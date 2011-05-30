@@ -32,7 +32,7 @@ namespace tloc
     Vector(const Vector<T, aSize>& aVector);
 
     FW_FI T& operator[](FwUInt32 aIndex);
-    FW_FI const T& operator[](FwUInt32 aIndex)const;
+    FW_FI const T& operator[](FwUInt32 aIndex) const;
 
     FW_FI void Zero();
     FW_FI void Swap(Vector<T, aSize>& aVector);
@@ -85,11 +85,33 @@ namespace tloc
     // the result in this vector
     FW_FI void Div(const T aReal);    
 
-    // Used by Length() and FastLength()
-    FW_FI void LengthSquared(T& aReal);
+    // Used by Length()
+    FW_FI void LengthSquared(T& aReal) const;
 
-    // This is a costly operation, consider FastLength() instead.
-    FW_FI void Length(T& aReal);
+    // This is a costly operation, consider using LengthSquared() if possible
+    FW_FI void Length(T& aReal) const;
+
+    // Normalizes this vector
+    FW_FI void Norm();    
+
+    // Same as Norm(), but returns the length as well
+    FW_FI T NormLength();
+
+    // Modifies this vector to store the normalized version of the incoming
+    // vector. Consider using FastNorm() taking into account the accuracy
+    // requirements.
+    FW_FI void Norm(const Vector<T, aSize>& aVector);
+
+    // Same as Norm() but returns the length as well
+    FW_FI void NormLength(const Vector<T, aSize>& aVector);
+
+    // Modifies this vector to store the normalized version of the incoming
+    // vector with an approx 3% error. Inverse square root code taken from
+    // http://www.codemaestro.com/reviews/9 (originally from Quake)
+    FW_FI void FastNorm(const Vector<T, aSize>& aVector);
+
+    // Same as FastNorm() but modifies this vector directly
+    FW_FI void FastNorm();
 
   private:
 

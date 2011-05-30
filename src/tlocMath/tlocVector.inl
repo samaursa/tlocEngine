@@ -174,7 +174,7 @@ FW_FI void Vector<T, aSize>::Div(const T aReal)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::LengthSquared(T& aReal)
+FW_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
 {
   aReal = 0;
 
@@ -185,8 +185,112 @@ FW_FI void Vector<T, aSize>::LengthSquared(T& aReal)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Length(T& aReal)
+FW_FI void Vector<T, aSize>::Length(T& aReal) const
 {
   LengthSquared(aReal);
   aReal = sqrt(aReal);
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::Norm()
+{
+  T lLength; Length(lLength);
+
+  if (lLength > 1e-08)
+  {
+    T lInvLength = (T)1.0 / lLength;
+
+    ITERATE_VECTOR
+    {
+      values[i] *= lInvLength;
+    }
+  }
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::NormLength()
+{
+  T lLength; Length(lLength);
+
+  if (lLength > 1e-08)
+  {
+    T lInvLength = (T)1.0 / lLength;
+
+    ITERATE_VECTOR
+    {
+      values[i] *= lInvLength;
+    }
+  }
+
+  return lLength;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
+{
+  T lLength; aVector.Length(lLength);
+
+  if (lLength > 1e-08)
+  {
+    T lInvLength = (T)1.0 / lLength;
+
+    ITERATE_VECTOR
+    {
+      values[i] = aVector[i] * lInvLength;
+    }
+  }
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
+{
+  T lLength; aVector.Length(lLength);
+
+  if (lLength > 1e-08)
+  {
+    T lInvLength = (T)1.0 / lLength;
+
+    ITERATE_VECTOR
+    {
+      values[i] = aVector[i] * lInvLength;
+    }
+  }
+
+  return lLength;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
+{
+  T lLength; aVector.LengthSquared(T);
+  
+  // Calculate length inverse
+  float xhalf = 0.5f*lLength;
+  int i = *(int*)&lLength; // get bits for floating value
+  i = 0x5f375a86- (i>>1); // gives initial guess y0
+  lLength = *(float*)&i; // convert bits back to float
+  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
+
+  ITERATE_VECTOR
+  {
+    values[i] *= lLength;
+  }
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::FastNorm()
+{
+  T lLength; LengthSquared(lLength);
+
+  // Calculate length inverse
+  float xhalf = 0.5f*lLength;
+  int i = *(int*)&lLength; // get bits for floating value
+  i = 0x5f375a86- (i>>1); // gives initial guess y0
+  lLength = *(float*)&i; // convert bits back to float
+  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
+
+  ITERATE_VECTOR
+  {
+    values[i] *= lLength;
+  }
 }

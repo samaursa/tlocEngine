@@ -16,9 +16,9 @@ struct Vector3fFixture
 
   tloc::Vector<float, 3> a, b, c, d, e;
 };
-#define REQUIRE_VEC3F(vec,x,y,z) REQUIRE(vec[0] == Approxf(x) ); \
-                                 REQUIRE(vec[1] == Approxf(y) ); \
-                                 REQUIRE(vec[2] == Approxf(z) );
+#define REQUIRE_VEC3F(vec,x,y,z) REQUIRE((vec[0]) == (Approxf(x)) ); \
+                                 REQUIRE((vec[1]) == (Approxf(y)) ); \
+                                 REQUIRE((vec[2]) == (Approxf(z)) );
 
 TEST_CASE_METHOD(Vector3fFixture, "vector3f/general", "Vector tests without math operations")
 {
@@ -79,7 +79,32 @@ TEST_CASE_METHOD(Vector3fFixture, "vector3f/math", "Vector math operations tests
   c.Zero(); c.Length(length);
   REQUIRE(length == Approxf(0.0f));
   
-  c[0] = 1, c[1] = 0, c[2] = 0;
+  c[0] = 1, c[1] = 1, c[2] = 0;
   c.Length(length);
+  REQUIRE(length == Approxf(1.414213562373095f));
+
+  c[0] = 2, c[1] = 0; c[2] = 0;
+  c.Norm();
+  REQUIRE_VEC3F(c, 1, 0, 0);
+
+  d = c;
+  c.Add(d);
+  REQUIRE_VEC3F(c, 2, 0, 0);
+  c[1] = 2; c[2] = 2;
+  d.Norm(c);
+
+  REQUIRE_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f);
+  c.Norm();
+  REQUIRE_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f);
+  length = c.NormLength();
   REQUIRE(length == Approxf(1.0f));
+
+  c[0] = 2; c[1] = 2; c[2] = 2;
+  c.FastNorm();
+  float percDiff = abs((c[0] - 0.577f) / c[0]);
+  // Make sure all the values are the same
+  REQUIRE_VEC3F(c, c[0], c[0], c[0]);
+  REQUIRE (percDiff < 0.03f);
+  c.Length(length);
+  REQUIRE (length > 0.99f);
 }

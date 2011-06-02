@@ -158,6 +158,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\src\tlocMath\tlocMath.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tlocMath\tlocMath.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tlocMath\tlocVector.h"
 				>
 			</File>

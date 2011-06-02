@@ -9,8 +9,8 @@ struct Vector3fFixture
   tloc::Vec3f a, b, c, d, e;
 };
 #define REQUIRE_VEC3F(vec,x,y,z) REQUIRE((vec[0]) == (Approxf(x)) ); \
-  REQUIRE((vec[1]) == (Approxf(y)) ); \
-  REQUIRE((vec[2]) == (Approxf(z)) );
+                                 REQUIRE((vec[1]) == (Approxf(y)) ); \
+                                 REQUIRE((vec[2]) == (Approxf(z)) );
 
 TEST_CASE_METHOD(Vector3fFixture, "vector3f/general", "Vector tests without math operations")
 {
@@ -57,8 +57,8 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/SetAndZero", "Tests the "
   REQUIRE_VEC3F(a, 0, 0, 0);
 }
 
-TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Addition", "Tests the "
-                 "addition functions")
+TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/BasicOperations", "Test "
+                 "addition, subtraction, multiplication and division")
 {
   //////////////////////////////////////////////////////////////////////////
   // Addition and subtraction
@@ -103,7 +103,11 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Addition", "Tests the "
 
   c.Div(14.0f);
   REQUIRE_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f);
+}
 
+TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Length", "Tests the "
+                 "length and length squared")
+{
   c.Zero(); c[0] = 2; c[1] = 2; c[2] = 2;
   float lengthSq;
   c.LengthSquared(lengthSq);
@@ -116,7 +120,11 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Addition", "Tests the "
   c[0] = 1, c[1] = 1, c[2] = 0;
   c.Length(length);
   REQUIRE(length == Approxf(1.414213562373095f));
+}
 
+TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/NormalizeLengthDis", 
+                 "Tests the normalize, length and distance functions")
+{
   c[0] = 2, c[1] = 0; c[2] = 0;
   c.Norm();
   REQUIRE_VEC3F(c, 1, 0, 0);
@@ -130,7 +138,7 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Addition", "Tests the "
   REQUIRE_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f);
   c.Norm();
   REQUIRE_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f);
-  length = c.NormLength();
+  float length = c.NormLength();
   REQUIRE(length == Approxf(1.0f));
 
   c[0] = 2; c[1] = 2; c[2] = 2;
@@ -154,7 +162,11 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Addition", "Tests the "
   REQUIRE_VEC3F(c, 1, 0, 0);
   REQUIRE_VEC3F(d, 3, 0, 0);
   REQUIRE(dis == 4);
+}
 
+TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/DotAndCross", 
+                 "Tests the dot and cross methods")
+{
   c.Zero(); d.Zero(); e.Zero();
   c[0] = 1; d[1] = 1; e = c;
   REQUIRE(c.Dot(d) == 0);

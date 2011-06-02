@@ -3,8 +3,7 @@
 
 #include "tlocCore\tlocBase.h"
 #include "tlocCore\tlocStandardFuncs.h"
-
-#include <cmath>
+#include "tlocMath\tlocMath.h"
 
 typedef unsigned int FwUInt32;
 
@@ -12,11 +11,7 @@ typedef unsigned int FwUInt32;
 // otherwise, explicit functions must be called. This can be selectively
 // turned on/off for different files depending on performance requirements
 #define FW_VECTOR_ALLOW_EASY_OPERATIONS
-
 #define FW_VECTOR_ENABLE_ASSERTS
-
-#define FW_FORCE_INLINE __forceinline
-#define FW_FI FW_FORCE_INLINE
 
 namespace tloc
 {

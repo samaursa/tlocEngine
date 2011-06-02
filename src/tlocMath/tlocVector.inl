@@ -350,7 +350,7 @@ template <typename T, FwUInt32 aSize>
 FW_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector)
 {
   T dotProd = Dot(aVector);
-  return abs(dotProd);
+  return Math::Abs(dotProd);
 }
 
 template <typename T, FwUInt32 aSize>

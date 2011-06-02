@@ -4,10 +4,6 @@
 template <typename T, FwUInt32 aSize>
 Vector<T, aSize>::Vector()
 {
-  ITERATE_VECTOR
-  {
-    values[i] = 0;
-  }
 }
 
 template <typename T, FwUInt32 aSize>
@@ -22,7 +18,7 @@ Vector<T, aSize>::Vector(T aValue)
 template <typename T, FwUInt32 aSize>
 Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 {
-  this = aVector;
+  *this = aVector;
 }
 
 
@@ -47,12 +43,18 @@ const T& Vector<T, aSize>::operator [](FwUInt32 aIndex) const
 // Modifiers
 
 template <typename T, FwUInt32 aSize>
-void Vector<T, aSize>::Zero()
+void Vector<T, aSize>::Set(T aValue)
 {
   ITERATE_VECTOR
   {
-    values[i] = 0;
+    values[i] = aValue;
   }
+}
+
+template <typename T, FwUInt32 aSize>
+void Vector<T, aSize>::Zero()
+{
+  Set(0);
 }
 
 template <typename T, FwUInt32 aSize>
@@ -185,10 +187,24 @@ FW_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
 }
 
 template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::LengthSquared() const
+{
+  T lengthSq; LengthSquared(lengthSq);
+  return lengthSq;
+}
+
+template <typename T, FwUInt32 aSize>
 FW_FI void Vector<T, aSize>::Length(T& aReal) const
 {
   LengthSquared(aReal);
   aReal = sqrt(aReal);
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::Length() const
+{
+  T length; Length(length);
+  return length;
 }
 
 template <typename T, FwUInt32 aSize>
@@ -242,7 +258,7 @@ FW_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
+FW_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.Length(lLength);
 
@@ -293,4 +309,90 @@ FW_FI void Vector<T, aSize>::FastNorm()
   {
     values[i] *= lLength;
   }
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector)
+{
+  Vector<T, aSize> lTemp = *this;
+  lTemp.Sub(aVector);
+  
+  T length;
+  lTemp.Length(length);
+  return length;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector)
+{
+  Vector<T, aSize> lTemp = *this;
+  lTemp.Sub(aVector);
+
+  T lengthSq;
+  lTemp.LengthSquared(lengthSq);
+  return lengthSq;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector)
+{
+  T dotProd = 0;
+
+  ITERATE_VECTOR
+  {
+    dotProd += values[i] * aVector[i];
+  }
+
+  return dotProd;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector)
+{
+  T dotProd = Dot(aVector);
+  return abs(dotProd);
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
+{
+  ITERATE_VECTOR
+  {
+    values[i] = (values[i] + aVector[i]) * (T)0.5;
+  }
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1, 
+                                      const Vector<T, aSize>& aVector2)
+{
+  operator=(aVector1);
+  Midpoint(aVector2);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Vector3
+
+template <typename T>
+FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
+{
+  /*
+  y * rkVector.z - z * rkVector.y,
+  z * rkVector.x - x * rkVector.z,
+  x * rkVector.y - y * rkVector.x);
+  */
+
+  Vector3<T> temp(*this);
+  
+  values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
+  values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
+  values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
+}
+
+template <typename T>
+FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
+                             const Vector3<T>& aVector2)
+{
+  operator=(aVector1);
+  Cross(aVector2);
 }

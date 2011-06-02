@@ -169,6 +169,10 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Vector3Test.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

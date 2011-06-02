@@ -28,14 +28,14 @@ Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 template <typename T, FwUInt32 aSize>
 T& Vector<T, aSize>::operator [](FwUInt32 aIndex)
 {
-  TLOC_ASSERT(aIndex < aSize, "Index out of bounds!");
+  TLOC_ASSERT_VEC(aIndex < aSize, "Index out of bounds!");
   return values[aIndex];
 }
 
 template <typename T, FwUInt32 aSize>
 const T& Vector<T, aSize>::operator [](FwUInt32 aIndex) const
 {
-  TLOC_ASSERT(aIndex < aSize, "Index out of bounds!");
+  TLOC_ASSERT_VEC(aIndex < aSize, "Index out of bounds!");
   return values[aIndex];
 }
 
@@ -312,7 +312,7 @@ FW_FI void Vector<T, aSize>::FastNorm()
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector)
+FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
   lTemp.Sub(aVector);
@@ -323,7 +323,7 @@ FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector)
+FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
   lTemp.Sub(aVector);
@@ -334,7 +334,7 @@ FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector)
+FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
 {
   T dotProd = 0;
 
@@ -347,7 +347,7 @@ FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector)
+FW_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector) const
 {
   T dotProd = Dot(aVector);
   return Math::Abs(dotProd);
@@ -369,6 +369,28 @@ FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1,
   operator=(aVector1);
   Midpoint(aVector2);
 }
+
+//------------------------------------------------------------------------
+// Comparisons
+
+template <typename T, FwUInt32 aSize>
+FW_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
+{
+  ITERATE_VECTOR
+  {
+    if (!Math::Approx(values[i], aVector[i])) return false;
+  }
+
+  return true;
+}
+
+template <typename T, FwUInt32 aSize>
+FW_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
+{
+  return !operator==(aVector);
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // Vector3

@@ -202,3 +202,15 @@ TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/DotAndCross",
   e.Cross(c, d);
   REQUIRE_VEC3F(e, 0, 0, -1);
 }
+
+TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Comparisons", 
+                 "Tests == and != comparisons")
+{
+  REQUIRE(a != b);
+  a = b;
+  REQUIRE(a == b);
+  a[0] = 0.0000001f; b[0] = 0.0000002f;
+  REQUIRE(a == b);
+  a[0] = 0.000002f; b[0] = 0.000005f;
+  REQUIRE(a != b);
+}

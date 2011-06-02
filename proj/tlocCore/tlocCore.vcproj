@@ -156,19 +156,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\src\tlocCore\tlocBase.h"
+				RelativePath="..\..\src\tlocCore\tlocBase.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\tlocCore\tlocNoOpt.h"
+				RelativePath="..\..\src\tlocCore\tlocNoOpt.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\tlocCore\tlocStandardFuncs.h"
+				RelativePath="..\..\src\tlocCore\tlocStandardFuncs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\tlocCore\tlocTypes.h"
+				RelativePath="..\..\src\tlocCore\tlocTypes.h"
 				>
 			</File>
 		</Filter>

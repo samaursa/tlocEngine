@@ -7,11 +7,23 @@
 
 typedef unsigned int FwUInt32;
 
-// If defined, easy math operations such as +,-,/,* will be available
+// If defined, easy math operations such as +,-,/,* will be available,
 // otherwise, explicit functions must be called. This can be selectively
 // turned on/off for different files depending on performance requirements
-#define FW_VECTOR_ALLOW_EASY_OPERATIONS
-#define FW_VECTOR_ENABLE_ASSERTS
+#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
+// If defined, simple assertions will be enabled in this class. Enabled by
+// default in debug
+#ifdef TLOC_DEBUG
+#define TLOC_VECTOR_ENABLE_ASSERTS
+#endif
+
+// If assertions are not enabled, we do not want TLOC_ASSERT to work anymore
+#ifdef TLOC_VECTOR_ENABLE_ASSERTS
+#define TLOC_ASSERT_VEC(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
+#else
+#define TLOC_ASSERT_VEC(_Expression, _Msg)
+#endif
 
 namespace tloc
 {
@@ -84,7 +96,7 @@ namespace tloc
     // Modifies this vector by dividing the incoming vectors and storing 
     // the result in this vector
     FW_FI void Div(const Vector<T, aSize>& aVector1, 
-             const Vector<T, aSize>& aVector2);    
+                   const Vector<T, aSize>& aVector2);    
 
     // Divides each element of this vector by the constant and stores the
     // the result in this vector
@@ -125,17 +137,17 @@ namespace tloc
     FW_FI void FastNorm();
 
     // Returns the distance between two vectors (expensive operation)
-    FW_FI T Distance(const Vector<T, aSize>& aVector);
+    FW_FI T Distance(const Vector<T, aSize>& aVector) const;
 
     // Returns the distance squared between two vectors (faster than 
     // Distance())
-    FW_FI T DistanceSquared(const Vector<T, aSize>& aVector);
+    FW_FI T DistanceSquared(const Vector<T, aSize>& aVector) const;
 
     // Returns the dot product between this and the incoming vector
-    FW_FI T Dot(const Vector<T, aSize>& aVector);
+    FW_FI T Dot(const Vector<T, aSize>& aVector) const;
 
     // Returns the absolute dot product between this and the incoming vector
-    FW_FI T DotAbs(const Vector<T, aSize>& aVector);
+    FW_FI T DotAbs(const Vector<T, aSize>& aVector) const;
 
     // Modifies this vector by storing the midpoint between this vector
     // and the incoming vector
@@ -146,10 +158,19 @@ namespace tloc
     FW_FI void Midpoint(const Vector<T, aSize>& aVector1,
                         const Vector<T, aSize>& aVector2);
 
+    //------------------------------------------------------------------------
+    // Comparisons
+
+    FW_FI bool operator==(const Vector<T, aSize>& aVector);
+    FW_FI bool operator!=(const Vector<T, aSize>& aVector);
+    
   protected:
 
     T values[aSize];
   };
+
+  typedef Vector<float, 4>  Vec4f;
+  typedef Vector<double, 4> Vec4d;
 
   template<typename T>
   class Vector3 : public Vector<T, 3>
@@ -186,7 +207,8 @@ namespace tloc
 
   };
 
-  typedef Vector3<float> Vec3f;
+  typedef Vector3<float>  Vec3f;
+  typedef Vector3<double> Vec3d;
 
 #include "tlocVector.inl"
 

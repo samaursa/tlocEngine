@@ -111,7 +111,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\include\&quot;;&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\single_include\&quot;;..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\include\&quot;;&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\single_include\&quot;;..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

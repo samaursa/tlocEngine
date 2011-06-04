@@ -79,7 +79,7 @@ void Vector<T, aSize>::Neg()
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
+TL_FI void Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
 {
   ITERATE_VECTOR
   {
@@ -91,7 +91,7 @@ FW_FI void Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
 // Math Operations
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -100,7 +100,7 @@ FW_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1, 
+TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
   ITERATE_VECTOR
@@ -110,7 +110,7 @@ FW_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1,
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -119,7 +119,7 @@ FW_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1, 
+TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
   operator=(aVector1);
@@ -127,7 +127,7 @@ FW_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1,
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -136,7 +136,7 @@ FW_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1, 
+TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
   operator=(aVector1);
@@ -144,7 +144,7 @@ FW_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1,
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Mul(const T aReal)
+TL_FI void Vector<T, aSize>::Mul(const T aReal)
 {
   ITERATE_VECTOR
   {
@@ -153,7 +153,7 @@ FW_FI void Vector<T, aSize>::Mul(const T aReal)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -162,7 +162,7 @@ FW_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1, 
+TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
   operator=(aVector1);
@@ -170,7 +170,7 @@ FW_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1,
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Div(const T aReal)
+TL_FI void Vector<T, aSize>::Div(const T aReal)
 {
   ITERATE_VECTOR
   {
@@ -179,7 +179,7 @@ FW_FI void Vector<T, aSize>::Div(const T aReal)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
+TL_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
 {
   aReal = 0;
 
@@ -190,28 +190,28 @@ FW_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::LengthSquared() const
+TL_FI T Vector<T, aSize>::LengthSquared() const
 {
   T lengthSq; LengthSquared(lengthSq);
   return lengthSq;
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Length(T& aReal) const
+TL_FI void Vector<T, aSize>::Length(T& aReal) const
 {
   LengthSquared(aReal);
   aReal = sqrt(aReal);
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::Length() const
+TL_FI T Vector<T, aSize>::Length() const
 {
   T length; Length(length);
   return length;
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Norm()
+TL_FI void Vector<T, aSize>::Norm()
 {
   T lLength; Length(lLength);
 
@@ -227,7 +227,7 @@ FW_FI void Vector<T, aSize>::Norm()
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::NormLength()
+TL_FI T Vector<T, aSize>::NormLength()
 {
   T lLength; Length(lLength);
 
@@ -245,7 +245,7 @@ FW_FI T Vector<T, aSize>::NormLength()
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.Length(lLength);
 
@@ -261,7 +261,7 @@ FW_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
+TL_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.Length(lLength);
 
@@ -279,7 +279,7 @@ FW_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.LengthSquared(T);
   
@@ -297,7 +297,7 @@ FW_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::FastNorm()
+TL_FI void Vector<T, aSize>::FastNorm()
 {
   T lLength; LengthSquared(lLength);
 
@@ -315,7 +315,7 @@ FW_FI void Vector<T, aSize>::FastNorm()
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
+TL_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
   lTemp.Sub(aVector);
@@ -326,7 +326,7 @@ FW_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
+TL_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
   lTemp.Sub(aVector);
@@ -337,7 +337,7 @@ FW_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
+TL_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
 {
   T dotProd = 0;
 
@@ -350,14 +350,14 @@ FW_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector) const
+TL_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector) const
 {
   T dotProd = Dot(aVector);
   return Math::Abs(dotProd);
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
+TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -366,7 +366,7 @@ FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1, 
+TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1, 
                                       const Vector<T, aSize>& aVector2)
 {
   operator=(aVector1);
@@ -377,7 +377,7 @@ FW_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1,
 // Comparisons
 
 template <typename T, FwUInt32 aSize>
-FW_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
+TL_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
@@ -388,7 +388,7 @@ FW_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
 }
 
 template <typename T, FwUInt32 aSize>
-FW_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
+TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
 {
   return !operator==(aVector);
 }
@@ -461,7 +461,7 @@ Vector3<T>::Vector3(const Vector3<T>& aVector)
 // Math operations
 
 template <typename T>
-FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
+TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
 {
   /*
   y * rkVector.z - z * rkVector.y,
@@ -477,7 +477,7 @@ FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
 }
 
 template <typename T>
-FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
+TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
                              const Vector3<T>& aVector2)
 {
   operator=(aVector1);

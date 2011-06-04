@@ -170,6 +170,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Vector2Test.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Vector3Test.h"
 				>
 			</File>

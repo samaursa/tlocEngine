@@ -7,3 +7,4 @@
 using namespace Catch::Detail;
 
 #include "Vector3Test.h"
+#include "Vector2Test.h"

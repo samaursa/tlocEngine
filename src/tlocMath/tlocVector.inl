@@ -1,4 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
+// Vector<N>
+
+//------------------------------------------------------------------------
 // Constructors
 
 template <typename T, FwUInt32 aSize>
@@ -7,7 +10,7 @@ Vector<T, aSize>::Vector()
 }
 
 template <typename T, FwUInt32 aSize>
-Vector<T, aSize>::Vector(T aValue)
+Vector<T, aSize>::Vector(const T& aValue)
 {
   ITERATE_VECTOR
   {
@@ -22,7 +25,7 @@ Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 }
 
 
-//////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------------------
 // Accessors
 
 template <typename T, FwUInt32 aSize>
@@ -39,7 +42,7 @@ const T& Vector<T, aSize>::operator [](FwUInt32 aIndex) const
   return values[aIndex];
 }
 
-//////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------------------
 // Modifiers
 
 template <typename T, FwUInt32 aSize>
@@ -84,7 +87,7 @@ FW_FI void Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
   }
 }
 
-//////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------------------
 // Math Operations
 
 template <typename T, FwUInt32 aSize>
@@ -390,10 +393,72 @@ FW_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
   return !operator==(aVector);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Vector2
 
+template <typename T>
+Vector2<T>::Vector2()
+{
+}
+
+template <typename T>
+Vector2<T>::Vector2(const T& aValue)
+{
+  values[0] = aValue;
+  values[1] = aValue;
+}
+
+template <typename T>
+Vector2<T>::Vector2(const T& aX, const T& aY)
+{
+  values[0] = aX;
+  values[1] = aY;
+}
+
+template <typename T>
+Vector2<T>::Vector2(const Vector2<T>& aVector)
+{
+  values[0] = aVector[0];
+  values[1] = aVector[1];
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Vector3
+
+//------------------------------------------------------------------------
+// Constructors
+
+template <typename T>
+Vector3<T>::Vector3()
+{
+}
+
+template <typename T>
+Vector3<T>::Vector3(const T& aValue)
+{
+  values[0] = aValue;
+  values[1] = aValue;
+  values[2] = aValue;
+}
+
+template <typename T>
+Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
+{
+  values[0] = aX;
+  values[1] = aY;
+  values[2] = aZ;
+}
+
+template <typename T>
+Vector3<T>::Vector3(const Vector3<T>& aVector)
+{
+  values[0] = aVector[0];
+  values[1] = aVector[1];
+  values[2] = aVector[2];
+}
+
+//------------------------------------------------------------------------
+// Math operations
 
 template <typename T>
 FW_FI void Vector3<T>::Cross(const Vector3<T>& aVector)

@@ -36,7 +36,7 @@ namespace tloc
   public:
     // Empty default constructor
     Vector();
-    Vector(T aValue);
+    Vector(const T& aValue);
     Vector(const Vector<T, aSize>& aVector);
 
     FW_FI T& operator[](FwUInt32 aIndex);
@@ -173,28 +173,26 @@ namespace tloc
   typedef Vector<double, 4> Vec4d;
 
   template<typename T>
+  class Vector2 : public Vector<T, 2>
+  {
+  public:
+    Vector2();
+    Vector2(const T& aValue);
+    Vector2(const T& aX, const T& aY);
+    Vector2(const Vector2<T>& aVector);
+  };
+
+  typedef Vector2<float>  Vec2f;
+  typedef Vector2<double> Vec2d;
+
+  template<typename T>
   class Vector3 : public Vector<T, 3>
   {
   public:
-    Vector3() {}
-    Vector3(T aValue) 
-    {
-      values[0] = aValue;
-      values[1] = aValue;
-      values[2] = aValue;
-    }
-    Vector3(T aX, T aY, T aZ)
-    {
-      values[0] = aX;
-      values[1] = aY;
-      values[2] = aZ;
-    }
-    Vector3(const Vector3<T>& aVector)
-    {
-      values[0] = aVector[0];
-      values[1] = aVector[1];
-      values[2] = aVector[2];
-    }
+    Vector3();
+    Vector3(const T& aValue);
+    Vector3(const T& aX, const T& aY, const T& aZ);
+    Vector3(const Vector3<T>& aVector);
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector

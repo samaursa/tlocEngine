@@ -6,5 +6,6 @@
 
 using namespace Catch::Detail;
 
+#include "MathTest.h"
 #include "Vector3Test.h"
 #include "Vector2Test.h"

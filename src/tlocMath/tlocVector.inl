@@ -24,7 +24,6 @@ Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
   *this = aVector;
 }
 
-
 //------------------------------------------------------------------------
 // Accessors
 
@@ -391,6 +390,31 @@ template <typename T, FwUInt32 aSize>
 TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
 {
   return !operator==(aVector);
+}
+
+//------------------------------------------------------------------------
+// Checks
+
+template <typename T, FwUInt32 aSize>
+TL_FI bool Vector<T, aSize>::IsValid()
+{
+  ITERATE_VECTOR
+  {
+    if (Math::IsNaN<T>(values[i])) return false;
+  }
+
+  return true;
+}
+
+template <typename T, FwUInt32 aSize>
+TL_FI bool Vector<T, aSize>::IsZero()
+{
+  ITERATE_VECTOR
+  {
+    if (!Math::Approx<T>(values[i], 0)) return false;
+  }
+
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////

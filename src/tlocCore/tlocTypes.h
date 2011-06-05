@@ -3,10 +3,10 @@
 #ifndef TLOC_TYPES_H
 #define TLOC_TYPES_H
 
-#include <vector>
-#include <map>
-#include <list>
-#include <string>
+//#include <vector>
+//#include <map>
+//#include <list>
+//#include <string>
 
 namespace tloc
 {
@@ -27,7 +27,7 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Containers
 
-  template <typename T>
+  /*template <typename T>
   class FwVecArray : public std::vector<T> {};
 
   template <typename T, typename _Ty, 
@@ -36,15 +36,15 @@ namespace tloc
   class FwMap : public std::map<T, _Ty, _Pr, _Alloc> {};
 
   template <typename _Ty, typename _Ax = allocator<_Ty> >
-  class FwList : public std::list<_Ty, _Ax> {};
+  class FwList : public std::list<_Ty, _Ax> {};*/
 
-  typedef FwVecArray<tl_uchar>     FwVecUChar;
+  /*typedef FwVecArray<tl_uchar>     FwVecUChar;
   typedef FwVecArray<tl_uint32>    FwVecUInt;
   typedef FwVecArray<tl_ulong>     FwVecULong;
   typedef FwVecArray<tl_int32>     FwVecInt;
   typedef FwVecArray<tl_real32>    FwVecFloat;
-  typedef FwVecArray<tl_real64>    FwVecDouble;
-  typedef FwVecArray<std::string>  FwVecString;
+  typedef FwVecArray<tl_real64>    FwVecDouble;*/
+  /*typedef FwVecArray<std::string>  FwVecString;*/
 };
 
 #endif

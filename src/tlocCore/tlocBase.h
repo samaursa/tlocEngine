@@ -3,6 +3,8 @@
 #ifndef TLOC_BASE_H
 #define TLOC_BASE_H
 
+#include <assert.h>
+
 //////////////////////////////////////////////////////////////////////////
 // Common macros
 #define _CRT_SECURE_NO_WARNINGS
@@ -55,8 +57,6 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
-#include <stlsoft/stlsoft.h>
-
 // Deprecated macros
 #pragma deprecated("FWASSERT") // Consider using TLOC_ASSERT
 #pragma deprecated("FwAssert") // Consider using TLOC_ASSERT
@@ -66,12 +66,15 @@
   (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
 #define FWASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-#define TLOC_ASSERT(_Expression, _Msg) STLSOFT_MESSAGE_ASSERT(_Msg, _Expression)
-
+#define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
+  (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+#define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
+  (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
 #else
 #define FwAssert(_Expression, _Msg)
 #define FWASSERT(_Expression, _Msg)
 #define TLOC_ASSERT(_Expression, _Msg)
+#define TLOC_ASSERTW(_Expression, _Msg)
 #endif
 
 //////////////////////////////////////////////////////////////////////////

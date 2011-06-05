@@ -210,16 +210,22 @@ namespace TestingVector3f
     REQUIRE_VEC3F(e, 0, 0, -1);
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Comparisons", 
-    "Tests == and != comparisons")
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks", 
+    "Tests == and != comparisons as well as checks")
   {
     REQUIRE(a != b);
     a = b;
     REQUIRE(a == b);
-    a[0] = 0.0000001f; b[0] = 0.0000002f;
+    a[0] = 0.0000001f; b[5] = 0.0000002f;
     REQUIRE(a == b);
     a[0] = 0.000002f; b[0] = 0.000005f;
     REQUIRE(a != b);
+
+    a.Zero();
+    REQUIRE(a.IsZero() == true);
+    REQUIRE(a.IsValid() == true);
+    a[2] = sqrt(-2.0f);
+    REQUIRE(a.IsValid() == false);
   }
 
 #undef REQUIRE_VEC3F

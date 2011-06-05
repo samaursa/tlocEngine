@@ -39,8 +39,9 @@ namespace tloc
   public:
     // Empty default constructor
     Vector();
-    Vector(const T& aValue);
     Vector(const Vector<T, aSize>& aVector);
+
+    explicit Vector(const T& aValue);    
 
     TL_FI T& operator[](FwUInt32 aIndex);
     TL_FI const T& operator[](FwUInt32 aIndex) const;
@@ -167,6 +168,13 @@ namespace tloc
     TL_FI bool operator==(const Vector<T, aSize>& aVector);
     TL_FI bool operator!=(const Vector<T, aSize>& aVector);
     
+    //------------------------------------------------------------------------
+    // Checks
+
+    // Returns false if the vector's values are invalid (NaN)
+    TL_FI bool IsValid();
+    TL_FI bool IsZero();
+    
   protected:
 
     T values[aSize];
@@ -183,9 +191,11 @@ namespace tloc
   {
   public:
     Vector2();
-    Vector2(const T& aValue);
-    Vector2(const T& aX, const T& aY);
+    Vector2(const T& aX, const T& aY);    
     Vector2(const Vector2<T>& aVector);
+
+    explicit Vector2(const T& aValue);
+    
   };
 
   typedef Vector2<float>  Vec2f;
@@ -199,9 +209,10 @@ namespace tloc
   {
   public:
     Vector3();
-    Vector3(const T& aValue);
     Vector3(const T& aX, const T& aY, const T& aZ);
     Vector3(const Vector3<T>& aVector);
+    
+    explicit Vector3(const T& aValue);    
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector

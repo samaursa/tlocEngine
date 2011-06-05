@@ -18,6 +18,8 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General", 
     "Vector tests without math operations")
   {
+    REQUIRE(sizeof(tloc::Vec3f) == 12);
+
     REQUIRE_VEC3F(a, 1.0f, 2.0f, 3.0f);
     REQUIRE_VEC3F(b, 5.0f, 6.0f, 7.0f);
 
@@ -216,7 +218,7 @@ namespace TestingVector3f
     REQUIRE(a != b);
     a = b;
     REQUIRE(a == b);
-    a[0] = 0.0000001f; b[5] = 0.0000002f;
+    a[0] = 0.0000001f; b[0] = 0.0000002f;
     REQUIRE(a == b);
     a[0] = 0.000002f; b[0] = 0.000005f;
     REQUIRE(a != b);

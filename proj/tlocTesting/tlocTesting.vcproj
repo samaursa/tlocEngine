@@ -173,15 +173,23 @@
 				Name="Math"
 				>
 				<File
-					RelativePath=".\MathTest.h"
+					RelativePath=".\tlocMathTest.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Vector2Test.h"
+					RelativePath=".\tlocTableTest.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Vector3Test.h"
+					RelativePath=".\tlocTupleTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocVector2Test.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocVector3Test.h"
 					>
 				</File>
 			</Filter>

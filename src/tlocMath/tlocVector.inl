@@ -4,12 +4,12 @@
 //------------------------------------------------------------------------
 // Constructors
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 Vector<T, aSize>::Vector()
 {
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 Vector<T, aSize>::Vector(const T& aValue)
 {
   ITERATE_VECTOR
@@ -18,7 +18,7 @@ Vector<T, aSize>::Vector(const T& aValue)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 {
   *this = aVector;
@@ -27,15 +27,15 @@ Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 //------------------------------------------------------------------------
 // Accessors
 
-template <typename T, FwUInt32 aSize>
-T& Vector<T, aSize>::operator [](FwUInt32 aIndex)
+template <typename T, tl_uint32 aSize>
+T& Vector<T, aSize>::operator [](tl_uint32 aIndex)
 {
   TLOC_ASSERT_VEC(aIndex < aSize, "Index out of bounds!");
   return values[aIndex];
 }
 
-template <typename T, FwUInt32 aSize>
-const T& Vector<T, aSize>::operator [](FwUInt32 aIndex) const
+template <typename T, tl_uint32 aSize>
+const T& Vector<T, aSize>::operator [](tl_uint32 aIndex) const
 {
   TLOC_ASSERT_VEC(aIndex < aSize, "Index out of bounds!");
   return values[aIndex];
@@ -44,7 +44,7 @@ const T& Vector<T, aSize>::operator [](FwUInt32 aIndex) const
 //------------------------------------------------------------------------
 // Modifiers
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 void Vector<T, aSize>::Set(T aValue)
 {
   ITERATE_VECTOR
@@ -53,22 +53,22 @@ void Vector<T, aSize>::Set(T aValue)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 void Vector<T, aSize>::Zero()
 {
   Set(0);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 void Vector<T, aSize>::Swap(Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
   {
-    tloc::swap(values[i], aVector[i]);
+    tloc::Swap(values[i], aVector[i]);
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 void Vector<T, aSize>::Neg()
 {
   ITERATE_VECTOR
@@ -77,19 +77,20 @@ void Vector<T, aSize>::Neg()
   }
 }
 
-template <typename T, FwUInt32 aSize>
-TL_FI void Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
+template <typename T, tl_uint32 aSize>
+TL_FI Vector<T, aSize>& Vector<T, aSize>::operator=( const Vector<T, aSize>& aVector )
 {
   ITERATE_VECTOR
   {
     values[i] = aVector[i];
   }
+  return *this;
 }
 
 //------------------------------------------------------------------------
 // Math Operations
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -98,7 +99,7 @@ TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
@@ -108,7 +109,7 @@ TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1,
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -117,7 +118,7 @@ TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
@@ -125,7 +126,7 @@ TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1,
   Sub(aVector2);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -134,7 +135,7 @@ TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
@@ -142,7 +143,7 @@ TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1,
   Mul(aVector2);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Mul(const T aReal)
 {
   ITERATE_VECTOR
@@ -151,7 +152,7 @@ TL_FI void Vector<T, aSize>::Mul(const T aReal)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -160,7 +161,7 @@ TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1, 
                                  const Vector<T, aSize>& aVector2)
 {
@@ -168,7 +169,7 @@ TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1,
   Div(aVector2);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Div(const T aReal)
 {
   ITERATE_VECTOR
@@ -177,7 +178,7 @@ TL_FI void Vector<T, aSize>::Div(const T aReal)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
 {
   aReal = 0;
@@ -188,28 +189,28 @@ TL_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::LengthSquared() const
 {
   T lengthSq; LengthSquared(lengthSq);
   return lengthSq;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Length(T& aReal) const
 {
   LengthSquared(aReal);
   aReal = sqrt(aReal);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::Length() const
 {
   T length; Length(length);
   return length;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Norm()
 {
   T lLength; Length(lLength);
@@ -225,7 +226,7 @@ TL_FI void Vector<T, aSize>::Norm()
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::NormLength()
 {
   T lLength; Length(lLength);
@@ -243,7 +244,7 @@ TL_FI T Vector<T, aSize>::NormLength()
   return lLength;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.Length(lLength);
@@ -259,7 +260,7 @@ TL_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.Length(lLength);
@@ -277,7 +278,7 @@ TL_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
   return lLength;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
 {
   T lLength; aVector.LengthSquared(T);
@@ -295,7 +296,7 @@ TL_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::FastNorm()
 {
   T lLength; LengthSquared(lLength);
@@ -313,7 +314,7 @@ TL_FI void Vector<T, aSize>::FastNorm()
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
@@ -324,7 +325,7 @@ TL_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
   return length;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
 {
   Vector<T, aSize> lTemp = *this;
@@ -335,7 +336,7 @@ TL_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
   return lengthSq;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
 {
   T dotProd = 0;
@@ -348,14 +349,14 @@ TL_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
   return dotProd;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector) const
 {
   T dotProd = Dot(aVector);
   return Math::Abs(dotProd);
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -364,7 +365,7 @@ TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
   }
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1, 
                                       const Vector<T, aSize>& aVector2)
 {
@@ -375,7 +376,7 @@ TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1,
 //------------------------------------------------------------------------
 // Comparisons
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
 {
   ITERATE_VECTOR
@@ -386,7 +387,7 @@ TL_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
   return true;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
 {
   return !operator==(aVector);
@@ -395,7 +396,7 @@ TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
 //------------------------------------------------------------------------
 // Checks
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI bool Vector<T, aSize>::IsValid()
 {
   ITERATE_VECTOR
@@ -406,7 +407,7 @@ TL_FI bool Vector<T, aSize>::IsValid()
   return true;
 }
 
-template <typename T, FwUInt32 aSize>
+template <typename T, tl_uint32 aSize>
 TL_FI bool Vector<T, aSize>::IsZero()
 {
   ITERATE_VECTOR

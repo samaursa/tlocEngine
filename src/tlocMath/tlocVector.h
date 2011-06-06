@@ -5,8 +5,6 @@
 #include "tlocCore\tlocStandardFuncs.h"
 #include "tlocMath\tlocMath.h"
 
-typedef unsigned int FwUInt32;
-
 // If defined, easy math operations such as +,-,/,* will be available,
 // otherwise, explicit functions must be called. This can be selectively
 // turned on/off for different files depending on performance requirements
@@ -28,12 +26,12 @@ typedef unsigned int FwUInt32;
 namespace tloc
 {
 
-#define ITERATE_VECTOR for (FwUInt32 i = 0; i < aSize; ++i)
+#define ITERATE_VECTOR for (tl_uint32 i = 0; i < aSize; ++i)
 
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
-  template <typename T, FwUInt32 aSize>
+  template <typename T, tl_uint32 aSize>
   class Vector
   {
   public:
@@ -43,8 +41,8 @@ namespace tloc
 
     explicit Vector(const T& aValue);    
 
-    TL_FI T& operator[](FwUInt32 aIndex);
-    TL_FI const T& operator[](FwUInt32 aIndex) const;
+    TL_FI T& operator[](tl_uint32 aIndex);
+    TL_FI const T& operator[](tl_uint32 aIndex) const;
 
     // Modifies this vector so that all values of this vector equal aValue
     TL_FI void Set(T aValue);
@@ -62,7 +60,7 @@ namespace tloc
     TL_FI void Neg(const Vector<T, aSize>& aVector);
 
     // All values of this vector will equal the incoming vector
-    TL_FI void operator=(const Vector<T, aSize>& aVector);
+    TL_FI Vector<T, aSize>& operator=(const Vector<T, aSize>& aVector);
 
     // Modifies this vector by adding the incoming vector
     TL_FI void Add(const Vector<T, aSize>& aVector);

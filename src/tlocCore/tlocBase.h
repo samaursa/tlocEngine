@@ -45,6 +45,7 @@
 // Inlining
 
 #define TLOC_INLINE inline
+#define TL_I TLOC_INLINE
 
 #define TLOC_FORCE_INLINE __forceinline
 #define TL_FI TLOC_FORCE_INLINE
@@ -75,6 +76,17 @@
 #define FWASSERT(_Expression, _Msg)
 #define TLOC_ASSERT(_Expression, _Msg)
 #define TLOC_ASSERTW(_Expression, _Msg)
+#endif
+
+//------------------------------------------------------------------------
+// Low level assertions
+// Define TLOC_LOW_LEVEL_ASSERTS in your project to catch low level asserts
+// e.g. out of bounds access
+
+#ifdef TLOC_LOW_LEVEL_ASSERTS
+#define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
+#else
+#define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
 #endif
 
 //////////////////////////////////////////////////////////////////////////

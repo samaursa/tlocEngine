@@ -17,6 +17,8 @@ namespace TestingVector2f
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General", 
     "Vector tests without math operations")
   {
+    REQUIRE(sizeof(tloc::Vec2f) == 8);
+
     REQUIRE_VEC2F(a, 1, 2);
     REQUIRE_VEC2F(b, 5, 6);
 

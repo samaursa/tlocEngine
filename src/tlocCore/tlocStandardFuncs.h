@@ -4,7 +4,7 @@
 namespace tloc
 {
   template <typename T>
-  void swap(T& a, T& b)
+  void Swap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }

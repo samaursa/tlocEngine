@@ -169,6 +169,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\tlocMath\tlocMatrix.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tlocMath\tlocMatrix.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tlocMath\tlocVector.h"
 				>
 			</File>

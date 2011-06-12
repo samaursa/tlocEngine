@@ -91,7 +91,8 @@
 //------------------------------------------------------------------------
 // Low level assertions
 // Define TLOC_LOW_LEVEL_ASSERTS in your project to catch low level asserts
-// e.g. out of bounds access
+// e.g. out of bounds access. These asserts are in areas that can be potentially
+// performance sensitive (e.g. vector/matrix accessors).
 
 #ifdef TLOC_LOW_LEVEL_ASSERTS
 #define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)

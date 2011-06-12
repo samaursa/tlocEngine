@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
 				MinimalRebuild="true"
@@ -59,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions=""
 			/>
 			<Tool
 				Name="VCALinkTool"

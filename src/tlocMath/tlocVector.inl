@@ -2,24 +2,26 @@
 // Vector<N>
 
 //------------------------------------------------------------------------
+// Macros
+
+#define ITERATE_VECTOR for (u32 i = 0; i < T_SIZE; ++i)
+
+//------------------------------------------------------------------------
 // Constructors
 
-template <typename T, u32 aSize>
-Vector<T, aSize>::Vector()
+template <typename T, u32 T_SIZE>
+TL_FI Vector<T, T_SIZE>::Vector()
 {
 }
 
-template <typename T, u32 aSize>
-Vector<T, aSize>::Vector(const T& aValue)
+template <typename T, u32 T_SIZE>
+TL_FI Vector<T, T_SIZE>::Vector(const T& aValue) : Tuple(aValue)
 {
-  ITERATE_VECTOR
-  {
-    values[i] = aValue;
-  }
+
 }
 
-template <typename T, u32 aSize>
-Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI Vector<T, T_SIZE>::Vector(const Vector<T, T_SIZE>& aVector)
 {
   *this = aVector;
 }
@@ -27,146 +29,146 @@ Vector<T, aSize>::Vector(const Vector<T, aSize>& aVector)
 //------------------------------------------------------------------------
 // Modifiers
 
-template <typename T, u32 aSize>
-void Vector<T, aSize>::Zero()
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Zero()
 {
   Set(0);
 }
 
-template <typename T, u32 aSize>
-void Vector<T, aSize>::Neg()
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Neg()
 {
   ITERATE_VECTOR
   {
-    values[i] = -values[i];
+    m_values[i] = -m_values[i];
   }
 }
 
 //------------------------------------------------------------------------
 // Math Operations
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Add(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    values[i] += aVector[i];
+    m_values[i] += aVector[i];
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Add(const Vector<T, aSize>& aVector1, 
-                                 const Vector<T, aSize>& aVector2)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Add(const Vector<T, T_SIZE>& aVector1, 
+                                 const Vector<T, T_SIZE>& aVector2)
 {
   ITERATE_VECTOR
   {
-    values[i] = aVector1[i] + aVector2[i];
+    m_values[i] = aVector1[i] + aVector2[i];
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Sub(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    values[i] -= aVector[i];
+    m_values[i] -= aVector[i];
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Sub(const Vector<T, aSize>& aVector1, 
-                                 const Vector<T, aSize>& aVector2)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Sub(const Vector<T, T_SIZE>& aVector1, 
+                                 const Vector<T, T_SIZE>& aVector2)
 {
   operator=(aVector1);
   Sub(aVector2);
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Mul(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    values[i] *= aVector[i];
+    m_values[i] *= aVector[i];
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Mul(const Vector<T, aSize>& aVector1, 
-                                 const Vector<T, aSize>& aVector2)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Mul(const Vector<T, T_SIZE>& aVector1, 
+                                 const Vector<T, T_SIZE>& aVector2)
 {
   operator=(aVector1);
   Mul(aVector2);
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Mul(const T aReal)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Mul(const T aReal)
 {
   ITERATE_VECTOR
   {
-    values[i] *= aReal;
+    m_values[i] *= aReal;
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Div(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    values[i] /= aVector[i];
+    m_values[i] /= aVector[i];
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Div(const Vector<T, aSize>& aVector1, 
-                                 const Vector<T, aSize>& aVector2)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Div(const Vector<T, T_SIZE>& aVector1, 
+                                 const Vector<T, T_SIZE>& aVector2)
 {
   operator=(aVector1);
   Div(aVector2);
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Div(const T aReal)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Div(const T aReal)
 {
   ITERATE_VECTOR
   {
-    values[i] /= aReal;
+    m_values[i] /= aReal;
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::LengthSquared(T& aReal) const
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::LengthSquared(T& aReal) const
 {
   aReal = 0;
 
   ITERATE_VECTOR
   {
-    aReal += (values[i] * values[i]);
+    aReal += (m_values[i] * m_values[i]);
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::LengthSquared() const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::LengthSquared() const
 {
   T lengthSq; LengthSquared(lengthSq);
   return lengthSq;
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Length(T& aReal) const
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Length(T& aReal) const
 {
   LengthSquared(aReal);
   aReal = sqrt(aReal);
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::Length() const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::Length() const
 {
   T length; Length(length);
   return length;
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Norm()
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Norm()
 {
   T lLength; Length(lLength);
 
@@ -176,13 +178,13 @@ TL_FI void Vector<T, aSize>::Norm()
 
     ITERATE_VECTOR
     {
-      values[i] *= lInvLength;
+      m_values[i] *= lInvLength;
     }
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::NormLength()
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::NormLength()
 {
   T lLength; Length(lLength);
 
@@ -192,15 +194,15 @@ TL_FI T Vector<T, aSize>::NormLength()
 
     ITERATE_VECTOR
     {
-      values[i] *= lInvLength;
+      m_values[i] *= lInvLength;
     }
   }
 
   return lLength;
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Norm(const Vector<T, T_SIZE>& aVector)
 {
   T lLength; aVector.Length(lLength);
 
@@ -210,13 +212,13 @@ TL_FI void Vector<T, aSize>::Norm(const Vector<T, aSize>& aVector)
 
     ITERATE_VECTOR
     {
-      values[i] = aVector[i] * lInvLength;
+      m_values[i] = aVector[i] * lInvLength;
     }
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::NormLength(const Vector<T, T_SIZE>& aVector)
 {
   T lLength; aVector.Length(lLength);
 
@@ -226,15 +228,15 @@ TL_FI T Vector<T, aSize>::NormLength(const Vector<T, aSize>& aVector)
 
     ITERATE_VECTOR
     {
-      values[i] = aVector[i] * lInvLength;
+      m_values[i] = aVector[i] * lInvLength;
     }
   }
 
   return lLength;
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::FastNorm(const Vector<T, T_SIZE>& aVector)
 {
   T lLength; aVector.LengthSquared(T);
   
@@ -247,12 +249,12 @@ TL_FI void Vector<T, aSize>::FastNorm(const Vector<T, aSize>& aVector)
 
   ITERATE_VECTOR
   {
-    values[i] *= lLength;
+    m_values[i] *= lLength;
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::FastNorm()
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::FastNorm()
 {
   T lLength; LengthSquared(lLength);
 
@@ -265,14 +267,14 @@ TL_FI void Vector<T, aSize>::FastNorm()
 
   ITERATE_VECTOR
   {
-    values[i] *= lLength;
+    m_values[i] *= lLength;
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::Distance(const Vector<T, T_SIZE>& aVector) const
 {
-  Vector<T, aSize> lTemp = *this;
+  Vector<T, T_SIZE> lTemp = *this;
   lTemp.Sub(aVector);
   
   T length;
@@ -280,10 +282,10 @@ TL_FI T Vector<T, aSize>::Distance(const Vector<T, aSize>& aVector) const
   return length;
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::DistanceSquared(const Vector<T, T_SIZE>& aVector) const
 {
-  Vector<T, aSize> lTemp = *this;
+  Vector<T, T_SIZE> lTemp = *this;
   lTemp.Sub(aVector);
 
   T lengthSq;
@@ -291,38 +293,38 @@ TL_FI T Vector<T, aSize>::DistanceSquared(const Vector<T, aSize>& aVector) const
   return lengthSq;
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::Dot(const Vector<T, aSize>& aVector) const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::Dot(const Vector<T, T_SIZE>& aVector) const
 {
   T dotProd = 0;
 
   ITERATE_VECTOR
   {
-    dotProd += values[i] * aVector[i];
+    dotProd += m_values[i] * aVector[i];
   }
 
   return dotProd;
 }
 
-template <typename T, u32 aSize>
-TL_FI T Vector<T, aSize>::DotAbs(const Vector<T, aSize>& aVector) const
+template <typename T, u32 T_SIZE>
+TL_FI T Vector<T, T_SIZE>::DotAbs(const Vector<T, T_SIZE>& aVector) const
 {
   T dotProd = Dot(aVector);
   return Math::Abs(dotProd);
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Midpoint(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    values[i] = (values[i] + aVector[i]) * (T)0.5;
+    m_values[i] = (m_values[i] + aVector[i]) * (T)0.5;
   }
 }
 
-template <typename T, u32 aSize>
-TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1, 
-                                      const Vector<T, aSize>& aVector2)
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Midpoint(const Vector<T, T_SIZE>& aVector1, 
+                                      const Vector<T, T_SIZE>& aVector2)
 {
   operator=(aVector1);
   Midpoint(aVector2);
@@ -331,19 +333,19 @@ TL_FI void Vector<T, aSize>::Midpoint(const Vector<T, aSize>& aVector1,
 //------------------------------------------------------------------------
 // Comparisons
 
-template <typename T, u32 aSize>
-TL_FI bool Vector<T, aSize>::operator==(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI bool Vector<T, T_SIZE>::operator==(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    if (!Math::Approx(values[i], aVector[i])) return false;
+    if (!Math::Approx(m_values[i], aVector[i])) return false;
   }
 
   return true;
 }
 
-template <typename T, u32 aSize>
-TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
+template <typename T, u32 T_SIZE>
+TL_FI bool Vector<T, T_SIZE>::operator!=(const Vector<T, T_SIZE>& aVector)
 {
   return !operator==(aVector);
 }
@@ -351,23 +353,23 @@ TL_FI bool Vector<T, aSize>::operator!=(const Vector<T, aSize>& aVector)
 //------------------------------------------------------------------------
 // Checks
 
-template <typename T, u32 aSize>
-TL_FI bool Vector<T, aSize>::IsValid()
+template <typename T, u32 T_SIZE>
+TL_FI bool Vector<T, T_SIZE>::IsValid()
 {
   ITERATE_VECTOR
   {
-    if (Math::IsNaN<T>(values[i])) return false;
+    if (Math::IsNaN<T>(m_values[i])) return false;
   }
 
   return true;
 }
 
-template <typename T, u32 aSize>
-TL_FI bool Vector<T, aSize>::IsZero()
+template <typename T, u32 T_SIZE>
+TL_FI bool Vector<T, T_SIZE>::IsZero()
 {
   ITERATE_VECTOR
   {
-    if (!Math::Approx<T>(values[i], 0)) return false;
+    if (!Math::Approx<T>(m_values[i], 0)) return false;
   }
 
   return true;
@@ -377,29 +379,29 @@ TL_FI bool Vector<T, aSize>::IsZero()
 // Vector2
 
 template <typename T>
-Vector2<T>::Vector2()
+TL_FI Vector2<T>::Vector2()
 {
 }
 
 template <typename T>
-Vector2<T>::Vector2(const T& aValue)
+TL_FI Vector2<T>::Vector2(const T& aValue)
 {
-  values[0] = aValue;
-  values[1] = aValue;
+  m_values[0] = aValue;
+  m_values[1] = aValue;
 }
 
 template <typename T>
-Vector2<T>::Vector2(const T& aX, const T& aY)
+TL_FI Vector2<T>::Vector2(const T& aX, const T& aY)
 {
-  values[0] = aX;
-  values[1] = aY;
+  m_values[0] = aX;
+  m_values[1] = aY;
 }
 
 template <typename T>
-Vector2<T>::Vector2(const Vector2<T>& aVector)
+TL_FI Vector2<T>::Vector2(const Vector2<T>& aVector)
 {
-  values[0] = aVector[0];
-  values[1] = aVector[1];
+  m_values[0] = aVector[0];
+  m_values[1] = aVector[1];
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -409,32 +411,32 @@ Vector2<T>::Vector2(const Vector2<T>& aVector)
 // Constructors
 
 template <typename T>
-Vector3<T>::Vector3()
+TL_FI Vector3<T>::Vector3()
 {
 }
 
 template <typename T>
-Vector3<T>::Vector3(const T& aValue)
+TL_FI Vector3<T>::Vector3(const T& aValue)
 {
-  values[0] = aValue;
-  values[1] = aValue;
-  values[2] = aValue;
+  m_values[0] = aValue;
+  m_values[1] = aValue;
+  m_values[2] = aValue;
 }
 
 template <typename T>
-Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
+TL_FI Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
 {
-  values[0] = aX;
-  values[1] = aY;
-  values[2] = aZ;
+  m_values[0] = aX;
+  m_values[1] = aY;
+  m_values[2] = aZ;
 }
 
 template <typename T>
-Vector3<T>::Vector3(const Vector3<T>& aVector)
+TL_FI Vector3<T>::Vector3(const Vector3<T>& aVector)
 {
-  values[0] = aVector[0];
-  values[1] = aVector[1];
-  values[2] = aVector[2];
+  m_values[0] = aVector[0];
+  m_values[1] = aVector[1];
+  m_values[2] = aVector[2];
 }
 
 //------------------------------------------------------------------------
@@ -451,9 +453,9 @@ TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
 
   Vector3<T> temp(*this);
   
-  values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
-  values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
-  values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
+  m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
+  m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
+  m_values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
 }
 
 template <typename T>

@@ -19,6 +19,12 @@ namespace TestingTuple
     CHECK(p.Get(2) == 2);
     CHECK(p.Get(3) == 3);
 
+    // Direct access
+    CHECK( *(p + 0) == 0);
+    CHECK( *(p + 1) == 1);
+    CHECK( *(p + 2) == 2);
+    CHECK( *(p + 3) == 3);
+
     p.Set(5);
     CHECK_TUP(p, 5, 5, 5, 5);
 

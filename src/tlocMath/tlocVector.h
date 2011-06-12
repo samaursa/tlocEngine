@@ -28,23 +28,27 @@
 namespace tloc
 {
 
-#define ITERATE_VECTOR for (u32 i = 0; i < aSize; ++i)
-
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
-  template <typename T, u32 aSize>
-  class Vector : public Tuple<T, aSize>
+  template <typename T, u32 T_SIZE>
+  class Vector : public Tuple<T, T_SIZE>
   {
   public:
-    // Empty default constructor
-    Vector();
-    Vector(const Vector<T, aSize>& aVector);
+    //------------------------------------------------------------------------
+    // Constructors
 
-    explicit Vector(const T& aValue);    
+    // Empty default constructor
+    TL_FI Vector();
+    TL_FI Vector(const Vector<T, T_SIZE>& aVector);
+
+    TL_FI explicit Vector(const T& aValue);    
 
     /*TL_FI T& operator[](u32 aIndex);
     TL_FI const T& operator[](u32 aIndex) const;*/
+
+    //------------------------------------------------------------------------
+    // Modifiers
 
     // Modifies this vector so that all values are zero. The vector must
     // be of numerical types
@@ -54,35 +58,38 @@ namespace tloc
     TL_FI void Neg();
 
     // Modifies this vector by storing the negation of the incoming vector
-    TL_FI void Neg(const Vector<T, aSize>& aVector);
+    TL_FI void Neg(const Vector<T, T_SIZE>& aVector);
 
     //// All values of this vector will equal the incoming vector
     //TL_FI Vector<T, aSize>& operator=(const Vector<T, aSize>& aVector);
 
+    //------------------------------------------------------------------------
+    // Math Operations
+
     // Modifies this vector by adding the incoming vector
-    TL_FI void Add(const Vector<T, aSize>& aVector);
+    TL_FI void Add(const Vector<T, T_SIZE>& aVector);
 
     // Modifies this vector by adding the incoming vectors and storing the 
     // result in this vector
-    TL_FI void Add(const Vector<T, aSize>& aVector1, 
-                   const Vector<T, aSize>& aVector2);
+    TL_FI void Add(const Vector<T, T_SIZE>& aVector1, 
+                   const Vector<T, T_SIZE>& aVector2);
 
     // Modifies this vector by subtracting the incoming vector
-    TL_FI void Sub(const Vector<T, aSize>& aVector);
+    TL_FI void Sub(const Vector<T, T_SIZE>& aVector);
 
     // Modifies this vector by subtracting the incoming vectors and storing 
     // the result in this vector
-    TL_FI void Sub(const Vector<T, aSize>& aVector1, 
-                   const Vector<T, aSize>& aVector2);
+    TL_FI void Sub(const Vector<T, T_SIZE>& aVector1, 
+                   const Vector<T, T_SIZE>& aVector2);
 
     // Multiply each element of this vector by the elements of the incoming 
     // Vector
-    TL_FI void Mul(const Vector<T, aSize>& aVector);
+    TL_FI void Mul(const Vector<T, T_SIZE>& aVector);
     
     // Modifies this vector by multiplying the incoming vectors and storing 
     // the result in this vector
-    TL_FI void Mul(const Vector<T, aSize>& aVector1, 
-                   const Vector<T, aSize>& aVector2);    
+    TL_FI void Mul(const Vector<T, T_SIZE>& aVector1, 
+                   const Vector<T, T_SIZE>& aVector2);    
 
     // Multiplies each element of this vector by the constant and stores the
     // the result in this vector
@@ -90,12 +97,12 @@ namespace tloc
 
     // Divides each element of this vector by the elements of the incoming 
     // Vector
-    TL_FI void Div(const Vector<T, aSize>& aVector);    
+    TL_FI void Div(const Vector<T, T_SIZE>& aVector);    
 
     // Modifies this vector by dividing the incoming vectors and storing 
     // the result in this vector
-    TL_FI void Div(const Vector<T, aSize>& aVector1, 
-                   const Vector<T, aSize>& aVector2);    
+    TL_FI void Div(const Vector<T, T_SIZE>& aVector1, 
+                   const Vector<T, T_SIZE>& aVector2);    
 
     // Divides each element of this vector by the constant and stores the
     // the result in this vector
@@ -122,47 +129,47 @@ namespace tloc
     // Modifies this vector to store the normalized version of the incoming
     // vector. Consider using FastNorm() taking into account the accuracy
     // requirements.
-    TL_FI void Norm(const Vector<T, aSize>& aVector);
+    TL_FI void Norm(const Vector<T, T_SIZE>& aVector);
 
     // Same as Norm() but returns the length as well
-    TL_FI T NormLength(const Vector<T, aSize>& aVector);
+    TL_FI T NormLength(const Vector<T, T_SIZE>& aVector);
 
     // Modifies this vector to store the normalized version of the incoming
     // vector with an approx 3% error. Inverse square root code taken from
     // http://www.codemaestro.com/reviews/9 (originally from Quake)
-    TL_FI void FastNorm(const Vector<T, aSize>& aVector);
+    TL_FI void FastNorm(const Vector<T, T_SIZE>& aVector);
 
     // Same as FastNorm() but modifies this vector directly
     TL_FI void FastNorm();
 
     // Returns the distance between two vectors (expensive operation). Use
     // DistanceApprox() for a faster (with more error) result
-    TL_FI T Distance(const Vector<T, aSize>& aVector) const;
+    TL_FI T Distance(const Vector<T, T_SIZE>& aVector) const;
 
     // Returns the distance squared between two vectors (faster than 
     // Distance())
-    TL_FI T DistanceSquared(const Vector<T, aSize>& aVector) const;
+    TL_FI T DistanceSquared(const Vector<T, T_SIZE>& aVector) const;
 
     // Returns the dot product between this and the incoming vector
-    TL_FI T Dot(const Vector<T, aSize>& aVector) const;
+    TL_FI T Dot(const Vector<T, T_SIZE>& aVector) const;
 
     // Returns the absolute dot product between this and the incoming vector
-    TL_FI T DotAbs(const Vector<T, aSize>& aVector) const;
+    TL_FI T DotAbs(const Vector<T, T_SIZE>& aVector) const;
 
     // Modifies this vector by storing the midpoint between this vector
     // and the incoming vector
-    TL_FI void Midpoint(const Vector<T, aSize>& aVector);
+    TL_FI void Midpoint(const Vector<T, T_SIZE>& aVector);
 
     // Modifies this vector by storing the midpoint between the two 
     // incoming vectors
-    TL_FI void Midpoint(const Vector<T, aSize>& aVector1,
-                        const Vector<T, aSize>& aVector2);
+    TL_FI void Midpoint(const Vector<T, T_SIZE>& aVector1,
+                        const Vector<T, T_SIZE>& aVector2);
 
     //------------------------------------------------------------------------
     // Comparisons
 
-    TL_FI bool operator==(const Vector<T, aSize>& aVector);
-    TL_FI bool operator!=(const Vector<T, aSize>& aVector);
+    TL_FI bool operator==(const Vector<T, T_SIZE>& aVector);
+    TL_FI bool operator!=(const Vector<T, T_SIZE>& aVector);
     
     //------------------------------------------------------------------------
     // Checks
@@ -183,11 +190,11 @@ namespace tloc
   class Vector2 : public Vector<T, 2>
   {
   public:
-    Vector2();
-    Vector2(const T& aX, const T& aY);    
-    Vector2(const Vector2<T>& aVector);
+    TL_FI Vector2();
+    TL_FI Vector2(const T& aX, const T& aY);    
+    TL_FI Vector2(const Vector2<T>& aVector);
 
-    explicit Vector2(const T& aValue);
+    TL_FI explicit Vector2(const T& aValue);
     
   };
 
@@ -201,11 +208,11 @@ namespace tloc
   class Vector3 : public Vector<T, 3>
   {
   public:
-    Vector3();
-    Vector3(const T& aX, const T& aY, const T& aZ);
-    Vector3(const Vector3<T>& aVector);
+    TL_FI Vector3();
+    TL_FI Vector3(const T& aX, const T& aY, const T& aZ);
+    TL_FI Vector3(const Vector3<T>& aVector);
     
-    explicit Vector3(const T& aValue);    
+    TL_FI explicit Vector3(const T& aValue);    
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector

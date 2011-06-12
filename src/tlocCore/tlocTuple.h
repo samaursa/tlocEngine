@@ -6,16 +6,16 @@
 
 namespace tloc
 {
-  template <typename T, u32 aSize>
+  template <typename T, u32 T_SIZE>
   class Tuple
   {
   public:
 
     // Empty default constructor
-    Tuple();
-    Tuple(const Tuple<T, aSize>& aTuple);
+    TL_FI Tuple();
+    TL_FI Tuple(const Tuple<T, T_SIZE>& aTuple);
     
-    explicit Tuple(const T& aValue);    
+    TL_FI explicit Tuple(const T& aValue);    
 
     //------------------------------------------------------------------------
     // Accessors
@@ -31,27 +31,27 @@ namespace tloc
     TL_FI T& Get(u32 aIndex);
     TL_FI const T& Get(u32 aIndex) const;
     
-    // Direct array access. Generally not recommended
+    // Direct array access. Generally not recommended but useful for memcpy
     TL_FI operator T* ();
     TL_FI operator const T* () const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    // Modifies this vector so that all values of this vector equal aValue
+    // Modifies this tuple so that all values of this tuple equal aValue
     TL_FI void Set(T aValue);
 
-    // Swaps the vector with the incoming vector
-    TL_FI void Swap(Tuple<T, aSize>& aVector);
+    // Swaps the tuple with the incoming vector
+    TL_FI void Swap(Tuple<T, T_SIZE>& aVector);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI Tuple<T, aSize>& operator= (const Tuple<T, aSize>& aTuple);
+    TL_FI Tuple<T, T_SIZE>& operator= (const Tuple<T, T_SIZE>& aTuple);
 
   protected:
 
-    T values[aSize];
+    T m_values[T_SIZE];
   };
 
 #include "tlocTuple.inl"

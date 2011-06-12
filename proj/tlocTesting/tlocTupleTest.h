@@ -5,7 +5,7 @@ namespace TestingTuple
   {
     Tuple<int, 4> p(0);
 
-    p.operator[](0) = 1;
+    p[0] = 0; p[1] = 1; p[2] = 2; p[3] = 3;
   }
 
 };

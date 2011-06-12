@@ -10,6 +10,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 //////////////////////////////////////////////////////////////////////////
+// Compiler specific
+
+#ifdef _MSC_VER
+  #ifndef TLOC_DEBUG
+    #pragma inline_recursion( on )
+    #pragma auto_inline( on )
+  #endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
 // For DLL support
 
 #ifndef TLOC_STATIC_LIB

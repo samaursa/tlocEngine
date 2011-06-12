@@ -6,8 +6,12 @@
 // overall program optimizations.
 
 #ifndef TLOC_RELEASE
-#ifdef _MSC_VER
-#pragma optimize("", off);
+  #ifdef _MSC_VER
+    #pragma optimize("", off);
+    #pragma inline_depth( 0 )
+    #pragma inline_recursion( off )
+    #pragma auto_inline( off )
+  #endif
 #endif
 #else
 #warning "FwNoOpt.h included in a Release build!"

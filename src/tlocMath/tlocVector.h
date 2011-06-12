@@ -2,7 +2,9 @@
 #define VECTOR_3_H
 
 #include "tlocCore\tlocBase.h"
+#include "tlocCore\tlocTuple.h"
 #include "tlocCore\tlocStandardFuncs.h"
+
 #include "tlocMath\tlocMath.h"
 
 // If defined, easy math operations such as +,-,/,* will be available,
@@ -26,13 +28,13 @@
 namespace tloc
 {
 
-#define ITERATE_VECTOR for (tl_uint32 i = 0; i < aSize; ++i)
+#define ITERATE_VECTOR for (u32 i = 0; i < aSize; ++i)
 
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
-  template <typename T, tl_uint32 aSize>
-  class Vector
+  template <typename T, u32 aSize>
+  class Vector : public Tuple<T, aSize>
   {
   public:
     // Empty default constructor
@@ -41,17 +43,12 @@ namespace tloc
 
     explicit Vector(const T& aValue);    
 
-    TL_FI T& operator[](tl_uint32 aIndex);
-    TL_FI const T& operator[](tl_uint32 aIndex) const;
+    /*TL_FI T& operator[](u32 aIndex);
+    TL_FI const T& operator[](u32 aIndex) const;*/
 
-    // Modifies this vector so that all values of this vector equal aValue
-    TL_FI void Set(T aValue);
-
-    // Modifies this vector so that all values are zero
+    // Modifies this vector so that all values are zero. The vector must
+    // be of numerical types
     TL_FI void Zero();
-
-    // Swaps the vector with the incoming vector
-    TL_FI void Swap(Vector<T, aSize>& aVector);
 
     // Negate this vector
     TL_FI void Neg();
@@ -59,8 +56,8 @@ namespace tloc
     // Modifies this vector by storing the negation of the incoming vector
     TL_FI void Neg(const Vector<T, aSize>& aVector);
 
-    // All values of this vector will equal the incoming vector
-    TL_FI Vector<T, aSize>& operator=(const Vector<T, aSize>& aVector);
+    //// All values of this vector will equal the incoming vector
+    //TL_FI Vector<T, aSize>& operator=(const Vector<T, aSize>& aVector);
 
     // Modifies this vector by adding the incoming vector
     TL_FI void Add(const Vector<T, aSize>& aVector);
@@ -138,7 +135,8 @@ namespace tloc
     // Same as FastNorm() but modifies this vector directly
     TL_FI void FastNorm();
 
-    // Returns the distance between two vectors (expensive operation)
+    // Returns the distance between two vectors (expensive operation). Use
+    // DistanceApprox() for a faster (with more error) result
     TL_FI T Distance(const Vector<T, aSize>& aVector) const;
 
     // Returns the distance squared between two vectors (faster than 
@@ -173,9 +171,6 @@ namespace tloc
     TL_FI bool IsValid();
     TL_FI bool IsZero();
     
-  protected:
-
-    T values[aSize];
   };
 
   typedef Vector<float, 4>  Vec4f;

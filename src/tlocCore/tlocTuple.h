@@ -6,9 +6,7 @@
 
 namespace tloc
 {
-#define ITERATE_TUPLE for (tl_uint32 i = 0; i < aSize; ++i)
-
-  template <typename T, tl_uint32 aSize>
+  template <typename T, u32 aSize>
   class Tuple
   {
   public:
@@ -22,12 +20,32 @@ namespace tloc
     //------------------------------------------------------------------------
     // Accessors
 
-    TL_FI T& operator[] (tl_uint32 aIndex);
-    TL_FI const T& operator[] (tl_uint32 aIndex) const;
+    // Access range is that of an integer, approx. 2.1 billion elements. 
+    // If size is more than that, use the get function instead
+    TL_FI T& operator[] (s32 aIndex);
+
+    // Access range is that of an integer, approx. 2.1 billion elements. 
+    // If size is more than that, use the get function instead
+    TL_FI const T& operator[] (s32 aIndex) const;
+
+    TL_FI T& Get(u32 aIndex);
+    TL_FI const T& Get(u32 aIndex) const;
     
     // Direct array access. Generally not recommended
     TL_FI operator T* ();
     TL_FI operator const T* () const;
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    // Modifies this vector so that all values of this vector equal aValue
+    TL_FI void Set(T aValue);
+
+    // Swaps the vector with the incoming vector
+    TL_FI void Swap(Tuple<T, aSize>& aVector);
+
+    //------------------------------------------------------------------------
+    // Operators
 
     TL_FI Tuple<T, aSize>& operator= (const Tuple<T, aSize>& aTuple);
 

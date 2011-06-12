@@ -13,16 +13,16 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Basic types
 
-  typedef char            tl_char;
-  typedef short           tl_int16;
-  typedef int             tl_int32;
-  typedef float           tl_real32;
-  typedef double          tl_real64;
+  typedef short           s16;
+  typedef int             s32;
+  typedef long            s64;
+  typedef float           f32;
+  typedef double          f64;
 
-  typedef unsigned char   tl_uchar;
-  typedef unsigned short  tl_uint16;
-  typedef unsigned int    tl_uint32;
-  typedef unsigned long   tl_ulong;
+  typedef unsigned char   uchar;
+  typedef unsigned short  u16;
+  typedef unsigned int    u32;
+  typedef unsigned long   u64;
 
   //////////////////////////////////////////////////////////////////////////
   // Containers

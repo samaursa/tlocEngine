@@ -12,6 +12,12 @@ Tuple<T, aSize>::Tuple()
 }
 
 template <typename T, u32 aSize>
+Tuple<T, aSize>::Tuple(const Tuple<T, aSize>& aTuple)
+{
+  operator=(aTuple);
+}
+
+template <typename T, u32 aSize>
 Tuple<T, aSize>::Tuple(const T& aValue)
 {
   ITERATE_TUPLE

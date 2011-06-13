@@ -22,6 +22,8 @@ namespace tloc
     T m_values[TABLE_SIZE];
 
   public:
+    //------------------------------------------------------------------------
+    // Constructors
 
     // Currently only useful for constructor/function accepting an array
     // of values

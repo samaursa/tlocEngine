@@ -102,6 +102,21 @@ namespace TestingTable
 
     a.Set(2, 2, 100);
     CHECK_TABLE(a, 11, 4, 7, 21, 5, 8, 71, 81, 100);
+
+    a.Set(0);
+    CHECK_TABLE(a, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    // ROW_MAJOR means that the above array has vectors in a row major order
+    // i.e. 9,8,7 is a row vector, 6,5,4 is a row vector and so on
+    a.Set(rawArray, tloc::Table<int, 3, 3>::ROW_MAJOR);
+    CHECK_TABLE(a, 9, 6, 3, 8, 5, 2, 7, 4, 1);
+
+    a.Set(0);
+    a.Set(rawArray, tloc::Table<int, 3, 3>::COL_MAJOR);
+    CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+
+
+
   }
 };
  

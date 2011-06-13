@@ -17,12 +17,21 @@ namespace tloc
   template <typename T, u32 T_ROWS, u32 T_COLS>
   class Table
   {
+  protected:
+    enum { TABLE_SIZE = T_ROWS * T_COLS };
+    T m_values[TABLE_SIZE];
+
   public:
+
+    // Currently only useful for constructor/function accepting an array
+    // of values
+    typedef enum TABLE_ORDER { ROW_MAJOR, COL_MAJOR } TABLE_ORDER;
 
     TL_FI Table();
     TL_FI Table(const Table<T, T_ROWS, T_COLS>& aTable);
 
     TL_FI explicit Table(const T& aValue);    
+    TL_FI Table(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
 
     //------------------------------------------------------------------------
     // Accessors   
@@ -45,16 +54,13 @@ namespace tloc
     //------------------------------------------------------------------------
     // Modifiers
 
+    TL_FI void Set(const T& aValue);
+    TL_FI void Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
     TL_FI void Set(u32 aRow, u32 aCol, const T& aValue);
     TL_FI void SetRow(u32 aRow, const Tuple<T, T_COLS>& aRowIn);
-    TL_FI void SetCol(u32 aCol, const Tuple<T, T_ROWS>& aColIn);
+    TL_FI void SetCol(u32 aCol, const Tuple<T, T_ROWS>& aColIn);    
 
     TL_FI Table<T, T_ROWS, T_COLS>& operator = (const Table& aTable);
-  
-  protected:
-    enum { TABLE_SIZE = T_ROWS * T_COLS };
-    T m_values[TABLE_SIZE];
-
   };
 
 #include "tlocTable.inl"

@@ -3,10 +3,16 @@
 
 namespace tloc
 {
-  /*template <typename T, >
+  template <typename T, typename T_ROWS, typename T_COLS>
   class Matrix
   {
-  };*/
+  public:
+
+    // Empty default constructor
+    Matrix();
+    Matrix(const Matrix<T, T_ROWS, T_COLS>& aMatrix);
+    
+  };
 };
 
 #endif

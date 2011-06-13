@@ -23,10 +23,14 @@ TL_FI Table<T, T_ROWS, T_COLS>::Table(const Table<T, T_ROWS, T_COLS>& aTable)
 template <typename T, u32 T_ROWS, u32 T_COLS>
 TL_FI Table<T, T_ROWS, T_COLS>::Table(const T& aValue)
 {
-  ITERATE_TABLE
-  {
-    m_values[i] = aValue;
-  }
+  Set(aValue);
+}
+
+template <typename T, u32 T_ROWS, u32 T_COLS>
+TL_FI Table<T, T_ROWS, T_COLS>::Table(const T values[TABLE_SIZE], 
+                                      TABLE_ORDER aTableOrder)
+{
+  Set(values, aTableOrder);
 }
 
 //------------------------------------------------------------------------
@@ -104,9 +108,36 @@ TL_FI Table<T, T_ROWS, T_COLS>::operator const T*() const
   return m_values;
 }
 
-
 //------------------------------------------------------------------------
 // Modifiers
+
+template <typename T, u32 T_ROWS, u32 T_COLS>
+TL_FI void Table<T, T_ROWS, T_COLS>::Set(const T& aValue)
+{
+  ITERATE_TABLE
+  {
+    m_values[i] = aValue;
+  }
+}
+
+template <typename T, u32 T_ROWS, u32 T_COLS>
+TL_FI void Table<T, T_ROWS, T_COLS>::Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder)
+{
+  if (aTableOrder == ROW_MAJOR)
+  {
+    for (u32 currRow = 0; currRow < T_ROWS; ++currRow)
+    {
+      for (u32 currCol = 0; currCol < T_COLS; ++currCol)
+      {
+        Set(currRow, currCol, values[(currRow * T_COLS) + currCol] );
+      }
+    }
+  }
+  else
+  {
+    memcpy(m_values, values, sizeof(T) * TABLE_SIZE);
+  }
+}
 
 template <typename T, u32 T_ROWS, u32 T_COLS>
 TL_FI void Table<T, T_ROWS, T_COLS>::Set(u32 aRow, u32 aCol, const T& aValue)

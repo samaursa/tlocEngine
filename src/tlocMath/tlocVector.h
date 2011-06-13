@@ -195,6 +195,13 @@ namespace tloc
     TL_FI Vector2(const Vector2<T>& aVector);
 
     TL_FI explicit Vector2(const T& aValue);
+
+    static const Vector2 ZERO;
+    static const Vector2 ONE;
+    static const Vector2 UNIT_X;
+    static const Vector2 UNIT_Y;
+    static const Vector2 NEG_UNIT_X;
+    static const Vector2 NEG_UNIT_Y;
     
   };
 
@@ -222,6 +229,15 @@ namespace tloc
     // incoming vectors
     TL_FI void Cross(const Vector3<T>& aVector1, 
                      const Vector3<T>& aVector2);
+
+    static const Vector3 ZERO;
+    static const Vector3 ONE;
+    static const Vector3 UNIT_X;
+    static const Vector3 UNIT_Y;
+    static const Vector3 UNIT_Z;
+    static const Vector3 NEG_UNIT_X;
+    static const Vector3 NEG_UNIT_Y;
+    static const Vector3 NEG_UNIT_Z;
 
   };
 

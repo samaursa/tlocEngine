@@ -44,7 +44,7 @@
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -59,6 +59,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -113,7 +115,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\include\&quot;;&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\single_include\&quot;;..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -129,6 +131,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -177,11 +181,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\tlocTableTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTupleTest.h"
+					RelativePath=".\tlocMatrixTest.h"
 					>
 				</File>
 				<File
@@ -190,6 +190,18 @@
 				</File>
 				<File
 					RelativePath=".\tlocVector3Test.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				>
+				<File
+					RelativePath=".\tlocTableTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocTupleTest.h"
 					>
 				</File>
 			</Filter>

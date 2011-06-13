@@ -35,6 +35,24 @@ namespace TestingVector3f
     CHECK_VEC3F(e, 1.0f, 2.0f, 3.0f);
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f);
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f);
+
+    c = tloc::Vec3f::ZERO;
+    CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
+    c = tloc::Vec3f::ONE;
+    CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
+    c = tloc::Vec3f::UNIT_X;
+    CHECK_VEC3F(c, 1.0f, 0.0f, 0.0f);
+    c = tloc::Vec3f::UNIT_Y;
+    CHECK_VEC3F(c, 0.0f, 1.0f, 0.0f);
+    c = tloc::Vec3f::UNIT_Z;
+    CHECK_VEC3F(c, 0.0f, 0.0f, 1.0f);
+    c = tloc::Vec3f::NEG_UNIT_X;
+    CHECK_VEC3F(c, -1.0f, 0.0f, 0.0f);
+    c = tloc::Vec3f::NEG_UNIT_Y;
+    CHECK_VEC3F(c, 0.0f, -1.0f, 0.0f);
+    c = tloc::Vec3f::NEG_UNIT_Z;
+    CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f);
+
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator", 

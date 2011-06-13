@@ -6,6 +6,7 @@
 #include "tlocCore/tlocTable.h"
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"
+#include "tlocMath/tlocMatrix.h"
 
 using namespace Catch::Detail;
 using namespace tloc;
@@ -15,3 +16,4 @@ using namespace tloc;
 #include "tlocMathTest.h"
 #include "tlocVector3Test.h"
 #include "tlocVector2Test.h"
+#include "tlocMatrixTest.h"

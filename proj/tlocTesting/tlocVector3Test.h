@@ -248,5 +248,4 @@ namespace TestingVector3f
     CHECK(a.IsValid() == false);
   }
 
-#undef CHECK_VEC3F
 }

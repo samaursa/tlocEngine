@@ -56,4 +56,62 @@ namespace TestingMatrix
     tloc::Mat3f h(rawArray, tloc::Mat3f::COL_MAJOR);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math",
+    "Test math operations")
+  {
+    tloc::Mat3f e(1);
+
+    c = a;
+    c.Add(a);
+    CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+
+    d.Add(a, a);
+    CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+
+    c.Set(0);
+    c(0, 0) = 1;
+    c(1, 1) = 1;
+    c(2, 2) = 1;
+
+    d = c;
+    d.Mul(c);
+    CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+
+    d.Mul(10);
+    CHECK_MATRIX3F(d, 10, 0, 0, 0, 10, 0, 0, 0, 10);
+    c.Set(1);
+    d.Add(c);
+    CHECK_MATRIX3F(d, 11, 1, 1, 1, 11, 1, 1, 1, 11);
+
+    d.Set(11);
+    CHECK_MATRIX3F(d, 11, 11, 11, 11, 11, 11, 11, 11, 11);
+    d.Div(11);
+    CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
+    c.Set(0);
+    c(0, 0) = 1;
+    c(1, 1) = 1;
+    c(2, 2) = 1;
+
+    d = c;
+    d.Transpose();
+    CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+    d(0, 2) = 1;
+    CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 1, 0, 1);
+    d.Transpose();
+    CHECK_MATRIX3F(d, 1, 0, 1, 0, 1, 0, 0, 0, 1);
+
+    Vec3f diagVec;
+    d.GetDiagonal(diagVec);
+    CHECK_VEC3F(diagVec, 1, 1, 1);
+
+    c.Set(0);
+    c(0, 0) = 3;
+    c(1, 1) = 4;
+    c(2, 2) = 5;
+
+    c.GetDiagonal(diagVec);
+    CHECK_VEC3F(diagVec, 3, 4, 5);
+  }
 };

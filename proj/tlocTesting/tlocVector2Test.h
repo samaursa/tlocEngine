@@ -96,7 +96,5 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 0, 0);
     c = b; c.Mul(b);
     CHECK_VEC2F(c, 25, 36);
-
-    
   }
 }

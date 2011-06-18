@@ -114,4 +114,37 @@ namespace TestingMatrix
     c.GetDiagonal(diagVec);
     CHECK_VEC3F(diagVec, 3, 4, 5);
   }
+
+  struct Matrix2Fixture
+  {
+    Matrix2Fixture() 
+    {
+      tloc::Vec2f row1;
+      tloc::Vec2f row2;
+
+      tloc::Vec2f col1;
+      tloc::Vec2f col2;
+
+      row1[0] = 1; row1[1] = 2;
+      row2[0] = 4; row2[1] = 5;
+
+      col1[0] = 1; col1[1] = 2;
+      col2[0] = 4; col2[1] = 5;
+
+      a.SetRow(0, row1);
+      a.SetRow(1, row2);
+      a.SetRow(2, row2);
+
+      b.SetCol(0, col1);
+      b.SetCol(1, col2);
+    }
+
+    tloc::Mat2f a, b, c, d;
+  };
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Core/DataStructures/Matrix2/General", 
+    "Test general/basic functionality")
+  {
+
+  }
 };

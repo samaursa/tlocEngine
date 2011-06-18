@@ -1,6 +1,8 @@
 #include "catch_with_main.hpp"
 #include "catch.hpp"
 
+#define TLOC_ENABLE_ASSERT_LOW_LEVEL
+
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTuple.h"
 #include "tlocCore/tlocTable.h"

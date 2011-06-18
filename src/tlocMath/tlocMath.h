@@ -18,56 +18,38 @@ namespace tloc
   {
   public:
 
-    static
-    TL_FI T Ceil(const T& aValue) { return ceil(aValue); }
+    TL_STATIC_FI T Ceil(const T& aValue);
 
-    static
-    TL_FI T Floor(const T& aValue) { return floor(aValue); }
+    TL_STATIC_FI T Floor(const T& aValue);
 
-    static
-    TL_FI T Abs(const T& aValue) { return abs(aValue); }
+    TL_STATIC_FI T Abs(const T& aValue);
 
-    static
-    TL_FI T ATan(const T& aValue) { return atan(aValue); }
+    TL_STATIC_FI T ATan(const T& aValue);
 
-    static
-    TL_FI T ATan2(const T& aValue1, const T& aValue2) { return atan2(aValue1, aValue2); }
+    TL_STATIC_FI T ATan2(const T& aValue1, const T& aValue2);
 
     // Taken from OgreMath
-    static
-    TL_FI bool IsNaN(const T& aValue) { return aValue != aValue; }
+    TL_STATIC_FI bool IsNaN(const T& aValue);
 
     // If the difference between the two values is < eps then this
     // returns true
-    static
-    TL_FI bool Approx(const T& aValue1, const T& aValue2,
-                      T eps = T(1e-6))
-    {
-      T toCompare = Abs(aValue1 - aValue2);
-      return (toCompare < eps);
-    }
+    TL_STATIC_FI bool Approx(const T& aValue1, const T& aValue2,
+                      T eps = T(1e-6));   
 
-    static
-    TL_FI T Degree(const T& aValueInRadian)
-    {
-      return aValueInRadian  * (T)TL_RAD_TO_DEGREE_CONSTANT;
-    }
+    TL_STATIC_FI T Degree(const T& aValueInRadian);    
 
-    static
-    TL_FI T Radian(const T& aValueInDegrees)
-    {
-      return aValueInDegrees * (T)TL_DEGREE_TO_RAD_CONSTANT;
-    }
+    TL_STATIC_FI T Radian(const T& aValueInDegrees);    
 
-    static
-    TL_FI T Sqrt(const T& aValue)
-    {
-      return sqrt(aValue);
-    }
+    TL_STATIC_FI T Sqrt(const T& aValue);    
   };
 
   typedef Math<f32> Mathf;
   typedef Math<f64> Mathd;
+  typedef Math<f128> Mathl;
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocMath.inl"
+#endif
 
 #endif

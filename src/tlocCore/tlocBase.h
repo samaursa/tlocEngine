@@ -11,6 +11,30 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 //////////////////////////////////////////////////////////////////////////
+// TLOC Engine No source
+// 
+// The following macro can be commented out when compiling the engine which 
+// allows safe removal of inline files altogether
+
+#define TLOC_FULL_SOURCE
+
+//------------------------------------------------------------------------
+// The following macros can be enabled to increase the size of the template
+// instantiations (that many more template types will be instantiated).
+// For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>, 
+// Matrix<>, Vector<> etc. classes will be instantiated such that they have
+// have a size of at least 20 rows and cols (if any). Note that for types
+// such as Table<> this will require a large type generation.
+// 
+// NOTE : Only useful if giving out the code without source
+// NOTE2: If you want size to be 20, you must also define SIZE_15
+
+#ifndef TLOC_FULL_SOURCE
+//#define TLOC_TEMPLATE_TYPES_SIZE_15
+//#define TLOC_TEMPLATE_TYPES_SIZE_20
+#endif
+
+//////////////////////////////////////////////////////////////////////////
 // Compiler specific
 
 #ifdef _MSC_VER
@@ -55,11 +79,27 @@
 //////////////////////////////////////////////////////////////////////////
 // Inlining
 
-#define TLOC_INLINE inline
-#define TL_I TLOC_INLINE
+#ifndef TLOC_DEBUG
+  #define TLOC_INLINE inline
+  #define TL_I TLOC_INLINE
 
-#define TLOC_FORCE_INLINE __forceinline
-#define TL_FI TLOC_FORCE_INLINE
+  #define TLOC_FORCE_INLINE __forceinline
+  #define TL_FI TLOC_FORCE_INLINE
+#else
+  #define TLOC_INLINE
+  #define TL_I
+
+  #define TLOC_FORCE_INLINE
+  #define TL_FI
+#endif
+
+#ifdef TLOC_FULL_SOURCE
+  #define TL_STATIC_I  static  TLOC_INLINE
+  #define TL_STATIC_FI static TLOC_FORCE_INLINE
+#else
+  #define TL_STATIC_I  static
+  #define TL_STATIC_FI static
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // FwTypes

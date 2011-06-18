@@ -1,105 +1,110 @@
-//////////////////////////////////////////////////////////////////////////
-// Tuple<N>
-
-//------------------------------------------------------------------------
-// Macros
-
-#define ITERATE_TUPLE for (u32 i = 0; i < T_SIZE; ++i)
-
-//------------------------------------------------------------------------
-// Constructors
-
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>::Tuple()
+namespace tloc
 {
-}
 
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>::Tuple(const Tuple<T, T_SIZE>& aTuple)
-{
-  operator=(aTuple);
-}
+  //////////////////////////////////////////////////////////////////////////
+  // Tuple<N>
 
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>::Tuple(const T& aValue)
-{
-  Set(aValue);
-}
+  //------------------------------------------------------------------------
+  // Macros
 
-//------------------------------------------------------------------------
-// Accessors
+#define ITERATE_TUPLE for (u32 i = 0; i < T_Size; ++i)
 
-template <typename T, u32 T_SIZE>
-TL_FI T& Tuple<T, T_SIZE>::operator [](s32 aIndex)
-{
-  TLOC_ASSERT_LOW_LEVEL(aIndex < T_SIZE, "Index is out of bounds!");
+  //------------------------------------------------------------------------
+  // Constructors
 
-  return m_values[aIndex];
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI const T& Tuple<T, T_SIZE>::operator [](s32 aIndex) const
-{
-  TLOC_ASSERT_LOW_LEVEL(aIndex < T_SIZE, "Index is out of bounds!");
-
-  return m_values[aIndex];
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI T& Tuple<T, T_SIZE>::Get(u32 aIndex)
-{
-  TLOC_ASSERT_LOW_LEVEL(aIndex < T_SIZE, "Index is out of bounds!");
-
-  return m_values[aIndex];
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI const T& Tuple<T, T_SIZE>::Get(u32 aIndex) const
-{
-  TLOC_ASSERT_LOW_LEVEL(aIndex < T_SIZE, "Index is out of bounds!");
-
-  return m_values[aIndex];
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>::operator T*()
-{
-  return m_values;
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>::operator const T*() const
-{
-  return m_values;
-}
-
-//------------------------------------------------------------------------
-// Modifiers
-
-template <typename T, u32 T_SIZE>
-void Tuple<T, T_SIZE>::Set(T aValue)
-{
-  ITERATE_TUPLE
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>::Tuple()
   {
-    m_values[i] = aValue;
   }
-}
 
-template <typename T, u32 T_SIZE>
-void Tuple<T, T_SIZE>::Swap(Tuple<T, T_SIZE>& aVector)
-{
-  ITERATE_TUPLE
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>::Tuple(const Tuple<T, T_Size>& aTuple)
   {
-    tloc::Swap(m_values[i], aVector[i]);
+    operator=(aTuple);
   }
-}
 
-//------------------------------------------------------------------------
-// Operators
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>::Tuple(const T& aValue)
+  {
+    Set(aValue);
+  }
 
-template <typename T, u32 T_SIZE>
-TL_FI Tuple<T, T_SIZE>& Tuple<T, T_SIZE>::operator = (const Tuple<T, T_SIZE>& aTuple)
-{
-  memcpy(m_values, aTuple, sizeof(T) * T_SIZE);
-  return *this;
-}
+  //------------------------------------------------------------------------
+  // Accessors
+
+  template <typename T, u32 T_Size>
+  TL_FI T& Tuple<T, T_Size>::operator [](s32 aIndex)
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI const T& Tuple<T, T_Size>::operator [](s32 aIndex) const
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI T& Tuple<T, T_Size>::Get(u32 aIndex)
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI const T& Tuple<T, T_Size>::Get(u32 aIndex) const
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>::operator T*()
+  {
+    return m_values;
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>::operator const T*() const
+  {
+    return m_values;
+  }
+
+  //------------------------------------------------------------------------
+  // Modifiers
+
+  template <typename T, u32 T_Size>
+  void Tuple<T, T_Size>::Set(T aValue)
+  {
+    ITERATE_TUPLE
+    {
+      m_values[i] = aValue;
+    }
+  }
+
+  template <typename T, u32 T_Size>
+  void Tuple<T, T_Size>::Swap(Tuple<T, T_Size>& aVector)
+  {
+    ITERATE_TUPLE
+    {
+      tloc::Swap(m_values[i], aVector[i]);
+    }
+  }
+
+  //------------------------------------------------------------------------
+  // Operators
+
+  template <typename T, u32 T_Size>
+  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator = (const Tuple<T, T_Size>& aTuple)
+  {
+    memcpy(m_values, aTuple, sizeof(T) * T_Size);
+    return *this;
+  }
+
+};

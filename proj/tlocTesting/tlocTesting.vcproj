@@ -192,6 +192,10 @@
 					RelativePath=".\tlocVector3Test.h"
 					>
 				</File>
+				<File
+					RelativePath=".\tlocVectorTest.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Core"

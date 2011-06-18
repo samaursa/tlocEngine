@@ -41,7 +41,8 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -107,7 +108,8 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -174,19 +176,23 @@
 				RelativePath="..\..\src\tlocCore\tlocStandardFuncs.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\src\tlocCore\tlocTypes.h"
-				>
-			</File>
 			<Filter
 				Name="DataStructures"
 				>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTable.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\src\tlocCore\tlocTable.h"
 					>
 				</File>
 				<File
 					RelativePath="..\..\src\tlocCore\tlocTable.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTuple.cpp"
 					>
 				</File>
 				<File
@@ -211,6 +217,26 @@
 				</File>
 				<File
 					RelativePath="..\..\src\tlocCore\tlocString.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Types"
+				>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTemplateTypesN.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTemplateTypesNxM.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTemplateTypesNxM.helper.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocCore\tlocTypes.h"
 					>
 				</File>
 			</Filter>

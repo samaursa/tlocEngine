@@ -31,11 +31,26 @@ namespace tloc
     
   };
 
+  //------------------------------------------------------------------------
+  // Typedefs
   typedef Vector2<f32>    Vec2f;
   typedef Vector2<f64>    Vec2d;
+  typedef Vector2<f128>   Vec2l;
 
-#include "tlocVector2.inl"
-
+  //------------------------------------------------------------------------
+  // Static const definitions
+  template<typename T> 
+  const Vector2<T> Vector2<T>::UNIT_X     (1.0, 0.0);
+  template<typename T> 
+  const Vector2<T> Vector2<T>::UNIT_Y     (0.0, 1.0);
+  template<typename T> 
+  const Vector2<T> Vector2<T>::NEG_UNIT_X (-1.0, 0.0);
+  template<typename T> 
+  const Vector2<T> Vector2<T>::NEG_UNIT_Y (0.0, -1.0);
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocVector2.inl"
+#endif
 
 #endif

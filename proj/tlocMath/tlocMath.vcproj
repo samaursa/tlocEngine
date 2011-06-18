@@ -159,7 +159,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\tlocMath.cpp"
+				RelativePath="..\..\src\tlocMath\tlocMath.cpp"
 				>
 			</File>
 			<File
@@ -173,6 +173,10 @@
 			<Filter
 				Name="Matrix"
 				>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\src\tlocMath\tlocMatrix.h"
 					>

@@ -14,11 +14,11 @@ namespace tloc
   // may be faster. These include Setting the columns via a Tuple<> and 
   // getting a column via a Tuple<>. Vice-versa is true for row major order
   // (not yet supported).
-  template <typename T, u32 T_ROWS, u32 T_COLS>
+  template <typename T, u32 T_Rows, u32 T_Cols>
   class Table
   {
   protected:
-    enum { TABLE_SIZE = T_ROWS * T_COLS };
+    enum { TABLE_SIZE = T_Rows * T_Cols };
     T m_values[TABLE_SIZE];
 
   public:
@@ -30,7 +30,7 @@ namespace tloc
     typedef enum TABLE_ORDER { ROW_MAJOR, COL_MAJOR } TABLE_ORDER;
 
     TL_FI Table();
-    TL_FI Table(const Table<T, T_ROWS, T_COLS>& aTable);
+    TL_FI Table(const Table<T, T_Rows, T_Cols>& aTable);
 
     TL_FI explicit Table(const T& aValue);    
     TL_FI Table(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
@@ -46,8 +46,8 @@ namespace tloc
     TL_FI T& Get(u32 aRow, u32 aCol);
     TL_FI const T& Get(u32 aRow, u32 aCol) const;
 
-    TL_FI void GetRow(u32 aRow, Tuple<T, T_COLS>& aRowOut) const;
-    TL_FI void GetCol(u32 aCol, Tuple<T, T_ROWS>& aColOut) const;
+    TL_FI void GetRow(u32 aRow, Tuple<T, T_Cols>& aRowOut) const;
+    TL_FI void GetCol(u32 aCol, Tuple<T, T_Rows>& aColOut) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
     TL_FI operator T* ();
@@ -59,13 +59,15 @@ namespace tloc
     TL_FI void Set(const T& aValue);
     TL_FI void Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
     TL_FI void Set(u32 aRow, u32 aCol, const T& aValue);
-    TL_FI void SetRow(u32 aRow, const Tuple<T, T_COLS>& aRowIn);
-    TL_FI void SetCol(u32 aCol, const Tuple<T, T_ROWS>& aColIn);    
+    TL_FI void SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn);
+    TL_FI void SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn);    
 
-    TL_FI Table<T, T_ROWS, T_COLS>& operator = (const Table& aTable);
+    TL_FI Table<T, T_Rows, T_Cols>& operator = (const Table& aTable);
   };
-
-#include "tlocTable.inl"
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocTable.inl"
+#endif
 
 #endif

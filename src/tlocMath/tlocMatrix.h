@@ -8,8 +8,8 @@
 
 namespace tloc
 {
-  template <typename T, u32 T_SIZE>
-  class Matrix : public Table<T, T_SIZE, T_SIZE>
+  template <typename T, u32 T_Size>
+  class Matrix : public Table<T, T_Size, T_Size>
   {
   protected:
     enum { MATRIX_SIZE = TABLE_SIZE };
@@ -22,7 +22,7 @@ namespace tloc
 
     // Empty default constructor
     TL_FI Matrix();
-    TL_FI Matrix(const Matrix<T, T_SIZE>& aMatrix);
+    TL_FI Matrix(const Matrix<T, T_Size>& aMatrix);
 
     TL_FI explicit Matrix(const T& aValue);
     TL_FI Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder);
@@ -40,29 +40,29 @@ namespace tloc
     // Math operations
 
     // Modifies this matrix by adding the incoming matrix
-    TL_FI void Add(const Matrix<T, T_SIZE>& aMatrix);
+    TL_FI void Add(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by adding the incoming matrices and storing the
     // result in this matrix
-    TL_FI void Add(const Matrix<T, T_SIZE>& aMatrix1,
-                   const Matrix<T, T_SIZE>& aMatrix2);
+    TL_FI void Add(const Matrix<T, T_Size>& aMatrix1,
+                   const Matrix<T, T_Size>& aMatrix2);
 
     // Modifies this matrix by subtracting the incoming matrix
-    TL_FI void Sub(const Matrix<T, T_SIZE>& aMatrix);
+    TL_FI void Sub(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by subtracting the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Sub(const Matrix<T, T_SIZE>& aMatrix1,
-                   const Matrix<T, T_SIZE>& aMatrix2);
+    TL_FI void Sub(const Matrix<T, T_Size>& aMatrix1,
+                   const Matrix<T, T_Size>& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix<T, T_SIZE>& aMatrix);
+    TL_FI void Mul(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix<T, T_SIZE>& aMatrix1,
-                   const Matrix<T, T_SIZE>& aMatrix2);
+    TL_FI void Mul(const Matrix<T, T_Size>& aMatrix1,
+                   const Matrix<T, T_Size>& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming real number
     TL_FI void Mul(const T& aReal);
@@ -70,8 +70,8 @@ namespace tloc
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the 
     // result is: vOut = M * vIn
-    TL_FI void Mul(const Vector<T, T_SIZE>& aVectorIn,
-                   const Vector<T, T_SIZE>& aVectorOut);
+    TL_FI void Mul(const Vector<T, T_Size>& aVectorIn,
+                   Vector<T, T_Size>& aVectorOut);
 
     // Modifies this matrix by dividing the incoming real number
     TL_FI void Div(const T& aReal);
@@ -81,13 +81,13 @@ namespace tloc
 
     // Modifies this matrix by transposing the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Transpose(const Matrix<T, T_SIZE>& aMatrix);
+    TL_FI void Transpose(const Matrix<T, T_Size>& aMatrix);
 
     //------------------------------------------------------------------------
     // Accessors
 
     // Stores the diagonal of this Matrix in aVector
-    TL_FI void GetDiagonal(Vector<T, T_SIZE>& aVector);
+    TL_FI void GetDiagonal(Vector<T, T_Size>& aVector);
   };
 
   typedef Matrix<float, 2> Mat2f;
@@ -97,8 +97,10 @@ namespace tloc
   typedef Matrix<double, 2> Mat2d;
   typedef Matrix<double, 3> Mat3d;
   typedef Matrix<double, 4> Mat4d;
-
-#include "tlocMatrix.inl"
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocMatrix.inl"
+#endif
 
 #endif

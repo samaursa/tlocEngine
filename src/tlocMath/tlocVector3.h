@@ -37,12 +37,12 @@ namespace tloc
     // vector with an approx 3% error. Inverse square root code taken from
     // http://www.codemaestro.com/reviews/9 (originally from Quake)
     // 
-    // NOTE: Only works on floats
-    TL_FI void FastNorm(const Vector3<f32>& aVector);
+    // NOTE: Only works on floats!
+    TL_FI void FastNorm(const Vector3<T>& aVector);
 
     // Same as FastNorm() but modifies this vector directly
     //
-    // NOTE: Only works on floats
+    // NOTE: Only works on floats!
     TL_FI void FastNorm();
 
     static const Vector3 UNIT_X;
@@ -54,11 +54,30 @@ namespace tloc
 
   };
 
+  //------------------------------------------------------------------------
+  // Typedefs
   typedef Vector3<f32>  Vec3f;
   typedef Vector3<f64>  Vec3d;
+  typedef Vector3<f128> Vec3l;
 
-#include "tlocVector3.inl"
-
+  //------------------------------------------------------------------------
+  // Static const definitions
+  template <typename T>
+  const Vector3<T> Vector3<T>::UNIT_X     (1.0, 0.0, 0.0);
+  template <typename T>
+  const Vector3<T> Vector3<T>::UNIT_Y     (0.0, 1.0, 0.0);
+  template <typename T>
+  const Vector3<T> Vector3<T>::UNIT_Z     (0.0, 0.0, 1.0);
+  template <typename T>
+  const Vector3<T> Vector3<T>::NEG_UNIT_X (-1.0, 0.0, 0.0);
+  template <typename T>
+  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0.0, -1.0, 0.0);
+  template <typename T>
+  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0.0, 0.0, -1.0);
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocVector3.inl"
+#endif
 
 #endif

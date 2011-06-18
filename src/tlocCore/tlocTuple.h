@@ -6,14 +6,14 @@
 
 namespace tloc
 {
-  template <typename T, u32 T_SIZE>
+  template <typename T, u32 T_Size>
   class Tuple
   {
   public:
 
     // Empty default constructor
     TL_FI Tuple();
-    TL_FI Tuple(const Tuple<T, T_SIZE>& aTuple);
+    TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
     
     TL_FI explicit Tuple(const T& aValue);    
 
@@ -42,22 +42,23 @@ namespace tloc
     TL_FI void Set(T aValue);
 
     // Swaps the tuple with the incoming vector
-    TL_FI void Swap(Tuple<T, T_SIZE>& aVector);
+    TL_FI void Swap(Tuple<T, T_Size>& aVector);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI Tuple<T, T_SIZE>& operator= (const Tuple<T, T_SIZE>& aTuple);
+    TL_FI Tuple<T, T_Size>& operator= (const Tuple<T, T_Size>& aTuple);
 
   protected:
 
-    T m_values[T_SIZE];
+    T m_values[T_Size];
   };
 
-#include "tlocTuple.inl"
-
-#undef ITERATE_TUPLE
-
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocTuple.inl"
+#endif
+
 
 #endif

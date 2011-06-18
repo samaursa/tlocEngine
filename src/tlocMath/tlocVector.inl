@@ -44,6 +44,13 @@ TL_FI void Vector<T, T_SIZE>::Neg()
   }
 }
 
+template <typename T, u32 T_SIZE>
+TL_FI void Vector<T, T_SIZE>::Neg(const Vector<T, T_SIZE>& aVector)
+{
+  operator=(aVector);
+  Neg();
+}
+
 //------------------------------------------------------------------------
 // Math Operations
 
@@ -236,42 +243,6 @@ TL_FI T Vector<T, T_SIZE>::NormLength(const Vector<T, T_SIZE>& aVector)
 }
 
 template <typename T, u32 T_SIZE>
-TL_FI void Vector<T, T_SIZE>::FastNorm(const Vector<T, T_SIZE>& aVector)
-{
-  T lLength; aVector.LengthSquared(T);
-  
-  // Calculate length inverse
-  float xhalf = 0.5f*lLength;
-  int i = *(int*)&lLength; // get bits for floating value
-  i = 0x5f375a86- (i>>1); // gives initial guess y0
-  lLength = *(float*)&i; // convert bits back to float
-  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
-
-  ITERATE_VECTOR
-  {
-    m_values[i] *= lLength;
-  }
-}
-
-template <typename T, u32 T_SIZE>
-TL_FI void Vector<T, T_SIZE>::FastNorm()
-{
-  T lLength; LengthSquared(lLength);
-
-  // Calculate length inverse
-  float xhalf = 0.5f*lLength;
-  int i = *(int*)&lLength; // get bits for floating value
-  i = 0x5f375a86- (i>>1); // gives initial guess y0
-  lLength = *(float*)&i; // convert bits back to float
-  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
-
-  ITERATE_VECTOR
-  {
-    m_values[i] *= lLength;
-  }
-}
-
-template <typename T, u32 T_SIZE>
 TL_FI T Vector<T, T_SIZE>::Distance(const Vector<T, T_SIZE>& aVector) const
 {
   Vector<T, T_SIZE> lTemp = *this;
@@ -310,7 +281,7 @@ template <typename T, u32 T_SIZE>
 TL_FI T Vector<T, T_SIZE>::DotAbs(const Vector<T, T_SIZE>& aVector) const
 {
   T dotProd = Dot(aVector);
-  return Math::Abs(dotProd);
+  return Math<T>::Abs(dotProd);
 }
 
 template <typename T, u32 T_SIZE>
@@ -338,7 +309,7 @@ TL_FI bool Vector<T, T_SIZE>::operator==(const Vector<T, T_SIZE>& aVector)
 {
   ITERATE_VECTOR
   {
-    if (!Math::Approx(m_values[i], aVector[i])) return false;
+    if (!Math<T>::Approx(m_values[i], aVector[i])) return false;
   }
 
   return true;
@@ -358,7 +329,7 @@ TL_FI bool Vector<T, T_SIZE>::IsValid()
 {
   ITERATE_VECTOR
   {
-    if (Math::IsNaN<T>(m_values[i])) return false;
+    if (Math<T>::IsNaN(m_values[i])) return false;
   }
 
   return true;
@@ -369,99 +340,8 @@ TL_FI bool Vector<T, T_SIZE>::IsZero()
 {
   ITERATE_VECTOR
   {
-    if (!Math::Approx<T>(m_values[i], 0)) return false;
+    if (!Math<T>::Approx(m_values[i], 0)) return false;
   }
 
   return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Vector2
-
-template <typename T>
-TL_FI Vector2<T>::Vector2()
-{
-}
-
-template <typename T>
-TL_FI Vector2<T>::Vector2(const T& aValue)
-{
-  m_values[0] = aValue;
-  m_values[1] = aValue;
-}
-
-template <typename T>
-TL_FI Vector2<T>::Vector2(const T& aX, const T& aY)
-{
-  m_values[0] = aX;
-  m_values[1] = aY;
-}
-
-template <typename T>
-TL_FI Vector2<T>::Vector2(const Vector2<T>& aVector)
-{
-  m_values[0] = aVector[0];
-  m_values[1] = aVector[1];
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Vector3
-
-//------------------------------------------------------------------------
-// Constructors
-
-template <typename T>
-TL_FI Vector3<T>::Vector3()
-{
-}
-
-template <typename T>
-TL_FI Vector3<T>::Vector3(const T& aValue)
-{
-  m_values[0] = aValue;
-  m_values[1] = aValue;
-  m_values[2] = aValue;
-}
-
-template <typename T>
-TL_FI Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
-{
-  m_values[0] = aX;
-  m_values[1] = aY;
-  m_values[2] = aZ;
-}
-
-template <typename T>
-TL_FI Vector3<T>::Vector3(const Vector3<T>& aVector)
-{
-  m_values[0] = aVector[0];
-  m_values[1] = aVector[1];
-  m_values[2] = aVector[2];
-}
-
-//------------------------------------------------------------------------
-// Math operations
-
-template <typename T>
-TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
-{
-  /*
-  y * rkVector.z - z * rkVector.y,
-  z * rkVector.x - x * rkVector.z,
-  x * rkVector.y - y * rkVector.x);
-  */
-
-  Vector3<T> temp(*this);
-  
-  m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
-  m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
-  m_values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
-}
-
-template <typename T>
-TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
-                             const Vector3<T>& aVector2)
-{
-  operator=(aVector1);
-  Cross(aVector2);
 }

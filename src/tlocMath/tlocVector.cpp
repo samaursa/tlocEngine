@@ -2,19 +2,17 @@
 
 namespace tloc
 {
-  template<> const Vec2f Vec2f::ZERO      (0.0f, 0.0f);
-  template<> const Vec2f Vec2f::ONE       (1.0f, 1.0f);
-  template<> const Vec2f Vec2f::UNIT_X    (1.0f, 0.0f);
-  template<> const Vec2f Vec2f::UNIT_Y    (0.0f, 1.0f);
-  template<> const Vec2f Vec2f::NEG_UNIT_X(-1.0f, 0.0f);
-  template<> const Vec2f Vec2f::NEG_UNIT_Y(0.0f, -1.0f);
+  template Vector<f32, 2>;
+  template Vector<f64, 2>;
+  template Vector<f32, 3>;
+  template Vector<f64, 3>;
+  template Vector<f32, 4>;
+  template Vector<f64, 4>;
 
-  template<> const Vec3f Vec3f::ZERO      (0.0f, 0.0f, 0.0f); 
-  template<> const Vec3f Vec3f::ONE       (1.0f, 1.0f, 1.0f);
-  template<> const Vec3f Vec3f::UNIT_X    (1.0f, 0.0f, 0.0f);
-  template<> const Vec3f Vec3f::UNIT_Y    (0.0f, 1.0f, 0.0f);
-  template<> const Vec3f Vec3f::UNIT_Z    (0.0f, 0.0f, 1.0f);
-  template<> const Vec3f Vec3f::NEG_UNIT_X(-1.0f, 0.0f, 0.0f);
-  template<> const Vec3f Vec3f::NEG_UNIT_Y(0.0f, -1.0f, 0.0f);
-  template<> const Vec3f Vec3f::NEG_UNIT_Z(0.0f, 0.0f, -1.0f);
+  template<typename T, u32 T_SIZE> 
+  const Vector<T, T_SIZE> Vector<T, T_SIZE>::ZERO(0);
+
+  template<typename T, u32 T_SIZE> 
+  const Vector<T, T_SIZE> Vector<T, T_SIZE>::ONE(1);
+
 };

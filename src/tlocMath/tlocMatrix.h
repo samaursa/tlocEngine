@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TLOC_MATRIX_H
 #define TLOC_MATRIX_H
 
@@ -25,6 +26,15 @@ namespace tloc
 
     TL_FI explicit Matrix(const T& aValue);
     TL_FI Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder);
+    
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    // Modifies this matrix by setting all values to 0
+    TL_FI void Zero();
+
+    // Modifes this matrix by making it an identity matrix
+    TL_FI void Identity();
 
     //------------------------------------------------------------------------
     // Math operations
@@ -87,22 +97,6 @@ namespace tloc
   typedef Matrix<double, 2> Mat2d;
   typedef Matrix<double, 3> Mat3d;
   typedef Matrix<double, 4> Mat4d;
-
-  template <typename T>
-  class Matrix2 : public Matrix<T, 2>
-  {
-  public:
-    //------------------------------------------------------------------------
-    // Constructors
-
-    // Empty default constructor
-    TL_FI Matrix2();
-    TL_FI Matrix2(const Matrix2<T>& aMatrix);
-
-    TL_FI explicit Matrix2(const T& aValue);
-    TL_FI Matrix2(const T values[MATRIX_SIZE], TABLE_ORDER aOrder);
-
-  };
 
 #include "tlocMatrix.inl"
 };

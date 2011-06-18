@@ -4,7 +4,7 @@
 //------------------------------------------------------------------------
 // Macros
 
-#define ITERATE_MATRIX for (u32 i = 0; i < TABLE_SIZE; ++i)
+#define ITERATE_MATRIX for (u32 i = 0; i < MATRIX_SIZE; ++i)
 
 //------------------------------------------------------------------------
 // Constructors
@@ -24,6 +24,27 @@ TL_FI Matrix<T, T_SIZE>::Matrix(const T& aValue)
 template <typename T, u32 T_SIZE>
 TL_FI Matrix<T, T_SIZE>::Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder)
 : Table(values, aOrder) {}
+
+//------------------------------------------------------------------------
+// Modifiers
+
+template <typename T, u32 T_SIZE>
+TL_FI void Matrix<T, T_SIZE>::Zero()
+{
+  Set(0);
+}
+
+template <typename T, u32 T_SIZE>
+TL_FI void Matrix<T, T_SIZE>::Identity()
+{
+  /*for (u32 i = 0; i < T_SIZE; ++i)
+  {
+    Vector<T, T_SIZE> vec;
+    vec.Zero();
+    vec[i] = 1;
+    SetCol(
+  }*/
+}
 
 //------------------------------------------------------------------------
 // Math operations
@@ -129,25 +150,3 @@ TL_FI void Matrix<T, T_SIZE>::GetDiagonal(Vector<T, T_SIZE>& aVector)
     aVector[i] = m_values[(i * T_SIZE) + i];
   }
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Matrix2f<T>
-
-//------------------------------------------------------------------------
-// Constructors
-
-template <typename T>
-TL_FI Matrix2<T>::Matrix2() 
-: Matrix() {}
-
-template <typename T>
-TL_FI Matrix2<T>::Matrix2(const Matrix2<T>& aMatrix) 
-: Matrix(aMatrix) {}
-
-template <typename T>
-TL_FI Matrix2<T>::Matrix2(const T& aValue) 
-: Matrix(aValue) {}
-
-template <typename T>
-TL_FI Matrix2<T>::Matrix2(const T values[MATRIX_SIZE], TABLE_ORDER aOrder)
-: Matrix(values, aOrder) {}

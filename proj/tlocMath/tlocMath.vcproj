@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -106,7 +106,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -152,16 +152,16 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\..\src\tlocMath\tlocVector.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\tlocMath.cpp"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\tlocMath\tlocMath.h"
 				>
@@ -170,22 +170,82 @@
 				RelativePath="..\..\src\tlocMath\tlocMath.inl"
 				>
 			</File>
-			<File
-				RelativePath="..\..\src\tlocMath\tlocMatrix.h"
+			<Filter
+				Name="Matrix"
 				>
-			</File>
-			<File
-				RelativePath="..\..\src\tlocMath\tlocMatrix.inl"
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix2.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix2.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix2.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix3.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocMatrix3.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Vector"
 				>
-			</File>
-			<File
-				RelativePath="..\..\src\tlocMath\tlocVector.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\tlocMath\tlocVector.inl"
-				>
-			</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector2.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector2.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector2.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector3.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tlocMath\tlocVector3.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

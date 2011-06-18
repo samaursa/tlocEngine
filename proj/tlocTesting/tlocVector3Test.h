@@ -1,3 +1,5 @@
+#include "tlocMath/tlocVector3.h"
+
 namespace TestingVector3f
 {
   struct Vector3fFixture

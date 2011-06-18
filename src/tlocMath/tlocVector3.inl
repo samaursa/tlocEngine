@@ -1,0 +1,104 @@
+//////////////////////////////////////////////////////////////////////////
+// Vector3
+
+//------------------------------------------------------------------------
+// Constructors
+
+template <typename T>
+TL_FI Vector3<T>::Vector3()
+{
+}
+
+template <typename T>
+TL_FI Vector3<T>::Vector3(const T& aValue)
+{
+  m_values[0] = aValue;
+  m_values[1] = aValue;
+  m_values[2] = aValue;
+}
+
+template <typename T>
+TL_FI Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
+{
+  m_values[0] = aX;
+  m_values[1] = aY;
+  m_values[2] = aZ;
+}
+
+template <typename T>
+TL_FI Vector3<T>::Vector3(const Vector3<T>& aVector)
+{
+  m_values[0] = aVector[0];
+  m_values[1] = aVector[1];
+  m_values[2] = aVector[2];
+}
+
+template <typename T>
+TL_FI Vector3<T>::Vector3(const Vector<T, 3>& aVector)
+{
+  m_values[0] = aVector[0];
+  m_values[1] = aVector[1];
+  m_values[2] = aVector[2];
+}
+
+//------------------------------------------------------------------------
+// Math operations
+
+template <typename T>
+TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
+{
+  /*
+  y * rkVector.z - z * rkVector.y,
+  z * rkVector.x - x * rkVector.z,
+  x * rkVector.y - y * rkVector.x);
+  */
+
+  Vector3<T> temp(*this);
+  
+  m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
+  m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
+  m_values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
+}
+
+template <typename T>
+TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
+                             const Vector3<T>& aVector2)
+{
+  operator=(aVector1);
+  Cross(aVector2);
+}
+
+template <>
+TL_FI void Vector3<f32>::FastNorm(const Vector3<f32>& aVector)
+{
+  f32 lLength; 
+  aVector.LengthSquared(lLength);
+
+  // Calculate length inverse
+  float xhalf = 0.5f*lLength;
+  int i = *(int*)&lLength; // get bits for floating value
+  i = 0x5f375a86- (i>>1); // gives initial guess y0
+  lLength = *(float*)&i; // convert bits back to float
+  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
+
+  m_values[0] *= lLength;
+  m_values[1] *= lLength;
+  m_values[2] *= lLength;
+}
+
+template <>
+TL_FI void Vector3<f32>::FastNorm()
+{
+  f32 lLength; LengthSquared(lLength);
+
+  // Calculate length inverse
+  float xhalf = 0.5f*lLength;
+  int i = *(int*)&lLength; // get bits for floating value
+  i = 0x5f375a86- (i>>1); // gives initial guess y0
+  lLength = *(float*)&i; // convert bits back to float
+  lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
+
+  m_values[0] *= lLength;
+  m_values[1] *= lLength;
+  m_values[2] *= lLength;
+}

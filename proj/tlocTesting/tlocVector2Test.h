@@ -1,3 +1,5 @@
+#include "tlocMath/tlocVector2.h"
+
 namespace TestingVector2f
 {
   struct Vector2fFixture
@@ -34,6 +36,19 @@ namespace TestingVector2f
     CHECK_VEC2F(e, 1.0f, 2.0f);
     CHECK_VEC2F(a, 1.0f, 2.0f);
     CHECK_VEC2F(b, 5.0f, 6.0f);
+
+    c = tloc::Vec2f::ZERO;
+    CHECK_VEC2F(c, 0.0f, 0.0f);
+    c = tloc::Vec2f::ONE;
+    CHECK_VEC2F(c, 1.0f, 1.0f);
+    c = tloc::Vec2f::UNIT_X;
+    CHECK_VEC2F(c, 1.0f, 0.0f);
+    c = tloc::Vec2f::UNIT_Y;
+    CHECK_VEC2F(c, 0.0f, 1.0f);
+    c = tloc::Vec2f::NEG_UNIT_X;
+    CHECK_VEC2F(c, -1.0f, 0.0f);
+    c = tloc::Vec2f::NEG_UNIT_Y;
+    CHECK_VEC2F(c, 0.0f, -1.0f);
   }
 
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/[]Operator", 

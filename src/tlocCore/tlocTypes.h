@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef TLOC_TYPES_H
 #define TLOC_TYPES_H
 

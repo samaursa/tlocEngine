@@ -1,5 +1,6 @@
-#ifndef VECTOR_3_H
-#define VECTOR_3_H
+#pragma once
+#ifndef TLOC_VECTOR_N_H
+#define TLOC_VECTOR_N_H
 
 #include "tlocCore\tlocBase.h"
 #include "tlocCore\tlocTuple.h"
@@ -27,7 +28,6 @@
 
 namespace tloc
 {
-
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
@@ -127,20 +127,11 @@ namespace tloc
     TL_FI T NormLength();
 
     // Modifies this vector to store the normalized version of the incoming
-    // vector. Consider using FastNorm() taking into account the accuracy
-    // requirements.
+    // vector. 
     TL_FI void Norm(const Vector<T, T_SIZE>& aVector);
 
     // Same as Norm() but returns the length as well
     TL_FI T NormLength(const Vector<T, T_SIZE>& aVector);
-
-    // Modifies this vector to store the normalized version of the incoming
-    // vector with an approx 3% error. Inverse square root code taken from
-    // http://www.codemaestro.com/reviews/9 (originally from Quake)
-    TL_FI void FastNorm(const Vector<T, T_SIZE>& aVector);
-
-    // Same as FastNorm() but modifies this vector directly
-    TL_FI void FastNorm();
 
     // Returns the distance between two vectors (expensive operation). Use
     // DistanceApprox() for a faster (with more error) result
@@ -177,72 +168,14 @@ namespace tloc
     // Returns false if the vector's values are invalid (NaN)
     TL_FI bool IsValid();
     TL_FI bool IsZero();
+
+    //------------------------------------------------------------------------
+    // Special vectors
+
+    static const Vector<T, T_SIZE> ZERO;
+    static const Vector<T, T_SIZE> ONE;
     
   };
-
-  typedef Vector<float, 4>  Vec4f;
-  typedef Vector<double, 4> Vec4d;
-
-  //////////////////////////////////////////////////////////////////////////
-  // Vector2
-
-  template<typename T>
-  class Vector2 : public Vector<T, 2>
-  {
-  public:
-    TL_FI Vector2();
-    TL_FI Vector2(const T& aX, const T& aY);    
-    TL_FI Vector2(const Vector2<T>& aVector);
-
-    TL_FI explicit Vector2(const T& aValue);
-
-    static const Vector2 ZERO;
-    static const Vector2 ONE;
-    static const Vector2 UNIT_X;
-    static const Vector2 UNIT_Y;
-    static const Vector2 NEG_UNIT_X;
-    static const Vector2 NEG_UNIT_Y;
-    
-  };
-
-  typedef Vector2<float>  Vec2f;
-  typedef Vector2<double> Vec2d;
-
-  //////////////////////////////////////////////////////////////////////////
-  // Vector3
-
-  template<typename T>
-  class Vector3 : public Vector<T, 3>
-  {
-  public:
-    TL_FI Vector3();
-    TL_FI Vector3(const T& aX, const T& aY, const T& aZ);
-    TL_FI Vector3(const Vector3<T>& aVector);
-    
-    TL_FI explicit Vector3(const T& aValue);    
-
-    // Modifies this vector by storing the cross product between this vector
-    // and the incoming vector
-    TL_FI void Cross(const Vector3<T>& aVector);
-
-    // Modifies this vector by storing the cross product between the two
-    // incoming vectors
-    TL_FI void Cross(const Vector3<T>& aVector1, 
-                     const Vector3<T>& aVector2);
-
-    static const Vector3 ZERO;
-    static const Vector3 ONE;
-    static const Vector3 UNIT_X;
-    static const Vector3 UNIT_Y;
-    static const Vector3 UNIT_Z;
-    static const Vector3 NEG_UNIT_X;
-    static const Vector3 NEG_UNIT_Y;
-    static const Vector3 NEG_UNIT_Z;
-
-  };
-
-  typedef Vector3<float>  Vec3f;
-  typedef Vector3<double> Vec3d;
 
 #include "tlocVector.inl"
 

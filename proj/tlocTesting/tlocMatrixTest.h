@@ -133,7 +133,6 @@ namespace TestingMatrix
 
       a.SetRow(0, row1);
       a.SetRow(1, row2);
-      a.SetRow(2, row2);
 
       b.SetCol(0, col1);
       b.SetCol(1, col2);

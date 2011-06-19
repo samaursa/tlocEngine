@@ -47,6 +47,7 @@
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
+				RuntimeTypeInfo="false"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -113,6 +114,7 @@
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="false"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>

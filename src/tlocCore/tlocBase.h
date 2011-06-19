@@ -37,11 +37,30 @@
 //////////////////////////////////////////////////////////////////////////
 // Compiler specific
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
+
+  //------------------------------------------------------------------------
+  // Compiler specific checks
+  #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
+    //------------------------------------------------------------------------
+    // Check for exception handling
+    #if defined(_CPPUNWIND) && !defined(TLOC_ENABLE_CPPUNWIND)
+      #error "Exception handling must be disabled for this project."
+    #endif
+    //------------------------------------------------------------------------
+    // Check for RTTI 
+    #if defined(_CPPRTTI) && !defined(TLOC_ENABLE_CPPRTTI)
+      #error "RTTI must be disabled for this project."
+    #endif
+  #endif
+
+  //------------------------------------------------------------------------
+  // Optimizations
   #ifndef TLOC_DEBUG
     #pragma inline_recursion( on )
     #pragma auto_inline( on )
   #endif
+
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,20 +79,39 @@
 //////////////////////////////////////////////////////////////////////////
 // Configurations
 
-#if !defined(TLOC_DEBUG) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DEBUGINFO)
-#error "Project must #define TLOC_DEBUG, TLOC_RELEASE or TLOC_RELEASE_DEBUGINFO"
+#if !defined(TLOC_DEBUG) && !defined(TLOC_DEBUG_DLL) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL) && !defined(TLOC_RELEASE_DEBUGINFO) && !defined(TLOC_RELEASE_DEBUGINFO_DLL)
+  #error "Project must #define TLOC_DEBUG or TLOC_DEBUG_DLL or TLOC_RELEASE or TLOC_RELEASE_DLL or TLOC_RELEASE_DEBUGINFO or TLOC_RELEASE_DEBUGINFO_DLL"
+
 #elif defined(TLOC_DEBUG)
-#if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DEBUGINFO)
-#error "Project has mixed configurations!"
+  #if defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+    #error "Project has mixed configurations!"
+  #endif
+
+#elif defined(TLOC_DEBUG_DLL)
+  #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+  #error "Project has mixed configurations!"
 #endif
+
 #elif defined(TLOC_RELEASE)
-#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-#error "Project has mixed configurations!"
+  #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+  #error "Project has mixed configurations!"
+  #endif
+
+#elif defined(TLOC_RELEASE_DLL)
+  #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+  #error "Project has mixed configurations!"
 #endif
+
 #elif defined(TLOC_RELEASE_DEBUGINFO)
-#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE)
-#error "Project has mixed configurations!"
+  #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
+  #error "Project has mixed configurations!"
+  #endif
+
+#elif defined(TLOC_RELEASE_DEBUGINFO_DLL)
+  #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO)
+  #error "Project has mixed configurations!"
 #endif
+
 #endif
 
 //////////////////////////////////////////////////////////////////////////

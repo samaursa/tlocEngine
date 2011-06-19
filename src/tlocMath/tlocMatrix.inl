@@ -134,6 +134,9 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Div(const T& aReal)
   {
+    TLOC_ASSERT_LOW_LEVEL(Math<T>::Approx(aReal, 0.0f), 
+      "The matrix is being divided by zero!");
+
     ITERATE_MATRIX
     {
       m_values[i] /= aReal;

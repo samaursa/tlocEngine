@@ -29,7 +29,7 @@ namespace TestingMatrix
       b.SetCol(2, col3);
     }
 
-    tloc::Mat3f a, b, c, d;
+    tloc::Mat3f a, b, c, d, e;
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -55,20 +55,32 @@ namespace TestingMatrix
 
     tloc::Mat3f h(rawArray, tloc::Mat3f::COL_MAJOR);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    c.Zero();
+    c.Identity();
+    CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math",
-    "Test math operations")
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Add", 
+    "Test addition")
   {
-    tloc::Mat3f e(1);
-
     c = a;
     c.Add(a);
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
 
     d.Add(a, a);
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+  }
 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub", 
+    "Test subtraction")
+  {
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Mul", 
+    "Test multipliciation")
+  {
+    //------------------------------------------------------------------------
     c.Set(0);
     c(0, 0) = 1;
     c(1, 1) = 1;
@@ -84,11 +96,35 @@ namespace TestingMatrix
     d.Add(c);
     CHECK_MATRIX3F(d, 11, 1, 1, 1, 11, 1, 1, 1, 11);
 
+    //------------------------------------------------------------------------
+    c.Identity();
+    Vec3f someVec(1, 0, 0);
+    Vec3f result;
+    c.Mul(someVec, result);
+
+    CHECK_VEC3F(result, 1, 0, 0);
+
+    //------------------------------------------------------------------------
+    c.Zero(); d.Zero();
+    f32 numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    c.Set(numArray, Matrix<f32, 3>::ROW_MAJOR);
+    d = c;
+    e.Mul(c, d);
+    CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div", 
+    "Test division")
+  {
     d.Set(11);
     CHECK_MATRIX3F(d, 11, 11, 11, 11, 11, 11, 11, 11, 11);
     d.Div(11);
     CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  }
 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div", 
+    "Test transpose")
+  {
     c.Set(0);
     c(0, 0) = 1;
     c(1, 1) = 1;
@@ -101,6 +137,13 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 1, 0, 1);
     d.Transpose();
     CHECK_MATRIX3F(d, 1, 0, 1, 0, 1, 0, 0, 0, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors", 
+    "Test accessors")
+  {
+    f32 diagArray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+    d.Set(diagArray, Matrix<f32, 3>::COL_MAJOR);
 
     Vec3f diagVec;
     d.GetDiagonal(diagVec);
@@ -113,15 +156,5 @@ namespace TestingMatrix
 
     c.GetDiagonal(diagVec);
     CHECK_VEC3F(diagVec, 3, 4, 5);
-
-    c.Zero();
-    c.Identity();
-    CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
-
-    Vec3f someVec(1, 0, 0);
-    Vec3f result;
-    c.Mul(someVec, result);
-
-    CHECK_VEC3F(result, 1, 0, 0);
   }
 };

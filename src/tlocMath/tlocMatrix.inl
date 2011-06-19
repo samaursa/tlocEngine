@@ -39,12 +39,10 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Identity()
   {
+    memset(m_values, 0, sizeof(T) * T_Size);
     for (u32 i = 0; i < T_Size; ++i)
     {
-      Vector<T, T_Size> vec;
-      vec.Zero();
-      vec[i] = 1;
-      SetCol(i, vec);
+      Set(i, i, 1);
     }
   }
 
@@ -134,7 +132,7 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Div(const T& aReal)
   {
-    TLOC_ASSERT_LOW_LEVEL(Math<T>::Approx(aReal, 0.0f), 
+    TLOC_ASSERT_LOW_LEVEL(Math<T>::Approx(aReal, 0.0f) == false, 
       "The matrix is being divided by zero!");
 
     ITERATE_MATRIX

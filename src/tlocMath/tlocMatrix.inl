@@ -39,13 +39,13 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Identity()
   {
-    /*for (u32 i = 0; i < T_SIZE; ++i)
+    for (u32 i = 0; i < T_Size; ++i)
     {
-    Vector<T, T_SIZE> vec;
-    vec.Zero();
-    vec[i] = 1;
-    SetCol(
-    }*/
+      Vector<T, T_Size> vec;
+      vec.Zero();
+      vec[i] = 1;
+      SetCol(i, vec);
+    }
   }
 
   //------------------------------------------------------------------------
@@ -104,7 +104,7 @@ namespace tloc
 
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Matrix<T, T_Size>& aMatrix1, 
-                                    const Matrix<T, T_Size>& aMatrix2)
+    const Matrix<T, T_Size>& aMatrix2)
   {
     operator=(aMatrix1);
     Mul(aMatrix2);
@@ -121,7 +121,7 @@ namespace tloc
 
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Vector<T, T_Size>& aVectorIn, 
-                                    Vector<T, T_Size>& aVectorOut)
+    Vector<T, T_Size>& aVectorOut)
   {
     for (u32 i = 0; i < T_Size; ++i)
     {

@@ -19,3 +19,4 @@ using namespace tloc;
 #include "tlocVector3Test.h"
 #include "tlocVector2Test.h"
 #include "tlocMatrixTest.h"
+#include "tlocMatrix2Test.h"

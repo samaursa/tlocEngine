@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\include\&quot;;&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\single_include\&quot;;..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)/include/CATCH/include/&quot;;&quot;$(TwoLocDep_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -113,7 +113,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\include\&quot;;&quot;$(TwoLocDep_PATH)\src\philsquared-Catch-89d1e6c\single_include\&quot;;..\..\src\;&quot;$(TwoLocDep_PATH)\include\StlSoft\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)/include/CATCH/include/&quot;;&quot;$(TwoLocDep_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -178,6 +178,10 @@
 				>
 				<File
 					RelativePath=".\tlocMathTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMatrix2Test.h"
 					>
 				</File>
 				<File

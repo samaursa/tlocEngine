@@ -1,8 +1,8 @@
 #ifndef TLOC_TUPLE_H
 #define TLOC_TUPLE_H
 
-#include "tlocCore\tlocBase.h"
-#include "tlocCore\tlocStandardFuncs.h"
+#include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocStandardFuncs.h"
 
 namespace tloc
 {

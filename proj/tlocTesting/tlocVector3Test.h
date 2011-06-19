@@ -13,9 +13,9 @@ namespace TestingVector3f
     tloc::Vec3f a, b, c, d, e;
   };
 
-#define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approxf(x)) ); \
-                               CHECK((vec[1]) == (Approxf(y)) ); \
-                               CHECK((vec[2]) == (Approxf(z)) );
+#define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approx(x)) ); \
+                               CHECK((vec[1]) == (Approx(y)) ); \
+                               CHECK((vec[2]) == (Approx(z)) );
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General", 
     "Vector tests without math operations")
@@ -140,15 +140,15 @@ namespace TestingVector3f
     c.Zero(); c[0] = 2; c[1] = 2; c[2] = 2;
     float lengthSq;
     c.LengthSquared(lengthSq);
-    CHECK(lengthSq == Approxf(12.0f));
+    CHECK(lengthSq == Approx(12.0f));
 
     float length;
     c.Zero(); c.Length(length);
-    CHECK(length == Approxf(0.0f));
+    CHECK(length == Approx(0.0f));
 
     c[0] = 1, c[1] = 1, c[2] = 0;
     c.Length(length);
-    CHECK(length == Approxf(1.414213562373095f));
+    CHECK(length == Approx(1.414213562373095f));
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/NormalizeLengthDis", 
@@ -168,7 +168,7 @@ namespace TestingVector3f
     c.Norm();
     CHECK_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f);
     float length = c.NormLength();
-    CHECK(length == Approxf(1.0f));
+    CHECK(length == Approx(1.0f));
 
     c[0] = 2; c[1] = 2; c[2] = 2;
     c.FastNorm();
@@ -208,7 +208,7 @@ namespace TestingVector3f
     c.Zero(); c[0] = -1; c[1] = 1;
     d.Zero(); d[0] = 0.5f; d[1] = 0.3f;
     d.Norm();
-    CHECK(d.Length() == Approxf(1.0f));
+    CHECK(d.Length() == Approx(1.0f));
     CHECK(c.Dot(d) < 0);
     CHECK(c.DotAbs(d) >= 0);
 

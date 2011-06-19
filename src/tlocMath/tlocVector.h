@@ -2,11 +2,11 @@
 #ifndef TLOC_VECTOR_N_H
 #define TLOC_VECTOR_N_H
 
-#include "tlocCore\tlocBase.h"
-#include "tlocCore\tlocTuple.h"
-#include "tlocCore\tlocStandardFuncs.h"
+#include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocTuple.h"
+#include "tlocCore/tlocStandardFuncs.h"
 
-#include "tlocMath\tlocMath.h"
+#include "tlocMath/tlocMath.h"
 
 // If defined, easy math operations such as +,-,/,* will be available,
 // otherwise, explicit functions must be called. This can be selectively

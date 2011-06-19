@@ -15,13 +15,13 @@ namespace TestingTlocMath
   TEST_CASE("Math/Abs", "")
   {
     CHECK(Mathf::Abs(-2) == 2);
-    CHECK(Mathf::Abs(-2.756f) == Approxf(2.756f));
+    CHECK(Mathf::Abs(-2.756f) == Approx(2.756f));
   }
 
   TEST_CASE("Math/AtanAtan2", "")
   {
-    CHECK(Mathf::ATan(5.0f) == Approxf(1.37340076f));
-    CHECK(Mathf::ATan2(-862.42f, 78.5149f) == Approxf(-1.4800063f));
+    CHECK(Mathf::ATan(5.0f) == Approx(1.37340076f));
+    CHECK(Mathf::ATan2(-862.42f, 78.5149f) == Approx(-1.4800063f));
   }
 
   TEST_CASE("Math/IsNaN", "")
@@ -41,6 +41,6 @@ namespace TestingTlocMath
   TEST_CASE("Math/DegreeRadian", "")
   {
     float degree = 1.0f;
-    CHECK( Mathf::Radian(degree) == Approxf(0.0174532925f) );
+    CHECK( Mathf::Radian(degree) == Approx(0.0174532925f) );
   }
 };

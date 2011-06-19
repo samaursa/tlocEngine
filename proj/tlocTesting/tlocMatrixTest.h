@@ -33,11 +33,11 @@ namespace TestingMatrix
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
-  CHECK((mat[0]) == (Approxf(x1)) ); CHECK((mat[1]) == (Approxf(y1)) ); \
-  CHECK((mat[2]) == (Approxf(z1)) ); CHECK((mat[3]) == (Approxf(x2)) ); \
-  CHECK((mat[4]) == (Approxf(y2)) ); CHECK((mat[5]) == (Approxf(z2)) ); \
-  CHECK((mat[6]) == (Approxf(x3)) ); CHECK((mat[7]) == (Approxf(y3)) ); \
-  CHECK((mat[8]) == (Approxf(z3)) );
+  CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \
+  CHECK((mat[2]) == (Approx(z1)) ); CHECK((mat[3]) == (Approx(x2)) ); \
+  CHECK((mat[4]) == (Approx(y2)) ); CHECK((mat[5]) == (Approx(z2)) ); \
+  CHECK((mat[6]) == (Approx(x3)) ); CHECK((mat[7]) == (Approx(y3)) ); \
+  CHECK((mat[8]) == (Approx(z3)) );
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General", 
     "Test general/basic functionality")
@@ -113,37 +113,15 @@ namespace TestingMatrix
 
     c.GetDiagonal(diagVec);
     CHECK_VEC3F(diagVec, 3, 4, 5);
-  }
 
-  struct Matrix2Fixture
-  {
-    Matrix2Fixture() 
-    {
-      tloc::Vec2f row1;
-      tloc::Vec2f row2;
+    c.Zero();
+    c.Identity();
+    CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
-      tloc::Vec2f col1;
-      tloc::Vec2f col2;
+    Vec3f someVec(1, 0, 0);
+    Vec3f result;
+    c.Mul(someVec, result);
 
-      row1[0] = 1; row1[1] = 2;
-      row2[0] = 4; row2[1] = 5;
-
-      col1[0] = 1; col1[1] = 2;
-      col2[0] = 4; col2[1] = 5;
-
-      a.SetRow(0, row1);
-      a.SetRow(1, row2);
-
-      b.SetCol(0, col1);
-      b.SetCol(1, col2);
-    }
-
-    tloc::Mat2f a, b, c, d;
-  };
-
-  TEST_CASE_METHOD(Matrix2Fixture, "Core/DataStructures/Matrix2/General", 
-    "Test general/basic functionality")
-  {
-
+    CHECK_VEC3F(result, 1, 0, 0);
   }
 };

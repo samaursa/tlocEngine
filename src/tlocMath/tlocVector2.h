@@ -2,11 +2,11 @@
 #ifndef TLOC_VECTOR_2_H
 #define TLOC_VECTOR_2_H
 
-#include "tlocCore\tlocBase.h"
-#include "tlocCore\tlocStandardFuncs.h"
+#include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocStandardFuncs.h"
 
-#include "tlocMath\tlocMath.h"
-#include "tlocMath\tlocVector.h"
+#include "tlocMath/tlocMath.h"
+#include "tlocMath/tlocVector.h"
 
 namespace tloc
 {

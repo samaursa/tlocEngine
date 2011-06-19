@@ -13,8 +13,8 @@ namespace TestingVector2f
     tloc::Vec2f a, b, c, d, e;
   };
 
-#define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approxf(x)) ); \
-                             CHECK((vec[1]) == (Approxf(y)) );
+#define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
+                             CHECK((vec[1]) == (Approx(y)) );
 
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General", 
     "Vector tests without math operations")

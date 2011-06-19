@@ -33,13 +33,13 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Zero()
   {
-    Set(0);
+    memset(m_values, 0, sizeof(T) * MATRIX_SIZE);
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Identity()
   {
-    memset(m_values, 0, sizeof(T) * T_Size);
+    Zero();
     for (u32 i = 0; i < T_Size; ++i)
     {
       Set(i, i, 1);

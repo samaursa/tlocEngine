@@ -22,8 +22,35 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m10, T m01, T m11)
 }
 
 template <typename T>
+TL_FI Matrix2<T>::Matrix2(T m00, T m11)
+{
+  T diag[2] = {m00, m11};
+  MakeDiagonal(diag);
+}
+
+template <typename T>
 TL_FI Matrix2<T>::Matrix2(const T& aValue) 
 : Matrix(aValue) {}
+
+template <typename T>
+TL_FI Matrix2<T>::Matrix2(const Vector<T, 2>& aVec1, const Vector<T, 2>& aVec2, 
+                          TABLE_ORDER aOrder)
+{
+  if (aOrder == COL_MAJOR)
+  {
+    m_values[0] = aVec1[0];
+    m_values[1] = aVec1[1];
+    m_values[2] = aVec2[0];
+    m_values[3] = aVec2[1];
+  }
+  else
+  {
+    m_values[0] = aVec1[0];
+    m_values[2] = aVec1[1];
+    m_values[1] = aVec2[0];
+    m_values[3] = aVec2[1];
+  }
+}
 
 template <typename T>
 TL_FI Matrix2<T>::Matrix2(const T values[MATRIX_SIZE], TABLE_ORDER aOrder)

@@ -17,10 +17,24 @@ namespace tloc
 
     // Empty default constructor
     TL_FI Matrix2();
-    TL_FI Matrix2(T m00, T m01, T m10, T m11);
+
+    // Generate a matrix by inputs in column-major order
+    TL_FI Matrix2(T m00, T m10, T m01, T m11);
+
+    // Generate a diagonal matrix
+    TL_FI Matrix2(T m00, T m11);
+
+    // Copy constructor
     TL_FI Matrix2(const Matrix2<T>& aMatrix);
 
+    // Fill the matrix with a certain value
     TL_FI explicit Matrix2(const T& aValue);
+
+    // Fill the matrix with vectors depending on the selected order
+    TL_FI Matrix2(const Vector<T, 2>& aVec1, const Vector<T, 2>& aVec2,
+                  TABLE_ORDER aOrder);
+
+    // Fill the matrix with values in a certain matrix order
     TL_FI Matrix2(const T values[MATRIX_SIZE], TABLE_ORDER aOrder);
 
     //------------------------------------------------------------------------

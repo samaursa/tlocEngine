@@ -125,7 +125,11 @@ namespace tloc
   template <typename T, u32 T_Rows, u32 T_Cols>
   TL_FI void Table<T, T_Rows, T_Cols>::Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder)
   {
-    if (aTableOrder == ROW_MAJOR)
+    if (aTableOrder == COL_MAJOR)
+    {
+      memcpy(m_values, values, sizeof(T) * TABLE_SIZE);
+    }
+    else
     {
       for (u32 currRow = 0; currRow < T_Rows; ++currRow)
       {
@@ -134,10 +138,6 @@ namespace tloc
           Set(currRow, currCol, values[(currRow * T_Cols) + currCol] );
         }
       }
-    }
-    else
-    {
-      memcpy(m_values, values, sizeof(T) * TABLE_SIZE);
     }
   }
 

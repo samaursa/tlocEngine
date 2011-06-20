@@ -187,6 +187,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocMatrix3Test.h"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMatrixTest.h"
 					>
 				</File>

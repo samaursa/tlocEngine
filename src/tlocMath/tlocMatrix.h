@@ -6,6 +6,22 @@
 #include "tlocCore/tlocTable.h"
 #include "tlocMath/tlocVector.h"
 
+//////////////////////////////////////////////////////////////////////////
+/* NOTES
+ * 
+ * Matrices are arranged in column-major order in memory as well as matrix
+ * layout. This means that each column of the matrix is a vector and
+ * consequently the matrix/vector multiplication is performed by:
+ * 
+ * M * v
+ * 
+ * where `v` is a column vector. The matrix is arranged in memory in a 
+ * column-major layout, i.e. a 3x3 matrix will be layed out in memory such
+ * that mat3x3[0], [1] and [2] indices correspond to the first column 
+ * vector. Similarly, [3], [4] and [5] indices correspond to the second
+ * column vector and so on.
+ */
+
 namespace tloc
 {
   template <typename T, u32 T_Size>
@@ -22,9 +38,14 @@ namespace tloc
 
     // Empty default constructor
     TL_FI Matrix();
+
+    // Copy constructor
     TL_FI Matrix(const Matrix<T, T_Size>& aMatrix);
 
+    // Modifies this matrix by filling it with the incoming value
     TL_FI explicit Matrix(const T& aValue);
+
+    // Fill the matrix with values in a certain matrix order
     TL_FI Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder);
     
     //------------------------------------------------------------------------

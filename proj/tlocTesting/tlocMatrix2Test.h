@@ -52,6 +52,16 @@ namespace TestingMatrix2
 
     Mat2f j(1.0f, 2.0f, 3.0f, 4.0f);
     CHECK_MATRIX2F(j, 1, 2, 3, 4);
+
+    Mat2f k(2.0f, 2.0f);
+    CHECK_MATRIX2F(k, 2.0f, 0, 0, 2.0f);
+
+    Vec2f v1(1, 2), v2(3,4);
+    Mat2f m(v1, v2, Mat2f::ROW_MAJOR);
+    CHECK_MATRIX2F(m, 1, 3, 2, 4);
+
+    Mat2f n(v1, v2, Mat2f::COL_MAJOR);
+    CHECK_MATRIX2F(n, 1, 2, 3, 4);
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",

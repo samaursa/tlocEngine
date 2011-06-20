@@ -10,7 +10,7 @@ GOTO :DONE
 
 :MAKE_ENV
 ECHO Setting environment variable to %CD%
-SETX TLOC_PATH %CD%
+SETX TLOC_PATH %CD% -m
 
 :RESTART_EXPLORER
 ECHO.

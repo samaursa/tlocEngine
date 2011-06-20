@@ -88,16 +88,16 @@ TL_FI bool Matrix2<T>::Inverse(const Matrix2<T>& aMatrix)
 template <typename T>
 TL_FI void Matrix2<T>::Adjoint()
 {
-  Matrix2<T> temp(m_values[3], -m_values[1], -m_values[2], m_values[0]);
-  this = temp;
+  Matrix2<T> temp = *this;
+  Adjoint(temp);
 }
 
 template <typename T>
 TL_FI void Matrix2<T>::Adjoint(const Matrix2<T>& aMatrix)
 {
   m_values[0] = aMatrix[3];
-  m_values[1] = -aMatrix[2];
-  m_values[2] = -aMatrix[1];
+  m_values[1] = -aMatrix[1];
+  m_values[2] = -aMatrix[2];
   m_values[3] = aMatrix[0];
 }
 
@@ -106,19 +106,19 @@ template <typename T>
 TL_FI void Matrix2<T>::Orthonormalize()
 {
   T invLength = Math<T>::InvSqrt(m_values[0] * m_values[0] +
-                                 m_values[2] * m_values[2]);
+                                 m_values[1] * m_values[1]);
   m_values[0] *= invLength;
-  m_values[2] *= invLength;
+  m_values[1] *= invLength;
 
   // Compute q1
-  T dot0 = m_values[0] * m_values[1] + m_values[2] * m_values[3];
-  m_values[1] -= dot0 * m_values[0];
+  T dot0 = (m_values[0] * m_values[2]) + (m_values[1] * m_values[3]);
+  m_values[2] -= dot0 * m_values[0];
   m_values[3] -= dot0 * m_values[2];
 
-  invLength = Math<T>::InvSqrt(m_values[1] * m_values[1] + 
+  invLength = Math<T>::InvSqrt(m_values[2] * m_values[2] + 
                                m_values[3] * m_values[3]);
 
-  m_values[1] *= invLength;
+  m_values[2] *= invLength;
   m_values[3] *= invLength;
 }
 
@@ -146,7 +146,7 @@ template <typename T>
 TL_FI void Matrix2<T>::EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) const
 {
   T sum = Math<T>::FAbs(m_values[0]) + Math<T>::FAbs(m_values[3]);
-  if (Math<T>::FAbs(m_values[1]) + sum == sum)
+  if (Math<T>::FAbs(m_values[2]) + sum == sum)
   {
     // The matrix is diagonal
     aRot[0] = (T)1; aRot[2] = (T)0; 
@@ -162,7 +162,7 @@ TL_FI void Matrix2<T>::EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) c
 
   T trace = m_values[0] + m_values[3];
   T diff = m_values[0] - m_values[3];
-  T discr = Math<T>::Sqrt(diff * diff + ((T)4) * m_values[1] * m_values[1]);
+  T discr = Math<T>::Sqrt(diff * diff + ((T)4) * m_values[2] * m_values[2]);
   eigVal0and1[0] = ((T)0.5) * (trace - discr);
   eigVal0and1[1] = ((T)0.5) * (trace + discr);
   aDiag.MakeDiagonal( eigVal0and1 );
@@ -170,13 +170,13 @@ TL_FI void Matrix2<T>::EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) c
   T cs, sn;
   if (diff >= (T)0)
   {
-    cs = m_values[1];
+    cs = m_values[2];
     sn = eigVal0and1[0] - m_values[0];
   }
   else
   {
     cs = eigVal0and1[0] - m_values[3];
-    sn = m_values[1];
+    sn = m_values[2];
   }
 
   T invLength = Math<T>::InvSqrt(cs * cs + sn * sn);
@@ -184,7 +184,7 @@ TL_FI void Matrix2<T>::EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) c
   sn *= invLength;
 
   aRot.m_values[0] = cs;
-  aRot.m_values[1] = -sn;
-  aRot.m_values[2] = sn;
+  aRot.m_values[1] = sn;
+  aRot.m_values[2] = -sn;
   aRot.m_values[3] = cs;
 }

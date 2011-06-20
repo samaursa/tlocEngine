@@ -98,4 +98,43 @@ namespace TestingMatrix2
     REQUIRE(c.Inverse() == true);
     CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
   }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Adj", 
+    "Test adjoint")
+  {
+    f32 values[4] = {1, 2, 3, 4};
+    c.Set(values, Mat2f::ROW_MAJOR);
+    d.Adjoint(c);
+    CHECK_MATRIX2F(d, 4, -3, -2, 1);
+
+    c.Adjoint();
+    CHECK_MATRIX2F(c, 4, -3, -2, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/OrthoNorm", 
+    "Test orthonormalize")
+  {
+    f32 values[4] = {1, 0, 0, 1};
+    c.Set(values, Mat2f::COL_MAJOR);
+    
+    c.Orthonormalize();
+    CHECK_MATRIX2F(c, 1, 0, 0, 1);
+
+    f32 values2[4] = {2, 0, 0, 2};
+    c.Set(values2, Mat2f::COL_MAJOR);
+    
+    c.Orthonormalize();
+    CHECK_MATRIX2F(c, 1, 0, 0, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/EigenDecomp", 
+    "Test eigen decomposition")
+  {
+    f32 values[4] = {1, 2, 3, 4};
+    c.Set(values, Mat2f::ROW_MAJOR);
+
+    c.EigenDecomposition(d, e);
+    CHECK_MATRIX2F(d, -0.89442718f, 0.44721359f, -0.44721359, -0.89442718f);
+    CHECK_MATRIX2F(e, 0, 0, 0, 5);
+  }
 };

@@ -3,7 +3,6 @@
 #define TLOC_MATRIX_2_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTable.h"
 #include "tlocMath/tlocVector.h"
 #include "tlocMath/tlocMatrix.h"
 

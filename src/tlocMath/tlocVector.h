@@ -173,8 +173,7 @@ namespace tloc
     // Special vectors
 
     static const Vector<T, T_Size> ZERO;
-    static const Vector<T, T_Size> ONE;
-    
+    static const Vector<T, T_Size> ONE;    
   };
 
   //------------------------------------------------------------------------

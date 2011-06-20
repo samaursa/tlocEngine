@@ -1,6 +1,6 @@
 #include "tlocMath/tlocMatrix2.h"
 
-namespace TestingMatrix
+namespace TestingMatrix2
 {
   struct Matrix2Fixture
   {
@@ -25,14 +25,14 @@ namespace TestingMatrix
       b.SetCol(1, col2);
     }
 
-    tloc::Mat2f a, b, c, d;
+    tloc::Mat2f a, b, c, d, e;
   };
 
 #define CHECK_MATRIX2F(mat,x1,y1,x2,y2) \
   CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \
   CHECK((mat[2]) == (Approx(x2)) ); CHECK((mat[3]) == (Approx(y2)) );
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Core/DataStructures/Matrix2/General", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General", 
     "Test general/basic functionality")
   {
     CHECK_MATRIX2F(a, 1, 4, 2, 5);
@@ -49,10 +49,53 @@ namespace TestingMatrix
 
     Mat2f i(array, Mat2f::COL_MAJOR);
     CHECK_MATRIX2F(i, 9, 10, 11, 12);
+
+    Mat2f j(1.0f, 2.0f, 3.0f, 4.0f);
+    CHECK_MATRIX2F(j, 1, 2, 3, 4);
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Core/DataStructures/Matrix2/General",
-    "Test math operations")
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",
+    "Test multiplication")
   {
+    c.Identity();
+    d = c;
+    c.Mul(d);
+    CHECK_MATRIX2F(c, 1, 0, 0, 1);
+
+    c.Zero();
+    d.Zero();
+    f32 values[4] = {1, 2, 3, 4};
+    c.Set(values, Mat2f::ROW_MAJOR);
+    d.Set(values, Mat2f::COL_MAJOR);
+
+    e.Mul(c, d);
+    CHECK_MATRIX2F(e, 5, 11, 11, 25);
+
+    c.Mul(d);
+    CHECK_MATRIX2F(c, 5, 11, 11, 25);
+
+    Vec2f v1(1, 2);
+    Vec2f v2;
+    c.Set(values, Mat2f::ROW_MAJOR);
+
+    c.Mul(v1, v2);
+    CHECK_VEC2F(v2, 5, 11);
+  }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det", 
+    "Test determinant")
+  {
+    f32 values[4] = {1, 2, 3, 4};
+    c.Set(values, Mat2f::ROW_MAJOR);
+    CHECK(-2 == Approx(c.Determinant()));
+  }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Inv", 
+    "Test inverse")
+  {
+    f32 values[4] = {1, 2, 3, 4};
+    c.Set(values, Mat2f::ROW_MAJOR);
+    REQUIRE(c.Inverse() == true);
+    CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
   }
 };

@@ -102,9 +102,9 @@ namespace tloc
     lLength = *(float*)&i; // convert bits back to float
     lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
 
-    m_values[0] *= lLength;
-    m_values[1] *= lLength;
-    m_values[2] *= lLength;
+    m_values[0] *= (T)lLength;
+    m_values[1] *= (T)lLength;
+    m_values[2] *= (T)lLength;
   }
 
 };

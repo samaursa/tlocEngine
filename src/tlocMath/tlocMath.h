@@ -19,13 +19,10 @@ namespace tloc
   public:
 
     TL_STATIC_FI T Ceil(const T& aValue);
-
     TL_STATIC_FI T Floor(const T& aValue);
-
     TL_STATIC_FI T Abs(const T& aValue);
-
+    TL_STATIC_FI T FAbs(const T& aValue);
     TL_STATIC_FI T ATan(const T& aValue);
-
     TL_STATIC_FI T ATan2(const T& aValue1, const T& aValue2);
 
     // Taken from OgreMath
@@ -36,11 +33,11 @@ namespace tloc
     TL_STATIC_FI bool Approx(const T& aValue1, const T& aValue2,
                       T eps = T(1e-6));   
 
-    TL_STATIC_FI T Degree(const T& aValueInRadian);    
-
+    TL_STATIC_FI T Degree(const T& aValueInRadian);
     TL_STATIC_FI T Radian(const T& aValueInDegrees);    
-
-    TL_STATIC_FI T Sqrt(const T& aValue);    
+    TL_STATIC_FI T Sqrt(const T& aValue);  
+    TL_STATIC_FI T InvSqrt(const T& aValue);
+    TL_STATIC_FI T FastInvSqrt(const T& aValue);
   };
 
   typedef Math<f32> Mathf;

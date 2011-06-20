@@ -6,7 +6,8 @@ namespace tloc
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_MATRIX for (u32 i = 0; i < MATRIX_SIZE; ++i)
+#define ITERATE_MATRIX      for (u32 i = 0; i < MATRIX_SIZE; ++i)
+#define ITERATE_MATRIX_HALF for (u32 i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
@@ -40,9 +41,19 @@ namespace tloc
   TL_FI void Matrix<T, T_Size>::Identity()
   {
     Zero();
-    for (u32 i = 0; i < T_Size; ++i)
+    ITERATE_MATRIX_HALF
     {
       Set(i, i, 1);
+    }
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI void Matrix<T, T_Size>::MakeDiagonal(const T values[T_Size])
+  {
+    Zero();
+    ITERATE_MATRIX_HALF
+    {
+      Set(i, i, values[i]);
     }
   }
 
@@ -121,7 +132,7 @@ namespace tloc
   TL_FI void Matrix<T, T_Size>::Mul(const Vector<T, T_Size>& aVectorIn, 
     Vector<T, T_Size>& aVectorOut)
   {
-    for (u32 i = 0; i < T_Size; ++i)
+    ITERATE_MATRIX_HALF
     {
       Vector<T, T_Size> row;
       GetRow(i, row);
@@ -160,7 +171,7 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::GetDiagonal(Vector<T, T_Size>& aVector)
   {
-    for (u32 i = 0; i < T_Size; ++i)
+    ITERATE_MATRIX_HALF
     {
       aVector[i] = m_values[(i * T_Size) + i];
     }

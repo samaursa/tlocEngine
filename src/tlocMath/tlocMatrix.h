@@ -36,6 +36,9 @@ namespace tloc
     // Modifes this matrix by making it an identity matrix
     TL_FI void Identity();
 
+    // Modifies this matrix to be a diagonal matrix
+    TL_FI void MakeDiagonal(const T values[T_Size]);
+
     //------------------------------------------------------------------------
     // Math operations
 
@@ -88,19 +91,17 @@ namespace tloc
 
     // Stores the diagonal of this Matrix in aVector
     TL_FI void GetDiagonal(Vector<T, T_Size>& aVector);
+
+    //------------------------------------------------------------------------
+    // Special Matrices
+
+    static const Matrix<T, T_Size> ZERO;
+    static const Matrix<T, T_Size> IDENTITY;
   };
-
-  typedef Matrix<float, 2> Mat2f;
-  typedef Matrix<float, 3> Mat3f;
-  typedef Matrix<float, 4> Mat4f;
-
-  typedef Matrix<double, 2> Mat2d;
-  typedef Matrix<double, 3> Mat3d;
-  typedef Matrix<double, 4> Mat4d;
 };
 
 #ifdef TLOC_FULL_SOURCE
-#include "tlocMatrix.inl"
+  #include "tlocMatrix.inl"
 #endif
 
 #endif

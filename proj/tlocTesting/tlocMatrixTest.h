@@ -29,7 +29,7 @@ namespace TestingMatrix
       b.SetCol(2, col3);
     }
 
-    tloc::Mat3f a, b, c, d, e;
+    tloc::Matrix<f32, 3> a, b, c, d, e;
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -42,23 +42,33 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General", 
     "Test general/basic functionality")
   {
-    tloc::Mat3f e(1);
+    tloc::Matrix<f32, 3> e(1);
     CHECK_MATRIX3F(e, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    tloc::Mat3f f(e);
+    tloc::Matrix<f32, 3> f(e);
     CHECK_MATRIX3F(f, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
     float rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    tloc::Mat3f g(rawArray, tloc::Mat3f::ROW_MAJOR);
+    tloc::Matrix<f32, 3> g(rawArray, tloc::Matrix<f32, 3>::ROW_MAJOR);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Mat3f h(rawArray, tloc::Mat3f::COL_MAJOR);
+    tloc::Matrix<f32, 3> h(rawArray, tloc::Matrix<f32, 3>::COL_MAJOR);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.Zero();
     c.Identity();
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Modifiers", 
+    "Test modifiers")
+  {
+    c.Zero();
+    f32 numbers[3] = {1,2,3};
+    c.MakeDiagonal(numbers);
+
+    CHECK_MATRIX3F(c, 1, 0, 0, 0, 2, 0, 0, 0, 3);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Add", 

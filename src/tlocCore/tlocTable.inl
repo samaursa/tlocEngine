@@ -44,7 +44,7 @@ namespace tloc
   TLOC_ASSERT_LOW_LEVEL(aCol < T_Cols, "The passed COL for this table is out of bounds!")
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI T& Table<T, T_Rows, T_Cols>::operator() (int aRow, int aCol)
+  TL_FI T& Table<T, T_Rows, T_Cols>::operator() (s32 aRow, s32 aCol)
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -53,7 +53,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI const T& Table<T, T_Rows, T_Cols>::operator() (int aRow, int aCol) const
+  TL_FI const T& Table<T, T_Rows, T_Cols>::operator() (s32 aRow, s32 aCol) const
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;

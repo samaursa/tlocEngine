@@ -4,7 +4,7 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/CeilFloor", "")
   {
-    float aValue = 1.5;
+    f32 aValue = 1.5;
     CHECK(Mathf::Ceil(aValue) == 2);
     CHECK(Mathf::Ceil(1.1f) == 2);
 
@@ -26,13 +26,13 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/IsNaN", "")
   {
-    float b = sqrt(-1.0f);
+    f32 b = sqrt(-1.0f);
     CHECK(Mathf::IsNaN(b) == true);
   }
 
   TEST_CASE("Math/Approx", "")
   {
-    float a = 1.0f, b = 1.0f;
+    f32 a = 1.0f, b = 1.0f;
     CHECK(Mathf::Approx(a, b));
     a = 1.000001f;
     CHECK(Mathf::Approx(a, b));
@@ -40,7 +40,14 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/DegreeRadian", "")
   {
-    float degree = 1.0f;
+    f32 degree = 1.0f;
     CHECK( Mathf::Radian(degree) == Approx(0.0174532925f) );
+  }
+
+  TEST_CASE("Math/Lerp", "")
+  {
+    f32 value1 = 0.0f;
+    f32 value2 = 1.0f;
+    CHECK(Mathf::Lerp(value1, value2) == Approx(0.5f));
   }
 };

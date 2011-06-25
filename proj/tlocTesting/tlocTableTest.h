@@ -2,15 +2,15 @@ namespace TestingTable
 {
   struct Table3Fixture
   {
-    Table3Fixture() 
+    Table3Fixture()
     {
-      tloc::Tuple<int, 3> row1;
-      tloc::Tuple<int, 3> row2;
-      tloc::Tuple<int, 3> row3;
+      tloc::Tuple<s32, 3> row1;
+      tloc::Tuple<s32, 3> row2;
+      tloc::Tuple<s32, 3> row3;
 
-      tloc::Tuple<int ,3> col1;
-      tloc::Tuple<int ,3> col2;
-      tloc::Tuple<int ,3> col3;
+      tloc::Tuple<s32 ,3> col1;
+      tloc::Tuple<s32 ,3> col2;
+      tloc::Tuple<s32 ,3> col3;
 
       row1[0] = 1; row1[1] = 2; row1[2] = 3;
       row2[0] = 4; row2[1] = 5; row2[2] = 6;
@@ -29,7 +29,7 @@ namespace TestingTable
       b.SetCol(2, col3);
     }
 
-    tloc::Table<int, 3, 3> a, b, c, d;
+    tloc::Table<s32, 3, 3> a, b, c, d;
   };
 
 #define CHECK_TABLE(tab,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -38,16 +38,16 @@ namespace TestingTable
   CHECK((tab[4]) == ((y2)) ); CHECK((tab[5]) == ((z2)) ); \
   CHECK((tab[6]) == ((x3)) ); CHECK((tab[7]) == ((y3)) ); \
   CHECK((tab[8]) == ((z3)) );
-  
 
-  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/General", 
-                                  "Test general/basic functionality")
+
+  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/General",
+    "Test general/basic functionality")
   {
     CHECK_TABLE(a, 1, 4, 7, 2, 5, 8, 3, 6, 9);
-    CHECK_TABLE(b, 1, 2, 3, 4, 5, 6, 7, 8, 9);    
+    CHECK_TABLE(b, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }
 
-  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Accessors", 
+  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Accessors",
     "Test all accessor functions")
   {
     CHECK(a(0, 0) == 1);
@@ -66,7 +66,7 @@ namespace TestingTable
     CHECK(b.Get(0, 1) == 4);
     CHECK(b.Get(2, 2) == 9);
 
-    Tuple<int, 3> tup;
+    Tuple<s32, 3> tup;
 
     a.GetRow(0, tup);
     CHECK(tup[0] == 1); CHECK(tup[1] == 2); CHECK(tup[2] == 3);
@@ -81,15 +81,15 @@ namespace TestingTable
     CHECK( *(a + 0) == 1); CHECK( *(a + 1) == 4); CHECK( *(a + 2) == 7);
   }
 
-  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Modifiers", 
+  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Modifiers",
     "Test all modifiers functions")
   {
     c = a;
     CHECK_TABLE(c, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Tuple<int, 3> row1;
-    tloc::Tuple<int, 3> row2;
-    tloc::Tuple<int, 3> row3;
+    tloc::Tuple<s32, 3> row1;
+    tloc::Tuple<s32, 3> row2;
+    tloc::Tuple<s32, 3> row3;
 
     row1[0] = 11; row1[1] = 21; row1[2] = 31;
     row2[0] = 41; row2[1] = 51; row2[2] = 61;
@@ -105,18 +105,15 @@ namespace TestingTable
 
     a.Set(0);
     CHECK_TABLE(a, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    int rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    s32 rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     // ROW_MAJOR means that the above array has vectors in a row major order
     // i.e. 9,8,7 is a row vector, 6,5,4 is a row vector and so on
-    a.Set(rawArray, tloc::Table<int, 3, 3>::ROW_MAJOR);
+    a.Set(rawArray, tloc::Table<s32, 3, 3>::ROW_MAJOR);
     CHECK_TABLE(a, 9, 6, 3, 8, 5, 2, 7, 4, 1);
 
     a.Set(0);
-    a.Set(rawArray, tloc::Table<int, 3, 3>::COL_MAJOR);
+    a.Set(rawArray, tloc::Table<s32, 3, 3>::COL_MAJOR);
     CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
-
-
-
   }
 };
  

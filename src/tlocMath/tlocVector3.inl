@@ -96,10 +96,10 @@ namespace tloc
     lLength = (f32)LengthSquared();
 
     // Calculate length inverse
-    float xhalf = 0.5f*lLength;
-    int i = *(int*)&lLength; // get bits for floating value
+    f32 xhalf = 0.5f*lLength;
+    s32 i = *(s32*)&lLength; // get bits for floating value
     i = 0x5f375a86- (i>>1); // gives initial guess y0
-    lLength = *(float*)&i; // convert bits back to float
+    lLength = *(f32*)&i; // convert bits back to float
     lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
 
     m_values[0] *= (T)lLength;

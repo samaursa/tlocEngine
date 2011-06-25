@@ -40,8 +40,8 @@ namespace tloc
 
     // Access range is that of an integer, approx. 2.1 billion rows & cols. 
     // If size is more than that, use the get function instead
-    TL_FI T& operator() (int aRow, int aCol);
-    TL_FI const T& operator() (int aRow, int aCol) const;
+    TL_FI T& operator() (s32 aRow, s32 aCol);
+    TL_FI const T& operator() (s32 aRow, s32 aCol) const;
 
     TL_FI T& Get(u32 aRow, u32 aCol);
     TL_FI const T& Get(u32 aRow, u32 aCol) const;

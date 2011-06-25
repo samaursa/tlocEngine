@@ -35,6 +35,18 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// Platform specific
+
+#if defined(_WIN32) || defined(WIN32)
+  #ifndef WIN32
+    #define WIN32
+  #endif
+  #ifndef _WIN32
+    #define _WIN32
+  #endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
 // Compiler specific
 
 #if defined(_MSC_VER)
@@ -77,7 +89,7 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// Configurations
+// 2LoC Configurations
 
 #if !defined(TLOC_DEBUG) && !defined(TLOC_DEBUG_DLL) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL) && !defined(TLOC_RELEASE_DEBUGINFO) && !defined(TLOC_RELEASE_DEBUGINFO_DLL)
   #error "Project must #define TLOC_DEBUG or TLOC_DEBUG_DLL or TLOC_RELEASE or TLOC_RELEASE_DLL or TLOC_RELEASE_DEBUGINFO or TLOC_RELEASE_DEBUGINFO_DLL"
@@ -184,5 +196,14 @@
 
 #define LOG_ERRORBOX ""
 #define LOG_CHECKBOX ""
+
+//////////////////////////////////////////////////////////////////////////
+// Miscellaneous
+
+// Idea taken from WildMagic5
+// Avoid warnings about unused variables.  This is designed for variables
+// that are exposed in debug configurations but are hidden in release
+// configurations.
+#define TLOC_UNUSED(variable) (void)variable;
 
 #endif

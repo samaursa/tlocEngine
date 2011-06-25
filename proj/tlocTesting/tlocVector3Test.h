@@ -138,11 +138,11 @@ namespace TestingVector3f
     "length and length squared")
   {
     c.Zero(); c[0] = 2; c[1] = 2; c[2] = 2;
-    float lengthSq;
+    f32 lengthSq;
     c.LengthSquared(lengthSq);
     CHECK(lengthSq == Approx(12.0f));
 
-    float length;
+    f32 length;
     c.Zero(); c.Length(length);
     CHECK(length == Approx(0.0f));
 
@@ -167,12 +167,12 @@ namespace TestingVector3f
     CHECK_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f);
     c.Norm();
     CHECK_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f);
-    float length = c.NormLength();
+    f32 length = c.NormLength();
     CHECK(length == Approx(1.0f));
 
     c[0] = 2; c[1] = 2; c[2] = 2;
     c.FastNorm();
-    float percDiff = abs((c[0] - 0.577f) / c[0]);
+    f32 percDiff = abs((c[0] - 0.577f) / c[0]);
     // Make sure all the values are the same
     CHECK_VEC3F(c, c[0], c[0], c[0]);
     CHECK (percDiff < 0.03f);
@@ -181,7 +181,7 @@ namespace TestingVector3f
 
     c.Zero(); c[0] = 1;
     d.Zero(); d[0] = 2;
-    float dis = c.Distance(d);
+    f32 dis = c.Distance(d);
     CHECK_VEC3F(c, 1, 0, 0);
     CHECK_VEC3F(d, 2, 0, 0);
     CHECK(dis == 1);

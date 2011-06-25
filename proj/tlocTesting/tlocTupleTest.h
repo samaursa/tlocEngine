@@ -8,7 +8,7 @@ namespace TestingTuple
 
   TEST_CASE("Core/DataStructures/Tuple", "Testing the Tuple<T, size> class")
   {
-    Tuple<int, 4> p(0);
+    Tuple<s32, 4> p(0);
     CHECK_TUP(p, 0, 0, 0, 0);
     
     p[0] = 0; p[1] = 1; p[2] = 2; p[3] = 3;
@@ -28,7 +28,7 @@ namespace TestingTuple
     p.Set(5);
     CHECK_TUP(p, 5, 5, 5, 5);
 
-    Tuple<int, 4> q(8);
+    Tuple<s32, 4> q(8);
     p.Swap(q);
 
     CHECK_TUP(p, 8, 8, 8, 8);

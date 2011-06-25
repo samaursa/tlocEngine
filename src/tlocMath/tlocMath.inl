@@ -40,6 +40,12 @@ namespace tloc
   }
 
   template <typename T>
+  TL_FI T tloc::Math<T>::Log( const T& aLog )
+  {
+    return log(aLog);
+  }
+
+  template <typename T>
   TL_FI bool Math<T>::IsNaN(const T& aValue)
   { 
     return aValue != aValue; 
@@ -82,12 +88,21 @@ namespace tloc
     f32 lLength = (f32)aValue;
 
     // Calculate length inverse
-    float xhalf = 0.5f*lLength;
-    int i = *(int*)&lLength; // get bits for floating value
+    f32 xhalf = 0.5f*lLength;
+    s32 i = *(s32*)&lLength; // get bits for floating value
     i = 0x5f375a86- (i>>1); // gives initial guess y0
-    lLength = *(float*)&i; // convert bits back to float
+    lLength = *(f32*)&i; // convert bits back to float
     lLength = lLength*(1.5f-xhalf*lLength*lLength); // Newton step, repeating increases accuracy
 
     return (T)lLength;
   }
+
+  template <typename T>
+  TL_FI T tloc::Math<T>::Lerp(const T& aValue1, 
+                                     const T& aValue2, 
+                                     const T aBias /* = */)
+  {
+    return (aBias * aValue1) + ((1 - aBias) * aValue2);
+  }
+
 };

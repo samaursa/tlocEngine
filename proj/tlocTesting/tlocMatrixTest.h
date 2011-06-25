@@ -48,7 +48,7 @@ namespace TestingMatrix
     tloc::Matrix<f32, 3> f(e);
     CHECK_MATRIX3F(f, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    float rawArray[9] = {1,2,3,4,5,6,7,8,9};
+    f32 rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
     tloc::Matrix<f32, 3> g(rawArray, tloc::Matrix<f32, 3>::ROW_MAJOR);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);

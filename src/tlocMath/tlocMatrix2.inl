@@ -13,7 +13,8 @@ TL_FI Matrix2<T>::Matrix2(const Matrix2<T>& aMatrix)
 : Matrix(aMatrix) {}
 
 template <typename T>
-TL_FI Matrix2<T>::Matrix2(T m00, T m10, T m01, T m11)
+TL_FI Matrix2<T>::Matrix2(T m00, T m01, 
+                          T m10, T m11)
 {
   m_values[0] = m00;
   m_values[1] = m10;

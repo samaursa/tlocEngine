@@ -18,10 +18,10 @@ namespace tloc
     // Empty default constructor
     TL_FI Matrix3();
 
-    // Generate a matrix by column inputs in column-major order
-    TL_FI Matrix3(T m00, T m10, T m20, 
-                  T m01, T m11, T m21, 
-                  T m02, T m12, T m22);
+    // Generate a matrix by inputs in row-major order
+    TL_FI Matrix3(T m00, T m01, T m02, 
+                  T m10, T m11, T m12, 
+                  T m20, T m21, T m22);
 
     // Generate a diagonal matrix
     TL_FI Matrix3(T m00, T m11, T m22);

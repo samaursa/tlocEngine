@@ -13,9 +13,9 @@ TL_FI Matrix3<T>::Matrix3(const Matrix3<T>& aMatrix)
 : Matrix(aMatrix) {}
 
 template <typename T>
-TL_FI Matrix3<T>::Matrix3(T m00, T m10, T m20, 
-                          T m01, T m11, T m21, 
-                          T m02, T m12, T m22)
+TL_FI Matrix3<T>::Matrix3(T m00, T m01, T m02, 
+                          T m10, T m11, T m12, 
+                          T m20, T m21, T m22)
 {
   m_values[0] = m00; m_values[3] = m01; m_values[6] = m02;
   m_values[1] = m10; m_values[4] = m11; m_values[7] = m12;
@@ -71,6 +71,7 @@ template <typename T>
 TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix1, 
                            const Matrix3<T>& aMatrix3)
 {
+
 }
 
 template <typename T>

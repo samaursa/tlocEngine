@@ -176,11 +176,127 @@ TL_I void Matrix3<T>::Adjoint(const Matrix3<T>& aMatrix)
 template <typename T>
 TL_FI void Matrix3<T>::Orthonormalize()
 {
+  // Copied from WildMagic5
+
+  // Algorithm uses Gram-Schmidt orthogonalization.  If 'this' matrix is
+  // M = [m0|m1|m2], then orthonormal output matrix is Q = [q0|q1|q2],
+  //
+  //   q0 = m0/|m0|
+  //   q1 = (m1-(q0*m1)q0)/|m1-(q0*m1)q0|
+  //   q2 = (m2-(q0*m2)q0-(q1*m2)q1)/|m2-(q0*m2)q0-(q1*m2)q1|
+  //
+  // where |V| indicates length of vector V and A*B indicates dot
+  // product of vectors A and B.
+
+  // Compute q0.
+  T invLength = Math<T>::InvSqrt(m_values[0] * m_values[0] +
+                                 m_values[1] * m_values[1] + 
+                                 m_values[2] * m_values[2]);
+
+  m_values[0] *= invLength;
+  m_values[1] *= invLength;
+  m_values[2] *= invLength;
+
+  // Compute q1.
+  T dot0 = m_values[0] * m_values[3] + 
+           m_values[1] * m_values[4] +
+           m_values[2] * m_values[5];
+
+  m_values[3] -= dot0 * m_values[0];
+  m_values[4] -= dot0 * m_values[1];
+  m_values[5] -= dot0 * m_values[2];
+
+  invLength = Math<T>::InvSqrt(m_values[3] * m_values[3] +
+                               m_values[4] * m_values[4] + 
+                               m_values[5] * m_values[5]);
+
+  m_values[3] *= invLength;
+  m_values[4] *= invLength;
+  m_values[5] *= invLength;
+
+  // compute q2
+  T dot1 = m_values[3] * m_values[6] + 
+           m_values[4] * m_values[7] +
+           m_values[5] * m_values[8];
+
+  dot0 = m_values[0] * m_values[6] + 
+         m_values[1] * m_values[7] +
+         m_values[2] * m_values[8];
+
+  m_values[6] -= dot0 * m_values[0] + dot1 * m_values[3];
+  m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
+  m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
+
+  invLength = Math<T>::InvSqrt(m_values[6] * m_values[6] +
+                               m_values[7] * m_values[7] + 
+                               m_values[8] * m_values[8]);
+
+  m_values[6] *= invLength;
+  m_values[7] *= invLength;
+  m_values[8] *= invLength;
 }
 
 template <typename T>
 TL_FI void Matrix3<T>::FastOrthonormalize()
 {
+  // Copied from WildMagic5
+
+  // Algorithm uses Gram-Schmidt orthogonalization.  If 'this' matrix is
+  // M = [m0|m1|m2], then orthonormal output matrix is Q = [q0|q1|q2],
+  //
+  //   q0 = m0/|m0|
+  //   q1 = (m1-(q0*m1)q0)/|m1-(q0*m1)q0|
+  //   q2 = (m2-(q0*m2)q0-(q1*m2)q1)/|m2-(q0*m2)q0-(q1*m2)q1|
+  //
+  // where |V| indicates length of vector V and A*B indicates dot
+  // product of vectors A and B.
+
+  // Compute q0.
+  T invLength = Math<T>::FastInvSqrt(m_values[0] * m_values[0] +
+                                     m_values[1] * m_values[1] + 
+                                     m_values[2] * m_values[2]);
+
+  m_values[0] *= invLength;
+  m_values[1] *= invLength;
+  m_values[2] *= invLength;
+
+  // Compute q1.
+  T dot0 = m_values[0] * m_values[3] + 
+    m_values[1] * m_values[4] +
+    m_values[2] * m_values[5];
+
+  m_values[3] -= dot0 * m_values[0];
+  m_values[4] -= dot0 * m_values[1];
+  m_values[5] -= dot0 * m_values[2];
+
+  invLength = Math<T>::FastInvSqrt(m_values[3] * m_values[3] +
+                                   m_values[4] * m_values[4] + 
+                                   m_values[5] * m_values[5]);
+
+  m_values[3] *= invLength;
+  m_values[4] *= invLength;
+  m_values[5] *= invLength;
+
+  // compute q2
+  T dot1 = m_values[3] * m_values[6] + 
+           m_values[4] * m_values[7] +
+           m_values[5] * m_values[8];
+
+  dot0 = m_values[0] * m_values[6] + 
+         m_values[1] * m_values[7] +
+         m_values[2] * m_values[8];
+
+  m_values[6] -= dot0 * m_values[0] + dot1 * m_values[3];
+  m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
+  m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
+
+  invLength = Math<T>::FastInvSqrt(m_values[6] * m_values[6] +
+                                   m_values[7] * m_values[7] + 
+                                   m_values[8] * m_values[8]);
+
+  m_values[6] *= invLength;
+  m_values[7] *= invLength;
+  m_values[8] *= invLength;
 }
 
 template <typename T>

@@ -109,6 +109,34 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/OrthoNorm", 
     "Test orthonormalize")
   {
+    f32 values[9] = {1, 4, 7, 4, 5, 8, 9, 15, 5};
+    a.Set(values, Mat3f::ROW_MAJOR);
+
+    a.Orthonormalize();
+    CHECK_MATRIX3F(a, 0.10101525f, 0.40406102f, 0.90913731f,
+                      0.83898753f, -0.52571768f, 0.14043106f,
+                      0.53469253f, 0.74856889f, -0.39210755f);
+    Vec3f col1, col2, col3;
+    a.GetCol(0, col1);
+    a.GetCol(1, col2);
+    a.GetCol(2, col3);    
+    CHECK(col1.Length() == Approx(1));
+    CHECK(col2.Length() == Approx(1));
+    CHECK(col3.Length() == Approx(1));
+
+    a.Zero();
+    a.Set(values, Mat3f::ROW_MAJOR);
+    a.FastOrthonormalize();
+    f32 prec = 1e-1f;
+    CHECK( (Mathf::Approx(a[0], 0.10f, prec)) == true );
+    CHECK( (Mathf::Approx(a[1], 0.40f, prec)) == true );
+    CHECK( (Mathf::Approx(a[2], 0.90f, prec)) == true );
+    CHECK( (Mathf::Approx(a[3], 0.83f, prec)) == true );
+    CHECK( (Mathf::Approx(a[4], -0.52f, prec)) == true );
+    CHECK( (Mathf::Approx(a[5], 0.14f, prec)) == true );
+    CHECK( (Mathf::Approx(a[6], 0.53f, prec)) == true );
+    CHECK( (Mathf::Approx(a[7], 0.74f, prec)) == true );
+    CHECK( (Mathf::Approx(a[8], -0.39f, prec)) == true );
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/EigenDecomp", 

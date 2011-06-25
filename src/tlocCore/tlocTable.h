@@ -62,6 +62,9 @@ namespace tloc
     TL_FI void SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn);
     TL_FI void SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn);    
 
+    //------------------------------------------------------------------------
+    // Operators
+
     TL_FI Table<T, T_Rows, T_Cols>& operator = (const Table& aTable);
   };
 };

@@ -69,43 +69,107 @@ TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix)
 
 template <typename T>
 TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix1, 
-                           const Matrix3<T>& aMatrix3)
+                           const Matrix3<T>& aMatrix2)
 {
-
+  m_values[0] = aMatrix1[0] * aMatrix2[0] + 
+                aMatrix1[3] * aMatrix2[1] + 
+                aMatrix1[6] * aMatrix2[2];
+  m_values[1] = aMatrix1[1] * aMatrix2[0] + 
+                aMatrix1[4] * aMatrix2[1] + 
+                aMatrix1[7] * aMatrix2[2];
+  m_values[2] = aMatrix1[2] * aMatrix2[0] + 
+                aMatrix1[5] * aMatrix2[1] +
+                aMatrix1[8] * aMatrix2[2];
+  m_values[3] = aMatrix1[0] * aMatrix2[3] + 
+                aMatrix1[3] * aMatrix2[4] +
+                aMatrix1[6] * aMatrix2[5];
+  m_values[4] = aMatrix1[1] * aMatrix2[3] + 
+                aMatrix1[4] * aMatrix2[4] +
+                aMatrix1[7] * aMatrix2[5];
+  m_values[5] = aMatrix1[2] * aMatrix2[3] + 
+                aMatrix1[5] * aMatrix2[4] +
+                aMatrix1[8] * aMatrix2[5];
+  m_values[6] = aMatrix1[0] * aMatrix2[6] + 
+                aMatrix1[3] * aMatrix2[7] +
+                aMatrix1[6] * aMatrix2[8];
+  m_values[7] = aMatrix1[1] * aMatrix2[6] + 
+                aMatrix1[4] * aMatrix2[7] +
+                aMatrix1[7] * aMatrix2[8];
+  m_values[8] = aMatrix1[2] * aMatrix2[6] + 
+                aMatrix1[5] * aMatrix2[7] +
+                aMatrix1[8] * aMatrix2[8];
 }
 
 template <typename T>
 TL_FI void Matrix3<T>::Mul(const Vector<T, 3>& aVectorIn, 
                            Vector<T, 3>& aVectorOut)
 {
+  aVectorOut[0] = m_values[0] * aVectorIn[0] +
+                  m_values[3] * aVectorIn[1] + 
+                  m_values[6] * aVectorIn[2];
+  aVectorOut[1] = m_values[1] * aVectorIn[0] + 
+                  m_values[4] * aVectorIn[1] + 
+                  m_values[7] * aVectorIn[2];
+  aVectorOut[2] = m_values[2] * aVectorIn[0] + 
+                  m_values[5] * aVectorIn[1] + 
+                  m_values[8] * aVectorIn[2];
 }
 
 template <typename T>
-TL_FI T Matrix3<T>::Determinant() const
+TL_I T Matrix3<T>::Determinant() const
 {
-  return 0;
+  T m11_12_21_22 = (m_values[4] * m_values[8] - m_values[7] * m_values[5]) 
+                    * m_values[0];
+  T m10_12_20_22 = (m_values[1] * m_values[8] - m_values[7] * m_values[2]) 
+                    * m_values[3];
+  T m10_11_20_21 = (m_values[1] * m_values[5] - m_values[4] * m_values[2]) 
+                    * m_values[6];
+
+  return m11_12_21_22 - m10_12_20_22 + m10_11_20_21;
 }
 
 template <typename T>
-TL_FI bool Matrix3<T>::Inverse()
+TL_I bool Matrix3<T>::Inverse()
 {
-  return false;
+  Matrix3<T> temp(*this);
+  return Inverse(temp);
 }
 
 template <typename T>
-TL_FI bool Matrix3<T>::Inverse(const Matrix3<T>& aMatrix)
+TL_I bool Matrix3<T>::Inverse(const Matrix3<T>& aMatrix)
 {
-  return false;
+  T detInv = aMatrix.Determinant();
+  if (Math<T>::Approx(detInv, (T)0)) { return false; }
+
+  detInv = ((T)1) / detInv;
+
+  Adjoint(aMatrix);
+  Matrix::Mul(detInv);
+
+  return true;
 }
 
 template <typename T>
-TL_FI void Matrix3<T>::Adjoint()
+TL_I void Matrix3<T>::Adjoint()
 {
+  Matrix3<T> temp(*this);
+  Adjoint(temp);
 }
 
 template <typename T>
-TL_FI void Matrix3<T>::Adjoint(const Matrix3<T>& aMatrix)
+TL_I void Matrix3<T>::Adjoint(const Matrix3<T>& aMatrix)
 {
+  // Matrix adjoint which is the matrix of minors turned into matrix of 
+  // co-factors which is then transposed
+  m_values[0] = aMatrix[4] * aMatrix[8] - aMatrix[7] * aMatrix[5]; // +
+  m_values[3] = aMatrix[6] * aMatrix[5] - aMatrix[3] * aMatrix[8]; // -
+  m_values[6] = aMatrix[3] * aMatrix[7] - aMatrix[6] * aMatrix[4]; // +
+  m_values[1] = aMatrix[7] * aMatrix[2] - aMatrix[1] * aMatrix[8]; // -
+  m_values[4] = aMatrix[0] * aMatrix[8] - aMatrix[6] * aMatrix[2]; // +
+  m_values[7] = aMatrix[1] * aMatrix[6] - aMatrix[0] * aMatrix[7]; // -
+  m_values[2] = aMatrix[1] * aMatrix[5] - aMatrix[4] * aMatrix[2]; // +
+  m_values[5] = aMatrix[3] * aMatrix[2] - aMatrix[0] * aMatrix[5]; // -
+  m_values[8] = aMatrix[0] * aMatrix[4] - aMatrix[3] * aMatrix[1]; // +
 }
 
 // Taken directly from WildMagic5 (modified to suit out needs)

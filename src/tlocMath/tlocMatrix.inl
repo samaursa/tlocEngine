@@ -113,7 +113,7 @@ namespace tloc
 
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Matrix<T, T_Size>& aMatrix1, 
-    const Matrix<T, T_Size>& aMatrix2)
+                                    const Matrix<T, T_Size>& aMatrix2)
   {
     operator=(aMatrix1);
     Mul(aMatrix2);
@@ -130,7 +130,7 @@ namespace tloc
 
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Vector<T, T_Size>& aVectorIn, 
-    Vector<T, T_Size>& aVectorOut)
+                                    Vector<T, T_Size>& aVectorOut)
   {
     ITERATE_MATRIX_HALF
     {

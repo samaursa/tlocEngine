@@ -169,6 +169,9 @@ namespace tloc
     memcpy(m_values + (aCol * T_Rows), aColIn, sizeof(T) * T_Rows);
   }
 
+  //------------------------------------------------------------------------
+  // Operators
+
   template <typename T, u32 T_Rows, u32 T_Cols>
   TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>::operator = (const Table& aTable)
   {

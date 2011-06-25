@@ -49,7 +49,7 @@ namespace tloc
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
     TL_FI void Mul(const Matrix3<T>& aMatrix1,
-      const Matrix3<T>& aMatrix3);
+                   const Matrix3<T>& aMatrix2);
 
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the 

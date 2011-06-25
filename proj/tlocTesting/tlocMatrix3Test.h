@@ -46,21 +46,64 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Math/Mul",
     "Test multiplication")
   {
+    f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a.Set(values, Mat3f::ROW_MAJOR);
+    b.Set(values, Mat3f::ROW_MAJOR);
+
+    c.Mul(a, b);
+    CHECK_MATRIX3F(c, 30, 66, 102, 36, 81, 126, 42, 96, 150);
+
+    c.Set(values, Mat3f::ROW_MAJOR);
+    c.Mul(a);
+    CHECK_MATRIX3F(c, 30, 66, 102, 36, 81, 126, 42, 96, 150);
+
+    Vec3f vec1(1, 2, 3), vec2;
+    c.Set(values, Mat3f::ROW_MAJOR);
+    c.Mul(vec1, vec2);
+    CHECK_VEC3F(vec2, 14, 32, 50);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Det", 
     "Test determinant")
   {
+    f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a.Set(values, Mat3f::ROW_MAJOR);
+
+    CHECK(a.Determinant() == Approx(0));
+
+    f32 values2[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
+    a.Set(values2, Mat3f::ROW_MAJOR);
+    CHECK(a.Determinant() == Approx(48));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Inv", 
     "Test inverse")
   {
+    f32 values[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
+    a.Set(values, Mat3f::ROW_MAJOR);
+
+    REQUIRE(b.Inverse(a) == true);
+    CHECK_MATRIX3F(b, 0.5625f, -0.25f, 0, 0.1875f, 0.25, -0.33333f, -0.5f, 0, .33333f);
+
+    f32 values2[9] = {89, 58, 23, 97, 78, 72, 54, 32, 90};
+    a.Set(values2, Mat3f::ROW_MAJOR);
+    a.Inverse();
+    CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f, 
+                     -0.03954f,   0.059680,  0.002504f, 
+                      0.021004f, -0.03683f,  0.011604f);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Adj", 
     "Test adjoint")
   {
+    f32 values[9] = {2, 0, 1, 3, 2, -1, 1, 0, 0};
+    a.Set(values, Mat3f::ROW_MAJOR);
+    b.Adjoint(a);
+
+    CHECK_MATRIX3F(b, 0, -1, -2, 0, -1, 0, -2, 5, 4);
+
+    a.Adjoint();
+    CHECK_MATRIX3F(a, 0, -1, -2, 0, -1, 0, -2, 5, 4);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/OrthoNorm", 

@@ -88,6 +88,18 @@ namespace tloc
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
     TL_I void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
+
+  private:
+
+    // Taken from WildMagic5
+    // Support for eigendecomposition.  The Tridiagonalize function applies
+    // a Householder transformation to the matrix.  If that transformation
+    // is the identity (the matrix is already tridiagonal), then the return
+    // value is 'false'.  Otherwise, the transformation is a reflection and
+    // the return value is 'true'.  The QLAlgorithm returns 'true' iff the
+    // QL iteration scheme converged.
+    bool Tridiagonalize (T aDiagonal[3], T aSubdiagonal[2]);
+    bool QLAlgorithm (T aDiagonal[3], T aSubdiagonal[2]);
   };
 
   typedef Matrix3<f32>  Mat3f;

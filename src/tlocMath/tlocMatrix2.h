@@ -89,10 +89,13 @@ namespace tloc
     TL_I void EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) const;
   };
 
-  typedef Matrix2<f32> Mat2f;
-  typedef Matrix2<f64> Mat2d;
-
-#include "tlocMatrix2.inl"
+  typedef Matrix2<f32>  Mat2f;
+  typedef Matrix2<f64>  Mat2d;
+  typedef Matrix2<f128> Mat2l;
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocMatrix2.inl"
+#endif
 
 #endif

@@ -90,10 +90,13 @@ namespace tloc
     TL_I void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
   };
 
-  typedef Matrix3<f32> Mat3f;
-  typedef Matrix3<f64> Mat3d;
-
-#include "tlocMatrix3.inl"
+  typedef Matrix3<f32>  Mat3f;
+  typedef Matrix3<f64>  Mat3d;
+  typedef Matrix3<f128> Mat3l;
 };
+
+#ifdef TLOC_FULL_SOURCE
+#include "tlocMatrix3.inl"
+#endif
 
 #endif

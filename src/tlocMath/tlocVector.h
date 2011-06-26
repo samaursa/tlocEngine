@@ -173,15 +173,15 @@ namespace tloc
     // Special vectors
 
     static const Vector<T, T_Size> ZERO;
-    static const Vector<T, T_Size> ONE;    
+    static const Vector<T, T_Size> ONE;
   };
 
   //------------------------------------------------------------------------
   // Static const definitions
   template<typename T, u32 T_Size> 
-  const Vector<T, T_Size> Vector<T, T_Size>::ZERO(Vector<T, T_Size>(0));
+  const Vector<T, T_Size> Vector<T, T_Size>::ZERO = Vector<T, T_Size>(0);
   template<typename T, u32 T_Size> 
-  const Vector<T, T_Size> Vector<T, T_Size>::ONE(Vector<T, T_Size>(1));
+  const Vector<T, T_Size> Vector<T, T_Size>::ONE = Vector<T, T_Size>(1);
 };
 
 #ifdef TLOC_FULL_SOURCE

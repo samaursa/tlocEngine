@@ -118,7 +118,26 @@ namespace tloc
 
     static const Matrix<T, T_Size> ZERO;
     static const Matrix<T, T_Size> IDENTITY;
+
+  private:
+    
+    static Matrix<T, T_Size> pInternal_GetIdentity();
   };
+
+  //------------------------------------------------------------------------
+  // Static const definitions
+  template <typename T, u32 T_Size>
+  const Matrix<T, T_Size> Matrix<T, T_Size>::ZERO = Matrix<T, T_Size>(0);
+  template <typename T, u32 T_Size>
+  const Matrix<T, T_Size> Matrix<T, T_Size>::IDENTITY = Matrix<T, T_Size>::pInternal_GetIdentity();
+
+  template <typename T, u32 T_Size>
+  Matrix<T, T_Size> Matrix<T, T_Size>::pInternal_GetIdentity()
+  {
+    Matrix<T, T_Size> temp;
+    temp.Identity();
+    return temp;
+  }
 };
 
 #ifdef TLOC_FULL_SOURCE

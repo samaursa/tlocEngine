@@ -26,6 +26,8 @@ namespace tloc
     TL_STATIC_FI T ATan(const T& aValue);
     TL_STATIC_FI T ATan2(const T& aValue1, const T& aValue2);
     TL_STATIC_FI T Log(const T& aLog);
+    TL_STATIC_FI T Sin(const T& aValInRad);
+    TL_STATIC_FI T Cos(const T& aValInRad);
 
     // Taken from OgreMath
     TL_STATIC_FI bool IsNaN(const T& aValue);

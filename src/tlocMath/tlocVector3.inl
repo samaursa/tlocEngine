@@ -48,7 +48,7 @@ namespace tloc
   // Math operations
 
   template <typename T>
-  TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector)
+  TL_FI Vector3<T>& Vector3<T>::Cross(const Vector3<T>& aVector)
   {
     /*
     y * rkVector.z - z * rkVector.y,
@@ -61,6 +61,8 @@ namespace tloc
     m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
     m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
     m_values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
+
+    return *this;
   }
 
   template <typename T>

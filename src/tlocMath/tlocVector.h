@@ -67,15 +67,15 @@ namespace tloc
     // Math Operations
 
     // Modifies this vector by adding the incoming vector
-    TL_FI void Add(const Vector<T, T_Size>& aVector);
+    TL_FI Vector<T, T_Size>& Add(const Vector<T, T_Size>& aVector);
 
     // Modifies this vector by adding the incoming vectors and storing the 
     // result in this vector
-    TL_FI void Add(const Vector<T, T_Size>& aVector1, 
+    TL_FI void Add(const Vector<T, T_Size>& aVector1,
                    const Vector<T, T_Size>& aVector2);
 
     // Modifies this vector by subtracting the incoming vector
-    TL_FI void Sub(const Vector<T, T_Size>& aVector);
+    TL_FI Vector<T, T_Size>& Sub(const Vector<T, T_Size>& aVector);
 
     // Modifies this vector by subtracting the incoming vectors and storing 
     // the result in this vector
@@ -84,7 +84,7 @@ namespace tloc
 
     // Multiply each element of this vector by the elements of the incoming 
     // Vector
-    TL_FI void Mul(const Vector<T, T_Size>& aVector);
+    TL_FI Vector<T, T_Size>& Mul(const Vector<T, T_Size>& aVector);
     
     // Modifies this vector by multiplying the incoming vectors and storing 
     // the result in this vector
@@ -93,11 +93,11 @@ namespace tloc
 
     // Multiplies each element of this vector by the constant and stores the
     // the result in this vector
-    TL_FI void Mul(const T aReal);    
+    TL_FI Vector<T, T_Size>& Mul(const T aReal);    
 
     // Divides each element of this vector by the elements of the incoming 
     // Vector
-    TL_FI void Div(const Vector<T, T_Size>& aVector);    
+    TL_FI Vector<T, T_Size>& Div(const Vector<T, T_Size>& aVector);    
 
     // Modifies this vector by dividing the incoming vectors and storing 
     // the result in this vector
@@ -106,29 +106,23 @@ namespace tloc
 
     // Divides each element of this vector by the constant and stores the
     // the result in this vector
-    TL_FI void Div(const T aReal);    
-
-    // Used by Length()
-    TL_FI void LengthSquared(T& aReal) const;
+    TL_FI Vector<T, T_Size>& Div(const T aReal);    
 
     // Same as Length() but returns the value instead
     TL_FI T LengthSquared() const;
-
-    // This is a costly operation, consider using LengthSquared() if possible
-    TL_FI void Length(T& aReal) const;
 
     // Same as Length() but returns the value instead
     TL_FI T Length() const;
 
     // Normalizes this vector
-    TL_FI void Norm();    
-
-    // Same as Norm(), but returns the length as well
-    TL_FI T NormLength();
+    TL_FI Vector<T, T_Size>& Norm();    
 
     // Modifies this vector to store the normalized version of the incoming
     // vector. 
-    TL_FI void Norm(const Vector<T, T_Size>& aVector);
+    TL_FI Vector<T, T_Size>& Norm(const Vector<T, T_Size>& aVector);
+
+    // Same as Norm(), but returns the length as well
+    TL_FI T NormLength();    
 
     // Same as Norm() but returns the length as well
     TL_FI T NormLength(const Vector<T, T_Size>& aVector);
@@ -149,7 +143,7 @@ namespace tloc
 
     // Modifies this vector by storing the midpoint between this vector
     // and the incoming vector
-    TL_FI void Midpoint(const Vector<T, T_Size>& aVector);
+    TL_FI Vector<T, T_Size>& Midpoint(const Vector<T, T_Size>& aVector);
 
     // Modifies this vector by storing the midpoint between the two 
     // incoming vectors

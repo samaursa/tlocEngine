@@ -43,7 +43,7 @@ namespace tloc
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix2<T>& aMatrix);
+    TL_FI Matrix2& Mul(const Matrix2<T>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
@@ -68,17 +68,26 @@ namespace tloc
     TL_I bool Inverse(const Matrix2<T>& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    TL_I void Adjoint();
+    TL_I Matrix2& Adjoint();
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
     TL_I void Adjoint(const Matrix2<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    TL_FI void Orthonormalize();
+    TL_FI Matrix2& Orthonormalize();
+
+    // Modifies this matrix by storing the orthonormalized version of the
+    // incoming matrix
+    TL_FI void Orthonormalize(const Matrix2<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix. This uses FastInvSqrt() 
     // used in the Quake engine and may result in lost precision
-    TL_FI void FastOrthonormalize();
+    TL_FI Matrix2& FastOrthonormalize();
+
+    // Modifies this matrix by storing the orthonormalized version of the
+    // incoming matrix. This uses FastInvSqrt() used in the Quake engine
+    // and may result in lost precision
+    TL_FI void FastOrthonormalize(const Matrix2<T>& aMatrix);
 
     // Taken from WildMagic5
     // The matrix must be symmetric.  Factor M = R * D * R^T where
@@ -87,7 +96,7 @@ namespace tloc
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
     TL_I void EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) const;
-  };
+  };  
 
   typedef Matrix2<f32>  Mat2f;
   typedef Matrix2<f64>  Mat2d;

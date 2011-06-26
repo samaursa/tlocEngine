@@ -64,7 +64,7 @@ namespace tloc
     // Math operations
 
     // Modifies this matrix by adding the incoming matrix
-    TL_FI void Add(const Matrix<T, T_Size>& aMatrix);
+    TL_FI Matrix<T, T_Size>& Add(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by adding the incoming matrices and storing the
     // result in this matrix
@@ -72,7 +72,7 @@ namespace tloc
                    const Matrix<T, T_Size>& aMatrix2);
 
     // Modifies this matrix by subtracting the incoming matrix
-    TL_FI void Sub(const Matrix<T, T_Size>& aMatrix);
+    TL_FI Matrix<T, T_Size>& Sub(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by subtracting the incoming matrices and storing
     // the result in this matrix
@@ -81,7 +81,7 @@ namespace tloc
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix<T, T_Size>& aMatrix);
+    TL_FI Matrix<T, T_Size>& Mul(const Matrix<T, T_Size>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
@@ -89,7 +89,7 @@ namespace tloc
                    const Matrix<T, T_Size>& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming real number
-    TL_FI void Mul(const T& aReal);
+    TL_FI Matrix<T, T_Size>& Mul(const T& aReal);
 
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the 
@@ -98,10 +98,10 @@ namespace tloc
                    Vector<T, T_Size>& aVectorOut);
 
     // Modifies this matrix by dividing the incoming real number
-    TL_FI void Div(const T& aReal);
+    TL_FI Matrix<T, T_Size>& Div(const T& aReal);
 
     // Modifies this matrix by transposing the matrix
-    TL_FI void Transpose();
+    TL_FI Matrix<T, T_Size>& Transpose();
 
     // Modifies this matrix by transposing the incoming matrix and storing
     // the result in this matrix

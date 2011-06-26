@@ -63,10 +63,12 @@ namespace tloc
   // Math Operations
 
   template <typename T>
-  TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix)
+  TL_FI Matrix3<T>& Matrix3<T>::Mul(const Matrix3<T>& aMatrix)
   {
     Matrix3<T> temp(*this);
     Mul(temp, aMatrix);
+
+    return *this;
   }
 
   template <typename T>
@@ -152,10 +154,12 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I void Matrix3<T>::Adjoint()
+  TL_I Matrix3<T>& Matrix3<T>::Adjoint()
   {
     Matrix3<T> temp(*this);
     Adjoint(temp);
+
+    return *this;
   }
 
   template <typename T>
@@ -176,7 +180,7 @@ namespace tloc
 
   // Taken directly from WildMagic5 (modified to suit out needs)
   template <typename T>
-  TL_FI void Matrix3<T>::Orthonormalize()
+  TL_FI Matrix3<T>& Matrix3<T>::Orthonormalize()
   {
     // Copied from WildMagic5
 
@@ -236,10 +240,19 @@ namespace tloc
     m_values[6] *= invLength;
     m_values[7] *= invLength;
     m_values[8] *= invLength;
+
+    return *this;
   }
 
   template <typename T>
-  TL_FI void Matrix3<T>::FastOrthonormalize()
+  TL_FI void tloc::Matrix3<T>::Orthonormalize( const Matrix3<T>& aMatrix )
+  {
+    *this = aMatrix;
+    Orthonormalize();
+  }
+
+  template <typename T>
+  TL_FI Matrix3<T>& Matrix3<T>::FastOrthonormalize()
   {
     // Copied from WildMagic5
 
@@ -299,10 +312,19 @@ namespace tloc
     m_values[6] *= invLength;
     m_values[7] *= invLength;
     m_values[8] *= invLength;
+
+    return *this;
   }
 
   template <typename T>
-  TL_I void Matrix3<T>::EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const
+  TL_FI void tloc::Matrix3<T>::FastOrthonormalize( const Matrix3<T>& aMatrix )
+  {
+    *this = aMatrix;
+    FastOrthonormalize();
+  }
+
+  template <typename T>
+  void Matrix3<T>::EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const
   {
     // Factor M = R*D*R^T.  The columns of R are the eigenvectors.  The
     // diagonal entries of D are the corresponding eigenvalues.
@@ -381,6 +403,9 @@ namespace tloc
       aRot(2,2) = -aRot(2,2);
     }
   }
+
+  //------------------------------------------------------------------------
+  // Helper functions
 
   template <typename T>
   bool tloc::Matrix3<T>::Tridiagonalize( T aDiagonal[3], T aSubdiagonal[2] )
@@ -670,4 +695,31 @@ namespace tloc
     }
     return false;
   }
+
+  template <typename T>
+  TL_FI void tloc::Matrix3<T>::MakeEuler( T aAngle1, T aAngle2, T aAngle3 )
+  {
+    T cs, sn;
+
+    cs = Math<T>::Cos(aAngle1);
+    sn = Math<T>::Sin(aAngle1);
+    Matrix3 matrix1( (T)1,(T)0,(T)0,
+                     (T)0,  cs, -sn,
+                     (T)0,  sn,  cs);
+
+    cs = Math<T>::Cos(aAngle2);
+    sn = Math<T>::Sin(aAngle2);
+    Matrix3 matrix2( cs,(T)0,  sn,
+                   (T)0,(T)1,(T)0,
+                    -sn,(T)0,  cs);
+
+    cs = Math<T>::Cos(aAngle3);
+    sn = Math<T>::Sin(aAngle3);
+    Matrix3 matrix3( cs, -sn, (T)0,
+                     sn,  cs, (T)0,
+                   (T)0,(T)0, (T)1);
+
+    *this = matrix1.Mul(matrix2.Mul(matrix3));
+  }
+
 };

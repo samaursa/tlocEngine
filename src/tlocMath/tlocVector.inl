@@ -57,17 +57,20 @@ namespace tloc
   // Math Operations
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Add(const Vector<T, T_Size>& aVector)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Add(const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
       m_values[i] += aVector[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Vector<T, T_Size>::Add(const Vector<T, T_Size>& aVector1, 
-    const Vector<T, T_Size>& aVector2)
+                                    const Vector<T, T_Size>& aVector2)
   {
     ITERATE_VECTOR
     {
@@ -76,110 +79,116 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Sub(const Vector<T, T_Size>& aVector)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Sub(const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
       m_values[i] -= aVector[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Vector<T, T_Size>::Sub(const Vector<T, T_Size>& aVector1, 
-    const Vector<T, T_Size>& aVector2)
+                                    const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
     Sub(aVector2);
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Mul(const Vector<T, T_Size>& aVector)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Mul(const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
       m_values[i] *= aVector[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Vector<T, T_Size>::Mul(const Vector<T, T_Size>& aVector1, 
-    const Vector<T, T_Size>& aVector2)
+                                    const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
     Mul(aVector2);
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Mul(const T aReal)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Mul(const T aReal)
   {
     ITERATE_VECTOR
     {
       m_values[i] *= aReal;
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Div(const Vector<T, T_Size>& aVector)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Div(const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
       m_values[i] /= aVector[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Vector<T, T_Size>::Div(const Vector<T, T_Size>& aVector1, 
-    const Vector<T, T_Size>& aVector2)
+                                    const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
     Div(aVector2);
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Div(const T aReal)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Div(const T aReal)
   {
     ITERATE_VECTOR
     {
       m_values[i] /= aReal;
     }
-  }
 
-  template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::LengthSquared(T& aReal) const
-  {
-    aReal = 0;
-
-    ITERATE_VECTOR
-    {
-      aReal += (m_values[i] * m_values[i]);
-    }
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::LengthSquared() const
   {
-    T lengthSq; LengthSquared(lengthSq);
-    return lengthSq;
-  }
+    T lengthSq = 0;
 
-  template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Length(T& aReal) const
-  {
-    aReal = LengthSquared();
-    aReal = Math<T>::Sqrt(aReal);
+    ITERATE_VECTOR
+    {
+      lengthSq += (m_values[i] * m_values[i]);
+    }
+
+    return lengthSq;
   }
 
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::Length() const
   {
-    T length; Length(length);
-    return length;
+    T length = LengthSquared();
+    return Math<T>::Sqrt(length);
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Norm()
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Norm()
   {
-    T lLength; Length(lLength);
+    T lLength = Length();
 
     if (lLength > 1e-08)
     {
@@ -190,12 +199,33 @@ namespace tloc
         m_values[i] *= lInvLength;
       }
     }
+
+    return *this;
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Norm(const Vector<T, T_Size>& aVector)
+  {
+    T lLength = aVector.Length();
+
+    if (lLength > 1e-08)
+    {
+      T lInvLength = (T)1.0 / lLength;
+
+      ITERATE_VECTOR
+      {
+        m_values[i] = aVector[i] * lInvLength;
+      }
+    }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::NormLength()
   {
-    T lLength; Length(lLength);
+    T lLength = Length();
 
     if (lLength > 1e-08)
     {
@@ -208,23 +238,7 @@ namespace tloc
     }
 
     return lLength;
-  }
-
-  template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Norm(const Vector<T, T_Size>& aVector)
-  {
-    T lLength; aVector.Length(lLength);
-
-    if (lLength > 1e-08)
-    {
-      T lInvLength = (T)1.0 / lLength;
-
-      ITERATE_VECTOR
-      {
-        m_values[i] = aVector[i] * lInvLength;
-      }
-    }
-  }
+  }  
 
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::NormLength(const Vector<T, T_Size>& aVector)
@@ -250,8 +264,7 @@ namespace tloc
     Vector<T, T_Size> lTemp = *this;
     lTemp.Sub(aVector);
 
-    T length;
-    lTemp.Length(length);
+    T length = lTemp.Length();
     return length;
   }
 
@@ -261,8 +274,7 @@ namespace tloc
     Vector<T, T_Size> lTemp = *this;
     lTemp.Sub(aVector);
 
-    T lengthSq;
-    lTemp.LengthSquared(lengthSq);
+    T lengthSq = lTemp.LengthSquared();
     return lengthSq;
   }
 
@@ -287,17 +299,20 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Midpoint(const Vector<T, T_Size>& aVector)
+  TL_FI Vector<T, T_Size>& Vector<T, T_Size>
+    ::Midpoint(const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
       m_values[i] = (m_values[i] + aVector[i]) * (T)0.5;
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
   TL_FI void Vector<T, T_Size>::Midpoint(const Vector<T, T_Size>& aVector1, 
-    const Vector<T, T_Size>& aVector2)
+                                         const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
     Midpoint(aVector2);

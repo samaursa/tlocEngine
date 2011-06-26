@@ -25,8 +25,10 @@ namespace tloc
     : Table(aValue) {}
 
   template <typename T, u32 T_Size>
-  TL_FI Matrix<T, T_Size>::Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder)
-    : Table(values, aOrder) {}
+  TL_FI Matrix<T, T_Size>::Matrix(const T values[MATRIX_SIZE], 
+                                  MATRIX_ORDER aOrder)
+                                  : Table(values, aOrder) 
+  {}
 
   //------------------------------------------------------------------------
   // Modifiers
@@ -61,12 +63,15 @@ namespace tloc
   // Math operations
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Add(const Matrix<T, T_Size>& aMatrix)
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
+    ::Add(const Matrix<T, T_Size>& aMatrix)
   {
     ITERATE_MATRIX
     {
       m_values[i] += aMatrix[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
@@ -78,12 +83,15 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Sub(const Matrix<T, T_Size>& aMatrix)
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
+    ::Sub(const Matrix<T, T_Size>& aMatrix)
   {
     ITERATE_MATRIX
     {
       m_values[i] -= aMatrix[i];
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
@@ -95,7 +103,8 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Mul(const Matrix<T, T_Size>& aMatrix)
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
+    ::Mul(const Matrix<T, T_Size>& aMatrix)
   {
     for (u32 i = 0; i < T_Size; ++i)
     {
@@ -109,6 +118,8 @@ namespace tloc
         Set(i, j, row.Dot(col));
       }
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
@@ -120,12 +131,14 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Mul(const T& aReal)
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Mul(const T& aReal)
   {
     ITERATE_MATRIX
     {
       m_values[i] *= aReal;
     }
+    
+    return *this;
   }
 
   template <typename T, u32 T_Size>
@@ -141,7 +154,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Div(const T& aReal)
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Div(const T& aReal)
   {
     TLOC_ASSERT_LOW_LEVEL(Math<T>::Approx(aReal, 0.0f) == false, 
       "The matrix is being divided by zero!");
@@ -150,13 +163,17 @@ namespace tloc
     {
       m_values[i] /= aReal;
     }
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Matrix<T, T_Size>::Transpose()
+  TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Transpose()
   {
     Matrix<T, T_Size> temp = *this;
     Set(temp, ROW_MAJOR);
+
+    return *this;
   }
 
   template <typename T, u32 T_Size>

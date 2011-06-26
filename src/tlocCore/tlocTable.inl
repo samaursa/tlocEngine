@@ -95,7 +95,12 @@ namespace tloc
   {
     ASSERT_NUM_COLS;
 
-    memcpy(aColOut, m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
+    u32 offset = aCol * T_Rows;
+
+    for (u32 i = 0; i < T_Rows; ++i)
+    {
+      aColOut[i] = m_values[offset + i];
+    }
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
@@ -127,7 +132,10 @@ namespace tloc
   {
     if (aTableOrder == COL_MAJOR)
     {
-      memcpy(m_values, values, sizeof(T) * TABLE_SIZE);
+      ITERATE_TABLE
+      {
+        m_values[i] = values[i];
+      }
     }
     else
     {
@@ -166,7 +174,12 @@ namespace tloc
   { 
     ASSERT_NUM_COLS;
 
-    memcpy(m_values + (aCol * T_Rows), aColIn, sizeof(T) * T_Rows);
+    u32 offset = aCol * T_Rows;
+
+    for (u32 i = 0; i < T_Rows; ++i)
+    {
+      m_values[offset + i] = aColIn[i];
+    }
   }
 
   //------------------------------------------------------------------------
@@ -175,7 +188,11 @@ namespace tloc
   template <typename T, u32 T_Rows, u32 T_Cols>
   TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>::operator = (const Table& aTable)
   {
-    memcpy(m_values, aTable, sizeof(T) * TABLE_SIZE);
+    ITERATE_TABLE
+    {
+      m_values[i] = aTable[i];
+    }
+
     return *this;
   }
 };

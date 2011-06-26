@@ -26,7 +26,7 @@ namespace tloc
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    TL_FI void Cross(const Vector3<T>& aVector);
+    TL_FI Vector3& Cross(const Vector3<T>& aVector);
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors

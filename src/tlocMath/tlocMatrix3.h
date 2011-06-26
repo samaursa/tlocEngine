@@ -44,7 +44,7 @@ namespace tloc
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix3<T>& aMatrix);
+    TL_FI Matrix3& Mul(const Matrix3<T>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
@@ -69,17 +69,26 @@ namespace tloc
     TL_I bool Inverse(const Matrix3<T>& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    TL_I void Adjoint();
+    TL_I Matrix3& Adjoint();
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
     TL_I void Adjoint(const Matrix3<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    TL_FI void Orthonormalize();
+    TL_FI Matrix3& Orthonormalize();
+
+    // Modifies this matrix by storing the orthonormalized version of the
+    // incoming matrix
+    TL_FI void Orthonormalize(const Matrix3<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix. This uses FastInvSqrt() 
     // used in the Quake engine and may result in lost precision
-    TL_FI void FastOrthonormalize();
+    TL_FI Matrix3& FastOrthonormalize();
+
+    // Modifies this matrix by storing the orthonormalized version of the
+    // incoming matrix. Uses FastInvSqrt() used in the Quake engine and 
+    // may result in lost precision
+    TL_FI void FastOrthonormalize(const Matrix3<T>& aMatrix);
 
     // Taken from WildMagic5
     // The matrix must be symmetric.  Factor M = R * D * R^T where
@@ -87,7 +96,7 @@ namespace tloc
     // D = diag(d0,d1) is a diagonal matrix whose diagonal entries are d0
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
-    TL_I void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
+    void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
 
   private:
 
@@ -100,6 +109,10 @@ namespace tloc
     // QL iteration scheme converged.
     bool Tridiagonalize (T aDiagonal[3], T aSubdiagonal[2]);
     bool QLAlgorithm (T aDiagonal[3], T aSubdiagonal[2]);
+
+    // Euler angles helper. This function should not be used directly
+    // as the order of rotation is ambiguous
+    TL_FI void MakeEuler(T aAngle1, T aAngle2, T aAngle3);
   };
 
   typedef Matrix3<f32>  Mat3f;

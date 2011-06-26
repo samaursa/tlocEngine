@@ -103,7 +103,11 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator = (const Tuple<T, T_Size>& aTuple)
   {
-    memcpy(m_values, aTuple, sizeof(T) * T_Size);
+    ITERATE_TUPLE
+    {
+      m_values[i] = aTuple[i];
+    }
+
     return *this;
   }
 

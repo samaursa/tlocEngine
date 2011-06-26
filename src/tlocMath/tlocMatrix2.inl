@@ -63,10 +63,12 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   // Math Operations
 
   template <typename T>
-  TL_FI void Matrix2<T>::Mul(const Matrix2<T>& aMatrix)
+  TL_FI Matrix2<T>& Matrix2<T>::Mul(const Matrix2<T>& aMatrix)
   {
     Matrix2<T> temp(*this);
     Mul(temp, aMatrix);
+
+    return *this;
   }
 
   template <typename T>
@@ -116,10 +118,12 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI void Matrix2<T>::Adjoint()
+  TL_FI Matrix2<T>& Matrix2<T>::Adjoint()
   {
     Matrix2<T> temp = *this;
     Adjoint(temp);
+
+    return *this;
   }
 
   template <typename T>
@@ -133,7 +137,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
 
   // Taken directly from WildMagic5 (modified to suit out needs)
   template <typename T>
-  TL_FI void Matrix2<T>::Orthonormalize()
+  TL_FI Matrix2<T>& Matrix2<T>::Orthonormalize()
   {
     T invLength = Math<T>::InvSqrt(m_values[0] * m_values[0] +
       m_values[1] * m_values[1]);
@@ -150,13 +154,22 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
 
     m_values[2] *= invLength;
     m_values[3] *= invLength;
+
+    return *this;
   }
 
   template <typename T>
-  TL_FI void Matrix2<T>::FastOrthonormalize()
+  TL_FI void tloc::Matrix2<T>::Orthonormalize( const Matrix2<T>& aMatrix )
+  {
+    *this = aMatrix;
+    Orthonormalize();
+  }
+
+  template <typename T>
+  TL_FI Matrix2<T>& Matrix2<T>::FastOrthonormalize()
   {
     T invLength = Math<T>::FastInvSqrt(m_values[0] * m_values[0] +
-      m_values[2] * m_values[2]);
+                                       m_values[2] * m_values[2]);
     m_values[0] *= invLength;
     m_values[2] *= invLength;
 
@@ -166,10 +179,19 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
     m_values[3] -= dot0 * m_values[2];
 
     invLength = Math<T>::FastInvSqrt(m_values[1] * m_values[1] + 
-      m_values[3] * m_values[3]);
+                                     m_values[3] * m_values[3]);
 
     m_values[1] *= invLength;
     m_values[3] *= invLength;
+
+    return *this;
+  }
+
+  template <typename T>
+  TL_FI void tloc::Matrix2<T>::FastOrthonormalize( const Matrix2<T>& aMatrix )
+  {
+    *this = aMatrix;
+    FastOrthonormalize();
   }
 
   template <typename T>

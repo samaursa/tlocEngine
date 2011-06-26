@@ -73,7 +73,6 @@ namespace tloc
   template <typename T>
   tloc::Math<T>::~Math()
   {
-
   }
 
   template <typename T>

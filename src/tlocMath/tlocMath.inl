@@ -46,6 +46,18 @@ namespace tloc
   }
 
   template <typename T>
+  TL_FI T tloc::Math<T>::Sin( const T& aValInRad )
+  {
+    return sin(aValInRad);
+  }
+
+  template <typename T>
+  TL_FI T tloc::Math<T>::Cos( const T& aValInRad )
+  {
+    return cos(aValInRad);
+  }
+
+  template <typename T>
   TL_FI bool Math<T>::IsNaN(const T& aValue)
   { 
     return aValue != aValue; 

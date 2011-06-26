@@ -148,8 +148,6 @@ namespace tloc
   {
     operator=(aVector1);
     Div(aVector2);
-
-    return *this;
   }
 
   template <typename T, u32 T_Size>
@@ -243,7 +241,7 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::NormLength(const Vector<T, T_Size>& aVector)
   {
-    T lLength; aVector.Length(lLength);
+    T lLength = aVector.Length();
 
     if (lLength > 1e-08)
     {

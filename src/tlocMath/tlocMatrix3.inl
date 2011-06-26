@@ -7,16 +7,16 @@ namespace tloc
   // Constructors
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3() 
+  TL_FI Matrix3<T>::Matrix3()
     : Matrix() {}
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const Matrix3<T>& aMatrix) 
+  TL_FI Matrix3<T>::Matrix3(const Matrix3<T>& aMatrix)
     : Matrix(aMatrix) {}
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(T m00, T m01, T m02, 
-                            T m10, T m11, T m12, 
+  TL_FI Matrix3<T>::Matrix3(T m00, T m01, T m02,
+                            T m10, T m11, T m12,
                             T m20, T m21, T m22)
   {
     m_values[0] = m00; m_values[3] = m01; m_values[6] = m02;
@@ -32,13 +32,13 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T& aValue) 
+  TL_FI Matrix3<T>::Matrix3(const T& aValue)
     : Matrix(aValue) {}
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const Vector<T, 3>& aVec1, 
-                            const Vector<T, 3>& aVec2, 
-                            const Vector<T, 3>& aVec3, 
+  TL_FI Matrix3<T>::Matrix3(const Vector<T, 3>& aVec1,
+                            const Vector<T, 3>& aVec2,
+                            const Vector<T, 3>& aVec3,
                             TABLE_ORDER aOrder)
   {
     if (aOrder == COL_MAJOR)
@@ -72,61 +72,61 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix1, 
+  TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix1,
                              const Matrix3<T>& aMatrix2)
   {
-    m_values[0] = aMatrix1[0] * aMatrix2[0] + 
-                  aMatrix1[3] * aMatrix2[1] + 
+    m_values[0] = aMatrix1[0] * aMatrix2[0] +
+                  aMatrix1[3] * aMatrix2[1] +
                   aMatrix1[6] * aMatrix2[2];
-    m_values[1] = aMatrix1[1] * aMatrix2[0] + 
-                  aMatrix1[4] * aMatrix2[1] + 
+    m_values[1] = aMatrix1[1] * aMatrix2[0] +
+                  aMatrix1[4] * aMatrix2[1] +
                   aMatrix1[7] * aMatrix2[2];
-    m_values[2] = aMatrix1[2] * aMatrix2[0] + 
+    m_values[2] = aMatrix1[2] * aMatrix2[0] +
                   aMatrix1[5] * aMatrix2[1] +
                   aMatrix1[8] * aMatrix2[2];
-    m_values[3] = aMatrix1[0] * aMatrix2[3] + 
+    m_values[3] = aMatrix1[0] * aMatrix2[3] +
                   aMatrix1[3] * aMatrix2[4] +
                   aMatrix1[6] * aMatrix2[5];
-    m_values[4] = aMatrix1[1] * aMatrix2[3] + 
+    m_values[4] = aMatrix1[1] * aMatrix2[3] +
                   aMatrix1[4] * aMatrix2[4] +
                   aMatrix1[7] * aMatrix2[5];
-    m_values[5] = aMatrix1[2] * aMatrix2[3] + 
+    m_values[5] = aMatrix1[2] * aMatrix2[3] +
                   aMatrix1[5] * aMatrix2[4] +
                   aMatrix1[8] * aMatrix2[5];
-    m_values[6] = aMatrix1[0] * aMatrix2[6] + 
+    m_values[6] = aMatrix1[0] * aMatrix2[6] +
                   aMatrix1[3] * aMatrix2[7] +
                   aMatrix1[6] * aMatrix2[8];
-    m_values[7] = aMatrix1[1] * aMatrix2[6] + 
+    m_values[7] = aMatrix1[1] * aMatrix2[6] +
                   aMatrix1[4] * aMatrix2[7] +
                   aMatrix1[7] * aMatrix2[8];
-    m_values[8] = aMatrix1[2] * aMatrix2[6] + 
+    m_values[8] = aMatrix1[2] * aMatrix2[6] +
                   aMatrix1[5] * aMatrix2[7] +
                   aMatrix1[8] * aMatrix2[8];
   }
 
   template <typename T>
-  TL_FI void Matrix3<T>::Mul(const Vector<T, 3>& aVectorIn, 
+  TL_FI void Matrix3<T>::Mul(const Vector<T, 3>& aVectorIn,
     Vector<T, 3>& aVectorOut)
   {
     aVectorOut[0] = m_values[0] * aVectorIn[0] +
-                    m_values[3] * aVectorIn[1] + 
+                    m_values[3] * aVectorIn[1] +
                     m_values[6] * aVectorIn[2];
-    aVectorOut[1] = m_values[1] * aVectorIn[0] + 
-                    m_values[4] * aVectorIn[1] + 
+    aVectorOut[1] = m_values[1] * aVectorIn[0] +
+                    m_values[4] * aVectorIn[1] +
                     m_values[7] * aVectorIn[2];
-    aVectorOut[2] = m_values[2] * aVectorIn[0] + 
-                    m_values[5] * aVectorIn[1] + 
+    aVectorOut[2] = m_values[2] * aVectorIn[0] +
+                    m_values[5] * aVectorIn[1] +
                     m_values[8] * aVectorIn[2];
   }
 
   template <typename T>
   TL_I T Matrix3<T>::Determinant() const
   {
-    T m11_12_21_22 = (m_values[4] * m_values[8] - m_values[7] * m_values[5]) 
+    T m11_12_21_22 = (m_values[4] * m_values[8] - m_values[7] * m_values[5])
                       * m_values[0];
-    T m10_12_20_22 = (m_values[1] * m_values[8] - m_values[7] * m_values[2]) 
+    T m10_12_20_22 = (m_values[1] * m_values[8] - m_values[7] * m_values[2])
                       * m_values[3];
-    T m10_11_20_21 = (m_values[1] * m_values[5] - m_values[4] * m_values[2]) 
+    T m10_11_20_21 = (m_values[1] * m_values[5] - m_values[4] * m_values[2])
                       * m_values[6];
 
     return m11_12_21_22 - m10_12_20_22 + m10_11_20_21;
@@ -165,7 +165,7 @@ namespace tloc
   template <typename T>
   TL_I void Matrix3<T>::Adjoint(const Matrix3<T>& aMatrix)
   {
-    // Matrix adjoint which is the matrix of minors turned into matrix of 
+    // Matrix adjoint which is the matrix of minors turned into matrix of
     // co-factors which is then transposed
     m_values[0] = aMatrix[4] * aMatrix[8] - aMatrix[7] * aMatrix[5]; // +
     m_values[3] = aMatrix[6] * aMatrix[5] - aMatrix[3] * aMatrix[8]; // -
@@ -196,7 +196,7 @@ namespace tloc
 
     // Compute q0.
     T invLength = Math<T>::InvSqrt(m_values[0] * m_values[0] +
-                                   m_values[1] * m_values[1] + 
+                                   m_values[1] * m_values[1] +
                                    m_values[2] * m_values[2]);
 
     m_values[0] *= invLength;
@@ -204,7 +204,7 @@ namespace tloc
     m_values[2] *= invLength;
 
     // Compute q1.
-    T dot0 = m_values[0] * m_values[3] + 
+    T dot0 = m_values[0] * m_values[3] +
              m_values[1] * m_values[4] +
              m_values[2] * m_values[5];
 
@@ -213,7 +213,7 @@ namespace tloc
     m_values[5] -= dot0 * m_values[2];
 
     invLength = Math<T>::InvSqrt(m_values[3] * m_values[3] +
-                                 m_values[4] * m_values[4] + 
+                                 m_values[4] * m_values[4] +
                                  m_values[5] * m_values[5]);
 
     m_values[3] *= invLength;
@@ -221,11 +221,11 @@ namespace tloc
     m_values[5] *= invLength;
 
     // compute q2
-    T dot1 = m_values[3] * m_values[6] + 
+    T dot1 = m_values[3] * m_values[6] +
              m_values[4] * m_values[7] +
              m_values[5] * m_values[8];
 
-    dot0 = m_values[0] * m_values[6] + 
+    dot0 = m_values[0] * m_values[6] +
            m_values[1] * m_values[7] +
            m_values[2] * m_values[8];
 
@@ -234,7 +234,7 @@ namespace tloc
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
     invLength = Math<T>::InvSqrt(m_values[6] * m_values[6] +
-                                 m_values[7] * m_values[7] + 
+                                 m_values[7] * m_values[7] +
                                  m_values[8] * m_values[8]);
 
     m_values[6] *= invLength;
@@ -268,7 +268,7 @@ namespace tloc
 
     // Compute q0.
     T invLength = Math<T>::FastInvSqrt(m_values[0] * m_values[0] +
-                                       m_values[1] * m_values[1] + 
+                                       m_values[1] * m_values[1] +
                                        m_values[2] * m_values[2]);
 
     m_values[0] *= invLength;
@@ -276,7 +276,7 @@ namespace tloc
     m_values[2] *= invLength;
 
     // Compute q1.
-    T dot0 = m_values[0] * m_values[3] + 
+    T dot0 = m_values[0] * m_values[3] +
              m_values[1] * m_values[4] +
              m_values[2] * m_values[5];
 
@@ -285,7 +285,7 @@ namespace tloc
     m_values[5] -= dot0 * m_values[2];
 
     invLength = Math<T>::FastInvSqrt(m_values[3] * m_values[3] +
-                                     m_values[4] * m_values[4] + 
+                                     m_values[4] * m_values[4] +
                                      m_values[5] * m_values[5]);
 
     m_values[3] *= invLength;
@@ -293,11 +293,11 @@ namespace tloc
     m_values[5] *= invLength;
 
     // compute q2
-    T dot1 = m_values[3] * m_values[6] + 
+    T dot1 = m_values[3] * m_values[6] +
              m_values[4] * m_values[7] +
              m_values[5] * m_values[8];
 
-    dot0 = m_values[0] * m_values[6] + 
+    dot0 = m_values[0] * m_values[6] +
            m_values[1] * m_values[7] +
            m_values[2] * m_values[8];
 
@@ -306,7 +306,7 @@ namespace tloc
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
     invLength = Math<T>::FastInvSqrt(m_values[6] * m_values[6] +
-                                     m_values[7] * m_values[7] + 
+                                     m_values[7] * m_values[7] +
                                      m_values[8] * m_values[8]);
 
     m_values[6] *= invLength;
@@ -404,6 +404,199 @@ namespace tloc
     }
   }
 
+  template <typename T>
+  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationX( const T& aXAngle )
+  {
+    T cosine, sine;
+
+    cosine = Math<T>::Cos(aXAngle);
+    sine = Math<T>::Sin(aXAngle);
+
+    T values[9] = { (T)1,   (T)0,  (T)0,
+                    (T)0, cosine, -sine,
+                    (T)0,   sine, cosine };
+
+    Set(values, ROW_MAJOR);
+    return *this;
+  }
+
+  template <typename T>
+  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationY( const T& aYAngle )
+  {
+    T cosine, sine;
+
+    cosine = Math<T>::Cos(aYAngle);
+    sine = Math<T>::Sin(aYAngle);
+
+    T values[9] = {cosine, (T)0,  sine,
+                     (T)0, (T)1,  (T)0,
+                    -sine, (T)0, cosine};
+
+    Set(values, ROW_MAJOR);
+    return *this;
+  }
+
+  template <typename T>
+  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationZ( const T& aZAngle )
+  {
+    T cosine, sine;
+
+    cosine = Math<T>::Cos(aZAngle);
+    sine = Math<T>::Sin(aZAngle);
+
+    T values[9] = {cosine,  -sine, (T)0,
+                     sine, cosine, (T)0,
+                     (T)0,   (T)0, (T)1 };
+
+    Set(values, ROW_MAJOR);
+    return *this;
+
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerXYZ( T aXAngle, T aYAngle, T aZAngle )
+  {
+    Matrix3<T> matY, matZ;
+
+    MakeRotationX(aXAngle);
+    matY.MakeRotationY(aYAngle);
+    matZ.MakeRotationZ(aZAngle);
+
+    Mul(matY.Mul(matZ));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerXZY( T aXAngle, T aZAngle, T aYAngle )
+  {
+    Matrix3<T> matY, matZ;
+
+    MakeRotationX(aXAngle);
+    matY.MakeRotationY(aYAngle);
+    matZ.MakeRotationZ(aZAngle);
+
+    Mul(matZ.Mul(matY));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerYXZ( T aYAngle, T aXAngle, T aZAngle )
+  {
+    Matrix3<T> matX, matZ;
+
+    MakeRotationY(aYAngle);
+    matX.MakeRotationX(aXAngle);
+    matZ.MakeRotationZ(aZAngle);
+
+    Mul(matX.Mul(matZ));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerYZX( T aYAngle, T aZAngle, T aXAngle )
+  {
+    Matrix3<T> matX, matZ;
+
+    MakeRotationY(aYAngle);
+    matX.MakeRotationX(aXAngle);
+    matZ.MakeRotationZ(aZAngle);
+
+    Mul(matZ.Mul(matX));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerZXY( T aZAngle, T aXAngle, T aYAngle )
+  {
+    Matrix3<T> matX, matY;
+
+    MakeRotationZ(aZAngle);
+    matX.MakeRotationX(aXAngle);
+    matY.MakeRotationY(aYAngle);
+
+    Mul(matX.Mul(matY));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerZYX( T aZAngle, T aYAngle, T aXAngle )
+  {
+    Matrix3<T> matX, matY;
+
+    MakeRotationZ(aZAngle);
+    matX.MakeRotationX(aXAngle);
+    matY.MakeRotationY(aYAngle);
+
+    Mul(matY.Mul(matX));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerXYX( T aXAngle0, T aYAngle, T aXAngle1 )
+  {
+    Matrix3<T> matX, matY;
+
+    MakeRotationX(aXAngle0);
+    matX.MakeRotationX(aXAngle1);
+    matY.MakeRotationY(aYAngle);
+
+    Mul(matY.Mul(matX));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerXZX( T aXAngle0, T aZAngle, T aXAngle1 )
+  {
+    Matrix3<T> matX, matZ;
+
+    MakeRotationX(aXAngle0);
+    matX.MakeRotationX(aXAngle1);
+    matZ.MakeRotationZ(aZAngle);
+
+    Mul(matZ.Mul(matX));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerYXY( T aYAngle0, T aXAngle, T aYAngle1 )
+  {
+    Matrix3<T> matX, matY;
+
+    MakeRotationY(aYAngle0);
+    matX.MakeRotationX(aXAngle);
+    matY.MakeRotationY(aYAngle1);
+
+    Mul(matX.Mul(matY));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerYZY( T aYAngle0, T aZAngle, T aYAngle1 )
+  {
+    Matrix3<T> matY, matZ;
+
+    MakeRotationY(aYAngle0);
+    matZ.MakeRotationZ(aZAngle);
+    matY.MakeRotationY(aYAngle1);
+
+    Mul(matZ.Mul(matY));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerZXZ( T aZAngle0, T aXAngle, T aZAngle1 )
+  {
+    Matrix3<T> matZ, matX;
+
+    MakeRotationZ(aZAngle0);
+    matX.MakeRotationX(aXAngle);
+    matZ.MakeRotationZ(aZAngle1);
+
+    Mul(matX.Mul(matZ));
+  }
+
+  template <typename T>
+  void tloc::Matrix3<T>::MakeEulerZYZ( T aZAngle0, T aYAngle, T aZAngle1 )
+  {
+    Matrix3<T> matZ, matY;
+
+    MakeRotationZ(aZAngle0);
+    matY.MakeRotationY(aYAngle);
+    matZ.MakeRotationZ(aZAngle1);
+
+    Mul(matY.Mul(matZ));
+  }
+
   //------------------------------------------------------------------------
   // Helper functions
 
@@ -411,9 +604,9 @@ namespace tloc
   bool tloc::Matrix3<T>::Tridiagonalize( T aDiagonal[3], T aSubdiagonal[2] )
   {
     // Householder reduction T = Q^t M Q
-    //   Input:   
+    //   Input:
     //     mat, symmetric 3x3 matrix M
-    //   Output:  
+    //   Output:
     //     mat, orthogonal matrix Q (a reflection)
     //     diag, diagonal entries of T
     //     subd, subdiagonal entries of T (T is symmetric)
@@ -694,32 +887,6 @@ namespace tloc
       aDiagonal[0] -= tmp0;
     }
     return false;
-  }
-
-  template <typename T>
-  TL_FI void tloc::Matrix3<T>::MakeEuler( T aAngle1, T aAngle2, T aAngle3 )
-  {
-    T cs, sn;
-
-    cs = Math<T>::Cos(aAngle1);
-    sn = Math<T>::Sin(aAngle1);
-    Matrix3 matrix1( (T)1,(T)0,(T)0,
-                     (T)0,  cs, -sn,
-                     (T)0,  sn,  cs);
-
-    cs = Math<T>::Cos(aAngle2);
-    sn = Math<T>::Sin(aAngle2);
-    Matrix3 matrix2( cs,(T)0,  sn,
-                   (T)0,(T)1,(T)0,
-                    -sn,(T)0,  cs);
-
-    cs = Math<T>::Cos(aAngle3);
-    sn = Math<T>::Sin(aAngle3);
-    Matrix3 matrix3( cs, -sn, (T)0,
-                     sn,  cs, (T)0,
-                   (T)0,(T)0, (T)1);
-
-    *this = matrix1.Mul(matrix2.Mul(matrix3));
   }
 
 };

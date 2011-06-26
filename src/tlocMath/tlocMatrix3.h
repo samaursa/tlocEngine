@@ -19,8 +19,8 @@ namespace tloc
     TL_FI Matrix3();
 
     // Generate a matrix by inputs in row-major order
-    TL_FI Matrix3(T m00, T m01, T m02, 
-                  T m10, T m11, T m12, 
+    TL_FI Matrix3(T m00, T m01, T m02,
+                  T m10, T m11, T m12,
                   T m20, T m21, T m22);
 
     // Generate a diagonal matrix
@@ -44,7 +44,7 @@ namespace tloc
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI Matrix3& Mul(const Matrix3<T>& aMatrix);
+    TL_FI Matrix3<T>& Mul(const Matrix3<T>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
@@ -52,7 +52,7 @@ namespace tloc
                    const Matrix3<T>& aMatrix2);
 
     // Multiplies the incoming inVector with this matrix and stores it in
-    // the outVector. Since we are assuming column major matrices, the 
+    // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
     TL_FI void Mul(const Vector<T, 3>& aVectorIn,
                    Vector<T, 3>& aVectorOut);
@@ -69,24 +69,24 @@ namespace tloc
     TL_I bool Inverse(const Matrix3<T>& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    TL_I Matrix3& Adjoint();
+    TL_I Matrix3<T>& Adjoint();
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
     TL_I void Adjoint(const Matrix3<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    TL_FI Matrix3& Orthonormalize();
+    TL_I Matrix3<T>& Orthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix
-    TL_FI void Orthonormalize(const Matrix3<T>& aMatrix);
+    TL_I void Orthonormalize(const Matrix3<T>& aMatrix);
 
-    // Normalizes the column vectors of the matrix. This uses FastInvSqrt() 
+    // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
     // used in the Quake engine and may result in lost precision
-    TL_FI Matrix3& FastOrthonormalize();
+    TL_FI Matrix3<T>& FastOrthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
-    // incoming matrix. Uses FastInvSqrt() used in the Quake engine and 
+    // incoming matrix. Uses FastInvSqrt() used in the Quake engine and
     // may result in lost precision
     TL_FI void FastOrthonormalize(const Matrix3<T>& aMatrix);
 
@@ -97,6 +97,37 @@ namespace tloc
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
     void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
+
+    // Modifies thia matrix to be a rotation matrix about the x-axis
+    TL_I Matrix3<T>& MakeRotationX(const T& aXAngle);
+
+    // Modifies thia matrix to be a rotation matrix about the y-axis
+    TL_I Matrix3<T>& MakeRotationY(const T& aYAngle);
+
+    // Modifies thia matrix to be a rotation matrix about the z-axis
+    TL_I Matrix3<T>& MakeRotationZ(const T& aZAngle);
+
+    // Modifies this vector by creating a rotation matrix from the incoming
+    // angles by the order specified by the function. E.g. MakeEulerXYZ will
+    // create a matrix that is:
+    //
+    // MatX * (MatY * MatZ)
+    //
+    // and if multiplied by a vector later, the breakdown will be:
+    //
+    // MatX * (MayY * (MatZ * V))
+    TL_I void MakeEulerXYZ (T aXAngle, T aYAngle, T aZAngle);
+    TL_I void MakeEulerXZY (T aXAngle, T aZAngle, T aYAngle);
+    TL_I void MakeEulerYXZ (T aYAngle, T aXAngle, T aZAngle);
+    TL_I void MakeEulerYZX (T aYAngle, T aZAngle, T aXAngle);
+    TL_I void MakeEulerZXY (T aZAngle, T aXAngle, T aYAngle);
+    TL_I void MakeEulerZYX (T aZAngle, T aYAngle, T aXAngle);
+    TL_I void MakeEulerXYX (T aXAngle0, T aYAngle, T aXAngle1);
+    TL_I void MakeEulerXZX (T aXAngle0, T aZAngle, T aXAngle1);
+    TL_I void MakeEulerYXY (T aYAngle0, T aXAngle, T aYAngle1);
+    TL_I void MakeEulerYZY (T aYAngle0, T aZAngle, T aYAngle1);
+    TL_I void MakeEulerZXZ (T aZAngle0, T aXAngle, T aZAngle1);
+    TL_I void MakeEulerZYZ (T aZAngle0, T aYAngle, T aZAngle1);
 
   private:
 
@@ -109,10 +140,6 @@ namespace tloc
     // QL iteration scheme converged.
     bool Tridiagonalize (T aDiagonal[3], T aSubdiagonal[2]);
     bool QLAlgorithm (T aDiagonal[3], T aSubdiagonal[2]);
-
-    // Euler angles helper. This function should not be used directly
-    // as the order of rotation is ambiguous
-    TL_FI void MakeEuler(T aAngle1, T aAngle2, T aAngle3);
   };
 
   typedef Matrix3<f32>  Mat3f;

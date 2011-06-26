@@ -4,14 +4,14 @@ namespace TestingMatrix3
 {
   struct Matrix3Fixture
   {
-    Matrix3Fixture() 
+    Matrix3Fixture()
     {
     }
 
     tloc::Mat3f a, b, c, d, e;
   };
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
   {
     a.Zero();
@@ -63,7 +63,7 @@ namespace TestingMatrix3
     CHECK_VEC3F(vec2, 14, 32, 50);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Det", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Det",
     "Test determinant")
   {
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -76,7 +76,7 @@ namespace TestingMatrix3
     CHECK(a.Determinant() == Approx(48));
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Inv", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Inv",
     "Test inverse")
   {
     f32 values[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
@@ -88,12 +88,12 @@ namespace TestingMatrix3
     f32 values2[9] = {89, 58, 23, 97, 78, 72, 54, 32, 90};
     a.Set(values2, Mat3f::ROW_MAJOR);
     a.Inverse();
-    CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f, 
-                     -0.03954f,   0.059680,  0.002504f, 
+    CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f,
+                     -0.03954f,   0.059680,  0.002504f,
                       0.021004f, -0.03683f,  0.011604f);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Adj", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Adj",
     "Test adjoint")
   {
     f32 values[9] = {2, 0, 1, 3, 2, -1, 1, 0, 0};
@@ -106,7 +106,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a, 0, -1, -2, 0, -1, 0, -2, 5, 4);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/OrthoNorm", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/OrthoNorm",
     "Test orthonormalize")
   {
     f32 values[9] = {1, 4, 7, 4, 5, 8, 9, 15, 5};
@@ -119,7 +119,7 @@ namespace TestingMatrix3
     Vec3f col1, col2, col3;
     a.GetCol(0, col1);
     a.GetCol(1, col2);
-    a.GetCol(2, col3);    
+    a.GetCol(2, col3);
     CHECK(col1.Length() == Approx(1));
     CHECK(col2.Length() == Approx(1));
     CHECK(col3.Length() == Approx(1));
@@ -139,8 +139,176 @@ namespace TestingMatrix3
     CHECK( (Mathf::Approx(a[8], -0.39f, prec)) == true );
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/EigenDecomp", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/EigenDecomp",
     "Test eigen decomposition")
   {
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeRotation",
+    "Test methods that create rotation matrices")
+  {
+    a.MakeRotationX(90 * Mathf::DEG_TO_RAD);
+    CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, 1, 0, -1, 0);
+
+    a.MakeRotationY(90 * Mathf::DEG_TO_RAD);
+    CHECK_MATRIX3F(a, 0, 0, -1, 0, 1, 0, 1, 0, 0);
+
+    a.MakeRotationZ(90 * Mathf::DEG_TO_RAD);
+    CHECK_MATRIX3F(a, 0, 1, 0, -1, 0, 0, 0, 0, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakerEulerXYZ",
+    "Test MakerEulerXYZ() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerXYZ(angle90, 0, 0);
+    CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, 1, 0, -1, 0);
+
+    a.MakeEulerXYZ(0, angle90, 0);
+    CHECK_MATRIX3F(a, 0, 0, -1, 0, 1, 0, 1, 0, 0);
+
+    a.MakeEulerXYZ(0, 0, angle90);
+    CHECK_MATRIX3F(a, 0, 1, 0, -1, 0, 0, 0, 0, 1);
+
+    a.MakeEulerXYZ(angle90, angle90, angle90);
+    CHECK_MATRIX3F(a, 0, 0, 1, 0, -1, 0, 1, 0, 0);
+
+    a.MakeEulerXYZ(angle45, angle90, angle45);
+    CHECK_MATRIX3F(a, 0, 1, 0, 0, 0, 1, 1, 0, 0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXZY",
+    "Test MakeEulerXZY() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerXZY(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a, 0, -1, 0, 1, 0, 0, 0, 0, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYXZ",
+    "Test MakeEulerYXZ() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerYXZ(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, -1, 0, 1, 0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYZX",
+    "Test MakeEulerYZX() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerYZX(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a, 0, 0, 1, 1, 0, 0, 0, 1, 0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZXY",
+    "Test MakeEulerZXY() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerZXY(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a, 0, 0, 1, 1, 0, 0, 0, 1, 0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZYX",
+    "Test MakeEulerZYX() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerZYX(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a, 0, 0, 1, 0, 1, 0, -1, 0, 0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXYX",
+    "Test MakeEulerXYX() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerXYX(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,            0, 0.70710677f, 0.70710677f,
+                       0.70710677f,        0.5f,       -0.5f,
+                      -0.70710677f,        0.5f,       -0.5f);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXZX",
+    "Test MakeEulerXZX() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerXZX(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,           0, -0.70710677f, 0.70710677f,
+                      0.70710677f,        -0.5f,       -0.5f,
+                      0.70710677f,         0.5f,        0.5f);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYXY",
+    "Test MakeEulerYXY() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerYXY(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,        0.5f, 0.70710677f,         0.5f,
+                      0.70710677f,           0, -0.70710677f,
+                            -0.5f, 0.70710677f,        -0.5f);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYZY",
+    "Test MakeEulerYZY() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerYZY(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,       -0.5f, -0.70710677f,        0.5f,
+                      0.70710677f,            0, 0.70710677f,
+                            -0.5f,  0.70710677f,        0.5f);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZXZ",
+    "Test MakeEulerZXZ() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerZXZ(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,        0.5f,       -0.5f,  0.70710677f,
+                             0.5f,       -0.5f, -0.70710677f,
+                      0.70710677f, 0.70710677f,            0);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZYZ",
+    "Test MakeEulerZYZ() method")
+  {
+    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
+    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+
+    a.MakeEulerZYZ(angle45, angle90, angle45);
+    a.Transpose();
+    CHECK_MATRIX3F(a,        -0.5f,       -0.5f, 0.70710677f,
+                              0.5f,        0.5f, 0.70710677f,
+                      -0.70710677f, 0.70710677f,           0);
   }
 };

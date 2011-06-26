@@ -10,7 +10,7 @@ namespace TestingTuple
   {
     Tuple<s32, 4> p(0);
     CHECK_TUP(p, 0, 0, 0, 0);
-    
+
     p[0] = 0; p[1] = 1; p[2] = 2; p[3] = 3;
     CHECK_TUP(p, 0, 1, 2, 3);
 
@@ -33,6 +33,18 @@ namespace TestingTuple
 
     CHECK_TUP(p, 8, 8, 8, 8);
     CHECK_TUP(q, 5, 5, 5, 5);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/Operators",
+    "Testing the operator functions")
+  {
+    Tuple<s32, 4> p(0), q(1);
+    CHECK( (p == q) == false);
+    CHECK( (p != q) == true);
+
+    p = q;
+    CHECK( (p == q) == true);
+    CHECK( (p != q) == false);
   }
 
 };

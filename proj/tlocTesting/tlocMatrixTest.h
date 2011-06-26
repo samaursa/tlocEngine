@@ -2,7 +2,7 @@ namespace TestingMatrix
 {
   struct Matrix3Fixture
   {
-    Matrix3Fixture() 
+    Matrix3Fixture()
     {
       tloc::Vec3f row1;
       tloc::Vec3f row2;
@@ -39,7 +39,7 @@ namespace TestingMatrix
   CHECK((mat[6]) == (Approx(x3)) ); CHECK((mat[7]) == (Approx(y3)) ); \
   CHECK((mat[8]) == (Approx(z3)) );
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General",
     "Test general/basic functionality")
   {
     tloc::Matrix<f32, 3> e(1);
@@ -61,7 +61,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Modifiers", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Modifiers",
     "Test modifiers")
   {
     c.Zero();
@@ -71,7 +71,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 2, 0, 0, 0, 3);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Add", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Add",
     "Test addition")
   {
     c = a;
@@ -82,12 +82,12 @@ namespace TestingMatrix
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub",
     "Test subtraction")
   {
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Mul", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Mul",
     "Test multipliciation")
   {
     //------------------------------------------------------------------------
@@ -123,7 +123,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div",
     "Test division")
   {
     d.Set(11);
@@ -132,7 +132,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div",
     "Test transpose")
   {
     c.Set(0);
@@ -149,7 +149,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 1, 0, 1, 0, 1, 0, 0, 0, 1);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors", 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors",
     "Test accessors")
   {
     f32 diagArray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
@@ -166,5 +166,19 @@ namespace TestingMatrix
 
     c.GetDiagonal(diagVec);
     CHECK_VEC3F(diagVec, 3, 4, 5);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Operators",
+    "Test operator functions")
+  {
+    CHECK( (a == b) == false);
+    CHECK( (a == b) != true);
+
+    a = b;
+    CHECK( (a == b) == true);
+    CHECK( (a == b) != false);
+
+    a[0] += 0.0000001f;
+    CHECK( (a == b) == true);
   }
 };

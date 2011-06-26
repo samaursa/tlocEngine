@@ -69,7 +69,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Add(const Vector<T, T_Size>& aVector1, 
+  TL_FI void Vector<T, T_Size>::Add(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
     ITERATE_VECTOR
@@ -91,7 +91,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Sub(const Vector<T, T_Size>& aVector1, 
+  TL_FI void Vector<T, T_Size>::Sub(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
@@ -111,7 +111,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Mul(const Vector<T, T_Size>& aVector1, 
+  TL_FI void Vector<T, T_Size>::Mul(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
@@ -143,7 +143,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Div(const Vector<T, T_Size>& aVector1, 
+  TL_FI void Vector<T, T_Size>::Div(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
@@ -236,7 +236,7 @@ namespace tloc
     }
 
     return lLength;
-  }  
+  }
 
   template <typename T, u32 T_Size>
   TL_FI T Vector<T, T_Size>::NormLength(const Vector<T, T_Size>& aVector)
@@ -309,7 +309,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI void Vector<T, T_Size>::Midpoint(const Vector<T, T_Size>& aVector1, 
+  TL_FI void Vector<T, T_Size>::Midpoint(const Vector<T, T_Size>& aVector1,
                                          const Vector<T, T_Size>& aVector2)
   {
     operator=(aVector1);
@@ -320,7 +320,7 @@ namespace tloc
   // Comparisons
 
   template <typename T, u32 T_Size>
-  TL_FI bool Vector<T, T_Size>::operator==(const Vector<T, T_Size>& aVector)
+  TL_FI bool Vector<T, T_Size>::operator == (const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
     {
@@ -331,7 +331,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool Vector<T, T_Size>::operator!=(const Vector<T, T_Size>& aVector)
+  TL_FI bool Vector<T, T_Size>::operator != (const Vector<T, T_Size>& aVector)
   {
     return !operator==(aVector);
   }
@@ -344,7 +344,7 @@ namespace tloc
   {
     ITERATE_VECTOR
     {
-      if (Math<T>::IsNaN(m_values[i])) return false;
+      if (Math<T>::IsNaN(m_values[i])) { return false; }
     }
 
     return true;
@@ -355,7 +355,7 @@ namespace tloc
   {
     ITERATE_VECTOR
     {
-      if (!Math<T>::Approx(m_values[i], 0)) return false;
+      if (!Math<T>::Approx(m_values[i], 0)) { return false; }
     }
 
     return true;

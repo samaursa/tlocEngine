@@ -111,4 +111,21 @@ namespace tloc
     return *this;
   }
 
+  template <typename T, u32 T_Size>
+  TL_FI bool tloc::Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
+  {
+    ITERATE_TUPLE
+    {
+      if (m_values[i] != aTuple[i]) { return false; }
+    }
+
+    return true;
+  }
+
+  template <typename T, u32 T_Size>
+  TL_FI bool tloc::Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
+  {
+    return !operator==(aTuple);
+  }
+
 };

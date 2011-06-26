@@ -14,23 +14,23 @@ namespace tloc
     // Empty default constructor
     TL_FI Tuple();
     TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
-    
-    TL_FI explicit Tuple(const T& aValue);    
+
+    TL_FI explicit Tuple(const T& aValue);
 
     //------------------------------------------------------------------------
     // Accessors
 
-    // Access range is that of an integer, approx. 2.1 billion elements. 
+    // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
     TL_FI T& operator[] (s32 aIndex);
 
-    // Access range is that of an integer, approx. 2.1 billion elements. 
+    // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
     TL_FI const T& operator[] (s32 aIndex) const;
 
     TL_FI T& Get(u32 aIndex);
     TL_FI const T& Get(u32 aIndex) const;
-    
+
     // Direct array access. Generally not recommended but useful for memcpy
     TL_FI operator T* ();
     TL_FI operator const T* () const;
@@ -48,6 +48,8 @@ namespace tloc
     // Operators
 
     TL_FI Tuple<T, T_Size>& operator= (const Tuple<T, T_Size>& aTuple);
+    TL_FI bool operator == (const Tuple<T, T_Size>& aTuple);
+    TL_FI bool operator != (const Tuple<T, T_Size>& aTuple);
 
   protected:
 

@@ -19,7 +19,7 @@ namespace tloc
     TL_FI Matrix2();
 
     // Generate a matrix by inputs in row-major order
-    TL_FI Matrix2(T m00, T m01, 
+    TL_FI Matrix2(T m00, T m01,
                   T m10, T m11);
 
     // Generate a diagonal matrix
@@ -43,7 +43,7 @@ namespace tloc
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI Matrix2& Mul(const Matrix2<T>& aMatrix);
+    TL_FI Matrix2<T>& Mul(const Matrix2<T>& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
@@ -51,7 +51,7 @@ namespace tloc
                    const Matrix2<T>& aMatrix2);
 
     // Multiplies the incoming inVector with this matrix and stores it in
-    // the outVector. Since we are assuming column major matrices, the 
+    // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
     TL_FI void Mul(const Vector<T, 2>& aVectorIn,
                          Vector<T, 2>& aVectorOut);
@@ -68,21 +68,21 @@ namespace tloc
     TL_I bool Inverse(const Matrix2<T>& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    TL_I Matrix2& Adjoint();
+    TL_I Matrix2<T>& Adjoint();
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
     TL_I void Adjoint(const Matrix2<T>& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    TL_FI Matrix2& Orthonormalize();
+    TL_FI Matrix2<T>& Orthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix
     TL_FI void Orthonormalize(const Matrix2<T>& aMatrix);
 
-    // Normalizes the column vectors of the matrix. This uses FastInvSqrt() 
+    // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
     // used in the Quake engine and may result in lost precision
-    TL_FI Matrix2& FastOrthonormalize();
+    TL_FI Matrix2<T>& FastOrthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix. This uses FastInvSqrt() used in the Quake engine
@@ -96,7 +96,7 @@ namespace tloc
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
     TL_I void EigenDecomposition(Matrix2<T>& aRot, Matrix2<T>& aDiag) const;
-  };  
+  };
 
   typedef Matrix2<f32>  Mat2f;
   typedef Matrix2<f64>  Mat2d;

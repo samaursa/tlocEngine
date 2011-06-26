@@ -29,7 +29,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const T values[TABLE_SIZE], 
+  TL_FI Table<T, T_Rows, T_Cols>::Table(const T values[TABLE_SIZE],
     TABLE_ORDER aTableOrder)
   {
     Set(values, aTableOrder);
@@ -80,7 +80,8 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::GetRow(u32 aRow, Tuple<T, T_Cols>& aRowOut) const
+  TL_FI void Table<T, T_Rows, T_Cols>
+    ::GetRow(u32 aRow, Tuple<T, T_Cols>& aRowOut) const
   {
     ASSERT_NUM_ROWS;
 
@@ -91,7 +92,8 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::GetCol(u32 aCol, Tuple<T, T_Rows>& aColOut) const
+  TL_FI void Table<T, T_Rows, T_Cols>
+    ::GetCol(u32 aCol, Tuple<T, T_Rows>& aColOut) const
   {
     ASSERT_NUM_COLS;
 
@@ -128,7 +130,8 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder)
+  TL_FI void Table<T, T_Rows, T_Cols>
+    ::Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder)
   {
     if (aTableOrder == COL_MAJOR)
     {
@@ -159,7 +162,8 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn)
+  TL_FI void Table<T, T_Rows, T_Cols>
+    ::SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn)
   {
     ASSERT_NUM_ROWS;
 
@@ -170,8 +174,9 @@ namespace tloc
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn)
-  { 
+  TL_FI void Table<T, T_Rows, T_Cols>
+    ::SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn)
+  {
     ASSERT_NUM_COLS;
 
     u32 offset = aCol * T_Rows;
@@ -186,7 +191,8 @@ namespace tloc
   // Operators
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>::operator = (const Table& aTable)
+  TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>
+    ::operator = (const Table<T, T_Rows, T_Cols>& aTable)
   {
     ITERATE_TABLE
     {
@@ -194,5 +200,24 @@ namespace tloc
     }
 
     return *this;
+  }
+
+  template <typename T, u32 T_Rows, u32 T_Cols>
+  TL_FI bool Table<T, T_Rows, T_Cols>
+    ::operator == (const Table<T, T_Rows, T_Cols>& aTable)
+  {
+    ITERATE_TABLE
+    {
+      if (m_values[i] != aTable[i]) { return false; }
+    }
+
+    return true;
+  }
+
+  template <typename T, u32 T_Rows, u32 T_Cols>
+  TL_FI bool Table<T, T_Rows, T_Cols>
+    ::operator != (const Table<T, T_Rows, T_Cols>& aTable)
+  {
+    return !operator==(aTable);
   }
 };

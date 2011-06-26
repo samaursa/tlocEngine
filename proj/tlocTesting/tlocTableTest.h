@@ -115,5 +115,12 @@ namespace TestingTable
     a.Set(rawArray, tloc::Table<s32, 3, 3>::COL_MAJOR);
     CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
   }
+
+  TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Operators",
+    "Test all operator functions")
+  {
+    a = c;
+    CHECK( (a == c) == true);
+    CHECK( (a != c) == false);
+  }
 };
- 

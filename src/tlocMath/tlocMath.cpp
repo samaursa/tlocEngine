@@ -78,5 +78,6 @@ namespace tloc
   template <typename T>
   void tloc::Math<T>::Initialize()
   {
+
   }
 }

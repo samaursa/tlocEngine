@@ -58,19 +58,6 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI bool Math<T>::IsNaN(const T& aValue)
-  {
-    return aValue != aValue;
-  }
-
-  template <typename T>
-  TL_FI bool Math<T>::Approx(const T& aValue1, const T& aValue2, T eps /* = T(1e-6) */)
-  {
-    T toCompare = Abs(aValue1 - aValue2);
-    return (toCompare < eps);
-  }
-
-  template <typename T>
   TL_FI T Math<T>::Degree(const T& aValueInRadian)
   {
     return aValueInRadian  * Math<T>::RAD_TO_DEG;
@@ -94,6 +81,31 @@ namespace tloc
     return ((T)1) / Sqrt(aValue);
   }
 
+  //------------------------------------------------------------------------
+  // Misc Functions
+
+  template <typename T>
+  TL_FI bool Math<T>::IsNaN(const T& aValue)
+  {
+    return aValue != aValue;
+  }
+
+  template <typename T>
+  TL_FI bool Math<T>::Approx(const T& aValue1, const T& aValue2, T eps /* = T(1e-6) */)
+  {
+    T toCompare = Abs(aValue1 - aValue2);
+    return (toCompare < eps);
+  }
+
+  template <typename T>
+  TL_FI bool tloc::Math<T>::IsPowerOfTwo( const u32& aValue )
+  {
+    return (aValue != 0) && ((aValue & (aValue - 1)) == 0);
+  }
+
+  //------------------------------------------------------------------------
+  // Fast specialized functions
+
   template <typename T>
   TL_FI T Math<T>::FastInvSqrt(const T& aValue)
   {
@@ -110,9 +122,25 @@ namespace tloc
   }
 
   template <typename T>
+  TL_FI u32 tloc::Math<T>::FastPowOfTwo( const u32& aPower )
+  {
+    return 0x00000001 << aPower;
+  }
+
+  template <typename T>
+  TL_FI s32 Math<T>::FastSignInt( const T& aRealIn )
+  {
+    if (((s32&)aRealIn & 0x7FFFFFF)==0) return 0;
+    return (signed ((s32&)aRealIn & 0x80000000) >> 31) | 1;
+  }
+
+  //------------------------------------------------------------------------
+  // Simple Interpolations
+
+  template <typename T>
   TL_FI T tloc::Math<T>::Lerp(const T& aValue1,
                                      const T& aValue2,
-                                     const T aBias /* = */)
+                                     const T& aBias /* = */)
   {
     return (aBias * aValue1) + ((1 - aBias) * aValue2);
   }

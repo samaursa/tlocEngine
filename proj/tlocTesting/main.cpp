@@ -13,8 +13,17 @@
 using namespace Catch::Detail;
 using namespace tloc;
 
+#include "tlocCore/tlocMemory.h"
+#include "tlocCore/tlocLinkMe.cpp"
+
+//------------------------------------------------------------------------
+// Core
+#include "tlocMemoryTest.h"
 #include "tlocTupleTest.h"
 #include "tlocTableTest.h"
+
+//------------------------------------------------------------------------
+// Math
 #include "tlocMathTest.h"
 #include "tlocVector3Test.h"
 #include "tlocVector2Test.h"

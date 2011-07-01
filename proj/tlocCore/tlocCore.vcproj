@@ -42,7 +42,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG"
+				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -110,7 +110,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -154,6 +154,18 @@
 		<Filter
 			Name="3rdParty"
 			>
+			<File
+				RelativePath="..\..\src\3rdParty\nedmalloc\malloc.c.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Containers"
@@ -305,6 +317,10 @@
 		</Filter>
 		<File
 			RelativePath="..\..\src\tlocCore\tlocBase.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\tlocCore\tlocLinkMe.cpp"
 			>
 		</File>
 		<File

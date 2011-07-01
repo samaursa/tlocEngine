@@ -89,7 +89,22 @@
 // Supported macros:
 // TLOC_USE_NED_MALLOC
 
+// Use nedmalloc
 #define TLOC_USE_NED_MALLOC
+
+// Use custom new/delete (if using custom MALLOCs above, this will allow
+// new/delete to take advantage of them)
+#define TLOC_USE_CUSTOM_NEW_DELETE
+
+#ifdef TLOC_DEBUG
+# ifndef DEBUG
+#   define DEBUG
+# endif
+#else
+# ifndef NDEBUG
+#   define NDEBUG
+# endif
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // For DLL support

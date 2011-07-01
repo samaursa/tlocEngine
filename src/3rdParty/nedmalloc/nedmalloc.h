@@ -137,7 +137,7 @@ nedmalloc.dll.
 \brief Defined to mark an API as deprecated */
 #ifndef NEDMALLOCDEPRECATED
 #if defined(_MSC_VER) && !defined(__GCCXML__)
- #define NEDMALLOCDEPRECATED __declspec(deprecated)
+ #define NEDMALLOCDEPRECATED 
 #elif defined(__GNUC__) && !defined(__GCCXML__)
  #define NEDMALLOCDEPRECATED __attribute ((deprecated))
 #else
@@ -165,8 +165,8 @@ nedmalloc.dll.
 #endif
 
 #if defined(_MSC_VER) && _MSC_VER>=1400
- #define NEDMALLOCPTRATTR __declspec(restrict)
- #define NEDMALLOCNOALIASATTR __declspec(noalias)
+ #define NEDMALLOCPTRATTR 
+ #define NEDMALLOCNOALIASATTR 
 #endif
 #ifdef __GNUC__
  #define NEDMALLOCPTRATTR __attribute__ ((malloc))

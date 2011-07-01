@@ -323,6 +323,14 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="3rdParty"
+			>
+			<File
+				RelativePath="..\..\src\3rdParty\DougLeaMalloc.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

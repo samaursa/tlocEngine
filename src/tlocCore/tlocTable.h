@@ -4,6 +4,7 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocStandardFuncs.h"
 #include "tlocCore/tlocTuple.h"
+#include <memory.h>
 
 namespace tloc
 {

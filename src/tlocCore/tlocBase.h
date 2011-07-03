@@ -195,13 +195,13 @@
 #pragma deprecated("FwAssert") // Consider using TLOC_ASSERT
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-#define FwAssert(_Expression, _Msg) (void)( (!!(_Expression)) || \
+# define FwAssert(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
-#define FWASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
+# define FWASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-#define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
+# define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-#define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
+# define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
 #else
 #define FwAssert(_Expression, _Msg)
@@ -217,9 +217,21 @@
 // performance sensitive (e.g. vector/matrix accessors).
 
 #ifdef TLOC_ENABLE_ASSERT_LOW_LEVEL
-#define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
+# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
 #else
-#define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
+# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
+#endif
+
+//------------------------------------------------------------------------
+// Container assertions
+// Define TLOC_DISABLE_ASSERT_CONTAINERS in your project to disable assertions
+// for containers. These asserts are on by default in all configurations except
+// release WITHOUT debug info
+
+#if !defined(TLOC_DISABLE_ASSERT_CONTAINERS) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
+# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
+#else
+# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
 #endif
 
 //////////////////////////////////////////////////////////////////////////

@@ -211,6 +211,10 @@
 				Name="Core"
 				>
 				<File
+					RelativePath=".\tlocArrayTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMemoryTest.h"
 					>
 				</File>

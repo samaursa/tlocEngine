@@ -21,6 +21,7 @@ using namespace tloc;
 #include "tlocMemoryTest.h"
 #include "tlocTupleTest.h"
 #include "tlocTableTest.h"
+#include "tlocArrayTest.h"
 
 //------------------------------------------------------------------------
 // Math

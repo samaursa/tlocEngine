@@ -316,6 +316,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\..\src\tlocCore\tlocAlgorithms.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\src\tlocCore\tlocBase.h"
 			>
 		</File>
@@ -329,10 +333,6 @@
 		</File>
 		<File
 			RelativePath="..\..\src\tlocCore\tlocNoOpt.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\src\tlocCore\tlocStandardFuncs.h"
 			>
 		</File>
 	</Files>

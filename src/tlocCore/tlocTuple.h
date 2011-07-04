@@ -2,7 +2,7 @@
 #define TLOC_TUPLE_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
 #include <memory.h>
 
 namespace tloc

@@ -2,7 +2,7 @@
 #define TLOC_TABLE_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
 #include "tlocCore/tlocTuple.h"
 #include <memory.h>
 

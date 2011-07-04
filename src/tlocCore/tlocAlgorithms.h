@@ -1,5 +1,5 @@
-#ifndef ADDITIONAL_FUNCTIONS_H
-#define ADDITIONAL_FUNCTIONS_H
+#ifndef TLOC_ALGORITHMS_H
+#define TLOC_ALGORITHMS_H
 
 namespace tloc
 {

@@ -11,8 +11,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 // TLOC Engine No source
-// 
-// The following macro can be commented out when compiling the engine which 
+//
+// The following macro can be commented out when compiling the engine which
 // allows safe removal of inline files altogether
 
 #define TLOC_FULL_SOURCE
@@ -20,11 +20,11 @@
 //------------------------------------------------------------------------
 // The following macros can be enabled to increase the size of the template
 // instantiations (that many more template types will be instantiated).
-// For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>, 
+// For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>,
 // Matrix<>, Vector<> etc. classes will be instantiated such that they have
 // have a size of at least 20 rows and cols (if any). Note that for types
 // such as Table<> this will require a large type generation.
-// 
+//
 // NOTE : Only useful if giving out the code without source
 // NOTE2: If you want size to be 20, you must also define SIZE_15
 
@@ -59,7 +59,7 @@
 #     error "Exception handling must be disabled for this project."
 #   endif
     //------------------------------------------------------------------------
-    // Check for RTTI 
+    // Check for RTTI
 #   if defined(_CPPRTTI) && !defined(TLOC_ENABLE_CPPRTTI)
 #     error "RTTI must be disabled for this project."
 #   endif
@@ -77,15 +77,15 @@
 //////////////////////////////////////////////////////////////////////////
 // Memory
 //
-// Notes: The default memory allocator used is the nedmalloc which is a 
+// Notes: The default memory allocator used is the nedmalloc which is a
 // derivation of doug lea malloc:
-// 
+//
 // http://www.nedprod.com/programs/portable/nedmalloc/
-// 
+//
 // If all of the following macros are commented out, the system defaults
 // to using the definitions contained in <memory.h>. To enable seamless
 // transitions, there are helper macros defined in <tlocMemory.h>
-// 
+//
 // Supported macros:
 // TLOC_USE_NED_MALLOC
 
@@ -126,22 +126,22 @@
 # error "Project must define TLOC_DEBUG or TLOC_DEBUG_DLL or TLOC_RELEASE or TLOC_RELEASE_DLL or TLOC_RELEASE_DEBUGINFO or TLOC_RELEASE_DEBUGINFO_DLL"
 
 #elif defined(TLOC_DEBUG)
-# if defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+# if defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 #   error "Project has mixed configurations!"
 # endif
 
 #elif defined(TLOC_DEBUG_DLL)
-# if defined(TLOC_DEBUG) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+# if defined(TLOC_DEBUG) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 #   error "Project has mixed configurations!"
 #endif
 
 #elif defined(TLOC_RELEASE)
-# if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+# if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 #   error "Project has mixed configurations!"
 # endif
 
 #elif defined(TLOC_RELEASE_DLL)
-# if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL) 
+# if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
   # error "Project has mixed configurations!"
 #endif
 

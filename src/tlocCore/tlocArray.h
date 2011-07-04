@@ -17,10 +17,10 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Different policies that Array can handle
 
-  struct Array_Unordered {};
-  struct Array_Ordered {};
-  struct Array_Fast {};
-  struct Array_Small {};
+  struct Array_Unordered  {};
+  struct Array_Ordered    {};
+  struct Array_Fixed      {};
+  struct Array_Dynamic    {};
 
   //////////////////////////////////////////////////////////////////////////
   // Array class
@@ -31,82 +31,89 @@ namespace tloc
   public:
     //------------------------------------------------------------------------
     // Functions
-    // 
+    //
     // Notes: The following methods, unlike all other methods in the engine
     // are started with lower case and match std::vector. This is to facilitate
     // switching between the containers easily if need be
 
-    TL_I tl_sizet size()
-    {
-      return m_size;
-    }
+    //------------------------------------------------------------------------
+    // Element access
 
-    TL_I bool empty()
-    {
-      return (m_size > 0) ? true : false;
-    }
+    TL_I T&           at(tl_sizet aIndex);
+    TL_I const T&     at(tl_sizet aIndex) const;
+
+    TL_I T&           operator[] (tl_sizet aIndex);
+    TL_I const T&     operator[] (tl_sizet aIndex) const;
+
+    TL_I T&           front();
+    TL_I const T&     front() const;
+
+    TL_I T&           back();
+    TL_I const T&     back() const;
+
+    TL_I T*           data();
+
+    //------------------------------------------------------------------------
+    // Iterator access
+
+    TL_I T*           begin();
+    TL_I const T*     begin() const;
+
+    TL_I T*           end();
+    TL_I const T*     end() const;
+
+    //------------------------------------------------------------------------
+    // Capacity
+
+    TL_I tl_sizet     size() const;
+    TL_I tl_sizet     capacity() const;
+    TL_I bool         empty() const;
+    TL_I bool         full() const;
 
   protected:
     //------------------------------------------------------------------------
-    // Functions
-    
-    ArrayBase() : m_data(NULL), m_size(0)
-    {
-    }
-    ArrayBase(tl_sizet aSize)
-    {
-      Allocate(aSize);
-    }
+    // Internal Functions
 
-    TL_I T* Allocate(tl_sizet aSize)
-    { 
-      return aSize ? (T*)TL_MALLOC(aSize * sizeof(t));
-    }
+    ArrayBase();
+    ArrayBase(tl_sizet aSize);
 
-    TL_I T* ReAllocate(tl_sizet aSize)
-    {
-      return (T*)TL_REALLOC(m_data, aSize);
-    }
-
-    TL_I void Free(T* aPtr, tl_sizet aSize)
-    {
-      TL_FREE(aPtr);
-    }
-
-    TL_I void DestroyValues(size_t aStartIndex, size_t aEndIndex)
-    {
-      TLOC_ASSERT_ARRAY(aStartIndex < m_size, "Start index out of bounds!");
-      TLOC_ASSERT_ARRAY(aEndIndex < m_size, "End index out of bounds!");
-      TLOC_ASSERT_ARRAY(aStartIndex <= aEndIndex, "Start index > End index!");
-
-      for (tl_sizet i = aStartIndex; i < aEndIndex; ++i)
-      {
-        (m_data + i)->~T();
-      }
-    }
+    TL_I T*       Allocate(tl_sizet aSize);
+    TL_I T*       ReAllocate(tl_sizet aSize);
+    TL_I void     Free(T* aPtr, tl_sizet aSize);
+    TL_I void     DestroyValues(size_t aStartIndex, size_t aEndIndex);
 
     //------------------------------------------------------------------------
     // Variables
-    T*        m_data;    
-    tl_sizet  m_size;
+    T*        m_begin;
+    T*        m_end;
+    T*        m_capacity;
   };
 
   template <typename T>
   class Array : public ArrayBase<T>
   {
   public:
-    Array() : m_data(NULL), m_size(0)
-    {
-    }
+    //------------------------------------------------------------------------
+    // Constructors
 
-    Array(tl_sizet aSize)
-    {
-      Allocate(aSize);
-    }
+    Array();
+    Array(tl_sizet aSize);
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    TL_I void         assign(T* rangeBegin, T* rangeEnd);
+    TL_I void         assign(tl_sizet aRepetitionNum, const T& aElemToCopy);
+
+    void              push_back(const T& aValueToCopy);
+    void              pop_back();
+    void              pop_back(T& aOut);
 
   private:
 
   };
 };
+
+#include "tlocArray.inl"
 
 #endif

@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TwoLocDep_PATH)/include/CATCH/include/&quot;;&quot;$(TwoLocDep_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
+				PreprocessorDefinitions="WIN32; TLOC_DEBUG; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"

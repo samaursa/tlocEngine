@@ -1,6 +1,5 @@
 namespace tloc
 {
-
   //////////////////////////////////////////////////////////////////////////
   // ArrayBase<T>
 
@@ -40,7 +39,6 @@ namespace tloc
   TL_I T& tloc::ArrayBase<T>::operator[]( tl_sizet aIndex )
   {
     tl_sizet mySize = size();
-    TLOC_ASSERT(false, "Bla bla");
     TLOC_ASSERT(aIndex < size(), "Index out of bounds! (ArrayBase::[])");
     return *(m_begin + aIndex);
   }
@@ -146,13 +144,13 @@ namespace tloc
   template <typename T>
   TL_I T* tloc::ArrayBase<T>::Allocate( tl_sizet aSize )
   {
-    return size() ? (T*)TL_MALLOC(aSize * sizeof(t));
+    return aSize ? (T*)TL_MALLOC(aSize * sizeof(T)) : NULL;
   }
 
   template <typename T>
   TL_I T* tloc::ArrayBase<T>::ReAllocate( tl_sizet aSize )
   {
-    return (T*)TL_REALLOC(m_begin, aSize);
+    return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize);
   }
 
   template <typename T>
@@ -210,21 +208,28 @@ namespace tloc
   template <typename T>
   void tloc::Array<T>::push_back( const T& aValueToCopy )
   {
-    if (m_end < m_capacity)
+    if (m_end >= m_capacity)
     {
-      new(m_end) T(aValueToCopy); // placement new
-      ++m_end;
+      tl_sizet prevSize = size();
+      tl_sizet prevCap  = capacity();
+      tl_sizet newCap  = prevCap ? (2 * prevCap) : 1;
+      T* ptr;
+
+      // Reallocate may malloc or realloc depending on the initial size
+      ptr = ReAllocate(newCap);
+
+      TLOC_ASSERT_ARRAY(ptr != NULL, "Could not allocate/re-allocate! (Array::push_back)");
+
+      if (ptr)
+      {
+        m_begin = ptr;
+        m_end = m_begin + prevSize;
+        m_capacity = m_begin + newCap;
+      }
     }
-    else
-    {
-      tl_sizet currSize = size();
-      T* ptr = currSize ? ReAllocate( size() * 2 ) : ReAllocate(1);
-      TLOC_ASSERT_ARRAY(ptr != NULL, "Could not re-allocate! (Array::ReAllocate)");
-      m_end = ptr + size();
-      m_capacity = ptr + capacity();
-      m_begin = ptr;
-      *m_begin = aValueToCopy;
-    }
+
+    new(m_end) T(aValueToCopy); // placement new
+    ++m_end;
   }
 
   template <typename T>
@@ -240,4 +245,4 @@ namespace tloc
     aOut = *(m_end);
     --m_end;
   }
-};
+}

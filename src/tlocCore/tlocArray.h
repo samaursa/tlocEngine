@@ -30,6 +30,16 @@ namespace tloc
   {
   public:
     //------------------------------------------------------------------------
+    // typedefs (similar to vector)
+    typedef T         value_type;
+    typedef T*        pointer;
+    typedef T&        reference;
+    typedef const T&  const_reference;
+    typedef const T*  const_pointer;
+    typedef T*        iterator;
+    typedef const T*  const_iterator;
+
+    //------------------------------------------------------------------------
     // Functions
     //
     // Notes: The following methods, unlike all other methods in the engine
@@ -37,38 +47,55 @@ namespace tloc
     // switching between the containers easily if need be
 
     //------------------------------------------------------------------------
+    // General
+
+    // returns the lowest capacity an array can have if size > 0
+    TL_I tl_sizet         defaultCapacity();
+
+    //------------------------------------------------------------------------
     // Element access
 
-    TL_I T&           at(tl_sizet aIndex);
-    TL_I const T&     at(tl_sizet aIndex) const;
+    TL_I reference        at(tl_sizet aIndex);
+    TL_I const_reference  at(tl_sizet aIndex) const;
 
-    TL_I T&           operator[] (tl_sizet aIndex);
-    TL_I const T&     operator[] (tl_sizet aIndex) const;
+    TL_I reference        operator[] (tl_sizet aIndex);
+    TL_I const_reference  operator[] (tl_sizet aIndex) const;
 
-    TL_I T&           front();
-    TL_I const T&     front() const;
+    TL_I reference        front();
+    TL_I const_reference  front() const;
 
-    TL_I T&           back();
-    TL_I const T&     back() const;
+    TL_I reference        back();
+    TL_I const_reference  back() const;
 
-    TL_I T*           data();
+    TL_I pointer          data();
 
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_I T*           begin();
-    TL_I const T*     begin() const;
+    TL_I iterator         begin();
+    TL_I const_iterator   begin() const;
 
-    TL_I T*           end();
-    TL_I const T*     end() const;
+    TL_I iterator         end();
+    TL_I const_iterator   end() const;
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I tl_sizet     size() const;
-    TL_I tl_sizet     capacity() const;
-    TL_I bool         empty() const;
-    TL_I bool         full() const;
+    TL_I tl_sizet         size() const;
+    TL_I tl_sizet         capacity() const;
+    TL_I bool             empty() const;
+    TL_I bool             full() const;
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    TL_I void             pop_back();
+    TL_I void             pop_back(T& aOut);
+    // Function assumes that order does not matter
+    TL_I void             erase(iterator aPosition);
+    // Ordering of elements is preserved
+    TL_I void             erase(iterator aRangeBegin, iterator aRangeEnd);
+    TL_I void             clear();
 
   protected:
     //------------------------------------------------------------------------
@@ -77,16 +104,37 @@ namespace tloc
     ArrayBase();
     ArrayBase(tl_sizet aSize);
 
-    TL_I T*       Allocate(tl_sizet aSize);
-    TL_I T*       ReAllocate(tl_sizet aSize);
-    TL_I void     Free(T* aPtr, tl_sizet aSize);
-    TL_I void     DestroyValues(size_t aStartIndex, size_t aEndIndex);
+    //------------------------------------------------------------------------
+    // Functions that call memory allocators directly
+
+    TL_I T*               DoAllocate(tl_sizet aSize);
+    TL_I T*               DoReAllocate(tl_sizet aSize);
+    TL_I void             DoFree(T* aPtr, tl_sizet aSize);
+
+    // Destroys a range of values only
+    TL_I void             DoDestroyValues(T* aRangeBegin, T* aRangeEnd);
+
+    // Copies the incoming value to the end pointer and increments the end pointer.
+    // NOTE: function performs no safety checks
+    TL_I void             DoAddToEnd(const T& aValueToCopy);
+
+    // Increases the storage capacity by reallocation. This function automatically
+    // resizes the array according to the formula:
+    //        newCapacity = m_capacity ? capacity() * 2 : sm_defaultCapacity;
+    TL_I void             DoReAllocate();
+
+    // Assigns
 
     //------------------------------------------------------------------------
     // Variables
-    T*        m_begin;
-    T*        m_end;
-    T*        m_capacity;
+    T*                    m_begin;
+    T*                    m_end;
+    T*                    m_capacity;
+
+    //------------------------------------------------------------------------
+    // Constants
+
+    static const tl_sizet sm_defaultCapacity;
   };
 
   template <typename T>
@@ -100,14 +148,24 @@ namespace tloc
     Array(tl_sizet aSize);
 
     //------------------------------------------------------------------------
+    // Capacity
+
+    TL_I void             resize(tl_sizet aNewSize );
+
+    //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void         assign(T* rangeBegin, T* rangeEnd);
-    TL_I void         assign(tl_sizet aRepetitionNum, const T& aElemToCopy);
-
-    void              push_back(const T& aValueToCopy);
-    void              pop_back();
-    void              pop_back(T& aOut);
+    TL_I void             assign(tl_sizet aRepetitionNum, const T& aElemToCopy);
+    template <typename T_InputIterator>
+    TL_I void             assign(T_InputIterator aRangeBegin,
+                                 T_InputIterator aRangeEnd);
+    TL_I void             push_back(const T& aValueToCopy);
+    TL_I void             insert(iterator aPosition, const T& aValueToCopy);
+    TL_I void             insert(iterator aPosition, tl_sizet aNumElemsToInsert,
+                                 const T& aValueToCopy);
+    template <typename T_InputIterator>
+    TL_I void             insert(iterator aPosition, T_InputIterator aRangeBegin,
+                                 T_InputIterator aRangeEnd);
 
   private:
 

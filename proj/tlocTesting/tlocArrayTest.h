@@ -3,8 +3,20 @@ namespace TestingArray
   struct ArrayFixture
   {
     int a, b, c, d, e, f;
-    Array<int> ints;
+    Array<s32> ints, ints2, ints3;
   };
+
+#define FILL_INT_ARRAY_BY_PUSH(arrayName, nFrom, nTo) \
+  for (u32 i = nFrom; i < nTo; ++i)\
+  {\
+    arrayName.push_back(i);\
+  }\
+
+#define FILL_INT_ARRAY_BY_INDEX(arrayName, nFrom, nTo) \
+  for (u32 i = nFrom; i < nTo; ++i)\
+  {\
+    arrayName[i] = i;\
+  }\
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/General",
                                                    "Test General functionality")
@@ -25,15 +37,12 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Accessors",
                                                               "Test accessors")
   {
-    for (u32 i = 0; i < 100; ++i)
-    {
-      ints.push_back(i);
-    }
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
 
-    Array<int>::iterator itr = ints.begin();
-    Array<int>::iterator itrEnd = ints.end();
+    Array<s32>::iterator itr = ints.begin();
+    Array<s32>::iterator itrEnd = ints.end();
 
-    int count = 0;
+    s32 count = 0;
     while (itr != itrEnd)
     {
       CHECK(count++ == *itr);
@@ -49,10 +58,7 @@ namespace TestingArray
     //------------------------------------------------------------------------
     // Erase at position
 
-    for (u32 i = 0; i < 10; ++i)
-    {
-      ints.push_back(i);
-    }
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
 
     CHECK(ints.size() == 10);
     ints.erase(ints.begin() + 4);
@@ -66,12 +72,8 @@ namespace TestingArray
     //------------------------------------------------------------------------
     // Erase range
 
-    ints.push_back(0);
-
-    for (u32 i = 0; i < 10; ++i)
-    {
-      ints[i] = i;
-    }
+    ints.push_back(0); // Make the array size 10
+    FILL_INT_ARRAY_BY_INDEX(ints, 0, 10);
 
     CHECK(ints.size() == 10);
     u32 currCapacity = ints.capacity();
@@ -84,10 +86,7 @@ namespace TestingArray
     "Test the clear function")
   {
     u32 sizeOfInts = 1000;
-    for (u32 i = 0; i < sizeOfInts; ++i)
-    {
-      ints.push_back(i);
-    }
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, sizeOfInts);
 
     u32 currCapacity = ints.capacity();
     CHECK(ints.size() == sizeOfInts);
@@ -96,4 +95,50 @@ namespace TestingArray
     CHECK(ints.capacity() == currCapacity);
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Insert",
+    "Test the insert methods")
+  {
+    //------------------------------------------------------------------------
+    // Insert single values
+
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
+
+    for (u32 i = 10; i < 20; ++i)
+    {
+      ints.insert(ints.end(), i);
+    }
+
+    CHECK(ints.size() == 20);
+
+    for (u32 i = 0; i < 20; ++i)
+    {
+      CHECK(ints[i] == (s32)i);
+    }
+
+    CHECK(ints.capacity() == 32);
+
+
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
+    "Test the resize methods")
+  {
+    /*FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
+
+    CHECK(ints.size() == 10);
+    ints.resize(5);
+    CHECK(ints.size() == 5);*/
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Assign",
+    "Test the assign function")
+  {
+    /*int someArray[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int* itrBegin = someArray;
+    int* itrEnd = someArray + 9;
+
+    ints.assign(itrBegin, itrEnd);*/
+  }
+
+#undef FILL_INT_ARRAY_BY_PUSH
 };

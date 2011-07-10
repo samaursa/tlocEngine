@@ -195,14 +195,22 @@
 #pragma deprecated("FwAssert") // Consider using TLOC_ASSERT
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
+
+// Deprecated
 # define FwAssert(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
+  (_wassert(_Msg L" (" _CRT_WIDE(__FUNCTION__) L")", _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define FWASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+
+// Supported assert macros
+# define TLOC_ASSERT_MESSAGE(msg)\
+  (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
+# define TLOC_ASSERT_MESSAGEW(msg)\
+  (msg L" (" _CRT_WIDE(__FUNCTION__) L")")
 # define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+  (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(_Msg, _CRT_WIDE(__FILE__), __LINE__), 0) )
+  (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 #else
 #define FwAssert(_Expression, _Msg)
 #define FWASSERT(_Expression, _Msg)

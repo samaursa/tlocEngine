@@ -104,12 +104,14 @@ namespace tloc
     ArrayBase();
     ArrayBase(tl_sizet aSize);
 
+    ~ArrayBase();
+
     //------------------------------------------------------------------------
     // Functions that call memory allocators directly
 
     TL_I T*               DoAllocate(tl_sizet aSize);
     TL_I T*               DoReAllocate(tl_sizet aSize);
-    TL_I void             DoFree(T* aPtr, tl_sizet aSize);
+    TL_I void             DoFree(T* aPtr);
 
     // Destroys a range of values only
     TL_I void             DoDestroyValues(T* aRangeBegin, T* aRangeEnd);
@@ -151,6 +153,7 @@ namespace tloc
     // Capacity
 
     TL_I void             resize(tl_sizet aNewSize );
+    TL_I void             resize(tl_sizet aNewSize, const T& aValue );
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -160,14 +163,23 @@ namespace tloc
     TL_I void             assign(T_InputIterator aRangeBegin,
                                  T_InputIterator aRangeEnd);
     TL_I void             push_back(const T& aValueToCopy);
-    TL_I void             insert(iterator aPosition, const T& aValueToCopy);
-    TL_I void             insert(iterator aPosition, tl_sizet aNumElemsToInsert,
+    TL_I iterator         insert(iterator aPosition, const T& aValueToCopy);
+    TL_I iterator         insert(iterator aPosition, tl_sizet aNumElemsToInsert,
                                  const T& aValueToCopy);
     template <typename T_InputIterator>
-    TL_I void             insert(iterator aPosition, T_InputIterator aRangeBegin,
+    TL_I iterator         insert(iterator aPosition, T_InputIterator aRangeBegin,
                                  T_InputIterator aRangeEnd);
+  protected:
 
-  private:
+    // Inserts the value in the specified position by moving all the elements
+    // range starting from aPosition by one element and increasing the capacity
+    // if required
+    TL_I void             DoInsertValue(T* aPosition, const T& aValue);
+
+    // Inserts the range of values in the specified position by moving all
+    // the elements from position to end and increasing the capacity if required
+    TL_I void             DoInsertValues(T* position, tl_sizet aNumElemsToInsert,
+                                         const T& aValue);
 
   };
 };

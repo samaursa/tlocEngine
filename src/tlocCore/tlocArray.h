@@ -123,6 +123,8 @@ namespace tloc
     // Increases the storage capacity by reallocation. This function automatically
     // resizes the array according to the formula:
     //        newCapacity = m_capacity ? capacity() * 2 : sm_defaultCapacity;
+    // and adjusts the iterators. If successful, old iterators are considered
+    // invalid.
     TL_I void             DoReAllocate();
 
     // Assigns
@@ -164,10 +166,10 @@ namespace tloc
                                  T_InputIterator aRangeEnd);
     TL_I void             push_back(const T& aValueToCopy);
     TL_I iterator         insert(iterator aPosition, const T& aValueToCopy);
-    TL_I iterator         insert(iterator aPosition, tl_sizet aNumElemsToInsert,
+    TL_I void             insert(T* aPosition, tl_sizet aNumElemsToInsert,
                                  const T& aValueToCopy);
     template <typename T_InputIterator>
-    TL_I iterator         insert(iterator aPosition, T_InputIterator aRangeBegin,
+    TL_I void             insert(iterator aPosition, T_InputIterator aRangeBegin,
                                  T_InputIterator aRangeEnd);
   protected:
 

@@ -117,7 +117,33 @@ namespace TestingArray
 
     CHECK(ints.capacity() == 32);
 
+    ints.insert(ints.begin() + 2, 90);
+    CHECK(ints.size() == 21);
+    CHECK(ints[0] == 0);
+    CHECK(ints[1] == 1);
+    CHECK(ints[2] == 90);
+    CHECK(ints[3] == 2);
 
+    CHECK(ints.capacity() == 32);
+
+    //------------------------------------------------------------------------
+    // Insert several values
+
+    FILL_INT_ARRAY_BY_PUSH(ints2, 0, 10);
+
+    CHECK(ints2.size() == 10);
+
+    ints2.insert(ints2.begin() + 2, static_cast<tl_sizet>(10), 90);
+
+    CHECK(ints2[0] == 0);
+    CHECK(ints2[1] == 1);
+
+    for (u32 i = 2; i < 10 + 2; ++i)
+    {
+      CHECK(ints2[i] == 90);
+    }
+
+    CHECK(ints2[12] == 2);
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",

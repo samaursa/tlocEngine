@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
 				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -109,7 +109,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TwoLocDep_PATH)\include\Boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
 				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -154,18 +154,30 @@
 		<Filter
 			Name="3rdParty"
 			>
-			<File
-				RelativePath="..\..\src\3rdParty\nedmalloc\malloc.c.h"
+			<Filter
+				Name="Memory"
 				>
-			</File>
-			<File
-				RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.h"
-				>
-			</File>
+				<Filter
+					Name="DlMalloc"
+					>
+					<File
+						RelativePath="..\..\src\3rdParty\nedmalloc\malloc.c.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Nedmalloc"
+					>
+					<File
+						RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Containers"
@@ -312,6 +324,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\tlocCore\tlocTypes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\tlocCore\tlocTypeTraits.h"
 				>
 			</File>
 		</Filter>

@@ -415,18 +415,17 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I typename Array<T>::iterator
-    Array<T>::insert( iterator aPosition, tl_sizet aNumElemsToInsert,
-                      const T& aValueToCopy )
+  TL_I void Array<T>::insert( T* aPosition,
+                              tl_sizet aNumElemsToInsert,
+                              const T& aValueToCopy )
   {
-
+    DoInsertValues(aPosition, aNumElemsToInsert, aValueToCopy);
   }
 
   template <typename T>
   template <typename T_InputIterator>
-  TL_I typename Array<T>::iterator
-    Array<T>::insert( iterator aPosition, T_InputIterator aRangeBegin,
-                      T_InputIterator aRangeEnd )
+  TL_I void Array<T>::insert( iterator aPosition, T_InputIterator aRangeBegin,
+                              T_InputIterator aRangeEnd )
   {
 
   }
@@ -466,35 +465,60 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::Array<T>::DoInsertValues( T* position,
+  TL_I void tloc::Array<T>::DoInsertValues( T* aPosition,
                                             tl_sizet aNumElemsToInsert,
                                             const T& aValue )
   {
-    TLOC_ASSERT_ARRAY_POSITION(position);
+    TLOC_ASSERT_ARRAY_POSITION(aPosition);
     TLOC_ASSERT_ARRAY(aNumElemsToInsert > 0, "Inserting 0 elements!");
 
-    // Check if we have enough capacity to store the elements
-    if (aNumElemsToInsert <= m_capacity - m_end)
-    {
-      // value may be from within the array, copy it
-      const T valueCopy = aValue;
-      const tl_sizet spaceRequired = (tl_sizet)(m_end - position);
-      const T* prevEnd = m_end;
+    // value may be from within the array, copy it
+    const T valueCopy = aValue;
 
-      T* itr = m_end - position;
-      while (m_end != position + spaceRequired)
+    // Check if we have enough capacity to store the elements
+    if (aNumElemsToInsert <= tl_sizet(m_capacity - m_end) )
+    {
+      //OPT: Not the most optimized solution, may want to re-work it
+
+      const tl_sizet elemsToMove = (tl_sizet)(m_end - aPosition);
+      const tl_sizet spaceRequired = elemsToMove + aNumElemsToInsert;
+
+      // Allocate all un-allocated space
+      while (m_end != aPosition + spaceRequired)
       {
-        ::new(m_end++) T(*(itr++));
+        ::new(m_end++) T();
       }
 
-      while (position != position + aNumElemsToInsert)
+      Copy_Backward(aPosition, aPosition + elemsToMove, m_end);
+
+      while (aPosition != m_end - elemsToMove)
       {
-        *(position++) = aValue;
+        *(aPosition++) = aValue;
       }
     }
     else
     {
+      tl_sizet posIndex = aPosition - m_begin;
 
+      // Reallocate
+      // TODO: Replace with resize() once implemented
+      tl_sizet prevSize = size();
+      tl_sizet newCap  = capacity() + aNumElemsToInsert;
+      T* ptr;
+
+      // DoReallocate may malloc or realloc depending on the initial size
+      ptr = DoReAllocate(newCap);
+
+      TLOC_ASSERT_ARRAY(ptr != NULL, "Could not allocate/re-allocate!");
+
+      if (ptr)
+      {
+        m_begin = ptr;
+        m_end = m_begin + prevSize;
+        m_capacity = m_begin + newCap;
+      }
+
+      insert(m_begin + posIndex, aNumElemsToInsert, valueCopy);
     }
   }
 };

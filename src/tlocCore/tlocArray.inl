@@ -28,17 +28,20 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
   TLOC_ASSERT_ARRAY(rangeEnd <= m_end,\
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
+#define TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd) \
+  TLOC_ASSERT_ARRAY(aRangeBegin <= aRangeEnd, \
+# aRangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# aRangeEnd) L"!")
+
 #define TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(aRangeBegin, aRangeEnd) \
   TLOC_ASSERT_ARRAY_RANGE_BEGIN(aRangeBegin);\
   TLOC_ASSERT_ARRAY_RANGE_END(aRangeEnd);\
-  TLOC_ASSERT_ARRAY(aRangeBegin < aRangeEnd,\
-# aRangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# aRangeEnd) L"!")
+  TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd);
 
   //////////////////////////////////////////////////////////////////////////
   // Constants
 
   template <typename T>
-  const tl_sizet ArrayBase<T>::sm_defaultCapacity = 2;
+  const tl_size ArrayBase<T>::sm_defaultCapacity = 2;
 
   //////////////////////////////////////////////////////////////////////////
   // ArrayBase<T>
@@ -52,7 +55,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  ArrayBase<T>::ArrayBase( tl_sizet aSize )
+  ArrayBase<T>::ArrayBase( tl_size aSize )
   {
     m_begin = DoAllocate(aSize);
     TLOC_ASSERT_CONTAINERS(m_begin != NULL,
@@ -75,28 +78,28 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Element access
 
   template <typename T>
-  TL_I T& ArrayBase<T>::at( tl_sizet aIndex )
+  TL_I T& ArrayBase<T>::at( tl_size aIndex )
   {
     TLOC_ASSERT_ARRAY_INDEX(aIndex);
     return *(m_begin + aIndex);
   }
 
   template <typename T>
-  TL_I const T& ArrayBase<T>::at( tl_sizet aIndex ) const
+  TL_I const T& ArrayBase<T>::at( tl_size aIndex ) const
   {
     TLOC_ASSERT_ARRAY_INDEX(aIndex);
     return *(m_begin + aIndex);
   }
 
   template <typename T>
-  TL_I T& ArrayBase<T>::operator[]( tl_sizet aIndex )
+  TL_I T& ArrayBase<T>::operator[]( tl_size aIndex )
   {
     TLOC_ASSERT_ARRAY_INDEX(aIndex);
     return *(m_begin + aIndex);
   }
 
   template <typename T>
-  TL_I const T& ArrayBase<T>::operator[]( tl_sizet aIndex ) const
+  TL_I const T& ArrayBase<T>::operator[]( tl_size aIndex ) const
   {
     TLOC_ASSERT_ARRAY_INDEX(aIndex);
     return *(m_begin + aIndex);
@@ -167,13 +170,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Capacity
 
   template <typename T>
-  TL_I tl_sizet ArrayBase<T>::size() const
+  TL_I tl_size ArrayBase<T>::size() const
   {
     return (m_end - m_begin);
   }
 
   template <typename T>
-  TL_I tl_sizet ArrayBase<T>::capacity() const
+  TL_I tl_size ArrayBase<T>::capacity() const
   {
     return (m_capacity - m_begin);
   }
@@ -245,13 +248,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Internal functions
 
   template <typename T>
-  TL_I T* ArrayBase<T>::DoAllocate( tl_sizet aSize )
+  TL_I T* ArrayBase<T>::DoAllocate( tl_size aSize )
   {
     return aSize ? (T*)TL_MALLOC(aSize * sizeof(T)) : NULL;
   }
 
   template <typename T>
-  TL_I T* ArrayBase<T>::DoReAllocate( tl_sizet aSize )
+  TL_I T* ArrayBase<T>::DoReAllocate( tl_size aSize )
   {
     return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize);
   }
@@ -284,9 +287,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::DoReAllocate()
   {
-    tl_sizet prevSize = size();
-    tl_sizet prevCap  = capacity();
-    tl_sizet newCap  = prevCap ? (2 * prevCap) : sm_defaultCapacity;
+    tl_size prevSize = size();
+    tl_size prevCap  = capacity();
+    tl_size newCap  = prevCap ? (2 * prevCap) : sm_defaultCapacity;
     T* ptr;
 
     // DoReallocate may malloc or realloc depending on the initial size
@@ -314,7 +317,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  Array<T>::Array( tl_sizet aSize ) : ArrayBase(aSize)
+  Array<T>::Array( tl_size aSize ) : ArrayBase(aSize)
   {
     Allocate(aSize);
   }
@@ -323,9 +326,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Capacity
 
   template <typename T>
-  TL_I void Array<T>::resize( tl_sizet aNewSize )
+  TL_I void Array<T>::resize( tl_size aNewSize )
   {
-    /*tl_sizet currSize = size();
+    /*tl_size currSize = size();
     if (aNewSize > currSize)
     {
       insert(m_end, aNewSize - currSize, T());
@@ -337,9 +340,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void Array<T>::resize( tl_sizet aNewSize, const T& aValue )
+  TL_I void Array<T>::resize( tl_size aNewSize, const T& aValue )
   {
-    /*tl_sizet currSize = size();
+    /*tl_size currSize = size();
     if (aNewSize > currSize)
     {
       insert(m_end, aNewSize - currSize, aValue);
@@ -350,11 +353,31 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }*/
   }
 
+  template <typename T>
+  TL_I void Array<T>::reserve(tl_size aNewCapacity)
+  {
+    if (aNewCapacity > capacity())
+    {
+      T* ptr = DoReAllocate(aNewCapacity);
+
+      TLOC_ASSERT_ARRAY(ptr, "Could not re-allocate!");
+
+      if (ptr)
+      {
+        const tl_size prevSize = size();
+        m_begin     = ptr;
+        m_end       = ptr + prevSize;
+        m_capacity  = ptr + aNewCapacity;
+      }
+
+    }
+  }
+
   //------------------------------------------------------------------------
   // Modifiers
 
   template <typename T>
-  TL_I void Array<T>::assign( tl_sizet aRepetitionNum, const T& aElemToCopy )
+  TL_I void Array<T>::assign( tl_size aRepetitionNum, const T& aElemToCopy )
   {
     if (capacity() < aRepetitionNum)
     {
@@ -371,7 +394,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(aRangeBegin, aRangeEnd);
 
-    tl_sizet projectedSize = aRangeEnd - aRangeBegin;
+    tl_size projectedSize = aRangeEnd - aRangeBegin;
     if (capacity() < projectedSize)
     {
       resize(projectedSize);
@@ -400,7 +423,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_POSITION(aPosition);
 
-    const tl_sizet posIndex = aPosition - m_begin;
+    const tl_size posIndex = aPosition - m_begin;
 
     if (full() || aPosition != m_end)
     {
@@ -416,7 +439,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   TL_I void Array<T>::insert( T* aPosition,
-                              tl_sizet aNumElemsToInsert,
+                              tl_size aNumElemsToInsert,
                               const T& aValueToCopy )
   {
     DoInsertValues(aPosition, aNumElemsToInsert, aValueToCopy);
@@ -427,7 +450,12 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<T>::insert( iterator aPosition, T_InputIterator aRangeBegin,
                               T_InputIterator aRangeEnd )
   {
+    typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
+    typedef Loki::Int2Type<inputUnknown::isIntegral> inputIntegral;
 
+    // The correct DoInsert() will be called depending on whether inputIntegral
+    // is Int2Type<true> or Int2Type<false>
+    DoInsert(aPosition, aRangeBegin, aRangeEnd, inputIntegral());
   }
 
   //------------------------------------------------------------------------
@@ -458,7 +486,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // Value may be from within the range of the array, in which case, it may
       // be destroyed, so make a copy
       const T valueCopy = aValue;
-      tl_sizet posIndex = aPosition - m_begin;
+      tl_size posIndex = aPosition - m_begin;
       DoReAllocate();
       insert(m_begin + posIndex, valueCopy);
     }
@@ -466,7 +494,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   TL_I void tloc::Array<T>::DoInsertValues( T* aPosition,
-                                            tl_sizet aNumElemsToInsert,
+                                            tl_size aNumElemsToInsert,
                                             const T& aValue )
   {
     TLOC_ASSERT_ARRAY_POSITION(aPosition);
@@ -476,12 +504,12 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     const T valueCopy = aValue;
 
     // Check if we have enough capacity to store the elements
-    if (aNumElemsToInsert <= tl_sizet(m_capacity - m_end) )
+    if (aNumElemsToInsert <= tl_size(m_capacity - m_end) )
     {
       //OPT: Not the most optimized solution, may want to re-work it
 
-      const tl_sizet elemsToMove = (tl_sizet)(m_end - aPosition);
-      const tl_sizet spaceRequired = elemsToMove + aNumElemsToInsert;
+      const tl_size elemsToMove = (tl_size)(m_end - aPosition);
+      const tl_size spaceRequired = elemsToMove + aNumElemsToInsert;
 
       // Allocate all un-allocated space
       while (m_end != aPosition + spaceRequired)
@@ -498,12 +526,12 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
     else
     {
-      tl_sizet posIndex = aPosition - m_begin;
+      tl_size posIndex = aPosition - m_begin;
 
       // Reallocate
       // TODO: Replace with resize() once implemented
-      tl_sizet prevSize = size();
-      tl_sizet newCap  = capacity() + aNumElemsToInsert;
+      tl_size prevSize = size();
+      tl_size newCap  = capacity() + aNumElemsToInsert;
       T* ptr;
 
       // DoReallocate may malloc or realloc depending on the initial size
@@ -519,6 +547,50 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
       insert(m_begin + posIndex, aNumElemsToInsert, valueCopy);
+    }
+  }
+
+  template <typename T>
+  template <typename T_Number>
+  TL_I void Array<T>::DoInsert( iterator aPosition,
+                                       T_Number aN,
+                                       T_Number aValue,
+                                       type_true )
+  {
+    insert(aPosition, static_cast<tl_size>(aN), static_cast<T>(aValue));
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I void Array<T>::DoInsert( iterator position,
+                                T_InputIterator first,
+                                T_InputIterator last,
+                                type_false )
+  {
+    DoInsertByIterator(position, first, last);
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I void Array<T>::DoInsertByIterator( iterator position,
+                                          T_InputIterator first,
+                                          T_InputIterator last )
+  {
+    TLOC_ASSERT_ARRAY_RANGE(first, last);
+    tl_size newSize = size() + (last - first);
+
+    if (capacity() >= newSize)
+    {
+      while (first != last)
+      {
+        position = insert(position, *first++);
+        ++position;
+      }
+    }
+    else
+    {
+      reserve(newSize);
+      DoInsertByIterator(position, first, last);
     }
   }
 };

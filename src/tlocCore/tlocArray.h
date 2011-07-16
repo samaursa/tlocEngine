@@ -2,6 +2,7 @@
 #define TLOC_ARRAY_H
 
 #include "tlocBase.h"
+#include "tlocTypeTraits.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -50,16 +51,16 @@ namespace tloc
     // General
 
     // returns the lowest capacity an array can have if size > 0
-    TL_I tl_sizet         defaultCapacity();
+    TL_I tl_size         defaultCapacity();
 
     //------------------------------------------------------------------------
     // Element access
 
-    TL_I reference        at(tl_sizet aIndex);
-    TL_I const_reference  at(tl_sizet aIndex) const;
+    TL_I reference        at(tl_size aIndex);
+    TL_I const_reference  at(tl_size aIndex) const;
 
-    TL_I reference        operator[] (tl_sizet aIndex);
-    TL_I const_reference  operator[] (tl_sizet aIndex) const;
+    TL_I reference        operator[] (tl_size aIndex);
+    TL_I const_reference  operator[] (tl_size aIndex) const;
 
     TL_I reference        front();
     TL_I const_reference  front() const;
@@ -81,8 +82,8 @@ namespace tloc
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I tl_sizet         size() const;
-    TL_I tl_sizet         capacity() const;
+    TL_I tl_size         size() const;
+    TL_I tl_size         capacity() const;
     TL_I bool             empty() const;
     TL_I bool             full() const;
 
@@ -102,15 +103,15 @@ namespace tloc
     // Internal Functions
 
     ArrayBase();
-    ArrayBase(tl_sizet aSize);
+    ArrayBase(tl_size aSize);
 
     ~ArrayBase();
 
     //------------------------------------------------------------------------
     // Functions that call memory allocators directly
 
-    TL_I T*               DoAllocate(tl_sizet aSize);
-    TL_I T*               DoReAllocate(tl_sizet aSize);
+    TL_I T*               DoAllocate(tl_size aSize);
+    TL_I T*               DoReAllocate(tl_size aSize);
     TL_I void             DoFree(T* aPtr);
 
     // Destroys a range of values only
@@ -138,7 +139,7 @@ namespace tloc
     //------------------------------------------------------------------------
     // Constants
 
-    static const tl_sizet sm_defaultCapacity;
+    static const tl_size sm_defaultCapacity;
   };
 
   template <typename T>
@@ -149,24 +150,25 @@ namespace tloc
     // Constructors
 
     Array();
-    Array(tl_sizet aSize);
+    Array(tl_size aSize);
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I void             resize(tl_sizet aNewSize );
-    TL_I void             resize(tl_sizet aNewSize, const T& aValue );
+    TL_I void             resize(tl_size aNewSize );
+    TL_I void             resize(tl_size aNewSize, const T& aValue );
+    TL_I void             reserve(tl_size aNewCapacity);
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void             assign(tl_sizet aRepetitionNum, const T& aElemToCopy);
+    TL_I void             assign(tl_size aRepetitionNum, const T& aElemToCopy);
     template <typename T_InputIterator>
     TL_I void             assign(T_InputIterator aRangeBegin,
                                  T_InputIterator aRangeEnd);
     TL_I void             push_back(const T& aValueToCopy);
     TL_I iterator         insert(iterator aPosition, const T& aValueToCopy);
-    TL_I void             insert(T* aPosition, tl_sizet aNumElemsToInsert,
+    TL_I void             insert(T* aPosition, tl_size aNumElemsToInsert,
                                  const T& aValueToCopy);
     template <typename T_InputIterator>
     TL_I void             insert(iterator aPosition, T_InputIterator aRangeBegin,
@@ -180,8 +182,24 @@ namespace tloc
 
     // Inserts the range of values in the specified position by moving all
     // the elements from position to end and increasing the capacity if required
-    TL_I void             DoInsertValues(T* position, tl_sizet aNumElemsToInsert,
+    TL_I void             DoInsertValues(T* position, tl_size aNumElemsToInsert,
                                          const T& aValue);
+
+    // This is the insert selecter, which is invoked with type-traits
+    template <typename T_Number>
+    TL_I void             DoInsert(iterator aPosition, T_Number aN,
+                                   T_Number aValue, type_true);
+
+    // This is the insert selecter, which is invoked with type-traits
+    template <typename T_InputIterator>
+    TL_I void             DoInsert(iterator position, T_InputIterator first,
+                                   T_InputIterator last, type_false);
+
+    template <typename T_InputIterator>
+    TL_I void             DoInsertByIterator(iterator position,
+                                             T_InputIterator first,
+                                             T_InputIterator last);
+
 
   };
 };

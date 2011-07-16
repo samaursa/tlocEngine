@@ -109,7 +109,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
 				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"

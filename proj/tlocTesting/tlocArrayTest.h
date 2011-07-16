@@ -95,6 +95,15 @@ namespace TestingArray
     CHECK(ints.capacity() == currCapacity);
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Reserve",
+    "Test the reserve function")
+  {
+    u32 newCapacity = 1000;
+    ints.reserve(newCapacity);
+
+    CHECK(ints.capacity() == newCapacity);
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Insert",
     "Test the insert methods")
   {
@@ -133,7 +142,7 @@ namespace TestingArray
 
     CHECK(ints2.size() == 10);
 
-    ints2.insert(ints2.begin() + 2, static_cast<tl_sizet>(10), 90);
+    ints2.insert(ints2.begin() + 2, 10, 90);
 
     CHECK(ints2[0] == 0);
     CHECK(ints2[1] == 1);
@@ -144,6 +153,19 @@ namespace TestingArray
     }
 
     CHECK(ints2[12] == 2);
+    CHECK(ints2.size() == 20);
+
+    const tl_size sizeOfNums = 10;
+    s32 nums[sizeOfNums]     = {1,2,3,4,5,6,7,8,9,10};
+
+    // Will result in reallocation
+    ints2.insert(ints2.begin() + 2, (nums), (nums + sizeOfNums) );
+
+    CHECK(ints2.size() == 30);
+    for (u32 i = 2; i < 10 + 2; ++i)
+    {
+      CHECK(ints2[i] == s32(i - 1));
+    }
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",

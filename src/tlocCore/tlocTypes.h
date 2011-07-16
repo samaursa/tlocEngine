@@ -23,8 +23,8 @@ namespace tloc
   typedef unsigned short  u16;
   typedef unsigned int    u32;
   typedef unsigned long   u64;
-  
-  typedef u32             tl_sizet;
+
+  typedef u32             tl_size;
 
   //////////////////////////////////////////////////////////////////////////
   // Containers
@@ -32,8 +32,8 @@ namespace tloc
   /*template <typename T>
   class FwVecArray : public std::vector<T> {};
 
-  template <typename T, typename _Ty, 
-    typename _Pr = less<_Kty>, 
+  template <typename T, typename _Ty,
+    typename _Pr = less<_Kty>,
     typename _Alloc = allocator<pair<const _Kty, _Ty> >>
   class FwMap : public std::map<T, _Ty, _Pr, _Alloc> {};
 

@@ -10,5 +10,3 @@ SET buildType=/rebuild
 SET platform=Win32
 
 CALL buildEngine.bat
-
-PAUSE

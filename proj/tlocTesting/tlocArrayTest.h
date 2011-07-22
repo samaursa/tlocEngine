@@ -171,11 +171,28 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
-    /*FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
 
     CHECK(ints.size() == 10);
     ints.resize(5);
-    CHECK(ints.size() == 5);*/
+    CHECK(ints.size() == 5);
+
+    u32 resizeSize = 150;
+    ints.resize(resizeSize);
+    CHECK(ints.size() == resizeSize);
+
+    // Check that all 'resizeSize' elements have been allocated properly
+    try
+    {
+      for (u32 i = 0; i < resizeSize; ++i)
+      {
+        ints[i] = i;
+      }
+    }
+    catch(...)
+    {
+      FAIL("Vector<T>::Resize() failed the allocation test");
+    }
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Assign",

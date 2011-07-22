@@ -235,7 +235,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
     Copy(aRangeEnd, m_end, copyRemainingTo);
 
-    m_end = m_begin;
+    m_end = m_end - (aRangeEnd - copyRemainingTo);
   }
 
   template <typename T>
@@ -328,7 +328,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void Array<T>::resize( tl_size aNewSize )
   {
-    /*tl_size currSize = size();
+    tl_size currSize = size();
     if (aNewSize > currSize)
     {
       insert(m_end, aNewSize - currSize, T());
@@ -336,13 +336,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     else
     {
       erase(m_begin + aNewSize, m_end);
-    }*/
+    }
   }
 
   template <typename T>
   TL_I void Array<T>::resize( tl_size aNewSize, const T& aValue )
   {
-    /*tl_size currSize = size();
+    tl_size currSize = size();
     if (aNewSize > currSize)
     {
       insert(m_end, aNewSize - currSize, aValue);
@@ -350,7 +350,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     else
     {
       erase(m_begin + aNewSize, m_end);
-    }*/
+    }
   }
 
   template <typename T>

@@ -392,15 +392,12 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<T>::assign( T_InputIterator aRangeBegin,
                               T_InputIterator aRangeEnd )
   {
-    TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(aRangeBegin, aRangeEnd);
+    typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
+    typedef Loki::Int2Type<inputUnknown::isIntegral> inputIntegral;
 
-    tl_size projectedSize = aRangeEnd - aRangeBegin;
-    if (capacity() < projectedSize)
-    {
-      resize(projectedSize);
-    }
-
-    Copy(aRangeBegin, aRangeEnd, m_begin);
+    // The correct DoInsert() will be called depending on whether inputIntegral
+    // is Int2Type<true> or Int2Type<false>
+    DoAssign(aRangeBegin, aRangeEnd, inputIntegral());
   }
 
   template <typename T>
@@ -548,6 +545,30 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
       insert(m_begin + posIndex, aNumElemsToInsert, valueCopy);
     }
+  }
+
+  template <typename T>
+  template <typename T_Number>
+  TL_I void tloc::Array<T>::DoAssign( T_Number aRepetitionNum,
+                                      T_Number aElemToCopy, type_true )
+  {
+    assign(static_cast<tl_size>(aRepetitionNum), static_cast<T>(aElemToCopy));
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I void tloc::Array<T>::DoAssign( T_InputIterator aRangeBegin,
+                                      T_InputIterator aRangeEnd, type_false )
+  {
+    TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd);
+
+    tl_size projectedSize = aRangeEnd - aRangeBegin;
+    if (capacity() < projectedSize)
+    {
+      resize(projectedSize);
+    }
+
+    Copy(aRangeBegin, aRangeEnd, m_begin);
   }
 
   template <typename T>

@@ -198,11 +198,33 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Assign",
     "Test the assign function")
   {
-    /*int someArray[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    int* itrBegin = someArray;
-    int* itrEnd = someArray + 9;
+    s32 someArray[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    s32* itrBegin = someArray;
+    s32* itrEnd = someArray + 10; // past the end, but that is ok, because it is
+                                  // not going to be assigned
+    ints.assign(itrBegin, itrEnd);
+    CHECK(ints.size() == 10);
 
-    ints.assign(itrBegin, itrEnd);*/
+    s32 anotherArray[15] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    itrBegin = anotherArray;
+    itrEnd = anotherArray + 15;
+
+    ints.assign(itrBegin, itrEnd);
+    CHECK(ints.size() == 15);
+
+    for (u32 i = 1; i <= 15; ++i)
+    {
+      CHECK(ints[i-1] == (s32)i);
+    }
+
+    // Assign 10, 20 times
+    ints.assign(20, 10);
+    CHECK(ints.size() == 20);
+
+    for (u32 i = 1; i <= 20; ++i)
+    {
+      CHECK(ints[i-1] == 10);
+    }
   }
 
 #undef FILL_INT_ARRAY_BY_PUSH

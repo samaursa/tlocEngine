@@ -185,12 +185,23 @@ namespace tloc
     TL_I void             DoInsertValues(T* position, tl_size aNumElemsToInsert,
                                          const T& aValue);
 
-    // This is the insert selecter, which is invoked with type-traits
+    // This is the assign() selector, which is invoked with type-traits
+    template <typename T_Number>
+    TL_I void             DoAssign(T_Number aRepetitionNum,
+                                   T_Number aElemToCopy, type_true);
+
+    // This is the assign() selector, which is invoked with type-traits
+    template <typename T_InputIterator>
+    TL_I void             DoAssign(T_InputIterator aRangeBegin,
+                                   T_InputIterator aRangeEnd, type_false);
+
+
+    // This is the insert selector, which is invoked with type-traits
     template <typename T_Number>
     TL_I void             DoInsert(iterator aPosition, T_Number aN,
                                    T_Number aValue, type_true);
 
-    // This is the insert selecter, which is invoked with type-traits
+    // This is the insert selector, which is invoked with type-traits
     template <typename T_InputIterator>
     TL_I void             DoInsert(iterator position, T_InputIterator first,
                                    T_InputIterator last, type_false);

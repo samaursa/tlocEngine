@@ -60,7 +60,7 @@ EXIT /B 1
 :START_BUILDING
 
 :: Build dependency first
-CALL buildDependency.bat
+CALL %TLOC_PATH%/ci/buildDependency.bat
 
 IF errorlevel 1 (
 %ColorBuildFail%

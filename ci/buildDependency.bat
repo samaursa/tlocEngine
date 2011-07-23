@@ -6,7 +6,7 @@ ECHO ---------------------------------------------------------------------------
 ECHO.
 
 :: File path for the dependency revision number
-SET dependencyFilePath=../tlocDep.txt
+SET dependencyFilePath=%TLOC_PATH%/tlocDep.txt
 SET dependencyRootPath=%TLOC_DEP_PATH%
 
 :: Temporary file that stores the mercurial version

@@ -4,7 +4,8 @@
 
 :: The following must be changed for each engine depending on the engine's
 :: environment variables
-SET %TLOC_PATH%=%CD%
+cd..
+SET TLOC_PATH=%CD%
 SET WORKSPACE_PATH=%TLOC_PATH%
 SET buildPath=%WORKSPACE_PATH%\proj\tlocEngine.sln
 

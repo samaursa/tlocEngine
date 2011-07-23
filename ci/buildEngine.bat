@@ -32,8 +32,7 @@ IF NOT "%buildConfig%"=="release_debugInfo" (
 IF NOT "%buildConfig%"=="release_debugInfo_dll" (
 %ColorError%
 ECHO  "ERROR: Unsupported build configuration (%buildConfig%) selected"
-SET errorlevel=1
-EXIT /B
+EXIT /B 1
 )
 )
 )
@@ -46,8 +45,7 @@ IF NOT "%buildType%"=="build" (
 IF NOT "%buildType%"=="rebuild" (
 %ColorError%
 ECHO  "ERROR: Unsupported build type (%buildType%) selected"
-SET errorlevel=1
-EXIT /B
+EXIT /B 1
 )
 )
 
@@ -55,8 +53,7 @@ EXIT /B
 IF NOT "%platform%"=="Win32" (
 %ColorError%
 ECHO  "ERROR: Unsupported platform type (%platform%) selected"
-SET errorlevel=1
-EXIT /B
+EXIT /B 1
 )
 
 :START_BUILDING
@@ -64,7 +61,7 @@ EXIT /B
 :: Build dependency first
 CALL buildDependency.bat
 
-IF %ERRORLEVEL% NEQ 0 (
+IF errorlevel 1 (
 %ColorBuildFail%
 EXIT /b %ERRORLEVEL%
 ) ELSE (
@@ -91,20 +88,19 @@ ECHO %_buildType% %buildPath%
 ECHO -------------------------------------------------------------------------------
 
 verify >nul
-vcbuild %buildType% /upgrade %buildPath% "%buildConfig%|/%platform%"
+vcbuild %buildType% /upgrade %buildPath% "%buildConfig%|%platform%"
 
 cd %currDir%
 cd %WORKSPACE_PATH%\ci\
 
 :: In bat files, ERRORLEVEL 1 = ERRORLEVEL 1 or higher
-IF %ERRORLEVEL% NEQ 0 (
+IF errorlevel 1 (
 %ColorBuildFail%
 EXIT /b %ERRORLEVEL%
 ) ELSE (
 %ColorOk%
+EXIT /b 0
 )
 
 ECHO.
 ECHO -------------------------------------------------------------------------------
-
-EXIT /b 0

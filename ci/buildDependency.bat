@@ -53,7 +53,7 @@ ECHO --- Dependency on correct revision number, skipping update/purge
 
 CD %TLOC_DEP_PATH%
 CD ci
-CALL buildEngine!buildConfig!.bat
+CALL buildEngine.bat %buildConfig% %buildType% %platform%
 
 ECHO.
 ECHO -------------------------------------------------------------------------------

@@ -6,7 +6,7 @@ ECHO ---------------------------------------------------------------------------
 ECHO.
 
 :: File path for the dependency revision number
-SET dependencyFilePath=../tlocDep.txt
+SET dependencyFilePath=%TLOC_PATH%/tlocDep.txt
 SET dependencyRootPath=%TLOC_DEP_PATH%
 
 :: Temporary file that stores the mercurial version
@@ -53,7 +53,7 @@ ECHO --- Dependency on correct revision number, skipping update/purge
 
 CD %TLOC_DEP_PATH%
 CD ci
-CALL buildEngine!buildConfig!.bat
+CALL buildEngine.bat %buildConfig% %buildType% %platform%
 
 ECHO.
 ECHO -------------------------------------------------------------------------------

@@ -4,8 +4,7 @@
 
 :: The following must be changed for each engine depending on the engine's
 :: environment variables
-cd..
-SET TLOC_PATH=%CD%
+SET TLOC_PATH=%CD%\..\
 SET WORKSPACE_PATH=%TLOC_PATH%
 SET buildPath=%WORKSPACE_PATH%\proj\tlocEngine.sln
 
@@ -26,82 +25,95 @@ SET ColorBuildFail=COLOR 6f
 :CHECK_ARGUMENTS
 :: Check whether we have the proper build configuration selected
 IF NOT "%buildConfig%"=="debug" (
-IF NOT "%buildConfig%"=="debug_dll" (
-IF NOT "%buildConfig%"=="release" (
-IF NOT "%buildConfig%"=="release_dll" (
-IF NOT "%buildConfig%"=="release_debugInfo" (
-IF NOT "%buildConfig%"=="release_debugInfo_dll" (
-%ColorError%
-ECHO  "ERROR: Unsupported build configuration (%buildConfig%) selected"
-EXIT /B 1
-)
-)
-)
-)
-)
+	IF NOT "%buildConfig%"=="debug_dll" (
+		IF NOT "%buildConfig%"=="release" (
+			IF NOT "%buildConfig%"=="release_dll" (
+				IF NOT "%buildConfig%"=="release_debugInfo" (
+					IF NOT "%buildConfig%"=="release_debugInfo_dll" (
+						%ColorError%
+						ECHO  "ERROR: Unsupported build configuration (%buildConfig%) selected"
+						SET errorlevel=1
+						EXIT /B
+					)
+				)
+			)
+		)
+	)
 )
 
 :: Check whether we have the proper build type selected (build or rebuild)
 IF NOT "%buildType%"=="build" (
-IF NOT "%buildType%"=="rebuild" (
-%ColorError%
-ECHO  "ERROR: Unsupported build type (%buildType%) selected"
-EXIT /B 1
-)
+	IF NOT "%buildType%"=="rebuild" (
+		%ColorError%
+		ECHO  "ERROR: Unsupported build type (%buildType%) selected"
+		SET errorlevel=1
+		EXIT /B
+	)
 )
 
 :: Check whether we have the proper build type selected (build or rebuild)
 IF NOT "%platform%"=="Win32" (
-%ColorError%
-ECHO  "ERROR: Unsupported platform type (%platform%) selected"
-EXIT /B 1
+	%ColorError%
+	ECHO  "ERROR: Unsupported platform type (%platform%) selected"
+	SET errorlevel=1
+	EXIT /B
 )
+
+:BUILD_DEPENDENCY
+
+:: Build dependency first
+CALL %TLOC_PATH%\ci\buildDependency.bat
+
+IF NOT %ERRORLEVEL%==0 (
+	ECHO ERROR: Dependencies failed to build, check log.
+	GOTO EXIT_BUILD
+)
+
+%ColorBuilding%
 
 :START_BUILDING
 
-:: Build dependency first
-CALL %TLOC_PATH%/ci/buildDependency.bat
-
-IF errorlevel 1 (
-%ColorBuildFail%
-EXIT /b %ERRORLEVEL%
-) ELSE (
-%ColorBuilding%
-)
-
-:: Start building the engine
-cd %WORKSPACE_PATH%\src\
-
-SET currDir = %CD%
-cd %VS90COMNTOOLS%\..\..\VC\vcpackages
-c:
+SET VcBuildPath="%VS90COMNTOOLS%\..\..\VC\vcpackages\vcbuild.exe"
 
 SET _buildType=Building
 IF "%buildType%"=="rebuild" (
-SET _buildType=Re-building
-SET buildType=/rebuild
+	SET _buildType=Re-building
+	SET buildType=/rebuild
 ) ELSE (
-SET buildType=
+	SET buildType=
 )
 
 ECHO -------------------------------------------------------------------------------
 ECHO %_buildType% %buildPath%
 ECHO -------------------------------------------------------------------------------
 
-verify >nul
-vcbuild %buildType% /upgrade %buildPath% "%buildConfig%|%platform%"
+%VcBuildPath% %buildType% /upgrade %buildPath% "%buildConfig%|%platform%" | %WORKSPACE_PATH%\ci\tee.exe %WORKSPACE_PATH%\ci\output.txt
 
-cd %currDir%
-cd %WORKSPACE_PATH%\ci\
+:: Visual studio does not set the errorlevel flag, so we will search output.txt instead
+:: We search for "0 Projects Failed" and error
+FINDSTR /C:"0 Projects failed" %WORKSPACE_PATH%\ci\output.txt
 
-:: In bat files, ERRORLEVEL 1 = ERRORLEVEL 1 or higher
-IF errorlevel 1 (
-%ColorBuildFail%
-EXIT /b %ERRORLEVEL%
-) ELSE (
-%ColorOk%
-EXIT /b 0
+SET buildFailed=%ERRORLEVEL%
+
+IF NOT %ERRORLEVEL%==0 (
+	FINDSTR /C:"error" %WORKSPACE_PATH%\ci\output.txt
+	
+	:: Now if ERRORLEVEL==0 we need to put buildFailed to 1
+	IF %ERRORLEVEL%==0 (
+		SET buildFailed=1
+	)
 )
 
-ECHO.
-ECHO -------------------------------------------------------------------------------
+ECHO Build Status: %buildFailed%
+
+:: Delete output.txt
+del %WORKSPACE_PATH%\ci\output.txt
+
+:EXIT_BUILD
+IF %buildFailed%==0 (
+	%ColorOk%
+	EXIT /b 0	
+) ELSE (
+	%ColorError%
+	EXIT /b %buildFailed%	
+)

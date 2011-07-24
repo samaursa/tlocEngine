@@ -65,7 +65,9 @@ IF NOT "%platform%"=="Win32" (
 CALL %TLOC_PATH%\ci\buildDependency.bat
 
 IF NOT %ERRORLEVEL%==0 (
+	%ColorError%
 	ECHO ERROR: Dependencies failed to build, check log.
+	SET buildFailed=1
 	GOTO EXIT_BUILD
 )
 

@@ -9,6 +9,12 @@ ECHO.
 SET dependencyFilePath=%TLOC_PATH%/tlocDep.txt
 SET dependencyRootPath=%TLOC_DEP_PATH%
 
+:: Check if directory exists
+IF NOT EXIST %dependencyRootPath% (
+	ECHO ERROR: Non-existent dependency folder: %dependencyRootPath%
+	EXIT /b 1
+)
+
 :: Temporary file that stores the mercurial version
 :: no real need to change it
 SET dependencyIDFile=id.txt
@@ -43,13 +49,18 @@ ECHO Dependency is on       : %revNum1%
 ECHO.
 
 IF NOT "%revisionNum%"=="%_var1%" (
-ECHO -!- Dependency on incorrect revision number, proceeding to update/purge
-hg update -r %_var1%
-hg purge
-
+	ECHO -@- Dependency on incorrect revision number, proceeding to update/purge
+	hg update -r %_var1%
 )ELSE (
 ECHO --- Dependency on correct revision number, skipping update/purge
 )
+
+IF %ERRORLEVEL% NEQ 0 (
+	ECHO ERROR: hg update failed!
+	EXIT /b %ERRORLEVEL%
+)
+
+hg purge
 
 CD %TLOC_DEP_PATH%
 CD ci

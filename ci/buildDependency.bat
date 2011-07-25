@@ -50,9 +50,11 @@ ECHO.
 
 IF NOT "%revisionNum%"=="%_var1%" (
 	ECHO -@- Dependency on incorrect revision number, proceeding to update/purge
+	hg pull
 	hg update -r %_var1%
 )ELSE (
 ECHO --- Dependency on correct revision number, skipping update/purge
+hg --config extensions.purge= clean --all
 )
 
 IF %ERRORLEVEL% NEQ 0 (
@@ -60,11 +62,15 @@ IF %ERRORLEVEL% NEQ 0 (
 	EXIT /b %ERRORLEVEL%
 )
 
-hg --config extensions.purge= clean --all
-
 CD %dependencyRootPath%
 CD ci
 CALL buildEngine.bat %buildConfig% %buildType% %platform%
+
+IF %ERRORLEVEL% NEQ 0 (
+	ECHO WARNING: dependency build failed... performing purge and rebuilding
+	hg --config extensions.purge= clean --all
+	CALL buildEngine.bat %buildConfig% %buildType% %platform%
+)
 
 ECHO.
 ECHO -------------------------------------------------------------------------------

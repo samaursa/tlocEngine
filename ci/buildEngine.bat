@@ -62,7 +62,7 @@ IF NOT "%platform%"=="Win32" (
 :BUILD_DEPENDENCY
 
 :: Build dependency first
-CALL %TLOC_PATH%\ci\buildDependency.bat
+CALL %WORKSPACE_PATH%\ci\buildDependency.bat
 
 IF NOT %ERRORLEVEL%==0 (
 	%ColorError%

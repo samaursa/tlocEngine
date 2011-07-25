@@ -60,9 +60,9 @@ IF %ERRORLEVEL% NEQ 0 (
 	EXIT /b %ERRORLEVEL%
 )
 
-hg purge
+hg --config extensions.purge= clean --all
 
-CD %TLOC_DEP_PATH%
+CD %dependencyRootPath%
 CD ci
 CALL buildEngine.bat %buildConfig% %buildType% %platform%
 

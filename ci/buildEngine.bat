@@ -108,11 +108,11 @@ IF NOT %ERRORLEVEL%==0 (
 
 ECHO Build Status: %buildFailed%
 
-:: Delete output.txt
-del %WORKSPACE_PATH%\ci\output.txt
-
 :EXIT_BUILD
 IF %buildFailed%==0 (
+	:: Delete output.txt
+	del %WORKSPACE_PATH%\ci\output.txt
+
 	%ColorOk%
 	EXIT /b 0	
 ) ELSE (

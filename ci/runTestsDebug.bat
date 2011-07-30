@@ -1,4 +1,3 @@
 @echo off
-cd..
-SET TLOC_PATH=%CD%
-%TLOC_PATH%/proj/Debug/tlocTesting
+SET TLOC_PATH=%CD%/../
+%TLOC_PATH%/proj/Debug/tlocTesting.exe

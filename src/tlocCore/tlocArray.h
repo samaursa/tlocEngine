@@ -4,6 +4,18 @@
 #include "tlocBase.h"
 #include "tlocTypeTraits.h"
 
+//////////////////////////////////////////////////////////////////////////
+/* 
+ * INTRODUCTION
+ * 
+ * This class is heavily influenced by EASTL. As of writing this intro-
+ * duction, many functions are comparable directly to EASTL which may 
+ * change as time goes by. This class was made first and foremost for 
+ * educating me on building generic containers; so it is not a copy/paste
+ * of EASTL. Second purpose, of course, is to use it in the 2LoC engine.
+ */
+//////////////////////////////////////////////////////////////////////////
+
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
 
@@ -145,12 +157,15 @@ namespace tloc
   template <typename T>
   class Array : public ArrayBase<T>
   {
+    friend class Array<T>;
+
   public:
     //------------------------------------------------------------------------
     // Constructors
 
     Array();
-    Array(tl_size aSize);
+    explicit Array(tl_size aSize);
+    explicit Array( const Array<T>& toCopy);
 
     //------------------------------------------------------------------------
     // Capacity
@@ -158,6 +173,8 @@ namespace tloc
     TL_I void             resize(tl_size aNewSize );
     TL_I void             resize(tl_size aNewSize, const T& aValue );
     TL_I void             reserve(tl_size aNewCapacity);
+    TL_I void             shrink(tl_size aNewCapacity);
+    TL_I void             shrink_to_fit();
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -173,6 +190,7 @@ namespace tloc
     template <typename T_InputIterator>
     TL_I void             insert(iterator aPosition, T_InputIterator aRangeBegin,
                                  T_InputIterator aRangeEnd);
+    TL_I void             swap(Array<T>& aVec);
   protected:
 
     // Inserts the value in the specified position by moving all the elements
@@ -206,10 +224,13 @@ namespace tloc
     TL_I void             DoInsert(iterator position, T_InputIterator first,
                                    T_InputIterator last, type_false);
 
+    // Helper function for DoInsert
     template <typename T_InputIterator>
     TL_I void             DoInsertByIterator(iterator position,
                                              T_InputIterator first,
                                              T_InputIterator last);
+
+
 
 
   };

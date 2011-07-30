@@ -262,5 +262,48 @@ namespace TestingArray
     CHECK(ints.capacity() == 100);
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Shrink",
+                                                    "Test the shrink function")
+  {
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
+
+    REQUIRE(ints.size() == 100);
+
+    ints.shrink(50);
+
+    CHECK(ints.capacity() == 50);
+    CHECK(ints.size() == 50);
+
+    ints.reserve(200);
+
+    CHECK(ints.capacity() == 200);
+    CHECK(ints.size() == 50);
+
+    ints.shrink_to_fit();
+
+    CHECK(ints.capacity() == 50);
+    CHECK(ints.size() == 50);
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Swap",
+                                                      "Test the swap function")
+  {
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
+    FILL_INT_ARRAY_BY_PUSH(ints2, 0, 200);
+
+    REQUIRE(ints.size() == 100);
+    REQUIRE(ints2.size() == 200);
+
+    tl_size intsCap = ints.capacity();
+    tl_size ints2Cap = ints2.capacity();
+
+    ints.swap(ints2);
+
+    CHECK(ints.size() == 200);
+    CHECK(ints2.size() == 100);
+    CHECK(ints.capacity() == ints2Cap);
+    CHECK(ints2.capacity() == intsCap);
+  }
+
 #undef FILL_INT_ARRAY_BY_PUSH
 };

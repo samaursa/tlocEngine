@@ -322,6 +322,12 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     Allocate(aSize);
   }
 
+  template <typename T>
+  tloc::Array<T>::Array( const Array<T>& toCopy )
+  {
+
+  }
+
   //------------------------------------------------------------------------
   // Capacity
 
@@ -371,6 +377,40 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
     }
+  }
+
+  template <typename T>
+  TL_I void tloc::Array<T>::shrink( tl_size aNewCapacity )
+  {
+    if (aNewCapacity < capacity())
+    {
+      tl_size newSize = size();
+
+      // If the new capacity is smaller than the number of elements we are
+      // currently, storing, we need to destroy those elements
+      if (aNewCapacity < newSize)
+      {
+        newSize = aNewCapacity;
+        erase(m_begin + aNewCapacity, m_end);
+      }
+
+      T* ptr = DoReAllocate(aNewCapacity);
+
+      TLOC_ASSERT_ARRAY(ptr, "Could not re-allocate!");
+
+      if (ptr)
+      {
+        m_begin = ptr;
+        m_end = ptr + newSize;
+        m_capacity = ptr + aNewCapacity;
+      }
+    }
+  }
+
+  template <typename T>
+  TL_I void tloc::Array<T>::shrink_to_fit()
+  {
+    shrink(size());
   }
 
   //------------------------------------------------------------------------
@@ -453,6 +493,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     // The correct DoInsert() will be called depending on whether inputIntegral
     // is Int2Type<true> or Int2Type<false>
     DoInsert(aPosition, aRangeBegin, aRangeEnd, inputIntegral());
+  }
+
+  template <typename T>
+  TL_I void tloc::Array<T>::swap( Array<T>& aVec )
+  {
+    tloc::Swap(m_begin, aVec.m_begin);
+    tloc::Swap(m_end, aVec.m_end);
+    tloc::Swap(m_capacity, aVec.m_capacity);
   }
 
   //------------------------------------------------------------------------

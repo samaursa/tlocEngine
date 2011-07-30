@@ -46,5 +46,4 @@ namespace TestingTuple
     CHECK( (p == q) == true);
     CHECK( (p != q) == false);
   }
-
 };

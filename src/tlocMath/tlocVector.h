@@ -4,7 +4,7 @@
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTuple.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
 
 #include "tlocMath/tlocMath.h"
 

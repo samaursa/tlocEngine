@@ -3,18 +3,31 @@
 
 #define TLOC_ENABLE_ASSERT_LOW_LEVEL
 
+using namespace Catch::Detail;
+
 #include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocMemory.h"
+#include "tlocCore/tlocLinkMe.cpp"
+
+using namespace tloc;
+
+//------------------------------------------------------------------------
+// Core
+#include "tlocCore/tlocArray.h"
 #include "tlocCore/tlocTuple.h"
 #include "tlocCore/tlocTable.h"
+
+#include "tlocMemoryTest.h"
+#include "tlocTupleTest.h"
+#include "tlocTableTest.h"
+#include "tlocArrayTest.h"
+
+//------------------------------------------------------------------------
+// Math
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"
 #include "tlocMath/tlocMatrix.h"
 
-using namespace Catch::Detail;
-using namespace tloc;
-
-#include "tlocTupleTest.h"
-#include "tlocTableTest.h"
 #include "tlocMathTest.h"
 #include "tlocVector3Test.h"
 #include "tlocVector2Test.h"

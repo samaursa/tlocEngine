@@ -206,8 +206,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::pop_back( T& aOut )
   {
-    aOut = *(m_end);
-    --m_end;
+    aOut = *(m_end - 1);
+    pop_back();
   }
 
   template <typename T>

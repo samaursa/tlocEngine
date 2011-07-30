@@ -82,8 +82,8 @@ namespace tloc
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I tl_size         size() const;
-    TL_I tl_size         capacity() const;
+    TL_I tl_size          size() const;
+    TL_I tl_size          capacity() const;
     TL_I bool             empty() const;
     TL_I bool             full() const;
 

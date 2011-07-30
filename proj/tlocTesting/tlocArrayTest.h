@@ -18,11 +18,9 @@ namespace TestingArray
     arrayName[i] = i;\
   }\
 
-  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/General",
-                                                   "Test General functionality")
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Push_back",
+                                                   "Test push_back functionality")
   {
-    TLOC_ASSERT(NULL == NULL, "Test");
-
     ints.push_back(5);
     a = ints[0];
     CHECK(a == 5);
@@ -32,6 +30,31 @@ namespace TestingArray
     CHECK(a == 5);
     b = ints[1];
     CHECK(b == 10);
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Pop_back",
+                                                "Test pop_back functionality")
+  {
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
+    
+    REQUIRE(ints.size() == 100);
+
+    ints.pop_back();
+
+    CHECK(ints.size() == 99);
+
+    s32 toSave;
+    ints.pop_back(toSave);
+
+    CHECK(toSave == 98);
+
+    u32 arraySize = ints.size();
+    for (u32 i = 0; i < arraySize; ++i)
+    {
+      ints.pop_back();
+    }
+
+    CHECK(ints.size() == 0);
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Accessors",
@@ -225,6 +248,18 @@ namespace TestingArray
     {
       CHECK(ints[i-1] == 10);
     }
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Reserve", 
+                                                    "Test the reserve function")
+  {
+    ints.reserve(100);
+    
+    REQUIRE(ints.capacity() == 100);
+
+    FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
+
+    CHECK(ints.capacity() == 100);
   }
 
 #undef FILL_INT_ARRAY_BY_PUSH

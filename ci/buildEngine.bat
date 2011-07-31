@@ -6,7 +6,7 @@
 :: environment variables
 SET TLOC_PATH=%CD%\..\
 SET WORKSPACE_PATH=%TLOC_PATH%
-SET buildPath=%WORKSPACE_PATH%\proj\tlocEngine.sln
+SET buildPath=%WORKSPACE_PATH%\proj\VS\2008\tlocEngine.sln
 
 :: The following are the batch file arguments, leave them alone
 SET buildConfig=%1%

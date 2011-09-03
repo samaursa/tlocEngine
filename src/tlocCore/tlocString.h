@@ -1,26 +1,26 @@
 #ifndef TLOC_STRING_H
 #define TLOC_STRING_H
 
+#include "tlocArray.h"
+
 namespace tloc
 {
   template <typename T>
-  class String
+  class StringBase : public Array<T>
   {
   public:
-    String()
-    {
+    StringBase();
+    ~StringBase();
 
-    }
+    //------------------------------------------------------------------------
+    // Modifiers
 
-    ~String()
-    {
+  protected:
 
-    }
+    //------------------------------------------------------------------------
+    // Helper functions
 
 
-
-  private:
-    T* m_string;
   };
 };
 

@@ -182,6 +182,10 @@
 		<Filter
 			Name="Containers"
 			>
+			<File
+				RelativePath="..\..\src\tlocCore\tlocContainersReadme.txt"
+				>
+			</File>
 			<Filter
 				Name="Array"
 				>

@@ -217,10 +217,6 @@ namespace tloc
     TL_I void             DoInsertByIterator(iterator position,
                                              T_InputIterator first,
                                              T_InputIterator last);
-
-
-
-
   };
 };
 

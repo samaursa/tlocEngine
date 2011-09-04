@@ -15,7 +15,9 @@
 // The following macro can be commented out when compiling the engine which
 // allows safe removal of inline files altogether
 
-#define TLOC_FULL_SOURCE
+#ifndef TLOC_NO_SOURCE
+  #define TLOC_FULL_SOURCE
+#endif
 
 //------------------------------------------------------------------------
 // The following macros can be enabled to increase the size of the template

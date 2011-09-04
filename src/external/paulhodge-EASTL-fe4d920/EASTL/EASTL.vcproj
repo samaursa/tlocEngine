@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocTesting"
-	ProjectGUID="{7ABE1B54-4A64-4D34-88F0-530A48F6B514}"
-	RootNamespace="tlocTesting"
+	Name="EASTL"
+	ProjectGUID="{87EB229E-FBE4-4CBA-823C-AA24D642D714}"
+	RootNamespace="EASTL"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -40,13 +40,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="true"
-				WarningLevel="4"
+				RuntimeLibrary="3"
+				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -60,9 +57,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
-				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -115,12 +109,9 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="true"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -134,9 +125,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
-				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -173,66 +161,18 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<Filter
-				Name="Math"
-				>
-				<File
-					RelativePath=".\tlocMathTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrix2Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrix3Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrixTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVector2Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVector3Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVectorTest.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Core"
-				>
-				<File
-					RelativePath=".\tlocArrayTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMemoryTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocStringTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTableTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTupleTest.h"
-					>
-				</File>
-			</Filter>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 		</Filter>
 	</Files>
 	<Globals>

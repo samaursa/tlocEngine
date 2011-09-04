@@ -61,6 +61,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
+				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
@@ -134,6 +135,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib"
+				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"

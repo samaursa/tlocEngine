@@ -36,7 +36,7 @@ namespace TestingArray
                                                 "Test pop_back functionality")
   {
     FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
-
+    
     REQUIRE(ints.size() == 100);
 
     ints.pop_back();
@@ -205,9 +205,16 @@ namespace TestingArray
     CHECK(ints.size() == resizeSize);
 
     // Check that all 'resizeSize' elements have been allocated properly
-    for (u32 i = 0; i < resizeSize; ++i)
+    try
     {
-      ints[i] = i;
+      for (u32 i = 0; i < resizeSize; ++i)
+      {
+        ints[i] = i;
+      }
+    }
+    catch(...)
+    {
+      FAIL("Vector<T>::Resize() failed the allocation test");
     }
   }
 
@@ -243,11 +250,11 @@ namespace TestingArray
     }
   }
 
-  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Reserve",
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Reserve", 
                                                     "Test the reserve function")
   {
     ints.reserve(100);
-
+    
     REQUIRE(ints.capacity() == 100);
 
     FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);

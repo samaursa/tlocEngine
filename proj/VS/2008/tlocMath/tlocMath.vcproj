@@ -161,54 +161,54 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\tlocMath\tlocMath.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocMath\tlocMath.h"
+				RelativePath="..\..\..\..\src\tlocMath\tlocMath.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocMath\tlocMath.inl"
+				RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
 				>
 			</File>
 			<Filter
 				Name="Matrix"
 				>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.inl"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix2.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix2.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix2.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.inl"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix3.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix3.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocMatrix3.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.inl"
 					>
 				</File>
 			</Filter>
@@ -216,39 +216,39 @@
 				Name="Vector"
 				>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector.inl"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector2.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector2.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector2.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.inl"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector3.cpp"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector3.h"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocMath\tlocVector3.inl"
+					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.inl"
 					>
 				</File>
 			</Filter>

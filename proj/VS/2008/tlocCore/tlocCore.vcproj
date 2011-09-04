@@ -161,7 +161,7 @@
 					Name="DlMalloc"
 					>
 					<File
-						RelativePath="..\..\src\3rdParty\nedmalloc\malloc.c.h"
+						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\malloc.c.h"
 						>
 					</File>
 				</Filter>
@@ -169,11 +169,11 @@
 					Name="Nedmalloc"
 					>
 					<File
-						RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.c"
+						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\nedmalloc.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\3rdParty\nedmalloc\nedmalloc.h"
+						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\nedmalloc.h"
 						>
 					</File>
 				</Filter>
@@ -182,23 +182,19 @@
 		<Filter
 			Name="Containers"
 			>
-			<File
-				RelativePath="..\..\src\tlocCore\tlocContainersReadme.txt"
-				>
-			</File>
 			<Filter
 				Name="Array"
 				>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocArray.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\tlocArray.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocArray.h"
+					RelativePath="..\..\..\..\src\tlocCore\tlocArray.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocArray.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocArray.inl"
 					>
 				</File>
 			</Filter>
@@ -206,15 +202,15 @@
 				Name="List"
 				>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocList.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\tlocList.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocList.h"
+					RelativePath="..\..\..\..\src\tlocCore\tlocList.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocList.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocList.inl"
 					>
 				</File>
 			</Filter>
@@ -222,15 +218,15 @@
 				Name="Hashmap"
 				>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocHashmap.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocHashmap.h"
+					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocHashmap.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.inl"
 					>
 				</File>
 			</Filter>
@@ -238,15 +234,15 @@
 				Name="Stack"
 				>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocStack.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\tlocStack.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocStack.h"
+					RelativePath="..\..\..\..\src\tlocCore\tlocStack.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocStack.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocStack.inl"
 					>
 				</File>
 			</Filter>
@@ -254,15 +250,15 @@
 				Name="Queue"
 				>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocQueue.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocQueue.h"
+					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tlocCore\tlocQueue.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.inl"
 					>
 				</File>
 			</Filter>
@@ -271,27 +267,27 @@
 			Name="DataStructures"
 			>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTable.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTable.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTable.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTable.inl"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTable.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTuple.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTuple.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTuple.inl"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.inl"
 				>
 			</File>
 		</Filter>
@@ -299,15 +295,15 @@
 			Name="String"
 			>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocString.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocString.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocString.inl"
+				RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
 				>
 			</File>
 		</Filter>
@@ -315,44 +311,44 @@
 			Name="Types"
 			>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTemplateTypesN.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesN.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTemplateTypesNxM.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTemplateTypesNxM.helper.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.helper.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTypes.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\tlocCore\tlocTypeTraits.h"
+				RelativePath="..\..\..\..\src\tlocCore\tlocTypeTraits.h"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\src\tlocCore\tlocAlgorithms.h"
+			RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 			>
 		</File>
 		<File
-			RelativePath="..\..\src\tlocCore\tlocBase.h"
+			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
 			>
 		</File>
 		<File
-			RelativePath="..\..\src\tlocCore\tlocLinkMe.cpp"
+			RelativePath="..\..\..\..\src\tlocCore\tlocLinkMe.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\src\tlocCore\tlocMemory.h"
+			RelativePath="..\..\..\..\src\tlocCore\tlocMemory.h"
 			>
 		</File>
 		<File
-			RelativePath="..\..\src\tlocCore\tlocNoOpt.h"
+			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
 			>
 		</File>
 	</Files>

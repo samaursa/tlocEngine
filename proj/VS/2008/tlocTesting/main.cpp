@@ -14,6 +14,7 @@ using namespace tloc;
 //------------------------------------------------------------------------
 // Core
 #include "tlocCore/tlocArray.h"
+#include "tlocCore/tlocString.h"
 #include "tlocCore/tlocTuple.h"
 #include "tlocCore/tlocTable.h"
 
@@ -21,6 +22,7 @@ using namespace tloc;
 #include "tlocTupleTest.h"
 #include "tlocTableTest.h"
 #include "tlocArrayTest.h"
+#include "tlocStringTest.h"
 
 //------------------------------------------------------------------------
 // Math

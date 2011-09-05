@@ -25,4 +25,9 @@
 //------------------------------------------------------------------------
 // Include the definitions
 #include "tlocTable.inl"
+
+#else
+
+IntentionallyEmptySourceFile();
+
 #endif

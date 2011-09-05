@@ -4,18 +4,6 @@
 #include "tlocBase.h"
 #include "tlocTypeTraits.h"
 
-//////////////////////////////////////////////////////////////////////////
-/* 
- * INTRODUCTION
- * 
- * This class is heavily influenced by EASTL. As of writing this intro-
- * duction, many functions are comparable directly to EASTL which may 
- * change as time goes by. This class was made first and foremost for 
- * educating me on building generic containers; so it is not a copy/paste
- * of EASTL. Second purpose, of course, is to use it in the 2LoC engine.
- */
-//////////////////////////////////////////////////////////////////////////
-
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
 
@@ -229,10 +217,6 @@ namespace tloc
     TL_I void             DoInsertByIterator(iterator position,
                                              T_InputIterator first,
                                              T_InputIterator last);
-
-
-
-
   };
 };
 

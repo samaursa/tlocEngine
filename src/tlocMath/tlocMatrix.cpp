@@ -21,4 +21,9 @@
 //------------------------------------------------------------------------
 // Include the definitions
 #include "tlocMatrix.inl"
+
+#else
+
+IntentionallyEmptySourceFile();
+
 #endif // TLOC_NO_SOURCE

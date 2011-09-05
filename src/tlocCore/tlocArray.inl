@@ -1,8 +1,7 @@
 namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
-  // Macros
-
+  // Macros (mostly for assertions)
 
 #define TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(index) \
 #index _CRT_WIDE(" is out of range!")

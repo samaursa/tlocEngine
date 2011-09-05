@@ -20,4 +20,9 @@
 //------------------------------------------------------------------------
 // Include the definitions
 #include "tlocVector.inl"
+
+#else
+
+IntentionallyEmptySourceFile();
+
 #endif // TLOC_NO_SOURCE

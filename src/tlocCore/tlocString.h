@@ -1,27 +1,121 @@
 #ifndef TLOC_STRING_H
 #define TLOC_STRING_H
 
+#include "tlocArray.h"
+
+//------------------------------------------------------------------------
+// Fine grain control to enable/disable assertions in Strings
+
+#ifndef TLOC_DISABLE_ASSERT_STRING
+# define TLOC_ASSERT_STRING(_Expression, _Msg) TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
+#else
+# define TLOC_ASSERT_STRING(_Expression, _Msg)
+#endif
+
 namespace tloc
 {
+  //------------------------------------------------------------------------
+  // Ctor Helpers
+
+  struct StringNoInitialize {};
+  struct StringSprintf {};
+
+  //------------------------------------------------------------------------
+  // StringBase
+
   template <typename T>
-  class String
+  class StringBase : private Array<T>
   {
   public:
-    String()
+
+    //------------------------------------------------------------------------
+    // typedefs
+
+    typedef StringBase<T>                     this_type;
+    typedef T                                 value_type;
+    typedef T*                                pointer;
+    typedef const T*                          const_pointer;
+    typedef T&                                reference;
+    typedef const T&                          const_reference;
+    typedef T*                                iterator;
+    typedef const T*                          const_iterator;
+
+    //------------------------------------------------------------------------
+    // Constants
+
+    static const tl_size npos     = (tl_size) - 1;
+    static const tl_size kMaxSize = (tl_size) - 2;
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    //------------------------------------------------------------------------
+    // Functions
+
+    StringBase();
+    StringBase(const T& aOther, tl_size aPosition, tl_size aN = npos);
+    StringBase(const T* aPtr, tl_size aN);
+    explicit StringBase(const T* aPtr);
+    StringBase(tl_size aN, T aC);
+    StringBase(const T& aOther);
+    StringBase(const T* aPtrBegin, const T* aPtrEnd);
+    StringBase(StringNoInitialize, tl_size aN);
+    StringBase(StringSprintf, const tl_size aFormat, ...);
+
+    ~StringBase();
+
+    //------------------------------------------------------------------------
+    // Assignment
+
+    T&          operator = (const T& aX);
+    T&          operator = (const T* aPtr);
+    T&          operator = (T aC);
+
+    void        swap(T& aX);
+
+  protected:
+    T*        m_begin;
+    T*        m_end;
+    T*        m_capacity;
+
+    //------------------------------------------------------------------------
+    // Empty strings
+
+    typedef union EmptyString
     {
+      char8   m_Empty8[1];
+      uchar8  m_EmptyU8[1];
+      char32  m_Empty32[1];
+    }EmptyString;
 
-    }
+    static const EmptyString sm_emptyString;
 
-    ~String()
-    {
+    TL_STATIC_I const char8*      GetEmptyString(char8);
+    TL_STATIC_I const uchar8*     GetEmptyString(uchar8);
+    TL_STATIC_I const char32*     GetEmptyString(char32);
 
-    }
+    //------------------------------------------------------------------------
+    // Helper functions
 
+    TL_I T*               DoAllocate(tl_size aSize);
+    TL_I T*               DoReAllocate(tl_size aSize);
+    TL_I void             DoFree(T* aPtr);
 
+    TL_I void             DoAllocateSelf();
+    TL_I void             DoAllocateSelt(tl_size aSize);
+    TL_I void             DoDeallocateSelf();
 
-  private:
-    T* m_string;
   };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Free functions
+
+  TL_I void CharToLower();
+  TL_I void CharToUpper();
+  TL_I void StrLen();
+  TL_I void Find();
 };
+
+#include "tlocString.inl"
 
 #endif

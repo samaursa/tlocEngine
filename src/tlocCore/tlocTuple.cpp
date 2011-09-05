@@ -24,4 +24,9 @@
 //------------------------------------------------------------------------
 // Include the definitions
 #include "tlocTuple.inl"
+
+#else
+
+namespace { tloc::char8 dummy; } // To eliminate LNK4221 in MSVC
+
 #endif

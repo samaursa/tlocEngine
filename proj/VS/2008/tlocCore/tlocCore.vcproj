@@ -310,6 +310,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Types"

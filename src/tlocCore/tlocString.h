@@ -53,11 +53,11 @@ namespace tloc
     // Functions
 
     StringBase();
-    StringBase(const T& aX, tl_size aPosition, tl_size aN = npos);
+    StringBase(const T& aOther, tl_size aPosition, tl_size aN = npos);
     StringBase(const T* aPtr, tl_size aN);
     explicit StringBase(const T* aPtr);
     StringBase(tl_size aN, T aC);
-    StringBase(const T& aX);
+    StringBase(const T& aOther);
     StringBase(const T* aPtrBegin, const T* aPtrEnd);
     StringBase(StringNoInitialize, tl_size aN);
     StringBase(StringSprintf, const tl_size aFormat, ...);
@@ -103,6 +103,7 @@ namespace tloc
 
     TL_I void             DoAllocateSelf();
     TL_I void             DoAllocateSelt(tl_size aSize);
+    TL_I void             DoDeallocateSelf();
 
   };
 

@@ -7,6 +7,9 @@ namespace tloc
   TLOC_ASSERT_STRING( GetEmptyString(char32()) == 0, \
   "EmptyString is corrupted! (no longer empty)");
 
+#define TLOC_ASSERT_STRING_INDEX(_index) \
+  TLOC_ASSERT_STRING( _index < length(), "Invalid index!")
+
   //////////////////////////////////////////////////////////////////////////
   // StringBase<T>
 
@@ -28,6 +31,12 @@ namespace tloc
 
   }
 
+  template <typename T>
+  StringBase<T>::~StringBase()
+  {
+    DoDeallocateSelf();
+  }
+
   //------------------------------------------------------------------------
   // Empty Strings
 
@@ -35,19 +44,19 @@ namespace tloc
   const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
   template <typename T>
-  TL_STATIC_I const char8* StringBase<T>::GetEmptyString( char8 )
+  TL_I const char8* StringBase<T>::GetEmptyString( char8 )
   {
     return sm_emptyString.m_Empty8;
   }
 
   template <typename T>
-  TL_STATIC_I const uchar8* StringBase<T>::GetEmptyString( uchar8 )
+  TL_I const uchar8* StringBase<T>::GetEmptyString( uchar8 )
   {
     return sm_emptyString.m_EmptyU8;
   }
 
   template <typename T>
-  TL_STATIC_I const char32* StringBase<T>::GetEmptyString( char32 )
+  TL_I const char32* StringBase<T>::GetEmptyString( char32 )
   {
     return sm_emptyString.m_Empty32;
   }
@@ -110,10 +119,92 @@ namespace tloc
   template <typename T>
   TL_I void StringBase<T>::DoDeallocateSelf()
   {
-    if (m_begin == &sm_emptyString)
+    if (m_begin == GetEmptyString(T()))
     {
       DoFree(m_begin);
     }
   }
 
+  //------------------------------------------------------------------------
+  // Element access
+
+  template <typename T>
+  TL_I const T& StringBase<T>::operator[]( tl_size aPos ) const
+  {
+    TLOC_ASSERT_STRING_INDEX(aPos);
+    return *(m_begin + aPos);
+  }
+
+  template <typename T>
+  TL_I T& StringBase<T>::operator[]( tl_size aPos )
+  {
+    TLOC_ASSERT_STRING_INDEX(aPos);
+    return *(m_begin + aPos);
+  }
+
+  template <typename T>
+  TL_I const T& StringBase<T>::at( tl_size aPos ) const
+  {
+    TLOC_ASSERT_STRING_INDEX(aPos);
+    return *(m_begin + aPos);
+  }
+
+  template <typename T>
+  TL_I T& StringBase<T>::at( tl_size aPos )
+  {
+    TLOC_ASSERT_STRING_INDEX(aPos);
+    return *(m_begin + aPos);
+  }
+
+  //------------------------------------------------------------------------
+  // Capacity
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::size() const
+  {
+    return (tl_size)(m_end - m_begin);
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::length() const
+  {
+    return (tl_size)(m_end - m_begin);
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::max_size() const
+  {
+    return m_MaxSize;
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::resize()
+  {
+
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::capacity() const
+  {
+    // Do not report the memory allocated for the null terminator
+    return (tl_size)(m_capacity - m_begin - 1);
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::reserve()
+  {
+
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::clear()
+  {
+
+  }
+
+  template <typename T>
+  TL_I bool StringBase<T>::empty()
+  {
+    return (m_begin == m_end);
+  }
 };

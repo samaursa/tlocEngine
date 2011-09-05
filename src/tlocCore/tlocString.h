@@ -44,7 +44,6 @@ namespace tloc
     // Constants
 
     static const tl_size npos     = (tl_size) - 1;
-    static const tl_size kMaxSize = (tl_size) - 2;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -67,16 +66,37 @@ namespace tloc
     //------------------------------------------------------------------------
     // Assignment
 
-    T&          operator = (const T& aX);
-    T&          operator = (const T* aPtr);
-    T&          operator = (T aC);
+    TL_I T&         operator = (const T& aX);
+    TL_I T&         operator = (const T* aPtr);
+    TL_I T&         operator = (T aC);
 
-    void        swap(T& aX);
+    TL_I void       swap(T& aX);
+
+    //------------------------------------------------------------------------
+    // Element access
+
+    TL_I const T&   operator [] (tl_size aPos) const;
+    TL_I T&         operator [] (tl_size aPos);
+
+    TL_I const T&   at(tl_size aPos) const;
+    TL_I T&         at(tl_size aPos);
+
+    //------------------------------------------------------------------------
+    // Capacity
+
+    TL_I tl_size    size() const;
+    TL_I tl_size    length() const;
+    TL_I tl_size    max_size() const;
+    TL_I void       resize();
+    TL_I tl_size    capacity() const;
+    TL_I void       reserve();
+    TL_I void       clear();
+    TL_I bool       empty();
 
   protected:
-    T*        m_begin;
-    T*        m_end;
-    T*        m_capacity;
+    TL_I T*         m_begin;
+    TL_I T*         m_end;
+    TL_I T*         m_capacity;
 
     //------------------------------------------------------------------------
     // Empty strings
@@ -105,6 +125,10 @@ namespace tloc
     TL_I void             DoAllocateSelt(tl_size aSize);
     TL_I void             DoDeallocateSelf();
 
+    //------------------------------------------------------------------------
+    // Constants
+
+    static const tl_size m_MaxSize  = (tl_size) - 2;
   };
 
   //////////////////////////////////////////////////////////////////////////

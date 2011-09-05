@@ -215,7 +215,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(aPosition);
 
     aPosition->~T();
-    Copy(aPosition + 1, m_end, aPosition);
+    tlCopy(aPosition + 1, m_end, aPosition);
     --m_end;
   }
 
@@ -232,7 +232,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       ++aRangeBegin;
     }
 
-    Copy(aRangeEnd, m_end, copyRemainingTo);
+    tlCopy(aRangeEnd, m_end, copyRemainingTo);
 
     m_end = m_end - (aRangeEnd - copyRemainingTo);
   }
@@ -423,7 +423,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(aRepetitionNum);
     }
 
-    Fill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
+    tlFill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
   }
 
   template <typename T>
@@ -432,11 +432,11 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                               T_InputIterator aRangeEnd )
   {
     typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isIntegral> inputIntegral;
+    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     // The correct DoInsert() will be called depending on whether inputIntegral
     // is Int2Type<true> or Int2Type<false>
-    DoAssign(aRangeBegin, aRangeEnd, inputIntegral());
+    DoAssign(aRangeBegin, aRangeEnd, inputArith());
   }
 
   template <typename T>
@@ -497,9 +497,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void tloc::Array<T>::swap( Array<T>& aVec )
   {
-    tloc::Swap(m_begin, aVec.m_begin);
-    tloc::Swap(m_end, aVec.m_end);
-    tloc::Swap(m_capacity, aVec.m_capacity);
+    tloc::tlSwap(m_begin, aVec.m_begin);
+    tloc::tlSwap(m_end, aVec.m_end);
+    tloc::tlSwap(m_capacity, aVec.m_capacity);
   }
 
   //------------------------------------------------------------------------
@@ -521,7 +521,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
       ::new(m_end) T(*(m_end - 1)); // We need to allocate it first
-      Copy_Backward(aPosition, m_end - 1, m_end);
+      tlCopy_Backward(aPosition, m_end - 1, m_end);
       *aPosition = *valuePtr;
       ++m_end;
     }
@@ -561,7 +561,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
         ::new(m_end++) T();
       }
 
-      Copy_Backward(aPosition, aPosition + elemsToMove, m_end);
+      tlCopy_Backward(aPosition, aPosition + elemsToMove, m_end);
 
       while (aPosition != m_end - elemsToMove)
       {
@@ -615,7 +615,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(projectedSize);
     }
 
-    Copy(aRangeBegin, aRangeEnd, m_begin);
+    tlCopy(aRangeBegin, aRangeEnd, m_begin);
   }
 
   template <typename T>

@@ -1,7 +1,10 @@
 #ifndef TLOC_STRING_H
 #define TLOC_STRING_H
 
-#include "tlocArray.h"
+#include "tlocBase.h"
+#include "tlocTypeTraits.h"
+
+#include <string.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Strings
@@ -24,21 +27,21 @@ namespace tloc
   // StringBase
 
   template <typename T>
-  class StringBase : private Array<T>
+  class StringBase
   {
   public:
 
     //------------------------------------------------------------------------
     // typedefs
 
-    typedef StringBase<T>                     this_type;
-    typedef T                                 value_type;
-    typedef T*                                pointer;
-    typedef const T*                          const_pointer;
-    typedef T&                                reference;
-    typedef const T&                          const_reference;
-    typedef T*                                iterator;
-    typedef const T*                          const_iterator;
+    typedef StringBase<T>   this_type;
+    typedef T               value_type;
+    typedef T*              pointer;
+    typedef const T*        const_pointer;
+    typedef T&              reference;
+    typedef const T&        const_reference;
+    typedef T*              iterator;
+    typedef const T*        const_iterator;
 
     //------------------------------------------------------------------------
     // Constants
@@ -52,11 +55,11 @@ namespace tloc
     // Functions
 
     StringBase();
-    StringBase(const T& aOther, tl_size aPosition, tl_size aN = npos);
-    StringBase(const T* aPtr, tl_size aN);
+    StringBase(const StringBase<T>& aOther);
+    StringBase(const StringBase<T>& aOther, tl_size aPosition, tl_size aNumChars = npos);
+    StringBase(const T* aPtr, tl_size aNumChars);
     explicit StringBase(const T* aPtr);
-    StringBase(tl_size aN, T aC);
-    StringBase(const T& aOther);
+    StringBase(tl_size aNumChars, T aChar);
     StringBase(const T* aPtrBegin, const T* aPtrEnd);
     StringBase(StringNoInitialize, tl_size aN);
     StringBase(StringSprintf, const tl_size aFormat, ...);
@@ -115,15 +118,18 @@ namespace tloc
     TL_STATIC_I const char32*     GetEmptyString(char32);
 
     //------------------------------------------------------------------------
-    // Helper functions
+    // Internal functions
 
     TL_I T*               DoAllocate(tl_size aSize);
     TL_I T*               DoReAllocate(tl_size aSize);
     TL_I void             DoFree(T* aPtr);
 
     TL_I void             DoAllocateSelf();
-    TL_I void             DoAllocateSelt(tl_size aSize);
+    TL_I void             DoAllocateSelf(tl_size aSize);
     TL_I void             DoDeallocateSelf();
+
+    void                  RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
+    void                  RangeInitialize(const T* aPtrBegin);
 
     //------------------------------------------------------------------------
     // Constants
@@ -134,10 +140,20 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Free functions
 
+  template <typename T>
+  TL_I tl_size StrLen(const T* aCharStr);
+  template <>
+  TL_I tl_size StrLen(const char8* aCharStr);
+
   TL_I void CharToLower();
   TL_I void CharToUpper();
-  TL_I void StrLen();
+
+
   TL_I void Find();
+
+  template <typename T>
+  TL_I T* DoCopyString(T* aDestination, const T* aSourceBegin,
+                       const T* aSourceEnd);
 };
 
 #include "tlocString.inl"

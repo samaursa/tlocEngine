@@ -1,6 +1,8 @@
 #ifndef TLOC_ALGORITHMS_H
 #define TLOC_ALGORITHMS_H
 
+#include "tlocTypeTraits.h"
+
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms
 
@@ -13,7 +15,13 @@
 namespace tloc
 {
   template <typename T>
-  void Swap(T& a, T& b)
+  TL_I const T& tlMin(const T& a, const T& b)
+  {
+    return a < b ? a : b;
+  }
+
+  template <typename T>
+  TL_I void tlSwap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }
@@ -24,8 +32,8 @@ namespace tloc
   // ^                     ^
   // aRangeBegin           aRangeEnd (copy 5,4,6,7,2,3,8,4,5,6,7 inclusive)
   template <typename T_InputIterator, typename T_OutputIterator>
-  T_OutputIterator Copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                        T_OutputIterator aDestRangeBegin)
+  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                               T_OutputIterator aDestRangeBegin)
   {
     TLOC_ASSERT_ALGORITHMS(aDestRangeBegin < aRangeBegin || aDestRangeBegin > aRangeEnd,
       "Output iterator is within the begin/end range (data over-writing)! - "
@@ -33,12 +41,13 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
       "aRangeBegin > aRangeEnd (infinite loop)!");
 
-    while (aRangeBegin != aRangeEnd)
-    {
-      *(aDestRangeBegin++) = *(aRangeBegin++);
-    }
+    // We assume that the inputs are pointers. We can then find out whether they
+    // are integral pointers or complex
+    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef Loki::TypeTraits<inputDeref> inputUnknown;
+    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
 
-    return aDestRangeBegin;
+    return tlCopy(aRangeBegin, aRangeEnd, aDestRangeBegin, inputArith());
   }
 
   // Copies the range of elements [aRangeBegin, aRangeEnd) to aCopyTo and returns
@@ -52,9 +61,9 @@ namespace tloc
   //                 ^
   //                 aDestRangeEnd (past-the-end, which is 8)
   template <typename T_InputIterator, typename T_OutputIterator>
-  T_OutputIterator Copy_Backward(T_InputIterator aRangeBegin,
-                                 T_InputIterator aRangeEnd,
-                                 T_OutputIterator aDestRangeEnd)
+  TL_I T_OutputIterator tlCopy_Backward(T_InputIterator aRangeBegin,
+                                        T_InputIterator aRangeEnd,
+                                        T_OutputIterator aDestRangeEnd)
   {
     TLOC_ASSERT_ALGORITHMS(aDestRangeEnd < aRangeBegin || aDestRangeEnd > aRangeEnd,
       "Output past-the-end iterator is within the begin/end range (data "
@@ -71,8 +80,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator, typename T>
-  void Fill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-            const T& aValue)
+  TL_I void tlFill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                   const T& aValue)
   {
     while (aRangeBegin != aRangeEnd)
     {
@@ -80,6 +89,34 @@ namespace tloc
       ++aRangeBegin;
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Internal use only
+
+  //------------------------------------------------------------------------
+  // Copy() helpers
+
+  template <typename T_InputIterator, typename T_OutputIterator>
+  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                               T_OutputIterator aDestRangeBegin, type_false)
+  {
+    while (aRangeBegin != aRangeEnd)
+    {
+      *(aDestRangeBegin++) = *(aRangeBegin++);
+    }
+
+    return aDestRangeBegin;
+  }
+
+  template <typename T_InputIterator, typename T_OutputIterator>
+  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                               T_OutputIterator aDestRangeBegin, type_true)
+  {
+    memmove( aDestRangeBegin, aRangeBegin,
+      (tl_size)(aRangeEnd - aRangeBegin) * sizeof(T_InputIterator) );
+    return aDestRangeBegin + (aRangeEnd - aRangeBegin);
+  }
+
 }
 
 #endif

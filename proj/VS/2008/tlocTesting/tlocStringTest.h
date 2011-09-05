@@ -8,6 +8,6 @@ namespace TestingStrings
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Construction",
     "Test basic string construction")
   {
-
+    StringBase<char8> g(a, 0);
   }
 };

@@ -92,7 +92,9 @@
 // TLOC_USE_NED_MALLOC
 
 // Use nedmalloc
-#define TLOC_USE_NED_MALLOC
+#ifndef TLOC_USE_STD_ALLOC
+  #define TLOC_USE_NED_MALLOC
+#endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)

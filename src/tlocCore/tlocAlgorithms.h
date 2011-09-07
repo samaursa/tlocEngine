@@ -112,9 +112,14 @@ namespace tloc
   TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                                T_OutputIterator aDestRangeBegin, type_true)
   {
+    // We need the size of what the pointer is pointing to, not the pointer
+    // itself
+    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+
+    tl_size rangeSize = aRangeEnd - aRangeBegin;
     memmove( aDestRangeBegin, aRangeBegin,
-      (tl_size)(aRangeEnd - aRangeBegin) * sizeof(T_InputIterator) );
-    return aDestRangeBegin + (aRangeEnd - aRangeBegin);
+      (tl_size)(rangeSize) * sizeof(inputDeref) );
+    return aDestRangeBegin + rangeSize;
   }
 
 }

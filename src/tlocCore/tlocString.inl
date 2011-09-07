@@ -4,7 +4,7 @@ namespace tloc
   // Macros (mostly for assertions)
 
 #define TLOC_ASSERT_STRING_EMPTY_STRING() \
-  TLOC_ASSERT_STRING( GetEmptyString(char32()) == 0, \
+  TLOC_ASSERT_STRING( *(GetEmptyString(char32())) == 0, \
   "EmptyString is corrupted! (no longer empty)");
 
 #define TLOC_ASSERT_STRING_INDEX(_index) \
@@ -52,6 +52,12 @@ namespace tloc
     {
       RangeInitialize(aOther.m_begin + aPosition, aOther.m_begin + aPosition + aN);
     }
+  }
+
+  template <typename T>
+  StringBase<T>::StringBase(const T* aPtr, tl_size aNumChars)
+  {
+    RangeInitialize(aPtr, aPtr + aNumChars);
   }
 
   template <typename T>
@@ -222,7 +228,7 @@ namespace tloc
   template <typename T>
   TL_I void StringBase<T>::DoDeallocateSelf()
   {
-    if (m_begin == GetEmptyString(T()))
+    if (m_begin != GetEmptyString(T()))
     {
       DoFree(m_begin);
     }
@@ -239,12 +245,19 @@ namespace tloc
   template <typename T>
   void StringBase<T>::RangeInitialize( const T* aPtrBegin, const T* aPtrEnd )
   {
-    TLOC_ASSERT_STRING_RANGE(aPtrBegin, aPtrEnd);
+    if (aPtrBegin != aPtrEnd)
+    {
+      TLOC_ASSERT_STRING_RANGE(aPtrBegin, aPtrEnd);
 
-    DoAllocateSelf( (tl_size)(aPtrEnd - aPtrBegin + 1));
+      DoAllocateSelf( (tl_size)(aPtrEnd - aPtrBegin + 1));
 
-    m_end = tlCopy(aPtrBegin, aPtrEnd, m_begin);
-    *m_end = 0; // Null terminator
+      m_end = tlCopy(aPtrBegin, aPtrEnd, m_begin);
+      *m_end = 0; // Null terminator
+    }
+    else
+    {
+      DoAllocateSelf();
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////

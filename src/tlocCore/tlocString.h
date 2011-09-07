@@ -97,9 +97,9 @@ namespace tloc
     TL_I bool       empty();
 
   protected:
-    TL_I T*         m_begin;
-    TL_I T*         m_end;
-    TL_I T*         m_capacity;
+    T*              m_begin;
+    T*              m_end;
+    T*              m_capacity;
 
     //------------------------------------------------------------------------
     // Empty strings

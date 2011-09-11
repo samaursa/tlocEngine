@@ -1,5 +1,3 @@
 #include "tlocString.h"
 
-namespace tloc
-{
-}
+IntentionallyEmptySourceFile();

@@ -247,13 +247,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Internal functions
 
   template <typename T>
-  TL_I T* ArrayBase<T>::DoAllocate( tl_size aSize )
+  TL_I T* ArrayBase<T>::DoAllocate( const tl_size& aSize )
   {
     return aSize ? (T*)TL_MALLOC(aSize * sizeof(T)) : NULL;
   }
 
   template <typename T>
-  TL_I T* ArrayBase<T>::DoReAllocate( tl_size aSize )
+  TL_I T* ArrayBase<T>::DoReAllocate( const tl_size& aSize )
   {
     return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize);
   }
@@ -286,9 +286,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::DoReAllocate()
   {
-    tl_size prevSize = size();
-    tl_size prevCap  = capacity();
-    tl_size newCap  = prevCap ? (2 * prevCap) : sm_defaultCapacity;
+    const tl_size prevSize = size();
+    const tl_size prevCap  = capacity();
+    const tl_size newCap   = prevCap ? (2 * prevCap) : sm_defaultCapacity;
     T* ptr;
 
     // DoReallocate may malloc or realloc depending on the initial size
@@ -657,8 +657,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
     else
     {
-      reserve(newSize);
-      DoInsertByIterator(position, first, last);
+      const tl_size oldPosition = (tl_size)( position - m_begin);
+      reserve(newSize); // 'position' is now invalid
+      DoInsertByIterator(m_begin + oldPosition, first, last);
     }
   }
 };

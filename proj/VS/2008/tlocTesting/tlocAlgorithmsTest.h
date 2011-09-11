@@ -26,7 +26,7 @@ namespace TestingAlgorithms
     { // tlCopy arithmetic types
       const char8* testString = "This is a test string"; // 21 chars including /0
       const char8* stringEnd = testString + 22; // copy does not include stringEnd
-      char8* copiedString = new char8[stringEnd - stringEnd];
+      char8* copiedString = new char8[stringEnd - testString];
 
       tlCopy(testString, stringEnd, copiedString);
 

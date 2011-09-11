@@ -23,6 +23,12 @@ namespace tloc
   template <typename T>
   TL_I const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
+  template <typename T>
+  const tl_size StringBase<T>::m_MaxSize = (tl_size) - 2;
+
+  template <typename T>
+  const tl_size StringBase<T>::sm_defaultCapacity = 2;
+
   //------------------------------------------------------------------------
   // Ctors
 
@@ -204,10 +210,64 @@ namespace tloc
   }
 
   //------------------------------------------------------------------------
+  // Modifiers
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::operator+=( const StringBase<T>& str )
+  {
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::operator+=( const T* charStr )
+  {
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::operator+=( const T& character )
+  {
+    return *this;
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I StringBase<T>& StringBase<T>::append( T_InputIterator aBegin,
+                                             T_InputIterator aEnd )
+  {
+    if (aBegin != aEnd)
+    {
+      const tl_size oldSize = size();
+      const tl_size oldCapacity = capacity();
+      const tl_size rangeSize = (tl_size)(aEnd - aBegin);
+
+      if ( (oldSize + rangeSize + 1) > oldCapacity ) // +1 because of /0
+      {
+        DoReAllocateAndAdjust(oldSize + rangeSize + 1);
+      }
+
+      m_end = tlCopy(aBegin, aEnd, m_end);
+      *m_end = 0;
+    }
+
+    return *this;
+  }
+
+  //------------------------------------------------------------------------
+  // Operations
+
+  template <typename T>
+  TL_I const T* StringBase<T>::c_str()
+  {
+    return m_begin;
+  }
+
+
+  //------------------------------------------------------------------------
   // Internal functions
 
   template <typename T>
-  TL_I T* StringBase<T>::DoAllocate( tl_size aSize )
+  TL_I T* StringBase<T>::DoAllocate( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize > 1,
       "Allocation size must be greater than 1 for the null terminator");
@@ -216,12 +276,68 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I T* StringBase<T>::DoReAllocate( tl_size aSize )
+  TL_I T* StringBase<T>::DoReAllocate( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize > 1,
       "Allocation size must be greater than 1 for the null terminator");
 
-    return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize);
+    // Make sure that the size is not 0, otherwise we would trying to reallocate
+    // the emptry string
+    if (size() != 0) { return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize); }
+    else { return DoAllocate(aSize); }
+  }
+
+  /*!
+   * \brief Reallocates to aSize
+   *
+   * Increases the storage capacity by reallocation. The function also readjusts
+   * the iterators.
+   *
+   * \return void
+   * \note Function does not do anything if ReAllocate() fails
+   * \warning
+   */
+  template <typename T>
+  TL_I void StringBase<T>::DoReAllocateAndAdjust( const tl_size& aSize )
+  {
+    const tl_size prevSize = size();
+    const tl_size newCap   = aSize;
+
+    T* ptr = DoReAllocate(aSize);
+
+    TLOC_ASSERT_STRING(ptr != NULL, "Could not allocate/re-allocate!");
+
+    if (ptr)
+    {
+      m_begin     = ptr;
+      m_end       = m_begin + prevSize;
+      m_capacity  = m_begin + newCap;
+    }
+  }
+
+  /*!
+   * \brief Reallocates automatically
+   *
+   * Increases the storage capacity by reallocation. This function automatically
+   * resizes the array according to the formula:
+   * \f[
+   * newCapacity = m_capacity ? capacity() * 2 : sm_defaultCapacity;
+   * \f]
+   * and adjusts the iterators. If successful, old iterators are considered
+   * invalid.
+   *
+   * \return void
+   * \note Function does not do anything if ReAllocate() fails
+   * \warning
+   */
+  template <typename T>
+  void StringBase<T>::DoReAllocateAndAdjust()
+  {
+    const tl_size prevSize = size();
+    const tl_size prevCap  = capacity();
+    const tl_size newCap   = prevCap ? (2 * prevCap) : sm_defaultCapacity;
+
+    DoReAllocateAndAdjust(newCap);
   }
 
   template <typename T>
@@ -241,7 +357,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I void StringBase<T>::DoAllocateSelf( tl_size aSize )
+  TL_I void StringBase<T>::DoAllocateSelf( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize <= (tl_size)std::numeric_limits<tl_size>::max,
       "Allocating too large a value!");
@@ -312,5 +428,44 @@ namespace tloc
     return (tl_size)strlen(aCharStr); // According to EASTL, this should call intrinsics
   }
 
+  template <typename T>
+  TL_I s32 StrCmp( const T* aPtr1, const T* aPtr2 )
+  {
+    while (*aPtr1 != 0 && *aPtr2 != 0)
+    {
+      if (*aPtr1 != *aPtr2)
+      {
+        return *aPtr1 > *aPtr2 ? 1 : -1;
+      }
 
+      ++aPtr1; ++aPtr2;
+    }
+
+    if (*aPtr1 != 0 || *aPtr2 != 0)
+    {
+      return *aPtr1 > *aPtr2 ? 1 : -1;
+    }
+
+    return 0;
+  }
+
+  template <typename T>
+  TL_I s32 StrCmp( const T* aPtr1, const T* aPtr2, const tl_size& aNumChars )
+  {
+    for (tl_size i = aNumChars; i > 0; --i)
+    {
+      if (*aPtr1 != aPtr2)
+      {
+        return *aPtr1 > *aPtr2 ? 1 : -1;
+      }
+    }
+
+    return 0;
+  }
+
+  template <>
+  TL_I s32 StrCmp( const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars )
+  {
+    return memcmp(aPtr1, aPtr2, aNumChars);
+  }
 };

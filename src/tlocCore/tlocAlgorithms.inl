@@ -10,6 +10,12 @@ namespace tloc
   }
 
   template <typename T>
+  TL_I const T& tlMax(const T& a, const T& b)
+  {
+    return a < b ? b : a;
+  }
+
+  template <typename T>
   TL_I void tlSwap(T& a, T& b)
   {
     T c(a); a = b; b = c;

@@ -2,6 +2,7 @@
 #define TLOC_STRING_H
 
 #include "tlocBase.h"
+#include "tlocAlgorithms.h"
 #include "tlocTypeTraits.h"
 
 #include <string.h>
@@ -34,7 +35,7 @@ namespace tloc
     //------------------------------------------------------------------------
     // typedefs
 
-    typedef StringBase<T>   this_type;
+    typedef StringBase<T>   StringBaseT;
     typedef T               value_type;
     typedef T*              pointer;
     typedef const T*        const_pointer;
@@ -106,6 +107,25 @@ namespace tloc
     TL_I void       clear();
     TL_I bool       empty();
 
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    TL_I StringBaseT& operator+= (const StringBaseT& aStr);
+    TL_I StringBaseT& operator+= (const T* aCharStr);
+    TL_I StringBaseT& operator+= (const T& aChar);
+
+    TL_I StringBaseT& append(const StringBaseT& aStr);
+    TL_I StringBaseT& append(const StringBaseT& aStr, tl_size aPos, tl_size aNumChars);
+    TL_I StringBaseT& append(const T* charArray, tl_size aNumChars);
+    TL_I StringBaseT& append(const T* charStr);
+    TL_I StringBaseT& append(tl_size aNumChars, T aChar);
+    template <typename T_InputIterator>
+    TL_I StringBaseT& append(T_InputIterator aBegin, T_InputIterator aEnd);
+
+    //------------------------------------------------------------------------
+    // Operations
+    TL_I const T*     c_str();
+
   protected:
     T*              m_begin;
     T*              m_end;
@@ -130,12 +150,14 @@ namespace tloc
     //------------------------------------------------------------------------
     // Internal functions
 
-    TL_I T*               DoAllocate(tl_size aSize);
-    TL_I T*               DoReAllocate(tl_size aSize);
+    TL_I T*               DoAllocate(const tl_size& aSize);
+    TL_I T*               DoReAllocate(const tl_size& aSize);
+    TL_I void             DoReAllocateAndAdjust(const tl_size& aSize);
+    TL_I void             DoReAllocateAndAdjust();
     TL_I void             DoFree(T* aPtr);
 
     TL_I void             DoAllocateSelf();
-    TL_I void             DoAllocateSelf(tl_size aSize);
+    TL_I void             DoAllocateSelf(const tl_size& aSize);
     TL_I void             DoDeallocateSelf();
 
     void                  RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
@@ -145,18 +167,26 @@ namespace tloc
     // Constants
 
     static const tl_size m_MaxSize  = (tl_size) - 2;
+    static const tl_size sm_defaultCapacity;
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Free functions
 
   template <typename T>
-  TL_I tl_size StrLen(const T* aCharStr);
+  TL_I tl_size    StrLen(const T* aCharStr);
   template <>
-  TL_I tl_size StrLen(const char8* aCharStr);
+  TL_I tl_size    StrLen(const char8* aCharStr);
 
-  TL_I void CharToLower();
-  TL_I void CharToUpper();
+  template <typename T>
+  TL_I s32        StrCmp(const T* aPtr1, const T* aPtr2);
+  template <typename T>
+  TL_I s32        StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
+  template <>
+  TL_I s32        StrCmp(const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars);
+
+  TL_I void       CharToLower();
+  TL_I void       CharToUpper();
 
 
   TL_I void Find();

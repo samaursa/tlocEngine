@@ -110,8 +110,8 @@ namespace tloc
     //------------------------------------------------------------------------
     // Functions that call memory allocators directly
 
-    TL_I T*               DoAllocate(tl_size aSize);
-    TL_I T*               DoReAllocate(tl_size aSize);
+    TL_I T*               DoAllocate(const tl_size& aSize);
+    TL_I T*               DoReAllocate(const tl_size& aSize);
     TL_I void             DoFree(T* aPtr);
 
     // Destroys a range of values only

@@ -92,7 +92,9 @@
 // TLOC_USE_NED_MALLOC
 
 // Use nedmalloc
-#define TLOC_USE_NED_MALLOC
+#ifndef TLOC_USE_STD_ALLOC
+  #define TLOC_USE_NED_MALLOC
+#endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)
@@ -192,17 +194,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
-// Deprecated macros
-#pragma deprecated("FWASSERT") // Consider using TLOC_ASSERT
-#pragma deprecated("FwAssert") // Consider using TLOC_ASSERT
-
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-
-// Deprecated
-# define FwAssert(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(_Msg L" (" _CRT_WIDE(__FUNCTION__) L")", _CRT_WIDE(__FILE__), __LINE__), 0) )
-# define FWASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(_CRT_WIDE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 
 // Supported assert macros
 # define TLOC_ASSERT_MESSAGE(msg)\

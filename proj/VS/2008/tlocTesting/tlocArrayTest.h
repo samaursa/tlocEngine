@@ -1,8 +1,14 @@
 namespace TestingArray
 {
+  class SomeClass
+  {
+  public:
+    int dummy;
+  };
+
   struct ArrayFixture
   {
-    int a, b, c, d, e, f;
+    Array<SomeClass> someClass, someClass2, someClass3;
     Array<s32> ints, ints2, ints3;
   };
 
@@ -21,6 +27,8 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Push_back",
                                                    "Test push_back functionality")
   {
+    int a, b = 0;
+
     ints.push_back(5);
     a = ints[0];
     CHECK(a == 5);
@@ -103,6 +111,15 @@ namespace TestingArray
     ints.erase(ints.begin(), ints.end());
     CHECK(ints.size() == 0);
     CHECK(ints.capacity() == currCapacity);
+
+    //------------------------------------------------------------------------
+    // Check that correct erase is being called on an object
+
+    someClass.push_back(SomeClass());
+    someClass.push_back(SomeClass());
+    someClass.push_back(SomeClass());
+
+    someClass.erase(someClass.begin());
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Clear",

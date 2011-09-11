@@ -14,17 +14,17 @@
 
 namespace tloc
 {
-  template <typename T>
-  TL_I const T& tlMin(const T& a, const T& b)
-  {
-    return a < b ? a : b;
-  }
+  //------------------------------------------------------------------------
+  // Min / Max
 
   template <typename T>
-  TL_I void tlSwap(T& a, T& b)
-  {
-    T c(a); a = b; b = c;
-  }
+  TL_I const T& tlMin(const T& a, const T& b);
+
+  template <typename T>
+  TL_I void tlSwap(T& a, T& b);
+
+  //------------------------------------------------------------------------
+  // Modifying sequence operations
 
   // Copies the range of elements [aRangeBegin, aRangeEnd) to aCopyTo and returns
   // an iterator to the end of the destination range
@@ -33,22 +33,7 @@ namespace tloc
   // aRangeBegin           aRangeEnd (copy 5,4,6,7,2,3,8,4,5,6,7 inclusive)
   template <typename T_InputIterator, typename T_OutputIterator>
   TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                               T_OutputIterator aDestRangeBegin)
-  {
-    TLOC_ASSERT_ALGORITHMS(aDestRangeBegin < aRangeBegin || aDestRangeBegin > aRangeEnd,
-      "Output iterator is within the begin/end range (data over-writing)! - "
-      L"Try Copy_Backward");
-    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
-      "aRangeBegin > aRangeEnd (infinite loop)!");
-
-    // We assume that the inputs are pointers. We can then find out whether they
-    // are integral pointers or complex
-    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-    typedef Loki::TypeTraits<inputDeref> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
-
-    return tlCopy(aRangeBegin, aRangeEnd, aDestRangeBegin, inputArith());
-  }
+                               T_OutputIterator aDestRangeBegin);
 
   // Copies the range of elements [aRangeBegin, aRangeEnd) to aCopyTo and returns
   // an iterator to the first element in the destination range.
@@ -63,65 +48,56 @@ namespace tloc
   template <typename T_InputIterator, typename T_OutputIterator>
   TL_I T_OutputIterator tlCopy_Backward(T_InputIterator aRangeBegin,
                                         T_InputIterator aRangeEnd,
-                                        T_OutputIterator aDestRangeEnd)
-  {
-    TLOC_ASSERT_ALGORITHMS(aDestRangeEnd < aRangeBegin || aDestRangeEnd > aRangeEnd,
-      "Output past-the-end iterator is within the begin/end range (data "
-      L"over-writing)! - Try Copy");
-    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
-      "aRangeBegin > aRangeEnd (infinite loop)");
-
-    while (aRangeEnd != aRangeBegin)
-    {
-      *(--aDestRangeEnd) = *(--aRangeEnd);
-    }
-
-    return aDestRangeEnd;
-  }
+                                        T_OutputIterator aDestRangeEnd);
 
   template <typename T_InputIterator, typename T>
   TL_I void tlFill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                   const T& aValue)
+                   const T& aValue);
+
+  namespace detail
   {
-    while (aRangeBegin != aRangeEnd)
+    //------------------------------------------------------------------------
+    // Copy() helpers
+
+    typedef type_false IsNotArith;
+    typedef type_true  IsArith;
+
+    template <typename T_InputIterator, typename T_OutputIterator>
+    TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                                 T_OutputIterator aDestRangeBegin, IsNotArith);
+
+    template <typename T_InputIterator, typename T_OutputIterator>
+    TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                                 T_OutputIterator aDestRangeBegin, IsArith);
+
+    //------------------------------------------------------------------------
+    // Fill helpers
+
+    template <typename T>
+    struct CharTest
     {
-      *aRangeBegin = aValue;
-      ++aRangeBegin;
-    }
-  }
+      typedef type_false result;
+    };
 
-  //////////////////////////////////////////////////////////////////////////
-  // Internal use only
-
-  //------------------------------------------------------------------------
-  // Copy() helpers
-
-  template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                               T_OutputIterator aDestRangeBegin, type_false)
-  {
-    while (aRangeBegin != aRangeEnd)
+    template <>
+    struct CharTest <char8>
     {
-      *(aDestRangeBegin++) = *(aRangeBegin++);
-    }
+      typedef type_true result;
+    };
 
-    return aDestRangeBegin;
+    typedef type_false IsNotChar;
+    typedef type_true  IsChar;
+
+    template <typename T_InputIterator, typename T>
+    TL_I void tlFill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                      const T& aValue, IsNotChar );
+
+    template <typename T_InputIterator, typename T>
+    TL_I void tlFill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                      const T& aValue, IsChar );
   }
-
-  template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                               T_OutputIterator aDestRangeBegin, type_true)
-  {
-    // We need the size of what the pointer is pointing to, not the pointer
-    // itself
-    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-
-    tl_size rangeSize = aRangeEnd - aRangeBegin;
-    memmove( aDestRangeBegin, aRangeBegin,
-      (tl_size)(rangeSize) * sizeof(inputDeref) );
-    return aDestRangeBegin + rangeSize;
-  }
-
 }
+
+#include "tlocAlgorithms.inl"
 
 #endif

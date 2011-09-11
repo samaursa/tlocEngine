@@ -52,19 +52,29 @@ namespace tloc
     // Modifiers
 
     //------------------------------------------------------------------------
-    // Functions
+    // Ctor / Dtor
 
-    StringBase();
-    StringBase(const StringBase<T>& aOther);
-    StringBase(const StringBase<T>& aOther, tl_size aPosition, tl_size aNumChars = npos);
-    StringBase(const T* aPtr, tl_size aNumChars);
-    explicit StringBase(const T* aPtr);
-    StringBase(tl_size aNumChars, T aChar);
-    StringBase(const T* aPtrBegin, const T* aPtrEnd);
-    StringBase(StringNoInitialize, tl_size aN);
-    StringBase(StringSprintf, const tl_size aFormat, ...);
+    TL_I StringBase();
+    TL_I StringBase(const StringBase<T>& aOther);
+    TL_I StringBase(const StringBase<T>& aOther, tl_size aPosition,
+                    tl_size aNumChars = npos);
+    TL_I StringBase(const T* aPtr, tl_size aNumChars);
+    TL_I explicit StringBase(const T* aPtr);
+    TL_I StringBase(tl_size aNumChars, T aChar);
+    TL_I StringBase(const T* aPtrBegin, const T* aPtrEnd);
+    TL_I StringBase(StringNoInitialize, tl_size aN);
+    TL_I StringBase(StringSprintf, const tl_size aFormat, ...);
 
-    ~StringBase();
+    TL_I ~StringBase();
+
+    //------------------------------------------------------------------------
+    // Iterators
+
+    TL_I iterator        begin();
+    TL_I const_iterator  begin() const;
+
+    TL_I iterator        end();
+    TL_I const_iterator  end() const;
 
     //------------------------------------------------------------------------
     // Assignment
@@ -150,10 +160,6 @@ namespace tloc
 
 
   TL_I void Find();
-
-  template <typename T>
-  TL_I T* DoCopyString(T* aDestination, const T* aSourceBegin,
-                       const T* aSourceEnd);
 };
 
 #include "tlocString.inl"

@@ -5,6 +5,13 @@ namespace TestingStrings
     StringBase<char8> a, b, c;
   };
 
+  TEST_CASE("Core/Strings/StrLen", "Test StrLen()")
+  {
+    const char8* someStr = "01234567890123456789"; // 20 chars long
+    tl_size strSize = StrLen(someStr);
+    CHECK(strSize == 20);
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Construction",
     "Test basic string construction")
   {

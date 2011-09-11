@@ -21,13 +21,13 @@ namespace tloc
   // Constants
 
   template <typename T>
-  const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
+  TL_I const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
   //------------------------------------------------------------------------
   // Ctors
 
   template <typename T>
-  StringBase<T>::StringBase()
+  TL_I StringBase<T>::StringBase()
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -36,8 +36,8 @@ namespace tloc
   }
 
   template <typename T>
-  StringBase<T>::StringBase(const StringBase<T>& aOther, tl_size aPosition,
-                            tl_size aN /* = npos */)
+  TL_I StringBase<T>::StringBase(const StringBase<T>& aOther, tl_size aPosition,
+                                 tl_size aN /* = npos */)
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -55,15 +55,48 @@ namespace tloc
   }
 
   template <typename T>
-  StringBase<T>::StringBase(const T* aPtr, tl_size aNumChars)
+  TL_I StringBase<T>::StringBase(const T* aPtr, tl_size aNumChars)
   {
     RangeInitialize(aPtr, aPtr + aNumChars);
   }
 
   template <typename T>
-  StringBase<T>::~StringBase()
+  TL_I StringBase<T>::StringBase(const T* aPtr)
+  {
+    RangeInitialize(aPtr);
+  }
+
+  template <typename T>
+  TL_I  StringBase<T>::~StringBase()
   {
     DoDeallocateSelf();
+  }
+
+  //------------------------------------------------------------------------
+  // Iterators
+
+  template <typename T>
+  TL_I typename StringBase<T>::iterator StringBase<T>::begin()
+  {
+    return m_begin;
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::const_iterator StringBase<T>::begin() const
+  {
+    return m_begin;
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::iterator StringBase<T>::end()
+  {
+    return m_end;
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::const_iterator StringBase<T>::end() const
+  {
+
   }
 
   //------------------------------------------------------------------------
@@ -263,7 +296,6 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Free functions
 
-
   template <typename T>
   TL_I tl_size StrLen( const T* aCharStr )
   {
@@ -277,7 +309,7 @@ namespace tloc
   template <>
   TL_I tl_size StrLen( const char8* aCharStr)
   {
-    return (tl_size)strlen(aCharStr);
+    return (tl_size)strlen(aCharStr); // According to EASTL, this should call intrinsics
   }
 
 

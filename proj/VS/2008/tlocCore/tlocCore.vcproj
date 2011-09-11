@@ -410,6 +410,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
 			>
 		</File>

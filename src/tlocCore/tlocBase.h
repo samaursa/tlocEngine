@@ -205,9 +205,15 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+
+// Use this macro when warning the user of a potential problem that the user may
+// have overlooked. These can be safely disabled, i.e. the function guarantees
+// it will work properly with these asserts disabled
+#ifndef TLOC_DISABLE_ASSERT_WARNINGS
+# define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT("[WARN] " _Expression, _Msg)
+#endif
+
 #else
-#define FwAssert(_Expression, _Msg)
-#define FWASSERT(_Expression, _Msg)
 #define TLOC_ASSERT(_Expression, _Msg)
 #define TLOC_ASSERTW(_Expression, _Msg)
 #endif

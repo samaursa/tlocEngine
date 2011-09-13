@@ -49,4 +49,33 @@ namespace TestingStrings
       CHECK(StrCmp(someString, a.c_str()) == 0);
     }
   }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Operator+=", "")
+  {
+    a += "This is a test.";
+    CHECK(StrCmp(a.c_str(), "This is a test.") == 0);
+
+    b += "Second test.";
+    CHECK(StrCmp(b.c_str(), "Second test.") == 0);
+
+    a += b;
+    CHECK(StrCmp(a.c_str(), "This is a test.Second test.") == 0);
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Capacity", "")
+  {
+    StringBase<char8> d("This is interesting.");
+
+    d.set_capacity(7);
+    CHECK(StrCmp(d.c_str(), "This is") == 0);
+    CHECK(d.size() == 7);
+    CHECK(d.capacity() == 7);
+
+    d.clear();
+    CHECK(StrCmp(d.c_str(), "") == 0);
+
+    d.append("This is interesting.");
+    d.set_capacity(50);
+    CHECK(d.capacity() == 50);
+  }
 };

@@ -12,6 +12,11 @@
 
 #ifndef TLOC_DISABLE_ASSERT_STRING
 # define TLOC_ASSERT_STRING(_Expression, _Msg) TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
+
+#   ifndef TLOC_DISABLE_ASSERT_STRING_WARN
+#     define TLOC_ASSERT_STRING_WARN(_Expression, _Msg) TLOC_ASSERT_WARN(_Expression, _Msg)
+#   endif
+
 #else
 # define TLOC_ASSERT_STRING(_Expression, _Msg)
 #endif
@@ -101,9 +106,10 @@ namespace tloc
     TL_I tl_size    size() const;
     TL_I tl_size    length() const;
     TL_I tl_size    max_size() const;
-    TL_I void       resize();
+    TL_I void       resize(const tl_size& newSize);
     TL_I tl_size    capacity() const;
-    TL_I void       reserve();
+    TL_I void       set_capacity(const tl_size& newCapacity = npos);
+    TL_I void       reserve(const tl_size& newSize);
     TL_I void       clear();
     TL_I bool       empty();
 

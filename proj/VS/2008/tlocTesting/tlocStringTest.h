@@ -48,6 +48,19 @@ namespace TestingStrings
 
       CHECK(StrCmp(someString, a.c_str()) == 0);
     }
+
+    {// char append
+      b.append(100, 'a');
+
+      for (u32 i = 0; i < 100; ++i)
+      {
+        CHECK(b[i] == 'a');
+      }
+
+      b.push_back('b');
+
+      CHECK(b[100] == 'b');
+    }
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Operator+=", "")
@@ -77,5 +90,46 @@ namespace TestingStrings
     d.append("This is interesting.");
     d.set_capacity(50);
     CHECK(d.capacity() == 50);
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Erase", "")
+  {
+    const char8* testString = "This is a test string.";
+    StringBase<char8> d(testString);
+    d.erase(d.end() - 1);
+
+    CHECK(StrCmp(d.c_str(), "This is a test string") == 0);
+
+    d.erase(10, 5);
+
+    CHECK(StrCmp(d.c_str(), "This is a string") == 0);
+
+    d.erase(d.begin(), d.begin() + 5);
+
+    CHECK(StrCmp(d.c_str(), "is a string") == 0);
+
+    d.erase();
+
+    CHECK(d.length() == 0);
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Assign", "")
+  {
+    const char8* testString = "This is a test string.";
+    a.assign(testString, testString + 14);
+
+    CHECK(StrCmp(a.c_str(), "This is a test") == 0);
+
+    a.assign(testString, testString + 7);
+
+    CHECK(StrCmp(a.c_str(), "This is") == 0);
+
+    a.assign(testString, testString + StrLen(testString));
+
+    CHECK(StrCmp(a.c_str(), testString) == 0);
+
+    a.assign(10, '!');
+
+    CHECK(StrCmp(a.c_str(), "!!!!!!!!!!") == 0);
   }
 };

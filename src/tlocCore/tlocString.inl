@@ -21,7 +21,7 @@ namespace tloc
   // Constants
 
   template <typename T>
-  TL_I const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
+  const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
   template <typename T>
   const tl_size StringBase<T>::m_MaxSize = (tl_size) - 2;
@@ -181,6 +181,13 @@ namespace tloc
   template <typename T>
   TL_I void StringBase<T>::resize(const tl_size& newSize)
   {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::resize(const tl_size& newSize, const T charToFill)
+  {
+    TLOC_ASSERT_WIP();
   }
 
   template <typename T>
@@ -206,12 +213,12 @@ namespace tloc
   {
     if (newCapacity != capacity())
     {
-      const tl_size oldSize = m_end - m_begin;
+      const tl_size oldSize = length();
       const tl_size cap = (newCapacity == npos) ? oldSize : newCapacity;
 
       if (cap > 0)
       {
-        const tl_size oldSize = m_end - m_begin;
+        const tl_size oldSize = size();
 
         m_begin = DoReAllocate(cap + 1); // +1 for the trailing 0
 
@@ -236,16 +243,25 @@ namespace tloc
     }
   }
 
+  /*!
+   * \brief Reserves a specific amount of memory for the string.
+   *
+   * \param const tl_size & newSize
+   * \return void
+   * \sa set_capacity(), resize()
+   * \note The function can only increase capacity. Call resize() to decrease capacity.
+   * \warning
+   */
   template <typename T>
   TL_I void StringBase<T>::reserve(const tl_size& newSize)
   {
     TLOC_ASSERT_STRING(newSize < m_MaxSize, "Reserve request is too large!");
-    TLOC_ASSERT_STRING_WARN(newSize < capacity(), "Reserve request is "
-      "smaller than the current capacity. Call resize() for shrinking.");
+    TLOC_ASSERT_STRING_WARN(newSize > capacity(), "Reserve request is smaller "
+      L"than the current capacity. Call resize() for shrinking.");
 
-    if (newSize > capacity())
+    if (newSize > capacity()) // Exclude /0
     {
-
+      set_capacity(newSize);
     }
   }
 
@@ -284,6 +300,24 @@ namespace tloc
   }
 
   template <typename T>
+  TL_I T& tloc::StringBase<T>::operator=( const T& aStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I T& tloc::StringBase<T>::operator=( const T* aCharStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I T& tloc::StringBase<T>::operator=( T aChar )
+  {
+
+  }
+
+  template <typename T>
   TL_I StringBase<T>& StringBase<T>::append( const StringBaseT& aStr )
   {
     return append(aStr.m_begin, aStr.m_end);
@@ -291,7 +325,8 @@ namespace tloc
 
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::append( const StringBaseT& aStr,
-                                             tl_size aPos, tl_size aNumChars )
+                                             const tl_size& aPos,
+                                             const tl_size& aNumChars )
   {
     TLOC_ASSERT_STRING(aPos < aStr.size(),
       "Position passed is outside of string's range!");
@@ -303,7 +338,8 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const T* charArray, tl_size aNumChars )
+  TL_I StringBase<T>& StringBase<T>::append( const T* charArray,
+                                             const tl_size& aNumChars )
   {
     TLOC_ASSERT_STRING(StrLen(charArray) >= aNumChars,
       "Number of characters to copy exceeds the range of the character array!");
@@ -318,16 +354,16 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( tl_size aNumChars, T aChar )
+  TL_I StringBase<T>& StringBase<T>::append( const tl_size& aNumChars,
+                                             const T& aChar )
   {
     if (aNumChars > 0)
     {
-      const tl_size currSize = m_end - m_begin;
-      const tl_size currCap  = m_capacity - m_begin;
+      const tl_size currSize = size();
 
-      if ( (currSize + aNumChars) > (currCap  - 1) )
+      if ( (currSize  + aNumChars) > capacity() ) // Exclude /0
       {
-        // call reserve
+        reserve(currSize + aNumChars);
       }
 
       tlFill(m_end, m_end + aNumChars, aChar);
@@ -345,7 +381,7 @@ namespace tloc
   {
     if (aBegin != aEnd)
     {
-      const tl_size oldSize = m_end - m_begin;
+      const tl_size oldSize = size();
       const tl_size oldCapacity = m_capacity - m_begin;
       const tl_size rangeSize = (tl_size)(aEnd - aBegin);
 
@@ -359,6 +395,126 @@ namespace tloc
     }
 
     return *this;
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::push_back(const T& aChar)
+  {
+    append(1, aChar);
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr,
+                                             const tl_size& aPos,
+                                             const tl_size& aNumChars )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr,
+                                             const tl_size& aNumChars )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::assign( const tl_size& aNumChars,
+                                             const T& aChar )
+  {
+    const tl_size ourSize = size();
+    if (aNumChars <= ourSize)
+    {
+      tlFill(m_begin, m_begin + aNumChars, aChar);
+      erase(m_begin + aNumChars, m_end);
+    }
+    else
+    {
+      tlFill(m_begin, m_begin + ourSize, aChar);
+      append(aNumChars - ourSize, aChar);
+    }
+
+    return *this;
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I StringBase<T>& StringBase<T>::assign(const T_InputIterator aBegin,
+                                            const T_InputIterator aEnd)
+  {
+    const tl_size ourSize = size();
+    const tl_size rangeSize = aEnd - aBegin;
+    if (rangeSize <= ourSize)
+    {
+      memmove(m_begin, aBegin, (tl_size)(rangeSize * sizeof(T)) );
+      erase(m_begin + rangeSize, m_end);
+    }
+    else
+    {
+      memmove(m_begin, aBegin, (tl_size)(ourSize) * sizeof(T) );
+      append(aBegin + (tl_size)(ourSize), aEnd);
+    }
+
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::erase( const tl_size& aPos /*= 0*/,
+                                            const tl_size& aNumChars /*= npos*/ )
+  {
+    const iterator rangeBegin = m_begin + aPos;
+    const iterator rangeEnd = aNumChars == npos ? m_end : rangeBegin + aNumChars;
+
+    TLOC_ASSERT_STRING( rangeBegin >= m_begin && rangeBegin < m_end,
+      "Position is out of range!");
+    TLOC_ASSERT_STRING( rangeEnd <= m_end,
+      "Position plus number of chars is past the end (out of range)!");
+
+    erase( rangeBegin, rangeEnd );
+    return *this;
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::iterator StringBase<T>::erase( const iterator aPos )
+  {
+    TLOC_ASSERT_STRING(aPos >= m_begin && aPos < m_end,
+      "Position is out of range!");
+
+    return erase(aPos, aPos + 1);
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::iterator StringBase<T>::erase( const iterator aFirst,
+                                                              const iterator aLast )
+  {
+    TLOC_ASSERT_STRING(aFirst >= m_begin && aFirst <= m_end ,
+      "Iterator aFirst is out of range!");
+    TLOC_ASSERT_STRING(aLast >= m_begin || aLast <= m_end,
+      "Iterator aLast is out of range!");
+    TLOC_ASSERT_STRING(aFirst <= aLast, "Invalid iterator range (aFirst > aLast)!");
+
+    if (aFirst != aLast)
+    {
+      const tl_size rangeSize = aLast - aFirst;
+
+      // Move the remaining string into place including the /0
+      memmove( aFirst, aLast, (tl_size)((m_end - aLast) + 1) * sizeof(T) );
+      m_end -= rangeSize;
+    }
+
+    return aFirst;
   }
 
   //------------------------------------------------------------------------
@@ -390,7 +546,7 @@ namespace tloc
 
     // Make sure that the size is not 0, otherwise we would trying to reallocate
     // the empty string
-    if ( (m_end - m_begin) != 0) { return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize); }
+    if ( size() != 0) { return (T*)TL_REALLOC(m_begin, sizeof(T) * aSize); }
     else { return DoAllocate(aSize); }
   }
 
@@ -411,7 +567,7 @@ namespace tloc
       "This function can only increase the storage capacity! (passed size is "
       L"smaller than the current capacity)");
 
-    const tl_size prevSize = m_end - m_begin;
+    const tl_size prevSize = size();
     const tl_size newCap   = aSize;
 
     T* ptr = DoReAllocate(aSize);

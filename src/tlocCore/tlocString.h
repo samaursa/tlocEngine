@@ -83,15 +83,6 @@ namespace tloc
     TL_I const_iterator  end() const;
 
     //------------------------------------------------------------------------
-    // Assignment
-
-    TL_I T&         operator = (const T& aX);
-    TL_I T&         operator = (const T* aPtr);
-    TL_I T&         operator = (T aC);
-
-    TL_I void       swap(T& aX);
-
-    //------------------------------------------------------------------------
     // Element access
 
     TL_I const T&   operator [] (tl_size aPos) const;
@@ -107,6 +98,7 @@ namespace tloc
     TL_I tl_size    length() const;
     TL_I tl_size    max_size() const;
     TL_I void       resize(const tl_size& newSize);
+    TL_I void       resize(const tl_size& newSize, const T charToFill);
     TL_I tl_size    capacity() const;
     TL_I void       set_capacity(const tl_size& newCapacity = npos);
     TL_I void       reserve(const tl_size& newSize);
@@ -120,13 +112,38 @@ namespace tloc
     TL_I StringBaseT& operator+= (const T* aCharStr);
     TL_I StringBaseT& operator+= (const T& aChar);
 
+    TL_I T&         operator = (const T& aStr);
+    TL_I T&         operator = (const T* aCharStr);
+    TL_I T&         operator = (T aChar);
+
+    TL_I void       swap(T& aX);
+
     TL_I StringBaseT& append(const StringBaseT& aStr);
-    TL_I StringBaseT& append(const StringBaseT& aStr, tl_size aPos, tl_size aNumChars);
-    TL_I StringBaseT& append(const T* charArray, tl_size aNumChars);
-    TL_I StringBaseT& append(const T* charStr);
-    TL_I StringBaseT& append(tl_size aNumChars, T aChar);
+    TL_I StringBaseT& append(const StringBaseT& aStr, const tl_size& aPos,
+                             const tl_size& aNumChars);
+    TL_I StringBaseT& append(const T* aCharArray, const tl_size& aNumChars);
+    TL_I StringBaseT& append(const T* aCharStr);
+    TL_I StringBaseT& append(const tl_size& aNumChars, const T& aChar);
     template <typename T_InputIterator>
     TL_I StringBaseT& append(T_InputIterator aBegin, T_InputIterator aEnd);
+
+    TL_I void         push_back(const T& aChar);
+
+    TL_I StringBaseT& assign(const StringBaseT& aStr);
+    TL_I StringBaseT& assign(const StringBaseT& aStr, const tl_size& aPos,
+                             const tl_size& aNumChars);
+    TL_I StringBaseT& assign(const T* aCharStr, const tl_size& aNumChars);
+    TL_I StringBaseT& assign(const T* aCharStr);
+    TL_I StringBaseT& assign(const tl_size& aNumChars, const T& aChar);
+    template <typename T_InputIterator>
+    TL_I StringBaseT& assign(const T_InputIterator aBegin,
+                             const T_InputIterator aEnd);
+
+    TL_I StringBaseT& erase(const tl_size& aPos = 0,
+                            const tl_size& aNumChars = npos);
+    TL_I iterator     erase(const iterator aPos);
+    TL_I iterator     erase(iterator aFirst, iterator aLast);
+
 
     //------------------------------------------------------------------------
     // Operations

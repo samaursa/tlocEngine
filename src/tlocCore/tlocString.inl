@@ -300,21 +300,33 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I T& tloc::StringBase<T>::operator=( const T& aStr )
+  TL_I StringBase<T>& tloc::StringBase<T>::operator=( const StringBase<T>& aStr )
   {
+    TLOC_ASSERT_STRING_WARN(&aStr != this, "Assigning the same string!");
 
+    return assign(aStr.m_begin, aStr.m_end);
   }
 
   template <typename T>
-  TL_I T& tloc::StringBase<T>::operator=( const T* aCharStr )
+  TL_I StringBase<T>& tloc::StringBase<T>::operator=( const T* aCharStr )
   {
-
+    return assign(aCharStr, aCharStr + StrLen(aCharStr));
   }
 
   template <typename T>
-  TL_I T& tloc::StringBase<T>::operator=( T aChar )
+  TL_I StringBase<T>& tloc::StringBase<T>::operator=( T aChar )
   {
+    return assign(1, aChar);
+  }
 
+  template <typename T>
+  TL_I void StringBase<T>::swap( T& aX )
+  {
+    TLOC_ASSERT_STRING_WARN(this != &aX, "Swap called on self (redundant).");
+
+    tlSwap(aX.m_begin, m_begin);
+    tlSwap(aX.m_end, m_end);
+    tlSwap(aX.m_capacity, m_capacity);
   }
 
   template <typename T>
@@ -331,7 +343,7 @@ namespace tloc
     TLOC_ASSERT_STRING(aPos < aStr.size(),
       "Position passed is outside of string's range!");
     TLOC_ASSERT_STRING_WARN( (aPos + aNumChars) < aStr.size(),
-      "Number of characters to copy passes the string's range!");
+      "Number of characters to copy passes the string's range.");
 
     u32 maxCharsLeft = (aStr.m_end - aStr.m_begin) - aPos;
     return append(aStr.begin + aPos, aPos < maxCharsLeft ? aPos : maxCharsLeft);
@@ -415,10 +427,9 @@ namespace tloc
                                              const tl_size& aNumChars )
   {
     TLOC_ASSERT_STRING(aPos <= aStr.size(), "Position is out of range!");
-    TLOC_ASSERT_STRING( (aPos + aNumChars) <= aStr.size(),
-      "Position plus number of characters is out of range!");
 
-    return assign(aStr.begin() + aPos, aStr.begin() + aPos + aNumChars);
+    const T* endItr = aStr.begin() + aPos + aNumChars;
+    return assign(aStr.begin() + aPos, (aStr.end() > endItr) ? endItr : aStr.end() );
   }
 
   template <typename T>
@@ -478,11 +489,117 @@ namespace tloc
   }
 
   template <typename T>
+  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const StringBaseT& aStr )
+  {
+    insert(m_begin + aIndex, aStr.begin(), aStr.end());
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndexDestination,
+                                             const StringBaseT& aStr,
+                                             tl_size aIndexSource,
+                                             tl_size aNumChars )
+  {
+    const_iterator endItr = aStr.begin() + aIndexSource + aNumChars;
+    insert(m_begin + aIndexDestination, aStr.begin() + aIndexSource,
+                                  (aStr.end() > endItr) ? endItr : aStr.end() );
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const T* aCharArray,
+                                             tl_size aNumChars )
+  {
+    insert(m_begin + aIndex, aCharArray, aCharArray + aNumChars);
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const T* aCharStr )
+  {
+    insert(m_begin + aIndex, aCharStr, aCharStr + StrLen(aCharStr));
+    return *this;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, tl_size aNumChars,
+                                             const T& aChar )
+  {
+    insert(m_begin + aIndex, aNumChars, aChar);
+    return *this;
+  }
+
+  template <typename T>
+  TL_I typename StringBase<T>::iterator StringBase<T>::insert( const T* aPos,
+                                                               const T& aChar )
+  {
+    // Save the position index because it may be invalid by the time insert()
+    // is complete
+    const tl_size posIndex = aPos - m_begin;
+    insert(aPos, 1, aChar);
+    return m_begin + posIndex;
+  }
+
+  template <typename T>
+  TL_I void StringBase<T>::insert( const T* aPos, tl_size aNumChars,
+                                   const T& aChar )
+  {
+    TLOC_ASSERT_STRING(aPos >= m_begin && aPos <= m_end,
+      "Iterator position is out of range!");
+
+    const tl_size currCap = m_capacity - m_begin;
+    const tl_size startIndex = aPos - m_begin;
+    const tl_size newCap = size() + aNumChars + 1;
+
+    if (currCap < newCap)
+    {
+      DoReAllocateAndAdjust(newCap);
+    }
+
+    iterator pos = m_begin + startIndex;
+
+    memmove(pos + aNumChars, pos, (tl_size)( (m_end - (pos) + 1) * sizeof(T)) );
+    tlFill(pos, pos + aNumChars, aChar);
+
+    m_end = m_end + aNumChars;
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  TL_I void StringBase<T>::insert( const T* aPos, T_InputIterator aBegin,
+                                                  T_InputIterator aEnd )
+  {
+    TLOC_ASSERT_STRING(aBegin <= aEnd, "Input range is invalid!");
+    TLOC_ASSERT_STRING(aPos >= m_begin && aPos <= m_end,
+      "Iterator position is out of range!");
+
+    const tl_size startIndex = aPos - m_begin;
+    const tl_size currCap = m_capacity - m_begin;
+    const tl_size rangeSize = aEnd - aBegin;
+    const tl_size newCap = size() + rangeSize + 1; // +1 for the NULL char
+
+    // Check if we have enough capacity
+    if (currCap < newCap)
+    {
+      DoReAllocateAndAdjust(newCap);
+    }
+
+    iterator pos = m_begin + startIndex;
+
+    // +1 for the NULL character
+    memmove(pos + rangeSize, pos, (tl_size)((m_end - (pos) + 1) * sizeof(T)) );
+    memmove(pos, aBegin, (tl_size)(rangeSize * sizeof(T)) );
+
+    m_end = m_end + rangeSize;
+  }
+
+  template <typename T>
   TL_I StringBase<T>& StringBase<T>::erase( const tl_size& aPos /*= 0*/,
                                             const tl_size& aNumChars /*= npos*/ )
   {
-    const iterator rangeBegin = m_begin + aPos;
-    const iterator rangeEnd = aNumChars == npos ? m_end : rangeBegin + aNumChars;
+    iterator rangeBegin = m_begin + aPos;
+    iterator rangeEnd = aNumChars == npos ? m_end : rangeBegin + aNumChars;
 
     TLOC_ASSERT_STRING( rangeBegin >= m_begin && rangeBegin < m_end,
       "Position is out of range!");
@@ -494,7 +611,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I typename StringBase<T>::iterator StringBase<T>::erase( const iterator aPos )
+  TL_I typename StringBase<T>::iterator StringBase<T>::erase( iterator aPos )
   {
     TLOC_ASSERT_STRING(aPos >= m_begin && aPos < m_end,
       "Position is out of range!");
@@ -503,8 +620,8 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I typename StringBase<T>::iterator StringBase<T>::erase( const iterator aFirst,
-                                                              const iterator aLast )
+  TL_I typename StringBase<T>::iterator StringBase<T>::erase( iterator aFirst,
+                                                              iterator aLast )
   {
     TLOC_ASSERT_STRING(aFirst >= m_begin && aFirst <= m_end ,
       "Iterator aFirst is out of range!");
@@ -522,6 +639,84 @@ namespace tloc
     }
 
     return aFirst;
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( tl_size aPos,
+                                              tl_size aNumCharsToReplace,
+                                              const StringBase<T>& aStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( iterator aDestBegin,
+                                              iterator aDestEnd,
+                                              const StringBase<T>& aStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( tl_size aDestPos,
+                                              tl_size aNumCharsToReplace,
+                                              const StringBase<T>& aStr,
+                                              tl_size aSourcePos,
+                                              tl_size aNumCharsToCopy )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( tl_size   aPos,
+                                              tl_size   aNumCharsToReplace,
+                                              const T*  aCharArray,
+                                              tl_size   aNumCharsToCopy )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( iterator  aDestBegin,
+                                              iterator  aDestEnd,
+                                              const T*  aCharArray,
+                                              tl_size   aNumCharsToCopy )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( tl_size   aPos,
+                                              tl_size   aNumCharsToReplace,
+                                              const T*  aCharStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( iterator aDestBegin,
+                                              iterator aDestEnd,
+                                              const T* aCharStr )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( tl_size   aPos,
+                                              tl_size   aNumCharsToReplace,
+                                              tl_size   aNumOfCharsToCopy,
+                                              const T&  aChar )
+  {
+
+  }
+
+  template <typename T>
+  TL_I StringBase<T>& StringBase<T>::replace( iterator  aDestBegin,
+                                              iterator  aDestEnd,
+                                              tl_size   aNumOfCharsToCopy,
+                                              const T&  aChar )
+  {
+
   }
 
   //------------------------------------------------------------------------

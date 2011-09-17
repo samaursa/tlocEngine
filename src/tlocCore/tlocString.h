@@ -15,10 +15,13 @@
 
 #   ifndef TLOC_DISABLE_ASSERT_STRING_WARN
 #     define TLOC_ASSERT_STRING_WARN(_Expression, _Msg) TLOC_ASSERT_WARN(_Expression, _Msg)
+#   else
+#     define TLOC_ASSERT_STRING_WARN(_Expression, _Msg)
 #   endif
 
 #else
 # define TLOC_ASSERT_STRING(_Expression, _Msg)
+# define TLOC_ASSERT_STRING_WARN(_Expression, _Msg)
 #endif
 
 namespace tloc
@@ -112,11 +115,11 @@ namespace tloc
     TL_I StringBaseT& operator+= (const T* aCharStr);
     TL_I StringBaseT& operator+= (const T& aChar);
 
-    TL_I T&         operator = (const T& aStr);
-    TL_I T&         operator = (const T* aCharStr);
-    TL_I T&         operator = (T aChar);
+    TL_I StringBaseT& operator = (const StringBaseT& aStr);
+    TL_I StringBaseT& operator = (const T* aCharStr);
+    TL_I StringBaseT& operator = (T aChar);
 
-    TL_I void       swap(T& aX);
+    TL_I void         swap(T& aX);
 
     TL_I StringBaseT& append(const StringBaseT& aStr);
     TL_I StringBaseT& append(const StringBaseT& aStr, const tl_size& aPos,
@@ -139,10 +142,50 @@ namespace tloc
     TL_I StringBaseT& assign(const T_InputIterator aBegin,
                              const T_InputIterator aEnd);
 
+    TL_I StringBaseT& insert(tl_size aIndex, const StringBaseT& aStr);
+    TL_I StringBaseT& insert(tl_size aIndexDestination, const StringBaseT& aStr,
+                             tl_size aIndexSource, tl_size aNumChars);
+    TL_I StringBaseT& insert(tl_size aIndex, const T* aCharArray, tl_size aNumChars);
+    TL_I StringBaseT& insert(tl_size aIndex, const T* aCharStr);
+    TL_I StringBaseT& insert(tl_size aIndex, tl_size aNumChars, const T& aChar);
+    TL_I iterator     insert(const T* aPos, const T& aChar);
+    TL_I void         insert(const T* aPos, tl_size aNumChars, const T& aChar);
+    template <typename T_InputIterator>
+    TL_I void         insert(const T* aPos, T_InputIterator aBegin,
+                             T_InputIterator aEnd);
+
     TL_I StringBaseT& erase(const tl_size& aPos = 0,
                             const tl_size& aNumChars = npos);
-    TL_I iterator     erase(const iterator aPos);
+    TL_I iterator     erase(iterator aPos);
     TL_I iterator     erase(iterator aFirst, iterator aLast);
+
+    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                              const StringBaseT& aStr);
+    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
+                              const StringBaseT& aStr);
+
+    TL_I StringBaseT& replace(tl_size aDestPos, tl_size aNumCharsToReplace,
+                              const StringBaseT& aStr, tl_size aSourcePos,
+                              tl_size aNumCharsToCopy);
+
+    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                              const T* aCharArray, tl_size aNumCharsToCopy);
+    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
+                              const T* aCharArray, tl_size aNumCharsToCopy);
+
+    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                              const T* aCharStr);
+    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
+                              const T* aCharStr);
+
+    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                              tl_size aNumOfCharsToCopy, const T& aChar);
+    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
+                              tl_size aNumOfCharsToCopy, const T& aChar);
+
+    /*template <typename T_InputIterator>
+    TL_I StringBaseT& replace(iterator*/
+
 
 
     //------------------------------------------------------------------------

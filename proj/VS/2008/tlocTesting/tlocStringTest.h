@@ -140,12 +140,90 @@ namespace TestingStrings
 
     CHECK(StrCmp(c.c_str(), "Testing String assign()") == 0 );
 
-    b.assign(c, 8, c.size() - 8);
+    b.assign(c, 8, c.size());
 
     CHECK(StrCmp(b.c_str(), "String assign()") == 0);
 
     b.assign("Can be very useful. Assign().", 19);
 
     CHECK(StrCmp(b.c_str(), "Can be very useful.") == 0);
+
+    b = a;
+
+    CHECK(StrCmp(b.c_str(), "!!!!!!!!!!") == 0);
+
+    b = "This is a test string.";
+
+    CHECK(StrCmp(b.c_str(), "This is a test string.") == 0);
+
+    b = 'a';
+
+    CHECK(StrCmp(b.c_str(), "a") == 0);
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Insert", "")
+  {
+    {
+      const char* testString = "This is a very very very very very very very very "
+        "very very very very very very very very very very very very very very very "
+        "very very very very very very very very long test";
+
+      a = "string";
+
+      b = testString;
+      b.append(a);
+
+      a.insert(a.begin(), testString, testString + StrLen(testString));
+
+      CHECK(a.capacity() == StrLen(testString) + StrLen("string") );
+      CHECK(StrCmp(a.c_str(), b.c_str()) == 0);
+
+      c = "Testing insert character:  (10 a chars)";
+
+      c.insert(c.begin() + 26, 10, 'a');
+
+      CHECK(StrCmp(c.c_str(), "Testing insert character: aaaaaaaaaa (10 a chars)") == 0);
+
+      a = testString;
+      b = testString;
+      b += c;
+
+      c.insert(0, a, 0, a.length());
+
+      CHECK(StrCmp(c.c_str(), b.c_str()) == 0);
+
+      b = "indestructible";
+      c = "This fragile glass will never break.";
+
+      c.erase(c.begin() + 5, c.begin() + 12);
+      c.insert(5, b);
+
+      CHECK(StrCmp(c.c_str(), "This indestructible glass will never break.") == 0);
+    }
+
+    {// tests from cplusplus.com
+      a = "to be question";
+      b = "the ";
+      c = "or not to be";
+      StringBase<char8>::iterator it;
+
+      // used in the same order as described above:
+      a.insert(6,b);                 // to be (the )question
+      CHECK(StrCmp(a.c_str(), "to be the question") == 0);
+      a.insert(6,c,3,4);             // to be (not )the question
+      CHECK(StrCmp(a.c_str(), "to be not the question") == 0);
+      a.insert(10,"that is cool",8);    // to be not (that is )the question
+      CHECK(StrCmp(a.c_str(), "to be not that is the question") == 0);
+      a.insert(10,"to be ");            // to be not (to be )that is the question
+      CHECK(StrCmp(a.c_str(), "to be not to be that is the question") == 0);
+      a.insert(15,1,':');               // to be not to be(:) that is the question
+      CHECK(StrCmp(a.c_str(), "to be not to be: that is the question") == 0);
+      it = a.insert(a.begin()+5,','); // to be(,) not to be: that is the question
+      CHECK(StrCmp(a.c_str(), "to be, not to be: that is the question") == 0);
+      a.insert (a.end(),3,'.');       // to be, not to be: that is the question(...)
+      CHECK(StrCmp(a.c_str(), "to be, not to be: that is the question...") == 0);
+      a.insert (it+2,c.begin(),c.begin()+3); // (or )
+      CHECK(StrCmp(a.c_str(), "to be, or not to be: that is the question...") == 0);
+    }
   }
 };

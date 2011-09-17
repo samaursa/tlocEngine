@@ -131,5 +131,21 @@ namespace TestingStrings
     a.assign(10, '!');
 
     CHECK(StrCmp(a.c_str(), "!!!!!!!!!!") == 0);
+
+    b.assign(a);
+
+    CHECK(StrCmp(b.c_str(), "!!!!!!!!!!") == 0);
+
+    c.assign("Testing String assign()");
+
+    CHECK(StrCmp(c.c_str(), "Testing String assign()") == 0 );
+
+    b.assign(c, 8, c.size() - 8);
+
+    CHECK(StrCmp(b.c_str(), "String assign()") == 0);
+
+    b.assign("Can be very useful. Assign().", 19);
+
+    CHECK(StrCmp(b.c_str(), "Can be very useful.") == 0);
   }
 };

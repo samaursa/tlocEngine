@@ -102,7 +102,7 @@ namespace tloc
   template <typename T>
   TL_I typename StringBase<T>::const_iterator StringBase<T>::end() const
   {
-
+    return m_end;
   }
 
   //------------------------------------------------------------------------
@@ -406,7 +406,7 @@ namespace tloc
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr )
   {
-
+    return assign(aStr.begin(), aStr.end());
   }
 
   template <typename T>
@@ -414,20 +414,27 @@ namespace tloc
                                              const tl_size& aPos,
                                              const tl_size& aNumChars )
   {
+    TLOC_ASSERT_STRING(aPos <= aStr.size(), "Position is out of range!");
+    TLOC_ASSERT_STRING( (aPos + aNumChars) <= aStr.size(),
+      "Position plus number of characters is out of range!");
 
+    return assign(aStr.begin() + aPos, aStr.begin() + aPos + aNumChars);
   }
 
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr,
                                              const tl_size& aNumChars )
   {
+    TLOC_ASSERT_STRING(aNumChars <= StrLen(aCharStr),
+      "Length of char string is smaller than number of chars to copy");
 
+    return assign(aCharStr, aCharStr + aNumChars);
   }
 
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr )
   {
-
+    return assign(aCharStr, aCharStr + StrLen(aCharStr));
   }
 
   template <typename T>

@@ -68,9 +68,10 @@ namespace tloc
     TL_I StringBase(const StringBase<T>& aOther, tl_size aPosition,
                     tl_size aNumChars = npos);
     TL_I StringBase(const T* aPtr, tl_size aNumChars);
-    TL_I explicit StringBase(const T* aPtr);
+    TL_I StringBase(const T* aPtr);
     TL_I StringBase(tl_size aNumChars, T aChar);
-    TL_I StringBase(const T* aPtrBegin, const T* aPtrEnd);
+    template <typename T_InputIterator>
+    TL_I StringBase(const T_InputIterator aPtrBegin, const T_InputIterator aPtrEnd);
     TL_I StringBase(StringNoInitialize, tl_size aN);
     TL_I StringBase(StringSprintf, const tl_size aFormat, ...);
 
@@ -147,11 +148,11 @@ namespace tloc
                              tl_size aIndexSource, tl_size aNumChars);
     TL_I StringBaseT& insert(tl_size aIndex, const T* aCharArray, tl_size aNumChars);
     TL_I StringBaseT& insert(tl_size aIndex, const T* aCharStr);
-    TL_I StringBaseT& insert(tl_size aIndex, tl_size aNumChars, const T& aChar);
-    TL_I iterator     insert(const T* aPos, const T& aChar);
-    TL_I void         insert(const T* aPos, tl_size aNumChars, const T& aChar);
+    TL_I StringBaseT& insert(tl_size aIndex, tl_size aNumChars, T aChar);
+    TL_I iterator     insert(const_iterator aPos, const T& aChar);
+    TL_I void         insert(const_iterator aPos, tl_size aNumChars, T aChar);
     template <typename T_InputIterator>
-    TL_I void         insert(const T* aPos, T_InputIterator aBegin,
+    TL_I void         insert(const_iterator aPos, T_InputIterator aBegin,
                              T_InputIterator aEnd);
 
     TL_I StringBaseT& erase(const tl_size& aPos = 0,
@@ -179,12 +180,13 @@ namespace tloc
                               const T* aCharStr);
 
     TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
-                              tl_size aNumOfCharsToCopy, const T& aChar);
+                              tl_size aNumOfCharsToCopy, const T aChar);
     TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              tl_size aNumOfCharsToCopy, const T& aChar);
+                              tl_size aNumOfCharsToCopy, const T aChar);
 
-    /*template <typename T_InputIterator>
-    TL_I StringBaseT& replace(iterator*/
+    template <typename T_InputIterator>
+    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
+                              T_InputIterator aBegin, T_InputIterator aEnd);
 
 
 

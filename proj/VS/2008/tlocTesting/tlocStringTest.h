@@ -37,6 +37,58 @@ namespace TestingStrings
     {
       CHECK(e[i] == *(text + i));
     }
+
+    {
+      StringBase<char8> f(e);
+      CHECK(StrCmp(f.c_str(), "Hello") == 0);
+    }
+
+    {
+      StringBase<char8> f(e, 3);
+      CHECK(StrCmp(f.c_str(), "lo") == 0);
+    }
+
+    {
+      StringBase<char8> f("Hello world!", 5);
+      CHECK(StrCmp(f.c_str(), "Hello") == 0);
+    }
+
+    {
+      StringBase<char8> f("Hello world!");
+      CHECK(StrCmp(f.c_str(), "Hello world!") == 0);
+    }
+
+    {
+      StringBase<char8> f(10, 'a');
+      CHECK(StrCmp(f.c_str(), "aaaaaaaaaa") == 0);
+    }
+
+    {
+      StringBase<char8> f(StringNoInitialize(), 10);
+      CHECK(f.capacity() == 10);
+    }
+
+    {// tests from cplusplus.com
+      StringBase<char8> s0 ("Initial string");
+      CHECK(StrCmp(s0.c_str(), "Initial string") == 0);
+
+      // constructors used in the same order as described above:
+      StringBase<char8> s1;
+      StringBase<char8> s2 (s0);
+      CHECK(StrCmp(s2.c_str(), "Initial string") == 0);
+      StringBase<char8> s3 (s0, 8, 3);
+      CHECK(StrCmp(s3.c_str(), "str") == 0);
+      StringBase<char8> s4 ("A character sequence", 6);
+      CHECK(StrCmp(s4.c_str(), "A char") == 0);
+      StringBase<char8> s5 ("Another character sequence");
+      CHECK(StrCmp(s5.c_str(), "Another character sequence") == 0);
+      StringBase<char8> s6 (10, 'x');
+      CHECK(StrCmp(s6.c_str(), "xxxxxxxxxx") == 0);
+      StringBase<char8> s7a (10, (char8)42);
+      CHECK(StrCmp(s7a.c_str(), "**********") == 0);
+      /*StringBase<char8> s7b (s0.begin(), s0.begin()+7);
+      CHECK(StrCmp(s7b.c_str(), "Initial") == 0);*/
+    }
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Append",
@@ -60,6 +112,26 @@ namespace TestingStrings
       b.push_back('b');
 
       CHECK(b[100] == 'b');
+    }
+
+    {// tests from cplusplus.com
+      StringBase<char8> str;
+      StringBase<char8> str2="Writing ";
+      StringBase<char8> str3="print 10 and then 5 more";
+
+      // used in the same order as described above:
+      str.append(str2);                       // "Writing "
+      CHECK(StrCmp(str.c_str(), "Writing ") == 0);
+      str.append(str3,6,3);                   // "10 "
+      CHECK(StrCmp(str.c_str(), "Writing 10 ") == 0);
+      str.append("dots are cool",5);          // "dots "
+      CHECK(StrCmp(str.c_str(), "Writing 10 dots ") == 0);
+      str.append("here: ");                   // "here: "
+      CHECK(StrCmp(str.c_str(), "Writing 10 dots here: ") == 0);
+      str.append(10,'.');                     // ".........."
+      CHECK(StrCmp(str.c_str(), "Writing 10 dots here: ..........") == 0);
+      str.append(str3.begin()+8,str3.end());  // " and then 5 more"
+      CHECK(StrCmp(str.c_str(), "Writing 10 dots here: .......... and then 5 more") == 0);
     }
   }
 
@@ -159,6 +231,30 @@ namespace TestingStrings
     b = 'a';
 
     CHECK(StrCmp(b.c_str(), "a") == 0);
+
+    {// tests from cplusplus.com
+      StringBase<char8> str;
+      StringBase<char8> base="The quick brown fox jumps over a lazy dog.";
+
+      // used in the same order as described above:
+
+      str.assign(base);
+
+      str.assign(base,10,9);
+      CHECK(StrCmp(str.c_str(), "brown fox") == 0);
+
+      str.assign("pangrams are cool",7);
+      CHECK(StrCmp(str.c_str(), "pangram") == 0);
+
+      str.assign("c-string");
+      CHECK(StrCmp(str.c_str(), "c-string") == 0);
+
+      str.assign(10,'*');
+      CHECK(StrCmp(str.c_str(), "**********") == 0);
+
+      str.assign(base.begin()+16,base.end()-12);
+      CHECK(StrCmp(str.c_str(), "fox jumps over") == 0);
+    }
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Insert", "")
@@ -199,6 +295,17 @@ namespace TestingStrings
       c.insert(5, b);
 
       CHECK(StrCmp(c.c_str(), "This indestructible glass will never break.") == 0);
+
+      a = "This is interesting.";
+      c.insert(c.end(), a.begin(), a.end());
+
+      CHECK(StrCmp(c.c_str(), "This indestructible glass will never break."
+        "This is interesting.") == 0);
+
+      a = c;
+      a.insert((tl_size)0, 10, 'T');
+      c.insert((tl_size)0, 10, c[0]); // Checks whether we are not messing up the pointers
+      CHECK(StrCmp(a.c_str(), c.c_str()) == 0);
     }
 
     {// tests from cplusplus.com
@@ -224,6 +331,58 @@ namespace TestingStrings
       CHECK(StrCmp(a.c_str(), "to be, not to be: that is the question...") == 0);
       a.insert (it+2,c.begin(),c.begin()+3); // (or )
       CHECK(StrCmp(a.c_str(), "to be, or not to be: that is the question...") == 0);
+    }
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Replace", "")
+  {
+    {
+      a = "This is a string.";
+      b = "test";
+
+      a.replace(a.begin() + 10, a.begin() + 16, b.begin(), b.end());
+      CHECK(StrCmp(a.c_str(), "This is a test.") == 0);
+
+      a.replace(a.end() - 1, a.end(), 3, '!');
+      CHECK(StrCmp(a.c_str(), "This is a test!!!") == 0);
+    }
+
+    {//tests from cplusplus.com
+      StringBase<char8> base = "this is a test string.";
+      StringBase<char8> str2 = "n example";
+      StringBase<char8> str3 = "sample phrase";
+      StringBase<char8> str4 = "useful.";
+
+      // function versions used in the same order as described above:
+
+      // Using positions:                 0123456789*123456789*12345
+      StringBase<char8> str=base;                // "this is a test string."
+      CHECK(StrCmp(str.c_str(), "this is a test string.") == 0);
+      str.replace(9,5,str2);          // "this is an example string."
+      CHECK(StrCmp(str.c_str(), "this is an example string.") == 0);
+      str.replace(19,6,str3,7,6);     // "this is an example phrase."
+      CHECK(StrCmp(str.c_str(), "this is an example phrase.") == 0);
+      str.replace(8,10,"just all",6); // "this is just a phrase."
+      CHECK(StrCmp(str.c_str(), "this is just a phrase.") == 0);
+      str.replace(8,6,"a short");     // "this is a short phrase."
+      CHECK(StrCmp(str.c_str(), "this is a short phrase.") == 0);
+      str.replace(22,1,3,'!');        // "this is a short phrase!!!"
+      CHECK(StrCmp(str.c_str(), "this is a short phrase!!!") == 0);
+
+      // Using iterators:                      0123456789*123456789*
+      StringBase<char8>::iterator it = str.begin();   //  ^
+      str.replace(it,str.end()-3,str3);    // "sample phrase!!!"
+      CHECK(StrCmp(str.c_str(), "sample phrase!!!") == 0);
+      str.replace(it,it+6,"replace it",7); // "replace phrase!!!"
+      CHECK(StrCmp(str.c_str(), "replace phrase!!!") == 0);
+      it+=8;                               //          ^
+      str.replace(it,it+6,"is cool");      // "replace is cool!!!"
+      CHECK(StrCmp(str.c_str(), "replace is cool!!!") == 0);
+      str.replace(it+4,str.end()-4,4,'o'); // "replace is cooool!!!"
+      CHECK(StrCmp(str.c_str(), "replace is cooool!!!") == 0);
+      it+=3;                               //             ^
+      str.replace(it,str.end(),str4.begin(),str4.end()); // "replace is useful."
+      CHECK(StrCmp(str.c_str(), "replace is useful.") == 0);
     }
   }
 };

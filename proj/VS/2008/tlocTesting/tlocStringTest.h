@@ -385,4 +385,17 @@ namespace TestingStrings
       CHECK(StrCmp(str.c_str(), "replace is useful.") == 0);
     }
   }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Copy", "")
+  {
+    tl_size length;
+    char8 buffer[20];
+    StringBase<char8> str ("Test string...");
+    REQUIRE(StrCmp(str.c_str(), "Test string...") == 0);
+
+    length = str.copy(buffer,6,5);
+    buffer[length] = '\0';
+
+    CHECK(StrCmp(buffer, "string") == 0);
+  }
 };

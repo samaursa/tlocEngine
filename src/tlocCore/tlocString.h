@@ -207,10 +207,11 @@ namespace tloc
 
     //------------------------------------------------------------------------
     // String Operations
+
     TL_I const T*     c_str();
     TL_I const T*     data();
     TL_I tl_size      copy(T* aDestArray, const tl_size& aNumCharsToCopy,
-                           const tl_size& aBeginIndex);
+                           const tl_size& aBegin);
 
     //````````````````````````````````````````````````````````````````````````
     // Find functions

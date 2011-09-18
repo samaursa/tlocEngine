@@ -822,6 +822,28 @@ namespace tloc
     return m_begin;
   }
 
+  template <typename T>
+  TL_I const T* StringBase<T>::data()
+  {
+    return m_begin;
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::copy( T* aDestArray,
+                                    const tl_size& aNumCharsToCopy,
+                                    const tl_size& aBegin )
+  {
+    TLOC_ASSERT_STRING(aBegin <= length(), "Begin is out of range!");
+    TLOC_ASSERT_STRING_WARN( (aBegin + aNumCharsToCopy) <= length(),
+      "Begin + number of chars is out of range.");
+
+    const_iterator itrBegin = m_begin + aBegin;
+    const_iterator itrEnd = (itrBegin + aNumCharsToCopy) > m_end
+                                          ? m_end : itrBegin + aNumCharsToCopy;
+    tlCopy(itrBegin, itrEnd, aDestArray);
+    return itrEnd - itrBegin;
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 

@@ -122,6 +122,9 @@ namespace tloc
 
     TL_I void         swap(T& aX);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Append
+
     TL_I StringBaseT& append(const StringBaseT& aStr);
     TL_I StringBaseT& append(const StringBaseT& aStr, const tl_size& aPos,
                              const tl_size& aNumChars);
@@ -133,6 +136,9 @@ namespace tloc
 
     TL_I void         push_back(const T& aChar);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Assign
+
     TL_I StringBaseT& assign(const StringBaseT& aStr);
     TL_I StringBaseT& assign(const StringBaseT& aStr, const tl_size& aPos,
                              const tl_size& aNumChars);
@@ -142,6 +148,9 @@ namespace tloc
     template <typename T_InputIterator>
     TL_I StringBaseT& assign(const T_InputIterator aBegin,
                              const T_InputIterator aEnd);
+
+    //````````````````````````````````````````````````````````````````````````
+    // Insert
 
     TL_I StringBaseT& insert(tl_size aIndex, const StringBaseT& aStr);
     TL_I StringBaseT& insert(tl_size aIndexDestination, const StringBaseT& aStr,
@@ -155,10 +164,16 @@ namespace tloc
     TL_I void         insert(const_iterator aPos, T_InputIterator aBegin,
                              T_InputIterator aEnd);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Replace
+
     TL_I StringBaseT& erase(const tl_size& aPos = 0,
                             const tl_size& aNumChars = npos);
     TL_I iterator     erase(iterator aPos);
     TL_I iterator     erase(iterator aFirst, iterator aLast);
+
+    //````````````````````````````````````````````````````````````````````````
+    // Replace
 
     TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
                               const StringBaseT& aStr);
@@ -191,8 +206,73 @@ namespace tloc
 
 
     //------------------------------------------------------------------------
-    // Operations
+    // String Operations
     TL_I const T*     c_str();
+    TL_I const T*     data();
+    TL_I tl_size      copy(T* aDestArray, const tl_size& aNumCharsToCopy,
+                           const tl_size& aBeginIndex);
+
+    //````````````````````````````````````````````````````````````````````````
+    // Find functions
+
+    TL_I tl_size      find(const StringBaseT& aStrToCompare,
+                           const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find(const T* aCharStr, const tl_size& aBeginIndex,
+                           const tl_size& aNumCharsToCompare) const;
+    TL_I tl_size      find(const T* aCharStr,
+                           const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find(T aChar, const tl_size& aBeginIndex = 0) const;
+
+    TL_I tl_size      rfind(const StringBaseT& aStrToCompare,
+                            const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      rfind(const T* aCharStr, const tl_size& aBeginIndex,
+                            const tl_size& aNumCharsToCompare) const;
+    TL_I tl_size      rfind(const T* aCharStr,
+                            const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      rfind(T aChar, const tl_size& aBeginIndex = 0) const;
+
+    TL_I tl_size      find_first_of(const StringBaseT& aStrToCompare,
+                                    const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_first_of(const T* aCharStr, const tl_size& aBeginIndex,
+                                    const tl_size& aNumCharsToCompare) const;
+    TL_I tl_size      find_first_of(const T* aCharStr,
+                                    const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_first_of(T aChar, const tl_size& aBeginIndex = 0) const;
+
+    TL_I tl_size      find_last_of(const StringBaseT& aStrToCompare,
+                                   const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_last_of(const T* aCharStr, const tl_size& aBeginIndex,
+                                   const tl_size& aNumCharsToCompare) const;
+    TL_I tl_size      find_last_of(const T* aCharStr,
+                                   const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_last_of(T aChar, const tl_size& aBeginIndex = 0) const;
+
+    TL_I tl_size      find_first_not_of(const StringBaseT& aStrToCompare,
+                                        tl_size aBeginIndex = 0) const;
+    TL_I tl_size      find_first_not_of(const T* aCharStr,
+                                        const tl_size& aBeginIndex,
+                                        tl_size aNumCharsToCompare) const;
+    TL_I tl_size      find_first_not_of(const T* aCharStr,
+                                        const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_first_not_of(T aChar, const tl_size& aBeginIndex = 0) const;
+
+    TL_I tl_size      find_last_not_of(const StringBaseT& aStrToCompare,
+                                       tl_size aBeginIndex = 0) const;
+    TL_I tl_size      find_last_not_of(const T* aCharStr, const tl_size& aBeginIndex,
+                                       tl_size aNumCharsToCompare) const;
+    TL_I tl_size      find_last_not_of(const T* aCharStr,
+                                       const tl_size& aBeginIndex = 0) const;
+    TL_I tl_size      find_last_not_of(T aChar,
+                                       const tl_size& aBeginIndex = 0) const;
+
+    //````````````````````````````````````````````````````````````````````````
+    // Substring
+
+    StringBaseT       substr(const tl_size& aBeginIndex,
+                             const tl_size& aNumCharsToCopy);
+    void              substr(const tl_size& aBeginIndex,
+                             const tl_size& aNumCharsToCopy,
+                             StringBaseT& aSubStrOut);
 
   protected:
     T*              m_begin;

@@ -319,6 +319,10 @@ namespace tloc
   //------------------------------------------------------------------------
   // Modifiers
 
+
+  //````````````````````````````````````````````````````````````````````````
+  // Operators
+
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::operator+=( const StringBase<T>& aStr )
   {
@@ -366,6 +370,9 @@ namespace tloc
     tlSwap(aX.m_end, m_end);
     tlSwap(aX.m_capacity, m_capacity);
   }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Append
 
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::append( const StringBaseT& aStr )
@@ -454,6 +461,9 @@ namespace tloc
     append(1, aChar);
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Assign
+
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr )
   {
@@ -526,6 +536,9 @@ namespace tloc
 
     return *this;
   }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Insert
 
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const StringBaseT& aStr )
@@ -633,6 +646,9 @@ namespace tloc
     m_end = m_end + rangeSize;
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Erase
+
   template <typename T>
   TL_I StringBase<T>& StringBase<T>::erase( const tl_size& aPos /*= 0*/,
                                             const tl_size& aNumChars /*= npos*/ )
@@ -679,6 +695,9 @@ namespace tloc
 
     return aFirst;
   }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Replace
 
   template <typename T>
   TL_I StringBase<T>&

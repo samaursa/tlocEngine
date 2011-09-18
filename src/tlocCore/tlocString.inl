@@ -844,6 +844,65 @@ namespace tloc
     return itrEnd - itrBegin;
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Find
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::find( const StringBaseT& aStrToCompare,
+                                    const tl_size& aBeginIndex /*= 0*/ ) const
+  {
+
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::find( const T* aCharStr, const tl_size& aBeginIndex,
+                                    const tl_size& aNumCharsToCompare ) const
+  {
+
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::find( const T* aCharStr,
+                                    const tl_size& aBeginIndex /*= 0*/ ) const
+  {
+
+  }
+
+  template <typename T>
+  TL_I tl_size StringBase<T>::find( T aChar, const tl_size& aBeginIndex /*= 0*/ ) const
+  {
+
+  }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Substr
+
+  template <typename T>
+  StringBase<T> StringBase<T>::substr( const tl_size& aBeginIndex,
+                                       const tl_size& aNumCharsToCopy )
+  {
+    StringBase<T> temp;
+    substr(aBeginIndex, aNumCharsToCopy, temp);
+    return temp;
+  }
+
+  template <typename T>
+  void StringBase<T>::substr( const tl_size& aBeginIndex,
+                              const tl_size& aNumCharsToCopy,
+                              StringBaseT& aSubStrOut )
+  {
+    const_iterator itrBegin = m_begin + aBeginIndex;
+    const_iterator itrBeginPlusN = itrBegin + aNumCharsToCopy;
+    const_iterator itrEnd = aNumCharsToCopy == npos ? m_end :
+                              ( itrBeginPlusN > m_end ? m_end : itrBeginPlusN);
+
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Begin index is out of range!");
+    TLOC_ASSERT_STRING_WARN(itrBeginPlusN <= m_end,
+      "Begin + number of chars to copy is out of range.");
+
+    aSubStrOut.assign(itrBegin, itrEnd);
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 

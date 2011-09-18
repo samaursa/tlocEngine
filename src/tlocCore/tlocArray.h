@@ -153,7 +153,10 @@ namespace tloc
 
     Array();
     explicit Array(tl_size aSize);
-    explicit Array( const Array<T>& toCopy);
+    Array( const Array<T>& toCopy);
+    Array(tl_size aNumElemsToInsert, const T& aValueToCopy = T());
+    template <typename T_InputIterator>
+    Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
 
     //------------------------------------------------------------------------
     // Capacity

@@ -15,6 +15,17 @@
 namespace tloc
 {
   //------------------------------------------------------------------------
+  // Non-modifying sequence operations
+
+  template <typename T_InputIterator, typename T_Function>
+  T_Function tlForEach(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                       T_Function aFunc);
+
+  template <typename T_InputIterator, typename T>
+  T_InputIterator tlFind(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                         const T& aValue);
+
+  //------------------------------------------------------------------------
   // Min / Max
 
   template <typename T>

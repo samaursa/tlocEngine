@@ -1,6 +1,42 @@
 namespace tloc
 {
   //------------------------------------------------------------------------
+  // Non-modifying sequence operations
+
+  template <typename T_InputIterator, typename T_Function>
+  T_Function tlForEach( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                        T_Function aFunc )
+  {
+    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
+      "Invalid range (aRangeBegin > aRangeEnd)!");
+    const tl_size rangeSize = aRangeEnd - aRangeBegin;
+
+    for (u32 i = 0; i < rangeSize; ++i)
+    {
+      aFunc(*aRangeBegin);
+      ++aRangeBegin;
+    }
+
+    return aFunc;
+  }
+
+  template <typename T_InputIterator, typename T>
+  T_InputIterator tlFind( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                          const T& aValue )
+  {
+    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
+      "Invalid range (aRangeBegin > aRangeEnd)!");
+
+    while (aRangeBegin != aRangeEnd)
+    {
+      if (*aRangeBegin == aValue) break;
+      ++aRangeBegin;
+    }
+
+    return aRangeBegin;
+  }
+
+  //------------------------------------------------------------------------
   // Min / Max
 
   template <typename T>

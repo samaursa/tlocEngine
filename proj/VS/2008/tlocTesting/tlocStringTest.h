@@ -398,4 +398,21 @@ namespace TestingStrings
 
     CHECK(StrCmp(buffer, "string") == 0);
   }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
+  {
+    StringBase<char8> str="We think in generalities, but we live in details.";
+    // quoting Alfred N. Whitehead
+    StringBase<char8> str2, str3;
+
+    str2 = str.substr (12,12); // "generalities"
+    CHECK(StrCmp(str2.c_str(), "generalities") == 0);
+
+    // TODO: Test when find() is complete
+    //tl_size pos;
+    //pos = str.find("live");    // position of "live" in str
+    //str3 = str.substr (pos);   // get from "live" to the end
+
+    //CHECK(StrCmp(str3.c_str(), " in details.") == 0);
+  }
 };

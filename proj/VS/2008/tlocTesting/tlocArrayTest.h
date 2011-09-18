@@ -24,6 +24,28 @@ namespace TestingArray
     arrayName[i] = i;\
   }\
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Ctors", "")
+  {
+    Array<s32> first;                                // empty vector of ints
+    Array<s32> second (4,100);                       // four ints with value 100
+    CHECK(second[0] == 100); CHECK(second[1] == 100);
+    CHECK(second[2] == 100); CHECK(second[3] == 100);
+    Array<s32> third (second.begin(),second.end());  // iterating through second
+    CHECK(third[0] == 100); CHECK(third[1] == 100);
+    CHECK(third[2] == 100); CHECK(third[3] == 100);
+    Array<s32> fourth (third);                       // a copy of third
+    CHECK(fourth[0] == 100); CHECK(fourth[1] == 100);
+    CHECK(fourth[2] == 100); CHECK(fourth[3] == 100);
+
+    // the iterator constructor can also be used to construct from arrays:
+    s32 myints[] = {16,2,77,29};
+    Array<s32> fifth (myints, myints + sizeof(myints) / sizeof(s32) );
+
+    CHECK(fifth[0] == 16); CHECK(fifth[1] == 2);
+    CHECK(fifth[2] == 77); CHECK(fifth[3] == 29);
+  }
+
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Push_back",
                                                    "Test push_back functionality")
   {

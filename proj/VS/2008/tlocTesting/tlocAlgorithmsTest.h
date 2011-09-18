@@ -104,4 +104,48 @@ namespace TestingAlgorithms
       }
     }
   }
+
+  void ForEachFunc(u32*& element)
+  {
+    *element = ++(*element);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/ForEach", "")
+  {
+    const tl_size arraySize = 5;
+    u32* intArray[arraySize];
+
+    for (u32 i = 0; i < arraySize; ++i)
+    {
+      intArray[i] = new u32(i);
+    }
+
+    tlForEach(intArray, intArray + arraySize, ForEachFunc);
+
+    for (u32 i = 0; i < arraySize; ++i)
+    {
+      CHECK( *(intArray[i]) == i + 1);
+    }
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Find", "")
+  {
+    u32 myints[] = { 10, 20, 30 ,40 };
+    u32 * p;
+
+    // pointer to array element:
+    p = tlFind(myints,myints+4, (u32)30);
+    ++p;
+
+    CHECK(*p == 40);
+
+    Array<u32> myvector (myints,myints+4);
+    Array<u32>::iterator it;
+
+    //iterator to vector element:
+    it = tlFind (myvector.begin(), myvector.end(), (u32)30);
+    ++it;
+
+    CHECK(*it == 40);
+  }
 };

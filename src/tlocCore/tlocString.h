@@ -211,7 +211,7 @@ namespace tloc
     TL_I const T*     c_str();
     TL_I const T*     data();
     TL_I tl_size      copy(T* aDestArray, const tl_size& aNumCharsToCopy,
-                           const tl_size& aBegin);
+                           const tl_size& aBegin = 0);
 
     //````````````````````````````````````````````````````````````````````````
     // Find functions
@@ -270,10 +270,10 @@ namespace tloc
     // Substring
 
     StringBaseT       substr(const tl_size& aBeginIndex,
-                             const tl_size& aNumCharsToCopy);
+                             const tl_size& aNumCharsToCopy = npos);
     void              substr(const tl_size& aBeginIndex,
                              const tl_size& aNumCharsToCopy,
-                             StringBaseT& aSubStrOut);
+                             StringBaseT&   aSubStrOut);
 
   protected:
     T*              m_begin;

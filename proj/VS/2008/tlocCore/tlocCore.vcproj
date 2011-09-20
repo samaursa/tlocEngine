@@ -332,6 +332,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Pair"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocPair.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="DataStructures"

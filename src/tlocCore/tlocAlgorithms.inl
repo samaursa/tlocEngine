@@ -1,14 +1,23 @@
 namespace tloc
 {
   //------------------------------------------------------------------------
+  // Macros
+
+#define TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(_Begin, _End) \
+  TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd, "Invalid range (aRangeBegin > aRangeEnd)!")
+
+  //------------------------------------------------------------------------
   // Non-modifying sequence operations
 
   template <typename T_InputIterator, typename T_Function>
   T_Function tlForEach( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                         T_Function aFunc )
   {
-    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
-      "Invalid range (aRangeBegin > aRangeEnd)!");
+    typedef Loki::TypeTraits<T_InputIterator> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlForEach_cannot_be_used_with_non_pointer_iterators);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
+
     const tl_size rangeSize = aRangeEnd - aRangeBegin;
 
     for (u32 i = 0; i < rangeSize; ++i)
@@ -24,8 +33,7 @@ namespace tloc
   T_InputIterator tlFind( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                           const T& aValue )
   {
-    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
-      "Invalid range (aRangeBegin > aRangeEnd)!");
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 
     while (aRangeBegin != aRangeEnd)
     {
@@ -34,6 +42,125 @@ namespace tloc
     }
 
     return aRangeBegin;
+  }
+
+  template <typename T_InputIterator, typename T_Predicate>
+  T_InputIterator tlFindIf( T_InputIterator aRangeBegin,
+                            T_InputIterator aRangeEnd, T_Predicate aPred )
+  {
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
+
+    while (aRangeBegin != aRangeEnd)
+    {
+      if (aPred(*aRangeBegin)) break;
+      ++aRangeBegin;
+    }
+
+    return aRangeBegin;
+  }
+
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindEnd( T_ForwardIterator1 aRangeToSearchBegin,
+                                T_ForwardIterator1 aRangeToSearchEnd,
+                                T_ForwardIterator2 aRangeToFindBegin,
+                                T_ForwardIterator2 aRangeToFindEnd )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+    typename T_BinaryPredicate>
+    T_ForwardIterator1 tlFindEnd( T_ForwardIterator1 aRangeToSearchBegin,
+                                  T_ForwardIterator1 aRangeToSearchEnd,
+                                  T_ForwardIterator2 aRangeToFindBegin,
+                                  T_ForwardIterator2 aRangeToFindEnd,
+                                  T_BinaryPredicate aPred )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator, typename T>
+  tl_ptrdiff tlCount( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                      const T& aValue )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator, typename T_Predicate>
+  tl_ptrdiff tlCountIf( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                        T_Predicate aPred )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator1, typename T_InputIterator2>
+  Pair<T_InputIterator1, T_InputIterator2>
+    tlMismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+                T_InputIterator2 aRangeToCompare )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
+  Pair<T_InputIterator1, T_InputIterator2>
+    tlMismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+                T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator1, typename T_InputIterator2>
+  bool tlEqual( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+                T_InputIterator2 aRangeToCompare )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_InputIterator1, typename T_InputIterator2,
+            typename T_BinaryPred>
+  bool tlEqual( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+                T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlSearch( T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+    T_ForwardIterator1 tlSearch( T_ForwardIterator1 aRangeToSearchBegin,
+                                 T_ForwardIterator1 aRangeToSearchEnd,
+                                 T_ForwardIterator2 aRangeToFindBegin,
+                                 T_ForwardIterator2 aRangeToFindEnd,
+                                 T_BinaryPredicate aPred )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_ForwardIterator, typename T_Size, typename T>
+  T_ForwardIterator tlSearchN( T_ForwardIterator aRangeToSearchBegin,
+                               T_ForwardIterator aRangeToSearchEnd,
+                               T_Size aCount, const T& aValue )
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T_ForwardIterator, typename T_Size, typename T,
+            typename T_BinaryPred>
+    T_ForwardIterator tlSearchN( T_ForwardIterator aRangeToSearchBegin,
+                                 T_ForwardIterator aRangeToSearchEnd,
+                                 T_Size aCount, const T& aValue,
+                                 T_BinaryPred aPred )
+  {
+    TLOC_ASSERT_WIP();
   }
 
   //------------------------------------------------------------------------

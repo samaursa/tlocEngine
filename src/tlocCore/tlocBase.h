@@ -4,10 +4,17 @@
 #define TLOC_BASE_H
 
 #include <assert.h>
+#include <3rdParty/loki/static_check.h>
 
 //////////////////////////////////////////////////////////////////////////
 // Common macros
 #define _CRT_SECURE_NO_WARNINGS 1
+
+#if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
+# define _SECURE_SCL 0  // turn of checked iterators
+# pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
+# pragma inline_recursion( on )
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // TLOC Engine No source
@@ -194,6 +201,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
+//````````````````````````````````````````````````````````````````````````
+// Run-time
+
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
@@ -205,7 +215,6 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-# define TLOC_ASSERT_WIP(), TLOC_ASSERT(false, "This function is unfinished (Work in progress)!");
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
 // it will work properly with these asserts disabled
@@ -220,6 +229,18 @@
 #define TLOC_ASSERTW(_Expression, _Msg)
 #define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
+
+//````````````````````````````````````````````````````````````````````````
+// Compile time
+#ifndef TLOC_DISABLE_STATIC_ASSERT
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg)
+#else
+# define TLOC_STATIC_ASSERT(_Expression, _Msg)
+#endif
+
+# define TLOC_ASSERT_WIP() \
+  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished);\
+  TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
 
 //------------------------------------------------------------------------
 // Low level assertions

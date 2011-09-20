@@ -148,4 +148,22 @@ namespace TestingAlgorithms
 
     CHECK(*it == 40);
   }
+
+  bool IsOdd (s32 i) {
+    return ((i%2)==1);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindIf", "")
+  {
+    Array<s32> myvector;
+    Array<s32>::iterator it;
+
+    myvector.push_back(10);
+    myvector.push_back(25);
+    myvector.push_back(40);
+    myvector.push_back(55);
+
+    it = tlFindIf(myvector.begin(), myvector.end(), IsOdd);
+    CHECK(*it == 25);
+  }
 };

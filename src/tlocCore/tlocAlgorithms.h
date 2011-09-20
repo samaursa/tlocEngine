@@ -2,6 +2,7 @@
 #define TLOC_ALGORITHMS_H
 
 #include "tlocTypeTraits.h"
+#include "tlocPair.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms
@@ -24,6 +25,76 @@ namespace tloc
   template <typename T_InputIterator, typename T>
   T_InputIterator tlFind(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                          const T& aValue);
+
+  template <typename T_InputIterator, typename T_Predicate>
+  T_InputIterator tlFindIf(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                           T_Predicate aPred);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindEnd(T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlFindEnd(T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd,
+                               T_BinaryPredicate  aPred);
+
+  template <typename T_InputIterator, typename T>
+  tl_ptrdiff tlCount(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                     const T& aValue);
+
+  template <typename T_InputIterator, typename T_Predicate>
+  tl_ptrdiff tlCountIf(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                       T_Predicate aPred);
+
+  template <typename T_InputIterator1, typename T_InputIterator2>
+  Pair<T_InputIterator1, T_InputIterator2>
+    tlMismatch(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+               T_InputIterator2 aRangeToCompare);
+
+  template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
+  Pair<T_InputIterator1, T_InputIterator2>
+    tlMismatch(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+               T_InputIterator2 aRangeToCompare, T_BinaryPred aPred);
+
+  template <typename T_InputIterator1, typename T_InputIterator2>
+  bool tlEqual(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+               T_InputIterator2 aRangeToCompare);
+
+  template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
+  bool tlEqual(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+               T_InputIterator2 aRangeToCompare, T_BinaryPred aPred);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlSearch(T_ForwardIterator1 aRangeToSearchBegin,
+                              T_ForwardIterator1 aRangeToSearchEnd,
+                              T_ForwardIterator2 aRangeToFindBegin,
+                              T_ForwardIterator2 aRangeToFindEnd);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlSearch(T_ForwardIterator1 aRangeToSearchBegin,
+                              T_ForwardIterator1 aRangeToSearchEnd,
+                              T_ForwardIterator2 aRangeToFindBegin,
+                              T_ForwardIterator2 aRangeToFindEnd,
+                              T_BinaryPredicate  aPred);
+
+  template <typename T_ForwardIterator, typename T_Size, typename T>
+  T_ForwardIterator tlSearchN(T_ForwardIterator aRangeToSearchBegin,
+                              T_ForwardIterator aRangeToSearchEnd,
+                              T_Size aCount, const T& aValue);
+
+  template <typename T_ForwardIterator, typename T_Size, typename T,
+            typename T_BinaryPred>
+  T_ForwardIterator tlSearchN(T_ForwardIterator aRangeToSearchBegin,
+                              T_ForwardIterator aRangeToSearchEnd,
+                              T_Size aCount, const T& aValue,
+                              T_BinaryPred aPred);
 
   //------------------------------------------------------------------------
   // Min / Max

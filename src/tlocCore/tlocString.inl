@@ -858,7 +858,16 @@ namespace tloc
   TL_I tl_size StringBase<T>::find( const T* aCharStr, const tl_size& aBeginIndex,
                                     const tl_size& aNumCharsToCompare ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(m_begin + aBeginIndex <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) <= aNumCharsToCompare,
+      "Number of characters to compare exceeds the input string length!");
+
+    while (itrBegin != m_end)
+    {
+      TLOC_ASSERT_WIP();
+    }
   }
 
   template <typename T>

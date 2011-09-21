@@ -428,6 +428,25 @@ namespace TestingStrings
     CHECK(found == StringBase<char8>::npos);
   }
 
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/rFind", "")
+  {
+    StringBase<char8> str ("The sixth sick sheik's sixth sheep's sick.");
+    StringBase<char8> key ("sixth");
+    tl_size found;
+
+    found = str.rfind(key);
+    REQUIRE(found != StringBase<char8>::npos);
+
+    str.replace (found,key.length(),"seventh");
+    CHECK(StrCmp(str.c_str(), "The sixth sick sheik's seventh sheep's sick.") == 0);
+
+    found = str.rfind("sick.");
+    CHECK(StrCmp(str.begin() + found, "sick.") == 0);
+
+    found = str.rfind("'");
+    CHECK(*(str.begin() + found) == '\'');
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
   {
     StringBase<char8> str="We think in generalities, but we live in details.";

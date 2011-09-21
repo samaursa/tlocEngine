@@ -252,6 +252,14 @@
 				RelativePath="..\..\..\..\src\tlocCore\tlocContainersReadme.txt"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.inl"
+				>
+			</File>
 			<Filter
 				Name="Array"
 				>
@@ -344,6 +352,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="String"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="DataStructures"
@@ -370,26 +398,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="String"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
 				>
 			</File>
 		</Filter>

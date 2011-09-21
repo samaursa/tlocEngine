@@ -1,3 +1,5 @@
+#include <algorithm>
+
 namespace TestingAlgorithms
 {
   struct AlgorithmFixture
@@ -149,7 +151,8 @@ namespace TestingAlgorithms
     CHECK(*it == 40);
   }
 
-  bool IsOdd (s32 i) {
+  bool IsOdd (s32 i)
+  {
     return ((i%2)==1);
   }
 
@@ -165,5 +168,167 @@ namespace TestingAlgorithms
 
     it = tlFindIf(myvector.begin(), myvector.end(), IsOdd);
     CHECK(*it == 25);
+  }
+
+  bool myfunction (s32 i, s32 j)
+  {
+    return (i==j);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindEnd", "")
+  {
+    s32 myints[] = {1,2,3,4,5,1,2,3,4,5};
+    Array<s32> myvector (myints,myints+10);
+    Array<s32>::iterator it;
+
+    s32 match1[] = {1,2,3};
+
+    // using default comparison:
+    it = tlFindEnd (myvector.begin(), myvector.end(), match1, match1+3);
+
+    CHECK( (s32)(it - myvector.begin()) == 5); // pos
+
+    s32 match2[] = {4,5,1};
+
+    // using predicate comparison:
+    it = tlFindEnd (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
+
+    CHECK( (s32)(it - myvector.begin()) == 3); // pos
+  }
+
+  bool comp_case_insensitive (char8 c1, char8 c2)
+  {
+    return (tolower(c1)==tolower(c2));
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindFirstOf", "")
+  {
+    char8 mychars[] = {'a','b','c','A','B','C'};
+    Array<char8> myvector (mychars,mychars+6);
+    Array<char8>::iterator it;
+
+    char8 match[] = {'A','B','C'};
+
+    // using default comparison:
+    it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match+3);
+
+    CHECK(*it == 'A');
+
+    // using predicate comparison:
+    it = tlFindFirstOf (myvector.begin(), myvector.end(),
+      match, match+3, comp_case_insensitive);
+
+    CHECK(*it == 'a');
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Count", "Count and CountIf")
+  {
+    {//tlCount
+      s32 mycount;
+
+      // counting elements in array:
+      s32 myints[] = {10,20,30,30,20,10,10,20};   // 8 elements
+      mycount = (s32) tlCount (myints, myints+8, 10);
+      CHECK(mycount == 3);
+
+      // counting elements in container:
+      Array<s32> myvector (myints, myints+8);
+      mycount = (s32) tlCount (myvector.begin(), myvector.end(), 20);
+      CHECK(mycount == 3);
+    }
+
+    {//tlCountIf
+      s32 mycount;
+
+      Array<s32> myvector;
+      for (s32 i=1; i<10; i++) myvector.push_back(i); // myvector: 1 2 3 4 5 6 7 8 9
+
+      mycount = (s32) tlCountIf (myvector.begin(), myvector.end(), IsOdd);
+      CHECK(mycount == 5);
+    }
+  }
+
+  bool mypredicate (s32 i, s32 j)
+  {
+    return (i==j);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Mismatch", "")
+  {
+    Array<s32> myvector;
+    for (s32 i=1; i<6; i++) myvector.push_back (i*10); // myvector: 10 20 30 40 50
+
+    s32 myints[] = {10,20,80,320,1024};                //   myints: 10 20 80 320 1024
+
+    Pair<Array<s32>::iterator,s32*> mypair;
+
+    // using default comparison:
+    mypair = tlMismatch (myvector.begin(), myvector.end(), myints);
+
+    CHECK(*mypair.first == 30);
+    CHECK(*mypair.second == 80);
+
+    mypair.first++; mypair.second++;
+
+    // using predicate comparison:
+    mypair = tlMismatch (mypair.first, myvector.end(), mypair.second, mypredicate);
+
+    CHECK(*mypair.first == 40);
+    CHECK(*mypair.second == 320);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Equal", "")
+  {
+    bool retValue = false;
+    s32 myints[] = {20,40,60,80,100};          //   myints: 20 40 60 80 100
+    Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
+
+    retValue = tlEqual(myvector.begin(), myvector.end(), myints);
+    CHECK(retValue == true);
+
+    myvector[3]=81;
+
+    retValue = tlEqual(myvector.begin(), myvector.end(), myints, mypredicate);
+    CHECK(retValue == false);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Search", "")
+  {
+    Array<s32> myvector;
+    Array<s32>::iterator it;
+
+    // set some values:        myvector: 10 20 30 40 50 60 70 80 90
+    for (s32 i=1; i<10; i++) myvector.push_back(i*10);
+
+
+    // using default comparison:
+    s32 match1[] = {40,50,60,70};
+    it = tlSearch (myvector.begin(), myvector.end(), match1, match1+4);
+
+    CHECK((s32)(it - myvector.begin()) == 3);
+
+    // using predicate comparison:
+    s32 match2[] = {20,30,50};
+    it = tlSearch (myvector.begin(), myvector.end(), match2, match2+3, mypredicate);
+
+    CHECK(it == myvector.end());
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/SearchN", "")
+  {
+    s32 myints[]={10,20,30,30,20,10,10,20};
+    Array<s32> myvector (myints,myints+8);
+
+    Array<s32>::iterator it;
+
+    // using default comparison:
+    it = tlSearchN (myvector.begin(), myvector.end(), 2, 30);
+
+    CHECK(s32(it-myvector.begin()) == 2);
+
+    // using predicate comparison:
+    it = tlSearchN (myvector.begin(), myvector.end(), 2, 10, mypredicate);
+
+    CHECK(s32(it-myvector.begin()) == 5);
   }
 };

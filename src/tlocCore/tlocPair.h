@@ -9,15 +9,20 @@ namespace tloc
   class Pair
   {
   public:
-    T_First   m_first;
-    T_Second  m_second;
+    T_First   first;
+    T_Second  second;
 
     Pair();
     Pair(const Pair<T_First, T_Second>& aOtherPair);
-    Pair(const Pair<T_Second, T_First>& aOtherPair);
     Pair(const T_First& aFirst);
     Pair(const T_First& aFirst, const T_Second& aSecond);
   };
+
+  template <typename T_First, typename T_Second>
+  Pair<T_First, T_Second> MakePair(const Pair<T_First, T_Second>& aOtherPair);
+
+  template <typename T_First, typename T_Second>
+  Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_First& aSecond);
 };
 
 #include "tlocPair.inl"

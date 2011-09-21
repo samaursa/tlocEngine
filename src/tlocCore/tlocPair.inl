@@ -7,28 +7,33 @@ namespace tloc
 
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second>::Pair( const Pair<T_First, T_Second>& aOtherPair )
-    : m_first(aOtherPair.m_first)
-    , m_second(aOtherPair.m_second)
-  {
-  }
-
-  template <typename T_First, typename T_Second>
-  Pair<T_First, T_Second>::Pair( const Pair<T_Second, T_First>& aOtherPair )
-    : m_first(aOtherPair.m_first)
-    , m_second(aOtherPair.m_second)
+    : first(aOtherPair.first)
+    , second(aOtherPair.second)
   {
   }
 
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second>::Pair( const T_First& aFirst )
-    : m_first(aFirst)
+    : first(aFirst)
   {
   }
 
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second>::Pair( const T_First& aFirst, const T_Second& aSecond )
-    : m_first(aFirst)
-    , m_second(aSecond)
+    : first(aFirst)
+    , second(aSecond)
   {
+  }
+
+  template <typename T_First, typename T_Second>
+  Pair<T_First, T_Second> MakePair( const Pair<T_First, T_Second>& aOtherPair )
+  {
+    return Pair<T_First, T_Second>(aOtherPair);
+  }
+
+  template <typename T_First, typename T_Second>
+  Pair<T_First, T_Second> MakePair( const T_First& aFirst, const T_Second& aSecond )
+  {
+    return Pair<T_First, T_Second>(aFirst, aSecond);
   }
 };

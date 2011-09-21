@@ -2,6 +2,7 @@
 #define TLOC_ALGORITHMS_H
 
 #include "tlocTypeTraits.h"
+#include "tlocIterator.h"
 #include "tlocPair.h"
 
 //------------------------------------------------------------------------
@@ -44,13 +45,27 @@ namespace tloc
                                T_ForwardIterator2 aRangeToFindEnd,
                                T_BinaryPredicate  aPred);
 
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindFirstOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                   T_ForwardIterator1 aRangeToSearchEnd,
+                                   T_ForwardIterator2 aRangeToFindBegin,
+                                   T_ForwardIterator2 aRangeToFindEnd);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlFindFirstOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                   T_ForwardIterator1 aRangeToSearchEnd,
+                                   T_ForwardIterator2 aRangeToFindBegin,
+                                   T_ForwardIterator2 aRangeToFindEnd,
+                                   T_BinaryPredicate  aPred);
+
   template <typename T_InputIterator, typename T>
-  tl_ptrdiff tlCount(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                     const T& aValue);
+  tl_size tlCount(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                  const T& aValue);
 
   template <typename T_InputIterator, typename T_Predicate>
-  tl_ptrdiff tlCountIf(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                       T_Predicate aPred);
+  tl_size tlCountIf(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                    T_Predicate aPred);
 
   template <typename T_InputIterator1, typename T_InputIterator2>
   Pair<T_InputIterator1, T_InputIterator2>

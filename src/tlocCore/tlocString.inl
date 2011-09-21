@@ -851,7 +851,7 @@ namespace tloc
   TL_I tl_size StringBase<T>::find( const StringBaseT& aStrToCompare,
                                     const tl_size& aBeginIndex /*= 0*/ ) const
   {
-
+    return find(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
   template <typename T>
@@ -860,27 +860,39 @@ namespace tloc
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
-    TLOC_ASSERT_STRING(m_begin + aBeginIndex <= m_end, "Index is out of range!");
-    TLOC_ASSERT_STRING(StrLen(aCharStr) <= aNumCharsToCompare,
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) >= aNumCharsToCompare,
       "Number of characters to compare exceeds the input string length!");
 
-    while (itrBegin != m_end)
+    if (aNumCharsToCompare > 0)
     {
-      TLOC_ASSERT_WIP();
+      const T* const findItr = tlSearch(itrBegin, m_end, aCharStr,
+                                        aCharStr + aNumCharsToCompare);
+
+      if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
+
+    return npos;
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find( const T* aCharStr,
                                     const tl_size& aBeginIndex /*= 0*/ ) const
   {
-
+    return find(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find( T aChar, const tl_size& aBeginIndex /*= 0*/ ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+
+    const T* const findItr = tlFind(itrBegin, m_end, aChar);
+
+    if (findItr != m_end) { return (tl_size)(findItr - m_begin); }
+    else { return npos; }
   }
 
   //````````````````````````````````````````````````````````````````````````

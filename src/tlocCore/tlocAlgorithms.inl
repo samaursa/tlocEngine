@@ -368,8 +368,9 @@ namespace tloc
       {
         sourceItr = aRangeToSearchBegin;
         compareItr = aRangeToFindBegin;
-        while (*sourceItr == *compareItr)
+        while (compareItr != aRangeToFindEnd)
         {
+          if (*sourceItr != *compareItr) { break; }
           ++sourceItr;
           ++compareItr;
         }
@@ -413,8 +414,9 @@ namespace tloc
       {
         sourceItr = aRangeToSearchBegin;
         compareItr = aRangeToFindBegin;
-        while (aPred(*sourceItr, *compareItr))
+        while (compareItr != aRangeToFindEnd)
         {
+          if (!aPred(*sourceItr, *compareItr)) { break; }
           ++sourceItr;
           ++compareItr;
         }

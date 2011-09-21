@@ -399,6 +399,35 @@ namespace TestingStrings
     CHECK(StrCmp(buffer, "string") == 0);
   }
 
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/Find", "")
+  {
+    StringBase<char8> str ("There are two needles in this haystack with needles.");
+    StringBase<char8> str2 ("needle");
+    tl_size found;
+
+    // different member versions of find in the same order as above:
+    found = str.find(str2);
+    CHECK(found == 14);
+
+    found = str.find("needles are small",found+1,6);
+    CHECK(found == 44);
+
+    found = str.find("haystack");
+    CHECK(found == 30);
+
+    found = str.find('.');
+    CHECK(found == 51);
+
+    // let's replace the first needle:
+    str.replace(str.find(str2),str2.length(),"preposition");
+
+    CHECK(StrCmp(str.c_str(), "There are two prepositions in this haystack "
+          "with needles.") == 0);
+
+    found = str.find("Pixar");
+    CHECK(found == StringBase<char8>::npos);
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
   {
     StringBase<char8> str="We think in generalities, but we live in details.";
@@ -409,10 +438,10 @@ namespace TestingStrings
     CHECK(StrCmp(str2.c_str(), "generalities") == 0);
 
     // TODO: Test when find() is complete
-    //tl_size pos;
-    //pos = str.find("live");    // position of "live" in str
-    //str3 = str.substr (pos);   // get from "live" to the end
+    tl_size pos;
+    pos = str.find("live");    // position of "live" in str
+    str3 = str.substr (pos);   // get from "live" to the end
 
-    //CHECK(StrCmp(str3.c_str(), " in details.") == 0);
+    CHECK(StrCmp(str3.c_str(), "live in details.") == 0);
   }
 };

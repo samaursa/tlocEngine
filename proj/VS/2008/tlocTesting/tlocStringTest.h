@@ -519,4 +519,16 @@ namespace TestingStrings
 
     CHECK(StrCmp(str3.c_str(), "live in details.") == 0);
   }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
+  {
+    StringBase<char8> str1 ("green apple");
+    StringBase<char8> str2 ("red apple");
+
+    CHECK(str1.compare(str2) != 0);
+    CHECK(str1.compare(6, 5, "apple") == 0);
+    CHECK(str2.compare(str2.size() - 5, 5, "apple") == 0);
+    CHECK(str1.compare(6, 5, str2, 4, 5) == 0);
+    CHECK(str2.compare(0, 3, "red") == 0);
+  }
 };

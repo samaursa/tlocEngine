@@ -823,7 +823,19 @@ namespace tloc
   }
 
   template <typename T>
+  TL_I const T* StringBase<T>::c_str()const
+  {
+    return m_begin;
+  }
+
+  template <typename T>
   TL_I const T* StringBase<T>::data()
+  {
+    return m_begin;
+  }
+
+  template <typename T>
+  TL_I const T* StringBase<T>::data() const
   {
     return m_begin;
   }
@@ -1138,6 +1150,60 @@ namespace tloc
     aSubStrOut.assign(itrBegin, itrEnd);
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Compare
+
+  template <typename T>
+  s32 StringBase<T>::compare( const StringBaseT& str ) const
+  {
+    return compare(0, length(), str.c_str(), 0, str.length());
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const T* s ) const
+  {
+    return compare(0, length(), s, 0, StrLen(s));
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& pos1,
+                              const tl_size& n1, const StringBaseT& str ) const
+  {
+    TLOC_ASSERT_STRING(length() >= pos1 + n1,
+      "Begin index + number of chars is out of range!");
+    return DoCompare(m_begin + pos1, m_begin + pos1 + n1, str.begin(),
+                     str.end());
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& pos1, const tl_size& n1,
+                              const T* s ) const
+  {
+    TLOC_ASSERT_STRING(length() >= pos1 + n1,
+      "Begin index + number of chars is out of range!");
+
+    return DoCompare(m_begin + pos1, m_begin + pos1 + n1, s,
+                     s + StrLen(s));
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& pos1, const tl_size& n1,
+                              const StringBaseT& str, const tl_size& pos2,
+                              const tl_size& n2 ) const
+  {
+    TLOC_ASSERT_STRING(length() >= pos1 + n1,
+      "Begin index + number of chars is out of range!");
+    TLOC_ASSERT_STRING(str.length() >= pos2 + n2,
+      "Begin index + number of chars is out of range!");
+    return DoCompare(m_begin + pos1, m_begin + pos1 + n1, str.begin() + pos2,
+      str.begin() + pos2 + n2);
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& pos1, const tl_size& n1,
+                              const T* s, const tl_size& n2 ) const
+  {
+    TLOC_ASSERT_STRING(length() >= pos1 + n1,
+      "Begin index + number of chars is out of range!");
+    TLOC_ASSERT_STRING(StrLen(s) >= n2, "Number of chars is out of range!");
+    return DoCompare(m_begin + pos1, m_begin + pos1 + n1, s, s + n2);
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 
@@ -1285,6 +1351,20 @@ namespace tloc
     {
       DoAllocateSelf();
     }
+  }
+
+  template <typename T>
+  s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
+                                const T* aBegin2, const T* aEnd2 ) const
+  {
+    TLOC_ASSERT_STRING_RANGE(aBegin1, aEnd1);
+    TLOC_ASSERT_STRING_RANGE(aBegin2, aEnd2);
+
+    const tl_size size1 = aEnd1 - aBegin1;
+    const tl_size size2 = aEnd2 - aBegin2;
+    const tl_size sizeMin = tlMin(size1, size2);
+
+    return StrCmp(aBegin1, aBegin2, sizeMin);
   }
 
   //////////////////////////////////////////////////////////////////////////

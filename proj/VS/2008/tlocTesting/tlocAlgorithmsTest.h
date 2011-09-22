@@ -194,6 +194,10 @@ namespace TestingAlgorithms
     it = tlFindEnd (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
 
     CHECK( (s32)(it - myvector.begin()) == 3); // pos
+
+    s32 match3[] = {1,2,3,4,5,6,6,7,8,8,5,4,3,23,2,2,1,2,3,4};
+    it = tlFindEnd(myvector.begin(), myvector.end(), match3, match3 + 20);
+    CHECK(it == myvector.end());
   }
 
   bool comp_case_insensitive (char8 c1, char8 c2)
@@ -203,22 +207,74 @@ namespace TestingAlgorithms
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindFirstOf", "")
   {
-    char8 mychars[] = {'a','b','c','A','B','C'};
-    Array<char8> myvector (mychars,mychars+6);
-    Array<char8>::iterator it;
+    {
+      char8 mychars[] = {'a','b','c','A','B','C'};
+      Array<char8> myvector (mychars,mychars+6);
+      Array<char8>::iterator it;
 
-    char8 match[] = {'A','B','C'};
+      char8 match[] = {'A','B','C'};
 
-    // using default comparison:
-    it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match+3);
+      // using default comparison:
+      it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match+3);
 
-    CHECK(*it == 'A');
+      CHECK(*it == 'A');
 
-    // using predicate comparison:
-    it = tlFindFirstOf (myvector.begin(), myvector.end(),
-      match, match+3, comp_case_insensitive);
+      // using predicate comparison:
+      it = tlFindFirstOf (myvector.begin(), myvector.end(),
+        match, match+3, comp_case_insensitive);
 
-    CHECK(*it == 'a');
+      CHECK(*it == 'a');
+    }
+    {
+      char8 mychars[] = {'t','i','s','9','i','s'};
+      Array<char8> myvector (mychars, mychars + 6);
+      Array<char8>::iterator it;
+
+      char8 match[] = {'a','b','c','s','9'};
+
+      it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match + 5);
+      CHECK(*it == 's');
+
+      it = tlFindFirstOf (it + 1, myvector.end(), match, match + 5);
+      CHECK(*it == '9');
+    }
+
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindFirstNotOf", "")
+  {
+    s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
+    s32 allowed[] = {1,2,3,4,5,6,7,8,9};
+
+    Array<s32> myvector(myInts, myInts + 10);
+    Array<s32>::iterator itr;
+
+    itr = tlFindFirstNotOf(myvector.begin(), myvector.end(), allowed, allowed + 9);
+    CHECK(*itr == 23);
+
+    itr = tlFindFirstNotOf(itr + 1, myvector.end(), allowed, allowed + 9);
+    CHECK(*itr == 41);
+
+    itr = tlFindFirstNotOf(itr + 1, myvector.end(), allowed, allowed + 9);
+    CHECK(*itr == 10);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindLastNotOf", "")
+  {
+    s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
+    s32 allowed[] = {1,2,3,4,5,6,7,8,9};
+
+    Array<s32> myvector(myInts, myInts + 10);
+    Array<s32>::iterator itr;
+
+    itr = tlFindLastNotOf(myvector.begin(), myvector.end(), allowed, allowed + 9);
+    CHECK(*itr == 10);
+
+    itr = tlFindLastNotOf(myvector.begin(), itr, allowed, allowed + 9);
+    CHECK(*itr == 41);
+
+    itr = tlFindLastNotOf(myvector.begin(), itr, allowed, allowed + 9);
+    CHECK(*itr == 23);
   }
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Count", "Count and CountIf")

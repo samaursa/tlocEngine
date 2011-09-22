@@ -445,6 +445,62 @@ namespace TestingStrings
 
     found = str.rfind("'");
     CHECK(*(str.begin() + found) == '\'');
+
+    found = str.rfind('.');
+    CHECK(*(str.begin() + found) == '.');
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FindFirstOf", "")
+  {
+    StringBase<char8> str ("Replace the vowels in this sentence by asterisks.");
+    tl_size found;
+
+    found = str.find_first_of("aeiou");
+    while (found!=StringBase<char8>::npos)
+    {
+      str[found]='*';
+      found=str.find_first_of("aeiou",found+1);
+    }
+
+    CHECK(StrCmp(str.c_str(), "R*pl*c* th* v*w*ls *n th*s s*nt*nc* by *st*r*sks.") == 0);
+
+    found = str.find_first_of('c');
+    CHECK(found == 5);
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FindFirstNotOf", "")
+  {
+    StringBase<char8> str ("look for non-alphabetic characters...");
+    tl_size found;
+
+    found = str.find_first_not_of("abcdefghijklmnopqrstuvwxyz ");
+    if (found!=StringBase<char8>::npos)
+    {
+      CHECK(str[found] == '-');
+      CHECK(found == (tl_size)12);
+    }
+    else
+    {
+      CHECK(StrCmp("FindFirstOf test failed", "Check above") == 0);
+    }
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FindLastNotOf", "")
+  {
+    StringBase<char8> str ("erase trailing white-spaces   \n");
+    StringBase<char8> whitespaces (" \t\f\v\n\r");
+    tl_size found;
+
+    found = str.find_last_not_of(whitespaces);
+    if (found != StringBase<char8>::npos)
+    {
+      str.erase(found+1);
+      CHECK(StrCmp(str.c_str(), "erase trailing white-spaces") == 0);
+    }
+    else
+    {
+      CHECK(StrCmp("FindLastNotOf test failed", "Check above") == 0);
+    }
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")

@@ -934,21 +934,14 @@ namespace tloc
   template <typename T>
   TL_I tl_size StringBase<T>::rfind( T aChar, const tl_size& aBeginIndex ) const
   {
-    iterator itrBegin = m_begin + aBeginIndex;
-
-    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
-
-    const T* const findItr = tlFindEnd(itrBegin, m_end, &aChar, &aChar + 1);
-
-    if (findItr != m_end) { return (tl_size)(findItr - m_begin); }
-    else { return npos; }
+    return rfind(&aChar, aBeginIndex, 1);
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_of( const StringBaseT& aStrToCompare,
                                              const tl_size& aBeginIndex ) const
   {
-
+    return find_first_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
   template <typename T>
@@ -956,28 +949,42 @@ namespace tloc
                                              const tl_size& aBeginIndex,
                                              const tl_size& aNumCharsToCompare ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) >= aNumCharsToCompare,
+      "Number of characters to compare exceeds the input string length!");
+
+    if (aNumCharsToCompare > 0)
+    {
+      const T* const findItr = tlFindFirstOf(itrBegin, m_end, aCharStr,
+                                             aCharStr + aNumCharsToCompare);
+
+      if (findItr != m_end) { return (size_t)(findItr - m_begin); }
+    }
+
+    return npos;
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_of( const T* aCharStr,
                                              const tl_size& aBeginIndex ) const
   {
-
+    return find_first_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_of( T aChar,
                                              const tl_size& aBeginIndex ) const
   {
-
+    return find_first_of(&aChar, aBeginIndex, (tl_size)1);
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_of( const StringBaseT& aStrToCompare,
                                             const tl_size& aBeginIndex ) const
   {
-
+    return find_last_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
   template <typename T>
@@ -985,28 +992,42 @@ namespace tloc
                                             const tl_size& aBeginIndex,
                                             const tl_size& aNumCharsToCompare ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) >= aNumCharsToCompare,
+      "Number of characters to compare exceeds the input string length!");
+
+    if (aNumCharsToCompare > 0)
+    {
+      const T* const findItr = tlFindEnd(itrBegin, m_end, aCharStr,
+                                         aCharStr + aNumCharsToCompare);
+
+      if (findItr != m_end) { return (size_t)(findItr - m_begin); }
+    }
+
+    return npos;
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_of( const T* aCharStr,
                                             const tl_size& aBeginIndex ) const
   {
-
+    return find_last_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_of( T aChar,
                                             const tl_size& aBeginIndex ) const
   {
-
+    return find_last_of(&aChar, aBeginIndex, 1);
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_not_of( const StringBaseT& aStrToCompare,
                                                  tl_size aBeginIndex ) const
   {
-
+    return find_first_not_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
   template <typename T>
@@ -1014,28 +1035,42 @@ namespace tloc
                                                  const tl_size& aBeginIndex,
                                                  tl_size aNumCharsToCompare ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) >= aNumCharsToCompare,
+      "Number of characters to compare exceeds the input string length!");
+
+    if (aNumCharsToCompare > 0)
+    {
+      const T* const findItr = tlFindFirstNotOf(itrBegin, m_end, aCharStr,
+                                                aCharStr + aNumCharsToCompare);
+
+      if (findItr != m_end) { return (size_t)(findItr - m_begin); }
+    }
+
+    return npos;
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_not_of( const T* aCharStr,
                                                  const tl_size& aBeginIndex ) const
   {
-
+    return find_first_not_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_first_not_of( T aChar,
                                                  const tl_size& aBeginIndex ) const
   {
-
+    return find_first_not_of(&aChar, aBeginIndex, 1);
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_not_of( const StringBaseT& aStrToCompare,
                                                 tl_size aBeginIndex ) const
   {
-
+    return find_last_not_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
   template <typename T>
@@ -1043,21 +1078,35 @@ namespace tloc
                                                 const tl_size& aBeginIndex,
                                                 tl_size aNumCharsToCompare ) const
   {
+    iterator itrBegin = m_begin + aBeginIndex;
 
+    TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aCharStr) >= aNumCharsToCompare,
+      "Number of characters to compare exceeds the input string length!");
+
+    if (aNumCharsToCompare > 0)
+    {
+      const T* const findItr = tlFindLastNotOf(itrBegin, m_end, aCharStr,
+                                               aCharStr + aNumCharsToCompare);
+
+      if (findItr != m_end) { return (size_t)(findItr - m_begin); }
+    }
+
+    return npos;
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_not_of( const T* aCharStr,
                                                 const tl_size& aBeginIndex ) const
   {
-
+    return find_last_not_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
   template <typename T>
   TL_I tl_size StringBase<T>::find_last_not_of( T aChar,
                                                 const tl_size& aBeginIndex ) const
   {
-
+    return find_last_not_of(&aChar, aBeginIndex, 1);
   }
 
   //````````````````````````````````````````````````````````````````````````

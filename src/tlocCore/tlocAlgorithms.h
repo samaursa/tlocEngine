@@ -59,6 +59,34 @@ namespace tloc
                                    T_ForwardIterator2 aRangeToFindEnd,
                                    T_BinaryPredicate  aPred);
 
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindFirstNotOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                      T_ForwardIterator1 aRangeToSearchEnd,
+                                      T_ForwardIterator2 aRangeToFindBegin,
+                                      T_ForwardIterator2 aRangeToFindEnd);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlFindFirstNotOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                      T_ForwardIterator1 aRangeToSearchEnd,
+                                      T_ForwardIterator2 aRangeToFindBegin,
+                                      T_ForwardIterator2 aRangeToFindEnd,
+                                      T_BinaryPredicate  aPred);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindLastNotOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                     T_ForwardIterator1 aRangeToSearchEnd,
+                                     T_ForwardIterator2 aRangeToFindBegin,
+                                     T_ForwardIterator2 aRangeToFindEnd);
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlFindLastNotOf(T_ForwardIterator1 aRangeToSearchBegin,
+                                     T_ForwardIterator1 aRangeToSearchEnd,
+                                     T_ForwardIterator2 aRangeToFindBegin,
+                                     T_ForwardIterator2 aRangeToFindEnd,
+                                     T_BinaryPredicate  aPred);
+
   template <typename T_InputIterator, typename T>
   tl_size tlCount(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                   const T& aValue);

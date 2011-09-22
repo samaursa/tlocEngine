@@ -74,29 +74,35 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
+    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+
     T_ForwardIterator1 retItr = aRangeToSearchEnd;
-    T_ForwardIterator1 sourceItr;
-    T_ForwardIterator2 compareItr;
-    T_ForwardIterator1 sourceLimit =
-            aRangeToSearchEnd - tlDistance(aRangeToFindBegin, aRangeToFindEnd) + 1;
 
-    while (aRangeToSearchBegin != sourceLimit)
+    if (sourceSize >= compareSize)
     {
-      sourceItr = aRangeToSearchBegin;
-      compareItr = aRangeToFindBegin;
-      while (compareItr != aRangeToFindEnd)
-      {
-        if (*sourceItr != *compareItr) { break; }
-        ++compareItr;
-        ++sourceItr;
-      }
+      T_ForwardIterator1 sourceItr;
+      T_ForwardIterator2 compareItr;
+      T_ForwardIterator1 sourceLimit = aRangeToSearchEnd - compareSize + 1;
 
-      if (compareItr == aRangeToFindEnd)
+      while (aRangeToSearchBegin != sourceLimit)
       {
-        retItr = aRangeToSearchBegin;
-      }
+        sourceItr = aRangeToSearchBegin;
+        compareItr = aRangeToFindBegin;
+        while (compareItr != aRangeToFindEnd)
+        {
+          if (*sourceItr != *compareItr) { break; }
+          ++compareItr;
+          ++sourceItr;
+        }
 
-      ++aRangeToSearchBegin;
+        if (compareItr == aRangeToFindEnd)
+        {
+          retItr = aRangeToSearchBegin;
+        }
+
+        ++aRangeToSearchBegin;
+      }
     }
 
     return retItr;
@@ -116,29 +122,35 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
+    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+
     T_ForwardIterator1 retItr = aRangeToSearchEnd;
-    T_ForwardIterator1 sourceItr;
-    T_ForwardIterator2 compareItr;
-    T_ForwardIterator1 sourceLimit =
-      aRangeToSearchEnd - tlDistance(aRangeToFindBegin, aRangeToFindEnd) + 1;
 
-    while (aRangeToSearchBegin != sourceLimit)
+    if (sourceSize >= compareSize)
     {
-      sourceItr = aRangeToSearchBegin;
-      compareItr = aRangeToFindBegin;
-      while (compareItr != aRangeToFindEnd)
-      {
-        if (!aPred(*sourceItr, *compareItr)) { break; }
-        ++compareItr;
-        ++sourceItr;
-      }
+      T_ForwardIterator1 sourceItr;
+      T_ForwardIterator2 compareItr;
+      T_ForwardIterator1 sourceLimit = aRangeToSearchEnd - compareSize + 1;
 
-      if (compareItr == aRangeToFindEnd)
+      while (aRangeToSearchBegin != sourceLimit)
       {
-        retItr = aRangeToSearchBegin;
-      }
+        sourceItr = aRangeToSearchBegin;
+        compareItr = aRangeToFindBegin;
+        while (compareItr != aRangeToFindEnd)
+        {
+          if (!aPred(*sourceItr, *compareItr)) { break; }
+          ++compareItr;
+          ++sourceItr;
+        }
 
-      ++aRangeToSearchBegin;
+        if (compareItr == aRangeToFindEnd)
+        {
+          retItr = aRangeToSearchBegin;
+        }
+
+        ++aRangeToSearchBegin;
+      }
     }
 
     return retItr;
@@ -150,28 +162,24 @@ namespace tloc
                                     T_ForwardIterator2 aRangeToFindBegin,
                                     T_ForwardIterator2 aRangeToFindEnd )
   {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    T_ForwardIterator1 sourceItr;
     T_ForwardIterator2 compareItr;
-    T_ForwardIterator1 sourceLimit =
-      aRangeToSearchEnd - tlDistance(aRangeToFindBegin, aRangeToFindEnd) + 1;
 
-    while (aRangeToSearchBegin != sourceLimit)
+    while (aRangeToSearchBegin != aRangeToSearchEnd)
     {
-      sourceItr = aRangeToSearchBegin;
       compareItr = aRangeToFindBegin;
       while (compareItr != aRangeToFindEnd)
       {
-        if (*sourceItr != *compareItr) { break; }
+        if (*aRangeToSearchBegin == *compareItr)
+        {
+          return aRangeToSearchBegin;
+        }
         ++compareItr;
-        ++sourceItr;
-      }
-
-      if (compareItr == aRangeToFindEnd)
-      {
-        return aRangeToSearchBegin;
       }
 
       ++aRangeToSearchBegin;
@@ -188,23 +196,55 @@ namespace tloc
                                     T_ForwardIterator2 aRangeToFindEnd,
                                     T_BinaryPredicate aPred )
   {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    T_ForwardIterator1 sourceItr;
     T_ForwardIterator2 compareItr;
-    T_ForwardIterator1 sourceLimit =
-      aRangeToSearchEnd - tlDistance(aRangeToFindBegin, aRangeToFindEnd) + 1;
 
-    while (aRangeToSearchBegin != sourceLimit)
+    while (aRangeToSearchBegin != aRangeToSearchEnd)
     {
-      sourceItr = aRangeToSearchBegin;
       compareItr = aRangeToFindBegin;
       while (compareItr != aRangeToFindEnd)
       {
-        if (!aPred(*sourceItr, *compareItr)) { break; }
+        if (aPred(*aRangeToSearchBegin, *compareItr))
+        {
+          return aRangeToSearchBegin;
+        }
         ++compareItr;
-        ++sourceItr;
+      }
+
+      ++aRangeToSearchBegin;
+    }
+
+    return aRangeToSearchEnd;
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindFirstNotOf( T_ForwardIterator1 aRangeToSearchBegin,
+                                       T_ForwardIterator1 aRangeToSearchEnd,
+                                       T_ForwardIterator2 aRangeToFindBegin,
+                                       T_ForwardIterator2 aRangeToFindEnd )
+  {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
+
+    T_ForwardIterator2 compareItr;
+
+    while (aRangeToSearchBegin != aRangeToSearchEnd)
+    {
+      compareItr = aRangeToFindBegin;
+
+      while (compareItr != aRangeToFindEnd)
+      {
+        if (*compareItr == *aRangeToSearchBegin) { break; }
+
+        ++compareItr;
       }
 
       if (compareItr == aRangeToFindEnd)
@@ -216,6 +256,126 @@ namespace tloc
     }
 
     return aRangeToSearchEnd;
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 tlFindFirstNotOf( T_ForwardIterator1 aRangeToSearchBegin,
+                                       T_ForwardIterator1 aRangeToSearchEnd,
+                                       T_ForwardIterator2 aRangeToFindBegin,
+                                       T_ForwardIterator2 aRangeToFindEnd,
+                                       T_BinaryPredicate aPred )
+  {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
+
+    T_ForwardIterator2 compareItr;
+
+    while (aRangeToSearchBegin != aRangeToSearchEnd)
+    {
+      compareItr = aRangeToFindBegin;
+
+      while (compareItr != aRangeToFindEnd)
+      {
+        if (aPred(*compareItr, *aRangeToSearchBegin)) { break; }
+
+        ++compareItr;
+      }
+
+      if (compareItr == aRangeToFindEnd)
+      {
+        return aRangeToSearchBegin;
+      }
+
+      ++aRangeToSearchBegin;
+    }
+
+    return aRangeToSearchEnd;
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2>
+  T_ForwardIterator1 tlFindLastNotOf( T_ForwardIterator1 aRangeToSearchBegin,
+                                      T_ForwardIterator1 aRangeToSearchEnd,
+                                      T_ForwardIterator2 aRangeToFindBegin,
+                                      T_ForwardIterator2 aRangeToFindEnd )
+  {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
+
+    const tl_size searchSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size findSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+
+    T_ForwardIterator1 ret = aRangeToSearchEnd;
+
+    if (findSize > 0)
+    {
+      for (u32 i = 0; i < searchSize; ++i)
+      {
+        u32 j = 0;
+        for (; j < findSize; ++j)
+        {
+          if ( *(aRangeToSearchBegin + i) == *(aRangeToFindBegin + j))
+          {
+            break;
+          }
+        }
+
+        if (j == findSize)
+        {
+          ret = aRangeToSearchBegin + i;
+        }
+      }
+    }
+
+    return ret;
+  }
+
+  template <typename T_ForwardIterator1, typename T_ForwardIterator2,
+    typename T_BinaryPredicate>
+    T_ForwardIterator1 tlFindLastNotOf( T_ForwardIterator1 aRangeToSearchBegin,
+                                        T_ForwardIterator1 aRangeToSearchEnd,
+                                        T_ForwardIterator2 aRangeToFindBegin,
+                                        T_ForwardIterator2 aRangeToFindEnd,
+                                        T_BinaryPredicate aPred )
+  {
+    typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
+
+    TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
+    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
+
+    const tl_size searchSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size findSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+
+    T_ForwardIterator1 ret = aRangeToSearchEnd;
+
+    if (findSize > 0)
+    {
+      for (u32 i = 0; i < searchSize; ++i)
+      {
+        u32 j = 0;
+        for (; j < findSize; ++j)
+        {
+          if ( aPred(*(aRangeToSearchBegin + i), *(aRangeToFindBegin + j)) )
+          {
+            break;
+          }
+        }
+
+        if (j == findSize)
+        {
+          ret = aRangeToSearchBegin + i;
+        }
+      }
+    }
+
+    return ret;
   }
 
   template <typename T_InputIterator, typename T>

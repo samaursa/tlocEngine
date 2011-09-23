@@ -280,8 +280,8 @@ namespace tloc
     //````````````````````````````````````````````````````````````````````````
     // Compare
 
-    s32 compare ( const StringBaseT& aOtherStr ) const;
-    s32 compare ( const T* aOtherCharStr ) const;
+    s32 compare ( const StringBaseT& aStr ) const;
+    s32 compare ( const T* aCharStr ) const;
     s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
                   const StringBaseT& aOtherStr ) const;
     s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,

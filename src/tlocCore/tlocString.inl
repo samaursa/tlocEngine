@@ -1151,6 +1151,54 @@ namespace tloc
   }
 
   //````````````````````````````````````````````````````````````````````````
+  // Upper Lower
+
+  template <typename T>
+  TL_I StringBase<T> StringBase<T>::to_upper()
+  {
+    StringBase<T> newString = *this;
+    newString.make_upper();
+    return newString;
+  }
+  template <typename T>
+  TL_I void StringBase<T>::to_upper( StringBaseT& aStrOut )
+  {
+    aStrOut = *this;
+    aStrOut.make_upper();
+  }
+  template <typename T>
+  TL_I StringBase<T> StringBase<T>::to_lower()
+  {
+    StringBase<T> newString = *this;
+    newString.make_lower();
+    return newString;
+  }
+  template <typename T>
+  TL_I void StringBase<T>::to_lower( StringBaseT& aStrOut )
+  {
+    aStrOut = *this;
+    aStrOut.make_lower();
+  }
+  template <typename T>
+  TL_I void StringBase<T>::make_upper()
+  {
+    tl_size sizeOfString = length();
+    for (tl_size i = 0; i < sizeOfString; ++i)
+    {
+      *(m_begin + i) = CharToUpper(*(m_begin + i));
+    }
+  }
+  template <typename T>
+  TL_I void StringBase<T>::make_lower()
+  {
+    tl_size sizeOfString = length();
+    for (tl_size i = 0; i < sizeOfString; ++i)
+    {
+      *(m_begin + i) = CharToLower(*(m_begin + i));
+    }
+  }
+
+  //````````````````````````````````````````````````````````````````````````
   // Compare
 
   template <typename T>
@@ -1436,5 +1484,19 @@ namespace tloc
     return memcmp(aPtr1, aPtr2, aNumChars);
   }
 
+  template <typename T>
+  TL_I T CharToLower( const T& aChar )
+  {
+    TLOC_ASSERT_STRING(aChar <= 0xFF,
+      "Character is out of range for this function!");
+    return (T)tolower((char8)aChar);
+  }
 
+  template <typename T>
+  TL_I T CharToUpper( const T& aChar)
+  {
+    TLOC_ASSERT_STRING(aChar <= 0xFF,
+      "Character is out of range for this function!");
+    return (T)toupper((char8)aChar);
+  }
 };

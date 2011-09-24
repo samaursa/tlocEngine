@@ -531,4 +531,46 @@ namespace TestingStrings
     CHECK(str1.compare(6, 5, str2, 4, 5) == 0);
     CHECK(str2.compare(0, 3, "red") == 0);
   }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/UpperLower", "")
+  {
+    const char8* testString      = "This Is A Test STRING";
+    const char8* testStringUpper = "THIS IS A TEST STRING";
+    const char8* testStringLower = "this is a test string";
+
+    StringBase<char8> str(testString);
+    StringBase<char8> str2;
+
+    str.make_lower();
+    CHECK(StrCmp(str.c_str(), testStringLower) == 0);
+
+    str = testString;
+    str.make_upper();
+    CHECK(StrCmp(str.c_str(), testStringUpper) == 0);
+
+    str = testString;
+    str.to_upper(str2);
+    CHECK(StrCmp(str2.c_str(), testStringUpper) == 0);
+
+    str.to_lower(str2);
+    CHECK(StrCmp(str2.c_str(), testStringLower) == 0);
+
+    str2 = str.to_upper();
+    CHECK(StrCmp(str2.c_str(), testStringUpper) == 0);
+
+    str2 = str.to_lower();
+    CHECK(StrCmp(str2.c_str(), testStringLower) == 0);
+
+  }
+
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/UpperLower", "")
+  {
+    CHECK(CharToUpper('a') == 'A');
+    CHECK(CharToUpper(L'a') == L'A');
+    CHECK(CharToUpper('A') == 'A');
+
+    CHECK(CharToLower('A') == 'a');
+    CHECK(CharToLower(L'A') == L'a');
+    CHECK(CharToLower('a') == 'a');
+  }
 };

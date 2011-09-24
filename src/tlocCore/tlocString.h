@@ -203,7 +203,17 @@ namespace tloc
     TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
                               T_InputIterator aBegin, T_InputIterator aEnd);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Lower and Upper case
 
+    TL_I StringBaseT to_upper();
+    TL_I void        to_upper(StringBaseT& aStrOut);
+
+    TL_I StringBaseT to_lower();
+    TL_I void        to_lower(StringBaseT& aStrOut);
+
+    TL_I void        make_upper();
+    TL_I void        make_lower();
 
     //------------------------------------------------------------------------
     // String Operations
@@ -354,8 +364,11 @@ namespace tloc
   template <>
   TL_I s32        StrCmp(const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars);
 
-  TL_I void       CharToLower();
-  TL_I void       CharToUpper();
+  template <typename T>
+  TL_I T          CharToLower(const T& aChar);
+
+  template <typename T>
+  TL_I T          CharToUpper(const T& aChar);
 
 
   TL_I void Find();

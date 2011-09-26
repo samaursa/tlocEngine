@@ -337,8 +337,23 @@ namespace tloc
   TL_I void       CharToLower();
   TL_I void       CharToUpper();
 
+  //````````````````````````````````````````````````````````````````````````
+  // Global operators (not providing <, > as they can be confusing/error-prone
 
-  TL_I void Find();
+  template <typename T>
+  TL_I bool       operator==(const StringBase<T>& a, const StringBase<T>& b);
+  template <typename T>
+  TL_I bool       operator==(const T* a, const StringBase<T>& b);
+  template <typename T>
+  TL_I bool       operator==(const StringBase<T>& a, const T* b);
+
+  template <typename T>
+  TL_I bool       operator!=(const StringBase<T>& a, const StringBase<T>& b);
+  template <typename T>
+  TL_I bool       operator!=(const T* a, const StringBase<T>& b);
+  template <typename T>
+  TL_I bool       operator!=(const StringBase<T>& a, const T* b);
+
 };
 
 #include "tlocString.inl"

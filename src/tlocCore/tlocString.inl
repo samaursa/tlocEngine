@@ -823,7 +823,19 @@ namespace tloc
   }
 
   template <typename T>
+  TL_I const T* StringBase<T>::c_str()const
+  {
+    return m_begin;
+  }
+
+  template <typename T>
   TL_I const T* StringBase<T>::data()
+  {
+    return m_begin;
+  }
+
+  template <typename T>
+  TL_I const T* StringBase<T>::data() const
   {
     return m_begin;
   }
@@ -1138,6 +1150,117 @@ namespace tloc
     aSubStrOut.assign(itrBegin, itrEnd);
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Upper Lower
+
+  template <typename T>
+  TL_I StringBase<T> StringBase<T>::to_upper()
+  {
+    StringBase<T> newString = *this;
+    newString.make_upper();
+    return newString;
+  }
+  template <typename T>
+  TL_I void StringBase<T>::to_upper( StringBaseT& aStrOut )
+  {
+    aStrOut = *this;
+    aStrOut.make_upper();
+  }
+  template <typename T>
+  TL_I StringBase<T> StringBase<T>::to_lower()
+  {
+    StringBase<T> newString = *this;
+    newString.make_lower();
+    return newString;
+  }
+  template <typename T>
+  TL_I void StringBase<T>::to_lower( StringBaseT& aStrOut )
+  {
+    aStrOut = *this;
+    aStrOut.make_lower();
+  }
+  template <typename T>
+  TL_I void StringBase<T>::make_upper()
+  {
+    tl_size sizeOfString = length();
+    for (tl_size i = 0; i < sizeOfString; ++i)
+    {
+      *(m_begin + i) = CharToUpper(*(m_begin + i));
+    }
+  }
+  template <typename T>
+  TL_I void StringBase<T>::make_lower()
+  {
+    tl_size sizeOfString = length();
+    for (tl_size i = 0; i < sizeOfString; ++i)
+    {
+      *(m_begin + i) = CharToLower(*(m_begin + i));
+    }
+  }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Compare
+
+  template <typename T>
+  s32 StringBase<T>::compare( const StringBaseT& aStr ) const
+  {
+    return compare(0, length(), aStr.c_str(), 0, aStr.length());
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const T* aCharStr ) const
+  {
+    return compare(0, length(), aCharStr, 0, StrLen(aCharStr));
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& aThisPos,
+                              const tl_size& aThisLength,
+                              const StringBaseT& aOtherStr ) const
+  {
+    TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
+      "Begin index + number of chars is out of range!");
+    return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisLength,
+                     aOtherStr.begin(), aOtherStr.end());
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& aThisPos,
+                              const tl_size& aThisLength,
+                              const T* aOtherCharStr ) const
+  {
+    TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
+      "Begin index + number of chars is out of range!");
+
+    return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisLength,
+                     aOtherCharStr, aOtherCharStr + StrLen(aOtherCharStr));
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& aThisPos,
+                              const tl_size& aThisLength,
+                              const StringBaseT& aOtherStr,
+                              const tl_size& aOtherPos,
+                              const tl_size& aOtherLength ) const
+  {
+    TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
+      "Begin index + number of chars is out of range!");
+    TLOC_ASSERT_STRING(aOtherStr.length() >= aOtherPos + aOtherLength,
+      "Begin index + number of chars is out of range!");
+    return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisLength,
+                     aOtherStr.begin() + aOtherPos,
+                     aOtherStr.begin() + aOtherPos + aOtherLength);
+  }
+  template <typename T>
+  s32 StringBase<T>::compare( const tl_size& aThisPos,
+                              const tl_size& aThisNumChars,
+                              const T* aOtherCharStr,
+                              const tl_size& aOtherPos ) const
+  {
+    TLOC_ASSERT_STRING(length() >= aThisPos + aThisNumChars,
+      "Begin index + number of chars is out of range!");
+    TLOC_ASSERT_STRING(StrLen(aOtherCharStr) >= aOtherPos,
+      "Number of chars is out of range!");
+    return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisNumChars,
+                     aOtherCharStr, aOtherCharStr + aOtherPos);
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 
@@ -1287,6 +1410,20 @@ namespace tloc
     }
   }
 
+  template <typename T>
+  s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
+                                const T* aBegin2, const T* aEnd2 ) const
+  {
+    TLOC_ASSERT_STRING_RANGE(aBegin1, aEnd1);
+    TLOC_ASSERT_STRING_RANGE(aBegin2, aEnd2);
+
+    const tl_size size1 = aEnd1 - aBegin1;
+    const tl_size size2 = aEnd2 - aBegin2;
+    const tl_size sizeMin = tlMin(size1, size2);
+
+    return StrCmp(aBegin1, aBegin2, sizeMin);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Free functions
 
@@ -1345,5 +1482,21 @@ namespace tloc
   TL_I s32 StrCmp( const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars )
   {
     return memcmp(aPtr1, aPtr2, aNumChars);
+  }
+
+  template <typename T>
+  TL_I T CharToLower( const T& aChar )
+  {
+    TLOC_ASSERT_STRING(aChar <= 0xFF,
+      "Character is out of range for this function!");
+    return (T)tolower((char8)aChar);
+  }
+
+  template <typename T>
+  TL_I T CharToUpper( const T& aChar)
+  {
+    TLOC_ASSERT_STRING(aChar <= 0xFF,
+      "Character is out of range for this function!");
+    return (T)toupper((char8)aChar);
   }
 };

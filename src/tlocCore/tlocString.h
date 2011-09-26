@@ -203,13 +203,25 @@ namespace tloc
     TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
                               T_InputIterator aBegin, T_InputIterator aEnd);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Lower and Upper case
 
+    TL_I StringBaseT to_upper();
+    TL_I void        to_upper(StringBaseT& aStrOut);
+
+    TL_I StringBaseT to_lower();
+    TL_I void        to_lower(StringBaseT& aStrOut);
+
+    TL_I void        make_upper();
+    TL_I void        make_lower();
 
     //------------------------------------------------------------------------
     // String Operations
 
     TL_I const T*     c_str();
+    TL_I const T*     c_str() const;
     TL_I const T*     data();
+    TL_I const T*     data() const;
     TL_I tl_size      copy(T* aDestArray, const tl_size& aNumCharsToCopy,
                            const tl_size& aBegin = 0);
 
@@ -275,6 +287,21 @@ namespace tloc
                              const tl_size& aNumCharsToCopy,
                              StringBaseT&   aSubStrOut);
 
+    //````````````````````````````````````````````````````````````````````````
+    // Compare
+
+    s32 compare ( const StringBaseT& aStr ) const;
+    s32 compare ( const T* aCharStr ) const;
+    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                  const StringBaseT& aOtherStr ) const;
+    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                  const T* aOtherStr) const;
+    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                  const StringBaseT& aOtherStr, const tl_size& aOtherPos,
+                  const tl_size& aOtherLength ) const;
+    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                  const T* aOtherCharStr, const tl_size& aOtherLength) const;
+
   protected:
     T*              m_begin;
     T*              m_end;
@@ -312,6 +339,9 @@ namespace tloc
     void                  RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
     void                  RangeInitialize(const T* aPtrBegin);
 
+    s32                   DoCompare(const T* aBegin1, const T* aEnd1,
+                                    const T* aBegin2, const T* aEnd2) const;
+
     //------------------------------------------------------------------------
     // Constants
 
@@ -334,8 +364,11 @@ namespace tloc
   template <>
   TL_I s32        StrCmp(const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars);
 
-  TL_I void       CharToLower();
-  TL_I void       CharToUpper();
+  template <typename T>
+  TL_I T          CharToLower(const T& aChar);
+
+  template <typename T>
+  TL_I T          CharToUpper(const T& aChar);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone

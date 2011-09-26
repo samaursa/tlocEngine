@@ -198,18 +198,6 @@ namespace tloc
     //------------------------------------------------------------------------
     // Fill helpers
 
-    template <typename T>
-    struct CharTest
-    {
-      typedef type_false result;
-    };
-
-    template <>
-    struct CharTest <char8>
-    {
-      typedef type_true result;
-    };
-
     typedef type_false IsNotChar;
     typedef type_true  IsChar;
 
@@ -220,6 +208,17 @@ namespace tloc
     template <typename T_InputIterator, typename T>
     TL_I void tlFill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                       const T& aValue, IsChar );
+
+    //````````````````````````````````````````````````````````````````````````
+    // tlFind helpers
+
+    template <typename T_InputIterator, typename T>
+    T_InputIterator tlFind(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                           const T& aValue, IsNotChar);
+
+    template <typename T_InputIterator, typename T>
+    T_InputIterator tlFind(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                           const T& aValue, IsChar);
   }
 }
 

@@ -37,13 +37,13 @@ namespace tloc
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 
-    while (aRangeBegin != aRangeEnd)
-    {
-      if (*aRangeBegin == aValue) break;
-      ++aRangeBegin;
-    }
+    // We assume that the inputs are pointers. If they point to data that is a
+    // single byte (a char) then use memset
+    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    return aRangeBegin;
+    return detail::tlFind(aRangeBegin, aRangeEnd, aValue, IsChar8());
   }
 
   template <typename T_InputIterator, typename T_Predicate>
@@ -748,9 +748,10 @@ namespace tloc
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
     typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-    typedef detail::CharTest<inputDeref>::result CharTestResult;
+    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    detail::tlFill(aRangeBegin, aRangeEnd, aValue, CharTestResult());
+    detail::tlFill(aRangeBegin, aRangeEnd, aValue, IsChar8());
 
   }
 
@@ -807,6 +808,33 @@ namespace tloc
                       const T& aValue, IsChar )
     {
       memset(aRangeBegin, aValue, sizeof(T) * (aRangeEnd - aRangeBegin));
+    }
+
+    template <typename T_InputIterator, typename T>
+    T_InputIterator tlFind( T_InputIterator aRangeBegin,
+                            T_InputIterator aRangeEnd,
+                            const T& aValue, IsNotChar )
+    {
+      TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
+
+      while (aRangeBegin != aRangeEnd)
+      {
+        if (*aRangeBegin == aValue) break;
+        ++aRangeBegin;
+      }
+
+      return aRangeBegin;
+    }
+
+    template <typename T_InputIterator>
+    T_InputIterator tlFind( T_InputIterator aRangeBegin,
+                            T_InputIterator aRangeEnd,
+                            const char8& aValue, IsChar )
+    {
+      TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
+
+      return (char8*)memchr(aRangeBegin, aValue, sizeof(char8) *
+                            (tl_size)(aRangeEnd - aRangeBegin));
     }
   }
 }

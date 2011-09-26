@@ -74,8 +74,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = distance(aRangeToFindBegin, aRangeToFindEnd);
 
     T_ForwardIterator1 retItr = aRangeToSearchEnd;
 
@@ -122,8 +122,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = distance(aRangeToFindBegin, aRangeToFindEnd);
 
     T_ForwardIterator1 retItr = aRangeToSearchEnd;
 
@@ -308,8 +308,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size searchSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size findSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size searchSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size findSize = distance(aRangeToFindBegin, aRangeToFindEnd);
 
     T_ForwardIterator1 ret = aRangeToSearchEnd;
 
@@ -350,8 +350,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size searchSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size findSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size searchSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size findSize = distance(aRangeToFindBegin, aRangeToFindEnd);
 
     T_ForwardIterator1 ret = aRangeToSearchEnd;
 
@@ -515,8 +515,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = distance(aRangeToFindBegin, aRangeToFindEnd);
     T_ForwardIterator1 sourceLimit = aRangeToSearchEnd - compareSize + 1;
 
     T_ForwardIterator1 sourceItr;
@@ -561,8 +561,8 @@ namespace tloc
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToFindBegin, aRangeToFindEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
-    const tl_size compareSize = tlDistance(aRangeToFindBegin, aRangeToFindEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size compareSize = distance(aRangeToFindBegin, aRangeToFindEnd);
     T_ForwardIterator1 sourceLimit = aRangeToSearchEnd - compareSize + 1;
 
     T_ForwardIterator1 sourceItr;
@@ -603,7 +603,7 @@ namespace tloc
     TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
 
     if (sourceSize >= (tl_size)aCount)
     {
@@ -646,7 +646,7 @@ namespace tloc
     TLOC_STATIC_ASSERT(itrType::isPointer, tlFindEnd_cannot_be_used_with_non_pointer_iterators);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeToSearchBegin, aRangeToSearchEnd);
 
-    const tl_size sourceSize = tlDistance(aRangeToSearchBegin, aRangeToSearchEnd);
+    const tl_size sourceSize = distance(aRangeToSearchBegin, aRangeToSearchEnd);
 
     if (sourceSize >= (tl_size)aCount)
     {

@@ -281,26 +281,26 @@ namespace tloc
     //````````````````````````````````````````````````````````````````````````
     // Substring
 
-    StringBaseT       substr(const tl_size& aBeginIndex,
-                             const tl_size& aNumCharsToCopy = npos);
-    void              substr(const tl_size& aBeginIndex,
-                             const tl_size& aNumCharsToCopy,
-                             StringBaseT&   aSubStrOut);
+    TL_I StringBaseT       substr(const tl_size& aBeginIndex,
+                                  const tl_size& aNumCharsToCopy = npos);
+    TL_I void              substr(const tl_size& aBeginIndex,
+                                  const tl_size& aNumCharsToCopy,
+                                  StringBaseT&   aSubStrOut);
 
     //````````````````````````````````````````````````````````````````````````
     // Compare
 
-    s32 compare ( const StringBaseT& aStr ) const;
-    s32 compare ( const T* aCharStr ) const;
-    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                  const StringBaseT& aOtherStr ) const;
-    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                  const T* aOtherStr) const;
-    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                  const StringBaseT& aOtherStr, const tl_size& aOtherPos,
-                  const tl_size& aOtherLength ) const;
-    s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                  const T* aOtherCharStr, const tl_size& aOtherLength) const;
+    TL_I s32 compare ( const StringBaseT& aStr ) const;
+    TL_I s32 compare ( const T* aCharStr ) const;
+    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                       const StringBaseT& aOtherStr ) const;
+    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                       const T* aOtherStr) const;
+    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                       const StringBaseT& aOtherStr, const tl_size& aOtherPos,
+                       const tl_size& aOtherLength ) const;
+    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                       const T* aOtherCharStr, const tl_size& aOtherLength) const;
 
   protected:
     T*              m_begin;
@@ -336,10 +336,10 @@ namespace tloc
     TL_I void             DoAllocateSelf(const tl_size& aSize);
     TL_I void             DoDeallocateSelf();
 
-    void                  RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
-    void                  RangeInitialize(const T* aPtrBegin);
+    TL_I void             RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
+    TL_I void             RangeInitialize(const T* aPtrBegin);
 
-    s32                   DoCompare(const T* aBegin1, const T* aEnd1,
+    TL_I s32              DoCompare(const T* aBegin1, const T* aEnd1,
                                     const T* aBegin2, const T* aEnd2) const;
 
     //------------------------------------------------------------------------

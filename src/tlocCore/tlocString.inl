@@ -1125,8 +1125,8 @@ namespace tloc
   // Substr
 
   template <typename T>
-  StringBase<T> StringBase<T>::substr( const tl_size& aBeginIndex,
-                                       const tl_size& aNumCharsToCopy )
+  TL_I StringBase<T> StringBase<T>::substr( const tl_size& aBeginIndex,
+                                            const tl_size& aNumCharsToCopy )
   {
     StringBase<T> temp;
     substr(aBeginIndex, aNumCharsToCopy, temp);
@@ -1134,9 +1134,9 @@ namespace tloc
   }
 
   template <typename T>
-  void StringBase<T>::substr( const tl_size& aBeginIndex,
-                              const tl_size& aNumCharsToCopy,
-                              StringBaseT& aSubStrOut )
+  TL_I void StringBase<T>::substr( const tl_size& aBeginIndex,
+                                   const tl_size& aNumCharsToCopy,
+                                   StringBaseT& aSubStrOut )
   {
     const_iterator itrBegin = m_begin + aBeginIndex;
     const_iterator itrBeginPlusN = itrBegin + aNumCharsToCopy;
@@ -1202,19 +1202,19 @@ namespace tloc
   // Compare
 
   template <typename T>
-  s32 StringBase<T>::compare( const StringBaseT& aStr ) const
+  TL_I s32 StringBase<T>::compare( const StringBaseT& aStr ) const
   {
     return compare(0, length(), aStr.c_str(), 0, aStr.length());
   }
   template <typename T>
-  s32 StringBase<T>::compare( const T* aCharStr ) const
+  TL_I s32 StringBase<T>::compare( const T* aCharStr ) const
   {
     return compare(0, length(), aCharStr, 0, StrLen(aCharStr));
   }
   template <typename T>
-  s32 StringBase<T>::compare( const tl_size& aThisPos,
-                              const tl_size& aThisLength,
-                              const StringBaseT& aOtherStr ) const
+  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
+                                   const tl_size& aThisLength,
+                                   const StringBaseT& aOtherStr ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
@@ -1222,9 +1222,9 @@ namespace tloc
                      aOtherStr.begin(), aOtherStr.end());
   }
   template <typename T>
-  s32 StringBase<T>::compare( const tl_size& aThisPos,
-                              const tl_size& aThisLength,
-                              const T* aOtherCharStr ) const
+  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
+                                   const tl_size& aThisLength,
+                                   const T* aOtherCharStr ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
@@ -1233,11 +1233,11 @@ namespace tloc
                      aOtherCharStr, aOtherCharStr + StrLen(aOtherCharStr));
   }
   template <typename T>
-  s32 StringBase<T>::compare( const tl_size& aThisPos,
-                              const tl_size& aThisLength,
-                              const StringBaseT& aOtherStr,
-                              const tl_size& aOtherPos,
-                              const tl_size& aOtherLength ) const
+  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
+                                   const tl_size& aThisLength,
+                                   const StringBaseT& aOtherStr,
+                                   const tl_size& aOtherPos,
+                                   const tl_size& aOtherLength ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
@@ -1248,10 +1248,10 @@ namespace tloc
                      aOtherStr.begin() + aOtherPos + aOtherLength);
   }
   template <typename T>
-  s32 StringBase<T>::compare( const tl_size& aThisPos,
-                              const tl_size& aThisNumChars,
-                              const T* aOtherCharStr,
-                              const tl_size& aOtherPos ) const
+  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
+                                   const tl_size& aThisNumChars,
+                                   const T* aOtherCharStr,
+                                   const tl_size& aOtherPos ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisNumChars,
       "Begin index + number of chars is out of range!");
@@ -1333,7 +1333,7 @@ namespace tloc
    * \warning
    */
   template <typename T>
-  void StringBase<T>::DoReAllocateAndAdjust()
+  TL_I void StringBase<T>::DoReAllocateAndAdjust()
   {
     const tl_size prevCap  = capacity();
     const tl_size newCap   = prevCap ? (2 * prevCap) : sm_defaultCapacity;
@@ -1385,7 +1385,7 @@ namespace tloc
   }
 
   template <typename T>
-  void StringBase<T>::RangeInitialize( const T* aPtrBegin )
+  TL_I void StringBase<T>::RangeInitialize( const T* aPtrBegin )
   {
     TLOC_ASSERT_STRING(aPtrBegin, "aPtrBegin cannot be NULL!");
 
@@ -1393,7 +1393,7 @@ namespace tloc
   }
 
   template <typename T>
-  void StringBase<T>::RangeInitialize( const T* aPtrBegin, const T* aPtrEnd )
+  TL_I void StringBase<T>::RangeInitialize( const T* aPtrBegin, const T* aPtrEnd )
   {
     if (aPtrBegin != aPtrEnd)
     {
@@ -1411,8 +1411,8 @@ namespace tloc
   }
 
   template <typename T>
-  s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
-                                const T* aBegin2, const T* aEnd2 ) const
+  TL_I s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
+                                     const T* aBegin2, const T* aEnd2 ) const
   {
     TLOC_ASSERT_STRING_RANGE(aBegin1, aEnd1);
     TLOC_ASSERT_STRING_RANGE(aBegin2, aEnd2);

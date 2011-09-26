@@ -372,6 +372,7 @@ namespace tloc
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone
+  // use StrCmp() for those operations
 
   template <typename T>
   TL_I bool       operator==(const StringBase<T>& a, const StringBase<T>& b);
@@ -387,6 +388,8 @@ namespace tloc
   template <typename T>
   TL_I bool       operator!=(const StringBase<T>& a, const T* b);
 
+  typedef StringBase<char8>   tlString;
+  typedef StringBase<char32>  tlWString;
 };
 
 #include "tlocString.inl"

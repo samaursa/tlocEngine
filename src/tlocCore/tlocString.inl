@@ -1499,4 +1499,51 @@ namespace tloc
       "Character is out of range for this function!");
     return (T)toupper((char8)aChar);
   }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Global operators
+
+  template <typename T>
+  TL_I bool operator==( const StringBase<T>& a, const StringBase<T>& b )
+  {
+    const tl_size sizeA = a.size();
+    return ( (sizeA == b.size()) && (memcmp(a.c_str(), b.c_str(),
+             sizeA * sizeof(typename StringBase<T>::value_type)) == 0) );
+
+  }
+
+  template <typename T>
+  TL_I bool operator==( const T* a, const StringBase<T>& b )
+  {
+    const tl_size charStrSize = StrLen(a);
+    return ( (charStrSize == b.size()) && (memcmp(a, b.c_str(),
+              charStrSize * sizeof(T)) == 0) );
+  }
+
+  template <typename T>
+  TL_I bool operator==( const StringBase<T>& a, const T* b )
+  {
+    const tl_size charStrSize = StrLen(b);
+    return ( (charStrSize == a.size()) && (memcmp(b, a.c_str(),
+              charStrSize * sizeof(T)) == 0) );
+  }
+
+  template <typename T>
+  TL_I bool operator!=( const StringBase<T>& a, const StringBase<T>& b )
+  {
+    return !(a == b);
+  }
+
+  template <typename T>
+  TL_I bool operator!=( const T* a, const StringBase<T>& b )
+  {
+    return !(a == b);
+  }
+
+  template <typename T>
+  TL_I bool operator!=( const StringBase<T>& a, const T* b )
+  {
+    return !(a == b);
+  }
+
 };

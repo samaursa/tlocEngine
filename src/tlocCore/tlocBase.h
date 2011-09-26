@@ -7,6 +7,15 @@
 #include <3rdParty/loki/static_check.h>
 
 //////////////////////////////////////////////////////////////////////////
+// Make sure we are not using standard containers
+
+#ifndef TLOC_USING_STL
+# if defined(_VECTOR_) || defined(_MAP_) || defined(_LIST_) || defined(_BITSET_) || defined (_DEQUE_) || defined(_QUEUE_) || defined(_SET_) || defined(_STACK_) || defined (_ALGORITHM_) || defined (_STRING_)
+#   error "STL use is prohibited. To enable usage of STL, compile with TLOC_USING_STL"
+# endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
 // Common macros
 #define _CRT_SECURE_NO_WARNINGS 1
 
@@ -101,11 +110,11 @@
 // transitions, there are helper macros defined in <tlocMemory.h>
 //
 // Supported macros:
-// TLOC_USE_NED_MALLOC
+// TLOC_USING_NED_MALLOC
 
 // Use nedmalloc
-#ifndef TLOC_USE_STD_ALLOC
-  #define TLOC_USE_NED_MALLOC
+#ifndef TLOC_USING_STD_ALLOC
+  #define TLOC_USING_NED_MALLOC
 #endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow

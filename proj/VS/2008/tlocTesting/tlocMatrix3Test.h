@@ -2,6 +2,8 @@
 
 namespace TestingMatrix3
 {
+  USING_TLOC;
+
   struct Matrix3Fixture
   {
     Matrix3Fixture()

@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <3rdParty/loki/static_check.h>
 
+#define USING_TLOC  using namespace tloc
+
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
 

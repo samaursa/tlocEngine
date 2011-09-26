@@ -2,9 +2,11 @@
 
 namespace TestingMatrix2
 {
+  USING_TLOC;
+
   struct Matrix2Fixture
   {
-    Matrix2Fixture() 
+    Matrix2Fixture()
     {
       tloc::Vec2f row1;
       tloc::Vec2f row2;
@@ -32,7 +34,7 @@ namespace TestingMatrix2
   CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \
   CHECK((mat[2]) == (Approx(x2)) ); CHECK((mat[3]) == (Approx(y2)) );
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",
     "Test general/basic functionality")
   {
     CHECK_MATRIX2F(a, 1, 4, 2, 5);
@@ -92,7 +94,7 @@ namespace TestingMatrix2
     CHECK_VEC2F(v2, 5, 11);
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det",
     "Test determinant")
   {
     f32 values[4] = {1, 2, 3, 4};
@@ -100,7 +102,7 @@ namespace TestingMatrix2
     CHECK(-2 == Approx(c.Determinant()));
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Inv", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Inv",
     "Test inverse")
   {
     f32 values[4] = {1, 2, 3, 4};
@@ -109,7 +111,7 @@ namespace TestingMatrix2
     CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Adj", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Adj",
     "Test adjoint")
   {
     f32 values[4] = {1, 2, 3, 4};
@@ -121,23 +123,23 @@ namespace TestingMatrix2
     CHECK_MATRIX2F(c, 4, -3, -2, 1);
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/OrthoNorm", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/OrthoNorm",
     "Test orthonormalize")
   {
     f32 values[4] = {1, 0, 0, 1};
     c.Set(values, Mat2f::COL_MAJOR);
-    
+
     c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
 
     f32 values2[4] = {2, 0, 0, 2};
     c.Set(values2, Mat2f::COL_MAJOR);
-    
+
     c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
   }
 
-  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/EigenDecomp", 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/EigenDecomp",
     "Test eigen decomposition")
   {
     f32 values[4] = {1, 2, 3, 4};

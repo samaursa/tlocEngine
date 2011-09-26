@@ -9,8 +9,6 @@ using namespace Catch::Detail;
 #include "tlocCore/tlocMemory.h"
 #include "tlocCore/tlocLinkMe.cpp"
 
-using namespace tloc;
-
 //------------------------------------------------------------------------
 // Core
 #include "tlocCore/tlocAlgorithms.h"

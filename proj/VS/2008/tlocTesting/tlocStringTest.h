@@ -1,5 +1,7 @@
 namespace TestingStrings
 {
+  USING_TLOC;
+
   struct StringFixture
   {
     tlString a, b, c;

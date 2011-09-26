@@ -1,5 +1,6 @@
 namespace TestingTuple
 {
+  USING_TLOC;
 
   #define CHECK_TUP(tup,x,y,z,w)   CHECK(tup[0] == x); \
                                    CHECK(tup[1] == y); \

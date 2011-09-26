@@ -22,7 +22,7 @@ namespace tloc
 
   template <typename T_Category, typename T, typename T_Distance = tl_ptrdiff,
             typename T_Ptr = T*, typename T_Ref = T&>
-  struct tlIterator
+  struct iterator
   {
     typedef T           value_type;
     typedef T_Distance  difference_type;
@@ -30,6 +30,11 @@ namespace tloc
     typedef T_Ref       reference;
     typedef T_Category  iterator_category;
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // Predefined iterators from the standard
+
+  //struct tlBackInsertIterator
 
   //````````````````````````````````````````````````````````````````````````
   // List iterator
@@ -43,7 +48,7 @@ namespace tloc
   // T_Node: Must have public members T* m_value, T_Node* m_next, T Node* m_prev;
   template <typename T_Node, typename T, typename T_Ptr = T*,
             typename T_Ref = T&, typename T_Distance = tl_ptrdiff>
-  struct ListIterator : public tlIterator<forward_iterator_tag, T, T_Distance, T_Ptr, T_Ref>
+  struct ListIterator : public iterator<forward_iterator_tag, T, T_Distance, T_Ptr, T_Ref>
   {
     typedef ListIterator<T, T_Ptr, T_Ref, T_Node> ForwardItrT;
 

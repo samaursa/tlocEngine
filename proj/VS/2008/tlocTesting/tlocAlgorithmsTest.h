@@ -2,6 +2,8 @@
 
 namespace TestingAlgorithms
 {
+  USING_TLOC;
+
   struct AlgorithmFixture
   {
 
@@ -10,14 +12,14 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/Swap", "Test the min() functions")
   {
     u32 i = 10, j = 15;
-    u32 minimum = tlMin(i, j);
+    u32 minimum = min(i, j);
     CHECK(minimum == i);
   }
 
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")
   {
     u32 i = 10, j = 15;
-    tlSwap(i, j);
+    swap(i, j);
     CHECK(i == 15);
     CHECK(j == 10);
   }
@@ -25,12 +27,12 @@ namespace TestingAlgorithms
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Copy",
     "Test the copy() functions")
   {
-    { // tlCopy arithmetic types
+    { // copy arithmetic types
       const char8* testString = "This is a test string"; // 21 chars including /0
       const char8* stringEnd = testString + 22; // copy does not include stringEnd
       char8* copiedString = new char8[stringEnd - testString];
 
-      tlCopy(testString, stringEnd, copiedString);
+      copy(testString, stringEnd, copiedString);
 
       for (u32 i = 0; i < (u32)(stringEnd - testString); ++i)
       {
@@ -38,7 +40,7 @@ namespace TestingAlgorithms
       }
     }
 
-    { // tlCopy complex types
+    { // copy complex types
       typedef struct copyTest
       {
         int a;
@@ -54,7 +56,7 @@ namespace TestingAlgorithms
         arrayStructs[i] = testStruct;
       }
 
-      tlCopy(arrayStructs, arrayStructs + 5, copiedStructs);
+      copy(arrayStructs, arrayStructs + 5, copiedStructs);
 
       for (u32 i = 0; i < 5; ++i)
       {
@@ -66,7 +68,7 @@ namespace TestingAlgorithms
     {// tlCopyBackward
       char8 testString[] = "0123456789"; // 10 chars including /0
 
-      tlCopy_Backward(testString, testString + 6, testString + 10);
+      copy_backward(testString, testString + 6, testString + 10);
 
       CHECK( testString[0] == '0');
       CHECK( testString[1] == '1');
@@ -84,10 +86,10 @@ namespace TestingAlgorithms
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Fill",
     "Test the fill() functions")
   {
-    { // tlFill char (tlFill has specialization for tlFill<char>() )
+    { // fill char (fill has specialization for fill<char>() )
       char8 testArray[100] = {0};
 
-      tlFill(testArray, testArray + 100, 'T');
+      fill(testArray, testArray + 100, 'T');
 
       for (u32 i = 0; i < 100; ++i)
       {
@@ -95,10 +97,10 @@ namespace TestingAlgorithms
       }
     }
 
-    { // tlFill other types
+    { // fill other types
       u64 testArray[100] = {0};
 
-      tlFill(testArray, testArray + 100, 50);
+      fill(testArray, testArray + 100, 50);
 
       for (u32 i = 0; i < 100; ++i)
       {
@@ -122,7 +124,7 @@ namespace TestingAlgorithms
       intArray[i] = new u32(i);
     }
 
-    tlForEach(intArray, intArray + arraySize, ForEachFunc);
+    for_each(intArray, intArray + arraySize, ForEachFunc);
 
     for (u32 i = 0; i < arraySize; ++i)
     {
@@ -136,7 +138,7 @@ namespace TestingAlgorithms
     u32 * p;
 
     // pointer to array element:
-    p = tlFind(myints,myints+4, (u32)30);
+    p = find(myints,myints+4, (u32)30);
     ++p;
 
     CHECK(*p == 40);
@@ -145,7 +147,7 @@ namespace TestingAlgorithms
     Array<u32>::iterator it;
 
     //iterator to vector element:
-    it = tlFind (myvector.begin(), myvector.end(), (u32)30);
+    it = find (myvector.begin(), myvector.end(), (u32)30);
     ++it;
 
     CHECK(*it == 40);
@@ -166,7 +168,7 @@ namespace TestingAlgorithms
     myvector.push_back(40);
     myvector.push_back(55);
 
-    it = tlFindIf(myvector.begin(), myvector.end(), IsOdd);
+    it = find_if(myvector.begin(), myvector.end(), IsOdd);
     CHECK(*it == 25);
   }
 
@@ -184,19 +186,19 @@ namespace TestingAlgorithms
     s32 match1[] = {1,2,3};
 
     // using default comparison:
-    it = tlFindEnd (myvector.begin(), myvector.end(), match1, match1+3);
+    it = find_end (myvector.begin(), myvector.end(), match1, match1+3);
 
     CHECK( (s32)(it - myvector.begin()) == 5); // pos
 
     s32 match2[] = {4,5,1};
 
     // using predicate comparison:
-    it = tlFindEnd (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
+    it = find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
 
     CHECK( (s32)(it - myvector.begin()) == 3); // pos
 
     s32 match3[] = {1,2,3,4,5,6,6,7,8,8,5,4,3,23,2,2,1,2,3,4};
-    it = tlFindEnd(myvector.begin(), myvector.end(), match3, match3 + 20);
+    it = find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
     CHECK(it == myvector.end());
   }
 
@@ -215,12 +217,12 @@ namespace TestingAlgorithms
       char8 match[] = {'A','B','C'};
 
       // using default comparison:
-      it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match+3);
+      it = find_first_of (myvector.begin(), myvector.end(), match, match+3);
 
       CHECK(*it == 'A');
 
       // using predicate comparison:
-      it = tlFindFirstOf (myvector.begin(), myvector.end(),
+      it = find_first_of (myvector.begin(), myvector.end(),
         match, match+3, comp_case_insensitive);
 
       CHECK(*it == 'a');
@@ -232,10 +234,10 @@ namespace TestingAlgorithms
 
       char8 match[] = {'a','b','c','s','9'};
 
-      it = tlFindFirstOf (myvector.begin(), myvector.end(), match, match + 5);
+      it = find_first_of (myvector.begin(), myvector.end(), match, match + 5);
       CHECK(*it == 's');
 
-      it = tlFindFirstOf (it + 1, myvector.end(), match, match + 5);
+      it = find_first_of (it + 1, myvector.end(), match, match + 5);
       CHECK(*it == '9');
     }
 
@@ -249,13 +251,13 @@ namespace TestingAlgorithms
     Array<s32> myvector(myInts, myInts + 10);
     Array<s32>::iterator itr;
 
-    itr = tlFindFirstNotOf(myvector.begin(), myvector.end(), allowed, allowed + 9);
+    itr = find_first_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 23);
 
-    itr = tlFindFirstNotOf(itr + 1, myvector.end(), allowed, allowed + 9);
+    itr = find_first_not_of(itr + 1, myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 41);
 
-    itr = tlFindFirstNotOf(itr + 1, myvector.end(), allowed, allowed + 9);
+    itr = find_first_not_of(itr + 1, myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 10);
   }
 
@@ -267,39 +269,39 @@ namespace TestingAlgorithms
     Array<s32> myvector(myInts, myInts + 10);
     Array<s32>::iterator itr;
 
-    itr = tlFindLastNotOf(myvector.begin(), myvector.end(), allowed, allowed + 9);
+    itr = find_last_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 10);
 
-    itr = tlFindLastNotOf(myvector.begin(), itr, allowed, allowed + 9);
+    itr = find_last_not_of(myvector.begin(), itr, allowed, allowed + 9);
     CHECK(*itr == 41);
 
-    itr = tlFindLastNotOf(myvector.begin(), itr, allowed, allowed + 9);
+    itr = find_last_not_of(myvector.begin(), itr, allowed, allowed + 9);
     CHECK(*itr == 23);
   }
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Count", "Count and CountIf")
   {
-    {//tlCount
+    {//count
       s32 mycount;
 
       // counting elements in array:
       s32 myints[] = {10,20,30,30,20,10,10,20};   // 8 elements
-      mycount = (s32) tlCount (myints, myints+8, 10);
+      mycount = (s32) count (myints, myints+8, 10);
       CHECK(mycount == 3);
 
       // counting elements in container:
       Array<s32> myvector (myints, myints+8);
-      mycount = (s32) tlCount (myvector.begin(), myvector.end(), 20);
+      mycount = (s32) count (myvector.begin(), myvector.end(), 20);
       CHECK(mycount == 3);
     }
 
-    {//tlCountIf
+    {//count_if
       s32 mycount;
 
       Array<s32> myvector;
       for (s32 i=1; i<10; i++) myvector.push_back(i); // myvector: 1 2 3 4 5 6 7 8 9
 
-      mycount = (s32) tlCountIf (myvector.begin(), myvector.end(), IsOdd);
+      mycount = (s32) count_if (myvector.begin(), myvector.end(), IsOdd);
       CHECK(mycount == 5);
     }
   }
@@ -319,7 +321,7 @@ namespace TestingAlgorithms
     Pair<Array<s32>::iterator,s32*> mypair;
 
     // using default comparison:
-    mypair = tlMismatch (myvector.begin(), myvector.end(), myints);
+    mypair = mismatch (myvector.begin(), myvector.end(), myints);
 
     CHECK(*mypair.first == 30);
     CHECK(*mypair.second == 80);
@@ -327,7 +329,7 @@ namespace TestingAlgorithms
     mypair.first++; mypair.second++;
 
     // using predicate comparison:
-    mypair = tlMismatch (mypair.first, myvector.end(), mypair.second, mypredicate);
+    mypair = mismatch (mypair.first, myvector.end(), mypair.second, mypredicate);
 
     CHECK(*mypair.first == 40);
     CHECK(*mypair.second == 320);
@@ -339,12 +341,12 @@ namespace TestingAlgorithms
     s32 myints[] = {20,40,60,80,100};          //   myints: 20 40 60 80 100
     Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
 
-    retValue = tlEqual(myvector.begin(), myvector.end(), myints);
+    retValue = equal(myvector.begin(), myvector.end(), myints);
     CHECK(retValue == true);
 
     myvector[3]=81;
 
-    retValue = tlEqual(myvector.begin(), myvector.end(), myints, mypredicate);
+    retValue = equal(myvector.begin(), myvector.end(), myints, mypredicate);
     CHECK(retValue == false);
   }
 
@@ -359,13 +361,13 @@ namespace TestingAlgorithms
 
     // using default comparison:
     s32 match1[] = {40,50,60,70};
-    it = tlSearch (myvector.begin(), myvector.end(), match1, match1+4);
+    it = search (myvector.begin(), myvector.end(), match1, match1+4);
 
     CHECK((s32)(it - myvector.begin()) == 3);
 
     // using predicate comparison:
     s32 match2[] = {20,30,50};
-    it = tlSearch (myvector.begin(), myvector.end(), match2, match2+3, mypredicate);
+    it = search (myvector.begin(), myvector.end(), match2, match2+3, mypredicate);
 
     CHECK(it == myvector.end());
   }
@@ -378,12 +380,12 @@ namespace TestingAlgorithms
     Array<s32>::iterator it;
 
     // using default comparison:
-    it = tlSearchN (myvector.begin(), myvector.end(), 2, 30);
+    it = search_n (myvector.begin(), myvector.end(), 2, 30);
 
     CHECK(s32(it-myvector.begin()) == 2);
 
     // using predicate comparison:
-    it = tlSearchN (myvector.begin(), myvector.end(), 2, 10, mypredicate);
+    it = search_n (myvector.begin(), myvector.end(), 2, 10, mypredicate);
 
     CHECK(s32(it-myvector.begin()) == 5);
   }

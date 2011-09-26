@@ -215,7 +215,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(aPosition);
 
     aPosition->~T();
-    tlCopy(aPosition + 1, m_end, aPosition);
+    copy(aPosition + 1, m_end, aPosition);
     --m_end;
   }
 
@@ -232,7 +232,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       ++aRangeBegin;
     }
 
-    tlCopy(aRangeEnd, m_end, copyRemainingTo);
+    copy(aRangeEnd, m_end, copyRemainingTo);
 
     m_end = m_end - (aRangeEnd - copyRemainingTo);
   }
@@ -435,7 +435,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(aRepetitionNum);
     }
 
-    tlFill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
+    fill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
   }
 
   template <typename T>
@@ -509,9 +509,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void tloc::Array<T>::swap( Array<T>& aVec )
   {
-    tloc::tlSwap(m_begin, aVec.m_begin);
-    tloc::tlSwap(m_end, aVec.m_end);
-    tloc::tlSwap(m_capacity, aVec.m_capacity);
+    tloc::swap(m_begin, aVec.m_begin);
+    tloc::swap(m_end, aVec.m_end);
+    tloc::swap(m_capacity, aVec.m_capacity);
   }
 
   //------------------------------------------------------------------------
@@ -533,7 +533,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
       ::new(m_end) T(*(m_end - 1)); // We need to allocate it first
-      tlCopy_Backward(aPosition, m_end - 1, m_end);
+      copy_backward(aPosition, m_end - 1, m_end);
       *aPosition = *valuePtr;
       ++m_end;
     }
@@ -573,7 +573,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
         ::new(m_end++) T();
       }
 
-      tlCopy_Backward(aPosition, aPosition + elemsToMove, m_end);
+      copy_backward(aPosition, aPosition + elemsToMove, m_end);
 
       while (aPosition != m_end - elemsToMove)
       {
@@ -627,7 +627,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(projectedSize);
     }
 
-    tlCopy(aRangeBegin, aRangeEnd, m_begin);
+    copy(aRangeBegin, aRangeEnd, m_begin);
   }
 
   template <typename T>

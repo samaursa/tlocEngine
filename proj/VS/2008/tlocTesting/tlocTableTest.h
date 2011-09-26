@@ -1,5 +1,7 @@
 namespace TestingTable
 {
+  USING_TLOC;
+
   struct Table3Fixture
   {
     Table3Fixture()

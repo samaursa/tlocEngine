@@ -1,5 +1,7 @@
 namespace TestingArray
 {
+  USING_TLOC;
+
   class SomeClass
   {
   public:

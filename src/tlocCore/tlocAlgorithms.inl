@@ -12,8 +12,8 @@ namespace tloc
   // Non-modifying sequence operations
 
   template <typename T_InputIterator, typename T_Function>
-  T_Function tlForEach( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                        T_Function aFunc )
+  T_Function for_each( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                       T_Function aFunc )
   {
     typedef Loki::TypeTraits<T_InputIterator> itrType;
 
@@ -32,8 +32,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator, typename T>
-  T_InputIterator tlFind( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                          const T& aValue )
+  T_InputIterator find( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                        const T& aValue )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 
@@ -43,12 +43,12 @@ namespace tloc
     typedef Loki::IsSameType<inputDeref, char8> charTestResult;
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    return detail::tlFind(aRangeBegin, aRangeEnd, aValue, IsChar8());
+    return detail::find(aRangeBegin, aRangeEnd, aValue, IsChar8());
   }
 
   template <typename T_InputIterator, typename T_Predicate>
-  T_InputIterator tlFindIf( T_InputIterator aRangeBegin,
-                            T_InputIterator aRangeEnd, T_Predicate aPred )
+  T_InputIterator find_if( T_InputIterator aRangeBegin,
+                           T_InputIterator aRangeEnd, T_Predicate aPred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 
@@ -63,10 +63,10 @@ namespace tloc
 
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 tlFindEnd( T_ForwardIterator1 aRangeToSearchBegin,
-                                T_ForwardIterator1 aRangeToSearchEnd,
-                                T_ForwardIterator2 aRangeToFindBegin,
-                                T_ForwardIterator2 aRangeToFindEnd )
+  T_ForwardIterator1 find_end( T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -110,11 +110,11 @@ namespace tloc
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
     typename T_BinaryPredicate>
-  T_ForwardIterator1 tlFindEnd( T_ForwardIterator1 aRangeToSearchBegin,
-                                T_ForwardIterator1 aRangeToSearchEnd,
-                                T_ForwardIterator2 aRangeToFindBegin,
-                                T_ForwardIterator2 aRangeToFindEnd,
-                                T_BinaryPredicate aPred )
+  T_ForwardIterator1 find_end( T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd,
+                               T_BinaryPredicate aPred )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -157,7 +157,7 @@ namespace tloc
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 tlFindFirstOf( T_ForwardIterator1 aRangeToSearchBegin,
+  T_ForwardIterator1 find_first_of( T_ForwardIterator1 aRangeToSearchBegin,
                                     T_ForwardIterator1 aRangeToSearchEnd,
                                     T_ForwardIterator2 aRangeToFindBegin,
                                     T_ForwardIterator2 aRangeToFindEnd )
@@ -190,7 +190,7 @@ namespace tloc
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-  T_ForwardIterator1 tlFindFirstOf( T_ForwardIterator1 aRangeToSearchBegin,
+  T_ForwardIterator1 find_first_of( T_ForwardIterator1 aRangeToSearchBegin,
                                     T_ForwardIterator1 aRangeToSearchEnd,
                                     T_ForwardIterator2 aRangeToFindBegin,
                                     T_ForwardIterator2 aRangeToFindEnd,
@@ -223,10 +223,10 @@ namespace tloc
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 tlFindFirstNotOf( T_ForwardIterator1 aRangeToSearchBegin,
-                                       T_ForwardIterator1 aRangeToSearchEnd,
-                                       T_ForwardIterator2 aRangeToFindBegin,
-                                       T_ForwardIterator2 aRangeToFindEnd )
+  T_ForwardIterator1 find_first_not_of( T_ForwardIterator1 aRangeToSearchBegin,
+                                        T_ForwardIterator1 aRangeToSearchEnd,
+                                        T_ForwardIterator2 aRangeToFindBegin,
+                                        T_ForwardIterator2 aRangeToFindEnd )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -260,11 +260,11 @@ namespace tloc
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-  T_ForwardIterator1 tlFindFirstNotOf( T_ForwardIterator1 aRangeToSearchBegin,
-                                       T_ForwardIterator1 aRangeToSearchEnd,
-                                       T_ForwardIterator2 aRangeToFindBegin,
-                                       T_ForwardIterator2 aRangeToFindEnd,
-                                       T_BinaryPredicate aPred )
+  T_ForwardIterator1 find_first_not_of( T_ForwardIterator1 aRangeToSearchBegin,
+                                        T_ForwardIterator1 aRangeToSearchEnd,
+                                        T_ForwardIterator2 aRangeToFindBegin,
+                                        T_ForwardIterator2 aRangeToFindEnd,
+                                        T_BinaryPredicate aPred )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -297,10 +297,10 @@ namespace tloc
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 tlFindLastNotOf( T_ForwardIterator1 aRangeToSearchBegin,
-                                      T_ForwardIterator1 aRangeToSearchEnd,
-                                      T_ForwardIterator2 aRangeToFindBegin,
-                                      T_ForwardIterator2 aRangeToFindEnd )
+  T_ForwardIterator1 find_last_not_of( T_ForwardIterator1 aRangeToSearchBegin,
+                                       T_ForwardIterator1 aRangeToSearchEnd,
+                                       T_ForwardIterator2 aRangeToFindBegin,
+                                       T_ForwardIterator2 aRangeToFindEnd )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -338,11 +338,11 @@ namespace tloc
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
     typename T_BinaryPredicate>
-    T_ForwardIterator1 tlFindLastNotOf( T_ForwardIterator1 aRangeToSearchBegin,
-                                        T_ForwardIterator1 aRangeToSearchEnd,
-                                        T_ForwardIterator2 aRangeToFindBegin,
-                                        T_ForwardIterator2 aRangeToFindEnd,
-                                        T_BinaryPredicate aPred )
+    T_ForwardIterator1 find_last_not_of( T_ForwardIterator1 aRangeToSearchBegin,
+                                         T_ForwardIterator1 aRangeToSearchEnd,
+                                         T_ForwardIterator2 aRangeToFindBegin,
+                                         T_ForwardIterator2 aRangeToFindEnd,
+                                         T_BinaryPredicate aPred )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -379,8 +379,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator, typename T>
-  tl_size tlCount( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                   const T& aValue )
+  tl_size count( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                 const T& aValue )
   {
     typedef Loki::TypeTraits<T_InputIterator> itrType;
 
@@ -399,8 +399,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator, typename T_Predicate>
-  tl_size tlCountIf( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                     T_Predicate aPred )
+  tl_size count_if( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                    T_Predicate aPred )
   {
     typedef Loki::TypeTraits<T_InputIterator> itrType;
 
@@ -420,8 +420,8 @@ namespace tloc
 
   template <typename T_InputIterator1, typename T_InputIterator2>
   Pair<T_InputIterator1, T_InputIterator2>
-    tlMismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
-                T_InputIterator2 aRangeToCompare )
+    mismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+              T_InputIterator2 aRangeToCompare )
   {
     typedef Loki::TypeTraits<T_InputIterator1> itrType;
 
@@ -442,8 +442,8 @@ namespace tloc
 
   template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
   Pair<T_InputIterator1, T_InputIterator2>
-    tlMismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
-                T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
+    mismatch( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+              T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
   {
     typedef Loki::TypeTraits<T_InputIterator1> itrType;
 
@@ -463,8 +463,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2>
-  bool tlEqual( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
-                T_InputIterator2 aRangeToCompare )
+  bool equal( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+              T_InputIterator2 aRangeToCompare )
   {
     typedef Loki::TypeTraits<T_InputIterator1> itrType;
 
@@ -484,8 +484,8 @@ namespace tloc
 
   template <typename T_InputIterator1, typename T_InputIterator2,
             typename T_BinaryPred>
-  bool tlEqual( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
-                T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
+  bool equal( T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
+              T_InputIterator2 aRangeToCompare, T_BinaryPred aPred )
   {
     typedef Loki::TypeTraits<T_InputIterator1> itrType;
 
@@ -504,10 +504,10 @@ namespace tloc
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 tlSearch( T_ForwardIterator1 aRangeToSearchBegin,
-                               T_ForwardIterator1 aRangeToSearchEnd,
-                               T_ForwardIterator2 aRangeToFindBegin,
-                               T_ForwardIterator2 aRangeToFindEnd )
+  T_ForwardIterator1 search( T_ForwardIterator1 aRangeToSearchBegin,
+                             T_ForwardIterator1 aRangeToSearchEnd,
+                             T_ForwardIterator2 aRangeToFindBegin,
+                             T_ForwardIterator2 aRangeToFindEnd )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -549,11 +549,11 @@ namespace tloc
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-    T_ForwardIterator1 tlSearch( T_ForwardIterator1 aRangeToSearchBegin,
-                                 T_ForwardIterator1 aRangeToSearchEnd,
-                                 T_ForwardIterator2 aRangeToFindBegin,
-                                 T_ForwardIterator2 aRangeToFindEnd,
-                                 T_BinaryPredicate aPred )
+    T_ForwardIterator1 search( T_ForwardIterator1 aRangeToSearchBegin,
+                               T_ForwardIterator1 aRangeToSearchEnd,
+                               T_ForwardIterator2 aRangeToFindBegin,
+                               T_ForwardIterator2 aRangeToFindEnd,
+                               T_BinaryPredicate aPred )
   {
     typedef Loki::TypeTraits<T_ForwardIterator1> itrType;
 
@@ -594,9 +594,9 @@ namespace tloc
   }
 
   template <typename T_ForwardIterator, typename T_Size, typename T>
-  T_ForwardIterator tlSearchN( T_ForwardIterator aRangeToSearchBegin,
-                               T_ForwardIterator aRangeToSearchEnd,
-                               T_Size aCount, const T& aValue )
+  T_ForwardIterator search_n( T_ForwardIterator aRangeToSearchBegin,
+                              T_ForwardIterator aRangeToSearchEnd,
+                              T_Size aCount, const T& aValue )
   {
     typedef Loki::TypeTraits<T_ForwardIterator> itrType;
 
@@ -636,10 +636,10 @@ namespace tloc
 
   template <typename T_ForwardIterator, typename T_Size, typename T,
             typename T_BinaryPred>
-    T_ForwardIterator tlSearchN( T_ForwardIterator aRangeToSearchBegin,
-                                 T_ForwardIterator aRangeToSearchEnd,
-                                 T_Size aCount, const T& aValue,
-                                 T_BinaryPred aPred )
+    T_ForwardIterator search_n( T_ForwardIterator aRangeToSearchBegin,
+                                T_ForwardIterator aRangeToSearchEnd,
+                                T_Size aCount, const T& aValue,
+                                T_BinaryPred aPred )
   {
     typedef Loki::TypeTraits<T_ForwardIterator> itrType;
 
@@ -681,7 +681,7 @@ namespace tloc
   // Min / Max
 
   template <typename T>
-  TL_I const T& tlMin(const T& a, const T& b)
+  TL_I const T& min(const T& a, const T& b)
   {
     return a < b ? a : b;
   }
@@ -693,7 +693,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I void tlSwap(T& a, T& b)
+  TL_I void swap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }
@@ -702,8 +702,8 @@ namespace tloc
   // Modifying sequence operations
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-    T_OutputIterator aDestRangeBegin)
+  TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                             T_OutputIterator aDestRangeBegin)
   {
     TLOC_ASSERT_ALGORITHMS(aDestRangeBegin < aRangeBegin || aDestRangeBegin > aRangeEnd,
       "Output iterator is within the begin/end range (data over-writing)! - "
@@ -717,13 +717,13 @@ namespace tloc
     typedef Loki::TypeTraits<inputDeref> inputUnknown;
     typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
 
-    return detail::tlCopy(aRangeBegin, aRangeEnd, aDestRangeBegin, inputArith());
+    return detail::copy(aRangeBegin, aRangeEnd, aDestRangeBegin, inputArith());
   }
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator tlCopy_Backward(T_InputIterator aRangeBegin,
-    T_InputIterator aRangeEnd,
-    T_OutputIterator aDestRangeEnd)
+  TL_I T_OutputIterator copy_backward(T_InputIterator aRangeBegin,
+                                      T_InputIterator aRangeEnd,
+                                      T_OutputIterator aDestRangeEnd)
   {
     TLOC_ASSERT_ALGORITHMS(aDestRangeEnd < aRangeBegin || aDestRangeEnd > aRangeEnd,
       "Output past-the-end iterator is within the begin/end range (data "
@@ -742,8 +742,8 @@ namespace tloc
   }
 
   template <typename T_InputIterator, typename T>
-  TL_I void tlFill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                   const T& aValue)
+  TL_I void fill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                 const T& aValue)
   {
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
@@ -751,7 +751,7 @@ namespace tloc
     typedef Loki::IsSameType<inputDeref, char8> charTestResult;
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    detail::tlFill(aRangeBegin, aRangeEnd, aValue, IsChar8());
+    detail::fill(aRangeBegin, aRangeEnd, aValue, IsChar8());
 
   }
 
@@ -764,8 +764,8 @@ namespace tloc
     // Copy() helpers
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                                 T_OutputIterator aDestRangeBegin, IsNotArith)
+    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                               T_OutputIterator aDestRangeBegin, IsNotArith)
     {
       while (aRangeBegin != aRangeEnd)
       {
@@ -776,8 +776,8 @@ namespace tloc
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator tlCopy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                                 T_OutputIterator aDestRangeBegin, IsArith)
+    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                               T_OutputIterator aDestRangeBegin, IsArith)
     {
       // We need the size of what the pointer is pointing to, not the pointer
       // itself
@@ -793,8 +793,8 @@ namespace tloc
     // Fill helpers
 
     template <typename T_InputIterator, typename T>
-    TL_I void tlFill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                      const T& aValue, IsNotChar )
+    TL_I void fill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                    const T& aValue, IsNotChar )
     {
       while (aRangeBegin != aRangeEnd)
       {
@@ -804,16 +804,16 @@ namespace tloc
     }
 
     template <typename T_InputIterator, typename T>
-    TL_I void tlFill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
-                      const T& aValue, IsChar )
+    TL_I void fill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+                    const T& aValue, IsChar )
     {
       memset(aRangeBegin, aValue, sizeof(T) * (aRangeEnd - aRangeBegin));
     }
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator tlFind( T_InputIterator aRangeBegin,
-                            T_InputIterator aRangeEnd,
-                            const T& aValue, IsNotChar )
+    T_InputIterator find( T_InputIterator aRangeBegin,
+                          T_InputIterator aRangeEnd,
+                          const T& aValue, IsNotChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 
@@ -827,9 +827,9 @@ namespace tloc
     }
 
     template <typename T_InputIterator>
-    T_InputIterator tlFind( T_InputIterator aRangeBegin,
-                            T_InputIterator aRangeEnd,
-                            const char8& aValue, IsChar )
+    T_InputIterator find( T_InputIterator aRangeBegin,
+                          T_InputIterator aRangeEnd,
+                          const char8& aValue, IsChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(aRangeBegin, aRangeEnd);
 

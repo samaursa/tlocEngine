@@ -366,9 +366,9 @@ namespace tloc
   {
     TLOC_ASSERT_STRING_WARN(this != &aX, "Swap called on self (redundant).");
 
-    tlSwap(aX.m_begin, m_begin);
-    tlSwap(aX.m_end, m_end);
-    tlSwap(aX.m_capacity, m_capacity);
+    swap(aX.m_begin, m_begin);
+    swap(aX.m_end, m_end);
+    swap(aX.m_capacity, m_capacity);
   }
 
   //````````````````````````````````````````````````````````````````````````
@@ -424,7 +424,7 @@ namespace tloc
         reserve(currSize + aNumChars);
       }
 
-      tlFill(m_end, m_end + aNumChars, aChar);
+      fill(m_end, m_end + aNumChars, aChar);
       m_end += aNumChars;
       *m_end = 0;
     }
@@ -448,7 +448,7 @@ namespace tloc
         DoReAllocateAndAdjust(oldSize + rangeSize + 1);
       }
 
-      m_end = tlCopy(aBegin, aEnd, m_end);
+      m_end = tloc::copy(aBegin, aEnd, m_end);
       *m_end = 0;
     }
 
@@ -504,12 +504,12 @@ namespace tloc
     const tl_size ourSize = size();
     if (aNumChars <= ourSize)
     {
-      tlFill(m_begin, m_begin + aNumChars, aChar);
+      fill(m_begin, m_begin + aNumChars, aChar);
       erase(m_begin + aNumChars, m_end);
     }
     else
     {
-      tlFill(m_begin, m_begin + ourSize, aChar);
+      fill(m_begin, m_begin + ourSize, aChar);
       append(aNumChars - ourSize, aChar);
     }
 
@@ -612,7 +612,7 @@ namespace tloc
     iterator pos = m_begin + startIndex;
 
     memmove(pos + aNumChars, pos, (tl_size)( (m_end - (pos) + 1) * sizeof(T)) );
-    tlFill(pos, pos + aNumChars, aChar);
+    fill(pos, pos + aNumChars, aChar);
 
     m_end = m_end + aNumChars;
   }
@@ -852,7 +852,7 @@ namespace tloc
     const_iterator itrBegin = m_begin + aBegin;
     const_iterator itrEnd = (itrBegin + aNumCharsToCopy) > m_end
                                           ? m_end : itrBegin + aNumCharsToCopy;
-    tlCopy(itrBegin, itrEnd, aDestArray);
+    tloc::copy(itrBegin, itrEnd, aDestArray);
     return itrEnd - itrBegin;
   }
 
@@ -878,7 +878,7 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlSearch(itrBegin, m_end, aCharStr,
+      const T* const findItr = search(itrBegin, m_end, aCharStr,
                                         aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
@@ -901,7 +901,7 @@ namespace tloc
 
     TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
 
-    const T* const findItr = tlFind(itrBegin, m_end, aChar);
+    const T* const findItr = tloc::find(itrBegin, m_end, aChar);
 
     if (findItr != m_end) { return (tl_size)(findItr - m_begin); }
     else { return npos; }
@@ -927,7 +927,7 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlFindEnd(itrBegin, m_end, aCharStr,
+      const T* const findItr = find_end(itrBegin, m_end, aCharStr,
                                          aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
@@ -969,8 +969,8 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlFindFirstOf(itrBegin, m_end, aCharStr,
-                                             aCharStr + aNumCharsToCompare);
+      const T* const findItr = tloc::find_first_of(itrBegin, m_end, aCharStr,
+                                                   aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1012,7 +1012,7 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlFindEnd(itrBegin, m_end, aCharStr,
+      const T* const findItr = find_end(itrBegin, m_end, aCharStr,
                                          aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
@@ -1055,8 +1055,8 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlFindFirstNotOf(itrBegin, m_end, aCharStr,
-                                                aCharStr + aNumCharsToCompare);
+      const T* const findItr = tloc::find_first_not_of(itrBegin, m_end, aCharStr,
+                                                       aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1098,8 +1098,8 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tlFindLastNotOf(itrBegin, m_end, aCharStr,
-                                               aCharStr + aNumCharsToCompare);
+      const T* const findItr = tloc::find_last_not_of(itrBegin, m_end, aCharStr,
+                                                      aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1401,7 +1401,7 @@ namespace tloc
 
       DoAllocateSelf( (tl_size)(aPtrEnd - aPtrBegin + 1));
 
-      m_end = tlCopy(aPtrBegin, aPtrEnd, m_begin);
+      m_end = tloc::copy(aPtrBegin, aPtrEnd, m_begin);
       *m_end = 0; // Null terminator
     }
     else
@@ -1419,7 +1419,7 @@ namespace tloc
 
     const tl_size size1 = aEnd1 - aBegin1;
     const tl_size size2 = aEnd2 - aBegin2;
-    const tl_size sizeMin = tlMin(size1, size2);
+    const tl_size sizeMin = min(size1, size2);
 
     return StrCmp(aBegin1, aBegin2, sizeMin);
   }

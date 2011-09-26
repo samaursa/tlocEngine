@@ -2,9 +2,11 @@
 
 namespace TestingVector3f
 {
+  USING_TLOC;
+
   struct Vector3fFixture
   {
-    Vector3fFixture() 
+    Vector3fFixture()
     {
       a[0] = 1; a[1] = 2; a[2] = 3;
       b[0] = 5; b[1] = 6; b[2] = 7;
@@ -17,7 +19,7 @@ namespace TestingVector3f
                                CHECK((vec[1]) == (Approx(y)) ); \
                                CHECK((vec[2]) == (Approx(z)) );
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
     REQUIRE(sizeof(tloc::Vec3f) == 12);
@@ -57,7 +59,7 @@ namespace TestingVector3f
 
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator",
     "Tests the square bracket operator value retrieval and assignment")
   {
     CHECK_VEC3F(a, 1, 2, 3);
@@ -68,7 +70,7 @@ namespace TestingVector3f
     CHECK_VEC3F(b, 20, 21, 22);
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/SetAndZero", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/SetAndZero",
                                     "Tests the Set() and Zero() functions")
   {
     a.Set(1);
@@ -85,7 +87,7 @@ namespace TestingVector3f
     CHECK_VEC3F(a, 0, 0, 0);
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/BasicOperations", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/BasicOperations",
                   "Test addition, subtraction, multiplication and division")
   {
     //////////////////////////////////////////////////////////////////////////
@@ -95,7 +97,7 @@ namespace TestingVector3f
     c.Add(a, b);
     CHECK_VEC3F(c, 6.0f, 8.0f, 10.0f);
 
-    // Subtraction double 
+    // Subtraction double
     c.Sub(a, b);
     CHECK_VEC3F(c, -4.0f, -4.0f, -4.0f);
 
@@ -141,7 +143,7 @@ namespace TestingVector3f
     f32 lengthSq = c.LengthSquared();
     CHECK(lengthSq == Approx(12.0f));
 
-    c.Zero(); 
+    c.Zero();
     f32 length = c.Length();
     CHECK(length == Approx(0.0f));
 
@@ -150,7 +152,7 @@ namespace TestingVector3f
     CHECK(length == Approx(1.414213562373095f));
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/NormalizeLengthDis", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/NormalizeLengthDis",
     "Tests the normalize, length and distance functions")
   {
     c[0] = 2, c[1] = 0; c[2] = 0;
@@ -192,7 +194,7 @@ namespace TestingVector3f
     CHECK(dis == 4);
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/DotAndCross", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/DotAndCross",
     "Tests the dot and cross methods")
   {
     c.Zero(); d.Zero(); e.Zero();
@@ -231,7 +233,7 @@ namespace TestingVector3f
     CHECK_VEC3F(e, 0, 0, -1);
   }
 
-  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks", 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks",
     "Tests == and != comparisons as well as checks")
   {
     CHECK((a != b) == true);

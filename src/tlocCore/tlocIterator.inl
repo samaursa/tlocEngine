@@ -18,6 +18,27 @@ namespace tloc
     detail::advance(aItr, aN, itrCat());
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Iterator construction
+
+  template <typename T_Container>
+  TL_FI back_insert_iterator<T_Container> back_inserter( T_Container& aContainer )
+  {
+    return back_insert_iterator<T_Container>(aContainer);
+  }
+
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container> front_inserter( T_Container& aContainer )
+  {
+    return front_insert_iterator<T_Container>(aContainer);
+  }
+
+  template <typename T_Container>
+  TL_FI insert_iterator<T_Container> inserter( T_Container& aContainer )
+  {
+    return insert_iterator<T_Container>(aContainer);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Detail
 

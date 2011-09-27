@@ -37,7 +37,7 @@ namespace tloc
     typedef T_Category  iterator_category;
   };
 
-  //````````````````````````````````````````````````````````````````````````
+  //------------------------------------------------------------------------
   // Iterator traits (from the standard)
 
   template <typename T_Itr>
@@ -70,8 +70,11 @@ namespace tloc
     typedef random_access_iterator_tag          iterator_category;
   };
 
-  //````````````````````````````````````````````````````````````````````````
+  //------------------------------------------------------------------------
   // Predefined iterators from the standard
+
+  //````````````````````````````````````````````````````````````````````````
+  // output_iterator_base
 
   template <typename T_Container>
   class output_iterator_base
@@ -80,43 +83,67 @@ namespace tloc
   public:
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
+    typedef typename T_Container::iterator                 iterator_type;
     typedef typename output_iterator_base<T_Container>     this_type;
 
-    explicit output_iterator_base(T_Container& aContainer);
-    this_type& operator* ();
-    this_type& operator++();
-    this_type& operator++(int);
+    TL_FI explicit output_iterator_base(T_Container& aContainer);
+    TL_FI this_type& operator* ();
+    TL_FI this_type& operator++();
+    TL_FI this_type& operator++(int);
 
   protected:
 
+    T_Container&  m_container;
+
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // back_insert_iterator
 
   template <typename T_Container>
   class back_insert_iterator : public output_iterator_base<T_Container>
   {
   public:
-    explicit back_insert_iterator(T_Container& aContainer);
-    this_type& operator= (const_reference aValue);
+    typedef typename back_insert_iterator<T_Container>     this_type;
+
+    TL_FI explicit back_insert_iterator(T_Container& aContainer);
+    TL_FI this_type& operator= (const_reference aValue);
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // front_insert_iterator
 
   template <typename T_Container>
   class front_insert_iterator : public output_iterator_base<T_Container>
   {
   public:
-    explicit front_insert_iterator (T_Container& aContainer);
-    this_type& operator=(const_reference aValue);
+    typedef typename front_insert_iterator<T_Container>     this_type;
+
+    TL_FI explicit front_insert_iterator (T_Container& aContainer);
+    TL_FI this_type& operator=(const_reference aValue);
   };
+
+
+
+  //````````````````````````````````````````````````````````````````````````
+  // insert_iterator
 
   template <typename T_Container>
   class insert_iterator : public output_iterator_base<T_Container>
   {
   public:
-    explicit insert_iterator (T_Container& aContainer);
-    this_type& operator=(const_reference aValue);
+    typedef typename insert_iterator<T_Container>     this_type;
+
+    TL_FI explicit insert_iterator (T_Container& aContainer, iterator_type aItr);
+    TL_FI this_type& operator=(const_reference aValue);
+    TL_FI this_type& operator=(const insert_iterator<T_Container>& aOther);
 
   protected:
     typename T_Container::iterator m_itr;
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // reverse_iterator
 
   template <typename T_Itr>
   class reverse_iterator :
@@ -132,31 +159,68 @@ namespace tloc
     typedef typename iterator_traits<T_Itr>::reference        reference;
     typedef reverse_iterator<T_Itr>                           this_type;
 
-    reverse_iterator();
-    explicit reverse_iterator(T_Itr aIterator);
+    TL_FI reverse_iterator();
+    TL_FI explicit
+    reverse_iterator(T_Itr aIterator);
     template <typename U>
-    reverse_iterator(const reverse_iterator<U>& aOther);
+    TL_FI reverse_iterator(const reverse_iterator<U>& aOther);
 
-    T_Itr             base() const;
+    TL_FI T_Itr             base() const;
 
     template <typename U>
-    this_type&        operator=   (const reverse_iterator<U>& aOther);
-    reference         operator*   () const;
-    reverse_iterator  operator+   (difference_type aDistance) const;
-    reverse_iterator& operator++  ();
-    reverse_iterator  operator++  (int);
-    reverse_iterator& operator+=  (difference_type aDistance);
-    reverse_iterator  operator-   (difference_type aDistance);
-    reverse_iterator& operator--  ();
-    reverse_iterator  operator--  (int);
-    reverse_iterator& operator-=  (difference_type aDistance);
-    pointer           operator->  () const;
-    reference         operator[]  (difference_type aDistance) const;
+    TL_FI this_type&        operator=   (const reverse_iterator<U>& aOther);
+    TL_FI reference         operator*   () const;
+    TL_FI reverse_iterator  operator+   (difference_type aDistance) const;
+    TL_FI reverse_iterator& operator++  ();
+    TL_FI reverse_iterator  operator++  (int);
+    TL_FI reverse_iterator& operator+=  (difference_type aDistance);
+    TL_FI reverse_iterator  operator-   (difference_type aDistance);
+    TL_FI reverse_iterator& operator--  ();
+    TL_FI reverse_iterator  operator--  (int);
+    TL_FI reverse_iterator& operator-=  (difference_type aDistance);
+    TL_FI pointer           operator->  () const;
+    TL_FI reference         operator[]  (difference_type aDistance) const;
 
   protected:
     T_Itr             m_itr;
 
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // Global operators for reverse_iterator
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator==(const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator!=(const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator< (const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator<=(const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator> (const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I bool operator>=(const reverse_iterator<T_Itr1>& a,
+                       const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr1, typename T_Itr2>
+  TL_I typename reverse_iterator<T_Itr1>::difference_type
+    operator- (const reverse_iterator<T_Itr1>& a, const reverse_iterator<T_Itr2>& b);
+
+  template <typename T_Itr>
+  TL_I typename reverse_iterator<T_Itr>::difference_type
+    operator+ (typename reverse_iterator<T_Itr>::difference_type aDistance,
+               const reverse_iterator<T_Itr>& a);
 
   //````````````````````````````````````````````````````````````````````````
   // Iterator construction
@@ -204,7 +268,7 @@ namespace tloc
   };
 
   //////////////////////////////////////////////////////////////////////////
-  // Free functions
+  // Global functions
 
   template <typename T_InputItr>
   TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd);

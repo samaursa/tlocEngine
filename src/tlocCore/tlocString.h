@@ -350,7 +350,7 @@ namespace tloc
   };
 
   //////////////////////////////////////////////////////////////////////////
-  // Free functions
+  // Global functions
 
   template <typename T>
   TL_I tl_size    StrLen(const T* aCharStr);

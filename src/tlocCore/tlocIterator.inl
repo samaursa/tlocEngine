@@ -278,6 +278,27 @@ namespace tloc
     return itr;
   }
 
+  //````````````````````````````````````````````````````````````````````````
+  // Iterator construction
+
+  template <typename T_Container>
+  TL_FI back_insert_iterator<T_Container> back_inserter( T_Container& aContainer )
+  {
+    return back_insert_iterator<T_Container>(aContainer);
+  }
+
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container> front_inserter( T_Container& aContainer )
+  {
+    return front_insert_iterator<T_Container>(aContainer);
+  }
+
+  template <typename T_Container>
+  TL_FI insert_iterator<T_Container> inserter( T_Container& aContainer )
+  {
+    return insert_iterator<T_Container>(aContainer);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Gobal functions
 
@@ -299,25 +320,35 @@ namespace tloc
     detail::advance(aItr, aN, itrCat());
   }
 
-  //````````````````````````````````````````````````````````````````````````
-  // Iterator construction
+  //////////////////////////////////////////////////////////////////////////
+  // Custom generic iterators (not defined in the standard)
 
-  template <typename T_Container>
-  TL_FI back_insert_iterator<T_Container> back_inserter( T_Container& aContainer )
+  LIST_ITR_BASE_TEMP
+    TL_FI LIST_ITR_BASE_TYPE::ListItrBase() : m_node()
   {
-    return back_insert_iterator<T_Container>(aContainer);
   }
 
-  template <typename T_Container>
-  TL_FI front_insert_iterator<T_Container> front_inserter( T_Container& aContainer )
+  LIST_ITR_BASE_TEMP
+    TL_FI LIST_ITR_BASE_TYPE::ListItrBase(const T_Node* aNode) : m_node(aNode)
   {
-    return front_insert_iterator<T_Container>(aContainer);
   }
 
-  template <typename T_Container>
-  TL_FI insert_iterator<T_Container> inserter( T_Container& aContainer )
+  LIST_ITR_BASE_TEMP
+  TL_FI LIST_ITR_BASE_TYPE::ListItrBase(const this_type& aOtherItr)
+  : m_node(aOtherItr.m_node)
   {
-    return insert_iterator<T_Container>(aContainer);
+  }
+
+  LIST_ITR_BASE_TEMP
+    TL_FI T_Ref LIST_ITR_BASE_TYPE::operator* () const
+  {
+    return m_node->m_value;
+  }
+
+  LIST_ITR_BASE_TEMP
+    TL_FI T_Ptr LIST_ITR_BASE_TYPE::operator-> () const
+  {
+    return *(m_node->m_value);
   }
 
   //////////////////////////////////////////////////////////////////////////

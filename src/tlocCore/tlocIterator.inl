@@ -4,42 +4,33 @@ namespace tloc
   // Pre-defined iterators
 
   //````````````````````````````````````````````````````````````````````````
-  // output_iterator_base
+  // back_insert_iterator
 
   template <typename T_Container>
-  TL_FI output_iterator_base<T_Container>::output_iterator_base( T_Container& aContainer )
+  TL_FI back_insert_iterator<T_Container>::back_insert_iterator( T_Container& aContainer )
     : m_container(aContainer)
   {
   }
 
   template <typename T_Container>
-  TL_FI output_iterator_base<T_Container>&
-    output_iterator_base<T_Container>::operator*()
+  TL_FI back_insert_iterator<T_Container>&
+    back_insert_iterator<T_Container>::operator*()
   {
     return *this;
   }
 
   template <typename T_Container>
-  TL_FI output_iterator_base<T_Container>&
-    output_iterator_base<T_Container>::operator++()
+  TL_FI back_insert_iterator<T_Container>&
+    back_insert_iterator<T_Container>::operator++()
   {
     return *this;
   }
 
   template <typename T_Container>
-  TL_FI output_iterator_base<T_Container>&
-    output_iterator_base<T_Container>::operator++( int )
+  TL_FI back_insert_iterator<T_Container>&
+    back_insert_iterator<T_Container>::operator++( int )
   {
     return *this;
-  }
-
-  //````````````````````````````````````````````````````````````````````````
-  // back_insert_iterator
-
-  template <typename T_Container>
-  TL_FI back_insert_iterator<T_Container>::back_insert_iterator( T_Container& aContainer )
-    : output_iterator_base(aContainer)
-  {
   }
 
   template <typename T_Container>
@@ -50,13 +41,42 @@ namespace tloc
     return *this;
   }
 
+  template <typename T_Container>
+  TL_FI back_insert_iterator<T_Container>&
+    back_insert_iterator<T_Container>::operator=
+    ( const back_insert_iterator<T_Container>& aOther )
+  {
+    return *this;
+  }
+
   //````````````````````````````````````````````````````````````````````````
   // front_insert_iterator
 
   template <typename T_Container>
   TL_FI front_insert_iterator<T_Container>::front_insert_iterator( T_Container& aContainer )
-    : output_iterator_base(aContainer)
+    : m_container(aContainer)
   {
+  }
+
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container>&
+    front_insert_iterator<T_Container>::operator*()
+  {
+    return *this;
+  }
+
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container>&
+    front_insert_iterator<T_Container>::operator++()
+  {
+    return *this;
+  }
+
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container>&
+    front_insert_iterator<T_Container>::operator++( int )
+  {
+    return *this;
   }
 
   template <typename T_Container>
@@ -67,13 +87,42 @@ namespace tloc
     return *this;
   }
 
+  template <typename T_Container>
+  TL_FI front_insert_iterator<T_Container>&
+    front_insert_iterator<T_Container>::operator=
+                            ( const front_insert_iterator<T_Container>& aOther )
+  {
+    return *this;
+  }
+
   //````````````````````````````````````````````````````````````````````````
   // insert_iterator
 
   template <typename T_Container>
   TL_FI insert_iterator<T_Container>::insert_iterator( T_Container& aContainer,
-    iterator_type aItr ) : output_iterator_base(aContainer), m_itr(aItr)
+    iterator_type aItr ) : m_container(aContainer), m_itr(aItr)
   {
+  }
+
+  template <typename T_Container>
+  TL_FI insert_iterator<T_Container>&
+    insert_iterator<T_Container>::operator*()
+  {
+    return *this;
+  }
+
+  template <typename T_Container>
+  TL_FI insert_iterator<T_Container>&
+    insert_iterator<T_Container>::operator++()
+  {
+    return *this;
+  }
+
+  template <typename T_Container>
+  TL_FI insert_iterator<T_Container>&
+    insert_iterator<T_Container>::operator++( int )
+  {
+    return *this;
   }
 
   template <typename T_Container>
@@ -313,7 +362,7 @@ namespace tloc
 
 
   template <typename T_InputItr, typename T_Distance>
-  TL_FI void advance( T_InputItr aItr, T_Distance aN )
+  TL_FI void advance( T_InputItr& aItr, T_Distance aN )
   {
     typedef typename iterator_traits<T_InputItr>::iterator_category itrCat;
 
@@ -369,7 +418,7 @@ namespace tloc
     }
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance( T_InputItr aItr, T_Distance aN, input_iterator_tag )
+    TL_FI void advance( T_InputItr& aItr, T_Distance aN, input_iterator_tag )
     {
       TLOC_ASSERT_ITERATOR(aN >= 0,
         "Iterator can only advance in the positive direction!");
@@ -378,7 +427,7 @@ namespace tloc
     }
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance( T_InputItr aItr, T_Distance aN, bidirectional_iterator_tag )
+    TL_FI void advance( T_InputItr& aItr, T_Distance aN, bidirectional_iterator_tag )
     {
       if (n > 0)
       {
@@ -391,7 +440,7 @@ namespace tloc
     }
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance( T_InputItr aItr, T_Distance aN, random_access_iterator_tag )
+    TL_FI void advance( T_InputItr& aItr, T_Distance aN, random_access_iterator_tag )
     {
       aItr = aItr + aN;
     }

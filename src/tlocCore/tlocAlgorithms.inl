@@ -705,17 +705,13 @@ namespace tloc
   TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                              T_OutputIterator aDestRangeBegin)
   {
-    TLOC_ASSERT_ALGORITHMS(aDestRangeBegin < aRangeBegin || aDestRangeBegin > aRangeEnd,
-      "Output iterator is within the begin/end range (data over-writing)! - "
-      L"Try Copy_Backward");
-    TLOC_ASSERT_ALGORITHMS(aRangeBegin <= aRangeEnd,
-      "aRangeBegin > aRangeEnd (infinite loop)!");
-
     // We assume that the inputs are pointers. We can then find out whether they
     // are integral pointers or complex
     typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef Loki::TypeTraits<T_OutputIterator>::PointeeType outputDeref;
     typedef Loki::TypeTraits<inputDeref> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+    typedef Loki::TypeTraits<outputDeref> outputUknown;
+    typedef Loki::Int2Type<inputUnknown::isArith && outputUknown::isArith> inputArith;
 
     return detail::copy(aRangeBegin, aRangeEnd, aDestRangeBegin, inputArith());
   }

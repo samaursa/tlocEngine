@@ -16,6 +16,7 @@ using namespace Catch::Detail;
 #include "tlocCore/tlocString.h"
 #include "tlocCore/tlocTuple.h"
 #include "tlocCore/tlocTable.h"
+#include "tlocCore/tlocIterator.h"
 
 #include "tlocAlgorithmsTest.h"
 #include "tlocMemoryTest.h"
@@ -23,6 +24,7 @@ using namespace Catch::Detail;
 #include "tlocTableTest.h"
 #include "tlocArrayTest.h"
 #include "tlocStringTest.h"
+#include "tlocIteratorTest.h"
 
 //------------------------------------------------------------------------
 // Math

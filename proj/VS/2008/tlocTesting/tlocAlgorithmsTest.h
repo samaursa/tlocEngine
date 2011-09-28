@@ -1,5 +1,3 @@
-#include <algorithm>
-
 namespace TestingAlgorithms
 {
   USING_TLOC;

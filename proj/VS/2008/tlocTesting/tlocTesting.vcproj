@@ -294,6 +294,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocIteratorTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMemoryTest.h"
 					>
 				</File>

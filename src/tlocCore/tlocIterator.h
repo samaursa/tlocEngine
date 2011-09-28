@@ -22,6 +22,8 @@ namespace tloc
   struct forward_iterator_tag : public input_iterator_tag {};
   struct bidirectional_iterator_tag : public forward_iterator_tag {};
   struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+  struct singly_linked_tag : public forward_iterator_tag {};
+  struct doubly_linked_tag : public bidirectional_iterator_tag {};
 
   //````````````````````````````````````````````````````````````````````````
   // Base class from the standard
@@ -78,6 +80,7 @@ namespace tloc
 
   template <typename T_Container>
   class back_insert_iterator
+    : public iterator<output_iterator_tag, void, void, void, void>
   {
   public:
     typedef T_Container                                    container_type;
@@ -101,12 +104,13 @@ namespace tloc
 
   template <typename T_Container>
   class front_insert_iterator
+    : public iterator<output_iterator_tag, void, void, void, void>
   {
   public:
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
     typedef typename T_Container::iterator                 iterator_type;
-    typedef typename front_insert_iterator<T_Container>     this_type;
+    typedef typename front_insert_iterator<T_Container>    this_type;
 
     TL_FI explicit front_insert_iterator (T_Container& aContainer);
     TL_FI this_type& operator* ();
@@ -126,12 +130,13 @@ namespace tloc
 
   template <typename T_Container>
   class insert_iterator
+    : public iterator<output_iterator_tag, void, void, void, void>
   {
   public:
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
     typedef typename T_Container::iterator                 iterator_type;
-    typedef typename insert_iterator<T_Container>     this_type;
+    typedef typename insert_iterator<T_Container>          this_type;
 
     TL_FI explicit insert_iterator (T_Container& aContainer, iterator_type aItr);
     TL_FI this_type& operator* ();
@@ -244,28 +249,10 @@ namespace tloc
   //````````````````````````````````````````````````````````````````````````
   // Macros
 
-#define LIST_ITR_BASE_TEMP_DEF template <typename T_Node, typename T_Category, \
-  typename T, typename T_Distance = tl_ptrdiff, typename T_Ptr = T*, \
-  typename T_Ref = T&>
+#define LIST_ITR_TEMP_PARAM typename T_Node, typename T_Itr_Type, \
+  typename T, typename T_Ptr, typename T_Ref
 
-#define SINGLY_LIST_ITR_TEMP_DEF template <typename T_Node, typename T, \
-  typename T_Distance = tl_ptrdiff, typename T_Ptr = T*, typename T_Ref = T&>
-
-#define DOUBLY_LIST_ITR_TEMP_DEF template <typename T_Node, typename T, \
-  typename T_Distance = tl_ptrdiff, typename T_Ptr = T*, typename T_Ref = T&>
-
-#define LIST_ITR_BASE_TEMP template <typename T_Node, typename T_Category, \
-  typename T, typename T_Distance, typename T_Ptr, typename T_Ref>
-
-#define SINGLY_LIST_ITR_TEMP template <typename T_Node, typename T, \
-    typename T_Distance, typename T_Ptr, typename T_Ref>
-
-#define DOUBLY_LIST_ITR_TEMP template <typename T_Node, typename T, \
-  typename T_Distance, typename T_Ptr, typename T_Ref>
-
-#define LIST_ITR_BASE_TYPE ListItrBase<T_Node, T_Category, T, T_Distance, T_Ptr, T_Ref>
-#define SINGLY_LIST_ITR_TYPE SinglyListItr<T_Node, T, T_Distance, T_Ptr, T_Ref>
-#define DOUBLY_LIST_ITR_TYPE DoublyListItr<T_Node, T, T_Distance, T_Ptr, T_Ref>
+#define LIST_ITR_TEMP template <LIST_ITR_TEMP_PARAM>
 
   //````````````````````````````````````````````````````````````````````````
   // List iterator
@@ -276,54 +263,38 @@ namespace tloc
   // The iterator must have a type, a pointer to the type and a reference to
   // the type. This is to allow creation of const T* pointers as well as T*
   // from the same template.
-  // T_Node: Must have public members T* m_value
-  LIST_ITR_BASE_TEMP_DEF
-  struct ListItrBase :
-    public iterator<T_Category, T, T_Distance, T_Ptr, T_Ref>
+  // T_Node: Must have public members T* m_value, T_Node* m_next, T_Node* m_prev
+  //         Must also have: typedef tl_ptrdiff difference_type;
+  template <typename T_Node, typename T_Itr_Type, typename T,
+            typename T_Ptr = T*, typename T_Ref = T&>
+  struct list_iterator :
+    public iterator<typename T_Itr_Type::iterator_category,
+                    T, typename T_Node::difference_type, T_Ptr, T_Ref>
   {
-    typedef LIST_ITR_BASE_TYPE this_type;
+    typedef list_iterator<LIST_ITR_TEMP_PARAM>                  this_type;
+    typedef typename T_Itr_Type::iterator_category              iterator_category;
+    typedef typename T_Node::pointer_type                       pointer_type;
+    typedef typename T_Node::reference_type                     reference_type;
 
-    TL_FI ListItrBase();
-    TL_FI ListItrBase(const T_Node* aNode);
-    TL_FI ListItrBase(const this_type& aOtherItr);
+    TL_FI list_iterator();
+    TL_FI list_iterator(const T_Node* aNode);
+    TL_FI list_iterator(const this_type& aOtherItr);
 
-    TL_FI T_Ref     operator*() const;
-    TL_FI T_Ptr     operator->() const;
+    TL_FI pointer_type    operator*() const;
+    TL_FI reference_type  operator->() const;
+    TL_FI this_type&      operator++();
+    TL_FI this_type&      operator++(int);
+    TL_FI this_type&      operator--();
+    TL_FI this_type&      operator--(int);
 
   protected:
-    T_Node*   m_node;
-  };
+    TL_FI this_type&      subOperation(singly_linked_tag);
+    TL_FI this_type&      subOperation(int, singly_linked_tag);
+    TL_FI this_type&      subOperation(doubly_linked_tag);
+    TL_FI this_type&      subOperation(int, doubly_linked_tag);
 
-  // T_Node: Must have public members T* m_value, T_Node* m_next;
-  SINGLY_LIST_ITR_TEMP_DEF
-  struct SinglyListItr :
-    public ListItrBase<T_Node, forward_iterator_tag, T, T_Distance, T_Ptr, T_Ref>
-  {
-    typedef SINGLY_LIST_ITR_TYPE this_type;
-
-    TL_FI SinglyListItr();
-    TL_FI SinglyListItr(const T_Node* aNode);
-    TL_FI SinglyListItr(const this_type& aOtherItr);
-
-    TL_FI this_type&   operator++();
-    TL_FI this_type    operator++(int);
-  };
-
-  // T_Node: Must have public members T* m_value, T_Node* m_next, T Node* m_prev;
-  DOUBLY_LIST_ITR_TEMP_DEF
-  struct DoublyListItr :
-    public ListItrBase<T_Node, bidirectional_iterator_tag, T, T_Distance, T_Ptr, T_Ref>
-  {
-    typedef DOUBLY_LIST_ITR_TYPE this_type;
-
-    TL_FI DoublyListItr();
-    TL_FI DoublyListItr(const T_Node* aNode);
-    TL_FI DoublyListItr(const this_type& aOtherItr);
-
-    TL_FI this_type&   operator++();
-    TL_FI this_type    operator++(int);
-    TL_FI this_type&   operator--();
-    TL_FI this_type    operator--(int);
+  protected:
+    T_Node*           m_node;
   };
 
   //////////////////////////////////////////////////////////////////////////

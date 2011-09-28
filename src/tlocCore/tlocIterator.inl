@@ -372,32 +372,98 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Custom generic iterators (not defined in the standard)
 
-  LIST_ITR_BASE_TEMP
-    TL_FI LIST_ITR_BASE_TYPE::ListItrBase() : m_node()
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>::list_iterator() : m_node()
   {
   }
 
-  LIST_ITR_BASE_TEMP
-    TL_FI LIST_ITR_BASE_TYPE::ListItrBase(const T_Node* aNode) : m_node(aNode)
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+      ::list_iterator(const T_Node* aNode) : m_node(aNode)
   {
   }
 
-  LIST_ITR_BASE_TEMP
-  TL_FI LIST_ITR_BASE_TYPE::ListItrBase(const this_type& aOtherItr)
+  LIST_ITR_TEMP
+  TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+    ::list_iterator(const this_type& aOtherItr)
   : m_node(aOtherItr.m_node)
   {
   }
 
-  LIST_ITR_BASE_TEMP
-    TL_FI T_Ref LIST_ITR_BASE_TYPE::operator* () const
+  LIST_ITR_TEMP
+  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer_type
+    list_iterator<LIST_ITR_TEMP_PARAM>::operator* () const
   {
     return m_node->m_value;
   }
 
-  LIST_ITR_BASE_TEMP
-    TL_FI T_Ptr LIST_ITR_BASE_TYPE::operator-> () const
+  LIST_ITR_TEMP
+  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference_type
+    list_iterator<LIST_ITR_TEMP_PARAM>::operator-> () const
   {
     return *(m_node->m_value);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::operator++()
+  {
+    m_node = m_node->m_next;
+    return *this;
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::operator++(int)
+  {
+    this_type tempItr(*this);
+    m_node = m_node->m_next;
+    return tempItr;
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
+  {
+    return subOperation(iterator_category);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
+  {
+    return subOperation(int, iterator_category);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(singly_linked_tag)
+  {
+    TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
+  {
+    TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(doubly_linked_tag)
+  {
+    m_node = m_node->m_prev;
+    return *this;
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
+  {
+    this_type tempItr(*this);
+    m_node = m_node->m_prev;
+    return tempItr;
   }
 
   //////////////////////////////////////////////////////////////////////////

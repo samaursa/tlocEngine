@@ -379,7 +379,7 @@ namespace tloc
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      ::list_iterator(const T_Node* aNode) : m_node(aNode)
+      ::list_iterator(const T_Node* aNode) : m_node(const_cast<T_Node*>(aNode))
   {
   }
 

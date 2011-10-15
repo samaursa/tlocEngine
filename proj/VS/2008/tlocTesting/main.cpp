@@ -13,6 +13,7 @@ using namespace Catch::Detail;
 // Core
 #include "tlocCore/tlocAlgorithms.h"
 #include "tlocCore/tlocArray.h"
+#include "tlocCore/tlocList.h"
 #include "tlocCore/tlocString.h"
 #include "tlocCore/tlocTuple.h"
 #include "tlocCore/tlocTable.h"

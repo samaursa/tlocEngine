@@ -268,11 +268,11 @@ namespace tloc
   template <typename T_Node, typename T_Itr_Type, typename T,
             typename T_Ptr = T*, typename T_Ref = T&>
   struct list_iterator :
-    public iterator<typename T_Itr_Type::iterator_category,
-                    T, typename T_Node::difference_type, T_Ptr, T_Ref>
+    public iterator<T_Itr_Type, T, typename T_Node::difference_type, 
+                    T_Ptr, T_Ref>
   {
     typedef list_iterator<LIST_ITR_TEMP_PARAM>                  this_type;
-    typedef typename T_Itr_Type::iterator_category              iterator_category;
+    typedef typename T_Itr_Type                                 iterator_category;
     typedef typename T_Node::pointer_type                       pointer_type;
     typedef typename T_Node::reference_type                     reference_type;
 

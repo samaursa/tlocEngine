@@ -2,6 +2,7 @@
 #define TLOC_LIST_H
 
 #include "tlocBase.h"
+#include "tlocMemory.h"
 #include "tlocTypeTraits.h"
 #include "tlocIterator.h"
 
@@ -25,14 +26,29 @@ namespace tloc
 
   //////////////////////////////////////////////////////////////////////////
   // List node
-
-  template <typename T, doubly_linked_tag>
+ 
+  template <typename T, typename T_ItrTag>
   struct ListNode
   {
-    typedef T       value_type;
-    typedef T*      pointer_type;
-    typedef T&      reference_type;
-    tl_ptrdiff      difference_type;
+  private:
+    ListNode();
+  };
+
+  template <typename T>
+  struct ListNode<T, doubly_linked_tag>
+  {
+    typedef ListNode<T, doubly_linked_tag>  this_type;
+
+    typedef T               value_type;
+    typedef T*              pointer_type;
+    typedef T&              reference_type;
+    typedef tl_ptrdiff      difference_type;
+
+    typedef bidirectional_iterator_tag  iterator_category;
+    typedef doubly_linked_tag           itr_tag;
+
+    ListNode();
+    ListNode(const this_type& aOther); 
 
     void            insert(ListNode* aNext);
     void            remove();
@@ -47,48 +63,59 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Array class
 
-  template <bool T_DedicatedSize>
-  struct ListSize
-  {
-  };
-
-  template <>
-  struct ListSize<true>
-  {
-    tl_size m_size;
-  };
-
-  template <typename T, typename T_Policy = List_Dynamic(),
-            typename T_ItrTag = doubly_linked_tag, bool T_DedicatedSize = true>
+  template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>, 
+            typename T_Policy = List_Dynamic(), bool T_DedicatedSize = true>
   class List
   {
   public:
     //------------------------------------------------------------------------
     // typedefs
-    typedef List<T, T_Policy, T_ItrTag>                 this_type;
-    typedef ListNode<T, T_ItrTag>                       node_type;
+    typedef List<T, T_Node,T_Policy, T_DedicatedSize>   this_type;
+    typedef T_Node                                      node_type;
 
-    typedef list_iterator<ListNode, T_ItrTag, T, T*, T&>  iterator;
-    typedef list_iterator<ListNode, T_ItrTag, T, const T*, const T&> const_iterator;
+    typedef list_iterator<node_type, typename node_type::iterator_category, T, T*, T&>  iterator;
+    typedef list_iterator<node_type, typename node_type::iterator_category, T, const T*, const T&> const_iterator;
 
     typedef T                                           value_type;
     typedef T*                                          pointer;
     typedef T&                                          reference;
     typedef const T&                                    const_reference;
-    typedef const T*                                    const_pointer;
-    typedef const T*                                    const_iterator;
+    //typedef const T*                                    const_pointer;
+    //typedef const T*                                    const_iterator;
     typedef tl_size                                     size_type;
     typedef tl_ptrdiff                                  difference_type;
     typedef tloc::reverse_iterator<iterator>            reverse_iterator;
     typedef tloc::reverse_iterator<const_iterator>      const_reverse_iterator;
 
+    typedef ConditionalType<tl_size, T_DedicatedSize>   list_size;
+
+  public:
+    List();
+    ~List();
+
+    iterator   begin();
+    iterator   end();
+
+  protected:
+    void DoInit();
+    void DoClear();
+
+    node_type* DoAllocateNode();
+    void       DoFreeNode(node_type* aNode);
+
+    node_type* DoCreateNode();
+    node_type* DoCreateNode(const T& aValueCopy);
+
+    void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
+    void       DoInsertValue(node_type* aNode, const T& aValueCopy);
+
   protected:
     node_type                 m_node;
-    ListSize<T_DedicatedSize> m_size;
+    list_size                 m_size;
 
   };
 };
 
-#include "tlocArray.inl"
+#include "tlocList.inl"
 
 #endif

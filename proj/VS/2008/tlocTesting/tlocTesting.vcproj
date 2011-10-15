@@ -298,6 +298,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocListTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMemoryTest.h"
 					>
 				</File>

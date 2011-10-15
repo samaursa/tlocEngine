@@ -65,6 +65,24 @@ namespace tloc
 #define TL_ULLONG_MAX             ULLONG_MAX
 
   //////////////////////////////////////////////////////////////////////////
+  // Conditional type
+
+  // This type can be conditionally removed based on the boolean value
+  template <typename T, bool T_DeclareValue>
+  struct ConditionalType
+  {
+    TL_FI ConditionalType(const T& aValue) {}
+  };
+
+  template <typename T>
+  struct ConditionalType<T, true>
+  {
+    ConditionalType(const T& aValue) : m_value(aValue) {}
+
+    T m_value;
+  };
+
+  //////////////////////////////////////////////////////////////////////////
   // Containers
 
   /*template <typename T>

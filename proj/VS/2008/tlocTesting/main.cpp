@@ -11,6 +11,9 @@ using namespace Catch::Detail;
 
 //------------------------------------------------------------------------
 // Core
+#include "tlocCore/tlocTypes.h"
+#include "tlocCore/tlocTypes.inl"
+
 #include "tlocCore/tlocAlgorithms.h"
 #include "tlocCore/tlocArray.h"
 #include "tlocCore/tlocList.h"
@@ -33,6 +36,7 @@ using namespace Catch::Detail;
 #include "tlocMath/tlocVector.h"
 #include "tlocMath/tlocMatrix.h"
 
+#include "tlocTypes.h"
 #include "tlocMathTest.h"
 #include "tlocVector3Test.h"
 #include "tlocVector2Test.h"

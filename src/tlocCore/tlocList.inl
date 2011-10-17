@@ -7,20 +7,20 @@ namespace tloc
   bool T_DedicatedSize
 #define LIST_TEMP_TEMPS T, T_Node, T_Policy, T_DedicatedSize
 
-  template <LIST_TEMP_PARAMS> 
+  template <LIST_TEMP_PARAMS>
   List<LIST_TEMP_TEMPS >::List()
-    : m_node(), m_size(0) 
+    : m_node(), m_size(0)
   {
     DoInit();
   }
 
-  template <LIST_TEMP_PARAMS> 
+  template <LIST_TEMP_PARAMS>
   List<LIST_TEMP_TEMPS >::~List()
   {
     DoClear();
   }
 
-  template <LIST_TEMP_PARAMS> 
+  template <LIST_TEMP_PARAMS>
   void List<LIST_TEMP_TEMPS >::DoInit()
   {
     // We use this node as the terminating node because when the user queries
@@ -57,7 +57,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_PARAMS>
-  typename List<LIST_TEMP_TEMPS>::node_type* 
+  typename List<LIST_TEMP_TEMPS>::node_type*
     List<LIST_TEMP_TEMPS>::DoCreateNode()
   {
     node_type* node = DoAllocateNode();
@@ -66,7 +66,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_PARAMS>
-  typename List<LIST_TEMP_TEMPS>::node_type* 
+  typename List<LIST_TEMP_TEMPS>::node_type*
     List<LIST_TEMP_TEMPS>::DoCreateNode(const T& aValueCopy)
   {
     node_type* node = DoAllocateNode();
@@ -87,8 +87,8 @@ namespace tloc
   }
 
   template <LIST_TEMP_PARAMS>
-  void List<LIST_TEMP_TEMPS>::DoInsertValues(node_type* aNode, 
-                                             tl_size numElements, 
+  void List<LIST_TEMP_TEMPS>::DoInsertValues(node_type* aNode,
+                                             tl_size numElements,
                                              const T& aValueCopy)
   {
     TLOC_UNUSED(aNode);
@@ -99,7 +99,8 @@ namespace tloc
   template <LIST_TEMP_PARAMS>
   void List<LIST_TEMP_TEMPS>::DoInsertValue(node_type* aNode, const T& aValueCopy)
   {
-    TLOC_UNUSED(aNode);
-    TLOC_UNUSED(aValueCopy);
+    node_type* const newNode = DoCreateNode(aValueCopy);
+    newNode->insert(aNode);
+    ++m_size;
   }
 };

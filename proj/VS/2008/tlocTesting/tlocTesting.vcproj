@@ -317,6 +317,10 @@
 					RelativePath=".\tlocTupleTest.h"
 					>
 				</File>
+				<File
+					RelativePath=".\tlocTypes.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

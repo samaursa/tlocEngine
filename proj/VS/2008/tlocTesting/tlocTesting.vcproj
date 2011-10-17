@@ -47,7 +47,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -196,7 +196,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -318,7 +318,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\tlocTypes.h"
+					RelativePath=".\tlocTypesTest.h"
 					>
 				</File>
 			</Filter>

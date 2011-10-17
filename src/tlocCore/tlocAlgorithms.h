@@ -143,11 +143,14 @@ namespace tloc
   //------------------------------------------------------------------------
   // Min / Max
 
-  template <typename T>
-  TL_I const T& min(const T& a, const T& b);
+  template <typename T_Value>
+  TL_I const T_Value& tlMin(const T_Value& a, const T_Value& b);
 
   template <typename T>
-  TL_I void swap(T& a, T& b);
+  TL_I const T& tlMax(const T& a, const T& b);
+
+  template <typename T>
+  TL_I void tlSwap(T& a, T& b);
 
   //------------------------------------------------------------------------
   // Modifying sequence operations

@@ -202,7 +202,7 @@
 #endif
 
 #ifdef TLOC_FULL_SOURCE
-# define TL_STATIC_I  static  TLOC_INLINE
+# define TL_STATIC_I  static TLOC_INLINE
 # define TL_STATIC_FI static TLOC_FORCE_INLINE
 #else
 # define TL_STATIC_I  static

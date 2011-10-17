@@ -2,6 +2,7 @@
 #define TLOC_ITERATOR_H
 
 #include "tlocBase.h"
+#include "tlocTypeTraits.h"
 
 #ifndef TLOC_DISABLE_ASSERT_ARRAY
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
@@ -268,7 +269,7 @@ namespace tloc
   template <typename T_Node, typename T_Itr_Type, typename T,
             typename T_Ptr = T*, typename T_Ref = T&>
   struct list_iterator :
-    public iterator<T_Itr_Type, T, typename T_Node::difference_type, 
+    public iterator<T_Itr_Type, T, typename T_Node::difference_type,
                     T_Ptr, T_Ref>
   {
     typedef list_iterator<LIST_ITR_TEMP_PARAM>                  this_type;

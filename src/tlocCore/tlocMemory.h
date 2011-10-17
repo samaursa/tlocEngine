@@ -13,7 +13,6 @@
 // C allocation
 
 #ifdef TLOC_USING_NED_MALLOC
-// Check to make sure we are not using CRT memory
 #   include <3rdParty/nedmalloc/nedmalloc.h>
 #   define TL_MALLOC(tl_size)                 nedalloc::nedmalloc(tl_size)
 #   define TL_CALLOC(tl_numElements, tl_size) nedalloc::nedcalloc(tl_numElements, tl_size)

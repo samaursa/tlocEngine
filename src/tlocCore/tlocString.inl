@@ -1419,7 +1419,7 @@ namespace tloc
 
     const tl_size size1 = aEnd1 - aBegin1;
     const tl_size size2 = aEnd2 - aBegin2;
-    const tl_size sizeMin = min(size1, size2);
+    const tl_size sizeMin = tlMin(size1, size2);
 
     return StrCmp(aBegin1, aBegin2, sizeMin);
   }

@@ -10,14 +10,14 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/Swap", "Test the min() functions")
   {
     u32 i = 10, j = 15;
-    u32 minimum = min(i, j);
+    u32 minimum = tlMin(i, j);
     CHECK(minimum == i);
   }
 
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")
   {
     u32 i = 10, j = 15;
-    swap(i, j);
+    tlSwap(i, j);
     CHECK(i == 15);
     CHECK(j == 10);
   }

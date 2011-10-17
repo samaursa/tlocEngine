@@ -16,7 +16,7 @@ namespace TestingVector2f
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
                              CHECK((vec[1]) == (Approx(y)) );
 
-  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General", 
+  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General",
     "Vector tests without math operations")
   {
     REQUIRE(sizeof(tloc::Vec2f) == 8);
@@ -51,7 +51,7 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 0.0f, -1.0f);
   }
 
-  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/[]Operator", 
+  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/[]Operator",
     "Tests the square bracket operator value retrieval and assignment")
   {
     CHECK_VEC2F(a, 1, 2);
@@ -62,7 +62,7 @@ namespace TestingVector2f
     CHECK_VEC2F(b, 20, 21);
   }
 
-  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/SetAndZero", 
+  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/SetAndZero",
                                     "Tests the Set() and Zero() functions")
   {
     a.Set(1);
@@ -79,7 +79,7 @@ namespace TestingVector2f
     CHECK_VEC2F(a, 0, 0);
   }
 
-  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/BasicOperations", 
+  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/BasicOperations",
                 "Test addition, subtraction, multiplication and division")
   {
     //////////////////////////////////////////////////////////////////////////

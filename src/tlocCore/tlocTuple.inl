@@ -93,7 +93,7 @@ namespace tloc
   {
     ITERATE_TUPLE
     {
-      tloc::swap(m_values[i], aVector[i]);
+      tlSwap(m_values[i], aVector[i]);
     }
   }
 

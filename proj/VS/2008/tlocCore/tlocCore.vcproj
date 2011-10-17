@@ -49,7 +49,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -181,7 +181,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

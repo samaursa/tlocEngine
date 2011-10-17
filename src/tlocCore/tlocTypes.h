@@ -76,10 +76,14 @@ namespace tloc
   template <typename T, bool T_DeclareValue>
   struct ConditionalType
   {
+    static T g_conditional_type_invalid_value;
+
+    // Must be declared in your specific source file.
+    // This is the value returned when ConditionalType is false
     typedef ConditionalType<T, T_DeclareValue> this_type;
 
-    TL_FI ConditionalType() {}
-    TL_FI ConditionalType(const T& aValue)  {}
+    TL_FI ConditionalType();
+    TL_FI ConditionalType(const T& aValue);
 
     TL_FI this_type& operator= (const this_type& aOther);
     TL_FI this_type& operator= (const T& aOther);
@@ -93,14 +97,14 @@ namespace tloc
     TL_FI T          operator/ (const this_type& aOther);
     TL_FI T          operator/ (const T& aOther);
 
-    TL_FI T&         operator+=(const this_type& aOther);
-    TL_FI T&         operator+=(const T& aOther);
-    TL_FI T&         operator-=(const this_type& aOther);
-    TL_FI T&         operator-=(const T& aOther);
-    TL_FI T&         operator*=(const this_type& aOther);
-    TL_FI T&         operator*=(const T& aOther);
-    TL_FI T&         operator/=(const this_type& aOther);
-    TL_FI T&         operator/=(const T& aOther);
+    TL_FI this_type& operator+=(const this_type& aOther);
+    TL_FI this_type& operator+=(const T& aOther);
+    TL_FI this_type& operator-=(const this_type& aOther);
+    TL_FI this_type& operator-=(const T& aOther);
+    TL_FI this_type& operator*=(const this_type& aOther);
+    TL_FI this_type& operator*=(const T& aOther);
+    TL_FI this_type& operator/=(const this_type& aOther);
+    TL_FI this_type& operator/=(const T& aOther);
 
     TL_FI this_type& operator++();
     TL_FI this_type  operator++(int);
@@ -120,8 +124,8 @@ namespace tloc
     TL_FI bool       operator> (const this_type& aOther);
     TL_FI bool       operator> (const T& aOther);
 
-    TL_FI T          get();
-    TL_FI T          value();
+    TL_FI const T&   get() const;
+    TL_FI T          value() const;
   };
 
   template <typename T>
@@ -171,8 +175,8 @@ namespace tloc
     TL_FI bool       operator> (const this_type& aOther);
     TL_FI bool       operator> (const T& aOther);
 
-    TL_FI T          get();
-    TL_FI T          value();
+    TL_FI const T&   get() const;
+    TL_FI T          value() const;
 
   private:
 

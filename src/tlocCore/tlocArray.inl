@@ -509,9 +509,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void tloc::Array<T>::swap( Array<T>& aVec )
   {
-    tloc::swap(m_begin, aVec.m_begin);
-    tloc::swap(m_end, aVec.m_end);
-    tloc::swap(m_capacity, aVec.m_capacity);
+    tlSwap(m_begin, aVec.m_begin);
+    tlSwap(m_end, aVec.m_end);
+    tlSwap(m_capacity, aVec.m_capacity);
   }
 
   //------------------------------------------------------------------------

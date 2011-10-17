@@ -681,7 +681,7 @@ namespace tloc
   // Min / Max
 
   template <typename T>
-  TL_I const T& min(const T& a, const T& b)
+  TL_I const T& tlMin(const T& a, const T& b)
   {
     return a < b ? a : b;
   }
@@ -693,7 +693,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I void swap(T& a, T& b)
+  TL_I void tlSwap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }

@@ -588,11 +588,7 @@ namespace TestingStrings
     CHECK( (str == str2) == true);
 
     const char* testStr = "This is another test";
-    const char* testStr2 = "This is another test";
     const char* testStr3 = "This is anotehr test.";
-
-    CHECK( (testStr == testStr2) == true);
-    CHECK( (testStr != testStr3) == true);
 
     str = testStr;
     str2 = testStr3;

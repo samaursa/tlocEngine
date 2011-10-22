@@ -281,21 +281,20 @@ namespace tloc
     TL_FI list_iterator(const T_Node* aNode);
     TL_FI list_iterator(const this_type& aOtherItr);
 
-    TL_FI pointer_type    operator*() const;
-    TL_FI reference_type  operator->() const;
+    TL_FI reference_type  operator*() const;
+    TL_FI pointer_type    operator->() const;
     TL_FI this_type&      operator++();
     TL_FI this_type&      operator++(int);
     TL_FI this_type&      operator--();
     TL_FI this_type&      operator--(int);
+
+    T_Node*               m_node;
 
   protected:
     TL_FI this_type&      subOperation(singly_linked_tag);
     TL_FI this_type&      subOperation(int, singly_linked_tag);
     TL_FI this_type&      subOperation(doubly_linked_tag);
     TL_FI this_type&      subOperation(int, doubly_linked_tag);
-
-  protected:
-    T_Node*           m_node;
   };
 
   //////////////////////////////////////////////////////////////////////////

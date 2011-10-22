@@ -391,14 +391,14 @@ namespace tloc
   }
 
   LIST_ITR_TEMP
-  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer_type
+  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator* () const
   {
     return m_node->m_value;
   }
 
   LIST_ITR_TEMP
-  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference_type
+  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator-> () const
   {
     return *(m_node->m_value);
@@ -480,7 +480,7 @@ namespace tloc
     template <typename T_InputItr>
     TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd, IsComplexItr)
     {
-      TLOC_ASSERT_WIP();
+      TLOC_STATIC_ASSERT_WIP();
     }
 
     template <typename T_InputItr, typename T_Distance>

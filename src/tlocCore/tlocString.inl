@@ -106,7 +106,7 @@ namespace tloc
   template <typename T>
   TL_I StringBase<T>::StringBase(StringSprintf, const tl_size aFormat, ...)
   {
-    TLOC_ASSERT_WIP();
+    TLOC_STATIC_ASSERT_WIP();
     // TODO: Implement this string ctor
   }
 
@@ -219,13 +219,13 @@ namespace tloc
   template <typename T>
   TL_I void StringBase<T>::resize(const tl_size& newSize)
   {
-    TLOC_ASSERT_WIP();
+    TLOC_STATIC_ASSERT_WIP();
   }
 
   template <typename T>
   TL_I void StringBase<T>::resize(const tl_size& newSize, const T charToFill)
   {
-    TLOC_ASSERT_WIP();
+    TLOC_STATIC_ASSERT_WIP();
   }
 
   template <typename T>

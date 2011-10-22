@@ -50,9 +50,9 @@ namespace tloc
     ListNode();
     ListNode(const this_type& aOther); 
 
-    void            insert(ListNode* aNext);
+    void            insert(this_type* aNext);
     void            remove();
-    void            splice(ListNode* aFirst, ListNode* aLast);
+    void            splice(this_type* aFirst, this_type* aLast);
     void            reverse();
 
     ListNode*       m_next;
@@ -90,24 +90,35 @@ namespace tloc
     typedef ConditionalType<tl_size, T_DedicatedSize>   list_size;
 
   public:
-    List();
-    ~List();
+    TL_FI List();
+    TL_FI ~List();
 
-    iterator   begin();
-    iterator   end();
+    //------------------------------------------------------------------------
+    // Iterator access
+
+    TL_FI iterator   begin();
+    TL_FI iterator   end();
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    TL_FI iterator   insert(iterator aPos);
+    TL_FI iterator   insert(iterator aPos, const value_type& aValue);
+    TL_FI void       insert(iterator aPos, size_type aNumValues, 
+                            const value_type& aValue);
 
   protected:
-    void DoInit();
-    void DoClear();
+    TL_FI void DoInit();
+    TL_FI void DoClear();
 
-    node_type* DoAllocateNode();
-    void       DoFreeNode(node_type* aNode);
+    TL_FI node_type* DoAllocateNode();
+    TL_FI void       DoFreeNode(node_type* aNode);
 
-    node_type* DoCreateNode();
-    node_type* DoCreateNode(const T& aValueCopy);
+    TL_FI node_type* DoCreateNode();
+    TL_FI node_type* DoCreateNode(const T& aValueCopy);
 
-    void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
-    void       DoInsertValue(node_type* aNode, const T& aValueCopy);
+    TL_FI void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
+    TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);
 
   protected:
     node_type                 m_node;

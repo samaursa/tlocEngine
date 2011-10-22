@@ -28,6 +28,7 @@ using namespace Catch::Detail;
 #include "tlocTupleTest.h"
 #include "tlocTableTest.h"
 #include "tlocArrayTest.h"
+#include "tlocListTest.h"
 #include "tlocStringTest.h"
 #include "tlocIteratorTest.h"
 

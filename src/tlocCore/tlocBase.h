@@ -254,8 +254,9 @@
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
 
+# define TLOC_STATIC_ASSERT_WIP() \
+  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
-  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished);\
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
 
 //------------------------------------------------------------------------

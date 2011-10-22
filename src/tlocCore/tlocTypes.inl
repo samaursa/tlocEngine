@@ -12,6 +12,7 @@ namespace tloc
   TL_FI COND_TYPE_TEMP_FALSE&
     COND_TYPE_TEMP_FALSE::operator= (const COND_TYPE_TEMP_FALSE& aOther)
   {
+    TLOC_UNUSED(aOther);
     return *this;
   }
 

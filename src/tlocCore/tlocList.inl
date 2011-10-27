@@ -4,14 +4,16 @@ namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
   // ListNode
+  
+#define LIST_NODE_T ListNode<T, doubly_linked_tag> 
 
   template <typename T>
-  ListNode<T, doubly_linked_tag>::ListNode()
+  TL_FI LIST_NODE_T::ListNode()
   {
   }
 
   template <typename T>
-  ListNode<T, doubly_linked_tag>::ListNode(const ListNode<T, doubly_linked_tag>& aOther)
+  TL_FI LIST_NODE_T::ListNode(const LIST_NODE_T& aOther)
   {
     m_next = aOther.m_next;
     m_prev = aOther.m_prev;
@@ -19,7 +21,15 @@ namespace tloc
   }
 
   template <typename T>
-  void ListNode<T, doubly_linked_tag>::insert(ListNode<T, doubly_linked_tag>* aNext)
+  TL_FI void LIST_NODE_T::swap(LIST_NODE_T& a, LIST_NODE_T& b)
+  {
+    TLOC_UNUSED(a);
+    TLOC_UNUSED(b);
+    TLOC_ASSERT_WIP();
+  }
+
+  template <typename T>
+  void LIST_NODE_T::insert(LIST_NODE_T* aNext)
   {
     m_next = aNext;
     m_prev = aNext->m_prev;
@@ -30,7 +40,8 @@ namespace tloc
   template <typename T>
   void ListNode<T, doubly_linked_tag>::remove()
   {
-    TLOC_ASSERT_WIP();
+    m_prev->m_next = m_next;
+    m_next->m_prev = m_prev;
   }
 
   template <typename T>
@@ -51,21 +62,21 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Macros
 
-#define LIST_TEMP_PARAMS typename T, typename T_Node, typename T_Policy, \
+#define LIST_TEMP_TYPES typename T, typename T_Node, typename T_Policy, \
   bool T_DedicatedSize
 #define LIST_TEMP T, T_Node, T_Policy, T_DedicatedSize
 
   //------------------------------------------------------------------------
   // Ctors / Dtors
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI List<LIST_TEMP >::List()
     : m_node(), m_size(0)
   {
     DoInit();
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI List<LIST_TEMP >::~List()
   {
     DoClear();
@@ -74,13 +85,13 @@ namespace tloc
   //------------------------------------------------------------------------
   // Iterator access
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::begin()
   {
     return iterator(m_node.m_next);
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::end()
   {
     return iterator(&m_node);
@@ -89,7 +100,7 @@ namespace tloc
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator 
     List<LIST_TEMP>::insert(iterator aPos)
   {
@@ -99,7 +110,7 @@ namespace tloc
     return node;
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator 
     List<LIST_TEMP>::insert(iterator aPos, const value_type& aValue)
   {
@@ -109,20 +120,28 @@ namespace tloc
     return node;
   }
 
-  template <LIST_TEMP_PARAMS>
-  TL_FI void List<LIST_TEMP>::insert(iterator aPos, size_type aNumValues, 
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::insert(iterator aPos, size_type aNumOfValues, 
                                      const value_type& aValue)
   {
-    TLOC_UNUSED(aPos);
-    TLOC_UNUSED(aNumValues);
-    TLOC_UNUSED(aValue);
-    TLOC_ASSERT_WIP();
+    DoInsertValues(aPos.m_node, aNumOfValues, aValue);
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Iterator>
+  TL_FI void List<LIST_TEMP>::insert(iterator aPos, T_Iterator aFirst, 
+                                     T_Iterator aLast)
+  {
+    typedef Loki::TypeTraits<T_Iterator> inputUnknown;
+    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+
+    DoInsert(aPos.m_node, aFirst, aLast, inputArith());
   }
 
   //------------------------------------------------------------------------
   // Internal functions
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP >::DoInit()
   {
     // We use this node as the terminating node because when the user queries
@@ -131,7 +150,7 @@ namespace tloc
     m_node.m_prev = &m_node;
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP >::DoClear()
   {
     node_type* node = m_node.m_next;
@@ -146,20 +165,20 @@ namespace tloc
     }
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::node_type* 
     List<LIST_TEMP>::DoAllocateNode()
   {
     return (node_type*)TL_MALLOC(sizeof(node_type));
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::DoFreeNode(node_type* aNode)
   {
     TL_FREE(aNode);
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::node_type*
     List<LIST_TEMP>::DoCreateNode()
   {
@@ -168,7 +187,7 @@ namespace tloc
     return node;
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::node_type*
     List<LIST_TEMP>::DoCreateNode(const T& aValueCopy)
   {
@@ -177,18 +196,38 @@ namespace tloc
     return node;
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
+  template <typename T_Integer>
+  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_Integer aNumTimes, 
+                                       T_Integer aValue, type_true)
+  {
+    DoInsertValues(aPos, aNumTimes, aValue);
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_InputIterator>
+  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_InputIterator aFirst, 
+                                       T_InputIterator aLast, type_false)
+  {
+    while (aFirst != aLast)
+    {
+      DoInsertValue(aPos, *aFirst);
+      ++aFirst;
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::DoInsertValues(node_type* aNode,
                                                    tl_size numElements,
                                                    const T& aValueCopy)
   {
-    TLOC_UNUSED(aNode);
-    TLOC_UNUSED(numElements);
-    TLOC_UNUSED(aValueCopy);
-    TLOC_ASSERT_WIP();
+    for (; numElements > 0; --numElements)
+    {
+      DoInsertValue(aNode, aValueCopy);
+    }
   }
 
-  template <LIST_TEMP_PARAMS>
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::DoInsertValue(node_type* aNode,
                                                   const T& aValueCopy)
   {

@@ -284,7 +284,7 @@ namespace tloc
     TL_FI reference_type  operator*() const;
     TL_FI pointer_type    operator->() const;
     TL_FI this_type&      operator++();
-    TL_FI this_type&      operator++(int);
+    TL_FI this_type       operator++(int);
     TL_FI this_type&      operator--();
     TL_FI this_type&      operator--(int);
 

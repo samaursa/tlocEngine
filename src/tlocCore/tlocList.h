@@ -47,13 +47,14 @@ namespace tloc
     typedef bidirectional_iterator_tag  iterator_category;
     typedef doubly_linked_tag           itr_tag;
 
-    ListNode();
-    ListNode(const this_type& aOther); 
+    TL_FI ListNode();
+    TL_FI ListNode(const this_type& aOther); 
 
-    void            insert(this_type* aNext);
-    void            remove();
-    void            splice(this_type* aFirst, this_type* aLast);
-    void            reverse();
+    TL_STATIC_FI void swap(this_type& a, this_type& b);
+    TL_FI        void insert(this_type* aNext);
+    TL_FI        void remove();
+    TL_FI        void splice(this_type* aFirst, this_type* aLast);
+    TL_FI        void reverse();
 
     ListNode*       m_next;
     ListNode*       m_prev;
@@ -104,8 +105,11 @@ namespace tloc
 
     TL_FI iterator   insert(iterator aPos);
     TL_FI iterator   insert(iterator aPos, const value_type& aValue);
-    TL_FI void       insert(iterator aPos, size_type aNumValues, 
+    TL_FI void       insert(iterator aPos, size_type aNumOfValues, 
                             const value_type& aValue);
+
+    template <typename T_Iterator>
+    TL_FI void       insert(iterator aPos, T_Iterator aFirst, T_Iterator aLast);
 
   protected:
     TL_FI void DoInit();
@@ -116,6 +120,14 @@ namespace tloc
 
     TL_FI node_type* DoCreateNode();
     TL_FI node_type* DoCreateNode(const T& aValueCopy);
+
+    template <typename T_Integer>
+    TL_FI void       DoInsert(node_type* aPos, T_Integer aNumTimes, T_Integer aValue,
+                              type_true);
+
+    template <typename T_InputIterator>
+    TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst, 
+                              T_InputIterator aLast, type_false);
 
     TL_FI void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
     TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);

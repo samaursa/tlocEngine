@@ -98,6 +98,15 @@ namespace tloc
   }
 
   //------------------------------------------------------------------------
+  // Capacity
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::size_type List<LIST_TEMP>::size()
+  {
+    return DoGetSize(list_size());
+  }
+
+  //------------------------------------------------------------------------
   // Modifiers
 
   template <LIST_TEMP_TYPES>
@@ -136,6 +145,34 @@ namespace tloc
     typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     DoInsert(aPos.m_node, aFirst, aLast, inputArith());
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::iterator 
+    List<LIST_TEMP>::erase(iterator aPos)
+  {
+    return iterator();
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::iterator
+    List<LIST_TEMP>::erase(iterator aFirst, iterator aLast)
+  {
+    return iterator();
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reverse_iterator
+    List<LIST_TEMP>::erase(reverse_iterator aPos)
+  {
+    return reverse_iterator();
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reverse_iterator
+    List<LIST_TEMP>::erase(reverse_iterator aFirst, reverse_iterator aLast)
+  {
+    return reverse_iterator();
   }
 
   //------------------------------------------------------------------------
@@ -217,6 +254,15 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoInsertValue(node_type* aNode,
+                                                  const T& aValueCopy)
+  {
+    node_type* const newNode = DoCreateNode(aValueCopy);
+    newNode->insert(aNode);
+    ++m_size;
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::DoInsertValues(node_type* aNode,
                                                    tl_size numElements,
                                                    const T& aValueCopy)
@@ -228,11 +274,26 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoInsertValue(node_type* aNode,
-                                                  const T& aValueCopy)
+  TL_FI void List<LIST_TEMP>::DoErase(node_type* aNode)
   {
-    node_type* const newNode = DoCreateNode(aValueCopy);
-    newNode->insert(aNode);
-    ++m_size;
+    aNode->remove();
+    aNode->~node_type();
+    DoFreeNode(aNode);
+    --m_size;
   }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::size_type 
+    List<LIST_TEMP>::DoGetSize(size_stored)
+  {
+    return m_size.value();
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::size_type 
+    List<LIST_TEMP>::DoGetSize(size_not_stored)
+  {
+    return tloc::distance(m_node.m_next, &m_node);
+  }
+
 };

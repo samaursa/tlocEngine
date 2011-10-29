@@ -88,7 +88,7 @@ namespace tloc
     typedef tloc::reverse_iterator<iterator>            reverse_iterator;
     typedef tloc::reverse_iterator<const_iterator>      const_reverse_iterator;
 
-    typedef ConditionalType<tl_size, T_DedicatedSize>   list_size;
+    typedef ConditionalType<size_type, T_DedicatedSize> list_size;
 
   public:
     TL_FI List();
@@ -101,6 +101,12 @@ namespace tloc
     TL_FI iterator   end();
 
     //------------------------------------------------------------------------
+    // Capacity
+
+    TL_FI size_type size();
+    TL_FI bool      empty(); 
+
+    //------------------------------------------------------------------------
     // Modifiers
 
     TL_FI iterator   insert(iterator aPos);
@@ -111,7 +117,16 @@ namespace tloc
     template <typename T_Iterator>
     TL_FI void       insert(iterator aPos, T_Iterator aFirst, T_Iterator aLast);
 
+    TL_FI iterator   erase(iterator aPos);
+    TL_FI iterator   erase(iterator aFirst, iterator aLast);
+
+    TL_FI reverse_iterator erase(reverse_iterator aPos);
+    TL_FI reverse_iterator erase(reverse_iterator aFirst, reverse_iterator aLast);
+
   protected:
+    typedef ConditionalType<size_type, true>  size_stored;
+    typedef ConditionalType<size_type, false> size_not_stored;
+
     TL_FI void DoInit();
     TL_FI void DoClear();
 
@@ -129,8 +144,13 @@ namespace tloc
     TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst, 
                               T_InputIterator aLast, type_false);
 
-    TL_FI void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
     TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);
+    TL_FI void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
+
+    TL_FI void       DoErase(node_type* aNode);
+
+    TL_FI size_type  DoGetSize(size_stored);
+    TL_FI size_type  DoGetSize(size_not_stored);
 
   protected:
     node_type                 m_node;

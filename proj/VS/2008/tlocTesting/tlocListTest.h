@@ -10,7 +10,7 @@ namespace TestingList
 
   struct ListFixture 
   {
-    List<s32>       intList;
+    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false>       intList;
     List<SomeClass> classList;
   };
 
@@ -47,5 +47,7 @@ namespace TestingList
     CHECK( *itr++ == 8);
     CHECK( *itr++ == 9);
     CHECK( *itr == 5);
+
+    CHECK(intList.size() == 13);
   }
 };

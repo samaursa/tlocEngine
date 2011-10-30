@@ -44,8 +44,7 @@ namespace tloc
     typedef T&              reference_type;
     typedef tl_ptrdiff      difference_type;
 
-    typedef bidirectional_iterator_tag  iterator_category;
-    typedef doubly_linked_tag           itr_tag;
+    typedef doubly_linked_tag           iterator_category;
 
     TL_FI ListNode();
     TL_FI ListNode(const this_type& aOther); 
@@ -97,31 +96,44 @@ namespace tloc
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_FI iterator   begin();
-    TL_FI iterator   end();
+    TL_FI iterator    begin();
+    TL_FI iterator    end();
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_FI size_type size();
-    TL_FI bool      empty(); 
+    TL_FI size_type   size();
+    TL_FI bool        empty(); 
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_FI iterator   insert(iterator aPos);
-    TL_FI iterator   insert(iterator aPos, const value_type& aValue);
-    TL_FI void       insert(iterator aPos, size_type aNumOfValues, 
-                            const value_type& aValue);
+    TL_FI void        push_front(const value_type& aVal);
+    TL_FI reference   push_front();
+    TL_FI pointer     push_front_uninitialized();
+
+    TL_FI void        push_back(const value_type& aVal);
+    TL_FI reference   push_back();
+    TL_FI pointer     push_back_uninitialized();
+
+    TL_FI void        pop_front();
+    TL_FI void        pop_back();
+
+    TL_FI iterator    insert(iterator aPos);
+    TL_FI iterator    insert(iterator aPos, const value_type& aValue);
+    TL_FI void        insert(iterator aPos, size_type aNumOfValues, 
+                             const value_type& aValue);
 
     template <typename T_Iterator>
-    TL_FI void       insert(iterator aPos, T_Iterator aFirst, T_Iterator aLast);
+    TL_FI void        insert(iterator aPos, T_Iterator aFirst, T_Iterator aLast);
 
-    TL_FI iterator   erase(iterator aPos);
-    TL_FI iterator   erase(iterator aFirst, iterator aLast);
+    TL_FI iterator    erase(iterator aPos);
+    TL_FI iterator    erase(iterator aFirst, iterator aLast);
 
     TL_FI reverse_iterator erase(reverse_iterator aPos);
     TL_FI reverse_iterator erase(reverse_iterator aFirst, reverse_iterator aLast);
+
+    TL_FI void        clear();
 
   protected:
     typedef ConditionalType<size_type, true>  size_stored;

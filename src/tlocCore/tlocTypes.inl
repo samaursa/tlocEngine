@@ -6,7 +6,10 @@ namespace tloc
   TL_FI COND_TYPE_TEMP_FALSE::ConditionalType() {}
 
   template <typename T, bool T_DeclareValue>
-  TL_FI COND_TYPE_TEMP_FALSE::ConditionalType(const T& aValue) {}
+  TL_FI COND_TYPE_TEMP_FALSE::ConditionalType(const T& aValue)
+  {
+    TLOC_UNUSED(aValue);
+  }
 
   template <typename T, bool T_DeclareValue>
   TL_FI COND_TYPE_TEMP_FALSE&

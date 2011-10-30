@@ -106,8 +106,78 @@ namespace tloc
     return DoGetSize(list_size());
   }
 
+  template <LIST_TEMP_TYPES>
+  TL_FI bool List<LIST_TEMP>::empty()
+  {
+    return &m_node == m_node.m_next;
+  }
+
   //------------------------------------------------------------------------
   // Modifiers
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::push_front(const typename List<LIST_TEMP>::value_type& aVal)
+  {
+    DoInsertValue(m_node.m_next, aVal);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reference List<LIST_TEMP>::push_front()
+  {
+    node_type* const node = DoCreateNode();
+    node->insert(m_node.m_next);
+    ++m_size;
+    return m_node.m_next->m_value;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::pointer
+    List<LIST_TEMP>::push_front_uninitialized()
+  {
+    node_type* const node = DoAllocateNode();
+    node->insert(m_node.m_next);
+    ++m_size;
+    return &(node->m_value);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::push_back(const typename List<LIST_TEMP>::value_type& aVal)
+  {
+    DoInsertValue(&m_node, aVal);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reference List<LIST_TEMP>::push_back()
+  {
+    node_type* const node = DoCreateNode();
+    node->insert(&m_node);
+    ++m_size;
+    return m_node.m_prev->m_value;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::pointer
+    List<LIST_TEMP>::push_back_uninitialized()
+  {
+    node_type* const node = DoAllocateNode();
+    node->insert(m_node.m_next);
+    ++m_size;
+    return &(node->m_value);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::pop_back()
+  {
+    TLOC_ASSERT_LIST(size() > 0, "Container is empty!");
+    DoErase(m_node.m_prev);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::pop_front()
+  {
+    TLOC_ASSERT_LIST(size() > 0, "Container is empty!");
+    DoErase(m_node.m_next);
+  }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator 
@@ -151,28 +221,45 @@ namespace tloc
   TL_FI typename List<LIST_TEMP>::iterator 
     List<LIST_TEMP>::erase(iterator aPos)
   {
-    return iterator();
+    ++aPos;
+    DoErase(aPos.m_node->m_prev);
+    return aPos;
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::erase(iterator aFirst, iterator aLast)
   {
-    return iterator();
+    while(aFirst != aLast)
+    {
+      aFirst = erase(aFirst);
+    }
+    return aLast;
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reverse_iterator
     List<LIST_TEMP>::erase(reverse_iterator aPos)
   {
-    return reverse_iterator();
+    ++aPos;
+    return reverse_iterator( erase(aPos.base()) );
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reverse_iterator
     List<LIST_TEMP>::erase(reverse_iterator aFirst, reverse_iterator aLast)
   {
-    return reverse_iterator();
+    ++aFirst;
+    ++aLast;
+    return reverse_iterator( erase(aLast.base(), aFirst.base()) );
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::clear()
+  {
+    DoClear();
+    DoInit();
+    m_size = 0;
   }
 
   //------------------------------------------------------------------------
@@ -206,7 +293,7 @@ namespace tloc
   TL_FI typename List<LIST_TEMP>::node_type* 
     List<LIST_TEMP>::DoAllocateNode()
   {
-    return (node_type*)TL_MALLOC(sizeof(node_type));
+   return (node_type*)TL_MALLOC(sizeof(node_type));
   }
 
   template <LIST_TEMP_TYPES>
@@ -293,7 +380,7 @@ namespace tloc
   TL_FI typename List<LIST_TEMP>::size_type 
     List<LIST_TEMP>::DoGetSize(size_not_stored)
   {
-    return tloc::distance(m_node.m_next, &m_node);
+    return tloc::distance(const_iterator(m_node.m_next), const_iterator(&m_node));
   }
 
 };

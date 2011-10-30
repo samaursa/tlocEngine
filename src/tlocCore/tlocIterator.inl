@@ -352,12 +352,12 @@ namespace tloc
   // Gobal functions
 
   template <typename T_InputItr>
-  TL_FI tl_size distance( T_InputItr aBegin, T_InputItr aEnd )
+  TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+    distance( T_InputItr aBegin, T_InputItr aEnd )
   {
-    typedef Loki::TypeTraits<T_InputItr>   itrType;
-    typedef Loki::Int2Type<itrType::isPointer>  itrTypeSelect;
+    typedef tloc::iterator_traits<T_InputItr>::iterator_category itrCat;
 
-    return detail::distance(aBegin, aEnd, itrTypeSelect());
+    return detail::distance(aBegin, aEnd, itrCat()); 
   }
 
 
@@ -425,14 +425,26 @@ namespace tloc
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
   {
-    return subOperation(iterator_category);
+    return subOperation(iterator_category());
   }
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
   {
-    return subOperation(int, iterator_category);
+    return subOperation(int, iterator_category());
+  }
+
+  LIST_ITR_TEMP
+    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator == (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
+  {
+    return m_node == aOther.m_node; 
+  }
+
+  LIST_ITR_TEMP
+    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator != (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
+  {
+    return m_node != aOther.m_node; 
   }
 
   LIST_ITR_TEMP
@@ -472,15 +484,24 @@ namespace tloc
   namespace detail
   {
     template <typename T_InputItr>
-    TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd, IsPtrItr)
+    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::random_access_iterator_tag)
     {
-      return (tl_size)(aEnd - aBegin);
+      return aEnd - aBegin;
     }
 
     template <typename T_InputItr>
-    TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd, IsComplexItr)
+    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::input_iterator_tag)
     {
-      TLOC_STATIC_ASSERT_WIP();
+      typename tloc::iterator_traits<T_InputItr>::difference_type dist = 0;
+      while (aBegin != aEnd)
+      {
+        ++aBegin;
+        ++dist;
+      }
+
+      return dist;
     }
 
     template <typename T_InputItr, typename T_Distance>

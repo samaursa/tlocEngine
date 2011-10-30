@@ -10,7 +10,8 @@ namespace TestingList
 
   struct ListFixture 
   {
-    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false>       intList;
+    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListSize;
+    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListNoSize;
     List<SomeClass> classList;
   };
 
@@ -19,21 +20,21 @@ namespace TestingList
   }
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert", "")
   {
-    intList.insert(intList.begin(), 5);
+    intListNoSize.insert(intListNoSize.begin(), 5);
 
-    List<s32>::iterator itr = intList.begin();
+    List<s32>::iterator itr = intListNoSize.begin();
     CHECK( *itr == 5);
 
-    intList.insert(itr, 2, 10);
-    itr = intList.begin();
+    intListNoSize.insert(itr, 2, 10);
+    itr = intListNoSize.begin();
     CHECK( *itr++ == 10);
     CHECK( *itr++ == 10);
     CHECK( *itr == 5);
 
     s32 rawArray[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    intList.insert(itr, rawArray, rawArray + 10);
+    intListNoSize.insert(itr, rawArray, rawArray + 10);
 
-    itr = intList.begin();
+    itr = intListNoSize.begin();
     CHECK( *itr++ == 10);
     CHECK( *itr++ == 10);
     CHECK( *itr++ == 0);
@@ -48,6 +49,14 @@ namespace TestingList
     CHECK( *itr++ == 9);
     CHECK( *itr == 5);
 
-    CHECK(intList.size() == 13);
+    CHECK(intListNoSize.size() == 13);
+
+    intListNoSize.clear();
+
+    CHECK(intListNoSize.size() == 0);
+
+    intListNoSize.push_front(99);
+    CHECK(intListNoSize.size() == 1);
+    CHECK(*(intListNoSize.begin()) == 99);
   }
 };

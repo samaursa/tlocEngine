@@ -287,6 +287,8 @@ namespace tloc
     TL_FI this_type       operator++(int);
     TL_FI this_type&      operator--();
     TL_FI this_type&      operator--(int);
+    TL_FI bool            operator==(const this_type& aOther);
+    TL_FI bool            operator!=(const this_type& aOther);
 
     T_Node*               m_node;
 
@@ -301,21 +303,21 @@ namespace tloc
   // Global functions
 
   template <typename T_InputItr>
-  TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd);
+  TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+    distance(T_InputItr aBegin, T_InputItr aEnd);
 
   template <typename T_InputItr, typename T_Distance>
   TL_FI void advance(T_InputItr& aItr, T_Distance aN);
 
   namespace detail
   {
-    typedef type_true   IsPtrItr;
-    typedef type_false  IsComplexItr;
+    template <typename T_InputItr>
+    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::random_access_iterator_tag);
 
     template <typename T_InputItr>
-    TL_FI tl_size distance(T_InputItr aBegin, T_InputItr aEnd, IsPtrItr);
-
-    template <typename T_InputItr>
-    TL_FI tl_size distance(T_InputItr aItr, T_InputItr aEnd, IsComplexItr);
+    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aItr, T_InputItr aEnd, tloc::input_iterator_tag);
 
     template <typename T_InputItr, typename T_Distance>
     TL_FI void advance(T_InputItr& aItr, T_Distance aN, input_iterator_tag);

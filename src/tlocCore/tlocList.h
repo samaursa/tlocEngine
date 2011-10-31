@@ -26,7 +26,7 @@ namespace tloc
 
   //////////////////////////////////////////////////////////////////////////
   // List node
- 
+
   template <typename T, typename T_ItrTag>
   struct ListNode
   {
@@ -47,7 +47,7 @@ namespace tloc
     typedef doubly_linked_tag           iterator_category;
 
     TL_FI ListNode();
-    TL_FI ListNode(const this_type& aOther); 
+    TL_FI ListNode(const this_type& aOther);
 
     TL_STATIC_FI void swap(this_type& a, this_type& b);
     TL_FI        void insert(this_type* aNext);
@@ -63,7 +63,7 @@ namespace tloc
   //////////////////////////////////////////////////////////////////////////
   // Array class
 
-  template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>, 
+  template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>,
             typename T_Policy = List_Dynamic(), bool T_DedicatedSize = true>
   class List
   {
@@ -80,8 +80,7 @@ namespace tloc
     typedef T*                                          pointer;
     typedef T&                                          reference;
     typedef const T&                                    const_reference;
-    //typedef const T*                                    const_pointer;
-    //typedef const T*                                    const_iterator;
+    typedef const T*                                    const_pointer;
     typedef tl_size                                     size_type;
     typedef tl_ptrdiff                                  difference_type;
     typedef tloc::reverse_iterator<iterator>            reverse_iterator;
@@ -96,14 +95,33 @@ namespace tloc
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_FI iterator    begin();
-    TL_FI iterator    end();
+    TL_FI iterator        begin();
+    TL_FI const_iterator  begin() const;
+    TL_FI iterator        end();
+    TL_FI const_iterator  end() const;
+
+    TL_FI reverse_iterator        rbegin();
+    TL_FI const_reverse_iterator  rbegin() const;
+    TL_FI reverse_iterator        rend();
+    TL_FI const_reverse_iterator  rend() const;
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_FI size_type   size();
-    TL_FI bool        empty(); 
+    TL_FI size_type   size() const;
+    TL_FI bool        empty() const;
+    TL_FI size_type   max_size() const;
+    TL_FI void        resize(size_type aNumElements,
+                             const value_type& aValue = value_type());
+
+    //------------------------------------------------------------------------
+    // Element Access
+
+    TL_FI reference       front();
+    TL_FI const_reference front() const;
+
+    TL_FI reference       back();
+    TL_FI const_reference back() const;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -112,16 +130,17 @@ namespace tloc
     TL_FI reference   push_front();
     TL_FI pointer     push_front_uninitialized();
 
+    TL_FI void        pop_front();
+
     TL_FI void        push_back(const value_type& aVal);
     TL_FI reference   push_back();
     TL_FI pointer     push_back_uninitialized();
 
-    TL_FI void        pop_front();
     TL_FI void        pop_back();
 
     TL_FI iterator    insert(iterator aPos);
     TL_FI iterator    insert(iterator aPos, const value_type& aValue);
-    TL_FI void        insert(iterator aPos, size_type aNumOfValues, 
+    TL_FI void        insert(iterator aPos, size_type aNumOfValues,
                              const value_type& aValue);
 
     template <typename T_Iterator>
@@ -153,7 +172,7 @@ namespace tloc
                               type_true);
 
     template <typename T_InputIterator>
-    TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst, 
+    TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst,
                               T_InputIterator aLast, type_false);
 
     TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);
@@ -161,8 +180,13 @@ namespace tloc
 
     TL_FI void       DoErase(node_type* aNode);
 
-    TL_FI size_type  DoGetSize(size_stored);
-    TL_FI size_type  DoGetSize(size_not_stored);
+    TL_FI size_type  DoGetSize(size_stored) const;
+    TL_FI size_type  DoGetSize(size_not_stored) const;
+
+    TL_FI void       DoResize(size_type aNumElements, const value_type& aValue,
+                              size_stored);
+    TL_FI void       DoResize(size_type aNumElements, const value_type& aValue,
+                              size_not_stored);
 
   protected:
     node_type                 m_node;

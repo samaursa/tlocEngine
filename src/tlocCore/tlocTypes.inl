@@ -29,7 +29,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator+ (const COND_TYPE_TEMP_FALSE& aOther)
+    COND_TYPE_TEMP_FALSE::operator+ (const COND_TYPE_TEMP_FALSE& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -37,7 +37,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator+ (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator+ (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -45,7 +45,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator- (const COND_TYPE_TEMP_FALSE& aOther)
+    COND_TYPE_TEMP_FALSE::operator- (const COND_TYPE_TEMP_FALSE& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -53,7 +53,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator- (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator- (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -61,7 +61,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator* (const COND_TYPE_TEMP_FALSE& aOther)
+    COND_TYPE_TEMP_FALSE::operator* (const COND_TYPE_TEMP_FALSE& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -69,7 +69,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator* (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator* (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -77,7 +77,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator/ (const COND_TYPE_TEMP_FALSE& aOther)
+    COND_TYPE_TEMP_FALSE::operator/ (const COND_TYPE_TEMP_FALSE& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -85,7 +85,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI T
-    COND_TYPE_TEMP_FALSE::operator/ (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator/ (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return g_conditional_type_invalid_value;
@@ -185,7 +185,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator==(const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator==(const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -193,7 +193,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator==(const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator==(const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -201,7 +201,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator!=(const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator!=(const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -209,7 +209,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator!=(const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator!=(const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -217,7 +217,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator< (const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator< (const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -225,7 +225,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator< (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator< (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -233,7 +233,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator<=(const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator<=(const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -241,7 +241,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator<=(const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator<=(const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -249,7 +249,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator>=(const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator>=(const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -257,7 +257,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator>=(const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator>=(const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -265,7 +265,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator> (const this_type& aOther)
+    COND_TYPE_TEMP_FALSE::operator> (const this_type& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -273,7 +273,7 @@ namespace tloc
 
   template <typename T, bool T_DeclareValue>
   TL_FI bool
-    COND_TYPE_TEMP_FALSE::operator> (const T& aOther)
+    COND_TYPE_TEMP_FALSE::operator> (const T& aOther) const
   {
     TLOC_UNUSED(aOther);
     return false;
@@ -320,56 +320,56 @@ namespace tloc
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator+ (const COND_TYPE_TEMP_TRUE& aOther)
+    COND_TYPE_TEMP_TRUE::operator+ (const COND_TYPE_TEMP_TRUE& aOther) const
   {
     return value() + aOther.value();
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator+ (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator+ (const T& aOther) const
   {
     return value() + aOther;
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator- (const COND_TYPE_TEMP_TRUE& aOther)
+    COND_TYPE_TEMP_TRUE::operator- (const COND_TYPE_TEMP_TRUE& aOther) const
   {
     return value() - aOther.value();
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator- (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator- (const T& aOther) const
   {
     return value() - aOther;
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator* (const COND_TYPE_TEMP_TRUE& aOther)
+    COND_TYPE_TEMP_TRUE::operator* (const COND_TYPE_TEMP_TRUE& aOther) const
   {
     return value() * aOther.value();
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator* (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator* (const T& aOther) const
   {
     return value() * aOther;
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator/ (const COND_TYPE_TEMP_TRUE& aOther)
+    COND_TYPE_TEMP_TRUE::operator/ (const COND_TYPE_TEMP_TRUE& aOther) const
   {
     return value() / aOther.value();
   }
 
   template <typename T>
   TL_FI T
-    COND_TYPE_TEMP_TRUE::operator/ (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator/ (const T& aOther) const
   {
     return value() / aOther;
   }
@@ -474,84 +474,84 @@ namespace tloc
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator==(const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator==(const this_type& aOther) const
   {
     return m_value == aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator==(const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator==(const T& aOther) const
   {
     return m_value == aOther;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator!=(const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator!=(const this_type& aOther) const
   {
     return m_value != aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator!=(const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator!=(const T& aOther) const
   {
     return m_value != aOther;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator< (const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator< (const this_type& aOther) const
   {
     return m_value < aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator< (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator< (const T& aOther) const
   {
     return m_value < aOther;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator<=(const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator<=(const this_type& aOther) const
   {
     return m_value <= aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator<=(const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator<=(const T& aOther) const
   {
     return m_value <= aOther;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator>=(const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator>=(const this_type& aOther) const
   {
     return m_value >= aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator>=(const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator>=(const T& aOther) const
   {
     return m_value >= aOther;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator> (const this_type& aOther)
+    COND_TYPE_TEMP_TRUE::operator> (const this_type& aOther) const
   {
     return m_value > aOther.m_value;
   }
 
   template <typename T>
   TL_FI bool
-    COND_TYPE_TEMP_TRUE::operator> (const T& aOther)
+    COND_TYPE_TEMP_TRUE::operator> (const T& aOther) const
   {
     return m_value > aOther;
   }

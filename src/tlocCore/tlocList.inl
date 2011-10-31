@@ -3,9 +3,15 @@
 namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
+  // Assertion macros
+
+#define TLOC_ASSERT_LIST_NOT_EMPTY() \
+  TLOC_ASSERT_LIST(empty(), "List container is empty!")
+
+  //////////////////////////////////////////////////////////////////////////
   // ListNode
-  
-#define LIST_NODE_T ListNode<T, doubly_linked_tag> 
+
+#define LIST_NODE_T ListNode<T, doubly_linked_tag>
 
   template <typename T>
   TL_FI LIST_NODE_T::ListNode()
@@ -92,24 +98,115 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_iterator List<LIST_TEMP>::begin() const
+  {
+    return const_iterator(m_node.m_next);
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::end()
   {
     return iterator(&m_node);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_iterator List<LIST_TEMP>::end() const
+  {
+    return const_iterator(&m_node);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reverse_iterator List<LIST_TEMP>::rbegin()
+  {
+    return reverse_iterator(&m_node);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_reverse_iterator
+    List<LIST_TEMP>::rbegin() const
+  {
+    return const_reverse_iterator(&m_node);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reverse_iterator List<LIST_TEMP>::rend()
+  {
+    return reverse_iterator(m_node.m_next);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_reverse_iterator
+    List<LIST_TEMP>::rend() const
+  {
+    return const_reverse_iterator(m_node.m_next);
   }
 
   //------------------------------------------------------------------------
   // Capacity
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::size_type List<LIST_TEMP>::size()
+  TL_FI typename List<LIST_TEMP>::size_type List<LIST_TEMP>::size() const
   {
     return DoGetSize(list_size());
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI bool List<LIST_TEMP>::empty()
+  TL_FI bool List<LIST_TEMP>::empty() const
   {
     return &m_node == m_node.m_next;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::size_type
+    List<LIST_TEMP>::max_size() const
+  {
+    return TL_UINT_MAX;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::resize(size_type aNumElements,
+                                     const value_type& aValue/* = value_type */)
+  {
+    // Since we can have lists that have a dedicated size variable and lists
+    // that do not, we call different functions to avoid traversing the list
+    // if possible (in case that size is stored)
+
+    DoResize(aNumElements, aValue, list_size());
+  }
+
+  //------------------------------------------------------------------------
+  // Elements Access
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reference
+    List<LIST_TEMP>::front()
+  {
+    TLOC_ASSERT_LIST_NOT_EMPTY();
+    return m_node.m_next->m_value;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_reference
+    List<LIST_TEMP>::front() const
+  {
+    TLOC_ASSERT_LIST_NOT_EMPTY();
+    return m_node.m_next->m_value;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::reference
+    List<LIST_TEMP>::back()
+  {
+    TLOC_ASSERT_LIST_NOT_EMPTY();
+    return m_node.m_prev->m_value;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_reference
+    List<LIST_TEMP>::back() const
+  {
+    TLOC_ASSERT_LIST_NOT_EMPTY();
+    return m_node.m_prev->m_value;
   }
 
   //------------------------------------------------------------------------
@@ -168,19 +265,19 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::pop_back()
   {
-    TLOC_ASSERT_LIST(size() > 0, "Container is empty!");
+    TLOC_ASSERT_LIST_NOT_EMPTY();
     DoErase(m_node.m_prev);
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::pop_front()
   {
-    TLOC_ASSERT_LIST(size() > 0, "Container is empty!");
+    TLOC_ASSERT_LIST_NOT_EMPTY();
     DoErase(m_node.m_next);
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::iterator 
+  TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::insert(iterator aPos)
   {
     node_type* const node = DoCreateNode(value_type());
@@ -190,7 +287,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::iterator 
+  TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::insert(iterator aPos, const value_type& aValue)
   {
     node_type* const node = DoCreateNode(aValue);
@@ -200,7 +297,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::insert(iterator aPos, size_type aNumOfValues, 
+  TL_FI void List<LIST_TEMP>::insert(iterator aPos, size_type aNumOfValues,
                                      const value_type& aValue)
   {
     DoInsertValues(aPos.m_node, aNumOfValues, aValue);
@@ -208,7 +305,7 @@ namespace tloc
 
   template <LIST_TEMP_TYPES>
   template <typename T_Iterator>
-  TL_FI void List<LIST_TEMP>::insert(iterator aPos, T_Iterator aFirst, 
+  TL_FI void List<LIST_TEMP>::insert(iterator aPos, T_Iterator aFirst,
                                      T_Iterator aLast)
   {
     typedef Loki::TypeTraits<T_Iterator> inputUnknown;
@@ -218,7 +315,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::iterator 
+  TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::erase(iterator aPos)
   {
     ++aPos;
@@ -290,7 +387,7 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::node_type* 
+  TL_FI typename List<LIST_TEMP>::node_type*
     List<LIST_TEMP>::DoAllocateNode()
   {
    return (node_type*)TL_MALLOC(sizeof(node_type));
@@ -322,7 +419,7 @@ namespace tloc
 
   template <LIST_TEMP_TYPES>
   template <typename T_Integer>
-  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_Integer aNumTimes, 
+  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_Integer aNumTimes,
                                        T_Integer aValue, type_true)
   {
     DoInsertValues(aPos, aNumTimes, aValue);
@@ -330,7 +427,7 @@ namespace tloc
 
   template <LIST_TEMP_TYPES>
   template <typename T_InputIterator>
-  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_InputIterator aFirst, 
+  TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_InputIterator aFirst,
                                        T_InputIterator aLast, type_false)
   {
     while (aFirst != aLast)
@@ -370,17 +467,60 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::size_type 
-    List<LIST_TEMP>::DoGetSize(size_stored)
+  TL_FI typename List<LIST_TEMP>::size_type
+    List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_stored) const
   {
     return m_size.value();
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::size_type 
-    List<LIST_TEMP>::DoGetSize(size_not_stored)
+  TL_FI typename List<LIST_TEMP>::size_type
+    List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_not_stored) const
   {
     return tloc::distance(const_iterator(m_node.m_next), const_iterator(&m_node));
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoResize
+    (typename List<LIST_TEMP>::size_type aNumElements,
+     const typename List<LIST_TEMP>::value_type& aValue,
+     typename List<LIST_TEMP>::size_stored)
+  {
+    // Assuming the user would usually want to grow the list when calling resize
+    if (aNumElements > m_size)
+    {
+      insert(&m_node, aNumElements - m_size, aValue);
+    }
+    else
+    {
+      iterator itr(m_node.m_next);
+      tloc::advance(itr, aNumElements);
+      erase(itr, &m_node);
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoResize
+    (typename List<LIST_TEMP>::size_type aNumElements,
+    const typename List<LIST_TEMP>::value_type& aValue,
+    typename List<LIST_TEMP>::size_not_stored)
+  {
+    iterator itr(m_node.m_next);
+    size_type count = 0;
+
+    while ( (itr.m_node != &m_node) && (count < aNumElements) )
+    {
+      ++count; ++itr;
+    }
+
+    if (count == aNumElements)
+    {
+      erase(itr, &m_node);
+    }
+    else
+    {
+      insert(&m_node, aNumElements - count, aValue);
+    }
   }
 
 };

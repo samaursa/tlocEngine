@@ -357,7 +357,7 @@ namespace tloc
   {
     typedef tloc::iterator_traits<T_InputItr>::iterator_category itrCat;
 
-    return detail::distance(aBegin, aEnd, itrCat()); 
+    return detail::distance(aBegin, aEnd, itrCat());
   }
 
 
@@ -438,13 +438,13 @@ namespace tloc
   LIST_ITR_TEMP
     TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator == (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
   {
-    return m_node == aOther.m_node; 
+    return m_node == aOther.m_node;
   }
 
   LIST_ITR_TEMP
     TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator != (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
   {
-    return m_node != aOther.m_node; 
+    return m_node != aOther.m_node;
   }
 
   LIST_ITR_TEMP
@@ -516,7 +516,7 @@ namespace tloc
     template <typename T_InputItr, typename T_Distance>
     TL_FI void advance( T_InputItr& aItr, T_Distance aN, bidirectional_iterator_tag )
     {
-      if (n > 0)
+      if (aN > 0)
       {
         while (aN) { ++aItr; --aN; }
       }

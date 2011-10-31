@@ -88,14 +88,14 @@ namespace tloc
     TL_FI this_type& operator= (const this_type& aOther);
     TL_FI this_type& operator= (const T& aOther);
 
-    TL_FI T          operator+ (const this_type& aOther);
-    TL_FI T          operator+ (const T& aOther);
-    TL_FI T          operator- (const this_type& aOther);
-    TL_FI T          operator- (const T& aOther);
-    TL_FI T          operator* (const this_type& aOther);
-    TL_FI T          operator* (const T& aOther);
-    TL_FI T          operator/ (const this_type& aOther);
-    TL_FI T          operator/ (const T& aOther);
+    TL_FI T          operator+ (const this_type& aOther) const;
+    TL_FI T          operator+ (const T& aOther) const;
+    TL_FI T          operator- (const this_type& aOther) const;
+    TL_FI T          operator- (const T& aOther) const;
+    TL_FI T          operator* (const this_type& aOther) const;
+    TL_FI T          operator* (const T& aOther) const;
+    TL_FI T          operator/ (const this_type& aOther) const;
+    TL_FI T          operator/ (const T& aOther) const;
 
     TL_FI this_type& operator+=(const this_type& aOther);
     TL_FI this_type& operator+=(const T& aOther);
@@ -111,18 +111,18 @@ namespace tloc
     TL_FI this_type& operator--();
     TL_FI this_type  operator--(int);
 
-    TL_FI bool       operator==(const this_type& aOther);
-    TL_FI bool       operator==(const T& aOther);
-    TL_FI bool       operator!=(const this_type& aOTher);
-    TL_FI bool       operator!=(const T& aOTher);
-    TL_FI bool       operator< (const this_type& aOther);
-    TL_FI bool       operator< (const T& aOther);
-    TL_FI bool       operator<=(const this_type& aOther);
-    TL_FI bool       operator<=(const T& aOther);
-    TL_FI bool       operator>=(const this_type& aOther);
-    TL_FI bool       operator>=(const T& aOther);
-    TL_FI bool       operator> (const this_type& aOther);
-    TL_FI bool       operator> (const T& aOther);
+    TL_FI bool       operator==(const this_type& aOther) const;
+    TL_FI bool       operator==(const T& aOther) const;
+    TL_FI bool       operator!=(const this_type& aOTher) const;
+    TL_FI bool       operator!=(const T& aOTher) const;
+    TL_FI bool       operator< (const this_type& aOther) const;
+    TL_FI bool       operator< (const T& aOther) const;
+    TL_FI bool       operator<=(const this_type& aOther) const;
+    TL_FI bool       operator<=(const T& aOther) const;
+    TL_FI bool       operator>=(const this_type& aOther) const;
+    TL_FI bool       operator>=(const T& aOther) const;
+    TL_FI bool       operator> (const this_type& aOther) const;
+    TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   get() const;
     TL_FI T          value() const;
@@ -139,14 +139,14 @@ namespace tloc
     TL_FI this_type& operator= (const this_type& aOther);
     TL_FI this_type& operator= (const T& aOther);
 
-    TL_FI T          operator+ (const this_type& aOther);
-    TL_FI T          operator+ (const T& aOther);
-    TL_FI T          operator- (const this_type& aOther);
-    TL_FI T          operator- (const T& aOther);
-    TL_FI T          operator* (const this_type& aOther);
-    TL_FI T          operator* (const T& aOther);
-    TL_FI T          operator/ (const this_type& aOther);
-    TL_FI T          operator/ (const T& aOther);
+    TL_FI T          operator+ (const this_type& aOther) const;
+    TL_FI T          operator+ (const T& aOther) const;
+    TL_FI T          operator- (const this_type& aOther) const;
+    TL_FI T          operator- (const T& aOther) const;
+    TL_FI T          operator* (const this_type& aOther) const;
+    TL_FI T          operator* (const T& aOther) const;
+    TL_FI T          operator/ (const this_type& aOther) const;
+    TL_FI T          operator/ (const T& aOther) const;
 
     TL_FI this_type& operator+=(const this_type& aOther);
     TL_FI this_type& operator+=(const T& aOther);
@@ -162,18 +162,18 @@ namespace tloc
     TL_FI this_type& operator--();
     TL_FI this_type  operator--(int);
 
-    TL_FI bool       operator==(const this_type& aOther);
-    TL_FI bool       operator==(const T& aOther);
-    TL_FI bool       operator!=(const this_type& aOTher);
-    TL_FI bool       operator!=(const T& aOTher);
-    TL_FI bool       operator< (const this_type& aOther);
-    TL_FI bool       operator< (const T& aOther);
-    TL_FI bool       operator<=(const this_type& aOther);
-    TL_FI bool       operator<=(const T& aOther);
-    TL_FI bool       operator>=(const this_type& aOther);
-    TL_FI bool       operator>=(const T& aOther);
-    TL_FI bool       operator> (const this_type& aOther);
-    TL_FI bool       operator> (const T& aOther);
+    TL_FI bool       operator==(const this_type& aOther) const;
+    TL_FI bool       operator==(const T& aOther) const;
+    TL_FI bool       operator!=(const this_type& aOTher) const;
+    TL_FI bool       operator!=(const T& aOTher) const;
+    TL_FI bool       operator< (const this_type& aOther) const;
+    TL_FI bool       operator< (const T& aOther) const;
+    TL_FI bool       operator<=(const this_type& aOther) const;
+    TL_FI bool       operator<=(const T& aOther) const;
+    TL_FI bool       operator>=(const this_type& aOther) const;
+    TL_FI bool       operator>=(const T& aOther) const;
+    TL_FI bool       operator> (const this_type& aOther) const;
+    TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   get() const;
     TL_FI T          value() const;
@@ -245,14 +245,14 @@ namespace tloc
   T operator<( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator<(aOtherValue);
+    return aOther.operator< (aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
   T operator>( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator>(aOtherValue);
+    return aOther.operator> (aOtherValue);
   }
 
   //////////////////////////////////////////////////////////////////////////

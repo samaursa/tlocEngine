@@ -152,7 +152,39 @@ namespace tloc
     TL_FI reverse_iterator erase(reverse_iterator aPos);
     TL_FI reverse_iterator erase(reverse_iterator aFirst, reverse_iterator aLast);
 
+    TL_FI void        swap(this_type& aOther);
+
     TL_FI void        clear();
+
+    //------------------------------------------------------------------------
+    // Operations
+
+    TL_FI void        splice(iterator aPos, this_type& aFrom);
+    TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOther);
+    TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOtherBegin,
+                             iterator aOtherEnd);
+
+    TL_FI void        remove(const T& aValueToCompare);
+
+    template <typename T_Pred>
+    TL_FI void        remove_if(T_Pred aFunctionToCompare);
+
+    TL_FI void        unique();
+    
+    template <typename T_Pred>
+    TL_FI void        unique(T_Pred aBinaryPred);
+
+    TL_FI void        merge(this_type& aOther);
+    
+    template <typename T_Compare>
+    TL_FI void        merge(this_type& aOther, T_Compare aComp);
+
+    TL_FI void        sort();
+
+    template <typename T_Compare>
+    TL_FI void        sort(T_Compare aComp);
+
+    TL_FI void        reverse();
 
   protected:
     typedef ConditionalType<size_type, true>  size_stored;

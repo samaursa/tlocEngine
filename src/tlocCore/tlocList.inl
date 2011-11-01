@@ -1,4 +1,5 @@
 #include "tlocList.h"
+#include "tlocAlgorithms.h"
 
 namespace tloc
 {
@@ -54,15 +55,27 @@ namespace tloc
   void ListNode<T, doubly_linked_tag>::splice(ListNode<T, doubly_linked_tag>* aFirst,
                                               ListNode<T, doubly_linked_tag>* aLast)
   {
-    TLOC_UNUSED(aFirst);
-    TLOC_UNUSED(aLast);
-    TLOC_ASSERT_WIP();
+    aLast->m_prev->m_next = this;
+    aFirst->m_prev->m_next = aLast;
+    m_prev->m_next = aFirst;
+
+    this_type* const temp = m_prev;
+    m_prev = aLast->m_prev;
+    aLast->m_prev = aFirst->m_prev;
+    aFirst->m_prev = temp;
   }
 
   template <typename T>
   void ListNode<T, doubly_linked_tag>::reverse()
   {
-    TLOC_ASSERT_WIP();
+    this_type* node = this;
+    do 
+    {
+      this_type* const temp = node->m_next;
+      node->m_next = node->m_prev;
+      node->m_prev = temp;
+      node         = node->m_prev;
+    } while (node != this);
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -352,11 +365,86 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::swap(this_type& aOther)
+  {
+    tlSwap(*this, aOther);
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::clear()
   {
     DoClear();
     DoInit();
     m_size = 0;
+  }
+
+  //------------------------------------------------------------------------
+  // Operations
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom,
+                                     iterator aOther)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom,
+                                     iterator aOtherBegin, iterator aOtherEnd)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::remove(const T& aValueToCompare)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Pred>
+  TL_FI void List<LIST_TEMP>::remove_if(T_Pred aFunctionToCompare)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::unique()
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Pred>
+  TL_FI void List<LIST_TEMP>::unique(T_Pred aBinaryPred)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::merge(this_type& aOther)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Compare>
+  TL_FI void List<LIST_TEMP>::merge(this_type& aOther, T_Compare aComp)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::sort()
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Compare>
+  TL_FI void List<LIST_TEMP>::sort(T_Compare aComp)
+  {
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::reverse()
+  {
   }
 
   //------------------------------------------------------------------------

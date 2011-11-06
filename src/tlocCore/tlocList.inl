@@ -96,6 +96,28 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
+  TL_FI List<LIST_TEMP>::List(size_type aNumTimes, const T& aValue) 
+  {
+    DoInit();
+    DoInsertValues(&m_node, aNumTimes, aValue);
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_InputItr>
+  TL_FI List<LIST_TEMP>::List(T_InputItr aFirst, T_InputItr aLast)
+  {
+    DoInit();
+    insert(&m_node, aFirst, aLast);
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI List<LIST_TEMP>::List(const this_type& aOther)
+  {
+    DoInit();
+    DoInsert(&m_node, aOther.begin(), aOther.end(), is_not_arith());
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI List<LIST_TEMP >::~List()
   {
     DoClear();
@@ -384,45 +406,132 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom)
   {
+    TLOC_ASSERT_LIST(&aFrom != this, 
+      "Cannot call this version of splice on itself");
+    if (!aFrom.empty())
+    {
+      aPos.m_node->splice(m_node.m_next, m_node.m_prev);
+    }
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom,
                                      iterator aOther)
   {
+    iterator itr(aOther);
+    ++itr;
+
+    TLOC_ASSERT_LIST( aPos != aOther, 
+      "Cannot perform splice at the position itself!");
+    TLOC_ASSERT_LIST( aPos != itr, "Cannot perform splice at (position + 1)!");
+
+    aPos.m_node->splice(aOther.m_node, itr.m_node);
+    ++m_size;
+    --aFrom.m_size;
+
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom,
                                      iterator aOtherBegin, iterator aOtherEnd)
   {
+    DoSplice(aPos, aFrom, aOtherBegin, aOtherEnd, list_size());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::remove(const T& aValueToCompare)
   {
+    iterator itr(m_node.m_next);
+    while (itr.m_node != &m_node)
+    {
+      if (*itr != aValueToCompare)
+      {
+        ++itr;
+      }
+      else
+      {
+        ++itr;
+        DoErase(itr.m_node->m_prev);
+      }
+    }
   }
 
   template <LIST_TEMP_TYPES>
   template <typename T_Pred>
   TL_FI void List<LIST_TEMP>::remove_if(T_Pred aFunctionToCompare)
   {
+    iterator itr(m_node.m_next);
+    while (itr.m_node != &m_node)
+    {
+      if (!T_Pred(*itr))
+      {
+        ++itr;
+      }
+      else
+      {
+        ++itr;
+        DoErase(itr.m_node->m_prev);
+      }
+    }
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::unique()
   {
+    iterator        itrBegin(begin());
+    const iterator  itrEnd(end());
+
+    // Make sure there is atleast one element
+    if (itrBegin != itrEnd)
+    {
+      iterator currElem(itrBegin);
+
+      while(++itrBegin != itrEnd)
+      {
+        if (*itrBegin == *currElem)
+        {
+          DoErase(itrBegin.m_node);
+          itrBegin = currElem;
+        }
+        else
+        {
+          currElem = itrBegin;
+        }
+      }
+    }
   }
 
   template <LIST_TEMP_TYPES>
   template <typename T_Pred>
   TL_FI void List<LIST_TEMP>::unique(T_Pred aBinaryPred)
   {
+    iterator        itrBegin(begin());
+    const iterator  itrEnd(end());
+
+    // Make sure there is atleast one element
+    if (itrBegin != itrEnd)
+    {
+      iterator currElem(itrBegin);
+
+      while(++itrBegin != itrEnd)
+      {
+        if (aBinaryPred(*currElem, *itrBegin))
+        {
+          DoErase(itrBegin.m_node);
+          itrBegin = currElem;
+        }
+        else
+        {
+          currElem = itrBegin;
+        }
+      }
+    }
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::merge(this_type& aOther)
   {
+    TLOC_ASSERT_LIST(this != &aOther, "Cannot merge List<> with itself!");
   }
 
   template <LIST_TEMP_TYPES>
@@ -445,6 +554,7 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::reverse()
   {
+    m_node.reverse();
   }
 
   //------------------------------------------------------------------------
@@ -508,7 +618,7 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   template <typename T_Integer>
   TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_Integer aNumTimes,
-                                       T_Integer aValue, type_true)
+                                       T_Integer aValue, is_arith)
   {
     DoInsertValues(aPos, aNumTimes, aValue);
   }
@@ -516,7 +626,7 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   template <typename T_InputIterator>
   TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_InputIterator aFirst,
-                                       T_InputIterator aLast, type_false)
+                                       T_InputIterator aLast, is_not_arith)
   {
     while (aFirst != aLast)
     {
@@ -608,6 +718,43 @@ namespace tloc
     else
     {
       insert(&m_node, aNumElements - count, aValue);
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos, 
+                                       typename List<LIST_TEMP>::this_type& aFrom, 
+                                       typename List<LIST_TEMP>::iterator aBegin,
+                                       typename List<LIST_TEMP>::iterator aEnd, 
+                                       typename List<LIST_TEMP>::size_stored)
+  {
+    TLOC_UNUSED(aPos);
+    TLOC_UNUSED(aFrom);
+    TLOC_UNUSED(aBegin);
+    TLOC_UNUSED(aEnd);
+
+    const size_type addedSize = tloc::distance(aBegin, aEnd);
+    if (addedSize != 0)
+    {
+      aPos.m_node->splice(aBegin.m_node, aEnd.m_node);
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos, 
+                                       typename List<LIST_TEMP>::this_type& aFrom, 
+                                       typename List<LIST_TEMP>::iterator aBegin,
+                                       typename List<LIST_TEMP>::iterator aEnd, 
+                                       typename List<LIST_TEMP>::size_not_stored)
+  {
+    TLOC_UNUSED(aPos);
+    TLOC_UNUSED(aFrom);
+    TLOC_UNUSED(aBegin);
+    TLOC_UNUSED(aEnd);
+    
+    if (aBegin != aEnd)
+    {
+      aPos.m_node->splice(aBegin.m_node, aEnd.m_node);
     }
   }
 

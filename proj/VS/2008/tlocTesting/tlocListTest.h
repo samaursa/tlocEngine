@@ -10,13 +10,28 @@ namespace TestingList
 
   struct ListFixture 
   {
+    typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListWithSize;
+    typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListWithoutSize;
+
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListSize;
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListNoSize;
     List<SomeClass> classList;
   };
 
+  //template <T_List>
+  //void testCtors(
+
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Ctors", "")
   {
+    // constructors used in the same order as described above:
+    intListWithSize first;                                // empty list of ints
+    intListWithSize second (4,100);                       // four ints with value 100
+    intListWithSize third (second.begin(),second.end());  // iterating through second
+    intListWithSize fourth (third);                       // a copy of third
+
+    // the iterator constructor can also be used to construct from arrays:
+    s32 myints[] = {16,2,77,29};
+    intListWithSize fifth (myints, myints + sizeof(myints) / sizeof(s32) );
   }
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert", "")
   {

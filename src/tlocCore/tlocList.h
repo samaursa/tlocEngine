@@ -90,6 +90,12 @@ namespace tloc
 
   public:
     TL_FI List();
+    TL_FI explicit List(size_type aNumTimes, const T& aValue = T());
+    
+    template <typename T_InputItr>
+    TL_FI List(T_InputItr aFirst, T_InputItr aLast);
+    TL_FI List(const this_type& aOther);
+
     TL_FI ~List();
 
     //------------------------------------------------------------------------
@@ -190,6 +196,9 @@ namespace tloc
     typedef ConditionalType<size_type, true>  size_stored;
     typedef ConditionalType<size_type, false> size_not_stored;
 
+    typedef type_true       is_arith;
+    typedef type_false      is_not_arith; 
+
     TL_FI void DoInit();
     TL_FI void DoClear();
 
@@ -201,11 +210,11 @@ namespace tloc
 
     template <typename T_Integer>
     TL_FI void       DoInsert(node_type* aPos, T_Integer aNumTimes, T_Integer aValue,
-                              type_true);
+                              is_arith);
 
     template <typename T_InputIterator>
     TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst,
-                              T_InputIterator aLast, type_false);
+                              T_InputIterator aLast, is_not_arith);
 
     TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);
     TL_FI void       DoInsertValues(node_type* aNode, tl_size numElements, const T& aValueCopy);
@@ -219,6 +228,14 @@ namespace tloc
                               size_stored);
     TL_FI void       DoResize(size_type aNumElements, const value_type& aValue,
                               size_not_stored);
+
+    // This function performs the actual splice for a range. It selects the 
+    // most optimized splicing operation depending on whether the size is stored
+    // or not
+    TL_FI void       DoSplice(iterator aPos, this_type& aFrom, iterator aBegin,
+                              iterator aEnd, size_stored);
+    TL_FI void       DoSplice(iterator aPos, this_type& aFrom, iterator aBegin,
+                              iterator aEnd, size_not_stored);
 
   protected:
     node_type                 m_node;

@@ -196,7 +196,7 @@ namespace tloc
   T operator-( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator-(aOtherValue);
+    return aOtherValue - aOther.get();
   }
 
   template <typename T, bool T_DeclareValue>
@@ -210,49 +210,49 @@ namespace tloc
   T operator/( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator/(aOtherValue);
+    return aOtherValue / aOther.get();
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator==( const T& aOtherValue,
+  bool operator==( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
     return aOther.operator==(aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator!=( const T& aOtherValue,
+  bool operator!=( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
     return aOther.operator!=(aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator<=( const T& aOtherValue,
+  bool operator<=( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator<=(aOtherValue);
+    return aOther.operator >= (aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator>=( const T& aOtherValue,
+  bool operator>=( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator>=(aOtherValue);
+    return aOther.operator <= (aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator<( const T& aOtherValue,
+  bool operator<( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator< (aOtherValue);
+    return aOther.operator > (aOtherValue);
   }
 
   template <typename T, bool T_DeclareValue>
-  T operator>( const T& aOtherValue,
+  bool operator>( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOther.operator> (aOtherValue);
+    return aOther.operator < (aOtherValue);
   }
 
   //////////////////////////////////////////////////////////////////////////

@@ -87,6 +87,18 @@ namespace TESTING_TYPES
 
     a = a2;
     CHECK( (a == a2) == true);
+
+    a = 5;
+    CHECK( (5 - a) == 0);
+    CHECK( (5 + a) == 10);
+    CHECK( (5 * a) == 25);
+    CHECK( (10 / a) == 2);
+    CHECK( (10 < a) == false);
+    CHECK( (10 > a) == true);
+    CHECK( (5 >= a) == true);
+    CHECK( (6 >= a) == true);
+    CHECK( (5 <= a) == true);
+    CHECK( (2 <= a) == true);
   }
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")

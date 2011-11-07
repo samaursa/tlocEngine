@@ -7,20 +7,19 @@ namespace tloc
   // Assertion macros
 
 #define TLOC_ASSERT_LIST_NOT_EMPTY() \
-  TLOC_ASSERT_LIST(empty(), "List container is empty!")
+  TLOC_ASSERT_LIST(!empty(), "List container is empty!")
 
   //////////////////////////////////////////////////////////////////////////
   // ListNode
 
-#define LIST_NODE_T ListNode<T, doubly_linked_tag>
-
   template <typename T>
-  TL_FI LIST_NODE_T::ListNode()
+  TL_FI ListNode<T, doubly_linked_tag>::ListNode()
   {
   }
 
   template <typename T>
-  TL_FI LIST_NODE_T::ListNode(const LIST_NODE_T& aOther)
+  TL_FI ListNode<T, doubly_linked_tag>
+    ::ListNode(const ListNode<T, doubly_linked_tag>& aOther)
   {
     m_next = aOther.m_next;
     m_prev = aOther.m_prev;
@@ -28,7 +27,8 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI void LIST_NODE_T::swap(LIST_NODE_T& a, LIST_NODE_T& b)
+  TL_FI void ListNode<T, doubly_linked_tag>
+    ::swap(ListNode<T, doubly_linked_tag>& a, ListNode<T, doubly_linked_tag>& b)
   {
     TLOC_UNUSED(a);
     TLOC_UNUSED(b);
@@ -36,7 +36,8 @@ namespace tloc
   }
 
   template <typename T>
-  void LIST_NODE_T::insert(LIST_NODE_T* aNext)
+  void ListNode<T, doubly_linked_tag>
+    ::insert(ListNode<T, doubly_linked_tag>* aNext)
   {
     m_next = aNext;
     m_prev = aNext->m_prev;
@@ -52,8 +53,9 @@ namespace tloc
   }
 
   template <typename T>
-  void ListNode<T, doubly_linked_tag>::splice(ListNode<T, doubly_linked_tag>* aFirst,
-                                              ListNode<T, doubly_linked_tag>* aLast)
+  void ListNode<T, doubly_linked_tag>
+    ::splice(ListNode<T, doubly_linked_tag>* aFirst,
+             ListNode<T, doubly_linked_tag>* aLast)
   {
     aLast->m_prev->m_next = this;
     aFirst->m_prev->m_next = aLast;
@@ -69,7 +71,7 @@ namespace tloc
   void ListNode<T, doubly_linked_tag>::reverse()
   {
     this_type* node = this;
-    do 
+    do
     {
       this_type* const temp = node->m_next;
       node->m_next = node->m_prev;
@@ -96,7 +98,8 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI List<LIST_TEMP>::List(size_type aNumTimes, const T& aValue) 
+  TL_FI List<LIST_TEMP>::List(size_type aNumTimes, const T& aValue)
+    : m_node(), m_size(0)
   {
     DoInit();
     DoInsertValues(&m_node, aNumTimes, aValue);
@@ -105,6 +108,7 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   template <typename T_InputItr>
   TL_FI List<LIST_TEMP>::List(T_InputItr aFirst, T_InputItr aLast)
+    : m_node(), m_size(0)
   {
     DoInit();
     insert(&m_node, aFirst, aLast);
@@ -112,6 +116,7 @@ namespace tloc
 
   template <LIST_TEMP_TYPES>
   TL_FI List<LIST_TEMP>::List(const this_type& aOther)
+    : m_node(), m_size(0)
   {
     DoInit();
     DoInsert(&m_node, aOther.begin(), aOther.end(), is_not_arith());
@@ -121,6 +126,16 @@ namespace tloc
   TL_FI List<LIST_TEMP >::~List()
   {
     DoClear();
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::this_type&
+    List<LIST_TEMP>::operator= (const typename List<LIST_TEMP>::this_type& aOther)
+  {
+    TLOC_ASSERT_LIST(this != &aOther, "Assigning list to itself!");
+
+    assign(aOther.begin(), aOther.end());
+    return *this;
   }
 
   //------------------------------------------------------------------------
@@ -246,6 +261,22 @@ namespace tloc
 
   //------------------------------------------------------------------------
   // Modifiers
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::assign(size_type aNumTimes, const T& aValueCopy)
+  {
+    DoAssignValues(aNumTimes, aValueCopy);
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_InputItr>
+  TL_FI void List<LIST_TEMP>::assign(T_InputItr aRangeBegin, T_InputItr aRangeEnd)
+  {
+    typedef Loki::TypeTraits<T_InputItr> inputUnknown;
+    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+
+    DoAssign(aRangeBegin, aRangeEnd, inputArith());
+  }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::push_front(const typename List<LIST_TEMP>::value_type& aVal)
@@ -406,7 +437,7 @@ namespace tloc
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::splice(iterator aPos, this_type& aFrom)
   {
-    TLOC_ASSERT_LIST(&aFrom != this, 
+    TLOC_ASSERT_LIST(&aFrom != this,
       "Cannot call this version of splice on itself");
     if (!aFrom.empty())
     {
@@ -421,7 +452,7 @@ namespace tloc
     iterator itr(aOther);
     ++itr;
 
-    TLOC_ASSERT_LIST( aPos != aOther, 
+    TLOC_ASSERT_LIST( aPos != aOther,
       "Cannot perform splice at the position itself!");
     TLOC_ASSERT_LIST( aPos != itr, "Cannot perform splice at (position + 1)!");
 
@@ -617,6 +648,66 @@ namespace tloc
 
   template <LIST_TEMP_TYPES>
   template <typename T_Integer>
+  TL_FI void List<LIST_TEMP>::DoAssign(T_Integer aNumTimes,
+                                       const T_Integer& aValueCopy, is_arith)
+  {
+    DoAssignValues(static_cast<size_type>(aNumTimes),
+                   static_cast<size_type>(aValueCopy));
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_InputItr>
+  TL_FI void List<LIST_TEMP>::DoAssign(T_InputItr aRangeBegin,
+                                       T_InputItr aRangeEnd, is_not_arith)
+  {
+    node_type* node = m_node.m_next;
+
+    // Fill as much as we can
+    while ( (aRangeBegin != aRangeEnd) && (node != &m_node) )
+    {
+      node->m_value = *aRangeBegin;
+      node = node->m_next;
+      ++aRangeBegin;
+    }
+
+    // Deal with over/under flow
+    if (aRangeBegin != aRangeEnd)
+    {
+      DoInsert(&m_node, aRangeBegin, aRangeEnd, is_not_arith());
+    }
+    else
+    {
+      erase(iterator(node), &m_node);
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI void List<LIST_TEMP>::DoAssignValues(size_type aNumTimes,
+                                             const value_type& aValueCopy)
+  {
+    node_type* node = m_node.m_next;
+
+    // Fill as much as we can
+    while ((node != &m_node) && (aNumTimes > 0))
+    {
+      node->m_value = aValueCopy;
+      node = node->m_next;
+      --aNumTimes;
+    }
+
+    // Deal with over/under flow
+    if (aNumTimes > 0)
+    {
+      DoInsertValues(&m_node, aNumTimes, aValueCopy);
+    }
+    else
+    {
+      erase(iterator(node), &m_node);
+    }
+  }
+
+  template <LIST_TEMP_TYPES>
+  template <typename T_Integer>
   TL_FI void List<LIST_TEMP>::DoInsert(node_type* aPos, T_Integer aNumTimes,
                                        T_Integer aValue, is_arith)
   {
@@ -722,10 +813,10 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos, 
-                                       typename List<LIST_TEMP>::this_type& aFrom, 
+  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos,
+                                       typename List<LIST_TEMP>::this_type& aFrom,
                                        typename List<LIST_TEMP>::iterator aBegin,
-                                       typename List<LIST_TEMP>::iterator aEnd, 
+                                       typename List<LIST_TEMP>::iterator aEnd,
                                        typename List<LIST_TEMP>::size_stored)
   {
     TLOC_UNUSED(aPos);
@@ -741,17 +832,17 @@ namespace tloc
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos, 
-                                       typename List<LIST_TEMP>::this_type& aFrom, 
+  TL_FI void List<LIST_TEMP>::DoSplice(typename List<LIST_TEMP>::iterator aPos,
+                                       typename List<LIST_TEMP>::this_type& aFrom,
                                        typename List<LIST_TEMP>::iterator aBegin,
-                                       typename List<LIST_TEMP>::iterator aEnd, 
+                                       typename List<LIST_TEMP>::iterator aEnd,
                                        typename List<LIST_TEMP>::size_not_stored)
   {
     TLOC_UNUSED(aPos);
     TLOC_UNUSED(aFrom);
     TLOC_UNUSED(aBegin);
     TLOC_UNUSED(aEnd);
-    
+
     if (aBegin != aEnd)
     {
       aPos.m_node->splice(aBegin.m_node, aEnd.m_node);

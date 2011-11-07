@@ -153,7 +153,7 @@ namespace tloc
   }
 
   template <typename T_Itr>
-  TL_FI reverse_iterator<T_Itr>::reverse_iterator( T_Itr aIterator )
+  TL_FI reverse_iterator<T_Itr>::reverse_iterator( const T_Itr aIterator )
     : m_itr(aIterator)
   {
   }
@@ -208,7 +208,7 @@ namespace tloc
   template <typename T_Itr>
   TL_FI reverse_iterator<T_Itr> reverse_iterator<T_Itr>::operator++( int )
   {
-    T_Itr itr(*this);
+    reverse_iterator itr(*this);
     --m_itr;
     return *this;
   }

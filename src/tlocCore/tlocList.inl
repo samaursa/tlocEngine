@@ -441,7 +441,7 @@ namespace tloc
       "Cannot call this version of splice on itself");
     if (!aFrom.empty())
     {
-      aPos.m_node->splice(m_node.m_next, m_node.m_prev);
+      DoSplice(aPos, aFrom, aFrom.begin(), aFrom.end(), list_size());
     }
   }
 
@@ -828,6 +828,8 @@ namespace tloc
     if (addedSize != 0)
     {
       aPos.m_node->splice(aBegin.m_node, aEnd.m_node);
+      m_size += addedSize;
+      aFrom.m_size -= addedSize;
     }
   }
 
@@ -838,10 +840,7 @@ namespace tloc
                                        typename List<LIST_TEMP>::iterator aEnd,
                                        typename List<LIST_TEMP>::size_not_stored)
   {
-    TLOC_UNUSED(aPos);
     TLOC_UNUSED(aFrom);
-    TLOC_UNUSED(aBegin);
-    TLOC_UNUSED(aEnd);
 
     if (aBegin != aEnd)
     {

@@ -494,7 +494,7 @@ namespace tloc
     iterator itr(m_node.m_next);
     while (itr.m_node != &m_node)
     {
-      if (!T_Pred(*itr))
+      if (!aFunctionToCompare( *itr ))
       {
         ++itr;
       }
@@ -563,12 +563,67 @@ namespace tloc
   TL_FI void List<LIST_TEMP>::merge(this_type& aOther)
   {
     TLOC_ASSERT_LIST(this != &aOther, "Cannot merge List<> with itself!");
+    
+    iterator itr(begin());
+    iterator itrEnd(end());
+    iterator itrOther(aOther.begin());
+    iterator itrOtherEnd(aOther.end());
+
+    while ( (itr != itrEnd) && (itrOther != itrOtherEnd) )
+    {
+      if (*itrOther < *itr)
+      {
+        iterator itrOtherNext(itrOther);
+
+        splice(itr, aOther, itrOther, ++itrOtherNext);
+        itrOther = itrOtherNext; //itrOther is invalid unless we do this
+      }
+      else
+      {
+        ++itr;
+      }
+    }
+
+    // If we have not exhausted the other list, then insert the remaining
+    // elements
+    if (itrOther != itrOtherEnd)
+    {
+      insert(itrEnd, itrOther, itrOtherEnd);
+    }
   }
 
   template <LIST_TEMP_TYPES>
   template <typename T_Compare>
   TL_FI void List<LIST_TEMP>::merge(this_type& aOther, T_Compare aComp)
   {
+    TLOC_ASSERT_LIST(this != &aOther, "Cannot merge List<> with itself!");
+    
+    iterator itr(begin());
+    iterator itrEnd(end());
+    iterator itrOther(aOther.begin());
+    iterator itrOtherEnd(aOther.end());
+
+    while ( (itr != itrEnd) && (itrOther != itrOtherEnd) )
+    {
+      if ( aComp(*itrOther, *itr) )
+      {
+        iterator itrOtherNext(itrOther);
+
+        splice(itr, aOther, itrOther, ++itrOtherNext);
+        itrOther = itrOtherNext; //itrOther is invalid unless we do this
+      }
+      else
+      {
+        ++itr;
+      }
+    }
+
+    // If we have not exhausted the other list, then insert the remaining
+    // elements
+    if (itrOther != itrOtherEnd)
+    {
+      insert(itrEnd, itrOther, itrOtherEnd);
+    }
   }
 
   template <LIST_TEMP_TYPES>

@@ -56,10 +56,15 @@ namespace TestingList
 
     second = first;
     first = T_ListType();
+
+    CHECK(first.size() == 0);
+    CHECK(second.size() == 3);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/operator=", "")
   {
+    testOperatorEqual<intListWithSize>();
+    testOperatorEqual<intListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -593,6 +598,15 @@ namespace TestingList
   template <typename T_ListType>
   void testRemove()
   {
+    s32 myints[]= {17,89,7,14};
+    T_ListType mylist (myints,myints+4);
+
+    mylist.remove(89);
+
+    T_ListType::iterator itr = mylist.begin();
+    CHECK(*itr++ == 17);
+    CHECK(*itr++ == 7);
+    CHECK(*itr++ == 14);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/remove", "")
@@ -601,9 +615,30 @@ namespace TestingList
     testRemove<intListWithoutSize>();
   }
 
+  // a predicate implemented as a function:
+  bool single_digit (const int& value) { return (value < 10); }
+
+  // a predicate implemented as a class:
+  class is_odd
+  {
+  public:
+    bool operator() (const int& value) {return (value%2)==1; }
+  };
+
   template <typename T_ListType>
   void testRemoveIf()
   {
+    s32 myints[]= {15,36,7,17,20,39,4,1};
+    T_ListType mylist (myints,myints+8);   // 15 36 7 17 20 39 4 1
+
+    mylist.remove_if (single_digit);      // 15 36 17 20 39
+
+    mylist.remove_if (is_odd());          // 36 20
+
+    T_ListType::iterator itr = mylist.begin();
+
+    CHECK(*itr++ == 36);
+    CHECK(*itr++ == 20);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/removeif", "")
@@ -623,15 +658,39 @@ namespace TestingList
     testUnique<intListWithoutSize>();
   }
 
+  bool mycomparison (double first, double second)
+  { return ( int(first)<int(second) ); }
+
   template <typename T_ListType>
   void testMerge()
   {
+    T_ListType first, second;
+
+    first.push_back (3.1);
+    first.push_back (2.2);
+    first.push_back (2.9);
+
+    second.push_back (3.7);
+    second.push_back (7.1);
+    second.push_back (1.4);
+
+    first.sort();
+    second.sort();
+
+    first.merge(second);
+
+    second.push_back (2.1);
+
+    first.merge(second,mycomparison);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/merge", "")
   {
-    testMerge<intListWithSize>();
-    testMerge<intListWithoutSize>();
+    typedef List<f64, ListNode<f64, doubly_linked_tag>, List_Dynamic(), true> f64ListWithSize;
+    typedef List<f64, ListNode<f64, doubly_linked_tag>, List_Dynamic(), false> f64ListWithoutSize;
+
+    testMerge<f64ListWithSize>();
+    testMerge<f64ListWithoutSize>();
   }
 
   template <typename T_ListType>

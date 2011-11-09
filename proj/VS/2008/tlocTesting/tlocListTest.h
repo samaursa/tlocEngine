@@ -707,6 +707,24 @@ namespace TestingList
   template <typename T_ListType>
   void testReverse()
   {
+    T_ListType mylist;
+    T_ListType::iterator it;
+
+    for (int i=1; i<10; i++) mylist.push_back(i);
+
+    mylist.reverse();
+
+    it = mylist.begin();
+
+    CHECK(*it++ == 9);
+    CHECK(*it++ == 8);
+    CHECK(*it++ == 7);
+    CHECK(*it++ == 6);
+    CHECK(*it++ == 5);
+    CHECK(*it++ == 4);
+    CHECK(*it++ == 3);
+    CHECK(*it++ == 2);
+    CHECK(*it++ == 1);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/reverse", "")

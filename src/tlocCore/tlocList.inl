@@ -10,34 +10,40 @@ namespace tloc
   TLOC_ASSERT_LIST(!empty(), "List container is empty!")
 
   //////////////////////////////////////////////////////////////////////////
+  // Template macros
+
+#define LIST_NODE_TYPES typename T
+#define LIST_NODE_PARAMS T, doubly_linked_tag
+
+  //////////////////////////////////////////////////////////////////////////
   // ListNode
 
-  template <typename T>
-  TL_FI ListNode<T, doubly_linked_tag>::ListNode()
+  template <LIST_NODE_TYPES>
+  TL_FI ListNode<LIST_NODE_PARAMS>::ListNode()
   {
   }
 
-  template <typename T>
-  TL_FI ListNode<T, doubly_linked_tag>
-    ::ListNode(const ListNode<T, doubly_linked_tag>& aOther)
+  template <LIST_NODE_TYPES>
+  TL_FI ListNode<LIST_NODE_PARAMS>
+    ::ListNode(const ListNode<LIST_NODE_PARAMS>& aOther)
   {
     m_next = aOther.m_next;
     m_prev = aOther.m_prev;
     m_value = aOther.m_value;
   }
 
-  template <typename T>
-  TL_FI void ListNode<T, doubly_linked_tag>
-    ::swap(ListNode<T, doubly_linked_tag>& a, ListNode<T, doubly_linked_tag>& b)
+  template <LIST_NODE_TYPES>
+  TL_FI void ListNode<LIST_NODE_PARAMS>
+    ::swap(ListNode<LIST_NODE_PARAMS>& a, ListNode<LIST_NODE_PARAMS>& b)
   {
     TLOC_UNUSED(a);
     TLOC_UNUSED(b);
     TLOC_ASSERT_WIP();
   }
 
-  template <typename T>
-  void ListNode<T, doubly_linked_tag>
-    ::insert(ListNode<T, doubly_linked_tag>* aNext)
+  template <LIST_NODE_TYPES>
+  void ListNode<LIST_NODE_PARAMS>
+    ::insert(ListNode<LIST_NODE_PARAMS>* aNext)
   {
     m_next = aNext;
     m_prev = aNext->m_prev;
@@ -45,17 +51,17 @@ namespace tloc
     aNext->m_prev = this;
   }
 
-  template <typename T>
-  void ListNode<T, doubly_linked_tag>::remove()
+  template <LIST_NODE_TYPES>
+  void ListNode<LIST_NODE_PARAMS>::remove()
   {
     m_prev->m_next = m_next;
     m_next->m_prev = m_prev;
   }
 
-  template <typename T>
-  void ListNode<T, doubly_linked_tag>
-    ::splice(ListNode<T, doubly_linked_tag>* aFirst,
-             ListNode<T, doubly_linked_tag>* aLast)
+  template <LIST_NODE_TYPES>
+  void ListNode<LIST_NODE_PARAMS>
+    ::splice(ListNode<LIST_NODE_PARAMS>* aFirst,
+             ListNode<LIST_NODE_PARAMS>* aLast)
   {
     aLast->m_prev->m_next = this;
     aFirst->m_prev->m_next = aLast;
@@ -67,8 +73,8 @@ namespace tloc
     aFirst->m_prev = temp;
   }
 
-  template <typename T>
-  void ListNode<T, doubly_linked_tag>::reverse()
+  template <LIST_NODE_TYPES>
+  void ListNode<LIST_NODE_PARAMS>::reverse()
   {
     this_type* node = this;
     do

@@ -12,7 +12,7 @@ namespace TestingVector3f
       b[0] = 5; b[1] = 6; b[2] = 7;
     }
 
-    tloc::Vec3f a, b, c, d, e;
+    tloc::math::Vec3f a, b, c, d, e;
   };
 
 #define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approx(x)) ); \
@@ -22,7 +22,7 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::Vec3f) == 12);
+    REQUIRE(sizeof(tloc::math::Vec3f) == 12);
 
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f);
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f);
@@ -40,21 +40,21 @@ namespace TestingVector3f
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f);
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f);
 
-    c = tloc::Vec3f::ZERO;
+    c = tloc::math::Vec3f::ZERO;
     CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
-    c = tloc::Vec3f::ONE;
+    c = tloc::math::Vec3f::ONE;
     CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
-    c = tloc::Vec3f::UNIT_X;
+    c = tloc::math::Vec3f::UNIT_X;
     CHECK_VEC3F(c, 1.0f, 0.0f, 0.0f);
-    c = tloc::Vec3f::UNIT_Y;
+    c = tloc::math::Vec3f::UNIT_Y;
     CHECK_VEC3F(c, 0.0f, 1.0f, 0.0f);
-    c = tloc::Vec3f::UNIT_Z;
+    c = tloc::math::Vec3f::UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, 1.0f);
-    c = tloc::Vec3f::NEG_UNIT_X;
+    c = tloc::math::Vec3f::NEG_UNIT_X;
     CHECK_VEC3F(c, -1.0f, 0.0f, 0.0f);
-    c = tloc::Vec3f::NEG_UNIT_Y;
+    c = tloc::math::Vec3f::NEG_UNIT_Y;
     CHECK_VEC3F(c, 0.0f, -1.0f, 0.0f);
-    c = tloc::Vec3f::NEG_UNIT_Z;
+    c = tloc::math::Vec3f::NEG_UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f);
 
   }

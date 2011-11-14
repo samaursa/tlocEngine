@@ -1,5 +1,11 @@
-namespace tloc
-{
+#ifndef TLOC_TUPLE_INL
+#define TLOC_TUPLE_INL
+
+#ifndef TLOC_TUPLE_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
   // Tuple<N>
@@ -109,7 +115,7 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
+  TL_FI bool Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
   {
     ITERATE_TUPLE
     {
@@ -120,9 +126,11 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
+  TL_FI bool Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
   {
     return !operator==(aTuple);
   }
 
-};
+};};
+
+#endif

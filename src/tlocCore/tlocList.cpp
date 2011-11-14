@@ -1,3 +1,4 @@
 #include "tlocList.h"
+#include "tlocList.inl"
 
-template tloc::List<tloc::f32>;
+template tloc::core::List<tloc::f32>;

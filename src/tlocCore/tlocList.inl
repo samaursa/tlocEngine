@@ -1,8 +1,15 @@
-#include "tlocList.h"
-#include "tlocAlgorithms.h"
+#ifndef TLOC_LIST_INL
+#define TLOC_LIST_INL
 
-namespace tloc
-{
+#ifndef TLOC_LIST_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocIterator.inl"
+#include "tlocAlgorithms.inl"
+
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
 
@@ -569,7 +576,7 @@ namespace tloc
   TL_FI void List<LIST_TEMP>::merge(this_type& aOther)
   {
     TLOC_ASSERT_LIST(this != &aOther, "Cannot merge List<> with itself!");
-    
+
     iterator itr(begin());
     iterator itrEnd(end());
     iterator itrOther(aOther.begin());
@@ -603,7 +610,7 @@ namespace tloc
   TL_FI void List<LIST_TEMP>::merge(this_type& aOther, T_Compare aComp)
   {
     TLOC_ASSERT_LIST(this != &aOther, "Cannot merge List<> with itself!");
-    
+
     iterator itr(begin());
     iterator itrEnd(end());
     iterator itrOther(aOther.begin());
@@ -827,7 +834,7 @@ namespace tloc
   TL_FI typename List<LIST_TEMP>::size_type
     List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_not_stored) const
   {
-    return tloc::distance(const_iterator(m_node.m_next), const_iterator(&m_node));
+    return distance(const_iterator(m_node.m_next), const_iterator(&m_node));
   }
 
   template <LIST_TEMP_TYPES>
@@ -844,7 +851,7 @@ namespace tloc
     else
     {
       iterator itr(m_node.m_next);
-      tloc::advance(itr, aNumElements);
+      advance(itr, aNumElements);
       erase(itr, &m_node);
     }
   }
@@ -885,7 +892,7 @@ namespace tloc
     TLOC_UNUSED(aBegin);
     TLOC_UNUSED(aEnd);
 
-    const size_type addedSize = tloc::distance(aBegin, aEnd);
+    const size_type addedSize = distance(aBegin, aEnd);
     if (addedSize != 0)
     {
       aPos.m_node->splice(aBegin.m_node, aEnd.m_node);
@@ -909,4 +916,6 @@ namespace tloc
     }
   }
 
-};
+};};
+
+#endif

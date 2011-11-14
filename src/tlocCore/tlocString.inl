@@ -1,5 +1,13 @@
-namespace tloc
-{
+#ifndef TLOC_STRING_INL
+#define TLOC_STRING_INL
+
+#include "tlocString.h"
+
+#ifndef TLOC_STRING_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Macros (mostly for assertions)
 
@@ -342,7 +350,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I StringBase<T>& tloc::StringBase<T>::operator=( const StringBase<T>& aStr )
+  TL_I StringBase<T>& StringBase<T>::operator=( const StringBase<T>& aStr )
   {
     TLOC_ASSERT_STRING_WARN(&aStr != this, "Assigning the same string!");
 
@@ -350,13 +358,13 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I StringBase<T>& tloc::StringBase<T>::operator=( const T* aCharStr )
+  TL_I StringBase<T>& StringBase<T>::operator=( const T* aCharStr )
   {
     return assign(aCharStr, aCharStr + StrLen(aCharStr));
   }
 
   template <typename T>
-  TL_I StringBase<T>& tloc::StringBase<T>::operator=( T aChar )
+  TL_I StringBase<T>& StringBase<T>::operator=( T aChar )
   {
     return assign(1, aChar);
   }
@@ -448,7 +456,7 @@ namespace tloc
         DoReAllocateAndAdjust(oldSize + rangeSize + 1);
       }
 
-      m_end = tloc::copy(aBegin, aEnd, m_end);
+      m_end = tloc::core::copy(aBegin, aEnd, m_end);
       *m_end = 0;
     }
 
@@ -852,7 +860,7 @@ namespace tloc
     const_iterator itrBegin = m_begin + aBegin;
     const_iterator itrEnd = (itrBegin + aNumCharsToCopy) > m_end
                                           ? m_end : itrBegin + aNumCharsToCopy;
-    tloc::copy(itrBegin, itrEnd, aDestArray);
+    tloc::core::copy(itrBegin, itrEnd, aDestArray);
     return itrEnd - itrBegin;
   }
 
@@ -901,7 +909,7 @@ namespace tloc
 
     TLOC_ASSERT_STRING(itrBegin <= m_end, "Index is out of range!");
 
-    const T* const findItr = tloc::find(itrBegin, m_end, aChar);
+    const T* const findItr = tloc::core::find(itrBegin, m_end, aChar);
 
     if (findItr != m_end) { return (tl_size)(findItr - m_begin); }
     else { return npos; }
@@ -927,8 +935,8 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = find_end(itrBegin, m_end, aCharStr,
-                                         aCharStr + aNumCharsToCompare);
+      const T* const findItr = tloc::core::find_end(itrBegin, m_end, aCharStr,
+                                                    aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -969,8 +977,9 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tloc::find_first_of(itrBegin, m_end, aCharStr,
-                                                   aCharStr + aNumCharsToCompare);
+      const T* const findItr =
+        tloc::core::find_first_of(itrBegin, m_end, aCharStr,
+                                  aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1055,8 +1064,9 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tloc::find_first_not_of(itrBegin, m_end, aCharStr,
-                                                       aCharStr + aNumCharsToCompare);
+      const T* const findItr =
+        tloc::core::find_first_not_of(itrBegin, m_end, aCharStr,
+                                      aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1098,8 +1108,9 @@ namespace tloc
 
     if (aNumCharsToCompare > 0)
     {
-      const T* const findItr = tloc::find_last_not_of(itrBegin, m_end, aCharStr,
-                                                      aCharStr + aNumCharsToCompare);
+      const T* const findItr =
+        tloc::core::find_last_not_of(itrBegin, m_end, aCharStr,
+                                     aCharStr + aNumCharsToCompare);
 
       if (findItr != m_end) { return (size_t)(findItr - m_begin); }
     }
@@ -1401,7 +1412,7 @@ namespace tloc
 
       DoAllocateSelf( (tl_size)(aPtrEnd - aPtrBegin + 1));
 
-      m_end = tloc::copy(aPtrBegin, aPtrEnd, m_begin);
+      m_end = tloc::core::copy(aPtrBegin, aPtrEnd, m_begin);
       *m_end = 0; // Null terminator
     }
     else
@@ -1546,4 +1557,6 @@ namespace tloc
     return !(a == b);
   }
 
-};
+};};
+
+#endif

@@ -10,7 +10,7 @@ namespace TestingVector2f
       b[0] = 5; b[1] = 6;
     }
 
-    tloc::Vec2f a, b, c, d, e;
+    tloc::math::Vec2f a, b, c, d, e;
   };
 
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
@@ -19,7 +19,7 @@ namespace TestingVector2f
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::Vec2f) == 8);
+    REQUIRE(sizeof(tloc::math::Vec2f) == 8);
 
     CHECK_VEC2F(a, 1, 2);
     CHECK_VEC2F(b, 5, 6);
@@ -37,17 +37,17 @@ namespace TestingVector2f
     CHECK_VEC2F(a, 1.0f, 2.0f);
     CHECK_VEC2F(b, 5.0f, 6.0f);
 
-    c = tloc::Vec2f::ZERO;
+    c = tloc::math::Vec2f::ZERO;
     CHECK_VEC2F(c, 0.0f, 0.0f);
-    c = tloc::Vec2f::ONE;
+    c = tloc::math::Vec2f::ONE;
     CHECK_VEC2F(c, 1.0f, 1.0f);
-    c = tloc::Vec2f::UNIT_X;
+    c = tloc::math::Vec2f::UNIT_X;
     CHECK_VEC2F(c, 1.0f, 0.0f);
-    c = tloc::Vec2f::UNIT_Y;
+    c = tloc::math::Vec2f::UNIT_Y;
     CHECK_VEC2F(c, 0.0f, 1.0f);
-    c = tloc::Vec2f::NEG_UNIT_X;
+    c = tloc::math::Vec2f::NEG_UNIT_X;
     CHECK_VEC2F(c, -1.0f, 0.0f);
-    c = tloc::Vec2f::NEG_UNIT_Y;
+    c = tloc::math::Vec2f::NEG_UNIT_Y;
     CHECK_VEC2F(c, 0.0f, -1.0f);
   }
 

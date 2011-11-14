@@ -1,4 +1,5 @@
 #include "tlocMatrix.h"
+#include "tlocMatrix.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------

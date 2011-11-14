@@ -11,16 +11,30 @@ using namespace Catch::Detail;
 
 //------------------------------------------------------------------------
 // Core
+
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocTypes.inl"
 
 #include "tlocCore/tlocAlgorithms.h"
+#include "tlocCore/tlocAlgorithms.inl"
+
 #include "tlocCore/tlocArray.h"
+#include "tlocCore/tlocArray.inl"
+
 #include "tlocCore/tlocList.h"
+#include "tlocCore/tlocList.inl"
+
 #include "tlocCore/tlocString.h"
+#include "tlocCore/tlocString.inl"
+
 #include "tlocCore/tlocTuple.h"
+#include "tlocCore/tlocTuple.inl"
+
 #include "tlocCore/tlocTable.h"
+#include "tlocCore/tlocTable.inl"
+
 #include "tlocCore/tlocIterator.h"
+#include "tlocCore/tlocIterator.inl"
 
 #include "tlocTypesTest.h"
 #include "tlocAlgorithmsTest.h"
@@ -35,8 +49,13 @@ using namespace Catch::Detail;
 //------------------------------------------------------------------------
 // Math
 #include "tlocMath/tlocMath.h"
+#include "tlocMath/tlocMath.inl"
+
 #include "tlocMath/tlocVector.h"
+#include "tlocMath/tlocVector.inl"
+
 #include "tlocMath/tlocMatrix.h"
+#include "tlocMath/tlocMatrix.inl"
 
 #include "tlocMathTest.h"
 #include "tlocVector3Test.h"

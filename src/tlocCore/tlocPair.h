@@ -3,8 +3,8 @@
 
 #include "tlocBase.h"
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   template <typename T_First, typename T_Second>
   class Pair
   {
@@ -23,8 +23,7 @@ namespace tloc
 
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_First& aSecond);
-};
 
-#include "tlocPair.inl"
+};};
 
 #endif

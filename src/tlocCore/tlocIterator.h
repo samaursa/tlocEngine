@@ -10,8 +10,8 @@
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Iterators
 
@@ -303,7 +303,7 @@ namespace tloc
   // Global functions
 
   template <typename T_InputItr>
-  TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+  TL_FI typename iterator_traits<T_InputItr>::difference_type
     distance(T_InputItr aBegin, T_InputItr aEnd);
 
   template <typename T_InputItr, typename T_Distance>
@@ -312,12 +312,12 @@ namespace tloc
   namespace detail
   {
     template <typename T_InputItr>
-    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
-      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::random_access_iterator_tag);
+    TL_FI typename iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, random_access_iterator_tag);
 
     template <typename T_InputItr>
-    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
-      distance(T_InputItr aItr, T_InputItr aEnd, tloc::input_iterator_tag);
+    TL_FI typename iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aItr, T_InputItr aEnd, input_iterator_tag);
 
     template <typename T_InputItr, typename T_Distance>
     TL_FI void advance(T_InputItr& aItr, T_Distance aN, input_iterator_tag);
@@ -328,7 +328,8 @@ namespace tloc
     template <typename T_InputItr, typename T_Distance>
     TL_FI void advance(T_InputItr& aItr, T_Distance aN, random_access_iterator_tag);
   };
-};
+
+};};
 
 #include "tlocIterator.inl"
 

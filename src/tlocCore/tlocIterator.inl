@@ -1,5 +1,11 @@
-namespace tloc
-{
+#ifndef TLOC_ITERATOR_INL
+#define TLOC_ITERATOR_INL
+
+#ifndef TLOC_ITERATOR_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Pre-defined iterators
 
@@ -352,10 +358,10 @@ namespace tloc
   // Gobal functions
 
   template <typename T_InputItr>
-  TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
+  TL_FI typename iterator_traits<T_InputItr>::difference_type
     distance( T_InputItr aBegin, T_InputItr aEnd )
   {
-    typedef tloc::iterator_traits<T_InputItr>::iterator_category itrCat;
+    typedef iterator_traits<T_InputItr>::iterator_category itrCat;
 
     return detail::distance(aBegin, aEnd, itrCat());
   }
@@ -484,17 +490,17 @@ namespace tloc
   namespace detail
   {
     template <typename T_InputItr>
-    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
-      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::random_access_iterator_tag)
+    TL_FI typename iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, random_access_iterator_tag)
     {
       return aEnd - aBegin;
     }
 
     template <typename T_InputItr>
-    TL_FI typename tloc::iterator_traits<T_InputItr>::difference_type
-      distance(T_InputItr aBegin, T_InputItr aEnd, tloc::input_iterator_tag)
+    TL_FI typename iterator_traits<T_InputItr>::difference_type
+      distance(T_InputItr aBegin, T_InputItr aEnd, input_iterator_tag)
     {
-      typename tloc::iterator_traits<T_InputItr>::difference_type dist = 0;
+      typename iterator_traits<T_InputItr>::difference_type dist = 0;
       while (aBegin != aEnd)
       {
         ++aBegin;
@@ -532,4 +538,7 @@ namespace tloc
       aItr = aItr + aN;
     }
   };
-};
+
+};};
+
+#endif

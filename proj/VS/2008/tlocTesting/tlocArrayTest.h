@@ -10,8 +10,8 @@ namespace TestingArray
 
   struct ArrayFixture
   {
-    Array<SomeClass> someClass, someClass2, someClass3;
-    Array<s32> ints, ints2, ints3;
+    core::Array<SomeClass> someClass, someClass2, someClass3;
+    core::Array<s32> ints, ints2, ints3;
   };
 
 #define FILL_INT_ARRAY_BY_PUSH(arrayName, nFrom, nTo) \
@@ -28,20 +28,20 @@ namespace TestingArray
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Ctors", "")
   {
-    Array<s32> first;                                // empty vector of ints
-    Array<s32> second (4,100);                       // four ints with value 100
+    core::Array<s32> first;                                // empty vector of ints
+    core::Array<s32> second (4,100);                       // four ints with value 100
     CHECK(second[0] == 100); CHECK(second[1] == 100);
     CHECK(second[2] == 100); CHECK(second[3] == 100);
-    Array<s32> third (second.begin(),second.end());  // iterating through second
+    core::Array<s32> third (second.begin(),second.end());  // iterating through second
     CHECK(third[0] == 100); CHECK(third[1] == 100);
     CHECK(third[2] == 100); CHECK(third[3] == 100);
-    Array<s32> fourth (third);                       // a copy of third
+    core::Array<s32> fourth (third);                       // a copy of third
     CHECK(fourth[0] == 100); CHECK(fourth[1] == 100);
     CHECK(fourth[2] == 100); CHECK(fourth[3] == 100);
 
     // the iterator constructor can also be used to construct from arrays:
     s32 myints[] = {16,2,77,29};
-    Array<s32> fifth (myints, myints + sizeof(myints) / sizeof(s32) );
+    core::Array<s32> fifth (myints, myints + sizeof(myints) / sizeof(s32) );
 
     CHECK(fifth[0] == 16); CHECK(fifth[1] == 2);
     CHECK(fifth[2] == 77); CHECK(fifth[3] == 29);
@@ -94,8 +94,8 @@ namespace TestingArray
   {
     FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
 
-    Array<s32>::iterator itr = ints.begin();
-    Array<s32>::iterator itrEnd = ints.end();
+    core::Array<s32>::iterator itr = ints.begin();
+    core::Array<s32>::iterator itrEnd = ints.end();
 
     s32 count = 0;
     while (itr != itrEnd)

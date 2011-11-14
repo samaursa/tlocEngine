@@ -10,13 +10,13 @@
 // Fine grain control to enable/disable assertions in algorithms
 
 #ifndef TLOC_DISABLE_ASSERT_ARRAY
-# define TLOC_ASSERT_ALGORITHMS(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
+# define TLOC_ASSERT_ALGORITHMS(_Expression, _Msg) \
+  TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_ALGORITHMS(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Non-modifying sequence operations
 
@@ -101,7 +101,8 @@ namespace tloc
     mismatch(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
              T_InputIterator2 aRangeToCompare);
 
-  template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
+  template <typename T_InputIterator1, typename T_InputIterator2,
+            typename T_BinaryPred>
   Pair<T_InputIterator1, T_InputIterator2>
     mismatch(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
              T_InputIterator2 aRangeToCompare, T_BinaryPred aPred);
@@ -110,7 +111,8 @@ namespace tloc
   bool equal(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
              T_InputIterator2 aRangeToCompare);
 
-  template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
+  template <typename T_InputIterator1, typename T_InputIterator2,
+            typename T_BinaryPred>
   bool equal(T_InputIterator1 aRangeBegin, T_InputIterator1 aRangeEnd,
              T_InputIterator2 aRangeToCompare, T_BinaryPred aPred);
 
@@ -141,6 +143,23 @@ namespace tloc
                              T_BinaryPred aPred);
 
   //------------------------------------------------------------------------
+  // Sorting
+
+  struct sort_quicksort_leftpivot{};
+  struct sort_quicksort_rightpivot{};
+  struct sort_quicksort_middlepivot{};
+  struct sort_quicksort_randompivot{};
+
+  struct sort_autoselect{};
+
+  // The sorting function can sort with multiple different techniques. Use
+  // sort_autoselect to automatically select the best sorting algorithm for
+  // the given container. Some techniques may not be be compatible with the given
+  // container
+  template <typename T_InputIterator>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast);
+
+  //------------------------------------------------------------------------
   // Min / Max
 
   template <typename T_Value>
@@ -161,7 +180,8 @@ namespace tloc
   // ^                     ^
   // aRangeBegin           aRangeEnd (copy 5,4,6,7,2,3,8,4,5,6,7 inclusive)
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+  TL_I T_OutputIterator copy(T_InputIterator aRangeBegin,
+                             T_InputIterator aRangeEnd,
                              T_OutputIterator aDestRangeBegin);
 
   // Copies the range of elements [aRangeBegin, aRangeEnd) to aCopyTo and returns
@@ -192,11 +212,13 @@ namespace tloc
     typedef type_true  IsArith;
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin,
+                               T_InputIterator aRangeEnd,
                                T_OutputIterator aDestRangeBegin, IsNotArith);
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
+    TL_I T_OutputIterator copy(T_InputIterator aRangeBegin,
+                               T_InputIterator aRangeEnd,
                                T_OutputIterator aDestRangeBegin, IsArith);
 
     //------------------------------------------------------------------------
@@ -213,7 +235,7 @@ namespace tloc
     TL_I void fill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                     const T& aValue, IsChar );
 
-    //````````````````````````````````````````````````````````````````````````
+    //------------------------------------------------------------------------
     // find helpers
 
     template <typename T_InputIterator, typename T>
@@ -223,9 +245,37 @@ namespace tloc
     template <typename T_InputIterator, typename T>
     T_InputIterator find(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                          const T& aValue, IsChar);
-  }
-}
 
-#include "tlocAlgorithms.inl"
+    //------------------------------------------------------------------------
+    // Sort helpers
+
+    // This quicksort helper will select a random pivot. It is considered one
+    // of the most efficient sorting methods
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
+                   sort_quicksort_randompivot);
+
+    // This quicksort helper will select the pivot somewhere in the middle of the
+    // container. This is not an efficient method for a random List<>
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
+                   sort_quicksort_middlepivot);
+
+    // This quicksort helper will select the right most element (or aLast - 1)
+    // as the pivot. This is not an efficient method for a not-so-random container
+    // (user other pivot methods)
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
+                   sort_quicksort_rightpivot);
+
+    // This quicksort helper assumes that the pivot is the first iterator and
+    // aLast is the past-the-end iterator. This is not an efficient method for
+    // a not-so-random container (use other pivot methods)
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
+                   sort_quicksort_leftpivot);
+  }
+
+};};
 
 #endif

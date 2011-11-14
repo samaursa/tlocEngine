@@ -3,6 +3,7 @@
 namespace TestingMatrix3
 {
   USING_TLOC;
+  using namespace math;
 
   struct Matrix3Fixture
   {
@@ -10,37 +11,37 @@ namespace TestingMatrix3
     {
     }
 
-    tloc::Mat3f a, b, c, d, e;
+    tloc::math::Mat3f a, b, c, d, e;
   };
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
   {
     a.Zero();
-    tloc::Mat3f f(a);
+    tloc::math::Mat3f f(a);
     CHECK_MATRIX3F(f, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    tloc::Mat3f g(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    tloc::math::Mat3f g(1, 2, 3, 4, 5, 6, 7, 8, 9);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Mat3f h(4, 5, 6);
+    tloc::math::Mat3f h(4, 5, 6);
     CHECK_MATRIX3F(h, 4, 0, 0, 0, 5, 0, 0, 0, 6);
 
-    tloc::Mat3f i(90);
+    tloc::math::Mat3f i(90);
     CHECK_MATRIX3F(i, 90, 90, 90, 90, 90, 90, 90, 90, 90);
 
-    tloc::Vec3f v1(1, 2, 3), v2(4, 5, 6), v3(7, 8, 9);
-    tloc::Mat3f j(v1, v2, v3, tloc::Mat3f::ROW_MAJOR);
+    tloc::math::Vec3f v1(1, 2, 3), v2(4, 5, 6), v3(7, 8, 9);
+    tloc::math::Mat3f j(v1, v2, v3, tloc::math::Mat3f::ROW_MAJOR);
     CHECK_MATRIX3F(j, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Mat3f k(v1, v2, v3, tloc::Mat3f::COL_MAJOR);
+    tloc::math::Mat3f k(v1, v2, v3, tloc::math::Mat3f::COL_MAJOR);
     CHECK_MATRIX3F(k, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    tloc::Mat3f m(values, tloc::Mat3f::ROW_MAJOR);
+    tloc::math::Mat3f m(values, tloc::math::Mat3f::ROW_MAJOR);
     CHECK_MATRIX3F(m, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Mat3f n(values, tloc::Mat3f::COL_MAJOR);
+    tloc::math::Mat3f n(values, tloc::math::Mat3f::COL_MAJOR);
     CHECK_MATRIX3F(n, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
   }

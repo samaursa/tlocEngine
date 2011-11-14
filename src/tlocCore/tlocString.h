@@ -24,8 +24,7 @@
 # define TLOC_ASSERT_STRING_WARN(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Ctor Helpers
 
@@ -390,8 +389,7 @@ namespace tloc
 
   typedef StringBase<char8>   tlString;
   typedef StringBase<char32>  tlWString;
-};
 
-#include "tlocString.inl"
+};};
 
 #endif

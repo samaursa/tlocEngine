@@ -5,6 +5,7 @@
 #include "tlocMemory.h"
 #include "tlocTypeTraits.h"
 #include "tlocIterator.h"
+#include "tlocAlgorithms.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -15,8 +16,8 @@
 # define TLOC_ASSERT_LIST(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Different policies that List can handle
 
@@ -83,8 +84,9 @@ namespace tloc
     typedef const T*                                    const_pointer;
     typedef tl_size                                     size_type;
     typedef tl_ptrdiff                                  difference_type;
-    typedef tloc::reverse_iterator<iterator>            reverse_iterator;
-    typedef tloc::reverse_iterator<const_iterator>      const_reverse_iterator;
+
+    typedef tloc::core::reverse_iterator<iterator>            reverse_iterator;
+    typedef tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
     typedef ConditionalType<size_type, T_DedicatedSize> list_size;
 
@@ -260,8 +262,7 @@ namespace tloc
     list_size                 m_size;
 
   };
-};
 
-#include "tlocList.inl"
+};};
 
 #endif

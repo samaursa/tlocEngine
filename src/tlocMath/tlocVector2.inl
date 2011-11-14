@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_VECTOR_2_INL
+#define TLOC_VECTOR_2_INL
+
+#ifndef TLOC_VECTOR_2_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocCore/tlocAlgorithms.inl"
+#include "tlocMath.inl"
+#include "tlocVector.inl"
+
+namespace tloc { namespace math {
 
   //////////////////////////////////////////////////////////////////////////
   // Vector2
@@ -36,4 +46,7 @@ namespace tloc
     m_values[0] = aVector[0];
     m_values[1] = aVector[1];
   }
-};
+
+};};
+
+#endif

@@ -1,5 +1,12 @@
-namespace tloc
-{
+#ifndef TLOC_PAIR_INL
+#define TLOC_PAIR_INL
+
+#ifndef TLOC_PAIR_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
+
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second>::Pair()
   {
@@ -36,4 +43,7 @@ namespace tloc
   {
     return Pair<T_First, T_Second>(aFirst, aSecond);
   }
-};
+
+};};
+
+#endif

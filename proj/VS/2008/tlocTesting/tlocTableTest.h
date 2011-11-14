@@ -6,13 +6,13 @@ namespace TestingTable
   {
     Table3Fixture()
     {
-      tloc::Tuple<s32, 3> row1;
-      tloc::Tuple<s32, 3> row2;
-      tloc::Tuple<s32, 3> row3;
+      tloc::core::Tuple<s32, 3> row1;
+      tloc::core::Tuple<s32, 3> row2;
+      tloc::core::Tuple<s32, 3> row3;
 
-      tloc::Tuple<s32 ,3> col1;
-      tloc::Tuple<s32 ,3> col2;
-      tloc::Tuple<s32 ,3> col3;
+      tloc::core::Tuple<s32 ,3> col1;
+      tloc::core::Tuple<s32 ,3> col2;
+      tloc::core::Tuple<s32 ,3> col3;
 
       row1[0] = 1; row1[1] = 2; row1[2] = 3;
       row2[0] = 4; row2[1] = 5; row2[2] = 6;
@@ -31,7 +31,7 @@ namespace TestingTable
       b.SetCol(2, col3);
     }
 
-    tloc::Table<s32, 3, 3> a, b, c, d;
+    tloc::core::Table<s32, 3, 3> a, b, c, d;
   };
 
 #define CHECK_TABLE(tab,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -68,7 +68,7 @@ namespace TestingTable
     CHECK(b.Get(0, 1) == 4);
     CHECK(b.Get(2, 2) == 9);
 
-    Tuple<s32, 3> tup;
+    core::Tuple<s32, 3> tup;
 
     a.GetRow(0, tup);
     CHECK(tup[0] == 1); CHECK(tup[1] == 2); CHECK(tup[2] == 3);
@@ -89,9 +89,9 @@ namespace TestingTable
     c = a;
     CHECK_TABLE(c, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Tuple<s32, 3> row1;
-    tloc::Tuple<s32, 3> row2;
-    tloc::Tuple<s32, 3> row3;
+    tloc::core::Tuple<s32, 3> row1;
+    tloc::core::Tuple<s32, 3> row2;
+    tloc::core::Tuple<s32, 3> row3;
 
     row1[0] = 11; row1[1] = 21; row1[2] = 31;
     row2[0] = 41; row2[1] = 51; row2[2] = 61;
@@ -110,11 +110,11 @@ namespace TestingTable
     s32 rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     // ROW_MAJOR means that the above array has vectors in a row major order
     // i.e. 9,8,7 is a row vector, 6,5,4 is a row vector and so on
-    a.Set(rawArray, tloc::Table<s32, 3, 3>::ROW_MAJOR);
+    a.Set(rawArray, tloc::core::Table<s32, 3, 3>::ROW_MAJOR);
     CHECK_TABLE(a, 9, 6, 3, 8, 5, 2, 7, 4, 1);
 
     a.Set(0);
-    a.Set(rawArray, tloc::Table<s32, 3, 3>::COL_MAJOR);
+    a.Set(rawArray, tloc::core::Table<s32, 3, 3>::COL_MAJOR);
     CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
   }
 

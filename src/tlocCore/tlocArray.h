@@ -3,6 +3,7 @@
 
 #include "tlocBase.h"
 #include "tlocTypeTraits.h"
+#include "tlocAlgorithms.h"
 #include "tlocIterator.h"
 
 //------------------------------------------------------------------------
@@ -14,8 +15,8 @@
 # define TLOC_ASSERT_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Different policies that Array can handle
 
@@ -42,8 +43,9 @@ namespace tloc
     typedef const T*                                const_iterator;
     typedef tl_size                                 size_type;
     typedef tl_ptrdiff                              difference_type;
-    typedef tloc::reverse_iterator<iterator>        reverse_iterator;
-    typedef tloc::reverse_iterator<const_iterator>  const_reverse_iterator;
+
+    typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
+    typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
     //------------------------------------------------------------------------
     // Functions
@@ -165,8 +167,9 @@ namespace tloc
     typedef const T*                                const_iterator;
     typedef tl_size                                 size_type;
     typedef tl_ptrdiff                              difference_type;
-    typedef tloc::reverse_iterator<iterator>        reverse_iterator;
-    typedef tloc::reverse_iterator<const_iterator>  const_reverse_iterator;
+
+    typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
+    typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
     typedef Array<T>                          this_type;
     typedef ArrayBase<T>                      base_type;
@@ -244,8 +247,7 @@ namespace tloc
                                              T_InputIterator first,
                                              T_InputIterator last);
   };
-};
 
-#include "tlocArray.inl"
+};};
 
 #endif

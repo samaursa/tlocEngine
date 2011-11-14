@@ -1,6 +1,7 @@
 namespace TestingList
 {
   USING_TLOC;
+  using namespace core;
 
   class SomeClass
   {
@@ -570,7 +571,7 @@ namespace TestingList
     // "it" is now invalid.
     CHECK(mylist2.size() == 1);
     it = mylist1.begin();
-    tloc::advance(it,3);                // "it" points now to 30
+    tloc::core::advance(it,3);                // "it" points now to 30
 
     mylist1.splice ( mylist1.begin(), mylist1, it, mylist1.end());
     // mylist1: 30 3 4 1 10 20

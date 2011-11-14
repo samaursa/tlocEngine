@@ -2,6 +2,7 @@
 #ifndef TLOC_TYPES_H
 #define TLOC_TYPES_H
 
+#include "tlocBase.h"
 #include <wctype.h>
 #include <limits>
 #include <limits.h>

@@ -1,18 +1,19 @@
 namespace TestingMatrix
 {
   USING_TLOC;
+  using namespace math;
 
   struct Matrix3Fixture
   {
     Matrix3Fixture()
     {
-      tloc::Vec3f row1;
-      tloc::Vec3f row2;
-      tloc::Vec3f row3;
+      tloc::math::Vec3f row1;
+      tloc::math::Vec3f row2;
+      tloc::math::Vec3f row3;
 
-      tloc::Vec3f col1;
-      tloc::Vec3f col2;
-      tloc::Vec3f col3;
+      tloc::math::Vec3f col1;
+      tloc::math::Vec3f col2;
+      tloc::math::Vec3f col3;
 
       row1[0] = 1; row1[1] = 2; row1[2] = 3;
       row2[0] = 4; row2[1] = 5; row2[2] = 6;
@@ -31,7 +32,7 @@ namespace TestingMatrix
       b.SetCol(2, col3);
     }
 
-    tloc::Matrix<f32, 3> a, b, c, d, e;
+    tloc::math::Matrix<f32, 3> a, b, c, d, e;
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -44,18 +45,18 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General",
     "Test general/basic functionality")
   {
-    tloc::Matrix<f32, 3> e(1);
+    tloc::math::Matrix<f32, 3> e(1);
     CHECK_MATRIX3F(e, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    tloc::Matrix<f32, 3> f(e);
+    tloc::math::Matrix<f32, 3> f(e);
     CHECK_MATRIX3F(f, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
     f32 rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    tloc::Matrix<f32, 3> g(rawArray, tloc::Matrix<f32, 3>::ROW_MAJOR);
+    tloc::math::Matrix<f32, 3> g(rawArray, tloc::math::Matrix<f32, 3>::ROW_MAJOR);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::Matrix<f32, 3> h(rawArray, tloc::Matrix<f32, 3>::COL_MAJOR);
+    tloc::math::Matrix<f32, 3> h(rawArray, tloc::math::Matrix<f32, 3>::COL_MAJOR);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.Zero();

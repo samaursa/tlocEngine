@@ -1,4 +1,5 @@
 #include "tlocMath/tlocVector.h"
+#include "tlocMath/tlocVector.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------

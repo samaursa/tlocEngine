@@ -1,6 +1,7 @@
 namespace TestingStrings
 {
   USING_TLOC;
+  using namespace core;
 
   struct StringFixture
   {

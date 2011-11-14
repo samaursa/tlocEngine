@@ -429,6 +429,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Timers"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 			>
@@ -451,6 +463,14 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.h"
 			>
 		</File>
 	</Files>

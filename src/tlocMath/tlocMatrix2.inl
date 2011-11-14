@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_MATRIX_2_INL
+#define TLOC_MATRIX_2_INL
+
+#ifndef TLOC_MATRIX_2_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocVector2.inl"
+#include "tlocMatrix.inl"
+
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Matrix2f<T>
 
@@ -7,16 +17,16 @@ namespace tloc
   // Constructors
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2() 
+  TL_FI Matrix2<T>::Matrix2()
     : Matrix() {}
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2(const Matrix2<T>& aMatrix) 
+  TL_FI Matrix2<T>::Matrix2(const Matrix2<T>& aMatrix)
     : Matrix(aMatrix) {}
 
   template <typename T>
-TL_FI Matrix2<T>::Matrix2(T m00, T m01, 
-                          T m10, T m11)
+  TL_FI Matrix2<T>::Matrix2(T m00, T m01,
+                            T m10, T m11)
   {
     m_values[0] = m00;
     m_values[1] = m10;
@@ -32,11 +42,11 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2(const T& aValue) 
+  TL_FI Matrix2<T>::Matrix2(const T& aValue)
     : Matrix(aValue) {}
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2(const Vector<T, 2>& aVec1, const Vector<T, 2>& aVec2, 
+  TL_FI Matrix2<T>::Matrix2(const Vector2<T>& aVec1, const Vector2<T>& aVec2,
     TABLE_ORDER aOrder)
   {
     if (aOrder == COL_MAJOR)
@@ -72,7 +82,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI void Matrix2<T>::Mul(const Matrix2<T>& aMatrix1, 
+  TL_FI void Matrix2<T>::Mul(const Matrix2<T>& aMatrix1,
     const Matrix2<T>& aMatrix2)
   {
     m_values[0] = (aMatrix1[0] * aMatrix2[0]) + (aMatrix1[2] * aMatrix2[1]);
@@ -82,8 +92,8 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI void Matrix2<T>::Mul(const Vector<T, 2>& aVectorIn, 
-    Vector<T, 2>& aVectorOut)
+  TL_FI void Matrix2<T>::Mul(const Vector2<T>& aVectorIn,
+                             Vector2<T>& aVectorOut)
   {
     aVectorOut[0] = (m_values[0] * aVectorIn[0]) + (m_values[2] * aVectorIn[1]);
     aVectorOut[1] = (m_values[1] * aVectorIn[0]) + (m_values[3] * aVectorIn[1]);
@@ -109,7 +119,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
 
     if (Math<T>::Approx(detInv, (T)0)) { return false; }
 
-    m_values[0] = aMatrix[3] * detInv;    
+    m_values[0] = aMatrix[3] * detInv;
     m_values[1] = -aMatrix[1] * detInv;
     m_values[2] = -aMatrix[2] * detInv;
     m_values[3] = aMatrix[0] * detInv;
@@ -149,7 +159,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
     m_values[2] -= dot0 * m_values[0];
     m_values[3] -= dot0 * m_values[2];
 
-    invLength = Math<T>::InvSqrt(m_values[2] * m_values[2] + 
+    invLength = Math<T>::InvSqrt(m_values[2] * m_values[2] +
       m_values[3] * m_values[3]);
 
     m_values[2] *= invLength;
@@ -159,7 +169,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI void tloc::Matrix2<T>::Orthonormalize( const Matrix2<T>& aMatrix )
+  TL_FI void Matrix2<T>::Orthonormalize( const Matrix2<T>& aMatrix )
   {
     *this = aMatrix;
     Orthonormalize();
@@ -178,7 +188,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
     m_values[1] -= dot0 * m_values[0];
     m_values[3] -= dot0 * m_values[2];
 
-    invLength = Math<T>::FastInvSqrt(m_values[1] * m_values[1] + 
+    invLength = Math<T>::FastInvSqrt(m_values[1] * m_values[1] +
                                      m_values[3] * m_values[3]);
 
     m_values[1] *= invLength;
@@ -188,7 +198,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
   }
 
   template <typename T>
-  TL_FI void tloc::Matrix2<T>::FastOrthonormalize( const Matrix2<T>& aMatrix )
+  TL_FI void Matrix2<T>::FastOrthonormalize( const Matrix2<T>& aMatrix )
   {
     *this = aMatrix;
     FastOrthonormalize();
@@ -201,7 +211,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
     if (Math<T>::FAbs(m_values[2]) + sum == sum)
     {
       // The matrix is diagonal
-      aRot[0] = (T)1; aRot[2] = (T)0; 
+      aRot[0] = (T)1; aRot[2] = (T)0;
       aRot[1] = (T)0; aRot[3] = (T)1;
 
       aDiag[0] = m_values[0]; aDiag[2] = (T)0;
@@ -240,4 +250,7 @@ TL_FI Matrix2<T>::Matrix2(T m00, T m01,
     aRot.m_values[2] = -sn;
     aRot.m_values[3] = cs;
   }
-};
+
+};};
+
+#endif

@@ -1,11 +1,8 @@
 #include "tlocMath/tlocMatrix2.h"
+#include "tlocMath/tlocMatrix2.inl"
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::Mat2f;
-template tloc::Mat2d;
-template tloc::Mat2l;
-
-#ifndef TLOC_FULL_SOURCE
-#include "tlocMatrix2.inl"
-#endif
+template tloc::math::Mat2f;
+template tloc::math::Mat2d;
+template tloc::math::Mat2l;

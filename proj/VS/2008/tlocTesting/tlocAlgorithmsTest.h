@@ -1,6 +1,7 @@
 namespace TestingAlgorithms
 {
   USING_TLOC;
+  using namespace core;
 
   struct AlgorithmFixture
   {
@@ -141,8 +142,8 @@ namespace TestingAlgorithms
 
     CHECK(*p == 40);
 
-    Array<u32> myvector (myints,myints+4);
-    Array<u32>::iterator it;
+    core::Array<u32> myvector (myints,myints+4);
+    core::Array<u32>::iterator it;
 
     //iterator to vector element:
     it = find (myvector.begin(), myvector.end(), (u32)30);
@@ -158,8 +159,8 @@ namespace TestingAlgorithms
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindIf", "")
   {
-    Array<s32> myvector;
-    Array<s32>::iterator it;
+    core::Array<s32> myvector;
+    core::Array<s32>::iterator it;
 
     myvector.push_back(10);
     myvector.push_back(25);
@@ -178,8 +179,8 @@ namespace TestingAlgorithms
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FindEnd", "")
   {
     s32 myints[] = {1,2,3,4,5,1,2,3,4,5};
-    Array<s32> myvector (myints,myints+10);
-    Array<s32>::iterator it;
+    core::Array<s32> myvector (myints,myints+10);
+    core::Array<s32>::iterator it;
 
     s32 match1[] = {1,2,3};
 
@@ -209,8 +210,8 @@ namespace TestingAlgorithms
   {
     {
       char8 mychars[] = {'a','b','c','A','B','C'};
-      Array<char8> myvector (mychars,mychars+6);
-      Array<char8>::iterator it;
+      core::Array<char8> myvector (mychars,mychars+6);
+      core::Array<char8>::iterator it;
 
       char8 match[] = {'A','B','C'};
 
@@ -227,8 +228,8 @@ namespace TestingAlgorithms
     }
     {
       char8 mychars[] = {'t','i','s','9','i','s'};
-      Array<char8> myvector (mychars, mychars + 6);
-      Array<char8>::iterator it;
+      core::Array<char8> myvector (mychars, mychars + 6);
+      core::Array<char8>::iterator it;
 
       char8 match[] = {'a','b','c','s','9'};
 
@@ -246,8 +247,8 @@ namespace TestingAlgorithms
     s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
     s32 allowed[] = {1,2,3,4,5,6,7,8,9};
 
-    Array<s32> myvector(myInts, myInts + 10);
-    Array<s32>::iterator itr;
+    core::Array<s32> myvector(myInts, myInts + 10);
+    core::Array<s32>::iterator itr;
 
     itr = find_first_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 23);
@@ -264,8 +265,8 @@ namespace TestingAlgorithms
     s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
     s32 allowed[] = {1,2,3,4,5,6,7,8,9};
 
-    Array<s32> myvector(myInts, myInts + 10);
-    Array<s32>::iterator itr;
+    core::Array<s32> myvector(myInts, myInts + 10);
+    core::Array<s32>::iterator itr;
 
     itr = find_last_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 10);
@@ -288,7 +289,7 @@ namespace TestingAlgorithms
       CHECK(mycount == 3);
 
       // counting elements in container:
-      Array<s32> myvector (myints, myints+8);
+      core::Array<s32> myvector (myints, myints+8);
       mycount = (s32) count (myvector.begin(), myvector.end(), 20);
       CHECK(mycount == 3);
     }
@@ -296,7 +297,7 @@ namespace TestingAlgorithms
     {//count_if
       s32 mycount;
 
-      Array<s32> myvector;
+      core::Array<s32> myvector;
       for (s32 i=1; i<10; i++) myvector.push_back(i); // myvector: 1 2 3 4 5 6 7 8 9
 
       mycount = (s32) count_if (myvector.begin(), myvector.end(), IsOdd);
@@ -311,12 +312,12 @@ namespace TestingAlgorithms
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Mismatch", "")
   {
-    Array<s32> myvector;
+    core::Array<s32> myvector;
     for (s32 i=1; i<6; i++) myvector.push_back (i*10); // myvector: 10 20 30 40 50
 
     s32 myints[] = {10,20,80,320,1024};                //   myints: 10 20 80 320 1024
 
-    Pair<Array<s32>::iterator,s32*> mypair;
+    Pair<core::Array<s32>::iterator,s32*> mypair;
 
     // using default comparison:
     mypair = mismatch (myvector.begin(), myvector.end(), myints);
@@ -337,7 +338,7 @@ namespace TestingAlgorithms
   {
     bool retValue = false;
     s32 myints[] = {20,40,60,80,100};          //   myints: 20 40 60 80 100
-    Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
+    core::Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
 
     retValue = equal(myvector.begin(), myvector.end(), myints);
     CHECK(retValue == true);
@@ -350,8 +351,8 @@ namespace TestingAlgorithms
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Search", "")
   {
-    Array<s32> myvector;
-    Array<s32>::iterator it;
+    core::Array<s32> myvector;
+    core::Array<s32>::iterator it;
 
     // set some values:        myvector: 10 20 30 40 50 60 70 80 90
     for (s32 i=1; i<10; i++) myvector.push_back(i*10);
@@ -373,9 +374,9 @@ namespace TestingAlgorithms
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/SearchN", "")
   {
     s32 myints[]={10,20,30,30,20,10,10,20};
-    Array<s32> myvector (myints,myints+8);
+    core::Array<s32> myvector (myints,myints+8);
 
-    Array<s32>::iterator it;
+    core::Array<s32>::iterator it;
 
     // using default comparison:
     it = search_n (myvector.begin(), myvector.end(), 2, 30);

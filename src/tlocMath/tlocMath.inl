@@ -1,5 +1,12 @@
-namespace tloc
-{
+#ifndef TLOC_MATH_INL
+#define TLOC_MATH_INL
+
+#ifndef TLOC_MATH_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc {
+
   //////////////////////////////////////////////////////////////////////////
   // Math<T>
 
@@ -40,19 +47,19 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Log( const T& aLog )
+  TL_FI T Math<T>::Log( const T& aLog )
   {
     return log(aLog);
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Sin( const T& aValInRad )
+  TL_FI T Math<T>::Sin( const T& aValInRad )
   {
     return sin(aValInRad);
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Cos( const T& aValInRad )
+  TL_FI T Math<T>::Cos( const T& aValInRad )
   {
     return cos(aValInRad);
   }
@@ -98,7 +105,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI bool tloc::Math<T>::IsPowerOfTwo( const u32& aValue )
+  TL_FI bool Math<T>::IsPowerOfTwo( const u32& aValue )
   {
     return (aValue != 0) && ((aValue & (aValue - 1)) == 0);
   }
@@ -122,7 +129,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI u32 tloc::Math<T>::FastPowOfTwo( const u32& aPower )
+  TL_FI u32 Math<T>::FastPowOfTwo( const u32& aPower )
   {
     return 0x00000001 << aPower;
   }
@@ -138,11 +145,11 @@ namespace tloc
   // Simple Interpolations
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Lerp(const T& aValue1,
-                                     const T& aValue2,
-                                     const T& aBias /* = */)
+  TL_FI T Math<T>::Lerp(const T& aValue1, const T& aValue2, const T& aBias)
   {
     return (aBias * aValue1) + ((1 - aBias) * aValue2);
   }
 
 };
+
+#endif

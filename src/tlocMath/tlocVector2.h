@@ -8,8 +8,8 @@
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Vector2
 
@@ -47,10 +47,7 @@ namespace tloc
   const Vector2<T> Vector2<T>::NEG_UNIT_X (-1.0, 0.0);
   template<typename T>
   const Vector2<T> Vector2<T>::NEG_UNIT_Y (0.0, -1.0);
-};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocVector2.inl"
-#endif
+};};
 
 #endif

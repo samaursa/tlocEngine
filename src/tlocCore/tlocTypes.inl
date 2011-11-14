@@ -1,3 +1,10 @@
+#ifndef TLOC_TYPES_INL
+#define TLOC_TYPES_INL
+
+#ifndef TLOC_TYPES_H
+#error "Must include header before including the inline file"
+#endif
+
 namespace tloc
 {
 #define COND_TYPE_TEMP_FALSE ConditionalType<T, T_DeclareValue>
@@ -569,4 +576,7 @@ namespace tloc
   {
     return m_value;
   }
+
 };
+
+#endif

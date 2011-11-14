@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_ALGORITHMS_INL
+#define TLOC_ALGORITHMS_INL
+
+#ifndef TLOC_ALGORITHMS_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocIterator.inl"
+#include "tlocPair.inl"
+
+namespace tloc { namespace core {
+
   // TODO: Make all find functions specialized for char* and use memcmp
 
   //------------------------------------------------------------------------
@@ -833,4 +843,7 @@ namespace tloc
                             (tl_size)(aRangeEnd - aRangeBegin));
     }
   }
-}
+
+};};
+
+#endif

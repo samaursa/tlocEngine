@@ -8,8 +8,8 @@
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Vector3
 
@@ -74,7 +74,8 @@ namespace tloc
   const Vector3<T> Vector3<T>::NEG_UNIT_Y (0.0, -1.0, 0.0);
   template <typename T>
   const Vector3<T> Vector3<T>::NEG_UNIT_Z (0.0, 0.0, -1.0);
-};
+
+};};
 
 #ifdef TLOC_FULL_SOURCE
 #include "tlocVector3.inl"

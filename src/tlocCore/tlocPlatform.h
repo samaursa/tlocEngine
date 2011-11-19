@@ -4,6 +4,19 @@
 #include "tlocBase.h"
 #include "tlocTypes.h"
 
+//////////////////////////////////////////////////////////////////////////
+// Macros
+
+#if defined(WIN32) || defined(_WIN32)
+#define TLOC_WIN32
+#elif defined(_WIN64)
+#define TLOC_WIN64
+#elif defined(TARGET_OS_MAC)
+#define TLOC_OS_MAC
+#elif defined(__linux__)
+#define TLOC_LINUX
+#endif
+
 namespace tloc { namespace core {
 
   struct platform_win32 {};
@@ -14,13 +27,13 @@ namespace tloc { namespace core {
   struct platform_linux {};
   struct platform_ps3 {};
 
-#if defined(_WIN32)
+#if defined(TLOC_WIN32)
   template <typename T_Platform = platform_win32>
-#elif defined(_WIN64)
+#elif defined(TLOC_WIN64)
   template <typename T_Platform = platform_win64>
-#elif defined(TARGET_OS_MAC)
+#elif defined(TLOC_OS_MAC)
   template <typename T_Platform = platform_osx>
-#elif defined(__linux__)
+#elif defined(TLOC_LINUX)
   template <typename T_Platform = platform_linux>
 #endif
   class PlatformInfo

@@ -304,6 +304,9 @@
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#define IntentionallyEmptySourceFile() namespace { char NoEmptyFileDummy##__LINE__; }
+#define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
+  namespace { char NoEmptyFileDummy##__LINE__; }
+#define TLOC_NOT_EMPTY_SOURCE_FILE() \
+  namespace { char NoEmptyFileDummy##__LINE__; }
 
 #endif

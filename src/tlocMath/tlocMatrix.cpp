@@ -25,6 +25,6 @@
 
 #else
 
-IntentionallyEmptySourceFile();
+TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 
 #endif // TLOC_NO_SOURCE

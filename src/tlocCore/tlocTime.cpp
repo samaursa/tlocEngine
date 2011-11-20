@@ -1,3 +1,8 @@
 #include "tlocTime.h"
+#include "tlocTime.inl"
 
-TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+namespace tloc { namespace core {
+
+  template Timer<>;
+
+};};

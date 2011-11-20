@@ -33,13 +33,20 @@ namespace tloc { namespace core {
     TL_I T_Real     DoGetElapsedSeconds(Platform_ps3);
     TL_I T_Real     DoGetElapsedSeconds(Platform_linux);
 
-    TL_I T_Real     DoGetElapsedMicroSeconds(Platform_win32);
-    TL_I T_Real     DoGetElapsedMicroSeconds(Platform_osx);
-    TL_I T_Real     DoGetElapsedMicroSeconds(Platform_osx_iphone);
-    TL_I T_Real     DoGetElapsedMicroSeconds(Platform_ps3);
-    TL_I T_Real     DoGetElapsedMicroSeconds(Platform_linux);
+    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_win32);
+    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_osx);
+    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_osx_iphone);
+    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_ps3);
+    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_linux);
 
-    T_UInt          m_start;
+    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_win32);
+    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_osx);
+    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_osx_iphone);
+    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_ps3);
+    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_linux);
+
+    T_UInt                              m_start;
+    ConditionalType<T_UInt, T_Adjust>   m_adjust;
 
   };
 

@@ -176,7 +176,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG; TLOC_USE_STD_ALLOC"
+				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -462,6 +462,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocLinkMe.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocMemory.cpp"
 			>
 		</File>
 		<File

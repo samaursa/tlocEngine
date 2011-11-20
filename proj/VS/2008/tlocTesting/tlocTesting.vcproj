@@ -293,6 +293,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocArrayTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocArrayTest.h"
 					>
 				</File>

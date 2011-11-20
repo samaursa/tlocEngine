@@ -4,7 +4,6 @@
 
 #include "tlocBase.h"
 #include <wctype.h>
-#include <limits>
 #include <limits.h>
 
 namespace tloc
@@ -125,8 +124,8 @@ namespace tloc
     TL_FI bool       operator> (const this_type& aOther) const;
     TL_FI bool       operator> (const T& aOther) const;
 
-    TL_FI const T&   get() const;
-    TL_FI T          value() const;
+    TL_FI const T&   Get() const;
+    TL_FI T          Value() const;
   };
 
   template <typename T>
@@ -176,8 +175,8 @@ namespace tloc
     TL_FI bool       operator> (const this_type& aOther) const;
     TL_FI bool       operator> (const T& aOther) const;
 
-    TL_FI const T&   get() const;
-    TL_FI T          value() const;
+    TL_FI const T&   Get() const;
+    TL_FI T          Value() const;
 
   private:
 
@@ -197,7 +196,16 @@ namespace tloc
   T operator-( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOtherValue - aOther.get();
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+
+  template <typename T>
+  T operator-( const T& aOtherValue,
+               const ConditionalType<T, true>& aOther)
+  {
+    return aOtherValue - aOther.Get();
   }
 
   template <typename T, bool T_DeclareValue>
@@ -211,7 +219,15 @@ namespace tloc
   T operator/( const T& aOtherValue,
                const ConditionalType<T, T_DeclareValue>& aOther)
   {
-    return aOtherValue / aOther.get();
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+  template <typename T>
+  T operator/( const T& aOtherValue,
+               const ConditionalType<T, true>& aOther)
+  {
+    return aOtherValue / aOther.Get();
   }
 
   template <typename T, bool T_DeclareValue>
@@ -255,28 +271,6 @@ namespace tloc
   {
     return aOther.operator < (aOtherValue);
   }
-
-  //////////////////////////////////////////////////////////////////////////
-  // Containers
-
-  /*template <typename T>
-  class FwVecArray : public std::vector<T> {};
-
-  template <typename T, typename _Ty,
-    typename _Pr = less<_Kty>,
-    typename _Alloc = allocator<pair<const _Kty, _Ty> >>
-  class FwMap : public std::map<T, _Ty, _Pr, _Alloc> {};
-
-  template <typename _Ty, typename _Ax = allocator<_Ty> >
-  class FwList : public std::list<_Ty, _Ax> {};*/
-
-  /*typedef FwVecArray<tl_uchar>     FwVecUChar;
-  typedef FwVecArray<tl_uint32>    FwVecUInt;
-  typedef FwVecArray<tl_ulong>     FwVecULong;
-  typedef FwVecArray<tl_int32>     FwVecInt;
-  typedef FwVecArray<tl_real32>    FwVecFloat;
-  typedef FwVecArray<tl_real64>    FwVecDouble;*/
-  /*typedef FwVecArray<std::string>  FwVecString;*/
 };
 
 #endif

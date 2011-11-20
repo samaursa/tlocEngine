@@ -49,6 +49,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
+				WarnAsError="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -116,6 +117,7 @@
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
+				WarnAsError="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -181,6 +183,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
+				WarnAsError="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -438,6 +441,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocTime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.inl"
 				>
 			</File>
 		</Filter>

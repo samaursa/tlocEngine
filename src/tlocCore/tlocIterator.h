@@ -2,6 +2,7 @@
 #define TLOC_ITERATOR_H
 
 #include "tlocBase.h"
+#include "tlocTypes.h"
 #include "tlocTypeTraits.h"
 
 #ifndef TLOC_DISABLE_ASSERT_ARRAY

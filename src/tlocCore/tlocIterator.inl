@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocTypes.inl"
+
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Pre-defined iterators

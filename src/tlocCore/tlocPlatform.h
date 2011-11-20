@@ -19,22 +19,22 @@
 
 namespace tloc { namespace core {
 
-  struct platform_win32 {};
-  struct platform_win64 {};
-  struct platform_xbox : public platform_win32 {};
-  struct platform_osx {};
-  struct platform_osx_iphone : public platform_osx {};
-  struct platform_linux {};
-  struct platform_ps3 {};
+  struct Platform_win32 {};
+  struct Platform_win64 {};
+  struct Platform_xbox : public Platform_win32 {};
+  struct Platform_osx {};
+  struct Platform_osx_iphone : public Platform_osx {};
+  struct Platform_linux {};
+  struct Platform_ps3 {};
 
 #if defined(TLOC_WIN32)
-  template <typename T_Platform = platform_win32>
+  template <typename T_Platform = Platform_win32>
 #elif defined(TLOC_WIN64)
-  template <typename T_Platform = platform_win64>
+  template <typename T_Platform = Platform_win64>
 #elif defined(TLOC_OS_MAC)
-  template <typename T_Platform = platform_osx>
+  template <typename T_Platform = Platform_osx>
 #elif defined(TLOC_LINUX)
-  template <typename T_Platform = platform_linux>
+  template <typename T_Platform = Platform_linux>
 #endif
   class PlatformInfo
   {
@@ -54,13 +54,13 @@ namespace tloc { namespace core {
     static platform_type GetPlatformType();
 
   private:
-    static const char*  DoGetPlatformName(platform_win32);
-    static const char*  DoGetPlatformName(platform_win64);
-    static const char*  DoGetPlatformName(platform_xbox);
-    static const char*  DoGetPlatformName(platform_osx);
-    static const char*  DoGetPlatformName(platform_osx_iphone);
-    static const char*  DoGetPlatformName(platform_linux);
-    static const char*  DoGetPlatformName(platform_ps3);
+    static const char*  DoGetPlatformName(Platform_win32);
+    static const char*  DoGetPlatformName(Platform_win64);
+    static const char*  DoGetPlatformName(Platform_xbox);
+    static const char*  DoGetPlatformName(Platform_osx);
+    static const char*  DoGetPlatformName(Platform_osx_iphone);
+    static const char*  DoGetPlatformName(Platform_linux);
+    static const char*  DoGetPlatformName(Platform_ps3);
 
     static const char* platforms[total_platforms];
   };

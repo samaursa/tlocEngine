@@ -46,43 +46,43 @@ namespace tloc { namespace core {
   // Helper functions
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_win32)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win32)
   {
     return platforms[win32];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_win64)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win64)
   {
     return platforms[win64];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_xbox)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_xbox)
   {
     return platforms[xbox];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_osx)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_osx)
   {
     return platforms[osx];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_osx_iphone)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_osx_iphone)
   {
     return platforms[osx_iphone];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_linux)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_linux)
   {
     return platforms[linux];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(platform_ps3)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_ps3)
   {
     return platforms[ps3];
   }

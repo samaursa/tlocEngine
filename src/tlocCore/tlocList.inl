@@ -827,7 +827,7 @@ namespace tloc { namespace core {
   TL_FI typename List<LIST_TEMP>::size_type
     List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_stored) const
   {
-    return m_size.value();
+    return m_size.Value();
   }
 
   template <LIST_TEMP_TYPES>

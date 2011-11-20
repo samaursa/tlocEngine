@@ -5,6 +5,7 @@
 #include <float.h>
 
 #include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocTypes.h"
 
 namespace tloc {
 

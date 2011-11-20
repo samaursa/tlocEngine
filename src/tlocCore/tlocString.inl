@@ -1,11 +1,12 @@
 #ifndef TLOC_STRING_INL
 #define TLOC_STRING_INL
 
-#include "tlocString.h"
-
 #ifndef TLOC_STRING_H
 #error "Must include header before including the inline file"
 #endif
+
+#include "tlocAlgorithms.inl"
+#include <string.h>
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////

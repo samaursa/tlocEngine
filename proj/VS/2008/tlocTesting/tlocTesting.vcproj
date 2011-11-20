@@ -253,11 +253,23 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\tlocTestCommon.h"
+				>
+			</File>
 			<Filter
 				Name="Math"
 				>
 				<File
+					RelativePath=".\tlocMathTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMathTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMatrix2Test.cpp"
 					>
 				</File>
 				<File
@@ -265,7 +277,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocMatrix3Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMatrix3Test.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMatrixTest.cpp"
 					>
 				</File>
 				<File
@@ -273,11 +293,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocVector2Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocVector2Test.h"
 					>
 				</File>
 				<File
+					RelativePath=".\tlocVector3Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocVector3Test.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocVectorTest.cpp"
 					>
 				</File>
 				<File
@@ -288,6 +320,10 @@
 			<Filter
 				Name="Core"
 				>
+				<File
+					RelativePath=".\tlocAlgorithmsTest.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\tlocAlgorithmsTest.h"
 					>
@@ -301,7 +337,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocIteratorTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocIteratorTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocListTest.cpp"
 					>
 				</File>
 				<File
@@ -309,7 +353,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocMemoryTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMemoryTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocStringTest.cpp"
 					>
 				</File>
 				<File
@@ -317,11 +369,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocTableTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocTableTest.h"
 					>
 				</File>
 				<File
+					RelativePath=".\tlocTupleTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocTupleTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocTypesTest.cpp"
 					>
 				</File>
 				<File

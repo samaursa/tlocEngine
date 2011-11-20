@@ -5,8 +5,6 @@
 #include "tlocAlgorithms.h"
 #include "tlocTypeTraits.h"
 
-#include <string.h>
-
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Strings
 

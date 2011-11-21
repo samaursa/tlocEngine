@@ -2,7 +2,7 @@
 
 namespace tloc { namespace core {
 
-  PlatformInfo<> g_platformInfo;
+  template PlatformInfo<>;
 
   //////////////////////////////////////////////////////////////////////////
   // PlatformInfo
@@ -23,7 +23,7 @@ namespace tloc { namespace core {
   template <typename T_Platform>
   const char* PlatformInfo<T_Platform>::GetPlatformName()
   {
-    return GetPlatformName(platform_type());
+    return DoGetPlatformName(platform_type());
   }
 
   template <typename T_Platform>
@@ -39,7 +39,7 @@ namespace tloc { namespace core {
   typename PlatformInfo<T_Platform>::platform_type
     PlatformInfo<T_Platform>::GetPlatformType()
   {
-    return platform_type;
+    return platform_type();
   }
 
   //------------------------------------------------------------------------

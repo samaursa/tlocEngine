@@ -1,6 +1,10 @@
 #include "tlocTypes.inl"
-
 #include "tlocPlatform.h"
+
+#ifndef TLOC_TIME_H
+#error "Must include header before including the inline file"
+#endif
+#include "tlocTime.h"
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 #include <Windows.h>
@@ -23,11 +27,25 @@ namespace tloc { namespace core {
   template <TIMER_TYPES>
   Timer<TIMER_PARAMS>::Timer()
   {
+    Calibrate();
   }
 
   template <TIMER_TYPES>
   Timer<TIMER_PARAMS>::~Timer()
   {
+  }
+
+  template <TIMER_TYPES>
+  TL_I void Timer<TIMER_PARAMS>::Calibrate(bool aCalibrate)
+  {
+    if (aCalibrate)
+    {
+      m_adjustInSeconds = 0;
+      Reset();
+      m_adjustInSeconds = ElapsedSeconds();
+    }
+
+    Reset();
   }
 
   template <TIMER_TYPES>
@@ -63,9 +81,7 @@ namespace tloc { namespace core {
   template <TIMER_TYPES>
   TL_I void Timer<TIMER_PARAMS>::DoReset(Platform_win32)
   {
-    T_UInt perfCount;
-    QueryPerformanceCounter( (LARGE_INTEGER*) &perfCount);
-    m_start = perfCount;
+    QueryPerformanceCounter( (LARGE_INTEGER*) &m_start);
   }
 
   template <TIMER_TYPES>
@@ -98,7 +114,15 @@ namespace tloc { namespace core {
   template <TIMER_TYPES>
   TL_I T_Real Timer<TIMER_PARAMS>::DoGetElapsedSeconds(Platform_win32)
   {
-    return 0;
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency(&freq);
+
+    LARGE_INTEGER end;
+    QueryPerformanceCounter( &end);
+
+    T_UInt delta = end.QuadPart - m_start;
+
+    return (delta / (T_Real)freq.QuadPart) + m_adjustInSeconds;
   }
 
   template <TIMER_TYPES>
@@ -135,7 +159,7 @@ namespace tloc { namespace core {
   template <TIMER_TYPES>
   TL_I T_UInt Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds(Platform_win32)
   {
-    return 0;
+    return (T_UInt)(ElapsedSeconds() * (T_Real)1000.0);
   }
 
   template <TIMER_TYPES>
@@ -172,7 +196,7 @@ namespace tloc { namespace core {
   template <TIMER_TYPES>
   TL_I T_UInt Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds(Platform_win32)
   {
-    return 0;
+    return (T_UInt)(ElapsedSeconds() * (T_Real)1000000.0);
   }
 
   template <TIMER_TYPES>

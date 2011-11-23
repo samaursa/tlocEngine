@@ -217,109 +217,97 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="Matrix"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="Vector"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMath.h"
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector.inl"
 				>
 			</File>
-			<Filter
-				Name="Matrix"
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.cpp"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Vector"
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.h"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector2.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocVector3.inl"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.inl"
+				>
+			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocMath.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

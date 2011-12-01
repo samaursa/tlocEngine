@@ -42,6 +42,26 @@ namespace TestingTuple
 
     CHECK_TUP(p, 8, 8, 8, 8);
     CHECK_TUP(q, 5, 5, 5, 5);
+
+    u32 numberSet[4] = {1, 2, 3, 4};
+    p.Set(numberSet);
+    CHECK_TUP(p, 1, 2, 3, 4);
+
+    core::Tuple<s32, 4> r(numberSet);
+    CHECK_TUP(r, 1, 2, 3, 4);
+
+    r.Set(0);
+    CHECK_TUP(r, 0, 0, 0, 0);
+    r = numberSet;
+    CHECK_TUP(r, 1, 2, 3, 4);
+
+    core::Tuple<s32, 4> s(r);
+    CHECK_TUP(s, 1, 2, 3, 4);
+
+    s.Set(0);
+    CHECK_TUP(s, 0, 0, 0, 0);
+    s = r;
+    CHECK_TUP(s, 1, 2, 3, 4);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Operators",

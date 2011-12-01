@@ -16,6 +16,9 @@ namespace tloc { namespace core {
     TL_FI Tuple();
     TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
 
+    template <typename T_ArrayType>
+    TL_FI Tuple(const T_ArrayType (&aArray)[T_Size]);
+
     TL_FI explicit Tuple(const T& aValue);
 
     //------------------------------------------------------------------------
@@ -42,19 +45,41 @@ namespace tloc { namespace core {
     // Modifies this tuple so that all values of this tuple equal aValue
     TL_FI void Set(T aValue);
 
+    // Copies the values of the other tuple into this tuple
+    template <typename T_TupleType>
+    TL_FI void Set(const Tuple<T_TupleType, T_Size>& aTuple);
+
+    // Copies the values in the array into this tuple
+    template <typename T_ArrayType>
+    TL_FI void Set(const T_ArrayType (&aArray)[T_Size]);
+
     // Swaps the tuple with the incoming vector
     TL_FI void Swap(Tuple<T, T_Size>& aVector);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI Tuple<T, T_Size>& operator= (const Tuple<T, T_Size>& aTuple);
+    template <typename T_TupleType>
+    TL_FI Tuple<T, T_Size>& operator= (const Tuple<T_TupleType, T_Size>& aTuple);
+    template <typename T_ArrayType>
+    TL_FI Tuple<T, T_Size>& operator= (const T_ArrayType (&aArray)[T_Size]);
+
     TL_FI bool operator == (const Tuple<T, T_Size>& aTuple);
     TL_FI bool operator != (const Tuple<T, T_Size>& aTuple);
 
   protected:
 
     T m_values[T_Size];
+
+  private:
+
+    template <typename T_ArrayType>
+    TL_FI void DoSet(const T_ArrayType (&aArray)[T_Size], type_false);
+    TL_FI void DoSet(const T (&aArray)[T_Size], type_true);
+
+    template <typename T_TupleType>
+    TL_FI void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
+    TL_FI void DoSet(const Tuple<T, T_Size>& aTuple, type_true);
   };
 
 };};

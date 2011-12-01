@@ -1,10 +1,11 @@
 #include "tlocMath/tlocVector2.h"
+#include "tlocMath/tlocVector2.inl"
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::Vec2f;
-template tloc::Vec2d;
-template tloc::Vec2l;
+template tloc::math::Vec2f;
+template tloc::math::Vec2d;
+template tloc::math::Vec2l;
 
 //------------------------------------------------------------------------
 #ifndef TLOC_FULL_SOURCE

@@ -5,9 +5,10 @@
 #include <float.h>
 
 #include "tlocCore/tlocBase.h"
+#include "tlocCore/tlocTypes.h"
 
-namespace tloc
-{
+namespace tloc {
+
   template <typename T>
   class Math
   {
@@ -96,10 +97,7 @@ namespace tloc
   typedef Math<f32>   Mathf;
   typedef Math<f64>   Mathd;
   typedef Math<f128>  Mathl;
-};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocMath.inl"
-#endif
+};
 
 #endif

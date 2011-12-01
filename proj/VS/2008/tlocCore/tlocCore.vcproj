@@ -49,7 +49,8 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -116,6 +117,7 @@
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
+				WarnAsError="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -174,14 +176,15 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG; TLOC_USE_STD_ALLOC"
+				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -250,6 +253,14 @@
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocContainersReadme.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.inl"
 				>
 			</File>
 			<Filter
@@ -332,6 +343,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Pair"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocPair.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="String"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="DataStructures"
@@ -362,26 +405,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="String"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Types"
 			>
 			<File
@@ -401,7 +424,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocTypeTraits.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Timers"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTime.inl"
 				>
 			</File>
 		</Filter>
@@ -422,11 +465,23 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocMemory.cpp"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocMemory.h"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.h"
 			>
 		</File>
 	</Files>

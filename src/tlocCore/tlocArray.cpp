@@ -1,3 +1,4 @@
 #include "tlocArray.h"
+#include "tlocArray.inl"
 
-IntentionallyEmptySourceFile();
+TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();

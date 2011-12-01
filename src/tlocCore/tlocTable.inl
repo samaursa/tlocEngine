@@ -1,5 +1,11 @@
-namespace tloc
-{
+#ifndef TLOC_TABLE_INL
+#define TLOC_TABLE_INL
+
+#ifndef TLOC_TABLE_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Table<N, N>
 
@@ -204,4 +210,6 @@ namespace tloc
   {
     return !operator==(aTable);
   }
-};
+};};
+
+#endif

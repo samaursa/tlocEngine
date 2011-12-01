@@ -41,13 +41,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
+				PreprocessorDefinitions="WIN32;TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -116,11 +117,12 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
 				WarningLevel="4"
+				WarnAsError="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -190,13 +192,14 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_PATH)/src/&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; TLOC_ENABLE_CPPUNWIND; TLOC_ENABLE_CPPRTTI; TLOC_USE_STD_ALLOC"
+				PreprocessorDefinitions="WIN32;TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -242,75 +245,149 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="Core"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\tlocAlgorithmsTest.cpp"
 				>
 			</File>
-			<Filter
-				Name="Math"
+			<File
+				RelativePath=".\tlocAlgorithmsTest.h"
 				>
-				<File
-					RelativePath=".\tlocMathTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrix2Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrix3Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMatrixTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVector2Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVector3Test.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVectorTest.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Core"
+			</File>
+			<File
+				RelativePath=".\tlocArrayTest.cpp"
 				>
-				<File
-					RelativePath=".\tlocAlgorithmsTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocArrayTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMemoryTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocStringTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTableTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTupleTest.h"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\tlocArrayTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocIteratorTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocIteratorTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocListTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocListTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMemoryTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMemoryTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocStringTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocStringTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTableTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTableTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTupleTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTupleTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTypesTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTypesTest.h"
+				>
+			</File>
 		</Filter>
+		<Filter
+			Name="Math"
+			>
+			<File
+				RelativePath=".\tlocMathTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMathTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrix2Test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrix2Test.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrix3Test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrix3Test.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrixTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocMatrixTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVector2Test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVector2Test.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVector3Test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVector3Test.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVectorTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocVectorTest.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\tlocTestCommon.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

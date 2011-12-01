@@ -4,10 +4,33 @@
 #define TLOC_BASE_H
 
 #include <assert.h>
+#include <3rdParty/loki/static_check.h>
+
+#define USING_TLOC  using namespace tloc
+
+//////////////////////////////////////////////////////////////////////////
+// Make sure we are not using standard containers
+
+#ifndef TLOC_USING_STL
+# if defined(_VECTOR_) || defined(_MAP_) || defined(_LIST_) || defined(_BITSET_) || defined (_DEQUE_) || defined(_QUEUE_) || defined(_SET_) || defined(_STACK_) || defined (_ALGORITHM_) || defined (_STRING_)
+#   error "STL use is prohibited. To enable usage of STL, compile with TLOC_USING_STL"
+# endif
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // Common macros
 #define _CRT_SECURE_NO_WARNINGS 1
+
+#if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
+# ifdef _SECURE_SCL
+# undef _SECURE_SCL
+# endif
+
+# define _SECURE_SCL 0  // turn of checked iterators
+# pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
+# pragma inline_recursion( on )
+
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // TLOC Engine No source
@@ -89,11 +112,11 @@
 // transitions, there are helper macros defined in <tlocMemory.h>
 //
 // Supported macros:
-// TLOC_USE_NED_MALLOC
+// TLOC_USING_NED_MALLOC
 
 // Use nedmalloc
-#ifndef TLOC_USE_STD_ALLOC
-  #define TLOC_USE_NED_MALLOC
+#ifndef TLOC_USING_STD_ALLOC
+  #define TLOC_USING_NED_MALLOC
 #endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
@@ -179,7 +202,7 @@
 #endif
 
 #ifdef TLOC_FULL_SOURCE
-# define TL_STATIC_I  static  TLOC_INLINE
+# define TL_STATIC_I  static TLOC_INLINE
 # define TL_STATIC_FI static TLOC_FORCE_INLINE
 #else
 # define TL_STATIC_I  static
@@ -187,12 +210,10 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// FwTypes
-
-#include "tlocTypes.h"
-
-//////////////////////////////////////////////////////////////////////////
 // Assertions
+
+//````````````````````````````````````````````````````````````````````````
+// Run-time
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
@@ -205,12 +226,33 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+// Use this macro when warning the user of a potential problem that the user may
+// have overlooked. These can be safely disabled, i.e. the function guarantees
+// it will work properly with these asserts disabled
+#   ifndef TLOC_DISABLE_ASSERT_WARNINGS
+#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " _CRT_WIDE(_Msg))
+#   else
+#     define TLOC_ASSERT_WARNG(_Expression, _Msg)
+#   endif
+
 #else
-#define FwAssert(_Expression, _Msg)
-#define FWASSERT(_Expression, _Msg)
 #define TLOC_ASSERT(_Expression, _Msg)
 #define TLOC_ASSERTW(_Expression, _Msg)
+#define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
+
+//````````````````````````````````````````````````````````````````````````
+// Compile time
+#ifndef TLOC_DISABLE_STATIC_ASSERT
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg)
+#else
+# define TLOC_STATIC_ASSERT(_Expression, _Msg)
+#endif
+
+# define TLOC_STATIC_ASSERT_WIP() \
+  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
+# define TLOC_ASSERT_WIP() \
+  TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
 
 //------------------------------------------------------------------------
 // Low level assertions
@@ -239,8 +281,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Logging
 
-#define LOG_ERRORBOX ""
-#define LOG_CHECKBOX ""
+#define TLOC_LOG_ERRORBOX ""
+#define TLOC_LOG_CHECKBOX ""
 
 //////////////////////////////////////////////////////////////////////////
 // Miscellaneous
@@ -257,6 +299,9 @@
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#define IntentionallyEmptySourceFile() namespace { char NoEmptyFileDummy##__LINE__; }
+#define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
+  namespace { char NoEmptyFileDummy##__LINE__; }
+#define TLOC_NOT_EMPTY_SOURCE_FILE() \
+  namespace { char NoEmptyFileDummy##__LINE__; }
 
 #endif

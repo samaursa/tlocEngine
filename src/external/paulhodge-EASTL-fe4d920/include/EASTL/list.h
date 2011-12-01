@@ -36,28 +36,28 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///////////////////////////////////////////////////////////////////////////////
 // This file implements a doubly-linked list, much like the C++ std::list class.
 // The primary distinctions between this list and std::list are:
-//    - list doesn't implement some of the less-frequently used functions 
+//    - list doesn't implement some of the less-frequently used functions
 //      of std::list. Any required functions can be added at a later time.
 //    - list has a couple extension functions that increase performance.
 //    - list can contain objects with alignment requirements. std::list cannot
 //      do so without a bit of tedious non-portable effort.
-//    - list has optimizations that don't exist in the STL implementations 
+//    - list has optimizations that don't exist in the STL implementations
 //      supplied by library vendors for our targeted platforms.
 //    - list supports debug memory naming natively.
-//    - list::size() by default is not a constant time function, like the list::size 
-//      in some std implementations such as STLPort and SGI STL but unlike the 
+//    - list::size() by default is not a constant time function, like the list::size
+//      in some std implementations such as STLPort and SGI STL but unlike the
 //      list in Dinkumware and Metrowerks. The EASTL_LIST_SIZE_CACHE option can change this.
 //    - list provides a guaranteed portable node definition that allows users
 //      to write custom fixed size node allocators that are portable.
 //    - list is easier to read, debug, and visualize.
 //    - list is savvy to an environment that doesn't have exception handling,
 //      as is sometimes the case with console or embedded environments.
-//    - list has less deeply nested function calls and allows the user to 
+//    - list has less deeply nested function calls and allows the user to
 //      enable forced inlining in debug builds in order to reduce bloat.
-//    - list doesn't keep a member size variable. This means that list is 
+//    - list doesn't keep a member size variable. This means that list is
 //      smaller than std::list (depends on std::list) and that for most operations
 //      it is faster than std::list. However, the list::size function is slower.
-//    - list::size_type is defined as eastl_size_t instead of size_t in order to 
+//    - list::size_type is defined as eastl_size_t instead of size_t in order to
 //      save memory and run faster on 64 bit systems.
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -112,11 +112,11 @@ namespace eastl
     /// ListNodeBase
     ///
     /// We define a ListNodeBase separately from ListNode (below), because it allows
-    /// us to have non-templated operations such as insert, remove (below), and it 
+    /// us to have non-templated operations such as insert, remove (below), and it
     /// makes it so that the list anchor node doesn't carry a T with it, which would
     /// waste space and possibly lead to surprising the user due to extra Ts existing
-    /// that the user didn't explicitly create. The downside to all of this is that 
-    /// it makes debug viewing of a list harder, given that the node pointers are of 
+    /// that the user didn't explicitly create. The downside to all of this is that
+    /// it makes debug viewing of a list harder, given that the node pointers are of
     /// type ListNodeBase and not ListNode. However, see ListNodeBaseProxy below.
     ///
     struct ListNodeBase
@@ -141,13 +141,13 @@ namespace eastl
         /// We do this because we want users in debug builds to be able to easily
         /// view the list's contents in a debugger GUI. We do this only in a debug
         /// build for the reasons described above: that ListNodeBase needs to be
-        /// as efficient as possible and not cause code bloat or extra function 
+        /// as efficient as possible and not cause code bloat or extra function
         /// calls (inlined or not).
         ///
-        /// ListNodeBaseProxy *must* be separate from its parent class ListNode 
+        /// ListNodeBaseProxy *must* be separate from its parent class ListNode
         /// because the list class must have a member node which contains no T value.
         /// It is thus incorrect for us to have one single ListNode class which
-        /// has mpNext, mpPrev, and mValue. So we do a recursive template trick in 
+        /// has mpNext, mpPrev, and mValue. So we do a recursive template trick in
         /// the definition and use of SListNodeBaseProxy.
         ///
         template <typename LN>
@@ -216,7 +216,7 @@ namespace eastl
 
     /// ListBase
     ///
-    /// See VectorBase (class vector) for an explanation of why we 
+    /// See VectorBase (class vector) for an explanation of why we
     /// create this separate base class.
     ///
     template <typename T, typename Allocator>
@@ -272,18 +272,18 @@ namespace eastl
     /// -- size() is O(n) --
     /// Note that as of this writing, list::size() is an O(n) operation. That is, getting the size
     /// of the list is not a fast operation, as it requires traversing the list and counting the nodes.
-    /// We could make list::size() be fast by having a member mSize variable. There are reasons for 
+    /// We could make list::size() be fast by having a member mSize variable. There are reasons for
     /// having such functionality and reasons for not having such functionality. We currently choose
     /// to not have a member mSize variable as it would add four bytes to the class, add a tiny amount
     /// of processing to functions such as insert and erase, and would only serve to improve the size
     /// function, but no others. The alternative argument is that the C++ standard states that std::list
     /// should be an O(1) operation (i.e. have a member size variable), most C++ standard library list
-    /// implementations do so, the size is but an integer which is quick to update, and many users 
+    /// implementations do so, the size is but an integer which is quick to update, and many users
     /// expect to have a fast size function. The EASTL_LIST_SIZE_CACHE option changes this.
     /// To consider: Make size caching an optional template parameter.
     ///
     /// Pool allocation
-    /// If you want to make a custom memory pool for a list container, your pool 
+    /// If you want to make a custom memory pool for a list container, your pool
     /// needs to contain items of type list::node_type. So if you have a memory
     /// pool that has a constructor that takes the size of pool items and the
     /// count of pool items, you would do this (assuming that MemoryPool implements
@@ -341,7 +341,7 @@ namespace eastl
         void assign(size_type n, const value_type& value);
 
         template <typename InputIterator>                       // It turns out that the C++ std::list specifies a two argument
-        void assign(InputIterator first, InputIterator last);   // version of assign that takes (int size, int value). These are not 
+        void assign(InputIterator first, InputIterator last);   // version of assign that takes (int size, int value). These are not
                                                                 // iterators, so we need to do a template compiler trick to do the right thing.
         iterator       begin();
         const_iterator begin() const;
@@ -406,7 +406,7 @@ namespace eastl
 
     public:
         // Sorting functionality
-        // This is independent of the global sort algorithms, as lists are 
+        // This is independent of the global sort algorithms, as lists are
         // linked nodes and can be sorted more efficiently by moving nodes
         // around in ways that global sort algorithms aren't privy to.
 
@@ -504,7 +504,7 @@ namespace eastl
             pNode->mpNext = pNode->mpPrev;
             pNode->mpPrev = pTemp;
             pNode         = pNode->mpPrev;
-        } 
+        }
         while(pNode != this);
     }
 
@@ -552,7 +552,7 @@ namespace eastl
         : mpNode(const_cast<node_type*>(x.mpNode))
     {
         // Empty
-    } 
+    }
 
 
     template <typename T, typename Pointer, typename Reference>
@@ -600,7 +600,7 @@ namespace eastl
 
 
     template <typename T, typename Pointer, typename Reference>
-    inline typename ListIterator<T, Pointer, Reference>::this_type 
+    inline typename ListIterator<T, Pointer, Reference>::this_type
     ListIterator<T, Pointer, Reference>::operator--(int)
     {
         this_type temp(*this);
@@ -613,7 +613,7 @@ namespace eastl
     // Thus we provide additional template paremeters here to support this. The defect report does not
     // require us to support comparisons between reverse_iterators and const_reverse_iterators.
     template <typename T, typename PointerA, typename ReferenceA, typename PointerB, typename ReferenceB>
-    inline bool operator==(const ListIterator<T, PointerA, ReferenceA>& a, 
+    inline bool operator==(const ListIterator<T, PointerA, ReferenceA>& a,
                            const ListIterator<T, PointerB, ReferenceB>& b)
     {
         return a.mpNode == b.mpNode;
@@ -621,17 +621,17 @@ namespace eastl
 
 
     template <typename T, typename PointerA, typename ReferenceA, typename PointerB, typename ReferenceB>
-    inline bool operator!=(const ListIterator<T, PointerA, ReferenceA>& a, 
+    inline bool operator!=(const ListIterator<T, PointerA, ReferenceA>& a,
                            const ListIterator<T, PointerB, ReferenceB>& b)
     {
         return a.mpNode != b.mpNode;
     }
 
 
-    // We provide a version of operator!= for the case where the iterators are of the 
+    // We provide a version of operator!= for the case where the iterators are of the
     // same type. This helps prevent ambiguity errors in the presence of rel_ops.
     template <typename T, typename Pointer, typename Reference>
-    inline bool operator!=(const ListIterator<T, Pointer, Reference>& a, 
+    inline bool operator!=(const ListIterator<T, Pointer, Reference>& a,
                            const ListIterator<T, Pointer, Reference>& b)
     {
         return a.mpNode != b.mpNode;
@@ -760,7 +760,7 @@ namespace eastl
 
     template <typename T, typename Allocator>
     inline list<T, Allocator>::list(size_type n, const value_type& value, const allocator_type& allocator)
-        : base_type(allocator) 
+        : base_type(allocator)
     {
         // insert(iterator((ListNodeBase*)&mNode), n, value);
         DoInsertValues((ListNodeBase*)&mNode, n, value);
@@ -979,7 +979,7 @@ namespace eastl
 
 
     // It turns out that the C++ std::list specifies a two argument
-    // version of assign that takes (int size, int value). These are not 
+    // version of assign that takes (int size, int value). These are not
     // iterators, so we need to do a template compiler trick to do the right thing.
     template <typename T, typename Allocator>
     template <typename InputIterator>
@@ -1003,9 +1003,9 @@ namespace eastl
     template <typename T, typename Allocator>
     inline void list<T, Allocator>::reset()
     {
-        // The reset function is a special extension function which unilaterally 
-        // resets the container to an empty state without freeing the memory of 
-        // the contained objects. This is useful for very quickly tearing down a 
+        // The reset function is a special extension function which unilaterally
+        // resets the container to an empty state without freeing the memory of
+        // the contained objects. This is useful for very quickly tearing down a
         // container built into scratch memory.
         DoInit();
         #if EASTL_LIST_SIZE_CACHE
@@ -1022,7 +1022,7 @@ namespace eastl
 
         while((current.mpNode != &mNode) && (i < n))
         {
-            ++current;  
+            ++current;
             ++i;
         }
         if(i == n)
@@ -1139,7 +1139,7 @@ namespace eastl
         return (ListNodeBase*)pNode;
     }
 
-    
+
     template <typename T, typename Allocator>
     inline typename list<T, Allocator>::iterator
     list<T, Allocator>::insert(iterator position, const value_type& value)
@@ -1256,7 +1256,7 @@ namespace eastl
     inline void list<T, Allocator>::splice(iterator position, this_type& x)
     {
         // Splicing operations cannot succeed if the two containers use unequal allocators.
-        // This issue is not addressed in the C++ 1998 standard but is discussed in the 
+        // This issue is not addressed in the C++ 1998 standard but is discussed in the
         // LWG defect reports, such as #431. There is no simple solution to this problem.
         // One option is to throw an exception. For now our answer is simply: don't do this.
         // EASTL_ASSERT(mAllocator == x.mAllocator); // Disabled because our member sort function uses splice but with allocators that may be unequal. There isn't a simple workaround aside from disabling this assert.
@@ -1484,8 +1484,8 @@ namespace eastl
         if((static_cast<node_type*>(mNode.mpNext) != &mNode) &&
            (static_cast<node_type*>(mNode.mpNext) != static_cast<node_type*>(mNode.mpPrev)))
         {
-            // We may have a stack space problem here if sizeof(this_type) is large (usually due to 
-            // usage of a fixed_list). The only current resolution is to find an alternative way of 
+            // We may have a stack space problem here if sizeof(this_type) is large (usually due to
+            // usage of a fixed_list). The only current resolution is to find an alternative way of
             // doing things. I (Paul Pedriana) believe that the best long-term solution to this problem
             // is to revise this sort function to not use this_type but instead use a ListNodeBase
             // which involves no allocators and sort at that level, entirely with node pointers.
@@ -1494,9 +1494,9 @@ namespace eastl
             this_type leftList(get_allocator());     // This should cause no memory allocation.
             this_type rightList(get_allocator());
 
-            // We find an iterator which is in the middle of the list. The fastest way to do 
-            // this is to iterate from the base node both forwards and backwards with two 
-            // iterators and stop when they meet each other. Recall that our size() function 
+            // We find an iterator which is in the middle of the list. The fastest way to do
+            // this is to iterate from the base node both forwards and backwards with two
+            // iterators and stop when they meet each other. Recall that our size() function
             // is not O(1) but is instead O(n), at least when EASTL_LIST_SIZE_CACHE is disabled.
             #if EASTL_LIST_SIZE_CACHE
                 iterator mid(begin());
@@ -1539,8 +1539,8 @@ namespace eastl
         if((static_cast<node_type*>(mNode.mpNext) != &mNode) &&
            (static_cast<node_type*>(mNode.mpNext) != static_cast<node_type*>(mNode.mpPrev)))
         {
-            // We may have a stack space problem here if sizeof(this_type) is large (usually due to 
-            // usage of a fixed_list). The only current resolution is to find an alternative way of 
+            // We may have a stack space problem here if sizeof(this_type) is large (usually due to
+            // usage of a fixed_list). The only current resolution is to find an alternative way of
             // doing things. I (Paul Pedriana) believe that the best long-term solution to this problem
             // is to revise this sort function to not use this_type but instead use a ListNodeBase
             // which involves no allocators and sort at that level, entirely with node pointers.
@@ -1549,9 +1549,9 @@ namespace eastl
             this_type leftList(get_allocator());     // This should cause no memory allocation.
             this_type rightList(get_allocator());
 
-            // We find an iterator which is in the middle of the list. The fastest way to do 
-            // this is to iterate from the base node both forwards and backwards with two 
-            // iterators and stop when they meet each other. Recall that our size() function 
+            // We find an iterator which is in the middle of the list. The fastest way to do
+            // this is to iterate from the base node both forwards and backwards with two
+            // iterators and stop when they meet each other. Recall that our size() function
             // is not O(1) but is instead O(n), at least when EASTL_LIST_SIZE_CACHE is disabled.
             #if EASTL_LIST_SIZE_CACHE
                 iterator mid(begin());
@@ -1749,7 +1749,7 @@ namespace eastl
         }
 
         if(i == end())
-            return (isf_valid | isf_current); 
+            return (isf_valid | isf_current);
 
         return isf_none;
     }

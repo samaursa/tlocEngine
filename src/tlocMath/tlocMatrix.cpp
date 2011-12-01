@@ -1,4 +1,5 @@
 #include "tlocMatrix.h"
+#include "tlocMatrix.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -24,6 +25,6 @@
 
 #else
 
-IntentionallyEmptySourceFile();
+TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 
 #endif // TLOC_NO_SOURCE

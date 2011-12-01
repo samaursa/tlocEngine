@@ -1,5 +1,12 @@
-namespace tloc
-{
+#ifndef TLOC_MATRIX_INL
+#define TLOC_MATRIX_INL
+
+#ifndef TLOC_MATRIX_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Matrix<N, N>
 
@@ -198,7 +205,7 @@ namespace tloc
   // Operators
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Matrix<T, T_Size>::operator==( const Matrix<T, T_Size>& aMatrix )
+  TL_FI bool Matrix<T, T_Size>::operator==( const Matrix<T, T_Size>& aMatrix )
   {
     ITERATE_MATRIX
     {
@@ -209,8 +216,11 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Matrix<T, T_Size>::operator!=( const Matrix<T, T_Size>& aMatrix )
+  TL_FI bool Matrix<T, T_Size>::operator!=( const Matrix<T, T_Size>& aMatrix )
   {
     return !operator==(aMatrix);
   }
-};
+
+};};
+
+#endif

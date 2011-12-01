@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_VECTOR_3_INL
+#define TLOC_VECTOR_3_INL
+
+#ifndef TLOC_VECTOR_3_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocCore/tlocAlgorithms.inl"
+#include "tlocMath.inl"
+#include "tlocVector.inl"
+
+namespace tloc { namespace math {
 
   //////////////////////////////////////////////////////////////////////////
   // Vector3
@@ -66,7 +76,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1, 
+  TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1,
     const Vector3<T>& aVector2)
   {
     operator=(aVector1);
@@ -76,7 +86,7 @@ namespace tloc
   template <typename T>
   TL_FI void Vector3<T>::FastNorm(const Vector3<T>& aVector)
   {
-    f32 lLength; 
+    f32 lLength;
     lLength = (f32)aVector.LengthSquared();
 
     // Calculate length inverse
@@ -109,4 +119,6 @@ namespace tloc
     m_values[2] *= (T)lLength;
   }
 
-};
+};};
+
+#endif

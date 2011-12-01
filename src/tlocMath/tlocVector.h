@@ -26,13 +26,13 @@
 #define TLOC_ASSERT_VEC(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
   template <typename T, u32 T_Size>
-  class Vector : public Tuple<T, T_Size>
+  class Vector : public core::Tuple<T, T_Size>
   {
   public:
     //------------------------------------------------------------------------
@@ -176,10 +176,7 @@ namespace tloc
   const Vector<T, T_Size> Vector<T, T_Size>::ZERO = Vector<T, T_Size>(0);
   template<typename T, u32 T_Size>
   const Vector<T, T_Size> Vector<T, T_Size>::ONE = Vector<T, T_Size>(1);
-};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocVector.inl"
-#endif
+};};
 
 #endif

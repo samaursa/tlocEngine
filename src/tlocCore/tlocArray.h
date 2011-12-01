@@ -3,6 +3,8 @@
 
 #include "tlocBase.h"
 #include "tlocTypeTraits.h"
+#include "tlocAlgorithms.h"
+#include "tlocIterator.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -13,8 +15,8 @@
 # define TLOC_ASSERT_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Different policies that Array can handle
 
@@ -32,13 +34,18 @@ namespace tloc
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
-    typedef T         value_type;
-    typedef T*        pointer;
-    typedef T&        reference;
-    typedef const T&  const_reference;
-    typedef const T*  const_pointer;
-    typedef T*        iterator;
-    typedef const T*  const_iterator;
+    typedef T                                       value_type;
+    typedef T*                                      pointer;
+    typedef T&                                      reference;
+    typedef const T&                                const_reference;
+    typedef const T*                                const_pointer;
+    typedef T*                                      iterator;
+    typedef const T*                                const_iterator;
+    typedef tl_size                                 size_type;
+    typedef tl_ptrdiff                              difference_type;
+
+    typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
+    typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
     //------------------------------------------------------------------------
     // Functions
@@ -148,12 +155,34 @@ namespace tloc
     friend class Array<T>;
 
   public:
+
+    //------------------------------------------------------------------------
+    // typedefs (similar to vector)
+    typedef T                                       value_type;
+    typedef T*                                      pointer;
+    typedef T&                                      reference;
+    typedef const T&                                const_reference;
+    typedef const T*                                const_pointer;
+    typedef T*                                      iterator;
+    typedef const T*                                const_iterator;
+    typedef tl_size                                 size_type;
+    typedef tl_ptrdiff                              difference_type;
+
+    typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
+    typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
+
+    typedef Array<T>                          this_type;
+    typedef ArrayBase<T>                      base_type;
+
     //------------------------------------------------------------------------
     // Constructors
 
     Array();
     explicit Array(tl_size aSize);
-    explicit Array( const Array<T>& toCopy);
+    Array( const Array<T>& toCopy);
+    Array(tl_size aNumElemsToInsert, const T& aValueToCopy = T());
+    template <typename T_InputIterator>
+    Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
 
     //------------------------------------------------------------------------
     // Capacity
@@ -218,8 +247,7 @@ namespace tloc
                                              T_InputIterator first,
                                              T_InputIterator last);
   };
-};
 
-#include "tlocArray.inl"
+};};
 
 #endif

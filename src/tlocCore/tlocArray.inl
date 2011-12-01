@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_ARRAY_INL
+#define TLOC_ARRAY_INL
+
+#ifndef TLOC_ARRAY_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocAlgorithms.inl"
+#include "tlocIterator.inl"
+
+namespace tloc { namespace core {
+
   //////////////////////////////////////////////////////////////////////////
   // Macros (mostly for assertions)
 
@@ -210,17 +220,17 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::ArrayBase<T>::erase( iterator aPosition )
+  TL_I void ArrayBase<T>::erase( iterator aPosition )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(aPosition);
 
     aPosition->~T();
-    tlCopy(aPosition + 1, m_end, aPosition);
+    copy(aPosition + 1, m_end, aPosition);
     --m_end;
   }
 
   template <typename T>
-  TL_I void tloc::ArrayBase<T>::erase( iterator aRangeBegin, iterator aRangeEnd )
+  TL_I void ArrayBase<T>::erase( iterator aRangeBegin, iterator aRangeEnd )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(aRangeBegin, aRangeEnd);
 
@@ -232,13 +242,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       ++aRangeBegin;
     }
 
-    tlCopy(aRangeEnd, m_end, copyRemainingTo);
+    copy(aRangeEnd, m_end, copyRemainingTo);
 
     m_end = m_end - (aRangeEnd - copyRemainingTo);
   }
 
   template <typename T>
-  TL_I void tloc::ArrayBase<T>::clear()
+  TL_I void ArrayBase<T>::clear()
   {
     erase(m_begin, m_end);
   }
@@ -318,13 +328,25 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   Array<T>::Array( tl_size aSize ) : ArrayBase(aSize)
   {
-    Allocate(aSize);
   }
 
   template <typename T>
-  tloc::Array<T>::Array( const Array<T>& toCopy )
+  Array<T>::Array( const Array<T>& toCopy )
   {
+    insert(m_begin, toCopy.m_begin, toCopy.m_end);
+  }
 
+  template <typename T>
+  Array<T>::Array(tl_size aNumElemsToInsert, const T& aValueToCopy /* = T() */)
+  {
+    insert(0, aNumElemsToInsert, aValueToCopy);
+  }
+
+  template <typename T>
+  template <typename T_InputIterator>
+  Array<T>::Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd)
+  {
+    insert(m_begin, aRangeBegin, aRangeEnd);
   }
 
   //------------------------------------------------------------------------
@@ -379,7 +401,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::Array<T>::shrink( tl_size aNewCapacity )
+  TL_I void Array<T>::shrink( tl_size aNewCapacity )
   {
     if (aNewCapacity < capacity())
     {
@@ -407,7 +429,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::Array<T>::shrink_to_fit()
+  TL_I void Array<T>::shrink_to_fit()
   {
     shrink(size());
   }
@@ -423,7 +445,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(aRepetitionNum);
     }
 
-    tlFill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
+    fill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
   }
 
   template <typename T>
@@ -495,11 +517,11 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::Array<T>::swap( Array<T>& aVec )
+  TL_I void Array<T>::swap( Array<T>& aVec )
   {
-    tloc::tlSwap(m_begin, aVec.m_begin);
-    tloc::tlSwap(m_end, aVec.m_end);
-    tloc::tlSwap(m_capacity, aVec.m_capacity);
+    tlSwap(m_begin, aVec.m_begin);
+    tlSwap(m_end, aVec.m_end);
+    tlSwap(m_capacity, aVec.m_capacity);
   }
 
   //------------------------------------------------------------------------
@@ -521,7 +543,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
       ::new(m_end) T(*(m_end - 1)); // We need to allocate it first
-      tlCopy_Backward(aPosition, m_end - 1, m_end);
+      copy_backward(aPosition, m_end - 1, m_end);
       *aPosition = *valuePtr;
       ++m_end;
     }
@@ -537,7 +559,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void tloc::Array<T>::DoInsertValues( T* aPosition,
+  TL_I void Array<T>::DoInsertValues( T* aPosition,
                                             tl_size aNumElemsToInsert,
                                             const T& aValue )
   {
@@ -561,7 +583,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
         ::new(m_end++) T();
       }
 
-      tlCopy_Backward(aPosition, aPosition + elemsToMove, m_end);
+      copy_backward(aPosition, aPosition + elemsToMove, m_end);
 
       while (aPosition != m_end - elemsToMove)
       {
@@ -596,7 +618,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   template <typename T_Number>
-  TL_I void tloc::Array<T>::DoAssign( T_Number aRepetitionNum,
+  TL_I void Array<T>::DoAssign( T_Number aRepetitionNum,
                                       T_Number aElemToCopy, type_true )
   {
     assign(static_cast<tl_size>(aRepetitionNum), static_cast<T>(aElemToCopy));
@@ -604,7 +626,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   template <typename T_InputIterator>
-  TL_I void tloc::Array<T>::DoAssign( T_InputIterator aRangeBegin,
+  TL_I void Array<T>::DoAssign( T_InputIterator aRangeBegin,
                                       T_InputIterator aRangeEnd, type_false )
   {
     TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd);
@@ -615,7 +637,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(projectedSize);
     }
 
-    tlCopy(aRangeBegin, aRangeEnd, m_begin);
+    copy(aRangeBegin, aRangeEnd, m_begin);
   }
 
   template <typename T>
@@ -662,4 +684,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       DoInsertByIterator(m_begin + oldPosition, first, last);
     }
   }
-};
+
+};};
+
+#endif

@@ -2,8 +2,8 @@
 #ifndef TLOC_TYPES_H
 #define TLOC_TYPES_H
 
+#include "tlocBase.h"
 #include <wctype.h>
-#include <limits>
 #include <limits.h>
 
 namespace tloc
@@ -29,6 +29,7 @@ namespace tloc
   typedef unsigned __int64  u64;
 
   typedef size_t            tl_size;
+  typedef ptrdiff_t         tl_ptrdiff;
 
   //////////////////////////////////////////////////////////////////////////
   // Numerical limits
@@ -64,26 +65,212 @@ namespace tloc
 #define TL_ULLONG_MAX             ULLONG_MAX
 
   //////////////////////////////////////////////////////////////////////////
-  // Containers
+  // Conditional type
+  //
+  // This type is capable of being compiled out if T_DeclareValue = false.
+  // All operators are overloaded. With T_DeclareValue = false, operators do
+  // not do anything. In case of the comparison operators, the result is
+  // always false
 
-  /*template <typename T>
-  class FwVecArray : public std::vector<T> {};
+  // This type can be conditionally removed based on the boolean value
+  template <typename T, bool T_DeclareValue>
+  struct ConditionalType
+  {
+    static T g_conditional_type_invalid_value;
 
-  template <typename T, typename _Ty,
-    typename _Pr = less<_Kty>,
-    typename _Alloc = allocator<pair<const _Kty, _Ty> >>
-  class FwMap : public std::map<T, _Ty, _Pr, _Alloc> {};
+    // Must be declared in your specific source file.
+    // This is the value returned when ConditionalType is false
+    typedef ConditionalType<T, T_DeclareValue> this_type;
 
-  template <typename _Ty, typename _Ax = allocator<_Ty> >
-  class FwList : public std::list<_Ty, _Ax> {};*/
+    TL_FI ConditionalType();
+    TL_FI ConditionalType(const T& aValue);
 
-  /*typedef FwVecArray<tl_uchar>     FwVecUChar;
-  typedef FwVecArray<tl_uint32>    FwVecUInt;
-  typedef FwVecArray<tl_ulong>     FwVecULong;
-  typedef FwVecArray<tl_int32>     FwVecInt;
-  typedef FwVecArray<tl_real32>    FwVecFloat;
-  typedef FwVecArray<tl_real64>    FwVecDouble;*/
-  /*typedef FwVecArray<std::string>  FwVecString;*/
+    TL_FI this_type& operator= (const this_type& aOther);
+    TL_FI this_type& operator= (const T& aOther);
+
+    TL_FI T          operator+ (const this_type& aOther) const;
+    TL_FI T          operator+ (const T& aOther) const;
+    TL_FI T          operator- (const this_type& aOther) const;
+    TL_FI T          operator- (const T& aOther) const;
+    TL_FI T          operator* (const this_type& aOther) const;
+    TL_FI T          operator* (const T& aOther) const;
+    TL_FI T          operator/ (const this_type& aOther) const;
+    TL_FI T          operator/ (const T& aOther) const;
+
+    TL_FI this_type& operator+=(const this_type& aOther);
+    TL_FI this_type& operator+=(const T& aOther);
+    TL_FI this_type& operator-=(const this_type& aOther);
+    TL_FI this_type& operator-=(const T& aOther);
+    TL_FI this_type& operator*=(const this_type& aOther);
+    TL_FI this_type& operator*=(const T& aOther);
+    TL_FI this_type& operator/=(const this_type& aOther);
+    TL_FI this_type& operator/=(const T& aOther);
+
+    TL_FI this_type& operator++();
+    TL_FI this_type  operator++(int);
+    TL_FI this_type& operator--();
+    TL_FI this_type  operator--(int);
+
+    TL_FI bool       operator==(const this_type& aOther) const;
+    TL_FI bool       operator==(const T& aOther) const;
+    TL_FI bool       operator!=(const this_type& aOTher) const;
+    TL_FI bool       operator!=(const T& aOTher) const;
+    TL_FI bool       operator< (const this_type& aOther) const;
+    TL_FI bool       operator< (const T& aOther) const;
+    TL_FI bool       operator<=(const this_type& aOther) const;
+    TL_FI bool       operator<=(const T& aOther) const;
+    TL_FI bool       operator>=(const this_type& aOther) const;
+    TL_FI bool       operator>=(const T& aOther) const;
+    TL_FI bool       operator> (const this_type& aOther) const;
+    TL_FI bool       operator> (const T& aOther) const;
+
+    TL_FI const T&   Get() const;
+    TL_FI T          Value() const;
+  };
+
+  template <typename T>
+  struct ConditionalType<T, true>
+  {
+    typedef ConditionalType<T, true> this_type;
+
+    TL_FI ConditionalType();
+    TL_FI ConditionalType(const T& aValue);
+
+    TL_FI this_type& operator= (const this_type& aOther);
+    TL_FI this_type& operator= (const T& aOther);
+
+    TL_FI T          operator+ (const this_type& aOther) const;
+    TL_FI T          operator+ (const T& aOther) const;
+    TL_FI T          operator- (const this_type& aOther) const;
+    TL_FI T          operator- (const T& aOther) const;
+    TL_FI T          operator* (const this_type& aOther) const;
+    TL_FI T          operator* (const T& aOther) const;
+    TL_FI T          operator/ (const this_type& aOther) const;
+    TL_FI T          operator/ (const T& aOther) const;
+
+    TL_FI this_type& operator+=(const this_type& aOther);
+    TL_FI this_type& operator+=(const T& aOther);
+    TL_FI this_type& operator-=(const this_type& aOther);
+    TL_FI this_type& operator-=(const T& aOther);
+    TL_FI this_type& operator*=(const this_type& aOther);
+    TL_FI this_type& operator*=(const T& aOther);
+    TL_FI this_type& operator/=(const this_type& aOther);
+    TL_FI this_type& operator/=(const T& aOther);
+
+    TL_FI this_type& operator++();
+    TL_FI this_type  operator++(int);
+    TL_FI this_type& operator--();
+    TL_FI this_type  operator--(int);
+
+    TL_FI bool       operator==(const this_type& aOther) const;
+    TL_FI bool       operator==(const T& aOther) const;
+    TL_FI bool       operator!=(const this_type& aOTher) const;
+    TL_FI bool       operator!=(const T& aOTher) const;
+    TL_FI bool       operator< (const this_type& aOther) const;
+    TL_FI bool       operator< (const T& aOther) const;
+    TL_FI bool       operator<=(const this_type& aOther) const;
+    TL_FI bool       operator<=(const T& aOther) const;
+    TL_FI bool       operator>=(const this_type& aOther) const;
+    TL_FI bool       operator>=(const T& aOther) const;
+    TL_FI bool       operator> (const this_type& aOther) const;
+    TL_FI bool       operator> (const T& aOther) const;
+
+    TL_FI const T&   Get() const;
+    TL_FI T          Value() const;
+
+  private:
+
+    T                m_value;
+  };
+
+  // Global operators
+
+  template <typename T, bool T_DeclareValue>
+  T operator+( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator+(aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  T operator-( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+
+  template <typename T>
+  T operator-( const T& aOtherValue,
+               const ConditionalType<T, true>& aOther)
+  {
+    return aOtherValue - aOther.Get();
+  }
+
+  template <typename T, bool T_DeclareValue>
+  T operator*( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator*(aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  T operator/( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+  template <typename T>
+  T operator/( const T& aOtherValue,
+               const ConditionalType<T, true>& aOther)
+  {
+    return aOtherValue / aOther.Get();
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator==( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator==(aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator!=( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator!=(aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator<=( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator >= (aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator>=( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator <= (aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator<( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator > (aOtherValue);
+  }
+
+  template <typename T, bool T_DeclareValue>
+  bool operator>( const T& aOtherValue,
+               const ConditionalType<T, T_DeclareValue>& aOther)
+  {
+    return aOther.operator < (aOtherValue);
+  }
 };
 
 #endif

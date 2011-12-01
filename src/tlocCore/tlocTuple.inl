@@ -26,7 +26,14 @@ namespace tloc { namespace core {
   template <typename T, u32 T_Size>
   TL_FI Tuple<T, T_Size>::Tuple(const Tuple<T, T_Size>& aTuple)
   {
-    operator=(aTuple);
+    Set(aTuple);
+  }
+
+  template <typename T, u32 T_Size>
+  template <typename T_ArrayType>
+  TL_FI Tuple<T, T_Size>::Tuple(const T_ArrayType (&aArray)[T_Size])
+  {
+    Set(aArray);
   }
 
   template <typename T, u32 T_Size>
@@ -95,6 +102,34 @@ namespace tloc { namespace core {
   }
 
   template <typename T, u32 T_Size>
+  template <typename T_TupleType>
+  void Tuple<T, T_Size>::Set(const Tuple<T_TupleType, T_Size>& aTuple)
+  {
+    // We go through the trouble of identifying the type for the sole reason of
+    // letting the compiler generate type mismatch warnings
+
+    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
+      Array_type_must_be_the_same_size_as_the_tuple_type);
+    typedef Loki::Int2Type< Loki::IsSameType<T, T_TupleType>::value > is_same_type;
+
+    DoSet(aTuple, is_same_type());
+  }
+
+  template <typename T, u32 T_Size>
+  template <typename T_ArrayType>
+  void Tuple<T, T_Size>::Set(const T_ArrayType (&aArray)[T_Size])
+  {
+    // We go through the trouble of identifying the type for the sole reason of
+    // letting the compiler generate type mismatch warnings
+
+    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
+      Array_type_must_be_the_same_size_as_the_tuple_type);
+    typedef Loki::Int2Type< Loki::IsSameType<T, T_ArrayType>::value > is_same_type;
+
+    DoSet(aArray, is_same_type());
+  }
+
+  template <typename T, u32 T_Size>
   void Tuple<T, T_Size>::Swap(Tuple<T, T_Size>& aVector)
   {
     ITERATE_TUPLE
@@ -107,10 +142,18 @@ namespace tloc { namespace core {
   // Operators
 
   template <typename T, u32 T_Size>
-  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator = (const Tuple<T, T_Size>& aTuple)
+  template <typename T_TupleType>
+  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=(const Tuple<T_TupleType, T_Size>& aTuple)
   {
-    memcpy(m_values, aTuple, sizeof(T) * T_Size);
+    Set(aTuple);
+    return *this;
+  }
 
+  template <typename T, u32 T_Size>
+  template <typename T_ArrayType>
+  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=( const T_ArrayType (&aArray)[T_Size])
+  {
+    Set(aArray);
     return *this;
   }
 
@@ -130,6 +173,48 @@ namespace tloc { namespace core {
   {
     return !operator==(aTuple);
   }
+
+  //------------------------------------------------------------------------
+  // Details
+
+  template <typename T, u32 T_Size>
+  void Tuple<T, T_Size>::DoSet(const T (&aArray)[T_Size], type_true)
+  {
+    memcpy(m_values, aArray, sizeof(T) * T_Size);
+  }
+
+  template <typename T, u32 T_Size>
+  template <typename T_ArrayType>
+  void Tuple<T, T_Size>::DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
+  {
+    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
+      Array_type_must_be_the_same_size_as_the_tuple_type);
+
+    ITERATE_TUPLE
+    {
+      m_values[i] = aArray[i];
+    }
+  }
+
+  template <typename T, u32 T_Size>
+  void Tuple<T, T_Size>::DoSet(const Tuple<T, T_Size>& aTuple, type_true)
+  {
+    memcpy(m_values, aTuple, sizeof(T) * T_Size);
+  }
+
+  template <typename T, u32 T_Size>
+  template <typename T_TupleType>
+  void Tuple<T, T_Size>::DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
+  {
+    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
+      Tuple_type_must_be_the_same_size_as_this_tuple_type);
+
+    ITERATE_TUPLE
+    {
+      m_values[i] = aTuple[i];
+    }
+  }
+
 
 };};
 

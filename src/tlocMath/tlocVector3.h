@@ -3,13 +3,13 @@
 #define TLOC_VECTOR_3_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
 
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Vector3
 
@@ -21,8 +21,8 @@ namespace tloc
     TL_FI Vector3(const T& aX, const T& aY, const T& aZ);
     TL_FI Vector3(const Vector3<T>& aVector);
     TL_FI Vector3(const Vector<T, 3>& aVector);
-    
-    TL_FI explicit Vector3(const T& aValue);    
+
+    TL_FI explicit Vector3(const T& aValue);
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
@@ -30,13 +30,13 @@ namespace tloc
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    TL_FI void Cross(const Vector3<T>& aVector1, 
+    TL_FI void Cross(const Vector3<T>& aVector1,
                      const Vector3<T>& aVector2);
 
     // Modifies this vector to store the normalized version of the incoming
     // vector with an approx 3% error. Inverse square root code taken from
     // http://www.codemaestro.com/reviews/9 (originally from Quake)
-    // 
+    //
     // NOTE: Only works on floats!
     TL_FI void FastNorm(const Vector3<T>& aVector);
 
@@ -74,7 +74,8 @@ namespace tloc
   const Vector3<T> Vector3<T>::NEG_UNIT_Y (0.0, -1.0, 0.0);
   template <typename T>
   const Vector3<T> Vector3<T>::NEG_UNIT_Z (0.0, 0.0, -1.0);
-};
+
+};};
 
 #ifdef TLOC_FULL_SOURCE
 #include "tlocVector3.inl"

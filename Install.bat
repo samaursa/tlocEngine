@@ -14,19 +14,7 @@ SETX TLOC_PATH %CD% -m
 
 :RESTART_EXPLORER
 ECHO.
-ECHO Environment variables will not take effect unless Explore.exe is restarted. A Log-off/on cycle may still be required
-SET /P KillExplorer="Do you want to restart explorer(y/n)?"
-IF "%KillExplorer%"=="y" (
-  ECHO Terminating Explorer...
-  taskkill /f /IM explorer.exe
-  ECHO Restarting Explorer...
-  explorer.exe
-  GOTO :DONE
-)
-IF "%KillExplorer%"=="n" (
-  GOTO :DONE
-)
-GOTO :RESTART_EXPLORER
+ECHO Environment variables will not take effect unless Explore.exe is restarted.
 
 :DONE
 ECHO DONE!

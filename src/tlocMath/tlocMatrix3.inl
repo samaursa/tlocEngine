@@ -1,5 +1,15 @@
-namespace tloc
-{
+#ifndef TLOC_MATRIX_3_INL
+#define TLOC_MATRIX_3_INL
+
+#ifndef TLOC_MATRIX_3_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocVector3.inl"
+#include "tlocMatrix.inl"
+
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Matrix3f<T>
 
@@ -245,7 +255,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI void tloc::Matrix3<T>::Orthonormalize( const Matrix3<T>& aMatrix )
+  TL_FI void Matrix3<T>::Orthonormalize( const Matrix3<T>& aMatrix )
   {
     *this = aMatrix;
     Orthonormalize();
@@ -317,7 +327,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI void tloc::Matrix3<T>::FastOrthonormalize( const Matrix3<T>& aMatrix )
+  TL_FI void Matrix3<T>::FastOrthonormalize( const Matrix3<T>& aMatrix )
   {
     *this = aMatrix;
     FastOrthonormalize();
@@ -405,7 +415,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationX( const T& aXAngle )
+  TL_I Matrix3<T>& Matrix3<T>::MakeRotationX( const T& aXAngle )
   {
     T cosine, sine;
 
@@ -421,7 +431,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationY( const T& aYAngle )
+  TL_I Matrix3<T>& Matrix3<T>::MakeRotationY( const T& aYAngle )
   {
     T cosine, sine;
 
@@ -437,7 +447,7 @@ namespace tloc
   }
 
   template <typename T>
-  TL_I Matrix3<T>& tloc::Matrix3<T>::MakeRotationZ( const T& aZAngle )
+  TL_I Matrix3<T>& Matrix3<T>::MakeRotationZ( const T& aZAngle )
   {
     T cosine, sine;
 
@@ -454,7 +464,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerXYZ( T aXAngle, T aYAngle, T aZAngle )
+  void Matrix3<T>::MakeEulerXYZ( T aXAngle, T aYAngle, T aZAngle )
   {
     Matrix3<T> matY, matZ;
 
@@ -466,7 +476,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerXZY( T aXAngle, T aZAngle, T aYAngle )
+  void Matrix3<T>::MakeEulerXZY( T aXAngle, T aZAngle, T aYAngle )
   {
     Matrix3<T> matY, matZ;
 
@@ -478,7 +488,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerYXZ( T aYAngle, T aXAngle, T aZAngle )
+  void Matrix3<T>::MakeEulerYXZ( T aYAngle, T aXAngle, T aZAngle )
   {
     Matrix3<T> matX, matZ;
 
@@ -490,7 +500,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerYZX( T aYAngle, T aZAngle, T aXAngle )
+  void Matrix3<T>::MakeEulerYZX( T aYAngle, T aZAngle, T aXAngle )
   {
     Matrix3<T> matX, matZ;
 
@@ -502,7 +512,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerZXY( T aZAngle, T aXAngle, T aYAngle )
+  void Matrix3<T>::MakeEulerZXY( T aZAngle, T aXAngle, T aYAngle )
   {
     Matrix3<T> matX, matY;
 
@@ -514,7 +524,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerZYX( T aZAngle, T aYAngle, T aXAngle )
+  void Matrix3<T>::MakeEulerZYX( T aZAngle, T aYAngle, T aXAngle )
   {
     Matrix3<T> matX, matY;
 
@@ -526,7 +536,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerXYX( T aXAngle0, T aYAngle, T aXAngle1 )
+  void Matrix3<T>::MakeEulerXYX( T aXAngle0, T aYAngle, T aXAngle1 )
   {
     Matrix3<T> matX, matY;
 
@@ -538,7 +548,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerXZX( T aXAngle0, T aZAngle, T aXAngle1 )
+  void Matrix3<T>::MakeEulerXZX( T aXAngle0, T aZAngle, T aXAngle1 )
   {
     Matrix3<T> matX, matZ;
 
@@ -550,7 +560,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerYXY( T aYAngle0, T aXAngle, T aYAngle1 )
+  void Matrix3<T>::MakeEulerYXY( T aYAngle0, T aXAngle, T aYAngle1 )
   {
     Matrix3<T> matX, matY;
 
@@ -562,7 +572,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerYZY( T aYAngle0, T aZAngle, T aYAngle1 )
+  void Matrix3<T>::MakeEulerYZY( T aYAngle0, T aZAngle, T aYAngle1 )
   {
     Matrix3<T> matY, matZ;
 
@@ -574,7 +584,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerZXZ( T aZAngle0, T aXAngle, T aZAngle1 )
+  void Matrix3<T>::MakeEulerZXZ( T aZAngle0, T aXAngle, T aZAngle1 )
   {
     Matrix3<T> matZ, matX;
 
@@ -586,7 +596,7 @@ namespace tloc
   }
 
   template <typename T>
-  void tloc::Matrix3<T>::MakeEulerZYZ( T aZAngle0, T aYAngle, T aZAngle1 )
+  void Matrix3<T>::MakeEulerZYZ( T aZAngle0, T aYAngle, T aZAngle1 )
   {
     Matrix3<T> matZ, matY;
 
@@ -601,7 +611,7 @@ namespace tloc
   // Helper functions
 
   template <typename T>
-  bool tloc::Matrix3<T>::Tridiagonalize( T aDiagonal[3], T aSubdiagonal[2] )
+  bool Matrix3<T>::Tridiagonalize( T aDiagonal[3], T aSubdiagonal[2] )
   {
     // Householder reduction T = Q^t M Q
     //   Input:
@@ -662,7 +672,7 @@ namespace tloc
   }
 
   template <typename T>
-  bool tloc::Matrix3<T>::QLAlgorithm( T aDiagonal[3], T aSubdiagonal[2] )
+  bool Matrix3<T>::QLAlgorithm( T aDiagonal[3], T aSubdiagonal[2] )
   {
     // This is an implementation of the symmetric QR algorithm from the book
     // "Matrix Computations" by Gene H. Golub and Charles F. Van Loan,
@@ -889,4 +899,6 @@ namespace tloc
     return false;
   }
 
-};
+};};
+
+#endif

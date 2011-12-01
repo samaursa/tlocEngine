@@ -3,11 +3,11 @@
 #define TLOC_MATRIX_3_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocMath/tlocVector.h"
+#include "tlocMath/tlocVector3.h"
 #include "tlocMath/tlocMatrix.h"
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   template <typename T>
   class Matrix3 : public Matrix<T, 3>
   {
@@ -145,10 +145,7 @@ namespace tloc
   typedef Matrix3<f32>  Mat3f;
   typedef Matrix3<f64>  Mat3d;
   typedef Matrix3<f128> Mat3l;
-};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocMatrix3.inl"
-#endif
+};};
 
 #endif

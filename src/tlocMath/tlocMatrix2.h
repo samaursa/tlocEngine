@@ -3,11 +3,11 @@
 #define TLOC_MATRIX_2_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocMath/tlocVector.h"
+#include "tlocMath/tlocVector2.h"
 #include "tlocMath/tlocMatrix.h"
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   template <typename T>
   class Matrix2 : public Matrix<T, 2>
   {
@@ -32,7 +32,7 @@ namespace tloc
     TL_FI explicit Matrix2(const T& aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    TL_FI Matrix2(const Vector<T, 2>& aVec1, const Vector<T, 2>& aVec2,
+    TL_FI Matrix2(const Vector2<T>& aVec1, const Vector2<T>& aVec2,
                   TABLE_ORDER aOrder);
 
     // Fill the matrix with values in a certain matrix order
@@ -53,8 +53,8 @@ namespace tloc
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
-    TL_FI void Mul(const Vector<T, 2>& aVectorIn,
-                         Vector<T, 2>& aVectorOut);
+    TL_FI void Mul(const Vector2<T>& aVectorIn,
+                         Vector2<T>& aVectorOut);
 
     // Returns the determinant of this Matrix
     TL_I T Determinant() const;
@@ -101,10 +101,7 @@ namespace tloc
   typedef Matrix2<f32>  Mat2f;
   typedef Matrix2<f64>  Mat2d;
   typedef Matrix2<f128> Mat2l;
-};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocMatrix2.inl"
-#endif
+};};
 
 #endif

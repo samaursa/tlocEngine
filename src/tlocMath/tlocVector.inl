@@ -1,5 +1,16 @@
-namespace tloc
-{
+#ifndef TLOC_VECTOR_N_INL
+#define TLOC_VECTOR_N_INL
+
+#ifndef TLOC_VECTOR_N_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocCore/tlocTuple.h"
+#include "tlocCore/tlocAlgorithms.h"
+#include "tlocMath.inl"
+
+namespace tloc { namespace math {
+
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
@@ -360,4 +371,7 @@ namespace tloc
 
     return true;
   }
-};
+
+};};
+
+#endif

@@ -1,5 +1,11 @@
-namespace tloc
-{
+#ifndef TLOC_TUPLE_INL
+#define TLOC_TUPLE_INL
+
+#ifndef TLOC_TUPLE_H
+#error "Must include header before including the inline file"
+#endif
+
+namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
   // Tuple<N>
@@ -93,7 +99,7 @@ namespace tloc
   {
     ITERATE_TUPLE
     {
-      tloc::Swap(m_values[i], aVector[i]);
+      tlSwap(m_values[i], aVector[i]);
     }
   }
 
@@ -103,16 +109,13 @@ namespace tloc
   template <typename T, u32 T_Size>
   TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator = (const Tuple<T, T_Size>& aTuple)
   {
-    ITERATE_TUPLE
-    {
-      m_values[i] = aTuple[i];
-    }
+    memcpy(m_values, aTuple, sizeof(T) * T_Size);
 
     return *this;
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
+  TL_FI bool Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
   {
     ITERATE_TUPLE
     {
@@ -123,9 +126,11 @@ namespace tloc
   }
 
   template <typename T, u32 T_Size>
-  TL_FI bool tloc::Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
+  TL_FI bool Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
   {
     return !operator==(aTuple);
   }
 
-};
+};};
+
+#endif

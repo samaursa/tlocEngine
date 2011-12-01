@@ -1,4 +1,5 @@
 #include "tlocMath/tlocMath.h"
+#include "tlocMath/tlocMath.inl"
 
 namespace tloc
 {
@@ -78,5 +79,6 @@ namespace tloc
   template <typename T>
   void tloc::Math<T>::Initialize()
   {
+
   }
 }

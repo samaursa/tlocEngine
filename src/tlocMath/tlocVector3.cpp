@@ -1,10 +1,11 @@
 #include "tlocMath/tlocVector3.h"
+#include "tlocMath/tlocVector3.inl"
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::Vec3f;
-template tloc::Vec3d;
-template tloc::Vec3l;
+template tloc::math::Vec3f;
+template tloc::math::Vec3d;
+template tloc::math::Vec3l;
 
 #ifndef TLOC_FULL_SOURCE
 #include "tlocVector3.inl"

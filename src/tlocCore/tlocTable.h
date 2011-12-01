@@ -2,11 +2,11 @@
 #define TLOC_TABLE_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
 #include "tlocCore/tlocTuple.h"
+#include <memory.h>
 
-namespace tloc
-{
+namespace tloc { namespace core {
   // Column major ordering (because OpenGL uses it. Switching back and forth
   // is not a problem as long as we are consistent)
   //
@@ -69,7 +69,8 @@ namespace tloc
     TL_FI bool operator == (const Table& aTable);
     TL_FI bool operator != (const Table& aTable);
   };
-};
+
+};};
 
 #ifdef TLOC_FULL_SOURCE
 #include "tlocTable.inl"

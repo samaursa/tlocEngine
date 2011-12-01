@@ -22,10 +22,10 @@
  * column vector and so on.
  */
 
-namespace tloc
-{
+namespace tloc { namespace math {
+
   template <typename T, u32 T_Size>
-  class Matrix : public Table<T, T_Size, T_Size>
+  class Matrix : public core::Table<T, T_Size, T_Size>
   {
   protected:
     enum { MATRIX_SIZE = TABLE_SIZE };
@@ -144,10 +144,7 @@ namespace tloc
     temp.Identity();
     return temp;
   }
-};
 
-#ifdef TLOC_FULL_SOURCE
-  #include "tlocMatrix.inl"
-#endif
+};};
 
 #endif

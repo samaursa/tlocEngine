@@ -2,10 +2,11 @@
 #define TLOC_TUPLE_H
 
 #include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocStandardFuncs.h"
+#include "tlocCore/tlocAlgorithms.h"
+#include <memory.h>
 
-namespace tloc
-{
+namespace tloc { namespace core {
+
   template <typename T, u32 T_Size>
   class Tuple
   {
@@ -56,7 +57,7 @@ namespace tloc
     T m_values[T_Size];
   };
 
-};
+};};
 
 #ifdef TLOC_FULL_SOURCE
 #include "tlocTuple.inl"

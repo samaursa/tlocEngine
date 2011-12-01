@@ -25,4 +25,9 @@
 //------------------------------------------------------------------------
 // Include the definitions
 #include "tlocTable.inl"
+
+#else
+
+TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+
 #endif

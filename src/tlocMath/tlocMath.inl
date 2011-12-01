@@ -1,5 +1,14 @@
-namespace tloc
-{
+#ifndef TLOC_MATH_INL
+#define TLOC_MATH_INL
+
+#ifndef TLOC_MATH_H
+#error "Must include header before including the inline file"
+#endif
+
+#include "tlocCore/tlocTypes.inl"
+
+namespace tloc {
+
   //////////////////////////////////////////////////////////////////////////
   // Math<T>
 
@@ -40,34 +49,21 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Log( const T& aLog )
+  TL_FI T Math<T>::Log( const T& aLog )
   {
     return log(aLog);
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Sin( const T& aValInRad )
+  TL_FI T Math<T>::Sin( const T& aValInRad )
   {
     return sin(aValInRad);
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Cos( const T& aValInRad )
+  TL_FI T Math<T>::Cos( const T& aValInRad )
   {
     return cos(aValInRad);
-  }
-
-  template <typename T>
-  TL_FI bool Math<T>::IsNaN(const T& aValue)
-  {
-    return aValue != aValue;
-  }
-
-  template <typename T>
-  TL_FI bool Math<T>::Approx(const T& aValue1, const T& aValue2, T eps /* = T(1e-6) */)
-  {
-    T toCompare = Abs(aValue1 - aValue2);
-    return (toCompare < eps);
   }
 
   template <typename T>
@@ -94,6 +90,31 @@ namespace tloc
     return ((T)1) / Sqrt(aValue);
   }
 
+  //------------------------------------------------------------------------
+  // Misc Functions
+
+  template <typename T>
+  TL_FI bool Math<T>::IsNaN(const T& aValue)
+  {
+    return aValue != aValue;
+  }
+
+  template <typename T>
+  TL_FI bool Math<T>::Approx(const T& aValue1, const T& aValue2, T eps /* = T(1e-6) */)
+  {
+    T toCompare = Abs(aValue1 - aValue2);
+    return (toCompare < eps);
+  }
+
+  template <typename T>
+  TL_FI bool Math<T>::IsPowerOfTwo( const u32& aValue )
+  {
+    return (aValue != 0) && ((aValue & (aValue - 1)) == 0);
+  }
+
+  //------------------------------------------------------------------------
+  // Fast specialized functions
+
   template <typename T>
   TL_FI T Math<T>::FastInvSqrt(const T& aValue)
   {
@@ -110,11 +131,27 @@ namespace tloc
   }
 
   template <typename T>
-  TL_FI T tloc::Math<T>::Lerp(const T& aValue1,
-                                     const T& aValue2,
-                                     const T aBias /* = */)
+  TL_FI u32 Math<T>::FastPowOfTwo( const u32& aPower )
+  {
+    return 0x00000001 << aPower;
+  }
+
+  template <typename T>
+  TL_FI s32 Math<T>::FastSignInt( const T& aRealIn )
+  {
+    if (((s32&)aRealIn & 0x7FFFFFF)==0) return 0;
+    return (signed ((s32&)aRealIn & 0x80000000) >> 31) | 1;
+  }
+
+  //------------------------------------------------------------------------
+  // Simple Interpolations
+
+  template <typename T>
+  TL_FI T Math<T>::Lerp(const T& aValue1, const T& aValue2, const T& aBias)
   {
     return (aBias * aValue1) + ((1 - aBias) * aValue2);
   }
 
 };
+
+#endif

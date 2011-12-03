@@ -33,7 +33,7 @@ namespace tloc { namespace core {
     TL_FI Table(const Table<T, T_Rows, T_Cols>& aTable);
 
     TL_FI explicit Table(const T& aValue);
-    TL_FI Table(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
+    TL_FI Table(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder);
 
     //------------------------------------------------------------------------
     // Accessors
@@ -57,7 +57,7 @@ namespace tloc { namespace core {
     // Modifiers
 
     TL_FI void Set(const T& aValue);
-    TL_FI void Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder);
+    TL_FI void Set(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder);
     TL_FI void Set(u32 aRow, u32 aCol, const T& aValue);
     TL_FI void SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn);
     TL_FI void SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn);

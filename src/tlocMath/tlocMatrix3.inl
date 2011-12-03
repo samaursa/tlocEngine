@@ -66,7 +66,7 @@ namespace tloc { namespace math {
   }
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T values[MATRIX_SIZE], TABLE_ORDER aOrder)
+  TL_FI Matrix3<T>::Matrix3(const T (&values)[MATRIX_SIZE], TABLE_ORDER aOrder)
     : Matrix(values, aOrder) {}
 
   //------------------------------------------------------------------------

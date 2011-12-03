@@ -32,7 +32,7 @@ namespace tloc { namespace math {
     : Table(aValue) {}
 
   template <typename T, u32 T_Size>
-  TL_FI Matrix<T, T_Size>::Matrix(const T values[MATRIX_SIZE],
+  TL_FI Matrix<T, T_Size>::Matrix(const T (&values)[MATRIX_SIZE],
                                   MATRIX_ORDER aOrder)
                                   : Table(values, aOrder)
   {}
@@ -178,7 +178,7 @@ namespace tloc { namespace math {
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Transpose()
   {
     Matrix<T, T_Size> temp = *this;
-    Set(temp, ROW_MAJOR);
+    Set(temp.m_values, ROW_MAJOR);
 
     return *this;
   }
@@ -186,7 +186,7 @@ namespace tloc { namespace math {
   template <typename T, u32 T_Size>
   TL_FI void Matrix<T, T_Size>::Transpose(const Matrix<T, T_Size>& aMatrix)
   {
-    Set(aMatrix, ROW_MAJOR);
+    Set(aMatrix.m_values, ROW_MAJOR);
   }
 
   //------------------------------------------------------------------------

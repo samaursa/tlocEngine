@@ -35,7 +35,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const T values[TABLE_SIZE],
+  TL_FI Table<T, T_Rows, T_Cols>::Table(const T (&values)[TABLE_SIZE],
     TABLE_ORDER aTableOrder)
   {
     Set(values, aTableOrder);
@@ -132,8 +132,11 @@ namespace tloc { namespace core {
 
   template <typename T, u32 T_Rows, u32 T_Cols>
   TL_FI void Table<T, T_Rows, T_Cols>
-    ::Set(const T values[TABLE_SIZE], TABLE_ORDER aTableOrder)
+    ::Set(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder)
   {
+    TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
+      L"Undefined behavior.");
+
     if (aTableOrder == COL_MAJOR)
     {
       memcpy(m_values, values, sizeof(T) * TABLE_SIZE);

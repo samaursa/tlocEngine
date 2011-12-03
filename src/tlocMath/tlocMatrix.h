@@ -46,7 +46,7 @@ namespace tloc { namespace math {
     TL_FI explicit Matrix(const T& aValue);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix(const T values[MATRIX_SIZE], MATRIX_ORDER aOrder);
+    TL_FI Matrix(const T (&values)[MATRIX_SIZE], MATRIX_ORDER aOrder);
 
     //------------------------------------------------------------------------
     // Modifiers

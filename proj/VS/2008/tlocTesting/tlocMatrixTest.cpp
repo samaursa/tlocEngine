@@ -154,7 +154,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
   }
 
-  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div",
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Transpose",
     "Test transpose")
   {
     c.Set(0);
@@ -169,6 +169,10 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 1, 0, 1);
     d.Transpose();
     CHECK_MATRIX3F(d, 1, 0, 1, 0, 1, 0, 0, 0, 1);
+
+    e = d;
+    e.Transpose(d);
+    CHECK_MATRIX3F(e, 1, 0, 0, 0, 1, 0, 1, 0, 1);  
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors",

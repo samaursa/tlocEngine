@@ -21,7 +21,7 @@ namespace tloc
   // Constants
 
   template <typename T>
-  TL_I const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
+  const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
   template <typename T>
   const tl_size StringBase<T>::m_MaxSize = (tl_size) - 2;

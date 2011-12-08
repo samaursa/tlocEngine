@@ -247,6 +247,10 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="RNGs"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Containers"

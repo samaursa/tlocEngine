@@ -311,6 +311,10 @@
 				Name="Generators"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocMath\tlocRngWell512.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocMath\tlocRngWell512.h"
 					>
 				</File>

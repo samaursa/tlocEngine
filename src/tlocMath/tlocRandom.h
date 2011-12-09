@@ -109,37 +109,37 @@ namespace tloc { namespace math {
 *      http://lomont.org/Math/Papers/2008/Lomont_PRNG_2008.pdf
 */
 
-#ifndef __Random_H__
-#define __Random_H__
-
-class Random
-{
-public:
-  Random();
-
-  void Seed(unsigned int seed);
-  void SetState(const unsigned int state[16], int index);
-  void GetState(unsigned int state[16], int& index);
-
-  /** 
-  * Generates a random number on [0,0xffffffff] interval
-  */
-  unsigned int RandomInteger();
-
-  /**
-  * Generates a random number on [0,0.99999999999...] interval
-  */
-  float RandomFloat();
-
-  /**
-  * Generates a random number on [min,max] interval
-  */
-  int RandomRanged(int min, int max);
-
-private:
-  unsigned int state_[16];
-  unsigned int index_;
-
-};
-
-#endif /* __Random_H__ */
+//#ifndef __Random_H__
+//#define __Random_H__
+//
+//class Random
+//{
+//public:
+//  Random();
+//
+//  void Seed(unsigned int seed);
+//  void SetState(const unsigned int state[16], int index);
+//  void GetState(unsigned int state[16], int& index);
+//
+//  /** 
+//  * Generates a random number on [0,0xffffffff] interval
+//  */
+//  unsigned int RandomInteger();
+//
+//  /**
+//  * Generates a random number on [0,0.99999999999...] interval
+//  */
+//  float RandomFloat();
+//
+//  /**
+//  * Generates a random number on [min,max] interval
+//  */
+//  int RandomRanged(int min, int max);
+//
+//private:
+//  unsigned int state_[16];
+//  unsigned int index_;
+//
+//};
+//
+//#endif /* __Random_H__ */

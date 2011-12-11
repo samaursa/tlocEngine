@@ -14,11 +14,11 @@ TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 ////*** Seed ***
 //
 //void Random::Seed(unsigned int s)
-//{	
+//{
 //  state_[0]=s^0xf68a9fc1;
-//  for (int i=1; i<16; i++) 
+//  for (int i=1; i<16; i++)
 //  {
-//    state_[i] = (0x6c078965U * (state_[i-1] ^ (state_[i-1] >> 30)) + i); 
+//    state_[i] = (0x6c078965U * (state_[i-1] ^ (state_[i-1] >> 30)) + i);
 //  }
 //}
 //
@@ -77,7 +77,7 @@ TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 //    return min;
 //  }
 //  int value=(int)(RandomFloat()*range);
-//  return min+value; 
+//  return min+value;
 //}
 //
 //
@@ -86,5 +86,5 @@ TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 //float Random::RandomFloat()
 //{
 //  // Get a random integer, and divide by 2^32
-//  return (RandomInteger()/4294967296.0f);     
+//  return (RandomInteger()/4294967296.0f);
 //}

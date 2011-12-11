@@ -18,10 +18,10 @@ namespace tloc { namespace math {
     m_params = a_seed;
 
     m_params.m_state[0]=m_params.m_seed ^ 0xf68a9fc1;
-    for (u32 i = 1; i < 16; ++i) 
+    for (u32 i = 1; i < 16; ++i)
     {
-      m_params.m_state[i] = (0x6c078965U * (m_params.m_state[i-1] ^ 
-                            (m_params.m_state[i-1] >> 30)) + i); 
+      m_params.m_state[i] = (0x6c078965U * (m_params.m_state[i-1] ^
+                            (m_params.m_state[i-1] >> 30)) + i);
     }
   }
 
@@ -30,39 +30,39 @@ namespace tloc { namespace math {
     return m_params;
   }
 
-  const RngWell512::int_type RngWell512::GetRandomInteger() const
+  const RngWell512::int_type RngWell512::GetRandomInteger()
   {
-    unsigned int a = m_params.m_state[m_params.m_index];
-    unsigned int c = m_params.m_state[(m_params.m_index+13)&15];
-    unsigned int b = a^c^(a<<16)^(c<<15);
+    u32 a = m_params.m_state[m_params.m_index];
+    u32 c = m_params.m_state[(m_params.m_index+13)&15];
+    u32 b = a^c^(a<<16)^(c<<15);
     c = m_params.m_state[(m_params.m_index+9)&15];
     c ^= (c>>11);
     a = m_params.m_state[m_params.m_index] = b^c;
-    unsigned int d = a^((a<<5)&0xda442d20U);
+    u32 d = a^((a<<5)&0xda442d20U);
     m_params.m_index= (m_params.m_index+ 15)&15;
     a = m_params.m_state[m_params.m_index];
     m_params.m_state[m_params.m_index] = a^b^d^(a<<2)^(b<<18)^(c<<28);
     return m_params.m_state[m_params.m_index];
   }
 
-  const RngWell512::real_type RngWell512::GetRandomFloat() const
+  const RngWell512::real_type RngWell512::GetRandomFloat()
   {
     // Get a random integer, and divide by 2^32
     return (GetRandomInteger()/4294967296.0f);
   }
 
-  const RngWell512::int_type 
-    RngWell512::GetRandomRange(const RngWell512::int_type& a_min, 
-                               const RngWell512::int_type& a_max)
+  const RngWell512::int_type
+    RngWell512::GetRandomInteger(const RngWell512::int_type& a_min,
+                                 const RngWell512::int_type& a_max)
   {
     TLOC_ASSERT_LOW_LEVEL(a_max >= a_min, "Range max is smaller than min!");
 
     const int_type range = a_max - a_min;
-    return (range * (int_type)(GetRandomFloat()) ) + a_min;
+    return (int_type)((real_type)range * (real_type)(GetRandomFloat()) ) + a_min;
   }
 
-  const RngWell512::int_type
-    RngWell512::GetRandomRange(const RngWell512::real_type& a_min, 
+  const RngWell512::real_type
+    RngWell512::GetRandomFloat(const RngWell512::real_type& a_min,
                                const RngWell512::real_type& a_max)
   {
     TLOC_ASSERT_LOW_LEVEL(a_max >= a_min, "Range max is smaller than min!");

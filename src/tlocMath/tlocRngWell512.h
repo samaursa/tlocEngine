@@ -4,6 +4,8 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
 
+#include "tlocRandom.h"
+
 namespace tloc { namespace math {
 
   // The basis of this class has been taken from a forum post of gamedev.net
@@ -12,7 +14,9 @@ namespace tloc { namespace math {
 
   class RngWell512
   {
-  public:
+    template <typename T_Generator> friend class RNG;
+
+  private:
 
     typedef   u32   int_type;
     typedef   f32   real_type;
@@ -43,16 +47,17 @@ namespace tloc { namespace math {
     ///-------------------------------------------------------------------------
     const Params&   GetSeed() const;
 
-    const int_type  GetRandomInteger() const;
-    const real_type GetRandomFloat() const;
-    const int_type  GetRandomRange(const int_type& a_min, 
-                                   const int_type& a_max);
-    const real_type GetRandomRange(const real_type& a_min,
+    const int_type  GetRandomInteger() ;
+    const real_type GetRandomFloat() ;
+    const int_type  GetRandomInteger(const int_type& a_min,
+                                     const int_type& a_max);
+    const real_type GetRandomFloat(const real_type& a_min,
                                    const real_type& a_max);
 
-  private:
     Params          m_params;
   };
+
+  typedef RNG<RngWell512> rng_well_512;
 
 };};
 

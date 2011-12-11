@@ -4,13 +4,13 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
 
-#include "tlocRandom.h"
-
 namespace tloc { namespace math {
 
   // The basis of this class has been taken from a forum post of gamedev.net
   // The class had to be `adjusted` to fit with our interface but the actual
-  // functionality has been copied directly.
+  // functionality has been copied directly. The original class was written
+  // by Mattias Gustavsson with the algorithm Well512 taken from 
+  // http://www.iro.umontreal.ca/~panneton/WELLRNG.html
 
   class RngWell512
   {
@@ -56,8 +56,6 @@ namespace tloc { namespace math {
 
     Params          m_params;
   };
-
-  typedef RNG<RngWell512> rng_well_512;
 
 };};
 

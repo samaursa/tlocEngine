@@ -7,6 +7,8 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
 
+#include "tlocMath/tlocRngWell512.h"
+
 namespace tloc {
 
   template <typename T>

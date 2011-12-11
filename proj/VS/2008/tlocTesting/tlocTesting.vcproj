@@ -356,6 +356,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocRandomTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocVector2Test.cpp"
 				>
 			</File>

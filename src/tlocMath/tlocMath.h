@@ -7,8 +7,6 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
 
-#include "tlocMath/tlocRngWell512.h"
-
 namespace tloc {
 
   template <typename T>
@@ -87,9 +85,9 @@ namespace tloc {
     // Math class initialization happens as soon as the program starts
     static void Initialize();
 
-    static Math<T>  m_math;
-    static const T  m_cosTable[64];
-    static const T  m_sinTable[64];
+    static Math<T>      m_math;
+    static const T      m_cosTable[64];
+    static const T      m_sinTable[64];
   };
 
   //------------------------------------------------------------------------

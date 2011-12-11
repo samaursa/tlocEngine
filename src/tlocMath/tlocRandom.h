@@ -8,6 +8,23 @@
 
 namespace tloc { namespace math {
 
+  template <typename T_Generator> class RNG;
+
+  //////////////////////////////////////////////////////////////////////////
+  // Supported RNG Types
+
+  // Supported RNG types
+  typedef RNG<RngWell512> rng_well_512;
+
+  // Default RNG type
+  typedef rng_well_512    rng_default;
+  
+  // Default RNG that is used program wide
+  extern rng_default      g_defaultRNG;
+
+  ///-------------------------------------------------------------------------
+  /// @brief Random number generator template class. The class requires an RNG that has the following functions at least.
+  ///-------------------------------------------------------------------------
   template <typename T_Generator>
   class RNG
   {
@@ -15,6 +32,7 @@ namespace tloc { namespace math {
 
     typedef typename T_Generator::int_type   int_type;
     typedef typename T_Generator::real_type  real_type;
+    typedef typename T_Generator             rng_type;
 
     ///-------------------------------------------------------------------------
     /// @brief Supports multiple calls to SetSeed()
@@ -75,11 +93,9 @@ namespace tloc { namespace math {
 
   private:
 
-    T_Generator m_rng;
+    T_Generator	        m_rng; 
 
   };
-  
-  typedef RNG<RngWell512> rng_well_512;
 
 };};
 

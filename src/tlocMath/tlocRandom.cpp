@@ -4,6 +4,10 @@
 
 namespace tloc { namespace math {
 
-  template RNG<RngWell512>;
+  // Supported RNG types instantiation
+  template      RNG<RngWell512>;
+
+  // Default global RNG
+  rng_default   g_defaultRNG;
 
 };};

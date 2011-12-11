@@ -18,8 +18,9 @@ namespace tloc { namespace math {
 
   private:
 
-    typedef   u32   int_type;
-    typedef   f32   real_type;
+    typedef   u32           int_type;
+    typedef   f32           real_type;
+    typedef   RngWell512    rng_type;
 
     struct Params
     {

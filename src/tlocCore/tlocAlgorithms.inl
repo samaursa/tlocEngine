@@ -871,8 +871,53 @@ namespace tloc { namespace core {
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_leftpivot)
     {
+      if (aFirst == aLast) { return; }
+
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType input_itr_value;
+
+      input_itr_value pivot = *aFirst;
+
+      T_InputIterator startItr = aFirst;
+      T_InputIterator endItr   = aLast--;
+
+      T_InputIterator currItr  = aFirst;
+
+      while (aFirst != aLast)
+      {
+        if (currItr == aFirst)
+        {
+          if (*aLast < pivot)
+          {
+            *aFirst = *aLast;
+            ++aFirst;
+            currItr = aLast;
+          }
+          else
+          {
+            --aLast;
+          }
+        }
+        else
+        {
+          if (*aFirst > pivot)
+          {
+            *aLast = *aFirst;
+            --aLast;
+            currItr = aFirst;
+          }
+          else
+          {
+            ++aFirst;
+          }
+        }
+      }
+
+      *aFirst = pivot;
+      if (startItr != aFirst) 
+      { quicksort(startItr, aFirst, sort_quicksort_leftpivot() ); }
+      if (++aLast != endItr)
+      { quicksort(aLast, endItr, sort_quicksort_leftpivot() ); }
     }
-    
   }
 
 };};

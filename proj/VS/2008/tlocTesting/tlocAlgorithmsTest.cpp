@@ -399,4 +399,45 @@ namespace TestingAlgorithms
 
     CHECK(s32(it-myvector.begin()) == 5);
   }
+
+  TEST_CASE("Core/Algorithms/Quicksort", "")
+  {
+    s32 myints[] = {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
+    s32* itrBegin = myints;
+    s32* itrEnd   = myints + 26;
+
+    Array<s32> myIntsArray(itrBegin, itrEnd);
+    List<s32>  myIntsList(itrBegin, itrEnd);
+
+    tloc::core::detail::quicksort(itrBegin, itrEnd, sort_quicksort_leftpivot() );
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myints[i] >= myints[i - 1]);
+    }
+
+    tloc::core::detail::quicksort(myIntsArray.begin(), myIntsArray.end(), 
+                                  sort_quicksort_leftpivot() );
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
+    }
+
+    /*tloc::core::detail::quicksort(myIntsList.begin(), myIntsList.end(), 
+                                  sort_quicksort_leftpivot() );
+
+    List<s32>::iterator listItr, listItr2, listItrEnd;
+    listItr2 = myIntsList.begin();
+    listItr = listItr2++;
+    listItrEnd = myIntsList.end();
+
+    while (listItr2 != listItrEnd)
+    {
+      CHECK(*listItr2 >= *listItr);
+
+      ++listItr2;
+      ++listItr;
+    }*/
+  }
 };

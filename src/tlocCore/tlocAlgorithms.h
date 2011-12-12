@@ -190,8 +190,9 @@ namespace tloc { namespace core {
 
   ///-------------------------------------------------------------------------
   /// @brief
-  /// Use for small data sets. If autosort is used, this algorithm is
-  /// selected for smaller containers. STABLE IN-PLACE ONLINE
+  /// Use for small data sets and/or data sets that are nearly sorted. If
+  /// autosort is used, this algorithm is selected for smaller
+  /// containers. STABLE IN-PLACE ONLINE.
   ///-------------------------------------------------------------------------
   struct sort_insertionsort{}; 
 

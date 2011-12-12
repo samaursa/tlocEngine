@@ -842,6 +842,37 @@ namespace tloc { namespace core {
       return (char8*)memchr(aRangeBegin, aValue, sizeof(char8) *
                             (tl_size)(aRangeEnd - aRangeBegin));
     }
+
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_autoselect)
+    {
+    }
+
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_randompivot)
+    {
+    }
+
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_middlepivot)
+    {
+    }
+
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_rightpivot)
+    {
+    }
+
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_leftpivot)
+    {
+    }
+    
   }
 
 };};

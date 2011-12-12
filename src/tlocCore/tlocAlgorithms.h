@@ -145,10 +145,62 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Sorting
 
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Quicksort where the left most element is selected as the pivot. On
+  /// a large linked list, this may be a better choice than a random
+  /// selection. This is also the default technique used for non random
+  /// access containers.
+  ///-------------------------------------------------------------------------
   struct sort_quicksort_leftpivot{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Quicksort where the left most element is selected as the pivot. On
+  /// a large linked list, this may be a better choice than a random
+  /// selection.
+  ///-------------------------------------------------------------------------
   struct sort_quicksort_rightpivot{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Quicksort where the middle element is selected as the pivot. This
+  /// is not the best choice for a linked list.
+  ///-------------------------------------------------------------------------
   struct sort_quicksort_middlepivot{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// The default Quicksort variant that is used on random access
+  /// containers. This may not be the best choice for linked lists.
+  ///-------------------------------------------------------------------------
   struct sort_quicksort_randompivot{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Will select the leftpivot sort or randompivot sort depending on the
+  /// type of container and its size.
+  ///-------------------------------------------------------------------------
+  struct sort_quicksort_autoselect{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief Use when seek time is a bottleneck (for example disk access)
+  ///-------------------------------------------------------------------------
+  struct sort_mergesort{};  
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Use for small data sets. If autosort is used, this algorithm is
+  /// selected for smaller containers. STABLE IN-PLACE ONLINE
+  ///-------------------------------------------------------------------------
+  struct sort_insertionsort{}; 
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Use only when low memory consumption is desired and the container
+  /// is nearly sorted.
+  ///-------------------------------------------------------------------------
+  struct sort_bubblesort{};             
 
   struct sort_autoselect{};
 
@@ -156,8 +208,9 @@ namespace tloc { namespace core {
   // sort_autoselect to automatically select the best sorting algorithm for
   // the given container. Some techniques may not be be compatible with the given
   // container
-  template <typename T_InputIterator>
-  void sort(T_InputIterator aFirst, T_InputIterator aLast);
+  template <typename T_InputIterator, typename T_SortAlgorithm>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast, 
+            T_SortAlgorithm aSortAlg = sort_quicksort_autoselect);
 
   //------------------------------------------------------------------------
   // Min / Max
@@ -249,14 +302,46 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Sort helpers
 
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Auto select the best quicksort for the given container type. Note
+    /// that if you know the container size is small, random quicksort
+    /// will provide the best results.
+    ///
+    /// @param  aFirst Range begin iterator.
+    /// @param  aLast  Range past the end iterator.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
+                   sort_quicksort_autoselect);
+
     // This quicksort helper will select a random pivot. It is considered one
     // of the most efficient sorting methods
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// This quicksort helper will select a random pivot. It is
+    /// considered one of the most efficient sorting methods.
+    ///
+    /// @param  aFirst Range begin iterator.
+    /// @param  aLast  Range past the end iterator. 
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
                    sort_quicksort_randompivot);
 
     // This quicksort helper will select the pivot somewhere in the middle of the
     // container. This is not an efficient method for a random List<>
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// This quicksort helper will select the pivot somewhere in the
+    /// middle of the. container. This is not an efficient method for a
+    /// random List&lt;&gt;
+    ///
+    /// @param  aFirst Range begin iterator. 
+    /// @param  aLast  Range past the end iterator. 
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
                    sort_quicksort_middlepivot);
@@ -264,13 +349,30 @@ namespace tloc { namespace core {
     // This quicksort helper will select the right most element (or aLast - 1)
     // as the pivot. This is not an efficient method for a not-so-random container
     // (user other pivot methods)
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// This quicksort helper will select the right most element (or
+    /// aLast - 1) as the pivot. This is not an efficient method for a
+    /// not-so-random container (user other pivot methods)
+    ///
+    /// @param  aFirst Range begin iterator. 
+    /// @param  aLast  Range past the end iterator. 
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
                    sort_quicksort_rightpivot);
 
-    // This quicksort helper assumes that the pivot is the first iterator and
-    // aLast is the past-the-end iterator. This is not an efficient method for
-    // a not-so-random container (use other pivot methods)
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// This quicksort helper assumes that the pivot is the first
+    /// iterator and aLast is the past-the-end iterator. This is not an
+    /// efficient method for a not-so-random container (use other pivot
+    /// methods)
+    ///
+    /// @param  aFirst Range begin iterator.
+    /// @param  aLast  Range past the end iterator.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
                    sort_quicksort_leftpivot);

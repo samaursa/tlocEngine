@@ -424,7 +424,7 @@ namespace TestingAlgorithms
       CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
     }
 
-    /*tloc::core::detail::quicksort(myIntsList.begin(), myIntsList.end(), 
+    tloc::core::detail::quicksort(myIntsList.begin(), myIntsList.end(), 
                                   sort_quicksort_leftpivot() );
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
@@ -438,6 +438,6 @@ namespace TestingAlgorithms
 
       ++listItr2;
       ++listItr;
-    }*/
+    }
   }
 };

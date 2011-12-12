@@ -871,11 +871,36 @@ namespace tloc { namespace core {
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_leftpivot)
     {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      DoQuicksortLeftPivot(aFirst, aLast, pointer_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast, 
+                              IsRawItr)
+    {
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      DoQuicksort(aFirst, aLast, value_type()); 
+    }
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast, 
+                              IsComplexItr)
+    {
+      // It is assumed, since the inputer iterator is complex, it has a typedef
+      // for value_type. If there is a COMPILE ERROR here then the complex
+      // object is either not an iterator OR does not have a value_type typedef
+      DoQuicksort(aFirst, aLast, T_InputIterator::value_type());
+    }
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType)
+    {
       if (aFirst == aLast) { return; }
 
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType input_itr_value;
-
-      input_itr_value pivot = *aFirst;
+      T_ValueType pivot = *aFirst;
 
       T_InputIterator startItr = aFirst;
       T_InputIterator endItr   = aLast--;

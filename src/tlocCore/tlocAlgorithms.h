@@ -377,6 +377,29 @@ namespace tloc { namespace core {
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
                    sort_quicksort_leftpivot);
+
+    typedef     type_false  IsComplexItr;
+    typedef     type_true   IsRawItr;
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast,
+                              IsRawItr);
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast,
+                              IsComplexItr);
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Quicksort helper. This will perform the leftpivot quicksort on
+    /// the given type. We need the quicksort helper because of raw and
+    /// complex iterators and their value types.
+    ///
+    /// @param  aFirst Range begin iterator 
+    /// @param  aLast  Range past the end iterator 
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType);
   }
 
 };};

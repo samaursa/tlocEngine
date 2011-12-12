@@ -437,10 +437,10 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
   {
-    return subOperation(int, iterator_category());
+    return subOperation(int(), iterator_category());
   }
 
   LIST_ITR_TEMP
@@ -463,7 +463,7 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
   {
     TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
@@ -478,7 +478,7 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
   {
     this_type tempItr(*this);

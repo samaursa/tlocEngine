@@ -287,7 +287,7 @@ namespace tloc { namespace core {
     TL_FI this_type&      operator++();
     TL_FI this_type       operator++(int);
     TL_FI this_type&      operator--();
-    TL_FI this_type&      operator--(int);
+    TL_FI this_type       operator--(int);
     TL_FI bool            operator==(const this_type& aOther);
     TL_FI bool            operator!=(const this_type& aOther);
 
@@ -295,9 +295,9 @@ namespace tloc { namespace core {
 
   protected:
     TL_FI this_type&      subOperation(singly_linked_tag);
-    TL_FI this_type&      subOperation(int, singly_linked_tag);
+    TL_FI this_type       subOperation(int, singly_linked_tag);
     TL_FI this_type&      subOperation(doubly_linked_tag);
-    TL_FI this_type&      subOperation(int, doubly_linked_tag);
+    TL_FI this_type       subOperation(int, doubly_linked_tag);
   };
 
   //////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 #ifndef TLOC_RNG_WELL_512_H
 #define TLOC_RNG_WELL_512_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
+#include "tlocBase.h"
+#include "tlocTypes.h"
 
 namespace tloc { namespace math {
 

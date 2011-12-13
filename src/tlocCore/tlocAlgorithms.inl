@@ -853,18 +853,34 @@ namespace tloc { namespace core {
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_randompivot)
     {
+      const u32 size = tloc::core::distance(aFirst, aLast);
+
     }
 
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_middlepivot)
     {
+      const u32 halfSize = tloc::core::distance(aFirst, aLast) / 2;
+
+      T_InputIterator midItr = aFirst;
+      tloc::core::advance(midItr, halfSize);
+
+      tlSwap(*aFirst, *midItr);
+      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_rightpivot)
     {
+      // Swap the rightpivot with the left most element. We can then call
+      // quicksort_leftpivot
+      T_InputIterator rightPivot = aLast;
+      --rightPivot;
+
+      tlSwap(*aFirst, *rightPivot);
+      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>

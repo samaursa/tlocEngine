@@ -400,16 +400,23 @@ namespace TestingAlgorithms
     CHECK(s32(it-myvector.begin()) == 5);
   }
 
-  TEST_CASE("Core/Algorithms/Quicksort", "")
+  template <typename T_SortType>
+  void QuicksortDetailsTests()
   {
-    s32 myints[] = {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
+    const s32 k_arraySize = 26;
+    const s32 rawArray[k_arraySize] = 
+    {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
+
+    s32 myints[26] = {0};
+    copy(rawArray, rawArray + k_arraySize, myints);
+
     s32* itrBegin = myints;
-    s32* itrEnd   = myints + 26;
+    s32* itrEnd   = myints + k_arraySize;
 
     Array<s32> myIntsArray(itrBegin, itrEnd);
     List<s32>  myIntsList(itrBegin, itrEnd);
 
-    tloc::core::detail::quicksort(itrBegin, itrEnd, sort_quicksort_leftpivot() );
+    tloc::core::detail::quicksort(itrBegin, itrEnd, T_SortType() );
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -417,7 +424,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::quicksort(myIntsArray.begin(), myIntsArray.end(), 
-                                  sort_quicksort_leftpivot() );
+                                  T_SortType() );
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -425,7 +432,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::quicksort(myIntsList.begin(), myIntsList.end(), 
-                                  sort_quicksort_leftpivot() );
+                                  T_SortType() );
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -439,5 +446,12 @@ namespace TestingAlgorithms
       ++listItr2;
       ++listItr;
     }
+  }
+
+  TEST_CASE("Core/Algorithms/QuicksortDetail", "")
+  {
+    QuicksortDetailsTests<sort_quicksort_leftpivot>();
+    QuicksortDetailsTests<sort_quicksort_rightpivot>();
+    QuicksortDetailsTests<sort_quicksort_middlepivot>();
   }
 };

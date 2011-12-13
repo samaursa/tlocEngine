@@ -452,6 +452,38 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Generators"
+			>
+		</Filter>
+		<Filter
+			Name="Random Number Generator"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.h"
+				>
+			</File>
+			<Filter
+				Name="Generators"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.inl"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 			>

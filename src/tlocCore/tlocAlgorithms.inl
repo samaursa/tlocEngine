@@ -8,6 +8,8 @@
 #include "tlocIterator.inl"
 #include "tlocPair.inl"
 
+#include "tlocRandom.h"
+
 namespace tloc { namespace core {
 
   // TODO: Make all find functions specialized for char* and use memcmp
@@ -853,8 +855,14 @@ namespace tloc { namespace core {
     void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_randompivot)
     {
-      const u32 size = tloc::core::distance(aFirst, aLast);
+      const u32 size			= tloc::core::distance(aFirst, aLast);
+      const u32 randomPiv	= g_defaultRNG.GetRandomInteger(0, size);
 
+      T_InputIterator randItr = aFirst;
+      tloc::core::advance(randItr, randomPiv);
+
+      tlSwap(*aFirst, *randItr);
+      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>

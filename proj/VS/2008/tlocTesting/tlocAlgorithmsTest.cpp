@@ -453,5 +453,6 @@ namespace TestingAlgorithms
     QuicksortDetailsTests<sort_quicksort_leftpivot>();
     QuicksortDetailsTests<sort_quicksort_rightpivot>();
     QuicksortDetailsTests<sort_quicksort_middlepivot>();
+    QuicksortDetailsTests<sort_quicksort_randompivot>();
   }
 };

@@ -4,7 +4,7 @@
 #include "tlocBase.h"
 #include "tlocTypes.h"
 
-namespace tloc { namespace math {
+namespace tloc { namespace core {
 
   // The basis of this class has been taken from a forum post of gamedev.net
   // The class had to be `adjusted` to fit with our interface but the actual

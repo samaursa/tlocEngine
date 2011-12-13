@@ -288,6 +288,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocRandomTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocStringTest.cpp"
 				>
 			</File>
@@ -353,10 +357,6 @@
 			</File>
 			<File
 				RelativePath=".\tlocMatrixTest.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocRandomTest.cpp"
 				>
 			</File>
 			<File

@@ -6,7 +6,7 @@
 
 #include "tlocRngWell512.h"
 
-namespace tloc { namespace math {
+namespace tloc { namespace core {
 
   template <typename T_Generator> class RNG;
 

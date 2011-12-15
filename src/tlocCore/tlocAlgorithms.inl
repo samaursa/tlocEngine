@@ -689,6 +689,23 @@ namespace tloc { namespace core {
     return aRangeToSearchEnd;
   }
 
+
+  //------------------------------------------------------------------------
+  // Sorting
+
+  template <typename T_InputIterator>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast)
+  {
+    detail::DoSort(aFirst, aLast, sort_quicksort_randompivot());
+  }
+
+  template <typename T_InputIterator, typename T_SortAlgorithm>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast, 
+            T_SortAlgorithm aSortAlg)
+  {
+    detail::DoSort(aFirst, aLast, aSortAlg); 
+  }
+
   //------------------------------------------------------------------------
   // Min / Max
 
@@ -846,13 +863,13 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_autoselect)
     {
     }
 
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_randompivot)
     {
       const u32 size			= tloc::core::distance(aFirst, aLast);
@@ -862,11 +879,11 @@ namespace tloc { namespace core {
       tloc::core::advance(randItr, randomPiv);
 
       tlSwap(*aFirst, *randItr);
-      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_middlepivot)
     {
       const u32 halfSize = tloc::core::distance(aFirst, aLast) / 2;
@@ -875,11 +892,11 @@ namespace tloc { namespace core {
       tloc::core::advance(midItr, halfSize);
 
       tlSwap(*aFirst, *midItr);
-      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_rightpivot)
     {
       // Swap the rightpivot with the left most element. We can then call
@@ -888,11 +905,11 @@ namespace tloc { namespace core {
       --rightPivot;
 
       tlSwap(*aFirst, *rightPivot);
-      quicksort(aFirst, aLast, sort_quicksort_leftpivot() );
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_leftpivot)
     {
       typedef Loki::TypeTraits<T_InputIterator> unknown_type;
@@ -963,9 +980,9 @@ namespace tloc { namespace core {
 
       *aFirst = pivot;
       if (startItr != aFirst) 
-      { quicksort(startItr, aFirst, sort_quicksort_leftpivot() ); }
+      { DoSort(startItr, aFirst, sort_quicksort_leftpivot() ); }
       if (++aLast != endItr)
-      { quicksort(aLast, endItr, sort_quicksort_leftpivot() ); }
+      { DoSort(aLast, endItr, sort_quicksort_leftpivot() ); }
     }
   }
 

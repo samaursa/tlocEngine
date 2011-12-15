@@ -205,13 +205,18 @@ namespace tloc { namespace core {
 
   struct sort_autoselect{};
 
+  // The default sort function. It sorts using random quicksort. See overloaded
+  // sort function for using a different sorting algorithm.
+  template <typename T_InputIterator>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast);
+
   // The sorting function can sort with multiple different techniques. Use
   // sort_autoselect to automatically select the best sorting algorithm for
-  // the given container. Some techniques may not be be compatible with the given
+  // the given container. Some techniques may not be compatible with the given
   // container
   template <typename T_InputIterator, typename T_SortAlgorithm>
   void sort(T_InputIterator aFirst, T_InputIterator aLast, 
-            T_SortAlgorithm aSortAlg = sort_quicksort_autoselect);
+            T_SortAlgorithm);
 
   //------------------------------------------------------------------------
   // Min / Max
@@ -313,8 +318,8 @@ namespace tloc { namespace core {
     /// @param  aLast  Range past the end iterator.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
-                   sort_quicksort_autoselect);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_quicksort_autoselect);
 
     // This quicksort helper will select a random pivot. It is considered one
     // of the most efficient sorting methods
@@ -328,8 +333,8 @@ namespace tloc { namespace core {
     /// @param  aLast  Range past the end iterator. 
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
-                   sort_quicksort_randompivot);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_quicksort_randompivot);
 
     // This quicksort helper will select the pivot somewhere in the middle of the
     // container. This is not an efficient method for a random List<>
@@ -344,8 +349,8 @@ namespace tloc { namespace core {
     /// @param  aLast  Range past the end iterator. 
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
-                   sort_quicksort_middlepivot);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_quicksort_middlepivot);
 
     // This quicksort helper will select the right most element (or aLast - 1)
     // as the pivot. This is not an efficient method for a not-so-random container
@@ -361,8 +366,8 @@ namespace tloc { namespace core {
     /// @param  aLast  Range past the end iterator. 
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
-                   sort_quicksort_rightpivot);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_quicksort_rightpivot);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -375,8 +380,8 @@ namespace tloc { namespace core {
     /// @param  aLast  Range past the end iterator.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void quicksort(T_InputIterator aFirst, T_InputIterator aLast,
-                   sort_quicksort_leftpivot);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_quicksort_leftpivot);
 
     typedef     type_false  IsComplexItr;
     typedef     type_true   IsRawItr;

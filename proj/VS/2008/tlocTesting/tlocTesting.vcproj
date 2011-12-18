@@ -288,7 +288,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocQueueTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocQueueTest.h"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocRandomTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocStackTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocStackTest.h"
 				>
 			</File>
 			<File

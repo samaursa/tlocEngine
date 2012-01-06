@@ -35,6 +35,12 @@ namespace TestingArray
   arrayName[i] = i;\
   }\
 
+#define CHECK_ARRAY_BY_INDEX(arrayName, nFrom, nTo) \
+  for (u32 i = nFrom; i < nTo; ++i)\
+  {\
+  CHECK(arrayName[i] == (s32)i);\
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Ctors", "")
   {
     core::Array<s32> first;                                // empty vector of ints
@@ -96,6 +102,21 @@ namespace TestingArray
     }
 
     CHECK(ints.size() == 0);
+  }
+
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/ElementAccess",
+    "Test element access functionality")
+  {
+    u32 startElement = 0;
+    u32 amountToPush = 4;
+    FILL_INT_ARRAY_BY_PUSH(ints, startElement, amountToPush);
+    CHECK(ints.size() == amountToPush);
+
+    for (u32 i = startElement; i < ints.size(); ++i)
+    {
+      CHECK(ints[i] == (s32)i);
+      CHECK(ints.at(i) == (s32)i);
+    }
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Accessors",
@@ -241,18 +262,39 @@ namespace TestingArray
     }
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Container/Array/FrontBackAccess",
+    "Test front and back access")
+  {
+    FILL_INT_ARRAY_BY_PUSH(ints, 0 , 4);
+
+    CHECK(ints.front() == 0);
+    CHECK(ints.back() == 3);
+
+    ints.erase(ints.begin());
+    ints.erase(ints.end() - 1);
+
+    CHECK(ints.front() == 1);
+    CHECK(ints.back() == 2);
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
-    FILL_INT_ARRAY_BY_PUSH(ints, 0, 10);
+    u32 firstElement = 0;
+    u32 arraySize = 10;
+    FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);
+    CHECK(ints.size() == arraySize);
+    CHECK_ARRAY_BY_INDEX(ints, firstElement, arraySize);
 
-    CHECK(ints.size() == 10);
-    ints.resize(5);
-    CHECK(ints.size() == 5);
-
-    u32 resizeSize = 150;
+    u32 resizeSize = 5;
     ints.resize(resizeSize);
     CHECK(ints.size() == resizeSize);
+    CHECK_ARRAY_BY_INDEX(ints, firstElement, resizeSize);
+
+    resizeSize = 150;
+    ints.resize(resizeSize);
+    CHECK(ints.size() == resizeSize);
+    CHECK_ARRAY_BY_INDEX(ints, firstElement, 5);
 
     // Check that all 'resizeSize' elements have been allocated properly
     for (u32 i = 0; i < resizeSize; ++i)
@@ -349,4 +391,5 @@ namespace TestingArray
   }
 
 #undef FILL_INT_ARRAY_BY_PUSH
+#undef FILL_INT_ARRAY_BY_INDEX
 };

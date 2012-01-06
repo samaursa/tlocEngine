@@ -117,7 +117,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I T& ArrayBase<T>::front()
   {
-    TLOC_ASSERT_ARRAY_INDEX(aIndex);
+    TLOC_ASSERT_ARRAY_NOT_EMPTY();
     return *m_begin;
   }
 

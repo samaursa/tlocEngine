@@ -697,7 +697,7 @@ namespace tloc { namespace core {
   void sort(T_InputIterator aFirst, T_InputIterator aLast)
   {
     detail::DoSort(aFirst, aLast, sort_quicksort_randompivot());
-  }
+  }  
 
   template <typename T_InputIterator, typename T_SortAlgorithm>
   void sort(T_InputIterator aFirst, T_InputIterator aLast, 
@@ -862,6 +862,9 @@ namespace tloc { namespace core {
                             (tl_size)(aRangeEnd - aRangeBegin));
     }
 
+    //------------------------------------------------------------------------
+    // Sort helpers
+
     template <typename T_InputIterator>
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_autoselect)
@@ -983,6 +986,57 @@ namespace tloc { namespace core {
       { DoSort(startItr, aFirst, sort_quicksort_leftpivot() ); }
       if (++aLast != endItr)
       { DoSort(aLast, endItr, sort_quicksort_leftpivot() ); }
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+      sort_insertionsort)
+    {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      DoInsertionSort(aFirst, aLast, pointer_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+      IsRawItr)
+    {
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      DoInsertionSort(aFirst, aLast, value_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+      IsComplexItr)
+    {
+      DoInsertionSort(aFirst, aLast, T_InputIterator::value_type());
+    }
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+      T_ValueType)
+    {
+      if (aFirst != aLast)
+      {
+        T_InputIterator unsortedItr = aFirst + 1;
+        T_InputIterator currentItr;
+        T_ValueType currentValue;
+
+        for (/* */; unsortedItr != aLast; ++unsortedItr)
+        {
+          currentItr = unsortedItr;
+          currentValue = *currentItr;
+
+          while(currentItr != aFirst && *(currentItr - 1) > currentValue)
+          {
+            *(currentItr - 1) = *currentItr;
+            --currentItr;
+          }
+
+          *currentItr = currentValue;
+        }
+      }
     }
   }
 

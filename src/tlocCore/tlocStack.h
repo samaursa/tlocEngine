@@ -8,9 +8,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Notes On Stack
 /*
- * Stack is a container adapter, built to limit a container to LIFO 
+ * Stack is a container adapter, built to limit a container to LIFO
  * (Last in first out) control. The stack implemented in tloc is heavily
- * influenced by the STL stack, specifically with function names, and 
+ * influenced by the STL stack, specifically with function names, and
  * general operation.
  *
  * Since stack is meant to be more of an adapter of a pre-existing container
@@ -30,7 +30,7 @@
 
 namespace tloc { namespace core {
 
-	template <typename T, typename T_Container = List<T>>
+	template <typename T, typename T_Container = List<T> >
 	class Stack
 	{
 	public:

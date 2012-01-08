@@ -93,6 +93,8 @@ namespace tloc { namespace core {
     TL_I tl_size          capacity() const;
     // Checks if size is exactly 0, returns true if so. This is for performance,
     // since one should already not be able to underflow the array.
+    // To not underflow the array, one must use TLOC_ASSERT_ARRAY_NOT_EMPTY()
+    // this assert checks for negative size.
     TL_I bool             empty() const;
     TL_I bool             full() const;
 

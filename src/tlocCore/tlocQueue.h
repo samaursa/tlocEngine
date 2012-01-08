@@ -8,9 +8,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Notes On Queue
 /*
- * Queue is a container adapter, built to limit a container to FIFO 
+ * Queue is a container adapter, built to limit a container to FIFO
  * (First in first out) control. The Queue implemented in tloc is heavily
- * influenced by the STL Queue, specifically with function names, and 
+ * influenced by the STL Queue, specifically with function names, and
  * general operation.
  *
  * Since queue is meant to be more of an adapter of a pre-existing container
@@ -30,7 +30,7 @@
 
 namespace tloc { namespace core {
 
-  template <typename T, typename T_Container = List<T>>
+  template <typename T, typename T_Container = List<T> >
   class Queue
   {
   public:

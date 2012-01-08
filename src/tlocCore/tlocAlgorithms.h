@@ -186,7 +186,7 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   /// @brief Use when seek time is a bottleneck (for example disk access)
   ///-------------------------------------------------------------------------
-  struct sort_mergesort{};  
+  struct sort_mergesort{};
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -194,14 +194,14 @@ namespace tloc { namespace core {
   /// autosort is used, this algorithm is selected for smaller
   /// containers. STABLE IN-PLACE ONLINE.
   ///-------------------------------------------------------------------------
-  struct sort_insertionsort{}; 
+  struct sort_insertionsort{};
 
   ///-------------------------------------------------------------------------
   /// @brief
   /// Use only when low memory consumption is desired and the container
   /// is nearly sorted.
   ///-------------------------------------------------------------------------
-  struct sort_bubblesort{};             
+  struct sort_bubblesort{};
 
   struct sort_autoselect{};
 
@@ -215,7 +215,7 @@ namespace tloc { namespace core {
   // the given container. Some techniques may not be compatible with the given
   // container
   template <typename T_InputIterator, typename T_SortAlgorithm>
-  void sort(T_InputIterator aFirst, T_InputIterator aLast, 
+  void sort(T_InputIterator aFirst, T_InputIterator aLast,
             T_SortAlgorithm);
 
   //------------------------------------------------------------------------
@@ -330,7 +330,7 @@ namespace tloc { namespace core {
     /// considered one of the most efficient sorting methods.
     ///
     /// @param  aFirst Range begin iterator.
-    /// @param  aLast  Range past the end iterator. 
+    /// @param  aLast  Range past the end iterator.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
@@ -345,8 +345,8 @@ namespace tloc { namespace core {
     /// middle of the. container. This is not an efficient method for a
     /// random List&lt;&gt;
     ///
-    /// @param  aFirst Range begin iterator. 
-    /// @param  aLast  Range past the end iterator. 
+    /// @param  aFirst Range begin iterator.
+    /// @param  aLast  Range past the end iterator.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
@@ -362,8 +362,8 @@ namespace tloc { namespace core {
     /// aLast - 1) as the pivot. This is not an efficient method for a
     /// not-so-random container (user other pivot methods)
     ///
-    /// @param  aFirst Range begin iterator. 
-    /// @param  aLast  Range past the end iterator. 
+    /// @param  aFirst Range begin iterator.
+    /// @param  aLast  Range past the end iterator.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
@@ -400,11 +400,27 @@ namespace tloc { namespace core {
     /// the given type. We need the quicksort helper because of raw and
     /// complex iterators and their value types.
     ///
-    /// @param  aFirst Range begin iterator 
-    /// @param  aLast  Range past the end iterator 
+    /// @param  aFirst Range begin iterator
+    /// @param  aLast  Range past the end iterator
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator, typename T_ValueType>
     void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType);
+
+    /*template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_insertionsort);*/
+
+    template <typename T_InputIterator>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+                         IsRawItr);
+
+    template <typename T_InputIterator>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+                         IsComplexItr);
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+                         T_ValueType);
   }
 
 };};

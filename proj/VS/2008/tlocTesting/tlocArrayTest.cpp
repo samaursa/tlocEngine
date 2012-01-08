@@ -392,4 +392,5 @@ namespace TestingArray
 
 #undef FILL_INT_ARRAY_BY_PUSH
 #undef FILL_INT_ARRAY_BY_INDEX
+#undef CHECK_ARRAY_BY_INDEX
 };

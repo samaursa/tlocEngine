@@ -67,7 +67,7 @@ namespace tloc { namespace core {
     ::insert_after(ListNode<SINGLY_LIST_NODE_PARAMS>* aNext)
   {
     m_next = aNext->m_next;
-    aNext = this;
+    aNext->m_next = this;
   }
 
   template <LIST_NODE_TYPES>
@@ -81,7 +81,23 @@ namespace tloc { namespace core {
     ::splice_after(ListNode<SINGLY_LIST_NODE_PARAMS>* aFirst,
                    ListNode<SINGLY_LIST_NODE_PARAMS>* aLast)
   {
-    aLast->m_next = m_next;
+    // Not the most efficient implementation as it requires iteration. Find a 
+    // way to do it without iterating the other list
+
+#ifndef TLOC_DISABLE_EXTENDED_SINGLY_LIST
+    this_type* beforeFirst = aFirst->getPrev();
+    this_type* beforeLast  = aLast->getPrev();
+#else
+    this_type* beforeFirst = aFirst;
+    this_type* beforeLast  = aLast;
+
+    while(beforeFirst->m_next != aFirst) { beforeFirst = beforeFirst->m_next; }
+    while(beforeLast->m_next != aLast) { beforeLast = beforeLast->m_next; }
+#endif
+
+    beforeFirst->m_next = aLast; // For the foreign list
+
+    beforeLast->m_next = m_next;
     m_next = aFirst;
   }
 

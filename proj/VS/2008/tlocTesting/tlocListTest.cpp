@@ -21,6 +21,8 @@ namespace TestingList
   {
     typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListWithSize;
     typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListWithoutSize;
+    typedef List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), true> intSinglyListWithSize;
+    typedef List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), false> intSinglyListWithoutSize;
 
     typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), true> uintListWithSize;
     typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), false> uintListWithoutSize;
@@ -57,6 +59,8 @@ namespace TestingList
   {
     testCtors<intListWithSize>();
     testCtors<intListWithoutSize>();
+    testCtors<intSinglyListWithSize>();
+    testCtors<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -76,6 +80,8 @@ namespace TestingList
   {
     testOperatorEqual<intListWithSize>();
     testOperatorEqual<intListWithoutSize>();
+    testOperatorEqual<intSinglyListWithSize>();
+    testOperatorEqual<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -98,6 +104,8 @@ namespace TestingList
   {
     testBegin<intListWithSize>();
     testBegin<intListWithoutSize>();
+    testBegin<intSinglyListWithSize>();
+    testBegin<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -120,6 +128,8 @@ namespace TestingList
   {
     testEnd<intListWithSize>();
     testEnd<intListWithoutSize>();
+    testEnd<intSinglyListWithSize>();
+    testEnd<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -141,6 +151,8 @@ namespace TestingList
   {
     testRBegin<intListWithSize>();
     testRBegin<intListWithoutSize>();
+    testRBegin<intSinglyListWithSize>();
+    testRBegin<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -162,6 +174,8 @@ namespace TestingList
   {
     testREnd<intListWithSize>();
     testREnd<intListWithoutSize>();
+    testREnd<intSinglyListWithSize>();
+    testREnd<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -185,6 +199,8 @@ namespace TestingList
   {
     testEmpty<intListWithSize>();
     testEmpty<intListWithoutSize>();
+    testEmpty<intSinglyListWithSize>();
+    testEmpty<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -206,6 +222,8 @@ namespace TestingList
   {
     testSize<intListWithSize>();
     testSize<intListWithoutSize>();
+    testSize<intSinglyListWithSize>();
+    testSize<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -241,6 +259,8 @@ namespace TestingList
   {
     testResize<intListWithSize>();
     testResize<intListWithoutSize>();
+    testResize<intSinglyListWithSize>();
+    testResize<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -260,6 +280,8 @@ namespace TestingList
   {
     testFront<intListWithSize>();
     testFront<intListWithoutSize>();
+    testFront<intSinglyListWithSize>();
+    testFront<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -293,6 +315,8 @@ namespace TestingList
   {
     testBack<intListWithSize>();
     testBack<intListWithoutSize>();
+    testBack<intSinglyListWithSize>();
+    testBack<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -314,6 +338,8 @@ namespace TestingList
   {
     testAssign<intListWithSize>();
     testAssign<intListWithoutSize>();
+    testAssign<intSinglyListWithSize>();
+    testAssign<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -335,6 +361,8 @@ namespace TestingList
   {
     testPushFront<intListWithSize>();
     testPushFront<intListWithoutSize>();
+    testPushFront<intSinglyListWithSize>();
+    testPushFront<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -359,6 +387,8 @@ namespace TestingList
   {
     testPopFront<intListWithSize>();
     testPopFront<intListWithoutSize>();
+    testPopFront<intSinglyListWithSize>();
+    testPopFront<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -385,6 +415,8 @@ namespace TestingList
   {
     testPushBack<intListWithSize>();
     testPushBack<intListWithoutSize>();
+    testPushBack<intSinglyListWithSize>();
+    testPushBack<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -410,6 +442,8 @@ namespace TestingList
   {
     testPopBack<intListWithSize>();
     testPopBack<intListWithoutSize>();
+    testPopBack<intSinglyListWithSize>();
+    testPopBack<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -451,6 +485,8 @@ namespace TestingList
   {
     testInsert<intListWithSize>();
     testInsert<intListWithoutSize>();
+    testInsert<intSinglyListWithSize>();
+    testInsert<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -495,6 +531,8 @@ namespace TestingList
   {
     testErase<intListWithSize>();
     testErase<intListWithoutSize>();
+    testErase<intSinglyListWithSize>();
+    testErase<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -523,6 +561,8 @@ namespace TestingList
   {
     testSwap<intListWithSize>();
     testSwap<intListWithoutSize>();
+    testSwap<intSinglyListWithSize>();
+    testSwap<intSinglyListWithoutSize>();
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testNodeSwap", "")
@@ -577,6 +617,8 @@ namespace TestingList
   {
     testClear<intListWithSize>();
     testClear<intListWithoutSize>();
+    testClear<intSinglyListWithSize>();
+    testClear<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -636,6 +678,8 @@ namespace TestingList
   {
     testSplice<intListWithSize>();
     testSplice<intListWithoutSize>();
+    testSplice<intSinglyListWithSize>();
+    testSplice<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -656,6 +700,8 @@ namespace TestingList
   {
     testRemove<intListWithSize>();
     testRemove<intListWithoutSize>();
+    testRemove<intSinglyListWithSize>();
+    testRemove<intSinglyListWithoutSize>();
   }
 
   // a predicate implemented as a function:
@@ -688,6 +734,8 @@ namespace TestingList
   {
     testRemoveIf<intListWithSize>();
     testRemoveIf<intListWithoutSize>();
+    testRemoveIf<intSinglyListWithSize>();
+    testRemoveIf<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -699,6 +747,8 @@ namespace TestingList
   {
     testUnique<intListWithSize>();
     testUnique<intListWithoutSize>();
+    testUnique<intSinglyListWithSize>();
+    testUnique<intSinglyListWithoutSize>();
   }
 
   bool mycomparison (double first, double second)
@@ -745,6 +795,8 @@ namespace TestingList
   {
     testSort<intListWithSize>();
     testSort<intListWithoutSize>();
+    testSort<intSinglyListWithSize>();
+    testSort<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -774,6 +826,8 @@ namespace TestingList
   {
     testReverse<intListWithSize>();
     testReverse<intListWithoutSize>();
+    testReverse<intSinglyListWithSize>();
+    testReverse<intSinglyListWithoutSize>();
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert", "")

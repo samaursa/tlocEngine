@@ -413,6 +413,18 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+      list_iterator<LIST_ITR_TEMP_PARAM>::operator+(difference_type aDistance) const
+  {
+    this_type tempItr(*this);
+    for(difference_type i = 0; i < aDistance; ++i)
+    {
+      tempItr.m_node = tempItr.m_node->getNext();
+    }
+    return tempItr;
+  }
+
+  LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator++()
   {
@@ -430,13 +442,20 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+    list_iterator<LIST_ITR_TEMP_PARAM>::operator-(difference_type aDistance) const
+  {
+    return subOperation(aDistance, iterator_category());
+  }
+
+  LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
   {
     // The function calls subOperation() because initially singly_linked nodes
     // were not required to have a prev() function. Now the restriction is
     // lifted and the burden falls on the implementation of the node.
-    return subOperation(iterator_category());
+    return decrementOperation(iterator_category());
   }
 
   LIST_ITR_TEMP
@@ -446,7 +465,7 @@ namespace tloc { namespace core {
     // The function calls subOperation() because initially singly_linked nodes
     // were not required to have a prev() function. Now the restriction is
     // lifted and the burden falls on the implementation of the node.
-    return subOperation(int(), iterator_category());
+    return decrementOperation(int(), iterator_category());
   }
 
   LIST_ITR_TEMP
@@ -462,8 +481,27 @@ namespace tloc { namespace core {
   }
 
   LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+    list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(difference_type aDistance, singly_linked_tag) const
+  {
+    TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
+  }
+
+  LIST_ITR_TEMP
+    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+    list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(difference_type aDistance, doubly_linked_tag) const
+  {
+    this_type tempItr(*this);
+    for(difference_type i = 0; i < aDistance; ++i)
+    {
+      tempItr.m_node = tempItr.m_node->getPrev();
+    }
+    return tempItr;
+  }
+
+  LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(singly_linked_tag)
+      list_iterator<LIST_ITR_TEMP_PARAM>::decrementOperation(singly_linked_tag)
   {
     m_node = m_node->getPrev();
     return *this;
@@ -471,7 +509,7 @@ namespace tloc { namespace core {
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
+      list_iterator<LIST_ITR_TEMP_PARAM>::decrementOperation(int, singly_linked_tag)
   {
     m_node = m_node->getPrev();
     return *this;
@@ -479,7 +517,7 @@ namespace tloc { namespace core {
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(doubly_linked_tag)
+      list_iterator<LIST_ITR_TEMP_PARAM>::decrementOperation(doubly_linked_tag)
   {
     m_node = m_node->getPrev();
     return *this;
@@ -487,12 +525,13 @@ namespace tloc { namespace core {
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
+      list_iterator<LIST_ITR_TEMP_PARAM>::decrementOperation(int, doubly_linked_tag)
   {
     this_type tempItr(*this);
     m_node = m_node->getPrev();
     return tempItr;
   }
+
 
   //////////////////////////////////////////////////////////////////////////
   // Detail

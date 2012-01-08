@@ -27,6 +27,8 @@ namespace TestingList
 
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListSize;
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListNoSize;
+    List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), true> intSinglyListSize;
+    List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), false> intSinglyListNoSize;
     List<SomeClass> classList;
   };
 
@@ -523,6 +525,30 @@ namespace TestingList
     testSwap<intListWithoutSize>();
   }
 
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testNodeSwap", "")
+  {
+    //ListNode<s32, doubly_linked_tag> n1, n2, n3;
+    //n1.m_value = 1;
+    //n2.m_value = 2;
+    //n3.m_value = 3;
+
+    //n1.m_next = &n2;
+    //n2.m_next = &n3;
+    //n3.m_next = &n1;
+
+    //n3.m_prev = &n2;
+    //n2.m_prev = &n1;
+    //n1.m_prev = &n3;
+
+    //n1.swap(n1, n2);
+    //CHECK(n1.m_value == 2);
+    //CHECK(n2.m_value == 1);
+
+    //CHECK(n1.m_next == &n3);
+    //CHECK(n2.m_next == &n1);
+    //CHECK(n2.m_prev == &n3);
+  }
+
   template <typename T_ListType>
   void testClear()
   {
@@ -569,14 +595,22 @@ namespace TestingList
     it = mylist1.begin();
     ++it;                         // points to 2
 
-    mylist1.splice (it, mylist2); // mylist1: 1 10 20 30 2 3 4
-    // mylist2 (empty)
-    // "it" still points to 2 (the 5th element)
+    mylist1.splice (it, mylist2);	// mylist1: 1 10 20 30 2 3 4
+																	// mylist2 (empty)
+																	// "it" still points to 2 (the 5th element)
 
-    mylist2.splice (mylist2.begin(),mylist1, it);
-    // mylist1: 1 10 20 30 3 4
-    // mylist2: 2
-    // "it" is now invalid.
+    T_ListType::iterator itrCheck = mylist1.begin();
+    CHECK( *itrCheck == 1); ++itrCheck;
+    CHECK( *itrCheck == 10); ++itrCheck;
+    CHECK( *itrCheck == 20); ++itrCheck;
+    CHECK( *itrCheck == 30); ++itrCheck;
+    CHECK( *itrCheck == 2); ++itrCheck;
+    CHECK( *itrCheck == 3); ++itrCheck;
+    CHECK( *itrCheck == 4);
+
+    mylist2.splice (mylist2.begin(),mylist1, it);	// mylist1: 1 10 20 30 3 4
+																									// mylist2: 2
+																									// "it" is now invalid.
     CHECK(mylist2.size() == 1);
     it = mylist1.begin();
     tloc::core::advance(it,3);                // "it" points now to 30

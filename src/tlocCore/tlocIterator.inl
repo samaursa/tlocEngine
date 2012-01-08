@@ -402,21 +402,21 @@ namespace tloc { namespace core {
   TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator* () const
   {
-    return m_node->m_value;
+    return m_node->getValue();
   }
 
   LIST_ITR_TEMP
   TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator-> () const
   {
-    return *(m_node->m_value);
+    return *(m_node->getValue());
   }
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator++()
   {
-    m_node = m_node->m_next;
+    m_node = m_node->getNext();
     return *this;
   }
 
@@ -425,7 +425,7 @@ namespace tloc { namespace core {
       list_iterator<LIST_ITR_TEMP_PARAM>::operator++(int)
   {
     this_type tempItr(*this);
-    m_node = m_node->m_next;
+    m_node = m_node->getNext();
     return tempItr;
   }
 
@@ -433,6 +433,9 @@ namespace tloc { namespace core {
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
   {
+    // The function calls subOperation() because initially singly_linked nodes
+    // were not required to have a prev() function. Now the restriction is
+    // lifted and the burden falls on the implementation of the node.
     return subOperation(iterator_category());
   }
 
@@ -440,6 +443,9 @@ namespace tloc { namespace core {
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
   {
+    // The function calls subOperation() because initially singly_linked nodes
+    // were not required to have a prev() function. Now the restriction is
+    // lifted and the burden falls on the implementation of the node.
     return subOperation(int(), iterator_category());
   }
 
@@ -459,21 +465,23 @@ namespace tloc { namespace core {
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(singly_linked_tag)
   {
-    TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
+    m_node = m_node->getPrev();
+    return *this;
   }
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
   {
-    TLOC_STATIC_ASSERT(false, Unable_to_perform_operation_on_a_singly_linked_node);
+    m_node = m_node->getPrev();
+    return *this;
   }
 
   LIST_ITR_TEMP
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(doubly_linked_tag)
   {
-    m_node = m_node->m_prev;
+    m_node = m_node->getPrev();
     return *this;
   }
 
@@ -482,7 +490,7 @@ namespace tloc { namespace core {
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
   {
     this_type tempItr(*this);
-    m_node = m_node->m_prev;
+    m_node = m_node->getPrev();
     return tempItr;
   }
 

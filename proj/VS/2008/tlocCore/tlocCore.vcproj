@@ -314,6 +314,22 @@
 					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.inl"
 					>
 				</File>
+				<Filter
+					Name="Hashtable"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.inl"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Stack"

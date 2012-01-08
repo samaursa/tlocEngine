@@ -708,19 +708,17 @@ namespace tloc { namespace core {
   TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::erase_after(iterator aPos)
   {
-    iterator itrToDel = aPos;
-    ++aPos;
-    DoEraseAfter(itrToDel.m_node);
-    return aPos;
+    DoEraseAfter(aPos.m_node);
+    return ++aPos;
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator
     List<LIST_TEMP>::erase_after(iterator aFirst, iterator aLast)
   {
-    while(aFirst != aLast)
+    while(aFirst.m_node->getNext() != aLast.m_node)
     {
-      aFirst = erase_after(aFirst);
+      erase_after(aFirst);
     }
     return aLast;
   }
@@ -827,7 +825,10 @@ namespace tloc { namespace core {
                                            iterator aOtherBegin, 
                                            iterator aOtherEnd)
   {
-    DoSpliceAfter(aPos, aFrom, aOtherBegin, aOtherEnd, list_size());
+    // According to the standard, the splice begins AFTER aOtherBegin, i.e.
+    // aOtherBegin is NOT going to be a part of this list
+
+    DoSpliceAfter(aPos, aFrom, ++aOtherBegin, aOtherEnd, list_size());
   }
 
   template <LIST_TEMP_TYPES>

@@ -450,7 +450,7 @@ namespace TestingList
   void testInsert()
   {
     T_ListType mylist;
-    T_ListType::iterator itr;
+    T_ListType::iterator itr, retItr;
 
     for (s32 i = 1; i <= 5; ++i) mylist.push_back(i);
 
@@ -458,7 +458,8 @@ namespace TestingList
     ++itr;
     CHECK(*itr == 2);
 
-    mylist.insert(itr, 10);
+    retItr = mylist.insert(itr, 10);
+    CHECK(*retItr == 10);
     mylist.insert(itr, 2, 20);
     --itr;
     CHECK(*itr++ == 20);
@@ -479,14 +480,104 @@ namespace TestingList
     CHECK(*itr++ == 3);
     CHECK(*itr++ == 4);
     CHECK(*itr++ == 5);
+
+    T_ListType myList2;
+
+    myList2.insert(myList2.begin(), 5);
+
+    T_ListType::iterator itr2 = myList2.begin();
+    CHECK( *itr2 == 5);
+
+    myList2.insert(itr2 , 2, 10);
+    itr2 = myList2.begin();
+    CHECK( *itr2 ++ == 10);
+    CHECK( *itr2 ++ == 10);
+    CHECK( *itr2 == 5);
+
+    s32 rawArray[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    myList2.insert(itr2 , rawArray, rawArray + 10);
+
+    itr2 = myList2.begin();
+    CHECK( *itr2 ++ == 10);
+    CHECK( *itr2 ++ == 10);
+    CHECK( *itr2 ++ == 0);
+    CHECK( *itr2 ++ == 1);
+    CHECK( *itr2 ++ == 2);
+    CHECK( *itr2 ++ == 3);
+    CHECK( *itr2 ++ == 4);
+    CHECK( *itr2 ++ == 5);
+    CHECK( *itr2 ++ == 6);
+    CHECK( *itr2 ++ == 7);
+    CHECK( *itr2 ++ == 8);
+    CHECK( *itr2 ++ == 9);
+    CHECK( *itr2 == 5);
+
+    CHECK(myList2.size() == 13);
+
+    myList2.clear();
+
+    CHECK(myList2.size() == 0);
+
+    myList2.push_front(99);
+    CHECK(myList2.size() == 1);
+    CHECK(*(myList2.begin()) == 99);
   }
 
-  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testInsert", "")
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert", "")
   {
     testInsert<intListWithSize>();
     testInsert<intListWithoutSize>();
     testInsert<intSinglyListWithSize>();
     testInsert<intSinglyListWithoutSize>();
+  }
+
+  template <typename T_ListType>
+  void testInsertAfter()
+  {
+    T_ListType mylist;
+    T_ListType::iterator itr, retItr;
+
+    for (s32 i = 1; i <= 5; ++i) mylist.push_back(i);
+
+    itr = mylist.begin();
+    ++itr;
+    CHECK(*itr == 2);
+
+    retItr = mylist.insert_after(itr, 10);
+    CHECK(*retItr == 10);
+    mylist.insert_after(itr, 2, 20);
+
+    CHECK(*itr++ == 2);
+    CHECK(*itr++ == 20);
+    CHECK(*itr++ == 20);
+    CHECK(*itr++ == 10);
+    CHECK(*itr++ == 3);
+
+    itr = mylist.begin(); ++itr;
+    CHECK(*itr == 2);
+
+    Array<s32> myvector(2, 30);
+    mylist.insert_after(itr, myvector.begin(), myvector.end());
+
+    itr = mylist.begin();
+    CHECK(*itr++ == 1);
+    CHECK(*itr++ == 2);
+    CHECK(*itr++ == 30);
+    CHECK(*itr++ == 30);
+    CHECK(*itr++ == 20);
+    CHECK(*itr++ == 20);
+    CHECK(*itr++ == 10);
+    CHECK(*itr++ == 3);
+    CHECK(*itr++ == 4);
+    CHECK(*itr++ == 5);
+  }
+
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert_after", "")
+  {
+    testInsertAfter<intListWithSize>();
+    testInsertAfter<intListWithoutSize>();
+    testInsertAfter<intSinglyListWithSize>();
+    testInsertAfter<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -533,6 +624,50 @@ namespace TestingList
     testErase<intListWithoutSize>();
     testErase<intSinglyListWithSize>();
     testErase<intSinglyListWithoutSize>();
+  }
+
+  template <typename T_ListType>
+  void testEraseAfter()
+  {
+    u32 i;
+    T_ListType mylist;
+    T_ListType::iterator itr1, itr2;
+
+    for (i = 1; i < 10; ++i) mylist.push_back(i * 10);
+
+    itr1 = itr2 = mylist.begin();
+    advance(itr2, 6);
+    CHECK(*itr2 == 70);
+    ++itr1;
+    CHECK(*itr1 == 20);
+
+    itr1 = mylist.erase_after(itr1);
+    CHECK(*itr1 == 40);
+
+    itr2 = mylist.erase_after(itr2);
+    CHECK(*itr2 == 90);
+
+    --itr2;
+    CHECK(*itr2 == 70);
+
+    itr1 = mylist.erase_after(itr1, itr2);
+    CHECK(*itr1 == 70);
+    CHECK(*itr1 == *itr2);
+
+    itr1 = mylist.begin();
+    CHECK(*itr1++ == 10);
+    CHECK(*itr1++ == 20);
+    CHECK(*itr1++ == 40);
+    CHECK(*itr1++ == 70);
+    CHECK(*itr1++ == 90);
+  }
+
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/erase_after", "")
+  {
+    testEraseAfter<intListWithSize>();
+    testEraseAfter<intListWithoutSize>();
+    testEraseAfter<intSinglyListWithSize>();
+    testEraseAfter<intSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -683,6 +818,67 @@ namespace TestingList
   }
 
   template <typename T_ListType>
+  void testSpliceAfter()
+  {
+    T_ListType mylist1, mylist2;
+    T_ListType::iterator it;
+
+    // set some initial values:
+    for (s32 i=1; i<=4; i++)
+      mylist1.push_back(i);      // mylist1: 1 2 3 4
+
+    for (s32 i=1; i<=3; i++)
+      mylist2.push_back(i*10);   // mylist2: 10 20 30
+
+    it = mylist1.begin();
+    ++it;                         // points to 2
+
+    mylist1.splice_after (it, mylist2);	// mylist1: 1 2 10 20 30 3 4 
+																				// mylist2 (empty)
+																				// "it" still points to 2 
+
+    T_ListType::iterator itrCheck = mylist1.begin();
+    CHECK( *itrCheck == 1); ++itrCheck;
+    CHECK( *itrCheck == 2); ++itrCheck;
+    CHECK( *itrCheck == 10); ++itrCheck;
+    CHECK( *itrCheck == 20); ++itrCheck;
+    CHECK( *itrCheck == 30); ++itrCheck;
+    CHECK( *itrCheck == 3); ++itrCheck;
+    CHECK( *itrCheck == 4);
+
+    mylist2.splice_after(mylist2.begin(),mylist1, it); // mylist1: 1 10 20 30 3 4
+																											 // mylist2: 2
+																											 // "it" is now invalid.
+    CHECK(mylist2.size() == 1);
+    it = mylist1.begin();
+    tloc::core::advance(it,3);                // "it" points now to 30
+
+    // mylist1: 1 3 4 10 20 30 (splice_after also effects it)
+    mylist1.splice_after( mylist1.begin(), mylist1, it, mylist1.end());
+
+    it = mylist1.begin();
+    CHECK(mylist1.size() == 6);
+    CHECK(*it++ == 1);
+    CHECK(*it++ == 3);
+    CHECK(*it++ == 4);
+    CHECK(*it++ == 10);
+    CHECK(*it++ == 20);
+    CHECK(*it++ == 30);
+
+    it = mylist2.begin();
+    CHECK(mylist2.size() == 1);
+    CHECK(*it++ == 2);
+  }
+
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/splice_after", "")
+  {
+    testSpliceAfter<intListWithSize>();
+    testSpliceAfter<intListWithoutSize>();
+    testSpliceAfter<intSinglyListWithSize>();
+    testSpliceAfter<intSinglyListWithoutSize>();
+  }
+
+  template <typename T_ListType>
   void testRemove()
   {
     s32 myints[]= {17,89,7,14};
@@ -828,47 +1024,5 @@ namespace TestingList
     testReverse<intListWithoutSize>();
     testReverse<intSinglyListWithSize>();
     testReverse<intSinglyListWithoutSize>();
-  }
-
-  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/insert", "")
-  {
-    intListNoSize.insert(intListNoSize.begin(), 5);
-
-    List<s32>::iterator itr = intListNoSize.begin();
-    CHECK( *itr == 5);
-
-    intListNoSize.insert(itr, 2, 10);
-    itr = intListNoSize.begin();
-    CHECK( *itr++ == 10);
-    CHECK( *itr++ == 10);
-    CHECK( *itr == 5);
-
-    s32 rawArray[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    intListNoSize.insert(itr, rawArray, rawArray + 10);
-
-    itr = intListNoSize.begin();
-    CHECK( *itr++ == 10);
-    CHECK( *itr++ == 10);
-    CHECK( *itr++ == 0);
-    CHECK( *itr++ == 1);
-    CHECK( *itr++ == 2);
-    CHECK( *itr++ == 3);
-    CHECK( *itr++ == 4);
-    CHECK( *itr++ == 5);
-    CHECK( *itr++ == 6);
-    CHECK( *itr++ == 7);
-    CHECK( *itr++ == 8);
-    CHECK( *itr++ == 9);
-    CHECK( *itr == 5);
-
-    CHECK(intListNoSize.size() == 13);
-
-    intListNoSize.clear();
-
-    CHECK(intListNoSize.size() == 0);
-
-    intListNoSize.push_front(99);
-    CHECK(intListNoSize.size() == 1);
-    CHECK(*(intListNoSize.begin()) == 99);
   }
 };

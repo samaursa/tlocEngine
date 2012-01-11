@@ -2,7 +2,7 @@
 
 #include "tlocRngWell512.inl"
 
-namespace tloc { namespace math {
+namespace tloc { namespace core {
 
   // Supported RNG types instantiation
   template      RNG<RngWell512>;

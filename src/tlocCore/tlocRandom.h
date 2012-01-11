@@ -1,12 +1,12 @@
 #ifndef TLOC_RANDOM_H
 #define TLOC_RANDOM_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
+#include "tlocBase.h"
+#include "tlocTypes.h"
 
 #include "tlocRngWell512.h"
 
-namespace tloc { namespace math {
+namespace tloc { namespace core {
 
   template <typename T_Generator> class RNG;
 

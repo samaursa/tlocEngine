@@ -20,7 +20,7 @@ namespace tloc { namespace core {
   TLOC_ASSERT_ARRAY(index < size(), "Index out of bounds!")
 
 #define TLOC_ASSERT_ARRAY_NOT_EMPTY() \
-  TLOC_ASSERT_ARRAY(size > 0, "Array is empty!")
+  TLOC_ASSERT_ARRAY(size() > 0, "Array is empty!")
 
 #define TLOC_ASSERT_ARRAY_NOT_FULL() \
   TLOC_ASSERT_ARRAY(full() == false, "Array is full!")
@@ -117,29 +117,29 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I T& ArrayBase<T>::front()
   {
-    TLOC_ASSERT_ARRAY_INDEX(aIndex);
-    return m_begin;
+    TLOC_ASSERT_ARRAY_NOT_EMPTY();
+    return *m_begin;
   }
 
   template <typename T>
   TL_I const T& ArrayBase<T>::front() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return m_begin;
+    return *m_begin;
   }
 
   template <typename T>
   TL_I T& ArrayBase<T>::back()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return m_end;
+    return *(m_end - 1);
   }
 
   template <typename T>
   TL_I const T& ArrayBase<T>::back() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return m_end;
+    return *(m_end - 1);
   }
 
   template <typename T>
@@ -193,7 +193,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I bool ArrayBase<T>::empty() const
   {
-    return size() > 0 ? true : false;
+    return size() == 0;
   }
 
   template <typename T>
@@ -208,6 +208,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::pop_back()
   {
+    TLOC_ASSERT_ARRAY_NOT_EMPTY();
     --m_end;
     m_end->~T();
   }
@@ -215,6 +216,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::pop_back( T& aOut )
   {
+    TLOC_ASSERT_ARRAY_NOT_EMPTY();
     aOut = *(m_end - 1);
     pop_back();
   }

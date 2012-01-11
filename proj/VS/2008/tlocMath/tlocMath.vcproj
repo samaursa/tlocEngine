@@ -296,34 +296,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Random Number Generator"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocRandom.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocRandom.h"
-				>
-			</File>
-			<Filter
-				Name="Generators"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocRngWell512.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocRngWell512.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocMath\tlocRngWell512.inl"
-					>
-				</File>
-			</Filter>
-		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
 			>

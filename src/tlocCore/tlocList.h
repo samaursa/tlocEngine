@@ -29,43 +29,128 @@ namespace tloc { namespace core {
   // List node
 
   template <typename T, typename T_ItrTag>
-  struct ListNode
+  class ListNode
   {
-  private:
     ListNode();
   };
 
   template <typename T>
-  struct ListNode<T, doubly_linked_tag>
+  class ListNode<T, singly_linked_tag>
   {
-    typedef ListNode<T, doubly_linked_tag>  this_type;
+  public:
 
-    typedef T               value_type;
-    typedef T*              pointer_type;
-    typedef T&              reference_type;
-    typedef tl_ptrdiff      difference_type;
+    typedef ListNode<T, singly_linked_tag>  this_type;
 
-    typedef doubly_linked_tag           iterator_category;
+    typedef T                               value_type;
+    typedef T*                              pointer_type;
+    typedef const T*                        const_pointer_type;
+    typedef T&                              reference_type;
+    typedef const T&                        const_reference_type;
+    typedef tl_ptrdiff                      difference_type;
+
+    typedef singly_linked_tag               iterator_category;
 
     TL_FI ListNode();
     TL_FI ListNode(const this_type& aOther);
 
-    TL_STATIC_FI void swap(this_type& a, this_type& b);
-    TL_FI        void insert(this_type* aNext);
-    TL_FI        void remove();
-    TL_FI        void splice(this_type* aFirst, this_type* aLast);
-    TL_FI        void reverse();
+    TL_FI        void       init();
+    TL_STATIC_FI void       swap(this_type& a, this_type& b);
+    TL_FI        void       insert_after(this_type* aNext);
+    TL_FI        void       remove_after(); 
+    TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
+    TL_FI        void       reverse();
 
-    ListNode*       m_next;
-    ListNode*       m_prev;
-    T               m_value;
+    TL_FI        this_type*           getNext();
+    TL_FI        const this_type*     getNext() const;
+    TL_FI        this_type*           getPrev();
+    TL_FI        const this_type*     getPrev() const;
+    TL_FI        reference_type       getValue();
+    TL_FI        const_reference_type getValue() const; 
+  private:
+
+    this_type*    m_next;
+    value_type    m_value;
   };
 
-  //////////////////////////////////////////////////////////////////////////
-  // Array class
+  template <typename T>
+  class ListNode<T, doubly_linked_tag>
+  {
+  public:
+
+    typedef ListNode<T, doubly_linked_tag>  this_type;
+
+    typedef T                               value_type;
+    typedef T*                              pointer_type;
+    typedef const T*                        const_pointer_type;
+    typedef T&                              reference_type;
+    typedef const T&                        const_reference_type;
+    typedef tl_ptrdiff                      difference_type;
+
+    typedef doubly_linked_tag               iterator_category;
+
+    TL_FI ListNode();
+    TL_FI ListNode(const this_type& aOther);
+
+    TL_FI        void       init();
+    TL_STATIC_FI void       swap(this_type& a, this_type& b);
+    TL_FI        void       insert_after(this_type* aNext);
+    TL_FI        void       remove_after();
+    TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
+    TL_FI        void       reverse();
+
+    TL_FI        this_type*           getNext();
+    TL_FI        const this_type*     getNext() const;
+    TL_FI        this_type*           getPrev();
+    TL_FI        const this_type*     getPrev() const;
+    TL_FI        reference_type       getValue();
+    TL_FI        const_reference_type getValue() const; 
+
+  private:
+
+    this_type*    m_next;
+    this_type*    m_prev;
+    value_type    m_value;
+  };
+
+  template <typename T, bool T_DedicatedSize>
+  class ListBase
+  {
+  protected:
+    ConditionalType<T, T_DedicatedSize> m_size;
+  };
+
 
   template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>,
             typename T_Policy = List_Dynamic(), bool T_DedicatedSize = true>
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// List class. The list can be bi-directional or uni-directional. Some
+  /// operations are very slow in uni-directional lists e.g. operations
+  /// which rely on a prev node. In uni-directional lists, this node has
+  /// to be found which is an O(n) operation. These operations include
+  /// (not an exhaustive list):
+  ///   * push_back() - user push_front()
+  ///   * pop_back() - use pop_front()
+  ///   * erase() - use erase_after()
+  ///   * splice() - use splice_after()
+  ///   * insert() - use insert_after()
+  ///
+  /// The above functions can be disabled entirely for a singly_linked list by
+  /// defining TLOC_DISABLE_EXTENDED_SINGLY_LIST in which case calling the 
+  /// functions will result in a compile error
+  /// 
+  /// The class is standard compliant but has extra functionality which
+  /// makes it a std::forward_list&lt;&gt; (c++11) as well if a
+  /// singly_linked_node is used. Alternatively you can simply use
+  /// tlocForwardList&lt;&gt; which does not have some methods such as
+  /// erase() and remove() but instead has erase_after()
+  /// and remove_after()
+  /// 
+  /// @notes The class's helper functions are sometimes written as
+  /// xxxxNext(). The reason for this is to help with a singly linked
+  /// list.
+  ///-------------------------------------------------------------------------
   class List
   {
   public:
@@ -88,7 +173,9 @@ namespace tloc { namespace core {
     typedef tloc::core::reverse_iterator<iterator>            reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
-    typedef ConditionalType<size_type, T_DedicatedSize> list_size;
+    typedef ConditionalTypePackage<node_type, size_type, T_DedicatedSize>  
+      size_and_node;
+    typedef typename size_and_node::cond_type           list_size;
 
   public:
     TL_FI List();
@@ -157,15 +244,31 @@ namespace tloc { namespace core {
     TL_FI iterator    insert(iterator aPos, const value_type& aValue);
     TL_FI void        insert(iterator aPos, size_type aNumOfValues,
                              const value_type& aValue);
-
     template <typename T_Iterator>
-    TL_FI void        insert(iterator aPos, T_Iterator aFirst, T_Iterator aLast);
+    TL_FI void        insert(iterator aPos, T_Iterator aFirst, 
+                             T_Iterator aLast);
+
+    TL_FI iterator    insert_after(iterator aPos);
+    TL_FI iterator    insert_after(iterator aPos, const value_type& aValue);
+    TL_FI void        insert_after(iterator aPos, size_type aNumOfValues,
+                                   const value_type& aValue);
+    template <typename T_Iterator>
+    TL_FI void        insert_after(iterator aPos, T_Iterator aFirst, 
+                                   T_Iterator aLast);
 
     TL_FI iterator    erase(iterator aPos);
     TL_FI iterator    erase(iterator aFirst, iterator aLast);
 
     TL_FI reverse_iterator erase(reverse_iterator aPos);
-    TL_FI reverse_iterator erase(reverse_iterator aFirst, reverse_iterator aLast);
+    TL_FI reverse_iterator erase(reverse_iterator aFirst, 
+                                 reverse_iterator aLast);
+
+    TL_FI iterator    erase_after(iterator aPos);
+    TL_FI iterator    erase_after(iterator aFirst, iterator aLast);
+
+    TL_FI reverse_iterator erase_after(reverse_iterator aPos);
+    TL_FI reverse_iterator erase_after(reverse_iterator aFirst, 
+                                       reverse_iterator aLast);
 
     TL_FI void        swap(this_type& aOther);
 
@@ -178,6 +281,12 @@ namespace tloc { namespace core {
     TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOther);
     TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOtherBegin,
                              iterator aOtherEnd);
+
+    TL_FI void        splice_after(iterator aPos, this_type& aFrom);
+    TL_FI void        splice_after(iterator aPos, this_type& aFrom, 
+                                   iterator aOther);
+    TL_FI void        splice_after(iterator aPos, this_type& aFrom, 
+                                   iterator aOtherBegin, iterator aOtherEnd);
 
     TL_FI void        remove(const T& aValueToCompare);
 
@@ -228,18 +337,19 @@ namespace tloc { namespace core {
     TL_FI void       DoAssignValues(size_type aNumTimes, const value_type& aValue);
 
     template <typename T_Integer>
-    TL_FI void       DoInsert(node_type* aPos, T_Integer aNumTimes,
-                              T_Integer aValueCopy, is_arith);
+    TL_FI void       DoInsertAfter(node_type* aPos, T_Integer aNumTimes,
+                                   T_Integer aValueCopy, is_arith);
 
     template <typename T_InputIterator>
-    TL_FI void       DoInsert(node_type* aPos, T_InputIterator aFirst,
-                              T_InputIterator aLast, is_not_arith);
+    TL_FI void       DoInsertAfter(node_type* aPos, T_InputIterator aFirst,
+                                   T_InputIterator aLast, is_not_arith);
 
-    TL_FI void       DoInsertValue(node_type* aNode, const T& aValueCopy);
-    TL_FI void       DoInsertValues(node_type* aNode,
-                                    tl_size numElements, const T& aValueCopy);
+    TL_FI void       DoInsertValueAfter(node_type* aNode, const T& aValueCopy);
+    TL_FI void       DoInsertValuesAfter(node_type* aNode,
+                                         tl_size numElements, 
+                                         const T& aValueCopy);
 
-    TL_FI void       DoErase(node_type* aNode);
+    TL_FI void       DoEraseAfter(node_type* aNode);
 
     TL_FI size_type  DoGetSize(size_stored) const;
     TL_FI size_type  DoGetSize(size_not_stored) const;
@@ -252,15 +362,15 @@ namespace tloc { namespace core {
     // This function performs the actual splice for a range. It selects the
     // most optimized splicing operation depending on whether the size is stored
     // or not
-    TL_FI void       DoSplice(iterator aPos, this_type& aFrom, iterator aBegin,
-                              iterator aEnd, size_stored);
-    TL_FI void       DoSplice(iterator aPos, this_type& aFrom, iterator aBegin,
-                              iterator aEnd, size_not_stored);
+    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom, 
+                                   iterator aBegin, iterator aEnd, size_stored);
+    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom, 
+                                   iterator aBegin, iterator aEnd, 
+                                   size_not_stored);
 
   protected:
-    node_type                 m_node;
-    list_size                 m_size;
 
+    size_and_node             m_sizeAndNode;
   };
 
 };};

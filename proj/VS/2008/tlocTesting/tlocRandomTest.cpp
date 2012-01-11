@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include "tlocMath/tlocRandom.h"
+#include "tlocCore/tlocRandom.h"
 
 namespace TestingRandom
 {
@@ -8,7 +8,7 @@ namespace TestingRandom
 
   TEST_CASE("Math/Random/RngWell512", "")
   {
-    using namespace tloc::math;
+    using namespace tloc::core;
 
     const u32 numberOfTests = 100;
 

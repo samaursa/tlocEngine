@@ -399,4 +399,110 @@ namespace TestingAlgorithms
 
     CHECK(s32(it-myvector.begin()) == 5);
   }
+
+  template <typename T_SortType>
+  void SortDetailsTests()
+  {
+    const s32 k_arraySize = 26;
+    const s32 rawArray[k_arraySize] =
+    {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
+
+    s32 myints[26] = {0};
+    copy(rawArray, rawArray + k_arraySize, myints);
+
+    s32* itrBegin = myints;
+    s32* itrEnd   = myints + k_arraySize;
+
+    Array<s32> myIntsArray(itrBegin, itrEnd);
+    List<s32>  myIntsList(itrBegin, itrEnd);
+
+    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType() );
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myints[i] >= myints[i - 1]);
+    }
+
+    tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
+                                  T_SortType() );
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
+    }
+
+    tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
+                                  T_SortType() );
+
+    List<s32>::iterator listItr, listItr2, listItrEnd;
+    listItr2 = myIntsList.begin();
+    listItr = listItr2++;
+    listItrEnd = myIntsList.end();
+
+    while (listItr2 != listItrEnd)
+    {
+      CHECK(*listItr2 >= *listItr);
+
+      ++listItr2;
+      ++listItr;
+    }
+  }
+
+  TEST_CASE("Core/Algorithms/QuicksortDetail", "")
+  {
+    SortDetailsTests<sort_quicksort_leftpivot>();
+    SortDetailsTests<sort_quicksort_rightpivot>();
+    SortDetailsTests<sort_quicksort_middlepivot>();
+    SortDetailsTests<sort_quicksort_randompivot>();
+  }
+
+  TEST_CASE("Core/Algorithms/InsertionsortDetail", "")
+  {
+    SortDetailsTests<sort_insertionsort>();
+  }
+
+  TEST_CASE("Core/Algorithms/Sort", "")
+  {
+    const s32 k_arraySize = 26;
+    const s32 rawArray[k_arraySize] =
+    {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
+
+    s32 myints[26] = {0};
+    copy(rawArray, rawArray + k_arraySize, myints);
+
+    s32* itrBegin = myints;
+    s32* itrEnd   = myints + k_arraySize;
+
+    Array<s32> myIntsArray(itrBegin, itrEnd);
+    List<s32>  myIntsList(itrBegin, itrEnd);
+
+    tloc::core::sort(itrBegin, itrEnd);
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myints[i] >= myints[i - 1]);
+    }
+
+    tloc::core::sort(myIntsArray.begin(), myIntsArray.end());
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
+    }
+
+    tloc::core::sort(myIntsList.begin(), myIntsList.end());
+
+    List<s32>::iterator listItr, listItr2, listItrEnd;
+    listItr2 = myIntsList.begin();
+    listItr = listItr2++;
+    listItrEnd = myIntsList.end();
+
+    while (listItr2 != listItrEnd)
+    {
+      CHECK(*listItr2 >= *listItr);
+
+      ++listItr2;
+      ++listItr;
+    }
+  }
 };

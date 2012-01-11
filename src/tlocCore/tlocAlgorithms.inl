@@ -8,6 +8,8 @@
 #include "tlocIterator.inl"
 #include "tlocPair.inl"
 
+#include "tlocRandom.h"
+
 namespace tloc { namespace core {
 
   // TODO: Make all find functions specialized for char* and use memcmp
@@ -687,6 +689,23 @@ namespace tloc { namespace core {
     return aRangeToSearchEnd;
   }
 
+
+  //------------------------------------------------------------------------
+  // Sorting
+
+  template <typename T_InputIterator>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast)
+  {
+    detail::DoSort(aFirst, aLast, sort_quicksort_randompivot());
+  }  
+
+  template <typename T_InputIterator, typename T_SortAlgorithm>
+  void sort(T_InputIterator aFirst, T_InputIterator aLast, 
+            T_SortAlgorithm aSortAlg)
+  {
+    detail::DoSort(aFirst, aLast, aSortAlg); 
+  }
+
   //------------------------------------------------------------------------
   // Min / Max
 
@@ -841,6 +860,210 @@ namespace tloc { namespace core {
 
       return (char8*)memchr(aRangeBegin, aValue, sizeof(char8) *
                             (tl_size)(aRangeEnd - aRangeBegin));
+    }
+
+    //------------------------------------------------------------------------
+    // Sort helpers
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_autoselect)
+    {
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_randompivot)
+    {
+      const u32 size			= tloc::core::distance(aFirst, aLast);
+      const u32 randomPiv	= g_defaultRNG.GetRandomInteger(0, size);
+
+      T_InputIterator randItr = aFirst;
+      tloc::core::advance(randItr, randomPiv);
+
+      tlSwap(*aFirst, *randItr);
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_middlepivot)
+    {
+      const u32 halfSize = tloc::core::distance(aFirst, aLast) / 2;
+
+      T_InputIterator midItr = aFirst;
+      tloc::core::advance(midItr, halfSize);
+
+      tlSwap(*aFirst, *midItr);
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_rightpivot)
+    {
+      // Swap the rightpivot with the left most element. We can then call
+      // quicksort_leftpivot
+      T_InputIterator rightPivot = aLast;
+      --rightPivot;
+
+      tlSwap(*aFirst, *rightPivot);
+      DoSort(aFirst, aLast, sort_quicksort_leftpivot() );
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                   sort_quicksort_leftpivot)
+    {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      DoQuicksortLeftPivot(aFirst, aLast, pointer_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast, 
+                              IsRawItr)
+    {
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      DoQuicksort(aFirst, aLast, value_type()); 
+    }
+
+    template <typename T_InputIterator>
+    void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast, 
+                              IsComplexItr)
+    {
+      // It is assumed, since the inputer iterator is complex, it has a typedef
+      // for value_type. If there is a COMPILE ERROR here then the complex
+      // object is either not an iterator OR does not have a value_type typedef
+      DoQuicksort(aFirst, aLast, T_InputIterator::value_type());
+    }
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType)
+    {
+      if (aFirst == aLast) { return; }
+
+      T_ValueType pivot = *aFirst;
+
+      T_InputIterator startItr = aFirst;
+      T_InputIterator endItr   = aLast--;
+
+      T_InputIterator currItr  = aFirst;
+
+      while (aFirst != aLast)
+      {
+        if (currItr == aFirst)
+        {
+          if (*aLast < pivot)
+          {
+            *aFirst = *aLast;
+            ++aFirst;
+            currItr = aLast;
+          }
+          else
+          {
+            --aLast;
+          }
+        }
+        else
+        {
+          if (*aFirst > pivot)
+          {
+            *aLast = *aFirst;
+            --aLast;
+            currItr = aFirst;
+          }
+          else
+          {
+            ++aFirst;
+          }
+        }
+      }
+
+      *aFirst = pivot;
+      if (startItr != aFirst) 
+      { DoSort(startItr, aFirst, sort_quicksort_leftpivot() ); }
+      if (++aLast != endItr)
+      { DoSort(aLast, endItr, sort_quicksort_leftpivot() ); }
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+      sort_insertionsort)
+    {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      DoInsertionsort(aFirst, aLast, pointer_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      IsRawItr)
+    {
+      DoInsertionsortBidirectional(aFirst,aLast);
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      IsComplexItr)
+    {
+      typedef typename iterator_traits<T_InputIterator>::iterator_category itrCat;
+
+      DoInsertionsort(aFirst, aLast, itrCat());
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      input_iterator_tag)
+    {
+      TLOC_STATIC_ASSERT_WIP();
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      bidirectional_iterator_tag)
+    {
+      DoInsertionsortBidirectional(aFirst, aLast);
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      random_access_iterator_tag)
+    {
+      DoInsertionsortBidirectional(aFirst, aLast);
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsortBidirectional(T_InputIterator aFirst, T_InputIterator aLast)
+    {
+      if (aFirst != aLast)
+      {
+        T_InputIterator unsortedItr = aFirst;
+        ++unsortedItr;
+
+        T_InputIterator currentItr;
+        T_InputIterator currentItrMinusOne;
+
+        for (/* */; unsortedItr != aLast; ++unsortedItr)
+        {
+          currentItr = unsortedItr;
+
+          currentItrMinusOne = currentItr;
+          --currentItrMinusOne;
+          
+          while (currentItr != aFirst 
+                 && *currentItrMinusOne > *unsortedItr)
+          {
+            *currentItr = *currentItrMinusOne;
+            --currentItr;
+            --currentItrMinusOne;
+          }
+
+          *currentItr = *unsortedItr;
+        }
+      }
     }
   }
 

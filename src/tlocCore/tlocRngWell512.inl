@@ -2,7 +2,7 @@
 
 #include <time.h>
 
-namespace tloc { namespace math {
+namespace tloc { namespace core {
 
   RngWell512::RngWell512()
   {

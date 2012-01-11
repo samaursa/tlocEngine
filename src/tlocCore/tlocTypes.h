@@ -72,7 +72,9 @@ namespace tloc
   // not do anything. In case of the comparison operators, the result is
   // always false
 
-  // This type can be conditionally removed based on the boolean value
+  ///-------------------------------------------------------------------------
+  /// @brief This type can be conditionally removed based on the boolean value.
+  ///-------------------------------------------------------------------------
   template <typename T, bool T_DeclareValue>
   struct ConditionalType
   {
@@ -181,6 +183,47 @@ namespace tloc
   private:
 
     T                m_value;
+  };
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Condition type package. Including ConditionalType as a member with
+  /// T_DeclareValue = false will not eliminate the size of the type (C++
+  /// does not allow 0 size classes). To get around that, use the
+  /// following class for one of your other members in the class where
+  /// T_User is the other member and T is your conditional type.
+  ///-------------------------------------------------------------------------
+  template <typename T_User, typename T, bool T_DeclareValue>
+  struct ConditionalTypePackage : public ConditionalType<T, T_DeclareValue>
+  {
+    typedef ConditionalType<T, T_DeclareValue>    cond_type;
+
+    ConditionalTypePackage();
+    ConditionalTypePackage(const T_User& aUserValue, const T& aValue); 
+
+    using cond_type::operator=;
+
+    using cond_type::operator+;
+    using cond_type::operator-;
+    using cond_type::operator*;
+    using cond_type::operator/;
+
+    using cond_type::operator+=;
+    using cond_type::operator-=;
+    using cond_type::operator*=;
+    using cond_type::operator/=;
+
+    using cond_type::operator++;
+    using cond_type::operator--;
+
+    using cond_type::operator==;
+    using cond_type::operator!=;
+    using cond_type::operator<;
+    using cond_type::operator>;
+    using cond_type::operator<=;
+    using cond_type::operator>=;
+
+    T_User m_var;
   };
 
   // Global operators

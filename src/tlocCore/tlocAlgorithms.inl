@@ -995,46 +995,73 @@ namespace tloc { namespace core {
       typedef Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
-      DoInsertionSort(aFirst, aLast, pointer_type());
+      DoInsertionsort(aFirst, aLast, pointer_type());
     }
 
     template <typename T_InputIterator>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
       IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
-      DoInsertionSort(aFirst, aLast, value_type());
+      DoInsertionsortBidirectional(aFirst,aLast);
     }
 
     template <typename T_InputIterator>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
       IsComplexItr)
     {
-      DoInsertionSort(aFirst, aLast, T_InputIterator::value_type());
+      typedef typename iterator_traits<T_InputIterator>::iterator_category itrCat;
+
+      DoInsertionsort(aFirst, aLast, itrCat());
     }
 
-    template <typename T_InputIterator, typename T_ValueType>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
-      T_ValueType)
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      input_iterator_tag)
+    {
+      TLOC_STATIC_ASSERT_WIP();
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      bidirectional_iterator_tag)
+    {
+      DoInsertionsortBidirectional(aFirst, aLast);
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      random_access_iterator_tag)
+    {
+      DoInsertionsortBidirectional(aFirst, aLast);
+    }
+
+    template <typename T_InputIterator>
+    void DoInsertionsortBidirectional(T_InputIterator aFirst, T_InputIterator aLast)
     {
       if (aFirst != aLast)
       {
-        T_InputIterator unsortedItr = aFirst + 1;
+        T_InputIterator unsortedItr = aFirst;
+        ++unsortedItr;
+
         T_InputIterator currentItr;
-        T_ValueType currentValue;
+        T_InputIterator currentItrMinusOne;
 
         for (/* */; unsortedItr != aLast; ++unsortedItr)
         {
           currentItr = unsortedItr;
-          currentValue = *currentItr;
 
-          while(currentItr != aFirst && *(currentItr - 1) > currentValue)
+          currentItrMinusOne = currentItr;
+          --currentItrMinusOne;
+          
+          while (currentItr != aFirst 
+                 && *currentItrMinusOne > *unsortedItr)
           {
-            *(currentItr - 1) = *currentItr;
+            *currentItr = *currentItrMinusOne;
             --currentItr;
+            --currentItrMinusOne;
           }
 
-          *currentItr = currentValue;
+          *currentItr = *unsortedItr;
         }
       }
     }

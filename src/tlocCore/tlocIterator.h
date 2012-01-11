@@ -284,10 +284,8 @@ namespace tloc { namespace core {
 
     TL_FI reference_type  operator*() const;
     TL_FI pointer_type    operator->() const;
-    TL_FI this_type       operator+(difference_type aDistance) const;
     TL_FI this_type&      operator++();
     TL_FI this_type       operator++(int);
-    TL_FI this_type       operator-(difference_type aDistance) const;
     TL_FI this_type&      operator--();
     TL_FI this_type       operator--(int);
     TL_FI bool            operator==(const this_type& aOther);
@@ -296,13 +294,10 @@ namespace tloc { namespace core {
     T_Node*               m_node;
 
   protected:
-    TL_FI this_type      subOperation(difference_type aDistance, singly_linked_tag) const;
-    TL_FI this_type      subOperation(difference_type aDistance, doubly_linked_tag) const;
-
-    TL_FI this_type&      decrementOperation(singly_linked_tag);
-    TL_FI this_type       decrementOperation(int, singly_linked_tag);
-    TL_FI this_type&      decrementOperation(doubly_linked_tag);
-    TL_FI this_type       decrementOperation(int, doubly_linked_tag);
+    TL_FI this_type&      subOperation(singly_linked_tag);
+    TL_FI this_type       subOperation(int, singly_linked_tag);
+    TL_FI this_type&      subOperation(doubly_linked_tag);
+    TL_FI this_type       subOperation(int, doubly_linked_tag);
   };
 
   //////////////////////////////////////////////////////////////////////////

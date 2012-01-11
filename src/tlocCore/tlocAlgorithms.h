@@ -406,21 +406,31 @@ namespace tloc { namespace core {
     template <typename T_InputIterator, typename T_ValueType>
     void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType);
 
-    /*template <typename T_InputIterator>
-    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
-                sort_insertionsort);*/
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast);
 
     template <typename T_InputIterator>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
                          IsRawItr);
 
     template <typename T_InputIterator>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
                          IsComplexItr);
 
-    template <typename T_InputIterator, typename T_ValueType>
-    void DoInsertionSort(T_InputIterator aFirst, T_InputIterator aLast,
-                         T_ValueType);
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      input_iterator_tag);
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      bidirectional_iterator_tag);
+
+    template <typename T_InputIterator>
+    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+      random_access_iterator_tag);
+
+    template <typename T_InputIterator>
+    void DoInsertionsortBidirectional(T_InputIterator aFirst, T_InputIterator aLast);
   }
 
 };};

@@ -574,6 +574,17 @@ namespace tloc
     return m_value;
   }
 
+#define COND_TYPE_PKG_TYPES   typename T_User, typename T, bool T_DeclareValue
+#define COND_TYPE_PKG_PARAMS  T_User, T, T_DeclareValue 
+
+  template <COND_TYPE_PKG_TYPES>
+  ConditionalTypePackage<COND_TYPE_PKG_PARAMS>::ConditionalTypePackage()
+    : cond_type() {}
+
+  template <COND_TYPE_PKG_TYPES>
+  ConditionalTypePackage<COND_TYPE_PKG_PARAMS>::ConditionalTypePackage(const T_User& aUserValue, 
+    const T& aValue) : cond_type(aValue), m_var(aUserValue) {}
+
 };
 
 #endif

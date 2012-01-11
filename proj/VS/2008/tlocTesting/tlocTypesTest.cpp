@@ -16,12 +16,14 @@ namespace TESTING_TYPES
   {
     ConditionalType<s32, true> a;
     ConditionalType<s32, true> a2;
+    ConditionalTypePackage<s32, s32, true> a3;
   };
 
   struct ConditionalFixtureFalse
   {
     ConditionalType<s32, false> a;
     ConditionalType<s32, false> a2;
+    ConditionalTypePackage<s32, s32, false> a3;
   };
 
   TEST_CASE_METHOD(ConditionalFixtureTrue, "Core/Types/ConditionalTypeTrue", "")
@@ -114,6 +116,16 @@ namespace TESTING_TYPES
     CHECK(num == 50);
     num = num / a;
     CHECK(num == 10);
+
+    a3 = 10;
+    a3.m_var = 20;
+    CHECK(a3 == 10);
+    CHECK(a3.m_var == 20);
+
+    a3 = a3 + 20;
+    CHECK(a3 == 30);
+    a3.m_var += (s32)a3.Get();
+    CHECK(a3.m_var == 50);
   }
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")

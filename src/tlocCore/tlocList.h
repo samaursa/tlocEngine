@@ -112,6 +112,13 @@ namespace tloc { namespace core {
     value_type    m_value;
   };
 
+  template <typename T, bool T_DedicatedSize>
+  class ListBase
+  {
+  protected:
+    ConditionalType<T, T_DedicatedSize> m_size;
+  };
+
 
   template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>,
             typename T_Policy = List_Dynamic(), bool T_DedicatedSize = true>
@@ -166,7 +173,9 @@ namespace tloc { namespace core {
     typedef tloc::core::reverse_iterator<iterator>            reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
-    typedef ConditionalType<size_type, T_DedicatedSize> list_size;
+    typedef ConditionalTypePackage<node_type, size_type, T_DedicatedSize>  
+      size_and_node;
+    typedef typename size_and_node::cond_type           list_size;
 
   public:
     TL_FI List();
@@ -360,9 +369,8 @@ namespace tloc { namespace core {
                                    size_not_stored);
 
   protected:
-    node_type                 m_node;
-    list_size                 m_size;
 
+    size_and_node             m_sizeAndNode;
   };
 
 };};

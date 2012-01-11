@@ -34,6 +34,14 @@ namespace TestingList
     List<SomeClass> classList;
   };
 
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Sizes", "")
+  {
+    CHECK(sizeof(intListWithSize) == 16);
+    CHECK(sizeof(intListWithoutSize) == 12);
+    CHECK(sizeof(intSinglyListWithSize) == 12);
+    CHECK(sizeof(intSinglyListWithoutSize) == 8);
+  }
+
   template <typename T_ListType>
   void testCtors()
   {

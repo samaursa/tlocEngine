@@ -349,7 +349,7 @@ namespace tloc { namespace core {
     : m_sizeAndNode()
   {
     DoInit();
-    DoInsertValuesAfter(&m_sizeAndNode.m_var, aNumTimes, aValue);
+    DoInsertValuesAfter(&m_node(), aNumTimes, aValue);
   }
 
   template <LIST_TEMP_TYPES>
@@ -358,14 +358,14 @@ namespace tloc { namespace core {
     : m_sizeAndNode()
   {
     DoInit();
-    insert(&m_sizeAndNode.m_var, aFirst, aLast);
+    insert(&m_node(), aFirst, aLast);
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI List<LIST_TEMP>::List(const this_type& aOther) : m_sizeAndNode()
   {
     DoInit();
-    DoInsertAfter(&m_sizeAndNode.m_var, aOther.begin(), aOther.end(), is_not_arith());
+    DoInsertAfter(&m_node(), aOther.begin(), aOther.end(), is_not_arith());
   }
 
   template <LIST_TEMP_TYPES>
@@ -390,51 +390,51 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::begin()
   {
-    return iterator(m_sizeAndNode.m_var.getNext());
+    return iterator(m_node().getNext());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::const_iterator List<LIST_TEMP>::begin() const
   {
-    return const_iterator(m_sizeAndNode.m_var.getNext());
+    return const_iterator(m_node().getNext());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::end()
   {
-    return iterator(&m_sizeAndNode.m_var);
+    return iterator(&m_node());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::const_iterator List<LIST_TEMP>::end() const
   {
-    return const_iterator(&m_sizeAndNode.m_var);
+    return const_iterator(&m_node());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reverse_iterator List<LIST_TEMP>::rbegin()
   {
-    return reverse_iterator(&m_sizeAndNode.m_var);
+    return reverse_iterator(&m_node());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::const_reverse_iterator
     List<LIST_TEMP>::rbegin() const
   {
-    return const_reverse_iterator(&m_sizeAndNode.m_var);
+    return const_reverse_iterator(&m_node());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reverse_iterator List<LIST_TEMP>::rend()
   {
-    return reverse_iterator(m_sizeAndNode.m_var.getNext());
+    return reverse_iterator(m_node().getNext());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::const_reverse_iterator
     List<LIST_TEMP>::rend() const
   {
-    return const_reverse_iterator(m_sizeAndNode.m_var.getNext());
+    return const_reverse_iterator(m_node().getNext());
   }
 
   //------------------------------------------------------------------------
@@ -449,7 +449,7 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI bool List<LIST_TEMP>::empty() const
   {
-    return &m_sizeAndNode.m_var== m_sizeAndNode.m_var.getNext();
+    return &m_node()== m_node().getNext();
   }
 
   template <LIST_TEMP_TYPES>
@@ -478,7 +478,7 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::front()
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    return m_sizeAndNode.m_var.getNext()->getValue();
+    return m_node().getNext()->getValue();
   }
 
   template <LIST_TEMP_TYPES>
@@ -486,7 +486,7 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::front() const
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    return m_sizeAndNode.m_var.getNext()->getValue();
+    return m_node().getNext()->getValue();
   }
 
   template <LIST_TEMP_TYPES>
@@ -494,7 +494,7 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::back()
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    return m_sizeAndNode.m_var.getPrev()->getValue();
+    return m_node().getPrev()->getValue();
   }
 
   template <LIST_TEMP_TYPES>
@@ -502,7 +502,7 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::back() const
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    return m_sizeAndNode.m_var.getPrev()->getValue();
+    return m_node().getPrev()->getValue();
   }
 
   //------------------------------------------------------------------------
@@ -527,16 +527,16 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::push_front(const typename List<LIST_TEMP>::value_type& aVal)
   {
-    DoInsertValueAfter(&m_sizeAndNode.m_var, aVal);
+    DoInsertValueAfter(&m_node(), aVal);
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reference List<LIST_TEMP>::push_front()
   {
     node_type* const node = DoCreateNode();
-    node->insert_after(&m_sizeAndNode.m_var);
-    ++m_sizeAndNode;
-    return m_sizeAndNode.m_var.getNext()->getValue();
+    node->insert_after(&m_node());
+    ++m_size();
+    return m_node().getNext()->getValue();
   }
 
   template <LIST_TEMP_TYPES>
@@ -544,24 +544,24 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::push_front_uninitialized()
   {
     node_type* const node = DoAllocateNode();
-    node->insert_after(&m_sizeAndNode.m_var);
-    ++m_sizeAndNode;
+    node->insert_after(&m_node());
+    ++m_size();
     return &(node->getValue());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::push_back(const typename List<LIST_TEMP>::value_type& aVal)
   {
-    DoInsertValueAfter(m_sizeAndNode.m_var.getPrev(), aVal);
+    DoInsertValueAfter(m_node().getPrev(), aVal);
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::reference List<LIST_TEMP>::push_back()
   {
     node_type* const node = DoCreateNode();
-    node->insert_after(m_sizeAndNode.m_var.getPrev());
-    ++m_sizeAndNode;
-    return m_sizeAndNode.m_var.getPrev()->getValue();
+    node->insert_after(m_node().getPrev());
+    ++m_size();
+    return m_node().getPrev()->getValue();
   }
 
   template <LIST_TEMP_TYPES>
@@ -569,8 +569,8 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::push_back_uninitialized()
   {
     node_type* const node = DoAllocateNode();
-    node->insert_after(&m_sizeAndNode.m_var);
-    ++m_sizeAndNode;
+    node->insert_after(&m_node());
+    ++m_size();
     return &(node->getValue());
   }
 
@@ -578,14 +578,14 @@ namespace tloc { namespace core {
   TL_FI void List<LIST_TEMP>::pop_back()
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    DoEraseAfter(m_sizeAndNode.m_var.getPrev()->getPrev());
+    DoEraseAfter(m_node().getPrev()->getPrev());
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::pop_front()
   {
     TLOC_ASSERT_LIST_NOT_EMPTY();
-    DoEraseAfter(&m_sizeAndNode.m_var);
+    DoEraseAfter(&m_node());
   }
 
   template <LIST_TEMP_TYPES>
@@ -594,7 +594,7 @@ namespace tloc { namespace core {
   {
     node_type* const node = DoCreateNode(value_type());
     node->insert_after(aPos.m_node->getPrev());
-    ++m_sizeAndNode;
+    ++m_size();
     return node;
   }
 
@@ -604,7 +604,7 @@ namespace tloc { namespace core {
   {
     node_type* const node = DoCreateNode(aValue);
     node->insert_after(aPos.m_node->getPrev());
-    ++m_sizeAndNode;
+    ++m_size();
     return node;
   }
 
@@ -634,7 +634,7 @@ namespace tloc { namespace core {
   {
     node_type* const node = DoCreateNode(value_type());
     node->insert_after(aPos.m_node);
-    ++m_sizeAndNode;
+    ++m_size();
     return node;
   }
 
@@ -644,7 +644,7 @@ namespace tloc { namespace core {
   {
     node_type* const node = DoCreateNode(aValue);
     node->insert_after(aPos.m_node);
-    ++m_sizeAndNode;
+    ++m_size();
     return node;
   }
 
@@ -751,7 +751,7 @@ namespace tloc { namespace core {
   {
     DoClear();
     DoInit();
-    m_sizeAndNode = 0;
+    m_size() = 0;
   }
 
   //------------------------------------------------------------------------
@@ -781,8 +781,8 @@ namespace tloc { namespace core {
 
     aPos.m_node->getPrev()->
       splice_after(aOther.m_node, itr.m_node);
-    ++m_sizeAndNode;
-    --aFrom.m_sizeAndNode;
+    ++m_size();
+    --aFrom.m_size();
 
   }
 
@@ -816,8 +816,8 @@ namespace tloc { namespace core {
     TLOC_ASSERT_LIST( aPos != itr, "Cannot perform splice at (position + 1)!");
 
     aPos.m_node->splice_after(aOther.m_node, itr.m_node);
-    ++m_sizeAndNode;
-    --aFrom.m_sizeAndNode;
+    ++m_size();
+    --aFrom.m_size();
 
   }
 
@@ -835,8 +835,8 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::remove(const T& aValueToCompare)
   {
-    iterator itr(&m_sizeAndNode.m_var);
-    while (itr.m_node->getNext() != &m_sizeAndNode.m_var)
+    iterator itr(&m_node());
+    while (itr.m_node->getNext() != &m_node())
     {
       if (itr.m_node->getNext()->getValue() != aValueToCompare)
       {
@@ -854,8 +854,8 @@ namespace tloc { namespace core {
   template <typename T_Pred>
   TL_FI void List<LIST_TEMP>::remove_if(T_Pred aFunctionToCompare)
   {
-    iterator itr(&m_sizeAndNode.m_var);
-    while (itr.m_node->getNext() != &m_sizeAndNode.m_var)
+    iterator itr(&m_node());
+    while (itr.m_node->getNext() != &m_node())
     {
       if (!aFunctionToCompare( itr.m_node->getNext()->getValue()))
       {
@@ -911,7 +911,7 @@ namespace tloc { namespace core {
       {
         if (aBinaryPred(*currElem, *itrBegin))
         {
-          DoErase(itrBegin.m_sizeAndNode.m_var);
+          DoErase(itrBegin.m_node());
           itrBegin = currElem;
         }
         else
@@ -1003,7 +1003,7 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::reverse()
   {
-    m_sizeAndNode.m_var.reverse();
+    m_node().reverse();
   }
 
   //------------------------------------------------------------------------
@@ -1012,16 +1012,16 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP >::DoInit()
   {
-    m_sizeAndNode = 0;
-    m_sizeAndNode.m_var.init();
+    m_size() = 0;
+    m_node().init();
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP >::DoClear()
   {
-    node_type* node = m_sizeAndNode.m_var.getNext();
+    node_type* node = m_node().getNext();
 
-    while (node->getNext() != &m_sizeAndNode.m_var)
+    while (node->getNext() != &m_node())
     {
       node_type* tempNode = node;
       node = node->getNext();
@@ -1076,10 +1076,10 @@ namespace tloc { namespace core {
   TL_FI void List<LIST_TEMP>::DoAssign(T_InputItr aRangeBegin,
                                        T_InputItr aRangeEnd, is_not_arith)
   {
-    node_type* node = m_sizeAndNode.m_var.getNext();
+    node_type* node = m_node().getNext();
 
     // Fill as much as we can
-    while ( (aRangeBegin != aRangeEnd) && (node != &m_sizeAndNode.m_var) )
+    while ( (aRangeBegin != aRangeEnd) && (node != &m_node()) )
     {
       node->getValue() = *aRangeBegin;
       node = node->getNext();
@@ -1089,12 +1089,12 @@ namespace tloc { namespace core {
     // Deal with over/under flow
     if (aRangeBegin != aRangeEnd)
     {
-      DoInsertAfter(m_sizeAndNode.m_var.getPrev(), aRangeBegin, aRangeEnd, 
+      DoInsertAfter(m_node().getPrev(), aRangeBegin, aRangeEnd, 
                     is_not_arith());
     }
     else
     {
-      erase(iterator(node), &m_sizeAndNode.m_var);
+      erase(iterator(node), &m_node());
     }
   }
 
@@ -1102,10 +1102,10 @@ namespace tloc { namespace core {
   TL_FI void List<LIST_TEMP>::DoAssignValues(size_type aNumTimes,
                                              const value_type& aValueCopy)
   {
-    node_type* node = m_sizeAndNode.m_var.getNext();
+    node_type* node = m_node().getNext();
 
     // Fill as much as we can
-    while ((node != &m_sizeAndNode.m_var) && (aNumTimes > 0))
+    while ((node != &m_node()) && (aNumTimes > 0))
     {
       node->getValue() = aValueCopy;
       node = node->getNext();
@@ -1115,12 +1115,12 @@ namespace tloc { namespace core {
     // Deal with over/under flow
     if (aNumTimes > 0)
     {
-      DoInsertValuesAfter(m_sizeAndNode.m_var.getPrev(), aNumTimes, 
+      DoInsertValuesAfter(m_node().getPrev(), aNumTimes, 
                           aValueCopy);
     }
     else
     {
-      erase(iterator(node), &m_sizeAndNode.m_var);
+      erase(iterator(node), &m_node());
     }
   }
 
@@ -1151,7 +1151,7 @@ namespace tloc { namespace core {
   {
     node_type* const newNode = DoCreateNode(aValueCopy);
     newNode->insert_after(aNode);
-    ++m_sizeAndNode;
+    ++m_size();
   }
 
   template <LIST_TEMP_TYPES>
@@ -1172,22 +1172,22 @@ namespace tloc { namespace core {
     aNode->remove_after();
     nodeAfter->~node_type();
     DoFreeNode(nodeAfter);
-    --m_sizeAndNode;
+    --m_size();
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::size_type
     List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_stored) const
   {
-    return m_sizeAndNode.Value();
+    return m_size().Value();
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::size_type
     List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_not_stored) const
   {
-    return distance(const_iterator(m_sizeAndNode.m_var.getNext()), 
-                    const_iterator(&m_sizeAndNode.m_var));
+    return distance(const_iterator(m_node().getNext()), 
+                    const_iterator(&m_node()));
   }
 
   template <LIST_TEMP_TYPES>
@@ -1197,15 +1197,15 @@ namespace tloc { namespace core {
      typename List<LIST_TEMP>::size_stored)
   {
     // Assuming the user would usually want to grow the list when calling resize
-    if (aNumElements > m_sizeAndNode)
+    if (aNumElements > m_size())
     {
-      insert(&m_sizeAndNode.m_var, aNumElements - m_sizeAndNode, aValue);
+      insert(&m_node(), aNumElements - m_size(), aValue);
     }
     else
     {
-      iterator itr(m_sizeAndNode.m_var.getNext());
+      iterator itr(m_node().getNext());
       advance(itr, aNumElements);
-      erase(itr, &m_sizeAndNode.m_var);
+      erase(itr, &m_node());
     }
   }
 
@@ -1215,10 +1215,10 @@ namespace tloc { namespace core {
     const typename List<LIST_TEMP>::value_type& aValue,
     typename List<LIST_TEMP>::size_not_stored)
   {
-    iterator itr(m_sizeAndNode.m_var.getNext());
+    iterator itr(m_node().getNext());
     size_type count = 0;
 
-    while ( (itr.m_node != &m_sizeAndNode.m_var) && 
+    while ( (itr.m_node != &m_node()) && 
             (count < aNumElements) )
     {
       ++count; ++itr;
@@ -1226,11 +1226,11 @@ namespace tloc { namespace core {
 
     if (count == aNumElements)
     {
-      erase(itr, &m_sizeAndNode.m_var);
+      erase(itr, &m_node());
     }
     else
     {
-      insert(&m_sizeAndNode.m_var, aNumElements - count, aValue);
+      insert(&m_node(), aNumElements - count, aValue);
     }
   }
 
@@ -1251,8 +1251,8 @@ namespace tloc { namespace core {
     if (addedSize != 0)
     {
       aPos.m_node->splice_after(aBegin.m_node, aEnd.m_node);
-      m_sizeAndNode += addedSize;
-      aFrom.m_sizeAndNode -= addedSize;
+      m_size() += addedSize;
+      aFrom.m_size() -= addedSize;
     }
   }
 
@@ -1270,6 +1270,37 @@ namespace tloc { namespace core {
     {
       aPos.m_node->splice_after(aBegin.m_node, aEnd.m_node);
     }
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Helper functions for m_sizeAndNode
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::node_type& 
+    List<LIST_TEMP>::m_node()
+  {
+    return m_sizeAndNode.m_var;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI const typename List<LIST_TEMP>::node_type& 
+    List<LIST_TEMP>::m_node() const
+  {
+    return m_sizeAndNode.m_var;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::list_size& 
+    List<LIST_TEMP>::m_size()
+  {
+    return (list_size&)m_sizeAndNode;
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI const typename List<LIST_TEMP>::list_size& 
+    List<LIST_TEMP>::m_size() const
+  {
+    return (list_size&)m_sizeAndNode;
   }
 
 };};

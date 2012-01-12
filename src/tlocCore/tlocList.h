@@ -370,6 +370,10 @@ namespace tloc { namespace core {
 
   protected:
 
+    TL_FI node_type&          m_node();
+    TL_FI const node_type&    m_node() const; 
+    TL_FI list_size&          m_size(); 
+    TL_FI const list_size&    m_size() const;
     size_and_node             m_sizeAndNode;
   };
 

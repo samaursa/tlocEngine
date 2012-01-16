@@ -7,6 +7,7 @@
 
 #include "tlocIterator.inl"
 #include "tlocPair.inl"
+#include "tlocArray.inl"
 
 #include "tlocRandom.h"
 
@@ -995,48 +996,28 @@ namespace tloc { namespace core {
       typedef Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
-      DoInsertionsort(aFirst, aLast, pointer_type());
+      DoInsertionsortWithItrType(aFirst, aLast, pointer_type());
     }
 
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoInsertionsortWithItrType(T_InputIterator aFirst, T_InputIterator aLast, 
       IsRawItr)
     {
-      DoInsertionsortBidirectional(aFirst,aLast);
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      DoInsertionsortWithValueType(aFirst,aLast, value_type());
     }
 
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
+    void DoInsertionsortWithItrType(T_InputIterator aFirst, T_InputIterator aLast, 
       IsComplexItr)
     {
-      typedef typename iterator_traits<T_InputIterator>::iterator_category itrCat;
-
-      DoInsertionsort(aFirst, aLast, itrCat());
+      DoInsertionsortWithValueType(aFirst, aLast, T_InputIterator::value_type());
     }
 
-    template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      input_iterator_tag)
-    {
-      TLOC_STATIC_ASSERT_WIP();
-    }
-
-    template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      bidirectional_iterator_tag)
-    {
-      DoInsertionsortBidirectional(aFirst, aLast);
-    }
-
-    template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      random_access_iterator_tag)
-    {
-      DoInsertionsortBidirectional(aFirst, aLast);
-    }
-
-    template <typename T_InputIterator>
-    void DoInsertionsortBidirectional(T_InputIterator aFirst, T_InputIterator aLast)
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoInsertionsortWithValueType(T_InputIterator aFirst, 
+                                      T_InputIterator aLast,
+                                      T_ValueType)
     {
       if (aFirst != aLast)
       {
@@ -1046,25 +1027,271 @@ namespace tloc { namespace core {
         T_InputIterator currentItr;
         T_InputIterator currentItrMinusOne;
 
+        T_ValueType currentValue;
+
         for (/* */; unsortedItr != aLast; ++unsortedItr)
         {
           currentItr = unsortedItr;
+          currentValue = *currentItr;
 
           currentItrMinusOne = currentItr;
           --currentItrMinusOne;
           
           while (currentItr != aFirst 
-                 && *currentItrMinusOne > *unsortedItr)
+                 && *currentItrMinusOne > currentValue)
           {
             *currentItr = *currentItrMinusOne;
-            --currentItr;
+
+            currentItr = currentItrMinusOne;
             --currentItrMinusOne;
           }
 
-          *currentItr = *unsortedItr;
+          *currentItr = currentValue;
         }
       }
     }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, sort_mergesort)
+    {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      DoMergesortWithItrType(aFirst, aLast, pointer_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
+                     IsComplexItr)
+    {
+      DoMergesortWithValueType(aFirst, aLast, T_InputIterator::value_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
+                     IsRawItr)
+    {
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+
+      DoMergesortWithValueType(aFirst, aLast, value_type());
+    }
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoMergesortWithValueType(T_InputIterator aFirst, T_InputIterator aLast,
+                     T_ValueType)
+    {
+      if (aFirst != aLast)
+      {
+        const u32 size = tloc::core::distance(aFirst, aLast);
+        typedef Array<T_ValueType> T_Container;
+        T_Container unsortedArray(size);
+
+        tloc::core::copy(aFirst, aLast, unsortedArray.begin());
+
+        T_Container sortedArray = DoMergesort(unsortedArray);
+
+        tloc::core::copy(sortedArray.begin(), sortedArray.end(), aFirst);
+      }
+    }
+
+    template <typename T_Container>
+    T_Container DoMergesort(const T_Container& aUnsorted)
+    {
+      const u32 size = aUnsorted.size();
+      if ((size - 1) != 0)
+      {
+        TLOC_ASSERT_LOW_LEVEL(size > 1, "Size is <= 1");
+
+        T_Container::const_iterator first = aUnsorted.begin();
+        T_Container::const_iterator last = aUnsorted.end();
+        const u32 halfSize = size / 2;
+        T_Container::const_iterator midItr = first;
+        tloc::core::advance(midItr, halfSize);
+
+        T_Container leftSide(halfSize);
+        T_Container rightSide(size - halfSize);
+
+        tloc::core::copy(first, midItr, leftSide.begin());
+        tloc::core::copy(midItr, last, rightSide.begin());
+
+        T_Container LeftSideSorted = DoMergesort(leftSide);
+        T_Container RightSideSorted = DoMergesort(rightSide);
+
+        return DoMerge(LeftSideSorted, RightSideSorted);
+      }
+      else
+      {
+        return aUnsorted;
+      }
+    }
+
+    template <typename T_Container>
+    T_Container DoMerge(const T_Container& aLeftFirst, 
+                        const T_Container& aRightFirst)
+    {
+      const T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
+      T_Container mergedContainer(size);
+
+      T_Container::const_iterator leftItr   = aLeftFirst.begin();
+      T_Container::const_iterator rightItr  = aRightFirst.begin();
+      T_Container::iterator mergedItr       = mergedContainer.begin();
+
+      const T_Container::const_iterator endLeftItr   = aLeftFirst.end();
+      const T_Container::const_iterator endRightItr  = aRightFirst.end();
+
+      while ((leftItr != endLeftItr) && (rightItr != endRightItr))
+      {
+        if (*leftItr < *rightItr)
+        {
+          *mergedItr = *leftItr;
+          ++leftItr;
+        }
+        else
+        {
+          *mergedItr = *rightItr;
+          ++rightItr;
+        }
+        ++mergedItr;
+      }
+
+      while (leftItr != endLeftItr)
+      {
+        *mergedItr = *leftItr;
+        ++leftItr;
+        ++mergedItr;
+      }
+
+      while (rightItr != endRightItr)
+      {
+        *mergedItr = *rightItr;
+        ++rightItr;
+        ++mergedItr;
+      }
+
+      return mergedContainer;
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_merge_insertionsort)
+    {
+      if (aFirst != aLast)
+      {
+        DoMergeInsertionSort(aFirst, aLast);
+      }
+    }
+
+    template <typename T_InputIterator>
+    void DoMergeInsertionSort(T_InputIterator aFirst, T_InputIterator aLast)
+    {
+      const u32 size = tloc::core::distance(aFirst, aLast);
+      if ((size - 1) != 0)
+      {
+        const u32 halfSize = size / 2;
+        T_InputIterator midItr = aFirst;
+        tloc::core::advance(midItr, halfSize);
+
+        DoMergeInsertionSort(aFirst, midItr);
+        DoMergeInsertionSort(midItr, aLast);
+        DoMergeInsertion(aFirst, midItr, aLast);
+      }
+    }
+
+    template <typename T_InputIterator>
+    void DoMergeInsertion(T_InputIterator aLeftFirst,
+                          T_InputIterator aRightFirst,
+                          T_InputIterator aLast)
+    {
+      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+
+      for (/* */; aLeftFirst != aRightFirst; ++aLeftFirst)
+      {
+        if (*aLeftFirst > *aRightFirst)
+        {
+          tlSwap(*aLeftFirst, *aRightFirst);
+          DoSortFirstElementWithItrType(aRightFirst, aLast, pointer_type());
+        }
+      }
+    }
+
+    template <typename T_InputIterator>
+    void DoSortFirstElementWithItrType(T_InputIterator aFirst, 
+                                       T_InputIterator aLast,
+                                       IsComplexItr)
+    {
+      DoSortFirstElementWithValueType(aFirst, 
+                                      aLast, 
+                                      T_InputIterator::value_type());
+    }
+
+    template <typename T_InputIterator>
+    void DoSortFirstElementWithItrType(T_InputIterator aFirst, 
+                                       T_InputIterator aLast,
+                                       IsRawItr)
+    {
+      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+
+      DoSortFirstElementWithValueType(aFirst, aLast, value_type());
+    }
+
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoSortFirstElementWithValueType(T_InputIterator aFirst, 
+                                         T_InputIterator aLast,
+                                         T_ValueType)
+    {
+      T_ValueType valueToBeSorted = *aFirst;
+
+      T_InputIterator currentItr = aFirst;
+      T_InputIterator currentItrPlusOne = currentItr;
+      ++currentItrPlusOne;
+
+      while (currentItrPlusOne != aLast && *currentItrPlusOne < valueToBeSorted)
+      {
+        *currentItr = *currentItrPlusOne;
+        ++currentItr;
+        ++currentItrPlusOne;
+      }
+
+      *currentItr = valueToBeSorted;
+    }
+
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                sort_bubblesort)
+    {
+      T_InputIterator endOfUnsortedItr;
+      T_InputIterator currentItr;
+      T_InputIterator currentItrPlusOne;
+      
+      bool swapped;
+
+      for (endOfUnsortedItr = aLast; endOfUnsortedItr != aFirst; --endOfUnsortedItr)
+      {
+        currentItr = aFirst;
+        currentItrPlusOne = currentItr;
+        ++currentItrPlusOne;
+
+        swapped = false;
+
+        for (/* */; 
+             currentItrPlusOne != endOfUnsortedItr; 
+             currentItr = currentItrPlusOne, ++currentItrPlusOne)
+        {
+          if (*currentItr > *currentItrPlusOne)
+          {
+            tlSwap(*currentItr, *currentItrPlusOne);
+            swapped = true;
+          }
+        }
+
+        if (!swapped)
+        {
+          break;
+        }
+      }
+    }
+
   }
 
 };};

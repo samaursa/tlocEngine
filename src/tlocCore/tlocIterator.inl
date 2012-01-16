@@ -473,8 +473,9 @@ namespace tloc { namespace core {
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
   {
+    this_type tempItr(*this);
     m_node = m_node->getPrev();
-    return *this;
+    return tempItr;
   }
 
   LIST_ITR_TEMP

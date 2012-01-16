@@ -5,6 +5,7 @@
 #include "tlocTypeTraits.h"
 #include "tlocIterator.h"
 #include "tlocPair.h"
+#include "tlocArray.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms
@@ -187,6 +188,11 @@ namespace tloc { namespace core {
   /// @brief Use when seek time is a bottleneck (for example disk access)
   ///-------------------------------------------------------------------------
   struct sort_mergesort{};
+
+  ///-------------------------------------------------------------------------
+  /// @brief Use when merge sort and low memory consumption is required.
+  ///-------------------------------------------------------------------------
+  struct sort_merge_insertionsort{};
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -395,42 +401,228 @@ namespace tloc { namespace core {
                               IsComplexItr);
 
     ///-------------------------------------------------------------------------
-    /// @brief
-    /// Quicksort helper. This will perform the leftpivot quicksort on
-    /// the given type. We need the quicksort helper because of raw and
-    /// complex iterators and their value types.
+    /// Quicksort helper. This will perform the leftpivot quicksort on the
+    /// given type. We need the quicksort helper because of raw and complex
+    /// iterators and their value types.
     ///
-    /// @param  aFirst Range begin iterator
-    /// @param  aLast  Range past the end iterator
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  The value type.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator, typename T_ValueType>
     void DoQuicksort(T_InputIterator aFirst, T_InputIterator aLast, T_ValueType);
 
+    ///-------------------------------------------------------------------------
+    /// Insertionsort Helper. This function will do insertion sort with a set
+    /// of iterators.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Insertionsort identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator aFirst, T_InputIterator aLast);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                sort_insertionsort);
 
+    ///-------------------------------------------------------------------------
+    /// Insertionsort helper. This function will do insertion sort with a set
+    /// of iterators, provided the iterator type is known as raw.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Raw iterator identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-                         IsRawItr);
+    void DoInsertionsortWithItrType(T_InputIterator aFirst, 
+                                    T_InputIterator aLast, 
+                                    IsRawItr);
 
+    ///-------------------------------------------------------------------------
+    /// Insertionsort helper. This function will do insertion sort with a set
+    /// of iterators, provided the iterator type is known as raw.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Complex iterator identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-                         IsComplexItr);
+    void DoInsertionsortWithItrType(T_InputIterator aFirst, 
+                                    T_InputIterator aLast, 
+                                    IsComplexItr);
 
-    template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      input_iterator_tag);
+    ///-------------------------------------------------------------------------
+    /// Insertionsort helper. This function performs the actual insertion
+    /// sort with the provided range of iterators and the value type.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  The value type.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoInsertionsortWithValueType(T_InputIterator aFirst, 
+                                      T_InputIterator aLast,
+                                      T_ValueType);
 
+    ///-------------------------------------------------------------------------
+    /// Preforms mergesort on a set of iterators.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Mergesort identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      bidirectional_iterator_tag);
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_mergesort);
 
+    ///-------------------------------------------------------------------------
+    /// Performs mergesort provided that the iterators are complex.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Complex iterator identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsort(T_InputIterator aFirst, T_InputIterator aLast, 
-      random_access_iterator_tag);
+    void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
+                                IsComplexItr);
 
+    ///-------------------------------------------------------------------------
+    /// Performs mergesort provided that the iterators are raw.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Raw iterator identifier.
+    ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsortBidirectional(T_InputIterator aFirst, T_InputIterator aLast);
+    void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
+                                IsRawItr);
+
+    ///-------------------------------------------------------------------------
+    /// performs mergesort if the value type of the iterator is known.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  The Value Type.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoMergesortWithValueType(T_InputIterator aFirst, T_InputIterator aLast,
+                                  T_ValueType);
+
+    ///-------------------------------------------------------------------------
+    /// Performs mergesort on a container. Note: This function will not work
+    /// if the container is empty.
+    ///
+    /// @param  aUnsorted and unsorted container.
+    ///
+    /// @return Returns a copy of the sorted container.
+    ///-------------------------------------------------------------------------
+    template <typename T_Container>
+    T_Container DoMergesort(const T_Container& aUnsorted);
+
+    ///-------------------------------------------------------------------------
+    /// Merges two sorted containers into a container and returns it.
+    ///
+    /// @param  aLeft   The left container.
+    /// @param  aRight  The right container.
+    ///
+    /// @return Merged container.
+    ///-------------------------------------------------------------------------
+    template <typename T_Container>
+    T_Container DoMerge(const T_Container& aLeft, 
+                        const T_Container& aRight);
+
+    ///-------------------------------------------------------------------------
+    /// Performs "merge insertion sort" on a set of iterators.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  MergeInsertionSort identifier.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
+                sort_merge_insertionsort);
+
+    ///-------------------------------------------------------------------------
+    /// Performs "Merge Insertion Sort" on a set of iterators. Note: This
+    /// function will only work if the list is not empty.
+    ///
+    /// @param  aFirst  Range begin iterator.
+    /// @param  aLast   Range past the end iterator.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoMergeInsertionSort(T_InputIterator aFirst, T_InputIterator aLast);
+
+    ///-------------------------------------------------------------------------
+    /// Merges two sorted neighboring containers together with only their
+    /// iterators. Note: The containers must be together as part of a bigger
+    /// container for this function to work.
+    ///
+    /// @param  aLeftFirst  Iterator that defines the beginning of the left
+    ///                     list.
+    /// @param  aRightFirst Iterator that defines the beginning of the right
+    ///                     list.
+    /// @param  aLast       Iterator that defines the end of the right list.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoMergeInsertion(T_InputIterator aLeftFirst, 
+                          T_InputIterator aRightFirst,
+                          T_InputIterator aLast);
+
+    ///-------------------------------------------------------------------------
+    /// Takes the first element in the provided iterator range and places it
+    /// in the remaining sorted container. This is provided that the iterator
+    /// type is known as complex. Note: Except for the first element the
+    /// container must be sorted from lowest to highest value.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Complex iterator identifier.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoSortFirstElementWithItrType(T_InputIterator aFirst, 
+                                       T_InputIterator aLast,
+                                       IsComplexItr);
+
+    ///-------------------------------------------------------------------------
+    /// Takes the first element in the provided iterator range and places it
+    /// in the remaining sorted container. This is provided that the iterator
+    /// type is known as raw. Note: Except for the first element the container
+    /// must be sorted from lowest to highest value.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Complex iterator identifier.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoSortFirstElementWithItrType(T_InputIterator aFirst, 
+                                       T_InputIterator aLast,
+                                       IsRawItr);
+
+    ///-------------------------------------------------------------------------
+    /// Takes the first element in the provided iterator range and places it
+    /// in the remaining sorted container. This is provided that the iterator
+    /// value type is known. Note: Except for the first element the container
+    /// must be sorted from lowest to highest value.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Complex iterator identifier.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator, typename T_ValueType>
+    void DoSortFirstElementWithValueType(T_InputIterator aFirst, 
+                                         T_InputIterator aLast,
+                                         T_ValueType);
+
+    ///-------------------------------------------------------------------------
+    /// Performs Bubblesort on a range of iterators.
+    ///
+    /// @param  aFirst      Range begin iterator.
+    /// @param  aLast       Range past the end iterator.
+    /// @param  parameter3  Bubblesort identifier.
+    ///-------------------------------------------------------------------------
+    template <typename T_InputIterator>
+    void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
+                sort_bubblesort);
+
   }
 
 };};

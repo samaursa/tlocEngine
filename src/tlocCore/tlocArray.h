@@ -34,15 +34,16 @@ namespace tloc { namespace core {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
-    typedef T                                       value_type;
-    typedef T*                                      pointer;
-    typedef T&                                      reference;
-    typedef const T&                                const_reference;
-    typedef const T*                                const_pointer;
-    typedef T*                                      iterator;
-    typedef const T*                                const_iterator;
-    typedef tl_size                                 size_type;
-    typedef tl_ptrdiff                              difference_type;
+    typedef ArrayBase<T>                                  this_type;
+    typedef T                                             value_type;
+    typedef T*                                            pointer;
+    typedef T&                                            reference;
+    typedef const T&                                      const_reference;
+    typedef const T*                                      const_pointer;
+    typedef T*                                            iterator;
+    typedef const T*                                      const_iterator;
+    typedef tl_size                                       size_type;
+    typedef tl_ptrdiff                                    difference_type;
 
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
@@ -182,9 +183,8 @@ namespace tloc { namespace core {
     // Constructors
 
     Array();
-    explicit Array(tl_size aSize);
     Array( const Array<T>& toCopy);
-    Array(tl_size aNumElemsToInsert, const T& aValueToCopy = T());
+    explicit Array(tl_size aNumElemsToInsert, const T& aValueToCopy = T());
     template <typename T_InputIterator>
     Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
 

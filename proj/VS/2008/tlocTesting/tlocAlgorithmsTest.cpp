@@ -407,6 +407,9 @@ namespace TestingAlgorithms
     const s32 rawArray[k_arraySize] =
     {5,6,3,4,7,1,2,3,8,9,4,2,3,6,9,6,7,8,3,2,7,6,5,2,8,5};
 
+    const s32 sortedRawArray[k_arraySize] =
+    {1,2,2,2,2,3,3,3,3,4,4,5,5,5,6,6,6,6,7,7,7,8,8,8,9,9};
+
     s32 myints[26] = {0};
     copy(rawArray, rawArray + k_arraySize, myints);
 
@@ -415,6 +418,7 @@ namespace TestingAlgorithms
 
     Array<s32> myIntsArray(itrBegin, itrEnd);
     List<s32>  myIntsList(itrBegin, itrEnd);
+    List<s32, ListNode<s32, singly_linked_tag> >  myIntsListSinglyLinked(itrBegin, itrEnd);
 
     tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType() );
 
@@ -423,12 +427,22 @@ namespace TestingAlgorithms
       CHECK( myints[i] >= myints[i - 1]);
     }
 
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myints[i] == sortedRawArray[i]);
+    }
+
     tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
                                   T_SortType() );
 
     for (u32 i = 1; i < 26; ++i)
     {
       CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
+    }
+
+    for (u32 i = 1; i < 26; ++i)
+    {
+      CHECK( myIntsArray[i] == sortedRawArray[i]);
     }
 
     tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
@@ -446,6 +460,51 @@ namespace TestingAlgorithms
       ++listItr2;
       ++listItr;
     }
+
+
+    listItr = myIntsList.begin();
+    listItrEnd = myIntsList.end();
+    const s32 *sortedItr = sortedRawArray;
+
+    while (listItr != listItrEnd)
+    {
+      CHECK(*listItr == *sortedItr);
+
+      ++listItr;
+      ++sortedItr;
+    }
+
+    tloc::core::detail::DoSort(myIntsListSinglyLinked.begin(), 
+                               myIntsListSinglyLinked.end(), 
+                               T_SortType());
+  
+    List<s32, ListNode<s32, singly_linked_tag> >::iterator singleListItr, 
+                                                           singleListItr2, 
+                                                           singleListItrEnd;
+    singleListItr2 = myIntsListSinglyLinked.begin();
+    singleListItr = singleListItr2++;
+    singleListItrEnd = myIntsListSinglyLinked.end();
+
+    while (singleListItr2 != singleListItrEnd)
+    {
+      CHECK(*singleListItr2 >= *singleListItr);
+
+      ++singleListItr2;
+      ++singleListItr;
+    }
+
+
+    singleListItr = myIntsListSinglyLinked.begin();
+    singleListItrEnd = myIntsListSinglyLinked.end();
+    sortedItr = sortedRawArray;
+
+    while (singleListItr != singleListItrEnd)
+    {
+      CHECK(*singleListItr == *sortedItr);
+
+      ++singleListItr;
+      ++sortedItr;
+    }
   }
 
   TEST_CASE("Core/Algorithms/QuicksortDetail", "")
@@ -459,6 +518,17 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/InsertionsortDetail", "")
   {
     SortDetailsTests<sort_insertionsort>();
+  }
+
+  TEST_CASE("Core/Algorithms/MergesortDetail", "")
+  {
+    SortDetailsTests<sort_mergesort>();
+    SortDetailsTests<sort_merge_insertionsort>();
+  }
+
+  TEST_CASE("Core/Algorithms/BubblesortDetail", "")
+  {
+    SortDetailsTests<sort_bubblesort>();
   }
 
   TEST_CASE("Core/Algorithms/Sort", "")

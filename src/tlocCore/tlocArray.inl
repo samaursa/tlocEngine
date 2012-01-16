@@ -30,7 +30,7 @@ namespace tloc { namespace core {
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(position) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_BEGIN(rangeBegin) \
-  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin < m_end,\
+  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin <= m_end,\
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_END(rangeEnd) \
@@ -324,11 +324,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   Array<T>::Array() : ArrayBase()
-  {
-  }
-
-  template <typename T>
-  Array<T>::Array( tl_size aSize ) : ArrayBase(aSize)
   {
   }
 

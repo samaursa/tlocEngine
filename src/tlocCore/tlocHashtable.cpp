@@ -150,7 +150,7 @@ namespace tloc { namespace core {
   };
 
   typedef HashtablePolicy<s32, dummyHashFunc, dummyEqualTo, prime_rehash_policy, 
-    List< List<HashtableElement<s32> > >, false> hashtable_policies;
+    List< Array<HashtableElement<s32> > >, false> hashtable_policies;
 
   template Hashtable<hashtable_policies>;
 

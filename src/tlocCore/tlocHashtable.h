@@ -51,25 +51,31 @@ namespace tloc { namespace core {
     hashcode_type m_valueAndHashcode;
   };
 
-  template <typename T_Policies>
-  class HashtableIteratorBase
+  template <typename T_Policies, bool T_Const>
+  class HashtableItr
   {
   protected:
 
-    typedef HashtableIteratorBase<T_Policies>    this_type;
+    typedef HashtableItr<T_Policies, T_Const>    this_type;
 
     typedef T_Policies                           policy_type;
-    typedef typename policy_type::element_type   element_type;
-    typedef typename policy_type::bucket_type    bucket_type;
     typedef typename policy_type::node_type      node_type;
 
-    typedef typename node_type::iterator         node_iterator;
-    typedef typename bucket_type::iterator       bucket_iterator;
+    typedef typename Loki::Select<T_Const, 
+      const typename policy_type::bucket_type, 
+      typename policy_type::bucket_type>::Result bucket_type;
 
+    typedef typename Loki::Select<T_Const, 
+      typename node_type::const_iterator, 
+      typename node_type::iterator>::Result node_iterator;
+
+    typedef typename Loki::Select<T_Const, 
+      typename bucket_type::const_iterator, 
+      typename bucket_type::iterator>::Result bucket_iterator;
 
   public:
-    TL_FI HashtableIteratorBase(bucket_type& a_bucketContainer);
-    TL_FI HashtableIteratorBase(bucket_type& a_bucketContainer,
+    TL_FI HashtableItr(bucket_type& a_bucketContainer);
+    TL_FI HashtableItr(bucket_type& a_bucketContainer,
       typename node_type::const_iterator& a_currNode,
       typename bucket_type::const_iterator& a_currBucket);
 
@@ -178,8 +184,9 @@ namespace tloc { namespace core {
     typedef typename policy_type::cache_hash_type		 cache_hash_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
-    typedef HashtableIteratorBase<policy_type>       iterator;
-    typedef const HashtableIteratorBase<policy_type> const_iterator;
+    typedef HashtableItr<policy_type, false> iterator;
+    typedef HashtableItr<policy_type, true>  const_iterator;
+
     typedef typename node_type::iterator             local_iterator;
     typedef typename node_type::const_iterator       const_local_iterator;
     typedef core::reverse_iterator<iterator>         reverse_iterator;
@@ -218,7 +225,7 @@ namespace tloc { namespace core {
     // Iterator Access
 
     TL_FI iterator        begin();
-    //TL_FI const_iterator  begin() const;
+    TL_FI const_iterator  begin() const;
 
 
   protected:

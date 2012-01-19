@@ -38,35 +38,6 @@ namespace tloc { namespace core {
   {
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // Rehash policies
-
-  //------------------------------------------------------------------------
-  // Prime rehash policy
-
-  prime_rehash_policy::prime_rehash_policy(f32 a_maxLoadFactor) 
-    : m_maxLoadFactor(a_maxLoadFactor), m_growthFactor(2.0f), m_nextResize(0)
-  {
-  }
-
-  prime_rehash_policy::size_type prime_rehash_policy
-    ::GetBucketCount(prime_rehash_policy::size_type a_numOfElements) const
-  {
-    const u32 minBucketCount = u32 (a_numOfElements / m_maxLoadFactor);
-    TLOC_UNUSED(minBucketCount);
-    //const u32 prime = 
-    return 0;
-  }
-
-  Pair<bool, prime_rehash_policy::size_type> prime_rehash_policy
-    ::GetRehashRequired(size_type a_numOfBuckets, size_type a_numOfElements, 
-                        size_type a_numOfElementsToAdd) const
-  {
-    TLOC_UNUSED(a_numOfBuckets);
-    TLOC_UNUSED(a_numOfElements);
-    TLOC_UNUSED(a_numOfElementsToAdd);
-    return MakePair<bool, size_type>(false, 0);
-  }
 
   //////////////////////////////////////////////////////////////////////////
   // Hashtable
@@ -83,6 +54,9 @@ namespace tloc { namespace core {
   Hashtable<HASH_TABLE_PARAMS>::Hashtable(size_type a_bucketCount)
   {
     TLOC_ASSERT_HASH_TABLE(a_bucketCount < 10000000, "Bucket count is too large!");
+    size_type newBucketCount = 
+      (size_type)m_rehashPolicy.GetNextBucketCount((u32)a_bucketCount);
+    DoAllocateBuckets(newBucketCount);
   }
 
   template <HASH_TABLE_TYPES>
@@ -94,6 +68,12 @@ namespace tloc { namespace core {
   template <HASH_TABLE_TYPES>
   Hashtable<HASH_TABLE_PARAMS>::~Hashtable()
   {
+  }
+
+  template <HASH_TABLE_TYPES>
+  void Hashtable<HASH_TABLE_PARAMS>::DoAllocateBuckets(size_type a_numBuckets)
+  {
+    m_bucketArray.resize(a_numBuckets);
   }
 
 };};

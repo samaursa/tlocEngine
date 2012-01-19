@@ -63,10 +63,77 @@ namespace tloc { namespace core {
       4294967291u // Sentinel so we don't have to test result of lower_bound
     };
 
-    const u32* g_primeNumberArrayPtr = g_primeNumberArray;
     const u32  g_primeCount  = (sizeof(g_primeNumberArray) / 
                                 sizeof(g_primeNumberArray[0]) - 1 );
   };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Rehash policies
+
+  //------------------------------------------------------------------------
+  // Prime rehash policy
+
+#define CEILING_POS(X) ((X-(s32)(X)) > 0 ? (s32)(X+1) : (s32)(X))
+#define CEILING_NEG(X) ((X-(s32)(X)) < 0 ? (s32)(X-1) : (s32)(X))
+#define CEILING(X) ( ((X) > 0) ? CEILING_POS(X) : CEILING_NEG(X) )
+
+  prime_rehash_policy::prime_rehash_policy(f32 a_maxLoadFactor) 
+    : m_maxLoadFactor(a_maxLoadFactor), m_growthFactor(2.0f), m_nextResize(0)
+  {
+  }
+
+  prime_rehash_policy::size_type prime_rehash_policy
+    ::GetNextBucketCount(size_type a_bucketCountHint) const
+  {
+    const u32 prime = *lower_bound(hash_detail::g_primeNumberArray, 
+      hash_detail::g_primeNumberArray + hash_detail::g_primeCount, 
+      a_bucketCountHint);
+
+    m_nextResize = (u32)( CEILING(prime * m_maxLoadFactor));
+    return prime;
+  }
+
+  prime_rehash_policy::size_type prime_rehash_policy
+    ::GetBucketCount(prime_rehash_policy::size_type a_numOfElements) const
+  {
+    const u32 minBucketCount = u32 (a_numOfElements / m_maxLoadFactor);
+    return GetNextBucketCount(minBucketCount);
+  }
+
+  Pair<bool, prime_rehash_policy::size_type> prime_rehash_policy
+    ::GetRehashRequired(size_type a_numOfBuckets, size_type a_numOfElements, 
+                        size_type a_numOfElementsToAdd) const
+  {
+    if (( a_numOfElements + a_numOfElementsToAdd) > m_nextResize)
+    {
+      if (a_numOfBuckets == 1) { a_numOfBuckets = 0; }
+
+      f32 minBucketCount = (a_numOfElements + a_numOfElementsToAdd) / 
+                            m_maxLoadFactor;
+
+      if (minBucketCount > (f32)a_numOfBuckets)
+      {
+        minBucketCount = tlMax(minBucketCount, m_growthFactor * a_numOfBuckets);
+        const u32 prime = *lower_bound(hash_detail::g_primeNumberArray, 
+          hash_detail::g_primeNumberArray + hash_detail::g_primeCount, 
+          minBucketCount);
+        m_nextResize = (u32)CEILING(prime * m_maxLoadFactor);
+
+        return Pair<bool, u32>(true, prime);
+      }
+      else
+      {
+        m_nextResize = (u32)CEILING(a_numOfBuckets * m_maxLoadFactor);
+        return Pair<bool, u32>(false, (u32)0);
+      }
+    }
+
+    return Pair<bool, u32>(false, (u32)0);
+  }
+
+#undef CEILING_POS
+#undef CEILING_NEG
+#undef CEILING
 
   struct dummyHashFunc 
   {

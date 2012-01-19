@@ -25,8 +25,6 @@ namespace tloc { namespace core {
   namespace hash_detail
   {
     extern void*       g_emptyBucketArray[2];
-    extern const u32*  g_primeNumberArrayPtr;
-    extern const u32   g_primeCount;
   }
 
   ///-------------------------------------------------------------------------
@@ -81,16 +79,21 @@ namespace tloc { namespace core {
     void Increment();
   };
 
+  ///-------------------------------------------------------------------------
+  /// Prime rehash policy. One of the available rehash policies. This one is
+  /// referenced from EASTL and changed where deemed fit.
+  ///-------------------------------------------------------------------------
   struct prime_rehash_policy
   {
     typedef tl_size size_type; 
 
-    f32       m_maxLoadFactor;
-    f32       m_growthFactor;
-    u32       m_nextResize;
+    f32         m_maxLoadFactor;
+    f32         m_growthFactor;
+    mutable u32 m_nextResize;
 
     prime_rehash_policy(f32 a_maxLoadFactor = 1.0f);
     
+    size_type             GetNextBucketCount(size_type a_bucketCountHint) const;
     size_type             GetBucketCount(size_type a_numOfElements) const;
     Pair<bool, size_type> GetRehashRequired(size_type a_numOfBuckets,
       size_type a_numOfElements, size_type a_numOfElementsToAdd) const;
@@ -194,6 +197,10 @@ namespace tloc { namespace core {
     /// Destructor.
     ///-------------------------------------------------------------------------
     ~Hashtable();
+
+  protected:
+
+    void DoAllocateBuckets(size_type a_numBuckets);
 
   protected:
     bucket_type				 m_bucketArray;

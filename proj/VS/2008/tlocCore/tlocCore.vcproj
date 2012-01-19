@@ -513,6 +513,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocFunctional.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocLinkMe.cpp"
 			>
 		</File>

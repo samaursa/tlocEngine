@@ -56,7 +56,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // ArrayBase<T>
 
   template <typename T>
-  ArrayBase<T>::ArrayBase()
+  TL_FI ArrayBase<T>::ArrayBase()
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -64,7 +64,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  ArrayBase<T>::ArrayBase( tl_size aSize )
+  TL_FI ArrayBase<T>::ArrayBase( tl_size aSize )
   {
     m_begin = DoAllocate(aSize);
     TLOC_ASSERT_CONTAINERS(m_begin != NULL,
@@ -74,7 +74,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  ArrayBase<T>::~ArrayBase()
+  TL_FI ArrayBase<T>::~ArrayBase()
   {
     if (m_begin)
     {
@@ -323,25 +323,25 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Constructors
 
   template <typename T>
-  Array<T>::Array() : ArrayBase()
+  TL_FI Array<T>::Array() : ArrayBase()
   {
   }
 
   template <typename T>
-  Array<T>::Array( const Array<T>& toCopy )
+  TL_FI Array<T>::Array( const Array<T>& toCopy )
   {
     insert(m_begin, toCopy.m_begin, toCopy.m_end);
   }
 
   template <typename T>
-  Array<T>::Array(tl_size aNumElemsToInsert, const T& aValueToCopy /* = T() */)
+  TL_FI Array<T>::Array(tl_size aNumElemsToInsert, const T& aValueToCopy)
   {
     insert(0, aNumElemsToInsert, aValueToCopy);
   }
 
   template <typename T>
   template <typename T_InputIterator>
-  Array<T>::Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd)
+  TL_FI Array<T>::Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd)
   {
     insert(m_begin, aRangeBegin, aRangeEnd);
   }

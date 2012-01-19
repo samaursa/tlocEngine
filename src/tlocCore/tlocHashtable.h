@@ -5,6 +5,7 @@
 #include "tlocMemory.h"
 #include "tlocTypeTraits.h"
 #include "tlocAlgorithms.h"
+#include "tlocIterator.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -55,7 +56,9 @@ namespace tloc { namespace core {
   {
   protected:
 
-    typedef T_Policies                  policy_type;
+    typedef HashtableIteratorBase<T_Policies>    this_type;
+
+    typedef T_Policies                           policy_type;
     typedef typename policy_type::element_type   element_type;
     typedef typename policy_type::bucket_type    bucket_type;
     typedef typename policy_type::node_type      node_type;
@@ -63,20 +66,22 @@ namespace tloc { namespace core {
     typedef typename node_type::iterator         node_iterator;
     typedef typename bucket_type::iterator       bucket_iterator;
 
-    node_type&          m_nodeContainer;
+
+  public:
+    TL_FI HashtableIteratorBase(bucket_type& a_bucketContainer);
+    TL_FI HashtableIteratorBase(bucket_type& a_bucketContainer,
+      typename node_type::const_iterator& a_currNode,
+      typename bucket_type::const_iterator& a_currBucket);
+
+    TL_FI void IncrementBucket();
+    TL_FI void Increment();
+
+    this_type& operator=(const this_type& a_other);
+
     node_iterator       m_currNode;
 
     bucket_type&        m_bucketContainer;
     bucket_iterator     m_currBucket;
-
-  public:
-    HashtableIteratorBase(node_type& a_nodeContainer, 
-                          bucket_type& a_bucketContainer,
-                          typename node_type::const_iterator& a_currNode,
-                          typename bucket_type::const_iterator& a_currBucket);
-
-    void IncrementBucket();
-    void Increment();
   };
 
   ///-------------------------------------------------------------------------
@@ -173,34 +178,52 @@ namespace tloc { namespace core {
     typedef typename policy_type::cache_hash_type		 cache_hash_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
-    typedef tl_ptrdiff                                       difference_type;
+    typedef HashtableIteratorBase<policy_type>       iterator;
+    typedef const HashtableIteratorBase<policy_type> const_iterator;
+    typedef typename node_type::iterator             local_iterator;
+    typedef typename node_type::const_iterator       const_local_iterator;
+    typedef core::reverse_iterator<iterator>         reverse_iterator;
+    typedef core::reverse_iterator<const_iterator>   const_reverse_iterator;
+
+    typedef tl_ptrdiff                               difference_type;
+
+    //------------------------------------------------------------------------
+    // Constructors
+
     ///-------------------------------------------------------------------------
     /// Default constructor.
     ///-------------------------------------------------------------------------
-    Hashtable();
+    TL_FI Hashtable();
 
     ///-------------------------------------------------------------------------
     /// Construct a Hashtable with at least a_bucketCount buckets.
     ///
     /// @param  a_bucketCount Number of buckets.
     ///-------------------------------------------------------------------------
-    Hashtable(size_type a_bucketCount);
+    TL_FI Hashtable(size_type a_bucketCount);
 
     ///-------------------------------------------------------------------------
     /// Copy constructor.
     ///
     /// @param  a_other The other hashtable.
     ///-------------------------------------------------------------------------
-    Hashtable(const this_type& a_other);
+    TL_FI Hashtable(const this_type& a_other);
 
     ///-------------------------------------------------------------------------
     /// Destructor.
     ///-------------------------------------------------------------------------
-    ~Hashtable();
+    TL_FI ~Hashtable();
+
+    //------------------------------------------------------------------------
+    // Iterator Access
+
+    TL_FI iterator        begin();
+    //TL_FI const_iterator  begin() const;
+
 
   protected:
 
-    void DoAllocateBuckets(size_type a_numBuckets);
+    TL_FI void DoAllocateBuckets(size_type a_numBuckets);
 
   protected:
     bucket_type				 m_bucketArray;

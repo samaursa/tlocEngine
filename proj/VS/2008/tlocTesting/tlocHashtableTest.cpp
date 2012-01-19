@@ -25,8 +25,11 @@ namespace TestingArray
 
   struct HashtableFixture 
   {
-    typedef HashtablePolicy<s32, hash<s32>, equal_to<s32>, prime_rehash_policy, 
-      List< List<HashtableElement<s32> > >, false> hashtable_policies;
+    typedef SinglyList<HashtableElement<s32>, false>::type element_list_type;
+    typedef SinglyList<element_list_type, false>::type list_type;
+
+    typedef HashtablePolicy<s32, hash<s32>, hash_to_range_mod, range_hash_default,
+      equal_to<s32>, prime_rehash_policy, list_type, false, true> hashtable_policies;
   };
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/Ctors", "")

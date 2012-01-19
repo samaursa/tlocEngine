@@ -6,6 +6,7 @@
 #include "tlocTypeTraits.h"
 #include "tlocAlgorithms.h"
 #include "tlocIterator.h"
+#include "tlocFunctional.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -27,6 +28,27 @@ namespace tloc { namespace core {
   {
     extern void*       g_emptyBucketArray[2];
   }
+
+  //------------------------------------------------------------------------
+  // Hash functions
+
+  struct hash_to_range_mod : public binary_function<u32, u32, u32>
+  {
+    u32 operator() (u32 a_hash, u32 a_tableSize) const
+    {
+      return a_hash % a_tableSize;
+    }
+  };
+
+  template <typename T_Key, typename T_Hasher, typename T_HashToRange>
+  struct range_hash_default : public binary_function<T_Key, u32, u32>,
+    public T_Hasher, public T_HashToRange
+  {
+    u32 operator() (T_Key a_key, u32 a_tableSize) const
+    {
+      return T_HashToRange(T_Hasher::operator()(a_key), a_tableSize);
+    }
+  };
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -50,6 +72,9 @@ namespace tloc { namespace core {
     // use the inline functions instead for clarity.
     hashcode_type m_valueAndHashcode;
   };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Iterators
 
   template <typename T_Policies, bool T_Const>
   class HashtableItrBase
@@ -145,25 +170,45 @@ namespace tloc { namespace core {
     mutable u32 m_nextResize;
 
     prime_rehash_policy(f32 a_maxLoadFactor = 1.0f);
-    
-    size_type             GetNextBucketCount(size_type a_bucketCountHint) const;
-    size_type             GetBucketCount(size_type a_numOfElements) const;
-    Pair<bool, size_type> GetRehashRequired(size_type a_numOfBuckets,
+
+    void                  set_max_load_factor(f32 a_maxLoadFactor);
+    f32                   get_max_load_factor() const;
+    size_type             get_next_bucket_count(size_type a_bucketCountHint) const;
+    size_type             get_bucket_count(size_type a_numOfElements) const;
+    Pair<bool, size_type> get_rehash_required(size_type a_numOfBuckets,
       size_type a_numOfElements, size_type a_numOfElementsToAdd) const;
   };
 
-  ///-------------------------------------------------------------------------
-  /// Hashtable rehash class. Called when the load factor in the Hashtable
-  /// exceeds and the table needs to rehash.
-  ///-------------------------------------------------------------------------
-  template <typename T_Policies, typename T_Hashtable>
-  class HashtableRehash
+  //------------------------------------------------------------------------
+  // Hashtable hashcode base
+  template <typename T_Policy, bool T_CacheHashCode>
+  class HashCode { };
+
+  template <typename T_Policy>
+  class HashCode<T_Policy, true>
   {
+  public:
+
+
+  protected:
   };
 
-  template <typename T_Key, typename T_HashFunc, 
-            typename T_KeyEqual, typename T_RehashPolicy, typename T_BucketType, 
-            bool T_CacheHashCode>
+  template <typename T_Policy>
+  class HashCode<T_Policy, false>
+  {
+  public:
+
+  protected:
+  };
+
+  //------------------------------------------------------------------------
+  // Hashtable Policy
+
+  template <typename T_Key, typename T_HashFunc, typename T_HashToRange, 
+    template <typename T_Key, typename T_HashFunc, typename T_HashToRange> class T_RangeHashFunc, 
+    typename T_KeyEqual, 
+    typename T_RehashPolicy, typename T_BucketType, 
+    bool T_CacheHashCode, bool T_UniqueKeys>
 
   ///-------------------------------------------------------------------------
   /// A policy class that combines all the policies with all the necessary
@@ -181,11 +226,13 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   struct HashtablePolicy
   {
-    typedef T_Key					 key_type;
-    typedef T_HashFunc		 hasher_func;
-    typedef T_KeyEqual		 key_equal;
-    typedef T_BucketType	 bucket_type;
-    typedef T_RehashPolicy rehash_policy_type;
+    typedef T_Key						          key_type;
+    typedef T_HashFunc                hasher; // No _type because the standard says so
+    typedef T_HashToRange		          hash_to_range_type;
+    typedef T_RangeHashFunc<key_type, hasher, hash_to_range_type> range_hasher_type;
+    typedef T_KeyEqual			          key_equal;
+    typedef T_BucketType		          bucket_type;
+    typedef T_RehashPolicy	          rehash_policy_type;
 
     typedef typename bucket_type::value_type	node_type;
     typedef typename node_type::value_type		element_type;
@@ -194,8 +241,12 @@ namespace tloc { namespace core {
     typedef tl_ptrdiff     difference_type;
     typedef tl_size        size_type;
 
-    typedef Loki::Int2Type<T_CacheHashCode> cache_hash_type;
+    typedef Loki::Int2Type<T_CacheHashCode> cache_hash;
+    typedef Loki::Int2Type<T_UniqueKeys>    unique_keys;
   };
+
+  //------------------------------------------------------------------------
+  // Hashtable itself
 
   template <typename T_Policies>
 
@@ -208,8 +259,7 @@ namespace tloc { namespace core {
   /// tloc::core::HashtableRehash<T_Policies::rehash_policy_type,Hashtable<T_Policies,T_RehashPolicy>
   /// >
   ///-------------------------------------------------------------------------
-  class Hashtable : public HashtableRehash<typename T_Policies::rehash_policy_type, 
-                                           Hashtable<T_Policies> >
+  class Hashtable
   {
   public:
     typedef Hashtable<T_Policies>                 this_type;
@@ -218,16 +268,22 @@ namespace tloc { namespace core {
     typedef typename policy_type::key_type					 key_type;
     typedef typename policy_type::value_type				 value_type;
     typedef typename policy_type::element_type			 element_type;
-    typedef typename policy_type::hasher_func				 hasher;
+    typedef typename policy_type::hasher             hasher;
     typedef typename policy_type::key_equal					 key_equal;
     typedef typename policy_type::node_type					 node_type;
     typedef typename policy_type::bucket_type				 bucket_type;
     typedef typename policy_type::size_type					 size_type;
-    typedef typename policy_type::cache_hash_type		 cache_hash_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
     typedef HashtableItr<policy_type, false> iterator;
     typedef HashtableItr<policy_type, true>  const_iterator;
+
+    typedef typename policy_type::cache_hash		     cache_hash;
+    typedef typename policy_type::unique_keys        unique_keys;
+    typedef typename 
+      Loki::Select<Loki::IsSameType<unique_keys,type_true>::value,
+                   Pair<iterator, bool>, iterator>::Result 
+                                                     insert_return_type;
 
     typedef typename node_type::iterator             local_iterator;
     typedef typename node_type::const_iterator       const_local_iterator;
@@ -272,10 +328,82 @@ namespace tloc { namespace core {
     TL_FI iterator        end();
     TL_FI const_iterator  end() const;
 
+    TL_FI local_iterator			 begin(size_type a_bucketNumber);
+    TL_FI const_local_iterator begin(size_type a_bucketNumber) const;
+    TL_FI local_iterator			 end(size_type a_bucketNumber);
+    TL_FI const_local_iterator end(size_type a_bucketNumber) const;
+
+    //------------------------------------------------------------------------
+    // Capacity
+
+    TL_FI size_type       size() const;
+    TL_FI size_type       bucket_count() const;
+    TL_FI size_type       bucket_size(size_type a_bucketNumber) const;
+
+    //------------------------------------------------------------------------
+    // Hashing queries
+
+    TL_FI f32									load_factor() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the current rehash policy.
+    ///
+    /// @return rehash_policy_type The current rehash policy.
+    ///-------------------------------------------------------------------------
+    TL_FI const rehash_policy_type&	get_rehash_policy() const;
+
+    ///-------------------------------------------------------------------------
+    /// Sets a rehash policy. This function is added just for the sake of
+    /// completeness. It is better to create a new hashtable with a different
+    /// hash policy.
+    ///
+    /// @param  rehash_policy_type The new rehash policy.
+    ///-------------------------------------------------------------------------
+    TL_FI void								set_rehash_policy(const rehash_policy_type& 
+                                            a_rehashPolicy);
+
+    ///-------------------------------------------------------------------------
+    /// Gets the maximum load factor. This function calls overloads that take
+    /// in their respective rehash policy.
+    ///
+    /// @return The maximum load factor.
+    ///-------------------------------------------------------------------------
+    TL_FI f32                 get_max_load_factor() const;
+
+    ///-------------------------------------------------------------------------
+    /// Sets a maximum load factor. This funtion calls the overloads that take
+    /// in their respective rehash policy.
+    ///
+    /// @param  a_maxLoadFactor The maximum load factor.
+    ///-------------------------------------------------------------------------
+    TL_FI void                set_max_load_factor(f32 a_maxLoadFactor);
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    //insert_return_type  insert(const value_type& a_value);
+    //iterator						insert(const_iterator a_itrBegin, 
+    //                           const value_type& a_value);
+    //template <typename T_InputItr>
+    //void                insert(T_InputItr a_first, T_InputItr a_last);
 
   protected:
 
-    TL_FI void DoAllocateBuckets(size_type a_numBuckets);
+    TL_FI void          DoAllocateBuckets(size_type a_numBuckets);
+
+    //------------------------------------------------------------------------
+    // Load factor overloads and sanity checks
+
+    template <typename T>
+    TL_FI f32               DoGetMaxLoadFactor(T) const
+    { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
+    template <typename T>
+    TL_FI void              DoSetMaxLoadFactor(f32, T)
+    { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
+
+    TL_FI f32               DoGetMaxLoadFactor(prime_rehash_policy) const;
+    TL_FI void              DoSetMaxLoadFactor(f32 a_maxLoadFactor, 
+                                               prime_rehash_policy);
 
   protected:
     bucket_type				 m_bucketArray;

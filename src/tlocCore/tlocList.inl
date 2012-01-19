@@ -1049,6 +1049,9 @@ namespace tloc { namespace core {
     List<LIST_TEMP>::DoCreateNode()
   {
     node_type* node = DoAllocateNode();
+
+    TLOC_ASSERT_LIST(node, "Unable to allocate memory for the list node!");
+
     new(&node->getValue()) value_type;
     return node;
   }

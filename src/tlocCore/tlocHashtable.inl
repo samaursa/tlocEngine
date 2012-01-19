@@ -128,7 +128,7 @@ namespace tloc { namespace core {
   {
     TLOC_ASSERT_HASH_TABLE(a_bucketCount < 10000000, "Bucket count is too large!");
     size_type newBucketCount = 
-      (size_type)m_rehashPolicy.GetNextBucketCount((u32)a_bucketCount);
+      (size_type)m_rehashPolicy.get_next_bucket_count((u32)a_bucketCount);
     DoAllocateBuckets(newBucketCount);
   }
 
@@ -149,6 +149,9 @@ namespace tloc { namespace core {
   {
     m_bucketArray.resize(a_numBuckets);
   }
+
+  //------------------------------------------------------------------------
+  // Iterator access 
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator 
@@ -186,6 +189,126 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>::end() const
   {
     return const_iterator(m_bucketArray, m_dummyNode, m_bucketArray.end()); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::local_iterator
+    Hashtable<HASH_TABLE_PARAMS>
+    ::begin(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber)
+  {
+    bucket_type::iterator itr(m_bucketArray.begin());
+    advance(itr, a_bucketNumber);
+    return (*(itr)).begin(); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_local_iterator
+    Hashtable<HASH_TABLE_PARAMS>
+    ::begin(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
+  {
+    bucket_type::const_iterator itr(m_bucketArray.begin());
+    advance(itr, a_bucketNumber);
+    return (*(itr)).begin(); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::local_iterator
+    Hashtable<HASH_TABLE_PARAMS>
+    ::end(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber)
+  {
+    bucket_type::iterator itr(m_bucketArray.end());
+    advance(itr, a_bucketNumber);
+    return (*(itr)).end(); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_local_iterator
+    Hashtable<HASH_TABLE_PARAMS>
+    ::end(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
+  {
+    bucket_type::const_iterator itr(m_bucketArray.end());
+    advance(itr, a_bucketNumber);
+    return (*(itr)).end(); 
+  }
+
+  //------------------------------------------------------------------------
+  // Capacity
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::size() const
+  {
+    return m_elementCount;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::bucket_count() const
+  {
+    return (size_type)m_bucketArray.size();
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::bucket_size
+    (typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
+  {
+    bucket_type::const_iterator itr(m_bucketArray.begin());
+    advance(itr, a_bucketNumber);
+    return (*itr).size();
+  }
+
+  //------------------------------------------------------------------------
+  // Hashing queries
+
+  template <HASH_TABLE_TYPES>
+  TL_FI f32 Hashtable<HASH_TABLE_PARAMS>::load_factor() const
+  {
+    return (f32)m_elementCount / (f32)bucket_count();
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI const typename Hashtable<HASH_TABLE_PARAMS>::rehash_policy_type&
+    Hashtable<HASH_TABLE_PARAMS>::get_rehash_policy() const
+  {
+    return m_rehashPolicy;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI void Hashtable<HASH_TABLE_PARAMS>::set_rehash_policy(const 
+    typename Hashtable<HASH_TABLE_PARAMS>::rehash_policy_type& a_rehashPolicy)
+  {
+    m_rehashPolicy = a_rehashPolicy;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI f32 Hashtable<HASH_TABLE_PARAMS>::get_max_load_factor() const
+  {
+    return DoGetMaxLoadFactor(m_rehashPolicy);
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI void Hashtable<HASH_TABLE_PARAMS>::
+    set_max_load_factor(f32 a_maxLoadFactor) 
+  {
+    DoSetMaxLoadFactor(a_maxLoadFactor, m_rehashPolicy);
+  }
+
+  //------------------------------------------------------------------------
+  // Load factor overloads and sanity checks
+
+  template <HASH_TABLE_TYPES>
+  TL_FI f32 Hashtable<HASH_TABLE_PARAMS>::
+    DoGetMaxLoadFactor(prime_rehash_policy) const
+  {
+    return m_rehashPolicy.get_max_load_factor();
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI void Hashtable<HASH_TABLE_PARAMS>::DoSetMaxLoadFactor
+    (f32 a_maxLoadFactor, prime_rehash_policy)
+  {
+    m_rehashPolicy.set_max_load_factor(a_maxLoadFactor);
   }
 
 };};

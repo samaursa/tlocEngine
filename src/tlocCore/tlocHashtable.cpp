@@ -82,8 +82,18 @@ namespace tloc { namespace core {
   {
   }
 
+  f32 prime_rehash_policy::get_max_load_factor() const
+  {
+    return m_maxLoadFactor;
+  }
+
+  void prime_rehash_policy::set_max_load_factor(f32 a_maxLoadFactor)
+  {
+    m_maxLoadFactor = a_maxLoadFactor;
+  }
+
   prime_rehash_policy::size_type prime_rehash_policy
-    ::GetNextBucketCount(size_type a_bucketCountHint) const
+    ::get_next_bucket_count(size_type a_bucketCountHint) const
   {
     const u32 prime = *lower_bound(hash_detail::g_primeNumberArray, 
       hash_detail::g_primeNumberArray + hash_detail::g_primeCount, 
@@ -94,15 +104,15 @@ namespace tloc { namespace core {
   }
 
   prime_rehash_policy::size_type prime_rehash_policy
-    ::GetBucketCount(prime_rehash_policy::size_type a_numOfElements) const
+    ::get_bucket_count(prime_rehash_policy::size_type a_numOfElements) const
   {
     const u32 minBucketCount = u32 (a_numOfElements / m_maxLoadFactor);
-    return GetNextBucketCount(minBucketCount);
+    return get_next_bucket_count(minBucketCount);
   }
 
   Pair<bool, prime_rehash_policy::size_type> prime_rehash_policy
-    ::GetRehashRequired(size_type a_numOfBuckets, size_type a_numOfElements, 
-                        size_type a_numOfElementsToAdd) const
+    ::get_rehash_required(size_type a_numOfBuckets, size_type a_numOfElements, 
+                          size_type a_numOfElementsToAdd) const
   {
     if (( a_numOfElements + a_numOfElementsToAdd) > m_nextResize)
     {
@@ -149,8 +159,9 @@ namespace tloc { namespace core {
     bool operator()(const s32& a, const s32& b) const { return a == b; }
   };
 
-  typedef HashtablePolicy<s32, dummyHashFunc, dummyEqualTo, prime_rehash_policy, 
-    List< Array<HashtableElement<s32> > >, false> hashtable_policies;
+  typedef HashtablePolicy<s32, hash<s32>, hash_to_range_mod, range_hash_default, 
+    equal_to<s32>, prime_rehash_policy, List< Array<HashtableElement<s32> > >, 
+    false, true> hashtable_policies;
 
   template Hashtable<hashtable_policies>;
 

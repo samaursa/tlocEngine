@@ -52,30 +52,30 @@ namespace tloc { namespace core {
   };
 
   template <typename T_Policies, bool T_Const>
-  class HashtableItr
+  class HashtableItrBase
   {
-  protected:
+  public:
 
-    typedef HashtableItr<T_Policies, T_Const>    this_type;
+    typedef HashtableItrBase<T_Policies, T_Const>    this_type;
 
-    typedef T_Policies                           policy_type;
-    typedef typename policy_type::node_type      node_type;
+    typedef T_Policies                               policy_type;
+    typedef typename policy_type::node_type          node_type;
+    typedef typename policy_type::bucket_type        b_type;
+    typedef typename T_Policies::value_type           value_type;
 
+    typedef typename Loki::Select<T_Const, const value_type*, value_type*> pointer;
+    typedef typename Loki::Select<T_Const, const value_type&, value_type&> reference;
+    typedef typename Loki::Select<T_Const, const b_type, b_type>::Result bucket_type;
     typedef typename Loki::Select<T_Const, 
-      const typename policy_type::bucket_type, 
-      typename policy_type::bucket_type>::Result bucket_type;
-
+                                  typename node_type::const_iterator, 
+                                  typename node_type::iterator>::Result node_iterator;
     typedef typename Loki::Select<T_Const, 
-      typename node_type::const_iterator, 
-      typename node_type::iterator>::Result node_iterator;
-
-    typedef typename Loki::Select<T_Const, 
-      typename bucket_type::const_iterator, 
-      typename bucket_type::iterator>::Result bucket_iterator;
+                                  typename bucket_type::const_iterator, 
+                                  typename bucket_type::iterator>::Result bucket_iterator;
 
   public:
-    TL_FI HashtableItr(bucket_type& a_bucketContainer);
-    TL_FI HashtableItr(bucket_type& a_bucketContainer,
+    TL_FI HashtableItrBase(bucket_type& a_bucketContainer);
+    TL_FI HashtableItrBase(bucket_type& a_bucketContainer,
       typename node_type::const_iterator& a_currNode,
       typename bucket_type::const_iterator& a_currBucket);
 
@@ -89,6 +89,28 @@ namespace tloc { namespace core {
     bucket_type&        m_bucketContainer;
     bucket_iterator     m_currBucket;
   };
+
+  template <typename T_Policies, bool T_Const>
+  class HashtableItr : public HashtableItrBase<T_Policies, T_Const>
+  {
+  public:
+
+    typedef HashtableItrBase<T_Policies, T_Const>     base_type;
+    typedef HashtableItr<T_Policies, T_Const>         this_type;
+
+    typedef typename base_type::bucket_type           bucket_type;
+    typedef typename base_type::node_type             node_type;
+    typedef typename base_type::value_type            value_type;
+    typedef typename base_type::pointer               pointer;
+    typedef typename base_type::reference             reference;
+
+    typedef tl_ptrdiff                                difference_type;
+    typedef forward_iterator_tag                      iterator_category;
+
+  public:
+
+  };
+
 
   ///-------------------------------------------------------------------------
   /// Prime rehash policy. One of the available rehash policies. This one is
@@ -184,8 +206,8 @@ namespace tloc { namespace core {
     typedef typename policy_type::cache_hash_type		 cache_hash_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
-    typedef HashtableItr<policy_type, false> iterator;
-    typedef HashtableItr<policy_type, true>  const_iterator;
+    typedef HashtableItrBase<policy_type, false> iterator;
+    typedef HashtableItrBase<policy_type, true>  const_iterator;
 
     typedef typename node_type::iterator             local_iterator;
     typedef typename node_type::const_iterator       const_local_iterator;
@@ -226,6 +248,9 @@ namespace tloc { namespace core {
 
     TL_FI iterator        begin();
     TL_FI const_iterator  begin() const;
+
+    //TL_FI iterator        end();
+    //TL_FI const_iterator  end() const;
 
 
   protected:

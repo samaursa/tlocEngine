@@ -13,25 +13,25 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Hashtable Iterator 
 
-#define HASH_TABLE_ITR_TYPES typename T_Policies, bool T_Const
-#define HASH_TABLE_ITR_PARAMS T_Policies, T_Const
+#define HASHTABLE_ITR_BASE_TYPES typename T_Policies, bool T_Const
+#define HASHTABLE_ITR_BASE_PARAMS T_Policies, T_Const
 
-  template <HASH_TABLE_ITR_TYPES>
-  TL_FI HashtableItr<HASH_TABLE_ITR_PARAMS>
-    ::HashtableItr(
-    typename HashtableItr<HASH_TABLE_ITR_PARAMS>::bucket_type& a_bucketContainer)
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
+    ::HashtableItrBase(
+    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type& a_bucketContainer)
     : m_bucketContainer(a_bucketContainer)
     , m_currNode( (*(a_bucketContainer.begin() )).begin())
     , m_currBucket( a_bucketContainer.begin() )
   {
   }
 
-  template <HASH_TABLE_ITR_TYPES>
-  TL_FI HashtableItr<HASH_TABLE_ITR_PARAMS>
-    ::HashtableItr(
-    typename HashtableItr<HASH_TABLE_ITR_PARAMS>::bucket_type& a_bucketContainer,
-    typename HashtableItr<HASH_TABLE_ITR_PARAMS>::node_type::const_iterator& a_currNode,
-    typename HashtableItr<HASH_TABLE_ITR_PARAMS>::bucket_type::const_iterator& a_currBucket) 
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
+    ::HashtableItrBase(
+    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type& a_bucketContainer,
+    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::node_type::const_iterator& a_currNode,
+    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type::const_iterator& a_currBucket) 
     : m_bucketContainer(a_bucketContainer)
     , m_currNode(a_currNode)
     , m_currBucket(a_currBucket)
@@ -39,8 +39,8 @@ namespace tloc { namespace core {
   }
 
 
-  template <HASH_TABLE_ITR_TYPES>
-  TL_FI void HashtableItr<HASH_TABLE_ITR_PARAMS>::Increment()
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::Increment()
   {
     bucket_type::const_iterator bucketEnd = m_bucketContainer.end();
     node_type::const_iterator itrEnd = (*m_currBucket).end();
@@ -64,8 +64,8 @@ namespace tloc { namespace core {
     }
   }
 
-  template <HASH_TABLE_ITR_TYPES>
-  TL_FI void HashtableItr<HASH_TABLE_ITR_PARAMS>::IncrementBucket()
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
     bucket_iterator bucketEnd = m_bucketContainer.end();
     ++m_currBucket;
@@ -84,10 +84,10 @@ namespace tloc { namespace core {
     }
   }
 
-  template <HASH_TABLE_ITR_TYPES>
-  TL_FI typename HashtableItr<HASH_TABLE_ITR_PARAMS>::this_type&
-    HashtableItr<HASH_TABLE_ITR_PARAMS> ::operator =
-    (const typename HashtableItr<HASH_TABLE_ITR_PARAMS>::this_type &a_other)
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::this_type&
+    HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS> 
+    ::operator = (const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::this_type &a_other)
   {
     m_currNode				= a_other.m_currNode;
     m_bucketContainer	= a_other.m_bucketContainer;

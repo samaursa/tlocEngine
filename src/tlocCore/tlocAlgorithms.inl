@@ -722,12 +722,6 @@ namespace tloc { namespace core {
     return a < b ? b : a;
   }
 
-  template <typename T>
-  TL_I void tlSwap(T& a, T& b)
-  {
-    T c(a); a = b; b = c;
-  }
-
   //------------------------------------------------------------------------
   // Modifying sequence operations
 
@@ -779,6 +773,68 @@ namespace tloc { namespace core {
 
     detail::fill(aRangeBegin, aRangeEnd, aValue, IsChar8());
 
+  }
+
+  template <typename T>
+  TL_I void tlSwap(T& a, T& b)
+  {
+    T c(a); a = b; b = c;
+  }
+
+  template <typename T_ForwardIterator, typename T>
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+    T_ForwardIterator a_last, const T& a_value)
+  {
+    T_ForwardIterator itr;
+    iterator_traits<T_ForwardIterator>::difference_type count, step;
+
+    count = distance(a_first, a_last);
+
+    while (count > 0)
+    {
+      itr = a_first;
+      step = count / 2;
+      advance(itr, step);
+
+      if (*itr < a_value)
+      {
+        a_first = ++itr; 
+        count -= step - 1;
+      }
+      else
+      {
+        count = step;
+      }
+    }
+
+    return a_first;
+  }
+
+  template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+    T_ForwardIterator a_last, const T& a_value, T_BinaryPred a_comp)
+  {
+    T_ForwardIterator itr;
+    iterator_traits<T_ForwardIterator>::difference_type count, step;
+
+    while (count > 0)
+    {
+      itr = a_first;
+      step = count / 2;
+      advance(itr, step);
+
+      if (a_comp(*itr, a_value)) 
+      {
+        a_first = ++itr; 
+        count -= step - 1;
+      }
+      else
+      {
+        count = step;
+      }
+    }
+
+    return a_first;
   }
 
   //////////////////////////////////////////////////////////////////////////

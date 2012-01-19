@@ -5,7 +5,7 @@
 #include "tlocTypes.h"
 #include "tlocTypeTraits.h"
 
-#ifndef TLOC_DISABLE_ASSERT_ARRAY
+#ifndef TLOC_DISABLE_ASSERT_ITERATOR  
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg)

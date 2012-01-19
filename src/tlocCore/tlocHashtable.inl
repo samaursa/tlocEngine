@@ -30,8 +30,8 @@ namespace tloc { namespace core {
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
     ::HashtableItrBase(
     typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type& a_bucketContainer,
-    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::node_type::const_iterator& a_currNode,
-    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type::const_iterator& a_currBucket) 
+    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::node_iterator& a_currNode,
+    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_iterator& a_currBucket) 
     : m_bucketContainer(a_bucketContainer)
     , m_currNode(a_currNode)
     , m_currBucket(a_currBucket)
@@ -68,6 +68,10 @@ namespace tloc { namespace core {
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
     bucket_iterator bucketEnd = m_bucketContainer.end();
+
+    TLOC_ASSERT_HASH_TABLE(m_currBucket != bucketEnd, 
+      "Already at the end of the bucket container!");
+
     ++m_currBucket;
     while( (*(m_currBucket)).size() == 0 )
     {
@@ -94,11 +98,25 @@ namespace tloc { namespace core {
     m_currBucket			= a_other.m_currBucket;
   }
 
+  template <HASHTABLE_ITR_BASE_TYPES>
+  TL_FI bool HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS> 
+    ::operator == (const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::this_type &a_other)
+  {
+    return ( m_bucketContainer == a_other.m_bucketContainer &&
+             m_currNode				 == a_other.m_currNode &&
+             m_currBucket			 == a_other.m_currBucket );
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Hashtable
 
 #define HASH_TABLE_TYPES typename T_Policies
 #define HASH_TABLE_PARAMS T_Policies
+  
+  template <HASH_TABLE_TYPES>
+  typename Hashtable<HASH_TABLE_PARAMS>::node_type::iterator 
+    Hashtable<HASH_TABLE_PARAMS>::m_dummyNode = 
+    typename Hashtable<HASH_TABLE_PARAMS>::node_type::iterator();
 
   template <HASH_TABLE_TYPES>
   Hashtable<HASH_TABLE_PARAMS>::Hashtable()
@@ -154,6 +172,20 @@ namespace tloc { namespace core {
       itr.IncrementBucket();
     }
     return itr;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator 
+    Hashtable<HASH_TABLE_PARAMS>::end()
+  {
+    return iterator(m_bucketArray, m_dummyNode, m_bucketArray.end()); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator 
+    Hashtable<HASH_TABLE_PARAMS>::end() const
+  {
+    return const_iterator(m_bucketArray, m_dummyNode, m_bucketArray.end()); 
   }
 
 };};

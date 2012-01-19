@@ -76,13 +76,14 @@ namespace tloc { namespace core {
   public:
     TL_FI HashtableItrBase(bucket_type& a_bucketContainer);
     TL_FI HashtableItrBase(bucket_type& a_bucketContainer,
-      typename node_type::const_iterator& a_currNode,
-      typename bucket_type::const_iterator& a_currBucket);
+      const node_iterator& a_currNode,
+      const bucket_iterator& a_currBucket);
 
     TL_FI void IncrementBucket();
     TL_FI void Increment();
 
     this_type& operator=(const this_type& a_other);
+    bool       operator==(const this_type& a_other);
 
     node_iterator       m_currNode;
 
@@ -97,9 +98,12 @@ namespace tloc { namespace core {
 
     typedef HashtableItrBase<T_Policies, T_Const>     base_type;
     typedef HashtableItr<T_Policies, T_Const>         this_type;
+    typedef HashtableItr<T_Policies, false>           this_type_non_const;
 
     typedef typename base_type::bucket_type           bucket_type;
+    typedef typename base_type::bucket_iterator       bucket_iterator;
     typedef typename base_type::node_type             node_type;
+    typedef typename base_type::node_iterator         node_iterator;
     typedef typename base_type::value_type            value_type;
     typedef typename base_type::pointer               pointer;
     typedef typename base_type::reference             reference;
@@ -108,6 +112,22 @@ namespace tloc { namespace core {
     typedef forward_iterator_tag                      iterator_category;
 
   public:
+
+    HashtableItr(bucket_type& a_bucketContainer)
+      : base_type(a_bucketContainer) {}
+    HashtableItr(bucket_type& a_bucketContainer, const node_iterator& a_currNode,
+      const bucket_iterator& a_currBucket)
+      : base_type(a_bucketContainer, a_currNode, a_currBucket) {}
+    HashtableItr(const this_type& a_other)
+      : base_type(a_other.m_bucketContainer, a_other.m_currNode, a_other.m_currBucket) {}
+
+    reference operator*() const { return base_type::m_currNode->m_value; }
+    pointer   operator->() const { return &(base_type::m_currNode->m_value); }
+    
+    this_type& operator++() { base_type::Increment(); return *this; }
+    this_type operator++(int) { this_type temp(*this); base_type::Increment(); return temp; }
+
+    const node_type* get_node() const { return base_type::m_currNode; }
 
   };
 
@@ -206,8 +226,8 @@ namespace tloc { namespace core {
     typedef typename policy_type::cache_hash_type		 cache_hash_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
-    typedef HashtableItrBase<policy_type, false> iterator;
-    typedef HashtableItrBase<policy_type, true>  const_iterator;
+    typedef HashtableItr<policy_type, false> iterator;
+    typedef HashtableItr<policy_type, true>  const_iterator;
 
     typedef typename node_type::iterator             local_iterator;
     typedef typename node_type::const_iterator       const_local_iterator;
@@ -249,8 +269,8 @@ namespace tloc { namespace core {
     TL_FI iterator        begin();
     TL_FI const_iterator  begin() const;
 
-    //TL_FI iterator        end();
-    //TL_FI const_iterator  end() const;
+    TL_FI iterator        end();
+    TL_FI const_iterator  end() const;
 
 
   protected:
@@ -261,6 +281,9 @@ namespace tloc { namespace core {
     bucket_type				 m_bucketArray;
     size_type					 m_elementCount;
     rehash_policy_type m_rehashPolicy;
+
+    // Used to mark end() iterator's m_currNode
+    static typename node_type::iterator   m_dummyNode; 
   };
 
 };};

@@ -292,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocPair.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocQueueTest.cpp"
 				>
 			</File>

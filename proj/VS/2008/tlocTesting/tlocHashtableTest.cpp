@@ -28,7 +28,7 @@ namespace TestingArray
     typedef SinglyList<HashtableElement<s32>, false>::type element_list_type;
     typedef SinglyList<element_list_type, false>::type list_type;
 
-    typedef HashtablePolicy<s32, hash<s32>, hash_to_range_mod, range_hash_default,
+    typedef HashtablePolicy<s32, use_self<s32>, hash<s32>, hash_to_range_mod, range_hash_default,
       equal_to<s32>, prime_rehash_policy, list_type, false, true> hashtable_policies;
   };
 

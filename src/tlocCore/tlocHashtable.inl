@@ -295,6 +295,34 @@ namespace tloc { namespace core {
   }
 
   //------------------------------------------------------------------------
+  // Insert Helpers
+
+  template <HASH_TABLE_TYPES>
+  TL_FI Pair<typename Hashtable<HASH_TABLE_PARAMS>::iterator, bool>
+    Hashtable<HASH_TABLE_PARAMS>::DoInsertValue
+    (const typename Hashtable<HASH_TABLE_PARAMS>::value_type& a_value, 
+           typename Hashtable<HASH_TABLE_PARAMS>::keys_are_unique)
+  {
+    const key_type& k = extract_key(a_value);
+    const hash_code_type c = get_hash_code(k);
+
+    TLOC_UNUSED(k);
+    TLOC_UNUSED(c);
+
+    return MakePair(begin(), false); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator  
+    Hashtable<HASH_TABLE_PARAMS>::DoInsertValue
+    (const typename Hashtable<HASH_TABLE_PARAMS>::value_type& a_value, 
+           typename Hashtable<HASH_TABLE_PARAMS>::keys_are_not_unique)
+  {
+    TLOC_UNUSED(a_value);
+    return begin(); 
+  }
+
+  //------------------------------------------------------------------------
   // Load factor overloads and sanity checks
 
   template <HASH_TABLE_TYPES>

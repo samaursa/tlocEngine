@@ -159,10 +159,12 @@ namespace tloc { namespace core {
     bool operator()(const s32& a, const s32& b) const { return a == b; }
   };
 
-  typedef HashtablePolicy<s32, hash<s32>, hash_to_range_mod, range_hash_default, 
+  typedef HashtablePolicy<s32, use_self<s32>, hash<s32>, hash_to_range_mod, range_hash_default, 
     equal_to<s32>, prime_rehash_policy, List< Array<HashtableElement<s32> > >, 
     false, true> hashtable_policies;
 
   template Hashtable<hashtable_policies>;
+
+  template HashCode<hashtable_policies, true>;
 
 };};

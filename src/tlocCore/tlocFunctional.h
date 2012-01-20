@@ -69,37 +69,37 @@ namespace tloc { namespace core {
   template <typename T>
   struct equal_to : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T == T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x == a_y; }
   };
 
   template <typename T>
   struct not_equal_to : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T != T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T != T; }
   };
 
   template <typename T>
   struct greater : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T > T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T > T; }
   };
 
   template <typename T>
   struct less : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T < T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T < T; }
   };
 
   template <typename T>
   struct greater_equal : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T >= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T >= T; }
   };
 
   template <typename T>
   struct less_equal : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T <= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T <= T; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -108,19 +108,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct logical_and : binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T && T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T && T; }
   };
 
   template <typename T>
   struct logical_or: binary_function<T, T, bool>
   {
-    T operator()(const T& a_x, const T& a_y) const { return T || T; }
+    bool operator()(const T& a_x, const T& a_y) const { return T || T; }
   };
 
   template <typename T>
   struct logical_not: unary_function<T, bool>
   {
-    T operator()(const T& a_x) const { return !T; }
+    bool operator()(const T& a_x) const { return !T; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -140,58 +140,83 @@ namespace tloc { namespace core {
   };
   template <> struct hash<bool>
   {
-    tl_size operator()(bool a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(bool a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<char8>
   {
-    tl_size operator()(char8 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(char8 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<char32>
   {
-    tl_size operator()(char32 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(char32 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<uchar8>
   {
-    tl_size operator()(uchar8 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(uchar8 a_value) const { return static_cast<tl_size>(a_value); }
   };
 
   template <> struct hash<s16>
   {
-    tl_size operator()(s16 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(s16 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<s32>
   {
-    tl_size operator()(s32 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(s32 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<s64>
   {
-    tl_size operator()(s64 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(s64 a_value) const { return static_cast<tl_size>(a_value); }
   };
 
   template <> struct hash<u16>
   {
-    tl_size operator()(u16 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(u16 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<u32>
   {
-    tl_size operator()(u32 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(u32 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<u64>
   {
-    tl_size operator()(u64 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(u64 a_value) const { return static_cast<tl_size>(a_value); }
   };
 
   template <> struct hash<f32>
   {
-    tl_size operator()(f32 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(f32 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<f64>
   {
-    tl_size operator()(f64 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(f64 a_value) const { return static_cast<tl_size>(a_value); }
   };
   template <> struct hash<f128>
   {
-    tl_size operator()(f128 a_value) const { static_cast<tl_size>(a_value); }
+    tl_size operator()(f128 a_value) const { return static_cast<tl_size>(a_value); }
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Use self/first/second
+
+  template <typename T>
+  struct use_self : public unary_function<const T, const T>
+  {
+    const T& operator()(const T& a) const { return a; }
+  };
+
+  template <typename T_Pair>
+  struct use_first : 
+    public unary_function<T_Pair, const typename T_Pair::first_type>
+  {
+    typename unary_function::result_type& operator()(const T_Pair& a) const
+    { return a.first; }
+  };
+
+  template <typename T_Pair>
+  struct use_second : 
+    public unary_function<T_Pair, const typename T_Pair::first_type>
+  {
+    typename unary_function::result_type& operator()(const T_Pair& a) const
+    { return a.second; }
   };
 
 };};

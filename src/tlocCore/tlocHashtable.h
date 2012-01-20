@@ -44,9 +44,12 @@ namespace tloc { namespace core {
   struct range_hash_default : public binary_function<T_Key, u32, u32>,
     public T_Hasher, public T_HashToRange
   {
-    u32 operator() (T_Key a_key, u32 a_tableSize) const
+    typedef T_Hasher      hasher;
+    typedef T_HashToRange hash_to_range_type;
+
+    u32 operator() (T_Key a_key, u32 a_bucketCount) const
     {
-      return T_HashToRange(T_Hasher::operator()(a_key), a_tableSize);
+      return hash_to_range_type::operator()(T_Hasher::operator()(a_key), a_bucketCount);
     }
   };
 
@@ -61,12 +64,14 @@ namespace tloc { namespace core {
   {
     typedef tl_size                                 size_type;
     typedef T_Value                                 value_type;
-    typedef ConditionalTypePackage<value_type, 
-                                   size_type, 
-                                   T_StoreHash>     hashcode_type;
 
-    TL_FI value_type m_value() { return m_valueAndHashcode.m_var; }
-    TL_FI size_type  m_hashcode() { return (size_type)m_valueAndHashcode; }
+    typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>     
+                                                    hashcode_type;
+
+    TL_FI value_type& m_value() { return m_valueAndHashcode.m_var; }
+    TL_FI const value_type& m_value() const { return m_valueAndHashcode.m_var; }
+    TL_FI size_type&  m_hashcode() { return (size_type)m_valueAndHashcode; }
+    TL_FI const size_type& m_hashcode() const { return (size_type)m_valueAndHashcode; }
 
     // You can access this variable directly, but it is recommended that you
     // use the inline functions instead for clarity.
@@ -181,30 +186,75 @@ namespace tloc { namespace core {
 
   //------------------------------------------------------------------------
   // Hashtable hashcode base
+  // NOTES: We deviated heavily from EASTL as far as the implementation goes so
+  // that we minimize duplicate code and avoid wasted space when any of the
+  // hash function objects are essentially empty classes
+
   template <typename T_Policy, bool T_CacheHashCode>
   class HashCode { };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, true>
+  class HashCode<T_Policy, true> : 
+    protected T_Policy::extract_key_type,
+    protected T_Policy::key_equal,
+    protected T_Policy::range_hasher_type
   {
   public:
 
+    typedef u32                           hash_code_type;
+    typedef u32                           bucket_index_type;
+
+    typedef typename T_Policy::node_type         node_type;
+    typedef typename T_Policy::element_type      element_type;
+    typedef typename T_Policy::value_type        value_type;
+    typedef typename T_Policy::key_type          key_type;
+    typedef typename T_Policy::range_hasher_type range_hasher_base_type;
+    typedef typename T_Policy::extract_key_type  extract_key_type;
+    typedef typename T_Policy::key_equal         key_equal;
+
+    typedef typename range_hasher_base_type::hasher             hasher_base_type;
+    typedef typename range_hasher_base_type::hash_to_range_type hash_to_range_type;
+
+    hash_code_type get_hash_code(const key_type& a_key) const
+    { return (hash_code_type)hasher_base_type::operator()(a_key); }
+
+    bucket_index_type bucket_index(const key_type& a_key, u32 a_bucketCount) const
+    { return (bucket_index_type)range_hasher_base_type::operator()
+    (a_key, a_bucketCount); }
+
+    bucket_index_type bucket_index(const element_type* a_node, u32 a_bucketCount) const
+    { return (bucket_index_type)range_hasher_base_type::operator()
+    (extract_key_type::operator()(a_node->m_value()), a_bucketCount); }
+
+    bool compare (const key_type& a_key, hash_code_type, element_type* a_node) const
+    { return key_equal::operator()
+    (a_key, extract_key_type::operator()(a_node->m_value())); }
+
+    key_type extract_key(const value_type& a_value) const
+    { return extract_key_type::operator()(a_value); }
 
   protected:
   };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, false>
+  class HashCode<T_Policy, false> :
+    protected T_Policy::extract_key_type,
+    protected T_Policy::key_equal,
+    protected T_Policy::range_hasher_type
   {
   public:
 
-  protected:
+    typedef u32                           hash_code_type;
+    typedef u32                           bucket_index_type;
+    typedef typename T_Policy::node_type  node_type;
+
   };
 
   //------------------------------------------------------------------------
   // Hashtable Policy
 
-  template <typename T_Key, typename T_HashFunc, typename T_HashToRange, 
+  template <typename T_Key, typename T_ExtractKey, typename T_HashFunc, 
+    typename T_HashToRange, 
     template <typename T_Key, typename T_HashFunc, typename T_HashToRange> class T_RangeHashFunc, 
     typename T_KeyEqual, 
     typename T_RehashPolicy, typename T_BucketType, 
@@ -214,19 +264,26 @@ namespace tloc { namespace core {
   /// A policy class that combines all the policies with all the necessary
   /// typedefs.
   /// 
-  /// - T_Key
-  /// - Any object that is compatible with the T_HashFunc for
-  /// conversion of the key to a hash.
-  /// - T_BucketType
-  /// - The container for storing the buckets of a container of some type. The
-  /// container must be such that this is true: BucketContainer&lt;
-  /// ElementContainer&lt; HashtableElement&lt;T&gt; &gt; &gt; where
+  /// - T_Key: Any object that is compatible with the T_HashFunc for conversion
+  /// of the key to a hash.
+  /// - T_ExtractKey: A function object that tells us how to get the key from
+  /// the value object. The value object may be as simple as a pair (storing
+  /// the key and the value) or it may be more complex in which case we want to
+  /// know how to extract the 'key' from the complex 'value' object.
+  /// - T_RangeHashFunc<>: A template class that takes in the Key, the hash
+  /// function and the hash to range function. This class essentially returns
+  /// the correct bucket number from the key by using the hash function and the
+  /// range hash function.
+  /// - T_BucketType: The container for storing the buckets of a container of
+  /// some type. The container must be such that:
+  /// BucketContainer<ElementContainer< HashtableElement<T>>> where
   /// BucketContainer and ElementContainer can be the same type containers. For
-  /// example: List&lt; List&lt;HashtableElement&lt;s32&gt; &gt; &gt;.
+  /// example: List<List<HashtableElement<s32>>>
   ///-------------------------------------------------------------------------
   struct HashtablePolicy
   {
     typedef T_Key						          key_type;
+    typedef T_ExtractKey              extract_key_type;
     typedef T_HashFunc                hasher; // No _type because the standard says so
     typedef T_HashToRange		          hash_to_range_type;
     typedef T_RangeHashFunc<key_type, hasher, hash_to_range_type> range_hasher_type;
@@ -254,12 +311,17 @@ namespace tloc { namespace core {
   /// The Hashtable is a base class for associative containers like the
   /// Hashmap. We used EASTL and SGI as reference but tried to keep it as
   /// simple as possible while retaining some flexibility.
+  /// 
+  /// @note Public inheritance from Hashcode<> may seem complicated but it
+  /// really isn't. The second parameter is determining whether in T_Policies,
+  /// unique_keys was true or not.
   ///
   /// @sa
-  /// tloc::core::HashtableRehash<T_Policies::rehash_policy_type,Hashtable<T_Policies,T_RehashPolicy>
-  /// >
+  /// tloc::core::HashCode<T_Policies,Loki::IsSameType<typename T_Policies::unique_keys,type_true>::value>
   ///-------------------------------------------------------------------------
-  class Hashtable
+  class Hashtable : 
+    public HashCode<T_Policies, 
+    Loki::IsSameType<typename T_Policies::unique_keys, type_true>::value >
   {
   public:
     typedef Hashtable<T_Policies>                 this_type;
@@ -291,6 +353,9 @@ namespace tloc { namespace core {
     typedef core::reverse_iterator<const_iterator>   const_reverse_iterator;
 
     typedef tl_ptrdiff                               difference_type;
+
+    typedef HashCode<T_Policies, 
+      Loki::IsSameType<unique_keys, type_true>::value> hash_code_base_type;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -389,7 +454,19 @@ namespace tloc { namespace core {
 
   protected:
 
-    TL_FI void          DoAllocateBuckets(size_type a_numBuckets);
+    TL_FI void              DoAllocateBuckets(size_type a_numBuckets);
+
+    //------------------------------------------------------------------------
+    // Insert helpers
+
+    /// Used by DoInsertValue() 
+    typedef type_true  keys_are_unique;
+    typedef type_false keys_are_not_unique;
+
+    Pair<iterator, bool>  DoInsertValue(const value_type& a_value, 
+                                        keys_are_unique);
+    iterator              DoInsertValue(const value_type& a_value,
+                                        keys_are_not_unique);
 
     //------------------------------------------------------------------------
     // Load factor overloads and sanity checks

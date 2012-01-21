@@ -5,6 +5,7 @@
 #include "tlocTypeTraits.h"
 #include "tlocAlgorithms.h"
 #include "tlocIterator.h"
+#include "tlocMemory.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array

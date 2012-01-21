@@ -1,4 +1,5 @@
 #include "tlocMemory.h"
+#include "tlocMemory.inl"
 
 #ifdef TLOC_USE_CUSTOM_NEW_DELETE
 

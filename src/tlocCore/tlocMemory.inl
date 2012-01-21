@@ -14,6 +14,7 @@ namespace tloc { namespace core {
                                            T_InputIterator aRangeEnd, 
                                            T_OutputIterator aDestRangeBegin)
   {
+    //TODO: Add proper checks for POD types.
     typedef Loki::TypeTraits<T_OutputIterator>::PointeeType value_type;
     typedef Loki::TypeTraits<value_type> value_type_traits;
     typedef Loki::Int2Type<value_type_traits::isArith &&
@@ -21,7 +22,7 @@ namespace tloc { namespace core {
                            !(value_type_traits::isVolatile)> 
                            assign_type;
 
-    return DoUninitializedCopy(aRangeBegin, 
+    return detail::DoUninitializedCopy(aRangeBegin, 
                                aRangeEnd, 
                                aDestRangeBegin,
                                value_type(),
@@ -58,9 +59,7 @@ namespace tloc { namespace core {
     }
 
 
-  };
-
-  
+  }
 
 };};
 

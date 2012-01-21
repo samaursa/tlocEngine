@@ -53,7 +53,7 @@ namespace tloc { namespace core {
   namespace detail {
 
     typedef type_true hasTrivalAssign;
-    typedef type_true hasComplexAssign;
+    typedef type_false hasComplexAssign;
 
     template <typename T_InputIterator, typename T_OutputIterator, typename T_ValueType>
     TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,

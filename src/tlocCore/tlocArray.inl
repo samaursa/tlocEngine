@@ -7,6 +7,7 @@
 
 #include "tlocAlgorithms.inl"
 #include "tlocIterator.inl"
+#include "tlocMemory.inl"
 
 namespace tloc { namespace core {
 
@@ -90,23 +91,27 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I typename ArrayBase<T>::this_type& 
     ArrayBase<T>::operator= (const typename ArrayBase<T>::this_type& aToCopy)
   {
-    TLOC_STATIC_ASSERT_WIP();
     TLOC_ASSERT_ARRAY(&aToCopy != this, "Assigning array to itself!");
     
     const ArrayBase<T>::size_type sizeOfOther = aToCopy.size();
     if (sizeOfOther > capacity())
     {
       m_begin    = DoReAllocate(sizeOfOther);
-      m_end      = copy(aToCopy.begin(), aToCopy.end(), m_begin);
+      m_end      = uninitialized_copy(aToCopy.begin(), 
+                                      aToCopy.end(), 
+                                      m_begin);
       m_capacity = m_end;
     }
     else if (sizeOfOther > size())
     {
-      m_end = copy(aToCopy.begin(), aToCopy.end(), m_begin);
+      copy(aToCopy.begin(), aToCopy.begin() + (m_end - m_begin), m_begin);
+      m_end = uninitialized_copy(aToCopy.begin() + (m_end - m_begin), 
+                                 aToCopy.end(), 
+                                 m_end);
     }
     else
     {
-      const Array<T>::iterator itr = copy(aToCopy.begin(), aToCopy.end(), m_begin);
+      const ArrayBase<T>::iterator itr = copy(aToCopy.begin(), aToCopy.end(), m_begin);
       erase(itr, m_end);
       m_end = itr;
     }

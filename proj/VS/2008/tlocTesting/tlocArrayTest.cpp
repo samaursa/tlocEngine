@@ -35,11 +35,25 @@ namespace TestingArray
   arrayName[i] = i;\
   }\
 
+#define FILL_TEST_CLASS_ARRAY_BY_PUSH(arrayName, nFrom, nTo) \
+  for (u32 i = nFrom; i < nTo; ++i)\
+  {\
+  SomeClass test;\
+  test.dummy = i;\
+  arrayName.push_back(test);\
+  }\
+
 #define CHECK_ARRAY_BY_INDEX(arrayName, nFrom, nTo) \
   for (u32 i = nFrom; i < nTo; ++i)\
   {\
   CHECK(arrayName[i] == (s32)i);\
   }
+
+#define CHECK_TEST_CLASS_ARRAY_BY_INDEX(arrayName, nFrom, nTo) \
+  for (int i = nFrom; i < nTo; ++i)\
+  {\
+  CHECK(arrayName[i].dummy == i);\
+  }\
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Ctors", "")
   {
@@ -107,14 +121,91 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/AssignmentOperator",
     "Test assigning an array to another")
   {
-    //core::Array<u32> smallArray, medArray, largeArray;
-    //FILL_INT_ARRAY_BY_PUSH(smallArray, 0, 10);
-    //FILL_INT_ARRAY_BY_PUSH(medArray, 0, 20);
-    //FILL_INT_ARRAY_BY_PUSH(largeArray, 0, 30);
+    /*core::Array<u32> copyFromSmallArray, copyFromMedArray, copyFromLargeArray;
+    core::Array<u32> copyToSmallArray, copyToMedArray, copyToLargeArray;
+    FILL_INT_ARRAY_BY_PUSH(copyFromSmallArray, 0, 10);
+    FILL_INT_ARRAY_BY_PUSH(copyFromMedArray, 0, 20);
+    FILL_INT_ARRAY_BY_PUSH(copyFromLargeArray, 0, 30);*/
 
-    //smallArray = largeArray;
+    core::Array<u32> copyToTestArray;
+    FILL_INT_ARRAY_BY_PUSH(copyToTestArray, 0, 5);
 
-    //CHECK_ARRAY_BY_INDEX(smallArray, 0, 30);
+    REQUIRE(copyToTestArray.capacity() == 8);
+    REQUIRE(copyToTestArray.size() == 5);
+
+    core::Array<u32> copyFromTestArray;
+
+    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 20);
+
+    copyToTestArray = copyFromTestArray;
+
+    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 20);
+
+    REQUIRE(copyToTestArray.capacity() == 20);
+    REQUIRE(copyToTestArray.size() == 20);
+
+    copyFromTestArray.clear();
+    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 10);
+
+    copyToTestArray = copyFromTestArray;
+
+    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 10);
+
+    REQUIRE(copyToTestArray.capacity() == 20);
+    REQUIRE(copyToTestArray.size() == 10);
+
+    copyFromTestArray.clear();
+    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 15);
+
+    copyToTestArray = copyFromTestArray;
+
+    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 15);
+
+    REQUIRE(copyToTestArray.capacity() == 20);
+    REQUIRE(copyToTestArray.size() == 15);
+    
+    //TODO: Turn into function later
+
+    core::Array<SomeClass> copyToTestClassArray;
+    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyToTestClassArray, 0, 5);
+
+    REQUIRE(copyToTestClassArray.capacity() == 8);
+    REQUIRE(copyToTestClassArray.size() == 5);
+
+    core::Array<SomeClass> copyFromTestClassArray;
+
+    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 20);
+
+    copyToTestClassArray = copyFromTestClassArray;
+
+    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 20);
+
+    REQUIRE(copyToTestClassArray.capacity() == 20);
+    REQUIRE(copyToTestClassArray.size() == 20);
+
+    copyFromTestClassArray.clear();
+    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 10);
+
+    copyToTestClassArray = copyFromTestClassArray;
+
+    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 10);
+
+    REQUIRE(copyToTestClassArray.capacity() == 20);
+    REQUIRE(copyToTestClassArray.size() == 10);
+
+    copyFromTestClassArray.clear();
+    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 15);
+
+    copyToTestClassArray = copyFromTestClassArray;
+
+    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 15);
+
+    REQUIRE(copyToTestClassArray.capacity() == 20);
+    REQUIRE(copyToTestClassArray.size() == 15);
+
+    /*smallArray = largeArray;
+
+    CHECK_ARRAY_BY_INDEX(smallArray, 0, 30);*/
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/ElementAccess",

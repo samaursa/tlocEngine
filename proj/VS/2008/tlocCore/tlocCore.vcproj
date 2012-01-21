@@ -529,6 +529,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocMemory.inl"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
 			>
 		</File>

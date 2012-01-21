@@ -2,6 +2,8 @@
 #define TLOC_MEMORY_H
 
 #include "tlocBase.h"
+#include "tlocTypeTraits.h"
+#include "tlocAlgorithms.h"
 #include <memory.h>
 #include <new>
 
@@ -40,5 +42,39 @@
   void  operator delete (void* ptr, const std::nothrow_t&);
 
 #endif // TLOC_USE_CUSTOM_NEW_DELETE
+
+namespace tloc { namespace core {
+
+  template <typename T_InputIterator, typename T_OutputIterator>
+  TL_I T_OutputIterator uninitialized_copy(T_InputIterator aRangeBegin,
+                                           T_InputIterator aRangeEnd,
+                                           T_OutputIterator aDestRangeBegin);
+
+  namespace detail {
+
+    typedef type_true hasTrivalAssign;
+    typedef type_true hasComplexAssign;
+
+    template <typename T_InputIterator, typename T_OutputIterator, typename T_ValueType>
+    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
+                                               T_InputIterator aRangeEnd,
+                                               T_OutputIterator aDestRangeBegin,
+                                               T_ValueType,
+                                               hasTrivalAssign);
+
+    template <typename T_InputIterator, typename T_OutputIterator, typename T_ValueType>
+    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
+                                               T_InputIterator aRangeEnd,
+                                               T_OutputIterator aDestRangeBegin,
+                                               T_ValueType,
+                                               hasComplexAssign);
+
+
+
+
+  };
+
+};};
+
 
 #endif  // TLOC_MEMORY_H

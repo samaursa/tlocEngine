@@ -5,8 +5,8 @@
 
 namespace tloc
 {
-  typedef Loki::Int2Type<1> type_true;
-  typedef Loki::Int2Type<0> type_false;
+  typedef Loki::Int2Type<true>  type_true;
+  typedef Loki::Int2Type<false> type_false;
 };
 
 #endif

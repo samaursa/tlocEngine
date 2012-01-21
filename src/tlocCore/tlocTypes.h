@@ -29,6 +29,7 @@ namespace tloc
   typedef unsigned __int64  u64;
 
   typedef size_t            tl_size;
+  typedef uintptr_t         tl_uintptr; // Guaranteed to hold a native pointer
   typedef ptrdiff_t         tl_ptrdiff;
 
   //////////////////////////////////////////////////////////////////////////

@@ -264,6 +264,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocHashtableTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocIteratorTest.cpp"
 				>
 			</File>
@@ -285,6 +289,10 @@
 			</File>
 			<File
 				RelativePath=".\tlocMemoryTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocPair.cpp"
 				>
 			</File>
 			<File

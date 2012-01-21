@@ -21,9 +21,9 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Different policies that List can handle
 
-  struct List_Dynamic  {};
-  struct List_Bucket    {};
-  struct List_Fixed      {};
+  struct List_Dynamic {};
+  struct List_Bucket  {};
+  struct List_Fixed   {};
 
   //////////////////////////////////////////////////////////////////////////
   // List node
@@ -375,6 +375,24 @@ namespace tloc { namespace core {
     TL_FI list_size&          m_size(); 
     TL_FI const list_size&    m_size() const;
     size_and_node             m_sizeAndNode;
+  };
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Default types for easy instantiation
+
+  template <typename T, bool T_DedicatedSize = true>
+  struct SinglyList
+  {
+    typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), 
+      T_DedicatedSize> type;
+  };
+
+  template <typename T, bool T_DedicatedSize = true>
+  struct DoublyList
+  {
+    typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(), 
+      T_DedicatedSize> type;
   };
 
 };};

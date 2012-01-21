@@ -5,7 +5,7 @@
 #include "tlocTypes.h"
 #include "tlocTypeTraits.h"
 
-#ifndef TLOC_DISABLE_ASSERT_ARRAY
+#ifndef TLOC_DISABLE_ASSERT_ITERATOR  
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg)
@@ -248,13 +248,7 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Custom generic iterators (not defined in the standard)
 
-  //````````````````````````````````````````````````````````````````````````
-  // Macros
 
-#define LIST_ITR_TEMP_PARAM typename T_Node, typename T_Itr_Type, \
-  typename T, typename T_Ptr, typename T_Ref
-
-#define LIST_ITR_TEMP template <LIST_ITR_TEMP_PARAM>
 
   //````````````````````````````````````````````````````````````````````````
   // List iterator
@@ -265,6 +259,9 @@ namespace tloc { namespace core {
   // The iterator must have a type, a pointer to the type and a reference to
   // the type. This is to allow creation of const T* pointers as well as T*
   // from the same template.
+  //
+  // T_Itr_Type: Can be singly_linked_tag or doubly_linked_tag
+  //
   // T_Node: Must have public members T* m_value, T_Node* m_next, T_Node* m_prev
   //         Must also have: typedef tl_ptrdiff difference_type;
   template <typename T_Node, typename T_Itr_Type, typename T,
@@ -273,14 +270,15 @@ namespace tloc { namespace core {
     public iterator<T_Itr_Type, T, typename T_Node::difference_type,
                     T_Ptr, T_Ref>
   {
-    typedef list_iterator<LIST_ITR_TEMP_PARAM>                  this_type;
+    typedef list_iterator<T_Node, T_Itr_Type, T, T_Ptr, T_Ref>  this_type;
+    typedef list_iterator<T_Node, T_Itr_Type, T, T*, T&>        iterator;
     typedef typename T_Itr_Type                                 iterator_category;
     typedef typename T_Node::pointer_type                       pointer_type;
     typedef typename T_Node::reference_type                     reference_type;
 
     TL_FI list_iterator();
     TL_FI list_iterator(const T_Node* aNode);
-    TL_FI list_iterator(const this_type& aOtherItr);
+    TL_FI list_iterator(const iterator& aOtherItr);
 
     TL_FI reference_type  operator*() const;
     TL_FI pointer_type    operator->() const;

@@ -119,10 +119,10 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Internal Functions
 
-    ArrayBase();
-    ArrayBase(tl_size aSize);
+    TL_FI ArrayBase();
+    TL_FI ArrayBase(tl_size aSize);
 
-    ~ArrayBase();
+    TL_FI ~ArrayBase();
 
     //------------------------------------------------------------------------
     // Functions that call memory allocators directly
@@ -187,11 +187,12 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Constructors
 
-    Array();
-    Array( const Array<T>& toCopy);
-    explicit Array(tl_size aNumElemsToInsert, const T& aValueToCopy = T());
+    TL_FI Array();
+    TL_FI Array( const Array<T>& toCopy);
+    TL_FI explicit Array(tl_size aNumElemsToInsert, 
+                         const T& aValueToCopy = T());
     template <typename T_InputIterator>
-    Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
+    TL_FI Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
 
     //------------------------------------------------------------------------
     // Capacity

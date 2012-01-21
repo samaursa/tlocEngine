@@ -379,40 +379,48 @@ namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
   // Custom generic iterators (not defined in the standard)
+  
+  //````````````````````````````````````````````````````````````````````````
+  // Macros
 
-  LIST_ITR_TEMP
+#define LIST_ITR_TYPES typename T_Node, typename T_Itr_Type, \
+  typename T, typename T_Ptr, typename T_Ref
+
+#define LIST_ITR_TEMP_PARAM T_Node, T_Itr_Type, T, T_Ptr, T_Ref
+
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>::list_iterator() : m_node()
   {
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       ::list_iterator(const T_Node* aNode) : m_node(const_cast<T_Node*>(aNode))
   {
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
   TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-    ::list_iterator(const this_type& aOtherItr)
+    ::list_iterator(const iterator& aOtherItr)
   : m_node(aOtherItr.m_node)
   {
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
   TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator* () const
   {
     return m_node->getValue();
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
   TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer_type
     list_iterator<LIST_ITR_TEMP_PARAM>::operator-> () const
   {
     return *(m_node->getValue());
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator++()
   {
@@ -420,7 +428,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::operator++(int)
   {
@@ -429,7 +437,7 @@ namespace tloc { namespace core {
     return tempItr;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
   {
@@ -439,7 +447,7 @@ namespace tloc { namespace core {
     return subOperation(iterator_category());
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
   {
@@ -449,19 +457,19 @@ namespace tloc { namespace core {
     return subOperation(int(), iterator_category());
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator == (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
   {
     return m_node == aOther.m_node;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator != (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
   {
     return m_node != aOther.m_node;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(singly_linked_tag)
   {
@@ -469,7 +477,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
   {
@@ -478,7 +486,7 @@ namespace tloc { namespace core {
     return tempItr;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(doubly_linked_tag)
   {
@@ -486,7 +494,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  LIST_ITR_TEMP
+  template <LIST_ITR_TYPES> 
     TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
       list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
   {

@@ -233,9 +233,6 @@ namespace tloc { namespace core {
   template <typename T>
   TL_I const T& tlMax(const T& a, const T& b);
 
-  template <typename T>
-  TL_I void tlSwap(T& a, T& b);
-
   //------------------------------------------------------------------------
   // Modifying sequence operations
 
@@ -267,6 +264,17 @@ namespace tloc { namespace core {
   template <typename T_InputIterator, typename T>
   TL_I void fill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                  const T& aValue);
+
+  template <typename T>
+  TL_I void tlSwap(T& a, T& b);
+
+  template <typename T_ForwardIterator, typename T>
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+    T_ForwardIterator a_last, const T& a_value);
+
+  template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+    T_ForwardIterator a_last, const T& a_value, T_BinaryPred a_comp);
 
   namespace detail
   {

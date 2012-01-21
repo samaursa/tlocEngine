@@ -400,6 +400,24 @@ namespace TestingAlgorithms
     CHECK(s32(it-myvector.begin()) == 5);
   }
 
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithsm/lower_bound", "")
+  {
+    s32 intArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+
+    s32* result = lower_bound( intArray, intArray + 15, 9);
+    CHECK(*result == 9);
+
+    s32 myints[] = {10,20,30,30,20,10,10,20};
+    Array<s32> v(myints,myints+8);           // 10 20 30 30 20 10 10 20
+    Array<s32>::iterator low;
+
+    sort (v.begin(), v.end());                // 10 10 10 20 20 20 30 30
+
+    low = lower_bound (v.begin(), v.end(), 20); //          ^
+
+    CHECK( distance(v.begin(), low) == 3);
+  }
+
   template <typename T_SortType>
   void SortDetailsTests()
   {

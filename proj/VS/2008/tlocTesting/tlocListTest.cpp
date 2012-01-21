@@ -106,6 +106,15 @@ namespace TestingList
     CHECK(*itr++ == 65);
     CHECK(*itr++ == 42);
     CHECK(*itr++ == 13);
+
+    T_ListType::const_iterator cItr = mylist.begin();
+
+    CHECK(*cItr++ == 75);
+    CHECK(*cItr++ == 23);
+    CHECK(*cItr++ == 65);
+    CHECK(*cItr++ == 42);
+    CHECK(*cItr++ == 13);
+
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/begin", "")

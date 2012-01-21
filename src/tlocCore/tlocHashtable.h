@@ -66,7 +66,11 @@ namespace tloc { namespace core {
     typedef T_Value                                 value_type;
 
     typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>     
-                                                    hashcode_type;
+                                                    value_hashcode_type;
+
+    HashtableElement() {}
+    HashtableElement(const value_type& a_value, const size_type& a_hash)
+      : m_valueAndHashcode(a_value, a_hash) {}
 
     TL_FI value_type& m_value() { return m_valueAndHashcode.m_var; }
     TL_FI const value_type& m_value() const { return m_valueAndHashcode.m_var; }
@@ -75,7 +79,7 @@ namespace tloc { namespace core {
 
     // You can access this variable directly, but it is recommended that you
     // use the inline functions instead for clarity.
-    hashcode_type m_valueAndHashcode;
+    value_hashcode_type m_valueAndHashcode;
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -222,13 +226,17 @@ namespace tloc { namespace core {
     { return (bucket_index_type)range_hasher_base_type::operator()
     (a_key, a_bucketCount); }
 
-    bucket_index_type bucket_index(const element_type* a_node, u32 a_bucketCount) const
-    { return (bucket_index_type)range_hasher_base_type::operator()
-    (extract_key_type::operator()(a_node->m_value()), a_bucketCount); }
+    bucket_index_type bucket_index(const key_type&, hash_code_type a_hash,
+      u32 a_bucketCount) const 
+    { return (bucket_index_type)hash_to_range_type::operator()(a_hash, a_bucketCount); }
 
-    bool compare (const key_type& a_key, hash_code_type, element_type* a_node) const
+    bucket_index_type bucket_index(const element_type& a_elem, u32 a_bucketCount) const
+    { return (bucket_index_type)range_hasher_base_type::operator()
+    (extract_key_type::operator()(a_elem.m_value()), a_bucketCount); }
+
+    bool compare (const key_type& a_key, hash_code_type, element_type* a_elem) const
     { return key_equal::operator()
-    (a_key, extract_key_type::operator()(a_node->m_value())); }
+    (a_key, extract_key_type::operator()(a_elem->m_value())); }
 
     key_type extract_key(const value_type& a_value) const
     { return extract_key_type::operator()(a_value); }
@@ -463,10 +471,15 @@ namespace tloc { namespace core {
     typedef type_true  keys_are_unique;
     typedef type_false keys_are_not_unique;
 
-    Pair<iterator, bool>  DoInsertValue(const value_type& a_value, 
-                                        keys_are_unique);
-    iterator              DoInsertValue(const value_type& a_value,
-                                        keys_are_not_unique);
+    TL_FI Pair<iterator, bool>  DoInsertValue(const value_type& a_value, 
+                                              keys_are_unique);
+    TL_FI iterator              DoInsertValue(const value_type& a_value,
+                                              keys_are_not_unique);
+
+    //------------------------------------------------------------------------
+    // Rehashing
+
+    TL_FI void DoRehash(size_type a_bucketCount);
 
     //------------------------------------------------------------------------
     // Load factor overloads and sanity checks

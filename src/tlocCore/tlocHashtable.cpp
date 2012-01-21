@@ -165,6 +165,5 @@ namespace tloc { namespace core {
 
   template Hashtable<hashtable_policies>;
 
-  template HashCode<hashtable_policies, true>;
 
 };};

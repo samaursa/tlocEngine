@@ -303,11 +303,7 @@ namespace tloc { namespace core {
     (const typename Hashtable<HASH_TABLE_PARAMS>::value_type& a_value, 
            typename Hashtable<HASH_TABLE_PARAMS>::keys_are_unique)
   {
-    const key_type& k = extract_key(a_value);
-    const hash_code_type c = get_hash_code(k);
-
-    TLOC_UNUSED(k);
-    TLOC_UNUSED(c);
+    TLOC_UNUSED(a_value);
 
     return MakePair(begin(), false); 
   }
@@ -318,8 +314,63 @@ namespace tloc { namespace core {
     (const typename Hashtable<HASH_TABLE_PARAMS>::value_type& a_value, 
            typename Hashtable<HASH_TABLE_PARAMS>::keys_are_not_unique)
   {
+    const Pair<bool, u32> rehash = m_rehashPolicy.get_rehash_required
+      ( (u32)bucket_count(), (u32)m_elementCount, (u32)1);
+
+    if (rehash.first) { DoRehash(rehash.second); }
+
+    const key_type& k = extract_key(a_value);
+    const hash_code_type c = get_hash_code(k);
+    const size_type n = (size_type)bucket_index(k, c, (u32)bucket_count());
+
+    // We don't care about order when we insert. Functions that do expect some
+    // order like equal_range() must call DoOrderBucket() before returning the
+    // range.
+    bucket_type::const_iterator itr(m_bucketArray.begin());
+    advance(itr, n);
+    element_type newElement(a_value, c);
+    (*itr).push_back(newElement);
+
+    TLOC_UNUSED(n);
     TLOC_UNUSED(a_value);
     return begin(); 
+  }
+
+  //------------------------------------------------------------------------
+  // Rehashing
+
+  template <HASH_TABLE_TYPES>
+  TL_FI void Hashtable<HASH_TABLE_PARAMS>::DoRehash(size_type a_bucketCount)
+  {
+    bucket_type newArray;
+    newArray.resize(a_bucketCount);
+
+    bucket_type::const_iterator itrB = m_bucketArray.begin();
+    bucket_type::const_iterator itrBEnd = m_bucketArray.end();
+
+    for (; itrB != itrBEnd; ++itrB)
+    {
+      node_type::const_iterator itrN = (*itrB).begin();
+      node_type::const_iterator itrNEnd = (*itrB).end();
+
+      while(itrN != itrNEnd)
+      {
+        const element_type& currElem = *itrN;
+        const size_type newBucketIndex = 
+          (size_type)bucket_index(currElem, a_bucketCount);
+
+        TLOC_ASSERT_HASH_TABLE(newBucketIndex < a_bucketCount, 
+          "Invalid bucket index!");
+
+        bucket_type::const_iterator itrNew(newArray.begin());
+        advance(itrNew, newBucketIndex);
+
+        (*itrNew).push_back(currElem);
+      }
+    }
+
+    m_bucketArray.swap(newArray);
+
   }
 
   //------------------------------------------------------------------------

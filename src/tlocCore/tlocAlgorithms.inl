@@ -1089,8 +1089,10 @@ namespace tloc { namespace core {
         tloc::core::copy(aFirst, aLast, unsortedArray.begin());
 
         T_Container sortedArray = DoMergesort(unsortedArray);
+        //unsortedArray = DoMergesort(unsortedArray);
 
         tloc::core::copy(sortedArray.begin(), sortedArray.end(), aFirst);
+        //tloc::core::copy(unsortedArray.begin(), unsortedArray.end(), aFirst);
       }
     }
 

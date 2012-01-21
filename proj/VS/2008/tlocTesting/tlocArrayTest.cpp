@@ -104,6 +104,19 @@ namespace TestingArray
     CHECK(ints.size() == 0);
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/AssignmentOperator",
+    "Test assigning an array to another")
+  {
+    //core::Array<u32> smallArray, medArray, largeArray;
+    //FILL_INT_ARRAY_BY_PUSH(smallArray, 0, 10);
+    //FILL_INT_ARRAY_BY_PUSH(medArray, 0, 20);
+    //FILL_INT_ARRAY_BY_PUSH(largeArray, 0, 30);
+
+    //smallArray = largeArray;
+
+    //CHECK_ARRAY_BY_INDEX(smallArray, 0, 30);
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/ElementAccess",
     "Test element access functionality")
   {

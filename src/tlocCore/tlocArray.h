@@ -62,6 +62,11 @@ namespace tloc { namespace core {
     TL_I tl_size         defaultCapacity();
 
     //------------------------------------------------------------------------
+    // Assignment
+    
+    TL_I this_type&      operator= (const this_type& aToCopy);
+
+    //------------------------------------------------------------------------
     // Element access
 
     TL_I reference        at(tl_size aIndex);

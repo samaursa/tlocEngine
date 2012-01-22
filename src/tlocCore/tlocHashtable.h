@@ -1,5 +1,5 @@
-#ifndef TLOC_HASH_TABLE_H 
-#define TLOC_HASH_TABLE_H 
+#ifndef TLOC_HASH_TABLE_H
+#define TLOC_HASH_TABLE_H
 
 #include "tlocBase.h"
 #include "tlocMemory.h"
@@ -19,7 +19,7 @@
 
 ///-------------------------------------------------------------------------
 /// @brief The hash_table is written after looking at EASTL hash_table and SGI
-/// hash_table. The container will be optimized for games only and may not be 
+/// hash_table. The container will be optimized for games only and may not be
 /// appropriate for application use
 ///-------------------------------------------------------------------------
 namespace tloc { namespace core {
@@ -60,12 +60,12 @@ namespace tloc { namespace core {
   /// as long as it can accomodate this class as `T`.
   ///-------------------------------------------------------------------------
   template <typename T_Value, bool T_StoreHash = false>
-  struct HashtableElement 
+  struct HashtableElement
   {
     typedef tl_size                                 size_type;
     typedef T_Value                                 value_type;
 
-    typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>     
+    typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>
                                                     value_hashcode_type;
 
     HashtableElement() {}
@@ -100,11 +100,11 @@ namespace tloc { namespace core {
     typedef typename Loki::Select<T_Const, const value_type*, value_type*> pointer;
     typedef typename Loki::Select<T_Const, const value_type&, value_type&> reference;
     typedef typename Loki::Select<T_Const, const b_type, b_type>::Result bucket_type;
-    typedef typename Loki::Select<T_Const, 
-                                  typename node_type::const_iterator, 
+    typedef typename Loki::Select<T_Const,
+                                  typename node_type::const_iterator,
                                   typename node_type::iterator>::Result node_iterator;
-    typedef typename Loki::Select<T_Const, 
-                                  typename bucket_type::const_iterator, 
+    typedef typename Loki::Select<T_Const,
+                                  typename bucket_type::const_iterator,
                                   typename bucket_type::iterator>::Result bucket_iterator;
 
   public:
@@ -148,7 +148,9 @@ namespace tloc { namespace core {
   public:
 
     HashtableItr(bucket_type& a_bucketContainer)
-      : base_type(a_bucketContainer) {}
+      : base_type(a_bucketContainer, (*(a_bucketContainer.begin())).begin(),
+      a_bucketContainer.begin()) {}
+
     HashtableItr(bucket_type& a_bucketContainer, const node_iterator& a_currNode,
       const bucket_iterator& a_currBucket)
       : base_type(a_bucketContainer, a_currNode, a_currBucket) {}
@@ -157,7 +159,7 @@ namespace tloc { namespace core {
 
     reference operator*() const { return base_type::m_currNode->m_value; }
     pointer   operator->() const { return &(base_type::m_currNode->m_value); }
-    
+
     this_type& operator++() { base_type::Increment(); return *this; }
     this_type operator++(int) { this_type temp(*this); base_type::Increment(); return temp; }
 
@@ -172,7 +174,7 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   struct prime_rehash_policy
   {
-    typedef tl_size size_type; 
+    typedef tl_size size_type;
 
     f32         m_maxLoadFactor;
     f32         m_growthFactor;
@@ -198,7 +200,7 @@ namespace tloc { namespace core {
   class HashCode { };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, true> : 
+  class HashCode<T_Policy, true> :
     protected T_Policy::extract_key_type,
     protected T_Policy::key_equal,
     protected T_Policy::range_hasher_type
@@ -227,7 +229,7 @@ namespace tloc { namespace core {
     (a_key, a_bucketCount); }
 
     bucket_index_type bucket_index(const key_type&, hash_code_type a_hash,
-      u32 a_bucketCount) const 
+      u32 a_bucketCount) const
     { return (bucket_index_type)hash_to_range_type::operator()(a_hash, a_bucketCount); }
 
     bucket_index_type bucket_index(const element_type& a_elem, u32 a_bucketCount) const
@@ -261,17 +263,17 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Hashtable Policy
 
-  template <typename T_Key, typename T_ExtractKey, typename T_HashFunc, 
-    typename T_HashToRange, 
-    template <typename T_Key, typename T_HashFunc, typename T_HashToRange> class T_RangeHashFunc, 
-    typename T_KeyEqual, 
-    typename T_RehashPolicy, typename T_BucketType, 
+  template <typename T_Key, typename T_ExtractKey, typename T_HashFunc,
+    typename T_HashToRange,
+    template <typename T_Key, typename T_HashFunc, typename T_HashToRange> class T_RangeHashFunc,
+    typename T_KeyEqual,
+    typename T_RehashPolicy, typename T_BucketType,
     bool T_CacheHashCode, bool T_UniqueKeys>
 
   ///-------------------------------------------------------------------------
   /// A policy class that combines all the policies with all the necessary
   /// typedefs.
-  /// 
+  ///
   /// - T_Key: Any object that is compatible with the T_HashFunc for conversion
   /// of the key to a hash.
   /// - T_ExtractKey: A function object that tells us how to get the key from
@@ -319,7 +321,7 @@ namespace tloc { namespace core {
   /// The Hashtable is a base class for associative containers like the
   /// Hashmap. We used EASTL and SGI as reference but tried to keep it as
   /// simple as possible while retaining some flexibility.
-  /// 
+  ///
   /// @note Public inheritance from Hashcode<> may seem complicated but it
   /// really isn't. The second parameter is determining whether in T_Policies,
   /// unique_keys was true or not.
@@ -327,8 +329,8 @@ namespace tloc { namespace core {
   /// @sa
   /// tloc::core::HashCode<T_Policies,Loki::IsSameType<typename T_Policies::unique_keys,type_true>::value>
   ///-------------------------------------------------------------------------
-  class Hashtable : 
-    public HashCode<T_Policies, 
+  class Hashtable :
+    public HashCode<T_Policies,
     Loki::IsSameType<typename T_Policies::unique_keys, type_true>::value >
   {
   public:
@@ -350,9 +352,9 @@ namespace tloc { namespace core {
 
     typedef typename policy_type::cache_hash		     cache_hash;
     typedef typename policy_type::unique_keys        unique_keys;
-    typedef typename 
+    typedef typename
       Loki::Select<Loki::IsSameType<unique_keys,type_true>::value,
-                   Pair<iterator, bool>, iterator>::Result 
+                   Pair<iterator, bool>, iterator>::Result
                                                      insert_return_type;
 
     typedef typename node_type::iterator             local_iterator;
@@ -362,7 +364,7 @@ namespace tloc { namespace core {
 
     typedef tl_ptrdiff                               difference_type;
 
-    typedef HashCode<T_Policies, 
+    typedef HashCode<T_Policies,
       Loki::IsSameType<unique_keys, type_true>::value> hash_code_base_type;
 
     //------------------------------------------------------------------------
@@ -432,7 +434,7 @@ namespace tloc { namespace core {
     ///
     /// @param  rehash_policy_type The new rehash policy.
     ///-------------------------------------------------------------------------
-    TL_FI void								set_rehash_policy(const rehash_policy_type& 
+    TL_FI void								set_rehash_policy(const rehash_policy_type&
                                             a_rehashPolicy);
 
     ///-------------------------------------------------------------------------
@@ -455,23 +457,23 @@ namespace tloc { namespace core {
     // Modifiers
 
     //insert_return_type  insert(const value_type& a_value);
-    //iterator						insert(const_iterator a_itrBegin, 
+    //iterator						insert(const_iterator a_itrBegin,
     //                           const value_type& a_value);
     //template <typename T_InputItr>
     //void                insert(T_InputItr a_first, T_InputItr a_last);
 
   protected:
 
-    TL_FI void              DoAllocateBuckets(size_type a_numBuckets);
+    TL_FI void                DoAllocateBuckets(size_type a_numBuckets);
 
     //------------------------------------------------------------------------
     // Insert helpers
 
-    /// Used by DoInsertValue() 
+    /// Used by DoInsertValue()
     typedef type_true  keys_are_unique;
     typedef type_false keys_are_not_unique;
 
-    TL_FI Pair<iterator, bool>  DoInsertValue(const value_type& a_value, 
+    TL_FI Pair<iterator, bool>  DoInsertValue(const value_type& a_value,
                                               keys_are_unique);
     TL_FI iterator              DoInsertValue(const value_type& a_value,
                                               keys_are_not_unique);
@@ -492,7 +494,7 @@ namespace tloc { namespace core {
     { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
 
     TL_FI f32               DoGetMaxLoadFactor(prime_rehash_policy) const;
-    TL_FI void              DoSetMaxLoadFactor(f32 a_maxLoadFactor, 
+    TL_FI void              DoSetMaxLoadFactor(f32 a_maxLoadFactor,
                                                prime_rehash_policy);
 
   protected:
@@ -500,8 +502,10 @@ namespace tloc { namespace core {
     size_type					 m_elementCount;
     rehash_policy_type m_rehashPolicy;
 
-    // Used to mark end() iterator's m_currNode
-    static typename node_type::iterator   m_dummyNode; 
+    // Used to mark end() iterator's m_currNode because we cannot dereference
+    // the end of the bucket container to get a node_type for an iterator
+    // that requires
+    static typename node_type::iterator   m_dummyNode;
   };
 
 };};

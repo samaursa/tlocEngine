@@ -18,10 +18,10 @@ namespace tloc { namespace core {
   // code duplication
 
   template <typename T>
-  const T* AddConst(T* a_type) { return a_type; }
+  const T* add_const(T* a_type) { return a_type; }
 
   template <typename T>
-  T* RemoveConst(const T* a_type) { return const_cast<T*>(a_type); }
+  T* remove_const(const T* a_type) { return const_cast<T*>(a_type); }
 
   //////////////////////////////////////////////////////////////////////////
   // Base classes

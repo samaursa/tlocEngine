@@ -89,6 +89,7 @@ namespace tloc { namespace core {
   class HashtableItrBase
   {
   public:
+    template <typename T_Policies> friend class Hashtable;
 
     typedef HashtableItrBase<T_Policies, T_Const>    this_type;
 
@@ -122,9 +123,11 @@ namespace tloc { namespace core {
 
     this_type& operator=(const this_type& a_other);
     bool       operator==(const this_type& a_other);
+    bool       operator!=(const this_type& a_other);
+
+  //private:
 
     node_iterator       m_currNode;
-
     bucket_type&        m_bucketContainer;
     bucket_iterator     m_currBucket;
   };
@@ -165,7 +168,7 @@ namespace tloc { namespace core {
     this_type&  operator++(); 
     this_type   operator++(int); 
 
-    const node_iterator& get_node() const; 
+    const node_iterator&    get_node() const;
 
   };
 
@@ -250,6 +253,17 @@ namespace tloc { namespace core {
   class HashCode<T_Policy, type_false> : public HashCodeBase<T_Policy>
   {
   public:
+    typedef HashCodeBase<T_Policy>  base_type;
+
+    hash_code_type get_hash_code(const key_type& a_key) const
+    {
+      return base_type::get_hash_code(a_key);
+    }
+
+    hash_code_type get_hash_code(const element_type& a_elem) const
+    {
+      return get_hash_code(a_elem.m_value());
+    }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
     {
@@ -265,6 +279,17 @@ namespace tloc { namespace core {
   class HashCode<T_Policy, type_true> : public HashCodeBase<T_Policy>
   {
   public:
+    typedef HashCodeBase<T_Policy>  base_type;
+    
+    hash_code_type get_hash_code(const key_type& a_key) const
+    {
+      return base_type::get_hash_code(a_key);
+    }
+
+    hash_code_type get_hash_code(const element_type& a_elem) const
+    {
+      return a_elem.m_hashcode(); 
+    }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
     {
@@ -358,8 +383,8 @@ namespace tloc { namespace core {
     typedef typename policy_type::element_type			 element_type;
     typedef typename policy_type::hasher             hasher;
     typedef typename policy_type::key_equal					 key_equal;
-    typedef typename policy_type::node_type					 node_type;
-    typedef typename policy_type::bucket_type				 bucket_type;
+    typedef typename policy_type::node_type					 buckets_type;
+    typedef typename policy_type::bucket_type				 buckets_array_type;
     typedef typename policy_type::size_type					 size_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
@@ -374,13 +399,15 @@ namespace tloc { namespace core {
                     Pair<iterator, bool>, 
                     iterator >::Result               insert_return_type;
 
-    typedef typename node_type::iterator             local_iterator;
-    typedef typename node_type::const_iterator       const_local_iterator;
-    typedef core::reverse_iterator<iterator>         reverse_iterator;
-    typedef core::reverse_iterator<const_iterator>   const_reverse_iterator;
+    typedef typename buckets_array_type::iterator       local_iterator;
+    typedef typename buckets_array_type::const_iterator const_local_iterator;
+    typedef typename buckets_type::iterator             bucket_iterator;
+    typedef typename buckets_type::const_iterator       const_bucket_iterator;
+
+    typedef core::reverse_iterator<iterator>            reverse_iterator;
+    typedef core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
     typedef tl_ptrdiff                               difference_type;
-
     typedef HashCode<T_Policies, unique_keys>        hash_code_base_type;
 
     // typedefs inherited from HashCode<>
@@ -422,10 +449,10 @@ namespace tloc { namespace core {
     TL_FI iterator        end();
     TL_FI const_iterator  end() const;
 
-    TL_FI local_iterator			 begin(size_type a_bucketNumber);
-    TL_FI const_local_iterator begin(size_type a_bucketNumber) const;
-    TL_FI local_iterator			 end(size_type a_bucketNumber);
-    TL_FI const_local_iterator end(size_type a_bucketNumber) const;
+    TL_FI bucket_iterator			 begin(size_type a_bucketNumber);
+    TL_FI const_bucket_iterator begin(size_type a_bucketNumber) const;
+    TL_FI bucket_iterator			 end(size_type a_bucketNumber);
+    TL_FI const_bucket_iterator end(size_type a_bucketNumber) const;
 
     //------------------------------------------------------------------------
     // Capacity
@@ -475,11 +502,11 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Modifiers
 
-    //insert_return_type  insert(const value_type& a_value);
-    //iterator						insert(const_iterator a_itrBegin,
-    //                           const value_type& a_value);
-    //template <typename T_InputItr>
-    //void                insert(T_InputItr a_first, T_InputItr a_last);
+    insert_return_type  insert(const value_type& a_value);
+    iterator						insert(const_iterator a_itrBegin,
+                               const value_type& a_value);
+    template <typename T_InputItr>
+    void                insert(T_InputItr a_first, T_InputItr a_last);
 
     //------------------------------------------------------------------------
     // Operations
@@ -504,7 +531,7 @@ namespace tloc { namespace core {
 
   protected:
 
-    TL_FI void                DoAllocateBuckets(size_type a_numBuckets);
+    TL_FI void            DoAllocateBuckets(size_type a_numBuckets);
 
     //------------------------------------------------------------------------
     // Insert helpers
@@ -517,6 +544,30 @@ namespace tloc { namespace core {
                                               keys_are_unique);
     TL_FI iterator              DoInsertValue(const value_type& a_value,
                                               keys_are_not_unique);
+
+    TL_FI typename buckets_type::iterator DoPushSelect
+      (local_iterator& a_itr, const element_type& a_elem, 
+       forward_iterator_tag);
+    TL_FI typename buckets_type::iterator DoPushSelect
+      (local_iterator& a_itr, const element_type& a_elem, 
+       bidirectional_iterator_tag);
+
+    ///-------------------------------------------------------------------------
+    /// The function is for internal use only. It selects insert_after() or
+    /// insert() depending on the type of iterator. It assumes that the
+    /// iterator is valid.
+    ///
+    /// @param [in,out] a_currNode The node after or before which to insert 
+    /// @param  a_elem             The element to insert
+    ///
+    /// @return Iterator to the inserted element
+    ///-------------------------------------------------------------------------
+    TL_FI typename buckets_type::iterator DoInsertSelect
+      (local_iterator& a_itr, bucket_iterator a_currNode, 
+       const element_type& a_elem, forward_iterator_tag);
+    TL_FI typename buckets_type::iterator DoInsertSelect
+      (local_iterator& a_itr, typename bucket_iterator a_currNode, 
+       const element_type& a_elem, bidirectional_iterator_tag);
 
     //------------------------------------------------------------------------
     // Rehashing
@@ -538,14 +589,14 @@ namespace tloc { namespace core {
                                                prime_rehash_policy);
 
   protected:
-    bucket_type				 m_bucketArray;
+    buckets_array_type				 m_bucketArray;
     size_type					 m_elementCount;
     rehash_policy_type m_rehashPolicy;
 
     // Used to mark end() iterator's m_currNode because we cannot dereference
     // the end of the bucket container to get a node_type for an iterator
     // that requires
-    static typename node_type::iterator   m_dummyNode;
+    static bucket_iterator m_dummyNode;
   };
 
 };};

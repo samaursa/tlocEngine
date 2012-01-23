@@ -28,10 +28,10 @@ namespace TestingArray
 
   struct HashtableFixture
   {
-    typedef SinglyList<HashtableElement<s32>, true>::type element_list_type;
+    typedef DoublyList<HashtableElement<u32>, true>::type element_list_type;
     typedef SinglyList<element_list_type, true>::type list_type;
 
-    //typedef Array<HashtableElement<s32> > element_list_type;
+    //typedef Array<HashtableElement<u32> > element_list_type;
     //typedef Array<element_list_type> list_type;
 
     typedef HashtablePolicy<s32, use_self<s32>, hash<s32>, hash_to_range_mod, range_hash_default,
@@ -45,16 +45,23 @@ namespace TestingArray
 
     for (u32 i = 0; i < 100; ++i)
     {
+      ht_type::iterator itr = h.DoInsertValue(i, tloc::type_false());
+      CHECK( (*itr) == i);
+    }
+
+    for (u32 i = 0; i < 100; ++i)
+    {
       h.DoInsertValue(i, tloc::type_false());
     }
 
     ht_type::iterator itr = h.find_by_hash(5);
 
+    REQUIRE(itr != h.end());
+
     //TemplateDiagnose<ht_type::iterator::node_iterator> test;
     //s32 p = (*(itr.get_node())).m_value();
 
     CHECK( (*itr) == 5);
-    //TemplateDiagnose<ht_type::iterator::node_iterator> test;
 
   }
 

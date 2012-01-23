@@ -525,7 +525,7 @@ namespace tloc { namespace core {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::push_front(const typename List<LIST_TEMP>::value_type& aVal)
+  TL_FI void List<LIST_TEMP>::push_front(const value_type& aVal)
   {
     DoInsertValueAfter(&m_node(), aVal);
   }
@@ -550,7 +550,7 @@ namespace tloc { namespace core {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::push_back(const typename List<LIST_TEMP>::value_type& aVal)
+  TL_FI void List<LIST_TEMP>::push_back(const value_type& aVal)
   {
     DoInsertValueAfter(m_node().getPrev(), aVal);
   }
@@ -1180,24 +1180,22 @@ namespace tloc { namespace core {
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::size_type
-    List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_stored) const
+    List<LIST_TEMP>::DoGetSize(size_stored) const
   {
     return m_size().Value();
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::size_type
-    List<LIST_TEMP>::DoGetSize(typename List<LIST_TEMP>::size_not_stored) const
+    List<LIST_TEMP>::DoGetSize(size_not_stored) const
   {
     return distance(const_iterator(m_node().getNext()), 
                     const_iterator(&m_node()));
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoResize
-    (typename List<LIST_TEMP>::size_type aNumElements,
-     const typename List<LIST_TEMP>::value_type& aValue,
-     typename List<LIST_TEMP>::size_stored)
+  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements, 
+                                        const value_type& aValue, size_stored)
   {
     // Assuming the user would usually want to grow the list when calling resize
     if (aNumElements > m_size())
@@ -1213,10 +1211,9 @@ namespace tloc { namespace core {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoResize
-    (typename List<LIST_TEMP>::size_type aNumElements,
-    const typename List<LIST_TEMP>::value_type& aValue,
-    typename List<LIST_TEMP>::size_not_stored)
+  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements, 
+                                        const value_type& aValue, 
+                                        size_not_stored)
   {
     iterator itr(m_node().getNext());
     size_type count = 0;
@@ -1238,12 +1235,9 @@ namespace tloc { namespace core {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSpliceAfter
-    (typename List<LIST_TEMP>::iterator aPos, 
-     typename List<LIST_TEMP>::this_type& aFrom,
-     typename List<LIST_TEMP>::iterator aBegin,
-     typename List<LIST_TEMP>::iterator aEnd,
-     typename List<LIST_TEMP>::size_stored)
+  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom, 
+                                             iterator aBegin, iterator aEnd, 
+                                             size_stored)
   {
     TLOC_UNUSED(aPos);
     TLOC_UNUSED(aFrom);
@@ -1260,12 +1254,9 @@ namespace tloc { namespace core {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSpliceAfter
-    (typename List<LIST_TEMP>::iterator aPos,
-     typename List<LIST_TEMP>::this_type& aFrom,
-     typename List<LIST_TEMP>::iterator aBegin,
-     typename List<LIST_TEMP>::iterator aEnd,
-     typename List<LIST_TEMP>::size_not_stored)
+  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom, 
+                                             iterator aBegin, iterator aEnd, 
+                                             size_not_stored)
   {
     TLOC_UNUSED(aFrom);
 

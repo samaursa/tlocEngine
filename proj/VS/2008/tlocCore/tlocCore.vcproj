@@ -440,6 +440,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.h"
 				>
 			</File>

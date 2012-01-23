@@ -11,18 +11,17 @@
 namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
-  // Hashtable Iterator
+  // Hashtable Iterator Base
 
 #define HASHTABLE_ITR_BASE_TYPES typename T_Policies, bool T_Const
 #define HASHTABLE_ITR_BASE_PARAMS T_Policies, T_Const
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase(
-    typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type& a_bucketContainer)
+    ::HashtableItrBase( bucket_type& a_bucketContainer) 
     : m_bucketContainer(a_bucketContainer)
-    , m_currNode( (*(a_bucketContainer.begin() )).begin())
     , m_currBucket( a_bucketContainer.begin() )
+    , m_currNode( (*(a_bucketContainer.begin() )).begin())
   {
   }
 
@@ -30,8 +29,8 @@ namespace tloc { namespace core {
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
     ::HashtableItrBase(
     typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_type& a_bucketContainer,
-    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::node_iterator& a_currNode,
-    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_iterator& a_currBucket)
+    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_iterator& a_currBucket,
+    typename const HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::node_iterator& a_currNode)
     : m_bucketContainer(a_bucketContainer)
     , m_currNode(a_currNode)
     , m_currBucket(a_currBucket)
@@ -107,6 +106,68 @@ namespace tloc { namespace core {
              m_currBucket			 == a_other.m_currBucket );
   }
 
+  //------------------------------------------------------------------------
+  // Hashtable Iterator
+
+#define HASHTABLE_ITR_TYPES   typename T_Policies, bool T_Const
+#define HASHTABLE_ITR_PARAMS  T_Policies, T_Const
+
+  template <HASHTABLE_ITR_TYPES>
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_type& a_bucketContainer) 
+    : base_type(a_bucketContainer, a_bucketContainer.begin(), 
+                (*(a_bucketContainer.begin())).begin() ) 
+  {
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_type& a_bucketContainer, 
+    const bucket_iterator& a_currBucket, const node_iterator& a_currNode) 
+    : base_type(a_bucketContainer, a_currBucket, a_currNode) 
+  {
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(const this_type& a_other)
+      : base_type(a_other.m_bucketContainer, a_other.m_currBucket, 
+                  a_other.m_currNode)
+  {
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  typename HashtableItr<HASHTABLE_ITR_PARAMS>::reference 
+    HashtableItr<HASHTABLE_ITR_PARAMS>::operator *() const
+  { 
+    return base_type::m_currNode->m_value;
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  typename HashtableItr<HASHTABLE_ITR_PARAMS>::pointer
+    HashtableItr<HASHTABLE_ITR_PARAMS>::operator ->() const
+  { 
+    return &(base_type::m_currNode->m_value); 
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  typename HashtableItr<HASHTABLE_ITR_PARAMS>::this_type&
+    HashtableItr<HASHTABLE_ITR_PARAMS>::operator ++() 
+  { 
+    base_type::Increment(); return *this; 
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  typename HashtableItr<HASHTABLE_ITR_PARAMS>::this_type
+    HashtableItr<HASHTABLE_ITR_PARAMS>::operator ++(int) 
+  { 
+    this_type temp(*this); base_type::Increment(); return temp; 
+  }
+
+  template <HASHTABLE_ITR_TYPES>
+  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::node_type*
+    HashtableItr<HASHTABLE_ITR_PARAMS>::get_node() const
+  { 
+    return base_type::m_currNode; 
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Hashtable
 
@@ -128,7 +189,6 @@ namespace tloc { namespace core {
   TL_FI Hashtable<HASH_TABLE_PARAMS>::Hashtable(size_type a_bucketCount)
     : m_elementCount(0)
   {
-    //TODO: Should be a static assert but manual instantiation doesn't let us
     TLOC_ASSERT_HASH_TABLE(a_bucketCount < 10000000, "Bucket count is too large!");
 
     size_type newBucketCount =
@@ -185,14 +245,14 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::end()
   {
-    return iterator(m_bucketArray, m_dummyNode, m_bucketArray.end());
+    return iterator(m_bucketArray, m_bucketArray.end(), m_dummyNode);
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::end() const
   {
-    return const_iterator(m_bucketArray, m_dummyNode, m_bucketArray.end());
+    return const_iterator(m_bucketArray, m_bucketArray.end(), m_dummyNode);
   }
 
   template <HASH_TABLE_TYPES>
@@ -299,6 +359,38 @@ namespace tloc { namespace core {
   }
 
   //------------------------------------------------------------------------
+  // Operations
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode)
+  {
+    const size_type n = (size_type)bucket_index(a_hashCode, (u32)bucket_count());
+
+    bucket_type::const_iterator itr = m_bucketArray.begin();
+    advance(itr, n);
+
+    node_type::iterator itrN    = (*itr).begin();
+    node_type::iterator itrNEnd = (*itr).end();
+
+    while (itrN != itrNEnd)
+    {
+      compare(a_hashCode, &(*itrN));
+      ++itrN;
+    }
+
+    return begin();
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
+    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode) const
+  {
+    TLOC_UNUSED(a_hashCode);
+    return begin();
+  }
+
+  //------------------------------------------------------------------------
   // Insert Helpers
 
   template <HASH_TABLE_TYPES>
@@ -337,7 +429,7 @@ namespace tloc { namespace core {
 
     ++m_elementCount;
 
-    return iterator(m_bucketArray, (*itr).begin(), itr);
+    return iterator(m_bucketArray, itr, (*itr).begin());
   }
 
   //------------------------------------------------------------------------

@@ -591,9 +591,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void Array<T>::DoInsertValues( T* aPosition,
-                                            tl_size aNumElemsToInsert,
-                                            const T& aValue )
+  TL_I void Array<T>::DoInsertValues( T* aPosition, tl_size aNumElemsToInsert, 
+                                      const T& aValue )
   {
     TLOC_ASSERT_ARRAY_POSITION(aPosition);
     TLOC_ASSERT_ARRAY(aNumElemsToInsert > 0, "Inserting 0 elements!");
@@ -650,16 +649,16 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   template <typename T_Number>
-  TL_I void Array<T>::DoAssign( T_Number aRepetitionNum,
-                                      T_Number aElemToCopy, type_true )
+  TL_I void Array<T>::DoAssign( T_Number aRepetitionNum, T_Number aElemToCopy, 
+                                is_arith_t)
   {
     assign(static_cast<tl_size>(aRepetitionNum), static_cast<T>(aElemToCopy));
   }
 
   template <typename T>
   template <typename T_InputIterator>
-  TL_I void Array<T>::DoAssign( T_InputIterator aRangeBegin,
-                                      T_InputIterator aRangeEnd, type_false )
+  TL_I void Array<T>::DoAssign( T_InputIterator aRangeBegin, 
+                                T_InputIterator aRangeEnd, is_not_arith_t)
   {
     TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd);
 
@@ -677,7 +676,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<T>::DoInsert( iterator aPosition,
                                        T_Number aN,
                                        T_Number aValue,
-                                       type_true )
+                                       is_integral_t)
   {
     insert(aPosition, static_cast<tl_size>(aN), static_cast<T>(aValue));
   }
@@ -687,7 +686,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<T>::DoInsert( iterator position,
                                 T_InputIterator first,
                                 T_InputIterator last,
-                                type_false )
+                                is_not_integral_t)
   {
     DoInsertByIterator(position, first, last);
   }

@@ -67,23 +67,27 @@ namespace tloc
 
   //////////////////////////////////////////////////////////////////////////
   // Conditional type
-  //
-  // This type is capable of being compiled out if T_DeclareValue = false.
-  // All operators are overloaded. With T_DeclareValue = false, operators do
-  // not do anything. In case of the comparison operators, the result is
-  // always false
+  // 
+  // This type is capable of being compiled out if T_DeclareValue = false. All
+  // operators are overloaded. With T_DeclareValue = false, operators do not do
+  // anything. In case of the comparison operators, the result is always false.
+  // If you get the value of the <false> type the value returned is
+  // g_conditional_type_invalid_value.
+  // 
+  // @note You should NOT test against g_conditional_type_invalid_value to see
+  // if your type is valid or not. Your first attempt should be to use compile
+  // time type checking. At runtime, you can use the IsValid() function which
+  // will return true for a <true> type. 
+  template <typename T, bool T_DeclareValue>
+  struct ConditionalType {};
 
   ///-------------------------------------------------------------------------
   /// @brief This type can be conditionally removed based on the boolean value.
   ///-------------------------------------------------------------------------
-  template <typename T, bool T_DeclareValue>
-  struct ConditionalType
+  template <typename T>
+  struct ConditionalType<T, false>
   {
-    static T g_conditional_type_invalid_value;
-
-    // Must be declared in your specific source file.
-    // This is the value returned when ConditionalType is false
-    typedef ConditionalType<T, T_DeclareValue> this_type;
+    typedef ConditionalType<T, false> this_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);
@@ -129,8 +133,18 @@ namespace tloc
 
     TL_FI const T&   Get() const;
     TL_FI T          Value() const;
+
+    TL_FI bool       IsValid() const;
+
+    static T g_conditional_type_invalid_value;
   };
 
+  // Default value for the returned invalid_type  
+  template <typename T>
+  T ConditionalType<T, false>::g_conditional_type_invalid_value;
+
+  /// ConditionalType<true> which behaves as if you are working with the original
+  /// type itself
   template <typename T>
   struct ConditionalType<T, true>
   {
@@ -181,18 +195,19 @@ namespace tloc
     TL_FI const T&   Get() const;
     TL_FI T          Value() const;
 
+    TL_FI bool       IsValid() const;
+
   private:
 
     T                m_value;
   };
 
   ///-------------------------------------------------------------------------
-  /// @brief
   /// Condition type package. Including ConditionalType as a member with
-  /// T_DeclareValue = false will not eliminate the size of the type (C++
-  /// does not allow 0 size classes). To get around that, use the
-  /// following class for one of your other members in the class where
-  /// T_User is the other member and T is your conditional type.
+  /// T_DeclareValue = false will not eliminate the size of the type (C++ does
+  /// not allow 0 size classes). To get around that, use the following class
+  /// for one of your other members in the class where T_User is the other
+  /// member and T is your conditional type.
   ///-------------------------------------------------------------------------
   template <typename T_User, typename T, bool T_DeclareValue>
   struct ConditionalTypePackage : public ConditionalType<T, T_DeclareValue>

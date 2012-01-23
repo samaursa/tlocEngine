@@ -3,11 +3,6 @@
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocTypes.inl"
 
-namespace tloc
-{
-  s32 ConditionalType<s32, false>::g_conditional_type_invalid_value = 1;
-}
-
 namespace TESTING_TYPES
 {
   USING_TLOC;
@@ -28,6 +23,9 @@ namespace TESTING_TYPES
 
   TEST_CASE_METHOD(ConditionalFixtureTrue, "Core/Types/ConditionalTypeTrue", "")
   {
+    // Type should return valid
+    CHECK(a.IsValid() == true);
+
     a = 5;
     CHECK(a.Value() == 5);
 
@@ -130,6 +128,14 @@ namespace TESTING_TYPES
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")
   {
+    // Note that direct comparison with the invalid_value should not be used in 
+    // code because g_conditional_type_invalid_value does not really exist for 
+    // ConditionalType<T, true>. The variable is used to make sure the type 
+    // works when <false> and for testing purposes.
+
+    // Type should return invalid
+    CHECK(a.IsValid() == false);
+
     a = 5;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
 

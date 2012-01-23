@@ -74,7 +74,7 @@ namespace tloc { namespace core {
 
     TL_FI value_type& m_value() { return m_valueAndHashcode.m_var; }
     TL_FI const value_type& m_value() const { return m_valueAndHashcode.m_var; }
-    TL_FI size_type&  m_hashcode() { return (size_type)m_valueAndHashcode; }
+    TL_FI size_type&  m_hashcode() { return (size_type)m_valueAndHashcode.Get(); }
     TL_FI const size_type& m_hashcode() const { return (size_type)m_valueAndHashcode; }
 
     // You can access this variable directly, but it is recommended that you
@@ -110,8 +110,7 @@ namespace tloc { namespace core {
   public:
     TL_FI HashtableItrBase(bucket_type& a_bucketContainer);
     TL_FI HashtableItrBase(bucket_type& a_bucketContainer,
-      const node_iterator& a_currNode,
-      const bucket_iterator& a_currBucket);
+      const bucket_iterator& a_currBucket, const node_iterator& a_currNode);
 
     TL_FI void IncrementBucket();
     TL_FI void Increment();
@@ -147,23 +146,18 @@ namespace tloc { namespace core {
 
   public:
 
-    HashtableItr(bucket_type& a_bucketContainer)
-      : base_type(a_bucketContainer, (*(a_bucketContainer.begin())).begin(),
-      a_bucketContainer.begin()) {}
+    HashtableItr(bucket_type& a_bucketContainer);
+    HashtableItr(bucket_type& a_bucketContainer, 
+                 const bucket_iterator& a_currBucket, 
+                 const node_iterator& a_currNode);
+    HashtableItr(const this_type& a_other);
 
-    HashtableItr(bucket_type& a_bucketContainer, const node_iterator& a_currNode,
-      const bucket_iterator& a_currBucket)
-      : base_type(a_bucketContainer, a_currNode, a_currBucket) {}
-    HashtableItr(const this_type& a_other)
-      : base_type(a_other.m_bucketContainer, a_other.m_currNode, a_other.m_currBucket) {}
+    reference   operator*() const; 
+    pointer     operator->() const; 
+    this_type&  operator++(); 
+    this_type   operator++(int); 
 
-    reference operator*() const { return base_type::m_currNode->m_value; }
-    pointer   operator->() const { return &(base_type::m_currNode->m_value); }
-
-    this_type& operator++() { base_type::Increment(); return *this; }
-    this_type operator++(int) { this_type temp(*this); base_type::Increment(); return temp; }
-
-    const node_type* get_node() const { return base_type::m_currNode; }
+    const node_type* get_node() const; 
 
   };
 
@@ -196,19 +190,16 @@ namespace tloc { namespace core {
   // that we minimize duplicate code and avoid wasted space when any of the
   // hash function objects are essentially empty classes
 
-  template <typename T_Policy, bool T_CacheHashCode>
-  class HashCode { };
-
   template <typename T_Policy>
-  class HashCode<T_Policy, true> :
-    protected T_Policy::extract_key_type,
-    protected T_Policy::key_equal,
-    protected T_Policy::range_hasher_type
+  class HashCodeBase : protected T_Policy::extract_key_type,
+                       protected T_Policy::key_equal,
+                       protected T_Policy::range_hasher_type
   {
   public:
+    //------------------------------------------------------------------------
+    // typdefs 
 
-    typedef u32                           hash_code_type;
-    typedef u32                           bucket_index_type;
+    typedef u32                                  hash_code_type;
 
     typedef typename T_Policy::node_type         node_type;
     typedef typename T_Policy::element_type      element_type;
@@ -217,47 +208,65 @@ namespace tloc { namespace core {
     typedef typename T_Policy::range_hasher_type range_hasher_base_type;
     typedef typename T_Policy::extract_key_type  extract_key_type;
     typedef typename T_Policy::key_equal         key_equal;
+    typedef typename T_Policy::size_type         size_type;
 
     typedef typename range_hasher_base_type::hasher             hasher_base_type;
     typedef typename range_hasher_base_type::hash_to_range_type hash_to_range_type;
 
+    //------------------------------------------------------------------------
+    // Methods
+
     hash_code_type get_hash_code(const key_type& a_key) const
     { return (hash_code_type)hasher_base_type::operator()(a_key); }
 
-    bucket_index_type bucket_index(const key_type& a_key, u32 a_bucketCount) const
-    { return (bucket_index_type)range_hasher_base_type::operator()
+    size_type bucket_index(const key_type& a_key, u32 a_bucketCount) const
+    { return (size_type)range_hasher_base_type::operator()
     (a_key, a_bucketCount); }
 
-    bucket_index_type bucket_index(const key_type&, hash_code_type a_hash,
+    size_type bucket_index(const key_type&, hash_code_type a_hash,
       u32 a_bucketCount) const
-    { return (bucket_index_type)hash_to_range_type::operator()(a_hash, a_bucketCount); }
+    { return (size_type)hash_to_range_type::operator()(a_hash, a_bucketCount); }
 
-    bucket_index_type bucket_index(const element_type& a_elem, u32 a_bucketCount) const
-    { return (bucket_index_type)range_hasher_base_type::operator()
+    size_type bucket_index(const element_type& a_elem, u32 a_bucketCount) const
+    { return (size_type)range_hasher_base_type::operator()
     (extract_key_type::operator()(a_elem.m_value()), a_bucketCount); }
+
+    key_type extract_key(const value_type& a_value) const
+    { return extract_key_type::operator()(a_value); }
+  };
+
+  template <typename T_Policy, bool T_CacheHashCode>
+  class HashCode { };
+
+  template <typename T_Policy>
+  class HashCode<T_Policy, false> : public HashCodeBase<T_Policy>
+  {
+  public:
+
+    bool compare (hash_code_type a_hashcode, element_type* a_elem) const
+    {
+      return a_hashcode == get_hash_code(a_elem->m_value());
+    }
 
     bool compare (const key_type& a_key, hash_code_type, element_type* a_elem) const
     { return key_equal::operator()
     (a_key, extract_key_type::operator()(a_elem->m_value())); }
-
-    key_type extract_key(const value_type& a_value) const
-    { return extract_key_type::operator()(a_value); }
-
-  protected:
   };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, false> :
-    protected T_Policy::extract_key_type,
-    protected T_Policy::key_equal,
-    protected T_Policy::range_hasher_type
+  class HashCode<T_Policy, true> : public HashCodeBase<T_Policy>
   {
   public:
 
-    typedef u32                           hash_code_type;
-    typedef u32                           bucket_index_type;
-    typedef typename T_Policy::node_type  node_type;
+    bool compare (hash_code_type a_hashcode, element_type* a_elem) const
+    {
+      return a_hashcode == a_elem->m_hashcode();
+    }
 
+    bool compare (const key_type& a_key, hash_code_type a_hashCode, 
+                  element_type* a_elem) const
+    { return (a_elem->m_hashcode() == a_hashCode) && key_equal::operator()
+    (a_key, extract_key_type::operator()(a_elem->m_value())); }
   };
 
   //------------------------------------------------------------------------
@@ -334,9 +343,10 @@ namespace tloc { namespace core {
     Loki::IsSameType<typename T_Policies::unique_keys, type_true>::value >
   {
   public:
-    typedef Hashtable<T_Policies>                 this_type;
-    typedef T_Policies                            policy_type;
+    typedef Hashtable<T_Policies>                   this_type;
+    typedef T_Policies                              policy_type;
 
+    // typedefs from T_Policies
     typedef typename policy_type::key_type					 key_type;
     typedef typename policy_type::value_type				 value_type;
     typedef typename policy_type::element_type			 element_type;
@@ -347,15 +357,16 @@ namespace tloc { namespace core {
     typedef typename policy_type::size_type					 size_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
-    typedef HashtableItr<policy_type, false> iterator;
-    typedef HashtableItr<policy_type, true>  const_iterator;
+    typedef HashtableItr<policy_type, false>         iterator;
+    typedef HashtableItr<policy_type, true>          const_iterator;
 
     typedef typename policy_type::cache_hash		     cache_hash;
     typedef typename policy_type::unique_keys        unique_keys;
     typedef typename
-      Loki::Select<Loki::IsSameType<unique_keys,type_true>::value,
-                   Pair<iterator, bool>, iterator>::Result
-                                                     insert_return_type;
+      Loki::Select< Loki::IsSameType<unique_keys,
+                    type_true>::value, 
+                    Pair<iterator, bool>, 
+                    iterator >::Result               insert_return_type;
 
     typedef typename node_type::iterator             local_iterator;
     typedef typename node_type::const_iterator       const_local_iterator;
@@ -366,6 +377,9 @@ namespace tloc { namespace core {
 
     typedef HashCode<T_Policies,
       Loki::IsSameType<unique_keys, type_true>::value> hash_code_base_type;
+
+    // typedefs inherited from HashCode<>
+    typedef typename hash_code_base_type::hash_code_type    hash_code_type;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -461,6 +475,27 @@ namespace tloc { namespace core {
     //                           const value_type& a_value);
     //template <typename T_InputItr>
     //void                insert(T_InputItr a_first, T_InputItr a_last);
+
+    //------------------------------------------------------------------------
+    // Operations
+
+    //TL_FI iterator        find(const key_type& a_value);
+    //TL_FI const_iterator  find(const key_type& a_value) const;
+
+    ///-------------------------------------------------------------------------
+    /// Non-standard function that is present in EASTL as well. Use this when
+    /// providing your own hash code to prevent the usual find() function from
+    /// recalculating the hash (which may be an expensive operation especially
+    /// if carried out multiple times)
+    ///
+    /// @param  a_hashCode The hash code.
+    ///
+    /// @return
+    /// iterator or const_iterator to the found object or end() if not
+    /// found.
+    ///-------------------------------------------------------------------------
+    TL_FI iterator        find_by_hash(u32 a_hashCode);
+    TL_FI const_iterator  find_by_hash(u32 a_hashCode) const;
 
   protected:
 

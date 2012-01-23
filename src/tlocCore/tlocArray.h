@@ -231,26 +231,37 @@ namespace tloc { namespace core {
     TL_I void             DoInsertValues(T* position, tl_size aNumElemsToInsert,
                                          const T& aValue);
 
+    //------------------------------------------------------------------------
+    // assign() helpers
+    
+    typedef type_true   is_arith_t;
+    typedef type_false  is_not_arith_t;
+
     // This is the assign() selector, which is invoked with type-traits
     template <typename T_Number>
     TL_I void             DoAssign(T_Number aRepetitionNum,
-                                   T_Number aElemToCopy, type_true);
+                                   T_Number aElemToCopy, is_arith_t);
 
     // This is the assign() selector, which is invoked with type-traits
     template <typename T_InputIterator>
     TL_I void             DoAssign(T_InputIterator aRangeBegin,
-                                   T_InputIterator aRangeEnd, type_false);
+                                   T_InputIterator aRangeEnd, is_not_arith_t);
 
+    //------------------------------------------------------------------------
+    // insert() helpers
+
+    typedef type_true   is_integral_t;
+    typedef type_false  is_not_integral_t;
 
     // This is the insert selector, which is invoked with type-traits
     template <typename T_Number>
     TL_I void             DoInsert(iterator aPosition, T_Number aN,
-                                   T_Number aValue, type_true);
+                                   T_Number aValue, is_integral_t);
 
     // This is the insert selector, which is invoked with type-traits
     template <typename T_InputIterator>
     TL_I void             DoInsert(iterator position, T_InputIterator first,
-                                   T_InputIterator last, type_false);
+                                   T_InputIterator last, is_not_integral_t);
 
     // Helper function for DoInsert
     template <typename T_InputIterator>

@@ -17,7 +17,7 @@ namespace tloc { namespace core {
   };
 
   template <typename T_Arg1, typename T_Arg2, typename T_Result>
-  struct binary_function
+  class binary_function
   {
     typedef T_Arg1    first_argument_type;
     typedef T_Arg2    second_argument_type;

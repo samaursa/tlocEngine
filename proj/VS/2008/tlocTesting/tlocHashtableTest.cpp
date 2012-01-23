@@ -47,6 +47,8 @@ namespace TestingArray
       h.DoInsertValue(i, tloc::type_false());
     }
 
+    Hashtable<hashtable_policies>::iterator itr = h.find_by_hash(5);
+
   }
 
 };

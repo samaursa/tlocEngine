@@ -95,17 +95,22 @@ namespace tloc { namespace core {
     typedef T_Policies                               policy_type;
     typedef typename policy_type::node_type          node_type;
     typedef typename policy_type::bucket_type        b_type;
-    typedef typename T_Policies::value_type           value_type;
+    typedef typename T_Policies::value_type          value_type;
 
-    typedef typename Loki::Select<T_Const, const value_type*, value_type*> pointer;
-    typedef typename Loki::Select<T_Const, const value_type&, value_type&> reference;
-    typedef typename Loki::Select<T_Const, const b_type, b_type>::Result bucket_type;
-    typedef typename Loki::Select<T_Const,
-                                  typename node_type::const_iterator,
-                                  typename node_type::iterator>::Result node_iterator;
-    typedef typename Loki::Select<T_Const,
-                                  typename bucket_type::const_iterator,
-                                  typename bucket_type::iterator>::Result bucket_iterator;
+    typedef typename Loki::Select<T_Const, 
+                                  const value_type*, 
+                                  value_type*>::Result      pointer;
+    typedef typename Loki::Select<T_Const, 
+                                  const value_type&, 
+                                  value_type&>::Result      reference;
+    typedef typename Loki::Select<T_Const, const b_type, 
+                                  b_type>::Result           bucket_type;
+    typedef typename Loki::Select<T_Const, 
+      typename node_type::const_iterator, 
+      typename node_type::iterator>::Result                 node_iterator;
+    typedef typename Loki::Select<T_Const, 
+      typename bucket_type::const_iterator,
+      typename bucket_type::iterator>::Result               bucket_iterator;
 
   public:
     TL_FI HashtableItrBase(bucket_type& a_bucketContainer);
@@ -131,6 +136,9 @@ namespace tloc { namespace core {
 
     typedef HashtableItrBase<T_Policies, T_Const>     base_type;
     typedef HashtableItr<T_Policies, T_Const>         this_type;
+
+    // The non-const type is used for the copy constructor. This is because
+    // we cannot 
     typedef HashtableItr<T_Policies, false>           this_type_non_const;
 
     typedef typename base_type::bucket_type           bucket_type;
@@ -150,14 +158,14 @@ namespace tloc { namespace core {
     HashtableItr(bucket_type& a_bucketContainer, 
                  const bucket_iterator& a_currBucket, 
                  const node_iterator& a_currNode);
-    HashtableItr(const this_type& a_other);
+    HashtableItr(const this_type_non_const& a_other);
 
     reference   operator*() const; 
     pointer     operator->() const; 
     this_type&  operator++(); 
     this_type   operator++(int); 
 
-    const node_type* get_node() const; 
+    const node_iterator& get_node() const; 
 
   };
 
@@ -235,11 +243,11 @@ namespace tloc { namespace core {
     { return extract_key_type::operator()(a_value); }
   };
 
-  template <typename T_Policy, bool T_CacheHashCode>
+  template <typename T_Policy, typename T_CacheHash> 
   class HashCode { };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, false> : public HashCodeBase<T_Policy>
+  class HashCode<T_Policy, type_false> : public HashCodeBase<T_Policy>
   {
   public:
 
@@ -254,7 +262,7 @@ namespace tloc { namespace core {
   };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, true> : public HashCodeBase<T_Policy>
+  class HashCode<T_Policy, type_true> : public HashCodeBase<T_Policy>
   {
   public:
 
@@ -338,9 +346,7 @@ namespace tloc { namespace core {
   /// @sa
   /// tloc::core::HashCode<T_Policies,Loki::IsSameType<typename T_Policies::unique_keys,type_true>::value>
   ///-------------------------------------------------------------------------
-  class Hashtable :
-    public HashCode<T_Policies,
-    Loki::IsSameType<typename T_Policies::unique_keys, type_true>::value >
+  class Hashtable : public HashCode<T_Policies, typename T_Policies::cache_hash>
   {
   public:
     typedef Hashtable<T_Policies>                   this_type;
@@ -375,8 +381,7 @@ namespace tloc { namespace core {
 
     typedef tl_ptrdiff                               difference_type;
 
-    typedef HashCode<T_Policies,
-      Loki::IsSameType<unique_keys, type_true>::value> hash_code_base_type;
+    typedef HashCode<T_Policies, unique_keys>        hash_code_base_type;
 
     // typedefs inherited from HashCode<>
     typedef typename hash_code_base_type::hash_code_type    hash_code_type;
@@ -479,8 +484,8 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Operations
 
-    //TL_FI iterator        find(const key_type& a_value);
-    //TL_FI const_iterator  find(const key_type& a_value) const;
+    TL_FI iterator        find(const key_type& a_value);
+    TL_FI const_iterator  find(const key_type& a_value) const;
 
     ///-------------------------------------------------------------------------
     /// Non-standard function that is present in EASTL as well. Use this when

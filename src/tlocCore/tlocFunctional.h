@@ -7,6 +7,23 @@
 namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
+  // This struct is used to diagnose template types
+
+  template <typename T>
+  struct TemplateDiagnose;
+
+  //////////////////////////////////////////////////////////////////////////
+  // Constness - these functions can be used to write the non-const version
+  // of a function by calling the const version of the function to avoid 
+  // code duplication
+
+  template <typename T>
+  const T* AddConst(T* a_type) { return a_type; }
+
+  template <typename T>
+  T* RemoveConst(const T* a_type) { return const_cast<T*>(a_type); }
+
+  //////////////////////////////////////////////////////////////////////////
   // Base classes
 
   template <typename T_Arg, typename T_Result>

@@ -248,7 +248,7 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Custom generic iterators (not defined in the standard)
 
-
+  // TODO: Clean this up to take one bool value instead of 3 different types
 
   //````````````````````````````````````````````````````````````````````````
   // List iterator
@@ -273,15 +273,15 @@ namespace tloc { namespace core {
     typedef list_iterator<T_Node, T_Itr_Type, T, T_Ptr, T_Ref>  this_type;
     typedef list_iterator<T_Node, T_Itr_Type, T, T*, T&>        iterator;
     typedef typename T_Itr_Type                                 iterator_category;
-    typedef typename T_Node::pointer_type                       pointer_type;
-    typedef typename T_Node::reference_type                     reference_type;
+    typedef typename T_Node::pointer_type                       pointer;
+    typedef typename T_Node::reference_type                     reference;
 
     TL_FI list_iterator();
     TL_FI list_iterator(const T_Node* aNode);
     TL_FI list_iterator(const iterator& aOtherItr);
 
-    TL_FI reference_type  operator*() const;
-    TL_FI pointer_type    operator->() const;
+    TL_FI reference       operator*() const;
+    TL_FI pointer         operator->() const;
     TL_FI this_type&      operator++();
     TL_FI this_type       operator++(int);
     TL_FI this_type&      operator--();

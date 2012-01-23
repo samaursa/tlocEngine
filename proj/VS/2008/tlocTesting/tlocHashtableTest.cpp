@@ -40,14 +40,21 @@ namespace TestingArray
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/Ctors", "")
   {
-    Hashtable<hashtable_policies> h(3);
+    typedef Hashtable<hashtable_policies> ht_type;
+    ht_type h(3);
 
     for (u32 i = 0; i < 100; ++i)
     {
       h.DoInsertValue(i, tloc::type_false());
     }
 
-    Hashtable<hashtable_policies>::iterator itr = h.find_by_hash(5);
+    ht_type::iterator itr = h.find_by_hash(5);
+
+    //TemplateDiagnose<ht_type::iterator::node_iterator> test;
+    //s32 p = (*(itr.get_node())).m_value();
+
+    CHECK( (*itr) == 5);
+    //TemplateDiagnose<ht_type::iterator::node_iterator> test;
 
   }
 

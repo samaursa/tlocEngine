@@ -127,7 +127,7 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(const this_type& a_other)
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(const this_type_non_const& a_other)
       : base_type(a_other.m_bucketContainer, a_other.m_currBucket, 
                   a_other.m_currNode)
   {
@@ -137,14 +137,14 @@ namespace tloc { namespace core {
   typename HashtableItr<HASHTABLE_ITR_PARAMS>::reference 
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator *() const
   { 
-    return base_type::m_currNode->m_value;
+    return (*(base_type::m_currNode)).m_value();
   }
 
   template <HASHTABLE_ITR_TYPES>
   typename HashtableItr<HASHTABLE_ITR_PARAMS>::pointer
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator ->() const
   { 
-    return &(base_type::m_currNode->m_value); 
+    return &(base_type::m_currNode->m_value() ); 
   }
 
   template <HASHTABLE_ITR_TYPES>
@@ -162,10 +162,10 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::node_type*
+  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::node_iterator&
     HashtableItr<HASHTABLE_ITR_PARAMS>::get_node() const
   { 
-    return base_type::m_currNode; 
+    return base_type::m_currNode;
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -363,11 +363,29 @@ namespace tloc { namespace core {
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_value)
+  {
+    const key_type& k = extract_key(a_value);
+    const hash_code_type hc = get_hash_code(k);
+    return find_by_hash(hc);
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
+    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_value) const
+  {
+    const key_type& k = extract_key(a_value);
+    const hash_code_type hc = get_hash_code(k);
+    return find_by_hash(hc);
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode)
   {
     const size_type n = (size_type)bucket_index(a_hashCode, (u32)bucket_count());
 
-    bucket_type::const_iterator itr = m_bucketArray.begin();
+    bucket_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
 
     node_type::iterator itrN    = (*itr).begin();
@@ -375,19 +393,24 @@ namespace tloc { namespace core {
 
     while (itrN != itrNEnd)
     {
-      compare(a_hashCode, &(*itrN));
+      if (compare(a_hashCode, &(*itrN)))
+      {
+        return iterator(m_bucketArray, itr, itrN);
+      }
+
       ++itrN;
     }
 
-    return begin();
+    return end();
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode) const
   {
-    TLOC_UNUSED(a_hashCode);
-    return begin();
+    const_iterator itr = (RemoveConst(this))->find_by_hash(a_hashCode);
+    AddConst(this);
+    return itr;
   }
 
   //------------------------------------------------------------------------

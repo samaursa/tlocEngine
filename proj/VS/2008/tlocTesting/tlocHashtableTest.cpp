@@ -79,7 +79,7 @@ namespace TestingArray
     }
   };
 
-#define TestMethodAllVariations(T_Type) \
+#define TestMethodAllVariationsUnique(T_Type) \
     T_Type<Hashtable<singly_nohash_unique> >(); \
     T_Type<Hashtable<doubly_nohash_unique> >(); \
     T_Type<Hashtable<singlydoubly_nohash_unique> >(); \
@@ -108,12 +108,18 @@ namespace TestingArray
     // Seems to be a bug. We will have to settle for #define 
     //TestMethod<TestCtors>::AllVariations();
 
-    TestMethodAllVariations(TestCtors);
+    TestMethodAllVariationsUnique(TestCtors);
   }
 
   template <typename T_List>
   void TestInsert()
   {
+    typedef Loki::Select< Loki::IsSameType<type_true, T_List::unique_keys>::value, 
+      Pair<T_List::iterator, bool>, T_List::iterator>::Result selected_result;
+
+    typedef Loki::Select< Loki::IsSameType<type_true, T_List::unique_keys>::value,
+      use_first<selected_result>, use_self<selected_result> >::Result iterator_deref;
+
     T_List h(3);
 
     h.insert(5);
@@ -121,12 +127,30 @@ namespace TestingArray
     // Should be added to bucket # 2
     T_List::iterator itr = h.begin();
 
+    Pair<bool, u32> result = itr.GetCurrBucketNumber();
+    REQUIRE(result.first == true);
+    CHECK(result.second == 2);
     CHECK( (*itr) == 5);
+
+    selected_result itr2 = h.insert(6);
+    itr = iterator_deref()(itr2);
+    CHECK( (*itr) == 6);
+
+    //itr = h.insert(7);
+    //CHECK( (*itr) == 7);
+
+    //CHECK(h.bucket_count() == 3);
+
+
+    //typedef use_first<selected_result> itr_def;
+    //T_List::iterator iter2 = iterator_deref()(iter);
+
+    //CHECK( (*(iter2)) == 8);
   }
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")
   {
-    TestMethodAllVariations(TestInsert);
+    TestMethodAllVariationsUnique(TestInsert);
   }
 
 };

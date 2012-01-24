@@ -17,8 +17,8 @@ namespace tloc { namespace core {
 #define HASHTABLE_ITR_BASE_PARAMS T_Policies, T_Const
 
   template <HASHTABLE_ITR_BASE_TYPES>
-  TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase( bucket_array_type& a_bucketContainer) 
+  TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::
+    HashtableItrBase( bucket_array_type* a_bucketContainer) 
     : m_bucketContainer(a_bucketContainer)
     , m_currBucket( a_bucketContainer.begin() )
     , m_currNode( (*(a_bucketContainer.begin() )).begin())
@@ -27,7 +27,7 @@ namespace tloc { namespace core {
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase( bucket_array_type& a_bucketContainer, 
+    ::HashtableItrBase( bucket_array_type* a_bucketContainer, 
                         const local_iterator& a_currBucket, 
                         const bucket_iterator& a_currNode)
                         : m_bucketContainer(a_bucketContainer)
@@ -40,7 +40,7 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::Increment()
   {
-    bucket_array_type::const_iterator bucketEnd = m_bucketContainer.end();
+    bucket_array_type::const_iterator bucketEnd = m_bucketContainer->end();
     bucket_type::const_iterator itrEnd = (*m_currBucket).end();
     ++m_currNode;
 
@@ -55,8 +55,8 @@ namespace tloc { namespace core {
       }
       else
       {
-        m_currBucket = m_bucketContainer.begin();
-        m_currNode = *(m_bucketContainer).begin();
+        m_currBucket = m_bucketContainer->begin();
+        m_currNode = *(m_bucketContainer)->begin();
         break;
       }
     }
@@ -65,7 +65,7 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
-    local_iterator bucketEnd = m_bucketContainer.end();
+    local_iterator bucketEnd = m_bucketContainer->end();
 
     TLOC_ASSERT_HASH_TABLE(m_currBucket != bucketEnd,
       "Already at the end of the bucket container!");
@@ -80,7 +80,7 @@ namespace tloc { namespace core {
       }
       else
       {
-        m_currBucket = m_bucketContainer.begin();
+        m_currBucket = m_bucketContainer->begin();
         m_currNode = (*(m_currBucket)).begin();
       }
     }
@@ -94,6 +94,8 @@ namespace tloc { namespace core {
     m_currNode				= a_other.m_currNode;
     m_bucketContainer	= a_other.m_bucketContainer;
     m_currBucket			= a_other.m_currBucket;
+
+    return *this;
   }
 
   template <HASHTABLE_ITR_BASE_TYPES>
@@ -119,7 +121,7 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_BASE_TYPES>
-  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_array_type&
+  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_array_type*
     HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetBucketArray() const
   { 
     return m_bucketContainer;
@@ -132,6 +134,24 @@ namespace tloc { namespace core {
     return m_currBucket;
   }
 
+  template <HASHTABLE_ITR_BASE_TYPES>
+  Pair<bool, typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::size_type>
+    HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetCurrBucketNumber() const
+  {
+    bucket_array_type::const_iterator itr    = m_bucketContainer->begin();
+    bucket_array_type::const_iterator itrEnd = m_bucketContainer->end();
+
+    size_type count = 0;
+
+    for (; itr != itrEnd; ++itr)
+    {
+      if (itr == m_currBucket) { return MakePair(true, count); }
+      ++count;
+    }
+
+    // We have an invalid iterator
+    return MakePair(false, count);
+  }
 
   //------------------------------------------------------------------------
   // Hashtable Iterator
@@ -140,14 +160,14 @@ namespace tloc { namespace core {
 #define HASHTABLE_ITR_PARAMS  T_Policies, T_Const
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type& a_bucketContainer) 
-    : base_type(a_bucketContainer, a_bucketContainer.begin(), 
-                (*(a_bucketContainer.begin())).begin() ) 
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type* a_bucketContainer) 
+    : base_type(a_bucketContainer, a_bucketContainer->begin(), 
+                (*(a_bucketContainer->begin())).begin() ) 
   {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type& a_bucketContainer, 
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type* a_bucketContainer, 
     const local_iterator& a_currBucket, const bucket_iterator& a_currNode) 
     : base_type(a_bucketContainer, a_currBucket, a_currNode) 
   {
@@ -243,7 +263,7 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::begin()
   {
-    iterator itr(m_bucketArray);
+    iterator itr(&m_bucketArray);
     if ( (*(itr.m_currBucket)).empty())
     {
       itr.IncrementBucket();
@@ -255,7 +275,7 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::begin() const
   {
-    const_iterator itr(m_bucketArray);
+    const_iterator itr(&m_bucketArray);
     if ( (*(itr.m_currBucket)).empty() )
     {
       itr.IncrementBucket();
@@ -267,14 +287,14 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::end()
   {
-    return iterator(m_bucketArray, m_bucketArray.end(), m_dummyNode);
+    return iterator(&m_bucketArray, m_bucketArray.end(), m_dummyNode);
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::end() const
   {
-    return const_iterator(m_bucketArray, m_bucketArray.end(), m_dummyNode);
+    return const_iterator(&m_bucketArray, m_bucketArray.end(), m_dummyNode);
   }
 
   template <HASH_TABLE_TYPES>
@@ -498,7 +518,7 @@ namespace tloc { namespace core {
     {
       if (compare(a_hashCode, &(*itrN)))
       {
-        return iterator(m_bucketArray, itr, itrN);
+        return iterator(&m_bucketArray, itr, itrN);
       }
 
       ++itrN;
@@ -596,7 +616,7 @@ namespace tloc { namespace core {
       advance(itrB, n);
 
       // Select the appropriate push() function (front or back)
-      return MakePair(iterator(m_bucketArray, itrB, 
+      return MakePair(iterator(&m_bucketArray, itrB, 
         DoPushSelect(itrB, newElement, bucket_iterator_type()) ), true);
     }
 

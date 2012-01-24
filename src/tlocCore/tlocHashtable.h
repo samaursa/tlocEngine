@@ -95,7 +95,8 @@ namespace tloc { namespace core {
     typedef T_Policies                               policy_type;
     typedef typename policy_type::bucket_type        bucket_type;
     typedef typename policy_type::buckets_array_type b_array_type;
-    typedef typename T_Policies::value_type          value_type;
+    typedef typename policy_type::size_type          size_type;
+    typedef typename policy_type::value_type         value_type;
 
     typedef typename Loki::Select<T_Const, 
                                   const value_type*, 
@@ -113,8 +114,8 @@ namespace tloc { namespace core {
       typename bucket_array_type::iterator>::Result           local_iterator;
 
   public:
-    TL_FI HashtableItrBase(bucket_array_type& a_bucketContainer);
-    TL_FI HashtableItrBase(bucket_array_type& a_bucketContainer,
+    TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer);
+    TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer,
       const local_iterator& a_currBucket, const bucket_iterator& a_currNode);
 
     TL_FI void IncrementBucket();
@@ -125,13 +126,16 @@ namespace tloc { namespace core {
     bool       operator!=(const this_type& a_other);
 
     const bucket_iterator&    GetNode() const;
-    const bucket_array_type&  GetBucketArray() const;
+    const bucket_array_type*  GetBucketArray() const;
     const local_iterator&     GetCurrBucket() const;
+
+    // Used mostly for testing
+    Pair<bool, size_type>     GetCurrBucketNumber() const;
 
   //private:
 
     bucket_iterator    m_currNode;
-    bucket_array_type& m_bucketContainer;
+    bucket_array_type* m_bucketContainer;
     local_iterator     m_currBucket;
   };
 
@@ -159,8 +163,8 @@ namespace tloc { namespace core {
 
   public:
 
-    HashtableItr(bucket_array_type& a_bucketContainer);
-    HashtableItr(bucket_array_type& a_bucketContainer, 
+    HashtableItr(bucket_array_type* a_bucketContainer);
+    HashtableItr(bucket_array_type* a_bucketContainer, 
                  const local_iterator& a_currBucket, 
                  const bucket_iterator& a_currNode);
     HashtableItr(const this_type_non_const& a_other);

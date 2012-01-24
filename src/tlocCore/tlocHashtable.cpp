@@ -108,6 +108,9 @@ namespace tloc { namespace core {
   prime_rehash_policy::size_type prime_rehash_policy
     ::get_bucket_count(prime_rehash_policy::size_type a_numOfElements) const
   {
+    TLOC_ASSERT_HASH_TABLE(m_maxLoadFactor > 0.0f, 
+      "m_maxLoadFactor is incorrect! (divide by zero or negative)");
+
     const u32 minBucketCount = u32 (a_numOfElements / m_maxLoadFactor);
     return get_next_bucket_count(minBucketCount);
   }
@@ -119,6 +122,9 @@ namespace tloc { namespace core {
     if (( a_numOfElements + a_numOfElementsToAdd) > m_nextResize)
     {
       if (a_numOfBuckets == 1) { a_numOfBuckets = 0; }
+
+      TLOC_ASSERT_HASH_TABLE(m_maxLoadFactor > 0.0f, 
+        "m_maxLoadFactor is incorrect! (divide by zero or negative)");
 
       f32 minBucketCount = (a_numOfElements + a_numOfElementsToAdd) / 
                             m_maxLoadFactor;

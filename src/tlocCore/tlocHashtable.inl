@@ -18,7 +18,7 @@ namespace tloc { namespace core {
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase( bucket_type& a_bucketContainer) 
+    ::HashtableItrBase( bucket_array_type& a_bucketContainer) 
     : m_bucketContainer(a_bucketContainer)
     , m_currBucket( a_bucketContainer.begin() )
     , m_currNode( (*(a_bucketContainer.begin() )).begin())
@@ -27,9 +27,9 @@ namespace tloc { namespace core {
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase( bucket_type& a_bucketContainer, 
-                        const bucket_iterator& a_currBucket, 
-                        const node_iterator& a_currNode)
+    ::HashtableItrBase( bucket_array_type& a_bucketContainer, 
+                        const local_iterator& a_currBucket, 
+                        const bucket_iterator& a_currNode)
                         : m_bucketContainer(a_bucketContainer)
                         , m_currNode(a_currNode)
                         , m_currBucket(a_currBucket)
@@ -40,8 +40,8 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::Increment()
   {
-    bucket_type::const_iterator bucketEnd = m_bucketContainer.end();
-    node_type::const_iterator itrEnd = (*m_currBucket).end();
+    bucket_array_type::const_iterator bucketEnd = m_bucketContainer.end();
+    bucket_type::const_iterator itrEnd = (*m_currBucket).end();
     ++m_currNode;
 
     while(m_currNode == itrEnd)
@@ -65,7 +65,7 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
-    bucket_iterator bucketEnd = m_bucketContainer.end();
+    local_iterator bucketEnd = m_bucketContainer.end();
 
     TLOC_ASSERT_HASH_TABLE(m_currBucket != bucketEnd,
       "Already at the end of the bucket container!");
@@ -118,15 +118,15 @@ namespace tloc { namespace core {
 #define HASHTABLE_ITR_PARAMS  T_Policies, T_Const
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_type& a_bucketContainer) 
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type& a_bucketContainer) 
     : base_type(a_bucketContainer, a_bucketContainer.begin(), 
                 (*(a_bucketContainer.begin())).begin() ) 
   {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_type& a_bucketContainer, 
-    const bucket_iterator& a_currBucket, const node_iterator& a_currNode) 
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type& a_bucketContainer, 
+    const local_iterator& a_currBucket, const bucket_iterator& a_currNode) 
     : base_type(a_bucketContainer, a_currBucket, a_currNode) 
   {
   }
@@ -167,7 +167,7 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::node_iterator&
+  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::bucket_iterator&
     HashtableItr<HASHTABLE_ITR_PARAMS>::get_node() const
   { 
     return base_type::m_currNode;
@@ -182,7 +182,7 @@ namespace tloc { namespace core {
   template <HASH_TABLE_TYPES>
   typename Hashtable<HASH_TABLE_PARAMS>::bucket_iterator
     Hashtable<HASH_TABLE_PARAMS>::m_dummyNode =
-    typename Hashtable<HASH_TABLE_PARAMS>::buckets_type::iterator();
+    typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator();
 
   template <HASH_TABLE_TYPES>
   Hashtable<HASH_TABLE_PARAMS>::Hashtable()
@@ -203,8 +203,10 @@ namespace tloc { namespace core {
 
   template <HASH_TABLE_TYPES>
   TL_FI Hashtable<HASH_TABLE_PARAMS>::Hashtable(const this_type& a_other)
+    : m_bucketArray(a_other.m_bucketArray)
+    , m_elementCount(a_other.m_elementCount)
+    , m_rehashPolicy(a_other.m_rehashPolicy)
   {
-    TLOC_UNUSED(a_other);
   }
 
   template <HASH_TABLE_TYPES>
@@ -370,6 +372,80 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::insert_return_type
     Hashtable<HASH_TABLE_PARAMS>::insert(const value_type& a_value)
   {
+    return DoInsertValue(a_value, unique_keys());
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::insert(const_iterator, 
+                                         const value_type& a_value)
+  {
+    // First argument ignored as it is useless for a hashtable. Insert() has
+    // the same signature as the other functions for generic algorithms to work
+    // properly. 
+
+    return insert_return_selector(DoInsertValue(a_value, unique_keys()) );
+  }
+
+  template <HASH_TABLE_TYPES>
+  template <typename T_InputItr>
+  void Hashtable<HASH_TABLE_PARAMS>::insert(T_InputItr a_first, 
+                                            T_InputItr a_last)
+  {
+    for (; a_first != a_last; ++a_first)
+    {
+      DoInsertValue(*a_first, unique_keys());
+    }
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::erase(iterator a_position)
+  {
+    // This operation will be a little slower for a bucket that is singly_linked
+    // or for a vector<> that maintains element order when erasing
+
+    return DoErase(a_position, bucket_iterator_type()); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::erase(iterator a_first, iterator a_last)
+  {
+    for (; a_first != a_last; ++a_first)
+    {
+      DoErase(a_first, bucket_iterator_type());
+    }
+
+    return a_first;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
+    Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_position)
+  {
+    return reverse_iterator(DoErase((++a_position).base()) ); 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
+    Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_first,  
+                                        reverse_iterator a_last)
+  {
+    return reverse_iterator(erase((++a_last).base(), (++a_first).base()) );
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::erase(const key_type& a_key)
+  {
+    DoErase(a_key, unique_keys());
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI void Hashtable<HASH_TABLE_PARAMS>::clear()
+  {
+    m_bucketArray.clear();
   }
 
   //------------------------------------------------------------------------
@@ -377,18 +453,16 @@ namespace tloc { namespace core {
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
-    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_value)
+    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key)
   {
-    const key_type& k = extract_key(a_value);
     const hash_code_type hc = get_hash_code(k);
     return find_by_hash(hc);
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
-    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_value) const
+    Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key) const
   {
-    const key_type& k = extract_key(a_value);
     const hash_code_type hc = get_hash_code(k);
     return find_by_hash(hc);
   }
@@ -402,8 +476,8 @@ namespace tloc { namespace core {
     buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
 
-    buckets_type::iterator itrN    = (*itr).begin();
-    buckets_type::iterator itrNEnd = (*itr).end();
+    bucket_type::iterator itrN    = (*itr).begin();
+    bucket_type::iterator itrNEnd = (*itr).end();
 
     while (itrN != itrNEnd)
     {
@@ -426,6 +500,57 @@ namespace tloc { namespace core {
     add_const(this);
     return itr;
   }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::count(const key_type& a_key) const
+  {
+    return DoCount(a_key, unique_keys());
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI Pair<typename Hashtable<HASH_TABLE_PARAMS>::iterator, 
+    typename Hashtable<HASH_TABLE_PARAMS>::iterator>
+    Hashtable<HASH_TABLE_PARAMS>::equal_range(const key_type& a_key)
+  {
+    // This function assumes unique_keys is false as it does not make sense
+    // to call this function when unique_keys is true
+
+    const hash_code_type hc = get_hash_code(a_key);
+    iterator itr = find_by_hash(a_key);
+
+    if (itr == end()) return 0;
+
+    bucket_iterator       itrB, itrBStart = itr.m_currNode;
+    const_bucket_iterator itrBEnd = (*(itr)).end();
+
+    ++itrB; // we have at least one match
+    for (; itrB != itrBEnd; ++itrB)
+    {
+      if (hc != get_hash_code(*itrB))
+      {
+        break;
+      }
+    }
+
+    return MakePair(iterator(m_bucketArray, itr, itrBStart), 
+                    iterator(m_bucketArray, itr, itrB));
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI Pair<typename Hashtable<HASH_TABLE_PARAMS>::const_iterator, 
+    typename Hashtable<HASH_TABLE_PARAMS>::const_iterator>
+    Hashtable<HASH_TABLE_PARAMS>::equal_range(const key_type& a_key) const
+  {
+    Pair<const_iterator, const_iterator> p = 
+      (remove_const(this))->equal_range(a_key);
+    add_const(this);
+    return p;
+  }
+
+  //------------------------------------------------------------------------
+  //------------------------------------------------------------------------
+  // Internal functions
 
   //------------------------------------------------------------------------
   // Insert Helpers
@@ -455,11 +580,9 @@ namespace tloc { namespace core {
       buckets_array_type::iterator itrB = m_bucketArray.begin(); 
       advance(itrB, n);
 
-      typedef iterator_traits<buckets_type::iterator>::iterator_category itr_cat;
-
       // Select the appropriate push() function (front or back)
       return Pair<iterator(m_bucketArray, itrB, 
-        DoPushSelect(itrB, newElement, itr_cat()) ), true>;
+        DoPushSelect(itrB, newElement, bucket_iterator_type()) ), true>;
     }
 
     return Pair<end(), false>;
@@ -482,15 +605,13 @@ namespace tloc { namespace core {
     iterator itr = find_by_hash(c);
     element_type newElement (a_value, c);
 
-    typedef iterator_traits<buckets_type::iterator>::iterator_category itr_cat;
-
     if (itr != end())
     {
       buckets_array_type::iterator itrB = itr.m_currBucket;
       // Select the appropriate insert() function (insert() or insert_after())
       return iterator(m_bucketArray, itrB, 
                       DoInsertSelect(itr.m_currBucket, itr.m_currNode, 
-                                     newElement, itr_cat()) );
+                                     newElement, bucket_iterator_type()) );
     }
     else
     {
@@ -501,12 +622,12 @@ namespace tloc { namespace core {
 
       // Select the appropriate push() function (front or back)
       return iterator(m_bucketArray, itrB, 
-                      DoPushSelect(itrB, newElement, itr_cat()) );
+                      DoPushSelect(itrB, newElement, bucket_iterator_type()) );
     }
   }
 
   template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::buckets_type::iterator
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoPushSelect(local_iterator& a_itr,
       const element_type& a_elem, bidirectional_iterator_tag)
   {
@@ -517,7 +638,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::buckets_type::iterator
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoPushSelect(local_iterator& a_itr,
       const element_type& a_elem, forward_iterator_tag)
   {
@@ -527,7 +648,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::buckets_type::iterator
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoInsertSelect(local_iterator& a_itr, 
       bucket_iterator a_currNode, const element_type& a_elem, 
       forward_iterator_tag)
@@ -536,7 +657,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::buckets_type::iterator
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoInsertSelect(local_iterator& a_itr, 
       bucket_iterator a_currNode, const element_type& a_elem, 
       bidirectional_iterator_tag)
@@ -544,6 +665,151 @@ namespace tloc { namespace core {
     return (*(a_itr)).insert(a_currNode, a_elem);
   }
 
+  //------------------------------------------------------------------------
+  // Erase helpers
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::DoErase(iterator a_position, 
+                                          forward_iterator_tag)
+  {
+    --m_elementCount;
+    return (*(a_position.m_currBucket)).erase(a_position.m_currNode);
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
+    Hashtable<HASH_TABLE_PARAMS>::DoErase(iterator a_position, 
+                                          bidirectional_iterator_tag)
+  {
+    --m_elementCount;
+    return (*(a_position.m_currBucket)).erase(a_position.m_currNode);
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::DoErase(const key_type& a_key, keys_are_unique)
+  {
+    const hash_code_type hc = get_hash_code(a_key);
+    iterator itr = find_by_hash(a_key);
+
+    if (itr == end()) return 0;
+
+    (*(itr.m_currBucket)).erase(itr.m_currNode);
+    --m_elementCount;
+
+    return 1;
+
+    //bucket_iterator itrB    = (*(itr)).begin();
+    //bucket_iterator itrBEnd = (*(itr)).end();
+
+    //for (; itrB != itrBEnd; ++itrB)
+    //{
+    //  if ( c == get_hash_code(*itrB))
+    //  {
+    //    (*(itr)).erase(itrB);
+    //    --m_elementCount;
+    //  }
+    //}
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
+    Hashtable<HASH_TABLE_PARAMS>::DoErase(const key_type& a_key, keys_are_not_unique)
+  {
+    // Relies on values with the sake key to be placed in sequence
+
+    const hash_code_type hc = get_hash_code(a_key);
+    iterator itr = find_by_hash(a_key);
+
+    if (itr == end()) return 0;
+
+    bucket_iterator itrB          = itr.m_currNode();
+    const bucket_iterator itrBEnd = (*(itr.m_currBucket)).end();
+
+    bucket_iterator itrEraseBegin, itrEraseEnd = itrB;
+    ++itrEraseEnd; // we need to erase at least the one we found
+
+    const size_type currElemCount = m_elementCount;
+
+    --m_elementCount; // We have found at least one
+
+    ++itrB; // We already counted this one
+    // Find the end
+    for (; itrB != itrBEnd; ++itrB)
+    {
+      if ( hc != get_hash_code(*itrB))
+      {
+        itrEraseEnd = itrB;
+        break;
+      }
+      --m_elementCount;
+    }
+
+    (*(itr)).erase(itrEraseBegin, itrEraseEnd);
+    return currElemCount - m_elementCount;
+  }
+
+  //------------------------------------------------------------------------
+  // count helpers
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type 
+    Hashtable<HASH_TABLE_PARAMS>::DoCount(const key_type& a_key, 
+                                          keys_are_unique)
+  {
+    const_iterator itr = find(a_key);
+
+    if (itr != end()) { return 1; }
+    else { return 0; }
+
+    //const hash_code_type c = get_hash_code(a_key);
+    //const size_type n = (size_type)bucket_index(a_key, c, bucket_count());
+
+    //local_iterator itr = m_bucketArray.begin();
+    //advance(itr, n);
+
+    //bucket_iterator itrB    = (*(itr)).begin();
+    //bucket_iterator itrBEnd = (*(itr)).end();
+
+    //for (; itrB != itrBEnd; ++itrB)
+    //{
+    //  if (c == get_hash_code(*itrB))
+    //  {
+    //    return 1;
+    //  }
+    //}
+
+    //return 0;
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type 
+    Hashtable<HASH_TABLE_PARAMS>::DoCount(const key_type& a_key, 
+                                          keys_are_not_unique)
+  {
+    const hash_code_type hc = get_hash_code(a_key);
+    iterator itr = find_by_hash(a_key);
+
+    if (itr == end()) return 0;
+
+    bucket_iterator itrB          = itr.m_currNode;
+    const_bucket_iterator itrBEnd = (*(itr.m_currBucket)).end();
+
+    size_type elementCount = 1; // we already know there is at least one
+
+    ++itrB; // already counted the first one 
+    for (; itrB != itrBEnd; ++itrB)
+    {
+      if (hc == get_hash_code(*itrB))
+      {
+        ++elementCount;
+      }
+    }
+
+    return elementCount;
+  }
+    
   //------------------------------------------------------------------------
   // Rehashing
 
@@ -558,8 +824,8 @@ namespace tloc { namespace core {
 
     for (; itrB != itrBEnd; ++itrB)
     {
-      buckets_type::const_iterator itrN = (*itrB).begin();
-      buckets_type::const_iterator itrNEnd = (*itrB).end();
+      bucket_type::const_iterator itrN = (*itrB).begin();
+      bucket_type::const_iterator itrNEnd = (*itrB).end();
 
       while(itrN != itrNEnd)
       {

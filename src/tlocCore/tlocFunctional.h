@@ -12,6 +12,9 @@ namespace tloc { namespace core {
   template <typename T>
   struct TemplateDiagnose;
 
+  template <typename T>
+  struct DiagnoseTemplate;
+
   //////////////////////////////////////////////////////////////////////////
   // Constness - these functions can be used to write the non-const version
   // of a function by calling the const version of the function to avoid 

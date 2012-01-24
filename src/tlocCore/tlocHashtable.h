@@ -41,8 +41,7 @@ namespace tloc { namespace core {
   };
 
   template <typename T_Key, typename T_Hasher, typename T_HashToRange>
-  struct range_hash_default : public binary_function<T_Key, u32, u32>,
-    public T_Hasher, public T_HashToRange
+  struct range_hash_default : public T_Hasher, public T_HashToRange
   {
     typedef T_Hasher      hasher;
     typedef T_HashToRange hash_to_range_type;
@@ -94,29 +93,29 @@ namespace tloc { namespace core {
     typedef HashtableItrBase<T_Policies, T_Const>    this_type;
 
     typedef T_Policies                               policy_type;
-    typedef typename policy_type::node_type          node_type;
-    typedef typename policy_type::bucket_type        b_type;
+    typedef typename policy_type::bucket_type        bucket_type;
+    typedef typename policy_type::buckets_array_type b_array_type;
     typedef typename T_Policies::value_type          value_type;
 
     typedef typename Loki::Select<T_Const, 
                                   const value_type*, 
-                                  value_type*>::Result      pointer;
+                                  value_type*>::Result        pointer;
     typedef typename Loki::Select<T_Const, 
                                   const value_type&, 
-                                  value_type&>::Result      reference;
-    typedef typename Loki::Select<T_Const, const b_type, 
-                                  b_type>::Result           bucket_type;
+                                  value_type&>::Result        reference;
+    typedef typename Loki::Select<T_Const, const b_array_type, 
+                                  b_array_type>::Result       bucket_array_type;
     typedef typename Loki::Select<T_Const, 
-      typename node_type::const_iterator, 
-      typename node_type::iterator>::Result                 node_iterator;
+      typename bucket_type::const_iterator, 
+      typename bucket_type::iterator>::Result                 bucket_iterator;
     typedef typename Loki::Select<T_Const, 
-      typename bucket_type::const_iterator,
-      typename bucket_type::iterator>::Result               bucket_iterator;
+      typename bucket_array_type::const_iterator,
+      typename bucket_array_type::iterator>::Result           local_iterator;
 
   public:
-    TL_FI HashtableItrBase(bucket_type& a_bucketContainer);
-    TL_FI HashtableItrBase(bucket_type& a_bucketContainer,
-      const bucket_iterator& a_currBucket, const node_iterator& a_currNode);
+    TL_FI HashtableItrBase(bucket_array_type& a_bucketContainer);
+    TL_FI HashtableItrBase(bucket_array_type& a_bucketContainer,
+      const local_iterator& a_currBucket, const bucket_iterator& a_currNode);
 
     TL_FI void IncrementBucket();
     TL_FI void Increment();
@@ -127,9 +126,9 @@ namespace tloc { namespace core {
 
   //private:
 
-    node_iterator       m_currNode;
-    bucket_type&        m_bucketContainer;
-    bucket_iterator     m_currBucket;
+    bucket_iterator    m_currNode;
+    bucket_array_type& m_bucketContainer;
+    local_iterator     m_currBucket;
   };
 
   template <typename T_Policies, bool T_Const>
@@ -142,25 +141,24 @@ namespace tloc { namespace core {
 
     // The non-const type is used for the copy constructor. This is because
     // we cannot 
-    typedef HashtableItr<T_Policies, false>           this_type_non_const;
+    typedef HashtableItr<T_Policies, false>     this_type_non_const;
 
-    typedef typename base_type::bucket_type           bucket_type;
-    typedef typename base_type::bucket_iterator       bucket_iterator;
-    typedef typename base_type::node_type             node_type;
-    typedef typename base_type::node_iterator         node_iterator;
-    typedef typename base_type::value_type            value_type;
-    typedef typename base_type::pointer               pointer;
-    typedef typename base_type::reference             reference;
+    typedef typename base_type::bucket_array_type bucket_array_type;
+    typedef typename base_type::local_iterator    local_iterator;
+    typedef typename base_type::bucket_iterator   bucket_iterator;
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::pointer           pointer;
+    typedef typename base_type::reference         reference;
 
-    typedef tl_ptrdiff                                difference_type;
-    typedef forward_iterator_tag                      iterator_category;
+    typedef tl_ptrdiff                          difference_type;
+    typedef forward_iterator_tag                iterator_category;
 
   public:
 
-    HashtableItr(bucket_type& a_bucketContainer);
-    HashtableItr(bucket_type& a_bucketContainer, 
-                 const bucket_iterator& a_currBucket, 
-                 const node_iterator& a_currNode);
+    HashtableItr(bucket_array_type& a_bucketContainer);
+    HashtableItr(bucket_array_type& a_bucketContainer, 
+                 const local_iterator& a_currBucket, 
+                 const bucket_iterator& a_currNode);
     HashtableItr(const this_type_non_const& a_other);
 
     reference   operator*() const; 
@@ -168,7 +166,7 @@ namespace tloc { namespace core {
     this_type&  operator++(); 
     this_type   operator++(int); 
 
-    const node_iterator&    get_node() const;
+    const bucket_iterator&    get_node() const;
 
   };
 
@@ -212,7 +210,7 @@ namespace tloc { namespace core {
 
     typedef u32                                  hash_code_type;
 
-    typedef typename T_Policy::node_type         node_type;
+    typedef typename T_Policy::bucket_type       bucket_type;
     typedef typename T_Policy::element_type      element_type;
     typedef typename T_Policy::value_type        value_type;
     typedef typename T_Policy::key_type          key_type;
@@ -340,12 +338,12 @@ namespace tloc { namespace core {
     typedef T_HashToRange		          hash_to_range_type;
     typedef T_RangeHashFunc<key_type, hasher, hash_to_range_type> range_hasher_type;
     typedef T_KeyEqual			          key_equal;
-    typedef T_BucketType		          bucket_type;
+    typedef T_BucketType		          buckets_array_type;
     typedef T_RehashPolicy	          rehash_policy_type;
 
-    typedef typename bucket_type::value_type	node_type;
-    typedef typename node_type::value_type		element_type;
-    typedef typename element_type::value_type	value_type;
+    typedef typename buckets_array_type::value_type bucket_type;
+    typedef typename bucket_type::value_type        element_type;
+    typedef typename element_type::value_type       value_type;
 
     typedef tl_ptrdiff     difference_type;
     typedef tl_size        size_type;
@@ -374,6 +372,9 @@ namespace tloc { namespace core {
   class Hashtable : public HashCode<T_Policies, typename T_Policies::cache_hash>
   {
   public:
+    //////////////////////////////////////////////////////////////////////////
+    // Typedefs
+
     typedef Hashtable<T_Policies>                   this_type;
     typedef T_Policies                              policy_type;
 
@@ -383,8 +384,8 @@ namespace tloc { namespace core {
     typedef typename policy_type::element_type			 element_type;
     typedef typename policy_type::hasher             hasher;
     typedef typename policy_type::key_equal					 key_equal;
-    typedef typename policy_type::node_type					 buckets_type;
-    typedef typename policy_type::bucket_type				 buckets_array_type;
+    typedef typename policy_type::bucket_type        bucket_type;
+    typedef typename policy_type::buckets_array_type buckets_array_type;
     typedef typename policy_type::size_type					 size_type;
     typedef typename policy_type::rehash_policy_type rehash_policy_type;
 
@@ -399,19 +400,30 @@ namespace tloc { namespace core {
                     Pair<iterator, bool>, 
                     iterator >::Result               insert_return_type;
 
+    typedef typename
+      Loki::Select< Loki::IsSameType<unique_keys,
+      type_true>::value, use_first<insert_return_type>, 
+      use_self<insert_return_type> >                    insert_return_selector;
+
     typedef typename buckets_array_type::iterator       local_iterator;
     typedef typename buckets_array_type::const_iterator const_local_iterator;
-    typedef typename buckets_type::iterator             bucket_iterator;
-    typedef typename buckets_type::const_iterator       const_bucket_iterator;
+    typedef typename bucket_type::iterator              bucket_iterator;
+    typedef typename bucket_type::const_iterator        const_bucket_iterator;
+
+    typedef typename iterator_traits 
+      <bucket_iterator>::iterator_category              bucket_iterator_type;
 
     typedef core::reverse_iterator<iterator>            reverse_iterator;
     typedef core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
-    typedef tl_ptrdiff                               difference_type;
-    typedef HashCode<T_Policies, unique_keys>        hash_code_base_type;
+    typedef tl_ptrdiff                                  difference_type;
+    typedef HashCode<T_Policies, unique_keys>           hash_code_base_type;
 
     // typedefs inherited from HashCode<>
     typedef typename hash_code_base_type::hash_code_type    hash_code_type;
+
+    //////////////////////////////////////////////////////////////////////////
+    // Methods
 
     //------------------------------------------------------------------------
     // Constructors
@@ -449,9 +461,9 @@ namespace tloc { namespace core {
     TL_FI iterator        end();
     TL_FI const_iterator  end() const;
 
-    TL_FI bucket_iterator			 begin(size_type a_bucketNumber);
+    TL_FI bucket_iterator			  begin(size_type a_bucketNumber);
     TL_FI const_bucket_iterator begin(size_type a_bucketNumber) const;
-    TL_FI bucket_iterator			 end(size_type a_bucketNumber);
+    TL_FI bucket_iterator			  end(size_type a_bucketNumber);
     TL_FI const_bucket_iterator end(size_type a_bucketNumber) const;
 
     //------------------------------------------------------------------------
@@ -503,16 +515,34 @@ namespace tloc { namespace core {
     // Modifiers
 
     insert_return_type  insert(const value_type& a_value);
-    iterator						insert(const_iterator a_itrBegin,
+    iterator						insert(const_iterator a_position,
                                const value_type& a_value);
     template <typename T_InputItr>
     void                insert(T_InputItr a_first, T_InputItr a_last);
 
+    ///-------------------------------------------------------------------------
+    /// Please note that this operation is a bit slower for Hashtables with the
+    /// buckets as list<singly_linked> or Vector<> that maintains element order
+    /// when erasing (instead of using swap() and pop_back() - check Array<>
+    /// policies).
+    ///
+    /// @param  a_position The position.
+    ///
+    /// @return .
+    ///-------------------------------------------------------------------------
+    iterator            erase(iterator a_position);
+    iterator            erase(iterator a_first, iterator a_last);
+    reverse_iterator    erase(reverse_iterator a_position);
+    reverse_iterator    erase(reverse_iterator a_first, reverse_iterator a_last);
+    size_type           erase(const key_type& a_key);
+
+    void                clear();
+
     //------------------------------------------------------------------------
     // Operations
 
-    TL_FI iterator        find(const key_type& a_value);
-    TL_FI const_iterator  find(const key_type& a_value) const;
+    TL_FI iterator        find(const key_type& a_key);
+    TL_FI const_iterator  find(const key_type& a_key) const;
 
     ///-------------------------------------------------------------------------
     /// Non-standard function that is present in EASTL as well. Use this when
@@ -528,6 +558,12 @@ namespace tloc { namespace core {
     ///-------------------------------------------------------------------------
     TL_FI iterator        find_by_hash(u32 a_hashCode);
     TL_FI const_iterator  find_by_hash(u32 a_hashCode) const;
+
+    TL_FI size_type       count(const key_type& a_key) const;
+
+    TL_FI Pair<iterator, iterator>             equal_range(const key_type& a_key);
+    TL_FI Pair<const_iterator, const_iterator> equal_range
+                                                  (const key_type& a_key) const;
 
   protected:
 
@@ -545,12 +581,20 @@ namespace tloc { namespace core {
     TL_FI iterator              DoInsertValue(const value_type& a_value,
                                               keys_are_not_unique);
 
-    TL_FI typename buckets_type::iterator DoPushSelect
-      (local_iterator& a_itr, const element_type& a_elem, 
-       forward_iterator_tag);
-    TL_FI typename buckets_type::iterator DoPushSelect
-      (local_iterator& a_itr, const element_type& a_elem, 
-       bidirectional_iterator_tag);
+    ///-------------------------------------------------------------------------
+    /// This function is for internal use only. It selects push_front() or
+    /// push_back() depending on the type of iterator. It assumes that the
+    /// iterator is valid.
+    ///
+    /// @param  a_itr         The bucket to which the element will be added 
+    /// @param  a_elem        The element to add
+    ///
+    /// @return Iterator to the inserted element 
+    ///-------------------------------------------------------------------------
+    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr, 
+      const element_type& a_elem, forward_iterator_tag);
+    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr, 
+      const element_type& a_elem, bidirectional_iterator_tag);
 
     ///-------------------------------------------------------------------------
     /// The function is for internal use only. It selects insert_after() or
@@ -562,12 +606,27 @@ namespace tloc { namespace core {
     ///
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
-    TL_FI typename buckets_type::iterator DoInsertSelect
-      (local_iterator& a_itr, bucket_iterator a_currNode, 
-       const element_type& a_elem, forward_iterator_tag);
-    TL_FI typename buckets_type::iterator DoInsertSelect
-      (local_iterator& a_itr, typename bucket_iterator a_currNode, 
-       const element_type& a_elem, bidirectional_iterator_tag);
+    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr, 
+      bucket_iterator a_currNode, const element_type& a_elem, 
+      forward_iterator_tag);
+    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr, 
+      typename bucket_iterator a_currNode, const element_type& a_elem, 
+      bidirectional_iterator_tag);
+
+    //------------------------------------------------------------------------
+    // Erase helpers
+
+    TL_FI iterator DoErase(iterator a_position, forward_iterator_tag);
+    TL_FI iterator DoErase(iterator a_position, bidirectional_iterator_tag);
+
+    TL_FI size_type DoErase(const key_type& a_key, keys_are_unique);
+    TL_FI size_type DoErase(const key_type& a_key, keys_are_not_unique);
+
+    //------------------------------------------------------------------------
+    // Count helpers
+
+    TL_FI size_type DoCount(const key_type& a_key, keys_are_unique);
+    TL_FI size_type DoCount(const key_type& a_key, keys_are_not_unique);
 
     //------------------------------------------------------------------------
     // Rehashing
@@ -589,13 +648,15 @@ namespace tloc { namespace core {
                                                prime_rehash_policy);
 
   protected:
-    buckets_array_type				 m_bucketArray;
-    size_type					 m_elementCount;
+    //////////////////////////////////////////////////////////////////////////
+    // Variables
+
+    buckets_array_type m_bucketArray;
+    size_type          m_elementCount;
     rehash_policy_type m_rehashPolicy;
 
     // Used to mark end() iterator's m_currNode because we cannot dereference
-    // the end of the bucket container to get a node_type for an iterator
-    // that requires
+    // the end of the bucket container to get a reference to a bucket_type. 
     static bucket_iterator m_dummyNode;
   };
 

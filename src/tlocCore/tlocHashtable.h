@@ -124,6 +124,10 @@ namespace tloc { namespace core {
     bool       operator==(const this_type& a_other);
     bool       operator!=(const this_type& a_other);
 
+    const bucket_iterator&    GetNode() const;
+    const bucket_array_type&  GetBucketArray() const;
+    const local_iterator&     GetCurrBucket() const;
+
   //private:
 
     bucket_iterator    m_currNode;
@@ -165,8 +169,6 @@ namespace tloc { namespace core {
     pointer     operator->() const; 
     this_type&  operator++(); 
     this_type   operator++(int); 
-
-    const bucket_iterator&    get_node() const;
 
   };
 

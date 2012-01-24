@@ -28,7 +28,7 @@ namespace TestingArray
 
   struct HashtableFixture
   {
-    typedef s32 value_type;
+    typedef u32 value_type;
 
     typedef HashtableElement<value_type>    e_type;
     typedef SinglyList<e_type, true>::type  singly_type;
@@ -38,13 +38,9 @@ namespace TestingArray
     template <typename T_List, typename T_Key, bool T_CacheHash, bool T_Unique>
     struct HT
     {
-      typedef HashtablePolicy<u32, use_self<T_Key>, hash<T_Key>, 
+      typedef HashtablePolicy<T_Key, use_self<T_Key>, hash<T_Key>, 
         hash_to_range_mod, range_hash_default, equal_to<T_Key>, 
         prime_rehash_policy, T_List, T_CacheHash, T_Unique> type;
-
-      //typedef HashtablePolicy<u32, use_self<u32>, hash<u32>, hash_to_range_mod,
-      //  range_hash_default, equal_to<u32>, prime_rehash_policy, T_List,
-      //  false, true> type;
     };
 
     typedef HT<SinglyList<singly_type, true>::type, value_type, false, true>::type
@@ -66,6 +62,32 @@ namespace TestingArray
     typedef HT<Array<doubly_type>, value_type, false, true>::type
       arraydouble_nohash_unique;
   };
+  
+  template <template <typename T_List> class T_Method>
+  struct TestMethod
+  {
+    static void AllVariations()
+    {
+      T_Method<HashtableFixture::Hashtable<doubly_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<singly_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<singlydoubly_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<doublysingly_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<doublyarray_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<array_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<arraysingly_nohash_unique> >();
+      T_Method<HashtableFixture::Hashtable<arraydouble_nohash_unique> >();
+    }
+  };
+
+#define TestMethodAllVariations(T_Type) \
+    T_Type<Hashtable<singly_nohash_unique> >(); \
+    T_Type<Hashtable<doubly_nohash_unique> >(); \
+    T_Type<Hashtable<singlydoubly_nohash_unique> >(); \
+    T_Type<Hashtable<doublysingly_nohash_unique> >(); \
+    T_Type<Hashtable<doublyarray_nohash_unique> >(); \
+    T_Type<Hashtable<array_nohash_unique> >(); \
+    T_Type<Hashtable<arraysingly_nohash_unique> >(); \
+    T_Type<Hashtable<arraydouble_nohash_unique> >();
 
   template <typename T_List>
   void TestCtors()
@@ -82,14 +104,29 @@ namespace TestingArray
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/Ctors", "")
   {
-    TestCtors<Hashtable<doubly_nohash_unique> >();
-    TestCtors<Hashtable<singly_nohash_unique> >();
-    TestCtors<Hashtable<singlydoubly_nohash_unique> >();
-    TestCtors<Hashtable<doublysingly_nohash_unique> >();
-    TestCtors<Hashtable<doublyarray_nohash_unique> >();
-    TestCtors<Hashtable<array_nohash_unique> >();
-    TestCtors<Hashtable<arraysingly_nohash_unique> >();
-    TestCtors<Hashtable<arraydouble_nohash_unique> >();
+    // Unfrotunately, uncommenting the following crashes the VS 2008 compiler.
+    // Seems to be a bug. We will have to settle for #define 
+    //TestMethod<TestCtors>::AllVariations();
+
+    TestMethodAllVariations(TestCtors);
+  }
+
+  template <typename T_List>
+  void TestInsert()
+  {
+    T_List h(3);
+
+    h.insert(5);
+
+    // Should be added to bucket # 2
+    T_List::iterator itr = h.begin();
+
+    CHECK( (*itr) == 5);
+  }
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")
+  {
+    TestMethodAllVariations(TestInsert);
   }
 
 };

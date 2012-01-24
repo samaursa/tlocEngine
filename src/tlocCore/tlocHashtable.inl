@@ -111,6 +111,28 @@ namespace tloc { namespace core {
     return !(operator==(a_other));
   }
 
+  template <HASHTABLE_ITR_BASE_TYPES>
+  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_iterator&
+    HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetNode() const
+  { 
+    return m_currNode;
+  }
+
+  template <HASHTABLE_ITR_BASE_TYPES>
+  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_array_type&
+    HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetBucketArray() const
+  { 
+    return m_bucketContainer;
+  }
+
+  template <HASHTABLE_ITR_BASE_TYPES>
+  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::local_iterator&
+    HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetCurrBucket() const
+  { 
+    return m_currBucket;
+  }
+
+
   //------------------------------------------------------------------------
   // Hashtable Iterator
 
@@ -164,13 +186,6 @@ namespace tloc { namespace core {
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator ++(int) 
   { 
     this_type temp(*this); base_type::Increment(); return temp; 
-  }
-
-  template <HASHTABLE_ITR_TYPES>
-  const typename HashtableItr<HASHTABLE_ITR_PARAMS>::bucket_iterator&
-    HashtableItr<HASHTABLE_ITR_PARAMS>::get_node() const
-  { 
-    return base_type::m_currNode;
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -581,11 +596,11 @@ namespace tloc { namespace core {
       advance(itrB, n);
 
       // Select the appropriate push() function (front or back)
-      return Pair<iterator(m_bucketArray, itrB, 
-        DoPushSelect(itrB, newElement, bucket_iterator_type()) ), true>;
+      return MakePair(iterator(m_bucketArray, itrB, 
+        DoPushSelect(itrB, newElement, bucket_iterator_type()) ), true);
     }
 
-    return Pair<end(), false>;
+    return MakePair(end(), false);
   }
 
   template <HASH_TABLE_TYPES>
@@ -644,7 +659,7 @@ namespace tloc { namespace core {
   {
     (*(a_itr)).push_front(a_elem);
 
-    return (*(a_itr)).front();
+    return (*(a_itr)).begin();
   }
 
   template <HASH_TABLE_TYPES>

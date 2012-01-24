@@ -129,23 +129,34 @@ namespace TestingArray
 
     Pair<bool, u32> result = itr.GetCurrBucketNumber();
     REQUIRE(result.first == true);
-    CHECK(result.second == 2);
+    CHECK(result.second == 5 % 3); // bucket #2
     CHECK( (*itr) == 5);
 
     selected_result itr2 = h.insert(6);
     itr = iterator_deref()(itr2);
     CHECK( (*itr) == 6);
 
-    //itr = h.insert(7);
-    //CHECK( (*itr) == 7);
+    result = itr.GetCurrBucketNumber();
+    REQUIRE(result.first == true);
+    CHECK(result.second == 0) // 6 should be in bucket #0
 
-    //CHECK(h.bucket_count() == 3);
+    itr2 = h.insert(7);
+    itr = iterator_deref()(itr2);
+    CHECK( (*itr) == 7);
 
+    itr2 = h.insert(8);
+    itr = iterator_deref()(itr2);
+    CHECK( (*itr) == 8);
 
-    //typedef use_first<selected_result> itr_def;
-    //T_List::iterator iter2 = iterator_deref()(iter);
+    CHECK(h.bucket_count() == 7);
+    result = itr.GetCurrBucketNumber();
+    REQUIRE(result.first == true);
+    CHECK(result.second == 8 % 7);
 
-    //CHECK( (*(iter2)) == 8);
+    itr = h.find(5);
+    result = itr.GetCurrBucketNumber();
+    REQUIRE(result.first == true);
+    CHECK(result.second == 5 % 7); // If passed, rehash was successful
   }
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")

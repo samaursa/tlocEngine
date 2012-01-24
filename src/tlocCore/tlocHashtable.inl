@@ -490,7 +490,7 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key)
   {
-    const hash_code_type hc = get_hash_code(k);
+    const hash_code_type hc = get_hash_code(a_key);
     return find_by_hash(hc);
   }
 
@@ -498,7 +498,7 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key) const
   {
-    const hash_code_type hc = get_hash_code(k);
+    const hash_code_type hc = get_hash_code(a_key);
     return find_by_hash(hc);
   }
 
@@ -667,6 +667,7 @@ namespace tloc { namespace core {
       const element_type& a_elem, bidirectional_iterator_tag)
   {
     (*(a_itr)).push_back(a_elem);
+    ++m_elementCount;
 
     bucket_iterator itrN = (*(a_itr)).end();
     return --itrN;
@@ -678,6 +679,7 @@ namespace tloc { namespace core {
       const element_type& a_elem, forward_iterator_tag)
   {
     (*(a_itr)).push_front(a_elem);
+    ++m_elementCount;
 
     return (*(a_itr)).begin();
   }
@@ -688,6 +690,7 @@ namespace tloc { namespace core {
       bucket_iterator a_currNode, const element_type& a_elem, 
       forward_iterator_tag)
   {
+    ++m_elementCount;
     return (*(a_itr)).insert_after(a_currNode, a_elem);
   }
 
@@ -697,6 +700,7 @@ namespace tloc { namespace core {
       bucket_iterator a_currNode, const element_type& a_elem, 
       bidirectional_iterator_tag)
   {
+    ++m_elementCount;
     return (*(a_itr)).insert(a_currNode, a_elem);
   }
 

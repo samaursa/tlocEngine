@@ -298,6 +298,15 @@ namespace tloc { namespace core {
     TL_FI this_type       subOperation(int, doubly_linked_tag);
   };
 
+  template <typename T_Node, typename T, typename T_Ptr, typename T_Ref,
+  typename T_ConstPtr, typename T_ConstRef>
+  TL_I bool operator==(const list_iterator<T_Node, T, T_Ptr, T_Ref>& a,
+                       const list_iterator<T_Node, T, T_ConstPtr, T_ConstRef>& b)
+  {
+    return a.m_node == b.m_node;
+  }
+
+
   //////////////////////////////////////////////////////////////////////////
   // Global functions
 

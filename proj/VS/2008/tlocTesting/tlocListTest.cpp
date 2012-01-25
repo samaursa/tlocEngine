@@ -1,10 +1,14 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocList.h"
-#include "tlocCore/tlocList.inl"
-
 #include "tlocCore/tlocArray.h"
 #include "tlocCore/tlocArray.inl"
+
+#define private public
+#define protected public
+#include "tlocCore/tlocList.h"
+#include "tlocCore/tlocList.inl"
+#undef private
+#undef protected
 
 namespace TestingList
 {
@@ -692,7 +696,7 @@ namespace TestingList
   {
     T_ListType first(3, 100);
     T_ListType second(5, 200);
-    T_ListType::iterator itr;
+    T_ListType::iterator itr, itr2;
 
     first.swap(second);
 
@@ -703,10 +707,10 @@ namespace TestingList
     CHECK(*itr++ == 200);
     CHECK(*itr++ == 200);
 
-    itr = second.begin();
-    CHECK(*itr++ == 100);
-    CHECK(*itr++ == 100);
-    CHECK(*itr++ == 100);
+    itr2 = second.begin();
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testSwap", "")
@@ -719,26 +723,92 @@ namespace TestingList
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testNodeSwap", "")
   {
-    //ListNode<s32, doubly_linked_tag> n1, n2, n3;
-    //n1.m_value = 1;
-    //n2.m_value = 2;
-    //n3.m_value = 3;
+    {
+      ListNode<s32, doubly_linked_tag> n1, n2, n3;
+      n1.m_value = 1;
+      n2.m_value = 2;
+      n3.m_value = 3;
 
-    //n1.m_next = &n2;
-    //n2.m_next = &n3;
-    //n3.m_next = &n1;
+      n1.m_next = &n2;
+      n2.m_next = &n3;
+      n3.m_next = &n1;
 
-    //n3.m_prev = &n2;
-    //n2.m_prev = &n1;
-    //n1.m_prev = &n3;
+      n3.m_prev = &n2;
+      n2.m_prev = &n1;
+      n1.m_prev = &n3;
 
-    //n1.swap(n1, n2);
-    //CHECK(n1.m_value == 2);
-    //CHECK(n2.m_value == 1);
+      n1.swap(n1, n2);
+      CHECK(n1.m_value == 2);
+      CHECK(n2.m_value == 1);
+      CHECK(n3.m_value == 3);
 
-    //CHECK(n1.m_next == &n3);
-    //CHECK(n2.m_next == &n1);
-    //CHECK(n2.m_prev == &n3);
+      CHECK(n1.m_next == &n3);
+      CHECK(n1.m_prev == &n2);
+      CHECK(n2.m_next == &n1);
+      CHECK(n2.m_prev == &n3);
+      CHECK(n3.m_prev == &n1);
+      CHECK(n3.m_next == &n2);
+
+      n1.swap(n1, n2);
+      CHECK(n1.m_value == 1);
+      CHECK(n2.m_value == 2);
+      CHECK(n3.m_value == 3);
+
+      CHECK(n1.m_next == &n2);
+      CHECK(n1.m_prev == &n3);
+      CHECK(n2.m_next == &n3);
+      CHECK(n2.m_prev == &n1);
+      CHECK(n3.m_next == &n1);
+      CHECK(n3.m_prev == &n2);
+
+      n1.swap(n1, n3);
+      CHECK(n1.m_value == 3);
+      CHECK(n2.m_value == 2);
+      CHECK(n3.m_value == 1);
+
+      CHECK(n3.m_next == &n2);
+      CHECK(n3.m_prev == &n1);
+      CHECK(n2.m_next == &n1);
+      CHECK(n2.m_prev == &n3);
+      CHECK(n1.m_next == &n3);
+      CHECK(n1.m_prev == &n2);
+    }
+
+    {
+      ListNode<s32, singly_linked_tag> n1, n2, n3;
+      n1.m_value = 1;
+      n2.m_value = 2;
+      n3.m_value = 3;
+
+      n1.m_next = &n2;
+      n2.m_next = &n3;
+      n3.m_next = &n1;
+
+      n1.swap(n1, n2);
+      CHECK(n1.m_value == 2);
+      CHECK(n2.m_value == 1);
+
+      CHECK(n1.m_next == &n3);
+      CHECK(n2.m_next == &n1);
+      CHECK(n3.m_next == &n2);
+
+      n1.swap(n1, n2);
+      CHECK(n1.m_value == 1);
+      CHECK(n2.m_value == 2);
+
+      CHECK(n1.m_next == &n2);
+      CHECK(n2.m_next == &n3);
+      CHECK(n3.m_next == &n1);
+
+      n1.swap(n1, n3);
+      CHECK(n1.m_value == 3);
+      CHECK(n2.m_value == 2);
+      CHECK(n3.m_value == 1);
+
+      CHECK(n3.m_next == &n2);
+      CHECK(n2.m_next == &n1);
+      CHECK(n1.m_next == &n3);
+    }
   }
 
   template <typename T_ListType>

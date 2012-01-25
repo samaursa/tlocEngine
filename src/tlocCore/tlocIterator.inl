@@ -458,13 +458,15 @@ namespace tloc { namespace core {
   }
 
   template <LIST_ITR_TYPES> 
-    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator == (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
+    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::
+      operator==(const this_type& aOther)
   {
     return m_node == aOther.m_node;
   }
 
   template <LIST_ITR_TYPES> 
-    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::operator != (const typename list_iterator<LIST_ITR_TEMP_PARAM>::this_type& aOther)
+    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::
+      operator!=(const this_type& aOther)
   {
     return m_node != aOther.m_node;
   }

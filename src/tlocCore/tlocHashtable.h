@@ -137,6 +137,10 @@ namespace tloc { namespace core {
     bucket_iterator    m_currNode;
     bucket_array_type* m_bucketContainer;
     local_iterator     m_currBucket;
+
+    // Used to mark end() iterator's m_currNode because we cannot dereference
+    // the end of the bucket container to get a reference to a bucket_type. 
+    static bucket_iterator m_dummyNode;
   };
 
   template <typename T_Policies, bool T_Const>
@@ -654,16 +658,14 @@ namespace tloc { namespace core {
                                                prime_rehash_policy);
 
   protected:
+    template<typename, bool> friend class HashtableItrBase;
+
     //////////////////////////////////////////////////////////////////////////
     // Variables
 
     buckets_array_type m_bucketArray;
     size_type          m_elementCount;
     rehash_policy_type m_rehashPolicy;
-
-    // Used to mark end() iterator's m_currNode because we cannot dereference
-    // the end of the bucket container to get a reference to a bucket_type. 
-    static bucket_iterator m_dummyNode;
   };
 
 };};

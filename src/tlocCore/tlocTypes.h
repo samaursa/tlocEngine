@@ -208,6 +208,11 @@ namespace tloc
   /// not allow 0 size classes). To get around that, use the following class
   /// for one of your other members in the class where T_User is the other
   /// member and T is your conditional type.
+  /// 
+  /// @note All operators are inherited from ConditionalType<> which means that
+  /// comparison between this package and another package is essentially a
+  /// comparison between ConditionType<>s and does NOT take the user variable
+  /// into account.
   ///-------------------------------------------------------------------------
   template <typename T_User, typename T, bool T_DeclareValue>
   struct ConditionalTypePackage : public ConditionalType<T, T_DeclareValue>

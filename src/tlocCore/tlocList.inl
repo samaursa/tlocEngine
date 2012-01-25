@@ -50,16 +50,47 @@ namespace tloc { namespace core {
 
   template <LIST_NODE_TYPES>
   TL_FI void ListNode<SINGLY_LIST_NODE_PARAMS>
-    ::swap(ListNode<SINGLY_LIST_NODE_PARAMS>& a, 
+    ::swap_after(ListNode<SINGLY_LIST_NODE_PARAMS>& a, 
+                 ListNode<SINGLY_LIST_NODE_PARAMS>& b)
+  {
+    TLOC_ASSERT_WIP();
+  }
+
+  template <LIST_NODE_TYPES>
+  TL_FI void ListNode<SINGLY_LIST_NODE_PARAMS>
+    ::swap(ListNode<SINGLY_LIST_NODE_PARAMS>& a,
            ListNode<SINGLY_LIST_NODE_PARAMS>& b)
   {
-    TLOC_ASSERT_WIP(); 
+    // Costly operation for a singly linked list because we have to get the
+    // previous node of each of the above
+
+    if (a.m_next != &b && b.m_next != &a)
+    {
+      this_type* prev_a = a.getPrev();
+      this_type* prev_b = b.getPrev();
+
+      prev_a->m_next = &b;
+      prev_b->m_next = &a;
+    }
+    else
+    {
+      if (a.m_next == &b)
+      {
+        this_type* prev_a = a.getPrev();
+        prev_a->m_next = &b;
+        a.m_next = &a;
+      }
+      else
+      {
+        this_type* prev_b = b.getPrev();
+        prev_b->m_next = &a;
+        b.m_next = &b;
+      }
+    }
 
     const this_type temp(a);
-    a.m_next = b.m_next;
-    a.m_value = b.m_value;
-    b.m_next = temp.m_next;
-    b.m_value = temp.m_value;
+    a = b;
+    b = temp;
   }
 
   template <LIST_NODE_TYPES>
@@ -210,9 +241,7 @@ namespace tloc { namespace core {
     ::swap(ListNode<DOUBLY_LIST_NODE_PARAMS>& a, 
            ListNode<DOUBLY_LIST_NODE_PARAMS>& b)
   {
-    TLOC_ASSERT_WIP(); 
-
-    if (a.m_next != &b && b.m_next != &b)
+    if (a.m_next != &b && b.m_next != &a)
     {
       a.m_prev->m_next = &b;
       a.m_next->m_prev = &b;
@@ -225,12 +254,16 @@ namespace tloc { namespace core {
       if (a.m_next == &b)
       {
         a.m_prev->m_next = &b;
+        a.m_next = &a;
         b.m_next->m_prev = &a;
+        b.m_prev = &b;
       }
       else
       {
-        a.m_next->m_prev = &b;
         b.m_prev->m_next = &a;
+        b.m_next = &b;
+        a.m_next->m_prev = &b;
+        a.m_prev = &a;
       }
     }
 
@@ -238,6 +271,14 @@ namespace tloc { namespace core {
     a = b;
     b = temp;
   }
+ 
+  template <LIST_NODE_TYPES>
+  TL_FI void ListNode<DOUBLY_LIST_NODE_PARAMS>
+    ::swap_after(ListNode<DOUBLY_LIST_NODE_PARAMS>& a, 
+                 ListNode<DOUBLY_LIST_NODE_PARAMS>& b)
+  {
+    TLOC_ASSERT_WIP();
+  } 
 
   template <LIST_NODE_TYPES>
   void ListNode<DOUBLY_LIST_NODE_PARAMS>
@@ -743,7 +784,8 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::swap(this_type& aOther)
   {
-    tlSwap(*this, aOther);
+    node_type::swap(m_node(), aOther.m_node());
+    tlSwap(m_size(), aOther.m_size());
   }
 
   template <LIST_TEMP_TYPES>

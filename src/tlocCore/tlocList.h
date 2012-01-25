@@ -55,6 +55,7 @@ namespace tloc { namespace core {
 
     TL_FI        void       init();
     TL_STATIC_FI void       swap(this_type& a, this_type& b);
+    TL_STATIC_FI void       swap_after(this_type& a, this_type& b);
     TL_FI        void       insert_after(this_type* aNext);
     TL_FI        void       remove_after(); 
     TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
@@ -93,6 +94,7 @@ namespace tloc { namespace core {
 
     TL_FI        void       init();
     TL_STATIC_FI void       swap(this_type& a, this_type& b);
+    TL_STATIC_FI void       swap_after(this_type& a, this_type& b);
     TL_FI        void       insert_after(this_type* aNext);
     TL_FI        void       remove_after();
     TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);

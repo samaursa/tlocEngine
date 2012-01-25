@@ -43,6 +43,7 @@ namespace TestingArray
         prime_rehash_policy, T_List, T_CacheHash, T_Unique> type;
     };
 
+    // Unique keys
     typedef HT<SinglyList<singly_type, true>::type, value_type, false, true>::type
       singly_nohash_unique;
     typedef HT<DoublyList<doubly_type, true>::type, value_type, false, true>::type
@@ -61,6 +62,26 @@ namespace TestingArray
       arraysingly_nohash_unique;
     typedef HT<Array<doubly_type>, value_type, false, true>::type
       arraydouble_nohash_unique;
+
+    // Non-unique keys
+    typedef HT<SinglyList<singly_type, true>::type, value_type, false, false>::type
+      singly_nohash_nounique;
+    typedef HT<DoublyList<doubly_type, true>::type, value_type, false, false>::type
+      doubly_nohash_nounique;
+    typedef HT<SinglyList<doubly_type, true>::type, value_type, false, false>::type
+      singlydoubly_nohash_nounique;
+    typedef HT<SinglyList<array_type, true>::type, value_type, false, false>::type
+      singlyarray_nohash_nounique;
+    typedef HT<DoublyList<singly_type, true>::type, value_type, false, false>::type
+      doublysingly_nohash_nounique;
+    typedef HT<DoublyList<array_type, true>::type, value_type, false, false>::type
+      doublyarray_nohash_nounique;
+    typedef HT<Array<array_type>, value_type, false, false>::type
+      array_nohash_nounique;
+    typedef HT<Array<singly_type>, value_type, false, false>::type
+      arraysingly_nohash_nounique;
+    typedef HT<Array<doubly_type>, value_type, false, false>::type
+      arraydouble_nohash_nounique;
   };
   
   template <template <typename T_List> class T_Method>
@@ -89,6 +110,16 @@ namespace TestingArray
     T_Type<Hashtable<arraysingly_nohash_unique> >(); \
     T_Type<Hashtable<arraydouble_nohash_unique> >();
 
+#define TestMethodAllVariationsNoUnique(T_Type) \
+    T_Type<Hashtable<singly_nohash_nounique> >(); \
+    T_Type<Hashtable<doubly_nohash_nounique> >(); \
+    T_Type<Hashtable<singlydoubly_nohash_nounique> >(); \
+    T_Type<Hashtable<doublysingly_nohash_nounique> >(); \
+    T_Type<Hashtable<doublyarray_nohash_nounique> >(); \
+    T_Type<Hashtable<array_nohash_nounique> >(); \
+    T_Type<Hashtable<arraysingly_nohash_nounique> >(); \
+    T_Type<Hashtable<arraydouble_nohash_nounique> >();
+
   template <typename T_List>
   void TestCtors()
   {
@@ -104,11 +135,12 @@ namespace TestingArray
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/Ctors", "")
   {
-    // Unfrotunately, uncommenting the following crashes the VS 2008 compiler.
+    // Unfortunately, uncommenting the following crashes the VS 2008 compiler.
     // Seems to be a bug. We will have to settle for #define 
     //TestMethod<TestCtors>::AllVariations();
 
-    TestMethodAllVariationsUnique(TestCtors);
+    //TestMethodAllVariationsUnique(TestCtors);
+    //TestMethodAllVariationsNoUnique(TestCtors);
   }
 
   template <typename T_List>
@@ -157,11 +189,28 @@ namespace TestingArray
     result = itr.GetCurrBucketNumber();
     REQUIRE(result.first == true);
     CHECK(result.second == 5 % 7); // If passed, rehash was successful
+
+    itr = h.begin();
+    T_List::iterator itrEnd = h.end();
+
+    REQUIRE(h.size() == 4);
+
+    REQUIRE(itr != itrEnd);
+    CHECK( (*(itr++)) == 7);
+    REQUIRE(itr != itrEnd);
+    CHECK( (*(itr++)) == 8);
+    REQUIRE(itr != itrEnd);
+    CHECK( (*(itr++)) == 5);
+    REQUIRE(itr != itrEnd);
+    CHECK( (*(itr++)) == 6);
+
+    CHECK( (itr == itrEnd) == true);
   }
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")
   {
     TestMethodAllVariationsUnique(TestInsert);
+    TestMethodAllVariationsNoUnique(TestInsert);
   }
 
 };

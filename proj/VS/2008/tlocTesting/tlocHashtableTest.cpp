@@ -257,12 +257,116 @@ namespace TestingArray
         CHECK(itr != h.end());
       }
     }
+
+    //------------------------------------------------------------------------
+    // Test multiple inserts
+    {
+      T_HashT h;
+      
+      for (u32 i = 0; i < 10; ++i)
+      {
+        h.insert(5);
+      }
+
+      CHECK(h.count(5) == (Loki::IsSameType<typename T_HashT::unique_keys, 
+        type_true>::value ? 1 : 10))
+    }
   }
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")
   {
     TestMethodAllVariationsUnique(TestInsert);
     TestMethodAllVariationsNoUnique(TestInsert);
+  }
+
+  template <typename T_HashT>
+  void TestFind()
+  {
+    USE_TYPEDEFS;
+
+    //------------------------------------------------------------------------
+    // TL_FI iterator        find(const key_type& a_key);
+    {
+      T_HashT h;
+
+      for (u32 i = 0; i < 16; i = i + 3)
+      {
+        h.insert(i);
+      }
+
+      T_HashT::iterator itr;
+      for (u32 i = 0; i < 16; i = i + 3)
+      {
+        itr = h.find(i);
+        CHECK(itr != h.end());
+      }
+    }
+
+    //------------------------------------------------------------------------
+    // TL_FI iterator        find_by_hash(u32 a_hashCode);
+    {
+      T_HashT h;
+      for (u32 i = 0; i < 16; i = i + 3)
+      {
+        h.insert(i);
+      }
+
+      T_HashT::iterator itr;
+      for (u32 i = 0; i < 16; i = i + 3)
+      {
+        itr = h.find_by_hash(i);
+        CHECK(itr != h.end());
+      }
+    }
+
+    //------------------------------------------------------------------------
+    // TL_FI size_type       count(const key_type& a_key) const;
+    {
+      T_HashT h;
+      const u32 numOfInserts = 3;
+      for (u32 i = 0; i < 10; ++i)
+      {
+        for (u32 j = 0; j < numOfInserts; ++j)
+        {
+          h.insert(i);
+        }
+      }
+
+      for (u32 i = 0; i < 10; ++i)
+      {
+        CHECK(h.count(i) == (Loki::IsSameType<typename T_HashT::unique_keys, 
+          type_true>::value ? 1 : numOfInserts))
+      }
+    }
+
+    //------------------------------------------------------------------------
+    // TL_FI Pair<iterator, iterator>   equal_range(const key_type& a_key);
+    {
+      T_HashT h;
+      for (u32 i = 0; i < 10; ++i)
+      {
+        h.insert(i);
+        h.insert(i);
+        h.insert(i);
+      }
+
+      Pair<T_HashT::iterator, T_HashT::iterator> p = h.equal_range(3);
+
+      u32 count = 0;
+      for (; p.first != p.second; ++(p.first))
+      {
+        ++count;
+      }
+
+      CHECK(count == (Loki::IsSameType<typename T_HashT::unique_keys, 
+          type_true>::value ? 1 : 3));
+    }
+  }
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/find", "")
+  {
+    TestMethodAllVariationsUnique(TestFind);
+    TestMethodAllVariationsNoUnique(TestFind);
   }
 
   template <typename T_HashT>
@@ -312,14 +416,10 @@ namespace TestingArray
     }
 
     {
-      //T_HashT::value_type v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+      T_HashT::value_type v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
-      //T_HashT h;
-      //h.insert(v, v + 14);
-
-      //for (u32 i = 0; i < 100; ++i)
-      //{
-      //}
+      T_HashT h;
+      h.insert(v, v + 14);
     }
   }
 

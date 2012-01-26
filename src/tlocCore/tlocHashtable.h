@@ -640,8 +640,8 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Count helpers
 
-    TL_FI size_type DoCount(const key_type& a_key, keys_are_unique);
-    TL_FI size_type DoCount(const key_type& a_key, keys_are_not_unique);
+    TL_FI size_type DoCount(const key_type& a_key, keys_are_unique) const;
+    TL_FI size_type DoCount(const key_type& a_key, keys_are_not_unique) const;
 
     //------------------------------------------------------------------------
     // Rehashing

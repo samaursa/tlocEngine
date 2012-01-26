@@ -56,7 +56,8 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::Increment()
   {
-    TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL!");
+    TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL!"
+      L" (did you try incrementing an iterator that is not initialized?)");
     TLOC_ASSERT_HASH_TABLE(m_currNode != m_dummyNode, 
       "Cannot increment end() iterator! (OR m_currNode wrongly assigned)");
 
@@ -84,8 +85,8 @@ namespace tloc { namespace core {
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
-    TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL! "
-      L"(did you try incrementing an iterator that is not initialized?)");
+    TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL!"
+      L" (did you try incrementing an iterator that is not initialized?)");
 
     local_iterator bucketEnd = m_bucketContainer->end();
 
@@ -329,7 +330,8 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::end() const
   {
-    return const_iterator(&m_bucketArray, m_bucketArray.end(), m_dummyNode);
+    return const_iterator(&m_bucketArray, m_bucketArray.end(), 
+                          iterator::m_dummyNode);
   }
 
   template <HASH_TABLE_TYPES>
@@ -591,8 +593,8 @@ namespace tloc { namespace core {
 
     if (itr == end()) return 0;
 
-    bucket_iterator       itrB, itrBStart = itr.m_currNode;
-    const_bucket_iterator itrBEnd = (*(itr)).end();
+    iterator itrB = itr; 
+    iterator itrBEnd = end(); 
 
     ++itrB; // we have at least one match
     for (; itrB != itrBEnd; ++itrB)
@@ -603,8 +605,7 @@ namespace tloc { namespace core {
       }
     }
 
-    return MakePair(iterator(&m_bucketArray, itr, itrBStart), 
-                    iterator(&m_bucketArray, itr, itrB));
+    return MakePair(itr, itrB); 
   }
 
   template <HASH_TABLE_TYPES>
@@ -818,7 +819,7 @@ namespace tloc { namespace core {
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type 
     Hashtable<HASH_TABLE_PARAMS>::DoCount(const key_type& a_key, 
-                                          keys_are_unique)
+                                          keys_are_unique) const
   {
     const_iterator itr = find(a_key);
 
@@ -829,14 +830,14 @@ namespace tloc { namespace core {
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type 
     Hashtable<HASH_TABLE_PARAMS>::DoCount(const key_type& a_key, 
-                                          keys_are_not_unique)
+                                          keys_are_not_unique) const
   {
     const hash_code_type hc = get_hash_code(a_key);
-    iterator itr = find_by_hash(a_key);
+    const_iterator itr = find_by_hash(a_key);
 
     if (itr == end()) return 0;
 
-    bucket_iterator itrB          = itr.m_currNode;
+    const_bucket_iterator itrB          = itr.m_currNode;
     const_bucket_iterator itrBEnd = (*(itr.m_currBucket)).end();
 
     size_type elementCount = 1; // we already know there is at least one

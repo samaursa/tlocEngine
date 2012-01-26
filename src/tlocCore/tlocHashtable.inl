@@ -93,8 +93,9 @@ namespace tloc { namespace core {
     TLOC_ASSERT_HASH_TABLE(m_currBucket != bucketEnd,
       "Already at the end of the bucket container!");
 
-    ++m_currBucket;
-    while( (*(m_currBucket)).size() == 0 )
+    // Select the next bucket that is not empty, if not found, then break and
+    // mark this iterator as the 'end'
+    do
     {
       ++m_currBucket;
       if (m_currBucket != bucketEnd)
@@ -106,7 +107,7 @@ namespace tloc { namespace core {
         m_currNode = m_dummyNode;
         break;
       }
-    }
+    }while( (*(m_currBucket)).size() == 0);
   }
 
   template <HASHTABLE_ITR_BASE_TYPES>
@@ -484,9 +485,9 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::erase(iterator a_first, iterator a_last)
   {
-    for (; a_first != a_last; ++a_first)
+    for (;a_first != a_last;)
     {
-      DoErase(a_first, bucket_iterator_type());
+      a_first = DoErase(a_first, bucket_iterator_type()); 
     }
 
     return a_first;
@@ -748,8 +749,15 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>::DoErase(iterator a_position, 
                                           forward_iterator_tag)
   {
+    // Prepare the iterator to return 
+    iterator itrNext = a_position;
+    ++itrNext;
+
+    // Erase the element
+    (*(a_position.m_currBucket)).erase(a_position.m_currNode);
     --m_elementCount;
-    return (*(a_position.m_currBucket)).erase(a_position.m_currNode);
+
+    return itrNext;
   }
 
   template <HASH_TABLE_TYPES>
@@ -757,8 +765,15 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>::DoErase(iterator a_position, 
                                           bidirectional_iterator_tag)
   {
+    // Prepare the iterator to return 
+    iterator itrNext = a_position;
+    ++itrNext;
+
+    // Erase the element
+    (*(a_position.m_currBucket)).erase(a_position.m_currNode);
     --m_elementCount;
-    return (*(a_position.m_currBucket)).erase(a_position.m_currNode);
+
+    return itrNext;
   }
 
   template <HASH_TABLE_TYPES>

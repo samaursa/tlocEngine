@@ -257,31 +257,29 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_I void ArrayBase<T>::erase( iterator aPosition )
+  TL_I typename ArrayBase<T>::iterator ArrayBase<T>::erase(iterator aPosition)
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(aPosition);
 
     aPosition->~T();
     copy(aPosition + 1, m_end, aPosition);
     --m_end;
+
+    return aPosition;
   }
 
   template <typename T>
-  TL_I void ArrayBase<T>::erase( iterator aRangeBegin, iterator aRangeEnd )
+  TL_I typename ArrayBase<T>::iterator ArrayBase<T>
+    ::erase( iterator aRangeBegin, iterator aRangeEnd )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(aRangeBegin, aRangeEnd);
 
-    iterator copyRemainingTo = aRangeBegin;
+    iterator const destroyFrom = copy(aRangeEnd, m_end, aRangeBegin);
+    DoDestroyValues(destroyFrom, m_end);
 
-    while (aRangeBegin != aRangeEnd)
-    {
-      aRangeBegin->~T();
-      ++aRangeBegin;
-    }
+    m_end = m_end - (aRangeEnd - aRangeBegin);
 
-    copy(aRangeEnd, m_end, copyRemainingTo);
-
-    m_end = m_end - (aRangeEnd - copyRemainingTo);
+    return aRangeBegin;
   }
 
   template <typename T>

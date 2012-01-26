@@ -111,9 +111,9 @@ namespace tloc { namespace core {
     TL_I void             pop_back();
     TL_I void             pop_back(T& aOut);
     // Function assumes that order does not matter
-    TL_I void             erase(iterator aPosition);
+    TL_I iterator         erase(iterator aPosition);
     // Ordering of elements is preserved
-    TL_I void             erase(iterator aRangeBegin, iterator aRangeEnd);
+    TL_I iterator         erase(iterator aRangeBegin, iterator aRangeEnd);
     TL_I void             clear();
 
   protected:

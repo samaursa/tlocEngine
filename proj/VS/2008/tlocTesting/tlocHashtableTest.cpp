@@ -15,7 +15,7 @@
 #include "tlocCore/tlocHashtable.h"
 #include "tlocCore/tlocHashtable.inl"
 
-namespace TestingArray
+namespace TestingHashtable 
 {
   USING_TLOC;
   using namespace core;
@@ -397,7 +397,6 @@ namespace TestingArray
 
     //------------------------------------------------------------------------
     // size_type           erase(const key_type& a_key);
-
     {
       T_HashT h;
       for (u32 i = 0; i < 100; ++i)
@@ -415,11 +414,20 @@ namespace TestingArray
       CHECK(h.size() == 0);
     }
 
+    //------------------------------------------------------------------------
+    //iterator            erase(iterator a_first, iterator a_last);
     {
       T_HashT::value_type v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
       T_HashT h;
       h.insert(v, v + 14);
+
+      T_HashT::iterator itr = h.erase(h.begin(), h.end());
+      CHECK(h.size() == 0);
+      CHECK(itr == h.end());
+
+      h.insert(v, v + 14);
+      CHECK(h.size() == 14);
     }
   }
 

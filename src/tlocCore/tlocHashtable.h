@@ -36,6 +36,8 @@ namespace tloc { namespace core {
   {
     u32 operator() (u32 a_hash, u32 a_tableSize) const
     {
+      TLOC_ASSERT_HASH_TABLE(a_tableSize != 0, 
+        "a_tableSize cannot be zero! (divide by zero)");
       return a_hash % a_tableSize;
     }
   };
@@ -114,6 +116,7 @@ namespace tloc { namespace core {
       typename bucket_array_type::iterator>::Result           local_iterator;
 
   public:
+    TL_FI HashtableItrBase();
     TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer);
     TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer,
       const local_iterator& a_currBucket, const bucket_iterator& a_currNode);
@@ -132,11 +135,11 @@ namespace tloc { namespace core {
     // Used mostly for testing
     Pair<bool, size_type>     GetCurrBucketNumber() const;
 
-  //private:
+  private:
 
-    bucket_iterator    m_currNode;
     bucket_array_type* m_bucketContainer;
     local_iterator     m_currBucket;
+    bucket_iterator    m_currNode;
 
     // Used to mark end() iterator's m_currNode because we cannot dereference
     // the end of the bucket container to get a reference to a bucket_type. 
@@ -166,7 +169,7 @@ namespace tloc { namespace core {
     typedef forward_iterator_tag                iterator_category;
 
   public:
-
+    HashtableItr();
     HashtableItr(bucket_array_type* a_bucketContainer);
     HashtableItr(bucket_array_type* a_bucketContainer, 
                  const local_iterator& a_currBucket, 
@@ -413,7 +416,7 @@ namespace tloc { namespace core {
     typedef typename
       Loki::Select< Loki::IsSameType<unique_keys,
       type_true>::value, use_first<insert_return_type>, 
-      use_self<insert_return_type> >                    insert_return_selector;
+      use_self<insert_return_type> >::Result            insert_return_selector;
 
     typedef typename buckets_array_type::iterator       local_iterator;
     typedef typename buckets_array_type::const_iterator const_local_iterator;
@@ -461,6 +464,8 @@ namespace tloc { namespace core {
     /// Destructor.
     ///-------------------------------------------------------------------------
     TL_FI ~Hashtable();
+
+    this_type&  operator=(const this_type& a_other);
 
     //------------------------------------------------------------------------
     // Iterator Access

@@ -121,7 +121,6 @@ namespace tloc { namespace core {
     ConditionalType<T, T_DedicatedSize> m_size;
   };
 
-
   template <typename T, typename T_Node = ListNode<T, doubly_linked_tag>,
             typename T_Policy = List_Dynamic(), bool T_DedicatedSize = true>
 
@@ -171,12 +170,13 @@ namespace tloc { namespace core {
     typedef const T*                                    const_pointer;
     typedef tl_size                                     size_type;
     typedef tl_ptrdiff                                  difference_type;
+    typedef 
+      tloc::core::reverse_iterator<iterator>            reverse_iterator;
+    typedef 
+      tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
-    typedef tloc::core::reverse_iterator<iterator>            reverse_iterator;
-    typedef tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
-
-    typedef ConditionalTypePackage<node_type, size_type, T_DedicatedSize>  
-      size_and_node;
+    typedef ConditionalTypePackage
+      <node_type*, size_type, T_DedicatedSize>          size_and_node;
     typedef typename size_and_node::cond_type           list_size;
 
   public:

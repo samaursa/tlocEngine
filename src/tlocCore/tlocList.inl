@@ -413,6 +413,9 @@ namespace tloc { namespace core {
   TL_FI List<LIST_TEMP >::~List()
   {
     DoClear();
+
+    // Delete the sentry node
+    delete m_sizeAndNode.m_var;
   }
 
   template <LIST_TEMP_TYPES>
@@ -784,8 +787,14 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::swap(this_type& aOther)
   {
-    node_type::swap(m_node(), aOther.m_node());
+    // We swap the pointers rather than the node that the pointer is pointing 
+    // to. This is a much faster O(1) operation on a singly linked list whereas
+    // a node swap is an O(n) operation
+    tlSwap(m_sizeAndNode.m_var, aOther.m_sizeAndNode.m_var);
     tlSwap(m_size(), aOther.m_size());
+
+    //node_type::swap(m_node(), aOther.m_node());
+    //tlSwap(m_size(), aOther.m_size());
   }
 
   template <LIST_TEMP_TYPES>
@@ -1054,6 +1063,9 @@ namespace tloc { namespace core {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP >::DoInit()
   {
+    // We need to new our sentry node
+    m_sizeAndNode.m_var = new node_type();
+    
     m_size() = 0;
     m_node().init();
   }
@@ -1242,7 +1254,7 @@ namespace tloc { namespace core {
     // Assuming the user would usually want to grow the list when calling resize
     if (aNumElements > m_size())
     {
-      insert(&m_node(), aNumElements - m_size(), aValue);
+      insert(&m_node(), aNumElements - size(), aValue);
     }
     else
     {
@@ -1290,7 +1302,8 @@ namespace tloc { namespace core {
     if (addedSize != 0)
     {
       aPos.m_node->splice_after(aBegin.m_node, aEnd.m_node);
-      m_size() += addedSize;
+
+      m_size()       += addedSize;
       aFrom.m_size() -= addedSize;
     }
   }
@@ -1315,14 +1328,14 @@ namespace tloc { namespace core {
   TL_FI typename List<LIST_TEMP>::node_type& 
     List<LIST_TEMP>::m_node()
   {
-    return m_sizeAndNode.m_var;
+    return *(m_sizeAndNode.m_var);
   }
 
   template <LIST_TEMP_TYPES>
   TL_FI const typename List<LIST_TEMP>::node_type& 
     List<LIST_TEMP>::m_node() const
   {
-    return m_sizeAndNode.m_var;
+    return *(m_sizeAndNode.m_var);
   }
 
   template <LIST_TEMP_TYPES>

@@ -249,89 +249,89 @@ namespace tloc
 
   // Global operators
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   T operator+( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator+(aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2>
   T operator-( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, false>& aOther)
   {
     TLOC_UNUSED(aOther);
     return aOtherValue;
   }
 
 
-  template <typename T>
+  template <typename T, typename T2>
   T operator-( const T& aOtherValue,
-               const ConditionalType<T, true>& aOther)
+               const ConditionalType<T2, true>& aOther)
   {
     return aOtherValue - aOther.Get();
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   T operator*( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator*(aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2>
   T operator/( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, false>& aOther)
   {
     TLOC_UNUSED(aOther);
     return aOtherValue;
   }
 
-  template <typename T>
+  template <typename T, typename T2>
   T operator/( const T& aOtherValue,
-               const ConditionalType<T, true>& aOther)
+               const ConditionalType<T2, true>& aOther)
   {
     return aOtherValue / aOther.Get();
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator==( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator==(aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator!=( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator!=(aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator<=( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator >= (aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator>=( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator <= (aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator<( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator > (aOtherValue);
   }
 
-  template <typename T, bool T_DeclareValue>
+  template <typename T, typename T2, bool T_DeclareValue>
   bool operator>( const T& aOtherValue,
-               const ConditionalType<T, T_DeclareValue>& aOther)
+               const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator < (aOtherValue);
   }

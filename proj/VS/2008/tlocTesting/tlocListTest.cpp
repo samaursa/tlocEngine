@@ -40,10 +40,13 @@ namespace TestingList
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Sizes", "")
   {
-    CHECK(sizeof(intListWithSize) == 16);
-    CHECK(sizeof(intListWithoutSize) == 12);
-    CHECK(sizeof(intSinglyListWithSize) == 12);
-    CHECK(sizeof(intSinglyListWithoutSize) == 8);
+    u32 sizeOfPtr = sizeof(tl_uintptr);
+    u32 sizeOfSize = sizeof(intListWithSize::size_type);
+
+    CHECK(sizeof(intListWithSize) == (sizeOfPtr) + (sizeOfSize));
+    CHECK(sizeof(intListWithoutSize) == (sizeOfPtr));
+    CHECK(sizeof(intSinglyListWithSize) == (sizeOfPtr) + (sizeOfSize));
+    CHECK(sizeof(intSinglyListWithoutSize) == (sizeOfPtr));
   }
 
   template <typename T_ListType>

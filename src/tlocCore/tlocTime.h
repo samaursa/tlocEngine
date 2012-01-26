@@ -11,21 +11,26 @@ namespace tloc { namespace core {
   class Timer
   {
   public:
+    typedef T_Real    sec_type;
+    typedef T_UInt    value_type;
+
     Timer();
     ~Timer();
 
-    //////////////////////////////////////////////////////////////////////////////
-    /// <summary>Calibrates the timer if T_Adjust = true.</summary>
+    ///-------------------------------------------------------------------------
+    /// Calibrates the timer if T_Adjust = true.
     ///
-    /// <remarks> Use this function to re-calibrate a timer. This function is
-    ///           automatically called when the timer is first created.</remarks>
+    /// @param  aCalibrate (optional) default is true.
     ///
-    /// <param name="aCalibrate">(optional) default is true.</param>
+    /// ### remarks
+    /// Use this function to re-calibrate a timer. This function is
+    /// automatically called when the timer is first created.
+    ///-------------------------------------------------------------------------
     TL_I void       Calibrate(bool aCalibrate = T_Adjust);
     TL_I void       Reset();
-    TL_I T_Real     ElapsedSeconds();
-    TL_I T_UInt     ElapsedMilliSeconds();
-    TL_I T_UInt     ElapsedMicroSeconds();
+    TL_I sec_type   ElapsedSeconds();
+    TL_I value_type ElapsedMilliSeconds();
+    TL_I value_type ElapsedMicroSeconds();
 
   private:
 
@@ -35,26 +40,26 @@ namespace tloc { namespace core {
     TL_I void       DoReset(Platform_ps3);
     TL_I void       DoReset(Platform_linux);
 
-    TL_I T_Real     DoGetElapsedSeconds(Platform_win32);
-    TL_I T_Real     DoGetElapsedSeconds(Platform_osx);
-    TL_I T_Real     DoGetElapsedSeconds(Platform_osx_iphone);
-    TL_I T_Real     DoGetElapsedSeconds(Platform_ps3);
-    TL_I T_Real     DoGetElapsedSeconds(Platform_linux);
+    TL_I sec_type   DoGetElapsedSeconds(Platform_win32);
+    TL_I sec_type   DoGetElapsedSeconds(Platform_osx);
+    TL_I sec_type   DoGetElapsedSeconds(Platform_osx_iphone);
+    TL_I sec_type   DoGetElapsedSeconds(Platform_ps3);
+    TL_I sec_type   DoGetElapsedSeconds(Platform_linux);
 
-    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_win32);
-    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_osx);
-    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_osx_iphone);
-    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_ps3);
-    TL_I T_UInt     DoGetElapsedMilliSeconds(Platform_linux);
+    TL_I value_type DoGetElapsedMilliSeconds(Platform_win32);
+    TL_I value_type DoGetElapsedMilliSeconds(Platform_osx);
+    TL_I value_type DoGetElapsedMilliSeconds(Platform_osx_iphone);
+    TL_I value_type DoGetElapsedMilliSeconds(Platform_ps3);
+    TL_I value_type DoGetElapsedMilliSeconds(Platform_linux);
 
-    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_win32);
-    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_osx);
-    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_osx_iphone);
-    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_ps3);
-    TL_I T_UInt     DoGetElapsedMicroSeconds(Platform_linux);
+    TL_I value_type DoGetElapsedMicroSeconds(Platform_win32);
+    TL_I value_type DoGetElapsedMicroSeconds(Platform_osx);
+    TL_I value_type DoGetElapsedMicroSeconds(Platform_osx_iphone);
+    TL_I value_type DoGetElapsedMicroSeconds(Platform_ps3);
+    TL_I value_type DoGetElapsedMicroSeconds(Platform_linux);
 
-    T_UInt                              m_start;
-    ConditionalType<T_Real, T_Adjust>   m_adjustInSeconds;
+    value_type                              m_start;
+    ConditionalType<sec_type, T_Adjust>     m_adjustInSeconds;
 
   };
 

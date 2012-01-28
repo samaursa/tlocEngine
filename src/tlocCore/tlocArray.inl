@@ -89,7 +89,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   
   template <typename T>
   TL_I typename ArrayBase<T>::this_type& 
-    ArrayBase<T>::operator= (const typename ArrayBase<T>::this_type& aToCopy)
+    ArrayBase<T>::operator= (const this_type& aToCopy)
   {
     TLOC_ASSERT_ARRAY(&aToCopy != this, "Assigning array to itself!");
     

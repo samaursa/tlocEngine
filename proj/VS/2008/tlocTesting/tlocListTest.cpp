@@ -7,6 +7,8 @@
 #define protected public
 #include "tlocCore/tlocList.h"
 #include "tlocCore/tlocList.inl"
+#include "tlocCore/tlocForwardList.h"
+#include "tlocCore/tlocForwardList.inl"
 #undef private
 #undef protected
 
@@ -923,9 +925,9 @@ namespace TestingList
     it = mylist1.begin();
     ++it;                         // points to 2
 
-    mylist1.splice_after (it, mylist2);	// mylist1: 1 2 10 20 30 3 4 
+    mylist1.splice_after (it, mylist2);	// mylist1: 1 2 10 20 30 3 4
 																				// mylist2 (empty)
-																				// "it" still points to 2 
+																				// "it" still points to 2
 
     T_ListType::iterator itrCheck = mylist1.begin();
     CHECK( *itrCheck == 1); ++itrCheck;

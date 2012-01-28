@@ -287,6 +287,18 @@
 				Name="List"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.inl"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocCore\tlocList.cpp"
 					>
 				</File>

@@ -80,9 +80,29 @@ namespace tloc { namespace core {
     TL_FI const_iterator cend() const;
 
     //--------------------------------------------------------------------------
+    // Capacity
+
+    TL_FI bool empty() const;
+    TL_FI size_type max_size() const;
+
+    //--------------------------------------------------------------------------
     // Modifiers
 
-    //TL_FI void clear();
+    TL_FI void clear();
+
+    TL_FI iterator insert_after(const_iterator aPos, const value_type& aValue);
+    TL_FI void insert_after(const_iterator aPos, size_type aNumOfValues,
+                            const value_type& aValue);
+    template <typename T_Iterator>
+    TL_FI void insert_after(const_iterator aPos, T_Iterator aFirst,
+                            T_Iterator aLast);
+
+    TL_FI iterator erase_after(const_iterator aPos);
+    TL_FI iterator erase_after(const_iterator aFirst, const_iterator aLast);
+
+    TL_FI void push_front(const T& aValue);
+
+
 
   };
 

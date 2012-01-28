@@ -126,9 +126,74 @@ namespace tloc { namespace core {
   }
 
   template <typename T>
-    TL_FI typename ForwardList<T>::const_iterator ForwardList<T>::cend() const
+  TL_FI typename ForwardList<T>::const_iterator ForwardList<T>::cend() const
   {
     return List::end();
+  }
+
+  //----------------------------------------------------------------------------
+  // Capacity
+
+  template <typename T>
+  TL_FI bool ForwardList<T>::empty() const
+  {
+    return List::empty();
+  }
+
+  template <typename T>
+  TL_FI typename ForwardList<T>::size_type ForwardList<T>::max_size() const
+  {
+    return List::max_size();
+  }
+
+  //----------------------------------------------------------------------------
+  // Modifiers
+
+  template <typename T>
+  TL_FI void ForwardList<T>::clear()
+  {
+    List::clear();
+  }
+
+  template <typename T>
+  TL_FI typename ForwardList<T>::iterator 
+    ForwardList<T>::insert_after(const_iterator aPos, const value_type& aValue)
+  {
+    return List::insert_after(aPos, aValue);
+  }
+
+  template <typename T>
+  TL_FI void ForwardList<T>::insert_after(const_iterator aPos, size_type aNumOfValues,
+                                          const value_type& aValue)
+  {
+    List::insert_after(aPos, aNumOfValues, aValue);
+  }
+
+  template <typename T>
+  template <typename T_Iterator>
+  TL_FI void ForwardList<T>::insert_after(const_iterator aPos, T_Iterator aFirst,
+                                          T_Iterator aLast)
+  {
+    List::insert_after(aPos, aFirst, aLast);
+  }
+
+  template <typename T>
+  TL_FI typename ForwardList<T>::iterator ForwardList<T>::erase_after(const_iterator aPos)
+  {
+    List::erase_after(aPos);
+  }
+
+  template <typename T>
+  TL_FI typename ForwardList<T>::iterator 
+    ForwardList<T>::erase_after(const_iterator aFirst, const_iterator aLast)
+  {
+    List::erase_after(aFirst, aLast);
+  }
+
+  template <typename T>
+  TL_FI void ForwardList<T>::push_front(const T& aValue)
+  {
+    List::push_front(aValue);
   }
 
 };};

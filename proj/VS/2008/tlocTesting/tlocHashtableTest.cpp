@@ -10,8 +10,6 @@
 
 #include "tlocCore/tlocFunctional.h"
 
-#define protected public
-#define private public
 #include "tlocCore/tlocHashtable.h"
 #include "tlocCore/tlocHashtable.inl"
 
@@ -435,5 +433,17 @@ namespace TestingHashtable
   {
     TestMethodAllVariationsUnique(TestErase);
     TestMethodAllVariationsNoUnique(TestErase);
+  }
+
+  template <typename T_Hash>
+  void TestBuckets()
+  {
+    USE_TYPEDEFS;
+
+    T_HashT h;
+  }
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/buckets", "")
+  {
   }
 };

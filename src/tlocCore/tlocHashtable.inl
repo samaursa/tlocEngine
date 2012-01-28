@@ -11,6 +11,73 @@
 namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
+  // Hash to range mod
+
+  TL_FI u32 hash_to_range_mod::operator ()(u32 a_hash, u32 a_tableSize) const
+  {
+    TLOC_ASSERT_HASH_TABLE(a_tableSize != 0, 
+      "a_tableSize cannot be zero! (divide by zero)");
+    return a_hash % a_tableSize;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Range hash default
+
+  template <typename T_Key, typename T_Hasher, typename T_HashToRange>
+  TL_FI u32 range_hash_default<T_Key, T_Hasher, T_HashToRange>
+    ::operator ()(T_Key a_key, u32 a_bucketCount) const
+  {
+    return hash_to_range_type::operator()(T_Hasher::operator()(a_key), 
+                                          a_bucketCount);
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Hashtable Element
+
+#define HASHTABLE_ELEMENT_TYPES typename T_Value, bool T_StoreHash
+#define HASHTABLE_ELEMENT_PARAMS T_Value, T_StoreHash
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI HashtableElement<HASHTABLE_ELEMENT_PARAMS>::HashtableElement() 
+  {
+  }
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI HashtableElement<HASHTABLE_ELEMENT_PARAMS>
+    ::HashtableElement(const value_type& a_value, const size_type& a_hash)
+    : m_valueAndHashcode(a_value, a_hash)
+  {
+  }
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::value_type&
+    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_value()
+  {
+    return m_valueAndHashcode.m_var;
+  }
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_value_type&
+    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_value() const
+  {
+    return m_valueAndHashcode.m_var;
+  }
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::size_type&
+    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode()
+  {
+    return m_valueAndHashcode.Get();
+  }
+
+  template <HASHTABLE_ELEMENT_TYPES>
+  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_size_type&
+    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode() const
+  {
+    return m_valueAndHashcode.Get();
+  }
+
+  //////////////////////////////////////////////////////////////////////////
   // Hashtable Iterator Base
 
 #define HASHTABLE_ITR_BASE_TYPES typename T_Policies, bool T_Const

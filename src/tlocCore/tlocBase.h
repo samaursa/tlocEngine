@@ -187,19 +187,11 @@
 //////////////////////////////////////////////////////////////////////////
 // Inlining
 
-#ifndef TLOC_DEBUG
-# define TLOC_INLINE inline
-# define TL_I TLOC_INLINE
+#define TLOC_INLINE inline
+#define TL_I TLOC_INLINE
 
-# define TLOC_FORCE_INLINE __forceinline
-# define TL_FI TLOC_FORCE_INLINE
-#else
-# define TLOC_INLINE
-# define TL_I
-
-# define TLOC_FORCE_INLINE
-# define TL_FI
-#endif
+#define TLOC_FORCE_INLINE __forceinline
+#define TL_FI TLOC_FORCE_INLINE
 
 #ifdef TLOC_FULL_SOURCE
 # define TL_STATIC_I  static TLOC_INLINE

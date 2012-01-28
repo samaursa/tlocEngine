@@ -6,8 +6,6 @@
 
 namespace tloc { namespace core {
 
-
-
   //////////////////////////////////////////////////////////////////////////
   // Globals
 
@@ -152,25 +150,5 @@ namespace tloc { namespace core {
 #undef CEILING_POS
 #undef CEILING_NEG
 #undef CEILING
-
-  struct dummyHashFunc 
-  {
-    size_t operator()(s32 a_value) { return (size_t)(a_value); }
-  };
-
-  struct dummyEqualTo
-  {
-    typedef s32 first_argument_type;
-    typedef s32 second_argument_type;
-    typedef bool result_type;
-
-    bool operator()(const s32& a, const s32& b) const { return a == b; }
-  };
-
-  //typedef HashtablePolicy<s32, use_self<s32>, hash<s32>, hash_to_range_mod, range_hash_default, 
-  //  equal_to<s32>, prime_rehash_policy, List< Array<HashtableElement<s32> > >, 
-  //  false, true> hashtable_policies;
-
-  //template Hashtable<hashtable_policies>;
 
 };};

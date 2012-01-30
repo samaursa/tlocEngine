@@ -264,6 +264,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocForwardListTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocHashtableTest.cpp"
 				>
 			</File>

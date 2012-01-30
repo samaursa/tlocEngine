@@ -10,8 +10,6 @@
 #undef private
 #undef protected
 
-#include "tlocCore/tlocForwardList.h"
-#include "tlocCore/tlocForwardList.inl"
 
 namespace TestingList
 {
@@ -33,8 +31,6 @@ namespace TestingList
 
     typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), true> uintListWithSize;
     typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), false> uintListWithoutSize;
-
-    typedef ForwardList <s32> intForwardList;
 
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListSize;
     List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListNoSize;
@@ -81,7 +77,6 @@ namespace TestingList
     testCtors<intListWithoutSize>();
     testCtors<intSinglyListWithSize>();
     testCtors<intSinglyListWithoutSize>();
-    testCtors<intForwardList>();
   }
 
   template <typename T_ListType>

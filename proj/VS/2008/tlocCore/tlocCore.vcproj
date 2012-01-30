@@ -560,6 +560,10 @@
 			RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.h"
 			>
 		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocUtils.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

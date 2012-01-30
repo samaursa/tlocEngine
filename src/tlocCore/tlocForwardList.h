@@ -6,35 +6,27 @@
 
 namespace tloc { namespace core {
 
-  template <typename T>
-  class ForwardList
-    : private List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), false>
+  template <typename T, typename T_Container>
+  class ForwardListT
   {
   private:
     //--------------------------------------------------------------------------
     // typedefs
-    typedef List
-      <T, ListNode<T, singly_linked_tag>, List_Dynamic(), false>
-                                                              this_type;
-    typedef ListNode<T, singly_linked_tag>                    node_type;
+    typedef T_Container                                 this_type;
 
   public:
     //--------------------------------------------------------------------------
     // typedefs (similar to forward_list)
-    typedef T                                                 value_type;
-    typedef tl_size                                           size_type;
-    typedef tl_ptrdiff                                        difference_type;
-    typedef T&                                                reference;
-    typedef const T&                                          const_reference;
-    typedef T*                                                pointer;
-    typedef const T*                                          const_pointer;
+    typedef typename T_Container::value_type            value_type;
+    typedef typename T_Container::size_type             size_type;
+    typedef typename T_Container::difference_type       difference_type;
+    typedef typename T_Container::reference             reference;
+    typedef typename T_Container::const_reference       const_reference;
+    typedef typename T_Container::pointer               pointer;
+    typedef typename T_Container::const_pointer         const_pointer;
 
-    typedef list_iterator
-      <node_type, typename node_type::iterator_category, T>
-                                                              iterator;
-    typedef list_iterator
-      <node_type, typename node_type::iterator_category, T, const T*, const T&>
-                                                              const_iterator;
+    typedef typename T_Container::iterator              iterator;
+    typedef typename T_Container::const_iterator        const_iterator;
 
     //--------------------------------------------------------------------------
     // Functions
@@ -46,11 +38,11 @@ namespace tloc { namespace core {
     //--------------------------------------------------------------------------
     // Constructors
 
-    TL_FI ForwardList();
-    TL_FI ForwardList(size_type aCount, const T& value = T());
+    TL_FI ForwardListT();
+    TL_FI ForwardListT(size_type aCount, const T& value = T());
     template <typename T_InputIterator>
-    TL_FI ForwardList(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
-    TL_FI ForwardList(const this_type& aOther);
+    TL_FI ForwardListT(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
+    TL_FI ForwardListT(const this_type& aOther);
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -140,6 +132,30 @@ namespace tloc { namespace core {
     template <typename T_Compare>
     TL_FI void                  sort(T_Compare aComp);
 
+  protected:
+    //--------------------------------------------------------------------------
+    // Variables
+    
+    T_Container                 m_container;
+
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Default types for easy instantiation
+  
+  template <typename T>
+  struct ForwardList 
+  {
+    DECL_TYPEDEF_HELPER(ForwardList);
+    typedef ForwardListT
+      <T, List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), false> > type;
+  };
+
+  template <typename T>
+  struct ArrayForwardList 
+  {
+    DECL_TYPEDEF_HELPER(ArrayForwardList);
+    typedef ForwardListT<T, Array<T> > type;
   };
 
 };};

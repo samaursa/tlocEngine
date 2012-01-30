@@ -6,6 +6,7 @@
 #include "tlocTypeTraits.h"
 #include "tlocIterator.h"
 #include "tlocAlgorithms.h"
+#include "tlocUtils.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -386,6 +387,7 @@ namespace tloc { namespace core {
   template <typename T, bool T_DedicatedSize = true>
   struct SinglyList
   {
+    DECL_TYPEDEF_HELPER(SinglyList);
     typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), 
       T_DedicatedSize> type;
   };
@@ -393,6 +395,7 @@ namespace tloc { namespace core {
   template <typename T, bool T_DedicatedSize = true>
   struct DoublyList
   {
+    DECL_TYPEDEF_HELPER(DoublyList);
     typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(), 
       T_DedicatedSize> type;
   };

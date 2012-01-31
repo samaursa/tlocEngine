@@ -13,7 +13,7 @@
 #include "tlocCore/tlocHashtable.h"
 #include "tlocCore/tlocHashtable.inl"
 
-namespace TestingHashtable 
+namespace TestingHashtable
 {
   USING_TLOC;
   using namespace core;
@@ -36,8 +36,8 @@ namespace TestingHashtable
     template <typename T_HashT, typename T_Key, bool T_CacheHash, bool T_Unique>
     struct HT
     {
-      typedef HashtablePolicy<T_Key, use_self<T_Key>, hash<T_Key>, 
-        hash_to_range_mod, range_hash_default, equal_to<T_Key>, 
+      typedef HashtablePolicy<T_Key, use_self<T_Key>, hash<T_Key>,
+        hash_to_range_mod, range_hash_default, equal_to<T_Key>,
         prime_rehash_policy, T_HashT, T_CacheHash, T_Unique> type;
     };
 
@@ -81,7 +81,7 @@ namespace TestingHashtable
     typedef HT<Array<doubly_type>, value_type, false, false>::type
       arraydouble_nohash_nounique;
   };
-  
+
   template <template <typename T_HashT> class T_Method>
   struct TestMethod
   {
@@ -141,11 +141,11 @@ namespace TestingHashtable
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/Ctors", "")
   {
     // Unfortunately, uncommenting the following crashes the VS 2008 compiler.
-    // Seems to be a bug. We will have to settle for #define 
+    // Seems to be a bug. We will have to settle for #define
     //TestMethod<TestCtors>::AllVariations();
 
-    //TestMethodAllVariationsUnique(TestCtors);
-    //TestMethodAllVariationsNoUnique(TestCtors);
+    TestMethodAllVariationsUnique(TestCtors);
+    TestMethodAllVariationsNoUnique(TestCtors);
   }
 
   template <typename T_HashT>
@@ -225,7 +225,7 @@ namespace TestingHashtable
     }
 
     //------------------------------------------------------------------------
-    // iterator						insert(const_iterator a_position, 
+    // iterator						insert(const_iterator a_position,
     //                           const value_type& a_value);
     {
       T_HashT h;
@@ -260,13 +260,13 @@ namespace TestingHashtable
     // Test multiple inserts
     {
       T_HashT h;
-      
+
       for (u32 i = 0; i < 10; ++i)
       {
         h.insert(5);
       }
 
-      CHECK(h.count(5) == (Loki::IsSameType<typename T_HashT::unique_keys, 
+      CHECK(h.count(5) == (Loki::IsSameType<typename T_HashT::unique_keys,
         type_true>::value ? 1 : 10))
     }
   }
@@ -332,7 +332,7 @@ namespace TestingHashtable
 
       for (u32 i = 0; i < 10; ++i)
       {
-        CHECK(h.count(i) == (Loki::IsSameType<typename T_HashT::unique_keys, 
+        CHECK(h.count(i) == (Loki::IsSameType<typename T_HashT::unique_keys,
           type_true>::value ? 1 : numOfInserts))
       }
     }
@@ -356,7 +356,7 @@ namespace TestingHashtable
         ++count;
       }
 
-      CHECK(count == (Loki::IsSameType<typename T_HashT::unique_keys, 
+      CHECK(count == (Loki::IsSameType<typename T_HashT::unique_keys,
           type_true>::value ? 1 : 3));
     }
   }

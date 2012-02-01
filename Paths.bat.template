@@ -1,0 +1,32 @@
+@ECHO OFF
+
+:: This file does not do anything on its own. If called from another batch
+:: file, it sets the proper environment variables for this clone of the
+:: repository.
+:: e.g. 
+:: CALL %CD%\..\Paths.bat
+:: // other commands go here which will now use the new environment 
+::    variables //
+
+:: Set the aboslute paths here
+SET TLOC_PATH=YOUR_TLOC_ENGINE_PATH_GOES_HERE
+SET TLOC_DEP_PATH=YOUR_TLOC_DEP_PATH_GOES_HERE
+
+::-----------------------------------------------------------------------------
+:: You should not edit anything past this point
+
+IF NOT EXIST %TLOC_PATH% GOTO:ERROR_TLOC_PATH
+IF NOT EXIST %TLOC_DEP_PATH% GOTO:ERROR_TLOC_DEP_PATH
+
+:DONE
+EXIT /b 0
+
+:ERROR_TLOC_PATH
+ECHO TLOC_PATH absolute path does not exist!
+PAUSE
+EXIT /b -1
+
+:ERROR_TLOC_DEP_PATH
+ECHO TLOC_DEP_PATH absolute path does not exist!
+PAUSE
+EXIT /b -1

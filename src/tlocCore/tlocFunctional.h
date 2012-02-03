@@ -44,6 +44,21 @@ namespace tloc { namespace core {
     typedef T_Result  result_type;
   };
 
+  struct unary_function_type  {};
+  struct binary_function_type {};
+
+  // These macros are preferred over inheriting from unary/binary base classes
+#define DECL_UNARY_FUNC(T_Arg , T_Result)\
+  typedef unary_function_type function_type;\
+  typedef T_Arg               argument_type;\
+  typedef T_Result            result_type;
+
+#define DECL_BINARY_FUNC(T_Arg1, T_Arg2, T_Result)\
+  typedef unary_function_type function_type;\
+  typedef T_Arg1              first_argument_type;\
+  typedef T_Arg2              second_argument_type;\
+  typedef T_Result            result_type;
+
   //////////////////////////////////////////////////////////////////////////
   // Arithmetic operations
 
@@ -218,24 +233,28 @@ namespace tloc { namespace core {
   // Use self/first/second
 
   template <typename T>
-  struct use_self : public unary_function<const T, const T>
+  struct use_self
   {
+    DECL_UNARY_FUNC(T, T);
+
     const T& operator()(const T& a) const { return a; }
   };
 
   template <typename T_Pair>
-  struct use_first : 
-    public unary_function<T_Pair, const typename T_Pair::first_type>
+  struct use_first
   {
-    typename unary_function::result_type& operator()(const T_Pair& a) const
+    DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
+    
+    typename result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };
 
   template <typename T_Pair>
-  struct use_second : 
-    public unary_function<T_Pair, const typename T_Pair::first_type>
+  struct use_second
   {
-    typename unary_function::result_type& operator()(const T_Pair& a) const
+    DECL_UNARY_FUNC(T_Pair, const typename T_Pair::second_type);
+
+    typename result_type& operator()(const T_Pair& a) const
     { return a.second; }
   };
 

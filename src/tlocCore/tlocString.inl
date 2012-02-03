@@ -399,7 +399,7 @@ namespace tloc { namespace core {
     TLOC_ASSERT_STRING_WARN( (aPos + aNumChars) < aStr.size(),
       "Number of characters to copy passes the string's range.");
 
-    u32 maxCharsLeft = (aStr.m_end - aStr.m_begin) - aPos;
+    tl_size maxCharsLeft = (aStr.m_end - aStr.m_begin) - aPos;
     return append(aStr.begin() + aPos, aStr.begin() + aPos +
       (aNumChars > maxCharsLeft ? maxCharsLeft : aNumChars) );
   }

@@ -166,7 +166,7 @@ namespace TestingHashtable
       // Should be added to bucket # 2
       T_HashT::iterator itr = h.begin();
 
-      Pair<bool, u32> result = itr.GetCurrBucketNumber();
+      Pair<bool, T_HashT::size_type> result = itr.GetCurrBucketNumber();
       REQUIRE(result.first == true);
       CHECK(result.second == 5 % 3); // bucket #2
       CHECK( (*itr) == 5);

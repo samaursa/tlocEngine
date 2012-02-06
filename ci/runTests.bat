@@ -63,8 +63,12 @@ GOTO:EXIT_GOOD
 IF NOT "%testAuto%"=="-a" (
   PAUSE
 )
-EXIT -1 /B
+EXIT /B -1
 
 :EXIT_GOOD
 %ColorTestPassed%
-
+ECHO "Success: All tests passed"
+IF NOT "%testAuto%"=="-a" (
+  PAUSE
+)
+EXIT /B 0

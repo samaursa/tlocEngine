@@ -708,8 +708,8 @@ namespace tloc { namespace core {
     // TODO: Remove extra copies created by end() here and when returning <false>
     if (itr == end())
     {
-      const Pair<bool, u32> rehash = m_rehashPolicy.get_rehash_required
-        ( (u32)bucket_count(), (u32)m_elementCount, (u32)1);
+      const Pair<bool, size_type> rehash = m_rehashPolicy.get_rehash_required
+        ( bucket_count(), m_elementCount, 1);
 
       if (rehash.first) { DoRehash(rehash.second); }
 
@@ -733,8 +733,8 @@ namespace tloc { namespace core {
     (const typename Hashtable<HASH_TABLE_PARAMS>::value_type& a_value,
            typename Hashtable<HASH_TABLE_PARAMS>::keys_are_not_unique)
   {
-    const Pair<bool, u32> rehash = m_rehashPolicy.get_rehash_required
-      ( (u32)bucket_count(), (u32)m_elementCount, (u32)1);
+    const Pair<bool, size_type> rehash = m_rehashPolicy.get_rehash_required
+      ( bucket_count(), m_elementCount, 1);
 
     if (rehash.first) { DoRehash(rehash.second); }
 

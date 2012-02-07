@@ -32,9 +32,12 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Hash functions
 
-  struct hash_to_range_mod : public binary_function<u32, u32, u32>
+  struct hash_to_range_mod 
   {
-    u32 operator() (u32 a_hash, u32 a_tableSize) const;
+    DECL_BINARY_FUNC(u32, u32, u32);
+
+    result_type operator() (first_argument_type a_hash, 
+                            second_argument_type a_tableSize) const;
   };
 
   template <typename T_Key, typename T_Hasher, typename T_HashToRange>
@@ -43,7 +46,12 @@ namespace tloc { namespace core {
     typedef T_Hasher      hasher;
     typedef T_HashToRange hash_to_range_type;
 
-    u32 operator() (T_Key a_key, u32 a_bucketCount) const;
+    DECL_BINARY_FUNC(T_Key, 
+                     typename hash_to_range_type::second_argument_type, 
+                     typename hash_to_range_type::result_type);
+
+    result_type operator() (first_argument_type a_key, 
+                            second_argument_type a_bucketCount) const;
   };
 
   ///-------------------------------------------------------------------------
@@ -234,17 +242,34 @@ namespace tloc { namespace core {
     hash_code_type get_hash_code(const key_type& a_key) const
     { return (hash_code_type)hasher_base_type::operator()(a_key); }
 
-    size_type bucket_index(const key_type& a_key, u32 a_bucketCount) const
-    { return (size_type)range_hasher_base_type::operator()
-    (a_key, a_bucketCount); }
+    size_type bucket_index(const key_type& a_key, size_type a_bucketCount) const
+    { 
+      typedef typename range_hasher_base_type::first_argument_type  arg1;
+      typedef typename range_hasher_base_type::second_argument_type arg2;
+
+      return (size_type)range_hasher_base_type::operator()
+        ( (arg1)a_key, (arg2)a_bucketCount);
+    }
 
     size_type bucket_index(const key_type&, hash_code_type a_hash,
       u32 a_bucketCount) const
-    { return (size_type)hash_to_range_type::operator()(a_hash, a_bucketCount); }
+    { 
+      typedef typename hash_to_range_type::first_argument_type  arg1;
+      typedef typename hash_to_range_type::second_argument_type arg2;
 
-    size_type bucket_index(const element_type& a_elem, u32 a_bucketCount) const
-    { return (size_type)range_hasher_base_type::operator()
-    (extract_key_type::operator()(a_elem.m_value()), a_bucketCount); }
+      return (size_type)hash_to_range_type::operator()
+        ( (arg1)a_hash, (arg2)a_bucketCount); 
+    }
+
+    size_type bucket_index(const element_type& a_elem, size_type a_bucketCount) const
+    { 
+      typedef typename range_hasher_base_type::first_argument_type  arg1;
+      typedef typename range_hasher_base_type::second_argument_type arg2;
+      typedef typename range_hasher_base_type::result_type          res;
+
+      return (res)range_hasher_base_type::operator()
+        (extract_key_type::operator()( (arg1)a_elem.m_value()), (arg2)a_bucketCount); 
+    }
 
     key_type extract_key(const value_type& a_value) const
     { return extract_key_type::operator()(a_value); }

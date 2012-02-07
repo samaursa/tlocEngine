@@ -110,7 +110,7 @@ namespace TestingArray
 
     CHECK(toSave == 98);
 
-    u32 arraySize = ints.size();
+    u32 arraySize = (u32)ints.size();
     for (u32 i = 0; i < arraySize; ++i)
     {
       ints.pop_back();
@@ -267,7 +267,7 @@ namespace TestingArray
     FILL_INT_ARRAY_BY_INDEX(ints, 0, 10);
 
     CHECK(ints.size() == 10);
-    u32 currCapacity = ints.capacity();
+    u32 currCapacity = (u32)ints.capacity();
     itr = ints.erase(ints.begin(), ints.end());
     CHECK(ints.size() == 0);
     CHECK(ints.capacity() == currCapacity);
@@ -294,7 +294,7 @@ namespace TestingArray
     u32 sizeOfInts = 1000;
     FILL_INT_ARRAY_BY_PUSH(ints, 0, sizeOfInts);
 
-    u32 currCapacity = ints.capacity();
+    u32 currCapacity = (u32)ints.capacity();
     CHECK(ints.size() == sizeOfInts);
     ints.clear();
     CHECK(ints.size() == 0);

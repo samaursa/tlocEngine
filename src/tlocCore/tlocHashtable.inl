@@ -13,7 +13,9 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Hash to range mod
 
-  TL_FI u32 hash_to_range_mod::operator ()(u32 a_hash, u32 a_tableSize) const
+  TL_FI hash_to_range_mod::result_type hash_to_range_mod::
+    operator ()(hash_to_range_mod::first_argument_type a_hash, 
+                hash_to_range_mod::second_argument_type a_tableSize) const
   {
     TLOC_ASSERT_HASH_TABLE(a_tableSize != 0, 
       "a_tableSize cannot be zero! (divide by zero)");
@@ -23,9 +25,16 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Range hash default
 
-  template <typename T_Key, typename T_Hasher, typename T_HashToRange>
-  TL_FI u32 range_hash_default<T_Key, T_Hasher, T_HashToRange>
-    ::operator ()(T_Key a_key, u32 a_bucketCount) const
+#define RANGE_HASH_DEFAULT_TYPES typename T_Key, typename T_Hasher, typename T_HashToRange
+#define RANGE_HASH_DEFAULT_PARAMS T_Key, T_Hasher, T_HashToRange
+
+  template <RANGE_HASH_DEFAULT_TYPES>
+  TL_FI typename range_hash_default<RANGE_HASH_DEFAULT_PARAMS>::result_type 
+    range_hash_default<RANGE_HASH_DEFAULT_PARAMS>::operator ()
+    (typename range_hash_default<RANGE_HASH_DEFAULT_PARAMS>::
+                                      first_argument_type a_key, 
+    typename range_hash_default<RANGE_HASH_DEFAULT_PARAMS>::
+                                      second_argument_type a_bucketCount) const
   {
     return hash_to_range_type::operator()(T_Hasher::operator()(a_key), 
                                           a_bucketCount);

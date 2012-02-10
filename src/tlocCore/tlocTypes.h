@@ -66,6 +66,33 @@ namespace tloc
 #define TL_ULLONG_MAX             ULLONG_MAX
 
   //////////////////////////////////////////////////////////////////////////
+  // Compile time type to string functions.
+  // USAGE: A type that you want (or is required) to have its own specialized
+  //        type_to_string<> function should simply call TLOC_DEF_TYPE(type)
+  //        after the type declaration in the header
+
+  // We do not allow unregistered types to be queried. If the compiler sent you
+  // here, trace back to the type that originated the error and register it. 
+  template <typename>
+  struct type_to_string
+  {
+    static const char* value()
+    {
+      TLOC_STATIC_ASSERT(false, Using_an_unregistered_type_Call_TLOC_DEF_TYPE_to_register_the_type);
+    }
+  };
+
+#define TLOC_DEF_TYPE(_type_)\
+  template <>\
+  struct type_to_string<_type_>\
+  {\
+    static const char* get()\
+    {\
+      return #_type_;\
+    }\
+  }
+
+  //////////////////////////////////////////////////////////////////////////
   // Conditional type
   // 
   // This type is capable of being compiled out if T_DeclareValue = false. All

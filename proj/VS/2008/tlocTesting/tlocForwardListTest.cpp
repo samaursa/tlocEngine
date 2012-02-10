@@ -2,6 +2,7 @@
 
 #include "tlocCore/tlocForwardList.h"
 #include "tlocCore/tlocForwardList.inl"
+#include "tlocCore/tlocArray.inl"
 
 namespace TestingForwardList
 {
@@ -17,9 +18,15 @@ namespace TestingForwardList
   }
 
 #define FILL_FORWARD_LIST_BY_PUSH(forwardListName, nFrom, nTo) \
-  for (u32 i = nFrom; i < nTo; ++i)\
+  for (u32 i = nTo; i >= nFrom; --i)\
   {\
-    forwardListName.push_back(i);\
+    forwardListName.push_front(i);\
+  }
+
+#define CHECK_FORWARD_LIST_BY_ITERATOR(forwardListBegin, forwardListEnd, nFrom)\
+  for (u32 i = nFrom; forwardListBegin != forwardListEnd; ++forwardListBegin, ++i)\
+  {\
+    CHECK((*forwardListBegin) == (s32)i);\
   }
 
   struct ForwardListFixture
@@ -64,4 +71,109 @@ namespace TestingForwardList
     testCtors<intForwardList>();
     testCtors<arrayIntForwardList>();
   }
+
+  template <typename T_ForwardListType>
+  void testOperatorEqual()
+  {
+    T_ForwardListType first(21, 10);
+    T_ForwardListType second(42, 30);
+
+    second = first;
+
+    T_ForwardListType::iterator itr = second.begin();
+    T_ForwardListType::iterator itrEnd = second.end();
+    CHECK_CONTENTS_OF_FORWARD_LIST_MATCHES_VALUE(itr, itrEnd, 10);
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/operator=", "")
+  {
+    testOperatorEqual<intForwardList>();
+    testOperatorEqual<arrayIntForwardList>();
+  }
+
+  template <typename T_ForwardListType, typename T_ForwardListIterator>
+  void testBeforeBeginIteratorAccessor()
+  {
+    T_ForwardListType myForwardList(1, 22);
+    T_ForwardListIterator itr = myForwardList.before_begin();
+
+    CHECK((*++itr) == 22);
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture,
+    "Core/Containers/ForwardList/BeforeBeginIteratorAccessor", "")
+  {
+    testBeforeBeginIteratorAccessor<intForwardList, intForwardList::iterator>();
+    testBeforeBeginIteratorAccessor<intForwardList, intForwardList::const_iterator>();
+  }
+
+  template <typename T_ForwardListType>
+  void testCBeforeBeginIteratorAccessor()
+  {
+    T_ForwardListType myForwardList(1, 14);
+    T_ForwardListType::const_iterator itr = myForwardList.cbefore_begin();
+
+    CHECK((*++itr) == 14);
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture,
+    "Core/Containers/ForwardList/CBeforeBeginIteratorAccessor", "")
+  {
+    testCBeforeBeginIteratorAccessor<intForwardList>();
+  }
+
+  template <typename T_ForwardListType, typename T_ForwardListIterator>
+  void testBeginEndIteratorAccessors()
+  {
+    const s32 myInts[] = {32,28,71,54};
+
+    T_ForwardListType myForwardList(myInts, myInts+4);
+    CHECK((*myForwardList.begin()) == 32);
+
+    T_ForwardListIterator itr = myForwardList.begin();
+
+    CHECK(*itr == 32); ++itr;
+    CHECK(*itr == 28); ++itr;
+    CHECK(*itr == 71); ++itr;
+    CHECK(*itr == 54); ++itr;
+
+    CHECK(itr == myForwardList.end());
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture,
+                   "Core/Containers/ForwardList/BeginEndIteratorAccessors", "")
+  {
+    testBeginEndIteratorAccessors<intForwardList, intForwardList::iterator>();
+    testBeginEndIteratorAccessors<intForwardList, intForwardList::const_iterator>();
+    testBeginEndIteratorAccessors<arrayIntForwardList, arrayIntForwardList::iterator>();
+    testBeginEndIteratorAccessors<arrayIntForwardList, arrayIntForwardList::const_iterator>();
+  }
+
+  template <typename T_ForwardListType>
+  void testCBeginCEndIteratorAccessors()
+  {
+    const s32 myInts[] = {11,22,60,41};
+
+    T_ForwardListType myForwardList(myInts, myInts+4);
+    CHECK((*myForwardList.cbegin()) == 11);
+
+    T_ForwardListType::const_iterator itr = myForwardList.cbegin();
+
+    CHECK(*itr == 11); ++itr;
+    CHECK(*itr == 22); ++itr;
+    CHECK(*itr == 60); ++itr;
+    CHECK(*itr == 41); ++itr;
+
+    CHECK(itr == myForwardList.cend());
+  }
+
+
+  TEST_CASE_METHOD(ForwardListFixture,
+    "Core/Containers/ForwardList/CBeginCEndIteratorAccessors", "")
+  {
+    testCBeginCEndIteratorAccessors<intForwardList>();
+    testCBeginCEndIteratorAccessors<arrayIntForwardList>();
+  }
+
+
 };

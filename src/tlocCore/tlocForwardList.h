@@ -2,7 +2,9 @@
 #define TLOC_FORWARD_LIST_H
 
 #include "tlocList.h"
+#include "tlocArray.h"
 #include "tlocIterator.h"
+
 
 namespace tloc { namespace core {
 
@@ -45,9 +47,13 @@ namespace tloc { namespace core {
     TL_FI ForwardListT(const this_type& aOther);
 
     //--------------------------------------------------------------------------
+    // General
+
+    TL_FI const T_Container& _Get_container() const;
+
+    //--------------------------------------------------------------------------
     // Assignment
 
-    TL_FI this_type&            operator= (const this_type& aOther);
     TL_FI void                  assign(size_type aCount, const T& aValue);
     template <typename T_InputIterator>
     TL_FI void                  assign(T_InputIterator aFirst,
@@ -135,16 +141,16 @@ namespace tloc { namespace core {
   protected:
     //--------------------------------------------------------------------------
     // Variables
-    
+
     T_Container                 m_container;
 
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Default types for easy instantiation
-  
+
   template <typename T>
-  struct ForwardList 
+  struct ForwardList
   {
     DECL_TYPEDEF_HELPER(ForwardList);
     typedef ForwardListT
@@ -152,7 +158,7 @@ namespace tloc { namespace core {
   };
 
   template <typename T>
-  struct ArrayForwardList 
+  struct ArrayForwardList
   {
     DECL_TYPEDEF_HELPER(ArrayForwardList);
     typedef ForwardListT<T, Array<T> > type;

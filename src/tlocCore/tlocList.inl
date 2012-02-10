@@ -432,6 +432,18 @@ namespace tloc { namespace core {
   // Iterator access
 
   template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::before_begin()
+  {
+    return iterator(&m_node());
+  }
+
+  template <LIST_TEMP_TYPES>
+  TL_FI typename List<LIST_TEMP>::const_iterator List<LIST_TEMP>::before_begin() const
+  {
+    return const_iterator(&m_node());
+  }
+
+  template <LIST_TEMP_TYPES>
   TL_FI typename List<LIST_TEMP>::iterator List<LIST_TEMP>::begin()
   {
     return iterator(m_node().getNext());

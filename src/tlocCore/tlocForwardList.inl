@@ -5,6 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocList.inl"
+#include "tlocArray.inl"
+
 namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
@@ -45,14 +48,17 @@ namespace tloc { namespace core {
   }
 
   //----------------------------------------------------------------------------
-  // Assignment
+  // General
 
   template <FORWARD_LIST_TYPES>
-  TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::this_type& 
-    ForwardListT<FORWARD_LIST_PARAMS>::operator=(const this_type& aOther)
+  TL_FI const T_Container& 
+    ForwardListT<FORWARD_LIST_PARAMS>::_Get_container() const
   {
-    return m_container.operator=(aOther);
+    return m_container;
   }
+
+  //----------------------------------------------------------------------------
+  // Assignment
 
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::assign(size_type aCount, 
@@ -93,21 +99,21 @@ namespace tloc { namespace core {
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::before_begin()
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::const_iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::before_begin() const
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::const_iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::cbefore_begin() const
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>

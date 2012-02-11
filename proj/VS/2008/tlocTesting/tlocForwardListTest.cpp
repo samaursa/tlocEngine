@@ -18,7 +18,7 @@ namespace TestingForwardList
   }
 
 #define FILL_FORWARD_LIST_BY_PUSH(forwardListName, nFrom, nTo) \
-  for (u32 i = nTo; i >= nFrom; --i)\
+  for (s32 i = nTo; i >= nFrom; --i)\
   {\
     forwardListName.push_front(i);\
   }
@@ -234,6 +234,125 @@ namespace TestingForwardList
   {
     testEmpty<intForwardList>();
     testEmpty<arrayIntForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testMaxSize()
+  {
+    T_ForwardListType myForwardList;
+    CHECK(myForwardList.max_size() > 0);
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/max_size", "")
+  {
+    testMaxSize<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testClear()
+  {
+    const s32 myFirstInts[] = {98, 57, 62, 35};
+    T_ForwardListType myForwardList(myFirstInts, myFirstInts+4);
+
+    T_ForwardListType::iterator itr = myForwardList.begin();
+
+    REQUIRE(*itr == 98); ++itr;
+    REQUIRE(*itr == 57); ++itr;
+    REQUIRE(*itr == 62); ++itr;
+    REQUIRE(*itr == 35); ++itr;
+
+    myForwardList.clear();
+    CHECK(myForwardList.empty());
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/clear", "")
+  {
+    testClear<intForwardList>();
+    testClear<arrayIntForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testInsertAfter()
+  {
+    T_ForwardListType myForwardList;
+    T_ForwardListType::iterator itr, retItr;
+
+    FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 5);
+
+    itr = myForwardList.begin();
+    advance(itr, 3);
+    REQUIRE(*itr == 3);
+
+    retItr = myForwardList.insert_after(itr, 42);
+    CHECK(*retItr == 42);
+
+    itr = myForwardList.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 42); ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+
+    itr = myForwardList.begin();
+    advance(itr, 2);
+    REQUIRE(*itr == 2);
+
+    myForwardList.insert_after(itr, 3, 12);
+
+    itr = myForwardList.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 42); ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+
+    itr = myForwardList.begin();
+    advance(itr, 5);
+    REQUIRE(*itr == 12);
+
+    T_ForwardListType insertionForwardList(4, 85);
+    myForwardList.insert_after(itr,
+                               insertionForwardList.begin(),
+                               insertionForwardList.end());
+
+    itr = myForwardList.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 12); ++itr;
+    CHECK(*itr == 85); ++itr;
+    CHECK(*itr == 85); ++itr;
+    CHECK(*itr == 85); ++itr;
+    CHECK(*itr == 85); ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 42); ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/insert_after", "")
+  {
+    testInsertAfter<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testEraseAfter()
+  {
+
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/erase_after", "")
+  {
+
   }
 
 

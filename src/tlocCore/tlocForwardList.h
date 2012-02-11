@@ -49,7 +49,7 @@ namespace tloc { namespace core {
     //--------------------------------------------------------------------------
     // General
 
-    TL_FI const T_Container& _Get_container() const;
+    TL_FI const T_Container&    _Get_container() const;
 
     //--------------------------------------------------------------------------
     // Assignment
@@ -89,21 +89,25 @@ namespace tloc { namespace core {
     //--------------------------------------------------------------------------
     // Modifiers
 
+    // TODO: Fix all inputs to const_iterator once iterator -> const_iterator
+    //       cast conversion exists
+    // TODO: Make all insert_after functions return an iterator to the element
+    //       it has inserted.
     TL_FI void                  clear();
 
-    TL_FI iterator              insert_after(const_iterator aPos,
+    TL_FI iterator              insert_after(iterator aPos,
                                              const value_type& aValue);
-    TL_FI void                  insert_after(const_iterator aPos,
+    TL_FI void                  insert_after(iterator aPos,
                                              size_type aNumOfValues,
                                              const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void                  insert_after(const_iterator aPos,
-                                            T_Iterator aFirst,
-                                            T_Iterator aLast);
+    TL_FI void                  insert_after(iterator aPos,
+                                             T_Iterator aFirst,
+                                             T_Iterator aLast);
 
-    TL_FI iterator              erase_after(const_iterator aPos);
-    TL_FI iterator              erase_after(const_iterator aFirst,
-                                            const_iterator aLast);
+    TL_FI iterator              erase_after(iterator aPos);
+    TL_FI iterator              erase_after(iterator aFirst,
+                                            iterator aLast);
 
     TL_FI void                  push_front(const T& aValue);
 

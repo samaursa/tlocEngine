@@ -53,7 +53,7 @@ namespace tloc
 #define TL_INT_MIN                INT_MIN
 #define TL_INT_MAX                INT_MAX
 #define TL_UINT_MIN               0
-#define TL_UINT_MAX               0
+#define TL_UINT_MAX               UINT_MAX
 
 #define TL_LONG_MIN               LONG_MIN
 #define TL_LONG_MAX               LONG_MAX
@@ -67,17 +67,17 @@ namespace tloc
 
   //////////////////////////////////////////////////////////////////////////
   // Conditional type
-  // 
+  //
   // This type is capable of being compiled out if T_DeclareValue = false. All
   // operators are overloaded. With T_DeclareValue = false, operators do not do
   // anything. In case of the comparison operators, the result is always false.
   // If you get the value of the <false> type the value returned is
   // g_conditional_type_invalid_value.
-  // 
+  //
   // @note You should NOT test against g_conditional_type_invalid_value to see
   // if your type is valid or not. Your first attempt should be to use compile
   // time type checking. At runtime, you can use the IsValid() function which
-  // will return true for a <true> type. 
+  // will return true for a <true> type.
   template <typename T, bool T_DeclareValue>
   struct ConditionalType {};
 
@@ -139,7 +139,7 @@ namespace tloc
     static T g_conditional_type_invalid_value;
   };
 
-  // Default value for the returned invalid_type  
+  // Default value for the returned invalid_type
   template <typename T>
   T ConditionalType<T, false>::g_conditional_type_invalid_value;
 
@@ -208,7 +208,7 @@ namespace tloc
   /// not allow 0 size classes). To get around that, use the following class
   /// for one of your other members in the class where T_User is the other
   /// member and T is your conditional type.
-  /// 
+  ///
   /// @note All operators are inherited from ConditionalType<> which means that
   /// comparison between this package and another package is essentially a
   /// comparison between ConditionType<>s and does NOT take the user variable
@@ -220,7 +220,7 @@ namespace tloc
     typedef ConditionalType<T, T_DeclareValue>    cond_type;
 
     ConditionalTypePackage();
-    ConditionalTypePackage(const T_User& aUserValue, const T& aValue); 
+    ConditionalTypePackage(const T_User& aUserValue, const T& aValue);
 
     using cond_type::operator=;
 

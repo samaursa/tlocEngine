@@ -43,7 +43,7 @@ namespace tloc { namespace core {
 
   template <FORWARD_LIST_TYPES>
   TL_FI ForwardListT<FORWARD_LIST_PARAMS>::ForwardListT(const this_type& aOther)
-    : m_container(aOther)
+    : m_container(aOther.m_container)
   {
   }
 
@@ -212,7 +212,7 @@ namespace tloc { namespace core {
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::erase_after(iterator aPos)
   {
-    m_container.erase_after(aPos);
+    return m_container.erase_after(aPos);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -220,7 +220,7 @@ namespace tloc { namespace core {
     ForwardListT<FORWARD_LIST_PARAMS>::erase_after(iterator aFirst, 
                                                   iterator aLast)
   {
-    m_container.erase_after(aFirst, aLast);
+    return m_container.erase_after(aFirst, aLast);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -238,7 +238,7 @@ namespace tloc { namespace core {
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::swap(this_type& aOther)
   {
-    m_container.swap(aOther);
+    m_container.swap(aOther.m_container);
   }
 
   template <FORWARD_LIST_TYPES>

@@ -132,6 +132,27 @@ namespace TestingForwardList
     testAssign<arrayIntForwardList>();
   }
 
+  template <typename T_ForwardListType>
+  void testFront()
+  {
+    const s32 myInts[] = {74, 28, 95, 42};
+    T_ForwardListType myForwardList(myInts, myInts+4);
+
+    CHECK(myForwardList.front() == 74);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 28);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 95);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 42);
+    myForwardList.pop_front();
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/front", "")
+  {
+    testFront<intForwardList>();
+  }
+
   template <typename T_ForwardListType, typename T_ForwardListIterator>
   void testBeforeBeginIteratorAccessor()
   {
@@ -347,13 +368,122 @@ namespace TestingForwardList
   template <typename T_ForwardListType>
   void testEraseAfter()
   {
+    T_ForwardListType myForwardList;
+    FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 5);
 
+    T_ForwardListType::iterator itr1, itr2;
+    itr1 = myForwardList.begin();
+
+    advance(itr1, 3);
+    CHECK(*itr1 == 3);
+
+    itr1 = myForwardList.erase_after(itr1);
+    CHECK(*itr1 == 5);
+
+    itr1 = myForwardList.begin();
+    CHECK(*itr1 == 0); ++itr1;
+    CHECK(*itr1 == 1); ++itr1;
+    CHECK(*itr1 == 2); ++itr1;
+    CHECK(*itr1 == 3); ++itr1;
+    CHECK(*itr1 == 5); ++itr1;
+
+    itr1 = itr2 = myForwardList.begin();
+    advance(itr2, 4);
+
+    itr1 = myForwardList.erase_after(itr1, itr2);
+    CHECK(*itr1 == 5);
+
+    itr1 = myForwardList.begin();
+    CHECK(*itr1 == 0); ++itr1;
+    CHECK(*itr1 == 5); ++itr1;
   }
 
   TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/erase_after", "")
   {
+    testEraseAfter<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testPushFront()
+  {
+    T_ForwardListType myForwardList(3, 1);
+    myForwardList.push_front(2);
+    myForwardList.push_front(3);
+    myForwardList.push_front(4);
+
+    T_ForwardListType::iterator itr = myForwardList.begin();
+
+    CHECK(*itr == 4); ++itr;
+    CHECK(*itr == 3); ++itr;
+    CHECK(*itr == 2); ++itr;
+    CHECK(*itr == 1); ++itr;
+    CHECK(*itr == 1); ++itr;
+    CHECK(*itr == 1); ++itr;
 
   }
 
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/push_front", "")
+  {
+    testPushFront<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testPopFront()
+  {
+    T_ForwardListType myForwardList(3, 1);
+    myForwardList.push_front(2);
+    myForwardList.push_front(3);
+    myForwardList.push_front(4);
+
+    CHECK(myForwardList.front() == 4);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 3);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 2);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 1);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 1);
+    myForwardList.pop_front();
+    CHECK(myForwardList.front() == 1);
+    myForwardList.pop_front();
+
+    CHECK(myForwardList.empty());
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/pop_back", "")
+  {
+    testPopFront<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testSwap()
+  {
+    const s32 myInts1[] = {54, 27, 68, 49, 52};
+    const s32 myInts2[] = {44, 32, 29};
+    T_ForwardListType myForwardList1(myInts1, myInts1+5);
+    T_ForwardListType myForwardList2(myInts2, myInts2+3);
+    T_ForwardListType::iterator itr1, itr2;
+
+    myForwardList1.swap(myForwardList2);
+
+    itr1 = myForwardList1.begin();
+    CHECK(*itr1 == 44); ++itr1;
+    CHECK(*itr1 == 32); ++itr1;
+    CHECK(*itr1 == 29); ++itr1;
+
+    itr2 = myForwardList2.begin();
+    CHECK(*itr2 == 54); ++itr2;
+    CHECK(*itr2 == 27); ++itr2;
+    CHECK(*itr2 == 68); ++itr2;
+    CHECK(*itr2 == 49); ++itr2;
+    CHECK(*itr2 == 52); ++itr2;
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/swap", "")
+  {
+    testSwap<intForwardList>();
+    testSwap<arrayIntForwardList>();
+  }
 
 };

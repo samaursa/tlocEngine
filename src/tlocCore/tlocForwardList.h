@@ -14,7 +14,8 @@ namespace tloc { namespace core {
   private:
     //--------------------------------------------------------------------------
     // typedefs
-    typedef T_Container                                 this_type;
+    typedef ForwardListT<T, T_Container>                this_type;
+    typedef T_Container                                 container_type;
 
   public:
     //--------------------------------------------------------------------------

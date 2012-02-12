@@ -32,6 +32,7 @@ namespace TestingForwardList
   struct ForwardListFixture
   {
     typedef ForwardList<s32>::type intForwardList;
+    typedef ForwardList<f32>::type floatForwardList;
     typedef ArrayForwardList<s32>::type arrayIntForwardList;
   };
 
@@ -690,54 +691,129 @@ namespace TestingForwardList
   template <typename T_ForwardListType>
   void testRemoveIf()
   {
-    //T_ForwardListType myForwardList;
-    //FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 40);
+    T_ForwardListType myForwardList;
+    FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 40);
 
-    //myForwardList.remove_if(isSecondDigitOdd);
+    myForwardList.remove_if(isSecondDigitOdd);
 
-    //myForwardList.remove_if(isNotDivisibleByThree());
+    myForwardList.remove_if(isNotDivisibleByThree());
 
-    //T_ForwardListType::iterator itr;
-    //itr = myForwardList.begin();
+    T_ForwardListType::iterator itr;
+    itr = myForwardList.begin();
 
-    //CHECK(*itr == 21); ++itr;
-    //CHECK(*itr == 24); ++itr;
-    //CHECK(*itr == 27); ++itr;
-    //CHECK(*itr == 32); ++itr;
-    //CHECK(*itr == 35); ++itr;
-    //CHECK(*itr == 28); ++itr;
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 6);  ++itr;
+    CHECK(*itr == 9);  ++itr;
+    CHECK(*itr == 21); ++itr;
+    CHECK(*itr == 24); ++itr;
+    CHECK(*itr == 27); ++itr;
 
-    //CHECK(itr == myForwardList.end());
-
-
-
+    CHECK(itr == myForwardList.end());
   }
 
   TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/remove_if", "")
   {
-
+    testRemoveIf<intForwardList>();
   }
 
   template <typename T_ForwardListType>
   void testReverse()
   {
+    T_ForwardListType myForwardList;
 
+    FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 9);
+
+    myForwardList.reverse();
+
+    T_ForwardListType::iterator itr;
+    itr = myForwardList.begin();
+
+    CHECK(*itr == 9); ++itr;
+    CHECK(*itr == 8); ++itr;
+    CHECK(*itr == 7); ++itr;
+    CHECK(*itr == 6); ++itr;
+    CHECK(*itr == 5); ++itr;
+    CHECK(*itr == 4); ++itr;
+    CHECK(*itr == 3); ++itr;
+    CHECK(*itr == 2); ++itr;
+    CHECK(*itr == 1); ++itr;
+    CHECK(*itr == 0); ++itr;
   }
 
   TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/reverse", "")
   {
-
+    testReverse<intForwardList>();
   }
+
+  bool integerCastComparison (f32 first, f32 second)
+  {
+    return ((s32)first == (s32)second);
+  }
+
+  class isNear
+  {
+  public:
+    bool operator() (f32 first, f32 second)
+    {
+      f32 diff = first - second;
+      return (diff > -10.f && diff < 10.f);
+    }
+  };
 
   template <typename T_ForwardListType>
   void testUnique()
   {
+    const f32 myFloats[] = { 0.f , 2.5f , 10.23f, 18.0f, 18.0f,
+                             36.f, 45.7f, 45.9f , 50.f , 64.f};
+    T_ForwardListType myForwardList(myFloats, myFloats+10);
 
+    myForwardList.unique();
+
+    T_ForwardListType::iterator itr;
+    itr = myForwardList.begin();
+
+    CHECK(*itr == 0.f);    ++itr;
+    CHECK(*itr == 2.5f);   ++itr;
+    CHECK(*itr == 10.23f); ++itr;
+    CHECK(*itr == 18.f);   ++itr;
+    CHECK(*itr == 36.f);   ++itr;
+    CHECK(*itr == 45.7f);  ++itr;
+    CHECK(*itr == 45.9f);  ++itr;
+    CHECK(*itr == 50.f);   ++itr;
+    CHECK(*itr == 64.f);   ++itr;
+
+    CHECK(itr == myForwardList.end());
+
+    myForwardList.unique(integerCastComparison);
+    itr = myForwardList.begin();
+
+    CHECK(*itr == 0.f);    ++itr;
+    CHECK(*itr == 2.5f);   ++itr;
+    CHECK(*itr == 10.23f); ++itr;
+    CHECK(*itr == 18.f);   ++itr;
+    CHECK(*itr == 36.f);   ++itr;
+    CHECK(*itr == 45.7f);  ++itr;
+    CHECK(*itr == 50.f);   ++itr;
+    CHECK(*itr == 64.f);   ++itr;
+
+    CHECK(itr == myForwardList.end());
+
+    myForwardList.unique(isNear());
+    itr = myForwardList.begin();
+
+    CHECK(*itr == 0.f);    ++itr;
+    CHECK(*itr == 10.23f); ++itr;
+    CHECK(*itr == 36.f);   ++itr;
+    CHECK(*itr == 50.f);   ++itr;
+    CHECK(*itr == 64.f);   ++itr;
+
+    CHECK(itr == myForwardList.end());
   }
 
   TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/unique", "")
   {
-
+    testUnique<floatForwardList>();
   }
 
   template <typename T_ForwardListType>

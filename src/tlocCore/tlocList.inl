@@ -908,7 +908,6 @@ namespace tloc { namespace core {
       else
       {
         DoEraseAfter(itr.m_node);
-        ++itr;
       }
     }
   }
@@ -927,7 +926,6 @@ namespace tloc { namespace core {
       else
       {
         DoEraseAfter(itr.m_node);
-        ++itr;
       }
     }
   }
@@ -974,7 +972,7 @@ namespace tloc { namespace core {
       {
         if (aBinaryPred(*currElem, *itrBegin))
         {
-          DoErase(itrBegin.m_node());
+          DoEraseAfter(itrBegin.m_node->getPrev());
           itrBegin = currElem;
         }
         else

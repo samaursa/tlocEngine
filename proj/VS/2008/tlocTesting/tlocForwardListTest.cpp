@@ -73,6 +73,31 @@ namespace TestingForwardList
   }
 
   template <typename T_ForwardListType>
+  void testGetContainer()
+  {
+    const s32 myInts[] = {78, 52, 38, 46};
+    T_ForwardListType myForwardList(myInts, myInts+4);
+
+    T_ForwardListType::container_type myContainer = myForwardList._Get_container();
+    T_ForwardListType::container_type::iterator itr;
+
+    itr = myContainer.begin();
+
+    CHECK(*itr == 78); ++itr;
+    CHECK(*itr == 52); ++itr;
+    CHECK(*itr == 38); ++itr;
+    CHECK(*itr == 46); ++itr;
+
+    CHECK(itr == myContainer.end());
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/_Get_container", "")
+  {
+    testGetContainer<intForwardList>();
+    testGetContainer<arrayIntForwardList>();
+  }
+
+  template <typename T_ForwardListType>
   void testOperatorEqual()
   {
     T_ForwardListType first(21, 10);
@@ -485,5 +510,260 @@ namespace TestingForwardList
     testSwap<intForwardList>();
     testSwap<arrayIntForwardList>();
   }
+
+  bool myComparison(s32 external, s32 original)
+  {
+    return ((external + 100) < original);
+  }
+
+  template <typename T_ForwardListType>
+  void testMerge()
+  {
+    T_ForwardListType firstForwardList, secondForwardList;
+
+    firstForwardList.push_front(37);
+    firstForwardList.push_front(10);
+    firstForwardList.push_front(3);
+
+    secondForwardList.push_front(89);
+    secondForwardList.push_front(28);
+    secondForwardList.push_front(15);
+
+    firstForwardList.merge(secondForwardList);
+
+    T_ForwardListType::iterator itr;
+    itr = firstForwardList.begin();
+
+    CHECK(*itr == 3); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 15); ++itr;
+    CHECK(*itr == 28); ++itr;
+    CHECK(*itr == 37); ++itr;
+    CHECK(*itr == 89); ++itr;
+
+    T_ForwardListType thirdForwardList, fourthForwardList;
+
+    thirdForwardList.push_front(37);
+    thirdForwardList.push_front(10);
+    thirdForwardList.push_front(3);
+
+    fourthForwardList.push_front(89);
+    fourthForwardList.push_front(28);
+    fourthForwardList.push_front(15);
+
+    thirdForwardList.merge(fourthForwardList, myComparison);
+    itr = thirdForwardList.begin();
+
+    CHECK(*itr == 3); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 37); ++itr;
+    CHECK(*itr == 15); ++itr;
+    CHECK(*itr == 28); ++itr;
+    CHECK(*itr == 89); ++itr;
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/merge", "")
+  {
+    testMerge<intForwardList>();
+  }
+
+  template <typename T_ForwardListType>
+  void testSpliceAfter()
+  {
+    T_ForwardListType myForwardList1, myForwardList2;
+    T_ForwardListType::iterator itr, itrRangeBegin, itrRangeEnd;
+
+    FILL_FORWARD_LIST_BY_PUSH(myForwardList1, 0, 5);
+
+    myForwardList2.assign(5, 20);
+
+    itr = myForwardList1.begin();
+    advance(itr, 2); // Points to 2 (myForwardList1)
+    CHECK(*itr == 2);
+
+    // Default Splice after. Copy myForwardList2 into myForwardList1 at itr
+    myForwardList1.splice_after(itr, myForwardList2);
+
+    itr = myForwardList1.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+
+    CHECK(myForwardList2.empty());
+
+    itr = myForwardList1.begin();
+    advance(itr, 8); // Points to the 3 (myForwardList1)
+    CHECK(*itr == 3);
+
+    const s32 myInts1[] = {33, 11, 22, 44, 66};
+    myForwardList2.assign(myInts1, myInts1+5);
+    itrRangeBegin = myForwardList2.begin();
+    advance(itrRangeBegin, 2); // Points to 22 (myForwardList2)
+    CHECK(*itrRangeBegin == 22);
+
+    // Second variation of splice after. Copy an element in myForwardList2
+    // at itrRangeBegin, to myForardList1 at itr
+    myForwardList1.splice_after(itr, myForwardList2, itrRangeBegin);
+
+    itr = myForwardList1.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 22); ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+
+    itr = myForwardList2.begin();
+    CHECK(*itr == 33); ++itr;
+    CHECK(*itr == 11); ++itr;
+    CHECK(*itr == 44); ++itr;
+    CHECK(*itr == 66); ++itr;
+
+    itr = myForwardList1.begin();
+    advance(itr, 1); // Points to the 1 (myForwardList1)
+    CHECK(*itr == 1);
+
+    const s32 myInts2[] = {11, 6, 22, 14, 8};
+    myForwardList2.assign(myInts2, myInts2+5);
+    itrRangeBegin = itrRangeEnd = myForwardList2.begin();
+    advance(itrRangeBegin, 1); // Points to 6 (myForwardList2)
+    CHECK(*itrRangeBegin == 6);
+    advance(itrRangeEnd, 4);
+    CHECK(*itrRangeEnd == 8);
+
+    // Third variation of splice after. Copy a range of elements from
+    // myForwardList2, indicated by itrRangeBegin and itrRangeEnd, to
+    // myForwardList1 at itr
+    myForwardList1.splice_after(itr, myForwardList2, itrRangeBegin, itrRangeEnd);
+
+    itr = myForwardList1.begin();
+    CHECK(*itr == 0);  ++itr;
+    CHECK(*itr == 1);  ++itr;
+    CHECK(*itr == 22); ++itr;
+    CHECK(*itr == 14); ++itr;
+    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 20); ++itr;
+    CHECK(*itr == 3);  ++itr;
+    CHECK(*itr == 22); ++itr;
+    CHECK(*itr == 4);  ++itr;
+    CHECK(*itr == 5);  ++itr;
+
+    itr = myForwardList2.begin();
+    CHECK(*itr == 11); ++itr;
+    CHECK(*itr == 6);  ++itr;
+    CHECK(*itr == 8);  ++itr;
+
+
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/splice_after", "")
+  {
+    testSpliceAfter<intForwardList>();
+  }
+
+  bool isSecondDigitOdd(const s32& value) { return !((value/10)%2 == 0); }
+
+  class isNotDivisibleByThree
+  {
+  public:
+    bool operator() (const s32& value) { return !((value%3)==0); }
+  };
+
+  template <typename T_ForwardListType>
+  void testRemoveIf()
+  {
+    //T_ForwardListType myForwardList;
+    //FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 40);
+
+    //myForwardList.remove_if(isSecondDigitOdd);
+
+    //myForwardList.remove_if(isNotDivisibleByThree());
+
+    //T_ForwardListType::iterator itr;
+    //itr = myForwardList.begin();
+
+    //CHECK(*itr == 21); ++itr;
+    //CHECK(*itr == 24); ++itr;
+    //CHECK(*itr == 27); ++itr;
+    //CHECK(*itr == 32); ++itr;
+    //CHECK(*itr == 35); ++itr;
+    //CHECK(*itr == 28); ++itr;
+
+    //CHECK(itr == myForwardList.end());
+
+
+
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/remove_if", "")
+  {
+
+  }
+
+  template <typename T_ForwardListType>
+  void testReverse()
+  {
+
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/reverse", "")
+  {
+
+  }
+
+  template <typename T_ForwardListType>
+  void testUnique()
+  {
+
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/unique", "")
+  {
+
+  }
+
+  template <typename T_ForwardListType>
+  void testSort()
+  {
+    const s32 myInts[] = {45, 38, 59, 11, 62, 36, 7};
+    T_ForwardListType myForwardList(myInts, myInts+7);
+
+    myForwardList.sort();
+
+    CHECK(*itr == 7); ++itr;
+    CHECK(*itr == 11); ++itr;
+    CHECK(*itr == 36); ++itr;
+    CHECK(*itr == 38); ++itr;
+    CHECK(*itr == 45); ++itr;
+    CHECK(*itr == 59); ++itr;
+    CHECK(*itr == 62); ++itr;
+  }
+
+  TEST_CASE_METHOD(ForwardListFixture, "Core/Containers/ForwardList/sort", "")
+  {
+    /* Intentionally blank until sort is implemented into a container */
+  }
+
+
+
+
 
 };

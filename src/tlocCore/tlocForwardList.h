@@ -15,11 +15,12 @@ namespace tloc { namespace core {
     //--------------------------------------------------------------------------
     // typedefs
     typedef ForwardListT<T, T_Container>                this_type;
-    typedef T_Container                                 container_type;
+
 
   public:
     //--------------------------------------------------------------------------
     // typedefs (similar to forward_list)
+    typedef T_Container                                 container_type;
     typedef typename T_Container::value_type            value_type;
     typedef typename T_Container::size_type             size_type;
     typedef typename T_Container::difference_type       difference_type;

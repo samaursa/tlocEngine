@@ -244,7 +244,7 @@ namespace tloc { namespace core {
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::merge(this_type& aOther)
   {
-    m_container.merge(aOther);
+    m_container.merge(aOther.m_container);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -252,14 +252,14 @@ namespace tloc { namespace core {
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::merge(this_type& aOther, 
                                                      T_Compare aComp)
   {
-    m_container.merge(aOther, aComp);
+    m_container.merge(aOther.m_container, aComp);
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::splice_after(iterator aPos, 
                                                             this_type& aFrom)
   {
-    m_container.splice_after(aPos, aFrom);
+    m_container.splice_after(aPos, aFrom.m_container);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -267,7 +267,7 @@ namespace tloc { namespace core {
                                                             this_type& aFrom, 
                                                             iterator aOther)
   {
-    m_container.splice_after(aPos, aFrom, aOther);
+    m_container.splice_after(aPos, aFrom.m_container, aOther);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -276,7 +276,7 @@ namespace tloc { namespace core {
                                                             iterator aOtherBegin, 
                                                             iterator aOtherEnd)
   {
-    m_container.splice_after(aPos, aFrom, aOtherBegin, aOtherEnd);
+    m_container.splice_after(aPos, aFrom.m_container, aOtherBegin, aOtherEnd);
   }
 
   template <FORWARD_LIST_TYPES>

@@ -235,8 +235,9 @@
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time
+
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg)
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
@@ -245,6 +246,14 @@
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
+# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
+# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer);
+# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
+# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
 
 //------------------------------------------------------------------------
 // Low level assertions

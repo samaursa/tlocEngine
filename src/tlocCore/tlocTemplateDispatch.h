@@ -113,24 +113,35 @@ namespace tloc { namespace core {
       m_allObservers.clear();
     }
 
+    template <typename T_Ref>
+    void foo(T_Ref a)
+    {
+      TLOC_STATIC_ASSERT_IS_REFERENCE(T_Ref);
+    }
+
     ///-------------------------------------------------------------------------
     /// Registers this object.
     ///
     /// @param [in] a_observer Pointer to the observer to register (cannot be
     ///                        NULL)
     ///-------------------------------------------------------------------------
-    template <typename T>
-    void Register(T* a_observer)
+    template <typename T_Ptr>
+    void Register(T_Ptr a_observer)
     {
-      typedef T_CallbackGroupT<T>           callback_type;
-      typedef container_type::iterator      itr_type;
+      TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
+
+      typedef Loki::TypeTraits<T_Ptr>::PointeeType value_type;
+      typedef T_CallbackGroupT<value_type>         callback_type;
+      typedef container_type::iterator             itr_type;
+
+      const char* type_string = tloc_type_to_string<value_type>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)
+        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           currCallback->Register(a_observer);
@@ -144,6 +155,12 @@ namespace tloc { namespace core {
       m_allObservers.push_back(newCallback);
     }
 
+    //template <typename T>
+    //void Register(T a_observer)
+    //{
+    //  TLOC_STATIC_ASSERT(false, Function_does_not_take_non_pointers_types);
+    //}
+
     ///-------------------------------------------------------------------------
     /// Un-register a previously registered observer.
     ///
@@ -152,18 +169,23 @@ namespace tloc { namespace core {
     ///
     /// @return false is returned if a_observer is not previously registered.
     ///-------------------------------------------------------------------------
-    template <typename T>
-    bool UnRegister(const T* a_observer)
+    template <typename T_Ptr>
+    bool UnRegister(const T_Ptr a_observer)
     {
-      typedef T_CallbackGroupT<T>           callback_type;
-      typedef container_type::iterator      itr_type;
+      TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
+
+      typedef Loki::TypeTraits<T_Ptr>::PointeeType value_type;
+      typedef T_CallbackGroupT<value_type>         callback_type;
+      typedef container_type::iterator             itr_type;
+
+      const char* type_string = tloc_type_to_string<value_type>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)
+        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->UnRegister(a_observer);

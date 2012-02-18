@@ -1131,6 +1131,18 @@
 		<Filter
 			Name="Base Classes"
 			>
+			<Filter
+				Name="Dispatchers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatchDefaults.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Memory"
@@ -1177,6 +1189,22 @@
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocUtils.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Windowing"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.inl"
 				>
 			</File>
 		</Filter>

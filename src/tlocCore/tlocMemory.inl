@@ -9,6 +9,32 @@
 
 namespace tloc { namespace core {
 
+#ifdef TLOC_USE_CUSTOM_NEW_DELETE
+
+  TL_FI void* operator new (std::size_t size)
+  {
+    void *ptr = TL_MALLOC(size);
+    return ptr; // Not throwing on purpose
+  }
+
+  TL_FI void operator delete (void* ptr)
+  {
+    TL_FREE(ptr);
+  }
+
+  TL_FI void* operator new (std::size_t size, const std::nothrow_t&)
+  {
+    void *ptr = TL_MALLOC(size);
+    return ptr; // Not throwing on purpose
+  }
+
+  TL_FI void operator delete (void* ptr, const std::nothrow_t&)
+  {
+    TL_FREE(ptr);
+  }
+
+#endif
+
   template <typename T_InputIterator, typename T_OutputIterator>
   TL_I T_OutputIterator uninitialized_copy(T_InputIterator aRangeBegin, 
                                            T_InputIterator aRangeEnd, 

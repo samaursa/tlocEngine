@@ -996,6 +996,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocTemplateDispatchTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocTupleTest.cpp"
 				>
 			</File>

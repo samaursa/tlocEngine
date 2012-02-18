@@ -2,7 +2,9 @@
 #define TLOC_FORWARD_LIST_H
 
 #include "tlocList.h"
+#include "tlocArray.h"
 #include "tlocIterator.h"
+
 
 namespace tloc { namespace core {
 
@@ -12,11 +14,13 @@ namespace tloc { namespace core {
   private:
     //--------------------------------------------------------------------------
     // typedefs
-    typedef T_Container                                 this_type;
+    typedef ForwardListT<T, T_Container>                this_type;
+
 
   public:
     //--------------------------------------------------------------------------
     // typedefs (similar to forward_list)
+    typedef T_Container                                 container_type;
     typedef typename T_Container::value_type            value_type;
     typedef typename T_Container::size_type             size_type;
     typedef typename T_Container::difference_type       difference_type;
@@ -45,9 +49,13 @@ namespace tloc { namespace core {
     TL_FI ForwardListT(const this_type& aOther);
 
     //--------------------------------------------------------------------------
+    // General
+
+    TL_FI const T_Container&    _Get_container() const;
+
+    //--------------------------------------------------------------------------
     // Assignment
 
-    TL_FI this_type&            operator= (const this_type& aOther);
     TL_FI void                  assign(size_type aCount, const T& aValue);
     template <typename T_InputIterator>
     TL_FI void                  assign(T_InputIterator aFirst,
@@ -83,21 +91,25 @@ namespace tloc { namespace core {
     //--------------------------------------------------------------------------
     // Modifiers
 
+    // TODO: Fix all inputs to const_iterator once iterator -> const_iterator
+    //       cast conversion exists
+    // TODO: Make all insert_after functions return an iterator to the element
+    //       it has inserted.
     TL_FI void                  clear();
 
-    TL_FI iterator              insert_after(const_iterator aPos,
+    TL_FI iterator              insert_after(iterator aPos,
                                              const value_type& aValue);
-    TL_FI void                  insert_after(const_iterator aPos,
+    TL_FI void                  insert_after(iterator aPos,
                                              size_type aNumOfValues,
                                              const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void                  insert_after(const_iterator aPos,
-                                            T_Iterator aFirst,
-                                            T_Iterator aLast);
+    TL_FI void                  insert_after(iterator aPos,
+                                             T_Iterator aFirst,
+                                             T_Iterator aLast);
 
-    TL_FI iterator              erase_after(const_iterator aPos);
-    TL_FI iterator              erase_after(const_iterator aFirst,
-                                            const_iterator aLast);
+    TL_FI iterator              erase_after(iterator aPos);
+    TL_FI iterator              erase_after(iterator aFirst,
+                                            iterator aLast);
 
     TL_FI void                  push_front(const T& aValue);
 
@@ -135,16 +147,16 @@ namespace tloc { namespace core {
   protected:
     //--------------------------------------------------------------------------
     // Variables
-    
+
     T_Container                 m_container;
 
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Default types for easy instantiation
-  
+
   template <typename T>
-  struct ForwardList 
+  struct ForwardList
   {
     DECL_TYPEDEF_HELPER(ForwardList);
     typedef ForwardListT
@@ -152,7 +164,7 @@ namespace tloc { namespace core {
   };
 
   template <typename T>
-  struct ArrayForwardList 
+  struct ArrayForwardList
   {
     DECL_TYPEDEF_HELPER(ArrayForwardList);
     typedef ForwardListT<T, Array<T> > type;

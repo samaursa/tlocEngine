@@ -5,6 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocList.inl"
+#include "tlocArray.inl"
+
 namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
@@ -40,19 +43,22 @@ namespace tloc { namespace core {
 
   template <FORWARD_LIST_TYPES>
   TL_FI ForwardListT<FORWARD_LIST_PARAMS>::ForwardListT(const this_type& aOther)
-    : m_container(aOther)
+    : m_container(aOther.m_container)
   {
   }
 
   //----------------------------------------------------------------------------
-  // Assignment
+  // General
 
   template <FORWARD_LIST_TYPES>
-  TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::this_type& 
-    ForwardListT<FORWARD_LIST_PARAMS>::operator=(const this_type& aOther)
+  TL_FI const T_Container& 
+    ForwardListT<FORWARD_LIST_PARAMS>::_Get_container() const
   {
-    return m_container.operator=(aOther);
+    return m_container;
   }
+
+  //----------------------------------------------------------------------------
+  // Assignment
 
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::assign(size_type aCount, 
@@ -93,21 +99,21 @@ namespace tloc { namespace core {
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::before_begin()
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::const_iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::before_begin() const
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::const_iterator 
     ForwardListT<FORWARD_LIST_PARAMS>::cbefore_begin() const
   {
-    return m_container.m_node();
+    return m_container.before_begin();
   }
 
   template <FORWARD_LIST_TYPES>
@@ -179,14 +185,14 @@ namespace tloc { namespace core {
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
-    ForwardListT<FORWARD_LIST_PARAMS>::insert_after(const_iterator aPos, 
+    ForwardListT<FORWARD_LIST_PARAMS>::insert_after(iterator aPos, 
                                                    const value_type& aValue)
   {
     return m_container.insert_after(aPos, aValue);
   }
 
   template <FORWARD_LIST_TYPES>
-  TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::insert_after(const_iterator aPos, 
+  TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::insert_after(iterator aPos, 
                                                             size_type aNumOfValues,
                                                             const value_type& aValue)
   {
@@ -195,7 +201,7 @@ namespace tloc { namespace core {
 
   template <FORWARD_LIST_TYPES>
   template <typename T_Iterator>
-  TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::insert_after(const_iterator aPos, 
+  TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::insert_after(iterator aPos, 
                                                             T_Iterator aFirst,
                                                             T_Iterator aLast)
   {
@@ -204,17 +210,17 @@ namespace tloc { namespace core {
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
-    ForwardListT<FORWARD_LIST_PARAMS>::erase_after(const_iterator aPos)
+    ForwardListT<FORWARD_LIST_PARAMS>::erase_after(iterator aPos)
   {
-    m_container.erase_after(aPos);
+    return m_container.erase_after(aPos);
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI typename ForwardListT<FORWARD_LIST_PARAMS>::iterator 
-    ForwardListT<FORWARD_LIST_PARAMS>::erase_after(const_iterator aFirst, 
-                                                  const_iterator aLast)
+    ForwardListT<FORWARD_LIST_PARAMS>::erase_after(iterator aFirst, 
+                                                  iterator aLast)
   {
-    m_container.erase_after(aFirst, aLast);
+    return m_container.erase_after(aFirst, aLast);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -232,13 +238,13 @@ namespace tloc { namespace core {
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::swap(this_type& aOther)
   {
-    m_container.swap(aOther);
+    m_container.swap(aOther.m_container);
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::merge(this_type& aOther)
   {
-    m_container.merge(aOther);
+    m_container.merge(aOther.m_container);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -246,14 +252,14 @@ namespace tloc { namespace core {
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::merge(this_type& aOther, 
                                                      T_Compare aComp)
   {
-    m_container.merge(aOther, aComp);
+    m_container.merge(aOther.m_container, aComp);
   }
 
   template <FORWARD_LIST_TYPES>
   TL_FI void ForwardListT<FORWARD_LIST_PARAMS>::splice_after(iterator aPos, 
                                                             this_type& aFrom)
   {
-    m_container.splice_after(aPos, aFrom);
+    m_container.splice_after(aPos, aFrom.m_container);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -261,7 +267,7 @@ namespace tloc { namespace core {
                                                             this_type& aFrom, 
                                                             iterator aOther)
   {
-    m_container.splice_after(aPos, aFrom, aOther);
+    m_container.splice_after(aPos, aFrom.m_container, aOther);
   }
 
   template <FORWARD_LIST_TYPES>
@@ -270,7 +276,7 @@ namespace tloc { namespace core {
                                                             iterator aOtherBegin, 
                                                             iterator aOtherEnd)
   {
-    m_container.splice_after(aPos, aFrom, aOtherBegin, aOtherEnd);
+    m_container.splice_after(aPos, aFrom.m_container, aOtherBegin, aOtherEnd);
   }
 
   template <FORWARD_LIST_TYPES>

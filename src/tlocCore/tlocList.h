@@ -58,7 +58,7 @@ namespace tloc { namespace core {
     TL_STATIC_FI void       swap(this_type& a, this_type& b);
     TL_STATIC_FI void       swap_after(this_type& a, this_type& b);
     TL_FI        void       insert_after(this_type* aNext);
-    TL_FI        void       remove_after(); 
+    TL_FI        void       remove_after();
     TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
     TL_FI        void       reverse();
 
@@ -67,7 +67,7 @@ namespace tloc { namespace core {
     TL_FI        this_type*           getPrev();
     TL_FI        const this_type*     getPrev() const;
     TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const; 
+    TL_FI        const_reference_type getValue() const;
   private:
 
     this_type*    m_next;
@@ -106,7 +106,7 @@ namespace tloc { namespace core {
     TL_FI        this_type*           getPrev();
     TL_FI        const this_type*     getPrev() const;
     TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const; 
+    TL_FI        const_reference_type getValue() const;
 
   private:
 
@@ -139,16 +139,16 @@ namespace tloc { namespace core {
   ///   * insert() - use insert_after()
   ///
   /// The above functions can be disabled entirely for a singly_linked list by
-  /// defining TLOC_DISABLE_EXTENDED_SINGLY_LIST in which case calling the 
+  /// defining TLOC_DISABLE_EXTENDED_SINGLY_LIST in which case calling the
   /// functions will result in a compile error
-  /// 
+  ///
   /// The class is standard compliant but has extra functionality which
   /// makes it a std::forward_list&lt;&gt; (c++11) as well if a
   /// singly_linked_node is used. Alternatively you can simply use
   /// tlocForwardList&lt;&gt; which does not have some methods such as
   /// erase() and remove() but instead has erase_after()
   /// and remove_after()
-  /// 
+  ///
   /// @notes The class's helper functions are sometimes written as
   /// xxxxNext(). The reason for this is to help with a singly linked
   /// list.
@@ -171,9 +171,9 @@ namespace tloc { namespace core {
     typedef const T*                                    const_pointer;
     typedef tl_size                                     size_type;
     typedef tl_ptrdiff                                  difference_type;
-    typedef 
+    typedef
       tloc::core::reverse_iterator<iterator>            reverse_iterator;
-    typedef 
+    typedef
       tloc::core::reverse_iterator<const_iterator>      const_reverse_iterator;
 
     typedef ConditionalTypePackage
@@ -195,6 +195,8 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Iterator access
 
+    TL_FI iterator        before_begin();
+    TL_FI const_iterator  before_begin() const;
     TL_FI iterator        begin();
     TL_FI const_iterator  begin() const;
     TL_FI iterator        end();
@@ -248,7 +250,7 @@ namespace tloc { namespace core {
     TL_FI void        insert(iterator aPos, size_type aNumOfValues,
                              const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void        insert(iterator aPos, T_Iterator aFirst, 
+    TL_FI void        insert(iterator aPos, T_Iterator aFirst,
                              T_Iterator aLast);
 
     TL_FI iterator    insert_after(iterator aPos);
@@ -256,21 +258,21 @@ namespace tloc { namespace core {
     TL_FI void        insert_after(iterator aPos, size_type aNumOfValues,
                                    const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void        insert_after(iterator aPos, T_Iterator aFirst, 
+    TL_FI void        insert_after(iterator aPos, T_Iterator aFirst,
                                    T_Iterator aLast);
 
     TL_FI iterator    erase(iterator aPos);
     TL_FI iterator    erase(iterator aFirst, iterator aLast);
 
     TL_FI reverse_iterator erase(reverse_iterator aPos);
-    TL_FI reverse_iterator erase(reverse_iterator aFirst, 
+    TL_FI reverse_iterator erase(reverse_iterator aFirst,
                                  reverse_iterator aLast);
 
     TL_FI iterator    erase_after(iterator aPos);
     TL_FI iterator    erase_after(iterator aFirst, iterator aLast);
 
     TL_FI reverse_iterator erase_after(reverse_iterator aPos);
-    TL_FI reverse_iterator erase_after(reverse_iterator aFirst, 
+    TL_FI reverse_iterator erase_after(reverse_iterator aFirst,
                                        reverse_iterator aLast);
 
     TL_FI void        swap(this_type& aOther);
@@ -286,9 +288,9 @@ namespace tloc { namespace core {
                              iterator aOtherEnd);
 
     TL_FI void        splice_after(iterator aPos, this_type& aFrom);
-    TL_FI void        splice_after(iterator aPos, this_type& aFrom, 
+    TL_FI void        splice_after(iterator aPos, this_type& aFrom,
                                    iterator aOther);
-    TL_FI void        splice_after(iterator aPos, this_type& aFrom, 
+    TL_FI void        splice_after(iterator aPos, this_type& aFrom,
                                    iterator aOtherBegin, iterator aOtherEnd);
 
     TL_FI void        remove(const T& aValueToCompare);
@@ -349,7 +351,7 @@ namespace tloc { namespace core {
 
     TL_FI void       DoInsertValueAfter(node_type* aNode, const T& aValueCopy);
     TL_FI void       DoInsertValuesAfter(node_type* aNode,
-                                         tl_size numElements, 
+                                         tl_size numElements,
                                          const T& aValueCopy);
 
     TL_FI void       DoEraseAfter(node_type* aNode);
@@ -365,17 +367,17 @@ namespace tloc { namespace core {
     // This function performs the actual splice for a range. It selects the
     // most optimized splicing operation depending on whether the size is stored
     // or not
-    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom, 
+    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom,
                                    iterator aBegin, iterator aEnd, size_stored);
-    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom, 
-                                   iterator aBegin, iterator aEnd, 
+    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom,
+                                   iterator aBegin, iterator aEnd,
                                    size_not_stored);
 
   protected:
 
     TL_FI node_type&          m_node();
-    TL_FI const node_type&    m_node() const; 
-    TL_FI list_size&          m_size(); 
+    TL_FI const node_type&    m_node() const;
+    TL_FI list_size&          m_size();
     TL_FI const list_size&    m_size() const;
     size_and_node             m_sizeAndNode;
   };
@@ -388,7 +390,7 @@ namespace tloc { namespace core {
   struct SinglyList
   {
     DECL_TYPEDEF_HELPER(SinglyList);
-    typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), 
+    typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(),
       T_DedicatedSize> type;
   };
 
@@ -396,7 +398,7 @@ namespace tloc { namespace core {
   struct DoublyList
   {
     DECL_TYPEDEF_HELPER(DoublyList);
-    typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(), 
+    typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(),
       T_DedicatedSize> type;
   };
 

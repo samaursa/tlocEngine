@@ -1,5 +1,5 @@
 #ifndef TLOC_TEMPLATE_DISPATCH_H
-#define TLOC_TEMPLATE_DISPATCH_H 
+#define TLOC_TEMPLATE_DISPATCH_H
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
@@ -8,8 +8,8 @@
 namespace tloc { namespace core {
 
   /// Use this class as a base class for callback classes that use the zero
-  /// virtual overhead observer callback pattern. The inherited callback classes 
-  /// use virtual or pure virtual methods that define the actual callbacks for 
+  /// virtual overhead observer callback pattern. The inherited callback classes
+  /// use virtual or pure virtual methods that define the actual callbacks for
   /// the Subject (in the observer pattern)
   template <typename T_CallbackMethods>
   class CallbackBase : public T_CallbackMethods
@@ -18,21 +18,21 @@ namespace tloc { namespace core {
 
     CallbackBase(const char* a_typename) : m_typename(a_typename) {}
 
-    const char* GetType() 
-    { 
+    const char* GetType()
+    {
       return m_typename;
     }
 
     template <typename T>
-    const char* IsSame() 
-    { 
-      return StrCmp(m_typename, tloc_type_to_string<T>().value()) == 0; 
-    } 
+    const char* IsSame()
+    {
+      return StrCmp(m_typename, tloc_type_to_string<T>().value()) == 0;
+    }
 
     const char* m_typename;
   };
 
-  /// Use this class as a base class for the actual callback class that can 
+  /// Use this class as a base class for the actual callback class that can
   /// use any type. T_Container must support the function push_back()
   template <typename T_CallbackMethods, typename T_ContainerWithType>
   class CallbackGroupT : public CallbackBase<T_CallbackMethods>
@@ -57,7 +57,7 @@ namespace tloc { namespace core {
 
     bool UnRegister(const_pointer a_observer)
     {
-      container_type::iterator itr = 
+      container_type::iterator itr =
         find(m_observers.begin(), m_observers.end(), a_observer);
 
       if (itr != m_observers.end())
@@ -76,13 +76,13 @@ namespace tloc { namespace core {
 
     // List of all the observers of the type value_type that this class is
     // responsible for
-    container_type m_observers; 
+    container_type m_observers;
   };
 
-  /// Base class for the dispatcher (the class responsible for firing the 
+  /// Base class for the dispatcher (the class responsible for firing the
   /// callbacks). T_CallbacksT is the type of your implemented callback
   /// class.
-  template <typename T_Callbacks, 
+  template <typename T_Callbacks,
             template <typename T> class T_CallbackGroupT,
             template <typename T> class T_ContainerT>
   class DispatcherBase
@@ -103,8 +103,8 @@ namespace tloc { namespace core {
     {
       typedef container_type::iterator itr_type;
 
-      for (itr_type itr = m_allObservers.begin(), 
-           itrEnd = m_allObservers.end(); 
+      for (itr_type itr = m_allObservers.begin(),
+           itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
         delete *itr;
@@ -126,8 +126,8 @@ namespace tloc { namespace core {
       typedef container_type::iterator      itr_type;
 
       // Find the callback with the given type if it already exists
-      for (itr_type itr = m_allObservers.begin(), 
-           itrEnd = m_allObservers.end(); 
+      for (itr_type itr = m_allObservers.begin(),
+           itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
         if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)
@@ -159,8 +159,8 @@ namespace tloc { namespace core {
       typedef container_type::iterator      itr_type;
 
       // Find the callback with the given type if it already exists
-      for (itr_type itr = m_allObservers.begin(), 
-           itrEnd = m_allObservers.end(); 
+      for (itr_type itr = m_allObservers.begin(),
+           itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
         if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)
@@ -185,8 +185,8 @@ namespace tloc { namespace core {
       typedef container_type::const_iterator  itr_type;
 
       // Find the callback with the given type if it already exists
-      for (itr_type itr = m_allObservers.begin(), 
-           itrEnd = m_allObservers.end(); 
+      for (itr_type itr = m_allObservers.begin(),
+           itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
         if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)

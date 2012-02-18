@@ -2,7 +2,7 @@
 
 #include "tlocCore/tlocTemplateDispatchDefaults.h"
 
-namespace someOtherNamespace
+namespace ns
 {
   struct pipes
   {
@@ -14,7 +14,7 @@ namespace someOtherNamespace
   TLOC_DEF_TYPE(pipes);
 };
 
-namespace TestingTemplateDispatch 
+namespace TestingTemplateDispatch
 {
   USING_TLOC;
   using namespace core;
@@ -27,12 +27,12 @@ namespace TestingTemplateDispatch
     void C2() { ++m_c2; }
     void C3() { ++m_c3; }
 
-    u32 m_c1, m_c2, m_c3; 
+    u32 m_c1, m_c2, m_c3;
   };
 
   TLOC_DEF_TYPE(bullets);
 
-  struct particles 
+  struct particles
   {
     particles() : m_c1(0), m_c2(0), m_c3(0) {}
 
@@ -40,7 +40,7 @@ namespace TestingTemplateDispatch
     void C2() { ++m_c2; }
     void C3() { ++m_c3; }
 
-    u32 m_c1, m_c2, m_c3; 
+    u32 m_c1, m_c2, m_c3;
   };
 
   TLOC_DEF_TYPE(particles);
@@ -80,7 +80,7 @@ namespace TestingTemplateDispatch
     }
   };
 
-  struct Window : public DispatcherBaseArray<WindowCallbacks, 
+  struct Window : public DispatcherBaseArray<WindowCallbacks,
                                              WindowCallbackGroupT>::type
   {
     void CallC1()
@@ -108,13 +108,16 @@ namespace TestingTemplateDispatch
     }
   };
 
-  TEST_CASE("Core/BaseClasses/TemplateDispatch/Register", "")
+  struct Fixture
   {
-    using namespace someOtherNamespace;
-
     bullets b1, b2, b3, b4, b5, b6, b7;
     particles p1, p2, p3, p4, p5, p6, p7;
-    pipes pi;
+    ns::pipes pi;
+  };
+
+  TEST_CASE_METHOD(Fixture, "Core/BaseClasses/TemplateDispatch/Register", "")
+  {
+    using namespace ns;
 
     Window win;
     win.Register(&b1);
@@ -157,5 +160,40 @@ namespace TestingTemplateDispatch
 
     CHECK(win.GetNumRegisteredGroups() == 3);
     CHECK(win.GetNumRegisteredTypes<pipes>() == 1);
+  }
+
+  TEST_CASE_METHOD(Fixture, "Core/BaseClasses/TemplateDispatch/UnRegister", "")
+  {
+    Window win;
+    win.Register(&b1); win.Register(&b2); win.Register(&b3);
+    win.Register(&p1); win.Register(&p2); win.Register(&p3);
+
+    CHECK(win.GetNumRegisteredGroups() == 2);
+    CHECK(win.GetNumRegisteredTypes<bullets>() == 3);
+    CHECK(win.GetNumRegisteredTypes<particles>() == 3);
+
+    win.CallC1(); win.CallC2(); win.CallC3();
+    CHECK(b1.m_c1 == 1); CHECK(b1.m_c2 == 1); CHECK(b1.m_c3 == 1);
+    CHECK(b2.m_c1 == 1); CHECK(b2.m_c2 == 1); CHECK(b2.m_c3 == 1);
+    CHECK(b3.m_c1 == 1); CHECK(b3.m_c2 == 1); CHECK(b3.m_c3 == 1);
+
+    CHECK(p1.m_c1 == 1); CHECK(p1.m_c2 == 1); CHECK(p1.m_c3 == 1);
+    CHECK(p2.m_c1 == 1); CHECK(p2.m_c2 == 1); CHECK(p2.m_c3 == 1);
+    CHECK(p3.m_c1 == 1); CHECK(p3.m_c2 == 1); CHECK(p3.m_c3 == 1);
+
+    win.UnRegister(&p1); win.UnRegister(&p2); win.UnRegister(&p3);
+
+    CHECK(win.GetNumRegisteredGroups() == 2);
+    CHECK(win.GetNumRegisteredTypes<bullets>() == 3);
+    CHECK(win.GetNumRegisteredTypes<particles>() == 0);
+
+    win.CallC1(); win.CallC2(); win.CallC3();
+    CHECK(b1.m_c1 == 2); CHECK(b1.m_c2 == 2); CHECK(b1.m_c3 == 2);
+    CHECK(b2.m_c1 == 2); CHECK(b2.m_c2 == 2); CHECK(b2.m_c3 == 2);
+    CHECK(b3.m_c1 == 2); CHECK(b3.m_c2 == 2); CHECK(b3.m_c3 == 2);
+
+    CHECK(p1.m_c1 == 1); CHECK(p1.m_c2 == 1); CHECK(p1.m_c3 == 1);
+    CHECK(p2.m_c1 == 1); CHECK(p2.m_c2 == 1); CHECK(p2.m_c3 == 1);
+    CHECK(p3.m_c1 == 1); CHECK(p3.m_c2 == 1); CHECK(p3.m_c3 == 1);
   }
 };

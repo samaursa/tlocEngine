@@ -932,8 +932,9 @@ namespace tloc { namespace core {
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_randompivot)
     {
-      const u32 size			= tloc::core::distance(aFirst, aLast);
-      const u32 randomPiv	= g_defaultRNG.GetRandomInteger(0, size);
+      const tl_ptrdiff size      = tloc::core::distance(aFirst, aLast);
+      const tl_ptrdiff randomPiv = g_defaultRNG.GetRandomInteger(0, 
+                                                  (rng_default::int_type)size);
 
       T_InputIterator randItr = aFirst;
       tloc::core::advance(randItr, randomPiv);
@@ -946,7 +947,7 @@ namespace tloc { namespace core {
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_middlepivot)
     {
-      const u32 halfSize = tloc::core::distance(aFirst, aLast) / 2;
+      const tl_ptrdiff halfSize = tloc::core::distance(aFirst, aLast) / 2;
 
       T_InputIterator midItr = aFirst;
       tloc::core::advance(midItr, halfSize);
@@ -1138,7 +1139,7 @@ namespace tloc { namespace core {
     {
       if (aFirst != aLast)
       {
-        const u32 size = tloc::core::distance(aFirst, aLast);
+        const tl_ptrdiff size = tloc::core::distance(aFirst, aLast);
         typedef Array<T_ValueType> T_Container;
         T_Container unsortedArray(size);
 
@@ -1155,14 +1156,16 @@ namespace tloc { namespace core {
     template <typename T_Container>
     T_Container DoMergesort(const T_Container& aUnsorted)
     {
-      const u32 size = aUnsorted.size();
+      const tl_size size = aUnsorted.size();
       if ((size - 1) != 0)
       {
         TLOC_ASSERT_LOW_LEVEL(size > 1, "Size is <= 1");
 
         T_Container::const_iterator first = aUnsorted.begin();
         T_Container::const_iterator last = aUnsorted.end();
-        const u32 halfSize = size / 2;
+
+        tl_size halfSize = size / 2;
+
         T_Container::const_iterator midItr = first;
         tloc::core::advance(midItr, halfSize);
 
@@ -1242,10 +1245,10 @@ namespace tloc { namespace core {
     template <typename T_InputIterator>
     void DoMergeInsertionSort(T_InputIterator aFirst, T_InputIterator aLast)
     {
-      const u32 size = tloc::core::distance(aFirst, aLast);
+      const tl_ptrdiff size = tloc::core::distance(aFirst, aLast);
       if ((size - 1) != 0)
       {
-        const u32 halfSize = size / 2;
+        const tl_ptrdiff halfSize = size / 2;
         T_InputIterator midItr = aFirst;
         tloc::core::advance(midItr, halfSize);
 

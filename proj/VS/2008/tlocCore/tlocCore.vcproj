@@ -1196,22 +1196,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Windowing"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocWindow.inl"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
 			>

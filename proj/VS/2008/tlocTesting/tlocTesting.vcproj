@@ -952,6 +952,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocForwardListTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocHashtableTest.cpp"
 				>
 			</File>
@@ -989,6 +993,10 @@
 			</File>
 			<File
 				RelativePath=".\tlocTableTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocTemplateDispatchTest.cpp"
 				>
 			</File>
 			<File

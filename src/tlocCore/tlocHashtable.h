@@ -37,12 +37,7 @@ namespace tloc { namespace core {
     DECL_BINARY_FUNC(u32, u32, u32);
 
     result_type operator() (first_argument_type a_hash, 
-                            second_argument_type a_tableSize) const
-    {
-      TLOC_ASSERT_HASH_TABLE(a_tableSize != 0, 
-        "a_tableSize cannot be zero! (divide by zero)");
-      return a_hash % a_tableSize;
-    }
+                            second_argument_type a_tableSize) const;
   };
 
   template <typename T_Key, typename T_Hasher, typename T_HashToRange>
@@ -56,12 +51,7 @@ namespace tloc { namespace core {
                      typename hash_to_range_type::result_type);
 
     result_type operator() (first_argument_type a_key, 
-                            second_argument_type a_bucketCount) const
-    {
-      return hash_to_range_type::operator()
-        ((hash_to_range_type::first_argument_type)hasher::operator()(a_key), 
-         a_bucketCount);
-    }
+                            second_argument_type a_bucketCount) const;
   };
 
   ///-------------------------------------------------------------------------
@@ -74,19 +64,20 @@ namespace tloc { namespace core {
   struct HashtableElement
   {
     typedef tl_size                                 size_type;
+    typedef tl_size                                 const_size_type;
     typedef T_Value                                 value_type;
+    typedef const T_Value                           const_value_type;
 
     typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>
                                                     value_hashcode_type;
 
-    HashtableElement() {}
-    HashtableElement(const value_type& a_value, const size_type& a_hash)
-      : m_valueAndHashcode(a_value, a_hash) {}
+    HashtableElement();
+    HashtableElement(const value_type& a_value, const size_type& a_hash);
 
-    TL_FI value_type& m_value() { return m_valueAndHashcode.m_var; }
-    TL_FI const value_type& m_value() const { return m_valueAndHashcode.m_var; }
-    TL_FI size_type&  m_hashcode() { return (size_type)m_valueAndHashcode.Get(); }
-    TL_FI const size_type& m_hashcode() const { return (size_type)m_valueAndHashcode; }
+    value_type&       m_value(); 
+    const_value_type& m_value() const;
+    size_type&        m_hashcode();
+    const_size_type&  m_hashcode() const;
 
     // You can access this variable directly, but it is recommended that you
     // use the inline functions instead for clarity.
@@ -145,7 +136,7 @@ namespace tloc { namespace core {
     // Used mostly for testing
     Pair<bool, size_type>     GetCurrBucketNumber() const;
 
-  private:
+  //protected:
 
     bucket_array_type* m_bucketContainer;
     local_iterator     m_currBucket;

@@ -11,12 +11,16 @@ namespace tloc { namespace core {
   const char* PlatformInfo<T_Platform>::
     platforms[PlatformInfo<T_Platform>::total_platforms] =
   {
+    "Windows"
     "Windows 32-bit",
     "Windows 64-bit",
     "XBOX",
+
     "Apple OSX",
     "Apple OSX iPhone",
+
     "Linux",
+
     "Playstation 3",
   };
 
@@ -44,6 +48,12 @@ namespace tloc { namespace core {
 
   //------------------------------------------------------------------------
   // Helper functions
+
+  template <typename T_Platform>
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win)
+  {
+    return platforms[windows];
+  }
 
   template <typename T_Platform>
   const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win32)

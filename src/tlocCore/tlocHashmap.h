@@ -1,10 +1,14 @@
-#ifndef TLOC_HASH_MAP_H 
-#define TLOC_HASH_MAP_H 
+#ifndef TLOC_HASH_MAP_H
+#define TLOC_HASH_MAP_H
 
 #include "tlocBase.h"
 #include "tlocTypeTraits.h"
 #include "tlocAlgorithms.h"
 #include "tlocIterator.h"
+#include "tlocHashtable.h"
+#include "tlocPair.h"
+#include "tlocArray.h"
+#include "tlocList.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -17,6 +21,65 @@
 
 namespace tloc { namespace core {
 
+  template <typename T_Key, typename T_ValueType, typename T_HashFunc,
+            typename T_KeyEqual, bool T_CacheHashCode = false,
+            typename T_BucketType
+            = Array<List<HashtableElement<Pair<const T_Key, T_ValueType> > > > >
+  class HashMap
+    : public Hashtable<
+                       HashtablePolicy<T_Key, use_first<Pair<const T_Key, T_ValueType> >,
+                       T_HashFunc, hash_to_range_mod, range_hash_default,
+                       T_KeyEqual, prime_rehash_policy, T_BucketType,
+                       T_CacheHashCode, true> >
+  {
+  public:
+    //////////////////////////////////////////////////////////////////////////
+    // Typedefs
 
+    typedef Hashtable<
+                       HashtablePolicy<T_Key, use_first<Pair<const T_Key, T_ValueType> >,
+                       T_HashFunc, hash_to_range_mod, tloc::core::range_hash_default,
+                       T_KeyEqual, prime_rehash_policy, T_BucketType, T_CacheHashCode,
+                       true> >                                      base_type;
+    typedef HashMap<T_Key, T_ValueType, T_HashFunc, T_KeyEqual,
+                    T_CacheHashCode, T_BucketType>                  this_type;
+
+    // Typedefs from T_Policies
+    typedef typename base_type::size_type                           size_type;
+    typedef typename base_type::key_type                            key_type;
+    typedef T_ValueType                                             mapped_type;
+    typedef typename base_type::value_type                          value_type;
+    typedef typename base_type::element_type                        node_type;
+    typedef typename base_type::insert_return_type                  insert_return_type;
+    typedef typename base_type::iterator                            iterator;
+
+    //////////////////////////////////////////////////////////////////////////
+    // Methods
+
+    //------------------------------------------------------------------------
+    // Constructors
+
+    TL_FI explicit HashMap();
+    TL_FI explicit HashMap(size_type aBucketCount,
+                           const T_HashFunc& aHashFunction = T_HashFunc(),
+                           const T_KeyEqual& aKeyEqual = T_KeyEqual());
+    // TODO: Implement an iterator copy constructor
+
+    //------------------------------------------------------------------------
+    // Modifiers
+
+    // TODO: Implement an "insert" function that only takes in a key, and makes it paired with a default constructed mapped_type
+    // This ultimately prevents us from creating the pair (ultimately copying
+    // the element) and then copying it into the hash_map. We can simply create
+    // a spot in the hash_map with the key, and then copy the value directly
+    // to that spot.
+
+    //------------------------------------------------------------------------
+    // Operations
+
+    TL_FI mapped_type& operator[](const key_type& aKey);
+  };
 
 };};
+
+#endif

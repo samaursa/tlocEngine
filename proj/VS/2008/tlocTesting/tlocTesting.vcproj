@@ -956,6 +956,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocHashMapTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocHashtableTest.cpp"
 				>
 			</File>

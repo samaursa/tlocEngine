@@ -9,6 +9,7 @@ namespace tloc { namespace core {
 
   template <typename T_First, typename T_Second>
   Pair<T_First, T_Second>::Pair()
+    : first(), second()
   {
   }
 

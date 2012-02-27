@@ -5,7 +5,7 @@
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocNonCopyable.h"
 
-namespace tloc { namespace core {
+namespace tloc { namespace graphics {
 
   ///-------------------------------------------------------------------------
   /// A window to render to.
@@ -14,7 +14,7 @@ namespace tloc { namespace core {
   ///
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
-  class Window : public NonCopyable
+  class Window : public core::NonCopyable
   {
   public:
     struct Parameters

@@ -19,12 +19,16 @@
 
 namespace tloc { namespace core {
 
-  struct Platform_win32 {};
-  struct Platform_win64 {};
+  struct Platform_win {};
+  struct Platform_win32 : public Platform_win {};
+  struct Platform_win64 : public Platform_win {};
   struct Platform_xbox : public Platform_win32 {};
+
   struct Platform_osx {};
   struct Platform_osx_iphone : public Platform_osx {};
+
   struct Platform_linux {};
+
   struct Platform_ps3 {};
 
 #if defined(TLOC_WIN32)
@@ -42,7 +46,8 @@ namespace tloc { namespace core {
     typedef T_Platform platform_type;
 
     typedef u32 platform_index;
-    enum {win32 = 0, win64, xbox, osx, osx_iphone, linux, ps3, total_platforms};
+    enum {windows = 0, win32, win64, xbox, osx, osx_iphone, linux,
+          ps3, total_platforms};
 
     // Returns the platform name (descriptive)
     static const char*   GetPlatformName();
@@ -54,6 +59,7 @@ namespace tloc { namespace core {
     static platform_type GetPlatformType();
 
   private:
+    static const char*  DoGetPlatformName(Platform_win);
     static const char*  DoGetPlatformName(Platform_win32);
     static const char*  DoGetPlatformName(Platform_win64);
     static const char*  DoGetPlatformName(Platform_xbox);

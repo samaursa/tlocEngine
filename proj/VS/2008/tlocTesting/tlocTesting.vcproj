@@ -1011,6 +1011,10 @@
 				RelativePath=".\tlocTypesTest.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\tlocUtilsTest.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Math"

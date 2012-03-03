@@ -32,11 +32,11 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Hash functions
 
-  struct hash_to_range_mod 
+  struct hash_to_range_mod
   {
     DECL_BINARY_FUNC(u32, u32, u32);
 
-    result_type operator() (first_argument_type a_hash, 
+    result_type operator() (first_argument_type a_hash,
                             second_argument_type a_tableSize) const;
   };
 
@@ -46,11 +46,11 @@ namespace tloc { namespace core {
     typedef T_Hasher      hasher;
     typedef T_HashToRange hash_to_range_type;
 
-    DECL_BINARY_FUNC(T_Key, 
-                     typename hash_to_range_type::second_argument_type, 
+    DECL_BINARY_FUNC(T_Key,
+                     typename hash_to_range_type::second_argument_type,
                      typename hash_to_range_type::result_type);
 
-    result_type operator() (first_argument_type a_key, 
+    result_type operator() (first_argument_type a_key,
                             second_argument_type a_bucketCount) const;
   };
 
@@ -74,7 +74,7 @@ namespace tloc { namespace core {
     HashtableElement();
     HashtableElement(const value_type& a_value, const size_type& a_hash);
 
-    value_type&       m_value(); 
+    value_type&       m_value();
     const_value_type& m_value() const;
     size_type&        m_hashcode();
     const_size_type&  m_hashcode() const;
@@ -101,18 +101,18 @@ namespace tloc { namespace core {
     typedef typename policy_type::size_type          size_type;
     typedef typename policy_type::value_type         value_type;
 
-    typedef typename Loki::Select<T_Const, 
-                                  const value_type*, 
+    typedef typename Loki::Select<T_Const,
+                                  const value_type*,
                                   value_type*>::Result        pointer;
-    typedef typename Loki::Select<T_Const, 
-                                  const value_type&, 
+    typedef typename Loki::Select<T_Const,
+                                  const value_type&,
                                   value_type&>::Result        reference;
-    typedef typename Loki::Select<T_Const, const b_array_type, 
+    typedef typename Loki::Select<T_Const, const b_array_type,
                                   b_array_type>::Result       bucket_array_type;
-    typedef typename Loki::Select<T_Const, 
-      typename bucket_type::const_iterator, 
+    typedef typename Loki::Select<T_Const,
+      typename bucket_type::const_iterator,
       typename bucket_type::iterator>::Result                 bucket_iterator;
-    typedef typename Loki::Select<T_Const, 
+    typedef typename Loki::Select<T_Const,
       typename bucket_array_type::const_iterator,
       typename bucket_array_type::iterator>::Result           local_iterator;
 
@@ -143,7 +143,7 @@ namespace tloc { namespace core {
     bucket_iterator    m_currNode;
 
     // Used to mark end() iterator's m_currNode because we cannot dereference
-    // the end of the bucket container to get a reference to a bucket_type. 
+    // the end of the bucket container to get a reference to a bucket_type.
     static bucket_iterator m_dummyNode;
   };
 
@@ -156,7 +156,7 @@ namespace tloc { namespace core {
     typedef HashtableItr<T_Policies, T_Const>         this_type;
 
     // The non-const type is used for the copy constructor. This is because
-    // we cannot 
+    // we cannot
     typedef HashtableItr<T_Policies, false>     this_type_non_const;
 
     typedef typename base_type::bucket_array_type bucket_array_type;
@@ -172,15 +172,15 @@ namespace tloc { namespace core {
   public:
     HashtableItr();
     HashtableItr(bucket_array_type* a_bucketContainer);
-    HashtableItr(bucket_array_type* a_bucketContainer, 
-                 const local_iterator& a_currBucket, 
+    HashtableItr(bucket_array_type* a_bucketContainer,
+                 const local_iterator& a_currBucket,
                  const bucket_iterator& a_currNode);
     HashtableItr(const this_type_non_const& a_other);
 
-    reference   operator*() const; 
-    pointer     operator->() const; 
-    this_type&  operator++(); 
-    this_type   operator++(int); 
+    reference   operator*() const;
+    pointer     operator->() const;
+    this_type&  operator++();
+    this_type   operator++(int);
 
   };
 
@@ -220,7 +220,7 @@ namespace tloc { namespace core {
   {
   public:
     //------------------------------------------------------------------------
-    // typdefs 
+    // typdefs
 
     typedef u32                                  hash_code_type;
 
@@ -242,8 +242,8 @@ namespace tloc { namespace core {
     hash_code_type get_hash_code(const key_type& a_key) const
     { return (hash_code_type)hasher_base_type::operator()(a_key); }
 
-    size_type bucket_index(const key_type& a_key, size_type a_bucketCount) const
-    { 
+    size_type bucket_index(const u32& a_key, size_type a_bucketCount) const
+    {
       typedef typename range_hasher_base_type::first_argument_type  arg1;
       typedef typename range_hasher_base_type::second_argument_type arg2;
 
@@ -251,31 +251,31 @@ namespace tloc { namespace core {
         ( (arg1)a_key, (arg2)a_bucketCount);
     }
 
-    size_type bucket_index(const key_type&, hash_code_type a_hash,
+    size_type bucket_index(const u32&, hash_code_type a_hash,
       u32 a_bucketCount) const
-    { 
+    {
       typedef typename hash_to_range_type::first_argument_type  arg1;
       typedef typename hash_to_range_type::second_argument_type arg2;
 
       return (size_type)hash_to_range_type::operator()
-        ( (arg1)a_hash, (arg2)a_bucketCount); 
+        ( (arg1)a_hash, (arg2)a_bucketCount);
     }
 
     size_type bucket_index(const element_type& a_elem, size_type a_bucketCount) const
-    { 
+    {
       typedef typename range_hasher_base_type::first_argument_type  arg1;
       typedef typename range_hasher_base_type::second_argument_type arg2;
       typedef typename range_hasher_base_type::result_type          res;
 
       return (res)range_hasher_base_type::operator()
-        (extract_key_type::operator()( (arg1)a_elem.m_value()), (arg2)a_bucketCount); 
+        ((arg1)extract_key_type::operator()( a_elem.m_value()), (arg2)a_bucketCount);
     }
 
     key_type extract_key(const value_type& a_value) const
     { return extract_key_type::operator()(a_value); }
   };
 
-  template <typename T_Policy, typename T_CacheHash> 
+  template <typename T_Policy, typename T_CacheHash>
   class HashCode { };
 
   template <typename T_Policy>
@@ -309,7 +309,7 @@ namespace tloc { namespace core {
   {
   public:
     typedef HashCodeBase<T_Policy>  base_type;
-    
+
     hash_code_type get_hash_code(const key_type& a_key) const
     {
       return base_type::get_hash_code(a_key);
@@ -317,7 +317,7 @@ namespace tloc { namespace core {
 
     hash_code_type get_hash_code(const element_type& a_elem) const
     {
-      return a_elem.m_hashcode(); 
+      return a_elem.m_hashcode();
     }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
@@ -325,7 +325,7 @@ namespace tloc { namespace core {
       return a_hashcode == a_elem->m_hashcode();
     }
 
-    bool compare (const key_type& a_key, hash_code_type a_hashCode, 
+    bool compare (const key_type& a_key, hash_code_type a_hashCode,
                   element_type* a_elem) const
     { return (a_elem->m_hashcode() == a_hashCode) && key_equal::operator()
     (a_key, extract_key_type::operator()(a_elem->m_value())); }
@@ -427,13 +427,13 @@ namespace tloc { namespace core {
     typedef typename policy_type::unique_keys        unique_keys;
     typedef typename
       Loki::Select< Loki::IsSameType<unique_keys,
-                    type_true>::value, 
-                    Pair<iterator, bool>, 
+                    type_true>::value,
+                    Pair<iterator, bool>,
                     iterator >::Result               insert_return_type;
 
     typedef typename
       Loki::Select< Loki::IsSameType<unique_keys,
-      type_true>::value, use_first<insert_return_type>, 
+      type_true>::value, use_first<insert_return_type>,
       use_self<insert_return_type> >::Result            insert_return_selector;
 
     typedef typename buckets_array_type::iterator       local_iterator;
@@ -441,7 +441,7 @@ namespace tloc { namespace core {
     typedef typename bucket_type::iterator              bucket_iterator;
     typedef typename bucket_type::const_iterator        const_bucket_iterator;
 
-    typedef typename iterator_traits 
+    typedef typename iterator_traits
       <bucket_iterator>::iterator_category              bucket_iterator_type;
 
     typedef core::reverse_iterator<iterator>            reverse_iterator;
@@ -602,6 +602,30 @@ namespace tloc { namespace core {
 
     TL_FI void            DoAllocateBuckets(size_type a_numBuckets);
 
+    //--------------------------------------------------------------------------
+    // Find Helpers
+
+    ///-------------------------------------------------------------------------
+    /// Non-standard functions formulated from EASTL. DoFindNode performs a
+    /// search with the key provided with a certain bucket in the bucket array.
+    /// The search is performed by a default comparison if a key is not
+    /// provided. If a key is provided the search is performed with the
+    /// comparison predicate provided.
+    ///
+    /// @param [in,out] a_itr The iterator that points to the bucket we want to
+    ///                       search.
+    /// @param  a_key         The key that is tied with the element.
+    /// @param  a_hashCode    The hash code.
+    ///
+    /// @return
+    /// Iterator to element, within the bucket. End of bucket is
+    /// returned if not found.
+    ///-------------------------------------------------------------------------
+    TL_FI bucket_iterator DoFindNode(local_iterator& a_itr, const key_type& a_key,
+                                     hash_code_type a_hashCode) const;
+    TL_FI bucket_iterator DoFindNode(local_iterator& a_itr,
+                                     hash_code_type a_hashCode) const;
+
     //------------------------------------------------------------------------
     // Insert helpers
 
@@ -619,14 +643,14 @@ namespace tloc { namespace core {
     /// push_back() depending on the type of iterator. It assumes that the
     /// iterator is valid.
     ///
-    /// @param  a_itr         The bucket to which the element will be added 
+    /// @param  a_itr         The bucket to which the element will be added
     /// @param  a_elem        The element to add
     ///
-    /// @return Iterator to the inserted element 
+    /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
-    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr, 
+    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, forward_iterator_tag);
-    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr, 
+    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, bidirectional_iterator_tag);
 
     ///-------------------------------------------------------------------------
@@ -634,16 +658,16 @@ namespace tloc { namespace core {
     /// insert() depending on the type of iterator. It assumes that the
     /// iterator is valid.
     ///
-    /// @param [in,out] a_currNode The node after or before which to insert 
+    /// @param [in,out] a_currNode The node after or before which to insert
     /// @param  a_elem             The element to insert
     ///
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
-    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr, 
-      bucket_iterator a_currNode, const element_type& a_elem, 
+    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
+      bucket_iterator a_currNode, const element_type& a_elem,
       forward_iterator_tag);
-    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr, 
-      typename bucket_iterator a_currNode, const element_type& a_elem, 
+    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
+      typename bucket_iterator a_currNode, const element_type& a_elem,
       bidirectional_iterator_tag);
 
     //------------------------------------------------------------------------

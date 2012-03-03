@@ -27,7 +27,8 @@ namespace tloc { namespace core {
             = Array<List<HashtableElement<Pair<const T_Key, T_ValueType> > > > >
   class HashMap
     : public Hashtable<
-                       HashtablePolicy<T_Key, use_first<Pair<const T_Key, T_ValueType> >,
+                       HashtablePolicy<T_Key,
+                       use_first<typename T_BucketType::value_type::value_type::value_type >,
                        T_HashFunc, hash_to_range_mod, range_hash_default,
                        T_KeyEqual, prime_rehash_policy, T_BucketType,
                        T_CacheHashCode, true> >
@@ -37,7 +38,8 @@ namespace tloc { namespace core {
     // Typedefs
 
     typedef Hashtable<
-                       HashtablePolicy<T_Key, use_first<Pair<const T_Key, T_ValueType> >,
+                       HashtablePolicy<T_Key,
+                       use_first<typename T_BucketType::value_type::value_type::value_type >,
                        T_HashFunc, hash_to_range_mod, tloc::core::range_hash_default,
                        T_KeyEqual, prime_rehash_policy, T_BucketType, T_CacheHashCode,
                        true> >                                      base_type;

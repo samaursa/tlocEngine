@@ -385,8 +385,8 @@ namespace tloc { namespace core {
   template <typename T>
   TL_I bool       operator!=(const StringBase<T>& a, const T* b);
 
-  typedef StringBase<char8>   tlString;
-  typedef StringBase<char32>  tlWString;
+  typedef StringBase<char8>   String;
+  typedef StringBase<char32>  StringW;
 
 };};
 

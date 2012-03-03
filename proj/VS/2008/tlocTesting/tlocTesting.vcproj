@@ -1048,6 +1048,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Graphics"
+			>
+			<File
+				RelativePath=".\tlocGraphicsModesTest.cpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

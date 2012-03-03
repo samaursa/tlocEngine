@@ -29,7 +29,9 @@ namespace TestingHashMap
   {
     HashMap<char8*, s32, hash<char8*>, eqstr> test;
 
-    //test["asdf"] = 10;
+    test["asdf"] = 10;
+
+    CHECK(test["asdf"] == 10);
   }
 
 

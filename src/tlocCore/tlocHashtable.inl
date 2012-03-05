@@ -73,13 +73,6 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ELEMENT_TYPES>
-  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::size_type&
-    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode()
-  {
-    return m_valueAndHashcode.Get();
-  }
-
-  template <HASHTABLE_ELEMENT_TYPES>
   TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_size_type&
     HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode() const
   {

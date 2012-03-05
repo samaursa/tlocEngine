@@ -27,11 +27,13 @@ namespace TestingHashMap
 
   TEST_CASE_METHOD(HashMapFixture, "Core/Containers/HashMap/Ctors", "")
   {
-    HashMap<char8*, s32, hash<char8*>, eqstr> test;
+    HashMap<char8*, s32, hash<char8*>, eqstr, true> test;
 
-    test["asdf"] = 10;
+    char* someKey = "asdf";
 
-    CHECK(test["asdf"] == 10);
+    test[someKey] = 10;
+
+    CHECK(test[someKey] == 10);
   }
 
 

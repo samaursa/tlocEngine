@@ -41,7 +41,7 @@ namespace TestingHashtable
         prime_rehash_policy, T_HashT, T_CacheHash, T_Unique> type;
     };
 
-    // Unique keys
+    // Unique keys - Not Stored Hash
     typedef HT<SinglyList<singly_type, true>::type, value_type, false, true>::type
       singly_nohash_unique;
     typedef HT<DoublyList<doubly_type, true>::type, value_type, false, true>::type
@@ -61,7 +61,7 @@ namespace TestingHashtable
     typedef HT<Array<doubly_type>, value_type, false, true>::type
       arraydouble_nohash_unique;
 
-    // Non-unique keys
+    // Non-unique keys - Not Stored Hash
     typedef HT<SinglyList<singly_type, true>::type, value_type, false, false>::type
       singly_nohash_nounique;
     typedef HT<DoublyList<doubly_type, true>::type, value_type, false, false>::type
@@ -80,6 +80,46 @@ namespace TestingHashtable
       arraysingly_nohash_nounique;
     typedef HT<Array<doubly_type>, value_type, false, false>::type
       arraydouble_nohash_nounique;
+
+    // Unique keys - Stored Hash
+    typedef HT<SinglyList<singly_type, true>::type, value_type, true, true>::type
+      singly_hash_unique;
+    typedef HT<DoublyList<doubly_type, true>::type, value_type, true, true>::type
+      doubly_hash_unique;
+    typedef HT<SinglyList<doubly_type, true>::type, value_type, true, true>::type
+      singlydoubly_hash_unique;
+    typedef HT<SinglyList<array_type, true>::type, value_type, true, true>::type
+      singlyarray_hash_unique;
+    typedef HT<DoublyList<singly_type, true>::type, value_type, true, true>::type
+      doublysingly_hash_unique;
+    typedef HT<DoublyList<array_type, true>::type, value_type, true, true>::type
+      doublyarray_hash_unique;
+    typedef HT<Array<array_type>, value_type, true, true>::type
+      array_hash_unique;
+    typedef HT<Array<singly_type>, value_type, true, true>::type
+      arraysingly_hash_unique;
+    typedef HT<Array<doubly_type>, value_type, true, true>::type
+      arraydouble_hash_unique;
+
+    // Non-unique keys - Stored hash
+    typedef HT<SinglyList<singly_type, true>::type, value_type, true, false>::type
+      singly_hash_nounique;
+    typedef HT<DoublyList<doubly_type, true>::type, value_type, true, false>::type
+      doubly_hash_nounique;
+    typedef HT<SinglyList<doubly_type, true>::type, value_type, true, false>::type
+      singlydoubly_hash_nounique;
+    typedef HT<SinglyList<array_type, true>::type, value_type, true, false>::type
+      singlyarray_hash_nounique;
+    typedef HT<DoublyList<singly_type, true>::type, value_type, true, false>::type
+      doublysingly_hash_nounique;
+    typedef HT<DoublyList<array_type, true>::type, value_type, true, false>::type
+      doublyarray_hash_nounique;
+    typedef HT<Array<array_type>, value_type, true, false>::type
+      array_hash_nounique;
+    typedef HT<Array<singly_type>, value_type, true, false>::type
+      arraysingly_hash_nounique;
+    typedef HT<Array<doubly_type>, value_type, true, false>::type
+      arraydouble_hash_nounique;
   };
 
   template <template <typename T_HashT> class T_Method>
@@ -98,7 +138,7 @@ namespace TestingHashtable
     }
   };
 
-#define TestMethodAllVariationsUnique(T_Type) \
+#define TestMethodAllVariationsUniqueHashNotStored(T_Type) \
     T_Type<Hashtable<singly_nohash_unique> >(); \
     T_Type<Hashtable<doubly_nohash_unique> >(); \
     T_Type<Hashtable<singlydoubly_nohash_unique> >(); \
@@ -108,7 +148,7 @@ namespace TestingHashtable
     T_Type<Hashtable<arraysingly_nohash_unique> >(); \
     T_Type<Hashtable<arraydouble_nohash_unique> >();
 
-#define TestMethodAllVariationsNoUnique(T_Type) \
+#define TestMethodAllVariationsNoUniqueHashNotStored(T_Type) \
     T_Type<Hashtable<singly_nohash_nounique> >(); \
     T_Type<Hashtable<doubly_nohash_nounique> >(); \
     T_Type<Hashtable<singlydoubly_nohash_nounique> >(); \
@@ -117,6 +157,26 @@ namespace TestingHashtable
     T_Type<Hashtable<array_nohash_nounique> >(); \
     T_Type<Hashtable<arraysingly_nohash_nounique> >(); \
     T_Type<Hashtable<arraydouble_nohash_nounique> >();
+
+#define TestMethodAllVariationsUniqueHashStored(T_Type) \
+  T_Type<Hashtable<singly_hash_unique> >(); \
+  T_Type<Hashtable<doubly_hash_unique> >(); \
+  T_Type<Hashtable<singlydoubly_hash_unique> >(); \
+  T_Type<Hashtable<doublysingly_hash_unique> >(); \
+  T_Type<Hashtable<doublyarray_hash_unique> >(); \
+  T_Type<Hashtable<array_hash_unique> >(); \
+  T_Type<Hashtable<arraysingly_hash_unique> >(); \
+  T_Type<Hashtable<arraydouble_hash_unique> >();
+
+#define TestMethodAllVariationsNoUniqueHashStored(T_Type) \
+  T_Type<Hashtable<singly_hash_nounique> >(); \
+  T_Type<Hashtable<doubly_hash_nounique> >(); \
+  T_Type<Hashtable<singlydoubly_hash_nounique> >(); \
+  T_Type<Hashtable<doublysingly_hash_nounique> >(); \
+  T_Type<Hashtable<doublyarray_hash_nounique> >(); \
+  T_Type<Hashtable<array_hash_nounique> >(); \
+  T_Type<Hashtable<arraysingly_hash_nounique> >(); \
+  T_Type<Hashtable<arraydouble_hash_nounique> >();
 
 #define USE_TYPEDEFS \
   typedef Loki::Select< Loki::IsSameType<type_true, T_HashT::unique_keys>::value, \
@@ -144,8 +204,10 @@ namespace TestingHashtable
     // Seems to be a bug. We will have to settle for #define
     //TestMethod<TestCtors>::AllVariations();
 
-    TestMethodAllVariationsUnique(TestCtors);
-    TestMethodAllVariationsNoUnique(TestCtors);
+    TestMethodAllVariationsUniqueHashNotStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashNotStored(TestCtors);
+    TestMethodAllVariationsUniqueHashStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
   template <typename T_HashT>
@@ -273,8 +335,10 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/insert", "")
   {
-    TestMethodAllVariationsUnique(TestInsert);
-    TestMethodAllVariationsNoUnique(TestInsert);
+    TestMethodAllVariationsUniqueHashNotStored(TestInsert);
+    TestMethodAllVariationsNoUniqueHashNotStored(TestInsert);
+    TestMethodAllVariationsUniqueHashStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
   template <typename T_HashT>
@@ -363,8 +427,10 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/find", "")
   {
-    TestMethodAllVariationsUnique(TestFind);
-    TestMethodAllVariationsNoUnique(TestFind);
+    TestMethodAllVariationsUniqueHashNotStored(TestFind);
+    TestMethodAllVariationsNoUniqueHashNotStored(TestFind);
+    TestMethodAllVariationsUniqueHashStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
   template <typename T_HashT>
@@ -384,8 +450,10 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/size", "")
   {
-    TestMethodAllVariationsUnique(TestSize);
-    TestMethodAllVariationsNoUnique(TestSize);
+    TestMethodAllVariationsUniqueHashNotStored(TestSize);
+    TestMethodAllVariationsNoUniqueHashNotStored(TestSize);
+    TestMethodAllVariationsUniqueHashStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
   template <typename T_HashT>
@@ -431,8 +499,10 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/erase", "")
   {
-    TestMethodAllVariationsUnique(TestErase);
-    TestMethodAllVariationsNoUnique(TestErase);
+    TestMethodAllVariationsUniqueHashNotStored(TestErase);
+    TestMethodAllVariationsNoUniqueHashNotStored(TestErase);
+    TestMethodAllVariationsUniqueHashStored(TestCtors);
+    TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
   template <typename T_Hash>

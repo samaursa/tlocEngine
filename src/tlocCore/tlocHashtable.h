@@ -64,7 +64,7 @@ namespace tloc { namespace core {
   struct HashtableElement
   {
     typedef tl_size                                 size_type;
-    typedef tl_size                                 const_size_type;
+    typedef const tl_size                           const_size_type;
     typedef T_Value                                 value_type;
     typedef const T_Value                           const_value_type;
 
@@ -76,7 +76,6 @@ namespace tloc { namespace core {
 
     value_type&       m_value();
     const_value_type& m_value() const;
-    size_type&        m_hashcode();
     const_size_type&  m_hashcode() const;
 
     // You can access this variable directly, but it is recommended that you
@@ -291,12 +290,12 @@ namespace tloc { namespace core {
 
     hash_code_type get_hash_code(const element_type& a_elem) const
     {
-      return get_hash_code(a_elem.m_value());
+      return get_hash_code(extract_key_type::operator()(a_elem.m_value()));
     }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
     {
-      return a_hashcode == get_hash_code(a_elem->m_value());
+      return a_hashcode == get_hash_code(extract_key_type::operator()(a_elem->m_value()));
     }
 
     bool compare (const key_type& a_key, hash_code_type, element_type* a_elem) const

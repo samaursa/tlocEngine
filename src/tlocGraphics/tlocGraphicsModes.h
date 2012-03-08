@@ -52,14 +52,13 @@ namespace tloc { namespace graphics {
     //------------------------------------------------------------------------
     // Static Methods
 
-    static this_type GetCurrentMode();
-    static this_type GetMode(size_type a_index);
-    static size_type GetTotalModes();
+    static this_type GetCurrentMode() {return this_type(Properties(0, 0));}
+    static this_type GetMode(size_type a_index) {TLOC_UNUSED(a_index); return this_type(Properties(0, 0)); }
+    static size_type GetTotalModes() { return 0; }
 
   protected:
 
     properties_type m_properties;
-
 
   };
 

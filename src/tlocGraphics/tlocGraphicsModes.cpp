@@ -21,9 +21,9 @@ namespace
 {
   using namespace tloc;
 
-  typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
+  //typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
 
-  graphics_modes_array g_SupportedModes;
+  //graphics_modes_array g_SupportedModes;
 
   struct CompareModes
   {
@@ -95,7 +95,7 @@ namespace tloc { namespace graphics {
   template <GRAPHICS_MODES_TEMP>
   bool GraphicsMode<GRAPHICS_MODES_PARAMS>::IsSupported() const
   {
-
+    return false;
   }
 
   template <GRAPHICS_MODES_TEMP>
@@ -119,5 +119,6 @@ namespace tloc { namespace graphics {
     return m_properties;
   }
 
+  template GraphicsMode<>;
 
 };};

@@ -82,7 +82,7 @@ namespace tloc { namespace core {
   // DoReset()
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoReset(Platform_win32)
+  TL_I void Timer<TIMER_PARAMS>::DoReset(Platform_win)
   {
     QueryPerformanceCounter( (LARGE_INTEGER*) &m_start);
   }
@@ -116,7 +116,7 @@ namespace tloc { namespace core {
 
   template <TIMER_TYPES>
   TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedSeconds(Platform_win32)
+    Timer<TIMER_PARAMS>::DoGetElapsedSeconds(Platform_win)
   {
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
@@ -166,7 +166,7 @@ namespace tloc { namespace core {
 
   template <TIMER_TYPES>
   TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds(Platform_win32)
+    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds(Platform_win)
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000.0);
   }
@@ -208,7 +208,7 @@ namespace tloc { namespace core {
 
   template <TIMER_TYPES>
   TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds(Platform_win32)
+    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds(Platform_win)
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000000.0);
   }

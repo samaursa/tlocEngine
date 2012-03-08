@@ -7,14 +7,16 @@
 //////////////////////////////////////////////////////////////////////////
 // Macros
 
-#if defined(WIN32) || defined(_WIN32)
-#define TLOC_WIN32
-#elif defined(_WIN64)
-#define TLOC_WIN64
+#if defined(_WIN64)
+# define TLOC_WIN64
+#elif defined(WIN32) || defined(_WIN32)
+# define TLOC_WIN32
 #elif defined(TARGET_OS_MAC)
-#define TLOC_OS_MAC
+# define TLOC_OS_MAC
 #elif defined(__linux__)
-#define TLOC_LINUX
+# define TLOC_LINUX
+#else
+# error "Unsupported Platform"
 #endif
 
 namespace tloc { namespace core {

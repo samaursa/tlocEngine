@@ -85,7 +85,7 @@ namespace tloc { namespace graphics {
   Window<WINDOW_PARAMS>::Window()
     : m_members(NULL)
     , m_properties("Dummy")
-    , m_graphicsMode(graphics_mode::Properties(0, 0))
+    , m_graphicsMode(graphics_mode::Properties(1, 1))
   {
     m_members = new WindowMembers<platform_type>();
   }
@@ -109,12 +109,52 @@ namespace tloc { namespace graphics {
     m_properties    = a_prop;
     m_graphicsMode  = a_mode;
 
+    DoCreate<platform_type>(platform_type());
+  }
+
+  LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+  {
+    switch(msg)
+    {
+    case WM_CLOSE:
+      DestroyWindow(hwnd);
+      break;
+    case WM_DESTROY:
+      PostQuitMessage(0);
+      break;
+    default:
+      return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
   }
 
   template <WINDOW_TEMP>
   template <typename T>
   void Window<WINDOW_PARAMS>::DoCreate(core::Platform_win)
   {
+    WNDCLASSW WindowClass;
+    WindowClass.style = 0;
+    WindowClass.lpfnWndProc = WndProc;
+    WindowClass.cbClsExtra = 0;
+    WindowClass.cbWndExtra = 0;
+    WindowClass.hInstance = GetModuleHandle(NULL);
+    WindowClass.hIcon = NULL;
+    WindowClass.hCursor = 0;
+    WindowClass.hbrBackground = 0;
+    WindowClass.lpszMenuName = NULL;
+    WindowClass.lpszClassName = L"OpenGL";
+    if (!RegisterClassW(&WindowClass))
+    {
+      TLOC_ASSERT(false, "Failed!");
+    }
+
+    DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+    DWORD dwStyle = WS_OVERLAPPEDWINDOW;
+
+    //m_members->m_handle = CreateWindowW(L"TLOC Window", L"Test", WS_CAPTION | WS_MINIMIZEBOX, 0, 0, 100, 100, NULL, NULL, GetModuleHandle(NULL), NULL);
+    m_members->m_handle = CreateWindowEx(dwExStyle, "OpenGL", "Test",
+      WS_CLIPSIBLINGS | WS_CLIPCHILDREN | dwStyle, 0, 0, 400, 400, NULL, NULL, WindowClass.hInstance, NULL);
+    ShowWindow(m_members->m_handle, SW_SHOW);
   }
 
   template <WINDOW_TEMP>

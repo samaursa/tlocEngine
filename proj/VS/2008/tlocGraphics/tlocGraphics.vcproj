@@ -839,6 +839,22 @@
 				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowHandle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowSettings.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowWin32.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowWin32.h"
+				>
+			</File>
 			<Filter
 				Name="Graphics Mode"
 				>

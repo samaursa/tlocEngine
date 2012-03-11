@@ -14,15 +14,14 @@
 
 namespace tloc { namespace graphics {
 
+  ///-------------------------------------------------------------------------
+  /// Platform independent window code
+  ///-------------------------------------------------------------------------
 
-    ///-------------------------------------------------------------------------
-    /// Platform independent window code
-    ///-------------------------------------------------------------------------
-
-    namespace priv
-    {
-      template <typename T_Platform> class    WindowImpl;
-    }
+  namespace priv
+  {
+    template <typename T_Platform> class    WindowImpl;
+  }
 
   ///-------------------------------------------------------------------------
   /// A window to render to.
@@ -49,12 +48,6 @@ namespace tloc { namespace graphics {
     ~Window();
 
     ///-------------------------------------------------------------------------
-    /// Create a window for a valid OpenGL context. This is needed when querying
-    /// for OpenGL support without creating an actual window.
-    ///-------------------------------------------------------------------------
-    void Create();
-
-    ///-------------------------------------------------------------------------
     /// Creates this actual window with the specified properties
     ///
     /// @param  a_ptr    An existing window handle
@@ -75,28 +68,28 @@ namespace tloc { namespace graphics {
     /// Closes the window and destroys internal implementations. Does NOT
     /// destroy this object itself.
     ///-------------------------------------------------------------------------
-    void Close() {}
+    void Close();
 
     ///-------------------------------------------------------------------------
     /// Query whether the window has been created or not
     ///
     /// @return true if valid, false if not.
     ///-------------------------------------------------------------------------
-    bool IsValid() const { return false; }
+    bool IsValid() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
     ///
     /// @return The width.
     ///-------------------------------------------------------------------------
-    size_type GetWidth() const { return 0; }
+    size_type GetWidth() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the height.
     ///
     /// @return The height.
     ///-------------------------------------------------------------------------
-    size_type GetHeight() const { return 0; }
+    size_type GetHeight() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the window settings.
@@ -110,14 +103,14 @@ namespace tloc { namespace graphics {
     ///
     /// @param  a_enable (optional)
     ///-------------------------------------------------------------------------
-    void SetVerticalSync(bool a_enable = true) { TLOC_UNUSED(a_enable); }
+    void SetVerticalSync(bool a_enable = true);
 
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.
     ///
     /// @param  a_visible True shows the mouse cursor
     ///-------------------------------------------------------------------------
-    void SetMouseVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
+    void SetMouseVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
     /// Sets the window position
@@ -125,7 +118,7 @@ namespace tloc { namespace graphics {
     /// @param  a_X The.
     /// @param  a_Y The.
     ///-------------------------------------------------------------------------
-    void SetPosition(s32 a_x, s32 a_y) { TLOC_UNUSED(a_x); TLOC_UNUSED(a_y); }
+    void SetPosition(s32 a_x, s32 a_y);
 
     ///-------------------------------------------------------------------------
     /// Sets a new window size. This will call the appropriate callbacks.
@@ -133,21 +126,26 @@ namespace tloc { namespace graphics {
     /// @param  a_width  The width.
     /// @param  a_height The height.
     ///-------------------------------------------------------------------------
-    void SetSize(size_type a_width, size_type a_height)
-    { TLOC_UNUSED(a_width); TLOC_UNUSED(a_height); }
+    void SetSize(size_type a_width, size_type a_height);
 
     ///-------------------------------------------------------------------------
     /// Sets a visibility of the window.
     ///
     /// @param  a_visible true to show, false to hide.
     ///-------------------------------------------------------------------------
-    void SetVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
+    void SetVisibility(bool a_visible);
+
+    ///-------------------------------------------------------------------------
+    /// Calls the OS specific display update.
+    ///-------------------------------------------------------------------------
+    void SwapBuffers();
 
   protected:
 
-    typedef priv::WindowImpl<T_Platform>    impl_type;
-    impl_type*                              m_impl;
+    void DoCreateImpl();
 
+    typedef priv::WindowImpl<platform_type> impl_type;
+    impl_type*                              m_impl;
   };
 
 };};

@@ -1,5 +1,5 @@
-#ifndef TLOC_WINDOW_H
-#define TLOC_WINDOW_H
+#ifndef TLOC_WINDOW_IMPL_WIN_H
+#define TLOC_WINDOW_IMPL_WIN_H
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocUtils.h"
@@ -10,36 +10,41 @@
 
 #include "tlocGraphicsModes.h"
 #include "tlocWindowSettings.h"
-#include "tlocWindowHandle.h"
 
-// Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
 
-namespace tloc { namespace graphics {
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+#include <gl/GL.h>
 
-  ///-------------------------------------------------------------------------
-  /// A window to render to.
-  ///
-  /// Notes: The initial implementation was influenced by SFML
-  ///
-  /// @sa tloc::core::NonCopyable
-  ///-------------------------------------------------------------------------
-  template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Window : public core::NonCopyable
+namespace tloc { namespace graphics { namespace priv {
+
+  template<>
+  class WindowImpl<core::PlatformInfo<>::platform_type>
   {
   public:
 
-    typedef T_Platform                                   platform_type;
-    typedef GraphicsMode<T_Platform>                     graphics_mode;
-    //typedef typename WindowHandle<T_Platform>::type      window_handle_type;
+    // TODO: Static assert to prevent other platforms from using this class
+
+    typedef core::PlatformInfo<>::platform_type          platform_type;
+    typedef GraphicsMode<platform_type>                  graphics_mode;
+
     typedef void*                                        window_handle_type;
-    typedef typename WindowSettings::style_type          window_style_type;
+    typedef WindowSettings::style_type                   window_style_type;
     typedef tl_size                                      size_type;
 
   public:
 
-    Window();
-    ~Window();
+    ///-------------------------------------------------------------------------
+    /// Default constructor. Only initialzes values.
+    ///-------------------------------------------------------------------------
+    WindowImpl();
+
+    ///-------------------------------------------------------------------------
+    /// Create a window for a valid OpenGL context. This is needed when querying
+    /// for OpenGL support without creating an actual window.
+    ///-------------------------------------------------------------------------
+    void Create() {}
 
     ///-------------------------------------------------------------------------
     /// Creates this actual window with the specified properties
@@ -47,7 +52,10 @@ namespace tloc { namespace graphics {
     /// @param  a_ptr    An existing window handle
     /// @param  a_params Window settings
     ///-------------------------------------------------------------------------
-    void Create(window_handle_type a_ptr, const WindowSettings& a_settings);
+    void Create(window_handle_type a_ptr, const WindowSettings& a_settings)
+    {
+      TLOC_UNUSED_2(a_ptr, a_settings);
+    }
 
     ///-------------------------------------------------------------------------
     /// Creates the actual window with the specified properties
@@ -56,34 +64,24 @@ namespace tloc { namespace graphics {
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
     void Create(const graphics_mode& a_mode, const core::String& a_title,
-                window_style_type a_style, const WindowSettings& a_settings);
-
-    ///-------------------------------------------------------------------------
-    /// Closes the window and destroys internal implementations. Does NOT
-    /// destroy this object itself.
-    ///-------------------------------------------------------------------------
-    void Close();
-
-    ///-------------------------------------------------------------------------
-    /// Query whether the window has been created or not
-    ///
-    /// @return true if valid, false if not.
-    ///-------------------------------------------------------------------------
-    bool IsValid() const;
+      window_style_type a_style, const WindowSettings& a_settings)
+    {
+      TLOC_UNUSED_4(a_mode, a_title, a_style, a_settings);
+    }
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
     ///
     /// @return The width.
     ///-------------------------------------------------------------------------
-    size_type GetWidth() const;
+    size_type GetWidth() const { return 0; }
 
     ///-------------------------------------------------------------------------
     /// Gets the height.
     ///
     /// @return The height.
     ///-------------------------------------------------------------------------
-    size_type GetHeight() const;
+    size_type GetHeight() const { return 0; }
 
     ///-------------------------------------------------------------------------
     /// Gets the window settings.
@@ -97,14 +95,14 @@ namespace tloc { namespace graphics {
     ///
     /// @param  a_enable (optional)
     ///-------------------------------------------------------------------------
-    void SetVerticalSync(bool a_enable = true);
+    void SetVerticalSync(bool a_enable = true) { TLOC_UNUSED(a_enable); }
 
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.
     ///
     /// @param  a_visible True shows the mouse cursor
     ///-------------------------------------------------------------------------
-    void SetMouseVisibility(bool a_visible);
+    void SetMouseVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
 
     ///-------------------------------------------------------------------------
     /// Sets the window position
@@ -112,7 +110,7 @@ namespace tloc { namespace graphics {
     /// @param  a_X The.
     /// @param  a_Y The.
     ///-------------------------------------------------------------------------
-    void SetPosition(s32 a_x, s32 a_y);
+    void SetPosition(s32 a_x, s32 a_y) { TLOC_UNUSED_2(a_x, a_y); }
 
     ///-------------------------------------------------------------------------
     /// Sets a new window size. This will call the appropriate callbacks.
@@ -120,28 +118,32 @@ namespace tloc { namespace graphics {
     /// @param  a_width  The width.
     /// @param  a_height The height.
     ///-------------------------------------------------------------------------
-    void SetSize(size_type a_width, size_type a_height);
+    void SetSize(size_type a_width, size_type a_height) { TLOC_UNUSED_2(a_width, a_height); }
 
     ///-------------------------------------------------------------------------
     /// Sets a visibility of the window.
     ///
     /// @param  a_visible true to show, false to hide.
     ///-------------------------------------------------------------------------
-    void SetVisibility(bool a_visible);
+    void SetVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
 
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
-    void SwapBuffers();
+    void SwapBuffers() {}
 
-  protected:
+  private:
 
-    void DoCreateImpl();
+    HWND      m_handle;
+    size_type m_callbackPtr;
+    HCURSOR   m_cursor;
+    HICON     m_icon;
+    bool      m_isCursorIn;
+    HDC       m_deviceContext;
+    HGLRC     m_OpenGLContext;
 
-    typedef priv::WindowImpl<platform_type> impl_type;
-    impl_type*                              m_impl;
   };
 
-};};
+};};};
 
 #endif

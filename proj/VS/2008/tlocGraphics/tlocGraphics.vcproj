@@ -844,6 +844,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowSettings.h"
 				>
 			</File>

@@ -68,6 +68,7 @@
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;"
 				GenerateDebugInformation="true"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -220,6 +221,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -372,6 +374,7 @@
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;"
 				GenerateDebugInformation="true"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -524,6 +527,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -679,6 +683,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -834,6 +839,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="0"
 				TargetMachine="1"
 			/>
 			<Tool

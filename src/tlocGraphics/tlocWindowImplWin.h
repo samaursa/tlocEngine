@@ -20,7 +20,7 @@
 namespace tloc { namespace graphics { namespace priv {
 
   template<>
-  class WindowImpl<core::PlatformInfo<>::platform_type>
+  class WindowImpl<core::PlatformInfo<>::platform_type> : public WindowImplBase<>
   {
   public:
 
@@ -44,7 +44,7 @@ namespace tloc { namespace graphics { namespace priv {
     /// Create a window for a valid OpenGL context. This is needed when querying
     /// for OpenGL support without creating an actual window.
     ///-------------------------------------------------------------------------
-    void Create() {}
+    void Create();
 
     ///-------------------------------------------------------------------------
     /// Creates this actual window with the specified properties
@@ -52,10 +52,7 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_ptr    An existing window handle
     /// @param  a_params Window settings
     ///-------------------------------------------------------------------------
-    void Create(window_handle_type a_ptr, const WindowSettings& a_settings)
-    {
-      TLOC_UNUSED_2(a_ptr, a_settings);
-    }
+    void Create(window_handle_type a_ptr, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Creates the actual window with the specified properties
@@ -64,10 +61,7 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
     void Create(const graphics_mode& a_mode, const core::String& a_title,
-      window_style_type a_style, const WindowSettings& a_settings)
-    {
-      TLOC_UNUSED_4(a_mode, a_title, a_style, a_settings);
-    }
+      const window_style_type& a_style, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
@@ -131,6 +125,11 @@ namespace tloc { namespace graphics { namespace priv {
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers() {}
+
+  private:
+
+    void DoCreateContext(const graphics_mode& a_gMode,
+                         const WindowSettings& a_params);
 
   private:
 

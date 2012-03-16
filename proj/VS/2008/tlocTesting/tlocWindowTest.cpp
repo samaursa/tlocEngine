@@ -9,5 +9,7 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/General", "")
   {
+    Window<> win;
+    win.Create();
   }
 };

@@ -27,6 +27,7 @@ namespace tloc { namespace graphics { namespace priv {
     // TODO: Static assert to prevent other platforms from using this class
 
     typedef core::PlatformInfo<>::platform_type          platform_type;
+    typedef WindowImpl<platform_type>                    this_type;
     typedef GraphicsMode<platform_type>                  graphics_mode;
 
     typedef void*                                        window_handle_type;
@@ -84,6 +85,8 @@ namespace tloc { namespace graphics { namespace priv {
     ///-------------------------------------------------------------------------
     //const WindowSettings& GetSettings() const;
 
+    void SetActive(bool a_active);
+
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync
     ///
@@ -128,8 +131,12 @@ namespace tloc { namespace graphics { namespace priv {
 
   private:
 
+    static LRESULT CALLBACK DoProcessEvents(HWND a_handle, UINT a_message,
+      WPARAM a_wparam, LPARAM a_lParam);
+
+    void DoRegisterWindowClass();
     void DoCreateContext(const graphics_mode& a_gMode,
-                         const WindowSettings& a_params);
+                         WindowSettings& a_params);
 
   private:
 

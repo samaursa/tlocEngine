@@ -1,5 +1,5 @@
-#ifndef TLOC_WINDOW_H
-#define TLOC_WINDOW_H
+#ifndef TLOC_WINDOW_HANDLE_H
+#define TLOC_WINDOW_HANDLE_H
 
 #include "tlocCore/tlocPlatform.h"
 
@@ -10,8 +10,6 @@ namespace tloc { namespace graphics {
   template<>
   struct WindowHandle<core::Platform_win>
   {
-    DECL_TYPEDEF_HELPER(WindowHandle);
-
     typedef void*         type;
   };
 
@@ -19,33 +17,25 @@ namespace tloc { namespace graphics {
   struct WindowHandle<core::Platform_win32>
     : public WindowHandle<core::Platform_win>
   {
-    DECL_TYPEDEF_HELPER(WindowHandle);
-
-    typedef typename WindowHandle<core::Platform_win>::type type;
+    typedef WindowHandle<core::Platform_win>::type type;
   };
 
   template<>
   struct WindowHandle<core::Platform_win64>
     : public WindowHandle<core::Platform_win>
   {
-    DECL_TYPEDEF_HELPER(WindowHandle);
-
-    typedef typename WindowHandle<core::Platform_win>::type type;
+    typedef WindowHandle<core::Platform_win>::type type;
   };
 
   template<>
   struct WindowHandle<core::Platform_osx>
   {
-    DECL_TYPEDEF_HELPER(WindowHandle);
-
     typedef void*         type;
   };
 
   template<>
   struct WindowHandle<core::Platform_linux>
   {
-    DECL_TYPEDEF_HELPER(WindowHandle);
-
     typedef tl_size       type;
   };
 

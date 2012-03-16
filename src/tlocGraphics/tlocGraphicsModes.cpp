@@ -113,7 +113,7 @@ namespace tloc { namespace graphics {
 
   template <GRAPHICS_MODES_TEMP>
   typename GraphicsMode<GRAPHICS_MODES_PARAMS>::properties_type
-    GraphicsMode<GRAPHICS_MODES_PARAMS>::GetProperties()
+    GraphicsMode<GRAPHICS_MODES_PARAMS>::GetProperties() const
   {
     return m_properties;
   }

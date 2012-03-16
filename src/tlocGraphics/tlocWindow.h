@@ -31,8 +31,7 @@ namespace tloc { namespace graphics {
 
     typedef T_Platform                                   platform_type;
     typedef GraphicsMode<T_Platform>                     graphics_mode;
-    //typedef typename WindowHandle<T_Platform>::type      window_handle_type;
-    typedef void*                                        window_handle_type;
+    typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
 
@@ -40,6 +39,11 @@ namespace tloc { namespace graphics {
 
     Window();
     ~Window();
+
+    ///-------------------------------------------------------------------------
+    /// Creates a window with default everything
+    ///-------------------------------------------------------------------------
+    void Create();
 
     ///-------------------------------------------------------------------------
     /// Creates this actual window with the specified properties
@@ -98,6 +102,8 @@ namespace tloc { namespace graphics {
     /// @param  a_enable (optional)
     ///-------------------------------------------------------------------------
     void SetVerticalSync(bool a_enable = true);
+
+    void SetActive(bool a_active = true) const;
 
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.

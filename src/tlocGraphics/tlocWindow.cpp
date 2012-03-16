@@ -12,6 +12,8 @@
 # error "WIP"
 #endif
 
+#include "tlocCore/tlocFunctional.h"
+
 namespace tloc { namespace graphics {
 
   //////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ namespace tloc { namespace graphics {
   template Window<>;
 
   template <WINDOW_TEMP>
-  Window<WINDOW_PARAMS>::Window()
+  Window<WINDOW_PARAMS>::Window() : m_impl(NULL)
   {
   }
 
@@ -41,6 +43,13 @@ namespace tloc { namespace graphics {
   Window<WINDOW_PARAMS>::~Window()
   {
     delete m_impl;
+  }
+
+  template <WINDOW_TEMP>
+  void Window<WINDOW_PARAMS>::Create()
+  {
+    DoCreateImpl();
+    m_impl->Create();
   }
 
   template <WINDOW_TEMP>
@@ -95,6 +104,13 @@ namespace tloc { namespace graphics {
   {
     VALIDATE_WINDOW();
     m_impl->SetVerticalSync(a_enable);
+  }
+
+  template <WINDOW_TEMP>
+  void Window<WINDOW_PARAMS>::SetActive(bool a_active) const
+  {
+    VALIDATE_WINDOW();
+    m_impl->SetActive(a_active);
   }
 
   template <WINDOW_TEMP>

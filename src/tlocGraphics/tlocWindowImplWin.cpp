@@ -50,6 +50,7 @@ namespace tloc { namespace graphics { namespace priv {
     }
     else
     {
+      // LOG: Could not create Win32 Window
       TLOC_ASSERT(m_handle, "Could not create Win32 window!");
     }
   }
@@ -91,6 +92,7 @@ namespace tloc { namespace graphics { namespace priv {
     WindowClass.lpszClassName = g_className;
 
     ATOM result = RegisterClassW(&WindowClass);
+    TLOC_UNUSED(result);
     TLOC_ASSERT(result, "Failed to register the window class");
   }
 
@@ -198,6 +200,7 @@ namespace tloc { namespace graphics { namespace priv {
 
     bool setPixelFormatResult =
       SetPixelFormat(m_deviceContext, bestFormat, &pixFormat) != 0;
+    TLOC_UNUSED(setPixelFormatResult);
     TLOC_ASSERT(setPixelFormatResult,
       "SetPixelFormat() failed -- cannot create OpenGL context");
 

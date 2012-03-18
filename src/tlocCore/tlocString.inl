@@ -6,7 +6,14 @@
 #endif
 
 #include "tlocAlgorithms.inl"
+#include "tlocTemplateUtils.h"
+#include "tlocPlatform.h"
 #include <string.h>
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+# define WIN32_LEAN_AND_MEAN
+# include <Windows.h>
+#endif
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
@@ -1372,8 +1379,7 @@ namespace tloc { namespace core {
   template <typename T>
   TL_I void StringBase<T>::DoAllocateSelf( const tl_size& aSize )
   {
-    TLOC_ASSERT_STRING(aSize <= (tl_size)std::numeric_limits<tl_size>::max,
-      "Allocating too large a value!");
+    TLOC_ASSERT_STRING(aSize <= TL_ULONG_MAX, "Allocating too large a value!");
 
     if (aSize > 1)
     {
@@ -1510,6 +1516,52 @@ namespace tloc { namespace core {
     TLOC_ASSERT_STRING(aChar <= 0xFF,
       "Character is out of range for this function!");
     return (T)toupper((char8)aChar);
+  }
+
+  namespace priv
+  {
+    //------------------------------------------------------------------------
+    // Windows specific
+    template <TLOC_DUMMY_TYPE>
+    TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, char32* a_out, 
+                             s32 a_outSize, Platform_win) 
+    {
+      return (s32)MultiByteToWideChar
+        (CP_ACP, MB_PRECOMPOSED, a_in, (int)a_inSize, a_out, (int)a_outSize);
+    }
+    
+    template <TLOC_DUMMY_TYPE>
+    TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, char8* a_out, 
+                             s32 a_outSize, Platform_win) 
+    {
+      int defaultUsed = 0;
+      s32 retIndex = 0;
+      retIndex = WideCharToMultiByte
+        (CP_ACP, 0, a_in, (int)a_inSize, a_out, (int)a_outSize, 
+         "?", &defaultUsed);
+      
+      TLOC_ASSERT_STRING(defaultUsed == 0, 
+                         "Wide string has incompatible characters");
+      return retIndex;
+    }
+
+    //------------------------------------------------------------------------
+    // Mac specific
+  }
+
+
+  TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, 
+                               char32* a_out, s32 a_outSize)
+  {
+    return priv::CharAsciiToWide<TLOC_DUMMY_PARAM>(a_in, a_inSize, a_out, 
+      a_outSize, PlatformInfo<>::platform_type());
+  }
+
+  TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, 
+                               char8* a_out, s32 a_outSize)
+  {
+    return priv::CharWideToAscii<TLOC_DUMMY_PARAM>(a_in, a_inSize, a_out, 
+      a_outSize, PlatformInfo<>::platform_type());
   }
 
   //````````````````````````````````````````````````````````````````````````

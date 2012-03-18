@@ -1192,6 +1192,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateUtils.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocUtils.h"
 				>
 			</File>

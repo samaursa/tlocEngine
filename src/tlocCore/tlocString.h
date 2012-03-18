@@ -2,6 +2,7 @@
 #define TLOC_STRING_H
 
 #include "tlocBase.h"
+#include "tlocTypes.h"
 #include "tlocAlgorithms.h"
 #include "tlocTypeTraits.h"
 
@@ -366,6 +367,10 @@ namespace tloc { namespace core {
 
   template <typename T>
   TL_I T          CharToUpper(const T& aChar);
+  TL_I void       CharAsciiToWide(const char8* a_in, s32 a_inSize,
+                                  const char32* a_out, s32 a_outSize);
+  TL_I void       CharWideToAscii(const char32* a_in, s32 a_inSize,
+                                  const char8* a_out, s32 a_outSize);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone

@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "tlocTestCommon.h"
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocMemory.h"

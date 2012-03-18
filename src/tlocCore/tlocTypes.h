@@ -8,9 +8,9 @@
 
 //------------------------------------------------------------------------
 // Global functions, no namespace
-// 
+//
 // These are the rare few functions that are globally defined without under
-// the tloc namespace. This is so that types in other namespaces can 
+// the tloc namespace. This is so that types in other namespaces can
 // successfully call TLOC_DEF_TYPE.
 
 //////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@
 //        after the type declaration in the header
 
 // We do not allow unregistered types to be queried. If the compiler sent you
-// here, trace back to the type that originated the error and register it. 
+// here, trace back to the type that originated the error and register it.
 template <typename>
 struct tloc_type_to_string
 {
@@ -30,7 +30,7 @@ struct tloc_type_to_string
   }
 };
 
-#ifdef TLOC_DEF_TYPE 
+#ifdef TLOC_DEF_TYPE
 #error "TLOC_DEF_TYPE is already defined somewhere else!"
 #else
 #define TLOC_DEF_TYPE(_type_)\

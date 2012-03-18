@@ -604,6 +604,25 @@ namespace TestingStrings
     CHECK( (testStr == str) == true);
     CHECK( (str2 != testStr) == true);
     CHECK( (testStr != str2) == true);
+  }
 
+  TEST_CASE("Core/Strings/FreeFunctions/AsciiWideConversion", "")
+  {
+    char32 sentence1[] = L"This is a sentence.";
+    char8  sentence2[] = "This is a sentence.";
+
+    {
+      char8 s1[256];
+      s32 retIndex = CharWideToAscii(sentence1, -1, s1, 256);
+      CHECK(StrCmp(sentence2, s1) == 0);
+      CHECK(retIndex == 20);
+    }
+
+    {
+      char32 s2[256];
+      s32 retIndex = CharAsciiToWide(sentence2, -1, s2, 256);
+      CHECK(StrCmp(sentence1, s2) == 0);
+      CHECK(retIndex == 20);
+    }
   }
 };

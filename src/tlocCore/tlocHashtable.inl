@@ -73,13 +73,6 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ELEMENT_TYPES>
-  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::size_type&
-    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode()
-  {
-    return m_valueAndHashcode.Get();
-  }
-
-  template <HASHTABLE_ELEMENT_TYPES>
   TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_size_type&
     HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode() const
   {
@@ -605,15 +598,27 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key)
   {
     const hash_code_type hc = get_hash_code(a_key);
-    return find_by_hash(hc);
+    const size_type n = (size_type)bucket_index(hc, (u32)bucket_count());
+
+    buckets_array_type::iterator itr = m_bucketArray.begin();
+    advance(itr, n);
+
+    bucket_iterator itrN = DoFindNode(itr, a_key, hc);
+    if (itrN != (*itr).end())
+    {
+      return iterator(&m_bucketArray, itr, itrN);
+    }
+
+    return end();
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
     Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key) const
   {
-    const hash_code_type hc = get_hash_code(a_key);
-    return find_by_hash(hc);
+    const_iterator itr = (remove_const(this))->find(a_key);
+    add_const(this);
+    return itr;
   }
 
   template <HASH_TABLE_TYPES>
@@ -625,17 +630,10 @@ namespace tloc { namespace core {
     buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
 
-    bucket_type::iterator itrN    = (*itr).begin();
-    bucket_type::iterator itrNEnd = (*itr).end();
-
-    while (itrN != itrNEnd)
+    bucket_iterator itrN = DoFindNode(itr, a_hashCode);
+    if (itrN != (*itr).end())
     {
-      if (compare(a_hashCode, &(*itrN)))
-      {
-        return iterator(&m_bucketArray, itr, itrN);
-      }
-
-      ++itrN;
+      return iterator(&m_bucketArray, itr, itrN);
     }
 
     return end();
@@ -701,6 +699,50 @@ namespace tloc { namespace core {
   // Internal functions
 
   //------------------------------------------------------------------------
+  // Find Helpers
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_iterator
+    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr, 
+                                             const key_type& a_key, 
+                                             hash_code_type  a_hashCode) const
+  {
+    bucket_iterator itr = (*a_itr).begin();
+    const bucket_iterator itrEnd = (*a_itr).end();
+
+    while (itr != itrEnd)
+    {
+      if (compare(a_key ,a_hashCode , &(*itr)))
+      {
+        return itr;
+      }
+      ++itr;
+    }
+
+    return itrEnd; 
+  }
+
+  template <HASH_TABLE_TYPES>
+  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_iterator
+    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr, 
+                                             hash_code_type  a_hashCode) const
+  {
+    bucket_iterator itr = (*a_itr).begin();
+    const bucket_iterator itrEnd = (*a_itr).end();
+
+    while (itr != itrEnd)
+    {
+      if (compare(a_hashCode , &(*itr)))
+      {
+        return itr;
+      }
+      ++itr;
+    }
+
+    return itrEnd; 
+  }
+
+  //------------------------------------------------------------------------
   // Insert Helpers
 
   template <HASH_TABLE_TYPES>
@@ -711,8 +753,9 @@ namespace tloc { namespace core {
   {
     const key_type& k = extract_key(a_value);
     const hash_code_type c = get_hash_code(k);
-
-    iterator itr = find_by_hash(c);
+    
+    // TODO: Rewrite without using find, only DoFindNode
+    iterator itr = find(k);
 
     // TODO: Remove extra copies created by end() here and when returning <false>
     if (itr == end())
@@ -750,7 +793,8 @@ namespace tloc { namespace core {
     const key_type& k = extract_key(a_value);
     const hash_code_type c = get_hash_code(k);
 
-    iterator itr = find_by_hash(c);
+    // TODO: Rewrite without using find, only DoFindNode
+    iterator itr = find(k);
     element_type newElement (a_value, c);
 
     if (itr != end())

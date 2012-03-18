@@ -47,7 +47,8 @@ namespace tloc { namespace graphics {
     bool operator < (const this_type& a_other) const;
     TLOC_DECLARE_OPERATORS(GraphicsMode);
 
-    properties_type GetProperties() const;
+    properties_type&  GetProperties();
+    properties_type   GetProperties() const;
 
     //------------------------------------------------------------------------
     // Static Methods

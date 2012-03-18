@@ -4,7 +4,10 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocUtils.h"
 #include "tlocCore/tlocTypes.h"
+
 #include "tlocCore/tlocString.h"
+#include "tlocCore/tlocString.inl"
+
 #include "tlocCore/tlocPlatform.h"
 #include "tlocCore/tlocNonCopyable.h"
 
@@ -20,7 +23,8 @@
 namespace tloc { namespace graphics { namespace priv {
 
   template<>
-  class WindowImpl<core::PlatformInfo<>::platform_type> : public WindowImplBase<>
+  class WindowImpl<core::PlatformInfo<>::platform_type> :
+    public WindowImplBase<core::PlatformInfo<>::platform_type>
   {
   public:
 
@@ -136,7 +140,7 @@ namespace tloc { namespace graphics { namespace priv {
 
     void DoRegisterWindowClass();
     void DoCreateContext(const graphics_mode& a_gMode,
-                         WindowSettings& a_params);
+                         WindowSettings& a_settings);
 
   private:
 

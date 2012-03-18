@@ -18,7 +18,7 @@ namespace tloc { namespace graphics { namespace priv {
   ///-------------------------------------------------------------------------
   /// Platform independant window code
   ///-------------------------------------------------------------------------
-  template <typename T_Platform = core::PlatformInfo<>::platform_type>
+  template <typename T_Platform>
   class WindowImplBase : public core::NonCopyable
   {
   public:
@@ -36,8 +36,8 @@ namespace tloc { namespace graphics { namespace priv {
     size_type GetWidth() { return m_graphicsMode.GetProperties().m_width; }
     size_type GetHeight() { return m_graphicsMode.GetProperties().m_height; }
 
-    const graphics_mode&   GetGraphicsMode() { return m_graphicsMode; }
-    const WindowSettings&  GetWindowSettings() { return m_windowSettings; }
+    const graphics_mode&   GetGraphicsMode() const { return m_graphicsMode; }
+    const WindowSettings&  GetWindowSettings() const { return m_windowSettings; }
 
   protected:
 

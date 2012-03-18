@@ -112,6 +112,7 @@ Global
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug_StdAlloc|Win32.ActiveCfg = Debug_StdAlloc|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug_StdAlloc|Win32.Build.0 = Debug_StdAlloc|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug_StdAlloc|x64.ActiveCfg = Debug_StdAlloc|x64
+		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug_StdAlloc|x64.Build.0 = Debug_StdAlloc|x64
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|Win32.Build.0 = Debug|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|x64.ActiveCfg = Debug|x64

@@ -65,7 +65,67 @@ namespace tloc { namespace graphics { namespace priv {
     Create(const graphics_mode& a_mode, const core::String& a_title,
            const window_style_type& a_style, const WindowSettings& a_settings)
   {
-    TLOC_UNUSED_4(a_mode, a_title, a_style, a_settings);
+    m_graphicsMode    = a_mode;
+    m_windowSettings  = a_settings;
+
+    DoRegisterWindowClass();
+
+    const graphics_mode::Properties modeProps = a_mode.GetProperties();
+
+    // Center the window to the screen regardless of the given size
+    HDC screenDC     = GetDC(NULL);
+    size_type left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
+    size_type top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+    size_type width  = modeProps.m_width;
+    size_type height = modeProps.m_height;
+    // LOG: Window resolution greater than screen's resolution
+    ReleaseDC(NULL, screenDC);
+
+    DWORD win32Style = WS_VISIBLE;
+    if (win32Style == WindowSettings::style_none)
+    {
+      win32Style |= WS_POPUP;
+    }
+    else
+    {
+      if (a_style& WindowSettings::style_titlebar)
+      { win32Style |= WS_CAPTION | WS_MINIMIZEBOX; }
+      if (a_style& WindowSettings::style_resize)
+      { win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX; }
+      if (a_style& WindowSettings::style_close)
+      { win32Style |= WS_SYSMENU; }
+    }
+
+    // Adjust the window's width and height given the requested resolution
+    const bool fullScreen = (a_style & WindowSettings::style_fullscreen) == 1;
+    if (fullScreen == false)
+    {
+      RECT rect = {0, 0, (LONG)width, (LONG)height};
+      AdjustWindowRect(&rect, win32Style, false);
+      width = rect.right - rect.left;
+      height = rect.bottom - rect.top;
+    }
+
+    // Create the actual window
+    const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
+    s32 retIndex = core::CharAsciiToWide(a_title.c_str(), -1, wTitle, wTitleSize);
+    wTitle[retIndex] = L'\0';
+    m_handle = CreateWindowW(g_className, wTitle, win32Style, (int)left,
+      (int)top, (int)width, (int)height, NULL, NULL, GetModuleHandle(NULL),
+      this);
+
+    // LOG: Grab log from GetLastError
+    TLOC_ASSERT(m_handle, "CreateWindowW failed.");
+    DoCreateContext(a_mode, m_windowSettings);
+
+    // (From SFML): Actual size of window may be different after the
+    // AdjustWindowRect() call.
+    RECT actualRect;
+    GetClientRect(m_handle, &actualRect);
+    graphics_mode::Properties& gProps = m_graphicsMode.GetProperties();
+
+    gProps.m_width  = actualRect.right - actualRect.left;
+    gProps.m_height = actualRect.bottom - actualRect.top;
   }
 
   LRESULT CALLBACK WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
@@ -97,7 +157,7 @@ namespace tloc { namespace graphics { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
-    DoCreateContext(const graphics_mode& a_gMode, WindowSettings& a_params)
+    DoCreateContext(const graphics_mode& a_gMode, WindowSettings& a_settings)
   {
     TLOC_UNUSED(a_gMode);
 
@@ -105,7 +165,7 @@ namespace tloc { namespace graphics { namespace priv {
     TLOC_ASSERT(m_deviceContext, "Failed to get window's device context");
 
     s32 bestFormat = 0;
-    if (a_params.m_antiAlias > 0)
+    if (a_settings.m_antiAlias > 0)
     {
       // Since we don't have GLEW yet, we will have to manually get the function
       // which will in turn give us the pixel format
@@ -121,8 +181,8 @@ namespace tloc { namespace graphics { namespace priv {
           WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
           WGL_ACCELERATION_ARB, GL_TRUE,
           WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-          WGL_SAMPLE_BUFFERS_ARB, (a_params.m_antiAlias ? GL_TRUE : GL_FALSE),
-          WGL_SAMPLES_ARB, (a_params.m_antiAlias),
+          WGL_SAMPLE_BUFFERS_ARB, (a_settings.m_antiAlias ? GL_TRUE : GL_FALSE),
+          WGL_SAMPLES_ARB, (a_settings.m_antiAlias),
           0, 0
         };
 
@@ -137,11 +197,11 @@ namespace tloc { namespace graphics { namespace priv {
 
         if (isValid == false || numFormats == 0)
         {
-          if (a_params.m_antiAlias > 2)
+          if (a_settings.m_antiAlias > 2)
           {
             // LOG: Failed to find a format that supports the required AA,
             // trying lower levels.
-            a_params.m_antiAlias = pixAttribs[11] = 2;
+            a_settings.m_antiAlias = pixAttribs[11] = 2;
             isValid = wglChoosePixelFormatARB(m_deviceContext, pixAttribs,
               attributeList, maxFormatsToReturn, formats, &numFormats) != 0;
           }
@@ -149,7 +209,7 @@ namespace tloc { namespace graphics { namespace priv {
           if (isValid == false || numFormats == 0)
           {
             // LOG: Cannot find pixel format supporting any AA, disabling AA
-            a_params.m_antiAlias = 0;
+            a_settings.m_antiAlias = 0;
           }
         }
 
@@ -163,7 +223,7 @@ namespace tloc { namespace graphics { namespace priv {
       else
       {
         // LOG: AA not supported and will be disabled
-        a_params.m_antiAlias = 0;
+        a_settings.m_antiAlias = 0;
       }
     }
 
@@ -179,8 +239,8 @@ namespace tloc { namespace graphics { namespace priv {
       pixelDesc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
       pixelDesc.iPixelType = PFD_TYPE_RGBA;
       pixelDesc.cColorBits = static_cast<BYTE>(a_gMode.GetProperties().m_bitsPerPixel);
-      pixelDesc.cDepthBits = static_cast<BYTE>(a_params.m_depthBits);
-      pixelDesc.cStencilBits = static_cast<BYTE>(a_params.m_stencilBits);
+      pixelDesc.cDepthBits = static_cast<BYTE>(a_settings.m_depthBits);
+      pixelDesc.cStencilBits = static_cast<BYTE>(a_settings.m_stencilBits);
       pixelDesc.cAlphaBits = a_gMode.GetProperties().m_bitsPerPixel == 32 ? 8 : 0;
 
       bestFormat = ChoosePixelFormat(m_deviceContext, &pixelDesc);
@@ -195,8 +255,8 @@ namespace tloc { namespace graphics { namespace priv {
 
     DescribePixelFormat(m_deviceContext, bestFormat, pixFormatSize, &pixFormat);
 
-    a_params.m_depthBits   = pixFormat.cDepthBits;
-    a_params.m_stencilBits = pixFormat.cStencilBits;
+    a_settings.m_depthBits   = pixFormat.cDepthBits;
+    a_settings.m_stencilBits = pixFormat.cStencilBits;
 
     bool setPixelFormatResult =
       SetPixelFormat(m_deviceContext, bestFormat, &pixFormat) != 0;
@@ -209,7 +269,7 @@ namespace tloc { namespace graphics { namespace priv {
 
     SetActive(true);
 
-    if (a_params.m_antiAlias > 0)
+    if (a_settings.m_antiAlias > 0)
     {
       glEnable(GL_MULTISAMPLE_ARB);
     }

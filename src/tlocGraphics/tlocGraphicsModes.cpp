@@ -1,6 +1,7 @@
 #include "tlocGraphicsModes.h"
 
 #include "tlocCore/tlocArray.h"
+#include "tlocCore/tlocArray.inl"
 
 //------------------------------------------------------------------------
 // Platform specific
@@ -21,20 +22,25 @@ namespace
 {
   using namespace tloc;
 
-  //typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
-  //graphics_modes_array g_SupportedModes;
+  typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
+  graphics_modes_array g_SupportedModes;
 
   struct CompareModes
   {
     bool operator() (const graphics::GraphicsMode<>& a_first,
       const graphics::GraphicsMode<>& a_second)
     {
-      TLOC_UNUSED(a_first);
-      TLOC_UNUSED(a_second);
+      graphics::GraphicsMode<>::Properties p1 = a_first.GetProperties();
+      graphics::GraphicsMode<>::Properties p2 = a_second.GetProperties();
+
+      if (p1.m_bitsPerPixel > p2.m_bitsPerPixel) { return true; }
+      else if (p1.m_bitsPerPixel < p2.m_bitsPerPixel) { return false; }
+      else if (p1.m_width > p2.m_width) { return true; }
+      else if (p1.m_width < p2.m_width) { return true; }
+      else { return p1.m_height > p2.m_height; }
     }
 
   };
-
 }
 
 namespace tloc { namespace graphics {
@@ -109,6 +115,13 @@ namespace tloc { namespace graphics {
     operator < (const this_type& a_other) const
   {
     return m_properties < a_other.m_properties;
+  }
+
+  template <GRAPHICS_MODES_TEMP>
+  typename GraphicsMode<GRAPHICS_MODES_PARAMS>::properties_type&
+    GraphicsMode<GRAPHICS_MODES_PARAMS>::GetProperties()
+  {
+    return m_properties;
   }
 
   template <GRAPHICS_MODES_TEMP>

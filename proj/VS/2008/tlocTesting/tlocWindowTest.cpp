@@ -11,8 +11,8 @@ namespace TestingWindow
   {
     typedef Window<>::graphics_mode graphics_mode;
 
-    //Window<> win;
-    //win.Create();
+    Window<> win;
+    win.Create();
 
     Window<> win2;
     win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),

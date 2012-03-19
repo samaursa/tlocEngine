@@ -8,7 +8,15 @@ namespace tloc { namespace graphics { namespace priv {
 #define WINDOW_IMPL_WIN_PARAMS core::PlatformInfo<>::platform_type
 #define WINDOW_IMPL_WIN_TYPE WindowImpl<WINDOW_IMPL_WIN_PARAMS>
 
-  const wchar_t g_className[] = L"TLOC_Window";
+  //////////////////////////////////////////////////////////////////////////
+  // Global variables
+
+  const wchar_t g_className[]                                = L"TLOC_Window";
+  WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = NULL;
+  WINDOW_IMPL_WIN_TYPE::size_type g_currWindowCount          = 0;
+
+  //////////////////////////////////////////////////////////////////////////
+  // WindowImpl<>
 
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>::WindowImpl()
     : WindowImplBase()
@@ -22,9 +30,31 @@ namespace tloc { namespace graphics { namespace priv {
   {
   }
 
+  WindowImpl<WINDOW_IMPL_WIN_PARAMS>::~WindowImpl()
+  {
+    if (m_icon) { DestroyIcon(m_icon); }
+    if (m_callbackPtr == NULL)
+    {
+      if (m_handle) { DestroyWindow(m_handle); }
+
+      --g_currWindowCount;
+
+      // If this is the last window...
+      if (g_currWindowCount == 0)
+      {
+        UnregisterClassW(g_className, GetModuleHandle(NULL));
+      }
+    }
+    else
+    {
+      // Window is external, which we are not handling yet
+      TLOC_ASSERT(false, "External windows are not supported yet");
+    }
+  }
+
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::Create()
   {
-    DoRegisterWindowClass();
+    if (g_currWindowCount == 0) { DoRegisterWindowClass(); }
 
     m_graphicsMode = graphics_mode(graphics_mode::Properties(1, 1));
     graphics_mode::Properties props = m_graphicsMode.GetProperties();
@@ -47,6 +77,8 @@ namespace tloc { namespace graphics { namespace priv {
       m_windowSettings.m_antiAlias = 0;
 
       DoCreateContext(graphics_mode(props), m_windowSettings);
+
+      ++g_currWindowCount;
     }
     else
     {
@@ -59,6 +91,7 @@ namespace tloc { namespace graphics { namespace priv {
     Create(window_handle_type a_ptr, const WindowSettings& a_settings)
   {
     TLOC_UNUSED_2(a_ptr, a_settings);
+    TLOC_ASSERT_WIP();
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
@@ -68,7 +101,7 @@ namespace tloc { namespace graphics { namespace priv {
     m_graphicsMode    = a_mode;
     m_windowSettings  = a_settings;
 
-    DoRegisterWindowClass();
+    if (g_currWindowCount == 0) { DoRegisterWindowClass(); }
 
     const graphics_mode::Properties modeProps = a_mode.GetProperties();
 
@@ -118,6 +151,8 @@ namespace tloc { namespace graphics { namespace priv {
     TLOC_ASSERT(m_handle, "CreateWindowW failed.");
     DoCreateContext(a_mode, m_windowSettings);
 
+    ++g_currWindowCount;
+
     // (From SFML): Actual size of window may be different after the
     // AdjustWindowRect() call.
     RECT actualRect;
@@ -128,11 +163,152 @@ namespace tloc { namespace graphics { namespace priv {
     gProps.m_height = actualRect.bottom - actualRect.top;
   }
 
-  LRESULT CALLBACK WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
-    DoProcessEvents(HWND a_handle, UINT a_message, WPARAM a_wparam,
-                    LPARAM a_lParam)
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetWidth() const
   {
+    return GetGraphicsMode().GetProperties().m_width;
+  }
+
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetHeight() const
+  {
+    return GetGraphicsMode().GetProperties().m_height;
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetActive(bool a_active)
+  {
+    if (a_active)
+    {
+      if (m_deviceContext && m_OpenGLContext && (wglGetCurrentContext() != m_OpenGLContext))
+      {
+        wglMakeCurrent(m_deviceContext, m_OpenGLContext);
+      }
+      else
+      {
+        // LOG: Window already active
+      }
+    }
+    else
+    {
+      if (wglGetCurrentContext() == m_OpenGLContext)
+      {
+        wglMakeCurrent(NULL, NULL);
+      }
+      else
+      {
+        // LOG: Window is already inactive
+      }
+    }
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVerticalSync(bool a_enable)
+  {
+    // Not using GLFW because it may not be initialized yet
+    PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT =
+      reinterpret_cast<PFNWGLSWAPINTERVALEXTPROC>
+      (wglGetProcAddress("wglSwapIntervalEXT"));
+
+    if (wglSwapIntervalEXT) { wglSwapIntervalEXT(a_enable ? 1 : 0); }
+    else
+    {
+      // LOG: Could not enable vertical sync (unsupported procedure).
+    }
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetMouseVisibility(bool a_enable)
+  {
+    if (a_enable) { m_cursor = LoadCursor(NULL, IDC_ARROW); }
+    else
+    {
+      m_cursor = NULL;
+    }
+
+    SetCursor(m_cursor);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetPosition(s32 a_x, s32 a_y)
+  {
+    SetWindowPos(m_handle, NULL, a_x, a_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetSize
+    (size_type a_width, size_type a_height)
+  {
+    const LONG width  = (LONG)a_width;
+    const LONG height = (LONG)a_height;
+
+    // SFML: We have to adjust according to the total size of the window which
+    // includes the title bar, borders etc.
+    RECT rect = {0, 0, width, height};
+    AdjustWindowRect(&rect, GetWindowLong(m_handle, GWL_STYLE), false);
+
+    a_width  = rect.right - rect.left;
+    a_height = rect.bottom - rect.top;
+
+    SetWindowPos(m_handle, NULL, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)
+  {
+    ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SwapBuffers()
+  {
+  }
+
+  //------------------------------------------------------------------------
+  // Private helper functions
+
+  LRESULT CALLBACK WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoWindowProcedure(HWND a_handle, UINT a_message, WPARAM a_wparam,
+                      LPARAM a_lParam)
+  {
+    // I am not entirely sure why SFML chooses this technique to store the
+    // user pointer (that is, wait for the create event and then use a 'trick'
+    // to get this class's instance. Should test it later.
+    // TODO: Register the user variable in Create()
+    if (a_message == WM_CREATE)
+    {
+      long thisPtr = reinterpret_cast<long>(reinterpret_cast<CREATESTRUCT*>
+        (a_lParam)->lpCreateParams);
+
+      SetWindowLongPtr(a_handle, GWLP_USERDATA, thisPtr);
+    }
+
+    this_type* win = reinterpret_cast<this_type*>(GetWindowLongPtr(a_handle,
+                                                  GWLP_USERDATA));
+
+    if (win)
+    {
+      win->DoProcessEvent(a_message, a_wparam, a_lParam);
+      if (win->m_callbackPtr)
+      {
+        return CallWindowProc(reinterpret_cast<WNDPROC>(win->m_callbackPtr),
+          a_handle, a_message, a_wparam, a_lParam);
+      }
+    }
+
+    if (a_message == WM_CLOSE) { return 0; }
+
     return DefWindowProcW(a_handle, a_message, a_wparam, a_lParam);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoProcessEvent(UINT a_message, WPARAM a_wparam, LPARAM a_lparam)
+  {
+    if (m_handle == NULL) { return; }
+
+    switch (a_message)
+    {
+    case WM_DESTROY:
+      {
+        DoCleanup();
+        break;
+      }
+    }
+
+    TLOC_UNUSED_2(a_wparam, a_lparam);
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::DoRegisterWindowClass()
@@ -141,7 +317,7 @@ namespace tloc { namespace graphics { namespace priv {
 
     WNDCLASSW WindowClass;
     WindowClass.style         = 0;
-    WindowClass.lpfnWndProc   = &this_type::DoProcessEvents;
+    WindowClass.lpfnWndProc   = &this_type::DoWindowProcedure;
     WindowClass.cbClsExtra    = 0;
     WindowClass.cbWndExtra    = 0;
     WindowClass.hInstance     = GetModuleHandle(NULL);
@@ -275,29 +451,63 @@ namespace tloc { namespace graphics { namespace priv {
     }
   }
 
-  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetActive(bool a_active)
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoSwitchToFullscreen(const graphics_mode& a_gMode)
   {
-    if (a_active)
+    const graphics_mode::Properties& props = a_gMode.GetProperties();
+
+    DEVMODE devMode;
+    devMode.dmSize       = sizeof(DEVMODE);
+    devMode.dmPelsWidth  = (DWORD)props.m_width;
+    devMode.dmPelsHeight = (DWORD)props.m_height;
+    devMode.dmBitsPerPel = (DWORD)props.m_bitsPerPixel;
+    devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+
+    s32 result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
+    if (result == DISP_CHANGE_SUCCESSFUL)
     {
-      if (m_deviceContext && m_OpenGLContext && (wglGetCurrentContext() != m_OpenGLContext))
-      {
-        wglMakeCurrent(m_deviceContext, m_OpenGLContext);
-      }
-      else
-      {
-        // LOG: Window already active
-      }
+      // LOG: Could not change display to fullscreen
+      return;
     }
-    else
+
+    // SFML: Make the window flags compatible with fullscreen mode
+    SetWindowLong(m_handle, GWL_STYLE, WS_POPUP | WS_CLIPCHILDREN |
+                            WS_CLIPSIBLINGS);
+    SetWindowLong(m_handle, GWL_EXSTYLE, WS_EX_APPWINDOW);
+
+    // SFML: Resize the window so that it fits the entire screen
+    SetWindowPos( m_handle, HWND_TOP, 0, 0,
+                  (int)props.m_width, (int)props.m_height,
+                  SWP_FRAMECHANGED );
+    ShowWindow(m_handle, SW_SHOW);
+
+    g_currFullScreenWindow = this;
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::DoCleanup()
+  {
+    // SFML: Restore the previous video mode (in case we are fullscreen)
+    if (g_currFullScreenWindow == this)
     {
-      if (wglGetCurrentContext() == m_OpenGLContext)
-      {
-        wglMakeCurrent(NULL, NULL);
-      }
-      else
-      {
-        // LOG: Window is already inactive
-      }
+      ChangeDisplaySettings(NULL, 0);
+      g_currFullScreenWindow = NULL;
+    }
+
+    // SFML: Unhide the mouse cursor
+    SetMouseVisibility(true);
+
+    // SFML: Destroy the OpenGL context
+    if (m_OpenGLContext)
+    {
+      SetActive(false);
+      wglDeleteContext(m_OpenGLContext);
+      m_OpenGLContext = NULL;
+    }
+
+    if (m_deviceContext)
+    {
+      ReleaseDC(m_handle, m_deviceContext);
+      m_deviceContext = NULL;
     }
   }
 

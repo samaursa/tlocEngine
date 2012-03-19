@@ -44,6 +44,7 @@ namespace tloc { namespace graphics { namespace priv {
     /// Default constructor. Only initialzes values.
     ///-------------------------------------------------------------------------
     WindowImpl();
+    ~WindowImpl();
 
     ///-------------------------------------------------------------------------
     /// Create a window for a valid OpenGL context. This is needed when querying
@@ -73,22 +74,20 @@ namespace tloc { namespace graphics { namespace priv {
     ///
     /// @return The width.
     ///-------------------------------------------------------------------------
-    size_type GetWidth() const { return 0; }
+    size_type GetWidth() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the height.
     ///
     /// @return The height.
     ///-------------------------------------------------------------------------
-    size_type GetHeight() const { return 0; }
+    size_type GetHeight() const;
 
     ///-------------------------------------------------------------------------
-    /// Gets the window settings.
+    /// Sets this window as active.
     ///
-    /// @return The window settings.
+    /// @param  a_active true to set this window as active.
     ///-------------------------------------------------------------------------
-    //const WindowSettings& GetSettings() const;
-
     void SetActive(bool a_active);
 
     ///-------------------------------------------------------------------------
@@ -96,14 +95,14 @@ namespace tloc { namespace graphics { namespace priv {
     ///
     /// @param  a_enable (optional)
     ///-------------------------------------------------------------------------
-    void SetVerticalSync(bool a_enable = true) { TLOC_UNUSED(a_enable); }
+    void SetVerticalSync(bool a_enable = true);
 
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.
     ///
     /// @param  a_visible True shows the mouse cursor
     ///-------------------------------------------------------------------------
-    void SetMouseVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
+    void SetMouseVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
     /// Sets the window position
@@ -111,7 +110,7 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_X The.
     /// @param  a_Y The.
     ///-------------------------------------------------------------------------
-    void SetPosition(s32 a_x, s32 a_y) { TLOC_UNUSED_2(a_x, a_y); }
+    void SetPosition(s32 a_x, s32 a_y);
 
     ///-------------------------------------------------------------------------
     /// Sets a new window size. This will call the appropriate callbacks.
@@ -119,28 +118,31 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_width  The width.
     /// @param  a_height The height.
     ///-------------------------------------------------------------------------
-    void SetSize(size_type a_width, size_type a_height) { TLOC_UNUSED_2(a_width, a_height); }
+    void SetSize(size_type a_width, size_type a_height);
 
     ///-------------------------------------------------------------------------
     /// Sets a visibility of the window.
     ///
     /// @param  a_visible true to show, false to hide.
     ///-------------------------------------------------------------------------
-    void SetVisibility(bool a_visible) { TLOC_UNUSED(a_visible); }
+    void SetVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
-    void SwapBuffers() {}
+    void SwapBuffers();
 
   private:
 
-    static LRESULT CALLBACK DoProcessEvents(HWND a_handle, UINT a_message,
-      WPARAM a_wparam, LPARAM a_lParam);
+    static LRESULT CALLBACK DoWindowProcedure(HWND a_handle, UINT a_message,
+                                              WPARAM a_wparam, LPARAM a_lParam);
+    void DoProcessEvent(UINT a_message, WPARAM a_wparam, LPARAM a_lparam);
 
     void DoRegisterWindowClass();
     void DoCreateContext(const graphics_mode& a_gMode,
                          WindowSettings& a_settings);
+    void DoSwitchToFullscreen(const graphics_mode& a_gMode);
+    void DoCleanup();
 
   private:
 

@@ -7,11 +7,11 @@ namespace tloc { namespace graphics {
 
   struct WindowSettings
   {
-    enum { style_none       = 0x00,
-           style_titlebar   = 0x01,
-           style_resize     = 0x02,
-           style_close      = 0x04,
-           style_fullscreen = 0x08  }; typedef u32 style_type;
+    enum { style_none       = 0,
+           style_titlebar   = 1 << 0,
+           style_resize     = 1 << 1,
+           style_close      = 1 << 2,
+           style_fullscreen = 1 << 3}; typedef u32 style_type;
 
     WindowSettings
       (core::String a_title,

@@ -76,6 +76,13 @@ namespace tloc { namespace graphics {
     bool IsValid() const;
 
     ///-------------------------------------------------------------------------
+    /// @brief Query if the window has been created successfully
+    ///
+    /// @return true if window was created, false if not.
+    ///-------------------------------------------------------------------------
+    bool IsCreated() const;
+
+    ///-------------------------------------------------------------------------
     /// Gets the width.
     ///
     /// @return The width.
@@ -103,6 +110,11 @@ namespace tloc { namespace graphics {
     ///-------------------------------------------------------------------------
     void SetVerticalSync(bool a_enable = true);
 
+    ///-------------------------------------------------------------------------
+    /// @brief Set this window as active
+    ///
+    /// @param  a_active (optional)
+    ///-------------------------------------------------------------------------
     void SetActive(bool a_active = true) const;
 
     ///-------------------------------------------------------------------------

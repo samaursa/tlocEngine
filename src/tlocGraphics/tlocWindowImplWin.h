@@ -128,6 +128,13 @@ namespace tloc { namespace graphics { namespace priv {
     void SetVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
+    /// @brief Calls IsWindow() on the handle and returns the result
+    ///
+    /// @return true if window has bee created, false if not.
+    ///-------------------------------------------------------------------------
+    bool IsCreated() const;
+
+    ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();

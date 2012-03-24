@@ -86,6 +86,15 @@ namespace tloc { namespace graphics {
   }
 
   template <WINDOW_TEMP>
+  bool Window<WINDOW_PARAMS>::IsCreated() const
+  {
+    if (IsValid())
+    { return m_impl->IsCreated(); }
+    else
+    { return false; }
+  }
+
+  template <WINDOW_TEMP>
   WINDOW_TYPE::size_type Window<WINDOW_PARAMS>::GetWidth() const
   {
     VALIDATE_WINDOW();

@@ -130,7 +130,7 @@ namespace tloc { namespace graphics { namespace priv {
     }
 
     // Adjust the window's width and height given the requested resolution
-    const bool fullScreen = (a_style & WindowSettings::style_fullscreen) == 1;
+    const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
     if (fullScreen == false)
     {
       RECT rect = {0, 0, (LONG)width, (LONG)height};
@@ -146,6 +146,8 @@ namespace tloc { namespace graphics { namespace priv {
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (int)left,
       (int)top, (int)width, (int)height, NULL, NULL, GetModuleHandle(NULL),
       this);
+
+    if (fullScreen) { DoSwitchToFullscreen(a_mode); }
 
     // LOG: Grab log from GetLastError
     TLOC_ASSERT(m_handle, "CreateWindowW failed.");
@@ -251,6 +253,11 @@ namespace tloc { namespace graphics { namespace priv {
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)
   {
     ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
+  }
+
+  bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::IsCreated() const
+  {
+    return IsWindow(m_handle) == 1;
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SwapBuffers()

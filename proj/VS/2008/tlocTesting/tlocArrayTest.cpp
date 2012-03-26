@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "tlocTestCommon.h"
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocMemory.h"
@@ -164,7 +164,7 @@ namespace TestingArray
 
     REQUIRE(copyToTestArray.capacity() == 20);
     REQUIRE(copyToTestArray.size() == 15);
-    
+
     //TODO: Turn into function later
 
     Array<SomeClass> copyToTestClassArray;

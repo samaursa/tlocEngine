@@ -10,6 +10,21 @@ namespace TestingWindow
   USING_TLOC;
   using namespace graphics;
 
+  struct dummy
+  {
+    dummy() : m_windowEventCount(0) {}
+
+    void OnWindowEvent(const WindowEvent& a_event)
+    {
+      TLOC_UNUSED(a_event);
+      m_windowEventCount++;
+    }
+
+    int m_windowEventCount;
+  };
+
+  TLOC_DEF_TYPE(dummy);
+
   TEST_CASE("Graphics/Window/General", "")
   {
     typedef Window<>::graphics_mode graphics_mode;
@@ -21,15 +36,21 @@ namespace TestingWindow
     CHECK(win.IsValid() == true);
     CHECK(win.IsCreated() == true);
 
-    Window<> win2;
-    CHECK(win2.IsValid() == false);
-    CHECK(win2.IsCreated() == false);
-    win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
-      "Test", WindowSettings::style_titlebar, WindowSettings("Test"));
-    CHECK(win2.IsValid() == true);
-    CHECK(win2.IsCreated() == true);
+    dummy dummyO;
+    CHECK(dummyO.m_windowEventCount == 0);
+    {
+      Window<> win2;
+      CHECK(win2.IsValid() == false);
+      CHECK(win2.IsCreated() == false);
+      win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
+        "Test", WindowSettings::style_titlebar, WindowSettings("Test"));
+      CHECK(win2.IsValid() == true);
+      CHECK(win2.IsCreated() == true);
 
-    CHECK(IsWindow(win.m_impl->m_handle) == 1);
+      CHECK(IsWindow(win.m_impl->m_handle) == 1);
+      win2.Register(&dummyO);
+    }
+    CHECK(dummyO.m_windowEventCount == 1); // win2 was destroyed, event was raised
 
     Window<> win3;
     CHECK(win3.IsValid() == false);

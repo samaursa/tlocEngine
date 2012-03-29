@@ -7,6 +7,7 @@
 #include "tlocCore/tlocString.h"
 #include "tlocCore/tlocPlatform.h"
 #include "tlocCore/tlocNonCopyable.h"
+#include "tlocCore/tlocTemplateDispatchDefaults.h"
 
 #include "tlocGraphicsModes.h"
 #include "tlocWindowSettings.h"
@@ -17,6 +18,43 @@
 
 namespace tloc { namespace graphics {
 
+  struct WindowEvent
+  {
+    enum EventType
+    {
+      none = -1,
+      closed = 0,
+      resized,
+      lost_focus,
+      gained_focus,
+      destroy,
+
+      events_count
+    };
+
+    WindowEvent(const EventType& a_event = none) : m_type(a_event) {}
+
+    EventType m_type;
+  };
+
+  struct WindowCallbacks
+  {
+    virtual void OnWindowEvent(const WindowEvent& a_event) = 0;
+  };
+
+  template <typename T>
+  struct WindowCallbackGroupT :
+    public core::CallbackGroupTArray<T, WindowCallbacks>::type
+  {
+    virtual void OnWindowEvent(const WindowEvent& a_event)
+    {
+      for (u32 i = 0; i < m_observers.size(); ++i)
+      {
+        m_observers[i]->OnWindowEvent(a_event);
+      }
+    }
+  };
+
   ///-------------------------------------------------------------------------
   /// A window to render to.
   ///
@@ -25,11 +63,14 @@ namespace tloc { namespace graphics {
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Window : public core::NonCopyable
+  class Window :
+    public core::DispatcherBaseArray <WindowCallbacks, WindowCallbackGroupT>::type,
+    public core::NonCopyable
   {
   public:
 
     typedef T_Platform                                   platform_type;
+    typedef Window<platform_type>                        this_type;
     typedef GraphicsMode<T_Platform>                     graphics_mode;
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
@@ -152,11 +193,18 @@ namespace tloc { namespace graphics {
     ///-------------------------------------------------------------------------
     void SwapBuffers();
 
+    ///-------------------------------------------------------------------------
+    /// Sends a WindowEvent to all registered objects
+    ///
+    /// @param  a_event The WindowEvent
+    ///-------------------------------------------------------------------------
+    void SendEvent(const WindowEvent& a_event);
+
   protected:
 
     void DoCreateImpl();
 
-    typedef priv::WindowImpl<platform_type> impl_type;
+    typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
   };
 

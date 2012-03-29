@@ -13,23 +13,25 @@ namespace tloc { namespace graphics { namespace priv {
   ///-------------------------------------------------------------------------
   /// Window implementation that must be specialized for each platform
   ///-------------------------------------------------------------------------
-  template <typename T_Platform> class WindowImpl;
+  template <class T_ParentWindow> class WindowImpl;
 
   ///-------------------------------------------------------------------------
   /// Platform independant window code
   ///-------------------------------------------------------------------------
-  template <typename T_Platform>
+  template <class T_ParentWindow>
   class WindowImplBase : public core::NonCopyable
   {
   public:
-    typedef T_Platform                    platformt_type;
-    typedef tl_size                       size_type;
-    typedef GraphicsMode<platformt_type>  graphics_mode;
+    typedef T_ParentWindow                             parent_window_type;
+    typedef typename parent_window_type::platform_type platform_type;
+    typedef tl_size                                    size_type;
+    typedef GraphicsMode<platform_type>                graphics_mode;
 
   public:
-    WindowImplBase()
+    WindowImplBase(parent_window_type* a_parent)
       : m_graphicsMode(graphics_mode::Properties(0, 0))
       , m_windowSettings("TLOC Window")
+      , m_parentWindow(a_parent)
     {
     }
 
@@ -43,6 +45,7 @@ namespace tloc { namespace graphics { namespace priv {
 
     graphics_mode               m_graphicsMode;
     WindowSettings              m_windowSettings;
+    parent_window_type*         m_parentWindow;
   };
 
 };};};

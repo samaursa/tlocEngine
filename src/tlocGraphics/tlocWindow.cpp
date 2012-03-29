@@ -157,6 +157,15 @@ namespace tloc { namespace graphics {
     m_impl->SwapBuffers();
   }
 
+  template <WINDOW_TEMP>
+  void Window<WINDOW_PARAMS>::SendEvent(const WindowEvent& a_event)
+  {
+    for (u32 i = 0; i < m_allObservers.size(); ++i)
+    {
+      m_allObservers[i]->OnWindowEvent(a_event);
+    }
+  }
+
   //````````````````````````````````````````````````````````````````````````
   // Private methods
 
@@ -164,7 +173,7 @@ namespace tloc { namespace graphics {
   void Window<WINDOW_PARAMS>::DoCreateImpl()
   {
     VALIDATE_NOT_WINDOW();
-    m_impl = new impl_type();
+    m_impl = new impl_type(this);
   }
 
 };};

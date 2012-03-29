@@ -5,8 +5,15 @@
 
 namespace tloc { namespace graphics { namespace priv {
 
-#define WINDOW_IMPL_WIN_PARAMS core::PlatformInfo<>::platform_type
+#define WINDOW_IMPL_WIN_PARAMS Window<>
 #define WINDOW_IMPL_WIN_TYPE WindowImpl<WINDOW_IMPL_WIN_PARAMS>
+
+#define VERIFY_DEVICE_CONTEXT() \
+    TLOC_ASSERT(m_deviceContext, "No device context available -- did you call "\
+      L"Create()?");
+#define VERIFY_OPENGL_CONTEXT() \
+    TLOC_ASSERT(m_OpenGLContext, "No OpenGL context available -- did you call "\
+      L"Create()? -- If yes, it may not have succeeded");
 
   //////////////////////////////////////////////////////////////////////////
   // Global variables
@@ -18,8 +25,8 @@ namespace tloc { namespace graphics { namespace priv {
   //////////////////////////////////////////////////////////////////////////
   // WindowImpl<>
 
-  WindowImpl<WINDOW_IMPL_WIN_PARAMS>::WindowImpl()
-    : WindowImplBase()
+  WindowImpl<WINDOW_IMPL_WIN_PARAMS>::WindowImpl(parent_window_type* a_parent)
+    : WindowImplBase(a_parent)
     , m_handle(NULL)
     , m_callbackPtr(0)
     , m_cursor(NULL)
@@ -262,6 +269,11 @@ namespace tloc { namespace graphics { namespace priv {
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SwapBuffers()
   {
+    VERIFY_DEVICE_CONTEXT();
+    VERIFY_OPENGL_CONTEXT();
+
+    // We have a name clash, make sure we are looking in the global scope
+    ::SwapBuffers(m_deviceContext);
   }
 
   //------------------------------------------------------------------------
@@ -310,6 +322,7 @@ namespace tloc { namespace graphics { namespace priv {
     {
     case WM_DESTROY:
       {
+        m_parentWindow->SendEvent(WindowEvent(WindowEvent::destroy));
         DoCleanup();
         break;
       }

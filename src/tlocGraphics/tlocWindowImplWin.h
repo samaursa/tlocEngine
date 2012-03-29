@@ -14,6 +14,7 @@
 #include "tlocGraphicsModes.h"
 #include "tlocWindowSettings.h"
 
+#include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
 #define WIN32_LEAN_AND_MEAN
@@ -22,17 +23,20 @@
 
 namespace tloc { namespace graphics { namespace priv {
 
-  template<>
-  class WindowImpl<core::PlatformInfo<>::platform_type> :
-    public WindowImplBase<core::PlatformInfo<>::platform_type>
+  template <>
+  class WindowImpl<Window<> >
+    : public WindowImplBase<Window<> >
+
   {
   public:
 
     // TODO: Static assert to prevent other platforms from using this class
 
     typedef core::PlatformInfo<>::platform_type          platform_type;
-    typedef WindowImpl<platform_type>                    this_type;
+    typedef WindowImpl<Window<> >                        this_type;
+    typedef WindowImplBase<Window<> >                    base_type;
     typedef GraphicsMode<platform_type>                  graphics_mode;
+    typedef base_type::parent_window_type                parent_window_type;
 
     typedef void*                                        window_handle_type;
     typedef WindowSettings::style_type                   window_style_type;
@@ -43,7 +47,7 @@ namespace tloc { namespace graphics { namespace priv {
     ///-------------------------------------------------------------------------
     /// Default constructor. Only initialzes values.
     ///-------------------------------------------------------------------------
-    WindowImpl();
+    WindowImpl(parent_window_type* a_parent);
     ~WindowImpl();
 
     ///-------------------------------------------------------------------------

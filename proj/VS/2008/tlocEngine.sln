@@ -116,12 +116,15 @@ Global
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|Win32.Build.0 = Debug|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|x64.ActiveCfg = Debug|x64
+		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Debug|x64.Build.0 = Debug|x64
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_DebugInfo|Win32.ActiveCfg = Release_DebugInfo|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_DebugInfo|Win32.Build.0 = Release_DebugInfo|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_DebugInfo|x64.ActiveCfg = Release_DebugInfo|x64
+		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_DebugInfo|x64.Build.0 = Release_DebugInfo|x64
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc_DebugInfo|Win32.ActiveCfg = Release_StdAlloc_DebugInfo|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc_DebugInfo|Win32.Build.0 = Release_StdAlloc_DebugInfo|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc_DebugInfo|x64.ActiveCfg = Release_StdAlloc_DebugInfo|x64
+		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc_DebugInfo|x64.Build.0 = Release_StdAlloc_DebugInfo|x64
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc|Win32.ActiveCfg = Release_StdAlloc|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc|Win32.Build.0 = Release_StdAlloc|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release_StdAlloc|x64.ActiveCfg = Release_StdAlloc|x64
@@ -129,6 +132,7 @@ Global
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release|Win32.ActiveCfg = Release|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release|Win32.Build.0 = Release|Win32
 		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release|x64.ActiveCfg = Release|x64
+		{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

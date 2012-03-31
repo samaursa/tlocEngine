@@ -1,23 +1,15 @@
-#ifndef TLOC_FUNCTIONAL_H 
-#define TLOC_FUNCTIONAL_H 
+#ifndef TLOC_FUNCTIONAL_H
+#define TLOC_FUNCTIONAL_H
 
 #include "tlocBase.h"
 #include "tlocTypes.h"
 
 namespace tloc { namespace core {
 
-  //////////////////////////////////////////////////////////////////////////
-  // This struct is used to diagnose template types
-
-  template <typename T>
-  struct TemplateDiagnose;
-
-  template <typename T>
-  struct DiagnoseTemplate;
 
   //////////////////////////////////////////////////////////////////////////
   // Constness - these functions can be used to write the non-const version
-  // of a function by calling the const version of the function to avoid 
+  // of a function by calling the const version of the function to avoid
   // code duplication
 
   template <typename T>
@@ -30,7 +22,7 @@ namespace tloc { namespace core {
   // Base classes
 
   template <typename T_Arg, typename T_Result>
-  struct unary_function 
+  struct unary_function
   {
     typedef T_Arg     argument_type;
     typedef T_Result  result_type;
@@ -163,8 +155,8 @@ namespace tloc { namespace core {
 
   template <typename T> struct hash
   {
-    tl_size operator()(T p) const 
-    { 
+    tl_size operator()(T p) const
+    {
       TLOC_STATIC_ASSERT(false, Unable_to_generate_a_hash_for_this_type);
     }
   };
@@ -244,7 +236,7 @@ namespace tloc { namespace core {
   struct use_first
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
-    
+
     typename result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };

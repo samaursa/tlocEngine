@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocCore"
-	ProjectGUID="{A1A79F8A-0BE9-4972-A551-B0D71302D87B}"
-	RootNamespace="tlocCore"
+	Name="tlocGraphics"
+	ProjectGUID="{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}"
+	RootNamespace="tlocGraphics"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -42,10 +42,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -66,7 +65,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions=""
 				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
@@ -110,10 +108,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -134,7 +131,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions=""
 				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
@@ -181,8 +177,8 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -249,8 +245,8 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -312,10 +308,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -336,7 +331,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions=""
 				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
@@ -380,150 +374,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalOptions=""
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_StdAlloc|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
-				ExceptionHandling="0"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release_StdAlloc|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="4"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
-				ExceptionHandling="0"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
 				WarningLevel="4"
 				WarnAsError="true"
@@ -587,8 +444,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -656,8 +513,143 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="false"
+				WarningLevel="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; TLOC_USING_STD_ALLOC; GLEW_STATIC"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="false"
+				WarningLevel="4"
+				WarnAsError="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -724,8 +716,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -793,8 +785,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -837,391 +829,99 @@
 	</References>
 	<Files>
 		<Filter
-			Name="3rdParty"
-			>
-			<Filter
-				Name="Memory"
-				>
-				<Filter
-					Name="DlMalloc"
-					>
-					<File
-						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\malloc.c.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Nedmalloc"
-					>
-					<File
-						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\nedmalloc.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\src\3rdParty\nedmalloc\nedmalloc.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="RNGs"
-				>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="Containers"
+			Name="Window"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocContainersReadme.txt"
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGL.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.inl"
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowHandle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowSettings.h"
 				>
 			</File>
 			<Filter
-				Name="Array"
+				Name="Graphics Mode"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsModes.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="List"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Hashmap"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.inl"
-					>
-				</File>
-				<Filter
-					Name="Hashtable"
-					>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.inl"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="Stack"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Queue"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Pair"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocPair.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="String"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
+					RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsModes.h"
 					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
-			Name="DataStructures"
+			Name="3rd Party"
 			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Types"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesN.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.helper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypeTraits.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Timers"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Generators"
-			>
-		</Filter>
-		<Filter
-			Name="Random Number Generator"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.h"
-				>
-			</File>
 			<Filter
-				Name="Generators"
+				Name="GLEW"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.cpp"
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glew.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.h"
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glew.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.inl"
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glxew.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\wglew.h"
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Base Classes"
-			>
 			<Filter
-				Name="Dispatchers"
+				Name="glext"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatch.h"
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\glext\glext.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatchDefaults.h"
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\glext\glxext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\glext\wglext.h"
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Memory"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Platform"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Algorithms"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Utilities"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocNonCopyable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateUtils.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocUtils.h"
-				>
-			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocDepVersionCheck.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocFunctional.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocLinkMe.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
+			RelativePath="..\..\..\..\src\tlocGraphics\placeholder.txt"
 			>
 		</File>
 	</Files>

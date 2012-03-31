@@ -23,7 +23,7 @@ namespace tloc { namespace graphics {
     enum EventType
     {
       none = -1,
-      closed = 0,
+      close = 0,
       resized,
       lost_focus,
       gained_focus,

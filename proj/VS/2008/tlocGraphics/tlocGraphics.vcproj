@@ -832,6 +832,10 @@
 			Name="Window"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGL.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.cpp"
 				>
 			</File>

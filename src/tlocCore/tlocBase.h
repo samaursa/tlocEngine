@@ -234,6 +234,9 @@
 #define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
 
+// Other common asserts
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ _CRT_WIDE(" cannot be NULL"))
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ _CRT_WIDE(" should be NULL"))
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time

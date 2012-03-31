@@ -35,6 +35,7 @@ namespace tloc { namespace graphics { namespace priv {
     , m_deviceContext(NULL)
     , m_OpenGLContext(NULL)
   {
+    TLOC_ASSERT_NOT_NULL(a_parent);
   }
 
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>::~WindowImpl()
@@ -324,6 +325,26 @@ namespace tloc { namespace graphics { namespace priv {
       {
         m_parentWindow->SendEvent(WindowEvent(WindowEvent::destroy));
         DoCleanup();
+        break;
+      }
+    case WM_CLOSE:
+      {
+        m_parentWindow->SendEvent(WindowEvent(WindowEvent::close));
+        break;
+      }
+    case WM_SIZE:
+      {
+        m_parentWindow->SendEvent(WindowEvent(WindowEvent::resized));
+        break;
+      }
+    case WM_SETFOCUS:
+      {
+        m_parentWindow->SendEvent(WindowEvent(WindowEvent::gained_focus));
+        break;
+      }
+    case WM_KILLFOCUS:
+      {
+        m_parentWindow->SendEvent(WindowEvent(WindowEvent::lost_focus));
         break;
       }
     }

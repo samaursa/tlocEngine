@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -177,7 +177,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -309,7 +309,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -444,7 +444,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -580,7 +580,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -716,7 +716,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE; TLOC_USING_STD_ALLOC; GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -832,10 +832,6 @@
 			Name="Window"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGL.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.cpp"
 				>
 			</File>
@@ -920,8 +916,44 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Context"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocContext.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocContext.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsContext.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="OpenGL"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGL.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGLExt.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGLExt.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\placeholder.txt"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>
 		</File>
 	</Files>

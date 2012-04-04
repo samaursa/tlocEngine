@@ -70,8 +70,8 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_mode The graphics mode
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const core::String& a_title,
-      const window_style_type& a_style, const WindowSettings& a_settings);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
+                const window_style_type& a_style);
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
@@ -86,6 +86,8 @@ namespace tloc { namespace graphics { namespace priv {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    void ProcessEvents();
 
     ///-------------------------------------------------------------------------
     /// Sets this window as active.

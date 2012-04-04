@@ -103,8 +103,8 @@ namespace tloc { namespace graphics { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
-    Create(const graphics_mode& a_mode, const core::String& a_title,
-           const window_style_type& a_style, const WindowSettings& a_settings)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
+           const window_style_type& a_style)
   {
     m_graphicsMode    = a_mode;
     m_windowSettings  = a_settings;
@@ -149,7 +149,8 @@ namespace tloc { namespace graphics { namespace priv {
 
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
-    s32 retIndex = core::CharAsciiToWide(a_title.c_str(), -1, wTitle, wTitleSize);
+    s32 retIndex =
+      core::CharAsciiToWide(a_settings.m_title.c_str(), -1, wTitle, wTitleSize);
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (int)left,
       (int)top, (int)width, (int)height, NULL, NULL, GetModuleHandle(NULL),
@@ -207,6 +208,20 @@ namespace tloc { namespace graphics { namespace priv {
       else
       {
         // LOG: Window is already inactive
+      }
+    }
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ProcessEvents()
+  {
+    // SFML: Update the window only if we own it
+    if (!m_callbackPtr)
+    {
+      MSG msg;
+      while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+      {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
       }
     }
   }
@@ -298,7 +313,6 @@ namespace tloc { namespace graphics { namespace priv {
 
     this_type* win = reinterpret_cast<this_type*>(GetWindowLongPtr(a_handle,
                                                   GWLP_USERDATA));
-
     if (win)
     {
       win->DoProcessEvent(a_message, a_wparam, a_lParam);

@@ -51,7 +51,7 @@ namespace TestingWindow
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
       win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
-        "Test", WindowSettings::style_titlebar, WindowSettings("Test"));
+        WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
 
@@ -67,7 +67,7 @@ namespace TestingWindow
     CHECK(win3.IsValid() == false);
     CHECK(win3.IsCreated() == false);
     win3.Create(graphics_mode(graphics_mode::Properties(1920, 1080)),
-      "Testing", WindowSettings::style_fullscreen, WindowSettings("Testing"));
+      WindowSettings("Testing"), WindowSettings::style_fullscreen);
     CHECK(win3.IsValid() == true);
     CHECK(win3.IsCreated() == true);
   }

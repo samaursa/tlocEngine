@@ -1,7 +1,6 @@
 #include "tlocWindow.h"
 
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include "tlocCore/tlocQueue.inl"
 
 //------------------------------------------------------------------------
 // Platform dependant includes
@@ -62,12 +61,12 @@ namespace tloc { namespace graphics {
 
   template <WINDOW_TEMP>
   void Window<WINDOW_PARAMS>::Create(const graphics_mode& a_mode,
-                                     const core::String& a_title,
-                                     window_style_type a_style,
-                                     const WindowSettings& a_settings)
+                                     const WindowSettings& a_settings,
+                                     window_style_type a_style)
+
   {
     DoCreateImpl();
-    m_impl->Create(a_mode, a_title, a_style, a_settings);
+    m_impl->Create(a_mode, a_settings, a_style);
   }
 
   template <WINDOW_TEMP>
@@ -106,6 +105,26 @@ namespace tloc { namespace graphics {
   {
     VALIDATE_WINDOW();
     return m_impl->GetHeight();
+  }
+
+  template <WINDOW_TEMP>
+  bool Window<WINDOW_PARAMS>::GetEvent(WindowEvent& a_eventOut)
+  {
+    // If the stack is empty, then see if the window has more events for us
+    if (m_impl && m_events.empty())
+    {
+      m_impl->ProcessEvents();
+    }
+
+    if (!m_events.empty())
+    {
+      a_eventOut = m_events.front();
+      m_events.pop();
+
+      return true;
+    }
+
+    return false;
   }
 
   template <WINDOW_TEMP>

@@ -5,6 +5,7 @@
 #include "tlocCore/tlocUtils.h"
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocString.h"
+#include "tlocCore/tlocQueue.h"
 #include "tlocCore/tlocPlatform.h"
 #include "tlocCore/tlocNonCopyable.h"
 #include "tlocCore/tlocTemplateDispatchDefaults.h"
@@ -100,8 +101,9 @@ namespace tloc { namespace graphics {
     /// @param  a_mode The graphics mode
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const core::String& a_title,
-                window_style_type a_style, const WindowSettings& a_settings);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
+                window_style_type a_style = WindowSettings::style_resize |
+                                            WindowSettings::style_close);
 
     ///-------------------------------------------------------------------------
     /// Closes the window and destroys internal implementations. Does NOT
@@ -136,6 +138,16 @@ namespace tloc { namespace graphics {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets an event on the stack, if stack is empty, then asks the window
+    /// to get more events (if any)
+    ///
+    /// @param [in,out] a_eventOut The last event on the stack
+    ///
+    /// @return true if an event exists, false otherwise
+    ///-------------------------------------------------------------------------
+    bool GetEvent(WindowEvent& a_eventOut);
 
     ///-------------------------------------------------------------------------
     /// Gets the window settings.
@@ -206,6 +218,7 @@ namespace tloc { namespace graphics {
 
     typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
+    core::Queue<WindowEvent>                m_events;
   };
 
 };};

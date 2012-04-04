@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
     RETURN_ERROR;
   }
 
-  vector<int> version;
+  vector<time_t> version;
   for (int i = 0; i < (int)total_elements; ++i)
   {
     version.push_back(0);
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
   }
 
   // The current time in milliseconds
-  version[date_time] = (int)(time(NULL) * 1000);
+  version[date_time] = time(NULL);
 
   file << "#ifndef " << PROJECT_NAME << "_VERSION_H" << "\n";
   file << "#define " << PROJECT_NAME << "_VERSION_H" << "\n\n";

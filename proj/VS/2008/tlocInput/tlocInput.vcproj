@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -109,7 +109,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -177,7 +177,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -245,7 +245,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -309,7 +309,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -375,7 +375,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -443,7 +443,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -511,7 +511,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -578,7 +578,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -646,7 +646,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -713,7 +713,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -781,7 +781,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -848,6 +848,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImpl.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.cpp"
 				>
 			</File>
@@ -856,11 +860,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImpl.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocMouse.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocMouse.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocMouseImpl.h"
 				>
 			</File>
 			<Filter

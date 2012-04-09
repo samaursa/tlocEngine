@@ -57,33 +57,33 @@ namespace tloc { namespace input { namespace priv {
   ///                          will eventually create platform-specific
   ///                          implementations
   ///-------------------------------------------------------------------------
-  template <class T_ParentKeyboard, class T_ParamList> class KeyboardImpl;
+  template <class T_ParentKeyboard> class KeyboardImpl;
 
-  template <class T_ParentKeyboard, typename T_ParamList>
+  template <class T_ParentKeyboard, class T_ParamList>
   class KeyboardImplBase : public core::NonCopyable
   {
   public:
     typedef T_ParentKeyboard                              parent_keyboard_type;
+    typedef T_ParamList                                   param_list_type;
     typedef typename parent_keyboard_type::platform_type  platform_type;
     typedef typename parent_keyboard_type::keycode_type   keycode_type;
     typedef u32                                           index_type;
-    typedef T_ParamList                                   param_list_type;
 
-    KeyboardImplBase(parent_keyboard_type* a_parent,
-                     const param_list_type& a_paramListType)
-                     :m_parent(a_parent)
-                     ,m_paramList(a_paramListType)
+    KeyboardImplBase(parent_keyboard_type* a_parent, param_list_type a_params)
+      : m_parent(a_parent), m_params(a_params)
     {
       TLOC_ASSERT_NOT_NULL(m_parent);
     }
+
+    const param_list_type& GetParams() const;
 
   protected:
     enum {pressed_alt = 0, pressed_shift, pressed_ctrl, pressed_system,
           pressed_count};
 
     u32                   m_buffer[KeyboardEvent::Count];
+    param_list_type       m_params;
     parent_keyboard_type* m_parent;
-    param_list_type       m_paramList;
     bool                  m_altPressed,
                           m_shiftPressed,
                           m_ctrlPressed,

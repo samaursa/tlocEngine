@@ -12,23 +12,31 @@
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <dinput.h>
 
+namespace tloc { namespace input {
+
+  typedef KeyboardParamList<HWND> windows_keyboard_param_type;
+
+};};
+
 namespace tloc { namespace input { namespace priv {
 
-  template <typename T_ParamList>
-  class KeyboardImpl<Keyboard<T_ParamList>, T_ParamList>
-    : public KeyboardImplBase<Keyboard<T_ParamList>, T_ParamList>
+  template <>
+  class KeyboardImpl<Keyboard<> >
+    : public KeyboardImplBase<Keyboard<>, windows_keyboard_param_type>
   {
   public:
-    typedef Keyboard<T_ParamList>                           keyboard_type;
-    typedef typename keyboard_type::platform_type           platform_type;
-    typedef T_ParamList                                     param_list_type;
-    typedef KeyboardImplBase<keyboard_type, param_list_type> base_type;
-    typedef KeyboardImpl<keyboard_type, keyboard_type>      this_type;
-    typedef typename base_type::parent_keyboard_type        parent_keybody_type;
-    typedef typename base_type::keycode_type                keycode_type;
+    typedef windows_keyboard_param_type            keyboard_param_type;
+    typedef Keyboard<>                             keyboard_type;
+    typedef KeyboardImpl<keyboard_type>            this_type;
+    typedef KeyboardImplBase
+      <keyboard_type, keyboard_param_type>         base_type;
+
+    typedef keyboard_type::platform_type           platform_type;
+    typedef base_type::parent_keyboard_type        parent_keybody_type;
+    typedef base_type::keycode_type                keycode_type;
 
     KeyboardImpl(parent_keyboard_type* a_parent,
-                 const param_list_type& a_paramList);
+                 const keyboard_param_type& a_params);
 
     ///-------------------------------------------------------------------------
     /// Query if 'a_key' is key down.
@@ -37,15 +45,12 @@ namespace tloc { namespace input { namespace priv {
     ///
     /// @return true if key is down, false if not.
     ///-------------------------------------------------------------------------
-    bool IsKeyDown(keycode_type a_key) const { return false; }
+    bool IsKeyDown(keycode_type a_key) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
-    void Update() { }
-
-  private:
-    HWND          m_windowHandle;
+    void Update();
   };
 
 };};};

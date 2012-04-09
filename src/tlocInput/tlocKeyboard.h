@@ -69,8 +69,7 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
-  template <typename T_ParamList,
-            typename T_Policy = KeyboardPolicy::Buffered(),
+  template <typename T_Policy = KeyboardPolicy::Buffered(),
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Keyboard :
     public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
@@ -78,11 +77,11 @@ namespace tloc { namespace input {
   {
   public:
     typedef T_Platform                      platform_type;
-    typedef T_ParamList                     param_list_type;
     typedef Keyboard<T_Policy, T_Platform>  this_type;
     typedef KeyboardEvent::key_code_type    keycode_type;
 
-    Keyboard(const param_list_type& a_paramList);
+    template <typename T_ParamList>
+    Keyboard(const T_ParamList& a_paramList);
     ~Keyboard();
 
     ///-------------------------------------------------------------------------
@@ -101,7 +100,7 @@ namespace tloc { namespace input {
 
   private:
 
-    typedef priv::KeyboardImpl<this_type, param_list_type> impl_type;
+    typedef priv::KeyboardImpl<this_type> impl_type;
     impl_type*                      m_impl;
   };
 

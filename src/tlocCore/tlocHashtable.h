@@ -7,6 +7,7 @@
 #include "tlocAlgorithms.h"
 #include "tlocIterator.h"
 #include "tlocFunctional.h"
+#include "tlocTemplateUtils.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -108,6 +109,8 @@ namespace tloc { namespace core {
                                   value_type&>::Result        reference;
     typedef typename Loki::Select<T_Const, const b_array_type,
                                   b_array_type>::Result       bucket_array_type;
+    typedef typename Loki::Select<T_Const, const b_array_type*,
+                                  b_array_type*>::Result      bucket_array_type_ptr;
     typedef typename Loki::Select<T_Const,
       typename bucket_type::const_iterator,
       typename bucket_type::iterator>::Result                 bucket_iterator;
@@ -117,8 +120,8 @@ namespace tloc { namespace core {
 
   public:
     TL_FI HashtableItrBase();
-    TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer);
-    TL_FI HashtableItrBase(bucket_array_type* a_bucketContainer,
+    TL_FI HashtableItrBase(bucket_array_type_ptr a_bucketContainer);
+    TL_FI HashtableItrBase(bucket_array_type_ptr a_bucketContainer,
       const local_iterator& a_currBucket, const bucket_iterator& a_currNode);
 
     TL_FI void IncrementBucket();
@@ -128,18 +131,18 @@ namespace tloc { namespace core {
     bool       operator==(const this_type& a_other);
     bool       operator!=(const this_type& a_other);
 
-    const bucket_iterator&    GetNode() const;
-    const bucket_array_type*  GetBucketArray() const;
-    const local_iterator&     GetCurrBucket() const;
+    const bucket_iterator&      GetNode() const;
+    const bucket_array_type_ptr GetBucketArray() const;
+    const local_iterator&       GetCurrBucket() const;
 
     // Used mostly for testing
     Pair<bool, size_type>     GetCurrBucketNumber() const;
 
   //protected:
 
-    bucket_array_type* m_bucketContainer;
-    local_iterator     m_currBucket;
-    bucket_iterator    m_currNode;
+    bucket_array_type_ptr m_bucketContainer;
+    local_iterator        m_currBucket;
+    bucket_iterator       m_currNode;
 
     // Used to mark end() iterator's m_currNode because we cannot dereference
     // the end of the bucket container to get a reference to a bucket_type.
@@ -159,6 +162,7 @@ namespace tloc { namespace core {
     typedef HashtableItr<T_Policies, false>     this_type_non_const;
 
     typedef typename base_type::bucket_array_type bucket_array_type;
+    typedef typename base_type::bucket_array_type_ptr bucket_array_type_ptr;
     typedef typename base_type::local_iterator    local_iterator;
     typedef typename base_type::bucket_iterator   bucket_iterator;
     typedef typename base_type::value_type        value_type;
@@ -170,8 +174,8 @@ namespace tloc { namespace core {
 
   public:
     HashtableItr();
-    HashtableItr(bucket_array_type* a_bucketContainer);
-    HashtableItr(bucket_array_type* a_bucketContainer,
+    HashtableItr(bucket_array_type_ptr a_bucketContainer);
+    HashtableItr(bucket_array_type_ptr a_bucketContainer,
                  const local_iterator& a_currBucket,
                  const bucket_iterator& a_currNode);
     HashtableItr(const this_type_non_const& a_other);
@@ -564,8 +568,8 @@ namespace tloc { namespace core {
     ///-------------------------------------------------------------------------
     iterator            erase(iterator a_position);
     iterator            erase(iterator a_first, iterator a_last);
-    reverse_iterator    erase(reverse_iterator a_position);
-    reverse_iterator    erase(reverse_iterator a_first, reverse_iterator a_last);
+    //reverse_iterator    erase(reverse_iterator a_position);
+    //reverse_iterator    erase(reverse_iterator a_first, reverse_iterator a_last);
     size_type           erase(const key_type& a_key);
 
     void                clear();
@@ -647,8 +651,10 @@ namespace tloc { namespace core {
     ///
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
+    template <TLOC_DUMMY_TYPE>
     TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, forward_iterator_tag);
+    template <TLOC_DUMMY_TYPE>
     TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, bidirectional_iterator_tag);
 
@@ -662,9 +668,11 @@ namespace tloc { namespace core {
     ///
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
+    template <TLOC_DUMMY_TYPE>
     TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
       bucket_iterator a_currNode, const element_type& a_elem,
       forward_iterator_tag);
+    template <TLOC_DUMMY_TYPE>
     TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
       typename bucket_iterator a_currNode, const element_type& a_elem,
       bidirectional_iterator_tag);

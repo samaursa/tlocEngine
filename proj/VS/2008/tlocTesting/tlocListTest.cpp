@@ -614,7 +614,8 @@ namespace TestingList
 
     for (i = 1; i < 10; ++i) mylist.push_back(i * 10);
 
-    itr1 = itr2 = mylist.begin();
+    itr1 = mylist.begin();
+    itr2 = mylist.begin();
     advance(itr2, 6);
     CHECK(*itr2 == 70);
     ++itr1;

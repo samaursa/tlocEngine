@@ -100,7 +100,7 @@ namespace tloc { namespace core {
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::
-    HashtableItrBase( bucket_array_type* a_bucketContainer)
+    HashtableItrBase( bucket_array_type_ptr a_bucketContainer)
     : m_bucketContainer(a_bucketContainer)
     , m_currBucket( a_bucketContainer ?
                     a_bucketContainer->begin() : local_iterator())
@@ -112,7 +112,7 @@ namespace tloc { namespace core {
 
   template <HASHTABLE_ITR_BASE_TYPES>
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
-    ::HashtableItrBase( bucket_array_type* a_bucketContainer,
+    ::HashtableItrBase( bucket_array_type_ptr a_bucketContainer,
                         const local_iterator& a_currBucket,
                         const bucket_iterator& a_currNode)
       : m_bucketContainer(a_bucketContainer)
@@ -130,8 +130,8 @@ namespace tloc { namespace core {
     TLOC_ASSERT_HASH_TABLE(m_currNode != m_dummyNode,
       "Cannot increment end() iterator! (OR m_currNode wrongly assigned)");
 
-    bucket_array_type::iterator bucketEnd = m_bucketContainer->end();
-    bucket_type::iterator itrEnd = (*m_currBucket).end();
+    bucket_array_type::const_iterator bucketEnd = m_bucketContainer->end();
+    bucket_type::const_iterator itrEnd = (*m_currBucket).end();
     ++m_currNode;
 
     while(m_currNode == itrEnd)
@@ -214,7 +214,7 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_BASE_TYPES>
-  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_array_type*
+  const typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::bucket_array_type_ptr
     HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetBucketArray() const
   {
     return m_bucketContainer;
@@ -259,13 +259,13 @@ namespace tloc { namespace core {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type* a_bucketContainer)
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type_ptr a_bucketContainer)
     : base_type(a_bucketContainer)
   {
   }
 
   template <HASHTABLE_ITR_TYPES>
-  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type* a_bucketContainer,
+  HashtableItr<HASHTABLE_ITR_PARAMS>::HashtableItr(bucket_array_type_ptr a_bucketContainer,
     const local_iterator& a_currBucket, const bucket_iterator& a_currNode)
     : base_type(a_bucketContainer, a_currBucket, a_currNode)
   {
@@ -353,6 +353,7 @@ namespace tloc { namespace core {
 
     clear();
     insert(a_other.begin(), a_other.end());
+    return *this;
   }
 
   template <HASH_TABLE_TYPES>
@@ -562,20 +563,21 @@ namespace tloc { namespace core {
     return a_first;
   }
 
-  template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
-    Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_position)
-  {
-    return reverse_iterator(DoErase((++a_position).base()) );
-  }
+  //template <HASH_TABLE_TYPES>
+  //TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
+  //  Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_position)
+  //{
+  //  return reverse_iterator
+  //    ( DoErase((++a_position).base(), bucket_iterator_type()) );
+  //}
 
-  template <HASH_TABLE_TYPES>
-  TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
-    Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_first,
-                                        reverse_iterator a_last)
-  {
-    return reverse_iterator(erase((++a_last).base(), (++a_first).base()) );
-  }
+  //template <HASH_TABLE_TYPES>
+  //TL_FI typename Hashtable<HASH_TABLE_PARAMS>::reverse_iterator
+  //  Hashtable<HASH_TABLE_PARAMS>::erase(reverse_iterator a_first,
+  //                                      reverse_iterator a_last)
+  //{
+  //  return reverse_iterator(erase((++a_last).base(), (++a_first).base()) );
+  //}
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
@@ -773,7 +775,8 @@ namespace tloc { namespace core {
 
       // Select the appropriate push() function (front or back)
       return MakePair(iterator(&m_bucketArray, itrB,
-        DoPushSelect(itrB, newElement, bucket_iterator_type()) ), true);
+        DoPushSelect<TLOC_DUMMY_PARAM>
+        (itrB, newElement, bucket_iterator_type()) ), true);
     }
 
     return MakePair(end(), false);
@@ -801,9 +804,8 @@ namespace tloc { namespace core {
     {
       buckets_array_type::iterator itrB = itr.m_currBucket;
       // Select the appropriate insert() function (insert() or insert_after())
-      return iterator(&m_bucketArray, itrB,
-                      DoInsertSelect(itr.m_currBucket, itr.m_currNode,
-                                     newElement, bucket_iterator_type()) );
+      return iterator(&m_bucketArray, itrB, DoInsertSelect<TLOC_DUMMY_PARAM> 
+        (itr.m_currBucket, itr.m_currNode, newElement, bucket_iterator_type()) );
     }
     else
     {
@@ -813,12 +815,13 @@ namespace tloc { namespace core {
       advance(itrB, n);
 
       // Select the appropriate push() function (front or back)
-      return iterator(&m_bucketArray, itrB,
-                      DoPushSelect(itrB, newElement, bucket_iterator_type()) );
+      return iterator(&m_bucketArray, itrB, DoPushSelect<TLOC_DUMMY_PARAM>
+        (itrB, newElement, bucket_iterator_type()) );
     }
   }
 
   template <HASH_TABLE_TYPES>
+  template <TLOC_DUMMY_TYPE>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoPushSelect(local_iterator& a_itr,
       const element_type& a_elem, bidirectional_iterator_tag)
@@ -831,6 +834,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
+  template <TLOC_DUMMY_TYPE>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoPushSelect(local_iterator& a_itr,
       const element_type& a_elem, forward_iterator_tag)
@@ -842,6 +846,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
+  template <TLOC_DUMMY_TYPE>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoInsertSelect(local_iterator& a_itr,
       bucket_iterator a_currNode, const element_type& a_elem,
@@ -852,6 +857,7 @@ namespace tloc { namespace core {
   }
 
   template <HASH_TABLE_TYPES>
+  template <TLOC_DUMMY_TYPE>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_type::iterator
     Hashtable<HASH_TABLE_PARAMS>::DoInsertSelect(local_iterator& a_itr,
       bucket_iterator a_currNode, const element_type& a_elem,

@@ -5,7 +5,7 @@
 #include "tlocTypes.h"
 #include "tlocTypeTraits.h"
 
-#ifndef TLOC_DISABLE_ASSERT_ITERATOR  
+#ifndef TLOC_DISABLE_ASSERT_ITERATOR
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_ITERATOR(_Expression, _Msg)
@@ -270,15 +270,18 @@ namespace tloc { namespace core {
     public iterator<T_Itr_Type, T, typename T_Node::difference_type,
                     T_Ptr, T_Ref>
   {
+    typedef typename T_Ptr                                      pointer;
+    typedef typename T_Ref                                      reference;
+
     typedef list_iterator<T_Node, T_Itr_Type, T, T_Ptr, T_Ref>  this_type;
     typedef list_iterator<T_Node, T_Itr_Type, T, T*, T&>        iterator;
     typedef typename T_Itr_Type                                 iterator_category;
-    typedef typename T_Node::pointer_type                       pointer;
-    typedef typename T_Node::reference_type                     reference;
 
     TL_FI list_iterator();
     TL_FI list_iterator(const T_Node* aNode);
     TL_FI list_iterator(const iterator& aOtherItr);
+    //template <typename T_Ptr2, typename T_Ref2>
+    //TL_FI list_iterator(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
 
     TL_FI reference       operator*() const;
     TL_FI pointer         operator->() const;
@@ -286,8 +289,14 @@ namespace tloc { namespace core {
     TL_FI this_type       operator++(int);
     TL_FI this_type&      operator--();
     TL_FI this_type       operator--(int);
-    TL_FI bool            operator==(const this_type& aOther);
-    TL_FI bool            operator!=(const this_type& aOther);
+    template <typename T_Ptr2, typename T_Ref2>
+    TL_FI bool            operator==(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
+    template <typename T_Ptr2, typename T_Ref2>
+    TL_FI bool            operator!=(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
+
+    template <typename T_Ptr2, typename T_Ref2>
+    TL_FI void            operator=
+      (const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
 
     T_Node*               m_node;
 
@@ -305,7 +314,6 @@ namespace tloc { namespace core {
   {
     return a.m_node == b.m_node;
   }
-
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions

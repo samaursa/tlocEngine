@@ -383,63 +383,63 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Macros
 
-#define LIST_ITR_TYPES typename T_Node, typename T_Itr_Type, \
+#define LIST_ITR_TEMP typename T_Node, typename T_Itr_Type, \
   typename T, typename T_Ptr, typename T_Ref
 
-#define LIST_ITR_TEMP_PARAM T_Node, T_Itr_Type, T, T_Ptr, T_Ref
+#define LIST_ITR_PARAMS T_Node, T_Itr_Type, T, T_Ptr, T_Ref
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>::list_iterator() : m_node()
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>::list_iterator() : m_node()
   {
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>
       ::list_iterator(const T_Node* aNode) : m_node(const_cast<T_Node*>(aNode))
   {
   }
 
-  template <LIST_ITR_TYPES> 
-  TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
+  template <LIST_ITR_TEMP> 
+  TL_FI list_iterator<LIST_ITR_PARAMS>
     ::list_iterator(const iterator& aOtherItr)
   : m_node(aOtherItr.m_node)
   {
   }
 
-  template <LIST_ITR_TYPES> 
-  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::reference
-    list_iterator<LIST_ITR_TEMP_PARAM>::operator* () const
+  template <LIST_ITR_TEMP> 
+  TL_FI typename list_iterator<LIST_ITR_PARAMS>::reference
+    list_iterator<LIST_ITR_PARAMS>::operator* () const
   {
     return m_node->getValue();
   }
 
-  template <LIST_ITR_TYPES> 
-  TL_FI typename list_iterator<LIST_ITR_TEMP_PARAM>::pointer
-    list_iterator<LIST_ITR_TEMP_PARAM>::operator-> () const
+  template <LIST_ITR_TEMP> 
+  TL_FI typename list_iterator<LIST_ITR_PARAMS>::pointer
+    list_iterator<LIST_ITR_PARAMS>::operator-> () const
   {
     return *(m_node->getValue());
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::operator++()
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>&
+      list_iterator<LIST_ITR_PARAMS>::operator++()
   {
     m_node = m_node->getNext();
     return *this;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::operator++(int)
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>
+      list_iterator<LIST_ITR_PARAMS>::operator++(int)
   {
     this_type tempItr(*this);
     m_node = m_node->getNext();
     return tempItr;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::operator--()
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>&
+      list_iterator<LIST_ITR_PARAMS>::operator--()
   {
     // The function calls subOperation() because initially singly_linked nodes
     // were not required to have a prev() function. Now the restriction is
@@ -447,9 +447,9 @@ namespace tloc { namespace core {
     return subOperation(iterator_category());
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::operator--(int)
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>
+      list_iterator<LIST_ITR_PARAMS>::operator--(int)
   {
     // The function calls subOperation() because initially singly_linked nodes
     // were not required to have a prev() function. Now the restriction is
@@ -457,48 +457,58 @@ namespace tloc { namespace core {
     return subOperation(int(), iterator_category());
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::
-      operator==(const this_type& aOther)
+  template <LIST_ITR_TEMP> 
+  template <typename T_Ptr2, typename T_Ref2>
+  TL_FI bool list_iterator<LIST_ITR_PARAMS>::
+    operator==(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other)
   {
-    return m_node == aOther.m_node;
+    return m_node == a_other.m_node;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI bool list_iterator<LIST_ITR_TEMP_PARAM>::
-      operator!=(const this_type& aOther)
+  template <LIST_ITR_TEMP> 
+  template <typename T_Ptr2, typename T_Ref2>
+  TL_FI bool list_iterator<LIST_ITR_PARAMS>::
+    operator!=(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other)
   {
-    return m_node != aOther.m_node;
+    return m_node != a_other.m_node;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(singly_linked_tag)
+  template <LIST_ITR_TEMP>
+  template <typename T_Ptr2, typename T_Ref2>
+  TL_FI void list_iterator<LIST_ITR_PARAMS>::operator=
+    (const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other)
+  {
+    m_node = a_other.m_node;
+  }
+
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>&
+      list_iterator<LIST_ITR_PARAMS>::subOperation(singly_linked_tag)
   {
     m_node = m_node->getPrev();
     return *this;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, singly_linked_tag)
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>
+      list_iterator<LIST_ITR_PARAMS>::subOperation(int, singly_linked_tag)
   {
     this_type tempItr(*this);
     m_node = m_node->getPrev();
     return tempItr;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>&
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(doubly_linked_tag)
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>&
+      list_iterator<LIST_ITR_PARAMS>::subOperation(doubly_linked_tag)
   {
     m_node = m_node->getPrev();
     return *this;
   }
 
-  template <LIST_ITR_TYPES> 
-    TL_FI list_iterator<LIST_ITR_TEMP_PARAM>
-      list_iterator<LIST_ITR_TEMP_PARAM>::subOperation(int, doubly_linked_tag)
+  template <LIST_ITR_TEMP> 
+    TL_FI list_iterator<LIST_ITR_PARAMS>
+      list_iterator<LIST_ITR_PARAMS>::subOperation(int, doubly_linked_tag)
   {
     this_type tempItr(*this);
     m_node = m_node->getPrev();

@@ -31,7 +31,7 @@ namespace tloc { namespace core {
   Pair<T_First, T_Second> MakePair(const Pair<T_First, T_Second>& aOtherPair);
 
   template <typename T_First, typename T_Second>
-  Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_First& aSecond);
+  Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_Second& aSecond);
 
   //////////////////////////////////////////////////////////////////////////
   // Global operators

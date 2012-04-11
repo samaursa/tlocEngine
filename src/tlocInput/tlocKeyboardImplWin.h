@@ -4,6 +4,7 @@
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
 
+#include "tlocInputTypes.h"
 #include "tlocKeyboard.h"
 #include "tlocKeyboardImpl.h"
 
@@ -14,28 +15,28 @@
 
 namespace tloc { namespace input {
 
-  typedef KeyboardParamList<HWND> windows_keyboard_param_type;
+  typedef KeyboardParamList<HWND, IDirectInput8*, parameter_options::Type>
+    windows_keyboard_param_type;
 
 };};
 
 namespace tloc { namespace input { namespace priv {
 
-  template <>
-  class KeyboardImpl<Keyboard<> >
-    : public KeyboardImplBase<Keyboard<>, windows_keyboard_param_type>
+  template <typename T_ParentKeyboard>
+  class KeyboardImpl
+    : public KeyboardImplBase<T_ParentKeyboard, windows_keyboard_param_type>
   {
   public:
     typedef windows_keyboard_param_type            keyboard_param_type;
-    typedef Keyboard<>                             keyboard_type;
-    typedef KeyboardImpl<keyboard_type>            this_type;
+    typedef T_ParentKeyboard                       parent_type;
+    typedef KeyboardImpl<parent_type>              this_type;
     typedef KeyboardImplBase
-      <keyboard_type, keyboard_param_type>         base_type;
+      <parent_type, keyboard_param_type>           base_type;
 
-    typedef keyboard_type::platform_type           platform_type;
-    typedef base_type::parent_keyboard_type        parent_keybody_type;
-    typedef base_type::keycode_type                keycode_type;
+    typedef typename parent_type::platform_type       platform_type;
+    typedef typename base_type::keycode_type          keycode_type;
 
-    KeyboardImpl(parent_keyboard_type* a_parent,
+    KeyboardImpl(parent_type* a_parent,
                  const keyboard_param_type& a_params);
 
     ///-------------------------------------------------------------------------
@@ -51,6 +52,16 @@ namespace tloc { namespace input { namespace priv {
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
+
+  private:
+
+    void DoInitialize();
+
+  private:
+
+    IDirectInput8*        m_directInput;
+    IDirectInputDevice8*  m_keyboard;
+    HWND                  m_windowPtr;
   };
 
 };};};

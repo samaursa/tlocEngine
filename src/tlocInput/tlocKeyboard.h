@@ -5,10 +5,13 @@
 #include "tlocCore/tlocPlatform.h"
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocTemplateDispatchDefaults.h"
+#include "tlocCore/tlocTemplateUtils.h"
 
+#include "tlocInput.h"
 #include "tlocKeyboardImpl.h"
 
 namespace tloc { namespace input {
+
 
   ///-------------------------------------------------------------------------
   /// This class itself is for internal use only.
@@ -49,27 +52,26 @@ namespace tloc { namespace input {
     }
   };
 
-  namespace KeyboardPolicy
-  {
-    struct Buffered{};
-    struct UnBuffered{};
-  };
-
   ///-------------------------------------------------------------------------
-  /// Platform independent list of parameters.
-  ///
-  /// Incorrect parameter types will result in linking errors.
+  /// Platform independent list of parameters. Passing incorrect parameters
+  /// will result in compile errors.
   ///-------------------------------------------------------------------------
-  template <typename T_WindowPtr>
+  template <class T1,
+            class T2 = TLOC_DUMMY_PARAM(),
+            class T3 = TLOC_DUMMY_PARAM(),
+            class T4 = TLOC_DUMMY_PARAM()>
   struct KeyboardParamList
   {
-    T_WindowPtr m_windowPtr;
+    T1 m_param1;
+    T2 m_param2;
+    T3 m_param3;
+    T4 m_param4;
   };
 
   ///-------------------------------------------------------------------------
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
-  template <typename T_Policy = KeyboardPolicy::Buffered(),
+  template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Keyboard :
     public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
@@ -81,7 +83,7 @@ namespace tloc { namespace input {
     typedef KeyboardEvent::key_code_type    keycode_type;
 
     template <typename T_ParamList>
-    Keyboard(const T_ParamList& a_paramList);
+    Keyboard(T_ParamList a_paramList);
     ~Keyboard();
 
     ///-------------------------------------------------------------------------
@@ -101,7 +103,7 @@ namespace tloc { namespace input {
   private:
 
     typedef priv::KeyboardImpl<this_type> impl_type;
-    impl_type*                      m_impl;
+    impl_type*  m_impl;
   };
 
 };};

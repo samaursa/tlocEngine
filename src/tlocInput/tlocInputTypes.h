@@ -30,6 +30,16 @@ namespace tloc { namespace input {
     };
   }
 
+  namespace buffer_size
+  {
+    enum Sizes
+    {
+      keyboard_buffer_size = 17,
+      mouse_buffer_size    = 128,
+      joystick_buffer_Size = 129
+    };
+  }
+
 };};
 
 #endif

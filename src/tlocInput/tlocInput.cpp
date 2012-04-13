@@ -21,19 +21,26 @@ namespace tloc { namespace input {
 #define INPUT_MANAGER_PARAM T_Policy, T_Platform
 #define INPUT_MANAGER_TYPE  typename InputManager<INPUT_MANAGER_PARAM>
 
-  template InputManager<InputPolicy::Buffered, core::PlatformInfo<>::platform_type>;
-  template InputManager<InputPolicy::UnBuffered, core::PlatformInfo<>::platform_type>;
+  template InputManager<InputPolicy::Buffered>;
+  template InputManager<InputPolicy::Immediate>;
 
   // Force instantiate the constructor for each platform
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-  template InputManager<InputPolicy::Buffered, core::PlatformInfo<>::platform_type>::InputManager(input_param_type);
-  template InputManager<InputPolicy::UnBuffered, core::PlatformInfo<>::platform_type>::InputManager(input_param_type);
+  template InputManager<InputPolicy::Buffered>::InputManager(input_param_type);
+  template InputManager<InputPolicy::Immediate>::InputManager(input_param_type);
 #else
 # error TODO
 #endif
 
+  //------------------------------------------------------------------------
   // Force instantiate CreateHID for all supported types
-  template Keyboard<InputPolicy::Buffered, core::PlatformInfo<>::platform_type>* InputManager<>::CreateHID<Keyboard<InputPolicy::Buffered, core::PlatformInfo<>::platform_type> >(input_type, parameter_options::Type);
+
+  // Keyboard
+  template Keyboard<InputPolicy::Buffered>* InputManager<>::CreateHID
+    <Keyboard<InputPolicy::Buffered> >(input_type, parameter_options::Type);
+
+  //------------------------------------------------------------------------
+  // Method Definitions
 
   template <INPUT_MANAGER_TEMP>
   template <typename T_ParamList>
@@ -87,6 +94,13 @@ namespace tloc { namespace input {
     {
       Update(i);
     }
+  }
+
+  template <INPUT_MANAGER_TEMP>
+  INPUT_MANAGER_TYPE::size_type
+    InputManager<INPUT_MANAGER_PARAM>::GetTotalHID(input_type a_inputType)
+  {
+    return m_impl->GetTotalHID(a_inputType);
   }
 
 };};

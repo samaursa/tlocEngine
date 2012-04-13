@@ -12,6 +12,7 @@
 
 namespace tloc { namespace input {
 
+  template <typename T_Policy, typename T_Platform> class Keyboard;
 
   ///-------------------------------------------------------------------------
   /// This class itself is for internal use only.
@@ -22,8 +23,10 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   struct KeyboardCallbacks
   {
-    virtual void OnKeyPress(const KeyboardEvent& a_event) = 0;
-    virtual void OnKeyRelease(const KeyboardEvent& a_event) = 0;
+    virtual void OnKeyPress(const tl_size a_caller,
+                            const KeyboardEvent& a_event) = 0;
+    virtual void OnKeyRelease(const tl_size a_caller,
+                              const KeyboardEvent& a_event) = 0;
   };
 
   ///-------------------------------------------------------------------------
@@ -33,21 +36,23 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct KeyboardCallbackGroupT:
-    public core::CallbackGroupTArray<T, KeyboardCallbacks>::type
+    public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    virtual void OnKeyPress(const KeyboardEvent& a_event)
+    virtual void OnKeyPress(const tl_size a_caller,
+                            const KeyboardEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnKeyPress(a_event);
+        m_observers[i]->OnKeyPress(a_caller, a_event);
       }
     }
 
-    virtual void OnKeyRelease(const KeyboardEvent& a_event)
+    virtual void OnKeyRelease(const tl_size a_caller,
+                              const KeyboardEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnKeyRelease(a_event);
+        m_observers[i]->OnKeyRelease(a_caller, a_event);
       }
     }
   };
@@ -79,11 +84,14 @@ namespace tloc { namespace input {
   {
   public:
     typedef T_Platform                      platform_type;
-    typedef Keyboard<T_Policy, T_Platform>  this_type;
+    typedef T_Policy                        policy_type;
     typedef KeyboardEvent::key_code_type    keycode_type;
+    typedef KeyboardEvent::Modifier         modifier_type;
+
+    typedef Keyboard<policy_type, platform_type>  this_type;
 
     template <typename T_ParamList>
-    Keyboard(T_ParamList a_paramList);
+    Keyboard(const T_ParamList& a_paramList);
     ~Keyboard();
 
     ///-------------------------------------------------------------------------
@@ -95,6 +103,11 @@ namespace tloc { namespace input {
     ///-------------------------------------------------------------------------
     bool IsKeyDown(keycode_type a_key) const;
 
+    bool IsModifierDown(modifier_type a_mod) const;
+
+    void SendOnKeyPress(const KeyboardEvent& a_event);
+    void SendOnKeyRelease(const KeyboardEvent& a_event);
+
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
@@ -105,6 +118,9 @@ namespace tloc { namespace input {
     typedef priv::KeyboardImpl<this_type> impl_type;
     impl_type*  m_impl;
   };
+
+  typedef Keyboard<InputPolicy::Buffered>   KeyboardBuff;
+  typedef Keyboard<InputPolicy::Immediate> KeyboardUnBuff;
 
 };};
 

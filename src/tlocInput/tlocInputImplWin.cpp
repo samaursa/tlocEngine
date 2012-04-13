@@ -15,10 +15,10 @@ namespace tloc { namespace input { namespace priv {
   "Unsupported input type passed!")
 
   template InputManagerImpl<InputManager<InputPolicy::Buffered> >;
-  template InputManagerImpl<InputManager<InputPolicy::UnBuffered> >;
+  template InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
   template Keyboard<InputPolicy::Buffered>* InputManagerImpl<InputManager<InputPolicy::Buffered> >::CreateHID<Keyboard<InputPolicy::Buffered> >(input_type, parameter_options::Type);
-  template Keyboard<InputPolicy::UnBuffered>* InputManagerImpl<InputManager<InputPolicy::UnBuffered> >::CreateHID<Keyboard<InputPolicy::UnBuffered> >(input_type, parameter_options::Type);
+  template Keyboard<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> >::CreateHID<Keyboard<InputPolicy::Immediate> >(input_type, parameter_options::Type);
 
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
@@ -64,7 +64,7 @@ namespace tloc { namespace input { namespace priv {
       return 1;
     }
 
-    EnumerateDevices();
+    DoEnumerateDevices();
     return 0;
   }
 
@@ -143,11 +143,38 @@ namespace tloc { namespace input { namespace priv {
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
-  void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::EnumerateDevices()
+  INPUT_MANAGER_IMPL_TYPE::size_type InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>
+    ::GetTotalHID(input_type a_inputType)
   {
-    m_directInput->EnumDevices(NULL, &this_type::DoEnumerateCallback, this,
-                               DIEDFL_ATTACHEDONLY);
+    ASSERT_INPUT_TYPE(a_inputType);
+
+    switch(a_inputType)
+    {
+    case hid::keyboard:
+      {
+        return m_winHIDs[hid::keyboard].size();
+        break;
+      }
+    case hid::mouse:
+      {
+        return m_winHIDs[hid::mouse].size();
+        break;
+      }
+    case hid::joystick:
+      {
+        return m_winHIDs[hid::joystick].size();
+        break;
+      }
+    default:
+      {
+        // LOG: Unsupported HID request
+        return 0;
+      }
+    }
   }
+
+  //------------------------------------------------------------------------
+  // Platform specific methods
 
   template <INPUT_MANAGER_IMPL_TEMP>
   HWND InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::GetWindowHandle()
@@ -157,6 +184,13 @@ namespace tloc { namespace input { namespace priv {
 
   //------------------------------------------------------------------------
   // Private methods
+
+  template <INPUT_MANAGER_IMPL_TEMP>
+  void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::DoEnumerateDevices()
+  {
+    m_directInput->EnumDevices(NULL, &this_type::DoEnumerateCallback, this,
+                               DIEDFL_ATTACHEDONLY);
+  }
 
   template <INPUT_MANAGER_IMPL_TEMP>
   BOOL InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::

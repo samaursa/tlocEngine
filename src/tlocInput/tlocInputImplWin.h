@@ -76,13 +76,25 @@ namespace tloc { namespace input { namespace priv {
     ///-------------------------------------------------------------------------
     void Update(input_type a_inputType);
 
+    ///-------------------------------------------------------------------------
+    /// Get the number of a given HID type.
+    ///
+    /// @param  a_inputType Type of the input.
+    ///
+    /// @return The total number of input types created.
+    ///-------------------------------------------------------------------------
+    size_type GetTotalHID(input_type a_inputType);
+
+  public:
+    //------------------------------------------------------------------------
+    // Platform specific methods
+
     HWND      GetWindowHandle();
 
   private:
 
     static BOOL CALLBACK DoEnumerateCallback(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
-    void          EnumerateDevices();
-
+    void                 DoEnumerateDevices();
 
     IDirectInput8*                m_directInput;
 

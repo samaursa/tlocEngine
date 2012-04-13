@@ -32,7 +32,7 @@ namespace tloc { namespace input {
   namespace InputPolicy
   {
     struct Buffered{};
-    struct UnBuffered{};
+    struct Immediate{};
   };
 
   ///-------------------------------------------------------------------------
@@ -94,8 +94,8 @@ namespace tloc { namespace input {
     ///
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
-    //template <typename T_InputObject>
-    //T_InputObject* GetHID(input_type a_inputType, size_type a_index);
+    template <typename T_InputObject>
+    T_InputObject* GetHID(input_type a_inputType, size_type a_index);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.
@@ -104,7 +104,7 @@ namespace tloc { namespace input {
     ///
     /// @return The total number of input types created.
     ///-------------------------------------------------------------------------
-    //u32 GetUsedHIDNum(input_type a_inputType);
+    size_type GetTotalHID(input_type a_inputType);
 
   private:
 

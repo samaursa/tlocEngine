@@ -34,6 +34,7 @@ namespace tloc { namespace input { namespace priv {
       <parent_type, keyboard_param_type>           base_type;
 
     typedef typename parent_type::platform_type       platform_type;
+    typedef typename parent_type::policy_type         policy_type;
     typedef typename base_type::keycode_type          keycode_type;
 
     KeyboardImpl(parent_type* a_parent,
@@ -55,13 +56,25 @@ namespace tloc { namespace input { namespace priv {
 
   private:
 
-    void DoInitialize();
+    void        DoInitialize();
+    // Buffered input requires extra initialization
+    bool        DoInitializeExtra(InputPolicy::Buffered);
+    // Immediate mode does not require anything special
+    bool        DoInitializeExtra(InputPolicy::Immediate) { return true; }
+
+    void        DoUpdate(InputPolicy::Buffered);
+    void        DoUpdate(InputPolicy::Immediate);
 
   private:
 
     IDirectInput8*        m_directInput;
     IDirectInputDevice8*  m_keyboard;
     HWND                  m_windowPtr;
+
+    bool                   m_buffer[KeyboardEvent::Count];
+
+    static const size_type s_bufferSize = 256;
+    uchar8                  m_rawBuffer[s_bufferSize];
   };
 
 };};};

@@ -36,4 +36,19 @@ namespace TestingMemory
     CHECK(c >= a);
     CHECK(a <= c);
   }
+
+  TEST_CASE("Core/Utilities/IsSamePointer", "")
+  {
+    s32* n = new s32(5);
+    tl_size ptr = (tl_size)n;
+
+    s32* p = new s32(6);
+    tl_size ptr2 = (tl_size)p;
+
+    CHECK(core::IsSamePointer(n, ptr) == true);
+    CHECK(core::IsSamePointer(n, p) == false);
+    CHECK(core::IsSamePointer(ptr, ptr2) == false);
+    CHECK(core::IsSamePointer(p, ptr2) == true);
+
+  }
 };

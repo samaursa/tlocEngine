@@ -835,6 +835,26 @@
 				RelativePath="..\..\..\..\src\tlocInput\tlocInput.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputTypes.h"
+				>
+			</File>
+			<Filter
+				Name="Win"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocInputImplWin.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocInputImplWin.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="HIDs"
@@ -849,18 +869,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImpl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImpl.h"
 				>
 			</File>
 			<File
@@ -887,14 +895,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.cpp"
 					>
 				</File>
@@ -902,6 +902,34 @@
 					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Keyboard"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImpl.h"
+					>
+				</File>
+				<Filter
+					Name="Win"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File

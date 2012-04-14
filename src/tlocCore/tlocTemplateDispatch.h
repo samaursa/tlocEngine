@@ -79,6 +79,8 @@ namespace tloc { namespace core {
     container_type m_observers;
   };
 
+#define FOR_ALL_OBSERVERS() for (tl_size i = 0; i < m_allObservers.size(); ++i)
+
   /// Base class for the dispatcher (the class responsible for firing the
   /// callbacks). T_CallbacksT is the type of your implemented callback
   /// class.

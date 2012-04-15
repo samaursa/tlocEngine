@@ -59,7 +59,7 @@ namespace tloc { namespace input {
   template <KEYBOARD_TEMP>
   void Keyboard<KEYBOARD_PARAMS>::SendOnKeyPress(const KeyboardEvent& a_event)
   {
-    FOR_ALL_OBSERVERS()
+    for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       m_allObservers[i]->OnKeyPress( (tl_size)this, a_event);
     }
@@ -68,7 +68,7 @@ namespace tloc { namespace input {
   template <KEYBOARD_TEMP>
   void Keyboard<KEYBOARD_PARAMS>::SendOnKeyRelease(const KeyboardEvent& a_event)
   {
-    FOR_ALL_OBSERVERS()
+    for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       m_allObservers[i]->OnKeyRelease( (tl_size)this, a_event);
     }

@@ -184,8 +184,8 @@ namespace tloc { namespace input { namespace priv {
     // Default parameters or...?
     if (m_params.m_param3 == 0)
     {
-      //coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-      coop = DISCL_BACKGROUND | DISCL_EXCLUSIVE;
+      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
+      //coop = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
     }
     else
     {
@@ -252,7 +252,20 @@ namespace tloc { namespace input { namespace priv {
     {
       // Try one more time
       hRes = m_keyboard->Acquire();
-      return;
+      if (hRes != DI_OK)
+      {
+        return;
+      }
+      else
+      {
+        hRes = m_keyboard->
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+        if (hRes != DI_OK)
+        {
+          // we don't have the keyboard, return
+          return;
+        }
+      }
     }
 
     if (FAILED(hRes))

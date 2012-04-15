@@ -95,7 +95,7 @@ namespace tloc { namespace input {
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(input_type a_inputType, size_type a_index);
+    T_InputObject* GetHID(input_type a_inputType, size_type a_index = 0);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.
@@ -111,6 +111,9 @@ namespace tloc { namespace input {
     typedef priv::InputManagerImpl<this_type> impl_type;
     impl_type*  m_impl;
   };
+
+  typedef InputManager<InputPolicy::Buffered>     InputManagerB;
+  typedef InputManager<InputPolicy::Immediate>    InputManagerI;
 
 };};
 

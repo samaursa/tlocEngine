@@ -2,6 +2,7 @@
 
 #include "tlocCore/tlocArray.inl"
 #include "tlocCore/tlocString.inl"
+#include "tlocCore/tlocTypeTraits.h"
 
 #include "tlocKeyboardImplWin.h"
 
@@ -20,6 +21,9 @@ namespace tloc { namespace input { namespace priv {
   template Keyboard<InputPolicy::Buffered>* InputManagerImpl<InputManager<InputPolicy::Buffered> >::CreateHID<Keyboard<InputPolicy::Buffered> >(input_type, parameter_options::Type);
   template Keyboard<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> >::CreateHID<Keyboard<InputPolicy::Immediate> >(input_type, parameter_options::Type);
 
+  template Keyboard<InputPolicy::Buffered>* InputManagerImpl<InputManager<InputPolicy::Buffered> >::GetHID<Keyboard<InputPolicy::Buffered> >(input_type, tl_size);
+  template Keyboard<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> >::GetHID<Keyboard<InputPolicy::Immediate> >(input_type, tl_size);
+
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     InputManagerImpl(parent_type* a_parent,
@@ -37,6 +41,28 @@ namespace tloc { namespace input { namespace priv {
     {
       m_directInput->Release();
       m_directInput = NULL;
+    }
+
+    for (size_type i = 0; i < hid::total_input_types; ++i)
+    {
+      for (size_type hidNum = 0; hidNum < m_winHIDs[i].size(); ++hidNum)
+      {
+        switch(i)
+        {
+          case hid::keyboard:
+            {
+              delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum].m_devicePtr;
+            }
+          case hid::mouse:
+            {
+              //delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum];
+            }
+          case hid::joystick:
+            {
+              //delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum];
+            }
+        }
+      }
     }
   }
 
@@ -86,10 +112,11 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[hid::keyboard].size(); ++i)
         {
-          if (m_winHIDs[hid::keyboard][i].first == false)
+          if (m_winHIDs[hid::keyboard][i].m_available == false)
           {
             T_InputObject* newInput = new Keyboard<policy_type>(params);
-            m_winHIDs[hid::keyboard][i].first = true;
+            m_winHIDs[hid::keyboard][i].m_available = true;
+            m_winHIDs[hid::keyboard][i].m_devicePtr = newInput;
             return newInput;
           }
           else
@@ -126,6 +153,14 @@ namespace tloc { namespace input { namespace priv {
     {
     case hid::keyboard:
       {
+        typedef Keyboard<policy_type> keyboard_type;
+
+        for (size_type i = 0; i < m_winHIDs[hid::keyboard].size(); ++i)
+        {
+          keyboard_type* kb = static_cast<keyboard_type*>
+                                (m_winHIDs[hid::keyboard][i].m_devicePtr);
+          kb->Update();
+        }
         break;
       }
     case hid::mouse:
@@ -140,6 +175,23 @@ namespace tloc { namespace input { namespace priv {
       {
       }
     }
+  }
+
+  template <INPUT_MANAGER_IMPL_TEMP>
+  template <typename T_InputObject>
+  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+    GetHID(input_type a_inputType, size_type a_index)
+  {
+    ASSERT_INPUT_TYPE(a_inputType);
+    TLOC_ASSERT(a_index < m_winHIDs[a_inputType].size(), "Index out of range!");
+
+    // Make sure the user has the correct policy type, if not, tell them
+    TLOC_STATIC_ASSERT
+      ( (Loki::IsSameType<T_InputObject::policy_type, policy_type>::value),
+         Requested_return_type_has_incorrect_policy_type );
+
+    return static_cast<T_InputObject*>
+      (m_winHIDs[a_inputType][a_index].m_devicePtr);
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -202,14 +254,15 @@ namespace tloc { namespace input { namespace priv {
     info.m_productGuid = lpddi->guidProduct;
     info.m_deviceGuid  = lpddi->guidInstance;
     info.m_deviceName  = lpddi->tszInstanceName;
+    info.m_available   = false;
 
     if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)
     {
-      inputMgr->m_winHIDs[hid::keyboard].push_back(core::MakePair(false, info));
+      inputMgr->m_winHIDs[hid::keyboard].push_back(info);
     }
     else if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_MOUSE)
     {
-      inputMgr->m_winHIDs[hid::mouse].push_back(core::MakePair(false, info));
+      inputMgr->m_winHIDs[hid::mouse].push_back(info);
     }
     else if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_JOYSTICK ||
              GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_GAMEPAD ||
@@ -217,7 +270,7 @@ namespace tloc { namespace input { namespace priv {
              GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_DRIVING ||
              GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_FLIGHT)
     {
-      inputMgr->m_winHIDs[hid::joystick].push_back(core::MakePair(false, info));
+      inputMgr->m_winHIDs[hid::joystick].push_back(info);
     }
 
     return DIENUM_CONTINUE;

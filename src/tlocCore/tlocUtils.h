@@ -39,10 +39,10 @@ namespace tloc { namespace core {
     typedef type_true   valid_type;
     typedef type_false  invalid_type;
 
-    typedef Loki::Select< (Loki::TypeTraits<T>::isIntegral ||
+    typedef Loki::Select< (Loki::TypeTraits<T>::isUnsignedInt||
       Loki::TypeTraits<T>::isPointer), valid_type, invalid_type>::Result  T_type;
 
-    typedef Loki::Select< (Loki::TypeTraits<U>::isIntegral ||
+    typedef Loki::Select< (Loki::TypeTraits<U>::isUnsignedInt||
       Loki::TypeTraits<U>::isPointer ), valid_type, invalid_type>::Result  U_type;
 
     TLOC_STATIC_ASSERT( (Loki::IsSameType<T_type, valid_type>::value),

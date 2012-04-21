@@ -54,6 +54,53 @@ namespace tloc { namespace core {
     return (tl_size)a_ptr1 == (tl_size)a_ptr2;
   }
 
+  //------------------------------------------------------------------------
+  // Enum Counter
+
+  ///-------------------------------------------------------------------------
+  /// Enum counter.
+  ///
+  /// This class is useful to count enums that are bit shifted, where a 'count'
+  /// doesn't give us the correct answer (for full usage, see tests)
+  ///-------------------------------------------------------------------------
+  template <int T_CountInBits, bool T_CountZero = false>
+  struct EnumCounter
+  {
+    enum { result = 1 + EnumCounter<T_CountInBits / 2, T_CountZero>::result };
+  };
+
+  template <>
+  struct EnumCounter<1, false>
+  {
+    enum { result = 1 };
+  };
+
+  template <>
+  struct EnumCounter<1, true>
+  {
+    enum { result = 2 };
+  };
+
+  //------------------------------------------------------------------------
+  // Enum to Index converter
+
+  template <int T_Enum, bool T_IncludeZero = false>
+  struct EnumToIndex
+  {
+    enum { result = 0 + EnumCounter<T_Enum / 2, T_IncludeZero>::result };
+  };
+
+  template <>
+  struct EnumToIndex<1, false>
+  {
+    enum { result = 0 };
+  };
+
+  template <>
+  struct EnumToIndex<1, true>
+  {
+    enum { result = 1 };
+  };
 
 };};
 

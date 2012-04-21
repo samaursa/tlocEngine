@@ -871,18 +871,6 @@
 				RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImpl.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocMouse.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocMouse.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocMouseImpl.h"
-				>
-			</File>
 			<Filter
 				Name="Win"
 				>
@@ -892,14 +880,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImplWin.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.h"
 					>
 				</File>
 			</Filter>
@@ -927,6 +907,34 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Mouse"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocMouse.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocMouse.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImpl.h"
+					>
+				</File>
+				<Filter
+					Name="Win"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.h"
 						>
 					</File>
 				</Filter>

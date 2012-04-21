@@ -29,11 +29,6 @@ namespace tloc { namespace input {
     T4  m_param4;
   };
 
-  namespace InputPolicy
-  {
-    struct Buffered{};
-    struct Immediate{};
-  };
 
   ///-------------------------------------------------------------------------
   /// Manager for all inputs. You can create as many of them as you want. A

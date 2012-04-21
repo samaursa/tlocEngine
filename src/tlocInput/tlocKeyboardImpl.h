@@ -52,7 +52,7 @@ namespace tloc { namespace input {
       Alt   = 1 << 2,
     };
 
-    KeyboardEvent(KeyCode a_code) : m_keyCode(a_code) {}
+    KeyboardEvent(KeyCode a_code = none) : m_keyCode(a_code) {}
 
     KeyCode   m_keyCode;
   };

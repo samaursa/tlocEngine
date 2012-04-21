@@ -10,7 +10,8 @@
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include "tlocInputImplWin.h"
-# include "tlocKeyboard.h"
+//# include "tlocKeyboardImplWin.h"
+//# include "tlocMouseImplWin.h"
 #else
 # error "WIP"
 #endif
@@ -35,14 +36,17 @@ namespace tloc { namespace input {
   //------------------------------------------------------------------------
   // Force instantiate CreateHID for all supported types
 
-#define INSTANTIATE_FOR_KEYBOARD(_type_)\
-  template Keyboard<_type_::policy_type>* _type_::CreateHID\
-    <Keyboard<_type_::policy_type> >(input_type, parameter_options::Type);\
-  template Keyboard<_type_::policy_type>* _type_::GetHID\
-    <Keyboard<_type_::policy_type> >(input_type, _type_::size_type );\
+#define INSTANTIATE_FOR_HID(_HID_, _type_)\
+  template _HID_<_type_::policy_type>* _type_::CreateHID\
+    <_HID_<_type_::policy_type> >(input_type, parameter_options::Type);\
+  template _HID_<_type_::policy_type>* _type_::GetHID\
+    <_HID_<_type_::policy_type> >(input_type, _type_::size_type );\
 
-  INSTANTIATE_FOR_KEYBOARD(InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_KEYBOARD(InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+
+  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Immediate>);
 
   //------------------------------------------------------------------------
   // Method Definitions
@@ -78,7 +82,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   void InputManager<INPUT_MANAGER_PARAM>::Update()
   {
-    for (u32 i = 0; i < hid::total_input_types; ++i)
+    for (u32 i = 0; i < hid::count; ++i)
     {
       Update(i);
     }

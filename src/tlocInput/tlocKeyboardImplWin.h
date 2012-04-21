@@ -3,6 +3,7 @@
 
 #include "tlocCore/tlocBase.h"
 #include "tlocCore/tlocTypes.h"
+#include "tlocCore/tlocTemplateParams.h"
 
 #include "tlocInputTypes.h"
 #include "tlocKeyboard.h"
@@ -15,7 +16,7 @@
 
 namespace tloc { namespace input {
 
-  typedef KeyboardParamList<HWND, IDirectInput8*, parameter_options::Type>
+  typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
     windows_keyboard_param_type;
 
 };};
@@ -39,6 +40,7 @@ namespace tloc { namespace input { namespace priv {
 
     KeyboardImpl(parent_type* a_parent,
                  const keyboard_param_type& a_params);
+    ~KeyboardImpl();
 
     ///-------------------------------------------------------------------------
     /// Query if 'a_key' is key down.

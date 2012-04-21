@@ -133,4 +133,26 @@ namespace TestingMemory
     CHECK(p10.m_param9 == 9);
     CHECK(p10.m_param10 == 10);
   }
+
+  TEST_CASE("Core/Utilities/EnumCounter", "")
+  {
+    enum
+    {
+      one   = 1 << 0,
+      two   = 1 << 1,
+      three = 1 << 2,
+      four  = 1 << 3,
+      five  = 1 << 4,
+      count = core::EnumCounter<five>::result,
+    };
+
+    CHECK( (core::EnumCounter<count>::result) == 5);
+    CHECK( (core::EnumCounter<count, true>::result) == 6);
+
+    CHECK( (core::EnumToIndex<five>::result) == 4);
+    CHECK( (core::EnumToIndex<one>::result) == 0);
+
+    CHECK( (core::EnumToIndex<five, true>::result) == 5);
+    CHECK( (core::EnumToIndex<one>::result) == 1);
+  }
 };

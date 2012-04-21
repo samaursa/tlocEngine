@@ -5,6 +5,7 @@
 #include "tlocCore/tlocTypeTraits.h"
 
 #include "tlocKeyboardImplWin.h"
+#include "tlocMouseImplWin.h"
 
 namespace tloc { namespace input { namespace priv {
 
@@ -12,17 +13,24 @@ namespace tloc { namespace input { namespace priv {
 #define INPUT_MANAGER_IMPL_PARAM  T_ParentInputManager
 #define INPUT_MANAGER_IMPL_TYPE   typename InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>
 
-#define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < hid::total_input_types,\
+#define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < hid::count,\
   "Unsupported input type passed!")
 
   template InputManagerImpl<InputManager<InputPolicy::Buffered> >;
   template InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
-  template Keyboard<InputPolicy::Buffered>* InputManagerImpl<InputManager<InputPolicy::Buffered> >::CreateHID<Keyboard<InputPolicy::Buffered> >(input_type, parameter_options::Type);
-  template Keyboard<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> >::CreateHID<Keyboard<InputPolicy::Immediate> >(input_type, parameter_options::Type);
+#define INSTANTIATE_HID(_HID_) \
+  template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::CreateHID<_HID_<InputPolicy::Buffered> >(input_type, parameter_options::Type);\
+  template _HID_<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> > ::CreateHID<_HID_<InputPolicy::Immediate> >(input_type, parameter_options::Type);\
+  \
+  template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::GetHID<_HID_<InputPolicy::Buffered> >(input_type, tl_size);\
+  template _HID_<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> > ::GetHID<_HID_<InputPolicy::Immediate> >(input_type, tl_size)
 
-  template Keyboard<InputPolicy::Buffered>* InputManagerImpl<InputManager<InputPolicy::Buffered> >::GetHID<Keyboard<InputPolicy::Buffered> >(input_type, tl_size);
-  template Keyboard<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> >::GetHID<Keyboard<InputPolicy::Immediate> >(input_type, tl_size);
+  INSTANTIATE_HID(Keyboard);
+  INSTANTIATE_HID(Mouse);
+
+  //------------------------------------------------------------------------
+  // InputManagerImpl
 
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
@@ -31,7 +39,7 @@ namespace tloc { namespace input { namespace priv {
                      : InputManagerImplBase(a_parent, a_params)
                      , m_directInput(NULL)
   {
-    m_winHIDs.resize(hid::total_input_types);
+    m_winHIDs.resize(hid::count);
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -43,7 +51,7 @@ namespace tloc { namespace input { namespace priv {
       m_directInput = NULL;
     }
 
-    for (size_type i = 0; i < hid::total_input_types; ++i)
+    for (size_type i = 0; i < hid::count; ++i)
     {
       for (size_type hidNum = 0; hidNum < m_winHIDs[i].size(); ++hidNum)
       {
@@ -101,6 +109,8 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(a_inputType);
 
+    T_InputObject* newInput = NULL;
+
     switch(a_inputType)
     {
     case hid::keyboard:
@@ -114,10 +124,9 @@ namespace tloc { namespace input { namespace priv {
         {
           if (m_winHIDs[hid::keyboard][i].m_available == false)
           {
-            T_InputObject* newInput = new Keyboard<policy_type>(params);
+            newInput = new T_InputObject(params);
             m_winHIDs[hid::keyboard][i].m_available = true;
             m_winHIDs[hid::keyboard][i].m_devicePtr = newInput;
-            return newInput;
           }
           else
           {
@@ -129,6 +138,25 @@ namespace tloc { namespace input { namespace priv {
       }
     case hid::mouse:
       {
+        windows_keyboard_param_type params;
+        params.m_param1 = m_params.m_param1;
+        params.m_param2 = m_directInput;
+        params.m_param3 = a_params;
+
+        for (size_type i = 0; i < m_winHIDs[hid::mouse].size(); ++i)
+        {
+          if (m_winHIDs[hid::mouse][i].m_available == false)
+          {
+            newInput = new T_InputObject(params);
+            m_winHIDs[hid::mouse][i].m_available = true;
+            m_winHIDs[hid::mouse][i].m_devicePtr = newInput;
+          }
+          else
+          {
+            // LOG: Could not create a keyboard (either one is already created
+            //      or we do not have any keyboards attached)
+          }
+        }
         break;
       }
     case hid::joystick:
@@ -141,7 +169,7 @@ namespace tloc { namespace input { namespace priv {
       }
     }
 
-    return NULL;
+    return newInput;
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>

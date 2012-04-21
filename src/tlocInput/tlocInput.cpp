@@ -35,9 +35,14 @@ namespace tloc { namespace input {
   //------------------------------------------------------------------------
   // Force instantiate CreateHID for all supported types
 
-  // Keyboard
-  template Keyboard<InputPolicy::Buffered>* InputManager<>::CreateHID
-    <Keyboard<InputPolicy::Buffered> >(input_type, parameter_options::Type);
+#define INSTANTIATE_FOR_KEYBOARD(_type_)\
+  template Keyboard<_type_::policy_type>* _type_::CreateHID\
+    <Keyboard<_type_::policy_type> >(input_type, parameter_options::Type);\
+  template Keyboard<_type_::policy_type>* _type_::GetHID\
+    <Keyboard<_type_::policy_type> >(input_type, _type_::size_type );\
+
+  INSTANTIATE_FOR_KEYBOARD(InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_KEYBOARD(InputManager<InputPolicy::Immediate>);
 
   //------------------------------------------------------------------------
   // Method Definitions
@@ -54,23 +59,6 @@ namespace tloc { namespace input {
   InputManager<INPUT_MANAGER_PARAM>::~InputManager()
   {
     delete m_impl;
-    //for (u32 i = 0; i < total_input_types; ++i)
-    //{
-    //  for (u32 hidNum = 0; hidNum < m_HIDs[i].second.size(); ++hidNum)
-    //  {
-    //    switch(m_HIDs[i].first)
-    //    {
-    //    case keyboard:
-    //      {
-    //        delete (Keyboard<policy_type>*)(m_HIDs[i].second[hidNum]);
-    //      }
-    //    default:
-    //      {
-    //        TLOC_ASSERT_WIP();
-    //      }
-    //    }
-    //  }
-    //}
   }
 
   template <INPUT_MANAGER_TEMP>
@@ -94,6 +82,14 @@ namespace tloc { namespace input {
     {
       Update(i);
     }
+  }
+
+  template <INPUT_MANAGER_TEMP>
+  template <typename T_InputObject>
+  T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
+    GetHID(input_type a_inputType, size_type a_index)
+  {
+    return m_impl->GetHID<T_InputObject>(a_inputType, a_index);
   }
 
   template <INPUT_MANAGER_TEMP>

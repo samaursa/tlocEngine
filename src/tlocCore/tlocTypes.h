@@ -70,6 +70,22 @@ namespace tloc
   typedef uintptr_t         tl_uintptr; // Guaranteed to hold a native pointer
   typedef ptrdiff_t         tl_ptrdiff;
 
+  //------------------------------------------------------------------------
+  // The following types are useful when you want the best type size depending
+  // on the platform itself
+
+#if defined(WIN32) || defined(_WIN32)
+  typedef s32               tl_int;
+  typedef u32               tl_uint;
+  typedef f32               tl_float;
+#elif defined(_WIN64)
+  typedef s64               tl_int;
+  typedef u64               tl_uint;
+  typedef f64               tl_float;
+#else
+# error WIP
+#endif
+
   //////////////////////////////////////////////////////////////////////////
   // Numerical limits
 
@@ -125,7 +141,8 @@ namespace tloc
   template <typename T>
   struct ConditionalType<T, false>
   {
-    typedef ConditionalType<T, false> this_type;
+    typedef T                                   value_type;
+    typedef ConditionalType<value_type, false>  this_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);
@@ -186,7 +203,8 @@ namespace tloc
   template <typename T>
   struct ConditionalType<T, true>
   {
-    typedef ConditionalType<T, true> this_type;
+    typedef T                                   value_type;
+    typedef ConditionalType<value_type, true>   this_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);
@@ -294,6 +312,14 @@ namespace tloc
     return aOther.operator+(aOtherValue);
   }
 
+  template <typename T, typename T2, bool T_DeclareValue>
+  ConditionalType<T2, T_DeclareValue>
+    operator+=( const T& a_otherValue,
+                const ConditionalType<T2, T_DeclareValue>& a_other)
+  {
+    return a_other.operator+(a_otherValue);
+  }
+
   template <typename T, typename T2>
   T operator-( const T& aOtherValue,
                const ConditionalType<T2, false>& aOther)
@@ -302,7 +328,6 @@ namespace tloc
     return aOtherValue;
   }
 
-
   template <typename T, typename T2>
   T operator-( const T& aOtherValue,
                const ConditionalType<T2, true>& aOther)
@@ -310,9 +335,34 @@ namespace tloc
     return aOtherValue - aOther.Get();
   }
 
+  template <typename T, typename T2>
+  ConditionalType<T2, false>
+    operator-=( const T& aOtherValue,
+                const ConditionalType<T2, false>& aOther)
+  {
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+  template <typename T, typename T2>
+  ConditionalType<T2, true>
+    operator-=( const T& aOtherValue,
+                const ConditionalType<T2, true>& aOther)
+  {
+    return aOtherValue - aOther.Get();
+  }
+
   template <typename T, typename T2, bool T_DeclareValue>
   T operator*( const T& aOtherValue,
                const ConditionalType<T2, T_DeclareValue>& aOther)
+  {
+    return aOther.operator*(aOtherValue);
+  }
+
+  template <typename T, typename T2, bool T_DeclareValue>
+  ConditionalType<T2, T_DeclareValue>
+    operator*=( const T& aOtherValue,
+                const ConditionalType<T2, T_DeclareValue>& aOther)
   {
     return aOther.operator*(aOtherValue);
   }
@@ -328,6 +378,23 @@ namespace tloc
   template <typename T, typename T2>
   T operator/( const T& aOtherValue,
                const ConditionalType<T2, true>& aOther)
+  {
+    return aOtherValue / aOther.Get();
+  }
+
+  template <typename T, typename T2>
+  ConditionalType<T2, false>
+    operator/=( const T& aOtherValue,
+                const ConditionalType<T2, false>& aOther)
+  {
+    TLOC_UNUSED(aOther);
+    return aOtherValue;
+  }
+
+  template <typename T, typename T2>
+  ConditionalType<T2, true>
+    operator/=( const T& aOtherValue,
+                const ConditionalType<T2, true>& aOther)
   {
     return aOtherValue / aOther.Get();
   }

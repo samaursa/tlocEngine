@@ -124,13 +124,24 @@ namespace TESTING_TYPES
     CHECK(a3 == 30);
     a3.m_var += (s32)a3.Get();
     CHECK(a3.m_var == 50);
+
+    a += a;
+    CHECK(a == 10);
+    a -= a;
+    CHECK(a == 0);
+    a = 5;
+    a /= a;
+    CHECK(a == 1);
+    a = 2;
+    a *= a;
+    CHECK(a == 4);
   }
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")
   {
-    // Note that direct comparison with the invalid_value should not be used in 
-    // code because g_conditional_type_invalid_value does not really exist for 
-    // ConditionalType<T, true>. The variable is used to make sure the type 
+    // Note that direct comparison with the invalid_value should not be used in
+    // code because g_conditional_type_invalid_value does not really exist for
+    // ConditionalType<T, true>. The variable is used to make sure the type
     // works when <false> and for testing purposes.
 
     // Type should return invalid
@@ -212,5 +223,16 @@ namespace TESTING_TYPES
     CHECK(num == 5);
     num = num / a;
     //CHECK(num == 5);
+
+    a += a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a -= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 5;
+    a /= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 2;
+    a *= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
   }
 };

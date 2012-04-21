@@ -2,6 +2,7 @@
 
 #include "tlocCore/tlocUtils.h"
 #include "tlocCore/tlocTypes.h"
+#include "tlocCore/tlocTemplateParams.h"
 
 namespace TestingMemory
 {
@@ -50,5 +51,86 @@ namespace TestingMemory
     CHECK(core::IsSamePointer(ptr, ptr2) == false);
     CHECK(core::IsSamePointer(p, ptr2) == true);
 
+  }
+
+  TEST_CASE("Core/Utilities/TemplateParams", "")
+  {
+    ParamList<u32> p1 = {1};
+    CHECK(p1.m_param1 == 1);
+
+    ParamList<u32, u32> p2 = {1, 2};
+    CHECK(p2.m_param1 == 1);
+    CHECK(p2.m_param2 == 2);
+
+    ParamList<u32, u32, u32> p3 = {1, 2, 3};
+    CHECK(p3.m_param1 == 1);
+    CHECK(p3.m_param2 == 2);
+    CHECK(p3.m_param3 == 3);
+
+    ParamList<u32, u32, u32, u32> p4 = {1, 2, 3, 4};
+    CHECK(p4.m_param1 == 1);
+    CHECK(p4.m_param2 == 2);
+    CHECK(p4.m_param3 == 3);
+    CHECK(p4.m_param4 == 4);
+
+    ParamList<u32, u32, u32, u32, u32> p5 = {1, 2, 3, 4, 5};
+    CHECK(p5.m_param1 == 1);
+    CHECK(p5.m_param2 == 2);
+    CHECK(p5.m_param3 == 3);
+    CHECK(p5.m_param4 == 4);
+    CHECK(p5.m_param5 == 5);
+
+    ParamList<u32, u32, u32, u32, u32, u32> p6 = {1, 2, 3, 4, 5, 6};
+    CHECK(p6.m_param1 == 1);
+    CHECK(p6.m_param2 == 2);
+    CHECK(p6.m_param3 == 3);
+    CHECK(p6.m_param4 == 4);
+    CHECK(p6.m_param5 == 5);
+    CHECK(p6.m_param6 == 6);
+
+    ParamList<u32, u32, u32, u32, u32, u32, u32> p7 = {1, 2, 3, 4, 5, 6, 7};
+    CHECK(p7.m_param1 == 1);
+    CHECK(p7.m_param2 == 2);
+    CHECK(p7.m_param3 == 3);
+    CHECK(p7.m_param4 == 4);
+    CHECK(p7.m_param5 == 5);
+    CHECK(p7.m_param6 == 6);
+    CHECK(p7.m_param7 == 7);
+
+    ParamList<u32, u32, u32, u32, u32, u32, u32, u32> p8 =
+    {1, 2, 3, 4, 5, 6, 7, 8};
+    CHECK(p8.m_param1 == 1);
+    CHECK(p8.m_param2 == 2);
+    CHECK(p8.m_param3 == 3);
+    CHECK(p8.m_param4 == 4);
+    CHECK(p8.m_param5 == 5);
+    CHECK(p8.m_param6 == 6);
+    CHECK(p8.m_param7 == 7);
+    CHECK(p8.m_param8 == 8);
+
+    ParamList<u32, u32, u32, u32, u32, u32, u32, u32, u32> p9 =
+    {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    CHECK(p9.m_param1 == 1);
+    CHECK(p9.m_param2 == 2);
+    CHECK(p9.m_param3 == 3);
+    CHECK(p9.m_param4 == 4);
+    CHECK(p9.m_param5 == 5);
+    CHECK(p9.m_param6 == 6);
+    CHECK(p9.m_param7 == 7);
+    CHECK(p9.m_param8 == 8);
+    CHECK(p9.m_param9 == 9);
+
+    ParamList<u32, u32, u32, u32, u32, u32, u32, u32, u32, u32> p10 =
+    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    CHECK(p10.m_param1 == 1);
+    CHECK(p10.m_param2 == 2);
+    CHECK(p10.m_param3 == 3);
+    CHECK(p10.m_param4 == 4);
+    CHECK(p10.m_param5 == 5);
+    CHECK(p10.m_param6 == 6);
+    CHECK(p10.m_param7 == 7);
+    CHECK(p10.m_param8 == 8);
+    CHECK(p10.m_param9 == 9);
+    CHECK(p10.m_param10 == 10);
   }
 };

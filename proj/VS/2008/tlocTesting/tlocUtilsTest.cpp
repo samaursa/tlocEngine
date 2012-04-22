@@ -146,13 +146,12 @@ namespace TestingMemory
       count = core::EnumCounter<five>::result,
     };
 
-    CHECK( (core::EnumCounter<count>::result) == 5);
-    CHECK( (core::EnumCounter<count, true>::result) == 6);
+    CHECK( count == 5);
 
     CHECK( (core::EnumToIndex<five>::result) == 4);
     CHECK( (core::EnumToIndex<one>::result) == 0);
 
     CHECK( (core::EnumToIndex<five, true>::result) == 5);
-    CHECK( (core::EnumToIndex<one>::result) == 1);
+    CHECK( (core::EnumToIndex<one>::result) == 0);
   }
 };

@@ -1,15 +1,19 @@
 #include "tlocTestCommon.h"
 
 #include "tlocCore/tlocUtils.h"
+#include "tlocCore/tlocTime.h"
 
 #define private public
 #define protected public
 #include "tlocInput/tlocInput.h"
 #include "tlocInput/tlocInputTypes.h"
 #include "tlocInput/tlocKeyboard.h"
+#include "tlocInput/tlocMouse.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#define DIRECTINPUT_VERSION 0x0800 // removes the default warning
+#include <dinput.h>
 
 namespace TestingInput
 {
@@ -17,75 +21,369 @@ namespace TestingInput
   using namespace input;
 
   template <typename T_Keyboard>
-  struct sampleInputObject
+  struct sampleInputKeyboard
   {
-    sampleInputObject(T_Keyboard* a_caller)
-      : m_caller(a_caller), m_keypresses(0), m_keyreleases(0) {}
+    sampleInputKeyboard(T_Keyboard* a_caller)
+      : m_event(KeyboardEvent::none),
+        m_caller(a_caller),
+        m_keypresses(0),
+        m_keyreleases(0) {}
 
-    void OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
+    bool OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      TLOC_UNUSED(a_event);
       CHECK(IsSamePointer(m_caller, a_caller) == true);
+      m_event = a_event;
       m_keypresses++;
+
+      return true; // Veto all later keypresses - does nothing here, just an e.g.
     }
 
-    void OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
+    bool OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      TLOC_UNUSED(a_event);
       CHECK(IsSamePointer(m_caller, a_caller) == true);
+      m_event = a_event;
       m_keyreleases++;
+
+      return true; // Veto all later keypresses - does nothing here, just an e.g.
     }
 
-    T_Keyboard* m_caller;
-    u32 m_keypresses;
-    u32 m_keyreleases;
-  };
+    KeyboardEvent m_event;
+    T_Keyboard*   m_caller;
+    u32           m_keypresses;
+    u32           m_keyreleases;
+  }; TLOC_DEF_TYPE(sampleInputKeyboard<Keyboard<> >);
 
-  TLOC_DEF_TYPE(sampleInputObject<Keyboard<> >);
-
-  void GenerateKey ( int vk , BOOL bExtended)
+  template <typename T_Mouse>
+  struct sampleInputMouse
   {
-    KEYBDINPUT  kb={0};
-    INPUT    Input={0};
-    // generate down
-    if ( bExtended )
-      kb.dwFlags  = KEYEVENTF_EXTENDEDKEY;
-    kb.wVk  = (WORD)vk;
-    Input.type  = INPUT_KEYBOARD;
+    sampleInputMouse(T_Mouse* a_caller)
+      : m_event(MouseEvent::none)
+      , m_caller(a_caller)
+      , m_buttonPresses(0)
+      , m_buttonReleases(0) {}
 
-    Input.ki  = kb;
-    ::SendInput(1,&Input,sizeof(Input));
+    bool OnButtonPress(const tl_size a_caller, const MouseEvent& a_event)
+    {
+      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      m_event = a_event;
+      m_buttonPresses++;
 
-    // generate up
-    ::ZeroMemory(&kb,sizeof(KEYBDINPUT));
-    ::ZeroMemory(&Input,sizeof(INPUT));
-    kb.dwFlags  =  KEYEVENTF_KEYUP;
-    if ( bExtended )
-      kb.dwFlags  |= KEYEVENTF_EXTENDEDKEY;
+      return false;
+    }
 
-    kb.wVk    =  (WORD)vk;
-    Input.type  =  INPUT_KEYBOARD;
-    Input.ki  =  kb;
-    ::SendInput(1,&Input,sizeof(Input));
+    bool OnButtonRelease(const tl_size a_caller, const MouseEvent& a_event)
+    {
+      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      m_event = a_event;
+      m_buttonReleases++;
+
+      return false;
+    }
+
+    bool OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
+    {
+      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      m_event = a_event;
+      return false;
+    }
+
+    MouseEvent  m_event;
+    T_Mouse*    m_caller;
+    u32         m_buttonPresses;
+    u32         m_buttonReleases;
+  }; TLOC_DEF_TYPE(sampleInputMouse<Mouse<> >);
+
+
+  LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+  {
+    return DefWindowProc(hWnd, message, wParam, lParam);
   }
+
+  HWND CreateWin32Window()
+  {
+    WNDCLASSW wcex;
+
+    wcex.style          = 0;
+    wcex.lpfnWndProc    = WndProc;
+    wcex.cbClsExtra     = 0;
+    wcex.cbWndExtra     = 0;
+    wcex.hInstance      = GetModuleHandle(NULL);
+    wcex.hIcon          = NULL;
+    wcex.hCursor        = 0;
+    wcex.hbrBackground  = 0;
+    wcex.lpszMenuName   = NULL;
+    wcex.lpszClassName  = L"tloc_testing_input";
+
+    if (!RegisterClassW(&wcex)) { return NULL; }
+
+    HWND wnd = CreateWindowW(wcex.lpszClassName, L"Testing Input",
+      WS_POPUP | WS_DISABLED, 0, 0, 10, 10, NULL, NULL, GetModuleHandle(NULL),
+      NULL);
+
+    if (!wnd) { return NULL; }
+
+    ShowWindow(wnd, SW_SHOW);
+    UpdateWindow(wnd);
+    return wnd;
+  }
+
+  void UpdateWin32Window(HWND a_wnd)
+  {
+    MSG msg;
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    TLOC_UNUSED(a_wnd);
+    //SetForegroundWindow(a_wnd);
+  }
+
+  //------------------------------------------------------------------------
+  // Keyboard specific
+
+  static void SendButtonPress(WORD input_code_set)
+  {
+    INPUT inp[1];
+    memset(inp, 0, sizeof(INPUT));
+    inp[0].type = INPUT_KEYBOARD;
+    inp[0].ki.wScan = input_code_set;
+    SendInput(1, inp, sizeof(INPUT));
+  }
+
+  static void SendButtonRelease(WORD input_code_set)
+  {
+    INPUT inp[1];
+    memset(inp, 0, sizeof(INPUT));
+    inp[0].type = INPUT_KEYBOARD;
+    inp[0].ki.dwFlags |= KEYEVENTF_KEYUP;
+    inp[0].ki.wScan = input_code_set;
+    SendInput(1, inp, sizeof(INPUT));
+  }
+
+  void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
+  {
+    TLOC_UNUSED_3(a_im, a_wnd, a_key);
+
+    core::Timer<> countDown;
+    Keyboard<>* kb = a_im->GetHID<Keyboard<> >(hid::keyboard);
+
+    sampleInputKeyboard<Keyboard<> > callback(kb);
+    kb->Register(&callback);
+
+    while ( countDown.ElapsedMilliSeconds() < 1000 &&
+            (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonPress(a_key);
+      SendButtonRelease(a_key);
+      a_im->Update();
+    }
+
+    kb->UnRegister(&callback);
+
+    CHECK(callback.m_keypresses > 0);
+    CHECK(callback.m_keyreleases > 0);
+    if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
+    {
+      WARN(a_key);
+    }
+  }
+
+  //------------------------------------------------------------------------
+  // Mouse specific
+
+  static void SendMousePress(WORD input_code_set)
+  {
+    INPUT inp[1];
+    memset(inp, 0, sizeof(INPUT));
+    inp[0].type = INPUT_MOUSE;
+    inp[0].ki.wScan = input_code_set;
+    SendInput(1, inp, sizeof(INPUT));
+  }
+
+  static void SendMouseRelease(WORD input_code_set)
+  {
+    INPUT inp[1];
+    memset(inp, 0, sizeof(INPUT));
+    inp[0].type = INPUT_MOUSE;
+    inp[0].ki.dwFlags |= MOUSEEVENTF_XUP;
+    inp[0].ki.wScan = input_code_set;
+    SendInput(1, inp, sizeof(INPUT));
+  }
+
+  void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_button)
+  {
+    TLOC_UNUSED_3(a_im, a_wnd, a_button);
+
+    core::Timer<> countDown;
+    Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
+
+    sampleInputMouse<Mouse<> > callback(mouse);
+    mouse->Register(&callback);
+
+    while ( countDown.ElapsedMilliSeconds() < 1000 &&
+            (callback.m_buttonPresses < 1 || callback.m_buttonReleases < 1) )
+    {
+      UpdateWin32Window(a_wnd);
+      SendMousePress(a_button);
+      SendMouseRelease(a_button);
+      a_im->Update();
+    }
+
+    mouse->UnRegister(&callback);
+
+    CHECK(callback.m_buttonPresses > 0);
+    CHECK(callback.m_buttonReleases > 0);
+    if (callback.m_buttonPresses == 0 || callback.m_buttonReleases == 0)
+    {
+      WARN(a_button);
+    }
+  }
+
+  //------------------------------------------------------------------------
+  // Tests
 
   TEST_CASE("Input/InputManager/General", "")
   {
+    core::Timer<> countDown;
+
+    HWND wnd = CreateWin32Window();
+
     InputParameterList<HWND> params;
-    params.m_param1 = GetConsoleWindow();
+    params.m_param1 = wnd;
     InputManager<> inputMgr(params);
 
-    Keyboard<>* testKeyboard = inputMgr.CreateHID<Keyboard<> >(hid::keyboard);
-    TLOC_UNUSED(testKeyboard);
+    Keyboard<>* kb = inputMgr.CreateHID<Keyboard<> >(hid::keyboard);
+    CHECK(kb != NULL);
 
-    sampleInputObject<Keyboard<> > callback(testKeyboard);
-    testKeyboard->Register(&callback);
+    if (kb)
+    {
+      TestKeyboardButton(&inputMgr, wnd, DIK_ESCAPE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_1);
+      TestKeyboardButton(&inputMgr, wnd, DIK_2);
+      TestKeyboardButton(&inputMgr, wnd, DIK_3);
+      TestKeyboardButton(&inputMgr, wnd, DIK_4);
+      TestKeyboardButton(&inputMgr, wnd, DIK_5);
+      TestKeyboardButton(&inputMgr, wnd, DIK_6);
+      TestKeyboardButton(&inputMgr, wnd, DIK_7);
+      TestKeyboardButton(&inputMgr, wnd, DIK_8);
+      TestKeyboardButton(&inputMgr, wnd, DIK_9);
+      TestKeyboardButton(&inputMgr, wnd, DIK_0);
+      TestKeyboardButton(&inputMgr, wnd, DIK_MINUS);
+      TestKeyboardButton(&inputMgr, wnd, DIK_EQUALS);
+      TestKeyboardButton(&inputMgr, wnd, DIK_BACK);
+      TestKeyboardButton(&inputMgr, wnd, DIK_TAB);
+      TestKeyboardButton(&inputMgr, wnd, DIK_Q);
+      TestKeyboardButton(&inputMgr, wnd, DIK_W);
+      TestKeyboardButton(&inputMgr, wnd, DIK_E);
+      TestKeyboardButton(&inputMgr, wnd, DIK_R);
+      TestKeyboardButton(&inputMgr, wnd, DIK_T);
+      TestKeyboardButton(&inputMgr, wnd, DIK_Y);
+      TestKeyboardButton(&inputMgr, wnd, DIK_U);
+      TestKeyboardButton(&inputMgr, wnd, DIK_I);
+      TestKeyboardButton(&inputMgr, wnd, DIK_O);
+      TestKeyboardButton(&inputMgr, wnd, DIK_P);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LBRACKET);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RBRACKET);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RETURN);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LCONTROL);
+      TestKeyboardButton(&inputMgr, wnd, DIK_A);
+      TestKeyboardButton(&inputMgr, wnd, DIK_S);
+      TestKeyboardButton(&inputMgr, wnd, DIK_D);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F);
+      TestKeyboardButton(&inputMgr, wnd, DIK_G);
+      TestKeyboardButton(&inputMgr, wnd, DIK_H);
+      TestKeyboardButton(&inputMgr, wnd, DIK_J);
+      TestKeyboardButton(&inputMgr, wnd, DIK_K);
+      TestKeyboardButton(&inputMgr, wnd, DIK_L);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SEMICOLON);
+      TestKeyboardButton(&inputMgr, wnd, DIK_APOSTROPHE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_GRAVE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LSHIFT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_BACKSLASH);
+      TestKeyboardButton(&inputMgr, wnd, DIK_Z);
+      TestKeyboardButton(&inputMgr, wnd, DIK_X);
+      TestKeyboardButton(&inputMgr, wnd, DIK_C);
+      TestKeyboardButton(&inputMgr, wnd, DIK_V);
+      TestKeyboardButton(&inputMgr, wnd, DIK_B);
+      TestKeyboardButton(&inputMgr, wnd, DIK_N);
+      TestKeyboardButton(&inputMgr, wnd, DIK_M);
+      TestKeyboardButton(&inputMgr, wnd, DIK_COMMA);
+      TestKeyboardButton(&inputMgr, wnd, DIK_PERIOD);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SLASH);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RSHIFT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_MULTIPLY);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LMENU);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SPACE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_CAPITAL);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F1);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F2);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F3);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F4);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F5);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F6);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F7);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F8);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F9);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F10);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMLOCK);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SCROLL);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD7);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD8);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD9);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SUBTRACT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD4);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD5);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD6);
+      TestKeyboardButton(&inputMgr, wnd, DIK_ADD);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD1);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD2);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD3);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD0);
+      TestKeyboardButton(&inputMgr, wnd, DIK_DECIMAL);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F11);
+      TestKeyboardButton(&inputMgr, wnd, DIK_F12);
+      //TestKeyboardButton(&inputMgr, wnd, DIK_F13); // Not on most KBs
+      //TestKeyboardButton(&inputMgr, wnd, DIK_F14); // Not on most KBs
+      //TestKeyboardButton(&inputMgr, wnd, DIK_F15); // Not on most KBs
+      TestKeyboardButton(&inputMgr, wnd, DIK_NEXTTRACK);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPADENTER);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RCONTROL);
+      TestKeyboardButton(&inputMgr, wnd, DIK_MUTE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_CALCULATOR);
+      TestKeyboardButton(&inputMgr, wnd, DIK_PLAYPAUSE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_MEDIASTOP);
+      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEDOWN);
+      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEUP);
+      TestKeyboardButton(&inputMgr, wnd, DIK_WEBHOME);
+      TestKeyboardButton(&inputMgr, wnd, DIK_DIVIDE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SYSRQ);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RMENU);
+      TestKeyboardButton(&inputMgr, wnd, DIK_PAUSE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_HOME);
+      TestKeyboardButton(&inputMgr, wnd, DIK_UP);
+      TestKeyboardButton(&inputMgr, wnd, DIK_PRIOR);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LEFT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RIGHT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_END);
+      TestKeyboardButton(&inputMgr, wnd, DIK_DOWN);
+      TestKeyboardButton(&inputMgr, wnd, DIK_NEXT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_INSERT);
+      TestKeyboardButton(&inputMgr, wnd, DIK_DELETE);
+      TestKeyboardButton(&inputMgr, wnd, DIK_LWIN);
+      TestKeyboardButton(&inputMgr, wnd, DIK_RWIN);
+      TestKeyboardButton(&inputMgr, wnd, DIK_POWER);
+      TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP);
+      TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
+    }
 
-    // TODO: Fix this (GenerateKey doesn't work, but user key presses do)
-    //while (callback.m_keypresses < 5)
+    //Mouse<>* mouse = inputMgr.CreateHID<Mouse<> >(hid::mouse);
+    //CHECK(mouse != NULL);
+
+    //if (mouse)
     //{
-    //  GenerateKey(VK_ESCAPE, FALSE);
-    //  testKeyboard->Update();
+    //  TestMouseButton(&inputMgr, wnd, DIMOFS_BUTTON0);
     //}
   }
 };

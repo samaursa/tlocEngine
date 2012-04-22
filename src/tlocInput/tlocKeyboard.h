@@ -23,9 +23,9 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   struct KeyboardCallbacks
   {
-    virtual void OnKeyPress(const tl_size a_caller,
+    virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event) = 0;
-    virtual void OnKeyRelease(const tl_size a_caller,
+    virtual bool OnKeyRelease(const tl_size a_caller,
                               const KeyboardEvent& a_event) = 0;
   };
 
@@ -38,39 +38,31 @@ namespace tloc { namespace input {
   struct KeyboardCallbackGroupT:
     public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    virtual void OnKeyPress(const tl_size a_caller,
+    virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnKeyPress(a_caller, a_event);
+        if (m_observers[i]->OnKeyPress(a_caller, a_event) == true)
+        {
+          return true;
+        }
       }
+      return false;
     }
 
-    virtual void OnKeyRelease(const tl_size a_caller,
+    virtual bool OnKeyRelease(const tl_size a_caller,
                               const KeyboardEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnKeyRelease(a_caller, a_event);
+        if (m_observers[i]->OnKeyRelease(a_caller, a_event) == true)
+        {
+          return true;
+        }
       }
+      return false;
     }
-  };
-
-  ///-------------------------------------------------------------------------
-  /// Platform independent list of parameters. Passing incorrect parameters
-  /// will result in compile errors.
-  ///-------------------------------------------------------------------------
-  template <class T1,
-            class T2 = TLOC_DUMMY_PARAM(),
-            class T3 = TLOC_DUMMY_PARAM(),
-            class T4 = TLOC_DUMMY_PARAM()>
-  struct KeyboardParamList
-  {
-    T1 m_param1;
-    T2 m_param2;
-    T3 m_param3;
-    T4 m_param4;
   };
 
   ///-------------------------------------------------------------------------

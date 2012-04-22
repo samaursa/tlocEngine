@@ -61,7 +61,10 @@ namespace tloc { namespace input {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      m_allObservers[i]->OnKeyPress( (tl_size)this, a_event);
+      if (m_allObservers[i]->OnKeyPress( (tl_size)this, a_event) == true)
+      {
+        return;
+      }
     }
   }
 
@@ -70,7 +73,10 @@ namespace tloc { namespace input {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      m_allObservers[i]->OnKeyRelease( (tl_size)this, a_event);
+      if (m_allObservers[i]->OnKeyRelease( (tl_size)this, a_event) == true)
+      {
+        return;
+      }
     }
   }
 

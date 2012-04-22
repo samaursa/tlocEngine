@@ -138,7 +138,7 @@ namespace tloc { namespace input { namespace priv {
   //------------------------------------------------------------------------
   // KeyboardImpl
 
-  template KeyboardImpl< Keyboard<> >;
+  template KeyboardImpl< Keyboard<InputPolicy::Buffered> >;
   template KeyboardImpl< Keyboard<InputPolicy::Immediate> >;
 
   template <KEYBOARD_IMPL_TEMP>
@@ -151,6 +151,17 @@ namespace tloc { namespace input { namespace priv {
     , m_windowPtr(a_params.m_param1)
   {
     DoInitialize();
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
+  KeyboardImpl<KEYBOARD_IMPL_PARAMS>::~KeyboardImpl()
+  {
+    if (m_keyboard)
+    {
+      m_keyboard->Unacquire();
+      m_keyboard->Release();
+      m_keyboard = NULL;
+    }
   }
 
   template <KEYBOARD_IMPL_TEMP>
@@ -184,8 +195,8 @@ namespace tloc { namespace input { namespace priv {
     // Default parameters or...?
     if (m_params.m_param3 == 0)
     {
-      //coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-      coop = DISCL_BACKGROUND | DISCL_EXCLUSIVE;
+      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
+      //coop = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
     }
     else
     {
@@ -252,7 +263,20 @@ namespace tloc { namespace input { namespace priv {
     {
       // Try one more time
       hRes = m_keyboard->Acquire();
-      return;
+      if (hRes != DI_OK)
+      {
+        return;
+      }
+      else
+      {
+        hRes = m_keyboard->
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+        if (hRes != DI_OK)
+        {
+          // we don't have the keyboard, return
+          return;
+        }
+      }
     }
 
     if (FAILED(hRes))

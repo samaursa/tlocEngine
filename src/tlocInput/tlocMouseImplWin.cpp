@@ -201,19 +201,19 @@ namespace tloc { namespace input { namespace priv {
         {
         case DIMOFS_X:
           {
-            m_currentState.m_X.m_rel() += diBuff[i].dwData;
+            m_currentState.m_X.m_rel() += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }
         case DIMOFS_Y:
           {
-            m_currentState.m_Y.m_rel() += diBuff[i].dwData;
+            m_currentState.m_Y.m_rel() += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }
         case DIMOFS_Z:
           {
-            m_currentState.m_Z.m_rel() += diBuff[i].dwData;
+            m_currentState.m_Z.m_rel() += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }

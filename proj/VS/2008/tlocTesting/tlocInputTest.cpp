@@ -60,7 +60,8 @@ namespace TestingInput
       : m_event(MouseEvent::none)
       , m_caller(a_caller)
       , m_buttonPresses(0)
-      , m_buttonReleases(0) {}
+      , m_buttonReleases(0)
+      , m_movementEvents(0) {}
 
     bool OnButtonPress(const tl_size a_caller, const MouseEvent& a_event)
     {
@@ -84,6 +85,7 @@ namespace TestingInput
     {
       CHECK(IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
+      m_movementEvents++;
       return false;
     }
 
@@ -91,6 +93,7 @@ namespace TestingInput
     T_Mouse*    m_caller;
     u32         m_buttonPresses;
     u32         m_buttonReleases;
+    u32         m_movementEvents;
   }; TLOC_DEF_TYPE(sampleInputMouse<Mouse<> >);
 
 
@@ -196,12 +199,15 @@ namespace TestingInput
   //------------------------------------------------------------------------
   // Mouse specific
 
-  static void SendMousePress(WORD input_code_set, WORD mouse_data)
+  static void SendMousePress(WORD input_code_set, WORD mouse_data,
+                             LONG coordX = 0, LONG coordY = 0)
   {
     INPUT inp = {0};
     inp.type = INPUT_MOUSE;
     inp.mi.dwFlags = input_code_set;
     inp.mi.mouseData = mouse_data;
+    inp.mi.dx = coordX;
+    inp.mi.dy = coordY;
     SendInput(1, &inp, sizeof(INPUT));
   }
 
@@ -236,6 +242,37 @@ namespace TestingInput
         WARN(a_buttonDown);
       }
     }
+  }
+
+  MouseEvent TestMouseMove(InputManager<>* a_im, HWND a_wnd, WORD a_axis,
+                     tl_int a_x, tl_int a_y, WORD a_data)
+  {
+    core::Timer<> countDown;
+    Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
+
+    CHECK(mouse != NULL);
+
+    if (mouse)
+    {
+      sampleInputMouse<Mouse<> > callback(mouse);
+      mouse->Register(&callback);
+
+      SendMousePress(a_axis, a_data, a_x, a_y);
+
+      while (countDown.ElapsedMilliSeconds() < 1000 &&
+             callback.m_movementEvents == 0)
+      {
+        UpdateWin32Window(a_wnd);
+        a_im->Update();
+      }
+
+      mouse->UnRegister(&callback);
+      CHECK(callback.m_movementEvents > 0);
+
+      return callback.m_event;
+    }
+
+    return MouseEvent(MouseEvent::none);
   }
 
   //------------------------------------------------------------------------
@@ -390,6 +427,44 @@ namespace TestingInput
                                       MOUSEEVENTF_XUP, XBUTTON1);
       TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
                                       MOUSEEVENTF_XUP, XBUTTON2);
+
+      MouseEvent evt;
+      
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
+      CHECK(evt.m_X.m_rel() == 5);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_X.m_abs().Get() == 5);
+      CHECK(evt.m_Y.m_abs().Get() == 0);
+
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
+      CHECK(evt.m_X.m_rel() == 5);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_X.m_abs().Get() == 10);
+      CHECK(evt.m_Y.m_abs().Get() == 0);
+
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
+      CHECK(evt.m_X.m_rel() == 0);
+      CHECK(evt.m_Y.m_rel() == 5);
+      CHECK(evt.m_X.m_abs().Get() == 10);
+      CHECK(evt.m_Y.m_abs().Get() == 5);
+
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
+      CHECK(evt.m_X.m_rel() == 0);
+      CHECK(evt.m_Y.m_rel() == 5);
+      CHECK(evt.m_X.m_abs().Get() == 10);
+      CHECK(evt.m_Y.m_abs().Get() == 10);
+
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_Z.m_rel() == 1);
+      CHECK(evt.m_Z.m_abs() == 1);
+
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_Y.m_rel() == 0);
+      CHECK(evt.m_Z.m_rel() == 1);
+      CHECK(evt.m_Z.m_abs() == 2);
     }
   }
 };

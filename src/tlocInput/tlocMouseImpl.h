@@ -34,7 +34,7 @@ namespace tloc { namespace input {
     button_code_type  m_buttonCode;
 
     // m_Z is the mouse wheel
-    Component::AxisAbsRel  m_X, m_Y, m_Z;
+    Component::AxisRelAbs m_X, m_Y, m_Z;
   };
 
 };};

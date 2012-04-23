@@ -31,7 +31,9 @@ namespace tloc { namespace input {
 
     MouseEvent(ButtonCode a_code = none) : m_buttonCode(a_code) {}
 
-    ButtonCode             m_buttonCode;
+    button_code_type  m_buttonCode;
+
+    // m_Z is the mouse wheel
     Component::AxisAbsRel  m_X, m_Y, m_Z;
   };
 

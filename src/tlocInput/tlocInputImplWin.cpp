@@ -185,14 +185,28 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[hid::keyboard].size(); ++i)
         {
-          keyboard_type* kb = static_cast<keyboard_type*>
-                                (m_winHIDs[hid::keyboard][i].m_devicePtr);
-          kb->Update();
+          if (m_winHIDs[hid::keyboard][i].m_available)
+          {
+            keyboard_type* kb = static_cast<keyboard_type*>
+                                      (m_winHIDs[hid::keyboard][i].m_devicePtr);
+            kb->Update();
+          }
         }
         break;
       }
     case hid::mouse:
       {
+        typedef Mouse<policy_type> mouse_type;
+
+        for (size_type i = 0; i < m_winHIDs[hid::mouse].size(); ++i)
+        {
+          if (m_winHIDs[hid::mouse][i].m_available)
+          {
+            mouse_type* mse = static_cast<mouse_type*>
+                                        (m_winHIDs[hid::mouse][i].m_devicePtr);
+            mse->Update();
+          }
+        }
         break;
       }
     case hid::joystick:

@@ -163,81 +163,78 @@ namespace TestingInput
 
   void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
   {
-    TLOC_UNUSED_3(a_im, a_wnd, a_key);
-
     core::Timer<> countDown;
     Keyboard<>* kb = a_im->GetHID<Keyboard<> >(hid::keyboard);
 
-    sampleInputKeyboard<Keyboard<> > callback(kb);
-    kb->Register(&callback);
+    CHECK(kb != NULL)
 
-    while ( countDown.ElapsedMilliSeconds() < 1000 &&
-            (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
+    if (kb)
     {
-      UpdateWin32Window(a_wnd);
-      SendButtonPress(a_key);
-      SendButtonRelease(a_key);
-      a_im->Update();
-    }
+      sampleInputKeyboard<Keyboard<> > callback(kb);
+      kb->Register(&callback);
 
-    kb->UnRegister(&callback);
+      while ( countDown.ElapsedMilliSeconds() < 1000 &&
+        (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
+      {
+        UpdateWin32Window(a_wnd);
+        SendButtonPress(a_key);
+        SendButtonRelease(a_key);
+        a_im->Update();
+      }
 
-    CHECK(callback.m_keypresses > 0);
-    CHECK(callback.m_keyreleases > 0);
-    if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
-    {
-      WARN(a_key);
+      kb->UnRegister(&callback);
+
+      CHECK(callback.m_keypresses > 0);
+      CHECK(callback.m_keyreleases > 0);
+      if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
+      {
+        WARN(a_key);
+      }
     }
   }
 
   //------------------------------------------------------------------------
   // Mouse specific
 
-  static void SendMousePress(WORD input_code_set)
+  static void SendMousePress(WORD input_code_set, WORD mouse_data)
   {
-    INPUT inp[1];
-    memset(inp, 0, sizeof(INPUT));
-    inp[0].type = INPUT_MOUSE;
-    inp[0].ki.wScan = input_code_set;
-    SendInput(1, inp, sizeof(INPUT));
+    INPUT inp = {0};
+    inp.type = INPUT_MOUSE;
+    inp.mi.dwFlags = input_code_set;
+    inp.mi.mouseData = mouse_data;
+    SendInput(1, &inp, sizeof(INPUT));
   }
 
-  static void SendMouseRelease(WORD input_code_set)
+  void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_buttonDown,
+                       WORD a_buttonUp, WORD a_extraData)
   {
-    INPUT inp[1];
-    memset(inp, 0, sizeof(INPUT));
-    inp[0].type = INPUT_MOUSE;
-    inp[0].ki.dwFlags |= MOUSEEVENTF_XUP;
-    inp[0].ki.wScan = input_code_set;
-    SendInput(1, inp, sizeof(INPUT));
-  }
-
-  void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_button)
-  {
-    TLOC_UNUSED_3(a_im, a_wnd, a_button);
-
     core::Timer<> countDown;
     Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
 
-    sampleInputMouse<Mouse<> > callback(mouse);
-    mouse->Register(&callback);
+    CHECK(mouse != NULL);
 
-    while ( countDown.ElapsedMilliSeconds() < 1000 &&
-            (callback.m_buttonPresses < 1 || callback.m_buttonReleases < 1) )
+    if (mouse)
     {
-      UpdateWin32Window(a_wnd);
-      SendMousePress(a_button);
-      SendMouseRelease(a_button);
-      a_im->Update();
-    }
+      sampleInputMouse<Mouse<> > callback(mouse);
+      mouse->Register(&callback);
 
-    mouse->UnRegister(&callback);
+      while ( countDown.ElapsedMilliSeconds() < 1000 &&
+        (callback.m_buttonPresses < 1 || callback.m_buttonReleases < 1) )
+      {
+        UpdateWin32Window(a_wnd);
+        SendMousePress(a_buttonDown, a_extraData);
+        SendMousePress(a_buttonUp, a_extraData);
+        a_im->Update();
+      }
 
-    CHECK(callback.m_buttonPresses > 0);
-    CHECK(callback.m_buttonReleases > 0);
-    if (callback.m_buttonPresses == 0 || callback.m_buttonReleases == 0)
-    {
-      WARN(a_button);
+      mouse->UnRegister(&callback);
+
+      CHECK(callback.m_buttonPresses > 0);
+      CHECK(callback.m_buttonReleases > 0);
+      if (callback.m_buttonPresses == 0 || callback.m_buttonReleases == 0)
+      {
+        WARN(a_buttonDown);
+      }
     }
   }
 
@@ -378,12 +375,21 @@ namespace TestingInput
       TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
     }
 
-    //Mouse<>* mouse = inputMgr.CreateHID<Mouse<> >(hid::mouse);
-    //CHECK(mouse != NULL);
+    Mouse<>* mouse = inputMgr.CreateHID<Mouse<> >(hid::mouse);
+    CHECK(mouse != NULL);
 
-    //if (mouse)
-    //{
-    //  TestMouseButton(&inputMgr, wnd, DIMOFS_BUTTON0);
-    //}
+    if (mouse)
+    {
+      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
+                                      MOUSEEVENTF_LEFTUP, NULL);
+      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
+                                      MOUSEEVENTF_RIGHTUP, NULL);
+      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
+                                      MOUSEEVENTF_MIDDLEUP, NULL);
+      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+                                      MOUSEEVENTF_XUP, XBUTTON1);
+      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+                                      MOUSEEVENTF_XUP, XBUTTON2);
+    }
   }
 };

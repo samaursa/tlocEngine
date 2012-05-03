@@ -148,6 +148,7 @@ namespace tloc { namespace input { namespace priv {
     m_currentState.m_X.m_rel() = 0;
     m_currentState.m_Y.m_rel() = 0;
     m_currentState.m_Z.m_rel() = 0;
+    m_currentState.m_buttonCode = MouseEvent::none;
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::mouse_buffer_size];
     DWORD entries = buffer_size::mouse_buffer_size;
@@ -185,7 +186,7 @@ namespace tloc { namespace input { namespace priv {
     for (tl_size i = 0; i < entries; ++i)
     {
       // Grab the key code that was pressed/released
-      m_currentState.m_buttonCode = TranslateKeyCode(diBuff[i].dwOfs);
+      m_currentState.m_buttonCode |= TranslateKeyCode(diBuff[i].dwOfs);
 
       if (m_currentState.m_buttonCode != MouseEvent::none)
       {
@@ -194,31 +195,34 @@ namespace tloc { namespace input { namespace priv {
         else
           m_parent->SendOnButtonRelease(m_currentState);
       }
-
-      switch(diBuff[i].dwOfs)
+      else
       {
-      case DIMOFS_X:
+        switch(diBuff[i].dwOfs)
         {
-          m_currentState.m_X.m_rel() += diBuff[i].dwData;
-          axesUpdated = true;
-          break;
+        case DIMOFS_X:
+          {
+            m_currentState.m_X.m_rel() += (tl_int)diBuff[i].dwData;
+            axesUpdated = true;
+            break;
+          }
+        case DIMOFS_Y:
+          {
+            m_currentState.m_Y.m_rel() += (tl_int)diBuff[i].dwData;
+            axesUpdated = true;
+            break;
+          }
+        case DIMOFS_Z:
+          {
+            m_currentState.m_Z.m_rel() += (tl_int)diBuff[i].dwData;
+            axesUpdated = true;
+            break;
+          }
+        default: break;
         }
-      case DIMOFS_Y:
-        {
-          m_currentState.m_Y.m_rel() += diBuff[i].dwData;
-          axesUpdated = true;
-          break;
-        }
-      case DIMOFS_Z:
-        {
-          m_currentState.m_Z.m_rel() += diBuff[i].dwData;
-          axesUpdated = true;
-          break;
-        }
-      default: break;
       }
     }
 
+    // If the mouse was moved...
     if (axesUpdated)
     {
       // Going with OIS's suggestion here

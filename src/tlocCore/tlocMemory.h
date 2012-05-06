@@ -46,32 +46,94 @@
 namespace tloc { namespace core {
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator uninitialized_copy(T_InputIterator aRangeBegin,
-                                           T_InputIterator aRangeEnd,
-                                           T_OutputIterator aDestRangeBegin);
+  TL_I T_OutputIterator     uninitialized_copy(T_InputIterator aRangeBegin,
+                                               T_InputIterator aRangeEnd,
+                                               T_OutputIterator aDestRangeBegin);
+
+  template <typename T_InputIterator, typename T_Count, typename T_ValueType>
+  TL_I void                 uninitialized_fill_n(T_InputIterator a_first, 
+                                                 T_Count a_count, 
+                                                 const T_ValueType& a_value);
 
   namespace detail {
 
-    typedef type_true hasTrivalAssign;
-    typedef type_false hasComplexAssign;
+    typedef type_true       IsRawItr;
+    typedef type_false      IsComplexItr;
+    typedef type_true       HasTrivalAssign;
+    typedef type_false      HasComplexAssign;
 
-    template <typename T_InputIterator, typename T_OutputIterator, typename T_ValueType>
-    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
-                                               T_InputIterator aRangeEnd,
-                                               T_OutputIterator aDestRangeBegin,
-                                               T_ValueType,
-                                               hasTrivalAssign);
+    template <typename T_InputIterator, typename T_OutputIterator>
+    TL_I T_OutputIterator   
+      DoUninitializedCopyWithItrType(T_InputIterator a_rangeBegin,
+                                     T_InputIterator a_rangeEnd,
+                                     T_OutputIterator a_destRangeBegin,
+                                     IsRawItr);
 
-    template <typename T_InputIterator, typename T_OutputIterator, typename T_ValueType>
-    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
-                                               T_InputIterator aRangeEnd,
-                                               T_OutputIterator aDestRangeBegin,
-                                               T_ValueType,
-                                               hasComplexAssign);
+    template <typename T_InputIterator, typename T_OutputIterator>
+    TL_I T_OutputIterator   
+      DoUninitializedCopyWithItrType(T_InputIterator a_rangeBegin,
+                                     T_InputIterator a_rangeEnd,
+                                     T_OutputIterator a_destRangeBegin,
+                                     IsComplexItr);
 
+    template <typename T_InputIterator, typename T_OutputIterator, 
+              typename T_ValueType>
+    TL_I T_OutputIterator   
+      DoUninitializedCopyWithValueType(T_InputIterator a_rangeBegin,
+                                       T_InputIterator a_rangeEnd,
+                                       T_OutputIterator a_destRangeBegin,
+                                       T_ValueType);
 
+    template <typename T_InputIterator, typename T_OutputIterator, 
+              typename T_ValueType>
+    TL_I T_OutputIterator DoUninitializedCopy(T_InputIterator aRangeBegin,
+                                              T_InputIterator aRangeEnd,
+                                              T_OutputIterator aDestRangeBegin,
+                                              T_ValueType,
+                                              HasTrivalAssign);
 
+    template <typename T_InputIterator, typename T_OutputIterator, 
+              typename T_ValueType>
+    TL_I T_OutputIterator   DoUninitializedCopy(T_InputIterator aRangeBegin,
+                                                T_InputIterator aRangeEnd,
+                                                T_OutputIterator aDestRangeBegin,
+                                                T_ValueType,
+                                                HasComplexAssign);
 
+    template <typename T_InputIterator, typename T_Count, typename T_ValueType>
+    TL_I void DoUninitializedFillNWithItrType(T_InputIterator a_first, 
+                                              T_Count a_count, 
+                                              const T_ValueType& a_value,
+                                              IsRawItr);
+
+    template <typename T_InputIterator, typename T_Count, typename T_ValueType>
+    TL_I void DoUninitializedFillNWithItrType(T_InputIterator a_first,
+                                              T_Count a_count,
+                                              const T_ValueType& a_value,
+                                              IsComplexItr);
+
+    template <typename T_InputIterator, typename T_Count, typename T_ValueType,
+              typename T_ValueTypeInputIterator>
+    TL_I void DoUninitializedFillNWithValueType(T_InputIterator a_first,
+                                                T_Count a_count,
+                                                const T_ValueType& a_value,
+                                                T_ValueTypeInputIterator);
+
+    template <typename T_InputIterator, typename T_Count, typename T_ValueType,
+              typename T_ValueTypeInputIterator>
+    TL_I void               DoUninitializedFillN(T_InputIterator a_first, 
+                                                 T_Count a_count, 
+                                                 const T_ValueType& a_value,
+                                                 T_ValueTypeInputIterator,
+                                                 HasTrivalAssign);
+
+    template <typename T_InputIterator, typename T_Count, typename T_ValueType,
+              typename T_ValueTypeInputIterator>
+    TL_I void               DoUninitializedFillN(T_InputIterator a_first, 
+                                                 T_Count a_count, 
+                                                 const T_ValueType& a_value,
+                                                 T_ValueTypeInputIterator,
+                                                 HasComplexAssign);
   };
 
 };};

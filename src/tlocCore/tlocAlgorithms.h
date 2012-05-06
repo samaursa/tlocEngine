@@ -265,6 +265,10 @@ namespace tloc { namespace core {
   TL_I void fill(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                  const T& aValue);
 
+  template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+  TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                   const T_ValueType& a_value);
+
   template <typename T>
   TL_I void tlSwap(T& a, T& b);
 
@@ -307,6 +311,17 @@ namespace tloc { namespace core {
     template <typename T_InputIterator, typename T>
     TL_I void fill( T_InputIterator aRangeBegin, T_InputIterator aRangeEnd,
                     const T& aValue, IsChar );
+
+    //------------------------------------------------------------------------
+    // fill_n helpers
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, IsNotChar);
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, IsChar);
 
     //------------------------------------------------------------------------
     // find helpers

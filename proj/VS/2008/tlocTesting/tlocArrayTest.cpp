@@ -69,12 +69,21 @@ namespace TestingArray
     CHECK(fourth[0] == 100); CHECK(fourth[1] == 100);
     CHECK(fourth[2] == 100); CHECK(fourth[3] == 100);
 
+    SomeClass fooClass;
+    fooClass.dummy = 50;
+    Array<SomeClass> fifth(4, fooClass);
+    CHECK(fifth[0].dummy == 50); CHECK(fifth[1].dummy == 50);
+    CHECK(fifth[2].dummy == 50); CHECK(fifth[3].dummy == 50);
+    
+    Array<s32> sixth (10);
+    CHECK(sixth.size() == 10);
+
     // the iterator constructor can also be used to construct from arrays:
     s32 myints[] = {16,2,77,29};
-    Array<s32> fifth (myints, myints + sizeof(myints) / sizeof(s32) );
+    Array<s32> seventh (myints, myints + sizeof(myints) / sizeof(s32) );
 
-    CHECK(fifth[0] == 16); CHECK(fifth[1] == 2);
-    CHECK(fifth[2] == 77); CHECK(fifth[3] == 29);
+    CHECK(seventh[0] == 16); CHECK(seventh[1] == 2);
+    CHECK(seventh[2] == 77); CHECK(seventh[3] == 29);
   }
 
 

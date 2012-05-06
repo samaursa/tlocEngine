@@ -775,6 +775,19 @@ namespace tloc { namespace core {
 
   }
 
+  template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+  TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                   const T_ValueType& a_value)
+  {
+    // We assume that the inputs are pointers. If they point to data that is a
+    // single byte (a char) then use memset
+    typedef Loki::TypeTraits<T_OutputIterator>::PointeeType inputDeref;
+    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef Loki::Int2Type<charTestResult::value> IsChar8;
+
+    detail::fill_n(a_first, a_count, a_value, IsChar8());
+  }
+
   template <typename T>
   TL_I void tlSwap(T& a, T& b)
   {
@@ -890,6 +903,23 @@ namespace tloc { namespace core {
                     const T& aValue, IsChar )
     {
       memset(aRangeBegin, aValue, sizeof(T) * (aRangeEnd - aRangeBegin));
+    }
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, IsNotChar)
+    {
+      for (/* */; a_count > 0; --a_count, ++a_first)
+      {
+        *a_first = a_value;
+      }
+    }
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, IsChar)
+    {
+      memset(a_first, a_value, (tl_size)a_count);
     }
 
     template <typename T_InputIterator, typename T>

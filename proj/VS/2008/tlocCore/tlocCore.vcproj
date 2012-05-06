@@ -898,6 +898,18 @@
 					RelativePath="..\..\..\..\src\tlocCore\tlocArray.inl"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.inl"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="List"

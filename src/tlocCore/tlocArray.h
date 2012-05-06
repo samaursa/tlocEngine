@@ -191,7 +191,8 @@ namespace tloc { namespace core {
     TL_FI Array();
     TL_FI Array( const Array<T>& toCopy);
     TL_FI explicit Array(tl_size aNumElemsToInsert, 
-                         const T& aValueToCopy = T());
+                         const T& aValueToCopy);
+    TL_FI explicit Array(tl_size aCount);
     template <typename T_InputIterator>
     TL_FI Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd);
 

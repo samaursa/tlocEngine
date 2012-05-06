@@ -367,9 +367,19 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <typename T>
-  TL_FI Array<T>::Array(tl_size aNumElemsToInsert, const T& aValueToCopy)
+  TL_FI Array<T>::Array(tl_size aNumElemsToInsert, const T& aValueToCopy) 
+    : ArrayBase(aNumElemsToInsert)
   {
-    insert(0, aNumElemsToInsert, aValueToCopy);
+    /*insert(0, aNumElemsToInsert, aValueToCopy);*/
+    uninitialized_fill_n(m_begin, aNumElemsToInsert, aValueToCopy);
+    m_end = m_begin + aNumElemsToInsert;
+  }
+
+  template <typename T>
+  TL_FI Array<T>::Array(tl_size aCount) : ArrayBase(aCount)
+  {
+    uninitialized_fill_n(m_begin, aCount, value_type());
+    m_end = m_begin + aCount;
   }
 
   template <typename T>

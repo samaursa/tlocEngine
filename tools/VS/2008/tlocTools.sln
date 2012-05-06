@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathBatInstaller", "tlocPathBatInstaller\PathBatInstaller.vcproj", "{488764B3-17AF-4306-9B38-F1C9141FE362}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{488764B3-17AF-4306-9B38-F1C9141FE362}.Debug|Win32.ActiveCfg = Debug|Win32
+		{488764B3-17AF-4306-9B38-F1C9141FE362}.Debug|Win32.Build.0 = Debug|Win32
+		{488764B3-17AF-4306-9B38-F1C9141FE362}.Release|Win32.ActiveCfg = Release|Win32
+		{488764B3-17AF-4306-9B38-F1C9141FE362}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

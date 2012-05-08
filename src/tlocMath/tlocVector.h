@@ -31,7 +31,7 @@ namespace tloc { namespace math {
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   class Vector : public core::Tuple<T, T_Size>
   {
   public:
@@ -44,8 +44,8 @@ namespace tloc { namespace math {
 
     TL_FI explicit Vector(const T& aValue);
 
-    /*TL_FI T& operator[](u32 aIndex);
-    TL_FI const T& operator[](u32 aIndex) const;*/
+    /*TL_FI T& operator[](tl_size aIndex);
+    TL_FI const T& operator[](tl_size aIndex) const;*/
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -172,9 +172,9 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Static const definitions
-  template<typename T, u32 T_Size>
+  template<typename T, tl_size T_Size>
   const Vector<T, T_Size> Vector<T, T_Size>::ZERO = Vector<T, T_Size>(0);
-  template<typename T, u32 T_Size>
+  template<typename T, tl_size T_Size>
   const Vector<T, T_Size> Vector<T, T_Size>::ONE = Vector<T, T_Size>(1);
 
 };};

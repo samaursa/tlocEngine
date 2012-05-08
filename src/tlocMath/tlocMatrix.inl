@@ -13,26 +13,26 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_MATRIX      for (u32 i = 0; i < MATRIX_SIZE; ++i)
-#define ITERATE_MATRIX_HALF for (u32 i = 0; i < T_Size; ++i)
+#define ITERATE_MATRIX      for (tl_size i = 0; i < k_MatrixSize; ++i)
+#define ITERATE_MATRIX_HALF for (tl_size i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix()
     : Table() {}
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const Matrix<T, T_Size>& aMatrix)
     : Table(aMatrix) {}
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const T& aValue)
     : Table(aValue) {}
 
-  template <typename T, u32 T_Size>
-  TL_FI Matrix<T, T_Size>::Matrix(const T (&values)[MATRIX_SIZE],
+  template <typename T, tl_size T_Size>
+  TL_FI Matrix<T, T_Size>::Matrix(const T (&values)[k_MatrixSize],
                                   MATRIX_ORDER aOrder)
                                   : Table(values, aOrder)
   {}
@@ -40,13 +40,13 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Zero()
   {
-    memset(m_values, 0, sizeof(T) * MATRIX_SIZE);
+    memset(m_values, 0, sizeof(T) * k_MatrixSize);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Identity()
   {
     Zero();
@@ -56,7 +56,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::MakeDiagonal(const T values[T_Size])
   {
     Zero();
@@ -69,7 +69,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Math operations
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
     ::Add(const Matrix<T, T_Size>& aMatrix)
   {
@@ -81,7 +81,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Add(const Matrix<T, T_Size>& aMatrix1,
     const Matrix<T, T_Size>& aMatrix2)
   {
@@ -89,7 +89,7 @@ namespace tloc { namespace math {
     Add(aMatrix2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
     ::Sub(const Matrix<T, T_Size>& aMatrix)
   {
@@ -101,7 +101,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Sub(const Matrix<T, T_Size>& aMatrix1,
     const Matrix<T, T_Size>& aMatrix2)
   {
@@ -109,15 +109,15 @@ namespace tloc { namespace math {
     Sub(aMatrix2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>
     ::Mul(const Matrix<T, T_Size>& aMatrix)
   {
-    for (u32 i = 0; i < T_Size; ++i)
+    for (tl_size i = 0; i < T_Size; ++i)
     {
       Vector<T, T_Size> row;
       GetRow(i, row);
-      for (u32 j = 0; j < T_Size; ++j)
+      for (tl_size j = 0; j < T_Size; ++j)
       {
         Vector<T, T_Size> col;
         aMatrix.GetCol(j, col);
@@ -129,7 +129,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Matrix<T, T_Size>& aMatrix1,
                                     const Matrix<T, T_Size>& aMatrix2)
   {
@@ -137,7 +137,7 @@ namespace tloc { namespace math {
     Mul(aMatrix2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Mul(const T& aReal)
   {
     ITERATE_MATRIX
@@ -148,7 +148,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Mul(const Vector<T, T_Size>& aVectorIn,
                                     Vector<T, T_Size>& aVectorOut)
   {
@@ -160,7 +160,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Div(const T& aReal)
   {
     TLOC_ASSERT_LOW_LEVEL(Math<T>::Approx(aReal, 0.0f) == false,
@@ -174,25 +174,25 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Transpose()
   {
     Matrix<T, T_Size> temp = *this;
-    Set(temp.m_values, ROW_MAJOR);
+    Set(temp.m_values, k_RowMajor);
 
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Transpose(const Matrix<T, T_Size>& aMatrix)
   {
-    Set(aMatrix.m_values, ROW_MAJOR);
+    Set(aMatrix.m_values, k_RowMajor);
   }
 
   //------------------------------------------------------------------------
   // Accessors
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::GetDiagonal(Vector<T, T_Size>& aVector)
   {
     ITERATE_MATRIX_HALF
@@ -204,7 +204,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Operators
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Matrix<T, T_Size>::operator==( const Matrix<T, T_Size>& aMatrix )
   {
     ITERATE_MATRIX
@@ -215,7 +215,7 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Matrix<T, T_Size>::operator!=( const Matrix<T, T_Size>& aMatrix )
   {
     return !operator==(aMatrix);

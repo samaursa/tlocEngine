@@ -49,7 +49,7 @@ namespace tloc { namespace math {
   TL_FI Matrix2<T>::Matrix2(const Vector2<T>& aVec1, const Vector2<T>& aVec2,
     TABLE_ORDER aOrder)
   {
-    if (aOrder == COL_MAJOR)
+    if (aOrder == k_ColMajor)
     {
       m_values[0] = aVec1[0];
       m_values[1] = aVec1[1];
@@ -66,7 +66,7 @@ namespace tloc { namespace math {
   }
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2(const T (&values)[MATRIX_SIZE], TABLE_ORDER aOrder)
+  TL_FI Matrix2<T>::Matrix2(const T (&values)[k_MatrixSize], TABLE_ORDER aOrder)
     : Matrix(values, aOrder) {}
 
   //------------------------------------------------------------------------

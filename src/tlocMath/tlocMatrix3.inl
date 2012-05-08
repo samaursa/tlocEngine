@@ -51,7 +51,7 @@ namespace tloc { namespace math {
                             const Vector<T, 3>& aVec3,
                             TABLE_ORDER aOrder)
   {
-    if (aOrder == COL_MAJOR)
+    if (aOrder == k_ColMajor)
     {
       m_values[0] = aVec1[0]; m_values[3] = aVec2[0]; m_values[6] = aVec3[0];
       m_values[1] = aVec1[1]; m_values[4] = aVec2[1]; m_values[7] = aVec3[1];
@@ -66,7 +66,7 @@ namespace tloc { namespace math {
   }
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T (&values)[MATRIX_SIZE], TABLE_ORDER aOrder)
+  TL_FI Matrix3<T>::Matrix3(const T (&values)[k_MatrixSize], TABLE_ORDER aOrder)
     : Matrix(values, aOrder) {}
 
   //------------------------------------------------------------------------
@@ -426,7 +426,7 @@ namespace tloc { namespace math {
                     (T)0, cosine, -sine,
                     (T)0,   sine, cosine };
 
-    Set(values, ROW_MAJOR);
+    Set(values, k_RowMajor);
     return *this;
   }
 
@@ -442,7 +442,7 @@ namespace tloc { namespace math {
                      (T)0, (T)1,  (T)0,
                     -sine, (T)0, cosine};
 
-    Set(values, ROW_MAJOR);
+    Set(values, k_RowMajor);
     return *this;
   }
 
@@ -458,7 +458,7 @@ namespace tloc { namespace math {
                      sine, cosine, (T)0,
                      (T)0,   (T)0, (T)1 };
 
-    Set(values, ROW_MAJOR);
+    Set(values, k_RowMajor);
     return *this;
 
   }

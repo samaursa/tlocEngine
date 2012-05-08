@@ -18,8 +18,8 @@ namespace tloc { namespace core {
   class Table
   {
   protected:
-    enum { TABLE_SIZE = T_Rows * T_Cols };
-    T m_values[TABLE_SIZE];
+    enum { k_TableSize = T_Rows * T_Cols };
+    T m_values[k_TableSize];
 
   public:
     //------------------------------------------------------------------------
@@ -27,13 +27,13 @@ namespace tloc { namespace core {
 
     // Currently only useful for constructor/function accepting an array
     // of values
-    typedef enum TABLE_ORDER { ROW_MAJOR, COL_MAJOR } TABLE_ORDER;
+    typedef enum TABLE_ORDER { k_RowMajor, k_ColMajor } TABLE_ORDER;
 
     TL_FI Table();
     TL_FI Table(const Table<T, T_Rows, T_Cols>& aTable);
 
     TL_FI explicit Table(const T& aValue);
-    TL_FI Table(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder);
+    TL_FI Table(const T (&values)[k_TableSize], TABLE_ORDER aTableOrder);
 
     //------------------------------------------------------------------------
     // Accessors
@@ -57,7 +57,7 @@ namespace tloc { namespace core {
     // Modifiers
 
     TL_FI void Set(const T& aValue);
-    TL_FI void Set(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder);
+    TL_FI void Set(const T (&values)[k_TableSize], TABLE_ORDER aTableOrder);
     TL_FI void Set(u32 aRow, u32 aCol, const T& aValue);
     TL_FI void SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn);
     TL_FI void SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn);

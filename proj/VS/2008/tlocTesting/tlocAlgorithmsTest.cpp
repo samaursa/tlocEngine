@@ -117,6 +117,88 @@ namespace TestingAlgorithms
         CHECK(testArray[i] == 50);
       }
     }
+
+    {// fill_n using an iterator for an Array<tl_int>
+      Array<tl_int> testArray(100, 10);
+
+      fill(testArray.begin(), testArray.end(), 12);
+
+      for (tl_size i = 0; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 12);
+      }
+    }
+
+    {// fill_n filling up a portion of the array
+      tl_int testArray[100] = {0};
+
+      fill(testArray, testArray + 50, 6);
+      fill(testArray + 50, testArray + 100, 5);
+
+      for (tl_size i = 0; i < 50; ++i)
+      {
+        CHECK(testArray[i] == 6);
+      }
+
+      for (tl_size i = 50; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 5);
+      }
+    }
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/FillN",
+    "Test the fill_n() functions")
+  {
+    {// fill_n with char (fill has specialization for fill<char>() )
+      char8 testArray[100] = {0};
+
+      fill_n(testArray, 100, 'U');
+
+      for (tl_size i = 0; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 'U');
+      }
+    }
+
+    {// fill_n with another POD type
+      tl_int testArray[100] = {0};
+
+      fill_n(testArray, 100, 73);
+
+      for (tl_size i = 0; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 73);
+      }
+    }
+
+    {// fill_n using an iterator for an Array<tl_uint>
+      Array<tl_uint> testArray(100, 0);
+
+      fill_n(testArray.begin(), 100, 8);
+
+      for (tl_size i = 0; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 8);
+      }
+    }
+
+    {// fill_n filling up a portion of the array
+      tl_int testArray[100] = {0};
+
+      fill_n(testArray, 50, 22);
+      fill_n(testArray + 50, 50, 14);
+
+      for (tl_size i = 0; i < 50; ++i)
+      {
+        CHECK(testArray[i] == 22);
+      }
+
+      for (tl_size i = 50; i < 100; ++i)
+      {
+        CHECK(testArray[i] == 14);
+      }
+    }
   }
 
   void ForEachFunc(u32*& element)

@@ -13,30 +13,30 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TUPLE for (u32 i = 0; i < T_Size; ++i)
+#define ITERATE_TUPLE for (tl_size i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Tuple<T, T_Size>::Tuple()
   {
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Tuple<T, T_Size>::Tuple(const Tuple<T, T_Size>& aTuple)
   {
     Set(aTuple);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_ArrayType>
   TL_FI Tuple<T, T_Size>::Tuple(const T_ArrayType (&aArray)[T_Size])
   {
     Set(aArray);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Tuple<T, T_Size>::Tuple(const T& aValue)
   {
     Set(aValue);
@@ -45,54 +45,60 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Accessors
 
-  template <typename T, u32 T_Size>
-  TL_FI T& Tuple<T, T_Size>::operator [](s32 aIndex)
+  template <typename T, tl_size T_Size>
+  TL_FI T& Tuple<T, T_Size>::operator [](tl_int aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
 
-  template <typename T, u32 T_Size>
-  TL_FI const T& Tuple<T, T_Size>::operator [](s32 aIndex) const
+  template <typename T, tl_size T_Size>
+  TL_FI const T& Tuple<T, T_Size>::operator [](tl_int aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
 
-  template <typename T, u32 T_Size>
-  TL_FI T& Tuple<T, T_Size>::Get(u32 aIndex)
+  template <typename T, tl_size T_Size>
+  TL_FI T& Tuple<T, T_Size>::Get(tl_size aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
 
-  template <typename T, u32 T_Size>
-  TL_FI const T& Tuple<T, T_Size>::Get(u32 aIndex) const
+  template <typename T, tl_size T_Size>
+  TL_FI const T& Tuple<T, T_Size>::Get(tl_size aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Tuple<T, T_Size>::operator T*()
   {
     return m_values;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Tuple<T, T_Size>::operator const T*() const
   {
     return m_values;
   }
 
+  template <typename T, tl_size T_Size>
+  TL_FI tl_size Tuple<T, T_Size>::GetSize() const
+  {
+    return k_TupleSize;
+  }
+
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   void Tuple<T, T_Size>::Set(T aValue)
   {
     ITERATE_TUPLE
@@ -101,7 +107,7 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_TupleType>
   void Tuple<T, T_Size>::Set(const Tuple<T_TupleType, T_Size>& aTuple)
   {
@@ -115,7 +121,7 @@ namespace tloc { namespace core {
     DoSet(aTuple, is_same_type());
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_ArrayType>
   void Tuple<T, T_Size>::Set(const T_ArrayType (&aArray)[T_Size])
   {
@@ -129,7 +135,7 @@ namespace tloc { namespace core {
     DoSet(aArray, is_same_type());
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   void Tuple<T, T_Size>::Swap(Tuple<T, T_Size>& aVector)
   {
     ITERATE_TUPLE
@@ -141,7 +147,7 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Operators
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_TupleType>
   TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=(const Tuple<T_TupleType, T_Size>& aTuple)
   {
@@ -149,7 +155,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_ArrayType>
   TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=( const T_ArrayType (&aArray)[T_Size])
   {
@@ -157,7 +163,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Tuple<T, T_Size>::operator==( const Tuple<T, T_Size>& aTuple )
   {
     ITERATE_TUPLE
@@ -168,7 +174,7 @@ namespace tloc { namespace core {
     return true;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Tuple<T, T_Size>::operator!=( const Tuple<T, T_Size>& aTuple )
   {
     return !operator==(aTuple);
@@ -177,13 +183,13 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Details
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   void Tuple<T, T_Size>::DoSet(const T (&aArray)[T_Size], type_true)
   {
     memcpy(m_values, aArray, sizeof(T) * T_Size);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_ArrayType>
   void Tuple<T, T_Size>::DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
   {
@@ -196,13 +202,13 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   void Tuple<T, T_Size>::DoSet(const Tuple<T, T_Size>& aTuple, type_true)
   {
     memcpy(m_values, aTuple, sizeof(T) * T_Size);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   template <typename T_TupleType>
   void Tuple<T, T_Size>::DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
   {

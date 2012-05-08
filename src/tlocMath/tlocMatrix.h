@@ -24,11 +24,11 @@
 
 namespace tloc { namespace math {
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   class Matrix : public core::Table<T, T_Size, T_Size>
   {
   protected:
-    enum { MATRIX_SIZE = TABLE_SIZE };
+    enum { k_MatrixSize = k_TableSize };
 
   public:
     //------------------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace tloc { namespace math {
     TL_FI explicit Matrix(const T& aValue);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix(const T (&values)[MATRIX_SIZE], MATRIX_ORDER aOrder);
+    TL_FI Matrix(const T (&values)[k_MatrixSize], MATRIX_ORDER aOrder);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -132,12 +132,12 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Static const definitions
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   const Matrix<T, T_Size> Matrix<T, T_Size>::ZERO = Matrix<T, T_Size>(0);
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   const Matrix<T, T_Size> Matrix<T, T_Size>::IDENTITY = Matrix<T, T_Size>::pInternal_GetIdentity();
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   Matrix<T, T_Size> Matrix<T, T_Size>::pInternal_GetIdentity()
   {
     Matrix<T, T_Size> temp;

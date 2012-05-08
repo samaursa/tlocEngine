@@ -17,23 +17,23 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_VECTOR for (u32 i = 0; i < T_Size; ++i)
+#define ITERATE_VECTOR for (tl_size i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>::Vector()
   {
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>::Vector(const T& aValue) : Tuple(aValue)
   {
 
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>::Vector(const Vector<T, T_Size>& aVector)
   {
     *this = aVector;
@@ -42,13 +42,13 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Zero()
   {
     Set(0);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Neg()
   {
     ITERATE_VECTOR
@@ -57,7 +57,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Neg(const Vector<T, T_Size>& aVector)
   {
     operator=(aVector);
@@ -67,7 +67,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Math Operations
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Add(const Vector<T, T_Size>& aVector)
   {
@@ -79,7 +79,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Add(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
@@ -89,7 +89,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Sub(const Vector<T, T_Size>& aVector)
   {
@@ -101,7 +101,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Sub(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
@@ -109,7 +109,7 @@ namespace tloc { namespace math {
     Sub(aVector2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Mul(const Vector<T, T_Size>& aVector)
   {
@@ -121,7 +121,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Mul(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
@@ -129,7 +129,7 @@ namespace tloc { namespace math {
     Mul(aVector2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Mul(const T aReal)
   {
@@ -141,7 +141,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Div(const Vector<T, T_Size>& aVector)
   {
@@ -153,7 +153,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Div(const Vector<T, T_Size>& aVector1,
                                     const Vector<T, T_Size>& aVector2)
   {
@@ -161,7 +161,7 @@ namespace tloc { namespace math {
     Div(aVector2);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Div(const T aReal)
   {
@@ -173,7 +173,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::LengthSquared() const
   {
     T lengthSq = 0;
@@ -186,14 +186,14 @@ namespace tloc { namespace math {
     return lengthSq;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::Length() const
   {
     T length = LengthSquared();
     return Math<T>::Sqrt(length);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Norm()
   {
@@ -212,7 +212,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Norm(const Vector<T, T_Size>& aVector)
   {
@@ -231,7 +231,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::NormLength()
   {
     T lLength = Length();
@@ -249,7 +249,7 @@ namespace tloc { namespace math {
     return lLength;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::NormLength(const Vector<T, T_Size>& aVector)
   {
     T lLength = aVector.Length();
@@ -267,7 +267,7 @@ namespace tloc { namespace math {
     return lLength;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::Distance(const Vector<T, T_Size>& aVector) const
   {
     Vector<T, T_Size> lTemp = *this;
@@ -277,7 +277,7 @@ namespace tloc { namespace math {
     return length;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::DistanceSquared(const Vector<T, T_Size>& aVector) const
   {
     Vector<T, T_Size> lTemp = *this;
@@ -287,7 +287,7 @@ namespace tloc { namespace math {
     return lengthSq;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::Dot(const Vector<T, T_Size>& aVector) const
   {
     T dotProd = 0;
@@ -300,14 +300,14 @@ namespace tloc { namespace math {
     return dotProd;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI T Vector<T, T_Size>::DotAbs(const Vector<T, T_Size>& aVector) const
   {
     T dotProd = Dot(aVector);
     return Math<T>::Abs(dotProd);
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI Vector<T, T_Size>& Vector<T, T_Size>
     ::Midpoint(const Vector<T, T_Size>& aVector)
   {
@@ -319,7 +319,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI void Vector<T, T_Size>::Midpoint(const Vector<T, T_Size>& aVector1,
                                          const Vector<T, T_Size>& aVector2)
   {
@@ -330,7 +330,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Comparisons
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Vector<T, T_Size>::operator == (const Vector<T, T_Size>& aVector)
   {
     ITERATE_VECTOR
@@ -341,7 +341,7 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Vector<T, T_Size>::operator != (const Vector<T, T_Size>& aVector)
   {
     return !operator==(aVector);
@@ -350,7 +350,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Checks
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Vector<T, T_Size>::IsValid()
   {
     ITERATE_VECTOR
@@ -361,7 +361,7 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   TL_FI bool Vector<T, T_Size>::IsZero()
   {
     ITERATE_VECTOR

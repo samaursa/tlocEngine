@@ -12,7 +12,7 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TABLE for (u32 i = 0; i < TABLE_SIZE; ++i)
+#define ITERATE_TABLE for (u32 i = 0; i < k_TableSize; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
@@ -35,7 +35,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const T (&values)[TABLE_SIZE],
+  TL_FI Table<T, T_Rows, T_Cols>::Table(const T (&values)[k_TableSize],
     TABLE_ORDER aTableOrder)
   {
     Set(values, aTableOrder);
@@ -132,14 +132,14 @@ namespace tloc { namespace core {
 
   template <typename T, u32 T_Rows, u32 T_Cols>
   TL_FI void Table<T, T_Rows, T_Cols>
-    ::Set(const T (&values)[TABLE_SIZE], TABLE_ORDER aTableOrder)
+    ::Set(const T (&values)[k_TableSize], TABLE_ORDER aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
       L"Undefined behavior.");
 
-    if (aTableOrder == COL_MAJOR)
+    if (aTableOrder == k_ColMajor)
     {
-      memcpy(m_values, values, sizeof(T) * TABLE_SIZE);
+      memcpy(m_values, values, sizeof(T) * k_TableSize);
     }
     else
     {
@@ -190,7 +190,7 @@ namespace tloc { namespace core {
   TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>
     ::operator = (const Table<T, T_Rows, T_Cols>& aTable)
   {
-    memcpy(m_values, aTable, sizeof(T) * TABLE_SIZE);
+    memcpy(m_values, aTable, sizeof(T) * k_TableSize);
 
     return *this;
   }

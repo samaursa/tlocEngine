@@ -72,10 +72,10 @@ namespace TestingMatrix
 
     f32 rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    tloc::math::Matrix<f32, 3> g(rawArray, tloc::math::Matrix<f32, 3>::ROW_MAJOR);
+    tloc::math::Matrix<f32, 3> g(rawArray, tloc::math::Matrix<f32, 3>::k_RowMajor);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Matrix<f32, 3> h(rawArray, tloc::math::Matrix<f32, 3>::COL_MAJOR);
+    tloc::math::Matrix<f32, 3> h(rawArray, tloc::math::Matrix<f32, 3>::k_ColMajor);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.Zero();
@@ -139,7 +139,7 @@ namespace TestingMatrix
     //------------------------------------------------------------------------
     c.Zero(); d.Zero();
     f32 numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    c.Set(numArray, Matrix<f32, 3>::ROW_MAJOR);
+    c.Set(numArray, Matrix<f32, 3>::k_RowMajor);
     d = c;
     e.Mul(c, d);
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
@@ -179,7 +179,7 @@ namespace TestingMatrix
     "Test accessors")
   {
     f32 diagArray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
-    d.Set(diagArray, Matrix<f32, 3>::COL_MAJOR);
+    d.Set(diagArray, Matrix<f32, 3>::k_ColMajor);
 
     Vec3f diagVec;
     d.GetDiagonal(diagVec);

@@ -45,17 +45,17 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(i, 90, 90, 90, 90, 90, 90, 90, 90, 90);
 
     tloc::math::Vec3f v1(1, 2, 3), v2(4, 5, 6), v3(7, 8, 9);
-    tloc::math::Mat3f j(v1, v2, v3, tloc::math::Mat3f::ROW_MAJOR);
+    tloc::math::Mat3f j(v1, v2, v3, tloc::math::Mat3f::k_RowMajor);
     CHECK_MATRIX3F(j, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Mat3f k(v1, v2, v3, tloc::math::Mat3f::COL_MAJOR);
+    tloc::math::Mat3f k(v1, v2, v3, tloc::math::Mat3f::k_ColMajor);
     CHECK_MATRIX3F(k, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    tloc::math::Mat3f m(values, tloc::math::Mat3f::ROW_MAJOR);
+    tloc::math::Mat3f m(values, tloc::math::Mat3f::k_RowMajor);
     CHECK_MATRIX3F(m, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Mat3f n(values, tloc::math::Mat3f::COL_MAJOR);
+    tloc::math::Mat3f n(values, tloc::math::Mat3f::k_ColMajor);
     CHECK_MATRIX3F(n, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
   }
@@ -64,18 +64,18 @@ namespace TestingMatrix3
     "Test multiplication")
   {
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    a.Set(values, Mat3f::ROW_MAJOR);
-    b.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
+    b.Set(values, Mat3f::k_RowMajor);
 
     c.Mul(a, b);
     CHECK_MATRIX3F(c, 30, 66, 102, 36, 81, 126, 42, 96, 150);
 
-    c.Set(values, Mat3f::ROW_MAJOR);
+    c.Set(values, Mat3f::k_RowMajor);
     c.Mul(a);
     CHECK_MATRIX3F(c, 30, 66, 102, 36, 81, 126, 42, 96, 150);
 
     Vec3f vec1(1, 2, 3), vec2;
-    c.Set(values, Mat3f::ROW_MAJOR);
+    c.Set(values, Mat3f::k_RowMajor);
     c.Mul(vec1, vec2);
     CHECK_VEC3F(vec2, 14, 32, 50);
   }
@@ -84,12 +84,12 @@ namespace TestingMatrix3
     "Test determinant")
   {
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    a.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
 
     CHECK(a.Determinant() == Approx(0));
 
     f32 values2[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
-    a.Set(values2, Mat3f::ROW_MAJOR);
+    a.Set(values2, Mat3f::k_RowMajor);
     CHECK(a.Determinant() == Approx(48));
   }
 
@@ -97,13 +97,13 @@ namespace TestingMatrix3
     "Test inverse")
   {
     f32 values[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
-    a.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
 
     REQUIRE(b.Inverse(a) == true);
     CHECK_MATRIX3F(b, 0.5625f, -0.25f, 0, 0.1875f, 0.25, -0.33333f, -0.5f, 0, .33333f);
 
     f32 values2[9] = {89, 58, 23, 97, 78, 72, 54, 32, 90};
-    a.Set(values2, Mat3f::ROW_MAJOR);
+    a.Set(values2, Mat3f::k_RowMajor);
     a.Inverse();
     CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f,
                      -0.03954f,   0.059680,  0.002504f,
@@ -114,7 +114,7 @@ namespace TestingMatrix3
     "Test adjoint")
   {
     f32 values[9] = {2, 0, 1, 3, 2, -1, 1, 0, 0};
-    a.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
     b.Adjoint(a);
 
     CHECK_MATRIX3F(b, 0, -1, -2, 0, -1, 0, -2, 5, 4);
@@ -127,7 +127,7 @@ namespace TestingMatrix3
     "Test orthonormalize")
   {
     f32 values[9] = {1, 4, 7, 4, 5, 8, 9, 15, 5};
-    a.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
 
     a.Orthonormalize();
     CHECK_MATRIX3F(a, 0.10101525f, 0.40406102f, 0.90913731f,
@@ -142,7 +142,7 @@ namespace TestingMatrix3
     CHECK(col3.Length() == Approx(1));
 
     a.Zero();
-    a.Set(values, Mat3f::ROW_MAJOR);
+    a.Set(values, Mat3f::k_RowMajor);
     a.FastOrthonormalize();
     f32 prec = 1e-1f;
     CHECK( (Mathf::Approx(a[0], 0.10f, prec)) == true );

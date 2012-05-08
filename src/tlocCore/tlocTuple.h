@@ -7,7 +7,7 @@
 
 namespace tloc { namespace core {
 
-  template <typename T, u32 T_Size>
+  template <typename T, tl_size T_Size>
   class Tuple
   {
   public:
@@ -26,18 +26,21 @@ namespace tloc { namespace core {
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI T& operator[] (s32 aIndex);
+    TL_FI T& operator[] (tl_int aIndex);
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI const T& operator[] (s32 aIndex) const;
+    TL_FI const T& operator[] (tl_int aIndex) const;
 
-    TL_FI T& Get(u32 aIndex);
-    TL_FI const T& Get(u32 aIndex) const;
+    TL_FI T& Get(tl_size aIndex);
+    TL_FI const T& Get(tl_size aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
     TL_FI operator T* ();
     TL_FI operator const T* () const;
+
+    // Access the size of the tuple
+    TL_FI tl_size GetSize() const;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -69,7 +72,8 @@ namespace tloc { namespace core {
 
   protected:
 
-    T m_values[T_Size];
+    enum { k_TupleSize = T_Size};
+    T m_values[k_TupleSize];
 
   private:
 

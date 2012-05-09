@@ -68,7 +68,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_FI ArrayBase<T>::ArrayBase( tl_size aSize )
   {
     m_begin = DoAllocate(aSize);
-    TLOC_ASSERT_CONTAINERS(m_begin != NULL,
+    TLOC_ASSERT_CONTAINERS(m_begin != NULL || aSize == 0,
                             "Could not allocate Array!");
     m_end = m_begin;
     m_capacity = m_begin + aSize;
@@ -362,8 +362,10 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <typename T>
   TL_FI Array<T>::Array( const Array<T>& toCopy )
+    : ArrayBase(toCopy.size())
   {
-    insert(m_begin, toCopy.m_begin, toCopy.m_end);
+    /*insert(m_begin, toCopy.m_begin, toCopy.m_end);*/
+    m_end = uninitialized_copy(toCopy.m_begin, toCopy.m_end, m_begin);
   }
 
   template <typename T>

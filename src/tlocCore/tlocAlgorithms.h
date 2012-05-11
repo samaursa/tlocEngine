@@ -323,6 +323,14 @@ namespace tloc { namespace core {
     TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, IsChar);
 
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, random_access_iterator_tag);
+    
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count,
+                     const T_ValueType& a_value, input_iterator_tag);
+
     //------------------------------------------------------------------------
     // find helpers
 

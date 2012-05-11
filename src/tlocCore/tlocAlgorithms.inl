@@ -909,10 +909,12 @@ namespace tloc { namespace core {
     TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, IsNotChar)
     {
-      for (/* */; a_count > 0; --a_count, ++a_first)
-      {
-        *a_first = a_value;
-      }
+      typedef iterator_traits<T_OutputIterator>::iterator_category 
+        iterator_category;
+
+      // The correct fill_n() will be called depending on whether the output
+      // iterator has a random or lesser tag associated with it. 
+      fill_n(a_first, a_count, a_value, iterator_category());
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
@@ -920,6 +922,26 @@ namespace tloc { namespace core {
                      const T_ValueType& a_value, IsChar)
     {
       memset(a_first, a_value, (tl_size)a_count);
+    }
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, random_access_iterator_tag)
+    {
+      // Grabbing a range by adding to a_first and using fill is faster than
+      // using two variables in a for loop. This is only possible if the output
+      // iterator has a random tag. 
+      tloc::core::fill(a_first, a_first + a_count, a_value);
+    }
+
+    template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
+    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+                     const T_ValueType& a_value, input_iterator_tag)
+    {
+      for (/* */; a_count > 0; --a_count, ++a_first)
+      {
+        *a_first = a_value;
+      }
     }
 
     template <typename T_InputIterator, typename T>

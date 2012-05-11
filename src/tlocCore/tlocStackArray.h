@@ -127,9 +127,11 @@ namespace tloc { namespace core {
   protected:
 
     //------------------------------------------------------------------------
-    // Insert Helpers
+    // push_back() Helpers
     TL_I void             DoAddToEnd(const value_type& a_valueToCopy);
 
+    //------------------------------------------------------------------------
+    // insert() Helpers
     TL_I void             DoInsertValue(value_type* a_position, 
                                         const value_type& a_value);
     TL_I void             DoInsertValues(value_type* a_position, 

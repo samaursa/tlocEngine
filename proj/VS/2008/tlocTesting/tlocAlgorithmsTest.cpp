@@ -118,7 +118,7 @@ namespace TestingAlgorithms
       }
     }
 
-    {// fill_n using an iterator for an Array<tl_int>
+    {// fill using an iterator for an Array<tl_int>
       Array<tl_int> testArray(100, 10);
 
       fill(testArray.begin(), testArray.end(), 12);
@@ -129,7 +129,7 @@ namespace TestingAlgorithms
       }
     }
 
-    {// fill_n filling up a portion of the array
+    {// fill filling up a portion of the array
       tl_int testArray[100] = {0};
 
       fill(testArray, testArray + 50, 6);
@@ -180,6 +180,20 @@ namespace TestingAlgorithms
       for (tl_size i = 0; i < 100; ++i)
       {
         CHECK(testArray[i] == 8);
+      }
+    }
+
+    {// fill_n using an iterator from a List<tl_int>
+      List<tl_int> testList(100, 0);
+
+      fill_n(testList.begin(), 100, 65);
+
+      List<tl_int>::iterator itr = testList.begin();
+      List<tl_int>::const_iterator itrEnd = testList.end();
+
+      for (/* */; itr != itrEnd; ++itr)
+      {
+        CHECK(*itr == 65);
       }
     }
 

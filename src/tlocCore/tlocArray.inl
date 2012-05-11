@@ -487,7 +487,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       resize(aRepetitionNum);
     }
 
-    fill(m_begin, m_begin + aRepetitionNum, aElemToCopy);
+    fill_n(m_begin, aRepetitionNum, aElemToCopy);
   }
 
   template <typename T>
@@ -576,15 +576,18 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
     if (m_end != m_capacity)
     {
-      // Value may be from within the range of the array, in which case, it will
-      // be moved by one
+      // Value may be from within the range of the array, in which case, the
+      // pointer will be moved by one to where it will be once everything is
+      // moved over. 
       const T* valuePtr = &aValue;
       if (valuePtr >= aPosition && valuePtr < m_end)
       {
         ++valuePtr;
       }
 
-      ::new(m_end) T(*(m_end - 1)); // We need to allocate it first
+      // We directly assume that the value is not going to be inserted at m_end
+      // at this point. 
+      ::new(m_end) T(*(m_end - 1)); // We need initialize and move the end value
       copy_backward(aPosition, m_end - 1, m_end);
       *aPosition = *valuePtr;
       ++m_end;

@@ -62,9 +62,12 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Assignment
     
+    TL_I this_type&
+      operator= (const this_type& a_toCopy);
+
     template <tl_size T_OtherCapacity>
-    TL_I this_type&       operator= (
-      const StackArray<value_type, T_OtherCapacity>& a_toCopy);
+    TL_I this_type&       
+      operator= (const StackArray<value_type, T_OtherCapacity>& a_toCopy);
 
     //------------------------------------------------------------------------
     // Element access
@@ -139,16 +142,25 @@ namespace tloc { namespace core {
   protected:
 
     //------------------------------------------------------------------------
+    // operator=() Helper
+
+    template <tl_size T_OtherCapacity>
+    TL_I this_type&       
+      DoOperatorEqual(const StackArray<value_type, T_OtherCapacity>& a_toCopy);
+
+    //------------------------------------------------------------------------
     // resize() Helper
 
     TL_I void             DoResize(size_type a_newSize, value_type& a_value);
 
     //------------------------------------------------------------------------
     // push_back() Helpers
+    
     TL_I void             DoAddToEnd(const value_type& a_valueToCopy);
 
     //------------------------------------------------------------------------
     // insert() Helpers
+    
     TL_I void             DoInsertValue(value_type* a_position, 
                                         const value_type& a_value);
     TL_I void             DoInsertValues(value_type* a_position, 

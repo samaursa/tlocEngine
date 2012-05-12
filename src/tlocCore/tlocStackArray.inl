@@ -134,18 +134,20 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Assignment
 
   template <STACK_ARRAY_TYPES>
+  TL_I typename StackArray<STACK_ARRAY_PARAMS>::this_type& 
+    StackArray<STACK_ARRAY_PARAMS>::operator= (const this_type& a_toCopy)
+  {
+    return DoOperatorEqual(a_toCopy);
+  }
+
+  template <STACK_ARRAY_TYPES>
   template <tl_size T_OtherCapacity>
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::this_type& 
-    StackArray<STACK_ARRAY_PARAMS>::operator= (
-    const StackArray<value_type, T_OtherCapacity>& a_toCopy)
+    StackArray<STACK_ARRAY_PARAMS>::
+    operator= (const StackArray<value_type, T_OtherCapacity>& a_toCopy)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_toCopy.size());
-
-    m_end = m_begin;
-    advance(m_end, a_toCopy.size());
-    copy(a_toCopy.begin(), a_toCopy.end(), static_cast<value_type*>(m_begin));
-    
-    return *this;
+    return DoOperatorEqual(a_toCopy);
   }
 
   //------------------------------------------------------------------------
@@ -445,6 +447,22 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<value_type, T_Capacity> temp(*this);
     *this = a_vec;
     a_vec = temp;
+  }
+
+  //------------------------------------------------------------------------
+  // operator=() Helper
+
+  template <STACK_ARRAY_TYPES>
+  template <tl_size T_OtherCapacity>
+  TL_I typename StackArray<STACK_ARRAY_PARAMS>::this_type& 
+    StackArray<STACK_ARRAY_PARAMS>::
+    DoOperatorEqual(const StackArray<value_type, T_OtherCapacity>& a_toCopy)
+  {
+    m_end = m_begin;
+    advance(m_end, a_toCopy.size());
+    copy(a_toCopy.begin(), a_toCopy.end(), static_cast<value_type*>(m_begin));
+
+    return *this;
   }
 
   //------------------------------------------------------------------------

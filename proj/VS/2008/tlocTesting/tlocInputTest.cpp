@@ -31,7 +31,7 @@ namespace TestingInput
 
     bool OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
       m_keypresses++;
 
@@ -40,7 +40,7 @@ namespace TestingInput
 
     bool OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
       m_keyreleases++;
 
@@ -65,7 +65,7 @@ namespace TestingInput
 
     bool OnButtonPress(const tl_size a_caller, const MouseEvent& a_event)
     {
-      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
       m_buttonPresses++;
 
@@ -74,7 +74,7 @@ namespace TestingInput
 
     bool OnButtonRelease(const tl_size a_caller, const MouseEvent& a_event)
     {
-      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
       m_buttonReleases++;
 
@@ -83,7 +83,7 @@ namespace TestingInput
 
     bool OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
     {
-      CHECK(IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
       m_movementEvents++;
       return false;

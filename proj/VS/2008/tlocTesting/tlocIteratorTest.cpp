@@ -1,15 +1,46 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocIterator.h"
-#include "tlocCore/tlocIterator.inl"
+#include <tlocCore/tlocIterator.h>
+#include <tlocCore/tlocIterator.inl>
 
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/tlocArray.h>
+#include <tlocCore/tlocArray.inl>
+#include <tlocCore/tlocList.h>
+#include <tlocCore/tlocList.inl>
 
 namespace TestingIterator
 {
   USING_TLOC;
   using namespace core;
+
+  TEST_CASE("Core/Iterator/globals", "")
+  {
+    {
+      int someArray[50];
+      int* testArrayBegin = begin(someArray);
+      int* testArrayEnd = end(someArray);
+      CHECK(testArrayBegin == someArray);
+      CHECK(testArrayEnd == someArray + 50);
+    }
+
+    {
+      Array<int> complexArray;
+      Array<int>::iterator itr, itrEnd;
+      itr = begin(complexArray);
+      itrEnd = end(complexArray);
+      CHECK(itr == complexArray.begin());
+      CHECK(itrEnd == complexArray.end());
+    }
+
+    {
+      List<int> complexList;
+      List<int>::iterator itr, itrEnd;
+      itr = begin(complexList);
+      itrEnd = end(complexList);
+      CHECK(itr == complexList.begin());
+      CHECK(itrEnd == complexList.end());
+    }
+  }
 
   TEST_CASE("Core/Iteraor/back_insert_iterator", "")
   {

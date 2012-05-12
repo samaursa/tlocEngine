@@ -4,6 +4,11 @@
 #include "tlocCore/tlocTypes.h"
 #include "tlocCore/tlocTemplateParams.h"
 
+#include <tlocCore/tlocArray.h>
+#include <tlocCore/tlocArray.inl>
+#include <tlocCore/tlocList.h>
+#include <tlocCore/tlocList.inl>
+
 namespace TestingMemory
 {
   USING_TLOC;
@@ -38,6 +43,19 @@ namespace TestingMemory
     CHECK(a <= c);
   }
 
+  TEST_CASE("Core/Utilities", "Testing array size utility")
+  {
+    int someArray[50];
+    char someCharArray[30];
+    core::Array<int> dynArray; dynArray.resize(20);
+    core::List<int> dynList; dynList.resize(5);
+
+    CHECK(core::utils::ArraySize(someArray) == 50);
+    CHECK(core::utils::ArraySize(someCharArray) == 30);
+    CHECK(core::utils::ArraySize(dynArray) == 20);
+    CHECK(core::utils::ArraySize(dynList) == 5);
+  }
+
   TEST_CASE("Core/Utilities/IsSamePointer", "")
   {
     s32* n = new s32(5);
@@ -46,11 +64,10 @@ namespace TestingMemory
     s32* p = new s32(6);
     tl_size ptr2 = (tl_size)p;
 
-    CHECK(core::IsSamePointer(n, ptr) == true);
-    CHECK(core::IsSamePointer(n, p) == false);
-    CHECK(core::IsSamePointer(ptr, ptr2) == false);
-    CHECK(core::IsSamePointer(p, ptr2) == true);
-
+    CHECK(core::utils::IsSamePointer(n, ptr) == true);
+    CHECK(core::utils::IsSamePointer(n, p) == false);
+    CHECK(core::utils::IsSamePointer(ptr, ptr2) == false);
+    CHECK(core::utils::IsSamePointer(p, ptr2) == true);
   }
 
   TEST_CASE("Core/Utilities/TemplateParams", "")
@@ -143,15 +160,15 @@ namespace TestingMemory
       three = 1 << 2,
       four  = 1 << 3,
       five  = 1 << 4,
-      count = core::EnumCounter<five>::result,
+      count = core::utils::EnumCounter<five>::result,
     };
 
     CHECK( count == 5);
 
-    CHECK( (core::EnumToIndex<five>::result) == 4);
-    CHECK( (core::EnumToIndex<one>::result) == 0);
+    CHECK( (core::utils::EnumToIndex<five>::result) == 4);
+    CHECK( (core::utils::EnumToIndex<one>::result) == 0);
 
-    CHECK( (core::EnumToIndex<five, true>::result) == 5);
-    CHECK( (core::EnumToIndex<one>::result) == 0);
+    CHECK( (core::utils::EnumToIndex<five, true>::result) == 5);
+    CHECK( (core::utils::EnumToIndex<one>::result) == 0);
   }
 };

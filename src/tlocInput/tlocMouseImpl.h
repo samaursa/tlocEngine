@@ -26,7 +26,7 @@ namespace tloc { namespace input {
       button7 = 1 << 6,
       button8 = 1 << 7,
 
-      count = core::EnumCounter<button8, true>::result,
+      count = core::utils::EnumCounter<button8, true>::result,
     };  typedef u32 button_code_type;
 
     MouseEvent(ButtonCode a_code = none) : m_buttonCode(a_code) {}

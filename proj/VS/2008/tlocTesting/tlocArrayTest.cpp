@@ -77,6 +77,7 @@ namespace TestingArray
     
     Array<s32> sixth (10);
     CHECK(sixth.size() == 10);
+    CHECK(sixth.capacity() == 10);
 
     // the iterator constructor can also be used to construct from arrays:
     s32 myints[] = {16,2,77,29};

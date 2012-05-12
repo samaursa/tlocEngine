@@ -5,7 +5,10 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocTuple.inl"
 #include "tlocAlgorithms.inl"
+#include "tlocIterator.inl"
+#include "tlocMemory.inl"
 
 namespace tloc { namespace core{
 
@@ -25,11 +28,11 @@ namespace tloc { namespace core{
   TLOC_ASSERT_STACK_ARRAY(full() == false, "Stack Array is full!")
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_EXCLUSIVE(a_position) \
-  TLOC_ASSERT_STACK_ARRAY(a_position >= m_values && a_position <= m_end, \
+  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position <= m_end, \
 TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_INCLUSIVE(a_position) \
-  TLOC_ASSERT_STACK_ARRAY(a_position >= m_values && a_position < m_end, \
+  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position < m_end, \
   TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN(a_rangeBegin) \
@@ -53,7 +56,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TLOC_ASSERT_STACK_ARRAY(a_size <= capacity(), "New size is larger than capacity!")
 
 #define TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO() \
-  TLOC_STATIC_ASSERT(capacity() > 0, Capacity_of_Stack_Array_must_be_more_than_0)
+  TLOC_STATIC_ASSERT(T_Capacity > 0, Capacity_of_Stack_Array_must_be_more_than_0)
 
   //////////////////////////////////////////////////////////////////////////
   // Template macros
@@ -66,20 +69,20 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray()
-    : m_values()
-    : m_end(m_values)
+    : m_begin()
+    , m_end(m_begin)
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
   }
 
   template <STACK_ARRAY_TYPES>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(const this_type& a_toCopy)
-    : m_values(a_toCopy.m_values)
+    : m_begin(a_toCopy.m_begin)
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_toCopy.size());
 
-    m_end = m_values + a_toCopy.size();
+    m_end = m_begin + a_toCopy.size();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -96,36 +99,35 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <STACK_ARRAY_TYPES>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(size_type a_numElemsToInsert, 
                                                    const value_type& a_valueToCopy)
-                                                   : m_values()
+                                                   : m_begin()
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_numElemsToInsert);
 
-    fill_n(m_values, a_numElemsToInsert, a_valueToCopy);
-    m_end = m_values + a_numElemsToInsert;
+    fill_n(static_cast<value_type*>(m_begin), a_numElemsToInsert, a_valueToCopy);
+    m_end = m_begin + a_numElemsToInsert;
   }
 
   template <STACK_ARRAY_TYPES>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(size_type a_count)
-    : m_values()
+    : m_begin()
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_count);
 
-    m_end = m_values + a_count;
+    m_end = m_begin + a_count;
   }
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(T_InputIterator a_rangeBegin, 
                                                    T_InputIterator a_rangeEnd)
-                                                   : m_values()
-                                                   : m_end(NULL)
+                                                   : m_begin()
+                                                   , m_end(m_begin)
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
-    TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(distance(a_rangeBegin, a_rangeEnd));
 
-    insert(m_values, a_rangeBegin, a_rangeEnd);
+    insert(static_cast<value_type*>(m_begin), a_rangeBegin, a_rangeEnd);
   }
 
   //------------------------------------------------------------------------
@@ -139,9 +141,9 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_toCopy.size());
 
-    m_end = m_values;
+    m_end = m_begin;
     advance(m_end, a_toCopy.size());
-    copy(a_toCopy.m_values, a_toCopy.m_end, m_values);
+    copy(a_toCopy.begin(), a_toCopy.end(), static_cast<value_type*>(m_begin));
     
     return *this;
   }
@@ -154,7 +156,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::at(size_type a_index)
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
-    return m_values.Get(a_index);
+    return m_begin.Get(a_index);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -162,7 +164,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::at(size_type a_index) const
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
-    return m_values.Get(a_index);
+    return m_begin.Get(a_index);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -170,7 +172,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::operator[] (size_type a_index)
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
-    return m_values.Get(a_index);
+    return m_begin.Get(a_index);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -178,7 +180,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::operator[] (size_type a_index) const
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
-    return m_values.Get(a_index);
+    return m_begin.Get(a_index);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -186,7 +188,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::front()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return *m_values;
+    return *m_begin;
   }
 
   template <STACK_ARRAY_TYPES>
@@ -194,7 +196,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     StackArray<STACK_ARRAY_PARAMS>::front() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return *m_values;
+    return *m_begin;
   }
 
   template <STACK_ARRAY_TYPES>
@@ -217,7 +219,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::pointer
     StackArray<STACK_ARRAY_PARAMS>::data()
   {
-    return m_values;
+    return m_begin;
   }
 
   //------------------------------------------------------------------------
@@ -227,14 +229,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::iterator
     StackArray<STACK_ARRAY_PARAMS>::begin()
   {
-    return m_values;
+    return m_begin;
   }
 
   template <STACK_ARRAY_TYPES>
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::const_iterator
     StackArray<STACK_ARRAY_PARAMS>::begin() const
   {
-    return m_values;
+    return m_begin;
   }
 
   template <STACK_ARRAY_TYPES>
@@ -258,14 +260,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::size_type
     StackArray<STACK_ARRAY_PARAMS>::size() const
   {
-    return (m_end - m_values);
+    return (m_end - m_begin);
   }
 
   template <STACK_ARRAY_TYPES>
   TL_I typename StackArray<STACK_ARRAY_PARAMS>::size_type
     StackArray<STACK_ARRAY_PARAMS>::capacity() const
   {
-    return m_values.GetSize();
+    return m_begin.GetSize();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -302,10 +304,10 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_repetitionNum);
 
-    m_end = m_values;
+    m_end = m_begin;
     advance(m_end, a_repetitionNum);
 
-    fill_n(m_values, a_repetitionNum, a_elemToCopy);
+    fill_n(m_begin, a_repetitionNum, a_elemToCopy);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -362,15 +364,29 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
       *m_end = a_valueToCopy;
       ++m_end;
     }
+
+    return a_position;
   }
 
   template <STACK_ARRAY_TYPES>
   TL_I void 
-    StackArray<STACK_ARRAY_PARAMS>::insert(value_type* a_position, 
+    StackArray<STACK_ARRAY_PARAMS>::insert(iterator a_position, 
                                            size_type a_numElemsToInsert, 
                                            const value_type& a_valueToCopy)
   {
-    DoInsertValues(a_position, a_numElemsToInsert, a_valueToCopy);
+    TLOC_ASSERT_STACK_ARRAY_POSITION_END_EXCLUSIVE(a_position);
+
+    if (a_position != m_end)
+    {
+      DoInsertValues(a_position, a_numElemsToInsert, a_valueToCopy);
+    }
+    else
+    {
+      TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(size() + a_numElemsToInsert);
+
+      fill_n(m_end, a_numElemsToInsert, a_valueToCopy);
+      advance(m_end, a_numElemsToInsert);
+    }
   }
 
   template <STACK_ARRAY_TYPES>
@@ -418,7 +434,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <STACK_ARRAY_TYPES>
   TL_I void StackArray<STACK_ARRAY_PARAMS>::clear()
   {
-    m_end = m_values;
+    m_end = m_begin;
   }
 
   template <STACK_ARRAY_TYPES>
@@ -485,7 +501,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     }
 
     // We directly assume that the value is not going to be inserted at m_end
-    // at this point
+    // at this point since we're making room by incrementing m_end. 
     ++m_end;
     copy_backward(a_position, m_end - 1, m_end);
     *a_position = *valuePtr;
@@ -507,12 +523,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     const value_type* valuePtr = &a_value;
     if (valuePtr >= a_position && valuePtr < m_end)
     {
-      tloc::core::advance(a_value, a_numElemsToInsert);
+      tloc::core::advance(valuePtr, a_numElemsToInsert);
     }
 
+    // We directly assume that the value is not going to be inserted at m_end
+    // at this point since we're making room by incrementing m_end. 
     tloc::core::advance(m_end, a_numElemsToInsert);
     copy_backward(a_position, m_end - a_numElemsToInsert, m_end);
-    fill_n(a_position, a_numElemsToInsert, a_value);
+    fill_n(a_position, a_numElemsToInsert, *valuePtr);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -522,7 +540,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
                                                      T_Number a_value, 
                                                      is_integral_t)
   {
-    insert(static_cast<size_type>(a_n), static_cast<value_type>(a_value));
+    insert(a_position, static_cast<size_type>(a_n), static_cast<value_type>(a_value));
   }
 
   template <STACK_ARRAY_TYPES>
@@ -577,10 +595,10 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(projectedSize);
     
-    m_end = m_values;
+    m_end = m_begin;
     tloc::core::advance(m_end, projectedSize);
 
-    copy(a_rangeBegin, a_rangeEnd, m_values);
+    copy(a_rangeBegin, a_rangeEnd, m_begin);
   }
 
 };};

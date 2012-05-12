@@ -1002,6 +1002,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocStackArrayTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocStackTest.cpp"
 				>
 			</File>

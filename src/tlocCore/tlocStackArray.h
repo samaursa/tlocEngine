@@ -3,7 +3,11 @@
 
 #include "tlocBase.h"
 #include "tlocTypes.h"
+#include "tlocTypeTraits.h"
 #include "tlocTuple.h"
+#include "tlocAlgorithms.h"
+#include "tlocIterator.h"
+#include "tlocMemory.h"
 
 #ifndef TLOC_DISABLE_ASSERT_STACK_ARRAY
 # define TLOC_ASSERT_STACK_ARRAY(_Expression, _Msg) TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
@@ -29,6 +33,8 @@ namespace tloc { namespace core {
     typedef const T*                                      const_iterator;
     typedef tl_size                                       size_type;
     typedef tl_ptrdiff                                    difference_type;
+
+    typedef Tuple<value_type, T_Capacity>                 container_type;
     
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
@@ -52,8 +58,6 @@ namespace tloc { namespace core {
     TL_FI explicit StackArray(size_type a_count);
     template <typename T_InputIterator>
     TL_FI StackArray(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd);
-
-    TL_FI ~StackArray();
 
     //------------------------------------------------------------------------
     // Assignment
@@ -116,7 +120,7 @@ namespace tloc { namespace core {
 
     TL_I iterator         insert(iterator a_position, 
                                  const value_type& a_valueToCopy);
-    TL_I void             insert(value_type* a_position, 
+    TL_I void             insert(iterator a_position, 
                                  size_type a_numElemsToInsert, 
                                  const value_type& a_valueToCopy);
     template <typename T_InputIterator>
@@ -183,8 +187,8 @@ namespace tloc { namespace core {
 
     //------------------------------------------------------------------------
     // Variables
-    Tuple<value_type, T_Capacity>     m_values;
-    value_type*                       m_end;
+    container_type        m_begin;
+    value_type*           m_end;
 
   };
 

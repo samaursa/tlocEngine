@@ -149,7 +149,8 @@ namespace tloc { namespace core {
 
   template <typename T, tl_size T_Size>
   template <typename T_TupleType>
-  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=(const Tuple<T_TupleType, T_Size>& aTuple)
+  TL_FI Tuple<T, T_Size>& 
+    Tuple<T, T_Size>::operator=(const Tuple<T_TupleType, T_Size>& aTuple)
   {
     Set(aTuple);
     return *this;
@@ -157,7 +158,8 @@ namespace tloc { namespace core {
 
   template <typename T, tl_size T_Size>
   template <typename T_ArrayType>
-  TL_FI Tuple<T, T_Size>& Tuple<T, T_Size>::operator=( const T_ArrayType (&aArray)[T_Size])
+  TL_FI Tuple<T, T_Size>& 
+    Tuple<T, T_Size>::operator=( const T_ArrayType (&aArray)[T_Size])
   {
     Set(aArray);
     return *this;

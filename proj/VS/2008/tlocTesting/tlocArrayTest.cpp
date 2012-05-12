@@ -434,6 +434,8 @@ namespace TestingArray
     ints.assign(itrBegin, itrEnd);
     CHECK(ints.size() == 10);
 
+    ints.reserve(20);
+
     s32 anotherArray[15] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     itrBegin = anotherArray;
     itrEnd = anotherArray + 15;
@@ -445,6 +447,8 @@ namespace TestingArray
     {
       CHECK(ints[i-1] == (s32)i);
     }
+
+    ints.reserve(50);
 
     // Assign 10, 20 times
     ints.assign(20, 10);

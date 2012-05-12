@@ -18,7 +18,7 @@ namespace tloc { namespace core {
 #index _CRT_WIDE(" is out of range!")
 
 #define TLOC_ASSERT_ARRAY_INDEX(index) \
-  TLOC_ASSERT_ARRAY(index < size(), "Index out of bounds!")
+  TLOC_ASSERT_ARRAY(index >= 0 && index < size(), "Index out of bounds!")
 
 #define TLOC_ASSERT_ARRAY_NOT_EMPTY() \
   TLOC_ASSERT_ARRAY(size() > 0, "Array is empty!")
@@ -31,7 +31,7 @@ namespace tloc { namespace core {
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(position) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_BEGIN(rangeBegin) \
-  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin <= m_end,\
+  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin < m_end,\
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_END(rangeEnd) \
@@ -112,8 +112,11 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     else
     {
       const ArrayBase<T>::iterator itr = copy(aToCopy.begin(), aToCopy.end(), m_begin);
-      erase(itr, m_end);
-      m_end = itr;
+      if (itr != m_end)
+      {
+        erase(itr, m_end);
+        m_end = itr;
+      }
     }
     return *this;
   }
@@ -285,7 +288,10 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void ArrayBase<T>::clear()
   {
-    erase(m_begin, m_end);
+    if (!empty())
+    {
+      erase(m_begin, m_end);
+    }
   }
 
   //------------------------------------------------------------------------
@@ -387,6 +393,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   template <typename T_InputIterator>
   TL_FI Array<T>::Array(T_InputIterator aRangeBegin, T_InputIterator aRangeEnd)
+    : ArrayBase()
   {
     insert(m_begin, aRangeBegin, aRangeEnd);
   }
@@ -482,7 +489,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T>
   TL_I void Array<T>::assign( tl_size aRepetitionNum, const T& aElemToCopy )
   {
-    if (capacity() < aRepetitionNum)
+    if (size() < aRepetitionNum)
     {
       resize(aRepetitionNum);
     }
@@ -675,8 +682,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE(aRangeBegin, aRangeEnd);
 
-    tl_size projectedSize = aRangeEnd - aRangeBegin;
-    if (capacity() < projectedSize)
+    tl_size projectedSize = tloc::core::distance(aRangeBegin, aRangeEnd);
+    if (size() < projectedSize)
     {
       resize(projectedSize);
     }
@@ -711,7 +718,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                           T_InputIterator last )
   {
     TLOC_ASSERT_ARRAY_RANGE(first, last);
-    tl_size newSize = size() + (last - first);
+    tl_size newSize = size() + (tloc::core::distance(first, last));
 
     if (capacity() >= newSize)
     {

@@ -45,6 +45,8 @@ namespace tloc { namespace core {
     
     TL_FI StackArray();
     TL_FI StackArray(const this_type& a_toCopy);
+    template <tl_size T_OtherCapacity>
+    TL_FI StackArray(const StackArray<value_type, T_OtherCapacity>& a_toCopy);
     TL_FI explicit StackArray(size_type a_numElemsToInsert, 
                               const value_type& a_valueToCopy);
     TL_FI explicit StackArray(size_type a_count);
@@ -56,7 +58,9 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Assignment
     
-    TL_I this_type&       operator= (const this_type& a_toCopy);
+    template <tl_size T_OtherCapacity>
+    TL_I this_type&       operator= (
+      const StackArray<value_type, T_OtherCapacity>& a_toCopy);
 
     //------------------------------------------------------------------------
     // Element access
@@ -93,6 +97,9 @@ namespace tloc { namespace core {
     TL_I bool             empty() const;
     TL_I bool             full() const;
 
+    TL_I void             resize(size_type a_newSize);
+    TL_I void             resize(size_type a_newSize, value_type& a_value);
+
     //------------------------------------------------------------------------
     // Modifiers
 
@@ -122,9 +129,15 @@ namespace tloc { namespace core {
     
     TL_I void             clear();
 
-    TL_I void             swap(this_type& a_vec);
+    template <tl_size T_OtherCapacity>
+    TL_I void             swap(StackArray<value_type, T_OtherCapacity>& a_vec);
 
   protected:
+
+    //------------------------------------------------------------------------
+    // resize() Helper
+
+    TL_I void             DoResize(size_type a_newSize, value_type& a_value);
 
     //------------------------------------------------------------------------
     // push_back() Helpers

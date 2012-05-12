@@ -64,7 +64,7 @@ namespace tloc { namespace core {
     typedef Loki::IsSameType<inputDeref, char8> charTestResult;
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    return detail::find(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
+    return detail::DoFind(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
   }
 
   template <typename T_InputIterator, typename T_Predicate>
@@ -691,7 +691,7 @@ namespace tloc { namespace core {
     typedef Loki::TypeTraits<outputDeref> outputUknown;
     typedef Loki::Int2Type<inputUnknown::isArith && outputUknown::isArith> inputArith;
 
-    return detail::copy(a_rangeBegin, a_rangeEnd, aDestRangeBegin, inputArith());
+    return detail::DoCopy(a_rangeBegin, a_rangeEnd, aDestRangeBegin, inputArith());
   }
 
   template <typename T_InputIterator, typename T_OutputIterator>
@@ -726,7 +726,7 @@ namespace tloc { namespace core {
     typedef Loki::IsSameType<inputDeref, char8> charTestResult;
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    detail::fill(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
+    detail::DoFill(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
 
   }
 
@@ -817,8 +817,9 @@ namespace tloc { namespace core {
     // Copy() helpers
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                               T_OutputIterator aDestRangeBegin, IsNotArith)
+    TL_I T_OutputIterator DoCopy(T_InputIterator a_rangeBegin, 
+                                 T_InputIterator a_rangeEnd, 
+                                 T_OutputIterator aDestRangeBegin, IsNotArith)
     {
       while (a_rangeBegin != a_rangeEnd)
       {
@@ -829,8 +830,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                               T_OutputIterator aDestRangeBegin, IsArith)
+    TL_I T_OutputIterator DoCopy(T_InputIterator a_rangeBegin, 
+                                 T_InputIterator a_rangeEnd, 
+                                 T_OutputIterator aDestRangeBegin, IsArith)
     {
       // We need the size of what the pointer is pointing to, not the pointer
       // itself
@@ -868,8 +870,8 @@ namespace tloc { namespace core {
     // Fill helpers
 
     template <typename T_InputIterator, typename T>
-    TL_I void fill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                    const T& a_value, IsNotChar )
+    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                      const T& a_value, IsNotChar )
     {
       while (a_rangeBegin != a_rangeEnd)
       {
@@ -879,16 +881,16 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T>
-    TL_I void fill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                    const T& a_value, IsChar )
+    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                      const T& a_value, IsChar )
     {
       memset(a_rangeBegin, a_value, sizeof(T) * (a_rangeEnd - a_rangeBegin));
     }
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator find( T_InputIterator a_rangeBegin,
-                          T_InputIterator a_rangeEnd,
-                          const T& a_value, IsNotChar )
+    T_InputIterator DoFind( T_InputIterator a_rangeBegin,
+                            T_InputIterator a_rangeEnd,
+                            const T& a_value, IsNotChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -902,9 +904,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    T_InputIterator find( T_InputIterator a_rangeBegin,
-                          T_InputIterator a_rangeEnd,
-                          const char8& a_value, IsChar )
+    T_InputIterator DoFind( T_InputIterator a_rangeBegin,
+                            T_InputIterator a_rangeEnd,
+                            const char8& a_value, IsChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 

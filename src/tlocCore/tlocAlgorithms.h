@@ -24,7 +24,7 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   /// @brief
   /// Verifies that the range is valid.
-  /// 
+  ///
   /// @note  Work ONLY on raw iterators, this function is compiled out
   /// when dealing with complex iterators. Since this is a special
   /// function that is only used for assertions, it is named like a macro.
@@ -33,7 +33,7 @@ namespace tloc { namespace core {
   /// @param  a_end   The end of the range.
   ///-------------------------------------------------------------------------
   template <typename T_Iterator>
-  void TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(T_Iterator a_begin, 
+  void TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(T_Iterator a_begin,
                                            T_Iterator a_end);
 
   template <typename T_Container, typename T_Function>
@@ -290,11 +290,11 @@ namespace tloc { namespace core {
   TL_I void tlSwap(T& a, T& b);
 
   template <typename T_ForwardIterator, typename T>
-  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first,
     T_ForwardIterator a_last, const T& a_value);
 
   template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
-  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
+  T_ForwardIterator lower_bound(T_ForwardIterator a_first,
     T_ForwardIterator a_last, const T& a_value, T_BinaryPred a_comp);
 
   namespace detail
@@ -310,11 +310,11 @@ namespace tloc { namespace core {
 
     // ------------------------------------------------------------------------
     //  Range verification helpers: for raw iterators we check the range, for
-    //  complex iterators, we ignore the call. 
+    //  complex iterators, we ignore the call.
 
     template <typename T_Iterator>
     void DoVerifyRange(T_Iterator a_begin, T_Iterator a_end, IsRawItr);
-    
+
     template <typename T_Iterator>
     void DoVerifyRange(T_Iterator a_begin, T_Iterator a_end, IsComplexItr);
 
@@ -322,14 +322,14 @@ namespace tloc { namespace core {
     // Copy() helpers
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator  a_rangeBegin,
-                               T_InputIterator  a_rangeEnd,
-                               T_OutputIterator a_destRangeBegin, IsNotArith);
+    TL_I T_OutputIterator DoCopy(T_InputIterator  a_rangeBegin,
+                                 T_InputIterator  a_rangeEnd,
+                                 T_OutputIterator a_destRangeBegin, IsNotArith);
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator copy(T_InputIterator	a_rangeBegin,
-                               T_InputIterator  a_rangeEnd,
-                               T_OutputIterator a_destRangeBegin, IsArith);
+    TL_I T_OutputIterator DoCopy(T_InputIterator	a_rangeBegin,
+                                 T_InputIterator  a_rangeEnd,
+                                 T_OutputIterator a_destRangeBegin, IsArith);
 
     template <typename T_InputIterator, typename T_OutputIterator>
     TL_I void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
@@ -345,23 +345,23 @@ namespace tloc { namespace core {
     // Fill helpers
 
     template <typename T_InputIterator, typename T>
-    TL_I void fill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                    const T& a_value, IsNotChar );
+    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                      const T& a_value, IsNotChar );
 
     template <typename T_InputIterator, typename T>
-    TL_I void fill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                    const T& a_value, IsChar );
+    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                      const T& a_value, IsChar );
 
     //------------------------------------------------------------------------
     // find helpers
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator find(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                         const T& a_value, IsNotChar);
+    T_InputIterator DoFind(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                           const T& a_value, IsNotChar);
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator find(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                         const T& a_value, IsChar);
+    T_InputIterator DoFind(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                           const T& a_value, IsChar);
 
     //------------------------------------------------------------------------
     // Sort helpers
@@ -470,7 +470,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  Insertionsort identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+    void DoSort(T_InputIterator a_first, T_InputIterator a_last,
                 sort_insertionsort);
 
     ///-------------------------------------------------------------------------
@@ -482,8 +482,8 @@ namespace tloc { namespace core {
     /// @param  parameter3  Raw iterator identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsortWithItrType(T_InputIterator a_first, 
-                                    T_InputIterator a_last, 
+    void DoInsertionsortWithItrType(T_InputIterator a_first,
+                                    T_InputIterator a_last,
                                     IsRawItr);
 
     ///-------------------------------------------------------------------------
@@ -495,8 +495,8 @@ namespace tloc { namespace core {
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoInsertionsortWithItrType(T_InputIterator a_first, 
-                                    T_InputIterator a_last, 
+    void DoInsertionsortWithItrType(T_InputIterator a_first,
+                                    T_InputIterator a_last,
                                     IsComplexItr);
 
     ///-------------------------------------------------------------------------
@@ -508,7 +508,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  The value type.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator, typename T_ValueType>
-    void DoInsertionsortWithValueType(T_InputIterator a_first, 
+    void DoInsertionsortWithValueType(T_InputIterator a_first,
                                       T_InputIterator a_last,
                                       T_ValueType);
 
@@ -576,7 +576,7 @@ namespace tloc { namespace core {
     /// @return Merged container.
     ///-------------------------------------------------------------------------
     template <typename T_Container>
-    T_Container DoMerge(const T_Container& a_left, 
+    T_Container DoMerge(const T_Container& a_left,
                         const T_Container& a_right);
 
     ///-------------------------------------------------------------------------
@@ -587,7 +587,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  MergeInsertionSort identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+    void DoSort(T_InputIterator a_first, T_InputIterator a_last,
                 sort_merge_insertionsort);
 
     ///-------------------------------------------------------------------------
@@ -612,7 +612,7 @@ namespace tloc { namespace core {
     /// @param  a_last       Iterator that defines the end of the right list.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoMergeInsertion(T_InputIterator a_leftFirst, 
+    void DoMergeInsertion(T_InputIterator a_leftFirst,
                           T_InputIterator a_rightFirst,
                           T_InputIterator a_last);
 
@@ -627,7 +627,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoSortFirstElementWithItrType(T_InputIterator a_first, 
+    void DoSortFirstElementWithItrType(T_InputIterator a_first,
                                        T_InputIterator a_last,
                                        IsComplexItr);
 
@@ -642,7 +642,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator>
-    void DoSortFirstElementWithItrType(T_InputIterator a_first, 
+    void DoSortFirstElementWithItrType(T_InputIterator a_first,
                                        T_InputIterator a_last,
                                        IsRawItr);
 
@@ -657,7 +657,7 @@ namespace tloc { namespace core {
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
     template <typename T_InputIterator, typename T_ValueType>
-    void DoSortFirstElementWithValueType(T_InputIterator a_first, 
+    void DoSortFirstElementWithValueType(T_InputIterator a_first,
                                          T_InputIterator a_last,
                                          T_ValueType);
 

@@ -286,11 +286,165 @@ namespace TestingStackArray
   TEST_CASE_METHOD(StackArrayFixture, "Core/Containers/StackArray/Insert",
     "Test the insert methods")
   {
+    //------------------------------------------------------------------------
+    // Insert single values
+
     FILL_INT_STACK_ARRAY_BY_PUSH(ints, 15);
 
-    /*for (tl_size)
+    // Inserting to the end of the array
+    for (tl_size i = 15; i < 30; ++i)
     {
-    }*/
+      ints.insert(ints.end(), i);
+    }
+
+    CHECK(ints.size() == 30);
+
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 30);
+
+    // Inserting to the middle of the array
+    ints.insert(ints.begin() + 4, 70);
+    CHECK(ints.size() == 31);
+    CHECK(ints[0] == 0);
+    CHECK(ints[1] == 1);
+    CHECK(ints[2] == 2);
+    CHECK(ints[3] == 3);
+    CHECK(ints[4] == 70);
+    CHECK(ints[5] == 4);
+
+    // Taking a value from the middle of the array and reinserting it
+    ints.insert(ints.begin() + 2, ints[4]);
+    CHECK(ints.size() == 32);
+    CHECK(ints[0] == 0);
+    CHECK(ints[1] == 1);
+    CHECK(ints[2] == 70);
+    CHECK(ints[3] == 2);
+    CHECK(ints[4] == 3);
+    CHECK(ints[5] == 70);
+    CHECK(ints[6] == 4);
+    
+    //------------------------------------------------------------------------
+    // Insert several values
+
+    FILL_INT_STACK_ARRAY_BY_PUSH(ints2, 4);
+
+    CHECK(ints2.size() == 4);
+
+    ints2.insert(ints2.begin() + 2, 10, 40);
+
+    CHECK(ints2[0] == 0);
+    CHECK(ints2[1] == 1);
+
+    for (tl_size i = 2; i < 10 +2; ++i)
+    {
+      CHECK(ints2[i] == 40);
+    }
+
+    CHECK(ints2[12] == 2);
+    CHECK(ints2[13] == 3);
+    CHECK(ints2.size() == 14);
+
+    ints2.clear();
+    ints2.push_back(0);
+    ints2.insert(ints2.end(), 5, 80);
+
+    CHECK(ints2[0] == 0);
+    
+    for (tl_size i = 1; i < 5 + 1; ++i)
+    {
+      CHECK(ints2[i] == 80);
+    }
+
+    //------------------------------------------------------------------------
+    // Insert with iterator
+
+    const tl_size sizeOfNums = 10;
+    tl_int nums[sizeOfNums]  = {0,1,2,3,4,5,6,7,8,9};
+
+    ints2.insert(ints2.begin(), nums, nums + sizeOfNums);
+
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints2, sizeOfNums);
+    CHECK(ints2[10] == 0);
+    CHECK(ints2[11] == 80);
+  }
+
+  TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/FrontBackAccess",
+    "Test front and back access")
+  {
+    FILL_INT_STACK_ARRAY_BY_PUSH(ints, 4);
+
+    CHECK(ints.front() == 0);
+    CHECK(ints.back() == 3);
+
+    ints.erase(ints.begin());
+    ints.erase(ints.end() - 1);
+
+    CHECK(ints.front() == 1);
+    CHECK(ints.back() == 2);
+  }
+
+  TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Resize",
+    "Test the resize methods")
+  {
+    tl_size arraySize = 10;
+    FILL_INT_STACK_ARRAY_BY_PUSH(ints, arraySize);
+    CHECK(ints.size() == arraySize);
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, arraySize);
+
+    tl_size resizeSize = 5;
+    ints.resize(resizeSize);
+    CHECK(ints.size() == resizeSize);
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, resizeSize);
+
+    resizeSize = 100;
+    ints.resize(resizeSize);
+    CHECK(ints.size() == resizeSize);
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 5);
+  }
+
+  TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Assign",
+    "Test the assign function")
+  {
+    tl_int someArray[10] = {0,1,2,3,4,5,6,7,8,9};
+    tl_int* itrBegin = someArray;
+    tl_int* itrEnd = someArray + 10;
+
+    ints.assign(itrBegin, itrEnd);
+    CHECK(ints.size() == 10);
+
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 10);
+  }
+
+  TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Swap",
+    "Test the swap function")
+  {
+    StackArray<tl_int, 50>  array50;
+    StackArray<tl_int, 50>  array50_2; array50_2.resize(50);
+    StackArray<tl_int, 70>  array70; array70.resize(50);
+
+    FILL_INT_STACK_ARRAY_BY_PUSH(array50, 50);
+    fill(array50_2.begin(), array50_2.end(), 15);
+    
+    fill(array70.begin(), array70.end(), 9);
+
+    StackArray<tl_int, 50>::iterator itr50 = array50.begin();
+    StackArray<tl_int, 50>::iterator itr50End = array50.end();
+    array50.swap(array50_2);
+
+    CHECK(array50.begin() == itr50);
+    CHECK(array50.end() == itr50End);
+
+    for (tl_int i = 0; i < 50; ++i)
+    {
+      CHECK(array50[i] == 15);
+      CHECK(array50_2[i] == i);
+    }
+
+    array50.swap(array70);
+
+    for (tl_int i = 0; i < 50; ++i)
+    {
+      CHECK(array50[i] == 9);
+    }
   }
 
 };

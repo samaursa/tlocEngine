@@ -151,7 +151,8 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // resize() Helper
 
-    TL_I void             DoResize(size_type a_newSize, value_type& a_value);
+    TL_I void             DoResize(size_type a_newSize, 
+                                   const value_type& a_value);
 
     //------------------------------------------------------------------------
     // push_back() Helpers

@@ -323,6 +323,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     // The correct DoInsert() will be called depending on whether inputIntegral
     // is Int2Type<true> or Int2Type<false>
     DoAssign(a_rangeBegin, a_rangeEnd, inputArith());
+    //TLOC_UNUSED_2(a_rangeBegin, a_rangeEnd);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -470,7 +471,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   TL_I void StackArray<STACK_ARRAY_PARAMS>::DoResize(size_type a_newSize, 
-                                                     value_type& a_value)
+                                                     const value_type& a_value)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_newSize);
 
@@ -616,7 +617,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     m_end = m_begin;
     tloc::core::advance(m_end, projectedSize);
 
-    copy(a_rangeBegin, a_rangeEnd, m_begin);
+    copy(a_rangeBegin, a_rangeEnd, static_cast<value_type*>(m_begin));
   }
 
 };};

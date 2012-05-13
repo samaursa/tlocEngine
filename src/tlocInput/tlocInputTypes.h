@@ -37,7 +37,7 @@ namespace tloc { namespace input {
       TL_WIN_DISCL_NONEXCLUSIVE = 1 << 3,
       TL_WIN_DISCL_NOWINKEY     = 1 << 4,
 
-      count = core::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
+      count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
     };
   }
 

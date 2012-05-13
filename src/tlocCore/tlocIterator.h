@@ -13,6 +13,37 @@
 
 namespace tloc { namespace core {
 
+  //------------------------------------------------------------------------
+  // Standard begin/end functions that work on raw/complex containers
+
+  template <class T_Container>
+  typename T_Container::iterator 
+    begin(T_Container& a_container) { return a_container.begin(); }
+
+  template <class T_Container>
+  typename T_Container::iterator
+    begin(const T_Container& a_container) { return a_container.begin(); }
+
+  template <class T, tl_size T_Size>
+  T* begin(T (&a_array)[T_Size]) { return a_array; } 
+
+  template <class T, tl_size T_Size>
+  T* begin(const T (&a_array)[T_Size]) { return a_array; } 
+  
+  template <class T_Container>
+  typename T_Container::iterator 
+    end(T_Container& a_container) { return a_container.end(); }
+
+  template <class T_Container>
+  typename T_Container::iterator
+    end(const T_Container& a_container) { return a_container.end(); }
+
+  template <class T, tl_size T_Size>
+  T* end(T (&a_array)[T_Size]) { return a_array + T_Size; } 
+
+  template <class T, tl_size T_Size>
+  T* end(const T (&a_array)[T_Size]) { return a_array + T_Size; } 
+
   //////////////////////////////////////////////////////////////////////////
   // Iterators
 

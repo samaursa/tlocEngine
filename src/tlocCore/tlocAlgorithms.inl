@@ -41,7 +41,7 @@ namespace tloc { namespace core {
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
-    const tl_size rangeSize = a_rangeEnd - a_rangeBegin;
+    const tl_size rangeSize = distance(a_rangeBegin, a_rangeEnd);
 
     for (u32 i = 0; i < rangeSize; ++i)
     {
@@ -50,6 +50,12 @@ namespace tloc { namespace core {
     }
 
     return aFunc;
+  }
+
+  template <typename T_Container, typename T>
+  typename T_Container::iterator find(T_Container a_container, const T& a_value)
+  {
+    return find(a_container.begin(), a_container.end(), a_value);
   }
 
   template <typename T_InputIterator, typename T>
@@ -65,6 +71,13 @@ namespace tloc { namespace core {
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
     return detail::DoFind(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
+  }
+
+  template <typename T_Container, typename T_Predicate>
+  typename T_Container::iterator find_if(T_Container a_container, 
+                                         const T_Predicate& a_pred)
+  {
+    return find_if(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_InputIterator, typename T_Predicate>
@@ -375,6 +388,12 @@ namespace tloc { namespace core {
     return ret;
   }
 
+  template <typename T_Container, typename T>
+  tl_size count(T_Container a_container, const T& a_value)
+  {
+    return count(a_container.begin(), a_container.end(), a_value);
+  }
+
   template <typename T_InputIterator, typename T>
   tl_size count( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                  const T& a_value )
@@ -390,6 +409,12 @@ namespace tloc { namespace core {
     }
 
     return count;
+  }
+
+  template <typename T_Container, typename T_Predicate>
+  tl_size count_if(T_Container a_container, T_Predicate a_pred)
+  {
+    return count_if(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_InputIterator, typename T_Predicate>

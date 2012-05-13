@@ -300,7 +300,9 @@ namespace TestingAlgorithms
   template <typename T_Itr>
   void TestForEach(T_Itr a_itr)
   {
-    for_each(a_itr, a_itr + g_testArraySize, ForEachFunc);
+    T_Itr itrEnd = a_itr;
+    advance(itrEnd, g_testArraySize);
+    for_each(a_itr, itrEnd, ForEachFunc);
 
     bool hasFailed = false;
     for (u32 i = 0; i < g_testArraySize; ++i)
@@ -324,9 +326,15 @@ namespace TestingAlgorithms
     {
       intArray[i] = new u32(i);
       intDynArray.push_back(new u32(i));
+      intList.push_back(new u32(i));
     }
 
     TestForEach(intArray);
+    TestForEach(intDynArray.begin());
+    TestForEach(intList.begin());
+
+    for_each(intDynArray, ForEachFunc);
+    for_each(intList, ForEachFunc);
   }
 
   template <typename T_Itr>
@@ -358,6 +366,9 @@ namespace TestingAlgorithms
     TestFind(myInts);
     TestFind(intArray.begin());
     TestFind(intList.begin());
+
+    find(intArray, 0u);
+    find(intList, 0u);
   }
 
   bool IsOdd (s32 i)
@@ -500,6 +511,9 @@ namespace TestingAlgorithms
       core::Array<s32> myvector (myints, myints+8);
       mycount = (s32) count (myvector.begin(), myvector.end(), 20);
       CHECK(mycount == 3);
+
+      mycount = (s32) count (myvector, 20);
+      CHECK(mycount == 3);
     }
 
     {//count_if
@@ -509,6 +523,9 @@ namespace TestingAlgorithms
       for (s32 i=1; i<10; i++) myvector.push_back(i); // myvector: 1 2 3 4 5 6 7 8 9
 
       mycount = (s32) count_if (myvector.begin(), myvector.end(), IsOdd);
+      CHECK(mycount == 5);
+
+      mycount = (s32) count_if (myvector, IsOdd);
       CHECK(mycount == 5);
     }
   }

@@ -110,13 +110,20 @@ namespace tloc { namespace core {
                                       T_ForwardIterator2 a_rangeToFindEnd,
                                       T_BinaryPredicate  a_pred);
 
+  template <typename T_Container, typename T>
+  tl_size count(T_Container a_container, const T& a_value);
+
   template <typename T_InputIterator, typename T>
   tl_size count(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                 const T& a_value);
 
+  template <typename T_Container, typename T_Predicate>
+  tl_size count_if(T_Container a_container, T_Predicate a_pred);
+
   template <typename T_InputIterator, typename T_Predicate>
   tl_size count_if(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                    T_Predicate a_pred);
+
 
   template <typename T_InputIterator1, typename T_InputIterator2>
   Pair<T_InputIterator1, T_InputIterator2>
@@ -287,7 +294,7 @@ namespace tloc { namespace core {
                  const T& a_value);
 
   template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-  TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+  TL_I void fill_n(T_OutputIterator a_first, T_Count a_count,
                    const T_ValueType& a_value);
 
   template <typename T>
@@ -360,17 +367,17 @@ namespace tloc { namespace core {
     // fill_n helpers
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, IsNotChar);
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, IsChar);
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, random_access_iterator_tag);
-    
+
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
     TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, input_iterator_tag);

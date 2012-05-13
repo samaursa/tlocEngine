@@ -524,6 +524,8 @@ namespace tloc { namespace core {
     TL_FI typename iterator_traits<T_InputItr>::difference_type
       distance(T_InputItr aBegin, T_InputItr aEnd, random_access_iterator_tag)
     {
+      TLOC_ASSERT_ITERATOR(aBegin <= aEnd, "Invalid iterator range!");
+
       return aEnd - aBegin;
     }
 

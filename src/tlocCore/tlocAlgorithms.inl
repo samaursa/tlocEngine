@@ -740,7 +740,7 @@ namespace tloc { namespace core {
     typedef Loki::IsSameType<inputDeref, char8> charTestResult;
     typedef Loki::Int2Type<charTestResult::value> IsChar8;
 
-    detail::fill_n(a_first, a_count, a_value, IsChar8());
+    detail::DoFill_n(a_first, a_count, a_value, IsChar8());
   }
 
   template <typename T>
@@ -901,7 +901,7 @@ namespace tloc { namespace core {
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, IsNotChar)
     {
       typedef iterator_traits<T_OutputIterator>::iterator_category 
@@ -909,18 +909,18 @@ namespace tloc { namespace core {
 
       // The correct fill_n() will be called depending on whether the output
       // iterator has a random or lesser tag associated with it. 
-      fill_n(a_first, a_count, a_value, iterator_category());
+      DoFill_n(a_first, a_count, a_value, iterator_category());
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, IsChar)
     {
       memset(a_first, a_value, (tl_size)a_count);
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, random_access_iterator_tag)
     {
       // Grabbing a range by adding to a_first and using fill is faster than
@@ -930,7 +930,7 @@ namespace tloc { namespace core {
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void fill_n(T_OutputIterator a_first, T_Count a_count, 
+    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, input_iterator_tag)
     {
       for (/* */; a_count > 0; --a_count, ++a_first)

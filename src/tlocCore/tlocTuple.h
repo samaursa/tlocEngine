@@ -12,6 +12,10 @@ namespace tloc { namespace core {
   {
   public:
 
+    typedef T                                           value_type;
+    typedef tl_size                                     size_type;
+    typedef Tuple<value_type, T_Size>                   this_type;
+
     // Empty default constructor
     TL_FI Tuple();
     TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
@@ -26,21 +30,21 @@ namespace tloc { namespace core {
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI T& operator[] (tl_int aIndex);
+    TL_FI value_type& operator[] (tl_int aIndex);
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI const T& operator[] (tl_int aIndex) const;
+    TL_FI const value_type& operator[] (tl_int aIndex) const;
 
-    TL_FI T& Get(tl_size aIndex);
-    TL_FI const T& Get(tl_size aIndex) const;
+    TL_FI value_type& Get(size_type aIndex);
+    TL_FI const value_type& Get(size_type aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
     TL_FI operator T* ();
     TL_FI operator const T* () const;
 
     // Access the size of the tuple
-    TL_FI tl_size GetSize() const;
+    TL_FI size_type GetSize() const;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -57,7 +61,7 @@ namespace tloc { namespace core {
     TL_FI void Set(const T_ArrayType (&aArray)[T_Size]);
 
     // Swaps the tuple with the incoming vector
-    TL_FI void Swap(Tuple<T, T_Size>& aVector);
+    TL_FI void Swap(this_type& aVector);
 
     //------------------------------------------------------------------------
     // Operators
@@ -67,8 +71,8 @@ namespace tloc { namespace core {
     template <typename T_ArrayType>
     TL_FI Tuple<T, T_Size>& operator= (const T_ArrayType (&aArray)[T_Size]);
 
-    TL_FI bool operator == (const Tuple<T, T_Size>& aTuple);
-    TL_FI bool operator != (const Tuple<T, T_Size>& aTuple);
+    TL_FI bool operator == (const this_type& aTuple);
+    TL_FI bool operator != (const this_type& aTuple);
 
   protected:
 
@@ -83,7 +87,7 @@ namespace tloc { namespace core {
 
     template <typename T_TupleType>
     TL_FI void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
-    TL_FI void DoSet(const Tuple<T, T_Size>& aTuple, type_true);
+    TL_FI void DoSet(const this_type& aTuple, type_true);
   };
 
 };};

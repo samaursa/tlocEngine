@@ -156,7 +156,7 @@ namespace tloc { namespace math {
     {
       Vector<T, T_Size> row;
       GetRow(i, row);
-      aVectorOut[i] = aVectorIn.Dot(row);
+      aVectorOut[(tl_int)i] = aVectorIn.Dot(row);
     }
   }
 
@@ -197,7 +197,7 @@ namespace tloc { namespace math {
   {
     ITERATE_MATRIX_HALF
     {
-      aVector[i] = m_values[(i * T_Size) + i];
+      aVector[(tl_int)i] = m_values[((tl_int)i * T_Size) + (tl_int)i];
     }
   }
 

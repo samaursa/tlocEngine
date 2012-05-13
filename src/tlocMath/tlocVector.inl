@@ -17,7 +17,10 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_VECTOR for (tl_size i = 0; i < T_Size; ++i)
+  // Note that we have tl_int and not tl_size for the iteration. This is because
+  // the [] operator only accepts integers, so we have no choice (either that
+  // or we cast the tl_size to tl_int, which defeats the purpose anyway)
+#define ITERATE_VECTOR for (tl_int i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors

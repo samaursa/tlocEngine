@@ -26,7 +26,7 @@ namespace TestingStackArray
 #define FILL_INT_STACK_ARRAY_BY_PUSH(a_arrayName, a_nTimes) \
   for (tl_size i = 0; i < a_nTimes; ++i) \
   { \
-  a_arrayName.push_back(i); \
+  a_arrayName.push_back((tl_int)i); \
   }
 
 #define CHECK_STACK_ARRAY_BY_INDEX(a_type, a_arrayName, a_nTimes) \
@@ -294,7 +294,7 @@ namespace TestingStackArray
     // Inserting to the end of the array
     for (tl_size i = 15; i < 30; ++i)
     {
-      ints.insert(ints.end(), i);
+      ints.insert(ints.end(), (tl_int)i);
     }
 
     CHECK(ints.size() == 30);
@@ -321,7 +321,7 @@ namespace TestingStackArray
     CHECK(ints[4] == 3);
     CHECK(ints[5] == 70);
     CHECK(ints[6] == 4);
-    
+
     //------------------------------------------------------------------------
     // Insert several values
 
@@ -348,7 +348,7 @@ namespace TestingStackArray
     ints2.insert(ints2.end(), 5, 80);
 
     CHECK(ints2[0] == 0);
-    
+
     for (tl_size i = 1; i < 5 + 1; ++i)
     {
       CHECK(ints2[i] == 80);
@@ -423,7 +423,7 @@ namespace TestingStackArray
 
     FILL_INT_STACK_ARRAY_BY_PUSH(array50, 50);
     fill(array50_2.begin(), array50_2.end(), 15);
-    
+
     fill(array70.begin(), array70.end(), 9);
 
     StackArray<tl_int, 50>::iterator itr50 = array50.begin();

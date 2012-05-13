@@ -12,30 +12,34 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TABLE for (u32 i = 0; i < k_TableSize; ++i)
+#define ITERATE_TABLE for (tl_int i = 0; i < k_TableSize; ++i)
+
+#define TABLE_TEMPS  typename T, tl_size T_Rows, tl_size T_Cols
+#define TABLE_PARAMS T, T_Rows, T_Cols
+#define TABLE_TYPE   typename Table<TABLE_PARAMS>
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table()
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::Table()
   {
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const Table<T, T_Rows, T_Cols>& aTable)
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::Table(const this_type& aTable)
   {
     operator=(aTable);
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const T& aValue)
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::Table(const T& aValue)
   {
     Set(aValue);
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::Table(const T (&values)[k_TableSize],
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::Table(const T (&values)[k_TableSize],
     TABLE_ORDER aTableOrder)
   {
     Set(values, aTableOrder);
@@ -49,8 +53,8 @@ namespace tloc { namespace core {
 #define ASSERT_NUM_COLS \
   TLOC_ASSERT_LOW_LEVEL(aCol < T_Cols, "The passed COL for this table is out of bounds!")
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI T& Table<T, T_Rows, T_Cols>::operator() (s32 aRow, s32 aCol)
+  template <TABLE_TEMPS>
+  TL_FI T& Table<TABLE_PARAMS>::operator() (tl_int aRow, tl_int aCol)
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -58,8 +62,9 @@ namespace tloc { namespace core {
     return m_values[aRow + aCol * T_Rows];
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI const T& Table<T, T_Rows, T_Cols>::operator() (s32 aRow, s32 aCol) const
+  template <TABLE_TEMPS>
+  TL_FI const T& Table<TABLE_PARAMS>::operator() (tl_int aRow, 
+                                                       tl_int aCol) const
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -67,8 +72,8 @@ namespace tloc { namespace core {
     return m_values[aRow + aCol * T_Rows];
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI T& Table<T, T_Rows, T_Cols>::Get(u32 aRow, u32 aCol)
+  template <TABLE_TEMPS>
+  TL_FI T& Table<TABLE_PARAMS>::Get(size_type aRow, size_type aCol)
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -76,8 +81,9 @@ namespace tloc { namespace core {
     return m_values[aRow + aCol * T_Rows];
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI const T& Table<T, T_Rows, T_Cols>::Get(u32 aRow, u32 aCol) const
+  template <TABLE_TEMPS>
+  TL_FI const T& Table<TABLE_PARAMS>::Get(size_type aRow, 
+                                               size_type aCol) const
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -85,35 +91,35 @@ namespace tloc { namespace core {
     return m_values[aRow + aCol * T_Rows];
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>
-    ::GetRow(u32 aRow, Tuple<T, T_Cols>& aRowOut) const
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>
+    ::GetRow(tl_size aRow, tuple_col_type& aRowOut) const
   {
     ASSERT_NUM_ROWS;
 
-    for (u32 i = 0; i < T_Cols; ++i)
+    for (tl_int i = 0; i < T_Cols; ++i)
     {
       aRowOut[i] = m_values[(i * T_Cols) + aRow];
     }
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>
-    ::GetCol(u32 aCol, Tuple<T, T_Rows>& aColOut) const
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>
+    ::GetCol(tl_size aCol, tuple_row_type& aColOut) const
   {
     ASSERT_NUM_COLS;
 
     memcpy(aColOut, m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::operator T*()
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::operator T*()
   {
     return m_values;
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>::operator const T*() const
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::operator const T*() const
   {
     return m_values;
   }
@@ -121,8 +127,8 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::Set(const T& aValue)
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>::Set(const T& aValue)
   {
     ITERATE_TABLE
     {
@@ -130,8 +136,8 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>
     ::Set(const T (&values)[k_TableSize], TABLE_ORDER aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
@@ -143,9 +149,9 @@ namespace tloc { namespace core {
     }
     else
     {
-      for (u32 currRow = 0; currRow < T_Rows; ++currRow)
+      for (tl_size currRow = 0; currRow < T_Rows; ++currRow)
       {
-        for (u32 currCol = 0; currCol < T_Cols; ++currCol)
+        for (tl_size currCol = 0; currCol < T_Cols; ++currCol)
         {
           Set(currRow, currCol, values[(currRow * T_Cols) + currCol] );
         }
@@ -153,8 +159,8 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>::Set(u32 aRow, u32 aCol, const T& aValue)
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>::Set(tl_size aRow, tl_size aCol, const T& aValue)
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -162,21 +168,21 @@ namespace tloc { namespace core {
     m_values[aRow + aCol * T_Rows] = aValue;
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>
-    ::SetRow(u32 aRow, const Tuple<T, T_Cols>& aRowIn)
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>::SetRow(tl_size aRow, 
+                                         const tuple_col_type& aRowIn)
   {
     ASSERT_NUM_ROWS;
 
-    for (u32 i = 0; i < T_Cols; ++i)
+    for (tl_int i = 0; i < T_Cols; ++i)
     {
       m_values[ ((i * T_Cols) + aRow) ] = aRowIn[i];
     }
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI void Table<T, T_Rows, T_Cols>
-    ::SetCol(u32 aCol, const Tuple<T, T_Rows>& aColIn)
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>::SetCol(tl_size aCol, 
+                                         const tuple_row_type& aColIn)
   {
     ASSERT_NUM_COLS;
 
@@ -186,18 +192,18 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Operators
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI Table<T, T_Rows, T_Cols>& Table<T, T_Rows, T_Cols>
-    ::operator = (const Table<T, T_Rows, T_Cols>& aTable)
+  template <TABLE_TEMPS>
+  TL_FI TABLE_TYPE::this_type& Table<TABLE_PARAMS>
+    ::operator = (const this_type& aTable)
   {
     memcpy(m_values, aTable, sizeof(T) * k_TableSize);
 
     return *this;
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI bool Table<T, T_Rows, T_Cols>
-    ::operator == (const Table<T, T_Rows, T_Cols>& aTable)
+  template <TABLE_TEMPS>
+  TL_FI bool Table<TABLE_PARAMS>
+    ::operator == (const Table<TABLE_PARAMS>& aTable)
   {
     ITERATE_TABLE
     {
@@ -207,8 +213,8 @@ namespace tloc { namespace core {
     return true;
   }
 
-  template <typename T, u32 T_Rows, u32 T_Cols>
-  TL_FI bool Table<T, T_Rows, T_Cols>
+  template <TABLE_TEMPS>
+  TL_FI bool Table<TABLE_PARAMS>
     ::operator != (const Table<T, T_Rows, T_Cols>& aTable)
   {
     return !operator==(aTable);

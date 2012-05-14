@@ -19,7 +19,7 @@ namespace tloc { namespace core{
 #a_index _CRT_WIDE(" is out of range!")
 
 #define TLOC_ASSERT_STACK_ARRAY_INDEX(a_index) \
-  TLOC_ASSERT_STACK_ARRAY(a_index >= 0 && a_index < size() , "Index out of bounds")
+  TLOC_ASSERT_STACK_ARRAY(a_index < size() , "Index out of bounds")
 
 #define TLOC_ASSERT_STACK_ARRAY_NOT_EMPTY() \
   TLOC_ASSERT_STACK_ARRAY(size() > 0, "Stack Array is empty!")

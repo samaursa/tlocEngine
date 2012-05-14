@@ -1,17 +1,18 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocMemory.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocMemory.h>
+#include <tlocCore/tlocTypes.h>
+#include <tlocCore/tlocTypes.inl>
+#include <tlocCore/tlocNestedFunction.h>
 
-#include "tlocCore/tlocList.h"
-#include "tlocCore/tlocList.inl"
+#include <tlocCore/tlocList.h>
+#include <tlocCore/tlocList.inl>
 
-#include "tlocCore/tlocFunctional.h"
+#include <tlocCore/tlocFunctional.h>
 
-#include "tlocCore/tlocHashtable.h"
-#include "tlocCore/tlocHashtable.inl"
+#include <tlocCore/tlocHashtable.h>
+#include <tlocCore/tlocHashtable.inl>
 
 namespace TestingHashtable
 {
@@ -284,15 +285,22 @@ namespace TestingHashtable
 
       CHECK( (itr == itrEnd) == true);
 
+      TL_NESTED_FUNC_BEGIN(CheckBucket)
+        void CheckBucket(T_HashT::iterator a_itr, tl_size a_valueToCheck)
+      {
+        CHECK(a_itr.GetCurrBucketNumber().second == a_valueToCheck);
+      }
+      TL_NESTED_FUNC_END();
+
       // One last check to make sure they were all added to the right buckets
       itr = h.find(7);
-      CHECK(itr.GetCurrBucketNumber().second == 0);
+      TL_NESTED_CALL(CheckBucket)(itr, 0);
       itr = h.find(8);
-      CHECK(itr.GetCurrBucketNumber().second == 1);
+      TL_NESTED_CALL(CheckBucket)(itr, 1);
       itr = h.find(5);
-      CHECK(itr.GetCurrBucketNumber().second == 5);
+      TL_NESTED_CALL(CheckBucket)(itr, 5);
       itr = h.find(6);
-      CHECK(itr.GetCurrBucketNumber().second == 6);
+      TL_NESTED_CALL(CheckBucket)(itr, 6);
     }
 
     //------------------------------------------------------------------------

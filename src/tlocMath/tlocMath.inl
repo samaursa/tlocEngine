@@ -96,7 +96,7 @@ namespace tloc {
   template <typename T>
   TL_FI bool Math<T>::IsNaN(const T& aValue)
   {
-    return aValue != aValue;
+    return aValue != aValue; //-V501
   }
 
   template <typename T>

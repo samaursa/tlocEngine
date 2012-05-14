@@ -101,7 +101,7 @@ namespace TestingMatrix2
     c.Set(values, Mat2f::k_RowMajor);
 
     c.Mul(v1, v2);
-    CHECK_VEC2F(v2, 5, 11);
+    CHECK_VEC2F(v2, 5, 11); //-V550
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det",

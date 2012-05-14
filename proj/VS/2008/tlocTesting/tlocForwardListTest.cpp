@@ -351,7 +351,7 @@ namespace TestingForwardList
     itr = myForwardList.begin();
     CHECK(*itr == 0);  ++itr;
     CHECK(*itr == 1);  ++itr;
-    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 2);  ++itr; //-V525
     CHECK(*itr == 12); ++itr;
     CHECK(*itr == 12); ++itr;
     CHECK(*itr == 12); ++itr;
@@ -372,7 +372,7 @@ namespace TestingForwardList
     itr = myForwardList.begin();
     CHECK(*itr == 0);  ++itr;
     CHECK(*itr == 1);  ++itr;
-    CHECK(*itr == 2);  ++itr;
+    CHECK(*itr == 2);  ++itr; //-V525
     CHECK(*itr == 12); ++itr;
     CHECK(*itr == 12); ++itr;
     CHECK(*itr == 12); ++itr;
@@ -441,7 +441,7 @@ namespace TestingForwardList
 
     CHECK(*itr == 4); ++itr;
     CHECK(*itr == 3); ++itr;
-    CHECK(*itr == 2); ++itr;
+    CHECK(*itr == 2); ++itr; //-V525
     CHECK(*itr == 1); ++itr;
     CHECK(*itr == 1); ++itr;
     CHECK(*itr == 1); ++itr;
@@ -465,7 +465,7 @@ namespace TestingForwardList
     myForwardList.pop_front();
     CHECK(myForwardList.front() == 3);
     myForwardList.pop_front();
-    CHECK(myForwardList.front() == 2);
+    CHECK(myForwardList.front() == 2); //-V525
     myForwardList.pop_front();
     CHECK(myForwardList.front() == 1);
     myForwardList.pop_front();

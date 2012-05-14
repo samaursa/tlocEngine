@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace priv {
     m_graphicsMode = graphics_mode(graphics_mode::Properties(1, 1));
     graphics_mode::Properties props = m_graphicsMode.GetProperties();
 
-    DWORD error = GetLastError();
+    DWORD error;
 
     // Create a dummy window
     m_handle = CreateWindowW(g_className, L"", WS_POPUP | WS_DISABLED, 0, 0,

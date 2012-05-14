@@ -77,7 +77,7 @@ namespace TestingMatrix3
     Vec3f vec1(1, 2, 3), vec2;
     c.Set(values, Mat3f::k_RowMajor);
     c.Mul(vec1, vec2);
-    CHECK_VEC3F(vec2, 14, 32, 50);
+    CHECK_VEC3F(vec2, 14, 32, 50); //-V550
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Det",
@@ -86,11 +86,11 @@ namespace TestingMatrix3
     f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     a.Set(values, Mat3f::k_RowMajor);
 
-    CHECK(a.Determinant() == Approx(0));
+    CHECK(a.Determinant() == Approx(0)); //-V550
 
     f32 values2[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
     a.Set(values2, Mat3f::k_RowMajor);
-    CHECK(a.Determinant() == Approx(48));
+    CHECK(a.Determinant() == Approx(48)); //-V550
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Inv",
@@ -137,9 +137,9 @@ namespace TestingMatrix3
     a.GetCol(0, col1);
     a.GetCol(1, col2);
     a.GetCol(2, col3);
-    CHECK(col1.Length() == Approx(1));
-    CHECK(col2.Length() == Approx(1));
-    CHECK(col3.Length() == Approx(1));
+    CHECK(col1.Length() == Approx(1)); //-V550
+    CHECK(col2.Length() == Approx(1)); //-V550
+    CHECK(col3.Length() == Approx(1)); //-V550
 
     a.Zero();
     a.Set(values, Mat3f::k_RowMajor);

@@ -310,7 +310,7 @@ namespace tloc { namespace input { namespace priv {
       }
       else
       {
-        if (kc == KeyboardEvent::left_control || kc == KeyboardEvent::left_control)
+        if (kc == KeyboardEvent::left_control || kc == KeyboardEvent::right_control)
         {
           m_modifier &= ~KeyboardEvent::Ctrl;
         }

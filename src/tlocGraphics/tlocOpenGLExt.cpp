@@ -4,7 +4,7 @@
 namespace tloc { namespace graphics {
 
   bool OpenGLExt::m_initialized = false;
-  u32  OpenGLExt::m_error       = false;
+  u32  OpenGLExt::m_error       = error_none;
 
   OpenGLExt::OpenGLExt()
   {

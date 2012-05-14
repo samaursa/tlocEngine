@@ -134,7 +134,7 @@ namespace TestingMatrix
     Vec3f result;
     c.Mul(someVec, result);
 
-    CHECK_VEC3F(result, 1, 0, 0);
+    CHECK_VEC3F(result, 1, 0, 0); //-V550
 
     //------------------------------------------------------------------------
     c.Zero(); d.Zero();
@@ -172,7 +172,7 @@ namespace TestingMatrix
 
     e = d;
     e.Transpose(d);
-    CHECK_MATRIX3F(e, 1, 0, 0, 0, 1, 0, 1, 0, 1);  
+    CHECK_MATRIX3F(e, 1, 0, 0, 0, 1, 0, 1, 0, 1);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors",
@@ -183,7 +183,7 @@ namespace TestingMatrix
 
     Vec3f diagVec;
     d.GetDiagonal(diagVec);
-    CHECK_VEC3F(diagVec, 1, 1, 1);
+    CHECK_VEC3F(diagVec, 1, 1, 1); //-V550
 
     c.Set(0);
     c(0, 0) = 3;
@@ -191,7 +191,7 @@ namespace TestingMatrix
     c(2, 2) = 5;
 
     c.GetDiagonal(diagVec);
-    CHECK_VEC3F(diagVec, 3, 4, 5);
+    CHECK_VEC3F(diagVec, 3, 4, 5); //-V550
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Operators",

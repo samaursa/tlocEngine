@@ -324,9 +324,9 @@ namespace TestingAlgorithms
 
     for (u32 i = 0; i < g_testArraySize; ++i)
     {
-      intArray[i] = new u32(i);
-      intDynArray.push_back(new u32(i));
-      intList.push_back(new u32(i));
+      intArray[i] = new u32(i); //-V508
+      intDynArray.push_back(new u32(i)); //-V508
+      intList.push_back(new u32(i)); //-V508
     }
 
     TestForEach(intArray);

@@ -1,8 +1,9 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocUtils.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTemplateParams.h"
+#include <tlocCore/tlocUtils.h>
+#include <tlocCore/tlocNestedFunction.h>
+#include <tlocCore/tlocTypes.h>
+#include <tlocCore/tlocTemplateParams.h>
 
 #include <tlocCore/tlocArray.h>
 #include <tlocCore/tlocArray.inl>
@@ -58,10 +59,10 @@ namespace TestingMemory
 
   TEST_CASE("Core/Utilities/IsSamePointer", "")
   {
-    s32* n = new s32(5);
+    s32* n = new s32(5); //-V508
     tl_size ptr = (tl_size)n;
 
-    s32* p = new s32(6);
+    s32* p = new s32(6); //-V508
     tl_size ptr2 = (tl_size)p;
 
     CHECK(core::utils::IsSamePointer(n, ptr) == true);
@@ -170,5 +171,26 @@ namespace TestingMemory
 
     CHECK( (core::utils::EnumToIndex<five, true>::result) == 5);
     CHECK( (core::utils::EnumToIndex<one>::result) == 0);
+  }
+
+  TEST_CASE("Core/Utilities/NestedFunction", "")
+  {
+    TL_NESTED_FUNC_BEGIN(AddTwoNumbers) s32 AddTwoNumbers(s32 a, s32 b)
+    {
+      return a + b;
+    }
+    TL_NESTED_FUNC_END();
+
+    CHECK( (TL_NESTED_CALL(AddTwoNumbers)(5, 5) == 10) );
+
+    TL_NESTED_FUNC_BEGIN(AddToRef) void AddToRef(s32& a_inOut)
+    {
+      a_inOut++;
+    }
+    TL_NESTED_FUNC_END();
+
+    s32 testNum = 0;
+    TL_NESTED_CALL(AddToRef)(testNum);
+    CHECK(testNum == 1);
   }
 };

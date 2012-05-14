@@ -102,31 +102,31 @@ namespace tloc { namespace core {
   template <typename T>
   struct not_equal_to : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T != T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x != a_y; }
   };
 
   template <typename T>
   struct greater : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T > T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x > a_y; }
   };
 
   template <typename T>
   struct less : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T < T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x < a_y; }
   };
 
   template <typename T>
   struct greater_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T >= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x >= a_y; }
   };
 
   template <typename T>
   struct less_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T <= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x <= a_y; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -135,19 +135,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct logical_and : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T && T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x && a_y; }
   };
 
   template <typename T>
   struct logical_or: binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T || T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x || a_y; }
   };
 
   template <typename T>
   struct logical_not: unary_function<T, bool>
   {
-    bool operator()(const T& a_x) const { return !T; }
+    bool operator()(const T& a_x) const { return !a_x; }
   };
 
   //////////////////////////////////////////////////////////////////////////

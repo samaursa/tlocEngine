@@ -6,6 +6,7 @@
 #include "tlocAlgorithms.h"
 #include "tlocIterator.h"
 #include "tlocMemory.h"
+#include "tlocUtils.h"
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -29,13 +30,12 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Array class
 
-  template <typename T>
+  template <typename T, typename T_Policy = Array_Ordered>
   class ArrayBase
   {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
-    typedef ArrayBase<T>                                  this_type;
     typedef T                                             value_type;
     typedef T*                                            pointer;
     typedef T&                                            reference;
@@ -48,6 +48,10 @@ namespace tloc { namespace core {
 
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
+
+    typedef ArrayBase<T, T_Policy>                        this_type;
+
+    typedef T_Policy                                      policy_type;
 
     //------------------------------------------------------------------------
     // Functions
@@ -147,7 +151,11 @@ namespace tloc { namespace core {
     // invalid.
     TL_I void             DoReAllocate();
 
-    // Assigns
+    //------------------------------------------------------------------------
+    // erase() helpers
+
+    TL_I iterator         DoErase(iterator a_position, Array_Ordered);
+    TL_I iterator         DoErase(iterator a_position, Array_Unordered);
 
     //------------------------------------------------------------------------
     // Variables
@@ -161,10 +169,10 @@ namespace tloc { namespace core {
     static const size_type sm_defaultCapacity;
   };
 
-  template <typename T>
-  class Array : public ArrayBase<T>
+  template <typename T, typename T_Policy = Array_Ordered>
+  class Array : public ArrayBase<T, T_Policy>
   {
-    friend class Array<T>;
+    friend class Array<T, T_Policy>;
 
   public:
 
@@ -183,8 +191,10 @@ namespace tloc { namespace core {
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
-    typedef Array<T>                                      this_type;
-    typedef ArrayBase<T>                                  base_type;
+    typedef Array<T, T_Policy>                            this_type;
+    typedef ArrayBase<T, T_Policy>                        base_type;
+
+    typedef T_Policy                                      policy_type;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -276,6 +286,21 @@ namespace tloc { namespace core {
     TL_I void             DoInsertByIterator(iterator a_position,
                                              T_InputIterator a_first,
                                              T_InputIterator a_last);
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Default types for easy instantiation
+
+  template <typename T>
+  class ArrayOrdered
+    : public Array<T, Array_Ordered>
+  {
+  };
+
+  template <typename T>
+  class ArrayUnordered
+    : public Array<T, Array_Unordered>
+  {
   };
 
 };};

@@ -298,6 +298,29 @@ namespace TestingArray
     someClass.erase(someClass.begin());
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/UnorderedErase",
+    "Test the unordered erase function")
+  {
+    Array<tl_int, Array_Unordered> unorderedInts;
+
+    FILL_INT_ARRAY_BY_PUSH(unorderedInts, 0, 10);
+
+    unorderedInts.erase(unorderedInts.begin() + 5);
+
+    CHECK((unorderedInts.begin() + 9) == unorderedInts.end());
+    CHECK(unorderedInts.size() == 9);
+
+    CHECK(unorderedInts[0] == 0);
+    CHECK(unorderedInts[1] == 1);
+    CHECK(unorderedInts[2] == 2);
+    CHECK(unorderedInts[3] == 3);
+    CHECK(unorderedInts[4] == 4);
+    CHECK(unorderedInts[5] == 9);
+    CHECK(unorderedInts[6] == 6);
+    CHECK(unorderedInts[7] == 7);
+    CHECK(unorderedInts[8] == 8);
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Clear",
     "Test the clear function")
   {

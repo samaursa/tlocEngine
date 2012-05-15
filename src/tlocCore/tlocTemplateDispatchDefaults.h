@@ -6,6 +6,7 @@
 #include "tlocList.h"
 #include "tlocArray.inl"
 #include "tlocList.inl"
+#include "tlocUtils.h"
 
 namespace tloc { namespace core {
 
@@ -33,7 +34,7 @@ namespace tloc { namespace core {
   struct DispatcherBaseArray 
   {
     DECL_TYPEDEF_HELPER(DispatcherBaseArray);
-    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, Array> type;
+    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, ArrayOrdered> type;
   };
 
   //template <typename T_Callbacks, template <typename T> class T_CallbackGroupT>

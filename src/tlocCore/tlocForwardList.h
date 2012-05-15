@@ -4,6 +4,7 @@
 #include "tlocList.h"
 #include "tlocArray.h"
 #include "tlocIterator.h"
+#include "tlocUtils.h"
 
 
 namespace tloc { namespace core {

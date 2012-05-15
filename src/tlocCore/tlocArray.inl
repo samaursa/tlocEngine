@@ -50,20 +50,20 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   //////////////////////////////////////////////////////////////////////////
   // Template macros
 
-#define ARRAY_BASE_TYPES typename T
-#define ARRAY_BASE_PARAMS T
+#define ARRAY_BASE_TYPES typename T, typename T_Policy
+#define ARRAY_BASE_PARAMS T, T_Policy
 
-#define ARRAY_TYPES typename T
-#define ARRAY_PARAMS T
+#define ARRAY_TYPES typename T, typename T_Policy
+#define ARRAY_PARAMS T, T_Policy
 
   //////////////////////////////////////////////////////////////////////////
   // Constants
 
   template <ARRAY_BASE_TYPES>
-  const tl_size ArrayBase<T>::sm_defaultCapacity = 2;
+  const tl_size ArrayBase<ARRAY_BASE_PARAMS>::sm_defaultCapacity = 2;
 
   //////////////////////////////////////////////////////////////////////////
-  // ArrayBase<T>
+  // ArrayBase<T, T_Policy>
 
   template <ARRAY_BASE_TYPES>
   TL_FI ArrayBase<ARRAY_BASE_PARAMS>::ArrayBase()
@@ -298,13 +298,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::iterator 
     ArrayBase<ARRAY_BASE_PARAMS>::erase(iterator a_position)
   {
-    TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
-
-    a_position->~value_type();
-    copy(a_position + 1, m_end, a_position);
-    --m_end;
-
-    return a_position;
+    return DoErase(a_position, policy_type());
   }
 
   template <ARRAY_BASE_TYPES>
@@ -334,27 +328,27 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Internal functions
 
   template <ARRAY_BASE_TYPES>
-  TL_I typename ArrayBase<ARRAY_PARAMS>::pointer 
-    ArrayBase<ARRAY_PARAMS>::DoAllocate(const size_type& a_size)
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
+    ArrayBase<ARRAY_BASE_PARAMS>::DoAllocate(const size_type& a_size)
   {
     return a_size ? (pointer)TL_MALLOC(a_size * sizeof(value_type)) : NULL;
   }
 
   template <ARRAY_BASE_TYPES>
-  TL_I typename ArrayBase<ARRAY_PARAMS>::pointer 
-    ArrayBase<ARRAY_PARAMS>::DoReAllocate(const size_type& a_size)
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
+    ArrayBase<ARRAY_BASE_PARAMS>::DoReAllocate(const size_type& a_size)
   {
     return (pointer)TL_REALLOC(m_begin, sizeof(value_type) * a_size);
   }
 
   template <ARRAY_BASE_TYPES>
-  TL_I void ArrayBase<ARRAY_PARAMS>::DoFree(pointer a_ptr)
+  TL_I void ArrayBase<ARRAY_BASE_PARAMS>::DoFree(pointer a_ptr)
   {
     TL_FREE(a_ptr);
   }
 
   template <ARRAY_BASE_TYPES>
-  TL_I void ArrayBase<ARRAY_PARAMS>::DoDestroyValues(pointer a_rangeBegin, 
+  TL_I void ArrayBase<ARRAY_BASE_PARAMS>::DoDestroyValues(pointer a_rangeBegin, 
                                                      pointer a_rangeEnd)
   {
     while (a_rangeBegin != a_rangeEnd)
@@ -365,7 +359,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  TL_I void ArrayBase<ARRAY_PARAMS>::DoAddToEnd(const_reference a_valueToCopy)
+  TL_I void ArrayBase<ARRAY_BASE_PARAMS>::DoAddToEnd(const_reference a_valueToCopy)
   {
     TLOC_ASSERT_ARRAY_NOT_FULL();
 
@@ -374,7 +368,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  TL_I void ArrayBase<ARRAY_PARAMS>::DoReAllocate()
+  TL_I void ArrayBase<ARRAY_BASE_PARAMS>::DoReAllocate()
   {
     const size_type prevSize = size();
     const size_type prevCap  = capacity();
@@ -394,8 +388,37 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
+  //------------------------------------------------------------------------
+  // erase() helpers
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
+    ArrayBase<ARRAY_BASE_PARAMS>::DoErase(iterator a_position, Array_Ordered)
+  {
+    TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
+
+    a_position->~value_type();
+    copy(a_position + 1, m_end, a_position);
+    --m_end;
+
+    return a_position;
+  }
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
+    ArrayBase<ARRAY_BASE_PARAMS>::DoErase(iterator a_position, Array_Unordered)
+  {
+    TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
+
+    tlSwap(*a_position, *(m_end - 1));
+    m_end->~value_type();
+    --m_end;
+
+    return a_position;
+  }
+
   //////////////////////////////////////////////////////////////////////////
-  // Array<T>
+  // Array<T, T_Policy>
 
   //------------------------------------------------------------------------
   // Constructors

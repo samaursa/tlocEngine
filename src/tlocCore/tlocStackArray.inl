@@ -29,11 +29,11 @@ namespace tloc { namespace core{
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_EXCLUSIVE(a_position) \
   TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position <= m_end, \
-TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(position) )
+TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_INCLUSIVE(a_position) \
   TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position < m_end, \
-  TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(position) )
+  TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN(a_rangeBegin) \
   TLOC_ASSERT_STACK_ARRAY(a_rangeBegin >= m_begin, \
@@ -99,7 +99,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <STACK_ARRAY_TYPES>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(size_type a_numElemsToInsert, 
                                                    const value_type& a_valueToCopy)
-                                                   : m_begin()
+     : m_begin()
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_numElemsToInsert);
@@ -122,8 +122,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <typename T_InputIterator>
   TL_FI StackArray<STACK_ARRAY_PARAMS>::StackArray(T_InputIterator a_rangeBegin, 
                                                    T_InputIterator a_rangeEnd)
-                                                   : m_begin()
-                                                   , m_end(m_begin)
+     : m_begin(), m_end(m_begin)
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
 

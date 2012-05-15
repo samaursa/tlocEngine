@@ -841,6 +841,7 @@ namespace tloc { namespace core {
     template <typename T_Iterator>
     void DoVerifyRange(T_Iterator a_begin, T_Iterator a_end, IsRawItr)
     {
+      TLOC_UNUSED_2(a_begin, a_end);
       TLOC_ASSERT_ALGORITHMS( a_begin <= a_end, 
                               "Invalid range (a_rangeBegin > a_rangeEnd)!");
     }

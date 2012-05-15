@@ -195,12 +195,12 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_FI iterator        before_begin();
-    TL_FI const_iterator  before_begin() const;
     TL_FI iterator        begin();
     TL_FI const_iterator  begin() const;
+    TL_FI const_iterator  cbegin() const;
     TL_FI iterator        end();
     TL_FI const_iterator  end() const;
+    TL_FI const_iterator  cend() const;
 
     TL_FI reverse_iterator        rbegin();
     TL_FI const_reverse_iterator  rbegin() const;

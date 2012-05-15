@@ -123,6 +123,14 @@ namespace TestingList
     CHECK(*cItr++ == 42);
     CHECK(*cItr++ == 13);
 
+    cItr = mylist.cbegin();
+
+    CHECK(*cItr++ == 75);
+    CHECK(*cItr++ == 23);
+    CHECK(*cItr++ == 65);
+    CHECK(*cItr++ == 42);
+    CHECK(*cItr++ == 13);
+
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/begin", "")
@@ -147,6 +155,22 @@ namespace TestingList
     CHECK(*--itr == 65);
     CHECK(*--itr == 23);
     CHECK(*--itr == 75);
+
+    T_ListType::const_iterator cItr = mylist.end();
+
+    CHECK(*--cItr == 13);
+    CHECK(*--cItr == 42);
+    CHECK(*--cItr == 65);
+    CHECK(*--cItr == 23);
+    CHECK(*--cItr == 75);
+
+    cItr = mylist.cend();
+
+    CHECK(*--cItr == 13);
+    CHECK(*--cItr == 42);
+    CHECK(*--cItr == 65);
+    CHECK(*--cItr == 23);
+    CHECK(*--cItr == 75);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/end", "")

@@ -1,7 +1,12 @@
 #include "tlocTestCommon.h"
 
+#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
 #include "tlocMath/tlocVector2.h"
 #include "tlocMath/tlocVector2.inl"
+
+#undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
 
 namespace TestingVector2f
 {
@@ -114,5 +119,51 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 0, 0);
     c = b; c.Mul(b);
     CHECK_VEC2F(c, 25, 36);
+    c.Mul(2);
+    CHECK_VEC2F(c, 50, 72);
+    c.Div(b);
+    CHECK_VEC2F(c, 10, 12);
+    c.Div(2);
+    CHECK_VEC2F(c, 5, 6);
+  }
+
+  TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/BasicAssignmentOperators",
+    "Test addition, subtraction, multiplication and division operators")
+  {
+    //////////////////////////////////////////////////////////////////////////
+    // Addition and subtraction
+
+    // Addition single
+    c = a + b;
+    CHECK_VEC2F(c, 6, 8);
+
+    // Subtraction double
+    c = a - b;
+    CHECK_VEC2F(c, -4, -4);
+
+    // Addition single
+    c += b;
+    CHECK_VEC2F(c, 1, 2);
+
+    // Subtraction single
+    c -= a;
+    CHECK_VEC2F(c, 0, 0);
+    c -= a;
+    CHECK_VEC2F(c, -1, -2);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Multiplication single
+
+    c.Zero();
+    c *= a;
+    CHECK_VEC2F(c, 0, 0);
+    c = b; c *= b;
+    CHECK_VEC2F(c, 25, 36);
+    c *= 2;
+    CHECK_VEC2F(c, 50, 72);
+    c /= b;
+    CHECK_VEC2F(c, 10, 12);
+    c /= 2;
+    CHECK_VEC2F(c, 5, 6);
   }
 }

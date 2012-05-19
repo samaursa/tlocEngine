@@ -294,16 +294,34 @@ namespace tloc { namespace core {
   };
 
   //////////////////////////////////////////////////////////////////////////
-  // Default types for easy instantiation
+  // default types for easy instantiation
 
   template <typename T>
-  class ArrayOrdered
-    : public Array<T, Array_Ordered>
+  struct ArrayOrdered
   {
+    DECL_TYPEDEF_HELPER(ArrayOrdered);
+    typedef Array<T, Array_Ordered> type;
   };
 
   template <typename T>
-  class ArrayUnordered
+  struct ArrayUnordered
+  {
+    DECL_TYPEDEF_HELPER(ArrayUnordered);
+    typedef Array<T, Array_Unordered> type;
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Temporary default types for easy instantiation
+
+  template <typename T>
+  class ArrayOrderedTemp
+    : public Array<T, Array_Ordered>
+  {
+
+  };
+
+  template <typename T>
+  class ArrayUnorderedTemp
     : public Array<T, Array_Unordered>
   {
   };

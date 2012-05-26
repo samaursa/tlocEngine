@@ -397,8 +397,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
 
-    a_position->~value_type();
     copy(a_position + 1, m_end, a_position);
+    m_end->~value_type();
     --m_end;
 
     return a_position;
@@ -410,9 +410,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
 
-    tlSwap(*a_position, *(m_end - 1));
-    m_end->~value_type();
     --m_end;
+    *a_position = *m_end;
+    m_end->~value_type();
 
     return a_position;
   }
@@ -643,6 +643,39 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   //------------------------------------------------------------------------
   // Internal functions
 
+  //------------------------------------------------------------------------
+  // assign() helpers
+
+  template <ARRAY_TYPES>
+  template <typename T_Number>
+  TL_I void Array<ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
+                                          T_Number a_elemToCopy, 
+                                          is_arith_t)
+  {
+    assign(static_cast<size_type>(a_repetitionNum), 
+           static_cast<value_type>(a_elemToCopy));
+  }
+
+  template <ARRAY_TYPES>
+  template <typename T_InputIterator>
+  TL_I void Array<ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
+                                          T_InputIterator a_rangeEnd, 
+                                          is_not_arith_t)
+  {
+    TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
+
+    size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
+    if (size() < projectedSize)
+    {
+      resize(projectedSize);
+    }
+
+    copy(a_rangeBegin, a_rangeEnd, m_begin);
+  }
+
+  //------------------------------------------------------------------------
+  // insert() helpers
+
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::DoInsertValue(iterator a_position, 
                                                const_reference a_value)
@@ -735,39 +768,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       insert(m_begin + posIndex, a_numElemsToInsert, valueCopy);
     }
   }
-
-  //------------------------------------------------------------------------
-  // assign() helpers
-
-  template <ARRAY_TYPES>
-  template <typename T_Number>
-  TL_I void Array<ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
-                                          T_Number a_elemToCopy, 
-                                          is_arith_t)
-  {
-    assign(static_cast<size_type>(a_repetitionNum), 
-           static_cast<value_type>(a_elemToCopy));
-  }
-
-  template <ARRAY_TYPES>
-  template <typename T_InputIterator>
-  TL_I void Array<ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
-                                          T_InputIterator a_rangeEnd, 
-                                          is_not_arith_t)
-  {
-    TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
-    if (size() < projectedSize)
-    {
-      resize(projectedSize);
-    }
-
-    copy(a_rangeBegin, a_rangeEnd, m_begin);
-  }
-
-  //------------------------------------------------------------------------
-  // insert() helpers
 
   template <ARRAY_TYPES>
   template <typename T_Number>

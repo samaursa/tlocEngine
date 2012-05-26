@@ -486,6 +486,36 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   //------------------------------------------------------------------------
+  // assign() helpers
+
+  template <STACK_ARRAY_TYPES>
+  template <typename T_Number>
+  TL_I void StackArray<STACK_ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
+    T_Number a_elemToCopy, 
+    is_arith_t)
+  {
+    assign(static_cast<size_type>(a_repetitionNum), 
+      static_cast<value_type>(a_elemToCopy));
+  }
+
+  template <STACK_ARRAY_TYPES>
+  template <typename T_InputIterator>
+  TL_I void StackArray<STACK_ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
+    T_InputIterator a_rangeEnd, 
+    is_not_arith_t)
+  {
+    TLOC_ASSERT_STACK_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
+
+    size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
+    TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(projectedSize);
+
+    m_end = m_begin;
+    tloc::core::advance(m_end, projectedSize);
+
+    copy(a_rangeBegin, a_rangeEnd, static_cast<value_type*>(m_begin));
+  }
+
+  //------------------------------------------------------------------------
   // push_back() Helpers
 
   template <STACK_ARRAY_TYPES>
@@ -587,36 +617,6 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
       ++a_first;
       ++a_position;
     }
-  }
-
-  //------------------------------------------------------------------------
-  // assign() helpers
-
-  template <STACK_ARRAY_TYPES>
-  template <typename T_Number>
-  TL_I void StackArray<STACK_ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
-                                                     T_Number a_elemToCopy, 
-                                                     is_arith_t)
-  {
-    assign(static_cast<size_type>(a_repetitionNum), 
-           static_cast<value_type>(a_elemToCopy));
-  }
-
-  template <STACK_ARRAY_TYPES>
-  template <typename T_InputIterator>
-  TL_I void StackArray<STACK_ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
-                                                     T_InputIterator a_rangeEnd, 
-                                                     is_not_arith_t)
-  {
-    TLOC_ASSERT_STACK_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
-    TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(projectedSize);
-    
-    m_end = m_begin;
-    tloc::core::advance(m_end, projectedSize);
-
-    copy(a_rangeBegin, a_rangeEnd, static_cast<value_type*>(m_begin));
   }
 
 };};

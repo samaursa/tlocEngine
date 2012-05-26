@@ -1,7 +1,12 @@
 #include "tlocTestCommon.h"
 
+#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
 #include "tlocMath/tlocVector3.h"
 #include "tlocMath/tlocVector3.inl"
+
+#undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
 
 namespace TestingVector3f
 {
@@ -137,6 +142,55 @@ namespace TestingVector3f
 
     c.Div(14.0f);
     CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f); //-V550
+  }
+
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/BasicAssignmentOperators",
+    "Test addition, subtraction, multiplication and division")
+  {
+    //////////////////////////////////////////////////////////////////////////
+    // Addition and subtraction
+
+    // Addition single
+    c = a + b;
+    CHECK_VEC3F(c, 6.0f, 8.0f, 10.0f);
+
+    // Subtraction double
+    c = a - b;
+    CHECK_VEC3F(c, -4.0f, -4.0f, -4.0f);
+
+    // Addition single
+    c += b;
+    CHECK_VEC3F(c, 1.0f, 2.0f, 3.0f);
+
+    // Subtraction single
+    c -= a;
+    CHECK_VEC3F(c, 0, 0, 0);
+    c -= a;
+    CHECK_VEC3F(c, -1, -2, -3);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Multiplication single
+    c.Zero();
+    c *= a;
+    CHECK_VEC3F(c, 0, 0, 0);
+    c = b; c *= b;
+    CHECK_VEC3F(c, 25.0f, 36.0f, 49.0f);
+
+    // Multiplication double
+    c.Zero(); c = a * b;
+    CHECK_VEC3F(c, 5.0f, 12.0f, 21.0f);
+
+    // Multiplication single
+    c *= 2;
+    CHECK_VEC3F(c, 10.0f, 24.0f, 42.0f);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Division
+    c /= a;
+    CHECK_VEC3F(c, 10.0f, 12.0f, 14.0f);
+
+    c /= 14.0f;
+    CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f);
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Length", "Tests the "

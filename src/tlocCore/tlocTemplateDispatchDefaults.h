@@ -34,7 +34,7 @@ namespace tloc { namespace core {
   struct DispatcherBaseArray 
   {
     DECL_TYPEDEF_HELPER(DispatcherBaseArray);
-    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, ArrayOrdered> type;
+    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, ArrayOrderedTemp> type;
   };
 
   //template <typename T_Callbacks, template <typename T> class T_CallbackGroupT>

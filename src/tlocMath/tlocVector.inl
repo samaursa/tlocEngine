@@ -21,6 +21,20 @@ namespace tloc { namespace math {
 #define VECTOR_PARAMS T, T_Size
 
   //////////////////////////////////////////////////////////////////////////
+  // Assertion Macros
+
+  // If TLOC_VECTOR_ALLOW_EASY_OPERATIONS is defined, easy math operations such
+  // as +,-,/,* will be available, otherwise, explicit functions must be
+  // called. This can be selectively turned on/off for different files
+  // depending on performance requirements. 
+#ifdef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+#define TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS
+#else
+#define TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS \
+  TLOC_STATIC_ASSERT(false, Operator_operations_unavailable_Use_explicit_functions)
+#endif 
+
+  //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
   // Note that we have tl_int and not tl_size for the iteration. This is because
@@ -344,7 +358,139 @@ namespace tloc { namespace math {
   }
 
   //------------------------------------------------------------------------
-  // Comparisons
+  // Operators
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Add(a_vector);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Sub(a_vector);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator* (const value_type& a_value)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Mul(a_value);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Mul(a_vector);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator/ (const value_type& a_value)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Div(a_value);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type 
+    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector)
+  {
+    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnVec;
+    returnVec = (*this);
+
+    returnVec.Div(a_vector);
+
+    return returnVec;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
+    Vector<VECTOR_PARAMS>::operator+= (const this_type& a_vector)
+  {
+    this->Add(a_vector);
+
+    return (*this);
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
+    Vector<VECTOR_PARAMS>::operator-= (const this_type& a_vector)
+  {
+    this->Sub(a_vector);
+
+    return (*this);;
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
+    Vector<VECTOR_PARAMS>::operator*= (const value_type& a_value)
+  {
+    this->Mul(a_value);
+
+    return (*this);
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
+    Vector<VECTOR_PARAMS>::operator*= (const this_type& a_vector)
+  {
+    this->Mul(a_vector);
+
+    return (*this);
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type&
+    Vector<VECTOR_PARAMS>::operator/= (const value_type& a_value)
+  {
+    this->Div(a_value);
+
+    return (*this);
+  }
+
+  template <VECTOR_TYPE>
+  TL_FI typename Vector<VECTOR_PARAMS>::this_type&
+    Vector<VECTOR_PARAMS>::operator/= (const this_type& a_vector)
+  {
+    this->Div(a_vector);
+
+    return (*this);
+  }
 
   template <VECTOR_TYPE>
   TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector)

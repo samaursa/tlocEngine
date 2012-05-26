@@ -155,6 +155,20 @@ namespace tloc { namespace core {
                                    const value_type& a_value);
 
     //------------------------------------------------------------------------
+    // assign() helpers
+
+    typedef type_true is_arith_t;
+    typedef type_false is_not_arith_t;
+
+    template <typename T_Number>
+    TL_I void             DoAssign(T_Number a_repetitionNum, 
+      T_Number a_elemToCopy, is_arith_t);
+
+    template <typename T_InputIterator>
+    TL_I void             DoAssign(T_InputIterator a_rangeBegin, 
+      T_InputIterator a_rangeEnd, is_not_arith_t);
+
+    //------------------------------------------------------------------------
     // push_back() Helpers
     
     TL_I void             DoAddToEnd(const value_type& a_valueToCopy);
@@ -183,20 +197,6 @@ namespace tloc { namespace core {
     TL_I void             DoInsertByIterator(iterator a_position, 
                                              T_InputIterator a_first, 
                                              T_InputIterator a_last);
-
-    //------------------------------------------------------------------------
-    // assign() helpers
-
-    typedef type_true is_arith_t;
-    typedef type_false is_not_arith_t;
-
-    template <typename T_Number>
-    TL_I void             DoAssign(T_Number a_repetitionNum, 
-                                   T_Number a_elemToCopy, is_arith_t);
-
-    template <typename T_InputIterator>
-    TL_I void             DoAssign(T_InputIterator a_rangeBegin, 
-                                   T_InputIterator a_rangeEnd, is_not_arith_t);
 
     //------------------------------------------------------------------------
     // Variables

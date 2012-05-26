@@ -35,6 +35,12 @@ namespace tloc { namespace core {
   {
   public:
     //------------------------------------------------------------------------
+    // Extended typedefs
+    typedef ArrayBase<T, T_Policy>                        this_type;
+
+    typedef T_Policy                                      policy_type;
+
+    //------------------------------------------------------------------------
     // typedefs (similar to vector)
     typedef T                                             value_type;
     typedef T*                                            pointer;
@@ -48,10 +54,6 @@ namespace tloc { namespace core {
 
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
-
-    typedef ArrayBase<T, T_Policy>                        this_type;
-
-    typedef T_Policy                                      policy_type;
 
     //------------------------------------------------------------------------
     // Functions
@@ -175,26 +177,27 @@ namespace tloc { namespace core {
     friend class Array<T, T_Policy>;
 
   public:
-
     //------------------------------------------------------------------------
-    // typedefs (similar to vector)
-    typedef T                                             value_type;
-    typedef T*                                            pointer;
-    typedef T&                                            reference;
-    typedef const T&                                      const_reference;
-    typedef const T*                                      const_pointer;
-    typedef T*                                            iterator;
-    typedef const T*                                      const_iterator;
-    typedef tl_size                                       size_type;
-    typedef tl_ptrdiff                                    difference_type;
-
-    typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
-    typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
-
+    // extended typedefs
     typedef Array<T, T_Policy>                            this_type;
     typedef ArrayBase<T, T_Policy>                        base_type;
 
-    typedef T_Policy                                      policy_type;
+    typedef typename base_type::policy_type               policy_type;
+
+    //------------------------------------------------------------------------
+    // typedefs (similar to vector)
+    typedef typename base_type::value_type                value_type;
+    typedef typename base_type::pointer                   pointer;
+    typedef typename base_type::reference                 reference;
+    typedef typename base_type::const_reference           const_reference;
+    typedef typename base_type::const_pointer             const_pointer;
+    typedef typename base_type::iterator                  iterator;
+    typedef typename base_type::const_iterator            const_iterator;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::difference_type           difference_type;
+
+    typedef typename base_type::reverse_iterator          reverse_iterator;
+    typedef typename base_type::const_reverse_iterator    const_reverse_iterator;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -236,18 +239,8 @@ namespace tloc { namespace core {
                                  T_InputIterator a_rangeEnd);
     TL_I void             swap(this_type& a_vec);
   protected:
-
-    // Inserts the value in the specified position by moving all the elements
-    // range starting from aPosition by one element and increasing the capacity
-    // if required
-    TL_I void             DoInsertValue(iterator a_position, 
-                                        const_reference a_value);
-
-    // Inserts the range of values in the specified position by moving all
-    // the elements from position to end and increasing the capacity if required
-    TL_I void             DoInsertValues(iterator a_position, 
-                                         size_type a_numElemsToInsert,
-                                         const_reference a_value);
+    //------------------------------------------------------------------------
+    // Internal functions
 
     //------------------------------------------------------------------------
     // assign() helpers
@@ -267,6 +260,18 @@ namespace tloc { namespace core {
 
     //------------------------------------------------------------------------
     // insert() helpers
+
+    // Inserts the value in the specified position by moving all the elements
+    // range starting from aPosition by one element and increasing the capacity
+    // if required
+    TL_I void             DoInsertValue(iterator a_position, 
+                                        const_reference a_value);
+
+    // Inserts the range of values in the specified position by moving all
+    // the elements from position to end and increasing the capacity if required
+    TL_I void             DoInsertValues(iterator a_position, 
+                                         size_type a_numElemsToInsert,
+                                         const_reference a_value);
 
     typedef type_true   is_integral_t;
     typedef type_false  is_not_integral_t;
@@ -289,16 +294,34 @@ namespace tloc { namespace core {
   };
 
   //////////////////////////////////////////////////////////////////////////
-  // Default types for easy instantiation
+  // default types for easy instantiation
 
   template <typename T>
-  class ArrayOrdered
-    : public Array<T, Array_Ordered>
+  struct ArrayOrdered
   {
+    DECL_TYPEDEF_HELPER(ArrayOrdered);
+    typedef Array<T, Array_Ordered> type;
   };
 
   template <typename T>
-  class ArrayUnordered
+  struct ArrayUnordered
+  {
+    DECL_TYPEDEF_HELPER(ArrayUnordered);
+    typedef Array<T, Array_Unordered> type;
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Temporary default types for easy instantiation
+
+  template <typename T>
+  class ArrayOrderedTemp
+    : public Array<T, Array_Ordered>
+  {
+
+  };
+
+  template <typename T>
+  class ArrayUnorderedTemp
     : public Array<T, Array_Unordered>
   {
   };

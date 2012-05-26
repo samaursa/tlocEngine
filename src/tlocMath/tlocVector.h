@@ -8,10 +8,7 @@
 
 #include "tlocMath/tlocMath.h"
 
-// If defined, easy math operations such as +,-,/,* will be available,
-// otherwise, explicit functions must be called. This can be selectively
-// turned on/off for different files depending on performance requirements
-#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
+
 
 // If defined, simple assertions will be enabled in this class. Enabled by
 // default in debug
@@ -158,7 +155,21 @@ namespace tloc { namespace math {
                                const this_type& a_vector2);
 
     //------------------------------------------------------------------------
-    // Comparisons
+    // Operators
+
+    TL_FI this_type   operator+ (const this_type& a_vector);
+    TL_FI this_type   operator- (const this_type& a_vector);
+    TL_FI this_type   operator* (const value_type& a_value);
+    TL_FI this_type   operator* (const this_type& a_vector);
+    TL_FI this_type   operator/ (const value_type& a_value);
+    TL_FI this_type   operator/ (const this_type& a_vector);
+
+    TL_FI this_type&  operator+= (const this_type& a_vector);
+    TL_FI this_type&  operator-= (const this_type& a_vector);
+    TL_FI this_type&  operator*= (const value_type& a_value);
+    TL_FI this_type&  operator*= (const this_type& a_vector);
+    TL_FI this_type&  operator/= (const value_type& a_value);
+    TL_FI this_type&  operator/= (const this_type& a_vector);
 
     TL_FI bool        operator == (const this_type& a_vector);
     TL_FI bool        operator != (const this_type& a_vector);

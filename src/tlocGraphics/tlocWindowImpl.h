@@ -1,9 +1,9 @@
 #ifndef TLOC_WINDOW_IMPL_H
 #define TLOC_WINDOW_IMPL_H
 
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocNonCopyable.h"
-#include "tlocCore/tlocPlatform.h"
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/platform/tlocPlatform.h>
 
 #include "tlocGraphicsModes.h"
 #include "tlocWindowSettings.h"

@@ -2,9 +2,9 @@
 #ifndef TLOC_VECTOR_N_H
 #define TLOC_VECTOR_N_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTuple.h"
-#include "tlocCore/tlocAlgorithms.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include "tlocMath/tlocMath.h"
 
@@ -191,11 +191,11 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Static const definitions
   template<typename T, tl_size T_Size>
-  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ZERO = 
+  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ZERO =
     Vector<T, T_Size>(0);
-  
+
   template<typename T, tl_size T_Size>
-  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE = 
+  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE =
     Vector<T, T_Size>(1);
 
 };};

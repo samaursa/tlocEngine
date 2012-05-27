@@ -1,11 +1,11 @@
 #ifndef TLOC_ALGORITHMS_H
 #define TLOC_ALGORITHMS_H
 
-#include "tlocBase.h"
-#include "tlocTypeTraits.h"
-#include "tlocIterator.h"
-#include "tlocPair.h"
-#include "tlocArray.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/iterators/tlocIterator.h>
+#include <tlocCore/tlocPair.h>
+#include <tlocCore/containers/tlocArray.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms

@@ -1,8 +1,8 @@
 #ifndef TLOC_OPEN_GL_EXT_H
 #define TLOC_OPEN_GL_EXT_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace graphics {
 

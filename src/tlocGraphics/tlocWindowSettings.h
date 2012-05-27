@@ -1,7 +1,7 @@
 #ifndef TLOC_WINDOW_SETTINGS_H
 #define TLOC_WINDOW_SETTINGS_H
 
-#include "tlocCore/tlocString.h"
+#include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace graphics {
 

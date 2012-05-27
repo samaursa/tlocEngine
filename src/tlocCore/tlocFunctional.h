@@ -1,8 +1,8 @@
 #ifndef TLOC_FUNCTIONAL_H
 #define TLOC_FUNCTIONAL_H
 
-#include "tlocBase.h"
-#include "tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core {
 

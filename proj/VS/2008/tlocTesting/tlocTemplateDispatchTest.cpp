@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocTemplateDispatchDefaults.h"
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 
 namespace ns
 {

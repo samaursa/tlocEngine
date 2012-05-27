@@ -1,7 +1,7 @@
 #include "tlocGraphicsModes.h"
 
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
 //------------------------------------------------------------------------
 // Platform specific

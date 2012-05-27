@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocAlgorithms.h"
+#include <tlocCore/tlocAlgorithms.h>
 #include "tlocCore/tlocAlgorithms.inl"
 
-#include "tlocCore/tlocTuple.h"
-#include "tlocCore/tlocTuple.inl"
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocTuple.inl>
 
 namespace TestingTuple
 {

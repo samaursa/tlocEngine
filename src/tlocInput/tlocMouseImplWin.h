@@ -1,9 +1,9 @@
 #ifndef TLOC_MOUSE_IMPL_WIN_H
 #define TLOC_MOUSE_IMPL_WIN_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTemplateParams.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTemplateParams.h>
 
 #include "tlocInputTypes.h"
 #include "tlocMouse.h"

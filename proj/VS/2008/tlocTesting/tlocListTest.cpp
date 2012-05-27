@@ -1,12 +1,12 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
 #define private public
 #define protected public
-#include "tlocCore/tlocList.h"
-#include "tlocCore/tlocList.inl"
+#include "tlocCore/containers/tlocList.h"
+#include "tlocCore/containers/tlocList.inl"
 #undef private
 #undef protected
 

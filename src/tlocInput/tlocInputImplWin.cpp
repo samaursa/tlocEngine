@@ -1,8 +1,8 @@
 #include "tlocInputImplWin.h"
 
-#include "tlocCore/tlocArray.inl"
-#include "tlocCore/tlocString.inl"
-#include "tlocCore/tlocTypeTraits.h"
+#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 #include "tlocKeyboardImplWin.h"
 #include "tlocMouseImplWin.h"

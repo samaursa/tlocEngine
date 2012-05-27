@@ -2,8 +2,8 @@
 #ifndef TLOC_VECTOR_2_H
 #define TLOC_VECTOR_2_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocAlgorithms.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include "tlocMath/tlocMath.h"
 #include "tlocMath/tlocVector.h"

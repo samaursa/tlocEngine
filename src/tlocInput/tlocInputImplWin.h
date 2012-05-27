@@ -1,10 +1,10 @@
 #ifndef TLOC_INPUT_WIN_H
 #define TLOC_INPUT_WIN_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocString.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/string/tlocString.h>
 
 #include "tlocInput.h"
 #include "tlocInputImpl.h"

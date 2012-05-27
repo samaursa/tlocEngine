@@ -1,7 +1,8 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocUtils.h"
-#include "tlocCore/tlocTime.h"
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
+#include <tlocCore/time/tlocTime.h>
 
 #define private public
 #define protected public
@@ -429,7 +430,7 @@ namespace TestingInput
                                       MOUSEEVENTF_XUP, XBUTTON2);
 
       MouseEvent evt;
-      
+
       evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
       CHECK(evt.m_X.m_rel() == 5);
       CHECK(evt.m_Y.m_rel() == 0);

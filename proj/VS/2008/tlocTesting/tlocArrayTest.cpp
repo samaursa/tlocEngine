@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocMemory.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
 namespace TestingArray
 {
@@ -74,7 +74,7 @@ namespace TestingArray
     Array<SomeClass> fifth(4, fooClass);
     CHECK(fifth[0].dummy == 50); CHECK(fifth[1].dummy == 50);
     CHECK(fifth[2].dummy == 50); CHECK(fifth[3].dummy == 50);
-    
+
     Array<s32> sixth (10);
     CHECK(sixth.size() == 10);
     CHECK(sixth.capacity() == 10);

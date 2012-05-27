@@ -1,11 +1,11 @@
 #ifndef TLOC_MOUSE_H
 #define TLOC_MOUSE_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocPlatform.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTemplateDispatchDefaults.h"
-#include "tlocCore/tlocTemplateUtils.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include "tlocInputTypes.h"
 #include "tlocMouse.h"

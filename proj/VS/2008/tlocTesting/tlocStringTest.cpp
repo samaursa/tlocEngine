@@ -1,8 +1,8 @@
 #include "tlocTestCommon.h"
 
 #include "tlocCore/tlocLinkMe.cpp"
-#include "tlocCore/tlocString.h"
-#include "tlocCore/tlocString.inl"
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace TestingStrings
 {

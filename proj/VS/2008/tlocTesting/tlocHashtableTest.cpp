@@ -1,18 +1,18 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/tlocMemory.h>
-#include <tlocCore/tlocTypes.h>
-#include <tlocCore/tlocTypes.inl>
-#include <tlocCore/tlocNestedFunction.h>
+#include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/utilities/tlocUtils.h>
 
-#include <tlocCore/tlocList.h>
-#include <tlocCore/tlocList.inl>
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 
 #include <tlocCore/tlocFunctional.h>
 
-#include <tlocCore/tlocHashtable.h>
-#include <tlocCore/tlocHashtable.inl>
+#include <tlocCore/containers/tlocHashtable.h>
+#include <tlocCore/containers/tlocHashtable.inl>
 
 namespace TestingHashtable
 {

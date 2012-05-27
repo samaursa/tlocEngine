@@ -1,7 +1,7 @@
 #ifndef TLOC_WINDOW_HANDLE_H
 #define TLOC_WINDOW_HANDLE_H
 
-#include "tlocCore/tlocPlatform.h"
+#include <tlocCore/platform/tlocPlatform.h>
 
 namespace tloc { namespace graphics {
 

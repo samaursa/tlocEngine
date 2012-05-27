@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
 
-#include "tlocCore/tlocHashmap.h"
-#include "tlocCore/tlocHashmap.inl"
+#include <tlocCore/containers/tlocHashmap.h>
+#include <tlocCore/containers/tlocHashmap.inl>
 
 namespace TestingHashMap
 {

@@ -1,10 +1,10 @@
 #ifndef TLOC_GRAPHICS_MODES_H
 #define TLOC_GRAPHICS_MODES_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocUtils.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocPlatform.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/platform/tlocPlatform.h>
 
 namespace tloc { namespace graphics {
 

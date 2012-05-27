@@ -1,8 +1,8 @@
 #ifndef TLOC_OPENGL_H
 #define TLOC_OPENGL_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 // Taken from SFML (we will trust the paths they chose for diff. platforms
 

@@ -1,14 +1,17 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/tlocUtils.h>
-#include <tlocCore/tlocNestedFunction.h>
-#include <tlocCore/tlocTypes.h>
-#include <tlocCore/tlocTemplateParams.h>
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
-#include <tlocCore/tlocArray.h>
-#include <tlocCore/tlocArray.inl>
-#include <tlocCore/tlocList.h>
-#include <tlocCore/tlocList.inl>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTemplateParams.h>
+
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 
 namespace TestingMemory
 {

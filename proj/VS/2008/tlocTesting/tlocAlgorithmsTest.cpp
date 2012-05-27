@@ -3,16 +3,16 @@
 
 #include "tlocTestCommon.h"
 
-#include <tlocCore/tlocUtils.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
 
-#include <tlocCore/tlocArray.h>
-#include <tlocCore/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
-#include <tlocCore/tlocList.h>
-#include <tlocCore/tlocList.inl>
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 
 namespace TestingAlgorithms
 {

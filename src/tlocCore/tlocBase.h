@@ -316,4 +316,13 @@
 #define TLOC_NOT_EMPTY_SOURCE_FILE() \
   namespace { char NoEmptyFileDummy##__LINE__; }
 
+///-------------------------------------------------------------------------
+/// @brief This struct is used to diagnose template types.
+///-------------------------------------------------------------------------
+template <typename T>
+struct TemplateDiagnose;
+
+template <typename T>
+struct DiagnoseTemplate;
+
 #endif

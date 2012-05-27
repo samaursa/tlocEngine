@@ -1,8 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
-#include "tlocCore/tlocTypeTraits.h"
-#include "tlocCore/tlocUtils.h"
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace input {
 

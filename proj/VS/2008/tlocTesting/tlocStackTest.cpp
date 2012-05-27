@@ -1,13 +1,13 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
-#include "tlocCore/tlocStack.h"
-#include "tlocCore/tlocStack.inl"
+#include <tlocCore/containers/tlocStack.h>
+#include <tlocCore/containers/tlocStack.inl>
 
 namespace TestingStack
 {
@@ -67,7 +67,7 @@ namespace TestingStack
     CHECK_TOP_WHILE_EMPTYING_STACK_BY_AMOUNT(third, 4);
   }
 
-  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Ctors", 
+  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Ctors",
     "Test default and copy constructor functionality")
   {
     testCtors<int_list_stack>();
@@ -82,7 +82,7 @@ namespace TestingStack
     CHECK(myStack.size() == 4);
   }
 
-  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Push", 
+  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Push",
     "Test push functionality")
   {
     testPush<int_list_stack>();
@@ -99,7 +99,7 @@ namespace TestingStack
     CHECK(myStack.empty());
   }
 
-  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Pop", 
+  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/Pop",
     "Test pop functionality")
   {
     testPop<int_list_stack>();
@@ -112,9 +112,9 @@ namespace TestingStack
     T_StackType myStack;
     FILL_INT_STACK_BY_AMOUNT(myStack, 4);
 
-    typename T_StackType::container_type myContainer 
+    typename T_StackType::container_type myContainer
       = myStack._Get_container();
-    typename T_StackType::container_type::iterator itr 
+    typename T_StackType::container_type::iterator itr
       = myContainer.begin();
 
     CHECK(*itr++ == 0);
@@ -153,7 +153,7 @@ namespace TestingStack
     CHECK(myArray[3] == 3);
   }*/
 
-  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/GetContainer", 
+  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/GetContainer",
     "Test grabbing container from stack and container contents")
   {
     testGetContainer<int_list_stack>();

@@ -1,14 +1,14 @@
 #ifndef TLOC_WINDOW_H
 #define TLOC_WINDOW_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocUtils.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocString.h"
-#include "tlocCore/tlocQueue.h"
-#include "tlocCore/tlocPlatform.h"
-#include "tlocCore/tlocNonCopyable.h"
-#include "tlocCore/tlocTemplateDispatchDefaults.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/containers/tlocQueue.h>
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 
 #include "tlocGraphicsModes.h"
 #include "tlocWindowSettings.h"

@@ -1,6 +1,6 @@
 #include "tlocKeyboard.h"
 
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/types/tlocTypes.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes

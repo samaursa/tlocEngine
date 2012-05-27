@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
 

@@ -5,12 +5,11 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocAlgorithms.h"
-#include "tlocIterator.inl"
-#include "tlocPair.inl"
-#include "tlocArray.inl"
-
-#include "tlocRandom.h"
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocPair.inl>
+#include <tlocCore/iterators/tlocIterator.inl>
+#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/RNGs/tlocRandom.h>
 
 namespace tloc { namespace core {
 

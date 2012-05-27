@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
-#include "tlocCore/tlocStackArray.h"
-#include "tlocCore/tlocStackArray.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/containers/tlocStackArray.h>
+#include <tlocCore/containers/tlocStackArray.inl>
 
 namespace TestingStackArray
 {

@@ -881,142 +881,238 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Containers"
+			Name="containers"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocContainersReadme.txt"
+				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainersReadme.txt"
+				>
+			</File>
+			<Filter
+				Name="array"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocArray.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocArray.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocArray.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStackArray.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStackArray.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStackArray.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="list"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocForwardList.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocForwardList.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocForwardList.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocList.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocList.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocList.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hashmap"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashmap.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashmap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashmap.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="stack"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStack.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStack.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocStack.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="queue"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocQueue.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocQueue.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocQueue.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hashtable"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashtable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashtable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocHashtable.inl"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="data_structures"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.h"
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocIterator.inl"
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="types"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypes.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypes.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypeTraits.h"
 				>
 			</File>
 			<Filter
-				Name="Array"
+				Name="template types"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateParams.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.h"
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateTypesN.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocArray.inl"
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateTypesNxM.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateTypesNxM.helper.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.h"
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateTypesNxN.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="time"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tlocTime.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tlocTime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tlocTime.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="_misc"
+			>
+			<Filter
+				Name="algorithms"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStackArray.inl"
+					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="List"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocForwardList.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocList.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Hashmap"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocHashmap.inl"
-					>
-				</File>
-				<Filter
-					Name="Hashtable"
-					>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\src\tlocCore\tlocHashtable.inl"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="Stack"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStack.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Queue"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocQueue.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Pair"
+				Name="pair"
 				>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
@@ -1027,220 +1123,140 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="RNGs"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.h"
+				>
+			</File>
 			<Filter
-				Name="String"
+				Name="generators"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.h"
+					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocString.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocStringReadme.txt"
+					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.inl"
 					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
-			Name="DataStructures"
+			Name="base_classes"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTable.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTuple.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Types"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateParams.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesN.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateTypesNxM.helper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypes.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTypeTraits.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Timers"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTime.inl"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Generators"
-			>
-		</Filter>
-		<Filter
-			Name="Random Number Generator"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocRandom.h"
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocNonCopyable.h"
 				>
 			</File>
 			<Filter
-				Name="Generators"
+				Name="dispatchers"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocTemplateDispatch.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.h"
+					RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocTemplateDispatchDefaults.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="cross_platform"
+				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocRngWell512.inl"
+					RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocPlatformImplBase.h"
 					>
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Base Classes"
-			>
-			<Filter
-				Name="Dispatchers"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatch.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocTemplateDispatchDefaults.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Cross Platform"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocPlatformImplBase.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="Memory"
+			Name="memory"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemory.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.h"
+				RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemory.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocMemory.inl"
+				RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemory.inl"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Platform"
+			Name="platform"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\platform\tlocPlatform.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocPlatform.h"
+				RelativePath="..\..\..\..\src\tlocCore\platform\tlocPlatform.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Algorithms"
+			Name="iterators"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
+				RelativePath="..\..\..\..\src\tlocCore\iterators\tlocIterator.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
+				RelativePath="..\..\..\..\src\tlocCore\iterators\tlocIterator.inl"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Utilities"
+			Name="utilies"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocNestedFunction.h"
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocContainerUtils.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocNonCopyable.h"
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocPointerUtils.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocTemplateUtils.h"
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocTemplateUtils.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\tlocUtils.h"
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocUtils.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="string"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tlocString.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tlocString.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tlocString.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tlocStringReadme.txt"
 				>
 			</File>
 		</Filter>

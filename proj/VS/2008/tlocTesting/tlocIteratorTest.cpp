@@ -1,12 +1,12 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/tlocIterator.h>
-#include <tlocCore/tlocIterator.inl>
+#include <tlocCore/iterators/tlocIterator.h>
+#include <tlocCore/iterators/tlocIterator.inl>
 
-#include <tlocCore/tlocArray.h>
-#include <tlocCore/tlocArray.inl>
-#include <tlocCore/tlocList.h>
-#include <tlocCore/tlocList.inl>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 
 namespace TestingIterator
 {

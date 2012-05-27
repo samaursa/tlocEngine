@@ -1,11 +1,11 @@
 #ifndef TLOC_KEYBOARD_H
 #define TLOC_KEYBOARD_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocPlatform.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTemplateDispatchDefaults.h"
-#include "tlocCore/tlocTemplateUtils.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include "tlocInput.h"
 #include "tlocKeyboardImpl.h"

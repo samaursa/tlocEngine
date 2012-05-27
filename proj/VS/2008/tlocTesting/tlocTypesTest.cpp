@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
 
 namespace TESTING_TYPES
 {

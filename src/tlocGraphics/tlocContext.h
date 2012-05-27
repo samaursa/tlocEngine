@@ -1,8 +1,8 @@
 #ifndef TLOC_CONTEXT_H
 #define TLOC_CONTEXT_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocNonCopyable.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace graphics {
 

@@ -1,5 +1,5 @@
 #include "tlocTestCommon.h"
-#include "tlocGraphics/tlocGraphicsModes.h"
+#include <tlocGraphics/window/tlocGraphicsModes.h>
 
 namespace TestingGraphicsModes
 {

@@ -844,46 +844,62 @@
 			Name="Window"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.cpp"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindow.inl"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowHandle.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindowHandle.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImpl.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindowImpl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.cpp"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindowImplWin.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowImplWin.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindowImplWin.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocWindowSettings.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindowSettings.h"
 				>
 			</File>
 			<Filter
 				Name="Graphics Mode"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsModes.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\window\tlocGraphicsModes.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsModes.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\window\tlocGraphicsModes.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Context"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\window\tlocContext.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\window\tlocContext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\window\tlocGraphicsContext.h"
 					>
 				</File>
 			</Filter>
@@ -929,34 +945,18 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Context"
-			>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocContext.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocContext.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsContext.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="OpenGL"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGL.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGLExt.cpp"
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGLExt.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\tlocOpenGLExt.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGLExt.h"
 				>
 			</File>
 		</Filter>

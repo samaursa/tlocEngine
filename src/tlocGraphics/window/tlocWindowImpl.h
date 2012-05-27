@@ -5,8 +5,8 @@
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
-#include "tlocGraphicsModes.h"
-#include "tlocWindowSettings.h"
+#include <tlocGraphics/window/tlocGraphicsModes.h>
+#include <tlocGraphics/window/tlocWindowSettings.h>
 
 namespace tloc { namespace graphics { namespace priv {
 

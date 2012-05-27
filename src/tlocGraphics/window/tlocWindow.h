@@ -10,9 +10,9 @@
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 
-#include "tlocGraphicsModes.h"
-#include "tlocWindowSettings.h"
-#include "tlocWindowHandle.h"
+#include <tlocGraphics/window/tlocGraphicsModes.h>
+#include <tlocGraphics/window/tlocWindowSettings.h>
+#include <tlocGraphics/window/tlocWindowHandle.h>
 
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"

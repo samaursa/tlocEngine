@@ -6,7 +6,7 @@
 // Platform dependant includes
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# include "tlocWindowImplWin.h"
+# include <tlocGraphics/window/tlocWindowImplWin.h>
 #else
 # error "WIP"
 #endif

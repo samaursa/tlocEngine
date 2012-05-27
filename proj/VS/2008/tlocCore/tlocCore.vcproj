@@ -1106,14 +1106,14 @@
 					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="pair"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
 					>

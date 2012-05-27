@@ -2,8 +2,8 @@
 
 #define private public
 #define protected public
-#include "tlocGraphics/tlocWindowImplWin.h"
-#include "tlocGraphics/tlocWindow.h"
+#include <tlocGraphics/window/tlocWindowImplWin.h>
+#include <tlocGraphics/window/tlocWindow.h>
 
 namespace TestingWindow
 {

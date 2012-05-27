@@ -1,4 +1,4 @@
-#include "tlocGraphicsModes.h"
+#include <tlocGraphics/window/tlocGraphicsModes.h>
 
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl>

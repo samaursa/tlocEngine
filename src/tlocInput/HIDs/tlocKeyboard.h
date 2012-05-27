@@ -7,8 +7,8 @@
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
-#include "tlocInput.h"
-#include "tlocKeyboardImpl.h"
+#include <tlocInput/tlocInput.h>
+#include <tlocInput/HIDs/tlocKeyboardImpl.h>
 
 namespace tloc { namespace input {
 

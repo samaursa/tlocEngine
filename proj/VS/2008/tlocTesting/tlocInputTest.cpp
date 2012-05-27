@@ -6,10 +6,10 @@
 
 #define private public
 #define protected public
-#include "tlocInput/tlocInput.h"
-#include "tlocInput/tlocInputTypes.h"
-#include "tlocInput/tlocKeyboard.h"
-#include "tlocInput/tlocMouse.h"
+#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputTypes.h>
+#include <tlocInput/HIDs/tlocKeyboard.h>
+#include <tlocInput/HIDs/tlocMouse.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

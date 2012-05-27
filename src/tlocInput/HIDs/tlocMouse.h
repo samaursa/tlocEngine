@@ -7,9 +7,9 @@
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
-#include "tlocInputTypes.h"
-#include "tlocMouse.h"
-#include "tlocMouseImpl.h"
+#include <tlocInput/tlocInputTypes.h>
+#include <tlocInput/HIDs/tlocMouse.h>
+#include <tlocInput/HIDs/tlocMouseImpl.h>
 
 namespace tloc { namespace input {
 

@@ -5,9 +5,9 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
-#include "tlocInputTypes.h"
-#include "tlocKeyboard.h"
-#include "tlocKeyboardImpl.h"
+#include <tlocInput/tlocInputTypes.h>
+#include <tlocInput/HIDs/tlocKeyboard.h>
+#include <tlocInput/HIDs/tlocKeyboardImpl.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

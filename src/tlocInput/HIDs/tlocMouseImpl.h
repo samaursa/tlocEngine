@@ -4,7 +4,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
 
-#include "tlocInputTypes.h"
+#include <tlocInput/tlocInputTypes.h>
 
 namespace tloc { namespace input {
 

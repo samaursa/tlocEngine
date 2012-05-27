@@ -5,9 +5,9 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
-#include "tlocInputTypes.h"
-#include "tlocMouse.h"
-#include "tlocMouseImpl.h"
+#include <tlocInput/tlocInputTypes.h>
+#include <tlocInput/HIDs/tlocMouse.h>
+#include <tlocInput/HIDs/tlocMouseImpl.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

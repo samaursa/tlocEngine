@@ -1,9 +1,9 @@
 #include "tlocInput.h"
 #include "tlocInputTypes.h"
 
-#include "tlocKeyboard.h"
-#include "tlocMouse.h"
-#include "tlocJoystick.h"
+#include <tlocInput/HIDs/tlocKeyboard.h>
+#include <tlocInput/HIDs/tlocMouse.h>
+#include <tlocInput/HIDs/tlocJoystick.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes

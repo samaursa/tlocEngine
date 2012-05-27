@@ -841,7 +841,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Window"
+			Name="window"
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.cpp"
@@ -905,7 +905,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="3rd Party"
+			Name="3rd_party"
 			>
 			<Filter
 				Name="GLEW"
@@ -945,7 +945,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="OpenGL"
+			Name="opengl"
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.h"

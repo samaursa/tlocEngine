@@ -5,8 +5,8 @@
 
 #define private public
 #define protected public
-#include "tlocCore/containers/tlocList.h"
-#include "tlocCore/containers/tlocList.inl"
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 #undef private
 #undef protected
 

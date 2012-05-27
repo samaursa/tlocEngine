@@ -1,5 +1,5 @@
-#include "tlocMath/tlocMatrix2.h"
-#include "tlocMath/tlocMatrix2.inl"
+#include "tlocMatrix2.h"
+#include "tlocMatrix2.inl"
 
 //------------------------------------------------------------------------
 // Explicit template instantiations

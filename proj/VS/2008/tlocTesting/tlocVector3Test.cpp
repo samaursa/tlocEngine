@@ -2,8 +2,8 @@
 
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-#include "tlocMath/tlocVector3.h"
-#include "tlocMath/tlocVector3.inl"
+#include <tlocMath/vector/tlocVector3.h>
+#include <tlocMath/vector/tlocVector3.inl>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 

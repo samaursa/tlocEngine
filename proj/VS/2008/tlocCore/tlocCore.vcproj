@@ -849,7 +849,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="3rdParty"
+			Name="3rd_party"
 			>
 			<Filter
 				Name="Memory"

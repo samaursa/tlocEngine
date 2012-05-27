@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
-#include "tlocMath/tlocMatrix3.h"
-#include "tlocMath/tlocMatrix3.inl"
+#include <tlocMath/matrix/tlocMatrix3.h>
+#include <tlocMath/matrix/tlocMatrix3.inl>
 
 namespace TestingMatrix3
 {

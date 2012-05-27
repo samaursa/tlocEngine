@@ -5,9 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocCore/tlocAlgorithms.inl"
-#include "tlocMath.inl"
-#include "tlocVector.inl"
+#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocMath/tlocMath.inl>
+#include <tlocMath/vector/tlocVector.inl>
 
 namespace tloc { namespace math {
 

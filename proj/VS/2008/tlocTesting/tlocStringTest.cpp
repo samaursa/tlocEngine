@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocLinkMe.cpp"
+#include <tlocCore/tlocLinkMe.cpp>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl>
 

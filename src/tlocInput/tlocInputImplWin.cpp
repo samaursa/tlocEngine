@@ -4,8 +4,8 @@
 #include <tlocCore/string/tlocString.inl>
 #include <tlocCore/types/tlocTypeTraits.h>
 
-#include "tlocKeyboardImplWin.h"
-#include "tlocMouseImplWin.h"
+#include <tlocInput/HIDs/tlocKeyboardImplWin.h>
+#include <tlocInput/HIDs/tlocMouseImplWin.h>
 
 namespace tloc { namespace input { namespace priv {
 

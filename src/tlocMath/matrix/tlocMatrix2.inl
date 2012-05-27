@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocVector2.inl"
-#include "tlocMatrix.inl"
+#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/matrix/tlocMatrix.inl>
 
 namespace tloc { namespace math {
 

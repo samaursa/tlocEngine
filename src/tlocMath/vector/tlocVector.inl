@@ -7,7 +7,7 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/tlocAlgorithms.h>
-#include "tlocMath.inl"
+#include <tlocMath/tlocMath.inl>
 
 namespace tloc { namespace math {
 

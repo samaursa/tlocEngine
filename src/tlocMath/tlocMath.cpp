@@ -1,5 +1,5 @@
-#include "tlocMath/tlocMath.h"
-#include "tlocMath/tlocMath.inl"
+#include "tlocMath.h"
+#include "tlocMath.inl"
 
 namespace tloc
 {

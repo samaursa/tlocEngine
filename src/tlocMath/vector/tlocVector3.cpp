@@ -1,5 +1,5 @@
-#include "tlocMath/tlocVector3.h"
-#include "tlocMath/tlocVector3.inl"
+#include "tlocVector3.h"
+#include "tlocVector3.inl"
 
 //------------------------------------------------------------------------
 // Explicit template instantiations

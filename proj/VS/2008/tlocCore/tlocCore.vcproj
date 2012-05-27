@@ -1184,6 +1184,10 @@
 			Name="memory"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\memory\tlocLinkMe.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemory.cpp"
 				>
 			</File>
@@ -1270,10 +1274,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocFunctional.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocLinkMe.cpp"
 			>
 		</File>
 		<File

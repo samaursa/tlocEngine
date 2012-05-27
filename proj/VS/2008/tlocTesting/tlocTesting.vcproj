@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -143,7 +143,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -220,7 +220,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -301,7 +301,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -379,7 +379,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -534,7 +534,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -615,7 +615,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -695,7 +695,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -778,7 +778,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -859,7 +859,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib DInput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"
@@ -942,7 +942,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocGraphics_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib glu32.lib OpenGL32.lib dinput8.lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocGraphics\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
 				GenerateDebugInformation="true"

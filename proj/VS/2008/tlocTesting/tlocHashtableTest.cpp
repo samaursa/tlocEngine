@@ -1,3 +1,5 @@
+#include "tlocCore/tlocNoOpt.h"
+
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocBase.h>

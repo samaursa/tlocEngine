@@ -343,7 +343,7 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Constants
 
-    static const tl_size m_MaxSize  = (tl_size) - 2;
+    static const tl_size m_MaxSize;
     static const tl_size sm_defaultCapacity;
   };
 

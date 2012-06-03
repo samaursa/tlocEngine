@@ -91,7 +91,7 @@ namespace tloc { namespace core {
   class HashtableItrBase
   {
   public:
-    template <typename T_Policies> friend class Hashtable;
+    template <typename T_PoliciesF> friend class Hashtable;
 
     typedef HashtableItrBase<T_Policies, T_Const>    this_type;
 
@@ -285,7 +285,12 @@ namespace tloc { namespace core {
   class HashCode<T_Policy, type_false> : public HashCodeBase<T_Policy>
   {
   public:
-    typedef HashCodeBase<T_Policy>  base_type;
+    typedef HashCodeBase<T_Policy>                base_type;
+    typedef typename base_type::key_type          key_type;
+    typedef typename base_type::hash_code_type    hash_code_type;
+    typedef typename base_type::element_type      element_type;
+    typedef typename base_type::extract_key_type  extract_key_type;
+    typedef typename base_type::key_equal         key_equal;
 
     hash_code_type get_hash_code(const key_type& a_key) const
     {
@@ -312,6 +317,11 @@ namespace tloc { namespace core {
   {
   public:
     typedef HashCodeBase<T_Policy>  base_type;
+    typedef typename base_type::key_type          key_type;
+    typedef typename base_type::hash_code_type    hash_code_type;
+    typedef typename base_type::element_type      element_type;
+    typedef typename base_type::extract_key_type  extract_key_type;
+    typedef typename base_type::key_equal         key_equal;
 
     hash_code_type get_hash_code(const key_type& a_key) const
     {
@@ -339,7 +349,7 @@ namespace tloc { namespace core {
 
   template <typename T_Key, typename T_ExtractKey, typename T_HashFunc,
     typename T_HashToRange,
-    template <typename T_Key, typename T_HashFunc, typename T_HashToRange> class T_RangeHashFunc,
+    template <typename T_KeyF, typename T_HashFuncF, typename T_HashToRangeF> class T_RangeHashFunc,
     typename T_KeyEqual,
     typename T_RehashPolicy, typename T_BucketType,
     bool T_CacheHashCode, bool T_UniqueKeys>
@@ -382,8 +392,8 @@ namespace tloc { namespace core {
     typedef tl_ptrdiff     difference_type;
     typedef tl_size        size_type;
 
-    typedef Loki::Int2Type<T_CacheHashCode> cache_hash;
-    typedef Loki::Int2Type<T_UniqueKeys>    unique_keys;
+    typedef typename Loki::Int2Type<T_CacheHashCode> cache_hash;
+    typedef typename Loki::Int2Type<T_UniqueKeys>    unique_keys;
   };
 
   //------------------------------------------------------------------------
@@ -674,7 +684,7 @@ namespace tloc { namespace core {
       forward_iterator_tag);
     template <TLOC_DUMMY_TYPE>
     TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
-      typename bucket_iterator a_currNode, const element_type& a_elem,
+      bucket_iterator a_currNode, const element_type& a_elem,
       bidirectional_iterator_tag);
 
     //------------------------------------------------------------------------

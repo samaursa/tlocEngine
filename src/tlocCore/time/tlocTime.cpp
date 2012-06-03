@@ -3,12 +3,12 @@
 
 namespace tloc { namespace core {
 
-  template Timer<>;
-  template Timer<f128>;
-  template Timer<f64, u64, false>;
-  template Timer<f128, u64, false>;
+  template class Timer<>;
+  template class Timer<f128>;
+  template class Timer<f64, u64, false>;
+  template class Timer<f128, u64, false>;
 
-  template Timer<f32, u32, true>;
-  template Timer<f32, u32, false>;
+  template class Timer<f32, u32, true>;
+  template class Timer<f32, u32, false>;
 
 };};

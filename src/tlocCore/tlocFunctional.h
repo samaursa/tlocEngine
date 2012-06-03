@@ -237,7 +237,7 @@ namespace tloc { namespace core {
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
 
-    typename result_type& operator()(const T_Pair& a) const
+    result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };
 
@@ -246,7 +246,7 @@ namespace tloc { namespace core {
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::second_type);
 
-    typename result_type& operator()(const T_Pair& a) const
+    result_type& operator()(const T_Pair& a) const
     { return a.second; }
   };
 

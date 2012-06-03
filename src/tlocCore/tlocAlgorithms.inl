@@ -21,7 +21,7 @@ namespace tloc { namespace core {
   template <typename T_Iterator>
   void TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(T_Iterator a_begin, T_Iterator a_end)
   {
-    typedef Loki::Int2Type<Loki::TypeTraits<T_Iterator>::isPointer> itr_type;
+    typedef typename Loki::Int2Type<Loki::TypeTraits<T_Iterator>::isPointer> itr_type;
     detail::DoVerifyRange(a_begin, a_end, itr_type());
   }
 
@@ -65,9 +65,9 @@ namespace tloc { namespace core {
 
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
-    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
-    typedef Loki::Int2Type<charTestResult::value> IsChar8;
+    typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef typename Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef typename Loki::Int2Type<charTestResult::value> IsChar8;
 
     return detail::DoFind(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
   }
@@ -709,11 +709,11 @@ namespace tloc { namespace core {
   {
     // We assume that the inputs are pointers. We can then find out whether they
     // are integral pointers or complex
-    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-    typedef Loki::TypeTraits<T_OutputIterator>::PointeeType outputDeref;
-    typedef Loki::TypeTraits<inputDeref> inputUnknown;
-    typedef Loki::TypeTraits<outputDeref> outputUknown;
-    typedef Loki::Int2Type<inputUnknown::isArith && outputUknown::isArith> inputArith;
+    typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType outputDeref;
+    typedef typename Loki::TypeTraits<inputDeref> inputUnknown;
+    typedef typename Loki::TypeTraits<outputDeref> outputUknown;
+    typedef typename Loki::Int2Type<inputUnknown::isArith && outputUknown::isArith> inputArith;
 
     return detail::DoCopy(a_rangeBegin, a_rangeEnd, aDestRangeBegin, inputArith());
   }
@@ -723,9 +723,9 @@ namespace tloc { namespace core {
                                       T_InputIterator a_rangeEnd,
                                       T_OutputIterator aDestRangeEnd)
   {
-    typedef Loki::Int2Type<Loki::TypeTraits<T_InputIterator>::isPointer> input_type;
-    typedef Loki::Int2Type<Loki::TypeTraits<T_OutputIterator>::isPointer> output_type;
-    typedef Loki::Select<input_type::value && output_type::value, 
+    typedef typename Loki::Int2Type<Loki::TypeTraits<T_InputIterator>::isPointer> input_type;
+    typedef typename Loki::Int2Type<Loki::TypeTraits<T_OutputIterator>::isPointer> output_type;
+    typedef typename Loki::Select<input_type::value && output_type::value, 
       detail::IsRawItr, detail::IsComplexItr>::Result  itr_type;
 
     detail::DoCopyBackwardChecks(a_rangeBegin, a_rangeEnd, aDestRangeEnd, itr_type());
@@ -746,9 +746,9 @@ namespace tloc { namespace core {
   {
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
-    typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
-    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
-    typedef Loki::Int2Type<charTestResult::value> IsChar8;
+    typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+    typedef typename Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef typename Loki::Int2Type<charTestResult::value> IsChar8;
 
     detail::DoFill(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
 
@@ -760,9 +760,9 @@ namespace tloc { namespace core {
   {
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
-    typedef Loki::TypeTraits<T_OutputIterator>::PointeeType inputDeref;
-    typedef Loki::IsSameType<inputDeref, char8> charTestResult;
-    typedef Loki::Int2Type<charTestResult::value> IsChar8;
+    typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType inputDeref;
+    typedef typename Loki::IsSameType<inputDeref, char8> charTestResult;
+    typedef typename Loki::Int2Type<charTestResult::value> IsChar8;
 
     detail::DoFill_n(a_first, a_count, a_value, IsChar8());
   }
@@ -778,7 +778,7 @@ namespace tloc { namespace core {
     T_ForwardIterator a_last, const T& a_value)
   {
     T_ForwardIterator itr;
-    iterator_traits<T_ForwardIterator>::difference_type count, step;
+    typename iterator_traits<T_ForwardIterator>::difference_type count, step;
 
     count = distance(a_first, a_last);
 
@@ -807,7 +807,7 @@ namespace tloc { namespace core {
     T_ForwardIterator a_last, const T& a_value, T_BinaryPred a_comp)
   {
     T_ForwardIterator itr;
-    iterator_traits<T_ForwardIterator>::difference_type count, step;
+    typename iterator_traits<T_ForwardIterator>::difference_type count, step;
 
     while (count > 0)
     {
@@ -874,7 +874,7 @@ namespace tloc { namespace core {
     {
       // We need the size of what the pointer is pointing to, not the pointer
       // itself
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType inputDeref;
 
       tl_size rangeSize = a_rangeEnd - a_rangeBegin;
       memmove( aDestRangeBegin, a_rangeBegin,
@@ -929,7 +929,7 @@ namespace tloc { namespace core {
     TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
                      const T_ValueType& a_value, IsNotChar)
     {
-      typedef iterator_traits<T_OutputIterator>::iterator_category 
+      typedef typename iterator_traits<T_OutputIterator>::iterator_category 
         iterator_category;
 
       // The correct fill_n() will be called depending on whether the output
@@ -1045,8 +1045,8 @@ namespace tloc { namespace core {
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast, 
                    sort_quicksort_leftpivot)
     {
-      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
-      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+      typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
       DoQuicksortLeftPivot(aFirst, aLast, pointer_type());
     }
@@ -1055,7 +1055,7 @@ namespace tloc { namespace core {
     void DoQuicksortLeftPivot(T_InputIterator aFirst, T_InputIterator aLast, 
                               IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoQuicksort(aFirst, aLast, value_type()); 
     }
 
@@ -1122,8 +1122,8 @@ namespace tloc { namespace core {
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast,
       sort_insertionsort)
     {
-      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
-      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+      typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
       DoInsertionsortWithItrType(aFirst, aLast, pointer_type());
     }
@@ -1132,7 +1132,7 @@ namespace tloc { namespace core {
     void DoInsertionsortWithItrType(T_InputIterator aFirst, T_InputIterator aLast, 
       IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoInsertionsortWithValueType(aFirst,aLast, value_type());
     }
 
@@ -1183,8 +1183,8 @@ namespace tloc { namespace core {
     template <typename T_InputIterator>
     void DoSort(T_InputIterator aFirst, T_InputIterator aLast, sort_mergesort)
     {
-      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
-      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+      typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
       DoMergesortWithItrType(aFirst, aLast, pointer_type());
     }
@@ -1200,7 +1200,7 @@ namespace tloc { namespace core {
     void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
                      IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
       DoMergesortWithValueType(aFirst, aLast, value_type());
     }
@@ -1233,12 +1233,12 @@ namespace tloc { namespace core {
       {
         TLOC_ASSERT_LOW_LEVEL(size > 1, "Size is <= 1");
 
-        T_Container::const_iterator first = aUnsorted.begin();
-        T_Container::const_iterator last = aUnsorted.end();
+        typename T_Container::const_iterator first = aUnsorted.begin();
+        typename T_Container::const_iterator last = aUnsorted.end();
 
         tl_size halfSize = size / 2;
 
-        T_Container::const_iterator midItr = first;
+        typename T_Container::const_iterator midItr = first;
         tloc::core::advance(midItr, halfSize);
 
         T_Container leftSide(halfSize);
@@ -1262,15 +1262,15 @@ namespace tloc { namespace core {
     T_Container DoMerge(const T_Container& aLeftFirst, 
                         const T_Container& aRightFirst)
     {
-      const T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
+      const typename T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
       T_Container mergedContainer(size);
 
-      T_Container::const_iterator leftItr   = aLeftFirst.begin();
-      T_Container::const_iterator rightItr  = aRightFirst.begin();
-      T_Container::iterator mergedItr       = mergedContainer.begin();
+      typename T_Container::const_iterator leftItr   = aLeftFirst.begin();
+      typename T_Container::const_iterator rightItr  = aRightFirst.begin();
+      typename T_Container::iterator mergedItr       = mergedContainer.begin();
 
-      const T_Container::const_iterator endLeftItr   = aLeftFirst.end();
-      const T_Container::const_iterator endRightItr  = aRightFirst.end();
+      const typename T_Container::const_iterator endLeftItr   = aLeftFirst.end();
+      const typename T_Container::const_iterator endRightItr  = aRightFirst.end();
 
       while ((leftItr != endLeftItr) && (rightItr != endRightItr))
       {
@@ -1335,8 +1335,8 @@ namespace tloc { namespace core {
                           T_InputIterator aRightFirst,
                           T_InputIterator aLast)
     {
-      typedef Loki::TypeTraits<T_InputIterator> unknown_type;
-      typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+      typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
+      typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
       for (/* */; aLeftFirst != aRightFirst; ++aLeftFirst)
       {
@@ -1363,7 +1363,7 @@ namespace tloc { namespace core {
                                        T_InputIterator aLast,
                                        IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
       DoSortFirstElementWithValueType(aFirst, aLast, value_type());
     }

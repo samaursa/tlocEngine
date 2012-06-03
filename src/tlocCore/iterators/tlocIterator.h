@@ -119,7 +119,7 @@ namespace tloc { namespace core {
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
     typedef typename T_Container::iterator                 iterator_type;
-    typedef typename back_insert_iterator<T_Container>     this_type;
+    typedef back_insert_iterator<T_Container>              this_type;
 
     TL_FI explicit back_insert_iterator(T_Container& aContainer);
     TL_FI this_type& operator* ();
@@ -143,7 +143,7 @@ namespace tloc { namespace core {
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
     typedef typename T_Container::iterator                 iterator_type;
-    typedef typename front_insert_iterator<T_Container>    this_type;
+    typedef front_insert_iterator<T_Container>             this_type;
 
     TL_FI explicit front_insert_iterator (T_Container& aContainer);
     TL_FI this_type& operator* ();
@@ -169,7 +169,7 @@ namespace tloc { namespace core {
     typedef T_Container                                    container_type;
     typedef typename T_Container::const_reference          const_reference;
     typedef typename T_Container::iterator                 iterator_type;
-    typedef typename insert_iterator<T_Container>          this_type;
+    typedef insert_iterator<T_Container>                   this_type;
 
     TL_FI explicit insert_iterator (T_Container& aContainer, iterator_type aItr);
     TL_FI this_type& operator* ();
@@ -301,12 +301,12 @@ namespace tloc { namespace core {
     public iterator<T_Itr_Type, T, typename T_Node::difference_type,
                     T_Ptr, T_Ref>
   {
-    typedef typename T_Ptr                                      pointer;
-    typedef typename T_Ref                                      reference;
+    typedef T_Ptr                                      pointer;
+    typedef T_Ref                                      reference;
 
     typedef list_iterator<T_Node, T_Itr_Type, T, T_Ptr, T_Ref>  this_type;
     typedef list_iterator<T_Node, T_Itr_Type, T, T*, T&>        iterator;
-    typedef typename T_Itr_Type                                 iterator_category;
+    typedef T_Itr_Type                                 iterator_category;
 
     TL_FI list_iterator();
     TL_FI list_iterator(const T_Node* aNode);
@@ -377,7 +377,5 @@ namespace tloc { namespace core {
   };
 
 };};
-
-#include <tlocCore/iterators/tlocIterator.inl>
 
 #endif

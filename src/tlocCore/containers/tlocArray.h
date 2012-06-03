@@ -291,6 +291,10 @@ namespace tloc { namespace core {
     TL_I void             DoInsertByIterator(iterator a_position,
                                              T_InputIterator a_first,
                                              T_InputIterator a_last);
+    
+    using base_type::m_begin;
+    using base_type::m_end;
+    using base_type::m_capacity;
   };
 
   //////////////////////////////////////////////////////////////////////////

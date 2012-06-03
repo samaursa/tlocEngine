@@ -32,7 +32,7 @@ namespace tloc { namespace core {
 
     typedef typename T_Generator::int_type   int_type;
     typedef typename T_Generator::real_type  real_type;
-    typedef typename T_Generator             rng_type;
+    typedef T_Generator                      rng_type;
 
     ///-------------------------------------------------------------------------
     /// @brief Supports multiple calls to SetSeed()

@@ -2,7 +2,7 @@
 
 namespace tloc { namespace core {
 
-  template PlatformInfo<>;
+  template class PlatformInfo<>;
 
   //////////////////////////////////////////////////////////////////////////
   // PlatformInfo

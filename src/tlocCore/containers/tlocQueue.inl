@@ -100,13 +100,13 @@ namespace tloc { namespace core {
   // Modifiers
 
   template <QUEUE_TYPES>
-  TL_I void Queue<QUEUE_TYPES>::push(const value_type& aVal)
+  TL_I void Queue<QUEUE_PARAMS>::push(const value_type& aVal)
   {
     m_container.push_back(aVal);
   }
 
   template <QUEUE_TYPES>
-  TL_I void Queue<QUEUE_TYPES>::pop()
+  TL_I void Queue<QUEUE_PARAMS>::pop()
   {
     TLOC_ASSERT_QUEUE_NOT_EMPTY();
     m_container.pop_front();

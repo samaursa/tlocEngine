@@ -122,7 +122,7 @@ namespace tloc { namespace core {
 
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
       Array_type_must_be_the_same_size_as_the_tuple_type);
-    typedef Loki::Int2Type< Loki::IsSameType<T, T_TupleType>::value > is_same_type;
+    typedef typename Loki::Int2Type< Loki::IsSameType<T, T_TupleType>::value > is_same_type;
 
     DoSet(aTuple, is_same_type());
   }
@@ -136,7 +136,7 @@ namespace tloc { namespace core {
 
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
       Array_type_must_be_the_same_size_as_the_tuple_type);
-    typedef Loki::Int2Type< Loki::IsSameType<T, T_ArrayType>::value > is_same_type;
+    typedef typename Loki::Int2Type< Loki::IsSameType<T, T_ArrayType>::value > is_same_type;
 
     DoSet(aArray, is_same_type());
   }

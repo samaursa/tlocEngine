@@ -130,7 +130,7 @@ namespace tloc { namespace core {
     {
       TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
 
-      typedef Loki::TypeTraits<T_Ptr>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
       typedef T_CallbackGroupT<value_type>         callback_type;
       typedef container_type::iterator             itr_type;
 
@@ -174,7 +174,7 @@ namespace tloc { namespace core {
     {
       TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
 
-      typedef Loki::TypeTraits<T_Ptr>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
       typedef T_CallbackGroupT<value_type>         callback_type;
       typedef container_type::iterator             itr_type;
 

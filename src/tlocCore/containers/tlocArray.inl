@@ -424,13 +424,13 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Constructors
 
   template <ARRAY_TYPES>
-  TL_FI Array<ARRAY_PARAMS>::Array() : ArrayBase()
+  TL_FI Array<ARRAY_PARAMS>::Array() : base_type()
   {
   }
 
   template <ARRAY_TYPES>
   TL_FI Array<ARRAY_PARAMS>::Array(const this_type& a_toCopy)
-    : ArrayBase(a_toCopy.size())
+    : base_type(a_toCopy.size())
   {
     /*insert(m_begin, toCopy.m_begin, toCopy.m_end);*/
     m_end = uninitialized_copy(a_toCopy.m_begin, a_toCopy.m_end, m_begin);
@@ -439,7 +439,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_FI Array<ARRAY_PARAMS>::Array(size_type a_numElemsToInsert, 
                                    const_reference a_valueToCopy) 
-    : ArrayBase(a_numElemsToInsert)
+    : base_type(a_numElemsToInsert)
   {
     /*insert(0, aNumElemsToInsert, aValueToCopy);*/
     uninitialized_fill_n(m_begin, a_numElemsToInsert, a_valueToCopy);
@@ -447,7 +447,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_TYPES>
-  TL_FI Array<ARRAY_PARAMS>::Array(size_type a_count) : ArrayBase(a_count)
+  TL_FI Array<ARRAY_PARAMS>::Array(size_type a_count) : base_type(a_count)
   {
     uninitialized_fill_n(m_begin, a_count, value_type());
     m_end = m_begin + a_count;
@@ -457,7 +457,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <typename T_InputIterator>
   TL_FI Array<ARRAY_PARAMS>::Array(T_InputIterator a_rangeBegin, 
                                    T_InputIterator a_rangeEnd)
-    : ArrayBase()
+    : base_type()
   {
     insert(m_begin, a_rangeBegin, a_rangeEnd);
   }
@@ -468,7 +468,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::resize(size_type a_newSize)
   {
-    size_type currSize = size();
+    size_type currSize = this->size();
     if (a_newSize > currSize)
     {
       insert(m_end, a_newSize - currSize, value_type());
@@ -483,7 +483,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<ARRAY_PARAMS>::resize(size_type a_newSize, 
                                         const_reference a_value)
   {
-    size_type currSize = size();
+    size_type currSize = this->size();
     if (a_newSize > currSize)
     {
       insert(m_end, a_newSize - currSize, a_value);
@@ -497,7 +497,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::reserve(size_type a_newCapacity)
   {
-    if (a_newCapacity > capacity())
+    if (a_newCapacity > this->capacity())
     {
       pointer ptr = DoReAllocate(a_newCapacity);
 
@@ -505,7 +505,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
       if (ptr)
       {
-        const size_type prevSize = size();
+        const size_type prevSize = this->size();
         m_begin     = ptr;
         m_end       = ptr + prevSize;
         m_capacity  = ptr + a_newCapacity;
@@ -517,9 +517,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::shrink(size_type a_newCapacity)
   {
-    if (a_newCapacity < capacity())
+    if (a_newCapacity < this->capacity())
     {
-      size_type newSize = size();
+      size_type newSize = this->size();
 
       // If the new capacity is smaller than the number of elements we are
       // currently, storing, we need to destroy those elements
@@ -545,7 +545,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::shrink_to_fit()
   {
-    shrink(size());
+    shrink(this->size());
   }
 
   //------------------------------------------------------------------------
@@ -555,7 +555,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<ARRAY_PARAMS>::assign(size_type a_repetitionNum, 
                                         const_reference a_elemToCopy)
   {
-    if (size() < a_repetitionNum)
+    if (this->size() < a_repetitionNum)
     {
       resize(a_repetitionNum);
     }
@@ -568,8 +568,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<ARRAY_PARAMS>::assign(T_InputIterator a_rangeBegin,
                                         T_InputIterator a_rangeEnd)
   {
-    typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+    typedef typename Loki::TypeTraits<T_InputIterator> inputUnknown;
+    typedef typename Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     // The correct DoInsert() will be called depending on whether inputIntegral
     // is Int2Type<true> or Int2Type<false>
@@ -585,7 +585,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
     else
     {
-      DoReAllocate();
+      this->DoReAllocate();
       DoAddToEnd(a_valueToCopy);
     }
   }
@@ -598,7 +598,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
     const size_type posIndex = a_position - m_begin;
 
-    if (full() || a_position != m_end)
+    if (this->full() || a_position != m_end)
     {
       DoInsertValue(a_position, a_valueToCopy);
     }
@@ -624,8 +624,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                         T_InputIterator a_rangeBegin,
                                         T_InputIterator a_rangeEnd)
   {
-    typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isIntegral> inputIntegral;
+    typedef typename Loki::TypeTraits<T_InputIterator> inputUnknown;
+    typedef typename Loki::Int2Type<inputUnknown::isIntegral> inputIntegral;
 
     // The correct DoInsert() will be called depending on whether inputIntegral
     // is Int2Type<true> or Int2Type<false>
@@ -665,7 +665,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
 
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
-    if (size() < projectedSize)
+    if (this->size() < projectedSize)
     {
       resize(projectedSize);
     }
@@ -706,7 +706,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // be destroyed, so make a copy
       const value_type valueCopy = a_value;
       size_type posIndex = a_position - m_begin;
-      DoReAllocate();
+      this->DoReAllocate();
       insert(m_begin + posIndex, valueCopy);
     }
   }
@@ -749,8 +749,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
       // Reallocate
       // TODO: Replace with resize() once implemented
-      size_type prevSize = size();
-      size_type newCap  = capacity() + a_numElemsToInsert;
+      size_type prevSize = this->size();
+      size_type newCap  = this->capacity() + a_numElemsToInsert;
       pointer ptr;
 
       // DoReallocate may malloc or realloc depending on the initial size
@@ -797,9 +797,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                                     T_InputIterator a_last)
   {
     TLOC_ASSERT_ARRAY_RANGE(a_first, a_last);
-    size_type newSize = size() + static_cast<size_type>(tloc::core::distance(a_first, a_last));
+    size_type newSize = this->size() + static_cast<size_type>(tloc::core::distance(a_first, a_last));
 
-    if (capacity() >= newSize)
+    if (this->capacity() >= newSize)
     {
       while (a_first != a_last)
       {

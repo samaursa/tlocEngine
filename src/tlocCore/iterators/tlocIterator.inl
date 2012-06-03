@@ -363,7 +363,7 @@ namespace tloc { namespace core {
   TL_FI typename iterator_traits<T_InputItr>::difference_type
     distance( T_InputItr aBegin, T_InputItr aEnd )
   {
-    typedef iterator_traits<T_InputItr>::iterator_category itrCat;
+    typedef typename iterator_traits<T_InputItr>::iterator_category itrCat;
 
     return detail::distance(aBegin, aEnd, itrCat());
   }

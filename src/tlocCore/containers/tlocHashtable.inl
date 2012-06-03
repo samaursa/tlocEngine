@@ -130,8 +130,8 @@ namespace tloc { namespace core {
     TLOC_ASSERT_HASH_TABLE(m_currNode != m_dummyNode,
       "Cannot increment end() iterator! (OR m_currNode wrongly assigned)");
 
-    bucket_array_type::const_iterator bucketEnd = m_bucketContainer->end();
-    bucket_type::const_iterator itrEnd = (*m_currBucket).end();
+    typename bucket_array_type::const_iterator bucketEnd = m_bucketContainer->end();
+    typename bucket_type::const_iterator itrEnd = (*m_currBucket).end();
     ++m_currNode;
 
     while(m_currNode == itrEnd)
@@ -231,8 +231,10 @@ namespace tloc { namespace core {
   Pair<bool, typename HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::size_type>
     HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetCurrBucketNumber() const
   {
-    bucket_array_type::const_iterator itr    = m_bucketContainer->begin();
-    bucket_array_type::const_iterator itrEnd = m_bucketContainer->end();
+    typedef typename bucket_array_type::const_iterator b_array_const_itr;
+  
+    b_array_const_itr itr    = m_bucketContainer->begin();
+    b_array_const_itr itrEnd = m_bucketContainer->end();
 
     size_type count = 0;
 
@@ -410,7 +412,7 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>
     ::begin(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber)
   {
-    buckets_array_type::iterator itr(m_bucketArray.begin());
+    typename buckets_array_type::iterator itr(m_bucketArray.begin());
     advance(itr, a_bucketNumber);
     return (*(itr)).begin();
   }
@@ -420,7 +422,7 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>
     ::begin(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
   {
-    buckets_array_type::const_iterator itr(m_bucketArray.begin());
+    typename buckets_array_type::const_iterator itr(m_bucketArray.begin());
     advance(itr, a_bucketNumber);
     return (*(itr)).begin();
   }
@@ -430,7 +432,7 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>
     ::end(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber)
   {
-    buckets_array_type::iterator itr(m_bucketArray.end());
+    typename buckets_array_type::iterator itr(m_bucketArray.end());
     advance(itr, a_bucketNumber);
     return (*(itr)).end();
   }
@@ -440,7 +442,7 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>
     ::end(typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
   {
-    buckets_array_type::const_iterator itr(m_bucketArray.end());
+    typename buckets_array_type::const_iterator itr(m_bucketArray.end());
     advance(itr, a_bucketNumber);
     return (*(itr)).end();
   }
@@ -467,9 +469,9 @@ namespace tloc { namespace core {
     Hashtable<HASH_TABLE_PARAMS>::bucket_size
     (typename Hashtable<HASH_TABLE_PARAMS>::size_type a_bucketNumber) const
   {
-    buckets_array_type::const_iterator itr(m_bucketArray.begin());
+    typename buckets_array_type::const_iterator itr(m_bucketArray.begin());
     advance(itr, a_bucketNumber);
-    return (*itr).size();
+    return (*(itr)).size();
   }
 
   //------------------------------------------------------------------------
@@ -602,7 +604,7 @@ namespace tloc { namespace core {
     const hash_code_type hc = get_hash_code(a_key);
     const size_type n = (size_type)bucket_index(hc, (u32)bucket_count());
 
-    buckets_array_type::iterator itr = m_bucketArray.begin();
+    typename buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
 
     bucket_iterator itrN = DoFindNode(itr, a_key, hc);
@@ -627,9 +629,9 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode)
   {
-    const size_type n = (size_type)bucket_index(a_hashCode, (u32)bucket_count());
+    const size_type n = (size_type)this->bucket_index(a_hashCode, (u32)bucket_count());
 
-    buckets_array_type::iterator itr = m_bucketArray.begin();
+    typename buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
 
     bucket_iterator itrN = DoFindNode(itr, a_hashCode);
@@ -770,7 +772,7 @@ namespace tloc { namespace core {
       element_type newElement (a_value, c);
 
       const size_type n = (size_type)bucket_index(c, (u32)bucket_count());
-      buckets_array_type::iterator itrB = m_bucketArray.begin();
+      typename buckets_array_type::iterator itrB = m_bucketArray.begin();
       advance(itrB, n);
 
       // Select the appropriate push() function (front or back)
@@ -802,7 +804,7 @@ namespace tloc { namespace core {
 
     if (itr != end())
     {
-      buckets_array_type::iterator itrB = itr.m_currBucket;
+      typename buckets_array_type::iterator itrB = itr.m_currBucket;
       // Select the appropriate insert() function (insert() or insert_after())
       return iterator(&m_bucketArray, itrB, DoInsertSelect<TLOC_DUMMY_PARAM> 
         (itr.m_currBucket, itr.m_currNode, newElement, bucket_iterator_type()) );
@@ -811,7 +813,7 @@ namespace tloc { namespace core {
     {
       const size_type n = (size_type)bucket_index(c, (u32)bucket_count());
 
-      buckets_array_type::iterator itrB = m_bucketArray.begin();
+      typename buckets_array_type::iterator itrB = m_bucketArray.begin();
       advance(itrB, n);
 
       // Select the appropriate push() function (front or back)
@@ -1009,8 +1011,9 @@ namespace tloc { namespace core {
 
     for (; itrB != itrBEnd; ++itrB)
     {
-      bucket_type::const_iterator itrN = (*itrB).begin();
-      bucket_type::const_iterator itrNEnd = (*itrB).end();
+      typedef typename bucket_type::const_iterator b_const_itr;
+      b_const_itr itrN = (*itrB).begin();
+      b_const_itr itrNEnd = (*itrB).end();
 
       while(itrN != itrNEnd)
       {

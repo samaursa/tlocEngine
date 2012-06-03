@@ -1522,17 +1522,16 @@ namespace tloc { namespace core {
   {
     //------------------------------------------------------------------------
     // Windows specific
-    template <TLOC_DUMMY_TYPE>
+#if defined (TLOC_WIN32) || defined (TLOC_WIN64)
     TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, char32* a_out, 
-                             s32 a_outSize, Platform_win) 
+                             s32 a_outSize) 
     {
       return (s32)MultiByteToWideChar
         (CP_ACP, MB_PRECOMPOSED, a_in, (int)a_inSize, a_out, (int)a_outSize);
     }
     
-    template <TLOC_DUMMY_TYPE>
     TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, char8* a_out, 
-                             s32 a_outSize, Platform_win) 
+                             s32 a_outSize) 
     {
       int defaultUsed = 0;
       s32 retIndex = 0;
@@ -1544,24 +1543,40 @@ namespace tloc { namespace core {
                          "Wide string has incompatible characters");
       return retIndex;
     }
+#endif    
 
     //------------------------------------------------------------------------
     // Mac specific
+    
+#if defined (TLOC_OS_MAC) || defined (TLOC_OS_IPHONE)
+    TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, char32* a_out, 
+                             s32 a_outSize) 
+    {
+      TLOC_UNUSED_4(a_in, a_inSize, a_out, a_outSize);
+      return 0;
+    }
+    
+    TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, char8* a_out, 
+                             s32 a_outSize) 
+    {
+      TLOC_UNUSED_4(a_in, a_inSize, a_out, a_outSize);
+      return 0;
+    }
+#endif
+       
   }
 
 
   TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, 
                                char32* a_out, s32 a_outSize)
   {
-    return priv::CharAsciiToWide<TLOC_DUMMY_PARAM>(a_in, a_inSize, a_out, 
-      a_outSize, PlatformInfo<>::platform_type());
+    return priv::CharAsciiToWide(a_in, a_inSize, a_out, a_outSize);
   }
 
   TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, 
                                char8* a_out, s32 a_outSize)
   {
-    return priv::CharWideToAscii<TLOC_DUMMY_PARAM>(a_in, a_inSize, a_out, 
-      a_outSize, PlatformInfo<>::platform_type());
+    return priv::CharWideToAscii(a_in, a_inSize, a_out, a_outSize);
   }
 
   //````````````````````````````````````````````````````````````````````````

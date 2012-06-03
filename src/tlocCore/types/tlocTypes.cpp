@@ -4,8 +4,8 @@
 namespace tloc { namespace core {
 
   // Some default instantiations
-#define INSTANTIATE(_type_) template ConditionalType<_type_, true>; \
-  template ConditionalType<_type_, false>
+#define INSTANTIATE(_type_) template struct ConditionalType<_type_, true>; \
+  template struct ConditionalType<_type_, false>
 
   INSTANTIATE(char8);
   INSTANTIATE(char32);
@@ -19,18 +19,11 @@ namespace tloc { namespace core {
   INSTANTIATE(f64);
   INSTANTIATE(f128);
 
-  INSTANTIATE(uchar8);
   INSTANTIATE(u8);
   INSTANTIATE(u16);
   INSTANTIATE(u32);
   INSTANTIATE(u64);
 
   INSTANTIATE(tl_size);
-  INSTANTIATE(tl_uintptr);
-  INSTANTIATE(tl_ptrdiff);
-
-  INSTANTIATE(tl_int);
-  INSTANTIATE(tl_float);
-  INSTANTIATE(tl_uint);
 
 };};

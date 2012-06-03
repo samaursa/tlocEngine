@@ -27,6 +27,6 @@
 
 #else
 
-namespace { tloc::char8 dummy; } // To eliminate LNK4221 in MSVC
+TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
 
 #endif

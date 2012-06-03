@@ -11,12 +11,20 @@
 # define TLOC_WIN64
 #elif defined(WIN32) || defined(_WIN32)
 # define TLOC_WIN32
-#elif defined(TARGET_OS_MAC)
+#elif defined(TARGET_OS_MAC) || defined (__APPLE__) || defined (MACOSX) || defined (macintosh) || defined (Macintosh)
 # define TLOC_OS_MAC
+#elif defined(TARGET_OS_IPHONE)
+# define TLOC_OS_IPHONE
 #elif defined(__linux__)
-# define TLOC_LINUX
+# define TLOC_OS_LINUX
 #else
 # error "Unsupported Platform"
+#endif
+
+// Convenience Macro
+
+#if defined (TLOC_WIN32) || defined (TLOC_WIN64)
+# define TLOC_OS_WIN
 #endif
 
 namespace tloc { namespace core {
@@ -39,7 +47,9 @@ namespace tloc { namespace core {
   template <typename T_Platform = Platform_win64>
 #elif defined(TLOC_OS_MAC)
   template <typename T_Platform = Platform_osx>
-#elif defined(TLOC_LINUX)
+#elif defined(TLOC_OS_IPHONE)
+  template <typename T_Platform = Platform_osx_iphone>
+#elif defined(TLOC_OS_LINUX)
   template <typename T_Platform = Platform_linux>
 #endif
   class PlatformInfo
@@ -47,7 +57,7 @@ namespace tloc { namespace core {
   public:
     typedef T_Platform platform_type;
 
-    typedef u32 platform_index;
+    typedef tl_size platform_index;
     enum {windows = 0, win32, win64, xbox, osx, osx_iphone, linux,
           ps3, total_platforms};
 

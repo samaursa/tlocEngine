@@ -34,29 +34,10 @@ namespace tloc { namespace core {
 
   private:
 
-    TL_I void       DoReset(Platform_win);
-    TL_I void       DoReset(Platform_osx);
-    TL_I void       DoReset(Platform_osx_iphone);
-    TL_I void       DoReset(Platform_ps3);
-    TL_I void       DoReset(Platform_linux);
-
-    TL_I sec_type   DoGetElapsedSeconds(Platform_win);
-    TL_I sec_type   DoGetElapsedSeconds(Platform_osx);
-    TL_I sec_type   DoGetElapsedSeconds(Platform_osx_iphone);
-    TL_I sec_type   DoGetElapsedSeconds(Platform_ps3);
-    TL_I sec_type   DoGetElapsedSeconds(Platform_linux);
-
-    TL_I value_type DoGetElapsedMilliSeconds(Platform_win);
-    TL_I value_type DoGetElapsedMilliSeconds(Platform_osx);
-    TL_I value_type DoGetElapsedMilliSeconds(Platform_osx_iphone);
-    TL_I value_type DoGetElapsedMilliSeconds(Platform_ps3);
-    TL_I value_type DoGetElapsedMilliSeconds(Platform_linux);
-
-    TL_I value_type DoGetElapsedMicroSeconds(Platform_win);
-    TL_I value_type DoGetElapsedMicroSeconds(Platform_osx);
-    TL_I value_type DoGetElapsedMicroSeconds(Platform_osx_iphone);
-    TL_I value_type DoGetElapsedMicroSeconds(Platform_ps3);
-    TL_I value_type DoGetElapsedMicroSeconds(Platform_linux);
+    TL_I void       DoReset();
+    TL_I sec_type   DoGetElapsedSeconds();
+    TL_I value_type DoGetElapsedMilliSeconds();
+    TL_I value_type DoGetElapsedMicroSeconds();
 
     value_type                              m_start;
     ConditionalType<sec_type, T_Adjust>     m_adjustInSeconds;

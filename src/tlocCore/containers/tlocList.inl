@@ -574,8 +574,8 @@ namespace tloc { namespace core {
   template <typename T_InputItr>
   TL_FI void List<LIST_TEMP>::assign(T_InputItr aRangeBegin, T_InputItr aRangeEnd)
   {
-    typedef Loki::TypeTraits<T_InputItr> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+    typedef typename Loki::TypeTraits<T_InputItr> inputUnknown;
+    typedef typename Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     DoAssign(aRangeBegin, aRangeEnd, inputArith());
   }
@@ -677,8 +677,8 @@ namespace tloc { namespace core {
   TL_FI void List<LIST_TEMP>::insert(iterator aPos, T_Iterator aFirst,
                                      T_Iterator aLast)
   {
-    typedef Loki::TypeTraits<T_Iterator> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+    typedef typename Loki::TypeTraits<T_Iterator> inputUnknown;
+    typedef typename Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     DoInsertAfter(aPos.m_node->getPrev(), aFirst, aLast, 
                   inputArith());
@@ -716,8 +716,8 @@ namespace tloc { namespace core {
   TL_FI void List<LIST_TEMP>::insert_after(iterator aPos, T_Iterator aFirst,
                                            T_Iterator aLast)
   {
-    typedef Loki::TypeTraits<T_Iterator> inputUnknown;
-    typedef Loki::Int2Type<inputUnknown::isArith> inputArith;
+    typedef typename Loki::TypeTraits<T_Iterator> inputUnknown;
+    typedef typename Loki::Int2Type<inputUnknown::isArith> inputArith;
 
     DoInsertAfter(aPos.m_node, aFirst, aLast, inputArith());
   }

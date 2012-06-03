@@ -45,7 +45,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG; DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -114,7 +114,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_DEBUG; DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG; DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -184,7 +184,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				PreprocessorDefinitions="TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -253,7 +253,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				PreprocessorDefinitions="TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -319,7 +319,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -388,7 +388,7 @@
 				AdditionalOptions=""
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;DEBUG;TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -458,7 +458,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				PreprocessorDefinitions="TLOC_USING_STD_ALLOC; TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -527,7 +527,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE; NDEBUG"
+				PreprocessorDefinitions="TLOC_USING_STD_ALLOC; TLOC_RELEASE; NDEBUG"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -596,7 +596,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE_DEBUGINFO;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -666,7 +666,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32; TLOC_RELEASE_DEBUGINFO;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -735,7 +735,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -805,7 +805,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="WIN32;TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -1199,6 +1199,18 @@
 				RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemory.inl"
 				>
 			</File>
+			<Filter
+				Name="memory_pool"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPool.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPool.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="platform"
@@ -1261,6 +1273,90 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\string\tlocStringReadme.txt"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="component_system"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.h"
 				>
 			</File>
 		</Filter>

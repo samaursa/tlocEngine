@@ -210,6 +210,16 @@
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
+#if defined (__APPLE__)
+
+# define _CRT_WIDE(_Msg)
+# define TLOC_ASSERT_MESSAGE(msg) assert(false)
+# define TLOC_ASSERT_MESSAGEW(msg) assert(false)
+# define TLOC_ASSERT(_Expression, _Msg) assert(_Expression)
+# define TLOC_ASSERTW(_Expression, _Msg) assert(_Expression)
+
+#else
+
 # define TLOC_ASSERT_MESSAGE(msg)\
   (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
 # define TLOC_ASSERT_MESSAGEW(msg)\
@@ -218,6 +228,8 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+
+#endif
 
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
@@ -242,7 +254,11 @@
 // Compile time
 
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+# if defined(__APPLE__)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg)
+# else
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+# endif
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
@@ -315,14 +331,5 @@
   namespace { char NoEmptyFileDummy##__LINE__; }
 #define TLOC_NOT_EMPTY_SOURCE_FILE() \
   namespace { char NoEmptyFileDummy##__LINE__; }
-
-///-------------------------------------------------------------------------
-/// @brief This struct is used to diagnose template types.
-///-------------------------------------------------------------------------
-template <typename T>
-struct TemplateDiagnose;
-
-template <typename T>
-struct DiagnoseTemplate;
 
 #endif

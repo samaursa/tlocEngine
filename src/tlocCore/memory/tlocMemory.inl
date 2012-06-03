@@ -7,7 +7,6 @@
 
 #include <tlocCore/tlocAlgorithms.inl>
 
-namespace tloc { namespace core {
 
 #ifdef TLOC_USE_CUSTOM_NEW_DELETE
 
@@ -35,13 +34,16 @@ namespace tloc { namespace core {
 
 #endif
 
+namespace tloc { namespace core {
+
+
   template <typename T_InputIterator, typename T_OutputIterator>
   TL_I T_OutputIterator uninitialized_copy(T_InputIterator aRangeBegin, 
                                            T_InputIterator aRangeEnd, 
                                            T_OutputIterator aDestRangeBegin)
   {
-    typedef Loki::TypeTraits<T_OutputIterator> unknown_type;
-    typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+    typedef typename Loki::TypeTraits<T_OutputIterator> unknown_type;
+    typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
     return detail::DoUninitializedCopyWithItrType(aRangeBegin, aRangeEnd, 
                                                   aDestRangeBegin, pointer_type());
@@ -52,8 +54,8 @@ namespace tloc { namespace core {
                                  T_Count a_count, 
                                  const T_ValueType& a_value)
   {
-    typedef Loki::TypeTraits<T_InputIterator> unknown_type;
-    typedef Loki::Int2Type<unknown_type::isPointer> pointer_type;
+    typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
+    typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
     detail::DoUninitializedFillNWithItrType(a_first, a_count, 
                                             a_value, pointer_type());
@@ -68,7 +70,7 @@ namespace tloc { namespace core {
                                      T_OutputIterator a_destRangeBegin, 
                                      IsRawItr)
     {
-      typedef Loki::TypeTraits<T_OutputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType value_type;
       return DoUninitializedCopyWithValueType(a_rangeBegin, 
                                               a_rangeEnd, 
                                               a_destRangeBegin, 
@@ -82,7 +84,7 @@ namespace tloc { namespace core {
                                      T_OutputIterator a_destRangeBegin, 
                                      IsComplexItr)
     {
-      typedef T_OutputIterator::value_type value_type;
+      typedef typename T_OutputIterator::value_type value_type;
       return DoUninitializedCopyWithValueType(a_rangeBegin,
                                               a_rangeEnd,
                                               a_destRangeBegin,
@@ -98,8 +100,8 @@ namespace tloc { namespace core {
                                        T_ValueType)
     {
       //TODO: Add proper checks for POD types.
-      typedef Loki::TypeTraits<T_ValueType> value_type_traits;
-      typedef Loki::Int2Type<value_type_traits::isArith &&
+      typedef typename Loki::TypeTraits<T_ValueType> value_type_traits;
+      typedef typename Loki::Int2Type<value_type_traits::isArith &&
                              !(value_type_traits::isConst) &&
                              !(value_type_traits::isVolatile)> 
                              assign_type;
@@ -146,7 +148,7 @@ namespace tloc { namespace core {
                                               const T_ValueType& a_value, 
                                               IsRawItr)
     {
-      typedef Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
+      typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoUninitializedFillNWithValueType(a_first, a_count, a_value, value_type());
     }
 
@@ -156,7 +158,7 @@ namespace tloc { namespace core {
                                               const T_ValueType& a_value, 
                                               IsComplexItr)
     {
-      typedef T_InputIterator::value_type value_type;
+      typedef typename T_InputIterator::value_type value_type;
       DoUninitializedFillNWithValueType(a_first, a_count, a_value, value_type());
     }
 
@@ -169,8 +171,8 @@ namespace tloc { namespace core {
                                                 T_ValueTypeInputIterator)
     {
       //TODO: Add proper checks for POD types.
-      typedef Loki::TypeTraits<T_ValueTypeInputIterator> value_type_traits;
-      typedef Loki::Int2Type<value_type_traits::isArith &&
+      typedef typename Loki::TypeTraits<T_ValueTypeInputIterator> value_type_traits;
+      typedef typename Loki::Int2Type<value_type_traits::isArith &&
                              !(value_type_traits::isConst) &&
                              !(value_type_traits::isVolatile)>
                              assign_type;

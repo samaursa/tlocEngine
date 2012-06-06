@@ -6,19 +6,20 @@
 namespace TESTING_TYPES
 {
   USING_TLOC;
+  using namespace core;
 
   struct ConditionalFixtureTrue
   {
-    ConditionalType<s32, true> a;
-    ConditionalType<s32, true> a2;
-    ConditionalTypePackage<s32, s32, true> a3;
+    ConditionalType<tl_int, true> a;
+    ConditionalType<tl_int, true> a2;
+    ConditionalTypePackage<tl_int, tl_int, true> a3;
   };
 
   struct ConditionalFixtureFalse
   {
-    ConditionalType<s32, false> a;
-    ConditionalType<s32, false> a2;
-    ConditionalTypePackage<s32, s32, false> a3;
+    ConditionalType<tl_int, false> a;
+    ConditionalType<tl_int, false> a2;
+    ConditionalTypePackage<tl_int, tl_int, false> a3;
   };
 
   TEST_CASE_METHOD(ConditionalFixtureTrue, "Core/Types/ConditionalTypeTrue", "")

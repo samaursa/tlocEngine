@@ -2,10 +2,10 @@
 #define TLOC_LIST_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
-#include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 //------------------------------------------------------------------------

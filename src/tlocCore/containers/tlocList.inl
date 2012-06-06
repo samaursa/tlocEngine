@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/iterators/tlocIterator.inl>
 
 namespace tloc { namespace core {
 

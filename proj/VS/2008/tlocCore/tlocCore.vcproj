@@ -1048,6 +1048,10 @@
 			Name="types"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocBasicTypes.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypes.cpp"
 				>
 			</File>
@@ -1084,6 +1088,22 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\types\tlocTemplateTypesNxN.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="conditional_type"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocConditionalType.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocConditionalType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocConditionalType.inl"
 					>
 				</File>
 			</Filter>

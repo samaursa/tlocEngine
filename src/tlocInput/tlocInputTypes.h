@@ -85,7 +85,7 @@ namespace tloc { namespace input {
       typedef Loki::Select<T_RelOnly, type_true, type_false>  abs_only_type;
       typedef T_ValueType                                     value_type;
       // Relative and absolute types
-      typedef ConditionalTypePackage<value_type, value_type, T_RelOnly>
+      typedef core::ConditionalTypePackage<value_type, value_type, T_RelOnly>
                                                               rel_and_abs;
       typedef typename rel_and_abs::cond_type                 abs_type;
 

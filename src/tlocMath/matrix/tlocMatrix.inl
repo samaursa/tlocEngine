@@ -33,7 +33,7 @@ namespace tloc { namespace math {
 
   template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const T (&values)[k_MatrixSize],
-                                  MATRIX_ORDER aOrder)
+                                  matrix_order aOrder)
                                   : Table(values, aOrder)
   {}
 

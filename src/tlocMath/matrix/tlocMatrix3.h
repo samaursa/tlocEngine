@@ -34,10 +34,10 @@ namespace tloc { namespace math {
 
     // Fill the matrix with vectors depending on the selected order
     TL_FI Matrix3(const Vector<T, 3>& aVec1, const Vector<T, 3>& aVec2,
-                  const Vector<T, 3>& aVec3, TABLE_ORDER aOrder);
+                  const Vector<T, 3>& aVec3, matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix3(const T (&values)[k_MatrixSize], TABLE_ORDER aOrder);
+    TL_FI Matrix3(const T (&values)[k_MatrixSize], matrix_order aOrder);
 
     //------------------------------------------------------------------------
     // Math operations

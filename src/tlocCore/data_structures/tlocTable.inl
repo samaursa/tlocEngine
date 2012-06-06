@@ -40,7 +40,7 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI Table<TABLE_PARAMS>::Table(const T (&values)[k_TableSize],
-    TABLE_ORDER aTableOrder)
+                                   table_order aTableOrder)
   {
     Set(values, aTableOrder);
   }
@@ -138,7 +138,7 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI void Table<TABLE_PARAMS>
-    ::Set(const T (&values)[k_TableSize], TABLE_ORDER aTableOrder)
+    ::Set(const T (&values)[k_TableSize], table_order aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
       L"Undefined behavior.");

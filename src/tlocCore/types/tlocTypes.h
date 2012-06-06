@@ -23,7 +23,7 @@
 // We do not allow unregistered types to be queried. If the compiler sent you
 // here, trace back to the type that originated the error and register it.
 template <typename>
-struct tloc_type_to_string
+struct tl_type_to_string
 {
   static const char* value()
   {
@@ -36,7 +36,7 @@ struct tloc_type_to_string
 #else
 #define TLOC_DEF_TYPE(_type_)\
   template <>\
-  struct tloc_type_to_string<_type_>\
+  struct tl_type_to_string<_type_>\
   {\
     static const char* value()\
     {\
@@ -49,23 +49,23 @@ namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
   // Windows Types
-  
+
 #if defined(WIN32) || defined(_WIN32) || defined (_WIN64)
 #define TLOC_INT8_TYPE  __int8
 #define TLOC_INT16_TYPE __int16
 #define TLOC_INT32_TYPE __int32
 #define TLOC_INT64_TYPE __int64
-  
+
 #define TLOC_U_INT8_TYPE unsigned TLOC_INT8_TYPE
 #define TLOC_U_INT16_TYPE unsigned TLOC_INT16_TYPE
 #define TLOC_U_INT32_TYPE unsigned TLOC_INT32_TYPE
 #define TLOC_U_INT64_TYPE unsigned TLOC_INT64_TYPE
-  
+
 #define TLOC_SIZE_TYPE      size_t
 #define TLOC_U_INT_PTR_TYPE uintptr_t
 #define TLOC_PTR_DIFF_TYPE  ptrdiff_t
-#endif   
-  
+#endif
+
   //////////////////////////////////////////////////////////////////////////
   // OSX Types
 
@@ -75,17 +75,17 @@ namespace tloc
 #define TLOC_INT16_TYPE __int16_t
 #define TLOC_INT32_TYPE __int32_t
 #define TLOC_INT64_TYPE __int64_t
-  
+
 #define TLOC_U_INT8_TYPE  __uint8_t
 #define TLOC_U_INT16_TYPE __uint16_t
 #define TLOC_U_INT32_TYPE __uint32_t
 #define TLOC_U_INT64_TYPE __uint64_t
-  
+
 #define TLOC_SIZE_TYPE      size_t
 #define TLOC_U_INT_PTR_TYPE uintptr_t
 #define TLOC_PTR_DIFF_TYPE  ptrdiff_t
-#endif 
-  
+#endif
+
   //////////////////////////////////////////////////////////////////////////
   // Basic types
 

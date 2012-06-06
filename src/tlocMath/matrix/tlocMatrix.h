@@ -34,7 +34,9 @@ namespace tloc { namespace math {
     //------------------------------------------------------------------------
     // Constructors
 
-    typedef TABLE_ORDER MATRIX_ORDER;
+    typedef T                                         value_type;
+    typedef core::Table<value_type, T_Size, T_Size>   base_type;
+    typedef base_type::table_order                    matrix_order;
 
     // Empty default constructor
     TL_FI Matrix();
@@ -46,7 +48,7 @@ namespace tloc { namespace math {
     TL_FI explicit Matrix(const T& aValue);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix(const T (&values)[k_MatrixSize], MATRIX_ORDER aOrder);
+    TL_FI Matrix(const T (&values)[k_MatrixSize], matrix_order aOrder);
 
     //------------------------------------------------------------------------
     // Modifiers

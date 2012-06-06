@@ -28,7 +28,7 @@ namespace tloc { namespace core {
 
     // Currently only useful for constructor/function accepting an array
     // of values
-    typedef enum TABLE_ORDER { k_RowMajor, k_ColMajor } TABLE_ORDER;
+    typedef enum table_order { k_RowMajor, k_ColMajor } table_order;
 
     typedef T                                           value_type;
     typedef tl_size                                     size_type;
@@ -40,7 +40,7 @@ namespace tloc { namespace core {
     TL_FI Table(const this_type& aTable);
 
     TL_FI explicit Table(const value_type& aValue);
-    TL_FI Table(const value_type (&values)[k_TableSize], TABLE_ORDER aTableOrder);
+    TL_FI Table(const value_type (&values)[k_TableSize], table_order aTableOrder);
 
     //------------------------------------------------------------------------
     // Accessors
@@ -65,7 +65,7 @@ namespace tloc { namespace core {
 
     TL_FI void Set(const value_type& aValue);
     TL_FI void Set(const value_type (&values)[k_TableSize],
-                   TABLE_ORDER aTableOrder);
+                   table_order aTableOrder);
     TL_FI void Set(size_type aRow, size_type aCol, const T& aValue);
     TL_FI void SetRow(size_type aRow, const tuple_col_type& aRowIn);
     TL_FI void SetCol(size_type aCol, const tuple_row_type& aColIn);

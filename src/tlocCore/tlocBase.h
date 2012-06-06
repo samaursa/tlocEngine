@@ -211,6 +211,7 @@
 
 // Supported assert macros
 #if defined (__APPLE__)
+// TODO: Fix the assert macros for mac
 
 # define _CRT_WIDE(_Msg)
 # define TLOC_ASSERT_MESSAGE(msg) assert(false)

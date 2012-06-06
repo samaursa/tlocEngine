@@ -26,7 +26,7 @@ namespace tloc { namespace core {
     template <typename T>
     const char* IsSame()
     {
-      return StrCmp(m_typename, tloc_type_to_string<T>().value()) == 0;
+      return StrCmp(m_typename, tl_type_to_string<T>().value()) == 0;
     }
 
     const char* m_typename;
@@ -48,7 +48,7 @@ namespace tloc { namespace core {
     typedef typename Loki::TypeTraits<pointer>::PointeeType   value_type;
     typedef typename const value_type*                        const_pointer;
 
-    CallbackGroupT() : CallbackBase<T_CallbackMethods>(tloc_type_to_string<value_type>().value()) {}
+    CallbackGroupT() : CallbackBase<T_CallbackMethods>(tl_type_to_string<value_type>().value()) {}
 
     void Register(pointer a_observer)
     {
@@ -134,7 +134,7 @@ namespace tloc { namespace core {
       typedef T_CallbackGroupT<value_type>         callback_type;
       typedef container_type::iterator             itr_type;
 
-      const char* type_string = tloc_type_to_string<value_type>().value();
+      const char* type_string = tl_type_to_string<value_type>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),
@@ -178,7 +178,7 @@ namespace tloc { namespace core {
       typedef T_CallbackGroupT<value_type>         callback_type;
       typedef container_type::iterator             itr_type;
 
-      const char* type_string = tloc_type_to_string<value_type>().value();
+      const char* type_string = tl_type_to_string<value_type>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),
@@ -211,7 +211,7 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), tloc_type_to_string<T>().value() ) == 0)
+        if ( StrCmp( (*itr)->GetType(), tl_type_to_string<T>().value() ) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->GetNumRegistered();

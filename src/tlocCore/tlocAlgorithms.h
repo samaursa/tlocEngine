@@ -308,6 +308,10 @@ namespace tloc { namespace core {
   T_ForwardIterator lower_bound(T_ForwardIterator a_first,
     T_ForwardIterator a_last, const T& a_value, T_BinaryPred a_comp);
 
+  // Does not work on associative containers
+  template <typename T_ForwardItr>
+  void delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last);
+
   namespace detail
   {
     typedef	type_false IsComplexItr;

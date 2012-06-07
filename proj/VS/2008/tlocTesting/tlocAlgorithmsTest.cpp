@@ -807,4 +807,47 @@ namespace TestingAlgorithms
       ++listItr;
     }
   }
+
+  struct CountDestruction
+  {
+    CountDestruction()
+    {
+      ++m_ctorCount;
+    }
+
+    ~CountDestruction()
+    {
+      ++m_dtorCount;
+    }
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
+  };
+
+  tl_int CountDestruction::m_ctorCount = 0;
+  tl_int CountDestruction::m_dtorCount = 0;
+
+  TEST_CASE("Core/Algorithms/delete_ptrs", "")
+  {
+    Array<CountDestruction*> myArray;
+    List<CountDestruction*>  myList;
+
+    const tl_int numElements = 10;
+
+    for (tl_int i = 0; i < numElements; ++i)
+    {
+      myArray.push_back(new CountDestruction()); //-V508
+      myList.push_back(new CountDestruction()); //-V508
+    }
+
+    CHECK(CountDestruction::m_ctorCount == numElements * 2);
+    CHECK(CountDestruction::m_dtorCount == 0);
+    CHECK(myArray.size() == numElements);
+    CHECK(myList.size() == numElements);
+
+    delete_ptrs(myArray.begin(), myArray.end());
+    CHECK(CountDestruction::m_dtorCount == numElements);
+    delete_ptrs(myList.begin(), myList.end());
+    CHECK(CountDestruction::m_dtorCount == numElements * 2);
+  }
 };

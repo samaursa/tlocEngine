@@ -829,6 +829,19 @@ namespace tloc { namespace core {
     return a_first;
   }
 
+  template <typename T_ForwardItr>
+  void delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last)
+  {
+    typedef iterator_traits<T_ForwardItr>::pointer pointer_type;
+    TLOC_STATIC_ASSERT(Loki::TypeTraits<pointer_type>::isPointer, 
+      Function_only_works_with_iterators_storing_simple_pointers);
+
+    for (; a_first != a_last; ++a_first)
+    {
+      delete *a_first;
+    }
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Internal use only
 

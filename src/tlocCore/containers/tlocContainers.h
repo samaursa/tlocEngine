@@ -34,6 +34,12 @@ namespace tloc { namespace core {
                  T_DedicatedSize> type;
   };
 
+  // Common containers
+  typedef tl_array<tl_int>::type    tl_array_int;
+  typedef tl_array<tl_uint>::type   tl_array_uint;
+  typedef tl_array<tl_float>::type  tl_array_float;
+  typedef tl_array<tl_size>::type   tl_array_size;
+
 };};
 
 #endif

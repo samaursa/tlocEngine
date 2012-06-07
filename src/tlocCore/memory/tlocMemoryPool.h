@@ -2,7 +2,7 @@
 #define TLOC_MEMORY_POOL_H
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/types/tlocConditionalType.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core {
 
@@ -11,7 +11,7 @@ namespace tloc { namespace core {
 
   namespace memory_pool_policies
   {
-    struct TrackUsedElements
+    struct Track_Used_Elements
     {
       template <class T_Container, typename T_Element>
       void TrackElement(T_Container& a_container, const T_Element& a_elem)
@@ -20,7 +20,7 @@ namespace tloc { namespace core {
       }
     };
 
-    struct IgnoreUsedElements
+    struct Ignore_Used_Elements
     {
       template <class T_Container, typename T_Element>
       void TrackElement(T_Container&, const T_Element&)
@@ -29,11 +29,11 @@ namespace tloc { namespace core {
     };
 
     // Memory pool instantiates the element on the stack
-    struct AllocateOnStack {};
+    struct Allocate_On_Stack {};
     // Memory pool instantiates the element on the heap. If there are many
     // elements and they are very large in size, this is the better policy to
     // use to avoid stack overflows
-    struct AllocateOnHeap {};
+    struct Allocate_On_Heap {};
   };
 
   //------------------------------------------------------------------------
@@ -46,40 +46,57 @@ namespace tloc { namespace core {
   /// of a memory pool is useful for pools of objects such as particles
   ///-------------------------------------------------------------------------
   template <class T,
-            class T_PolicyAllocation = memory_pool_policies::AllocateOnStack,
-            class T_PolicyUsedElements = memory_pool_policies::TrackUsedElements>
-  class MemoryPoolByIndex
+            class T_PolicyAllocation = memory_pool_policies::Allocate_On_Stack,
+            class T_PolicyUsedElements = memory_pool_policies::Track_Used_Elements>
+  class MemoryPoolIndex
   {
 
     //------------------------------------------------------------------------
     // Memory Pool Element Wrapper
-
+    template <typename T_Elem, typename T_SizeType>
     struct ElementWrapper
     {
-      T   m_element;
-      T   m_index;
+      typedef T_Elem      value_type;
+      typedef T_SizeType  size_type;
+
+      ElementWrapper() {}
+
+      value_type  m_element;
+      size_type   m_index;
     };
 
   public:
 
+    typedef T_PolicyAllocation                        policy_allocation_type;
+    typedef T_PolicyUsedElements                      policy_used_elements_type;
+
+    typedef typename
+      Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
+                     memory_pool_policies::Allocate_On_Stack>::value>
+                                                  policy_allocation_result_type;
+
+    typedef typename
+      Loki::Int2Type<Loki::IsSameType<policy_used_elements_type,
+                     memory_pool_policies::Track_Used_Elements>::value>
+                                                  policy_used_elements_result_type;
+
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
-
-    typedef Loki::Select<Loki::IsSameType<T_PolicyAllocation,
-                         memory_pool_policies::AllocateOnStack>::value,
-                         value_type, value_type*>
-                                                        selected_type;
-
-    typedef tl_array<selected_type>::type               container_type;
-    typedef container_type::iterator                    iterator;
-    typedef container_type::const_iterator              const_iterator;
     typedef tl_size                                     size_type;
+    typedef Loki::Select
+      <policy_allocation_result_type::value,
+       value_type, value_type*>                         selected_type;
 
-    MemoryPoolByIndex();
-    ~MemoryPoolByIndex();
+    typedef ElementWrapper<selected_type, size_type>    element_wrapper_type;
 
-    void Initialize();
-    void Allocate(size_type a_maxElements);
+    typedef typename tl_array<element_wrapper_type>::type        container_type;
+    typedef typename container_type::iterator                    iterator;
+    typedef typename container_type::const_iterator              const_iterator;
+
+    MemoryPoolIndex();
+    ~MemoryPoolIndex();
+
+    void Initialize(size_type a_maxElements);
 
     value_type& GetNext();
     void        Recycle(const value_type& a_returnedElement);
@@ -95,9 +112,33 @@ namespace tloc { namespace core {
 
   protected:
 
-    container_type    m_allElements;
-    container_type    m_usedElements;
-    size_type         m_availElements;
+    void            DoNewElement(iterator,
+                                 memory_pool_policies::Allocate_On_Stack);
+    void            DoNewElement(iterator a_pos,
+                                 memory_pool_policies::Allocate_On_Heap);
+
+    template <typename T_Element>
+    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
+                                 memory_pool_policies::Allocate_On_Stack);
+    template <typename T_Element>
+    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
+                                 memory_pool_policies::Allocate_On_Heap);
+
+    template <typename T_Element>
+    void            DoSetIndex(T_Element& a_elem, size_type a_index,
+                                 memory_pool_policies::Allocate_On_Stack);
+    template <typename T_Element>
+    void            DoSetIndex(T_Element& a_elem, size_type a_index,
+                                 memory_pool_policies::Allocate_On_Heap);
+
+    void            DoCleanup(memory_pool_policies::Allocate_On_Stack);
+    void            DoCleanup(memory_pool_policies::Allocate_On_Heap);
+
+    bool            DoIsInitialized();
+
+    container_type            m_allElements;
+    container_type            m_usedElements;
+    tl_array_size             m_availElements;
 
     tl_int            m_availIndex;
   };

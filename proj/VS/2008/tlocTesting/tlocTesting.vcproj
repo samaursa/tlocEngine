@@ -1014,6 +1014,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocMemoryPoolTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocMemoryTest.cpp"
 				>
 			</File>

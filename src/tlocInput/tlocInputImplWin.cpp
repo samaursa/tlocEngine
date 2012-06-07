@@ -16,8 +16,8 @@ namespace tloc { namespace input { namespace priv {
 #define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < hid::count,\
   "Unsupported input type passed!")
 
-  template InputManagerImpl<InputManager<InputPolicy::Buffered> >;
-  template InputManagerImpl<InputManager<InputPolicy::Immediate> >;
+  template class InputManagerImpl<InputManager<InputPolicy::Buffered> >;
+  template class InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
 #define INSTANTIATE_HID(_HID_) \
   template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::CreateHID<_HID_<InputPolicy::Buffered> >(input_type, parameter_options::Type);\

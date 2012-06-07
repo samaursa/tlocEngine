@@ -8,11 +8,27 @@
 #include "tlocMemoryPool.h"
 #include <tlocCore/containers/tlocContainers.inl>
 
+//------------------------------------------------------------------------
+// Fine grain control to enable/disable assertions
+
+#ifndef TLOC_DISABLE_ASSERT_MEMORY_POOL_INDEX
+# define TLOC_ASSERT_MEMORY_POOL_INDEX(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
+#else
+# define TLOC_ASSERT_MEMORY_POOL_INDEX(_Expression, _Msg)
+#endif
+
 namespace tloc { namespace core {
 
 #define MEMORY_POOL_INDEX_TEMP    class T, class T_PolicyAllocation, class T_PolicyUsedElements
 #define MEMORY_POOL_INDEX_PARAMS  T, T_PolicyAllocation, T_PolicyUsedElements
-#define MEMORY_POOL_INDEX_TYPE    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>
+#define MEMORY_POOL_INDEX_TYPE    typename MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>
+
+#define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
+  TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::value_type  
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::npos;
 
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndex()
@@ -44,6 +60,86 @@ namespace tloc { namespace core {
     m_availIndex = a_maxElements - 1;
   }
 
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetNext()
+  {
+    TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
+
+    tl_int availIndex = m_availIndex--;
+
+    if (m_availIndex < 0)
+    {
+      ++m_availIndex;
+      return MEMORY_POOL_INDEX_TYPE::npos;
+    }
+
+    // TODO: Store the element as used (as per the policy)
+    return m_allElements[m_availElements[m_availIndex] ];
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    Recycle(const wrapper_type& a_retElem)
+  {
+    TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
+
+    tl_int availIndex = ++m_availIndex;
+
+    if (availIndex >= (tl_int)m_allElements.size())
+    {
+      --m_availIndex;
+      TLOC_ASSERT_MEMORY_POOL_INDEX(false, 
+        "Trying to recycle more elements than we have!");
+      return;
+    }
+
+    // TODO: Store the element as used (as per the policy)
+    m_availElements[m_availIndex] = a_retElem
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::size_type 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
+  {
+    return m_allElements.size();
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::size_type 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
+  {
+    return m_allElements.size() - (m_availIndex + 1);
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::iterator 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::begin()
+  {
+    return m_allElements.begin();
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::const_iterator
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::begin() const
+  {
+    return m_allElements.begin();
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::iterator 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::end() 
+  {
+    return m_allElements.end();
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::const_iterator
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::end() const
+  {
+    return m_allElements.end();
+  }
+
   //------------------------------------------------------------------------
   // Helper functions
 
@@ -66,7 +162,7 @@ namespace tloc { namespace core {
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
     DoNewElement(iterator a_pos, memory_pool_policies::Allocate_On_Heap)
   {
-    a_pos = new element_wrapper_type();
+    a_pos = new wrapper_type();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>

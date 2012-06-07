@@ -50,23 +50,7 @@ namespace tloc { namespace core {
             class T_PolicyUsedElements = memory_pool_policies::Track_Used_Elements>
   class MemoryPoolIndex
   {
-
-    //------------------------------------------------------------------------
-    // Memory Pool Element Wrapper
-    template <typename T_Elem, typename T_SizeType>
-    struct ElementWrapper
-    {
-      typedef T_Elem      value_type;
-      typedef T_SizeType  size_type;
-
-      ElementWrapper() {}
-
-      value_type  m_element;
-      size_type   m_index;
-    };
-
   public:
-
     typedef T_PolicyAllocation                        policy_allocation_type;
     typedef T_PolicyUsedElements                      policy_used_elements_type;
 
@@ -87,19 +71,49 @@ namespace tloc { namespace core {
       <policy_allocation_result_type::value,
        value_type, value_type*>                         selected_type;
 
-    typedef ElementWrapper<selected_type, size_type>    element_wrapper_type;
+    typedef MemoryPoolIndex<value_type, policy_allocation_type,
+      policy_used_elements_type>                        this_type;
 
-    typedef typename tl_array<element_wrapper_type>::type        container_type;
+    //------------------------------------------------------------------------
+    // Memory Pool Element Wrapper
+
+    template <typename T_Elem, typename T_SizeType>
+    class ElementWrapper
+    {
+    public:
+      typedef T_Elem      value_type;
+      typedef T_SizeType  size_type;
+      friend class        this_type; // here this_type is the parent class
+
+      ElementWrapper() {}
+      value_type& GetElement() { return m_element; }
+      size_type   GetIndex() { return m_index; }
+
+    private:
+
+      value_type  m_element;
+      size_type   m_index;
+    };
+
+
+    typedef ElementWrapper<selected_type, size_type>    wrapper_type;
+
+    typedef typename tl_array<wrapper_type>::type        container_type;
+    typedef typename tl_array<wrapper_type*>::type       container_ptr_type;
     typedef typename container_type::iterator                    iterator;
     typedef typename container_type::const_iterator              const_iterator;
+
+    //------------------------------------------------------------------------
+    // Methods
 
     MemoryPoolIndex();
     ~MemoryPoolIndex();
 
     void Initialize(size_type a_maxElements);
 
-    value_type& GetNext();
-    void        Recycle(const value_type& a_returnedElement);
+    // Returns MemoryPoolIndex<>::npos on failure
+    wrapper_type& GetNext();
+    void          Recycle(const wrapper_type& a_returnedElement);
 
     size_type   GetAvail() const;
     size_type   GetUsed() const;
@@ -109,6 +123,8 @@ namespace tloc { namespace core {
     const_iterator  begin() const;
     iterator        end();
     const_iterator  end() const;
+
+    static const value_type npos;
 
   protected:
 
@@ -137,7 +153,7 @@ namespace tloc { namespace core {
     bool            DoIsInitialized();
 
     container_type            m_allElements;
-    container_type            m_usedElements;
+    container_ptr_type        m_usedElements;
     tl_array_size             m_availElements;
 
     tl_int            m_availIndex;

@@ -79,7 +79,7 @@ namespace tloc { namespace math {
   TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1,
     const Vector3<T>& aVector2)
   {
-    operator=(aVector1);
+    this->operator=(aVector1);
     Cross(aVector2);
   }
 
@@ -105,7 +105,7 @@ namespace tloc { namespace math {
   TL_FI void Vector3<T>::FastNorm()
   {
     f32 lLength;
-    lLength = (f32)LengthSquared();
+    lLength = (f32)this->LengthSquared();
 
     // Calculate length inverse
     f32 xhalf = 0.5f*lLength;

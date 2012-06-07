@@ -18,11 +18,11 @@ namespace tloc { namespace math {
 
   template <typename T>
   TL_FI Matrix3<T>::Matrix3()
-    : Matrix() {}
+    : base_type() {}
 
   template <typename T>
   TL_FI Matrix3<T>::Matrix3(const Matrix3<T>& aMatrix)
-    : Matrix(aMatrix) {}
+    : base_type(aMatrix) {}
 
   template <typename T>
   TL_FI Matrix3<T>::Matrix3(T m00, T m01, T m02,
@@ -38,20 +38,20 @@ namespace tloc { namespace math {
   TL_FI Matrix3<T>::Matrix3(T m00, T m11, T m22)
   {
     T diag[3] = {m00, m11, m22};
-    MakeDiagonal(diag);
+    this->MakeDiagonal(diag);
   }
 
   template <typename T>
   TL_FI Matrix3<T>::Matrix3(const T& aValue)
-    : Matrix(aValue) {}
+    : base_type(aValue) {}
 
   template <typename T>
   TL_FI Matrix3<T>::Matrix3(const Vector<T, 3>& aVec1,
                             const Vector<T, 3>& aVec2,
                             const Vector<T, 3>& aVec3,
-                            matrix_order aOrder)
+                            typename base_type::matrix_order aOrder)
   {
-    if (aOrder == k_ColMajor)
+    if (aOrder == base_type::k_ColMajor)
     {
       m_values[0] = aVec1[0]; m_values[3] = aVec2[0]; m_values[6] = aVec3[0];
       m_values[1] = aVec1[1]; m_values[4] = aVec2[1]; m_values[7] = aVec3[1];
@@ -66,8 +66,9 @@ namespace tloc { namespace math {
   }
 
   template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T (&values)[k_MatrixSize], matrix_order aOrder)
-    : Matrix(values, aOrder) {}
+  TL_FI Matrix3<T>::Matrix3(const T (&values)[k_MatrixSize], 
+                            typename base_type::matrix_order aOrder)
+    : base_type(values, aOrder) {}
 
   //------------------------------------------------------------------------
   // Math Operations
@@ -158,7 +159,7 @@ namespace tloc { namespace math {
     detInv = ((T)1) / detInv;
 
     Adjoint(aMatrix);
-    Matrix::Mul(detInv);
+    base_type::Mul(detInv);
 
     return true;
   }
@@ -426,7 +427,7 @@ namespace tloc { namespace math {
                     (T)0, cosine, -sine,
                     (T)0,   sine, cosine };
 
-    Set(values, k_RowMajor);
+    this->Set(values, base_type::k_RowMajor);
     return *this;
   }
 
@@ -442,7 +443,7 @@ namespace tloc { namespace math {
                      (T)0, (T)1,  (T)0,
                     -sine, (T)0, cosine};
 
-    Set(values, k_RowMajor);
+    this->Set(values, base_type::k_RowMajor);
     return *this;
   }
 
@@ -458,7 +459,7 @@ namespace tloc { namespace math {
                      sine, cosine, (T)0,
                      (T)0,   (T)0, (T)1 };
 
-    Set(values, k_RowMajor);
+    this->Set(values, base_type::k_RowMajor);
     return *this;
 
   }

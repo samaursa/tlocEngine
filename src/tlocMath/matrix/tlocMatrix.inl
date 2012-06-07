@@ -21,20 +21,20 @@ namespace tloc { namespace math {
 
   template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix()
-    : Table() {}
+    : base_type() {}
 
   template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const Matrix<T, T_Size>& aMatrix)
-    : Table(aMatrix) {}
+    : base_type(aMatrix) {}
 
   template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const T& aValue)
-    : Table(aValue) {}
+    : base_type(aValue) {}
 
   template <typename T, tl_size T_Size>
   TL_FI Matrix<T, T_Size>::Matrix(const T (&values)[k_MatrixSize],
                                   matrix_order aOrder)
-                                  : Table(values, aOrder)
+                                  : base_type(values, aOrder)
   {}
 
   //------------------------------------------------------------------------
@@ -52,7 +52,7 @@ namespace tloc { namespace math {
     Zero();
     ITERATE_MATRIX_HALF
     {
-      Set(i, i, 1);
+      this->Set(i, i, 1);
     }
   }
 
@@ -62,7 +62,7 @@ namespace tloc { namespace math {
     Zero();
     ITERATE_MATRIX_HALF
     {
-      Set(i, i, values[i]);
+      this->Set(i, i, values[i]);
     }
   }
 
@@ -178,7 +178,7 @@ namespace tloc { namespace math {
   TL_FI Matrix<T, T_Size>& Matrix<T, T_Size>::Transpose()
   {
     Matrix<T, T_Size> temp = *this;
-    Set(temp.m_values, k_RowMajor);
+    Set(temp.m_values, base_type::k_RowMajor);
 
     return *this;
   }
@@ -186,7 +186,7 @@ namespace tloc { namespace math {
   template <typename T, tl_size T_Size>
   TL_FI void Matrix<T, T_Size>::Transpose(const Matrix<T, T_Size>& aMatrix)
   {
-    Set(aMatrix.m_values, k_RowMajor);
+    Set(aMatrix.m_values, base_type::k_RowMajor);
   }
 
   //------------------------------------------------------------------------

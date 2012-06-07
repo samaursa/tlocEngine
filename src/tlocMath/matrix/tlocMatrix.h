@@ -27,16 +27,28 @@ namespace tloc { namespace math {
   template <typename T, tl_size T_Size>
   class Matrix : public core::Table<T, T_Size, T_Size>
   {
+  public:
+    //------------------------------------------------------------------------
+    // typedefs (similar to std containers)
+    typedef Matrix<T, T_Size>               this_type;
+    typedef core::Table<T, T_Size, T_Size>  base_type;
+    
+    typedef typename base_type::value_type  value_type;
+    
+    typedef typename base_type::table_order matrix_order;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::k_TableSize;
+    using base_type::m_values;
+    
   protected:
+    
     enum { k_MatrixSize = k_TableSize };
-
+    
   public:
     //------------------------------------------------------------------------
     // Constructors
-
-    typedef T                                         value_type;
-    typedef core::Table<value_type, T_Size, T_Size>   base_type;
-    typedef base_type::table_order                    matrix_order;
 
     // Empty default constructor
     TL_FI Matrix();

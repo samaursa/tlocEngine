@@ -13,6 +13,18 @@ namespace tloc { namespace math {
   {
   public:
     //------------------------------------------------------------------------
+    // typedefs (similar to std containers)
+    typedef Matrix3<T>                      this_type;
+    typedef Matrix<T, 3>                    base_type;
+    
+    typedef typename base_type::value_type  value_type;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::k_MatrixSize;
+    using base_type::m_values;
+    
+    //------------------------------------------------------------------------
     // Constructors
 
     // Empty default constructor
@@ -33,11 +45,14 @@ namespace tloc { namespace math {
     TL_FI explicit Matrix3(const T& aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    TL_FI Matrix3(const Vector<T, 3>& aVec1, const Vector<T, 3>& aVec2,
-                  const Vector<T, 3>& aVec3, matrix_order aOrder);
+    TL_FI Matrix3(const Vector<T, 3>& aVec1, 
+                  const Vector<T, 3>& aVec2,
+                  const Vector<T, 3>& aVec3, 
+                  typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix3(const T (&values)[k_MatrixSize], matrix_order aOrder);
+    TL_FI Matrix3(const T (&values)[k_MatrixSize], 
+                  typename base_type::matrix_order aOrder);
 
     //------------------------------------------------------------------------
     // Math operations

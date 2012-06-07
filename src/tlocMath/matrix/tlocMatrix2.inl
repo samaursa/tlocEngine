@@ -18,11 +18,11 @@ namespace tloc { namespace math {
 
   template <typename T>
   TL_FI Matrix2<T>::Matrix2()
-    : Matrix() {}
+    : base_type() {}
 
   template <typename T>
   TL_FI Matrix2<T>::Matrix2(const Matrix2<T>& aMatrix)
-    : Matrix(aMatrix) {}
+    : base_type(aMatrix) {}
 
   template <typename T>
   TL_FI Matrix2<T>::Matrix2(T m00, T m01,
@@ -38,18 +38,18 @@ namespace tloc { namespace math {
   TL_FI Matrix2<T>::Matrix2(T m00, T m11)
   {
     T diag[2] = {m00, m11};
-    MakeDiagonal(diag);
+    this->MakeDiagonal(diag);
   }
 
   template <typename T>
   TL_FI Matrix2<T>::Matrix2(const T& aValue)
-    : Matrix(aValue) {}
+    : base_type(aValue) {}
 
   template <typename T>
   TL_FI Matrix2<T>::Matrix2(const Vector2<T>& aVec1, const Vector2<T>& aVec2,
-                            matrix_order aOrder)
+    typename base_type::matrix_order aOrder)
   {
-    if (aOrder == k_ColMajor)
+    if (aOrder == base_type::k_ColMajor)
     {
       m_values[0] = aVec1[0];
       m_values[1] = aVec1[1];
@@ -66,8 +66,9 @@ namespace tloc { namespace math {
   }
 
   template <typename T>
-  TL_FI Matrix2<T>::Matrix2(const T (&values)[k_MatrixSize], matrix_order aOrder)
-    : Matrix(values, aOrder) {}
+  TL_FI Matrix2<T>::Matrix2(const T (&values)[k_MatrixSize], 
+                            typename base_type::matrix_order aOrder)
+    : base_type(values, aOrder) {}
 
   //------------------------------------------------------------------------
   // Math Operations

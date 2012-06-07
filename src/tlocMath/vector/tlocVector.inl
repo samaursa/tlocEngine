@@ -57,7 +57,8 @@ namespace tloc { namespace math {
   }
 
   template <VECTOR_TYPE>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) : Tuple(a_value)
+  TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) 
+    : base_type(a_value)
   {
   }
 
@@ -67,7 +68,7 @@ namespace tloc { namespace math {
   template <VECTOR_TYPE>
   TL_FI void Vector<VECTOR_PARAMS>::Zero()
   {
-    Set(0);
+    this->Set(0);
   }
 
   template <VECTOR_TYPE>

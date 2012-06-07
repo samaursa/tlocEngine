@@ -17,6 +17,19 @@ namespace tloc { namespace math {
   class Vector2 : public Vector<T, 2>
   {
   public:
+    //------------------------------------------------------------------------
+    // typedefs (similar to std containers)
+    typedef Vector2<T>                      this_type;
+    typedef Vector<T, 2>                    base_type;
+    
+    typedef typename base_type::value_type  value_type;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::m_values;
+    
+    //------------------------------------------------------------------------
+    // Constructors
     TL_FI Vector2();
     TL_FI Vector2(const T& aX, const T& aY);
     TL_FI Vector2(const Vector2<T>& aVector);

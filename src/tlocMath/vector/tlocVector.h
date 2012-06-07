@@ -34,10 +34,16 @@ namespace tloc { namespace math {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Vector<T, T_Size>   this_type;
-    typedef T                   value_type;
-    typedef T&                  reference;
-    typedef const T&            const_reference;
+    typedef Vector<T, T_Size>                     this_type;
+    typedef core::Tuple<T, T_Size>                base_type;
+    
+    typedef typename base_type::value_type        value_type;
+    typedef value_type&                           reference;
+    typedef const value_type&                     const_reference;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::m_values;
 
     //------------------------------------------------------------------------
     // Constructors

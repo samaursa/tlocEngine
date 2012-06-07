@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include "tlocMath/tlocMatrix2.h"
-#include "tlocMath/tlocMatrix2.inl"
+#include <tlocMath/matrix/tlocMatrix2.h>
+#include <tlocMath/matrix/tlocMatrix2.inl>
 
-#include "tlocMath/tlocVector2.h"
-#include "tlocMath/tlocVector2.inl"
+#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/vector/tlocVector2.inl>
 
 namespace TestingMatrix2
 {
@@ -56,10 +56,10 @@ namespace TestingMatrix2
     CHECK_MATRIX2F(g, 10, 10, 10, 10);
 
     f32 array[4] = {9, 10, 11, 12};
-    Mat2f h(array, Mat2f::ROW_MAJOR);
+    Mat2f h(array, Mat2f::k_RowMajor);
     CHECK_MATRIX2F(h, 9, 11, 10, 12);
 
-    Mat2f i(array, Mat2f::COL_MAJOR);
+    Mat2f i(array, Mat2f::k_ColMajor);
     CHECK_MATRIX2F(i, 9, 10, 11, 12);
 
     Mat2f j(1.0f, 2.0f, 3.0f, 4.0f);
@@ -69,10 +69,10 @@ namespace TestingMatrix2
     CHECK_MATRIX2F(k, 2.0f, 0, 0, 2.0f);
 
     Vec2f v1(1, 2), v2(3,4);
-    Mat2f m(v1, v2, Mat2f::ROW_MAJOR);
+    Mat2f m(v1, v2, Mat2f::k_RowMajor);
     CHECK_MATRIX2F(m, 1, 3, 2, 4);
 
-    Mat2f n(v1, v2, Mat2f::COL_MAJOR);
+    Mat2f n(v1, v2, Mat2f::k_ColMajor);
     CHECK_MATRIX2F(n, 1, 2, 3, 4);
   }
 
@@ -87,8 +87,8 @@ namespace TestingMatrix2
     c.Zero();
     d.Zero();
     f32 values[4] = {1, 2, 3, 4};
-    c.Set(values, Mat2f::ROW_MAJOR);
-    d.Set(values, Mat2f::COL_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
+    d.Set(values, Mat2f::k_ColMajor);
 
     e.Mul(c, d);
     CHECK_MATRIX2F(e, 5, 11, 11, 25);
@@ -98,17 +98,17 @@ namespace TestingMatrix2
 
     Vec2f v1(1, 2);
     Vec2f v2;
-    c.Set(values, Mat2f::ROW_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
 
     c.Mul(v1, v2);
-    CHECK_VEC2F(v2, 5, 11);
+    CHECK_VEC2F(v2, 5, 11); //-V550
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det",
     "Test determinant")
   {
     f32 values[4] = {1, 2, 3, 4};
-    c.Set(values, Mat2f::ROW_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
     CHECK(-2 == Approx(c.Determinant()));
   }
 
@@ -116,7 +116,7 @@ namespace TestingMatrix2
     "Test inverse")
   {
     f32 values[4] = {1, 2, 3, 4};
-    c.Set(values, Mat2f::ROW_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
     REQUIRE(c.Inverse() == true);
     CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
   }
@@ -125,7 +125,7 @@ namespace TestingMatrix2
     "Test adjoint")
   {
     f32 values[4] = {1, 2, 3, 4};
-    c.Set(values, Mat2f::ROW_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
     d.Adjoint(c);
     CHECK_MATRIX2F(d, 4, -3, -2, 1);
 
@@ -137,13 +137,13 @@ namespace TestingMatrix2
     "Test orthonormalize")
   {
     f32 values[4] = {1, 0, 0, 1};
-    c.Set(values, Mat2f::COL_MAJOR);
+    c.Set(values, Mat2f::k_ColMajor);
 
     c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
 
     f32 values2[4] = {2, 0, 0, 2};
-    c.Set(values2, Mat2f::COL_MAJOR);
+    c.Set(values2, Mat2f::k_ColMajor);
 
     c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
@@ -153,7 +153,7 @@ namespace TestingMatrix2
     "Test eigen decomposition")
   {
     f32 values[4] = {1, 2, 3, 4};
-    c.Set(values, Mat2f::ROW_MAJOR);
+    c.Set(values, Mat2f::k_RowMajor);
 
     c.EigenDecomposition(d, e);
     CHECK_MATRIX2F(d, -0.89442718f, 0.44721359f, -0.44721359, -0.89442718f);

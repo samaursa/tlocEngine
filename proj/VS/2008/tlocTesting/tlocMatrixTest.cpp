@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include "tlocMath/tlocMatrix.h"
-#include "tlocMath/tlocMatrix.inl"
+#include <tlocMath/matrix/tlocMatrix.h>
+#include <tlocMath/matrix/tlocMatrix.inl>
 
-#include "tlocMath/tlocVector3.h"
-#include "tlocMath/tlocVector3.inl"
+#include <tlocMath/vector/tlocVector3.h>
+#include <tlocMath/vector/tlocVector3.inl>
 
 namespace TestingMatrix
 {
@@ -72,10 +72,10 @@ namespace TestingMatrix
 
     f32 rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    tloc::math::Matrix<f32, 3> g(rawArray, tloc::math::Matrix<f32, 3>::ROW_MAJOR);
+    tloc::math::Matrix<f32, 3> g(rawArray, tloc::math::Matrix<f32, 3>::k_RowMajor);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Matrix<f32, 3> h(rawArray, tloc::math::Matrix<f32, 3>::COL_MAJOR);
+    tloc::math::Matrix<f32, 3> h(rawArray, tloc::math::Matrix<f32, 3>::k_ColMajor);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.Zero();
@@ -134,12 +134,12 @@ namespace TestingMatrix
     Vec3f result;
     c.Mul(someVec, result);
 
-    CHECK_VEC3F(result, 1, 0, 0);
+    CHECK_VEC3F(result, 1, 0, 0); //-V550
 
     //------------------------------------------------------------------------
     c.Zero(); d.Zero();
     f32 numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    c.Set(numArray, Matrix<f32, 3>::ROW_MAJOR);
+    c.Set(numArray, Matrix<f32, 3>::k_RowMajor);
     d = c;
     e.Mul(c, d);
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
@@ -172,18 +172,18 @@ namespace TestingMatrix
 
     e = d;
     e.Transpose(d);
-    CHECK_MATRIX3F(e, 1, 0, 0, 0, 1, 0, 1, 0, 1);  
+    CHECK_MATRIX3F(e, 1, 0, 0, 0, 1, 0, 1, 0, 1);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Accessors",
     "Test accessors")
   {
     f32 diagArray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
-    d.Set(diagArray, Matrix<f32, 3>::COL_MAJOR);
+    d.Set(diagArray, Matrix<f32, 3>::k_ColMajor);
 
     Vec3f diagVec;
     d.GetDiagonal(diagVec);
-    CHECK_VEC3F(diagVec, 1, 1, 1);
+    CHECK_VEC3F(diagVec, 1, 1, 1); //-V550
 
     c.Set(0);
     c(0, 0) = 3;
@@ -191,7 +191,7 @@ namespace TestingMatrix
     c(2, 2) = 5;
 
     c.GetDiagonal(diagVec);
-    CHECK_VEC3F(diagVec, 3, 4, 5);
+    CHECK_VEC3F(diagVec, 3, 4, 5); //-V550
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Operators",

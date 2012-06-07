@@ -4,8 +4,8 @@
 #include <cmath>
 #include <float.h>
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 namespace tloc {
 

@@ -187,19 +187,11 @@
 //////////////////////////////////////////////////////////////////////////
 // Inlining
 
-#ifndef TLOC_DEBUG
-# define TLOC_INLINE inline
-# define TL_I TLOC_INLINE
+#define TLOC_INLINE inline
+#define TL_I TLOC_INLINE
 
-# define TLOC_FORCE_INLINE __forceinline
-# define TL_FI TLOC_FORCE_INLINE
-#else
-# define TLOC_INLINE
-# define TL_I
-
-# define TLOC_FORCE_INLINE
-# define TL_FI
-#endif
+#define TLOC_FORCE_INLINE __forceinline
+#define TL_FI TLOC_FORCE_INLINE
 
 #ifdef TLOC_FULL_SOURCE
 # define TL_STATIC_I  static TLOC_INLINE
@@ -218,6 +210,17 @@
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
+#if defined (__APPLE__)
+// TODO: Fix the assert macros for mac
+
+# define _CRT_WIDE(_Msg)
+# define TLOC_ASSERT_MESSAGE(msg) assert(false)
+# define TLOC_ASSERT_MESSAGEW(msg) assert(false)
+# define TLOC_ASSERT(_Expression, _Msg) assert(_Expression)
+# define TLOC_ASSERTW(_Expression, _Msg) assert(_Expression)
+
+#else
+
 # define TLOC_ASSERT_MESSAGE(msg)\
   (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
 # define TLOC_ASSERT_MESSAGEW(msg)\
@@ -226,13 +229,16 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+
+#endif
+
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
 // it will work properly with these asserts disabled
 #   ifndef TLOC_DISABLE_ASSERT_WARNINGS
 #     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " _CRT_WIDE(_Msg))
 #   else
-#     define TLOC_ASSERT_WARNG(_Expression, _Msg)
+#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
 #   endif
 
 #else
@@ -241,10 +247,19 @@
 #define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
 
+// Other common asserts
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ _CRT_WIDE(" cannot be NULL"))
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ _CRT_WIDE(" should be NULL"))
+
 //````````````````````````````````````````````````````````````````````````
 // Compile time
+
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg)
+# if defined(__APPLE__)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg)
+# else
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+# endif
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
@@ -253,6 +268,14 @@
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
+# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
+# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer);
+# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
+# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
 
 //------------------------------------------------------------------------
 // Low level assertions
@@ -291,7 +314,13 @@
 // Avoid warnings about unused variables.  This is designed for variables
 // that are exposed in debug configurations but are hidden in release
 // configurations.
-#define TLOC_UNUSED(variable) (void)variable;
+#define TLOC_UNUSED(variable) (void)variable
+#define TLOC_UNUSED_2(variable1, variable2) TLOC_UNUSED(variable1); TLOC_UNUSED(variable2)
+#define TLOC_UNUSED_3(variable1, variable2, variable3) TLOC_UNUSED_2(variable1, variable2); TLOC_UNUSED(variable3)
+#define TLOC_UNUSED_4(variable1, variable2, variable3, variable4) TLOC_UNUSED_3(variable1, variable2, variable3); TLOC_UNUSED(variable4)
+#define TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5) TLOC_UNUSED_4(variable1, variable2, variable3, variable4); TLOC_UNUSED(variable5)
+#define TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5); TLOC_UNUSED(variable6)
+#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
 
 // If a source file is empty (usually because of #ifdef) then the linker will
 // generate the LNK4221 warning complaining that no symbols were found and hence

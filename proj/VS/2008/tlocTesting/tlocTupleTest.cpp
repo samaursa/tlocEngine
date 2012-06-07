@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocAlgorithms.h"
+#include <tlocCore/tlocAlgorithms.h>
 #include "tlocCore/tlocAlgorithms.inl"
 
-#include "tlocCore/tlocTuple.h"
-#include "tlocCore/tlocTuple.inl"
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocTuple.inl>
 
 namespace TestingTuple
 {
@@ -37,6 +37,9 @@ namespace TestingTuple
     p.Set(5);
     CHECK_TUP(p, 5, 5, 5, 5);
 
+    // Check Size
+    CHECK(p.GetSize() == 4);
+
     core::Tuple<s32, 4> q(8);
     p.Swap(q);
 
@@ -47,6 +50,9 @@ namespace TestingTuple
     p.Set(numberSet);
     CHECK_TUP(p, 1, 2, 3, 4);
 
+    // Check Size
+    CHECK(q.GetSize() == 4);
+
     core::Tuple<s32, 4> r(numberSet);
     CHECK_TUP(r, 1, 2, 3, 4);
 
@@ -55,6 +61,9 @@ namespace TestingTuple
     r = numberSet;
     CHECK_TUP(r, 1, 2, 3, 4);
 
+    // Check Size
+    CHECK(r.GetSize() == 4);
+
     core::Tuple<s32, 4> s(r);
     CHECK_TUP(s, 1, 2, 3, 4);
 
@@ -62,6 +71,9 @@ namespace TestingTuple
     CHECK_TUP(s, 0, 0, 0, 0);
     s = r;
     CHECK_TUP(s, 1, 2, 3, 4);
+
+    // Check Size
+    CHECK (q.GetSize() == 4);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Operators",

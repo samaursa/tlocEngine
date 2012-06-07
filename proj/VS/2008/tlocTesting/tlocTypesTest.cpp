@@ -1,31 +1,32 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
-
-namespace tloc
-{
-  s32 ConditionalType<s32, false>::g_conditional_type_invalid_value = 1;
-}
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
 
 namespace TESTING_TYPES
 {
   USING_TLOC;
+  using namespace core;
 
   struct ConditionalFixtureTrue
   {
-    ConditionalType<s32, true> a;
-    ConditionalType<s32, true> a2;
+    ConditionalType<tl_int, true> a;
+    ConditionalType<tl_int, true> a2;
+    ConditionalTypePackage<tl_int, tl_int, true> a3;
   };
 
   struct ConditionalFixtureFalse
   {
-    ConditionalType<s32, false> a;
-    ConditionalType<s32, false> a2;
+    ConditionalType<tl_int, false> a;
+    ConditionalType<tl_int, false> a2;
+    ConditionalTypePackage<tl_int, tl_int, false> a3;
   };
 
   TEST_CASE_METHOD(ConditionalFixtureTrue, "Core/Types/ConditionalTypeTrue", "")
   {
+    // Type should return valid
+    CHECK(a.IsValid() == true);
+
     a = 5;
     CHECK(a.Value() == 5);
 
@@ -114,10 +115,39 @@ namespace TESTING_TYPES
     CHECK(num == 50);
     num = num / a;
     CHECK(num == 10);
+
+    a3 = 10;
+    a3.m_var = 20;
+    CHECK(a3 == 10);
+    CHECK(a3.m_var == 20);
+
+    a3 = a3 + 20;
+    CHECK(a3 == 30);
+    a3.m_var += (s32)a3.Get();
+    CHECK(a3.m_var == 50);
+
+    a += a;
+    CHECK(a == 10);
+    a -= a;
+    CHECK(a == 0);
+    a = 5;
+    a /= a;
+    CHECK(a == 1);
+    a = 2;
+    a *= a;
+    CHECK(a == 4);
   }
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")
   {
+    // Note that direct comparison with the invalid_value should not be used in
+    // code because g_conditional_type_invalid_value does not really exist for
+    // ConditionalType<T, true>. The variable is used to make sure the type
+    // works when <false> and for testing purposes.
+
+    // Type should return invalid
+    CHECK(a.IsValid() == false);
+
     a = 5;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
 
@@ -194,5 +224,16 @@ namespace TESTING_TYPES
     CHECK(num == 5);
     num = num / a;
     //CHECK(num == 5);
+
+    a += a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a -= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 5;
+    a /= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 2;
+    a *= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
   }
 };

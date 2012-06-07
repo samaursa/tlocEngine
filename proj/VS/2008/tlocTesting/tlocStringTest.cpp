@@ -1,8 +1,8 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocLinkMe.cpp"
-#include "tlocCore/tlocString.h"
-#include "tlocCore/tlocString.inl"
+#include <tlocCore/memory/tlocLinkMe.cpp>
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace TestingStrings
 {
@@ -11,7 +11,7 @@ namespace TestingStrings
 
   struct StringFixture
   {
-    tlString a, b, c;
+    String a, b, c;
   };
 
   TEST_CASE("Core/Strings/StrLen", "Test StrLen()")
@@ -37,10 +37,10 @@ namespace TestingStrings
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Construction",
     "Test basic string construction")
   {
-    tlString d(a, 0);
+    String d(a, 0);
 
     const char* text = "Hello";
-    tlString e(text, 5);
+    String e(text, 5);
 
     for (u32 i = 0; i < 5; ++i)
     {
@@ -48,52 +48,52 @@ namespace TestingStrings
     }
 
     {
-      tlString f(e);
+      String f(e);
       CHECK(StrCmp(f.c_str(), "Hello") == 0);
     }
 
     {
-      tlString f(e, 3);
+      String f(e, 3);
       CHECK(StrCmp(f.c_str(), "lo") == 0);
     }
 
     {
-      tlString f("Hello world!", 5);
+      String f("Hello world!", 5);
       CHECK(StrCmp(f.c_str(), "Hello") == 0);
     }
 
     {
-      tlString f("Hello world!");
+      String f("Hello world!");
       CHECK(StrCmp(f.c_str(), "Hello world!") == 0);
     }
 
     {
-      tlString f(10, 'a');
+      String f(10, 'a');
       CHECK(StrCmp(f.c_str(), "aaaaaaaaaa") == 0);
     }
 
     {
-      tlString f(StringNoInitialize(), 10);
+      String f(StringNoInitialize(), 10);
       CHECK(f.capacity() == 10);
     }
 
     {// tests from cplusplus.com
-      tlString s0 ("Initial string");
+      String s0 ("Initial string");
       CHECK(StrCmp(s0.c_str(), "Initial string") == 0);
 
       // constructors used in the same order as described above:
-      tlString s1;
-      tlString s2 (s0);
+      String s1;
+      String s2 (s0);
       CHECK(StrCmp(s2.c_str(), "Initial string") == 0);
-      tlString s3 (s0, 8, 3);
+      String s3 (s0, 8, 3);
       CHECK(StrCmp(s3.c_str(), "str") == 0);
-      tlString s4 ("A character sequence", 6);
+      String s4 ("A character sequence", 6);
       CHECK(StrCmp(s4.c_str(), "A char") == 0);
-      tlString s5 ("Another character sequence");
+      String s5 ("Another character sequence");
       CHECK(StrCmp(s5.c_str(), "Another character sequence") == 0);
-      tlString s6 (10, 'x');
+      String s6 (10, 'x');
       CHECK(StrCmp(s6.c_str(), "xxxxxxxxxx") == 0);
-      tlString s7a (10, (char8)42);
+      String s7a (10, (char8)42);
       CHECK(StrCmp(s7a.c_str(), "**********") == 0);
       /*tlString s7b (s0.begin(), s0.begin()+7);
       CHECK(StrCmp(s7b.c_str(), "Initial") == 0);*/
@@ -124,9 +124,9 @@ namespace TestingStrings
     }
 
     {// tests from cplusplus.com
-      tlString str;
-      tlString str2="Writing ";
-      tlString str3="print 10 and then 5 more";
+      String str;
+      String str2="Writing ";
+      String str3="print 10 and then 5 more";
 
       // used in the same order as described above:
       str.append(str2);                       // "Writing "
@@ -158,7 +158,7 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Capacity", "")
   {
-    tlString d("This is interesting.");
+    String d("This is interesting.");
 
     d.set_capacity(7);
     CHECK(StrCmp(d.c_str(), "This is") == 0);
@@ -176,7 +176,7 @@ namespace TestingStrings
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Erase", "")
   {
     const char8* testString = "This is a test string.";
-    tlString d(testString);
+    String d(testString);
     d.erase(d.end() - 1);
 
     CHECK(StrCmp(d.c_str(), "This is a test string") == 0);
@@ -242,8 +242,8 @@ namespace TestingStrings
     CHECK(StrCmp(b.c_str(), "a") == 0);
 
     {// tests from cplusplus.com
-      tlString str;
-      tlString base="The quick brown fox jumps over a lazy dog.";
+      String str;
+      String base="The quick brown fox jumps over a lazy dog.";
 
       // used in the same order as described above:
 
@@ -321,7 +321,7 @@ namespace TestingStrings
       a = "to be question";
       b = "the ";
       c = "or not to be";
-      tlString::iterator it;
+      String::iterator it;
 
       // used in the same order as described above:
       a.insert(6,b);                 // to be (the )question
@@ -357,15 +357,15 @@ namespace TestingStrings
     }
 
     {//tests from cplusplus.com
-      tlString base = "this is a test string.";
-      tlString str2 = "n example";
-      tlString str3 = "sample phrase";
-      tlString str4 = "useful.";
+      String base = "this is a test string.";
+      String str2 = "n example";
+      String str3 = "sample phrase";
+      String str4 = "useful.";
 
       // function versions used in the same order as described above:
 
       // Using positions:                 0123456789*123456789*12345
-      tlString str=base;                // "this is a test string."
+      String str=base;                // "this is a test string."
       CHECK(StrCmp(str.c_str(), "this is a test string.") == 0);
       str.replace(9,5,str2);          // "this is an example string."
       CHECK(StrCmp(str.c_str(), "this is an example string.") == 0);
@@ -379,7 +379,7 @@ namespace TestingStrings
       CHECK(StrCmp(str.c_str(), "this is a short phrase!!!") == 0);
 
       // Using iterators:                      0123456789*123456789*
-      tlString::iterator it = str.begin();   //  ^
+      String::iterator it = str.begin();   //  ^
       str.replace(it,str.end()-3,str3);    // "sample phrase!!!"
       CHECK(StrCmp(str.c_str(), "sample phrase!!!") == 0);
       str.replace(it,it+6,"replace it",7); // "replace phrase!!!"
@@ -399,7 +399,7 @@ namespace TestingStrings
   {
     tl_size length;
     char8 buffer[20];
-    tlString str ("Test string...");
+    String str ("Test string...");
     REQUIRE(StrCmp(str.c_str(), "Test string...") == 0);
 
     length = str.copy(buffer,6,5);
@@ -410,8 +410,8 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/Find", "")
   {
-    tlString str ("There are two needles in this haystack with needles.");
-    tlString str2 ("needle");
+    String str ("There are two needles in this haystack with needles.");
+    String str2 ("needle");
     tl_size found;
 
     // different member versions of find in the same order as above:
@@ -434,17 +434,17 @@ namespace TestingStrings
           "with needles.") == 0);
 
     found = str.find("Pixar");
-    CHECK(found == tlString::npos);
+    CHECK(found == String::npos);
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/rFind", "")
   {
-    tlString str ("The sixth sick sheik's sixth sheep's sick.");
-    tlString key ("sixth");
+    String str ("The sixth sick sheik's sixth sheep's sick.");
+    String key ("sixth");
     tl_size found;
 
     found = str.rfind(key);
-    REQUIRE(found != tlString::npos);
+    REQUIRE(found != String::npos);
 
     str.replace (found,key.length(),"seventh");
     CHECK(StrCmp(str.c_str(), "The sixth sick sheik's seventh sheep's sick.") == 0);
@@ -461,11 +461,11 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FindFirstOf", "")
   {
-    tlString str ("Replace the vowels in this sentence by asterisks.");
+    String str ("Replace the vowels in this sentence by asterisks.");
     tl_size found;
 
     found = str.find_first_of("aeiou");
-    while (found!=tlString::npos)
+    while (found!=String::npos)
     {
       str[found]='*';
       found=str.find_first_of("aeiou",found+1);
@@ -479,11 +479,11 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FindFirstNotOf", "")
   {
-    tlString str ("look for non-alphabetic characters...");
+    String str ("look for non-alphabetic characters...");
     tl_size found;
 
     found = str.find_first_not_of("abcdefghijklmnopqrstuvwxyz ");
-    if (found!=tlString::npos)
+    if (found!=String::npos)
     {
       CHECK(str[found] == '-');
       CHECK(found == (tl_size)12);
@@ -496,12 +496,12 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FindLastNotOf", "")
   {
-    tlString str ("erase trailing white-spaces   \n");
-    tlString whitespaces (" \t\f\v\n\r");
+    String str ("erase trailing white-spaces   \n");
+    String whitespaces (" \t\f\v\n\r");
     tl_size found;
 
     found = str.find_last_not_of(whitespaces);
-    if (found != tlString::npos)
+    if (found != String::npos)
     {
       str.erase(found+1);
       CHECK(StrCmp(str.c_str(), "erase trailing white-spaces") == 0);
@@ -514,9 +514,9 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
   {
-    tlString str="We think in generalities, but we live in details.";
+    String str="We think in generalities, but we live in details.";
     // quoting Alfred N. Whitehead
-    tlString str2, str3;
+    String str2, str3;
 
     str2 = str.substr (12,12); // "generalities"
     CHECK(StrCmp(str2.c_str(), "generalities") == 0);
@@ -531,8 +531,8 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
   {
-    tlString str1 ("green apple");
-    tlString str2 ("red apple");
+    String str1 ("green apple");
+    String str2 ("red apple");
 
     CHECK(str1.compare(str2) != 0);
     CHECK(str1.compare(6, 5, "apple") == 0);
@@ -547,8 +547,8 @@ namespace TestingStrings
     const char8* testStringUpper = "THIS IS A TEST STRING";
     const char8* testStringLower = "this is a test string";
 
-    tlString str(testString);
-    tlString str2;
+    String str(testString);
+    String str2;
 
     str.make_lower();
     CHECK(StrCmp(str.c_str(), testStringLower) == 0);
@@ -585,8 +585,8 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/Operators", "")
   {
-    tlString str("This is a test");
-    tlString str2 = str;
+    String str("This is a test");
+    String str2 = str;
 
     CHECK( (str == str2) == true);
     str += "a";
@@ -604,6 +604,25 @@ namespace TestingStrings
     CHECK( (testStr == str) == true);
     CHECK( (str2 != testStr) == true);
     CHECK( (testStr != str2) == true);
+  }
 
+  TEST_CASE("Core/Strings/FreeFunctions/AsciiWideConversion", "")
+  {
+    char32 sentence1[] = L"This is a sentence.";
+    char8  sentence2[] = "This is a sentence.";
+
+    {
+      char8 s1[256];
+      s32 retIndex = CharWideToAscii(sentence1, -1, s1, 256);
+      CHECK(StrCmp(sentence2, s1) == 0);
+      CHECK(retIndex == 20);
+    }
+
+    {
+      char32 s2[256];
+      s32 retIndex = CharAsciiToWide(sentence2, -1, s2, 256);
+      CHECK(StrCmp(sentence1, s2) == 0);
+      CHECK(retIndex == 20);
+    }
   }
 };

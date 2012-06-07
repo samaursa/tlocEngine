@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
 
@@ -96,7 +96,7 @@ namespace tloc {
   template <typename T>
   TL_FI bool Math<T>::IsNaN(const T& aValue)
   {
-    return aValue != aValue;
+    return aValue != aValue; //-V501
   }
 
   template <typename T>

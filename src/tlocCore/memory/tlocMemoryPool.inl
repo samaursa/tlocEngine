@@ -27,13 +27,12 @@ namespace tloc { namespace core {
   TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::value_type  
+  MEMORY_POOL_INDEX_TYPE::wrapper_type  
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::npos;
 
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndex()
-    : m_availElements(0)
-    , m_availIndex(-2)
+    : m_numAvail(-1)
   {
   }
 
@@ -46,6 +45,8 @@ namespace tloc { namespace core {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Initialize(size_type a_maxElements)
   {
+    TLOC_ASSERT_MEMORY_POOL_INDEX(a_maxElements > 0, "Invalid # of elements!");
+
     m_allElements.resize(a_maxElements);
     size_type currentIndex = 0;
     for (iterator itr = m_allElements.begin(), itrEnd = m_allElements.end();
@@ -53,11 +54,10 @@ namespace tloc { namespace core {
     {
       DoNewElement(itr, policy_allocation_type());
       DoSetIndex(*itr, currentIndex, policy_allocation_type());
-      m_availElements.push_back(currentIndex);
       ++currentIndex;
     }
 
-    m_availIndex = a_maxElements - 1;
+    m_numAvail = a_maxElements;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -66,16 +66,16 @@ namespace tloc { namespace core {
   {
     TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
 
-    tl_int availIndex = m_availIndex--;
-
-    if (m_availIndex < 0)
+    TLOC_ASSERT_MEMORY_POOL_INDEX(m_numAvail >= 0, "Serious logical error!");
+    if (m_numAvail == 0)
     {
-      ++m_availIndex;
       return MEMORY_POOL_INDEX_TYPE::npos;
     }
 
     // TODO: Store the element as used (as per the policy)
-    return m_allElements[m_availElements[m_availIndex] ];
+    const size_type index = DoGetAvailIndex();
+    m_numAvail--;
+    return m_allElements[ index ];
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -84,32 +84,58 @@ namespace tloc { namespace core {
   {
     TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
 
-    tl_int availIndex = ++m_availIndex;
-
-    if (availIndex >= (tl_int)m_allElements.size())
+    if (m_numAvail >= (tl_int)m_allElements.size())
     {
-      --m_availIndex;
       TLOC_ASSERT_MEMORY_POOL_INDEX(false, 
         "Trying to recycle more elements than we have!");
       return;
     }
 
     // TODO: Store the element as used (as per the policy)
-    m_availElements[m_availIndex] = a_retElem
+
+    // Swap the recycled element with the last element in our array. We swap
+    // to ensure wrapper index remains consistent
+    const size_type lastUsedElem = DoGetAvailIndex() - 1;
+    m_allElements[a_retElem.m_index].DoSwap(m_allElements[lastUsedElem]);
+    m_numAvail++;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Recycle(tl_int a_index)
+  {
+    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (tl_int)m_allElements.size(),
+                                  "Index out of bounds!");
+    Recycle(m_allElements[a_index]);
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::RecycleAll()
+  {
+    for (tl_int i = 0; i < m_numAvail; ++i)
+    {
+      Recycle(m_allElements[i]);
+    }
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::size_type 
-    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetTotal() const
   {
     return m_allElements.size();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::size_type 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
+  {
+    return m_numAvail;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::size_type 
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
   {
-    return m_allElements.size() - (m_availIndex + 1);
+    return m_allElements.size() - (m_numAvail);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -140,6 +166,13 @@ namespace tloc { namespace core {
     return m_allElements.end();
   }
 
+  template <MEMORY_POOL_INDEX_TEMP>
+  bool MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    IsInvalid(const wrapper_type& a_element) const
+  {
+    return &a_element == &npos;
+  }
+
   //------------------------------------------------------------------------
   // Helper functions
 
@@ -148,7 +181,13 @@ namespace tloc { namespace core {
   {
     // TODO: Change this function to use a conditional bool type to determine
     // initialization
-    return m_availIndex == -2;
+    return !(m_numAvail == -1);
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  tl_int  MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
+  {
+    return m_allElements.size() - m_numAvail;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>

@@ -96,7 +96,8 @@ namespace tloc { namespace core {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    m_allElements[a_retElem.m_index].DoSwap(m_allElements[lastUsedElem]);
+    wrapper_type& toSwap = this->operator[](a_retElem.m_index);
+    toSwap.DoSwap(m_allElements[lastUsedElem]);
     m_numAvail++;
   }
 
@@ -115,6 +116,26 @@ namespace tloc { namespace core {
     {
       Recycle(m_allElements[i]);
     }
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index)
+  {
+    TLOC_ASSERT_MEMORY_POOL_INDEX((size_type)a_index < GetTotal() - GetAvail(),
+      "Index trying to access unavailable element!");
+
+    return m_allElements[a_index];
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  const MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index) const
+  {
+    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < GetTotal() - GetAvail(),
+      "Index trying to access unavailable element!");
+
+    return m_allElements[a_index];
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -156,21 +177,21 @@ namespace tloc { namespace core {
   MEMORY_POOL_INDEX_TYPE::iterator 
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::end() 
   {
-    return m_allElements.end();
+    return m_allElements.end() - GetAvail();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::const_iterator
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::end() const
   {
-    return m_allElements.end();
+    return m_allElements.end() - GetAvail();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   bool MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    IsInvalid(const wrapper_type& a_element) const
+    IsValid(const wrapper_type& a_element) const
   {
-    return &a_element == &npos;
+    return &a_element != &npos;
   }
 
   //------------------------------------------------------------------------

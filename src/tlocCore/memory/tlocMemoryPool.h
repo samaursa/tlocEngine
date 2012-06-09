@@ -64,6 +64,12 @@ namespace tloc { namespace core {
       value_type& GetElement() { return m_element; }
       size_type   GetIndex() { return m_index; }
 
+      bool operator ==(this_type& a_rhs)
+      {
+        return (m_element == a_rhs.m_element) &&
+               (m_index == a_rhs.m_index);
+      }
+
     private:
 
       type() {}
@@ -76,7 +82,7 @@ namespace tloc { namespace core {
       void DoSwap(this_type& a_rhs)
       {
         tlSwap(m_element, a_rhs.m_element);
-        tlSwap(m_index, a_rhs.m_index);
+        // The indexes are permanent, we don't swap those
       }
 
       value_type  m_element;
@@ -117,9 +123,9 @@ namespace tloc { namespace core {
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
     typedef tl_size                                     size_type;
-    typedef Loki::Select
+    typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       value_type, value_type*>                         selected_type;
+       value_type, value_type*>::Result                 selected_type;
     typedef MemoryPoolIndex<value_type,
                             policy_allocation_type,
                             policy_used_elements_type>  this_type;
@@ -139,23 +145,76 @@ namespace tloc { namespace core {
 
     void Initialize(size_type a_maxElements);
 
-    // Returns MemoryPoolIndex<>::npos on failure
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the next available element. Returns ::npos if no more avail
+    /// elements.
+    ///
+    /// @return The next.
+    ///-------------------------------------------------------------------------
     wrapper_type& GetNext();
+
+    ///-------------------------------------------------------------------------
+    /// @brief Recycles an element. Invalidates element indexes.
+    ///
+    /// @param  a_returnedElement The returned element.
+    ///-------------------------------------------------------------------------
     void          Recycle(const wrapper_type& a_returnedElement);
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Recycles an element at a particular index. Index must be smaller
+    /// than # of used elements.
+    ///
+    /// @param  a_index Zero-based index of a.
+    ///-------------------------------------------------------------------------
     void          Recycle(tl_int a_index);
+
+    ///-------------------------------------------------------------------------
+    /// @brief Recycle all elements
+    ///-------------------------------------------------------------------------
     void          RecycleAll();
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets an element at a particular index (must be smaller than # of
+    /// used elements.
+    ///
+    /// @param  a_index Zero-based index of a.
+    ///
+    /// @return The indexed value.
+    ///-------------------------------------------------------------------------
+    wrapper_type& operator[](tl_int a_index);
+    const wrapper_type& operator[](tl_int a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;
     size_type   GetUsed() const;
 
-    // Get iterator to the elements in use
+    ///-------------------------------------------------------------------------
+    /// @brief Gets the first used element iff begin() != end()
+    ///
+    /// @return iterator to the elements
+    ///-------------------------------------------------------------------------
     iterator        begin();
     const_iterator  begin() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Gets the iterator to the last used element + 1
+    ///
+    /// @return iterator to past-the-end of used elements
+    ///-------------------------------------------------------------------------
     iterator        end();
     const_iterator  end() const;
 
-    bool            IsInvalid(const wrapper_type& a_element) const;
+    ///-------------------------------------------------------------------------
+    /// @brief Query if 'a_element' is valid.
+    ///
+    /// @param  a_element The element.
+    ///
+    /// @return true if valid, false if not.
+    ///-------------------------------------------------------------------------
+    bool            IsValid(const wrapper_type& a_element) const;
 
   protected:
 

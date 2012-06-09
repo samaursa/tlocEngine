@@ -163,12 +163,12 @@ namespace tloc { namespace math {
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI this_type   operator+ (const this_type& a_vector);
-    TL_FI this_type   operator- (const this_type& a_vector);
-    TL_FI this_type   operator* (const_reference a_value);
-    TL_FI this_type   operator* (const this_type& a_vector);
-    TL_FI this_type   operator/ (const value_type& a_value);
-    TL_FI this_type   operator/ (const this_type& a_vector);
+    TL_FI this_type   operator+ (const this_type& a_vector) const;
+    TL_FI this_type   operator- (const this_type& a_vector) const;
+    TL_FI this_type   operator* (const_reference a_value) const;
+    TL_FI this_type   operator* (const this_type& a_vector) const;
+    TL_FI this_type   operator/ (const value_type& a_value) const;
+    TL_FI this_type   operator/ (const this_type& a_vector) const;
 
     TL_FI this_type&  operator+= (const this_type& a_vector);
     TL_FI this_type&  operator-= (const this_type& a_vector);

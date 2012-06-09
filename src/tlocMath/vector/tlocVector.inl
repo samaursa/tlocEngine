@@ -363,7 +363,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -376,7 +376,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -389,7 +389,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator* (const_reference a_value)
+    Vector<VECTOR_PARAMS>::operator* (const_reference a_value) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -402,7 +402,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -415,7 +415,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator/ (const_reference a_value)
+    Vector<VECTOR_PARAMS>::operator/ (const_reference a_value) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -428,7 +428,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;

@@ -17,6 +17,20 @@ namespace tloc { namespace math {
 #define MATRIX_PARAMS T, T_Size
 
   //////////////////////////////////////////////////////////////////////////
+  // Assertion Macros
+
+  // If TLOC_MATRIX_ALLOW_EASY_OPERATIONS is defined, easy math operations such
+  // as +,-,/,* will be available, otherwise, explicit functions must be
+  // called. This can be selectively turned on/off for different files
+  // depending on performance requirements. 
+#ifdef TLOC_MATRIX_ALLOW_EASY_OPERATIONS
+#define TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS
+#else
+#define TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS \
+  TLOC_STATIC_ASSERT(false, Operator_operations_unavailable_Use_explicit_functions)
+#endif 
+
+  //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
 #define ITERATE_MATRIX      for (tl_size i = 0; i < k_MatrixSize; ++i)
@@ -213,6 +227,103 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Operators
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type
+    Matrix<MATRIX_PARAMS>::operator+ (const this_type& a_matrix) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnMat;
+    returnMat = (*this);
+
+    returnMat.Add(a_matrix);
+
+    return returnMat;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type
+    Matrix<MATRIX_PARAMS>::operator- (const this_type& a_matrix) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnMat;
+    returnMat = (*this);
+
+    returnMat.Sub(a_matrix);
+
+    return returnMat;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type
+    Matrix<MATRIX_PARAMS>::operator* (const this_type& a_matrix) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnMat;
+    returnMat = (*this);
+
+    returnMat.Mul(a_matrix);
+
+    return returnMat;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI Vector<typename Matrix<MATRIX_PARAMS>::value_type, T_Size> 
+    Matrix<MATRIX_PARAMS>
+    ::operator* (const Vector<value_type, T_Size> a_vector) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    Vector<value_type, T_Size> returnVec;
+
+    Mul(a_vector, returnVec);
+
+    return returnVec;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type
+    Matrix<MATRIX_PARAMS>::operator/ (const this_type& a_matrix) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnMat;
+    returnMat = (*this);
+
+    returnMat.Div(a_matrix);
+
+    return returnMat;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
+    Matrix<MATRIX_PARAMS>::operator+= (const this_type& a_matrix)
+  {
+    Add(a_matrix);
+    return *this;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
+    Matrix<MATRIX_PARAMS>::operator-= (const this_type& a_matrix)
+  {
+    Sub(a_matrix);
+    return *this;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
+    Matrix<MATRIX_PARAMS>::operator*= (const this_type& a_matrix)
+  {
+    Mul(a_matrix);
+    return *this;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
+    Matrix<MATRIX_PARAMS>::operator/= (const this_type& a_matrix)
+  {
+    Div(a_matrix);
+    return *this;
+  }
 
   template <MATRIX_TYPES>
   TL_FI bool Matrix<MATRIX_PARAMS>::operator==( const this_type& aMatrix )

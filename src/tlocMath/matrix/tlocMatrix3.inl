@@ -13,43 +13,52 @@ namespace tloc { namespace math {
   //////////////////////////////////////////////////////////////////////////
   // Matrix3f<T>
 
+  //////////////////////////////////////////////////////////////////////////
+  // Template Macros
+
+#define MATRIX_3_TYPES typename T
+#define MATRIX_3_PARAMS T
+
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3()
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3()
     : base_type() {}
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const Matrix3<T>& aMatrix)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(const this_type& aMatrix)
     : base_type(aMatrix) {}
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(T m00, T m01, T m02,
-                            T m10, T m11, T m12,
-                            T m20, T m21, T m22)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>
+    ::Matrix3(value_type m00, value_type m01, value_type m02,
+              value_type m10, value_type m11, value_type m12,
+              value_type m20, value_type m21, value_type m22)
   {
     m_values[0] = m00; m_values[3] = m01; m_values[6] = m02;
     m_values[1] = m10; m_values[4] = m11; m_values[7] = m12;
     m_values[2] = m20; m_values[5] = m21; m_values[8] = m22;
   }
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(T m00, T m11, T m22)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(value_type m00, 
+                                          value_type m11, 
+                                          value_type m22)
   {
-    T diag[3] = {m00, m11, m22};
+    value_type diag[3] = {m00, m11, m22};
     this->MakeDiagonal(diag);
   }
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T& aValue)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(const_reference aValue)
     : base_type(aValue) {}
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const Vector<T, 3>& aVec1,
-                            const Vector<T, 3>& aVec2,
-                            const Vector<T, 3>& aVec3,
-                            typename base_type::matrix_order aOrder)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(const Vector<value_type, 3>& aVec1,
+                                          const Vector<value_type, 3>& aVec2,
+                                          const Vector<value_type, 3>& aVec3,
+                                          typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
     {
@@ -65,26 +74,27 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T>
-  TL_FI Matrix3<T>::Matrix3(const T (&values)[k_MatrixSize], 
-                            typename base_type::matrix_order aOrder)
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(const value_type (&values)[k_MatrixSize], 
+                                          typename base_type::matrix_order aOrder)
     : base_type(values, aOrder) {}
 
   //------------------------------------------------------------------------
   // Math Operations
 
-  template <typename T>
-  TL_FI Matrix3<T>& Matrix3<T>::Mul(const Matrix3<T>& aMatrix)
+  template <MATRIX_3_TYPES>
+  TL_FI typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::Mul(const this_type& aMatrix)
   {
-    Matrix3<T> temp(*this);
+    this_type temp(*this);
     Mul(temp, aMatrix);
 
     return *this;
   }
 
-  template <typename T>
-  TL_FI void Matrix3<T>::Mul(const Matrix3<T>& aMatrix1,
-                             const Matrix3<T>& aMatrix2)
+  template <MATRIX_3_TYPES>
+  TL_FI void Matrix3<MATRIX_3_PARAMS>::Mul(const this_type& aMatrix1,
+                                           const this_type& aMatrix2)
   {
     m_values[0] = aMatrix1[0] * aMatrix2[0] +
                   aMatrix1[3] * aMatrix2[1] +
@@ -115,9 +125,9 @@ namespace tloc { namespace math {
                   aMatrix1[8] * aMatrix2[8];
   }
 
-  template <typename T>
-  TL_FI void Matrix3<T>::Mul(const Vector<T, 3>& aVectorIn,
-    Vector<T, 3>& aVectorOut)
+  template <MATRIX_3_TYPES>
+  TL_FI void Matrix3<MATRIX_3_PARAMS>::Mul(const Vector<value_type, 3>& aVectorIn,
+                                           Vector<value_type, 3>& aVectorOut)
   {
     aVectorOut[0] = m_values[0] * aVectorIn[0] +
                     m_values[3] * aVectorIn[1] +
@@ -130,33 +140,34 @@ namespace tloc { namespace math {
                     m_values[8] * aVectorIn[2];
   }
 
-  template <typename T>
-  TL_I T Matrix3<T>::Determinant() const
+  template <MATRIX_3_TYPES>
+  TL_I typename Matrix3<MATRIX_3_PARAMS>::value_type 
+    Matrix3<MATRIX_3_PARAMS>::Determinant() const
   {
-    T m11_12_21_22 = (m_values[4] * m_values[8] - m_values[7] * m_values[5])
-                      * m_values[0];
-    T m10_12_20_22 = (m_values[1] * m_values[8] - m_values[7] * m_values[2])
-                      * m_values[3];
-    T m10_11_20_21 = (m_values[1] * m_values[5] - m_values[4] * m_values[2])
-                      * m_values[6];
+    value_type m11_12_21_22 = 
+      (m_values[4] * m_values[8] - m_values[7] * m_values[5]) * m_values[0];
+    value_type m10_12_20_22 = 
+      (m_values[1] * m_values[8] - m_values[7] * m_values[2]) * m_values[3];
+    value_type m10_11_20_21 = 
+      (m_values[1] * m_values[5] - m_values[4] * m_values[2]) * m_values[6];
 
     return m11_12_21_22 - m10_12_20_22 + m10_11_20_21;
   }
 
-  template <typename T>
-  TL_I bool Matrix3<T>::Inverse()
+  template <MATRIX_3_TYPES>
+  TL_I bool Matrix3<MATRIX_3_PARAMS>::Inverse()
   {
-    Matrix3<T> temp(*this);
+    this_type temp(*this);
     return Inverse(temp);
   }
 
-  template <typename T>
-  TL_I bool Matrix3<T>::Inverse(const Matrix3<T>& aMatrix)
+  template <MATRIX_3_TYPES>
+  TL_I bool Matrix3<MATRIX_3_PARAMS>::Inverse(const this_type& aMatrix)
   {
-    T detInv = aMatrix.Determinant();
-    if (Math<T>::Approx(detInv, (T)0)) { return false; }
+    value_type detInv = aMatrix.Determinant();
+    if (Math<value_type>::Approx(detInv, (value_type)0)) { return false; }
 
-    detInv = ((T)1) / detInv;
+    detInv = ((value_type)1) / detInv;
 
     Adjoint(aMatrix);
     base_type::Mul(detInv);
@@ -164,17 +175,18 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <typename T>
-  TL_I Matrix3<T>& Matrix3<T>::Adjoint()
+  template <MATRIX_3_TYPES>
+  TL_I typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::Adjoint()
   {
-    Matrix3<T> temp(*this);
+    this_type temp(*this);
     Adjoint(temp);
 
     return *this;
   }
 
-  template <typename T>
-  TL_I void Matrix3<T>::Adjoint(const Matrix3<T>& aMatrix)
+  template <MATRIX_3_TYPES>
+  TL_I void Matrix3<MATRIX_3_PARAMS>::Adjoint(const this_type& aMatrix)
   {
     // Matrix adjoint which is the matrix of minors turned into matrix of
     // co-factors which is then transposed
@@ -190,8 +202,9 @@ namespace tloc { namespace math {
   }
 
   // Taken directly from WildMagic5 (modified to suit out needs)
-  template <typename T>
-  TL_FI Matrix3<T>& Matrix3<T>::Orthonormalize()
+  template <MATRIX_3_TYPES>
+  TL_FI typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::Orthonormalize()
   {
     // Copied from WildMagic5
 
@@ -206,35 +219,36 @@ namespace tloc { namespace math {
     // product of vectors A and B.
 
     // Compute q0.
-    T invLength = Math<T>::InvSqrt(m_values[0] * m_values[0] +
-                                   m_values[1] * m_values[1] +
-                                   m_values[2] * m_values[2]);
+    value_type invLength = 
+      Math<value_type>::InvSqrt(m_values[0] * m_values[0] +
+                                m_values[1] * m_values[1] +
+                                m_values[2] * m_values[2]);
 
     m_values[0] *= invLength;
     m_values[1] *= invLength;
     m_values[2] *= invLength;
 
     // Compute q1.
-    T dot0 = m_values[0] * m_values[3] +
-             m_values[1] * m_values[4] +
-             m_values[2] * m_values[5];
+    value_type dot0 = m_values[0] * m_values[3] +
+                      m_values[1] * m_values[4] +
+                      m_values[2] * m_values[5];
 
     m_values[3] -= dot0 * m_values[0];
     m_values[4] -= dot0 * m_values[1];
     m_values[5] -= dot0 * m_values[2];
 
-    invLength = Math<T>::InvSqrt(m_values[3] * m_values[3] +
-                                 m_values[4] * m_values[4] +
-                                 m_values[5] * m_values[5]);
+    invLength = Math<value_type>::InvSqrt(m_values[3] * m_values[3] +
+                                          m_values[4] * m_values[4] +
+                                          m_values[5] * m_values[5]);
 
     m_values[3] *= invLength;
     m_values[4] *= invLength;
     m_values[5] *= invLength;
 
     // compute q2
-    T dot1 = m_values[3] * m_values[6] +
-             m_values[4] * m_values[7] +
-             m_values[5] * m_values[8];
+    value_type dot1 = m_values[3] * m_values[6] +
+                      m_values[4] * m_values[7] +
+                      m_values[5] * m_values[8];
 
     dot0 = m_values[0] * m_values[6] +
            m_values[1] * m_values[7] +
@@ -244,9 +258,9 @@ namespace tloc { namespace math {
     m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
-    invLength = Math<T>::InvSqrt(m_values[6] * m_values[6] +
-                                 m_values[7] * m_values[7] +
-                                 m_values[8] * m_values[8]);
+    invLength = Math<value_type>::InvSqrt(m_values[6] * m_values[6] +
+                                          m_values[7] * m_values[7] +
+                                          m_values[8] * m_values[8]);
 
     m_values[6] *= invLength;
     m_values[7] *= invLength;
@@ -255,15 +269,16 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T>
-  TL_FI void Matrix3<T>::Orthonormalize( const Matrix3<T>& aMatrix )
+  template <MATRIX_3_TYPES>
+  TL_FI void Matrix3<MATRIX_3_PARAMS>::Orthonormalize( const this_type& aMatrix )
   {
     *this = aMatrix;
     Orthonormalize();
   }
 
-  template <typename T>
-  TL_FI Matrix3<T>& Matrix3<T>::FastOrthonormalize()
+  template <MATRIX_3_TYPES>
+  TL_FI typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::FastOrthonormalize()
   {
     // Copied from WildMagic5
 
@@ -278,35 +293,36 @@ namespace tloc { namespace math {
     // product of vectors A and B.
 
     // Compute q0.
-    T invLength = Math<T>::FastInvSqrt(m_values[0] * m_values[0] +
-                                       m_values[1] * m_values[1] +
-                                       m_values[2] * m_values[2]);
+    value_type invLength = 
+      Math<value_type>::FastInvSqrt(m_values[0] * m_values[0] +
+                                    m_values[1] * m_values[1] +
+                                    m_values[2] * m_values[2]);
 
     m_values[0] *= invLength;
     m_values[1] *= invLength;
     m_values[2] *= invLength;
 
     // Compute q1.
-    T dot0 = m_values[0] * m_values[3] +
-             m_values[1] * m_values[4] +
-             m_values[2] * m_values[5];
+    value_type dot0 = m_values[0] * m_values[3] +
+                      m_values[1] * m_values[4] +
+                      m_values[2] * m_values[5];
 
     m_values[3] -= dot0 * m_values[0];
     m_values[4] -= dot0 * m_values[1];
     m_values[5] -= dot0 * m_values[2];
 
-    invLength = Math<T>::FastInvSqrt(m_values[3] * m_values[3] +
-                                     m_values[4] * m_values[4] +
-                                     m_values[5] * m_values[5]);
+    invLength = Math<value_type>::FastInvSqrt(m_values[3] * m_values[3] +
+                                              m_values[4] * m_values[4] +
+                                              m_values[5] * m_values[5]);
 
     m_values[3] *= invLength;
     m_values[4] *= invLength;
     m_values[5] *= invLength;
 
     // compute q2
-    T dot1 = m_values[3] * m_values[6] +
-             m_values[4] * m_values[7] +
-             m_values[5] * m_values[8];
+    value_type dot1 = m_values[3] * m_values[6] +
+                      m_values[4] * m_values[7] +
+                      m_values[5] * m_values[8];
 
     dot0 = m_values[0] * m_values[6] +
            m_values[1] * m_values[7] +
@@ -316,9 +332,9 @@ namespace tloc { namespace math {
     m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
-    invLength = Math<T>::FastInvSqrt(m_values[6] * m_values[6] +
-                                     m_values[7] * m_values[7] +
-                                     m_values[8] * m_values[8]);
+    invLength = Math<value_type>::FastInvSqrt(m_values[6] * m_values[6] +
+                                              m_values[7] * m_values[7] +
+                                              m_values[8] * m_values[8]);
 
     m_values[6] *= invLength;
     m_values[7] *= invLength;
@@ -327,19 +343,21 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T>
-  TL_FI void Matrix3<T>::FastOrthonormalize( const Matrix3<T>& aMatrix )
+  template <MATRIX_3_TYPES>
+  TL_FI void 
+    Matrix3<MATRIX_3_PARAMS>::FastOrthonormalize( const this_type& aMatrix )
   {
     *this = aMatrix;
     FastOrthonormalize();
   }
 
-  template <typename T>
-  void Matrix3<T>::EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::
+    EigenDecomposition(this_type& aRot, this_type& aDiag) const
   {
     // Factor M = R*D*R^T.  The columns of R are the eigenvectors.  The
     // diagonal entries of D are the corresponding eigenvalues.
-    T diagonal[3], subdiagonal[2];
+    value_type diagonal[3], subdiagonal[2];
     aRot = *this;
     bool reflection = aRot.Tridiagonalize(diagonal, subdiagonal);
     bool converged = aRot.QLAlgorithm(diagonal, subdiagonal);
@@ -349,7 +367,7 @@ namespace tloc { namespace math {
     // Sort the eigenvalues in increasing order, d0 <= d1 <= d2.  This is an
     // insertion sort.
     int i;
-    T save;
+    value_type save;
 
     if (diagonal[1] < diagonal[0])
     {
@@ -415,59 +433,64 @@ namespace tloc { namespace math {
     }
   }
 
-  template <typename T>
-  TL_I Matrix3<T>& Matrix3<T>::MakeRotationX( const T& aXAngle )
+  template <MATRIX_3_TYPES>
+  TL_I typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::MakeRotationX( const_reference aXAngle )
   {
-    T cosine, sine;
+    value_type cosine, sine;
 
-    cosine = Math<T>::Cos(aXAngle);
-    sine = Math<T>::Sin(aXAngle);
+    cosine = Math<value_type>::Cos(aXAngle);
+    sine = Math<value_type>::Sin(aXAngle);
 
-    T values[9] = { (T)1,   (T)0,  (T)0,
-                    (T)0, cosine, -sine,
-                    (T)0,   sine, cosine };
+    value_type values[9] = { (value_type)1,  (value_type)0,  (value_type)0,
+                             (value_type)0,         cosine,          -sine,
+                             (value_type)0,           sine,         cosine };
 
     this->Set(values, base_type::k_RowMajor);
     return *this;
   }
 
-  template <typename T>
-  TL_I Matrix3<T>& Matrix3<T>::MakeRotationY( const T& aYAngle )
+  template <MATRIX_3_TYPES>
+  TL_I typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::MakeRotationY( const_reference aYAngle )
   {
-    T cosine, sine;
+    value_type cosine, sine;
 
-    cosine = Math<T>::Cos(aYAngle);
-    sine = Math<T>::Sin(aYAngle);
+    cosine = Math<value_type>::Cos(aYAngle);
+    sine = Math<value_type>::Sin(aYAngle);
 
-    T values[9] = {cosine, (T)0,  sine,
-                     (T)0, (T)1,  (T)0,
-                    -sine, (T)0, cosine};
+    value_type values[9] = {        cosine,  (value_type)0,           sine,
+                             (value_type)0,  (value_type)1,  (value_type)0,
+                                     -sine,  (value_type)0,         cosine};
 
     this->Set(values, base_type::k_RowMajor);
     return *this;
   }
 
-  template <typename T>
-  TL_I Matrix3<T>& Matrix3<T>::MakeRotationZ( const T& aZAngle )
+  template <MATRIX_3_TYPES>
+  TL_I typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+    Matrix3<MATRIX_3_PARAMS>::MakeRotationZ( const_reference aZAngle )
   {
-    T cosine, sine;
+    value_type cosine, sine;
 
-    cosine = Math<T>::Cos(aZAngle);
-    sine = Math<T>::Sin(aZAngle);
+    cosine = Math<value_type>::Cos(aZAngle);
+    sine = Math<value_type>::Sin(aZAngle);
 
-    T values[9] = {cosine,  -sine, (T)0,
-                     sine, cosine, (T)0,
-                     (T)0,   (T)0, (T)1 };
+    value_type values[9] = {        cosine,          -sine,  (value_type)0,
+                                      sine,         cosine,  (value_type)0,
+                             (value_type)0,  (value_type)0,  (value_type)1 };
 
     this->Set(values, base_type::k_RowMajor);
     return *this;
 
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerXYZ( T aXAngle, T aYAngle, T aZAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerXYZ( value_type aXAngle, 
+                                               value_type aYAngle, 
+                                               value_type aZAngle )
   {
-    Matrix3<T> matY, matZ;
+    this_type matY, matZ;
 
     MakeRotationX(aXAngle);
     matY.MakeRotationY(aYAngle);
@@ -476,10 +499,12 @@ namespace tloc { namespace math {
     Mul(matY.Mul(matZ));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerXZY( T aXAngle, T aZAngle, T aYAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerXZY( value_type aXAngle, 
+                                               value_type aZAngle, 
+                                               value_type aYAngle )
   {
-    Matrix3<T> matY, matZ;
+    this_type matY, matZ;
 
     MakeRotationX(aXAngle);
     matY.MakeRotationY(aYAngle);
@@ -488,10 +513,12 @@ namespace tloc { namespace math {
     Mul(matZ.Mul(matY));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerYXZ( T aYAngle, T aXAngle, T aZAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerYXZ( value_type aYAngle, 
+                                               value_type aXAngle, 
+                                               value_type aZAngle )
   {
-    Matrix3<T> matX, matZ;
+    this_type matX, matZ;
 
     MakeRotationY(aYAngle);
     matX.MakeRotationX(aXAngle);
@@ -500,10 +527,12 @@ namespace tloc { namespace math {
     Mul(matX.Mul(matZ));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerYZX( T aYAngle, T aZAngle, T aXAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerYZX( value_type aYAngle, 
+                                               value_type aZAngle, 
+                                               value_type aXAngle )
   {
-    Matrix3<T> matX, matZ;
+    this_type matX, matZ;
 
     MakeRotationY(aYAngle);
     matX.MakeRotationX(aXAngle);
@@ -512,10 +541,12 @@ namespace tloc { namespace math {
     Mul(matZ.Mul(matX));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerZXY( T aZAngle, T aXAngle, T aYAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerZXY( value_type aZAngle, 
+                                               value_type aXAngle, 
+                                               value_type aYAngle )
   {
-    Matrix3<T> matX, matY;
+    this_type matX, matY;
 
     MakeRotationZ(aZAngle);
     matX.MakeRotationX(aXAngle);
@@ -524,10 +555,12 @@ namespace tloc { namespace math {
     Mul(matX.Mul(matY));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerZYX( T aZAngle, T aYAngle, T aXAngle )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerZYX( value_type aZAngle, 
+                                               value_type aYAngle, 
+                                               value_type aXAngle )
   {
-    Matrix3<T> matX, matY;
+    this_type matX, matY;
 
     MakeRotationZ(aZAngle);
     matX.MakeRotationX(aXAngle);
@@ -536,10 +569,12 @@ namespace tloc { namespace math {
     Mul(matY.Mul(matX));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerXYX( T aXAngle0, T aYAngle, T aXAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerXYX( value_type aXAngle0, 
+                                               value_type aYAngle, 
+                                               value_type aXAngle1 )
   {
-    Matrix3<T> matX, matY;
+    this_type matX, matY;
 
     MakeRotationX(aXAngle0);
     matX.MakeRotationX(aXAngle1);
@@ -548,10 +583,12 @@ namespace tloc { namespace math {
     Mul(matY.Mul(matX));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerXZX( T aXAngle0, T aZAngle, T aXAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerXZX( value_type aXAngle0, 
+                                               value_type aZAngle, 
+                                               value_type aXAngle1 )
   {
-    Matrix3<T> matX, matZ;
+    this_type matX, matZ;
 
     MakeRotationX(aXAngle0);
     matX.MakeRotationX(aXAngle1);
@@ -560,10 +597,12 @@ namespace tloc { namespace math {
     Mul(matZ.Mul(matX));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerYXY( T aYAngle0, T aXAngle, T aYAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerYXY( value_type aYAngle0, 
+                                               value_type aXAngle, 
+                                               value_type aYAngle1 )
   {
-    Matrix3<T> matX, matY;
+    this_type matX, matY;
 
     MakeRotationY(aYAngle0);
     matX.MakeRotationX(aXAngle);
@@ -572,10 +611,12 @@ namespace tloc { namespace math {
     Mul(matX.Mul(matY));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerYZY( T aYAngle0, T aZAngle, T aYAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerYZY( value_type aYAngle0, 
+                                               value_type aZAngle, 
+                                               value_type aYAngle1 )
   {
-    Matrix3<T> matY, matZ;
+    this_type matY, matZ;
 
     MakeRotationY(aYAngle0);
     matZ.MakeRotationZ(aZAngle);
@@ -584,10 +625,12 @@ namespace tloc { namespace math {
     Mul(matZ.Mul(matY));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerZXZ( T aZAngle0, T aXAngle, T aZAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerZXZ( value_type aZAngle0, 
+                                               value_type aXAngle, 
+                                               value_type aZAngle1 )
   {
-    Matrix3<T> matZ, matX;
+    this_type matZ, matX;
 
     MakeRotationZ(aZAngle0);
     matX.MakeRotationX(aXAngle);
@@ -596,10 +639,12 @@ namespace tloc { namespace math {
     Mul(matX.Mul(matZ));
   }
 
-  template <typename T>
-  void Matrix3<T>::MakeEulerZYZ( T aZAngle0, T aYAngle, T aZAngle1 )
+  template <MATRIX_3_TYPES>
+  void Matrix3<MATRIX_3_PARAMS>::MakeEulerZYZ( value_type aZAngle0, 
+                                               value_type aYAngle, 
+                                               value_type aZAngle1 )
   {
-    Matrix3<T> matZ, matY;
+    this_type matZ, matY;
 
     MakeRotationZ(aZAngle0);
     matY.MakeRotationY(aYAngle);
@@ -611,8 +656,9 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Helper functions
 
-  template <typename T>
-  bool Matrix3<T>::Tridiagonalize( T aDiagonal[3], T aSubdiagonal[2] )
+  template <MATRIX_3_TYPES>
+  bool Matrix3<MATRIX_3_PARAMS>
+    ::Tridiagonalize( value_type aDiagonal[3], value_type aSubdiagonal[2] )
   {
     // Householder reduction T = Q^t M Q
     //   Input:
@@ -622,32 +668,32 @@ namespace tloc { namespace math {
     //     diag, diagonal entries of T
     //     subd, subdiagonal entries of T (T is symmetric)
 
-    T m00 = m_values[0];
-    T m01 = m_values[1];
-    T m02 = m_values[2];
-    T m11 = m_values[4];
-    T m12 = m_values[5];
-    T m22 = m_values[8];
+    value_type m00 = m_values[0];
+    value_type m01 = m_values[1];
+    value_type m02 = m_values[2];
+    value_type m11 = m_values[4];
+    value_type m12 = m_values[5];
+    value_type m22 = m_values[8];
 
     aDiagonal[0] = m00;
-    if (Math<T>::FAbs(m02) >= Math<T>::ZERO_TOLERANCE)
+    if (Math<value_type>::FAbs(m02) >= Math<value_type>::ZERO_TOLERANCE)
     {
-      aSubdiagonal[0] = Math<T>::Sqrt(m01*m01 + m02*m02);
-      T invLength = ((T)1)/aSubdiagonal[0];
+      aSubdiagonal[0] = Math<value_type>::Sqrt(m01*m01 + m02*m02);
+      value_type invLength = ((value_type)1)/aSubdiagonal[0];
       m01 *= invLength;
       m02 *= invLength;
-      T tmp = ((T)2)*m01*m12 + m02*(m22 - m11);
+      value_type tmp = ((value_type)2)*m01*m12 + m02*(m22 - m11);
       aDiagonal[1] = m11 + m02*tmp;
       aDiagonal[2] = m22 - m02*tmp;
       aSubdiagonal[1] = m12 - m01*tmp;
 
-      m_values[0] = (T)1;
-      m_values[1] = (T)0;
-      m_values[2] = (T)0;
-      m_values[3] = (T)0;
+      m_values[0] = (value_type)1;
+      m_values[1] = (value_type)0;
+      m_values[2] = (value_type)0;
+      m_values[3] = (value_type)0;
       m_values[4] = m01;
       m_values[5] = m02;
-      m_values[6] = (T)0;
+      m_values[6] = (value_type)0;
       m_values[7] = m02;
       m_values[8] = -m01;
       return true;
@@ -659,21 +705,22 @@ namespace tloc { namespace math {
       aSubdiagonal[0] = m01;
       aSubdiagonal[1] = m12;
 
-      m_values[0] = (T)1;
-      m_values[1] = (T)0;
-      m_values[2] = (T)0;
-      m_values[3] = (T)0;
-      m_values[4] = (T)1;
-      m_values[5] = (T)0;
-      m_values[6] = (T)0;
-      m_values[7] = (T)0;
-      m_values[8] = (T)1;
+      m_values[0] = (value_type)1;
+      m_values[1] = (value_type)0;
+      m_values[2] = (value_type)0;
+      m_values[3] = (value_type)0;
+      m_values[4] = (value_type)1;
+      m_values[5] = (value_type)0;
+      m_values[6] = (value_type)0;
+      m_values[7] = (value_type)0;
+      m_values[8] = (value_type)1;
       return false;
     }
   }
 
-  template <typename T>
-  bool Matrix3<T>::QLAlgorithm( T aDiagonal[3], T aSubdiagonal[2] )
+  template <MATRIX_3_TYPES>
+  bool Matrix3<MATRIX_3_PARAMS>
+    ::QLAlgorithm( value_type aDiagonal[3], value_type aSubdiagonal[2] )
   {
     // This is an implementation of the symmetric QR algorithm from the book
     // "Matrix Computations" by Gene H. Golub and Charles F. Van Loan,
@@ -685,11 +732,12 @@ namespace tloc { namespace math {
     const s32 imax = 32;
     for (s32 i = 0; i < imax; ++i)
     {
-      T sum, diff, discr, eigVal0, eigVal1, cs, sn, tmp;
+      value_type sum, diff, discr, eigVal0, eigVal1, cs, sn, tmp;
       s32 row;
 
-      sum = Math<T>::FAbs(aDiagonal[0]) + Math<T>::FAbs(aDiagonal[1]);
-      if (Math<T>::FAbs(aSubdiagonal[0]) + sum == sum)
+      sum = Math<value_type>::FAbs(aDiagonal[0]) + 
+            Math<value_type>::FAbs(aDiagonal[1]);
+      if (Math<value_type>::FAbs(aSubdiagonal[0]) + sum == sum)
       {
         // The matrix is effectively
         //       +-        -+
@@ -699,9 +747,9 @@ namespace tloc { namespace math {
         //       +-        -+
 
         // Test whether M is diagonal (within numerical round-off).
-        sum = Math<T>::FAbs(aDiagonal[1]) +
-          Math<T>::FAbs(aDiagonal[2]);
-        if (Math<T>::FAbs(aSubdiagonal[1]) + sum == sum)
+        sum = Math<value_type>::FAbs(aDiagonal[1]) +
+              Math<value_type>::FAbs(aDiagonal[2]);
+        if (Math<value_type>::FAbs(aSubdiagonal[1]) + sum == sum)
         {
           return true;
         }
@@ -709,13 +757,13 @@ namespace tloc { namespace math {
         // Compute the eigenvalues as roots of a quadratic equation.
         sum = aDiagonal[1] + aDiagonal[2];
         diff = aDiagonal[1] - aDiagonal[2];
-        discr = Math<T>::Sqrt(diff * diff +
-          ((T)4) * aSubdiagonal[1] * aSubdiagonal[1]);
-        eigVal0 = ((T)0.5) * (sum - discr);
-        eigVal1 = ((T)0.5) * (sum + discr);
+        discr = Math<value_type>::Sqrt(diff * diff +
+                ((value_type)4) * aSubdiagonal[1] * aSubdiagonal[1]);
+        eigVal0 = ((value_type)0.5) * (sum - discr);
+        eigVal1 = ((value_type)0.5) * (sum + discr);
 
         // Compute the Givens rotation.
-        if (diff >= (T)0)
+        if (diff >= (value_type)0)
         {
           cs = aSubdiagonal[1];
           sn = aDiagonal[1] - eigVal0;
@@ -725,7 +773,7 @@ namespace tloc { namespace math {
           cs = aDiagonal[2] - eigVal0;
           sn = aSubdiagonal[1];
         }
-        tmp = Math<T>::InvSqrt(cs*cs + sn*sn);
+        tmp = Math<value_type>::InvSqrt(cs*cs + sn*sn);
         cs *= tmp;
         sn *= tmp;
 
@@ -741,13 +789,14 @@ namespace tloc { namespace math {
         // Update the tridiagonal matrix.
         aDiagonal[1] = eigVal0;
         aDiagonal[2] = eigVal1;
-        aSubdiagonal[0] = (T)0;
-        aSubdiagonal[1] = (T)0;
+        aSubdiagonal[0] = (value_type)0;
+        aSubdiagonal[1] = (value_type)0;
         return true;
       }
 
-      sum = Math<T>::FAbs(aDiagonal[1]) + Math<T>::FAbs(aDiagonal[2]);
-      if (Math<T>::FAbs(aSubdiagonal[1]) + sum == sum)
+      sum = Math<value_type>::FAbs(aDiagonal[1]) + 
+            Math<value_type>::FAbs(aDiagonal[2]);
+      if (Math<value_type>::FAbs(aSubdiagonal[1]) + sum == sum)
       {
         // The matrix is effectively
         //       +-         -+
@@ -757,9 +806,9 @@ namespace tloc { namespace math {
         //       +-         -+
 
         // Test whether M is diagonal (within numerical round-off).
-        sum = Math<T>::FAbs(aDiagonal[0]) +
-          Math<T>::FAbs(aDiagonal[1]);
-        if (Math<T>::FAbs(aSubdiagonal[0]) + sum == sum)
+        sum = Math<value_type>::FAbs(aDiagonal[0]) +
+              Math<value_type>::FAbs(aDiagonal[1]);
+        if (Math<value_type>::FAbs(aSubdiagonal[0]) + sum == sum)
         {
           return true;
         }
@@ -767,13 +816,13 @@ namespace tloc { namespace math {
         // Compute the eigenvalues as roots of a quadratic equation.
         sum = aDiagonal[0] + aDiagonal[1];
         diff = aDiagonal[0] - aDiagonal[1];
-        discr = Math<T>::Sqrt(diff*diff +
-                ((T)4.0) * aSubdiagonal[0] * aSubdiagonal[0]);
-        eigVal0 = ((T)0.5)*(sum - discr);
-        eigVal1 = ((T)0.5)*(sum + discr);
+        discr = Math<value_type>::Sqrt(diff*diff +
+                ((value_type)4.0) * aSubdiagonal[0] * aSubdiagonal[0]);
+        eigVal0 = ((value_type)0.5)*(sum - discr);
+        eigVal1 = ((value_type)0.5)*(sum + discr);
 
         // Compute the Givens rotation.
-        if (diff >= (T)0)
+        if (diff >= (value_type)0)
         {
           cs = aSubdiagonal[0];
           sn = aDiagonal[0] - eigVal0;
@@ -783,7 +832,7 @@ namespace tloc { namespace math {
           cs = aDiagonal[1] - eigVal0;
           sn = aSubdiagonal[0];
         }
-        tmp = Math<T>::InvSqrt(cs*cs + sn*sn);
+        tmp = Math<value_type>::InvSqrt(cs*cs + sn*sn);
         cs *= tmp;
         sn *= tmp;
 
@@ -799,8 +848,8 @@ namespace tloc { namespace math {
         // Update the tridiagonal matrix.
         aDiagonal[0] = eigVal0;
         aDiagonal[1] = eigVal1;
-        aSubdiagonal[0] = (T)0;
-        aSubdiagonal[1] = (T)0;
+        aSubdiagonal[0] = (value_type)0;
+        aSubdiagonal[1] = (value_type)0;
         return true;
       }
 
@@ -814,11 +863,12 @@ namespace tloc { namespace math {
       // Set up the parameters for the first pass of the QL step.  The
       // value for A is the difference between diagonal term D[2] and the
       // implicit shift suggested by Wilkinson.
-      T ratio = (aDiagonal[1] - aDiagonal[0])/(((T)2) * aSubdiagonal[0]);
-      T root = Math<T>::Sqrt((T)1 + ratio * ratio);
-      T b = aSubdiagonal[1];
-      T a = aDiagonal[2] - aDiagonal[0];
-      if (ratio >= (T)0)
+      value_type ratio = (aDiagonal[1] - aDiagonal[0])/
+                          (((value_type)2) * aSubdiagonal[0]);
+      value_type root = Math<value_type>::Sqrt((value_type)1 + ratio * ratio);
+      value_type b = aSubdiagonal[1];
+      value_type a = aDiagonal[2] - aDiagonal[0];
+      if (ratio >= (value_type)0)
       {
         a += aSubdiagonal[0]/(ratio + root);
       }
@@ -828,16 +878,16 @@ namespace tloc { namespace math {
       }
 
       // Compute the Givens rotation for the first pass.
-      if (Math<T>::FAbs(b) >= Math<T>::FAbs(a))
+      if (Math<value_type>::FAbs(b) >= Math<value_type>::FAbs(a))
       {
         ratio = a/b;
-        sn = Math<T>::InvSqrt((T)1 + ratio*ratio);
+        sn = Math<value_type>::InvSqrt((value_type)1 + ratio*ratio);
         cs = ratio*sn;
       }
       else
       {
         ratio = b/a;
-        cs = Math<T>::InvSqrt((T)1 + ratio*ratio);
+        cs = Math<value_type>::InvSqrt((value_type)1 + ratio*ratio);
         sn = ratio*cs;
       }
 
@@ -853,29 +903,29 @@ namespace tloc { namespace math {
       // Set up the parameters for the second pass of the QL step.  The
       // values tmp0 and tmp1 are required to fully update the tridiagonal
       // matrix at the end of the second pass.
-      T tmp0 = (aDiagonal[1] - aDiagonal[2])*sn +
-        ((T)2) * aSubdiagonal[1] * cs;
-      T tmp1 = cs * aSubdiagonal[0];
+      value_type tmp0 = (aDiagonal[1] - aDiagonal[2])*sn +
+                        ((value_type)2) * aSubdiagonal[1] * cs;
+      value_type tmp1 = cs * aSubdiagonal[0];
       b = sn * aSubdiagonal[0];
       a = cs*tmp0 - aSubdiagonal[1];
       tmp0 *= sn;
 
       // Compute the Givens rotation for the second pass.  The subdiagonal
       // term S[1] in the tridiagonal matrix is updated at this time.
-      if (Math<T>::FAbs(b) >= Math<T>::FAbs(a))
+      if (Math<value_type>::FAbs(b) >= Math<value_type>::FAbs(a))
       {
         ratio = a/b;
-        root = Math<T>::Sqrt((T)1 + ratio*ratio);
+        root = Math<value_type>::Sqrt((value_type)1 + ratio*ratio);
         aSubdiagonal[1] = b*root;
-        sn = ((T)1)/root;
+        sn = ((value_type)1)/root;
         cs = ratio*sn;
       }
       else
       {
         ratio = b/a;
-        root = Math<T>::Sqrt((T)1 + ratio*ratio);
+        root = Math<value_type>::Sqrt((value_type)1 + ratio*ratio);
         aSubdiagonal[1] = a * root;
-        cs = ((T)1)/root;
+        cs = ((value_type)1)/root;
         sn = ratio * cs;
       }
 
@@ -889,9 +939,9 @@ namespace tloc { namespace math {
       }
 
       // Complete the update of the tridiagonal matrix.
-      T tmp2 = aDiagonal[1] - tmp0;
+      value_type tmp2 = aDiagonal[1] - tmp0;
       aDiagonal[2] += tmp0;
-      tmp0 = (aDiagonal[0] - tmp2) * sn + ((T)2) * tmp1 * cs;
+      tmp0 = (aDiagonal[0] - tmp2) * sn + ((value_type)2) * tmp1 * cs;
       aSubdiagonal[0] = cs * tmp0 - tmp1;
       tmp0 *= sn;
       aDiagonal[1] = tmp2 + tmp0;

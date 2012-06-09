@@ -165,16 +165,16 @@ namespace tloc { namespace math {
 
     TL_FI this_type   operator+ (const this_type& a_vector);
     TL_FI this_type   operator- (const this_type& a_vector);
-    TL_FI this_type   operator* (const value_type& a_value);
+    TL_FI this_type   operator* (const_reference a_value);
     TL_FI this_type   operator* (const this_type& a_vector);
     TL_FI this_type   operator/ (const value_type& a_value);
     TL_FI this_type   operator/ (const this_type& a_vector);
 
     TL_FI this_type&  operator+= (const this_type& a_vector);
     TL_FI this_type&  operator-= (const this_type& a_vector);
-    TL_FI this_type&  operator*= (const value_type& a_value);
+    TL_FI this_type&  operator*= (const_reference a_value);
     TL_FI this_type&  operator*= (const this_type& a_vector);
-    TL_FI this_type&  operator/= (const value_type& a_value);
+    TL_FI this_type&  operator/= (const_reference a_value);
     TL_FI this_type&  operator/= (const this_type& a_vector);
 
     TL_FI bool        operator == (const this_type& a_vector);
@@ -198,11 +198,11 @@ namespace tloc { namespace math {
   // Static const definitions
   template<typename T, tl_size T_Size>
   const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ZERO =
-    Vector<T, T_Size>(0);
+    typename Vector<T, T_Size>::this_type(0);
 
   template<typename T, tl_size T_Size>
   const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE =
-    Vector<T, T_Size>(1);
+    typename Vector<T, T_Size>::this_type(1);
 
 };};
 

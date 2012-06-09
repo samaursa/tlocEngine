@@ -19,10 +19,12 @@ namespace tloc { namespace math {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Vector3<T> this_type;
-    typedef Vector<T, 3> base_type;
+    typedef Vector3<T>                            this_type;
+    typedef Vector<T, 3>                          base_type;
     
-    typedef typename base_type::value_type value_type;
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::reference         reference;
+    typedef typename base_type::const_reference   const_reference;
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -31,27 +33,27 @@ namespace tloc { namespace math {
     //------------------------------------------------------------------------
     // Constructors
     TL_FI Vector3();
-    TL_FI Vector3(const T& aX, const T& aY, const T& aZ);
-    TL_FI Vector3(const Vector3<T>& aVector);
-    TL_FI Vector3(const Vector<T, 3>& aVector);
+    TL_FI Vector3(const_reference aX, const_reference aY, const_reference aZ);
+    TL_FI Vector3(const this_type& aVector);
+    TL_FI Vector3(const base_type& aVector);
 
-    TL_FI explicit Vector3(const T& aValue);
+    TL_FI explicit Vector3(const_reference aValue);
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    TL_FI Vector3& Cross(const Vector3<T>& aVector);
+    TL_FI this_type& Cross(const this_type& aVector);
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    TL_FI void Cross(const Vector3<T>& aVector1,
-                     const Vector3<T>& aVector2);
+    TL_FI void Cross(const this_type& aVector1,
+                     const this_type& aVector2);
 
     // Modifies this vector to store the normalized version of the incoming
     // vector with an approx 3% error. Inverse square root code taken from
     // http://www.codemaestro.com/reviews/9 (originally from Quake)
     //
     // NOTE: Only works on floats!
-    TL_FI void FastNorm(const Vector3<T>& aVector);
+    TL_FI void FastNorm(const this_type& aVector);
 
     // Same as FastNorm() but modifies this vector directly
     //

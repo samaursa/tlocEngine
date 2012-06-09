@@ -14,10 +14,12 @@ namespace tloc { namespace math {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix3<T>                      this_type;
-    typedef Matrix<T, 3>                    base_type;
+    typedef Matrix3<T>                            this_type;
+    typedef Matrix<T, 3>                          base_type;
     
-    typedef typename base_type::value_type  value_type;
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::reference         reference;
+    typedef typename base_type::const_reference   const_reference;
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -31,27 +33,27 @@ namespace tloc { namespace math {
     TL_FI Matrix3();
 
     // Generate a matrix by inputs in row-major order
-    TL_FI Matrix3(T m00, T m01, T m02,
-                  T m10, T m11, T m12,
-                  T m20, T m21, T m22);
+    TL_FI Matrix3(value_type m00, value_type m01, value_type m02,
+                  value_type m10, value_type m11, value_type m12,
+                  value_type m20, value_type m21, value_type m22);
 
     // Generate a diagonal matrix
-    TL_FI Matrix3(T m00, T m11, T m22);
+    TL_FI Matrix3(value_type m00, value_type m11, value_type m22);
 
     // Copy constructor
-    TL_FI Matrix3(const Matrix3<T>& aMatrix);
+    TL_FI Matrix3(const this_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    TL_FI explicit Matrix3(const T& aValue);
+    TL_FI explicit Matrix3(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    TL_FI Matrix3(const Vector<T, 3>& aVec1, 
-                  const Vector<T, 3>& aVec2,
-                  const Vector<T, 3>& aVec3, 
+    TL_FI Matrix3(const Vector<value_type, 3>& aVec1, 
+                  const Vector<value_type, 3>& aVec2,
+                  const Vector<value_type, 3>& aVec3, 
                   typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix3(const T (&values)[k_MatrixSize], 
+    TL_FI Matrix3(const value_type (&values)[k_MatrixSize], 
                   typename base_type::matrix_order aOrder);
 
     //------------------------------------------------------------------------
@@ -59,21 +61,21 @@ namespace tloc { namespace math {
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI Matrix3<T>& Mul(const Matrix3<T>& aMatrix);
+    TL_FI this_type& Mul(const this_type& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix3<T>& aMatrix1,
-                   const Matrix3<T>& aMatrix2);
+    TL_FI void Mul(const this_type& aMatrix1,
+                   const this_type& aMatrix2);
 
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
-    TL_FI void Mul(const Vector<T, 3>& aVectorIn,
-                   Vector<T, 3>& aVectorOut);
+    TL_FI void Mul(const Vector<value_type, 3>& aVectorIn,
+                   Vector<value_type, 3>& aVectorOut);
 
     // Returns the determinant of this Matrix
-    TL_I T Determinant() const;
+    TL_I value_type Determinant() const;
 
     // Modifies this matrix by storing its inverse
     // If determinant is 0, then false is returned, otherwise, true.
@@ -81,29 +83,29 @@ namespace tloc { namespace math {
 
     // Modifies this matrix by storing the inverse of the incoming matrix.
     // If determinant is 0, the false is returned, otherwise, true.
-    TL_I bool Inverse(const Matrix3<T>& aMatrix);
+    TL_I bool Inverse(const this_type& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    TL_I Matrix3<T>& Adjoint();
+    TL_I this_type& Adjoint();
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
-    TL_I void Adjoint(const Matrix3<T>& aMatrix);
+    TL_I void Adjoint(const this_type& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    TL_I Matrix3<T>& Orthonormalize();
+    TL_I this_type& Orthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix
-    TL_I void Orthonormalize(const Matrix3<T>& aMatrix);
+    TL_I void Orthonormalize(const this_type& aMatrix);
 
     // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
     // used in the Quake engine and may result in lost precision
-    TL_FI Matrix3<T>& FastOrthonormalize();
+    TL_FI this_type& FastOrthonormalize();
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix. Uses FastInvSqrt() used in the Quake engine and
     // may result in lost precision
-    TL_FI void FastOrthonormalize(const Matrix3<T>& aMatrix);
+    TL_FI void FastOrthonormalize(const this_type& aMatrix);
 
     // Taken from WildMagic5
     // The matrix must be symmetric.  Factor M = R * D * R^T where
@@ -111,16 +113,16 @@ namespace tloc { namespace math {
     // D = diag(d0,d1) is a diagonal matrix whose diagonal entries are d0
     // and d1.  The eigenvector u[i] corresponds to eigenvector d[i].  The
     // eigenvalues are ordered as d0 <= d1.
-    void EigenDecomposition(Matrix3<T>& aRot, Matrix3<T>& aDiag) const;
+    void EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
     // Modifies thia matrix to be a rotation matrix about the x-axis
-    TL_I Matrix3<T>& MakeRotationX(const T& aXAngle);
+    TL_I this_type& MakeRotationX(const_reference aXAngle);
 
     // Modifies thia matrix to be a rotation matrix about the y-axis
-    TL_I Matrix3<T>& MakeRotationY(const T& aYAngle);
+    TL_I this_type& MakeRotationY(const_reference aYAngle);
 
     // Modifies thia matrix to be a rotation matrix about the z-axis
-    TL_I Matrix3<T>& MakeRotationZ(const T& aZAngle);
+    TL_I this_type& MakeRotationZ(const_reference aZAngle);
 
     // Modifies this vector by creating a rotation matrix from the incoming
     // angles by the order specified by the function. E.g. MakeEulerXYZ will
@@ -131,18 +133,30 @@ namespace tloc { namespace math {
     // and if multiplied by a vector later, the breakdown will be:
     //
     // MatX * (MayY * (MatZ * V))
-    TL_I void MakeEulerXYZ (T aXAngle, T aYAngle, T aZAngle);
-    TL_I void MakeEulerXZY (T aXAngle, T aZAngle, T aYAngle);
-    TL_I void MakeEulerYXZ (T aYAngle, T aXAngle, T aZAngle);
-    TL_I void MakeEulerYZX (T aYAngle, T aZAngle, T aXAngle);
-    TL_I void MakeEulerZXY (T aZAngle, T aXAngle, T aYAngle);
-    TL_I void MakeEulerZYX (T aZAngle, T aYAngle, T aXAngle);
-    TL_I void MakeEulerXYX (T aXAngle0, T aYAngle, T aXAngle1);
-    TL_I void MakeEulerXZX (T aXAngle0, T aZAngle, T aXAngle1);
-    TL_I void MakeEulerYXY (T aYAngle0, T aXAngle, T aYAngle1);
-    TL_I void MakeEulerYZY (T aYAngle0, T aZAngle, T aYAngle1);
-    TL_I void MakeEulerZXZ (T aZAngle0, T aXAngle, T aZAngle1);
-    TL_I void MakeEulerZYZ (T aZAngle0, T aYAngle, T aZAngle1);
+    TL_I void MakeEulerXYZ (value_type aXAngle, value_type aYAngle, 
+                            value_type aZAngle);
+    TL_I void MakeEulerXZY (value_type aXAngle, value_type aZAngle, 
+                            value_type aYAngle);
+    TL_I void MakeEulerYXZ (value_type aYAngle, value_type aXAngle, 
+                            value_type aZAngle);
+    TL_I void MakeEulerYZX (value_type aYAngle, value_type aZAngle, 
+                            value_type aXAngle);
+    TL_I void MakeEulerZXY (value_type aZAngle, value_type aXAngle, 
+                            value_type aYAngle);
+    TL_I void MakeEulerZYX (value_type aZAngle, value_type aYAngle, 
+                            value_type aXAngle);
+    TL_I void MakeEulerXYX (value_type aXAngle0, value_type aYAngle, 
+                            value_type aXAngle1);
+    TL_I void MakeEulerXZX (value_type aXAngle0, value_type aZAngle, 
+                            value_type aXAngle1);
+    TL_I void MakeEulerYXY (value_type aYAngle0, value_type aXAngle, 
+                            value_type aYAngle1);
+    TL_I void MakeEulerYZY (value_type aYAngle0, value_type aZAngle, 
+                            value_type aYAngle1);
+    TL_I void MakeEulerZXZ (value_type aZAngle0, value_type aXAngle, 
+                            value_type aZAngle1);
+    TL_I void MakeEulerZYZ (value_type aZAngle0, value_type aYAngle, 
+                            value_type aZAngle1);
 
   private:
 
@@ -153,8 +167,8 @@ namespace tloc { namespace math {
     // value is 'false'.  Otherwise, the transformation is a reflection and
     // the return value is 'true'.  The QLAlgorithm returns 'true' iff the
     // QL iteration scheme converged.
-    bool Tridiagonalize (T aDiagonal[3], T aSubdiagonal[2]);
-    bool QLAlgorithm (T aDiagonal[3], T aSubdiagonal[2]);
+    bool Tridiagonalize (value_type aDiagonal[3], value_type aSubdiagonal[2]);
+    bool QLAlgorithm (value_type aDiagonal[3], value_type aSubdiagonal[2]);
   };
 
   typedef Matrix3<f32>  Mat3f;

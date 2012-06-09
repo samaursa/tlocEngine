@@ -30,12 +30,14 @@ namespace tloc { namespace math {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix<T, T_Size>               this_type;
-    typedef core::Table<T, T_Size, T_Size>  base_type;
+    typedef Matrix<T, T_Size>                     this_type;
+    typedef core::Table<T, T_Size, T_Size>        base_type;
     
-    typedef typename base_type::value_type  value_type;
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::value_type&       reference;
+    typedef typename const base_type::value_type& const_reference;
     
-    typedef typename base_type::table_order matrix_order;
+    typedef typename base_type::table_order       matrix_order;
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -54,13 +56,13 @@ namespace tloc { namespace math {
     TL_FI Matrix();
 
     // Copy constructor
-    TL_FI Matrix(const Matrix<T, T_Size>& aMatrix);
+    TL_FI Matrix(const this_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    TL_FI explicit Matrix(const T& aValue);
+    TL_FI explicit Matrix(const_reference aValue);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix(const T (&values)[k_MatrixSize], matrix_order aOrder);
+    TL_FI Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -72,89 +74,93 @@ namespace tloc { namespace math {
     TL_FI void Identity();
 
     // Modifies this matrix to be a diagonal matrix
-    TL_FI void MakeDiagonal(const T values[T_Size]);
+    TL_FI void MakeDiagonal(const value_type values[T_Size]);
 
     //------------------------------------------------------------------------
     // Math operations
 
     // Modifies this matrix by adding the incoming matrix
-    TL_FI Matrix<T, T_Size>& Add(const Matrix<T, T_Size>& aMatrix);
+    TL_FI this_type& Add(const this_type& aMatrix);
 
     // Modifies this matrix by adding the incoming matrices and storing the
     // result in this matrix
-    TL_FI void Add(const Matrix<T, T_Size>& aMatrix1,
-                   const Matrix<T, T_Size>& aMatrix2);
+    TL_FI void Add(const this_type& aMatrix1,
+                   const this_type& aMatrix2);
 
     // Modifies this matrix by subtracting the incoming matrix
-    TL_FI Matrix<T, T_Size>& Sub(const Matrix<T, T_Size>& aMatrix);
+    TL_FI this_type& Sub(const this_type& aMatrix);
 
     // Modifies this matrix by subtracting the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Sub(const Matrix<T, T_Size>& aMatrix1,
-                   const Matrix<T, T_Size>& aMatrix2);
+    TL_FI void Sub(const this_type& aMatrix1,
+                   const this_type& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI Matrix<T, T_Size>& Mul(const Matrix<T, T_Size>& aMatrix);
+    TL_FI this_type& Mul(const this_type& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Mul(const Matrix<T, T_Size>& aMatrix1,
-                   const Matrix<T, T_Size>& aMatrix2);
+    TL_FI void Mul(const this_type& aMatrix1,
+                   const this_type& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming real number
-    TL_FI Matrix<T, T_Size>& Mul(const T& aReal);
+    TL_FI this_type& Mul(const_reference aReal);
 
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
-    TL_FI void Mul(const Vector<T, T_Size>& aVectorIn,
-                   Vector<T, T_Size>& aVectorOut);
+    TL_FI void Mul(const Vector<value_type, T_Size>& aVectorIn,
+                   Vector<value_type, T_Size>& aVectorOut);
 
     // Modifies this matrix by dividing the incoming real number
-    TL_FI Matrix<T, T_Size>& Div(const T& aReal);
+    TL_FI this_type& Div(const_reference aReal);
 
     // Modifies this matrix by transposing the matrix
-    TL_FI Matrix<T, T_Size>& Transpose();
+    TL_FI this_type& Transpose();
 
     // Modifies this matrix by transposing the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Transpose(const Matrix<T, T_Size>& aMatrix);
+    TL_FI void Transpose(const this_type& aMatrix);
 
     //------------------------------------------------------------------------
     // Accessors
 
     // Stores the diagonal of this Matrix in aVector
-    TL_FI void GetDiagonal(Vector<T, T_Size>& aVector);
+    TL_FI void GetDiagonal(Vector<value_type, T_Size>& aVector);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI bool operator == (const Matrix<T, T_Size>& aMatrix);
-    TL_FI bool operator != (const Matrix<T, T_Size>& aMatrix);
+    TL_FI bool operator == (const this_type& aMatrix);
+    TL_FI bool operator != (const this_type& aMatrix);
 
     //------------------------------------------------------------------------
     // Special Matrices
 
-    static const Matrix<T, T_Size> ZERO;
-    static const Matrix<T, T_Size> IDENTITY;
+    static const this_type ZERO;
+    static const this_type IDENTITY;
 
   private:
 
-    static Matrix<T, T_Size> pInternal_GetIdentity();
+    static this_type pInternal_GetIdentity();
   };
 
   //------------------------------------------------------------------------
   // Static const definitions
   template <typename T, tl_size T_Size>
-  const Matrix<T, T_Size> Matrix<T, T_Size>::ZERO = Matrix<T, T_Size>(0);
-  template <typename T, tl_size T_Size>
-  const Matrix<T, T_Size> Matrix<T, T_Size>::IDENTITY = Matrix<T, T_Size>::pInternal_GetIdentity();
+  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::ZERO = 
+    typename Matrix<T, T_Size>::this_type(0);
 
   template <typename T, tl_size T_Size>
-  Matrix<T, T_Size> Matrix<T, T_Size>::pInternal_GetIdentity()
+  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY = 
+    typename Matrix<T, T_Size>::this_type::pInternal_GetIdentity();
+
+  template <typename T, tl_size T_Size>
+  typename Matrix<T, T_Size>::this_type 
+    Matrix<T, T_Size>::pInternal_GetIdentity()
   {
-    Matrix<T, T_Size> temp;
+    this_type temp;
     temp.Identity();
     return temp;
   }

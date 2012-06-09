@@ -506,6 +506,31 @@ namespace tloc { namespace core {
     return true;
   }
 
+  template <typename T_RandomAccessIterator>
+  void random_shuffle(T_RandomAccessIterator a_first, 
+                      T_RandomAccessIterator a_last)
+  {
+    iterator_traits<T_RandomAccessIterator>::difference_type rangeSize, i;
+    rangeSize = a_last - a_first;
+    for (i = rangeSize - 1; i > 0; --i)
+    {
+      tlSwap(a_first[i], a_first[g_defaultRNG.GetRandomInteger(i + 1)]);
+    }
+  }
+
+  template <typename T_RandomAccessIterator, class T_RandomNumberGenerator>
+  void random_shuffle(T_RandomAccessIterator a_first, 
+                      T_RandomAccessIterator a_last,
+                      T_RandomNumberGenerator a_rng)
+  {
+    iterator_traits<T_RandomAccessIterator>::difference_type rangeSize, i;
+    rangeSize = a_last - a_first;
+    for (i = rangeSize - 1; i > 0; --i)
+    {
+      tlSwap(a_first[i], a_first[a_rng(i + 1)]);
+    }
+  }
+
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
   T_ForwardIterator1 search( T_ForwardIterator1 a_rangeToSearchBegin,
                              T_ForwardIterator1 a_rangeToSearchEnd,

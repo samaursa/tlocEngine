@@ -8,11 +8,8 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
 
-#include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
-
-#include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl>
 
 namespace TestingAlgorithms
 {
@@ -572,6 +569,48 @@ namespace TestingAlgorithms
 
     retValue = equal(myvector.begin(), myvector.end(), myints, mypredicate);
     CHECK(retValue == false);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/RandomShuffle", "")
+  {
+    TL_NESTED_FUNC_BEGIN(getRandom) tl_int getRandom(tl_int a_num)
+    {
+      return g_defaultRNG.GetRandomInteger(a_num);
+    }
+    TL_NESTED_FUNC_END();
+
+    tl_array<tl_int>::type  myVec;
+
+    {
+      // set some values
+      for (tl_int i = 0; i < 10; ++i) myVec.push_back(i);
+
+      random_shuffle(myVec.begin(), myVec.end());
+
+      // not the best test, relies on the rng to be tested thoroughly
+      bool notShuffled = true;
+      for (tl_int i = 0; i < 10; ++i)
+      {
+        if (myVec[i] != i) { notShuffled = false; break; }
+      }
+      CHECK(notShuffled == false);
+    }
+
+    myVec.clear();
+
+    {
+      for (tl_int i = 0; i < 10; ++i) myVec.push_back(i);
+
+      random_shuffle(myVec.begin(), myVec.end(), TL_NESTED_CALL(getRandom));
+
+      bool notShuffled = true;
+      for (tl_int i = 0; i < 10; ++i)
+      {
+        if (myVec[i] != i) { notShuffled = false; break; }
+      }
+      CHECK(notShuffled == false);
+    }
+
   }
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Search", "")

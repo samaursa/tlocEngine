@@ -333,4 +333,9 @@
 #define TLOC_NOT_EMPTY_SOURCE_FILE() \
   namespace { char NoEmptyFileDummy##__LINE__; }
 
+// Punctuation - useful in macros using templates
+#ifndef COMMA
+# define COMMA() ,
+#endif
+
 #endif

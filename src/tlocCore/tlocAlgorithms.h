@@ -2,9 +2,9 @@
 #define TLOC_ALGORITHMS_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocPair.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
-#include <tlocCore/tlocPair.h>
 #include <tlocCore/containers/tlocArray.h>
 
 //------------------------------------------------------------------------
@@ -144,6 +144,17 @@ namespace tloc { namespace core {
             typename T_BinaryPred>
   bool equal(T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
              T_InputIterator2 aRangeToCompare, T_BinaryPred a_pred);
+
+  template <typename T_RandomAccessIterator>
+  void random_shuffle(T_RandomAccessIterator a_first,
+                      T_RandomAccessIterator a_last);
+
+  // T_RandomNumberGenerator takes in a number n (of type size_type) and and
+  // generates a random number between 0...n.
+  template <typename T_RandomAccessIterator, class T_RandomNumberGenerator>
+  void random_shuffle(T_RandomAccessIterator a_first,
+                      T_RandomAccessIterator a_last,
+                      T_RandomNumberGenerator a_rng);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
   T_ForwardIterator1 search(T_ForwardIterator1 a_rangeToSearchBegin,

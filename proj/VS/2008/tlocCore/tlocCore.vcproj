@@ -1134,14 +1134,14 @@
 					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.h"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="pair"
-				>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\tlocAlgorithms.inl"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="pair"
+				>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\tlocPair.h"
 					>
@@ -1185,6 +1185,10 @@
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocNonCopyable.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocPolicyBase.h"
 				>
 			</File>
 			<Filter

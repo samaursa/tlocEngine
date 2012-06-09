@@ -152,45 +152,45 @@ namespace TestingVector3f
 
     // Addition single
     c = a + b;
-    CHECK_VEC3F(c, 6.0f, 8.0f, 10.0f);
+    CHECK_VEC3F(c, 6.0f, 8.0f, 10.0f); //-V550
 
     // Subtraction double
     c = a - b;
-    CHECK_VEC3F(c, -4.0f, -4.0f, -4.0f);
+    CHECK_VEC3F(c, -4.0f, -4.0f, -4.0f); //-V550
 
     // Addition single
     c += b;
-    CHECK_VEC3F(c, 1.0f, 2.0f, 3.0f);
+    CHECK_VEC3F(c, 1.0f, 2.0f, 3.0f); //-V550
 
     // Subtraction single
     c -= a;
-    CHECK_VEC3F(c, 0, 0, 0);
+    CHECK_VEC3F(c, 0, 0, 0); //-V550
     c -= a;
-    CHECK_VEC3F(c, -1, -2, -3);
+    CHECK_VEC3F(c, -1, -2, -3); //-V550
 
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
     c.Zero();
     c *= a;
-    CHECK_VEC3F(c, 0, 0, 0);
+    CHECK_VEC3F(c, 0, 0, 0); //-V550
     c = b; c *= b;
-    CHECK_VEC3F(c, 25.0f, 36.0f, 49.0f);
+    CHECK_VEC3F(c, 25.0f, 36.0f, 49.0f); //-V550
 
     // Multiplication double
     c.Zero(); c = a * b;
-    CHECK_VEC3F(c, 5.0f, 12.0f, 21.0f);
+    CHECK_VEC3F(c, 5.0f, 12.0f, 21.0f); //-V550
 
     // Multiplication single
     c *= 2;
-    CHECK_VEC3F(c, 10.0f, 24.0f, 42.0f);
+    CHECK_VEC3F(c, 10.0f, 24.0f, 42.0f); //-V550
 
     //////////////////////////////////////////////////////////////////////////
     // Division
     c /= a;
-    CHECK_VEC3F(c, 10.0f, 12.0f, 14.0f);
+    CHECK_VEC3F(c, 10.0f, 12.0f, 14.0f); //-V550
 
     c /= 14.0f;
-    CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f);
+    CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f); //-V550
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Length", "Tests the "

@@ -31,7 +31,7 @@ namespace tloc { namespace graphics {
   //  Instantiate the template to avoid linking errors. This will only
   //  instantiate for the platform it is being compiled on.
 
-  template Window<>;
+  template class Window<>;
 
   template <WINDOW_TEMP>
   Window<WINDOW_PARAMS>::Window() : m_impl(NULL)

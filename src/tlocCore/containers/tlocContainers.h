@@ -34,6 +34,19 @@ namespace tloc { namespace core {
                  T_DedicatedSize> type;
   };
 
+  template <typename T_Key, typename T_Value>
+  struct tl_hash_map
+  {
+    DECL_TYPEDEF_HELPER(tl_hash_map);
+    typedef HashMap<T_Key, T_Value>   type;
+  };
+
+  // Common containers
+  typedef tl_array<tl_int>::type    tl_array_int;
+  typedef tl_array<tl_uint>::type   tl_array_uint;
+  typedef tl_array<tl_float>::type  tl_array_float;
+  typedef tl_array<tl_size>::type   tl_array_size;
+
 };};
 
 #endif

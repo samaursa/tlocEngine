@@ -69,6 +69,26 @@ namespace tloc { namespace core {
     const real_type GetRandomFloat() { return m_rng.GetRandomFloat(); }
 
     ///-------------------------------------------------------------------------
+    /// @brief Gets a random integer between [0, a_max)
+    ///
+    /// @param  a_max The maximum number (not inclusive)
+    ///
+    /// @return The random integer.
+    ///-------------------------------------------------------------------------
+    const int_type GetRandomInteger(const int_type& a_max)
+    { return GetRandomInteger(0, a_max); }
+
+    ///-------------------------------------------------------------------------
+    /// @brief Gets a random float between [0, a_max)
+    ///
+    /// @param  a_max The maximum number (not inclusive)
+    ///
+    /// @return The random float.
+    ///-------------------------------------------------------------------------
+    const real_type GetRandomFloat(const real_type& a_max)
+    { return GetRandomFloat(0, a_max); }
+
+    ///-------------------------------------------------------------------------
     /// @brief Generates a random integer between [min, max).
     ///
     /// @param  a_min The beginning of the range (inclusive).

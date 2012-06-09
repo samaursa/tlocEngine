@@ -22,8 +22,8 @@ namespace tloc { namespace input {
 #define INPUT_MANAGER_PARAM T_Policy, T_Platform
 #define INPUT_MANAGER_TYPE  typename InputManager<INPUT_MANAGER_PARAM>
 
-  template InputManager<InputPolicy::Buffered>;
-  template InputManager<InputPolicy::Immediate>;
+  template class InputManager<InputPolicy::Buffered>;
+  template class InputManager<InputPolicy::Immediate>;
 
   // Force instantiate the constructor for each platform
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)

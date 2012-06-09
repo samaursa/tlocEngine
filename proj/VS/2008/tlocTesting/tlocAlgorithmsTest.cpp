@@ -8,11 +8,8 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
 
-#include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
-
-#include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl>
 
 namespace TestingAlgorithms
 {
@@ -574,6 +571,48 @@ namespace TestingAlgorithms
     CHECK(retValue == false);
   }
 
+  TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/RandomShuffle", "")
+  {
+    TL_NESTED_FUNC_BEGIN(getRandom) tl_int getRandom(tl_int a_num)
+    {
+      return g_defaultRNG.GetRandomInteger(a_num);
+    }
+    TL_NESTED_FUNC_END();
+
+    tl_array<tl_int>::type  myVec;
+
+    {
+      // set some values
+      for (tl_int i = 0; i < 10; ++i) myVec.push_back(i);
+
+      random_shuffle(myVec.begin(), myVec.end());
+
+      // not the best test, relies on the rng to be tested thoroughly
+      bool notShuffled = true;
+      for (tl_int i = 0; i < 10; ++i)
+      {
+        if (myVec[i] != i) { notShuffled = false; break; }
+      }
+      CHECK(notShuffled == false);
+    }
+
+    myVec.clear();
+
+    {
+      for (tl_int i = 0; i < 10; ++i) myVec.push_back(i);
+
+      random_shuffle(myVec.begin(), myVec.end(), TL_NESTED_CALL(getRandom));
+
+      bool notShuffled = true;
+      for (tl_int i = 0; i < 10; ++i)
+      {
+        if (myVec[i] != i) { notShuffled = false; break; }
+      }
+      CHECK(notShuffled == false);
+    }
+
+  }
+
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/Search", "")
   {
     core::Array<s32> myvector;
@@ -806,5 +845,48 @@ namespace TestingAlgorithms
       ++listItr2;
       ++listItr;
     }
+  }
+
+  struct CountDestruction
+  {
+    CountDestruction()
+    {
+      ++m_ctorCount;
+    }
+
+    ~CountDestruction()
+    {
+      ++m_dtorCount;
+    }
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
+  };
+
+  tl_int CountDestruction::m_ctorCount = 0;
+  tl_int CountDestruction::m_dtorCount = 0;
+
+  TEST_CASE("Core/Algorithms/delete_ptrs", "")
+  {
+    Array<CountDestruction*> myArray;
+    List<CountDestruction*>  myList;
+
+    const tl_int numElements = 10;
+
+    for (tl_int i = 0; i < numElements; ++i)
+    {
+      myArray.push_back(new CountDestruction()); //-V508
+      myList.push_back(new CountDestruction()); //-V508
+    }
+
+    CHECK(CountDestruction::m_ctorCount == numElements * 2);
+    CHECK(CountDestruction::m_dtorCount == 0);
+    CHECK(myArray.size() == numElements);
+    CHECK(myList.size() == numElements);
+
+    delete_ptrs(myArray.begin(), myArray.end());
+    CHECK(CountDestruction::m_dtorCount == numElements);
+    delete_ptrs(myList.begin(), myList.end());
+    CHECK(CountDestruction::m_dtorCount == numElements * 2);
   }
 };

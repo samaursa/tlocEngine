@@ -21,8 +21,10 @@
 
 namespace tloc { namespace core {
 
-  template <typename T_Key, typename T_ValueType, typename T_HashFunc,
-            typename T_KeyEqual, bool T_CacheHashCode = false,
+  template <typename T_Key, typename T_ValueType,
+            typename T_HashFunc = hash<T_Key>,
+            typename T_KeyEqual = equal_to<T_Key>,
+            bool T_CacheHashCode = false,
             typename T_BucketType
             = Array<List<HashtableElement<Pair<const T_Key, T_ValueType>, T_CacheHashCode > > > >
   class HashMap

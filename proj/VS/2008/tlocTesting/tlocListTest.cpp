@@ -1141,4 +1141,46 @@ namespace TestingList
     testReverse<intSinglyListWithSize>();
     testReverse<intSinglyListWithoutSize>();
   }
+
+  struct testItr
+  {
+    tl_int m_value;
+  };
+
+  template <typename T_LinkedTag, bool T_DedicatedSize>
+  void testIterator()
+  {
+    typedef core::List<testItr, ListNode<testItr, T_LinkedTag>,
+                       List_Dynamic(), T_DedicatedSize>           list_type;
+    list_type myList;
+    list_type::iterator itr;
+
+    for (int i = 0; i < 10; ++i)
+    {
+      testItr temp;
+      temp.m_value = i;
+      myList.push_back(temp);
+    }
+
+    itr = myList.begin();
+    CHECK(itr->m_value == 0); ++itr;
+    CHECK(itr->m_value == 1); ++itr;
+    CHECK(itr->m_value == 2); ++itr;
+    CHECK(itr->m_value == 3); ++itr;
+    CHECK(itr->m_value == 4); ++itr;
+    CHECK(itr->m_value == 5); ++itr;
+    CHECK(itr->m_value == 6); ++itr;
+    CHECK(itr->m_value == 7); ++itr;
+    CHECK(itr->m_value == 8); ++itr;
+    CHECK(itr->m_value == 9); ++itr;
+
+    CHECK(myList.end() == itr);
+  }
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/iterator", "")
+  {
+    testIterator<doubly_linked_tag, false>();
+    testIterator<doubly_linked_tag, true>();
+    testIterator<singly_linked_tag, false>();
+    testIterator<singly_linked_tag, true>();
+  }
 };

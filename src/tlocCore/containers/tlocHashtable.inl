@@ -291,7 +291,7 @@ namespace tloc { namespace core {
   typename HashtableItr<HASHTABLE_ITR_PARAMS>::pointer
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator->() const
   {
-    return &(base_type::m_currNode->m_value() );
+    return &(*(base_type::m_currNode)).m_value();
   }
 
   template <HASHTABLE_ITR_TYPES>

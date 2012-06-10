@@ -417,7 +417,7 @@ namespace tloc { namespace core {
   TL_FI typename list_iterator<LIST_ITR_PARAMS>::pointer
     list_iterator<LIST_ITR_PARAMS>::operator-> () const
   {
-    return *(m_node->getValue());
+    return &m_node->getValue();
   }
 
   template <LIST_ITR_TEMP> 

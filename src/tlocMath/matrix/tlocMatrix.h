@@ -135,14 +135,16 @@ namespace tloc { namespace math {
     TL_FI this_type   operator+ (const this_type& a_matrix) const;
     TL_FI this_type   operator- (const this_type& a_matrix) const;
     TL_FI this_type   operator* (const this_type& a_matrix) const;
+    TL_FI this_type   operator* (const_reference a_value) const;
     TL_FI Vector<value_type, T_Size> 
       operator* (const Vector<value_type, T_Size> a_vector) const;
-    TL_FI this_type   operator/ (const this_type& a_matrix) const;
+    TL_FI this_type   operator/ (const_reference a_value) const;
 
     TL_FI this_type&   operator+= (const this_type& a_matrix);
     TL_FI this_type&   operator-= (const this_type& a_matrix);
     TL_FI this_type&   operator*= (const this_type& a_matrix);
-    TL_FI this_type&   operator/= (const this_type& a_matrix);
+    TL_FI this_type&   operator*= (const_reference a_value);
+    TL_FI this_type&   operator/= (const_reference a_value);
 
     TL_FI bool operator == (const this_type& aMatrix);
     TL_FI bool operator != (const this_type& aMatrix);

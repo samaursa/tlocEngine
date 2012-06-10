@@ -268,6 +268,19 @@ namespace tloc { namespace math {
   }
 
   template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type
+    Matrix<MATRIX_PARAMS>::operator* (const_reference a_value) const
+  {
+    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
+    this_type returnMat;
+    returnMat = (*this);
+
+    returnMat.Mul(a_value);
+
+    return returnMat;
+  }
+
+  template <MATRIX_TYPES>
   TL_FI Vector<typename Matrix<MATRIX_PARAMS>::value_type, T_Size> 
     Matrix<MATRIX_PARAMS>
     ::operator* (const Vector<value_type, T_Size> a_vector) const
@@ -275,14 +288,14 @@ namespace tloc { namespace math {
     TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     Vector<value_type, T_Size> returnVec;
 
-    Mul(a_vector, returnVec);
+    returnVec.Mul(a_vector, returnVec);
 
     return returnVec;
   }
 
   template <MATRIX_TYPES>
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
-    Matrix<MATRIX_PARAMS>::operator/ (const this_type& a_matrix) const
+    Matrix<MATRIX_PARAMS>::operator/ (const_reference a_matrix) const
   {
     TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat;
@@ -319,9 +332,17 @@ namespace tloc { namespace math {
 
   template <MATRIX_TYPES>
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
-    Matrix<MATRIX_PARAMS>::operator/= (const this_type& a_matrix)
+    Matrix<MATRIX_PARAMS>::operator*= (const_reference a_value)
   {
-    Div(a_matrix);
+    Mul(a_value);
+    return *this;
+  }
+
+  template <MATRIX_TYPES>
+  TL_FI typename Matrix<MATRIX_PARAMS>::this_type&
+    Matrix<MATRIX_PARAMS>::operator/= (const_reference a_value)
+  {
+    Div(a_value);
     return *this;
   }
 

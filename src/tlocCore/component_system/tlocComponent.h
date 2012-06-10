@@ -3,7 +3,7 @@
 
 #include <tlocCore/component_system/tlocComponentType.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace component_system {
 
   class Component
   {
@@ -16,6 +16,6 @@ namespace tloc { namespace core {
     component_type::type m_type;
   };
 
-};};
+};};};
 
 #endif

@@ -5,7 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-namespace tloc { namespace core {
+#include "tlocEntity.h"
+
+namespace tloc { namespace core { namespace component_system {
 
   Entity::Entity(entity_id a_id)
     : m_id(a_id)
@@ -24,4 +26,4 @@ namespace tloc { namespace core {
     return m_allComponents[a_type];
   }
     
-};};
+};};};

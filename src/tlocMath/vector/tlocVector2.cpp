@@ -3,9 +3,9 @@
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::math::Vec2f;
-template tloc::math::Vec2d;
-template tloc::math::Vec2l;
+template class tloc::math::Vector2<tloc::f32>;
+template class tloc::math::Vector2<tloc::f64>;
+template class tloc::math::Vector2<tloc::f128>;
 
 //------------------------------------------------------------------------
 #ifndef TLOC_FULL_SOURCE

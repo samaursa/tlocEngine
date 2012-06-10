@@ -17,7 +17,7 @@ namespace tloc { namespace math {
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
-#define VECTOR_TYPE typename T, tl_size T_Size
+#define VECTOR_TYPES typename T, tl_size T_Size
 #define VECTOR_PARAMS T, T_Size
 
   //////////////////////////////////////////////////////////////////////////
@@ -45,32 +45,33 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Constructors
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI Vector<VECTOR_PARAMS>::Vector()
   {
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI Vector<VECTOR_PARAMS>::Vector(const this_type& a_vector)
   {
     *this = a_vector;
   }
 
-  template <VECTOR_TYPE>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) : Tuple(a_value)
+  template <VECTOR_TYPES>
+  TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) 
+    : base_type(a_value)
   {
   }
 
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Zero()
   {
-    Set(0);
+    this->Set(0);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Neg()
   {
     ITERATE_VECTOR
@@ -79,7 +80,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Neg(const this_type& a_vector)
   {
     operator=(a_vector);
@@ -89,7 +90,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Math Operations
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Add(const this_type& a_vector)
   {
@@ -101,7 +102,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Add(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
@@ -111,7 +112,7 @@ namespace tloc { namespace math {
     }
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector)
   {
@@ -123,7 +124,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
@@ -131,7 +132,7 @@ namespace tloc { namespace math {
     Sub(a_vector2);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector)
   {
@@ -143,7 +144,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
@@ -151,7 +152,7 @@ namespace tloc { namespace math {
     Mul(a_vector2);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Mul(const value_type a_real)
   {
@@ -163,7 +164,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Div(const this_type& a_vector)
   {
@@ -175,7 +176,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Div(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
@@ -183,7 +184,7 @@ namespace tloc { namespace math {
     Div(a_vector2);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Div(const value_type a_real)
   {
@@ -195,7 +196,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::LengthSquared() const
   {
@@ -209,7 +210,7 @@ namespace tloc { namespace math {
     return lengthSq;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::Length() const
   {
@@ -217,7 +218,7 @@ namespace tloc { namespace math {
     return Math<value_type>::Sqrt(length);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Norm()
   {
@@ -236,7 +237,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Norm(const this_type& a_vector)
   {
@@ -255,7 +256,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::NormLength()
   {
@@ -274,7 +275,7 @@ namespace tloc { namespace math {
     return lLength;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::NormLength(const this_type& a_vector)
   {
@@ -293,7 +294,7 @@ namespace tloc { namespace math {
     return lLength;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::Distance(const this_type& a_vector) const
   {
@@ -304,7 +305,7 @@ namespace tloc { namespace math {
     return length;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::DistanceSquared(const this_type& a_vector) const
   {
@@ -315,7 +316,7 @@ namespace tloc { namespace math {
     return lengthSq;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::Dot(const this_type& a_vector) const
   {
@@ -329,7 +330,7 @@ namespace tloc { namespace math {
     return dotProd;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::value_type 
     Vector<VECTOR_PARAMS>::DotAbs(const this_type& a_vector) const
   {
@@ -337,7 +338,7 @@ namespace tloc { namespace math {
     return Math<value_type>::Abs(dotProd);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector)
   {
@@ -349,7 +350,7 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector1,
                                              const this_type& a_vector2)
   {
@@ -360,9 +361,9 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Operators
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -373,9 +374,9 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -386,9 +387,9 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator* (const value_type& a_value)
+    Vector<VECTOR_PARAMS>::operator* (const_reference a_value) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -399,9 +400,9 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -412,9 +413,9 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator/ (const value_type& a_value)
+    Vector<VECTOR_PARAMS>::operator/ (const_reference a_value) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -425,9 +426,9 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type 
-    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector)
+    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector) const
   {
     TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
@@ -438,7 +439,7 @@ namespace tloc { namespace math {
     return returnVec;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator+= (const this_type& a_vector)
   {
@@ -447,7 +448,7 @@ namespace tloc { namespace math {
     return (*this);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator-= (const this_type& a_vector)
   {
@@ -456,16 +457,16 @@ namespace tloc { namespace math {
     return (*this);;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
-    Vector<VECTOR_PARAMS>::operator*= (const value_type& a_value)
+    Vector<VECTOR_PARAMS>::operator*= (const_reference a_value)
   {
     this->Mul(a_value);
 
     return (*this);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator*= (const this_type& a_vector)
   {
@@ -474,16 +475,16 @@ namespace tloc { namespace math {
     return (*this);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type&
-    Vector<VECTOR_PARAMS>::operator/= (const value_type& a_value)
+    Vector<VECTOR_PARAMS>::operator/= (const_reference a_value)
   {
     this->Div(a_value);
 
     return (*this);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI typename Vector<VECTOR_PARAMS>::this_type&
     Vector<VECTOR_PARAMS>::operator/= (const this_type& a_vector)
   {
@@ -492,7 +493,7 @@ namespace tloc { namespace math {
     return (*this);
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -503,7 +504,7 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector)
   {
     return !operator==(a_vector);
@@ -512,7 +513,7 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Checks
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI bool Vector<VECTOR_PARAMS>::IsValid()
   {
     ITERATE_VECTOR
@@ -523,7 +524,7 @@ namespace tloc { namespace math {
     return true;
   }
 
-  template <VECTOR_TYPE>
+  template <VECTOR_TYPES>
   TL_FI bool Vector<VECTOR_PARAMS>::IsZero()
   {
     ITERATE_VECTOR

@@ -3,9 +3,9 @@
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::math::Mat3f;
-template tloc::math::Mat3d;
-template tloc::math::Mat3l;
+template class tloc::math::Matrix3<tloc::f32>;
+template class tloc::math::Matrix3<tloc::f64>;
+template class tloc::math::Matrix3<tloc::f128>;
 
 #ifndef TLOC_FULL_SOURCE
 #include "tlocMatrix3.inl"

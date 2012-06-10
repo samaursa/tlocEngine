@@ -14,40 +14,48 @@ namespace tloc { namespace math {
   //////////////////////////////////////////////////////////////////////////
   // Vector3
 
+  //////////////////////////////////////////////////////////////////////////
+  // Template Macros
+
+#define VECTOR_3_TYPES typename T
+#define VECTOR_3_PARAMS T
+
   //------------------------------------------------------------------------
   // Constructors
 
-  template <typename T>
-  TL_FI Vector3<T>::Vector3()
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3()
   {
   }
 
-  template <typename T>
-  TL_FI Vector3<T>::Vector3(const T& aValue)
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const_reference aValue)
   {
     m_values[0] = aValue;
     m_values[1] = aValue;
     m_values[2] = aValue;
   }
 
-  template <typename T>
-  TL_FI Vector3<T>::Vector3(const T& aX, const T& aY, const T& aZ)
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const_reference aX, 
+                            const_reference aY, 
+                            const_reference aZ)
   {
     m_values[0] = aX;
     m_values[1] = aY;
     m_values[2] = aZ;
   }
 
-  template <typename T>
-  TL_FI Vector3<T>::Vector3(const Vector3<T>& aVector)
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const this_type& aVector)
   {
     m_values[0] = aVector[0];
     m_values[1] = aVector[1];
     m_values[2] = aVector[2];
   }
 
-  template <typename T>
-  TL_FI Vector3<T>::Vector3(const Vector<T, 3>& aVector)
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const base_type& aVector)
   {
     m_values[0] = aVector[0];
     m_values[1] = aVector[1];
@@ -57,8 +65,9 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Math operations
 
-  template <typename T>
-  TL_FI Vector3<T>& Vector3<T>::Cross(const Vector3<T>& aVector)
+  template <VECTOR_3_TYPES>
+  TL_FI typename Vector3<VECTOR_3_PARAMS>::this_type& 
+    Vector3<VECTOR_3_PARAMS>::Cross(const this_type& aVector)
   {
     /*
     y * rkVector.z - z * rkVector.y,
@@ -66,7 +75,7 @@ namespace tloc { namespace math {
     x * rkVector.y - y * rkVector.x);
     */
 
-    Vector3<T> temp(*this);
+    this_type temp(*this);
 
     m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
     m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
@@ -75,16 +84,16 @@ namespace tloc { namespace math {
     return *this;
   }
 
-  template <typename T>
-  TL_FI void Vector3<T>::Cross(const Vector3<T>& aVector1,
-    const Vector3<T>& aVector2)
+  template <VECTOR_3_TYPES>
+  TL_FI void Vector3<VECTOR_3_PARAMS>::Cross(const this_type& aVector1,
+                                            const this_type& aVector2)
   {
-    operator=(aVector1);
+    this->operator=(aVector1);
     Cross(aVector2);
   }
 
-  template <typename T>
-  TL_FI void Vector3<T>::FastNorm(const Vector3<T>& aVector)
+  template <VECTOR_3_TYPES>
+  TL_FI void Vector3<VECTOR_3_PARAMS>::FastNorm(const this_type& aVector)
   {
     f32 lLength;
     lLength = (f32)aVector.LengthSquared();
@@ -101,11 +110,11 @@ namespace tloc { namespace math {
     m_values[2] *= lLength;
   }
 
-  template <typename T>
-  TL_FI void Vector3<T>::FastNorm()
+  template <VECTOR_3_TYPES>
+  TL_FI void Vector3<VECTOR_3_PARAMS>::FastNorm()
   {
     f32 lLength;
-    lLength = (f32)LengthSquared();
+    lLength = (f32)this->LengthSquared();
 
     // Calculate length inverse
     f32 xhalf = 0.5f*lLength;

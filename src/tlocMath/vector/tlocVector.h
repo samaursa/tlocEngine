@@ -34,10 +34,16 @@ namespace tloc { namespace math {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Vector<T, T_Size>   this_type;
-    typedef T                   value_type;
-    typedef T&                  reference;
-    typedef const T&            const_reference;
+    typedef Vector<T, T_Size>                     this_type;
+    typedef core::Tuple<T, T_Size>                base_type;
+    
+    typedef typename base_type::value_type        value_type;
+    typedef value_type&                           reference;
+    typedef const value_type&                     const_reference;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::m_values;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -157,18 +163,18 @@ namespace tloc { namespace math {
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI this_type   operator+ (const this_type& a_vector);
-    TL_FI this_type   operator- (const this_type& a_vector);
-    TL_FI this_type   operator* (const value_type& a_value);
-    TL_FI this_type   operator* (const this_type& a_vector);
-    TL_FI this_type   operator/ (const value_type& a_value);
-    TL_FI this_type   operator/ (const this_type& a_vector);
+    TL_FI this_type   operator+ (const this_type& a_vector) const;
+    TL_FI this_type   operator- (const this_type& a_vector) const;
+    TL_FI this_type   operator* (const_reference a_value) const;
+    TL_FI this_type   operator* (const this_type& a_vector) const;
+    TL_FI this_type   operator/ (const value_type& a_value) const;
+    TL_FI this_type   operator/ (const this_type& a_vector) const;
 
     TL_FI this_type&  operator+= (const this_type& a_vector);
     TL_FI this_type&  operator-= (const this_type& a_vector);
-    TL_FI this_type&  operator*= (const value_type& a_value);
+    TL_FI this_type&  operator*= (const_reference a_value);
     TL_FI this_type&  operator*= (const this_type& a_vector);
-    TL_FI this_type&  operator/= (const value_type& a_value);
+    TL_FI this_type&  operator/= (const_reference a_value);
     TL_FI this_type&  operator/= (const this_type& a_vector);
 
     TL_FI bool        operator == (const this_type& a_vector);
@@ -192,11 +198,11 @@ namespace tloc { namespace math {
   // Static const definitions
   template<typename T, tl_size T_Size>
   const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ZERO =
-    Vector<T, T_Size>(0);
+    typename Vector<T, T_Size>::this_type(0);
 
   template<typename T, tl_size T_Size>
   const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE =
-    Vector<T, T_Size>(1);
+    typename Vector<T, T_Size>::this_type(1);
 
 };};
 

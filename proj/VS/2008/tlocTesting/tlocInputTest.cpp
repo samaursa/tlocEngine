@@ -258,7 +258,8 @@ namespace TestingInput
       sampleInputMouse<Mouse<> > callback(mouse);
       mouse->Register(&callback);
 
-      SendMousePress(a_axis, a_data, a_x, a_y);
+      SendMousePress(a_axis, a_data, 
+                     static_cast<LONG>(a_x), static_cast<LONG>(a_y));
 
       while (countDown.ElapsedMilliSeconds() < 1000 &&
              callback.m_movementEvents == 0)

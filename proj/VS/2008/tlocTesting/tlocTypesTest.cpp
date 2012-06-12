@@ -54,7 +54,7 @@ namespace TESTING_TYPES
     a = a / 2;
     CHECK(a.Value() == 25);
 
-    ConditionalType<s32, true> b = a++;
+    ConditionalType<tl_int, true> b = a++;
     CHECK(a.Value() == 26);
     CHECK(b.Value() == 25);
 
@@ -95,10 +95,10 @@ namespace TESTING_TYPES
     CHECK( (a == a2) == true);
 
     a = 5;
-    CHECK( (5 - a) == 0);
-    CHECK( (5 + a) == 10);
-    CHECK( (5 * a) == 25);
-    CHECK( (10 / a) == 2);
+    CHECK( (tl_int(5) - a) == 0);
+    CHECK( (tl_int(5) + a) == 10);
+    CHECK( (tl_int(5) * a) == 25);
+    CHECK( (tl_int(10) / a) == 2);
     CHECK( (10 < a) == false);
     CHECK( (10 > a) == true);
     CHECK( (5 >= a) == true);
@@ -106,7 +106,7 @@ namespace TESTING_TYPES
     CHECK( (5 <= a) == true);
     CHECK( (2 <= a) == true);
 
-    s32 num = 10;
+    tl_int num = 10;
     num = num - a;
     CHECK(num == 5);
     num = num + a;
@@ -175,7 +175,7 @@ namespace TESTING_TYPES
     a = a / 2;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
 
-    ConditionalType<s32, false> b = a++;
+    ConditionalType<tl_int, false> b = a++;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
     CHECK(b.Value() == b.g_conditional_type_invalid_value );
 
@@ -215,7 +215,7 @@ namespace TESTING_TYPES
     a = a2;
     CHECK( (a == a2) == true);
 
-    s32 num = 5;
+    tl_int num = 5;
     num = num + a;
     CHECK(num == 5);
     num = num - a;

@@ -573,9 +573,10 @@ namespace TestingAlgorithms
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithms/RandomShuffle", "")
   {
-    TL_NESTED_FUNC_BEGIN(getRandom) tl_int getRandom(tl_int a_num)
+    TL_NESTED_FUNC_BEGIN(getRandom) tl_size getRandom(tl_size a_num)
     {
-      return g_defaultRNG.GetRandomInteger(a_num);
+      return static_cast<u32>
+        (g_defaultRNG.GetRandomInteger(static_cast<u32>(a_num)));
     }
     TL_NESTED_FUNC_END();
 
@@ -859,21 +860,21 @@ namespace TestingAlgorithms
       ++m_dtorCount;
     }
 
-    static tl_int m_ctorCount;
-    static tl_int m_dtorCount;
+    static tl_size m_ctorCount;
+    static tl_size m_dtorCount;
   };
 
-  tl_int CountDestruction::m_ctorCount = 0;
-  tl_int CountDestruction::m_dtorCount = 0;
+  tl_size CountDestruction::m_ctorCount = 0;
+  tl_size CountDestruction::m_dtorCount = 0;
 
   TEST_CASE("Core/Algorithms/delete_ptrs", "")
   {
     Array<CountDestruction*> myArray;
     List<CountDestruction*>  myList;
 
-    const tl_int numElements = 10;
+    const tl_size numElements = 10;
 
-    for (tl_int i = 0; i < numElements; ++i)
+    for (tl_size i = 0; i < numElements; ++i)
     {
       myArray.push_back(new CountDestruction()); //-V508
       myList.push_back(new CountDestruction()); //-V508

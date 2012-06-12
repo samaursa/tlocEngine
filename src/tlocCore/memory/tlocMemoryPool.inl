@@ -57,7 +57,7 @@ namespace tloc { namespace core {
       ++currentIndex;
     }
 
-    m_numAvail = a_maxElements;
+    m_numAvail = static_cast<tl_int>(a_maxElements);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -96,7 +96,8 @@ namespace tloc { namespace core {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    wrapper_type& toSwap = this->operator[](a_retElem.m_index);
+    wrapper_type& toSwap = 
+      this->operator[](static_cast<tl_int>(a_retElem.m_index));
     toSwap.DoSwap(m_allElements[lastUsedElem]);
     m_numAvail++;
   }
@@ -208,7 +209,7 @@ namespace tloc { namespace core {
   template <MEMORY_POOL_INDEX_TEMP>
   tl_int  MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
   {
-    return m_allElements.size() - m_numAvail;
+    return static_cast<tl_int>(m_allElements.size()) - m_numAvail;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>

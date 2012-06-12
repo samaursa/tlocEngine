@@ -149,7 +149,7 @@ namespace tloc { namespace core {
   void random_shuffle(T_RandomAccessIterator a_first,
                       T_RandomAccessIterator a_last);
 
-  // T_RandomNumberGenerator takes in a number n (of type size_type) and and
+  // T_RandomNumberGenerator takes in a number n (of type tl_size) and and
   // generates a random number between 0...n.
   template <typename T_RandomAccessIterator, class T_RandomNumberGenerator>
   void random_shuffle(T_RandomAccessIterator a_first,

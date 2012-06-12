@@ -19,7 +19,7 @@ namespace TestingMemoryPool
   {
     // TODO: Clean up these tests (put each one in its own TEST_CASE)
 
-    const tl_int count = 10;
+    const tl_size count = 10;
 
     typedef core::MemoryPoolIndex<tl_int> memory_pool_type;
     memory_pool_type myPool;

@@ -629,7 +629,7 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode)
   {
-    const size_type n = (size_type)this->bucket_index(a_hashCode, (u32)bucket_count());
+    const size_type n = (size_type)bucket_index(a_hashCode, (u32)bucket_count());
 
     typename buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);

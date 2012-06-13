@@ -468,7 +468,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::resize(size_type a_newSize)
   {
-    size_type currSize = this->size();
+    size_type currSize = size();
     if (a_newSize > currSize)
     {
       insert(m_end, a_newSize - currSize, value_type());
@@ -483,7 +483,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<ARRAY_PARAMS>::resize(size_type a_newSize, 
                                         const_reference a_value)
   {
-    size_type currSize = this->size();
+    size_type currSize = size();
     if (a_newSize > currSize)
     {
       insert(m_end, a_newSize - currSize, a_value);
@@ -497,7 +497,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::reserve(size_type a_newCapacity)
   {
-    if (a_newCapacity > this->capacity())
+    if (a_newCapacity > capacity())
     {
       pointer ptr = DoReAllocate(a_newCapacity);
 
@@ -505,7 +505,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
       if (ptr)
       {
-        const size_type prevSize = this->size();
+        const size_type prevSize = size();
         m_begin     = ptr;
         m_end       = ptr + prevSize;
         m_capacity  = ptr + a_newCapacity;
@@ -517,9 +517,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::shrink(size_type a_newCapacity)
   {
-    if (a_newCapacity < this->capacity())
+    if (a_newCapacity < capacity())
     {
-      size_type newSize = this->size();
+      size_type newSize = size();
 
       // If the new capacity is smaller than the number of elements we are
       // currently, storing, we need to destroy those elements
@@ -545,7 +545,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   TL_I void Array<ARRAY_PARAMS>::shrink_to_fit()
   {
-    shrink(this->size());
+    shrink(size());
   }
 
   //------------------------------------------------------------------------
@@ -555,7 +555,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I void Array<ARRAY_PARAMS>::assign(size_type a_repetitionNum, 
                                         const_reference a_elemToCopy)
   {
-    if (this->size() < a_repetitionNum)
+    if (size() < a_repetitionNum)
     {
       resize(a_repetitionNum);
     }
@@ -585,7 +585,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
     else
     {
-      this->DoReAllocate();
+      DoReAllocate();
       DoAddToEnd(a_valueToCopy);
     }
   }
@@ -598,7 +598,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
     const size_type posIndex = a_position - m_begin;
 
-    if (this->full() || a_position != m_end)
+    if (full() || a_position != m_end)
     {
       DoInsertValue(a_position, a_valueToCopy);
     }
@@ -665,7 +665,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
 
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
-    if (this->size() < projectedSize)
+    if (size() < projectedSize)
     {
       resize(projectedSize);
     }
@@ -706,7 +706,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // be destroyed, so make a copy
       const value_type valueCopy = a_value;
       size_type posIndex = a_position - m_begin;
-      this->DoReAllocate();
+      DoReAllocate();
       insert(m_begin + posIndex, valueCopy);
     }
   }
@@ -749,8 +749,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
       // Reallocate
       // TODO: Replace with resize() once implemented
-      size_type prevSize = this->size();
-      size_type newCap  = this->capacity() + a_numElemsToInsert;
+      size_type prevSize = size();
+      size_type newCap  = capacity() + a_numElemsToInsert;
       pointer ptr;
 
       // DoReallocate may malloc or realloc depending on the initial size
@@ -797,9 +797,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                                     T_InputIterator a_last)
   {
     TLOC_ASSERT_ARRAY_RANGE(a_first, a_last);
-    size_type newSize = this->size() + static_cast<size_type>(tloc::core::distance(a_first, a_last));
+    size_type newSize = size() + static_cast<size_type>(tloc::core::distance(a_first, a_last));
 
-    if (this->capacity() >= newSize)
+    if (capacity() >= newSize)
     {
       while (a_first != a_last)
       {

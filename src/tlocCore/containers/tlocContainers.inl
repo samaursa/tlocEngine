@@ -6,8 +6,8 @@
 #endif
 
 #include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArrayFixed.inl>
 #include <tlocCore/containers/tlocList.inl>
 #include <tlocCore/containers/tlocHashmap.inl>
-#include <tlocCore/containers/tlocStackArray.inl>
 
 #endif

@@ -115,6 +115,7 @@ namespace TestingMemoryPool
       pool.GetNext().GetElement() = i;
     }
 
+    bool recycleTestPassed = true;
     for (tl_int i = 0; i < T_PoolSize; ++i)
     {
       const tl_int indexToRecycle = 0;
@@ -125,9 +126,15 @@ namespace TestingMemoryPool
       for (T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
            itr != itrEnd; ++itr)
       {
-        CHECK(itr->GetElement() != elementToCheck);
+        if (itr->GetElement() == elementToCheck)
+        {
+          recycleTestPassed = false;
+          goto recycle_test_finished;
+        }
       }
     }
+recycle_test_finished:
+    CHECK(recycleTestPassed);
   }
 
   TEST_CASE("Core/MemoryPool/GetAndRecycle", "")

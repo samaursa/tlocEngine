@@ -1,7 +1,11 @@
 #include "tlocTestCommon.h"
 
+#define TLOC_MATRIX_ALLOW_EASY_OPERATIONS
+
 #include <tlocMath/matrix/tlocMatrix.h>
 #include <tlocMath/matrix/tlocMatrix.inl>
+
+#undef TLOC_MATRIX_ALLOW_EASY_OPERATIONS
 
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/vector/tlocVector3.inl>
@@ -104,9 +108,35 @@ namespace TestingMatrix
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
   }
 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/AddOperator",
+    "Test addition operator")
+  {
+    c = a;
+    c += a;
+    CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+
+    d = a + a;
+    CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+  }
+
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub",
     "Test subtraction")
   {
+    a.Sub(b);
+    CHECK_MATRIX3F(a, 0, 2, 4, -2, 0, 2, -4, -2, 0);
+
+    d.Sub(b, a);
+    CHECK_MATRIX3F(d, 1, 0, -1, 6, 5, 4, 11, 10, 9);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/SubOperator",
+    "Test subtraction operator")
+  {
+    a -= (b);
+    CHECK_MATRIX3F(a, 0, 2, 4, -2, 0, 2, -4, -2, 0);
+
+    d = b - a;
+    CHECK_MATRIX3F(d, 1, 0, -1, 6, 5, 4, 11, 10, 9);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Mul",
@@ -145,6 +175,45 @@ namespace TestingMatrix
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
   }
 
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/MulOperator",
+    "Test multipliciation operator")
+  {
+    //------------------------------------------------------------------------
+    c.Set(0);
+    c(0, 0) = 1;
+    c(1, 1) = 1;
+    c(2, 2) = 1;
+
+    d = c;
+    d *= (c);
+    CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+
+    d = d * 5;
+    CHECK_MATRIX3F(d, 5, 0, 0, 0, 5, 0, 0, 0, 5);
+
+    d *= 2;
+    CHECK_MATRIX3F(d, 10, 0, 0, 0, 10, 0, 0, 0, 10);
+    c.Set(1);
+    d += c;
+    CHECK_MATRIX3F(d, 11, 1, 1, 1, 11, 1, 1, 1, 11);
+
+    //------------------------------------------------------------------------
+    c.Identity();
+    Vec3f someVec(1, 0, 0);
+    Vec3f result;
+    result = c * someVec;
+
+    CHECK_VEC3F(result, 1, 0, 0); //-V550
+
+    //------------------------------------------------------------------------
+    c.Zero(); d.Zero();
+    f32 numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    c.Set(numArray, Matrix<f32, 3>::k_RowMajor);
+    d = c;
+    e = c * d;
+    CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
+  }
+
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Div",
     "Test division")
   {
@@ -152,6 +221,20 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 11, 11, 11, 11, 11, 11, 11, 11, 11);
     d.Div(11);
     CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/DivOperator",
+    "Test division operator")
+  {
+    d.Set(11);
+    CHECK_MATRIX3F(d, 11, 11, 11, 11, 11, 11, 11, 11, 11);
+    d /= 11;
+    CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    
+    e.Set(42);
+    CHECK_MATRIX3F(e, 42, 42, 42, 42, 42, 42, 42, 42, 42);
+    e = e / 2;
+    CHECK_MATRIX3F(e, 21, 21, 21, 21, 21, 21, 21, 21, 21);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Transpose",

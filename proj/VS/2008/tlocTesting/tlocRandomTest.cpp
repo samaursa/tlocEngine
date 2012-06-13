@@ -14,19 +14,19 @@ namespace TestingRandom
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      f32 randomNumber = g_defaultRNG.GetRandomFloat();
+      tl_float randomNumber = g_defaultRNG.GetRandomFloat();
       CHECK( (randomNumber >= 0 && randomNumber < 1.0f) == true);
     }
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      f32 randomNumber = g_defaultRNG.GetRandomFloat(1.0f, 50.0f);
+      tl_float randomNumber = g_defaultRNG.GetRandomFloat(1.0f, 50.0f);
       CHECK( (randomNumber >= 1.0f && randomNumber <= 50.0f) == true);
     }
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      u32 randomNumber = g_defaultRNG.GetRandomInteger(1, 100);
+      tl_int randomNumber = g_defaultRNG.GetRandomInteger(1, 100);
       CHECK( (randomNumber >= 1 && randomNumber <= 100) == true);
     }
   }

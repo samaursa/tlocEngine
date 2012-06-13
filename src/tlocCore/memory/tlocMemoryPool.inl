@@ -115,7 +115,7 @@ namespace tloc { namespace core {
 
     m_allElements.resize(a_initialSize);
     DoInitializeRange(m_allElements.begin(), m_allElements.end(), 0);
-    m_numAvail = a_initialSize;
+    m_numAvail = static_cast<index_type>(a_initialSize);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -149,7 +149,7 @@ namespace tloc { namespace core {
   {
     TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
 
-    if (m_numAvail >= (tl_int)m_allElements.size())
+    if (m_numAvail >= (index_type)m_allElements.size())
     {
       TLOC_ASSERT_MEMORY_POOL_INDEX(false, 
         "Trying to recycle more elements than we have!");
@@ -167,9 +167,9 @@ namespace tloc { namespace core {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Recycle(tl_int a_index)
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Recycle(index_type a_index)
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (tl_int)m_allElements.size(),
+    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (index_type)m_allElements.size(),
                                   "Index out of bounds!");
     Recycle(m_allElements[a_index]);
   }
@@ -177,7 +177,7 @@ namespace tloc { namespace core {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::RecycleAll()
   {
-    for (tl_int i = 0; i < m_numAvail; ++i)
+    for (index_type i = 0; i < m_numAvail; ++i)
     {
       Recycle(m_allElements[i]);
     }
@@ -323,7 +323,8 @@ namespace tloc { namespace core {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  tl_int  MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
+  MEMORY_POOL_INDEX_TYPE::index_type  
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
   {
     return m_allElements.size() - m_numAvail;
   }

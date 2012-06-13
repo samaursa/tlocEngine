@@ -3,9 +3,9 @@
 
 namespace tloc
 {
-  template Math<f32>;
-  template Math<f64>;
-  template Math<f128>;
+  template class Math<f32>;
+  template class Math<f64>;
+  template class Math<f128>;
 };
 
 #ifndef TLOC_FULL_SOURCE

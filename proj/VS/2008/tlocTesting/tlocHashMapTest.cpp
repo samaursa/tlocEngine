@@ -40,7 +40,7 @@ namespace TestingHashMap
 
     CHECK(test[someKey] == 10);
 
-    const tl_int count = 10;
+    const tl_size count = 10;
     typedef tl_hash_map<tl_int, foo*>::type my_map;
     my_map test2;
     CHECK(test2.size() == 0);

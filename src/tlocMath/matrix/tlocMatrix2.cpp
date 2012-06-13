@@ -3,6 +3,6 @@
 
 //------------------------------------------------------------------------
 // Explicit template instantiations
-template tloc::math::Mat2f;
-template tloc::math::Mat2d;
-template tloc::math::Mat2l;
+template class tloc::math::Matrix2<tloc::f32>;
+template class tloc::math::Matrix2<tloc::f64>;
+template class tloc::math::Matrix2<tloc::f128>;

@@ -510,11 +510,15 @@ namespace tloc { namespace core {
   void random_shuffle(T_RandomAccessIterator a_first, 
                       T_RandomAccessIterator a_last)
   {
-    iterator_traits<T_RandomAccessIterator>::difference_type rangeSize, i;
+    typename iterator_traits<T_RandomAccessIterator>::difference_type 
+      rangeSize, i;
     rangeSize = a_last - a_first;
+
+    typedef typename rng_default::int_type int_type;
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], a_first[g_defaultRNG.GetRandomInteger(i + 1)]);
+      tlSwap(a_first[i], 
+             a_first[g_defaultRNG.GetRandomInteger(static_cast<int_type>(i) + 1)]);
     }
   }
 
@@ -523,11 +527,13 @@ namespace tloc { namespace core {
                       T_RandomAccessIterator a_last,
                       T_RandomNumberGenerator a_rng)
   {
-    iterator_traits<T_RandomAccessIterator>::difference_type rangeSize, i;
+    typename iterator_traits<T_RandomAccessIterator>::difference_type 
+      rangeSize, i;
     rangeSize = a_last - a_first;
+
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], a_first[a_rng(i + 1)]);
+      tlSwap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
     }
   }
 

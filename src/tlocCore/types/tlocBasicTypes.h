@@ -76,14 +76,14 @@ namespace tloc
   // The following types are useful when you want the best type size depending
   // on the platform itself
 
-#if defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
-  typedef s32               tl_int;
-  typedef u32               tl_uint;
-  typedef f32               tl_float;
-#elif defined(_WIN64) || defined(__LP64__)
+#if defined(_WIN64) || defined(__LP64__)
   typedef s64               tl_int;
   typedef u64               tl_uint;
   typedef f64               tl_float;
+#elif defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
+  typedef s32               tl_int;
+  typedef u32               tl_uint;
+  typedef f32               tl_float;
 #else
 # error WIP
 #endif

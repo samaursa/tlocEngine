@@ -14,8 +14,8 @@ namespace tloc { namespace core { namespace component_system {
       mesh,
 
       count
-    };
-  }; typedef tl_uint component_type;
+    }; typedef tl_int value_type;
+  };
 
 };};};
 

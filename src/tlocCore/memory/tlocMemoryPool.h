@@ -38,76 +38,32 @@ namespace tloc { namespace core {
     struct Allocate_On_Heap {};
   };
 
-  namespace memory_pool_index_wrapper
-  {
-    template <typename T_ParentType, typename T_Elem, typename T_SizeType>
-    class type
-    {
-    public:
-      typedef T_Elem                                    value_type;
-      typedef T_SizeType                                size_type;
-      typedef type<T_ParentType, value_type, size_type> this_type;
 
-      friend T_ParentType; // here this_type is the parent class
-
-      // Visual studio gives an incorrect warning for the friend declaration
-      // below. We must therefore disable it.
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-#pragma warning(push)
-#pragma warning(disable:4517)
-#endif
-      friend tl_array<this_type, Array_Unordered >::type;
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-#pragma warning(pop)
-#endif
-
-      value_type& GetElement() { return m_element; }
-      size_type   GetIndex() { return m_index; }
-
-      bool operator ==(this_type& a_rhs)
-      {
-        return (m_element == a_rhs.m_element) &&
-               (m_index == a_rhs.m_index);
-      }
-
-    private:
-
-      type() {}
-      type(const this_type& a_rhs)
-      {
-        m_element = a_rhs.m_element;
-        m_index = a_rhs.m_index;
-      }
-
-      void DoSwap(this_type& a_rhs)
-      {
-        tlSwap(m_element, a_rhs.m_element);
-        // The indexes are permanent, we don't swap those
-      }
-
-      value_type  m_element;
-      size_type   m_index;
-    };
-  };
 
   //------------------------------------------------------------------------
   // Intrusive Memory Pool
 
   ///-------------------------------------------------------------------------
-  /// @brief This is the simplest memory pool. It allows fast retrieval of
-  /// free and used elements by caching the elements with an index. The pool
-  /// assumes that the element will have a default constructor. This type of
-  /// of a memory pool is useful for pools of objects such as particles
+  /// @brief
+  /// This is the simplest memory pool. It allows fast retrieval of free
+  /// and used elements by caching the elements with an index. The pool
+  /// assumes that the element will have a default constructor. This type
+  /// of of a memory pool is useful for pools of objects such as
+  /// particles.
+  ///
+  /// @T_Capacity specifies the size of memory pool which cannot be changed
+  ///             at runtime. If you want the pool to dynamically increase in
+  ///             size, then set T_Capacity to 0
   ///-------------------------------------------------------------------------
-
   template <class T,
+            tl_uint T_Capacity = 0,
             class T_PolicyAllocation = memory_pool_policies::Allocate_On_Stack,
             class T_PolicyUsedElements = memory_pool_policies::Track_Used_Elements>
   class MemoryPoolIndex
   {
   public:
-    //------------------------------------------------------------------------
-    // typedefs
+
+#pragma region typedefs
 
     typedef T_PolicyAllocation                        policy_allocation_type;
     typedef T_PolicyUsedElements                      policy_used_elements_type;
@@ -120,22 +76,46 @@ namespace tloc { namespace core {
                      memory_pool_policies::Track_Used_Elements>::value>
                                                   policy_used_elements_result_type;
 
+    typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
+
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
+    typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
+
+    // Select T or T* as the value_type
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
        value_type, value_type*>::Result                 selected_type;
+
     typedef MemoryPoolIndex<value_type,
+                            T_Capacity,
                             policy_allocation_type,
                             policy_used_elements_type>  this_type;
-    typedef memory_pool_index_wrapper::type
-                            <this_type,
-                             selected_type, size_type>  wrapper_type;
-    typedef typename tl_array<wrapper_type,
-                              Array_Unordered>::type    container_type;
-    typedef typename container_type::iterator           iterator;
-    typedef typename container_type::const_iterator     const_iterator;
+
+  private:
+#include "tlocMemoryPoolIndexWrapper.h"
+  public:
+
+    // Declare our element wrapper
+    typedef Wrapper <selected_type, index_type>  wrapper_type;
+
+    // Select the proper array
+    typedef typename tl_array<wrapper_type, Array_Unordered>::type d_array_type;
+    typedef typename tl_array_fixed<wrapper_type,
+                                    pool_size_type::value>::type   s_array_type;
+
+    typedef typename
+      Loki::Select<pool_size_type::value == 0,
+                   d_array_type, s_array_type >::Result   container_type;
+
+    // Declare iterator types
+    typedef typename container_type::iterator             iterator;
+    typedef typename container_type::const_iterator       const_iterator;
+
+#pragma endregion typedefs
+
+  public:
 
     //------------------------------------------------------------------------
     // Methods
@@ -143,7 +123,7 @@ namespace tloc { namespace core {
     MemoryPoolIndex();
     ~MemoryPoolIndex();
 
-    void Initialize(size_type a_maxElements);
+    void Initialize(size_type a_initialSize);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -168,7 +148,7 @@ namespace tloc { namespace core {
     ///
     /// @param  a_index Zero-based index of a.
     ///-------------------------------------------------------------------------
-    void          Recycle(tl_int a_index);
+    void          Recycle(index_type a_index);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycle all elements
@@ -184,8 +164,8 @@ namespace tloc { namespace core {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type& operator[](tl_int a_index);
-    const wrapper_type& operator[](tl_int a_index) const;
+    wrapper_type& operator[](index_type a_index);
+    const wrapper_type& operator[](index_type a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;
@@ -218,7 +198,25 @@ namespace tloc { namespace core {
 
   protected:
 
-    tl_int          DoGetAvailIndex() const;
+    typedef type_false                                 fixed_container_selected;
+    typedef type_true                                  dynamic_container_selected;
+
+    // Used for selecting functions wrt the container type
+    typedef typename Loki::Select<pool_size_type::value == 0,
+      type_true, type_false>::Result
+                                                        container_dynamic_type;
+
+  protected:
+    void            DoResize(size_type, fixed_container_selected);
+    void            DoResize(size_type a_newSize, dynamic_container_selected);
+
+    void            DoInitializeRange(iterator a_begin, iterator a_end,
+                                      index_type a_startingIndex);
+
+    bool            DoExpand(fixed_container_selected);
+    bool            DoExpand(dynamic_container_selected);
+
+    index_type      DoGetAvailIndex() const;
 
     void            DoNewElement(iterator,
                                  memory_pool_policies::Allocate_On_Stack);
@@ -245,9 +243,10 @@ namespace tloc { namespace core {
     bool            DoIsInitialized();
 
     container_type            m_allElements;
-    tl_int                    m_numAvail;
+    index_type                m_numAvail;
 
-    static wrapper_type npos;
+    static wrapper_type       npos;
+    static const index_type   sm_invalidIndex;
   };
 
 };};

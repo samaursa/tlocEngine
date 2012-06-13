@@ -44,7 +44,7 @@ namespace tloc { namespace math {
   TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2(value_type m00, value_type m11)
   {
     T diag[2] = {m00, m11};
-    this->MakeDiagonal(diag);
+    MakeDiagonal(diag);
   }
 
   template <MATRIX_2_TYPES>

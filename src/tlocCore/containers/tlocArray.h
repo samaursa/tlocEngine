@@ -200,6 +200,16 @@ namespace tloc { namespace core {
     typedef typename base_type::const_reverse_iterator    const_reverse_iterator;
 
     //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::size;
+    using base_type::capacity;
+    using base_type::full;
+    using base_type::DoReAllocate;
+    using base_type::m_begin;
+    using base_type::m_end;
+    using base_type::m_capacity;
+
+    //------------------------------------------------------------------------
     // Constructors
 
     TL_FI Array();
@@ -291,10 +301,6 @@ namespace tloc { namespace core {
     TL_I void             DoInsertByIterator(iterator a_position,
                                              T_InputIterator a_first,
                                              T_InputIterator a_last);
-    
-    using base_type::m_begin;
-    using base_type::m_end;
-    using base_type::m_capacity;
   };
 
   //////////////////////////////////////////////////////////////////////////

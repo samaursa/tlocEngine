@@ -6,7 +6,7 @@
 // complete engine at any point in time without re-writing code
 
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocStackArray.h>
+#include <tlocCore/containers/tlocArrayFixed.h>
 #include <tlocCore/containers/tlocStack.h>
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocHashmap.h>
@@ -24,7 +24,7 @@ namespace tloc { namespace core {
   struct tl_array_fixed
   {
     DECL_TYPEDEF_HELPER(tl_array_fixed);
-    typedef StackArray<T, T_Capacity> type;
+    typedef ArrayFixed<T, T_Capacity> type;
   };
 
   template <typename T, bool T_DedicatedSize = true>

@@ -23,8 +23,9 @@ namespace tloc { namespace math {
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
-    using base_type::k_MatrixSize;
+    using base_type::MakeDiagonal;
     using base_type::m_values;
+    using base_type::k_MatrixSize;
     
     //------------------------------------------------------------------------
     // Constructors

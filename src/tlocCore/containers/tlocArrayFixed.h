@@ -18,12 +18,12 @@
 namespace tloc { namespace core {
 
   template <typename T, tl_size T_Capacity>
-  class StackArray
+  class ArrayFixed
   {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
-    typedef StackArray<T, T_Capacity>                     this_type;
+    typedef ArrayFixed<T, T_Capacity>                     this_type;
     typedef T                                             value_type;
     typedef T*                                            pointer;
     typedef T&                                            reference;
@@ -49,15 +49,15 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // constructors
 
-    TL_FI StackArray();
-    TL_FI StackArray(const this_type& a_toCopy);
+    TL_FI ArrayFixed();
+    TL_FI ArrayFixed(const this_type& a_toCopy);
     template <tl_size T_OtherCapacity>
-    TL_FI StackArray(const StackArray<value_type, T_OtherCapacity>& a_toCopy);
-    TL_FI explicit StackArray(size_type a_numElemsToInsert,
+    TL_FI ArrayFixed(const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy);
+    TL_FI explicit ArrayFixed(size_type a_numElemsToInsert,
                               const value_type& a_valueToCopy);
-    TL_FI explicit StackArray(size_type a_count);
+    TL_FI explicit ArrayFixed(size_type a_count);
     template <typename T_InputIterator>
-    TL_FI StackArray(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd);
+    TL_FI ArrayFixed(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd);
 
     //------------------------------------------------------------------------
     // Assignment
@@ -67,7 +67,7 @@ namespace tloc { namespace core {
 
     template <tl_size T_OtherCapacity>
     TL_I this_type&
-      operator= (const StackArray<value_type, T_OtherCapacity>& a_toCopy);
+      operator= (const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy);
 
     //------------------------------------------------------------------------
     // Element access
@@ -137,7 +137,7 @@ namespace tloc { namespace core {
     TL_I void             clear();
 
     template <tl_size T_OtherCapacity>
-    TL_I void             swap(StackArray<value_type, T_OtherCapacity>& a_vec);
+    TL_I void             swap(ArrayFixed<value_type, T_OtherCapacity>& a_vec);
 
   protected:
 
@@ -146,7 +146,7 @@ namespace tloc { namespace core {
 
     template <tl_size T_OtherCapacity>
     TL_I this_type&
-      DoOperatorEqual(const StackArray<value_type, T_OtherCapacity>& a_toCopy);
+      DoOperatorEqual(const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy);
 
     //------------------------------------------------------------------------
     // resize() Helper

@@ -420,6 +420,8 @@ namespace tloc { namespace core {
     // Typedefs
 
     typedef Hashtable<T_Policies>                   this_type;
+    typedef HashCode<T_Policies, 
+            typename T_Policies::cache_hash>        base_type;
     typedef T_Policies                              policy_type;
 
     // typedefs from T_Policies
@@ -465,6 +467,11 @@ namespace tloc { namespace core {
 
     // typedefs inherited from HashCode<>
     typedef typename hash_code_base_type::hash_code_type    hash_code_type;
+
+    //////////////////////////////////////////////////////////////////////////
+    // using declarations for access to base class
+
+    using base_type::bucket_index;
 
     //////////////////////////////////////////////////////////////////////////
     // Methods

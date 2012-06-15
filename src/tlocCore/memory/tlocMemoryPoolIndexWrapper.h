@@ -12,7 +12,8 @@ public:
   typedef this_type                                   parent_type;
   typedef Wrapper<wrapper_value_type, index_type>             wrapper_type;
 
-  template <class T_1, tl_uint T_2, class T_3> friend class     MemoryPoolIndex;
+  template <class T_1, tl_uint T_2,
+            class T_3, class T_4> friend class        MemoryPoolIndex;
 
   Wrapper();
   Wrapper(const wrapper_type& a_rhs);

@@ -13,15 +13,25 @@ namespace tloc { namespace core {
 
   namespace p_memory_pool_index
   {
-    // Memory pool instantiates the element on the stack
-    struct Allocate_On_Stack {};
-    // Memory pool instantiates the element on the heap. If there are many
-    // elements and they are very large in size, this is the better policy to
-    // use to avoid stack overflows
-    struct Allocate_On_Heap {};
+    namespace allocation
+    {
+      // Memory pool instantiates the element on the stack
+      struct On_Stack{};
+      // Memory pool instantiates the element on the heap. If there are many
+      // elements and they are very large in size, this is the better policy to
+      // use to avoid stack overflows
+      struct On_Heap{};
+    };
+
+    namespace indexing
+    {
+      // Uses the built-in wrapper to store the user element
+      struct Wrapper { };
+
+      // The user element must have an m_index variable
+      struct User { };
+    };
   };
-
-
 
   //------------------------------------------------------------------------
   // Intrusive Memory Pool
@@ -40,7 +50,8 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   template <class T,
             tl_uint T_Capacity = 0,
-            class T_PolicyAllocation = p_memory_pool_index::Allocate_On_Stack>
+            class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
+            class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndex
   {
   public:
@@ -48,10 +59,17 @@ namespace tloc { namespace core {
 #pragma region typedefs
 
     typedef T_PolicyAllocation                        policy_allocation_type;
+    typedef T_PolicyIndexing                          policy_indexing_type;
+
     typedef typename
       Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
-                     p_memory_pool_index::Allocate_On_Stack>::value>
+      p_memory_pool_index::allocation::On_Stack>::value>
                                                   policy_allocation_result_type;
+
+    typedef typename
+      Loki::Int2Type<Loki::IsSameType<policy_indexing_type,
+      p_memory_pool_index::indexing::Wrapper>::value>
+                                                  policy_indexing_result_type;
 
     typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
 
@@ -59,11 +77,6 @@ namespace tloc { namespace core {
     typedef T                                           value_type;
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
-
-    // Select T or T* as the value_type
-    typedef typename Loki::Select
-      <policy_allocation_result_type::value,
-       value_type, value_type*>::Result                 selected_type;
 
     typedef MemoryPoolIndex<value_type,
                             T_Capacity,
@@ -73,8 +86,25 @@ namespace tloc { namespace core {
 #include "tlocMemoryPoolIndexWrapper.h"
   public:
 
+    // Select T or T* as the value_type
+    typedef typename Loki::Select
+      <policy_allocation_result_type::value,
+       value_type, value_type*>::Result                 selected_user_type;
+
+    typedef typename Loki::Select
+      <policy_allocation_result_type::value,
+       Wrapper<value_type, index_type>,
+       Wrapper<value_type, index_type>*>::Result       selected_wrapper_type;
+
+    typedef typename Loki::Select
+      <policy_indexing_result_type::value,
+       Wrapper<value_type, index_type>,
+       value_type>::Result                              selected_value_type;
+
     // Declare our element wrapper
-    typedef Wrapper <selected_type, index_type>  wrapper_type;
+    typedef typename Loki::Select
+      <policy_indexing_result_type::value,
+       selected_wrapper_type, selected_user_type>::Result    wrapper_type;
 
     // Select the proper array
     typedef typename tl_array<wrapper_type, Array_Unordered>::type d_array_type;
@@ -177,6 +207,9 @@ namespace tloc { namespace core {
     typedef type_false                                 fixed_container_selected;
     typedef type_true                                  dynamic_container_selected;
 
+    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
+    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
+
     // Used for selecting functions wrt the container type
     typedef typename Loki::Select<pool_size_type::value == 0,
       type_true, type_false>::Result
@@ -194,15 +227,20 @@ namespace tloc { namespace core {
 
     index_type      DoGetAvailIndex() const;
 
-    void            DoNewElement(iterator,
-                                 p_memory_pool_index::Allocate_On_Stack);
-    void            DoNewElement(iterator a_pos,
-                                 p_memory_pool_index::Allocate_On_Heap);
 
-    void            DoCleanup(p_memory_pool_index::Allocate_On_Stack);
-    void            DoCleanup(p_memory_pool_index::Allocate_On_Heap);
+    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_stack);
+    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_heap);
 
-    bool            DoIsInitialized();
+    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const;
+    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const;
+
+    void            DoNewElement(iterator, allocation_on_stack);
+    void            DoNewElement(iterator a_pos, allocation_on_heap);
+
+    void            DoCleanup(allocation_on_stack);
+    void            DoCleanup(allocation_on_heap);
+
+    bool            DoIsInitialized() const;
 
     container_type            m_allElements;
     index_type                m_numAvail;

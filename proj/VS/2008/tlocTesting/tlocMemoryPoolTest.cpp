@@ -11,6 +11,14 @@
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
+#define TEST_MEMORY_POOL_INDEX(funcName)\
+  funcName<core::MemoryPoolIndex<tl_uint, 100>, 100>();\
+  funcName<core::MemoryPoolIndex<tl_uint>, 100>();\
+  funcName<core::MemoryPoolIndex<tl_uint, 100,\
+  core::p_memory_pool_index::Allocate_On_Heap>, 100>();\
+  funcName<core::MemoryPoolIndex<tl_uint, 0,\
+  core::p_memory_pool_index::Allocate_On_Heap>, 100>()
+
 namespace TestingMemoryPool
 {
   USING_TLOC;
@@ -28,8 +36,7 @@ namespace TestingMemoryPool
 
   TEST_CASE("Core/MemoryPool/Initialize", "")
   {
-    TestInitialize<core::MemoryPoolIndex<tl_uint, 100>, 100>();
-    TestInitialize<core::MemoryPoolIndex<tl_uint>, 100>();
+    TEST_MEMORY_POOL_INDEX(TestInitialize);
   }
 
   template <typename T_PoolType, tl_uint T_PoolSize>
@@ -63,8 +70,7 @@ namespace TestingMemoryPool
 
   TEST_CASE("Core/MemoryPool/IsValid", "")
   {
-    TestIsValid<core::MemoryPoolIndex<tl_uint, 100>, 100>();
-    TestIsValid<core::MemoryPoolIndex<tl_uint>, 100>();
+    TEST_MEMORY_POOL_INDEX(TestInitialize);
   }
 
   template <typename T_PoolType, tl_uint T_PoolSize>
@@ -139,8 +145,7 @@ recycle_test_finished:
 
   TEST_CASE("Core/MemoryPool/GetAndRecycle", "")
   {
-    TestGetAndRecycle<core::MemoryPoolIndex<tl_uint, 100>, 100>();
-    TestGetAndRecycle<core::MemoryPoolIndex<tl_uint>, 100>();
+    TEST_MEMORY_POOL_INDEX(TestInitialize);
   }
 
   typedef type_true           dynamic_pool_type;
@@ -191,7 +196,6 @@ recycle_test_finished:
 
   TEST_CASE("Core/MemoryPool/GetNext_Growth", "Test GetNext growth")
   {
-    TestGrowth<core::MemoryPoolIndex<tl_uint, 100>, 100>();
-    TestGrowth<core::MemoryPoolIndex<tl_uint>, 100>();
+    TEST_MEMORY_POOL_INDEX(TestInitialize);
   }
 };

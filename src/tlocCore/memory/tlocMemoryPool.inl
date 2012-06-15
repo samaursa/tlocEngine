@@ -19,8 +19,8 @@
 
 namespace tloc { namespace core {
 
-#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation, class T_PolicyUsedElements
-#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation, T_PolicyUsedElements
+#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation
+#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation
 #define MEMORY_POOL_INDEX_TYPE    typename MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>
 
   //------------------------------------------------------------------------
@@ -287,7 +287,7 @@ namespace tloc { namespace core {
     for ( ; a_begin != a_end; ++a_begin)
     {
       DoNewElement(a_begin, policy_allocation_type());
-      DoSetIndex(*a_begin, a_startingIndex, policy_allocation_type());
+      (*a_begin).m_index = a_startingIndex;
       ++a_startingIndex;
     }
   }
@@ -331,66 +331,34 @@ namespace tloc { namespace core {
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator, memory_pool_policies::Allocate_On_Stack)
+    DoNewElement(iterator, p_memory_pool_index::Allocate_On_Stack)
   {
     // Intentionally empty
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator a_pos, memory_pool_policies::Allocate_On_Heap)
+    DoNewElement(iterator a_pos, p_memory_pool_index::Allocate_On_Heap)
   {
-    a_pos = new wrapper_type();
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <typename T_Element>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoSetElement(T_Element& a_elem, const value_type& a_value, 
-                 memory_pool_policies::Allocate_On_Stack)
-  {
-    a_elem.m_value = a_value;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <typename T_Element>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoSetElement(T_Element& a_elem, const value_type& a_value, 
-                 memory_pool_policies::Allocate_On_Heap)
-  {
-    a_elem->m_value = a_value;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <typename T_Element>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoSetIndex(T_Element& a_elem, size_type a_index,
-               memory_pool_policies::Allocate_On_Stack)
-  {
-    a_elem.m_index = a_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <typename T_Element>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoSetIndex(T_Element& a_elem, size_type a_index,
-               memory_pool_policies::Allocate_On_Heap)
-  {
-    a_elem->m_index = a_index;
+    (*a_pos).m_element = new value_type();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoCleanup(memory_pool_policies::Allocate_On_Stack)
+    DoCleanup(p_memory_pool_index::Allocate_On_Stack)
   {
     // Intentionally empty
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoCleanup(memory_pool_policies::Allocate_On_Heap)
+    DoCleanup(p_memory_pool_index::Allocate_On_Heap)
   {
-    delete_ptrs(m_allElements.begin(), m_allElements.end());
+    for (container_type::iterator itr = m_allElements.begin(), 
+      itrEnd = m_allElements.end(); itr != itrEnd; ++itr)
+    {
+      delete (*itr).m_element;
+    }
   }
 
 };};

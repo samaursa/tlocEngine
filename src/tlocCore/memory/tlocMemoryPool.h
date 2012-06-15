@@ -9,27 +9,10 @@
 namespace tloc { namespace core {
 
   //------------------------------------------------------------------------
-  // Memory pool policies
+  // Memory pool index policies
 
-  namespace memory_pool_policies
+  namespace p_memory_pool_index
   {
-    struct Track_Used_Elements
-    {
-      template <class T_Container, typename T_Element>
-      void TrackElement(T_Container& a_container, const T_Element& a_elem)
-      {
-        a_container.push_back(a_elem);
-      }
-    };
-
-    struct Ignore_Used_Elements
-    {
-      template <class T_Container, typename T_Element>
-      void TrackElement(T_Container&, const T_Element&)
-      {
-      }
-    };
-
     // Memory pool instantiates the element on the stack
     struct Allocate_On_Stack {};
     // Memory pool instantiates the element on the heap. If there are many
@@ -57,8 +40,7 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   template <class T,
             tl_uint T_Capacity = 0,
-            class T_PolicyAllocation = memory_pool_policies::Allocate_On_Stack,
-            class T_PolicyUsedElements = memory_pool_policies::Track_Used_Elements>
+            class T_PolicyAllocation = p_memory_pool_index::Allocate_On_Stack>
   class MemoryPoolIndex
   {
   public:
@@ -66,15 +48,10 @@ namespace tloc { namespace core {
 #pragma region typedefs
 
     typedef T_PolicyAllocation                        policy_allocation_type;
-    typedef T_PolicyUsedElements                      policy_used_elements_type;
     typedef typename
       Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
-                     memory_pool_policies::Allocate_On_Stack>::value>
+                     p_memory_pool_index::Allocate_On_Stack>::value>
                                                   policy_allocation_result_type;
-    typedef typename
-      Loki::Int2Type<Loki::IsSameType<policy_used_elements_type,
-                     memory_pool_policies::Track_Used_Elements>::value>
-                                                  policy_used_elements_result_type;
 
     typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
 
@@ -90,8 +67,7 @@ namespace tloc { namespace core {
 
     typedef MemoryPoolIndex<value_type,
                             T_Capacity,
-                            policy_allocation_type,
-                            policy_used_elements_type>  this_type;
+                            policy_allocation_type>     this_type;
 
   private:
 #include "tlocMemoryPoolIndexWrapper.h"
@@ -219,26 +195,12 @@ namespace tloc { namespace core {
     index_type      DoGetAvailIndex() const;
 
     void            DoNewElement(iterator,
-                                 memory_pool_policies::Allocate_On_Stack);
+                                 p_memory_pool_index::Allocate_On_Stack);
     void            DoNewElement(iterator a_pos,
-                                 memory_pool_policies::Allocate_On_Heap);
+                                 p_memory_pool_index::Allocate_On_Heap);
 
-    template <typename T_Element>
-    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
-                                 memory_pool_policies::Allocate_On_Stack);
-    template <typename T_Element>
-    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
-                                 memory_pool_policies::Allocate_On_Heap);
-
-    template <typename T_Element>
-    void            DoSetIndex(T_Element& a_elem, size_type a_index,
-                                 memory_pool_policies::Allocate_On_Stack);
-    template <typename T_Element>
-    void            DoSetIndex(T_Element& a_elem, size_type a_index,
-                                 memory_pool_policies::Allocate_On_Heap);
-
-    void            DoCleanup(memory_pool_policies::Allocate_On_Stack);
-    void            DoCleanup(memory_pool_policies::Allocate_On_Heap);
+    void            DoCleanup(p_memory_pool_index::Allocate_On_Stack);
+    void            DoCleanup(p_memory_pool_index::Allocate_On_Heap);
 
     bool            DoIsInitialized();
 

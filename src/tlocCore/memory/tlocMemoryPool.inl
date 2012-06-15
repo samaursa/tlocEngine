@@ -19,8 +19,8 @@
 
 namespace tloc { namespace core {
 
-#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation
-#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation
+#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation, class T_PolicyIndexing
+#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation, T_PolicyIndexing
 #define MEMORY_POOL_INDEX_TYPE    typename MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>
 
   //------------------------------------------------------------------------
@@ -161,8 +161,10 @@ namespace tloc { namespace core {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    wrapper_type& toSwap = this->operator[](a_retElem.m_index);
-    toSwap.DoSwap(m_allElements[lastUsedElem]);
+    wrapper_type& toSwap = this->operator[]( DoGetIndex(a_retElem, policy_allocation_type()) );
+    tlSwap(toSwap, m_allElements[lastUsedElem]);
+    tlSwap(DoGetIndex(toSwap, policy_allocation_type()), 
+           DoGetIndex(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
   }
 
@@ -214,14 +216,14 @@ namespace tloc { namespace core {
   MEMORY_POOL_INDEX_TYPE::size_type 
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
   {
-    return m_numAvail;
+    return m_numAvail != -1 ? m_numAvail : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::size_type 
     MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
   {
-    return m_allElements.size() - (m_numAvail);
+    return m_numAvail != -1 ? (m_allElements.size() - GetAvail()) : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -258,8 +260,8 @@ namespace tloc { namespace core {
   {
     return (m_numAvail != sm_invalidIndex) &&
            (&a_element != &npos) && 
-           (a_element.GetIndex() != sm_invalidIndex) &&
-           (a_element.GetIndex() < (index_type)GetUsed());
+           (DoGetIndex(a_element, policy_allocation_type()) != sm_invalidIndex) &&
+           (DoGetIndex(a_element, policy_allocation_type()) < (index_type)GetUsed());
   }
 
   //------------------------------------------------------------------------
@@ -287,7 +289,7 @@ namespace tloc { namespace core {
     for ( ; a_begin != a_end; ++a_begin)
     {
       DoNewElement(a_begin, policy_allocation_type());
-      (*a_begin).m_index = a_startingIndex;
+      DoGetIndex(*a_begin, policy_allocation_type()) = a_startingIndex;
       ++a_startingIndex;
     }
   }
@@ -315,7 +317,7 @@ namespace tloc { namespace core {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  bool MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoIsInitialized()
+  bool MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoIsInitialized() const
   {
     // TODO: Change this function to use a conditional bool type to determine
     // initialization
@@ -330,34 +332,64 @@ namespace tloc { namespace core {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::index_type&
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    DoGetIndex(wrapper_type& a_element, allocation_on_stack)
+  {
+    return (index_type&)a_element.m_index;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::index_type&
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    DoGetIndex(wrapper_type& a_element, allocation_on_heap)
+  {
+    return (index_type&)a_element->m_index;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::index_type  
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const
+  {
+    return (index_type)a_element.m_index;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::index_type  
+    MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
+    DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const
+  {
+    return (index_type)a_element->m_index;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator, p_memory_pool_index::Allocate_On_Stack)
+    DoNewElement(iterator, allocation_on_stack)
   {
     // Intentionally empty
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator a_pos, p_memory_pool_index::Allocate_On_Heap)
+    DoNewElement(iterator a_pos, allocation_on_heap)
   {
-    (*a_pos).m_element = new value_type();
+    *a_pos = new selected_value_type();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoCleanup(p_memory_pool_index::Allocate_On_Stack)
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_stack)
   {
     // Intentionally empty
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    DoCleanup(p_memory_pool_index::Allocate_On_Heap)
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_heap)
   {
     for (container_type::iterator itr = m_allElements.begin(), 
       itrEnd = m_allElements.end(); itr != itrEnd; ++itr)
     {
-      delete (*itr).m_element;
+      delete (*itr);
     }
   }
 

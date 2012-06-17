@@ -72,7 +72,7 @@ namespace tloc { namespace math {
     Zero();
     ITERATE_MATRIX_HALF
     {
-      this->Set(i, i, 1);
+      Set(i, i, 1);
     }
   }
 
@@ -82,7 +82,7 @@ namespace tloc { namespace math {
     Zero();
     ITERATE_MATRIX_HALF
     {
-      this->Set(i, i, values[i]);
+      Set(i, i, values[i]);
     }
   }
 

@@ -47,7 +47,7 @@ namespace tloc { namespace math {
                                           value_type m22)
   {
     value_type diag[3] = {m00, m11, m22};
-    this->MakeDiagonal(diag);
+    MakeDiagonal(diag);
   }
 
   template <MATRIX_3_TYPES>
@@ -446,7 +446,7 @@ namespace tloc { namespace math {
                              (value_type)0,         cosine,          -sine,
                              (value_type)0,           sine,         cosine };
 
-    this->Set(values, base_type::k_RowMajor);
+    Set(values, base_type::k_RowMajor);
     return *this;
   }
 
@@ -463,7 +463,7 @@ namespace tloc { namespace math {
                              (value_type)0,  (value_type)1,  (value_type)0,
                                      -sine,  (value_type)0,         cosine};
 
-    this->Set(values, base_type::k_RowMajor);
+    Set(values, base_type::k_RowMajor);
     return *this;
   }
 
@@ -480,7 +480,7 @@ namespace tloc { namespace math {
                                       sine,         cosine,  (value_type)0,
                              (value_type)0,  (value_type)0,  (value_type)1 };
 
-    this->Set(values, base_type::k_RowMajor);
+    Set(values, base_type::k_RowMajor);
     return *this;
 
   }

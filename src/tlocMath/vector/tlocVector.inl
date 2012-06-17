@@ -68,7 +68,7 @@ namespace tloc { namespace math {
   template <VECTOR_TYPES>
   TL_FI void Vector<VECTOR_PARAMS>::Zero()
   {
-    this->Set(0);
+    Set(0);
   }
 
   template <VECTOR_TYPES>
@@ -443,7 +443,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator+= (const this_type& a_vector)
   {
-    this->Add(a_vector);
+    Add(a_vector);
 
     return (*this);
   }
@@ -452,7 +452,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator-= (const this_type& a_vector)
   {
-    this->Sub(a_vector);
+    Sub(a_vector);
 
     return (*this);;
   }
@@ -461,7 +461,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator*= (const_reference a_value)
   {
-    this->Mul(a_value);
+    Mul(a_value);
 
     return (*this);
   }
@@ -470,7 +470,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type& 
     Vector<VECTOR_PARAMS>::operator*= (const this_type& a_vector)
   {
-    this->Mul(a_vector);
+    Mul(a_vector);
 
     return (*this);
   }
@@ -479,7 +479,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type&
     Vector<VECTOR_PARAMS>::operator/= (const_reference a_value)
   {
-    this->Div(a_value);
+    Div(a_value);
 
     return (*this);
   }
@@ -488,7 +488,7 @@ namespace tloc { namespace math {
   TL_FI typename Vector<VECTOR_PARAMS>::this_type&
     Vector<VECTOR_PARAMS>::operator/= (const this_type& a_vector)
   {
-    this->Div(a_vector);
+    Div(a_vector);
 
     return (*this);
   }

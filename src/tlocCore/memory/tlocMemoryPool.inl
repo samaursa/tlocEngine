@@ -145,7 +145,7 @@ namespace tloc { namespace core {
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::
-    Recycle(const wrapper_type& a_retElem)
+    RecycleElement(const wrapper_type& a_retElem)
   {
     TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
 
@@ -169,11 +169,11 @@ namespace tloc { namespace core {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Recycle(index_type a_index)
+  void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::RecycleAtIndex(index_type a_index)
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (index_type)m_allElements.size(),
                                   "Index out of bounds!");
-    Recycle(m_allElements[a_index]);
+    RecycleElement(m_allElements[a_index]);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -181,7 +181,7 @@ namespace tloc { namespace core {
   {
     for (index_type i = 0; i < m_numAvail; ++i)
     {
-      Recycle(m_allElements[i]);
+      RecycleElement(m_allElements[i]);
     }
   }
 

@@ -613,16 +613,16 @@ namespace TestingStrings
 
     {
       char8 s1[256];
-      s32 retIndex = CharWideToAscii(sentence1, -1, s1, 256);
+      tl_int retIndex = CharWideToAscii(s1, sentence1, 256);
       CHECK(StrCmp(sentence2, s1) == 0);
-      CHECK(retIndex == 20);
+      CHECK(retIndex == 19);
     }
 
     {
       char32 s2[256];
-      s32 retIndex = CharAsciiToWide(sentence2, -1, s2, 256);
+      tl_int retIndex = CharAsciiToWide(s2, sentence2, 256);
       CHECK(StrCmp(sentence1, s2) == 0);
-      CHECK(retIndex == 20);
+      CHECK(retIndex == 19);
     }
   }
 };

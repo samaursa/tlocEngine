@@ -19,7 +19,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Common macros
-#define _CRT_SECURE_NO_WARNINGS 1
+//#define _CRT_SECURE_NO_WARNINGS 1
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 # ifdef _SECURE_SCL
@@ -190,7 +190,11 @@
 #define TLOC_INLINE inline
 #define TL_I TLOC_INLINE
 
-#define TLOC_FORCE_INLINE __forceinline
+#if defined (_MSC_VER)
+#  define TLOC_FORCE_INLINE __forceinline
+#else 
+#  define TLOC_FORCE_INLINE inline
+#endif
 #define TL_FI TLOC_FORCE_INLINE
 
 #ifdef TLOC_FULL_SOURCE

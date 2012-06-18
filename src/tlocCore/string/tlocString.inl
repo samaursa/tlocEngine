@@ -5,15 +5,13 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocString.h"
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <string.h>
 
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# define WIN32_LEAN_AND_MEAN
-# include <Windows.h>
-#endif
+#include <cstdlib>
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
@@ -378,13 +376,13 @@ namespace tloc { namespace core {
   }
 
   template <typename T>
-  TL_I void StringBase<T>::swap( T& aX )
+  TL_I void StringBase<T>::swap(this_type& aX )
   {
     TLOC_ASSERT_STRING_WARN(this != &aX, "Swap called on self (redundant).");
 
-    swap(aX.m_begin, m_begin);
-    swap(aX.m_end, m_end);
-    swap(aX.m_capacity, m_capacity);
+    tlSwap(aX.m_begin, m_begin);
+    tlSwap(aX.m_end, m_end);
+    tlSwap(aX.m_capacity, m_capacity);
   }
 
   //````````````````````````````````````````````````````````````````````````
@@ -1487,7 +1485,7 @@ namespace tloc { namespace core {
   {
     for (tl_size i = aNumChars; i > 0; --i)
     {
-      if (*aPtr1 != aPtr2)
+      if (*aPtr1 != *aPtr2)
       {
         return *aPtr1 > *aPtr2 ? 1 : -1;
       }
@@ -1518,65 +1516,17 @@ namespace tloc { namespace core {
     return (T)toupper((char8)aChar);
   }
 
-  namespace priv
-  {
-    //------------------------------------------------------------------------
-    // Windows specific
-#if defined (TLOC_WIN32) || defined (TLOC_WIN64)
-    TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, char32* a_out, 
-                             s32 a_outSize) 
-    {
-      return (s32)MultiByteToWideChar
-        (CP_ACP, MB_PRECOMPOSED, a_in, (int)a_inSize, a_out, (int)a_outSize);
-    }
-    
-    TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, char8* a_out, 
-                             s32 a_outSize) 
-    {
-      int defaultUsed = 0;
-      s32 retIndex = 0;
-      retIndex = WideCharToMultiByte
-        (CP_ACP, 0, a_in, (int)a_inSize, a_out, (int)a_outSize, 
-         "?", &defaultUsed);
-      
-      TLOC_ASSERT_STRING(defaultUsed == 0, 
-                         "Wide string has incompatible characters");
-      return retIndex;
-    }
-#endif    
 
-    //------------------------------------------------------------------------
-    // Mac specific
-    
-#if defined (TLOC_OS_MAC) || defined (TLOC_OS_IPHONE)
-    TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, char32* a_out, 
-                             s32 a_outSize) 
-    {
-      TLOC_UNUSED_4(a_in, a_inSize, a_out, a_outSize);
-      return 0;
-    }
-    
-    TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, char8* a_out, 
-                             s32 a_outSize) 
-    {
-      TLOC_UNUSED_4(a_in, a_inSize, a_out, a_outSize);
-      return 0;
-    }
-#endif
-       
+  TL_I tl_int CharAsciiToWide(char32* a_out, const char8* a_in, 
+                              tl_int a_inSize)
+  {
+    return ::mbstowcs(a_out, a_in, a_inSize);
   }
 
-
-  TL_I s32 CharAsciiToWide(const char8* a_in, s32 a_inSize, 
-                               char32* a_out, s32 a_outSize)
+  TL_I tl_int CharWideToAscii(char8* a_out, const char32* a_in, 
+                              tl_int a_inSize)
   {
-    return priv::CharAsciiToWide(a_in, a_inSize, a_out, a_outSize);
-  }
-
-  TL_I s32 CharWideToAscii(const char32* a_in, s32 a_inSize, 
-                               char8* a_out, s32 a_outSize)
-  {
-    return priv::CharWideToAscii(a_in, a_inSize, a_out, a_outSize);
+    return ::wcstombs(a_out, a_in, a_inSize);
   }
 
   //````````````````````````````````````````````````````````````````````````

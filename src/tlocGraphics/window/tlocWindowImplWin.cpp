@@ -149,12 +149,12 @@ namespace tloc { namespace graphics { namespace priv {
 
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
-    s32 retIndex =
-      core::CharAsciiToWide(a_settings.m_title.c_str(), -1, wTitle, wTitleSize);
+    tl_int retIndex =
+      core::CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
-    m_handle = CreateWindowW(g_className, wTitle, win32Style, (int)left,
-      (int)top, (int)width, (int)height, NULL, NULL, GetModuleHandle(NULL),
-      this);
+    m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
+      (s32)top, (s32)width, (s32)height, NULL, NULL, 
+      GetModuleHandle(NULL), this);
 
     if (fullScreen) { DoSwitchToFullscreen(a_mode); }
 

@@ -35,7 +35,7 @@ namespace tloc { namespace math {
     
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::value_type&       reference;
-    typedef typename const base_type::value_type& const_reference;
+    typedef const typename base_type::value_type& const_reference;
     
     typedef typename base_type::table_order       matrix_order;
     
@@ -169,7 +169,7 @@ namespace tloc { namespace math {
 
   template <typename T, tl_size T_Size>
   const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY = 
-    typename Matrix<T, T_Size>::this_type::pInternal_GetIdentity();
+    Matrix<T, T_Size>::this_type::pInternal_GetIdentity();
 
   template <typename T, tl_size T_Size>
   typename Matrix<T, T_Size>::this_type 

@@ -235,7 +235,7 @@ namespace TestingMemoryPool
 
     for (tl_int i = 0; i < T_PoolSize; ++i)
     {
-      pool.Recycle(0);
+      pool.RecycleAtIndex(0);
     }
 
     CHECK(pool.GetAvail() == T_PoolSize);
@@ -253,7 +253,7 @@ namespace TestingMemoryPool
         GetElement(pool[0], pool_type::policy_allocation_type(),
                             pool_type::policy_indexing_type() );
 
-      pool.Recycle(indexToRecycle);
+      pool.RecycleAtIndex(indexToRecycle);
 
       for (T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
            itr != itrEnd; ++itr)

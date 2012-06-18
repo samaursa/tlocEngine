@@ -145,7 +145,7 @@ namespace tloc { namespace core {
     ///
     /// @param  a_returnedElement The returned element.
     ///-------------------------------------------------------------------------
-    void          Recycle(const wrapper_type& a_returnedElement);
+    void          RecycleElement(const wrapper_type& a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -154,7 +154,7 @@ namespace tloc { namespace core {
     ///
     /// @param  a_index Zero-based index of a.
     ///-------------------------------------------------------------------------
-    void          Recycle(index_type a_index);
+    void          RecycleAtIndex(index_type a_index);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycle all elements

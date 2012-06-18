@@ -8,6 +8,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocPair.inl>
 #include <tlocCore/iterators/tlocIterator.inl>
+#include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/RNGs/tlocRandom.h>
 
@@ -863,7 +864,7 @@ namespace tloc { namespace core {
   template <typename T_ForwardItr>
   void delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last)
   {
-    typedef iterator_traits<T_ForwardItr>::pointer pointer_type;
+    typedef typename iterator_traits<T_ForwardItr>::pointer pointer_type;
     TLOC_STATIC_ASSERT(Loki::TypeTraits<pointer_type>::isPointer, 
       Function_only_works_with_iterators_storing_simple_pointers);
 
@@ -1024,10 +1025,10 @@ namespace tloc { namespace core {
       return a_rangeBegin;
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T>
     T_InputIterator DoFind( T_InputIterator a_rangeBegin,
                             T_InputIterator a_rangeEnd,
-                            const char8& a_value, IsChar )
+                            const T& a_value, IsChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -1110,7 +1111,7 @@ namespace tloc { namespace core {
       // It is assumed, since the inputer iterator is complex, it has a typedef
       // for value_type. If there is a COMPILE ERROR here then the complex
       // object is either not an iterator OR does not have a value_type typedef
-      DoQuicksort(aFirst, aLast, T_InputIterator::value_type());
+      DoQuicksort(aFirst, aLast, typename T_InputIterator::value_type());
     }
 
     template <typename T_InputIterator, typename T_ValueType>
@@ -1184,7 +1185,8 @@ namespace tloc { namespace core {
     void DoInsertionsortWithItrType(T_InputIterator aFirst, T_InputIterator aLast, 
       IsComplexItr)
     {
-      DoInsertionsortWithValueType(aFirst, aLast, T_InputIterator::value_type());
+      DoInsertionsortWithValueType(aFirst, aLast, 
+                                   typename T_InputIterator::value_type());
     }
 
     template <typename T_InputIterator, typename T_ValueType>
@@ -1237,7 +1239,9 @@ namespace tloc { namespace core {
     void DoMergesortWithItrType(T_InputIterator aFirst, T_InputIterator aLast,
                      IsComplexItr)
     {
-      DoMergesortWithValueType(aFirst, aLast, T_InputIterator::value_type());
+      DoMergesortWithValueType(aFirst, 
+                               aLast, 
+                               typename T_InputIterator::value_type());
     }
 
     template <typename T_InputIterator>
@@ -1399,7 +1403,7 @@ namespace tloc { namespace core {
     {
       DoSortFirstElementWithValueType(aFirst, 
                                       aLast, 
-                                      T_InputIterator::value_type());
+                                      typename T_InputIterator::value_type());
     }
 
     template <typename T_InputIterator>

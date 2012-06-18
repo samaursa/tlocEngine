@@ -211,14 +211,14 @@ namespace TestingStackArray
 
     CHECK(theStackArray.size() == a_newSizeOfArray);
 
-    T_StackArray::iterator itr;
+    typename T_StackArray::iterator itr;
     itr = theStackArray.erase(theStackArray.begin() + a_index);
     if (itr != theStackArray.end())
     {
       CHECK(*itr == static_cast<tl_int>(a_index + 1));
     }
 
-    T_StackArray::iterator itrEnd;
+    typename T_StackArray::iterator itrEnd;
     itr = theStackArray.begin();
     itrEnd = theStackArray.end();
 
@@ -243,7 +243,7 @@ namespace TestingStackArray
     const tl_size sizeOfArray = 10;
     for (tl_size i = 0; i < sizeOfArray; ++i)
     {
-      TestEraseAtPosition<ArrayFixed<tl_int, sizeOfArray>>(i, sizeOfArray);
+      TestEraseAtPosition<ArrayFixed<tl_int, sizeOfArray> >(i, sizeOfArray);
     }
 
     //------------------------------------------------------------------------

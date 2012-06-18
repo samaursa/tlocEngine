@@ -268,6 +268,17 @@ namespace nedalloc {
 extern "C" {
 #endif
 #endif
+  
+#if defined(__linux__) || defined(__FreeBSD__)
+  /* Sadly we can't include <malloc.h> as it causes a redefinition error */
+  size_t malloc_usable_size(void *);
+#elif defined(__APPLE__)
+  size_t malloc_size(const void *ptr);
+  inline size_t malloc_size_wrapper(void *ptr)
+  {
+    return malloc_size(ptr);
+  }
+#endif
 
 #if USE_ALLOCATOR==0
 static void *unsupported_operation(const char *opname) THROWSPEC
@@ -303,7 +314,7 @@ size_t (*sysblksize)(void *)=
 	malloc_usable_size;
 #elif defined(__FreeBSD__) || defined(__APPLE__)
 	/* This is the BSD libc equivalent.  */
-	malloc_size;
+	malloc_size_wrapper;
 #else
 #error Cannot tolerate the memory allocator of an unknown system!
 #endif

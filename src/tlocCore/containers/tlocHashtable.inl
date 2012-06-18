@@ -670,7 +670,7 @@ namespace tloc { namespace core {
     const hash_code_type hc = get_hash_code(a_key);
     iterator itr = find_by_hash(a_key);
 
-    if (itr == end()) return 0;
+    if (itr == end()) return end();
 
     iterator itrB = itr;
     iterator itrBEnd = end();

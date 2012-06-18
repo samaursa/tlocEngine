@@ -26,7 +26,7 @@ namespace tloc { namespace core {
             typename T_KeyEqual = equal_to<T_Key>,
             bool T_CacheHashCode = false,
             typename T_BucketType
-            = Array<List<HashtableElement<Pair<const T_Key, T_ValueType>, T_CacheHashCode > > > >
+            = Array<List<HashtableElement<Pair</*const*/T_Key, T_ValueType>, T_CacheHashCode > > > >
   class HashMap
     : public Hashtable<
                        HashtablePolicy<T_Key,

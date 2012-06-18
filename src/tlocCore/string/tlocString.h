@@ -49,11 +49,13 @@ namespace tloc { namespace core {
     typedef const T&        const_reference;
     typedef T*              iterator;
     typedef const T*        const_iterator;
+    
+    typedef StringBase<value_type>  this_type;
 
     //------------------------------------------------------------------------
     // Constants
 
-    static const tl_size npos     = (tl_size) - 1;
+    static const tl_size npos;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -118,7 +120,7 @@ namespace tloc { namespace core {
     TL_I StringBaseT& operator = (const T* aCharStr);
     TL_I StringBaseT& operator = (T aChar);
 
-    TL_I void         swap(T& aX);
+    TL_I void         swap(this_type& aX);
 
     //````````````````````````````````````````````````````````````````````````
     // Append
@@ -346,6 +348,9 @@ namespace tloc { namespace core {
     static const tl_size m_MaxSize;
     static const tl_size sm_defaultCapacity;
   };
+  
+  template <typename T>
+  const tl_size StringBase<T>::npos = (tl_size) - 1;
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions
@@ -367,10 +372,10 @@ namespace tloc { namespace core {
 
   template <typename T>
   TL_I T          CharToUpper(const T& aChar);
-  TL_I void       CharAsciiToWide(const char8* a_in, s32 a_inSize,
-                                  const char32* a_out, s32 a_outSize);
-  TL_I void       CharWideToAscii(const char32* a_in, s32 a_inSize,
-                                  const char8* a_out, s32 a_outSize);
+  TL_I tl_int     CharAsciiToWide(char32* a_out, const char8* a_in, 
+                                  tl_int a_inSize);  
+  TL_I tl_int     CharWideToAscii(char8* a_out, const char32* a_in, 
+                                  tl_int a_inSize);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone

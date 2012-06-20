@@ -5,7 +5,6 @@
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
-#include <tlocCore/containers/tlocArray.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms

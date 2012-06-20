@@ -204,6 +204,8 @@ namespace tloc { namespace core {
     using base_type::size;
     using base_type::capacity;
     using base_type::full;
+    using base_type::erase;
+    using base_type::DoAddToEnd;
     using base_type::DoReAllocate;
     using base_type::m_begin;
     using base_type::m_end;

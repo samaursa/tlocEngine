@@ -1,3 +1,6 @@
+#ifndef TLOC_RNG_WELL_512_INL
+#define TLOC_RNG_WELL_512_INL
+
 #include "tlocRngWell512.h"
 
 #include <time.h>
@@ -72,3 +75,5 @@ namespace tloc { namespace core {
   }
 
 };};
+
+#endif

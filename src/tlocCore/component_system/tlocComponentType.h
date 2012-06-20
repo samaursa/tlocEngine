@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace component_system {
 
   namespace components
   {
@@ -14,9 +14,9 @@ namespace tloc { namespace core {
       mesh,
 
       count
-    };
-  }; typedef tl_uint component_type;
+    }; typedef tl_int value_type;
+  };
 
-};};
+};};};
 
 #endif

@@ -9,84 +9,27 @@
 namespace tloc { namespace core {
 
   //------------------------------------------------------------------------
-  // Memory pool policies
+  // Memory pool index policies
 
-  namespace memory_pool_policies
+  namespace p_memory_pool_index
   {
-    struct Track_Used_Elements
+    namespace allocation
     {
-      template <class T_Container, typename T_Element>
-      void TrackElement(T_Container& a_container, const T_Element& a_elem)
-      {
-        a_container.push_back(a_elem);
-      }
+      // Memory pool instantiates the element on the stack
+      struct On_Stack{};
+      // Memory pool instantiates the element on the heap. If there are many
+      // elements and they are very large in size, this is the better policy to
+      // use to avoid stack overflows
+      struct On_Heap{};
     };
 
-    struct Ignore_Used_Elements
+    namespace indexing
     {
-      template <class T_Container, typename T_Element>
-      void TrackElement(T_Container&, const T_Element&)
-      {
-      }
-    };
+      // Uses the built-in wrapper to store the user element
+      struct Wrapper { };
 
-    // Memory pool instantiates the element on the stack
-    struct Allocate_On_Stack {};
-    // Memory pool instantiates the element on the heap. If there are many
-    // elements and they are very large in size, this is the better policy to
-    // use to avoid stack overflows
-    struct Allocate_On_Heap {};
-  };
-
-  namespace memory_pool_index_wrapper
-  {
-    template <typename T_ParentType, typename T_Elem, typename T_SizeType>
-    class type
-    {
-    public:
-      typedef T_Elem                                    value_type;
-      typedef T_SizeType                                size_type;
-      typedef type<T_ParentType, value_type, size_type> this_type;
-
-      friend T_ParentType; // here this_type is the parent class
-
-      // Visual studio gives an incorrect warning for the friend declaration
-      // below. We must therefore disable it.
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-#pragma warning(push)
-#pragma warning(disable:4517)
-#endif
-      friend tl_array<this_type, Array_Unordered >::type;
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-#pragma warning(pop)
-#endif
-
-      value_type& GetElement() { return m_element; }
-      size_type   GetIndex() { return m_index; }
-
-      bool operator ==(this_type& a_rhs)
-      {
-        return (m_element == a_rhs.m_element) &&
-               (m_index == a_rhs.m_index);
-      }
-
-    private:
-
-      type() {}
-      type(const this_type& a_rhs)
-      {
-        m_element = a_rhs.m_element;
-        m_index = a_rhs.m_index;
-      }
-
-      void DoSwap(this_type& a_rhs)
-      {
-        tlSwap(m_element, a_rhs.m_element);
-        // The indexes are permanent, we don't swap those
-      }
-
-      value_type  m_element;
-      size_type   m_index;
+      // The user element must have an m_index variable
+      struct User { };
     };
   };
 
@@ -94,48 +37,91 @@ namespace tloc { namespace core {
   // Intrusive Memory Pool
 
   ///-------------------------------------------------------------------------
-  /// @brief This is the simplest memory pool. It allows fast retrieval of
-  /// free and used elements by caching the elements with an index. The pool
-  /// assumes that the element will have a default constructor. This type of
-  /// of a memory pool is useful for pools of objects such as particles
+  /// @brief
+  /// This is the simplest memory pool. It allows fast retrieval of free
+  /// and used elements by caching the elements with an index. The pool
+  /// assumes that the element will have a default constructor. This type
+  /// of of a memory pool is useful for pools of objects such as
+  /// particles.
+  ///
+  /// @T_Capacity specifies the size of memory pool which cannot be changed
+  ///             at runtime. If you want the pool to dynamically increase in
+  ///             size, then set T_Capacity to 0
   ///-------------------------------------------------------------------------
-
   template <class T,
-            class T_PolicyAllocation = memory_pool_policies::Allocate_On_Stack,
-            class T_PolicyUsedElements = memory_pool_policies::Track_Used_Elements>
+            tl_uint T_Capacity = 0,
+            class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
+            class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndex
   {
   public:
-    //------------------------------------------------------------------------
-    // typedefs
+
+#pragma region typedefs
 
     typedef T_PolicyAllocation                        policy_allocation_type;
-    typedef T_PolicyUsedElements                      policy_used_elements_type;
+    typedef T_PolicyIndexing                          policy_indexing_type;
+
     typedef typename
       Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
-                     memory_pool_policies::Allocate_On_Stack>::value>
+      p_memory_pool_index::allocation::On_Stack>::value>
                                                   policy_allocation_result_type;
+
     typedef typename
-      Loki::Int2Type<Loki::IsSameType<policy_used_elements_type,
-                     memory_pool_policies::Track_Used_Elements>::value>
-                                                  policy_used_elements_result_type;
+      Loki::Int2Type<Loki::IsSameType<policy_indexing_type,
+      p_memory_pool_index::indexing::Wrapper>::value>
+                                                  policy_indexing_result_type;
+
+    typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
+    typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
+
+    typedef MemoryPoolIndex<value_type,
+                            T_Capacity,
+                            policy_allocation_type>     this_type;
+
+  private:
+#include "tlocMemoryPoolIndexWrapper.h"
+  public:
+
+    // Select T or T* as the value_type
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       value_type, value_type*>::Result                 selected_type;
-    typedef MemoryPoolIndex<value_type,
-                            policy_allocation_type,
-                            policy_used_elements_type>  this_type;
-    typedef memory_pool_index_wrapper::type
-                            <this_type,
-                             selected_type, size_type>  wrapper_type;
-    typedef typename tl_array<wrapper_type,
-                              Array_Unordered>::type    container_type;
-    typedef typename container_type::iterator           iterator;
-    typedef typename container_type::const_iterator     const_iterator;
+       value_type, value_type*>::Result                 selected_user_type;
+
+    typedef typename Loki::Select
+      <policy_allocation_result_type::value,
+       Wrapper<value_type, index_type>,
+       Wrapper<value_type, index_type>*>::Result       selected_wrapper_type;
+
+    typedef typename Loki::Select
+      <policy_indexing_result_type::value,
+       Wrapper<value_type, index_type>,
+       value_type>::Result                              selected_value_type;
+
+    // Declare our element wrapper
+    typedef typename Loki::Select
+      <policy_indexing_result_type::value,
+       selected_wrapper_type, selected_user_type>::Result    wrapper_type;
+
+    // Select the proper array
+    typedef typename tl_array<wrapper_type, Array_Unordered>::type d_array_type;
+    typedef typename tl_array_fixed<wrapper_type,
+                                    pool_size_type::value>::type   s_array_type;
+
+    typedef typename
+      Loki::Select<pool_size_type::value == 0,
+                   d_array_type, s_array_type >::Result   container_type;
+
+    // Declare iterator types
+    typedef typename container_type::iterator             iterator;
+    typedef typename container_type::const_iterator       const_iterator;
+
+#pragma endregion typedefs
+
+  public:
 
     //------------------------------------------------------------------------
     // Methods
@@ -143,7 +129,7 @@ namespace tloc { namespace core {
     MemoryPoolIndex();
     ~MemoryPoolIndex();
 
-    void Initialize(size_type a_maxElements);
+    void Initialize(size_type a_initialSize);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -159,7 +145,7 @@ namespace tloc { namespace core {
     ///
     /// @param  a_returnedElement The returned element.
     ///-------------------------------------------------------------------------
-    void          Recycle(const wrapper_type& a_returnedElement);
+    void          RecycleElement(const wrapper_type& a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -168,7 +154,7 @@ namespace tloc { namespace core {
     ///
     /// @param  a_index Zero-based index of a.
     ///-------------------------------------------------------------------------
-    void          Recycle(tl_int a_index);
+    void          RecycleAtIndex(index_type a_index);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycle all elements
@@ -218,36 +204,49 @@ namespace tloc { namespace core {
 
   protected:
 
-    tl_int          DoGetAvailIndex() const;
+    typedef type_false                                 fixed_container_selected;
+    typedef type_true                                  dynamic_container_selected;
 
-    void            DoNewElement(iterator,
-                                 memory_pool_policies::Allocate_On_Stack);
-    void            DoNewElement(iterator a_pos,
-                                 memory_pool_policies::Allocate_On_Heap);
+    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
+    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
 
-    template <typename T_Element>
-    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
-                                 memory_pool_policies::Allocate_On_Stack);
-    template <typename T_Element>
-    void            DoSetElement(T_Element& a_elem, const value_type& a_value,
-                                 memory_pool_policies::Allocate_On_Heap);
+    // Used for selecting functions wrt the container type
+    typedef typename Loki::Select<pool_size_type::value == 0,
+      type_true, type_false>::Result
+                                                        container_dynamic_type;
 
-    template <typename T_Element>
-    void            DoSetIndex(T_Element& a_elem, size_type a_index,
-                                 memory_pool_policies::Allocate_On_Stack);
-    template <typename T_Element>
-    void            DoSetIndex(T_Element& a_elem, size_type a_index,
-                                 memory_pool_policies::Allocate_On_Heap);
+  protected:
+    void            DoResize(size_type, fixed_container_selected);
+    void            DoResize(size_type a_newSize, dynamic_container_selected);
 
-    void            DoCleanup(memory_pool_policies::Allocate_On_Stack);
-    void            DoCleanup(memory_pool_policies::Allocate_On_Heap);
+    void            DoInitializeRange(iterator a_begin, iterator a_end,
+                                      index_type a_startingIndex);
 
-    bool            DoIsInitialized();
+    bool            DoExpand(fixed_container_selected);
+    bool            DoExpand(dynamic_container_selected);
+
+    index_type      DoGetAvailIndex() const;
+
+
+    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_stack);
+    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_heap);
+
+    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const;
+    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const;
+
+    void            DoNewElement(iterator, allocation_on_stack);
+    void            DoNewElement(iterator a_pos, allocation_on_heap);
+
+    void            DoCleanup(allocation_on_stack);
+    void            DoCleanup(allocation_on_heap);
+
+    bool            DoIsInitialized() const;
 
     container_type            m_allElements;
-    tl_int                    m_numAvail;
+    index_type                m_numAvail;
 
-    static wrapper_type npos;
+    static wrapper_type       npos;
+    static const index_type   sm_invalidIndex;
   };
 
 };};

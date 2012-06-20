@@ -472,6 +472,9 @@ namespace tloc { namespace core {
     // using declarations for access to base class
 
     using base_type::bucket_index;
+    using base_type::extract_key;
+    using base_type::get_hash_code;
+    using base_type::compare;
 
     //////////////////////////////////////////////////////////////////////////
     // Methods

@@ -46,7 +46,7 @@ namespace tloc { namespace core {
     typedef typename container_type::value_type               pointer;
     typedef typename container_type::size_type                size_type;
     typedef typename Loki::TypeTraits<pointer>::PointeeType   value_type;
-    typedef typename const value_type*                        const_pointer;
+    typedef const value_type*                                 const_pointer;
 
     CallbackGroupT() : CallbackBase<T_CallbackMethods>(tl_type_to_string<value_type>().value()) {}
 
@@ -57,7 +57,7 @@ namespace tloc { namespace core {
 
     bool UnRegister(const_pointer a_observer)
     {
-      container_type::iterator itr =
+      typename container_type::iterator itr =
         find(m_observers.begin(), m_observers.end(), a_observer);
 
       if (itr != m_observers.end())
@@ -92,8 +92,6 @@ namespace tloc { namespace core {
     // We don't know what the base type is yet
 
     typedef CallbackBase<T_Callbacks>                 callback_base_type;
-    typedef T_ContainerT<callback_base_type*>         container_type;
-    typedef typename container_type::value_type       value_type;
 
     typedef T_ContainerT<callback_base_type*>         container_type;
     typedef typename container_type::value_type       value_type;
@@ -101,7 +99,7 @@ namespace tloc { namespace core {
 
     ~DispatcherBase()
     {
-      typedef container_type::iterator itr_type;
+      typedef typename container_type::iterator itr_type;
 
       for (itr_type itr = m_allObservers.begin(),
            itrEnd = m_allObservers.end();
@@ -132,7 +130,7 @@ namespace tloc { namespace core {
 
       typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
       typedef T_CallbackGroupT<value_type>         callback_type;
-      typedef container_type::iterator             itr_type;
+      typedef typename container_type::iterator    itr_type;
 
       const char* type_string = tl_type_to_string<value_type>().value();
 
@@ -176,7 +174,7 @@ namespace tloc { namespace core {
 
       typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
       typedef T_CallbackGroupT<value_type>         callback_type;
-      typedef container_type::iterator             itr_type;
+      typedef typename container_type::iterator    itr_type;
 
       const char* type_string = tl_type_to_string<value_type>().value();
 
@@ -203,8 +201,8 @@ namespace tloc { namespace core {
     template <typename T>
     size_type GetNumRegisteredTypes() const
     {
-      typedef T_CallbackGroupT<T>             callback_type;
-      typedef container_type::const_iterator  itr_type;
+      typedef T_CallbackGroupT<T>                      callback_type;
+      typedef typename container_type::const_iterator  itr_type;
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),

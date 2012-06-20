@@ -23,7 +23,7 @@ namespace TestingStack
   struct StackFixture
   {
     typedef Stack<s32> int_list_stack;
-    typedef Stack<s32, Array<s32>> int_array_stack;
+    typedef Stack<s32, Array<s32> > int_array_stack;
 
     Stack<SomeClass> someClassListStack;
   };

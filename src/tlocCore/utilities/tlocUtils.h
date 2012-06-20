@@ -11,7 +11,7 @@ namespace tloc { namespace core { namespace utils {
 
 #define TL_NESTED_FUNC_BEGIN(funcName) struct funcName ## _nestedFunctionClass { static
 #define TL_NESTED_FUNC_END() }
-#define TL_NESTED_CALL(funcName) funcName ## _nestedFunctionClass:: ##funcName
+#define TL_NESTED_CALL(funcName) funcName ##  _nestedFunctionClass:: funcName
 
 ///-----------------------------------------------------------------------------
 /// Used to prevent a struct or class from being initialized by declaring a

@@ -44,8 +44,8 @@ namespace TestingForwardList
     T_ForwardListType third (second.begin(), second.end());
     T_ForwardListType fourth (third);
 
-    T_ForwardListType::iterator itr = second.begin();
-    T_ForwardListType::iterator itrEnd = second.end();
+    typename T_ForwardListType::iterator itr = second.begin();
+    typename T_ForwardListType::iterator itrEnd = second.end();
     CHECK_CONTENTS_OF_FORWARD_LIST_MATCHES_VALUE(itr, itrEnd, 20);
 
     itr = third.begin();
@@ -79,8 +79,8 @@ namespace TestingForwardList
     const s32 myInts[] = {78, 52, 38, 46};
     T_ForwardListType myForwardList(myInts, myInts+4);
 
-    T_ForwardListType::container_type myContainer = myForwardList._Get_container();
-    T_ForwardListType::container_type::iterator itr;
+    typename T_ForwardListType::container_type myContainer = myForwardList._Get_container();
+    typename T_ForwardListType::container_type::iterator itr;
 
     itr = myContainer.begin();
 
@@ -106,8 +106,8 @@ namespace TestingForwardList
 
     second = first;
 
-    T_ForwardListType::iterator itr = second.begin();
-    T_ForwardListType::iterator itrEnd = second.end();
+    typename T_ForwardListType::iterator itr = second.begin();
+    typename T_ForwardListType::iterator itrEnd = second.end();
     CHECK_CONTENTS_OF_FORWARD_LIST_MATCHES_VALUE(itr, itrEnd, 10);
   }
 
@@ -125,7 +125,7 @@ namespace TestingForwardList
 
     firstList.assign(myInts, myInts+4);
 
-    T_ForwardListType::iterator itr;
+    typename T_ForwardListType::iterator itr;
     itr = firstList.begin();
 
     CHECK(*itr == 87); ++itr;
@@ -199,7 +199,7 @@ namespace TestingForwardList
   void testCBeforeBeginIteratorAccessor()
   {
     T_ForwardListType myForwardList(1, 14);
-    T_ForwardListType::const_iterator itr = myForwardList.cbefore_begin();
+    typename T_ForwardListType::const_iterator itr = myForwardList.cbefore_begin();
 
     CHECK((*++itr) == 14);
   }
@@ -245,7 +245,7 @@ namespace TestingForwardList
     T_ForwardListType myForwardList(myInts, myInts+4);
     CHECK((*myForwardList.cbegin()) == 11);
 
-    T_ForwardListType::const_iterator itr = myForwardList.cbegin();
+    typename T_ForwardListType::const_iterator itr = myForwardList.cbegin();
 
     CHECK(*itr == 11); ++itr;
     CHECK(*itr == 22); ++itr;
@@ -301,7 +301,7 @@ namespace TestingForwardList
     const s32 myFirstInts[] = {98, 57, 62, 35};
     T_ForwardListType myForwardList(myFirstInts, myFirstInts+4);
 
-    T_ForwardListType::iterator itr = myForwardList.begin();
+    typename T_ForwardListType::iterator itr = myForwardList.begin();
 
     REQUIRE(*itr == 98); ++itr;
     REQUIRE(*itr == 57); ++itr;
@@ -322,7 +322,7 @@ namespace TestingForwardList
   void testInsertAfter()
   {
     T_ForwardListType myForwardList;
-    T_ForwardListType::iterator itr, retItr;
+    typename T_ForwardListType::iterator itr, retItr;
 
     FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 5);
 
@@ -397,7 +397,7 @@ namespace TestingForwardList
     T_ForwardListType myForwardList;
     FILL_FORWARD_LIST_BY_PUSH(myForwardList, 0, 5);
 
-    T_ForwardListType::iterator itr1, itr2;
+    typename T_ForwardListType::iterator itr1, itr2;
     itr1 = myForwardList.begin();
 
     advance(itr1, 3);
@@ -437,7 +437,7 @@ namespace TestingForwardList
     myForwardList.push_front(3);
     myForwardList.push_front(4);
 
-    T_ForwardListType::iterator itr = myForwardList.begin();
+    typename T_ForwardListType::iterator itr = myForwardList.begin();
 
     CHECK(*itr == 4); ++itr;
     CHECK(*itr == 3); ++itr;
@@ -489,7 +489,7 @@ namespace TestingForwardList
     const s32 myInts2[] = {44, 32, 29};
     T_ForwardListType myForwardList1(myInts1, myInts1+5);
     T_ForwardListType myForwardList2(myInts2, myInts2+3);
-    T_ForwardListType::iterator itr1, itr2;
+    typename T_ForwardListType::iterator itr1, itr2;
 
     myForwardList1.swap(myForwardList2);
 
@@ -532,7 +532,7 @@ namespace TestingForwardList
 
     firstForwardList.merge(secondForwardList);
 
-    T_ForwardListType::iterator itr;
+    typename T_ForwardListType::iterator itr;
     itr = firstForwardList.begin();
 
     CHECK(*itr == 3); ++itr;
@@ -572,7 +572,7 @@ namespace TestingForwardList
   void testSpliceAfter()
   {
     T_ForwardListType myForwardList1, myForwardList2;
-    T_ForwardListType::iterator itr, itrRangeBegin, itrRangeEnd;
+    typename T_ForwardListType::iterator itr, itrRangeBegin, itrRangeEnd;
 
     FILL_FORWARD_LIST_BY_PUSH(myForwardList1, 0, 5);
 
@@ -698,7 +698,7 @@ namespace TestingForwardList
 
     myForwardList.remove_if(isNotDivisibleByThree());
 
-    T_ForwardListType::iterator itr;
+    typename T_ForwardListType::iterator itr;
     itr = myForwardList.begin();
 
     CHECK(*itr == 0);  ++itr;
@@ -726,7 +726,7 @@ namespace TestingForwardList
 
     myForwardList.reverse();
 
-    T_ForwardListType::iterator itr;
+    typename T_ForwardListType::iterator itr;
     itr = myForwardList.begin();
 
     CHECK(*itr == 9); ++itr;
@@ -770,7 +770,7 @@ namespace TestingForwardList
 
     myForwardList.unique();
 
-    T_ForwardListType::iterator itr;
+    typename T_ForwardListType::iterator itr;
     itr = myForwardList.begin();
 
     CHECK(*itr == 0.f);    ++itr;
@@ -823,6 +823,8 @@ namespace TestingForwardList
     T_ForwardListType myForwardList(myInts, myInts+7);
 
     myForwardList.sort();
+    
+    typename T_ForwardListType::iterator itr;
 
     CHECK(*itr == 7); ++itr;
     CHECK(*itr == 11); ++itr;

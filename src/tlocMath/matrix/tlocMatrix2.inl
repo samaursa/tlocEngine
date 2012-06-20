@@ -119,7 +119,7 @@ namespace tloc { namespace math {
   template <MATRIX_2_TYPES>
   TL_FI bool Matrix2<MATRIX_2_PARAMS>::Inverse()
   {
-    this_type temp = *this;
+    this_type temp(*this);
     return Inverse(temp);
   }
 
@@ -142,7 +142,7 @@ namespace tloc { namespace math {
   TL_FI typename Matrix2<MATRIX_2_PARAMS>::this_type& 
     Matrix2<MATRIX_2_PARAMS>::Adjoint()
   {
-    this_type temp = *this;
+    this_type temp(*this);
     Adjoint(temp);
 
     return *this;
@@ -184,7 +184,7 @@ namespace tloc { namespace math {
   template <MATRIX_2_TYPES>
   TL_FI void Matrix2<MATRIX_2_PARAMS>::Orthonormalize( const this_type& aMatrix )
   {
-    *this = aMatrix;
+    base_type::operator= (aMatrix);
     Orthonormalize();
   }
 
@@ -215,7 +215,7 @@ namespace tloc { namespace math {
   TL_FI void 
     Matrix2<MATRIX_2_PARAMS>::FastOrthonormalize( const this_type& aMatrix )
   {
-    *this = aMatrix;
+    base_type::operator= (aMatrix);
     FastOrthonormalize();
   }
 

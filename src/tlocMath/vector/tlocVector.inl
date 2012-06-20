@@ -128,7 +128,7 @@ namespace tloc { namespace math {
   TL_FI void Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
-    operator=(a_vector1);
+    *this = a_vector1;
     Sub(a_vector2);
   }
 
@@ -148,7 +148,7 @@ namespace tloc { namespace math {
   TL_FI void Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
-    operator=(a_vector1);
+    *this = a_vector1;
     Mul(a_vector2);
   }
 
@@ -354,7 +354,7 @@ namespace tloc { namespace math {
   TL_FI void Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector1,
                                              const this_type& a_vector2)
   {
-    operator=(a_vector1);
+    *this = a_vector1;
     Midpoint(a_vector2);
   }
 

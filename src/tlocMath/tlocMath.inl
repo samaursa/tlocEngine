@@ -15,55 +15,55 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::Ceil(const T& aValue)
   {
-    return ceil(aValue);
+    return std::ceil(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::Floor(const T& aValue)
   {
-    return floor(aValue);
+    return std::floor(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::Abs(const T& aValue)
   {
-    return abs(aValue);
+    return std::abs(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::FAbs(const T& aValue)
   {
-    return fabs(aValue);
+    return std::fabs(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::ATan(const T& aValue)
   {
-    return atan(aValue);
+    return std::atan(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::ATan2(const T& aValue1, const T& aValue2)
   {
-    return atan2(aValue1, aValue2);
+    return std::atan2(aValue1, aValue2);
   }
 
   template <typename T>
   TL_FI T Math<T>::Log( const T& aLog )
   {
-    return log(aLog);
+    return std::log(aLog);
   }
 
   template <typename T>
   TL_FI T Math<T>::Sin( const T& aValInRad )
   {
-    return sin(aValInRad);
+    return std::sin(aValInRad);
   }
 
   template <typename T>
   TL_FI T Math<T>::Cos( const T& aValInRad )
   {
-    return cos(aValInRad);
+    return std::cos(aValInRad);
   }
 
   template <typename T>
@@ -81,7 +81,7 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::Sqrt(const T& aValue)
   {
-    return sqrt(aValue);
+    return std::sqrt(aValue);
   }
 
   template <typename T>

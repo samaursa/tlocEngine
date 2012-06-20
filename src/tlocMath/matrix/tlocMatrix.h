@@ -41,6 +41,7 @@ namespace tloc { namespace math {
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
+    using base_type::GetRow;
     using base_type::Set;
     using base_type::k_TableSize;
     using base_type::m_values;

@@ -28,7 +28,6 @@ namespace tloc { namespace math {
     
     //------------------------------------------------------------------------
     // using declarations for access to base class
-    using base_type::operator=;
     using base_type::LengthSquared;
     using base_type::m_values;
     

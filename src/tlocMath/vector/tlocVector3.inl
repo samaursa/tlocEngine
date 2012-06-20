@@ -88,7 +88,7 @@ namespace tloc { namespace math {
   TL_FI void Vector3<VECTOR_3_PARAMS>::Cross(const this_type& aVector1,
                                             const this_type& aVector2)
   {
-    operator=(aVector1);
+    *this = aVector1;
     Cross(aVector2);
   }
 

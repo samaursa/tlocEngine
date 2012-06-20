@@ -272,7 +272,7 @@ namespace tloc { namespace math {
   template <MATRIX_3_TYPES>
   TL_FI void Matrix3<MATRIX_3_PARAMS>::Orthonormalize( const this_type& aMatrix )
   {
-    *this = aMatrix;
+    base_type::operator= (aMatrix);
     Orthonormalize();
   }
 
@@ -347,7 +347,7 @@ namespace tloc { namespace math {
   TL_FI void 
     Matrix3<MATRIX_3_PARAMS>::FastOrthonormalize( const this_type& aMatrix )
   {
-    *this = aMatrix;
+    base_type::operator= (aMatrix);
     FastOrthonormalize();
   }
 
@@ -358,7 +358,7 @@ namespace tloc { namespace math {
     // Factor M = R*D*R^T.  The columns of R are the eigenvectors.  The
     // diagonal entries of D are the corresponding eigenvalues.
     value_type diagonal[3], subdiagonal[2];
-    aRot = *this;
+    aRot.operator= (*this);
     bool reflection = aRot.Tridiagonalize(diagonal, subdiagonal);
     bool converged = aRot.QLAlgorithm(diagonal, subdiagonal);
     TLOC_ASSERT(converged, "QLAlgorithm failed to converge\n");

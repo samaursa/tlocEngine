@@ -125,7 +125,7 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1>
-  typename T_Elem1 GetElement(T_Elem1& a, p_on_stack, p_user)
+  T_Elem1 GetElement(T_Elem1& a, p_on_stack, p_user)
   {
     return a;
   }
@@ -217,8 +217,8 @@ namespace TestingMemoryPool
   void TestGetAndRecycle()
   {
     typedef T_PoolType    pool_type;
-    typedef pool_type::policy_allocation_type p_alloc_type;
-    typedef pool_type::policy_indexing_type   p_index_type;
+    typedef typename pool_type::policy_allocation_type p_alloc_type;
+    typedef typename pool_type::policy_indexing_type   p_index_type;
 
     pool_type pool;
     pool.Initialize(T_PoolSize);
@@ -249,17 +249,17 @@ namespace TestingMemoryPool
     for (tl_int i = 0; i < T_PoolSize; ++i)
     {
       const tl_int indexToRecycle = 0;
-      const pool_type::value_type elementToCheck =
-        GetElement(pool[0], pool_type::policy_allocation_type(),
-                            pool_type::policy_indexing_type() );
+      const typename pool_type::value_type elementToCheck =
+        GetElement(pool[0], typename pool_type::policy_allocation_type(),
+                            typename pool_type::policy_indexing_type() );
 
       pool.RecycleAtIndex(indexToRecycle);
 
-      for (T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
+      for (typename T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
            itr != itrEnd; ++itr)
       {
-        if (GetElement(*itr, pool_type::policy_allocation_type(),
-          pool_type::policy_indexing_type()) == elementToCheck)
+        if (GetElement(*itr, typename pool_type::policy_allocation_type(),
+          typename pool_type::policy_indexing_type()) == elementToCheck)
         {
           recycleTestPassed = false;
           goto recycle_test_finished;
@@ -283,10 +283,11 @@ recycle_test_finished:
   {
     typename T_PoolType::size_type prevSize = a_pool.GetTotal();
 
-    T_PoolType::wrapper_type& elem = a_pool.GetNext();
+    typename T_PoolType::wrapper_type& elem = a_pool.GetNext();
     CHECK(a_pool.IsValid(elem) );
 
-    CHECK(GetIndex(elem, T_PoolType::policy_allocation_type()) == (T_PoolType::index_type)prevSize);
+    CHECK(GetIndex(elem, typename T_PoolType::policy_allocation_type()) == 
+          (typename T_PoolType::index_type)prevSize);
     CHECK(a_pool.GetTotal() > prevSize);
   }
 
@@ -318,7 +319,7 @@ recycle_test_finished:
     CHECK(pool.GetAvail() == 0);
 
     // Test growth depending on pool type
-    TestGrowthHelper(pool, T_PoolType::container_dynamic_type());
+    TestGrowthHelper(pool, typename T_PoolType::container_dynamic_type());
   }
 
   TEST_CASE("Core/MemoryPool/GetNext_Growth", "Test GetNext growth")

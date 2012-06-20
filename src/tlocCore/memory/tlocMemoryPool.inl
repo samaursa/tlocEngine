@@ -28,7 +28,7 @@ namespace tloc { namespace core {
 
 #define MEMORY_POOL_INDEX_WRAPPER_TEMP    typename T_Elem, typename T_SizeType
 #define MEMORY_POOL_INDEX_WRAPPER_PARAMS  T_Elem, T_SizeType
-#define MEMORY_POOL_INDEX_WRAPPER_TYPE    typename MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>
+#define MEMORY_POOL_INDEX_WRAPPER_TYPE    typename MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::template Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
@@ -140,7 +140,7 @@ namespace tloc { namespace core {
       return GetNext();
     }
 
-    return MEMORY_POOL_INDEX_TYPE::npos;
+    return MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::npos;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -386,7 +386,7 @@ namespace tloc { namespace core {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndex<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_heap)
   {
-    for (container_type::iterator itr = m_allElements.begin(), 
+    for (typename container_type::iterator itr = m_allElements.begin(), 
       itrEnd = m_allElements.end(); itr != itrEnd; ++itr)
     {
       delete (*itr);

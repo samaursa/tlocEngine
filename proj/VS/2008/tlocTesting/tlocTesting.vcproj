@@ -990,6 +990,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocArrayFixedTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocArrayTest.cpp"
 				>
 			</File>
@@ -1031,10 +1035,6 @@
 			</File>
 			<File
 				RelativePath=".\tlocRandomTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocStackArrayTest.cpp"
 				>
 			</File>
 			<File

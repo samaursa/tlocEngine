@@ -261,23 +261,23 @@ static LPVOID ChkedTlsGetValue(DWORD idx)
 #include "usermodepageallocator.c"
 #endif
 
+#if defined(__linux__) || defined(__FreeBSD__)
+/* Sadly we can't include <malloc.h> as it causes a redefinition error */
+size_t malloc_usable_size(void *);
+#elif defined(__APPLE__)
+#include <malloc/malloc.h>
+inline size_t malloc_size_wrapper(void *ptr)
+{
+  return malloc_size(ptr);
+}
+#endif
+
 #if defined(__cplusplus)
 #if !defined(NO_NED_NAMESPACE)
 namespace nedalloc {
 #else
 extern "C" {
 #endif
-#endif
-  
-#if defined(__linux__) || defined(__FreeBSD__)
-  /* Sadly we can't include <malloc.h> as it causes a redefinition error */
-  size_t malloc_usable_size(void *);
-#elif defined(__APPLE__)
-  size_t malloc_size(const void *ptr);
-  inline size_t malloc_size_wrapper(void *ptr)
-  {
-    return malloc_size(ptr);
-  }
 #endif
 
 #if USE_ALLOCATOR==0

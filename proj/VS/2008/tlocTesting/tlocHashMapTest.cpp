@@ -34,7 +34,7 @@ namespace TestingHashMap
   {
     HashMap<char8*, s32, hash<char8*>, eqstr, true> test;
 
-    char* someKey = "asdf";
+    char* someKey = (char*)"asdf";
 
     test[someKey] = 10;
 

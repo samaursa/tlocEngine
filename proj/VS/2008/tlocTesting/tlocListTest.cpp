@@ -63,12 +63,14 @@ namespace TestingList
     s32 myints[] = {16,2,77,29};
     T_ListType fifth (myints, myints + sizeof(myints) / sizeof(s32) );
 
-    typename T_ListType::iterator itr = fifth.begin(); itr != fifth.end();
+    typename T_ListType::iterator itr = fifth.begin(); 
 
     CHECK(*itr++ == 16);
     CHECK(*itr++ == 2);
     CHECK(*itr++ == 77);
     CHECK(*itr++ == 29);
+    
+    CHECK(itr == fifth.end());
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Ctors", "")

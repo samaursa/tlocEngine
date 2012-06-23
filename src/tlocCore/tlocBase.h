@@ -73,23 +73,19 @@
 //////////////////////////////////////////////////////////////////////////
 // Compiler specific
 
+//------------------------------------------------------------------------
+// Microsoft Visual C++ compiler
 #if defined(_MSC_VER)
-
-  //------------------------------------------------------------------------
-  // Compiler specific checks
-# ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
-    //------------------------------------------------------------------------
-    // Check for exception handling
-#   if defined(_CPPUNWIND) && !defined(TLOC_ENABLE_CPPUNWIND)
-#     error "Exception handling must be disabled for this project."
-#   endif
-    //------------------------------------------------------------------------
-    // Check for RTTI
-#   if defined(_CPPRTTI) && !defined(TLOC_ENABLE_CPPRTTI)
-#     error "RTTI must be disabled for this project."
-#   endif
+//------------------------------------------------------------------------
+  // Check for exception handling
+# if defined(_CPPUNWIND)
+#   define TLOC_CPPUNWIND_ENABLED
 # endif
-
+  //------------------------------------------------------------------------
+  // Check for RTTI
+# if defined(_CPPRTTI)
+#   define TLOC_RTTI_ENABLED
+# endif
   //------------------------------------------------------------------------
   // Optimizations
 # ifndef TLOC_DEBUG
@@ -97,6 +93,40 @@
 #   pragma auto_inline( on )
 # endif
 
+//------------------------------------------------------------------------
+// GCC compiler
+#elif defined(__GNUC__)
+    //------------------------------------------------------------------------
+    // Compiler specific checks
+# if defined (__EXCEPTIONS)
+#   define TLOC_CPPUNWIND_ENABLED
+# endif
+    //------------------------------------------------------------------------
+    // Check for RTTI
+# if defined (__GXX_RTTI)
+#   define TLOC_RTTI_ENABLED
+# endif
+
+#else
+# error WIP
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// Exceptions 
+
+#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
+# if defined (TLOC_CPPUNWIND_ENABLED) && !defined (TLOC_ENABLE_CPPUNWIND)
+#   error "Exception handling must be disabled for this project."
+# endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// RTTI
+
+#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
+# if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
+#   error "Exception handling must be disabled for this project."
+# endif
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -191,7 +221,13 @@
 #define TL_I TLOC_INLINE
 
 #if defined (_MSC_VER)
-#  define TLOC_FORCE_INLINE __forceinline
+# define TLOC_FORCE_INLINE __forceinline
+#elif defined (__GNUC__)
+# if defined (TLOC_DEBUG)
+#   define TLOC_FORCE_INLINE inline
+# else
+#   define TLOC_FORCE_INLINE inline __attribute__ ((always_inline))
+# endif
 #else 
 #  define TLOC_FORCE_INLINE inline
 #endif
@@ -214,7 +250,7 @@
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
-#if defined (__APPLE__)
+#if defined (__GNUC__)
 // TODO: Fix the assert macros for mac
 
 # define _CRT_WIDE(_Msg)
@@ -332,10 +368,15 @@
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
-  namespace { char NoEmptyFileDummy##__LINE__; }
-#define TLOC_NOT_EMPTY_SOURCE_FILE() \
-  namespace { char NoEmptyFileDummy##__LINE__; }
+#ifdef _MSC_VER
+# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
+    namespace { char NoEmptyFileDummy##__LINE__; }
+# define TLOC_NOT_EMPTY_SOURCE_FILE() \
+    namespace { char NoEmptyFileDummy##__LINE__; }
+#else
+# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() 
+# define TLOC_NOT_EMPTY_SOURCE_FILE() 
+#endif
 
 ///-------------------------------------------------------------------------
 /// @brief This struct is used to diagnose template types.
@@ -351,5 +392,6 @@ struct DiagnoseTemplate;
 #ifndef COMMA
 # define COMMA() ,
 #endif
+
 
 #endif

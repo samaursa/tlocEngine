@@ -4,6 +4,10 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
+#ifdef __APPLE__
+# include "TargetConditionals.h"
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // Macros
 
@@ -11,10 +15,10 @@
 # define TLOC_WIN64
 #elif defined(WIN32) || defined(_WIN32)
 # define TLOC_WIN32
-#elif defined(TARGET_OS_MAC) || defined (__APPLE__) || defined (MACOSX) || defined (macintosh) || defined (Macintosh)
-# define TLOC_OS_MAC
 #elif defined(TARGET_OS_IPHONE)
 # define TLOC_OS_IPHONE
+#elif defined(TARGET_OS_MAC)
+# define TLOC_OS_MAC
 #elif defined(__linux__)
 # define TLOC_OS_LINUX
 #else
@@ -26,6 +30,7 @@
 #if defined (TLOC_WIN32) || defined (TLOC_WIN64)
 # define TLOC_OS_WIN
 #endif
+
 
 namespace tloc { namespace core {
 

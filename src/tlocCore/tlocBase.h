@@ -19,7 +19,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Common macros
-//#define _CRT_SECURE_NO_WARNINGS 1
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 # ifdef _SECURE_SCL
@@ -76,7 +75,7 @@
 //------------------------------------------------------------------------
 // Microsoft Visual C++ compiler
 #if defined(_MSC_VER)
-//------------------------------------------------------------------------
+  //------------------------------------------------------------------------
   // Check for exception handling
 # if defined(_CPPUNWIND)
 #   define TLOC_CPPUNWIND_ENABLED
@@ -95,14 +94,14 @@
 
 //------------------------------------------------------------------------
 // GCC compiler
-#elif defined(__GNUC__)
-    //------------------------------------------------------------------------
-    // Compiler specific checks
+#elif defined (__GNUC__) || defined(__clang__)
+  //------------------------------------------------------------------------
+  // Check for exception handling
 # if defined (__EXCEPTIONS)
 #   define TLOC_CPPUNWIND_ENABLED
 # endif
-    //------------------------------------------------------------------------
-    // Check for RTTI
+  //------------------------------------------------------------------------
+  // Check for RTTI
 # if defined (__GXX_RTTI)
 #   define TLOC_RTTI_ENABLED
 # endif
@@ -220,14 +219,22 @@
 #define TLOC_INLINE inline
 #define TL_I TLOC_INLINE
 
+//------------------------------------------------------------------------
+// Define force inline for the VC++ compiler
 #if defined (_MSC_VER)
 # define TLOC_FORCE_INLINE __forceinline
-#elif defined (__GNUC__)
+//------------------------------------------------------------------------
+// Define force inline for the GCC and clang compilers. Since the 
+// attribute always_inline, inlines regardless of optimization level
+// always_inline is removed in debug builds, and replaced with inline.
+#elif defined (__GNUC__) || defined(__clang__)
 # if defined (TLOC_DEBUG)
 #   define TLOC_FORCE_INLINE inline
 # else
 #   define TLOC_FORCE_INLINE inline __attribute__ ((always_inline))
 # endif
+//------------------------------------------------------------------------
+// Define force inline as a normal inline for an unsupported compiler
 #else 
 #  define TLOC_FORCE_INLINE inline
 #endif
@@ -250,7 +257,7 @@
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
-#if defined (__GNUC__)
+#if defined (__GNUC__) || defined(__clang__)
 // TODO: Fix the assert macros for mac
 
 # define _CRT_WIDE(_Msg)

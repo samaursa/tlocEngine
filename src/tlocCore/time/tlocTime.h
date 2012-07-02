@@ -34,6 +34,10 @@ namespace tloc { namespace core {
 
   private:
 
+#ifdef TLOC_OS_IPHONE
+    TL_I static sec_type   DoGetTicksToSeconds();
+#endif
+
     TL_I void       DoInit();
     TL_I void       DoReset();
     TL_I sec_type   DoGetElapsedSeconds();
@@ -44,7 +48,7 @@ namespace tloc { namespace core {
     ConditionalType<sec_type, T_Adjust>     m_adjustInSeconds;
     
 #ifdef TLOC_OS_IPHONE
-    static sec_type                         sm_ticksToSeconds;
+    static const sec_type                         sm_ticksToSeconds;
 #endif
 
   };

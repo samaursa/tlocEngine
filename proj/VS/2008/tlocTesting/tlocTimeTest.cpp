@@ -6,6 +6,8 @@
 # include<unistd.h>
 #endif
 
+#include<time.h>
+
 #include <tlocCore/time/tlocTime.h>
 #include <tlocCore/time/tlocTime.inl>
 
@@ -21,7 +23,7 @@ namespace TestingTime
     
     typedef Timer<f64, u64, true>   accurate_adjust_timer;
     typedef Timer<f64, u64, false>  accurate_no_adjust_timer;
-    
+
     typedef Timer<f32, u32, true>   no_accurate_adjust_timer;
     typedef Timer<f32, u32, false>  no_accurate_no_adjust_timer;
   };
@@ -42,13 +44,13 @@ namespace TestingTime
   template <typename T_Real, typename T_UInt>
   T_UInt GetCurrentTimeMS()
   {
-    return (u64)(GetCurrentTimeS() * (T_Real)1000.0);
+    return (T_UInt)(GetCurrentTimeS<T_Real, T_UInt>() * (T_Real)1000.0);
   }
 
   template <typename T_Real, typename T_UInt>
   T_UInt GetCurrentTimeMicroS()
   {
-    return (u64)(GetCurrentTimeS() * (T_Real)1000000.0);
+    return (T_UInt)(GetCurrentTimeS<T_Real, T_UInt>() * (T_Real)1000000.0);
   }
 
 #elif defined (TLOC_OS_IPHONE)
@@ -103,10 +105,21 @@ namespace TestingTime
   {
     TimeTestSleepS<T_Real, T_UInt>(durationMicroS * (T_Real)0.000001);
   }
-  
+
+  template <typename T_UInt>
+  void TimeTestSleepCTimeS(T_UInt durationS)
+  {
+    T_UInt startTime = (T_UInt)time(NULL);
+    T_UInt currentTime = startTime;
+
+    while (currentTime - startTime < durationS)
+    {
+      currentTime = (T_UInt)time(NULL);
+    }
+  }
   
   template <typename T_TimerType>
-  void TestTimer()
+  void TestTimerAgainstSelf()
   {
     typedef typename T_TimerType::sec_type    real_type;
     typedef typename T_TimerType::value_type  UInt_type;
@@ -123,7 +136,7 @@ namespace TestingTime
     real_type timeTwoS = timerTwo.ElapsedSeconds();
     
     CHECK(timeOneS < timeTwoS);
-    
+
     timerTwo.Reset();
     
     timeOneS = timerOne.ElapsedSeconds();
@@ -137,10 +150,11 @@ namespace TestingTime
     timerTwo.Reset();
     
     UInt_type timeOneMS = timerOne.ElapsedMilliSeconds();
-    TimeTestSleepMS<real_type, UInt_type>(1);
+    TimeTestSleepMS<real_type, UInt_type>(2);
     UInt_type timeTwoMS = timerTwo.ElapsedMilliSeconds();
     
-    CHECK(timeOneMS < timeTwoMS);
+    REQUIRE(timeOneMS < timeTwoMS);
+    CHECK((timeTwoMS - timeOneMS) >= (UInt_type)1);
     
     timerTwo.Reset();
     
@@ -155,11 +169,12 @@ namespace TestingTime
     timerTwo.Reset();
     
     UInt_type timeOneMicroS = timerOne.ElapsedMicroSeconds();
-    TimeTestSleepMicroS<real_type, UInt_type>(1);
+    TimeTestSleepMicroS<real_type, UInt_type>(2);
     UInt_type timeTwoMicroS = timerTwo.ElapsedMicroSeconds();
     
-    CHECK(timeOneMicroS < timeTwoMicroS);
-    
+    REQUIRE(timeOneMicroS < timeTwoMicroS);
+    CHECK((timeTwoMicroS - timeOneMicroS) >= (UInt_type)1);
+
     timerTwo.Reset();
     
     timeOneMicroS = timerOne.ElapsedMicroSeconds();
@@ -168,11 +183,36 @@ namespace TestingTime
     CHECK(timeOneMicroS > timeTwoMicroS);
   }
 
-  TEST_CASE_METHOD(TimeFixture, "Core/Containers/Time/Timer", "")
+  TEST_CASE_METHOD(TimeFixture, "Core/Containers/Time/TimerAgainstSelf", "")
   {
-    TestTimer<accurate_adjust_timer>();
-    TestTimer<accurate_no_adjust_timer>();
-    TestTimer<no_accurate_adjust_timer>();
-    TestTimer<no_accurate_no_adjust_timer>();
+    TestTimerAgainstSelf<accurate_adjust_timer>();
+    TestTimerAgainstSelf<accurate_no_adjust_timer>();
+    TestTimerAgainstSelf<no_accurate_adjust_timer>();
+    TestTimerAgainstSelf<no_accurate_no_adjust_timer>();
+  }
+
+  template <typename T_TimerType>
+  void TestTimerAgainstCTime()
+  {
+    typedef typename T_TimerType::sec_type    real_type;
+
+    T_TimerType timer;
+    timer.Reset();
+
+    real_type timeOne = timer.ElapsedSeconds();
+    TimeTestSleepCTimeS(2);
+    real_type timeTwo = timer.ElapsedSeconds();
+
+    REQUIRE(timeTwo > timeOne);
+    CHECK((timeTwo - timeOne) >= (real_type)1.0);
+    CHECK((timeTwo - timeOne) <  (real_type)3.0);
+  }
+
+  TEST_CASE_METHOD(TimeFixture, "Core/Containers/Time/TimerAgainstCTime", "")
+  {
+    TestTimerAgainstCTime<accurate_adjust_timer>();
+    TestTimerAgainstCTime<accurate_no_adjust_timer>();
+    TestTimerAgainstSelf<no_accurate_adjust_timer>();
+    TestTimerAgainstSelf<no_accurate_no_adjust_timer>();
   }
 };

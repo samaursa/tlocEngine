@@ -10,10 +10,10 @@ namespace tloc { namespace core { namespace component_system {
   public:
     Component(components::type a_type) : m_type(a_type) {}
 
-    component_type::type  GetType() { return m_type; }
+    components::type  GetType() { return m_type; }
 
   protected:
-    component_type::type m_type;
+    components::type m_type;
   };
 
 };};};

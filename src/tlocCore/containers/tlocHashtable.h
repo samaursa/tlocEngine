@@ -182,6 +182,7 @@ namespace tloc { namespace core {
 
     reference   operator*() const;
     pointer     operator->() const;
+
     this_type&  operator++();
     this_type   operator++(int);
 
@@ -420,7 +421,7 @@ namespace tloc { namespace core {
     // Typedefs
 
     typedef Hashtable<T_Policies>                   this_type;
-    typedef HashCode<T_Policies, 
+    typedef HashCode<T_Policies,
             typename T_Policies::cache_hash>        base_type;
     typedef T_Policies                              policy_type;
 

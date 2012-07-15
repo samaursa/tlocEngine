@@ -66,29 +66,29 @@ namespace tloc { namespace core {
     // General
 
     // returns the lowest capacity an array can have if size > 0
-    TL_I size_type       defaultCapacity();
+    size_type       defaultCapacity();
 
     //------------------------------------------------------------------------
     // Assignment
 
-    TL_I this_type&      operator= (const this_type& a_toCopy);
+    this_type&      operator= (const this_type& a_toCopy);
 
     //------------------------------------------------------------------------
     // Element access
 
-    TL_I reference        at(size_type a_index);
-    TL_I const_reference  at(size_type a_index) const;
+    reference        at(size_type a_index);
+    const_reference  at(size_type a_index) const;
 
-    TL_I reference        operator[] (size_type a_index);
-    TL_I const_reference  operator[] (size_type a_index) const;
+    reference        operator[] (size_type a_index);
+    const_reference  operator[] (size_type a_index) const;
 
-    TL_I reference        front();
-    TL_I const_reference  front() const;
+    reference        front();
+    const_reference  front() const;
 
-    TL_I reference        back();
-    TL_I const_reference  back() const;
+    reference        back();
+    const_reference  back() const;
 
-    TL_I pointer          data();
+    pointer          data();
 
     //------------------------------------------------------------------------
     // Iterator access

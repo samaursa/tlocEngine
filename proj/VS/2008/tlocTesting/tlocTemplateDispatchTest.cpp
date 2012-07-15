@@ -10,8 +10,6 @@ namespace ns
     void C2() {}
     void C3() {}
   };
-
-  
 };
 
 TLOC_DEF_TYPE(ns::pipes);
@@ -55,7 +53,7 @@ namespace TestingTemplateDispatch
   {
     typedef typename CallbackGroupTArray<T, WindowCallbacks>::type base_type;
     using base_type::m_observers;
-    
+
     virtual void C1()
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -113,7 +111,7 @@ namespace TestingTemplateDispatch
 TLOC_DEF_TYPE(TestingTemplateDispatch::bullets);
 TLOC_DEF_TYPE(TestingTemplateDispatch::particles);
 
-namespace TestingTemplateDispatch 
+namespace TestingTemplateDispatch
 {
   struct Fixture
   {

@@ -41,7 +41,6 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // typedefs
 
-    typedef StringBase<T>   StringBaseT;
     typedef T               value_type;
     typedef T*              pointer;
     typedef const T*        const_pointer;
@@ -49,7 +48,8 @@ namespace tloc { namespace core {
     typedef const T&        const_reference;
     typedef T*              iterator;
     typedef const T*        const_iterator;
-    
+    typedef tl_size         size_type;
+
     typedef StringBase<value_type>  this_type;
 
     //------------------------------------------------------------------------
@@ -64,16 +64,18 @@ namespace tloc { namespace core {
     // Ctor / Dtor
 
     TL_I StringBase();
-    TL_I StringBase(const StringBase<T>& aOther);
-    TL_I StringBase(const StringBase<T>& aOther, tl_size aPosition,
-                    tl_size aNumChars = npos);
-    TL_I StringBase(const T* aPtr, tl_size aNumChars);
-    TL_I StringBase(const T* aPtr);
-    TL_I StringBase(tl_size aNumChars, T aChar);
+    TL_I StringBase(const this_type& aOther);
+    TL_I StringBase(const this_type& aOther, size_type aPosition,
+                    size_type aNumChars = npos);
+    TL_I StringBase(const_pointer aPtr, size_type aNumChars);
+    TL_I StringBase(const_pointer aPtr);
+    TL_I StringBase(size_type aNumChars, value_type aChar);
+
     template <typename T_InputIterator>
     TL_I StringBase(const T_InputIterator aPtrBegin, const T_InputIterator aPtrEnd);
-    TL_I StringBase(StringNoInitialize, tl_size aN);
-    TL_I StringBase(StringSprintf, const tl_size aFormat, ...);
+
+    TL_I StringBase(StringNoInitialize, size_type aN);
+    TL_I StringBase(StringSprintf, const size_type aFormat, ...);
 
     TL_I ~StringBase();
 
@@ -89,11 +91,11 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Element access
 
-    TL_I const T&   operator [] (tl_size aPos) const;
-    TL_I T&         operator [] (tl_size aPos);
+    TL_I const T&   operator [] (size_type aPos) const;
+    TL_I T&         operator [] (size_type aPos);
 
-    TL_I const T&   at(tl_size aPos) const;
-    TL_I T&         at(tl_size aPos);
+    TL_I const T&   at(size_type aPos) const;
+    TL_I T&         at(size_type aPos);
 
     //------------------------------------------------------------------------
     // Capacity
@@ -101,65 +103,66 @@ namespace tloc { namespace core {
     TL_I tl_size    size() const;
     TL_I tl_size    length() const;
     TL_I tl_size    max_size() const;
-    TL_I void       resize(const tl_size& newSize);
-    TL_I void       resize(const tl_size& newSize, const T charToFill);
+    TL_I void       resize(const size_type& newSize);
+    TL_I void       resize(const size_type& newSize, const value_type charToFill);
     TL_I tl_size    capacity() const;
-    TL_I void       set_capacity(const tl_size& newCapacity = npos);
-    TL_I void       reserve(const tl_size& newSize);
+    TL_I void       set_capacity(const size_type& newCapacity = npos);
+    TL_I void       reserve(const size_type& newSize);
     TL_I void       clear();
     TL_I bool       empty();
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I StringBaseT& operator+= (const StringBaseT& aStr);
-    TL_I StringBaseT& operator+= (const T* aCharStr);
-    TL_I StringBaseT& operator+= (const T& aChar);
+    TL_I this_type& operator+= (const this_type& aStr);
+    TL_I this_type& operator+= (const_pointer aCharStr);
+    TL_I this_type& operator+= (const_reference aChar);
 
-    TL_I StringBaseT& operator = (const StringBaseT& aStr);
-    TL_I StringBaseT& operator = (const T* aCharStr);
-    TL_I StringBaseT& operator = (T aChar);
+    TL_I this_type& operator = (const this_type& aStr);
+    TL_I this_type& operator = (const_pointer aCharStr);
+    TL_I this_type& operator = (value_type aChar);
 
     TL_I void         swap(this_type& aX);
 
     //````````````````````````````````````````````````````````````````````````
     // Append
 
-    TL_I StringBaseT& append(const StringBaseT& aStr);
-    TL_I StringBaseT& append(const StringBaseT& aStr, const tl_size& aPos,
-                             const tl_size& aNumChars);
-    TL_I StringBaseT& append(const T* aCharArray, const tl_size& aNumChars);
-    TL_I StringBaseT& append(const T* aCharStr);
-    TL_I StringBaseT& append(const tl_size& aNumChars, const T& aChar);
+    TL_I this_type& append(const this_type& aStr);
+    TL_I this_type& append(const this_type& aStr, const size_type& aPos,
+                             const size_type& aNumChars);
+    TL_I this_type& append(const_pointer aCharArray, const size_type& aNumChars);
+    TL_I this_type& append(const_pointer aCharStr);
+    TL_I this_type& append(const size_type& aNumChars, const_reference aChar);
     template <typename T_InputIterator>
-    TL_I StringBaseT& append(T_InputIterator aBegin, T_InputIterator aEnd);
+    TL_I this_type& append(T_InputIterator aBegin, T_InputIterator aEnd);
 
     TL_I void         push_back(const T& aChar);
 
     //````````````````````````````````````````````````````````````````````````
     // Assign
 
-    TL_I StringBaseT& assign(const StringBaseT& aStr);
-    TL_I StringBaseT& assign(const StringBaseT& aStr, const tl_size& aPos,
+    TL_I this_type& assign(const this_type& aStr);
+    TL_I this_type& assign(const this_type& aStr, const tl_size& aPos,
                              const tl_size& aNumChars);
-    TL_I StringBaseT& assign(const T* aCharStr, const tl_size& aNumChars);
-    TL_I StringBaseT& assign(const T* aCharStr);
-    TL_I StringBaseT& assign(const tl_size& aNumChars, const T& aChar);
+    TL_I this_type& assign(const_pointer aCharStr, const tl_size& aNumChars);
+    TL_I this_type& assign(const_pointer aCharStr);
+    TL_I this_type& assign(const tl_size& aNumChars, const T& aChar);
     template <typename T_InputIterator>
-    TL_I StringBaseT& assign(const T_InputIterator aBegin,
+    TL_I this_type& assign(const T_InputIterator aBegin,
                              const T_InputIterator aEnd);
 
     //````````````````````````````````````````````````````````````````````````
     // Insert
 
-    TL_I StringBaseT& insert(tl_size aIndex, const StringBaseT& aStr);
-    TL_I StringBaseT& insert(tl_size aIndexDestination, const StringBaseT& aStr,
-                             tl_size aIndexSource, tl_size aNumChars);
-    TL_I StringBaseT& insert(tl_size aIndex, const T* aCharArray, tl_size aNumChars);
-    TL_I StringBaseT& insert(tl_size aIndex, const T* aCharStr);
-    TL_I StringBaseT& insert(tl_size aIndex, tl_size aNumChars, T aChar);
-    TL_I iterator     insert(const_iterator aPos, const T& aChar);
-    TL_I void         insert(const_iterator aPos, tl_size aNumChars, T aChar);
+    TL_I this_type& insert(tl_size aIndex, const this_type& aStr);
+    TL_I this_type& insert(tl_size aIndexDestination, const this_type& aStr,
+                           tl_size aIndexSource, tl_size aNumChars);
+    TL_I this_type& insert(tl_size aIndex, const_pointer aCharArray, tl_size aNumChars);
+    TL_I this_type& insert(tl_size aIndex, const_pointer aCharStr);
+    TL_I this_type& insert(tl_size aIndex, tl_size aNumChars, T aChar);
+    TL_I iterator   insert(const_iterator aPos, const T& aChar);
+    TL_I void       insert(const_iterator aPos, tl_size aNumChars, T aChar);
+
     template <typename T_InputIterator>
     TL_I void         insert(const_iterator aPos, T_InputIterator aBegin,
                              T_InputIterator aEnd);
@@ -167,50 +170,50 @@ namespace tloc { namespace core {
     //````````````````````````````````````````````````````````````````````````
     // Replace
 
-    TL_I StringBaseT& erase(const tl_size& aPos = 0,
-                            const tl_size& aNumChars = npos);
+    TL_I this_type& erase(const tl_size& aPos = 0,
+                          const tl_size& aNumChars = npos);
     TL_I iterator     erase(iterator aPos);
     TL_I iterator     erase(iterator aFirst, iterator aLast);
 
     //````````````````````````````````````````````````````````````````````````
     // Replace
 
-    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
-                              const StringBaseT& aStr);
-    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              const StringBaseT& aStr);
+    TL_I this_type& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                            const this_type& aStr);
+    TL_I this_type& replace(iterator aDestBegin, iterator aDestEnd,
+                            const this_type& aStr);
 
-    TL_I StringBaseT& replace(tl_size aDestPos, tl_size aNumCharsToReplace,
-                              const StringBaseT& aStr, tl_size aSourcePos,
-                              tl_size aNumCharsToCopy);
+    TL_I this_type& replace(tl_size aDestPos, tl_size aNumCharsToReplace,
+                            const this_type& aStr, tl_size aSourcePos,
+                            tl_size aNumCharsToCopy);
 
-    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
-                              const T* aCharArray, tl_size aNumCharsToCopy);
-    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              const T* aCharArray, tl_size aNumCharsToCopy);
+    TL_I this_type& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                            const_pointer aCharArray, tl_size aNumCharsToCopy);
+    TL_I this_type& replace(iterator aDestBegin, iterator aDestEnd,
+                            const_pointer aCharArray, tl_size aNumCharsToCopy);
 
-    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
-                              const T* aCharStr);
-    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              const T* aCharStr);
+    TL_I this_type& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                            const_pointer aCharStr);
+    TL_I this_type& replace(iterator aDestBegin, iterator aDestEnd,
+                            const_pointer aCharStr);
 
-    TL_I StringBaseT& replace(tl_size aPos, tl_size aNumCharsToReplace,
-                              tl_size aNumOfCharsToCopy, const T aChar);
-    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              tl_size aNumOfCharsToCopy, const T aChar);
+    TL_I this_type& replace(tl_size aPos, tl_size aNumCharsToReplace,
+                            tl_size aNumOfCharsToCopy, const T aChar);
+    TL_I this_type& replace(iterator aDestBegin, iterator aDestEnd,
+                            tl_size aNumOfCharsToCopy, const T aChar);
 
     template <typename T_InputIterator>
-    TL_I StringBaseT& replace(iterator aDestBegin, iterator aDestEnd,
-                              T_InputIterator aBegin, T_InputIterator aEnd);
+    TL_I this_type& replace(iterator aDestBegin, iterator aDestEnd,
+                            T_InputIterator aBegin, T_InputIterator aEnd);
 
     //````````````````````````````````````````````````````````````````````````
     // Lower and Upper case
 
-    TL_I StringBaseT to_upper();
-    TL_I void        to_upper(StringBaseT& aStrOut);
+    TL_I this_type   to_upper();
+    TL_I void        to_upper(this_type& aStrOut);
 
-    TL_I StringBaseT to_lower();
-    TL_I void        to_lower(StringBaseT& aStrOut);
+    TL_I this_type   to_lower();
+    TL_I void        to_lower(this_type& aStrOut);
 
     TL_I void        make_upper();
     TL_I void        make_lower();
@@ -218,62 +221,62 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // String Operations
 
-    TL_I const T*     c_str();
-    TL_I const T*     c_str() const;
-    TL_I const T*     data();
-    TL_I const T*     data() const;
-    TL_I tl_size      copy(T* aDestArray, const tl_size& aNumCharsToCopy,
+    TL_I const_pointer     c_str();
+    TL_I const_pointer     c_str() const;
+    TL_I const_pointer     data();
+    TL_I const_pointer     data() const;
+    TL_I tl_size      copy(pointer aDestArray, const tl_size& aNumCharsToCopy,
                            const tl_size& aBegin = 0);
 
     //````````````````````````````````````````````````````````````````````````
     // Find functions
 
-    TL_I tl_size      find(const StringBaseT& aStrToCompare,
+    TL_I tl_size      find(const this_type& aStrToCompare,
                            const tl_size& aBeginIndex = 0) const;
-    TL_I tl_size      find(const T* aCharStr, const tl_size& aBeginIndex,
+    TL_I tl_size      find(const_pointer aCharStr, const tl_size& aBeginIndex,
                            const tl_size& aNumCharsToCompare) const;
-    TL_I tl_size      find(const T* aCharStr,
+    TL_I tl_size      find(const_pointer aCharStr,
                            const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      find(T aChar, const tl_size& aBeginIndex = 0) const;
 
-    TL_I tl_size      rfind(const StringBaseT& aStrToCompare,
+    TL_I tl_size      rfind(const this_type& aStrToCompare,
                             const tl_size& aBeginIndex = 0) const;
-    TL_I tl_size      rfind(const T* aCharStr, const tl_size& aBeginIndex,
+    TL_I tl_size      rfind(const_pointer aCharStr, const tl_size& aBeginIndex,
                             const tl_size& aNumCharsToCompare) const;
-    TL_I tl_size      rfind(const T* aCharStr,
+    TL_I tl_size      rfind(const_pointer aCharStr,
                             const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      rfind(T aChar, const tl_size& aBeginIndex = 0) const;
 
-    TL_I tl_size      find_first_of(const StringBaseT& aStrToCompare,
+    TL_I tl_size      find_first_of(const this_type& aStrToCompare,
                                     const tl_size& aBeginIndex = 0) const;
-    TL_I tl_size      find_first_of(const T* aCharStr, const tl_size& aBeginIndex,
+    TL_I tl_size      find_first_of(const_pointer aCharStr, const tl_size& aBeginIndex,
                                     const tl_size& aNumCharsToCompare) const;
-    TL_I tl_size      find_first_of(const T* aCharStr,
+    TL_I tl_size      find_first_of(const_pointer aCharStr,
                                     const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      find_first_of(T aChar, const tl_size& aBeginIndex = 0) const;
 
-    TL_I tl_size      find_last_of(const StringBaseT& aStrToCompare,
+    TL_I tl_size      find_last_of(const this_type& aStrToCompare,
                                    const tl_size& aBeginIndex = 0) const;
-    TL_I tl_size      find_last_of(const T* aCharStr, const tl_size& aBeginIndex,
+    TL_I tl_size      find_last_of(const_pointer aCharStr, const tl_size& aBeginIndex,
                                    const tl_size& aNumCharsToCompare) const;
-    TL_I tl_size      find_last_of(const T* aCharStr,
+    TL_I tl_size      find_last_of(const_pointer aCharStr,
                                    const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      find_last_of(T aChar, const tl_size& aBeginIndex = 0) const;
 
-    TL_I tl_size      find_first_not_of(const StringBaseT& aStrToCompare,
+    TL_I tl_size      find_first_not_of(const this_type& aStrToCompare,
                                         tl_size aBeginIndex = 0) const;
-    TL_I tl_size      find_first_not_of(const T* aCharStr,
+    TL_I tl_size      find_first_not_of(const_pointer aCharStr,
                                         const tl_size& aBeginIndex,
                                         tl_size aNumCharsToCompare) const;
-    TL_I tl_size      find_first_not_of(const T* aCharStr,
+    TL_I tl_size      find_first_not_of(const_pointer aCharStr,
                                         const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      find_first_not_of(T aChar, const tl_size& aBeginIndex = 0) const;
 
-    TL_I tl_size      find_last_not_of(const StringBaseT& aStrToCompare,
+    TL_I tl_size      find_last_not_of(const this_type& aStrToCompare,
                                        tl_size aBeginIndex = 0) const;
-    TL_I tl_size      find_last_not_of(const T* aCharStr, const tl_size& aBeginIndex,
+    TL_I tl_size      find_last_not_of(const_pointer aCharStr, const tl_size& aBeginIndex,
                                        tl_size aNumCharsToCompare) const;
-    TL_I tl_size      find_last_not_of(const T* aCharStr,
+    TL_I tl_size      find_last_not_of(const_pointer aCharStr,
                                        const tl_size& aBeginIndex = 0) const;
     TL_I tl_size      find_last_not_of(T aChar,
                                        const tl_size& aBeginIndex = 0) const;
@@ -281,31 +284,31 @@ namespace tloc { namespace core {
     //````````````````````````````````````````````````````````````````````````
     // Substring
 
-    TL_I StringBaseT       substr(const tl_size& aBeginIndex,
-                                  const tl_size& aNumCharsToCopy = npos);
+    TL_I this_type substr(const tl_size& aBeginIndex,
+                          const tl_size& aNumCharsToCopy = npos);
     TL_I void              substr(const tl_size& aBeginIndex,
                                   const tl_size& aNumCharsToCopy,
-                                  StringBaseT&   aSubStrOut);
+                                  this_type&   aSubStrOut);
 
     //````````````````````````````````````````````````````````````````````````
     // Compare
 
-    TL_I s32 compare ( const StringBaseT& aStr ) const;
-    TL_I s32 compare ( const T* aCharStr ) const;
+    TL_I s32 compare ( const this_type& aStr ) const;
+    TL_I s32 compare ( const_pointer aCharStr ) const;
     TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const StringBaseT& aOtherStr ) const;
+                       const this_type& aOtherStr ) const;
     TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const T* aOtherStr) const;
+                       const_pointer aOtherStr) const;
     TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const StringBaseT& aOtherStr, const tl_size& aOtherPos,
+                       const this_type& aOtherStr, const tl_size& aOtherPos,
                        const tl_size& aOtherLength ) const;
     TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const T* aOtherCharStr, const tl_size& aOtherLength) const;
+                       const_pointer aOtherCharStr, const tl_size& aOtherLength) const;
 
   protected:
-    T*              m_begin;
-    T*              m_end;
-    T*              m_capacity;
+    pointer  m_begin;
+    pointer  m_end;
+    pointer  m_capacity;
 
     //------------------------------------------------------------------------
     // Empty strings
@@ -326,21 +329,22 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Internal functions
 
-    TL_I T*               DoAllocate(const tl_size& aSize);
-    TL_I T*               DoReAllocate(const tl_size& aSize);
-    TL_I void             DoReAllocateAndAdjust(const tl_size& aSize);
+    TL_I pointer          DoAllocate(const size_type& aSize);
+    TL_I pointer          DoReAllocate(const size_type& aSize);
+    TL_I void             DoReAllocateAndAdjust(const size_type& aSize);
     TL_I void             DoReAllocateAndAdjust();
-    TL_I void             DoFree(T* aPtr);
+    TL_I void             DoFree(pointer aPtr);
 
     TL_I void             DoAllocateSelf();
-    TL_I void             DoAllocateSelf(const tl_size& aSize);
+    TL_I void             DoAllocateSelf(const size_type& aSize);
     TL_I void             DoDeallocateSelf();
 
-    TL_I void             RangeInitialize(const T* aPtrBegin, const T* aPtrEnd);
-    TL_I void             RangeInitialize(const T* aPtrBegin);
+    TL_I void             RangeInitialize(const_pointer aPtrBegin,
+                                          const_pointer aPtrEnd);
+    TL_I void             RangeInitialize(const_pointer aPtrBegin);
 
-    TL_I s32              DoCompare(const T* aBegin1, const T* aEnd1,
-                                    const T* aBegin2, const T* aEnd2) const;
+    TL_I tl_int           DoCompare(const_pointer aBegin1, const_pointer aEnd1,
+                                    const_pointer aBegin2, const_pointer aEnd2) const;
 
     //------------------------------------------------------------------------
     // Constants
@@ -348,7 +352,7 @@ namespace tloc { namespace core {
     static const tl_size m_MaxSize;
     static const tl_size sm_defaultCapacity;
   };
-  
+
   template <typename T>
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
@@ -372,10 +376,8 @@ namespace tloc { namespace core {
 
   template <typename T>
   TL_I T          CharToUpper(const T& aChar);
-  TL_I tl_int     CharAsciiToWide(char32* a_out, const char8* a_in, 
-                                  tl_int a_inSize);  
-  TL_I tl_int     CharWideToAscii(char8* a_out, const char32* a_in, 
-                                  tl_int a_inSize);
+  TL_I tl_int     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
+  TL_I tl_int     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone

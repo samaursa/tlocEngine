@@ -15,7 +15,7 @@
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
-  // Macros (mostly for assertions)
+  // Macros 
 
 #define TLOC_ASSERT_STRING_EMPTY_STRING() \
   TLOC_ASSERT_STRING( *(GetEmptyString(char32())) == 0, \
@@ -28,26 +28,29 @@ namespace tloc { namespace core {
   TLOC_ASSERT(_RangeBegin <= _RangeEnd, \
   # _RangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# _RangeEnd) L"!")
 
+#define STRING_BASE_TYPES typename T
+#define STRING_BASE_PARAMS T
+#define STRING_BASE_TYPE typename StringBase<STRING_BASE_PARAMS>
   //////////////////////////////////////////////////////////////////////////
   // StringBase<T>
 
   //------------------------------------------------------------------------
   // Constants
 
-  template <typename T>
-  const typename StringBase<T>::EmptyString StringBase<T>::sm_emptyString = { 0 };
+  template <STRING_BASE_TYPES>
+  const typename STRING_BASE_TYPE::EmptyString StringBase<T>::sm_emptyString = { 0 };
 
   template <typename T>
-  const tl_size StringBase<T>::m_MaxSize = (tl_size) - 2;
+  const tl_size STRING_BASE_TYPE::m_MaxSize = (tl_size) - 2;
 
-  template <typename T>
-  const tl_size StringBase<T>::sm_defaultCapacity = 2;
+  template <STRING_BASE_TYPES>
+  const tl_size STRING_BASE_TYPE::sm_defaultCapacity = 2;
 
   //------------------------------------------------------------------------
   // Ctors
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase()
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::StringBase()
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -55,8 +58,8 @@ namespace tloc { namespace core {
     DoAllocateSelf();
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(const StringBase<T>& aOther)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::StringBase(const this_type& aOther)
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -64,9 +67,9 @@ namespace tloc { namespace core {
     RangeInitialize(aOther.begin(), aOther.end());
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(const StringBase<T>& aOther, tl_size aPosition,
-                                 tl_size aN /* = npos */)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(const this_type& aOther, size_type aPosition, size_type aN) 
     : m_begin(NULL)
     , m_end(NULL)
     , m_capacity(NULL)
@@ -83,49 +86,55 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(const T* aPtr, tl_size aNumChars)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(const T* aPtr, size_type aNumChars)
   {
     RangeInitialize(aPtr, aPtr + aNumChars);
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(const T* aPtr)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(const T* aPtr)
   {
     RangeInitialize(aPtr);
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(tl_size aNumChars, T aChar)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(size_type aNumChars, T aChar)
   {
     DoAllocateSelf();
     append(aNumChars, aChar);
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   template <typename T_InputIterator>
-  TL_I StringBase<T>::StringBase(const T_InputIterator aPtrBegin,
-                                 const T_InputIterator aPtrEnd)
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(const T_InputIterator aPtrBegin, 
+               const T_InputIterator aPtrEnd)
   {
     RangeInitialize(aPtrBegin, aPtrEnd);
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(StringNoInitialize, tl_size aN)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(StringNoInitialize, size_type aN)
   {
     DoAllocateSelf(aN + 1);
     *m_end = 0;
   }
 
-  template <typename T>
-  TL_I StringBase<T>::StringBase(StringSprintf, const tl_size aFormat, ...)
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<STRING_BASE_PARAMS>::
+    StringBase(StringSprintf, const size_type aFormat, ...)
   {
-    TLOC_STATIC_ASSERT_WIP();
+    //TLOC_STATIC_ASSERT_WIP();
     // TODO: Implement this string ctor
   }
 
-  template <typename T>
-  TL_I  StringBase<T>::~StringBase()
+  template <STRING_BASE_TYPES>
+  TL_I  StringBase<STRING_BASE_PARAMS>::~StringBase()
   {
     DoDeallocateSelf();
   }
@@ -133,26 +142,30 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Iterators
 
-  template <typename T>
-  TL_I typename StringBase<T>::iterator StringBase<T>::begin()
+  template <STRING_BASE_TYPES>
+  TL_I typename StringBase<T>::iterator 
+    StringBase<STRING_BASE_PARAMS>::begin()
   {
     return m_begin;
   }
 
-  template <typename T>
-  TL_I typename StringBase<T>::const_iterator StringBase<T>::begin() const
+  template <STRING_BASE_TYPES>
+  TL_I typename StringBase<T>::const_iterator 
+    StringBase<STRING_BASE_PARAMS>::begin() const
   {
     return m_begin;
   }
 
-  template <typename T>
-  TL_I typename StringBase<T>::iterator StringBase<T>::end()
+  template <STRING_BASE_TYPES>
+  TL_I typename StringBase<T>::iterator 
+    StringBase<STRING_BASE_PARAMS>::end()
   {
     return m_end;
   }
 
-  template <typename T>
-  TL_I typename StringBase<T>::const_iterator StringBase<T>::end() const
+  template <STRING_BASE_TYPES>
+  TL_I typename StringBase<T>::const_iterator 
+    StringBase<STRING_BASE_PARAMS>::end() const
   {
     return m_end;
   }
@@ -160,20 +173,20 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Empty Strings
 
-  template <typename T>
-  TL_I const char8* StringBase<T>::GetEmptyString( char8 )
+  template <STRING_BASE_TYPES>
+  TL_I const char8* StringBase<STRING_BASE_PARAMS>::GetEmptyString( char8 )
   {
     return sm_emptyString.m_Empty8;
   }
 
-  template <typename T>
-  TL_I const uchar8* StringBase<T>::GetEmptyString( uchar8 )
+  template <STRING_BASE_TYPES>
+  TL_I const uchar8* StringBase<STRING_BASE_PARAMS>::GetEmptyString( uchar8 )
   {
     return sm_emptyString.m_EmptyU8;
   }
 
-  template <typename T>
-  TL_I const char32* StringBase<T>::GetEmptyString( char32 )
+  template <STRING_BASE_TYPES>
+  TL_I const char32* StringBase<STRING_BASE_PARAMS>::GetEmptyString( char32 )
   {
     return sm_emptyString.m_Empty32;
   }
@@ -181,29 +194,29 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Element access
 
-  template <typename T>
-  TL_I const T& StringBase<T>::operator[]( tl_size aPos ) const
+  template <STRING_BASE_TYPES>
+  TL_I const T& StringBase<STRING_BASE_PARAMS>::operator[]( size_type aPos ) const
   {
     TLOC_ASSERT_STRING_INDEX(aPos);
     return *(m_begin + aPos);
   }
 
-  template <typename T>
-  TL_I T& StringBase<T>::operator[]( tl_size aPos )
+  template <STRING_BASE_TYPES>
+  TL_I T& StringBase<STRING_BASE_PARAMS>::operator[]( size_type aPos )
   {
     TLOC_ASSERT_STRING_INDEX(aPos);
     return *(m_begin + aPos);
   }
 
-  template <typename T>
-  TL_I const T& StringBase<T>::at( tl_size aPos ) const
+  template <STRING_BASE_TYPES>
+  TL_I const T& StringBase<STRING_BASE_PARAMS>::at( size_type aPos ) const
   {
     TLOC_ASSERT_STRING_INDEX(aPos);
     return *(m_begin + aPos);
   }
 
-  template <typename T>
-  TL_I T& StringBase<T>::at( tl_size aPos )
+  template <STRING_BASE_TYPES>
+  TL_I T& StringBase<STRING_BASE_PARAMS>::at( size_type aPos )
   {
     TLOC_ASSERT_STRING_INDEX(aPos);
     return *(m_begin + aPos);
@@ -212,41 +225,46 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Capacity
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::size() const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<STRING_BASE_PARAMS>::size() const
   {
-    return (tl_size)(m_end - m_begin);
+    return (size_type )(m_end - m_begin);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::length() const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<STRING_BASE_PARAMS>::length() const
   {
-    return (tl_size)(m_end - m_begin);
+    return (size_type )(m_end - m_begin);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::max_size() const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<STRING_BASE_PARAMS>::max_size() const
   {
     return m_MaxSize;
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::resize(const tl_size& newSize)
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::resize(const size_type & newSize)
   {
-    TLOC_STATIC_ASSERT_WIP();
+    //TLOC_STATIC_ASSERT_WIP();
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::resize(const tl_size& newSize, const T charToFill)
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::resize(const size_type & newSize, 
+                                                   const T charToFill)
   {
-    TLOC_STATIC_ASSERT_WIP();
+    //TLOC_STATIC_ASSERT_WIP();
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::capacity() const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<STRING_BASE_PARAMS>::capacity() const
   {
     // Do not report the memory allocated for the null terminator
-    return (tl_size)(m_capacity - m_begin - 1);
+    return (size_type )(m_capacity - m_begin - 1);
   }
 
   /*!
@@ -256,21 +274,22 @@ namespace tloc { namespace core {
    * being stripped off. Setting the new capacity to 'npos' will ensure that
    * the capacity == size.
    *
-   * \param const tl_size & newCapacity
-   * \return tl_size
+   * \param const size_type & newCapacity
+   * \returnsize_type  
    * \sa resize(), reserve()
    */
-  template <typename T>
-  TL_I void StringBase<T>::set_capacity(const tl_size& newCapacity)
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::
+    set_capacity(const size_type & newCapacity)
   {
     if (newCapacity != capacity())
     {
-      const tl_size oldSize = length();
-      const tl_size cap = (newCapacity == npos) ? oldSize : newCapacity;
+      const size_type oldSize = length();
+      const size_type cap = (newCapacity == npos) ? oldSize : newCapacity;
 
       if (cap > 0)
       {
-        const tl_size oldSize = size();
+        const size_type oldSize = size();
 
         m_begin = DoReAllocate(cap + 1); // +1 for the trailing 0
 
@@ -298,14 +317,14 @@ namespace tloc { namespace core {
   /*!
    * \brief Reserves a specific amount of memory for the string.
    *
-   * \param const tl_size & newSize
+   * \param const size_type & newSize
    * \return void
    * \sa set_capacity(), resize()
    * \note The function can only increase capacity. Call resize() to decrease capacity.
    * \warning
    */
-  template <typename T>
-  TL_I void StringBase<T>::reserve(const tl_size& newSize)
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::reserve(const size_type & newSize)
   {
     TLOC_ASSERT_STRING(newSize < m_MaxSize, "Reserve request is too large!");
     TLOC_ASSERT_STRING_WARN(newSize > capacity(), "Reserve request is smaller "
@@ -317,15 +336,15 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::clear()
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::clear()
   {
     *m_begin = T(0);
     m_end   = m_begin;
   }
 
-  template <typename T>
-  TL_I bool StringBase<T>::empty()
+  template <STRING_BASE_TYPES>
+  TL_I bool StringBase<STRING_BASE_PARAMS>::empty()
   {
     return (m_begin == m_end);
   }
@@ -337,46 +356,52 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Operators
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator+=( const StringBase<T>& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator+=( const StringBase<T>& aStr )
   {
     return append(aStr);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator+=( const T* charStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator+=( const T* charStr )
   {
     return append(charStr);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator+=( const T& character )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator+=( const T& character )
   {
     return *this;
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator=( const StringBase<T>& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator=( const StringBase<T>& aStr )
   {
     TLOC_ASSERT_STRING_WARN(&aStr != this, "Assigning the same string!");
 
     return assign(aStr.m_begin, aStr.m_end);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator=( const T* aCharStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator=( const T* aCharStr )
   {
     return assign(aCharStr, aCharStr + StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::operator=( T aChar )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<STRING_BASE_PARAMS>::operator=( T aChar )
   {
     return assign(1, aChar);
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::swap(this_type& aX )
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<STRING_BASE_PARAMS>::swap(this_type& aX )
   {
     TLOC_ASSERT_STRING_WARN(this != &aX, "Swap called on self (redundant).");
 
@@ -388,30 +413,30 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Append
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const StringBaseT& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( const this_type& aStr )
   {
     return append(aStr.m_begin, aStr.m_end);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const StringBaseT& aStr,
-                                             const tl_size& aPos,
-                                             const tl_size& aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( const this_type& aStr,
+                                             const size_type & aPos,
+                                             const size_type & aNumChars )
   {
     TLOC_ASSERT_STRING(aPos < aStr.size(),
       "Position passed is outside of string's range!");
     TLOC_ASSERT_STRING_WARN( (aPos + aNumChars) < aStr.size(),
       "Number of characters to copy passes the string's range.");
 
-    tl_size maxCharsLeft = (aStr.m_end - aStr.m_begin) - aPos;
+    size_type maxCharsLeft = (aStr.m_end - aStr.m_begin) - aPos;
     return append(aStr.begin() + aPos, aStr.begin() + aPos +
       (aNumChars > maxCharsLeft ? maxCharsLeft : aNumChars) );
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const T* charArray,
-                                             const tl_size& aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( const T* charArray,
+                                             const size_type & aNumChars )
   {
     TLOC_ASSERT_STRING(StrLen(charArray) >= aNumChars,
       "Number of characters to copy exceeds the range of the character array!");
@@ -419,19 +444,19 @@ namespace tloc { namespace core {
     return append(charArray, charArray + aNumChars);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const T* charStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( const T* charStr )
   {
     return append(charStr, charStr + StrLen(charStr));
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::append( const tl_size& aNumChars,
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( const size_type & aNumChars,
                                              const T& aChar )
   {
     if (aNumChars > 0)
     {
-      const tl_size currSize = size();
+      const size_type currSize = size();
 
       if ( (currSize  + aNumChars) > capacity() ) // Exclude /0
       {
@@ -446,16 +471,16 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   template <typename T_InputIterator>
-  TL_I StringBase<T>& StringBase<T>::append( T_InputIterator aBegin,
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::append( T_InputIterator aBegin,
                                              T_InputIterator aEnd )
   {
     if (aBegin != aEnd)
     {
-      const tl_size oldSize = size();
-      const tl_size oldCapacity = m_capacity - m_begin;
-      const tl_size rangeSize = (tl_size)(aEnd - aBegin);
+      const size_type oldSize = size();
+      const size_type oldCapacity = m_capacity - m_begin;
+      const size_type rangeSize = (size_type )(aEnd - aBegin);
 
       if ( (oldSize + rangeSize) > (oldCapacity - 1) ) // -1 because of /0
       {
@@ -469,7 +494,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::push_back(const T& aChar)
   {
     append(1, aChar);
@@ -478,16 +503,16 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Assign
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign( const this_type& aStr )
   {
     return assign(aStr.begin(), aStr.end());
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::assign( const StringBaseT& aStr,
-                                             const tl_size& aPos,
-                                             const tl_size& aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign( const this_type& aStr,
+                                             const size_type & aPos,
+                                             const size_type & aNumChars )
   {
     TLOC_ASSERT_STRING(aPos <= aStr.size(), "Position is out of range!");
 
@@ -495,9 +520,9 @@ namespace tloc { namespace core {
     return assign(aStr.begin() + aPos, (aStr.end() > endItr) ? endItr : aStr.end() );
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr,
-                                             const tl_size& aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign( const T* aCharStr,
+                                             const size_type & aNumChars )
   {
     TLOC_ASSERT_STRING(aNumChars <= StrLen(aCharStr),
       "Length of char string is smaller than number of chars to copy");
@@ -505,17 +530,17 @@ namespace tloc { namespace core {
     return assign(aCharStr, aCharStr + aNumChars);
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::assign( const T* aCharStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign( const T* aCharStr )
   {
     return assign(aCharStr, aCharStr + StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::assign( const tl_size& aNumChars,
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign( const size_type & aNumChars,
                                              const T& aChar )
   {
-    const tl_size ourSize = size();
+    const size_type ourSize = size();
     if (aNumChars <= ourSize)
     {
       fill(m_begin, m_begin + aNumChars, aChar);
@@ -530,22 +555,22 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   template <typename T_InputIterator>
-  TL_I StringBase<T>& StringBase<T>::assign(const T_InputIterator aBegin,
+  TL_I STRING_BASE_TYPE::this_type& StringBase<T>::assign(const T_InputIterator aBegin,
                                             const T_InputIterator aEnd)
   {
-    const tl_size ourSize = size();
-    const tl_size rangeSize = aEnd - aBegin;
+    const size_type ourSize = size();
+    const size_type rangeSize = aEnd - aBegin;
     if (rangeSize <= ourSize)
     {
-      memmove(m_begin, aBegin, (tl_size)(rangeSize * sizeof(T)) );
+      memmove(m_begin, aBegin, (size_type )(rangeSize * sizeof(T)) );
       erase(m_begin + rangeSize, m_end);
     }
     else
     {
-      memmove(m_begin, aBegin, (tl_size)(ourSize) * sizeof(T) );
-      append(aBegin + (tl_size)(ourSize), aEnd);
+      memmove(m_begin, aBegin, (size_type )(ourSize) * sizeof(T) );
+      append(aBegin + (size_type )(ourSize), aEnd);
     }
 
     return *this;
@@ -554,18 +579,20 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Insert
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const StringBaseT& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::insert( size_type aIndex, const this_type& aStr )
   {
     insert(m_begin + aIndex, aStr.begin(), aStr.end());
     return *this;
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndexDestination,
-                                             const StringBaseT& aStr,
-                                             tl_size aIndexSource,
-                                             tl_size aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::insert( size_type aIndexDestination, 
+                           const this_type& aStr, 
+                           size_type aIndexSource, 
+                           size_type aNumChars )
   {
     const_iterator endItr = aStr.begin() + aIndexSource + aNumChars;
     insert(m_begin + aIndexDestination, aStr.begin() + aIndexSource,
@@ -573,50 +600,52 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const T* aCharArray,
-                                             tl_size aNumChars )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::insert( size_type aIndex, const T* aCharArray, 
+                           size_type aNumChars )
   {
     insert(m_begin + aIndex, aCharArray, aCharArray + aNumChars);
     return *this;
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, const T* aCharStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::insert( size_type aIndex, const T* aCharStr )
   {
     insert(m_begin + aIndex, aCharStr, aCharStr + StrLen(aCharStr));
     return *this;
   }
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::insert( tl_size aIndex, tl_size aNumChars,
-                                             T aChar )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::insert( size_type aIndex, size_type aNumChars, T aChar )
   {
     insert(m_begin + aIndex, aNumChars, aChar);
     return *this;
   }
 
-  template <typename T>
-  TL_I typename StringBase<T>::iterator StringBase<T>::insert( const_iterator aPos,
-                                                               const T& aChar )
+  template <STRING_BASE_TYPES>
+  TL_I typename StringBase<T>::iterator 
+    StringBase<T>::insert( const_iterator aPos, const T& aChar )
   {
     // Save the position index because it may be invalid by the time insert()
     // is complete
-    const tl_size posIndex = aPos - m_begin;
+    const size_type posIndex = aPos - m_begin;
     insert(aPos, 1, aChar);
     return m_begin + posIndex;
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::insert( const_iterator aPos, tl_size aNumChars,
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<T>::insert( const_iterator aPos, size_type aNumChars,
                                    T aChar )
   {
     TLOC_ASSERT_STRING(aPos >= m_begin && aPos <= m_end,
       "Iterator position is out of range!");
 
-    const tl_size currCap = m_capacity - m_begin;
-    const tl_size startIndex = aPos - m_begin;
-    const tl_size newCap = size() + aNumChars + 1;
+    const size_type currCap = m_capacity - m_begin;
+    const size_type startIndex = aPos - m_begin;
+    const size_type newCap = size() + aNumChars + 1;
 
     if (currCap < newCap)
     {
@@ -625,13 +654,13 @@ namespace tloc { namespace core {
 
     iterator pos = m_begin + startIndex;
 
-    memmove(pos + aNumChars, pos, (tl_size)( (m_end - (pos) + 1) * sizeof(T)) );
+    memmove(pos + aNumChars, pos, (size_type )( (m_end - (pos) + 1) * sizeof(T)) );
     fill(pos, pos + aNumChars, aChar);
 
     m_end = m_end + aNumChars;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   template <typename T_InputIterator>
   TL_I void StringBase<T>::insert( const_iterator aPos, T_InputIterator aBegin,
                                                         T_InputIterator aEnd )
@@ -640,10 +669,10 @@ namespace tloc { namespace core {
     TLOC_ASSERT_STRING(aPos >= m_begin && aPos <= m_end,
       "Iterator position is out of range!");
 
-    const tl_size startIndex = aPos - m_begin;
-    const tl_size currCap = m_capacity - m_begin;
-    const tl_size rangeSize = aEnd - aBegin;
-    const tl_size newCap = size() + rangeSize + 1; // +1 for the NULL char
+    const size_type startIndex = aPos - m_begin;
+    const size_type currCap = m_capacity - m_begin;
+    const size_type rangeSize = aEnd - aBegin;
+    const size_type newCap = size() + rangeSize + 1; // +1 for the NULL char
 
     // Check if we have enough capacity
     if (currCap < newCap)
@@ -654,8 +683,8 @@ namespace tloc { namespace core {
     iterator pos = m_begin + startIndex;
 
     // +1 for the NULL character
-    memmove(pos + rangeSize, pos, (tl_size)((m_end - (pos) + 1) * sizeof(T)) );
-    memmove(pos, aBegin, (tl_size)(rangeSize * sizeof(T)) );
+    memmove(pos + rangeSize, pos, (size_type )((m_end - (pos) + 1) * sizeof(T)) );
+    memmove(pos, aBegin, (size_type )(rangeSize * sizeof(T)) );
 
     m_end = m_end + rangeSize;
   }
@@ -663,9 +692,9 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Erase
 
-  template <typename T>
-  TL_I StringBase<T>& StringBase<T>::erase( const tl_size& aPos /*= 0*/,
-                                            const tl_size& aNumChars /*= npos*/ )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type& 
+    StringBase<T>::erase( const size_type & aPos, const size_type & aNumChars )
   {
     iterator rangeBegin = m_begin + aPos;
     iterator rangeEnd = aNumChars == npos ? m_end : rangeBegin + aNumChars;
@@ -679,7 +708,7 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I typename StringBase<T>::iterator StringBase<T>::erase( iterator aPos )
   {
     TLOC_ASSERT_STRING(aPos >= m_begin && aPos < m_end,
@@ -688,7 +717,7 @@ namespace tloc { namespace core {
     return erase(aPos, aPos + 1);
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I typename StringBase<T>::iterator StringBase<T>::erase( iterator aFirst,
                                                               iterator aLast )
   {
@@ -700,10 +729,10 @@ namespace tloc { namespace core {
 
     if (aFirst != aLast)
     {
-      const tl_size rangeSize = aLast - aFirst;
+      const size_type rangeSize = aLast - aFirst;
 
       // Move the remaining string into place including the /0
-      memmove( aFirst, aLast, (tl_size)((m_end - aLast) + 1) * sizeof(T) );
+      memmove( aFirst, aLast, (size_type )((m_end - aLast) + 1) * sizeof(T) );
       m_end -= rangeSize;
     }
 
@@ -713,28 +742,28 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Replace
 
-  template <typename T>
-  TL_I StringBase<T>&
-    StringBase<T>::replace( tl_size aPos, tl_size aNumCharsToReplace,
-                            const StringBase<T>& aStr )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
+    StringBase<T>::replace( size_type aPos, size_type aNumCharsToReplace,
+                            const this_type& aStr )
   {
     return replace(m_begin + aPos, m_begin + aPos + aNumCharsToReplace,
       aStr.begin(), aStr.end());
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
     StringBase<T>::replace( iterator aDestBegin, iterator aDestEnd,
-                            const StringBase<T>& aStr )
+                            const this_type& aStr )
   {
     return replace(aDestBegin, aDestEnd, aStr.begin(), aStr.end());
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
-    StringBase<T>::replace( tl_size aDestPos, tl_size aNumCharsToReplace,
-                            const StringBase<T>& aStr, tl_size aSourcePos,
-                            tl_size aNumCharsToCopy )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
+    StringBase<T>::replace( size_type aDestPos, size_type aNumCharsToReplace,
+                            const this_type& aStr, size_type aSourcePos,
+                            size_type aNumCharsToCopy )
   {
     const_iterator itrSourceEnd = aStr.begin() + aSourcePos + aNumCharsToCopy;
 
@@ -742,53 +771,53 @@ namespace tloc { namespace core {
       aStr.begin() + aSourcePos, (itrSourceEnd > aStr.end()) ? aStr.end() : itrSourceEnd);
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
-    StringBase<T>::replace( tl_size   aPos, tl_size   aNumCharsToReplace,
-                            const T*  aCharArray, tl_size   aNumCharsToCopy )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
+    StringBase<T>::replace( size_type aPos, size_type aNumCharsToReplace,
+                            const T*  aCharArray, size_type aNumCharsToCopy )
   {
     return replace(m_begin + aPos, m_begin + aPos + aNumCharsToReplace,
                    aCharArray, aCharArray + aNumCharsToCopy);
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
     StringBase<T>::replace( iterator  aDestBegin, iterator  aDestEnd,
-                            const T*  aCharArray, tl_size   aNumCharsToCopy )
+                            const T*  aCharArray, size_type aNumCharsToCopy )
   {
     return replace(aDestBegin, aDestEnd, aCharArray, aCharArray + aNumCharsToCopy);
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
-    StringBase<T>::replace( tl_size   aPos, tl_size   aNumCharsToReplace,
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
+    StringBase<T>::replace( size_type aPos, size_type aNumCharsToReplace,
                             const T*  aCharStr )
   {
     return replace(m_begin + aPos, m_begin + aPos + aNumCharsToReplace,
                    aCharStr, aCharStr + StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
     StringBase<T>::replace( iterator aDestBegin, iterator aDestEnd,
                             const T* aCharStr )
   {
     return replace(aDestBegin, aDestEnd, aCharStr, aCharStr + StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
-    StringBase<T>::replace( tl_size   aPos, tl_size   aNumCharsToReplace,
-                            tl_size   aNumOfCharsToCopy, const T  aChar )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
+    StringBase<T>::replace( size_type aPos, size_type aNumCharsToReplace,
+                            size_type aNumOfCharsToCopy, const T  aChar )
   {
     return replace(m_begin + aPos, m_begin + aPos + aNumCharsToReplace,
                    aNumOfCharsToCopy, aChar);
   }
 
-  template <typename T>
-  TL_I StringBase<T>&
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::this_type&
     StringBase<T>::replace( iterator  aDestBegin, iterator  aDestEnd,
-                            tl_size   aNumOfCharsToCopy, const T  aChar )
+                            size_type aNumOfCharsToCopy, const T  aChar )
   {
     TLOC_ASSERT_STRING(aDestBegin >= m_begin && aDestBegin <= m_end,
       "Destination begin iterator is out of range!");
@@ -801,9 +830,9 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   template <typename T_InputIterator>
-  TL_I StringBase<T>&
+  TL_I STRING_BASE_TYPE::this_type&
     StringBase<T>::replace(iterator aDestBegin, iterator aDestEnd,
                            T_InputIterator aBegin, T_InputIterator aEnd)
   {
@@ -830,34 +859,34 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Operations
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I const T* StringBase<T>::c_str()
   {
     return m_begin;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I const T* StringBase<T>::c_str()const
   {
     return m_begin;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I const T* StringBase<T>::data()
   {
     return m_begin;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I const T* StringBase<T>::data() const
   {
     return m_begin;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::copy( T* aDestArray,
-                                    const tl_size& aNumCharsToCopy,
-                                    const tl_size& aBegin )
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::copy( T* aDestArray, const size_type & aNumCharsToCopy, 
+                         const size_type & aBegin )
   {
     TLOC_ASSERT_STRING(aBegin <= length(), "Begin is out of range!");
     TLOC_ASSERT_STRING_WARN( (aBegin + aNumCharsToCopy) <= length(),
@@ -873,16 +902,18 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Find
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find( const StringBaseT& aStrToCompare,
-                                    const tl_size& aBeginIndex /*= 0*/ ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find( const this_type& aStrToCompare, 
+                         const size_type & aBeginIndex) const
   {
     return find(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find( const T* aCharStr, const tl_size& aBeginIndex,
-                                    const tl_size& aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find( const T* aCharStr, const size_type & aBeginIndex, 
+                         const size_type & aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -901,15 +932,16 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find( const T* aCharStr,
-                                    const tl_size& aBeginIndex /*= 0*/ ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find( const T* aCharStr, const size_type & aBeginIndex) const
   {
     return find(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find( T aChar, const tl_size& aBeginIndex /*= 0*/ ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find( T aChar, const size_type & aBeginIndex) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -917,21 +949,23 @@ namespace tloc { namespace core {
 
     const T* const findItr = tloc::core::find(itrBegin, m_end, aChar);
 
-    if (findItr != m_end) { return (tl_size)(findItr - m_begin); }
+    if (findItr != m_end) { return (size_type )(findItr - m_begin); }
     else { return npos; }
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::rfind( const StringBaseT& aStrToCompare,
-                                     const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::rfind( const this_type& aStrToCompare, 
+                          const size_type & aBeginIndex ) const
   {
     return rfind(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::rfind( const T* aCharStr,
-                                     const tl_size& aBeginIndex,
-                                     const tl_size& aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::rfind( const T* aCharStr, 
+                          const size_type & aBeginIndex, 
+                          const size_type & aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -950,30 +984,33 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::rfind( const T* aCharStr,
-                                     const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::rfind( const T* aCharStr, const size_type & aBeginIndex ) const
   {
     return rfind(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::rfind( T aChar, const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::rfind( T aChar, const size_type & aBeginIndex ) const
   {
     return rfind(&aChar, aBeginIndex, 1);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_of( const StringBaseT& aStrToCompare,
-                                             const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_of( const this_type& aStrToCompare, 
+                                  const size_type & aBeginIndex ) const
   {
     return find_first_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_of( const T* aCharStr,
-                                             const tl_size& aBeginIndex,
-                                             const tl_size& aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_of( const T* aCharStr, 
+                                  const size_type & aBeginIndex, 
+                                  const size_type & aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -993,31 +1030,34 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_of( const T* aCharStr,
-                                             const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_of( const T* aCharStr, 
+                                  const size_type & aBeginIndex ) const
   {
     return find_first_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_of( T aChar,
-                                             const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_of( T aChar, const size_type & aBeginIndex ) const
   {
-    return find_first_of(&aChar, aBeginIndex, (tl_size)1);
+    return find_first_of(&aChar, aBeginIndex, (size_type )1);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_of( const StringBaseT& aStrToCompare,
-                                            const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_of( const this_type& aStrToCompare, 
+                                 const size_type & aBeginIndex ) const
   {
     return find_last_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_of( const T* aCharStr,
-                                            const tl_size& aBeginIndex,
-                                            const tl_size& aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_of( const T* aCharStr, 
+                                 const size_type & aBeginIndex, 
+                                 const size_type & aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -1036,31 +1076,34 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_of( const T* aCharStr,
-                                            const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_of( const T* aCharStr, 
+                                 const size_type & aBeginIndex ) const
   {
     return find_last_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_of( T aChar,
-                                            const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_of( T aChar, const size_type & aBeginIndex ) const
   {
     return find_last_of(&aChar, aBeginIndex, 1);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_not_of( const StringBaseT& aStrToCompare,
-                                                 tl_size aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_not_of( const this_type& aStrToCompare, 
+                                      size_type aBeginIndex ) const
   {
     return find_first_not_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_not_of( const T* aCharStr,
-                                                 const tl_size& aBeginIndex,
-                                                 tl_size aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_not_of( const T* aCharStr, 
+                                      const size_type & aBeginIndex, 
+                                      size_type aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -1080,31 +1123,34 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_not_of( const T* aCharStr,
-                                                 const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_not_of( const T* aCharStr, 
+                                      const size_type & aBeginIndex ) const
   {
     return find_first_not_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_first_not_of( T aChar,
-                                                 const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_first_not_of( T aChar, const size_type & aBeginIndex ) const
   {
     return find_first_not_of(&aChar, aBeginIndex, 1);
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_not_of( const StringBaseT& aStrToCompare,
-                                                tl_size aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_not_of( const this_type& aStrToCompare, 
+                                     size_type aBeginIndex ) const
   {
     return find_last_not_of(aStrToCompare.begin(), aBeginIndex, aStrToCompare.length());
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_not_of( const T* aCharStr,
-                                                const tl_size& aBeginIndex,
-                                                tl_size aNumCharsToCompare ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_not_of( const T* aCharStr, 
+                                     const size_type & aBeginIndex, 
+                                     size_type aNumCharsToCompare ) const
   {
     iterator itrBegin = m_begin + aBeginIndex;
 
@@ -1124,16 +1170,18 @@ namespace tloc { namespace core {
     return npos;
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_not_of( const T* aCharStr,
-                                                const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_not_of( const T* aCharStr, 
+                                     const size_type & aBeginIndex ) const
   {
     return find_last_not_of(aCharStr, aBeginIndex, StrLen(aCharStr));
   }
 
-  template <typename T>
-  TL_I tl_size StringBase<T>::find_last_not_of( T aChar,
-                                                const tl_size& aBeginIndex ) const
+  template <STRING_BASE_TYPES>
+  TL_I STRING_BASE_TYPE::size_type 
+    StringBase<T>::find_last_not_of( T aChar, 
+                                     const size_type & aBeginIndex ) const
   {
     return find_last_not_of(&aChar, aBeginIndex, 1);
   }
@@ -1141,19 +1189,19 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Substr
 
-  template <typename T>
-  TL_I StringBase<T> StringBase<T>::substr( const tl_size& aBeginIndex,
-                                            const tl_size& aNumCharsToCopy )
+  template <STRING_BASE_TYPES>
+  TL_I StringBase<T> StringBase<T>::substr( const size_type & aBeginIndex,
+                                            const size_type & aNumCharsToCopy )
   {
     StringBase<T> temp;
     substr(aBeginIndex, aNumCharsToCopy, temp);
     return temp;
   }
 
-  template <typename T>
-  TL_I void StringBase<T>::substr( const tl_size& aBeginIndex,
-                                   const tl_size& aNumCharsToCopy,
-                                   StringBaseT& aSubStrOut )
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<T>::substr( const size_type & aBeginIndex,
+                                   const size_type & aNumCharsToCopy,
+                                   this_type& aSubStrOut )
   {
     const_iterator itrBegin = m_begin + aBeginIndex;
     const_iterator itrBeginPlusN = itrBegin + aNumCharsToCopy;
@@ -1170,42 +1218,47 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Upper Lower
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I StringBase<T> StringBase<T>::to_upper()
   {
     StringBase<T> newString = *this;
     newString.make_upper();
     return newString;
   }
-  template <typename T>
-  TL_I void StringBase<T>::to_upper( StringBaseT& aStrOut )
+
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<T>::to_upper( this_type& aStrOut )
   {
     aStrOut = *this;
     aStrOut.make_upper();
   }
-  template <typename T>
+
+  template <STRING_BASE_TYPES>
   TL_I StringBase<T> StringBase<T>::to_lower()
   {
     StringBase<T> newString = *this;
     newString.make_lower();
     return newString;
   }
-  template <typename T>
-  TL_I void StringBase<T>::to_lower( StringBaseT& aStrOut )
+
+  template <STRING_BASE_TYPES>
+  TL_I void StringBase<T>::to_lower( this_type& aStrOut )
   {
     aStrOut = *this;
     aStrOut.make_lower();
   }
-  template <typename T>
+
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::make_upper()
   {
-    tl_size sizeOfString = length();
+    size_type sizeOfString = length();
     for (tl_size i = 0; i < sizeOfString; ++i)
     {
       *(m_begin + i) = CharToUpper(*(m_begin + i));
     }
   }
-  template <typename T>
+
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::make_lower()
   {
     tl_size sizeOfString = length();
@@ -1218,27 +1271,27 @@ namespace tloc { namespace core {
   //````````````````````````````````````````````````````````````````````````
   // Compare
 
-  template <typename T>
-  TL_I s32 StringBase<T>::compare( const StringBaseT& aStr ) const
+  template <STRING_BASE_TYPES>
+  TL_I s32 StringBase<T>::compare( const this_type& aStr ) const
   {
     return compare(0, length(), aStr.c_str(), 0, aStr.length());
   }
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::compare( const T* aCharStr ) const
   {
     return compare(0, length(), aCharStr, 0, StrLen(aCharStr));
   }
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
                                    const tl_size& aThisLength,
-                                   const StringBaseT& aOtherStr ) const
+                                   const this_type& aOtherStr ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
     return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisLength,
                      aOtherStr.begin(), aOtherStr.end());
   }
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
                                    const tl_size& aThisLength,
                                    const T* aOtherCharStr ) const
@@ -1249,10 +1302,10 @@ namespace tloc { namespace core {
     return DoCompare(m_begin + aThisPos, m_begin + aThisPos + aThisLength,
                      aOtherCharStr, aOtherCharStr + StrLen(aOtherCharStr));
   }
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
                                    const tl_size& aThisLength,
-                                   const StringBaseT& aOtherStr,
+                                   const this_type& aOtherStr,
                                    const tl_size& aOtherPos,
                                    const tl_size& aOtherLength ) const
   {
@@ -1264,7 +1317,7 @@ namespace tloc { namespace core {
                      aOtherStr.begin() + aOtherPos,
                      aOtherStr.begin() + aOtherPos + aOtherLength);
   }
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
                                    const tl_size& aThisNumChars,
                                    const T* aOtherCharStr,
@@ -1281,7 +1334,7 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Internal functions
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I T* StringBase<T>::DoAllocate( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize > 1,
@@ -1290,7 +1343,7 @@ namespace tloc { namespace core {
     return (T*)TL_MALLOC(aSize * sizeof(T));
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I T* StringBase<T>::DoReAllocate( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize > 1,
@@ -1312,7 +1365,7 @@ namespace tloc { namespace core {
    * \note Function does not do anything if ReAllocate() fails
    * \warning
    */
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoReAllocateAndAdjust( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize > capacity(),
@@ -1349,7 +1402,7 @@ namespace tloc { namespace core {
    * \note Function does not do anything if ReAllocate() fails
    * \warning
    */
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoReAllocateAndAdjust()
   {
     const tl_size prevCap  = capacity();
@@ -1358,13 +1411,13 @@ namespace tloc { namespace core {
     DoReAllocateAndAdjust(newCap);
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoFree( T* aPtr )
   {
     TL_FREE(aPtr);
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoAllocateSelf()
   {
     TLOC_ASSERT_STRING_EMPTY_STRING();
@@ -1374,7 +1427,7 @@ namespace tloc { namespace core {
     m_capacity  = m_begin + 1;
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoAllocateSelf( const tl_size& aSize )
   {
     TLOC_ASSERT_STRING(aSize <= TL_ULONG_MAX, "Allocating too large a value!");
@@ -1391,7 +1444,7 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoDeallocateSelf()
   {
     if (m_begin != GetEmptyString(T()))
@@ -1400,7 +1453,7 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::RangeInitialize( const T* aPtrBegin )
   {
     TLOC_ASSERT_STRING(aPtrBegin, "aPtrBegin cannot be NULL!");
@@ -1408,7 +1461,7 @@ namespace tloc { namespace core {
     RangeInitialize(aPtrBegin, aPtrBegin + StrLen(aPtrBegin));
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::RangeInitialize( const T* aPtrBegin, const T* aPtrEnd )
   {
     if (aPtrBegin != aPtrEnd)
@@ -1426,7 +1479,7 @@ namespace tloc { namespace core {
     }
   }
 
-  template <typename T>
+  template <STRING_BASE_TYPES>
   TL_I s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
                                      const T* aBegin2, const T* aEnd2 ) const
   {

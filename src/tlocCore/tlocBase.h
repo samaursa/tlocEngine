@@ -3,6 +3,19 @@
 #ifndef TLOC_BASE_H
 #define TLOC_BASE_H
 
+//////////////////////////////////////////////////////////////////////////
+// Macros that have to be included before any other file
+
+#ifdef _MSC_VER
+#  ifndef _CRT_SECURE_NO_WARNINGS
+#    define _CRT_SECURE_NO_WARNINGS
+#  endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// Header files that will be included in almost every file in the engine.
+// Avoid including extra headers here
+
 #include <assert.h>
 #include <3rdParty/loki/static_check.h>
 
@@ -111,7 +124,7 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// Exceptions 
+// Exceptions
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
 # if defined (TLOC_CPPUNWIND_ENABLED) && !defined (TLOC_ENABLE_CPPUNWIND)
@@ -224,7 +237,7 @@
 #if defined (_MSC_VER)
 # define TLOC_FORCE_INLINE __forceinline
 //------------------------------------------------------------------------
-// Define force inline for the GCC and clang compilers. Since the 
+// Define force inline for the GCC and clang compilers. Since the
 // attribute always_inline, inlines regardless of optimization level
 // always_inline is removed in debug builds, and replaced with inline.
 #elif defined (__GNUC__) || defined(__clang__)
@@ -235,7 +248,7 @@
 # endif
 //------------------------------------------------------------------------
 // Define force inline as a normal inline for an unsupported compiler
-#else 
+#else
 #  define TLOC_FORCE_INLINE inline
 #endif
 #define TL_FI TLOC_FORCE_INLINE
@@ -381,8 +394,8 @@
 # define TLOC_NOT_EMPTY_SOURCE_FILE() \
     namespace { char NoEmptyFileDummy##__LINE__; }
 #else
-# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() 
-# define TLOC_NOT_EMPTY_SOURCE_FILE() 
+# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE()
+# define TLOC_NOT_EMPTY_SOURCE_FILE()
 #endif
 
 ///-------------------------------------------------------------------------

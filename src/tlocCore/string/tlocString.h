@@ -293,17 +293,18 @@ namespace tloc { namespace core {
     //````````````````````````````````````````````````````````````````````````
     // Compare
 
-    TL_I s32 compare ( const this_type& aStr ) const;
-    TL_I s32 compare ( const_pointer aCharStr ) const;
-    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const this_type& aOtherStr ) const;
-    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const_pointer aOtherStr) const;
-    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const this_type& aOtherStr, const tl_size& aOtherPos,
-                       const tl_size& aOtherLength ) const;
-    TL_I s32 compare ( const tl_size& aThisPos, const tl_size& aThisLength,
-                       const_pointer aOtherCharStr, const tl_size& aOtherLength) const;
+    TL_I tl_int compare ( const this_type& aStr ) const;
+    TL_I tl_int compare ( const_pointer aCharStr ) const;
+    TL_I tl_int compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                          const this_type& aOtherStr ) const;
+    TL_I tl_int compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                          const_pointer aOtherStr) const;
+    TL_I tl_int compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                          const this_type& aOtherStr, const tl_size& aOtherPos,
+                          const tl_size& aOtherLength ) const;
+    TL_I tl_int compare ( const tl_size& aThisPos, const tl_size& aThisLength,
+                          const_pointer aOtherCharStr,
+                          const tl_size& aOtherLength) const;
 
   protected:
     pointer  m_begin;
@@ -365,11 +366,12 @@ namespace tloc { namespace core {
   TL_I tl_size    StrLen(const char8* aCharStr);
 
   template <typename T>
-  TL_I s32        StrCmp(const T* aPtr1, const T* aPtr2);
+  TL_I tl_int StrCmp(const T* aPtr1, const T* aPtr2);
   template <typename T>
-  TL_I s32        StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
+  TL_I tl_int StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
   template <>
-  TL_I s32        StrCmp(const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars);
+  TL_I tl_int StrCmp(const char8* aPtr1, const char8* aPtr2,
+                     const tl_size& aNumChars);
 
   template <typename T>
   TL_I T          CharToLower(const T& aChar);

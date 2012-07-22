@@ -77,7 +77,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "nedmalloc.h"
 #include <errno.h>
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
  #include <malloc.h>
 #endif
 #ifdef __linux__

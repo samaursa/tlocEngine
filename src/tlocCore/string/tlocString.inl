@@ -1272,17 +1272,17 @@ namespace tloc { namespace core {
   // Compare
 
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const this_type& aStr ) const
+  TL_I tl_int StringBase<T>::compare( const this_type& aStr ) const
   {
     return compare(0, length(), aStr.c_str(), 0, aStr.length());
   }
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const T* aCharStr ) const
+  TL_I tl_int StringBase<T>::compare( const T* aCharStr ) const
   {
     return compare(0, length(), aCharStr, 0, StrLen(aCharStr));
   }
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
+  TL_I tl_int StringBase<T>::compare( const tl_size& aThisPos,
                                    const tl_size& aThisLength,
                                    const this_type& aOtherStr ) const
   {
@@ -1292,9 +1292,9 @@ namespace tloc { namespace core {
                      aOtherStr.begin(), aOtherStr.end());
   }
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
-                                   const tl_size& aThisLength,
-                                   const T* aOtherCharStr ) const
+  TL_I tl_int StringBase<T>::compare( const tl_size& aThisPos,
+                                      const tl_size& aThisLength,
+                                      const T* aOtherCharStr ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
@@ -1303,11 +1303,11 @@ namespace tloc { namespace core {
                      aOtherCharStr, aOtherCharStr + StrLen(aOtherCharStr));
   }
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
-                                   const tl_size& aThisLength,
-                                   const this_type& aOtherStr,
-                                   const tl_size& aOtherPos,
-                                   const tl_size& aOtherLength ) const
+  TL_I tl_int StringBase<T>::compare( const tl_size& aThisPos,
+                                      const tl_size& aThisLength,
+                                      const this_type& aOtherStr,
+                                      const tl_size& aOtherPos,
+                                      const tl_size& aOtherLength ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisLength,
       "Begin index + number of chars is out of range!");
@@ -1318,10 +1318,10 @@ namespace tloc { namespace core {
                      aOtherStr.begin() + aOtherPos + aOtherLength);
   }
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::compare( const tl_size& aThisPos,
-                                   const tl_size& aThisNumChars,
-                                   const T* aOtherCharStr,
-                                   const tl_size& aOtherPos ) const
+  TL_I tl_int StringBase<T>::compare( const tl_size& aThisPos,
+                                      const tl_size& aThisNumChars,
+                                      const T* aOtherCharStr,
+                                      const tl_size& aOtherPos ) const
   {
     TLOC_ASSERT_STRING(length() >= aThisPos + aThisNumChars,
       "Begin index + number of chars is out of range!");
@@ -1480,8 +1480,8 @@ namespace tloc { namespace core {
   }
 
   template <STRING_BASE_TYPES>
-  TL_I s32 StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
-                                     const T* aBegin2, const T* aEnd2 ) const
+  TL_I tl_int StringBase<T>::DoCompare( const T* aBegin1, const T* aEnd1,
+                                        const T* aBegin2, const T* aEnd2 ) const
   {
     TLOC_ASSERT_STRING_RANGE(aBegin1, aEnd1);
     TLOC_ASSERT_STRING_RANGE(aBegin2, aEnd2);
@@ -1513,7 +1513,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T>
-  TL_I s32 StrCmp( const T* aPtr1, const T* aPtr2 )
+  TL_I tl_int StrCmp( const T* aPtr1, const T* aPtr2 )
   {
     while (*aPtr1 != 0 && *aPtr2 != 0)
     {
@@ -1534,7 +1534,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T>
-  TL_I s32 StrCmp( const T* aPtr1, const T* aPtr2, const tl_size& aNumChars )
+  TL_I tl_int StrCmp( const T* aPtr1, const T* aPtr2, const tl_size& aNumChars )
   {
     for (tl_size i = aNumChars; i > 0; --i)
     {
@@ -1548,7 +1548,8 @@ namespace tloc { namespace core {
   }
 
   template <>
-  TL_I s32 StrCmp( const char8* aPtr1, const char8* aPtr2, const tl_size& aNumChars )
+  TL_I tl_int StrCmp( const char8* aPtr1, const char8* aPtr2, 
+                      const tl_size& aNumChars )
   {
     return memcmp(aPtr1, aPtr2, aNumChars);
   }

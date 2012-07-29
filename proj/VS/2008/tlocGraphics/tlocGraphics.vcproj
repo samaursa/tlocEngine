@@ -961,10 +961,6 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocGraphics\placeholder.txt"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>
 		</File>

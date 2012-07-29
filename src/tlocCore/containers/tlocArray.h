@@ -323,7 +323,9 @@ namespace tloc { namespace core {
   };
 
   //////////////////////////////////////////////////////////////////////////
-  // Temporary default types for easy instantiation
+  // Temporary default types to allow the array to work with the template
+  // dispatch system because it expects only one argument (temporary because
+  // we need a better solution)
 
   template <typename T>
   class ArrayOrderedTemp

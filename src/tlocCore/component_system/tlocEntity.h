@@ -30,6 +30,9 @@ namespace tloc { namespace core { namespace component_system {
     component_list_list m_allComponents;
   };
 
+  typedef tl_array<Entity*>::type                              entity_array;
+  typedef tl_array<Entity*, core::Array_Unordered>::type       entity_array_o;
+
 };};};
 
 #endif

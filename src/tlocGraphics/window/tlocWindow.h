@@ -83,7 +83,7 @@ namespace tloc { namespace graphics {
     ~Window();
 
     ///-------------------------------------------------------------------------
-    /// Creates a window with default everything
+    /// Creates an invisible window (lookup False Context)
     ///-------------------------------------------------------------------------
     void Create();
 

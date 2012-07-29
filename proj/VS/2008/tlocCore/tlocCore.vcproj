@@ -1427,6 +1427,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="system"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"

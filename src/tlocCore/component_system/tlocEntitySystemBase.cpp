@@ -25,9 +25,9 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (CheckProcessing())
     {
-      PreProcessActiveEntities();
+      Pre_ProcessActiveEntities();
       ProcessActiveEntities(m_entityMgr, m_activeEntities);
-      PostProcessActiveEntities();
+      Post_ProcessActiveEntities();
     }
   }
 

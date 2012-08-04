@@ -1002,14 +1002,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tlocHashMapTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocHashtableTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\tlocIteratorTest.cpp"
 				>
 			</File>
@@ -1030,15 +1022,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tlocQueueTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\tlocRandomTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocStackTest.cpp"
 				>
 			</File>
 			<File
@@ -1069,6 +1053,30 @@
 				RelativePath=".\tlocUtilsTest.cpp"
 				>
 			</File>
+			<Filter
+				Name="component_system"
+				>
+			</Filter>
+			<Filter
+				Name="containers"
+				>
+				<File
+					RelativePath=".\tlocHashMapTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocHashtableTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocQueueTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocStackTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Math"

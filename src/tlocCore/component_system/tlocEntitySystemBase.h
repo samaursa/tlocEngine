@@ -43,12 +43,12 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called before processing entities
     ///-------------------------------------------------------------------------
-    virtual void PreProcessActiveEntities() = 0;
+    virtual void Pre_ProcessActiveEntities() = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
     ///-------------------------------------------------------------------------
-    virtual void PostProcessActiveEntities() = 0;
+    virtual void Post_ProcessActiveEntities() = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by EventManager (we are/should-be a registered listener)

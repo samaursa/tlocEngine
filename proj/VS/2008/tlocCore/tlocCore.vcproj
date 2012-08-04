@@ -1431,6 +1431,10 @@
 				Name="system"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.cpp"
 					>
 				</File>

@@ -11,6 +11,8 @@ namespace tloc { namespace core { namespace component_system {
 
   class EntitySystemBase : public EventListener
   {
+  protected:
+
     typedef EventBase::event_type       event_type;
     typedef components::value_type      component_type;
 

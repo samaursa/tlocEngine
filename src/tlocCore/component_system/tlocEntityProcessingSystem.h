@@ -6,7 +6,7 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntityProcessingSystem
+  class EntityProcessingSystem : EntitySystemBase
   {
   public:
 
@@ -18,9 +18,10 @@ namespace tloc { namespace core { namespace component_system {
 
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities();
+    virtual void ProcessEntity(EntityManager* a_mgr, Entity* a_ent) = 0;
     virtual void ProcessActiveEntities (EntityManager* a_mgr,
                                         const entity_array& a_entities);
-    virtual void
+    virtual void Post_ProcessingActiveEntities();
   };
 
 };};};

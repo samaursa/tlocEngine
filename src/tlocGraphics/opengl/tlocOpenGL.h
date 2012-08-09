@@ -24,6 +24,10 @@ namespace tloc { namespace graphics {
 
 # include <OpenGL/gl.h>
 # include <OpenGl/glu.h>
+  
+#elif defined(TLOC_OS_IPHONE)
+
+# include <OpenGLES/ES2/gl.h>
 
 #endif
 

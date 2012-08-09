@@ -29,7 +29,7 @@ namespace tloc { namespace graphics { namespace priv {
 
   public:
     WindowImplBase(parent_window_type* a_parent)
-      : m_graphicsMode(graphics_mode::Properties(0, 0))
+      : m_graphicsMode(typename graphics_mode::Properties(0, 0))
       , m_windowSettings("TLOC Window")
       , m_parentWindow(a_parent)
     {

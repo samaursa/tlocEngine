@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocMemory.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
 namespace TestingArray
 {
@@ -69,12 +69,22 @@ namespace TestingArray
     CHECK(fourth[0] == 100); CHECK(fourth[1] == 100);
     CHECK(fourth[2] == 100); CHECK(fourth[3] == 100);
 
+    SomeClass fooClass;
+    fooClass.dummy = 50;
+    Array<SomeClass> fifth(4, fooClass);
+    CHECK(fifth[0].dummy == 50); CHECK(fifth[1].dummy == 50);
+    CHECK(fifth[2].dummy == 50); CHECK(fifth[3].dummy == 50);
+
+    Array<s32> sixth (10);
+    CHECK(sixth.size() == 10);
+    CHECK(sixth.capacity() == 10);
+
     // the iterator constructor can also be used to construct from arrays:
     s32 myints[] = {16,2,77,29};
-    Array<s32> fifth (myints, myints + sizeof(myints) / sizeof(s32) );
+    Array<s32> seventh (myints, myints + sizeof(myints) / sizeof(s32) );
 
-    CHECK(fifth[0] == 16); CHECK(fifth[1] == 2);
-    CHECK(fifth[2] == 77); CHECK(fifth[3] == 29);
+    CHECK(seventh[0] == 16); CHECK(seventh[1] == 2);
+    CHECK(seventh[2] == 77); CHECK(seventh[3] == 29);
   }
 
 
@@ -288,6 +298,29 @@ namespace TestingArray
     someClass.erase(someClass.begin());
   }
 
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/UnorderedErase",
+    "Test the unordered erase function")
+  {
+    Array<tl_int, Array_Unordered> unorderedInts;
+
+    FILL_INT_ARRAY_BY_PUSH(unorderedInts, 0, 10);
+
+    unorderedInts.erase(unorderedInts.begin() + 5);
+
+    CHECK((unorderedInts.begin() + 9) == unorderedInts.end());
+    CHECK(unorderedInts.size() == 9);
+
+    CHECK(unorderedInts[0] == 0);
+    CHECK(unorderedInts[1] == 1);
+    CHECK(unorderedInts[2] == 2);
+    CHECK(unorderedInts[3] == 3);
+    CHECK(unorderedInts[4] == 4);
+    CHECK(unorderedInts[5] == 9);
+    CHECK(unorderedInts[6] == 6);
+    CHECK(unorderedInts[7] == 7);
+    CHECK(unorderedInts[8] == 8);
+  }
+
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Clear",
     "Test the clear function")
   {
@@ -425,6 +458,8 @@ namespace TestingArray
     ints.assign(itrBegin, itrEnd);
     CHECK(ints.size() == 10);
 
+    ints.reserve(20);
+
     s32 anotherArray[15] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     itrBegin = anotherArray;
     itrEnd = anotherArray + 15;
@@ -436,6 +471,8 @@ namespace TestingArray
     {
       CHECK(ints[i-1] == (s32)i);
     }
+
+    ints.reserve(50);
 
     // Assign 10, 20 times
     ints.assign(20, 10);

@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
 
-#include "tlocCore/tlocQueue.h"
-#include "tlocCore/tlocQueue.inl"
+#include <tlocCore/containers/tlocQueue.h>
+#include <tlocCore/containers/tlocQueue.inl>
 
 namespace TestingQueue
 {

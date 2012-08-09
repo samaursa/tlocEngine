@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocTemplateDispatchDefaults.h"
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 
 namespace ns
 {
@@ -10,9 +10,9 @@ namespace ns
     void C2() {}
     void C3() {}
   };
-
-  TLOC_DEF_TYPE(pipes);
 };
+
+TLOC_DEF_TYPE(ns::pipes);
 
 namespace TestingTemplateDispatch
 {
@@ -30,8 +30,6 @@ namespace TestingTemplateDispatch
     u32 m_c1, m_c2, m_c3;
   };
 
-  TLOC_DEF_TYPE(bullets);
-
   struct particles
   {
     particles() : m_c1(0), m_c2(0), m_c3(0) {}
@@ -43,8 +41,6 @@ namespace TestingTemplateDispatch
     u32 m_c1, m_c2, m_c3;
   };
 
-  TLOC_DEF_TYPE(particles);
-
   struct WindowCallbacks
   {
     virtual void C1() = 0;
@@ -55,6 +51,9 @@ namespace TestingTemplateDispatch
   template <typename T>
   struct WindowCallbackGroupT : public CallbackGroupTArray<T, WindowCallbacks>::type
   {
+    typedef typename CallbackGroupTArray<T, WindowCallbacks>::type base_type;
+    using base_type::m_observers;
+
     virtual void C1()
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -107,7 +106,13 @@ namespace TestingTemplateDispatch
       }
     }
   };
+};
 
+TLOC_DEF_TYPE(TestingTemplateDispatch::bullets);
+TLOC_DEF_TYPE(TestingTemplateDispatch::particles);
+
+namespace TestingTemplateDispatch
+{
   struct Fixture
   {
     bullets b1, b2, b3, b4, b5, b6, b7;

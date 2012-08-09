@@ -1,17 +1,20 @@
+#include "tlocCore/tlocNoOpt.h"
+
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocMemory.h"
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/utilities/tlocUtils.h>
 
-#include "tlocCore/tlocList.h"
-#include "tlocCore/tlocList.inl"
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 
-#include "tlocCore/tlocFunctional.h"
+#include <tlocCore/tlocFunctional.h>
 
-#include "tlocCore/tlocHashtable.h"
-#include "tlocCore/tlocHashtable.inl"
+#include <tlocCore/containers/tlocHashtable.h>
+#include <tlocCore/containers/tlocHashtable.inl>
 
 namespace TestingHashtable
 {
@@ -127,16 +130,25 @@ namespace TestingHashtable
   {
     static void AllVariations()
     {
-      T_Method<HashtableFixture::Hashtable<doubly_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<singly_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<singlydoubly_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<doublysingly_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<doublyarray_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<array_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<arraysingly_nohash_unique> >();
-      T_Method<HashtableFixture::Hashtable<arraydouble_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::doubly_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::singly_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::singlydoubly_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::doublysingly_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::doublyarray_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::array_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::arraysingly_nohash_unique> >();
+      T_Method<Hashtable<HashtableFixture::arraydouble_nohash_unique> >();
     }
   };
+
+  template class Hashtable<HashtableFixture::singly_nohash_unique>;
+  template class Hashtable<HashtableFixture::doubly_nohash_unique>;
+  template class Hashtable<HashtableFixture::singlydoubly_nohash_unique>;
+  template class Hashtable<HashtableFixture::doublysingly_nohash_unique>;
+  template class Hashtable<HashtableFixture::doublyarray_nohash_unique>;
+  template class Hashtable<HashtableFixture::array_nohash_unique>;
+  template class Hashtable<HashtableFixture::arraysingly_nohash_unique>;
+  template class Hashtable<HashtableFixture::arraydouble_nohash_unique>;
 
 #define TestMethodAllVariationsUniqueHashNotStored(T_Type) \
     T_Type<Hashtable<singly_nohash_unique> >(); \
@@ -179,9 +191,12 @@ namespace TestingHashtable
   T_Type<Hashtable<arraydouble_hash_nounique> >();
 
 #define USE_TYPEDEFS \
-  typedef Loki::Select< Loki::IsSameType<type_true, T_HashT::unique_keys>::value, \
-  Pair<T_HashT::iterator, bool>, T_HashT::iterator>::Result selected_result; \
-  typedef Loki::Select< Loki::IsSameType<type_true, T_HashT::unique_keys>::value, \
+  typedef typename Loki::Select< Loki::IsSameType<type_true, \
+    typename T_HashT::unique_keys>::value, \
+    Pair<typename T_HashT::iterator, bool>, \
+    typename T_HashT::iterator>::Result selected_result; \
+  typedef typename Loki::Select< Loki::IsSameType<type_true, \
+    typename T_HashT::unique_keys>::value, \
     use_first<selected_result>, use_self<selected_result> >::Result iterator_deref \
 
 
@@ -224,9 +239,10 @@ namespace TestingHashtable
       h.insert(5);
 
       // Should be added to bucket # 2
-      T_HashT::iterator itr = h.begin();
+      typename T_HashT::iterator itr = h.begin();
 
-      Pair<bool, T_HashT::size_type> result = itr.GetCurrBucketNumber();
+      Pair<bool, typename T_HashT::size_type> result = 
+        itr.GetCurrBucketNumber();
       REQUIRE(result.first == true);
       CHECK(result.second == 5 % 3); // bucket #2
       CHECK( (*itr) == 5);
@@ -258,7 +274,7 @@ namespace TestingHashtable
       CHECK(result.second == 5 % 7); // If passed, rehash was successful
 
       itr = h.begin();
-      T_HashT::iterator itrEnd = h.end();
+      typename T_HashT::iterator itrEnd = h.end();
 
       REQUIRE(h.size() == 4);
 
@@ -275,15 +291,23 @@ namespace TestingHashtable
 
       CHECK( (itr == itrEnd) == true);
 
+      TL_NESTED_FUNC_BEGIN(CheckBucket)
+        void CheckBucket(typename T_HashT::iterator a_itr, 
+                         tl_size a_valueToCheck)
+      {
+        CHECK(a_itr.GetCurrBucketNumber().second == a_valueToCheck);
+      }
+      TL_NESTED_FUNC_END();
+
       // One last check to make sure they were all added to the right buckets
       itr = h.find(7);
-      CHECK(itr.GetCurrBucketNumber().second == 0);
+      TL_NESTED_CALL(CheckBucket)(itr, 0);
       itr = h.find(8);
-      CHECK(itr.GetCurrBucketNumber().second == 1);
+      TL_NESTED_CALL(CheckBucket)(itr, 1);
       itr = h.find(5);
-      CHECK(itr.GetCurrBucketNumber().second == 5);
+      TL_NESTED_CALL(CheckBucket)(itr, 5);
       itr = h.find(6);
-      CHECK(itr.GetCurrBucketNumber().second == 6);
+      TL_NESTED_CALL(CheckBucket)(itr, 6);
     }
 
     //------------------------------------------------------------------------
@@ -291,7 +315,7 @@ namespace TestingHashtable
     //                           const value_type& a_value);
     {
       T_HashT h;
-      T_HashT::iterator dummyItr = h.begin();
+      typename T_HashT::iterator dummyItr = h.begin();
 
       dummyItr = h.insert(dummyItr, 9);
       CHECK( (*dummyItr) == 9);
@@ -305,11 +329,12 @@ namespace TestingHashtable
     // template <typename T_InputItr>
     // void                insert(T_InputItr a_first, T_InputItr a_last);
     {
-      T_HashT::value_type v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+      typename T_HashT::value_type v[] = 
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
       T_HashT h;
       h.insert(v, v + 14);
-      T_HashT::iterator itr;
+      typename T_HashT::iterator itr;
 
       for (u32 i = 1; i < 15; ++i)
       {
@@ -356,7 +381,7 @@ namespace TestingHashtable
         h.insert(i);
       }
 
-      T_HashT::iterator itr;
+      typename T_HashT::iterator itr;
       for (u32 i = 0; i < 16; i = i + 3)
       {
         itr = h.find(i);
@@ -373,7 +398,7 @@ namespace TestingHashtable
         h.insert(i);
       }
 
-      T_HashT::iterator itr;
+      typename T_HashT::iterator itr;
       for (u32 i = 0; i < 16; i = i + 3)
       {
         itr = h.find_by_hash(i);
@@ -412,7 +437,8 @@ namespace TestingHashtable
         h.insert(i);
       }
 
-      Pair<T_HashT::iterator, T_HashT::iterator> p = h.equal_range(3);
+      Pair<typename T_HashT::iterator, typename T_HashT::iterator> p = 
+        h.equal_range(3);
 
       u32 count = 0;
       for (; p.first != p.second; ++(p.first))
@@ -483,12 +509,13 @@ namespace TestingHashtable
     //------------------------------------------------------------------------
     //iterator            erase(iterator a_first, iterator a_last);
     {
-      T_HashT::value_type v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+      typename T_HashT::value_type v[] = 
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
       T_HashT h;
       h.insert(v, v + 14);
 
-      T_HashT::iterator itr = h.erase(h.begin(), h.end());
+      typename T_HashT::iterator itr = h.erase(h.begin(), h.end());
       CHECK(h.size() == 0);
       CHECK(itr == h.end());
 
@@ -505,7 +532,7 @@ namespace TestingHashtable
     TestMethodAllVariationsNoUniqueHashStored(TestCtors);
   }
 
-  template <typename T_Hash>
+  template <typename T_HashT>
   void TestBuckets()
   {
     USE_TYPEDEFS;

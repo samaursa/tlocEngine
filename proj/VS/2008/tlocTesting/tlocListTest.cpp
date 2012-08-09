@@ -1,12 +1,12 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocArray.inl"
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl>
 
 #define private public
 #define protected public
-#include "tlocCore/tlocList.h"
-#include "tlocCore/tlocList.inl"
+#include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl>
 #undef private
 #undef protected
 
@@ -63,12 +63,14 @@ namespace TestingList
     s32 myints[] = {16,2,77,29};
     T_ListType fifth (myints, myints + sizeof(myints) / sizeof(s32) );
 
-    T_ListType::iterator itr = fifth.begin(); itr != fifth.end();
+    typename T_ListType::iterator itr = fifth.begin(); 
 
     CHECK(*itr++ == 16);
     CHECK(*itr++ == 2);
     CHECK(*itr++ == 77);
     CHECK(*itr++ == 29);
+    
+    CHECK(itr == fifth.end());
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Ctors", "")
@@ -107,7 +109,7 @@ namespace TestingList
     T_ListType mylist (myints,myints+5);
     CHECK(mylist.size() == 5);
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
 
     CHECK(*itr++ == 75);
     CHECK(*itr++ == 23);
@@ -115,7 +117,15 @@ namespace TestingList
     CHECK(*itr++ == 42);
     CHECK(*itr++ == 13);
 
-    T_ListType::const_iterator cItr = mylist.begin();
+    typename T_ListType::const_iterator cItr = mylist.begin();
+
+    CHECK(*cItr++ == 75);
+    CHECK(*cItr++ == 23);
+    CHECK(*cItr++ == 65);
+    CHECK(*cItr++ == 42);
+    CHECK(*cItr++ == 13);
+
+    cItr = mylist.cbegin();
 
     CHECK(*cItr++ == 75);
     CHECK(*cItr++ == 23);
@@ -140,13 +150,29 @@ namespace TestingList
     T_ListType mylist (myints,myints+5);
     CHECK(mylist.size() == 5);
 
-    T_ListType::iterator itr = mylist.end();
+    typename T_ListType::iterator itr = mylist.end();
 
     CHECK(*--itr == 13);
     CHECK(*--itr == 42);
     CHECK(*--itr == 65);
     CHECK(*--itr == 23);
     CHECK(*--itr == 75);
+
+    typename T_ListType::const_iterator cItr = mylist.end();
+
+    CHECK(*--cItr == 13);
+    CHECK(*--cItr == 42);
+    CHECK(*--cItr == 65);
+    CHECK(*--cItr == 23);
+    CHECK(*--cItr == 75);
+
+    cItr = mylist.cend();
+
+    CHECK(*--cItr == 13);
+    CHECK(*--cItr == 42);
+    CHECK(*--cItr == 65);
+    CHECK(*--cItr == 23);
+    CHECK(*--cItr == 75);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/end", "")
@@ -163,7 +189,7 @@ namespace TestingList
     T_ListType myList;
     for (s32 i = 1; i <= 5; ++i) { myList.push_back(i); }
 
-    T_ListType::reverse_iterator itr = myList.rbegin();
+    typename T_ListType::reverse_iterator itr = myList.rbegin();
 
     CHECK(*itr == 5); ++itr;
     CHECK(*itr == 4); ++itr;
@@ -186,7 +212,7 @@ namespace TestingList
     T_ListType myList;
     for (s32 i = 1; i <= 5; ++i) { myList.push_back(i); }
 
-    T_ListType::reverse_iterator itr = myList.rend();
+    typename T_ListType::reverse_iterator itr = myList.rend();
 
     --itr; CHECK(*itr == 1);
     --itr; CHECK(*itr == 2);
@@ -265,7 +291,7 @@ namespace TestingList
     mylist.resize(8,100);
     mylist.resize(12);
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
     CHECK(*itr++ == 1);
     CHECK(*itr++ == 2);
     CHECK(*itr++ == 3);
@@ -321,7 +347,7 @@ namespace TestingList
       mylist.push_back(mylist.back() - 1);
     }
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
 
     CHECK(*itr++ == 10);
     CHECK(*itr++ == 9);
@@ -374,7 +400,7 @@ namespace TestingList
     mylist.push_front(200);
     mylist.push_front(300);
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
 
     CHECK(*itr++ == 300);
     CHECK(*itr++ == 200);
@@ -428,7 +454,7 @@ namespace TestingList
 
     CHECK(mylist.size() == 4);
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
 
     CHECK(*itr++ == 5);
     CHECK(*itr++ == 10);
@@ -475,7 +501,7 @@ namespace TestingList
   void testInsert()
   {
     T_ListType mylist;
-    T_ListType::iterator itr, retItr;
+    typename T_ListType::iterator itr, retItr;
 
     for (s32 i = 1; i <= 5; ++i) mylist.push_back(i);
 
@@ -510,7 +536,7 @@ namespace TestingList
 
     myList2.insert(myList2.begin(), 5);
 
-    T_ListType::iterator itr2 = myList2.begin();
+    typename T_ListType::iterator itr2 = myList2.begin();
     CHECK( *itr2 == 5);
 
     myList2.insert(itr2 , 2, 10);
@@ -560,7 +586,7 @@ namespace TestingList
   void testInsertAfter()
   {
     T_ListType mylist;
-    T_ListType::iterator itr, retItr;
+    typename T_ListType::iterator itr, retItr;
 
     for (s32 i = 1; i <= 5; ++i) mylist.push_back(i);
 
@@ -610,11 +636,12 @@ namespace TestingList
   {
     u32 i;
     T_ListType mylist;
-    T_ListType::iterator itr1, itr2;
+    typename T_ListType::iterator itr1, itr2;
 
     for (i = 1; i < 10; ++i) mylist.push_back(i * 10);
 
-    itr1 = itr2 = mylist.begin();
+    itr1 = mylist.begin();
+    itr2 = mylist.begin();
     advance(itr2, 6);
     CHECK(*itr2 == 70);
     ++itr1;
@@ -656,7 +683,7 @@ namespace TestingList
   {
     u32 i;
     T_ListType mylist;
-    T_ListType::iterator itr1, itr2;
+    typename T_ListType::iterator itr1, itr2;
 
     for (i = 1; i < 10; ++i) mylist.push_back(i * 10);
 
@@ -700,7 +727,7 @@ namespace TestingList
   {
     T_ListType first(3, 100);
     T_ListType second(5, 200);
-    T_ListType::iterator itr, itr2;
+    typename T_ListType::iterator itr, itr2;
 
     first.swap(second);
 
@@ -819,7 +846,7 @@ namespace TestingList
   void testClear()
   {
     T_ListType mylist;
-    T_ListType::iterator itr;
+    typename T_ListType::iterator itr;
 
     mylist.push_back(100);
     mylist.push_back(200);
@@ -851,7 +878,7 @@ namespace TestingList
   void testSplice()
   {
     T_ListType mylist1, mylist2;
-    T_ListType::iterator it;
+    typename T_ListType::iterator it;
 
     // set some initial values:
     for (s32 i=1; i<=4; i++)
@@ -867,7 +894,7 @@ namespace TestingList
 																	// mylist2 (empty)
 																	// "it" still points to 2 (the 5th element)
 
-    T_ListType::iterator itrCheck = mylist1.begin();
+    typename T_ListType::iterator itrCheck = mylist1.begin();
     CHECK( *itrCheck == 1); ++itrCheck;
     CHECK( *itrCheck == 10); ++itrCheck;
     CHECK( *itrCheck == 20); ++itrCheck;
@@ -912,7 +939,7 @@ namespace TestingList
   void testSpliceAfter()
   {
     T_ListType mylist1, mylist2;
-    T_ListType::iterator it;
+    typename T_ListType::iterator it;
 
     // set some initial values:
     for (s32 i=1; i<=4; i++)
@@ -928,7 +955,7 @@ namespace TestingList
 																				// mylist2 (empty)
 																				// "it" still points to 2
 
-    T_ListType::iterator itrCheck = mylist1.begin();
+    typename T_ListType::iterator itrCheck = mylist1.begin();
     CHECK( *itrCheck == 1); ++itrCheck;
     CHECK( *itrCheck == 2); ++itrCheck;
     CHECK( *itrCheck == 10); ++itrCheck;
@@ -977,7 +1004,7 @@ namespace TestingList
 
     mylist.remove(89);
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
     CHECK(*itr++ == 17);
     CHECK(*itr++ == 7);
     CHECK(*itr++ == 14);
@@ -1011,7 +1038,7 @@ namespace TestingList
 
     mylist.remove_if (is_odd());          // 36 20
 
-    T_ListType::iterator itr = mylist.begin();
+    typename T_ListType::iterator itr = mylist.begin();
 
     CHECK(*itr++ == 36);
     CHECK(*itr++ == 20);
@@ -1090,7 +1117,7 @@ namespace TestingList
   void testReverse()
   {
     T_ListType mylist;
-    T_ListType::iterator it;
+    typename T_ListType::iterator it;
 
     for (int i=1; i<10; i++) mylist.push_back(i);
 
@@ -1115,5 +1142,47 @@ namespace TestingList
     testReverse<intListWithoutSize>();
     testReverse<intSinglyListWithSize>();
     testReverse<intSinglyListWithoutSize>();
+  }
+
+  struct testItr
+  {
+    tl_int m_value;
+  };
+
+  template <typename T_LinkedTag, bool T_DedicatedSize>
+  void testIterator()
+  {
+    typedef core::List<testItr, ListNode<testItr, T_LinkedTag>,
+                       List_Dynamic(), T_DedicatedSize>           list_type;
+    list_type myList;
+    typename list_type::iterator itr;
+
+    for (int i = 0; i < 10; ++i)
+    {
+      testItr temp;
+      temp.m_value = i;
+      myList.push_back(temp);
+    }
+
+    itr = myList.begin();
+    CHECK(itr->m_value == 0); ++itr;
+    CHECK(itr->m_value == 1); ++itr;
+    CHECK(itr->m_value == 2); ++itr;
+    CHECK(itr->m_value == 3); ++itr;
+    CHECK(itr->m_value == 4); ++itr;
+    CHECK(itr->m_value == 5); ++itr;
+    CHECK(itr->m_value == 6); ++itr;
+    CHECK(itr->m_value == 7); ++itr;
+    CHECK(itr->m_value == 8); ++itr;
+    CHECK(itr->m_value == 9); ++itr;
+
+    CHECK(myList.end() == itr);
+  }
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/iterator", "")
+  {
+    testIterator<doubly_linked_tag, false>();
+    testIterator<doubly_linked_tag, true>();
+    testIterator<singly_linked_tag, false>();
+    testIterator<singly_linked_tag, true>();
   }
 };

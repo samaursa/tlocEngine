@@ -1,24 +1,25 @@
 #include "tlocTestCommon.h"
 
-#include "tlocCore/tlocTypes.h"
-#include "tlocCore/tlocTypes.inl"
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypes.inl>
 
 namespace TESTING_TYPES
 {
   USING_TLOC;
+  using namespace core;
 
   struct ConditionalFixtureTrue
   {
-    ConditionalType<s32, true> a;
-    ConditionalType<s32, true> a2;
-    ConditionalTypePackage<s32, s32, true> a3;
+    ConditionalType<tl_int, true> a;
+    ConditionalType<tl_int, true> a2;
+    ConditionalTypePackage<tl_int, tl_int, true> a3;
   };
 
   struct ConditionalFixtureFalse
   {
-    ConditionalType<s32, false> a;
-    ConditionalType<s32, false> a2;
-    ConditionalTypePackage<s32, s32, false> a3;
+    ConditionalType<tl_int, false> a;
+    ConditionalType<tl_int, false> a2;
+    ConditionalTypePackage<tl_int, tl_int, false> a3;
   };
 
   TEST_CASE_METHOD(ConditionalFixtureTrue, "Core/Types/ConditionalTypeTrue", "")
@@ -53,7 +54,7 @@ namespace TESTING_TYPES
     a = a / 2;
     CHECK(a.Value() == 25);
 
-    ConditionalType<s32, true> b = a++;
+    ConditionalType<tl_int, true> b = a++;
     CHECK(a.Value() == 26);
     CHECK(b.Value() == 25);
 
@@ -94,10 +95,10 @@ namespace TESTING_TYPES
     CHECK( (a == a2) == true);
 
     a = 5;
-    CHECK( (5 - a) == 0);
-    CHECK( (5 + a) == 10);
-    CHECK( (5 * a) == 25);
-    CHECK( (10 / a) == 2);
+    CHECK( (tl_int(5) - a) == 0);
+    CHECK( (tl_int(5) + a) == 10);
+    CHECK( (tl_int(5) * a) == 25);
+    CHECK( (tl_int(10) / a) == 2);
     CHECK( (10 < a) == false);
     CHECK( (10 > a) == true);
     CHECK( (5 >= a) == true);
@@ -105,7 +106,7 @@ namespace TESTING_TYPES
     CHECK( (5 <= a) == true);
     CHECK( (2 <= a) == true);
 
-    s32 num = 10;
+    tl_int num = 10;
     num = num - a;
     CHECK(num == 5);
     num = num + a;
@@ -124,13 +125,24 @@ namespace TESTING_TYPES
     CHECK(a3 == 30);
     a3.m_var += (s32)a3.Get();
     CHECK(a3.m_var == 50);
+
+    a += a;
+    CHECK(a == 10);
+    a -= a;
+    CHECK(a == 0);
+    a = 5;
+    a /= a;
+    CHECK(a == 1);
+    a = 2;
+    a *= a;
+    CHECK(a == 4);
   }
 
   TEST_CASE_METHOD(ConditionalFixtureFalse, "Core/Types/ConditionalTypeFalse", "")
   {
-    // Note that direct comparison with the invalid_value should not be used in 
-    // code because g_conditional_type_invalid_value does not really exist for 
-    // ConditionalType<T, true>. The variable is used to make sure the type 
+    // Note that direct comparison with the invalid_value should not be used in
+    // code because g_conditional_type_invalid_value does not really exist for
+    // ConditionalType<T, true>. The variable is used to make sure the type
     // works when <false> and for testing purposes.
 
     // Type should return invalid
@@ -163,7 +175,7 @@ namespace TESTING_TYPES
     a = a / 2;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
 
-    ConditionalType<s32, false> b = a++;
+    ConditionalType<tl_int, false> b = a++;
     CHECK(a.Value() == a.g_conditional_type_invalid_value );
     CHECK(b.Value() == b.g_conditional_type_invalid_value );
 
@@ -203,7 +215,7 @@ namespace TESTING_TYPES
     a = a2;
     CHECK( (a == a2) == true);
 
-    s32 num = 5;
+    tl_int num = 5;
     num = num + a;
     CHECK(num == 5);
     num = num - a;
@@ -212,5 +224,16 @@ namespace TESTING_TYPES
     CHECK(num == 5);
     num = num / a;
     //CHECK(num == 5);
+
+    a += a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a -= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 5;
+    a /= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
+    a = 2;
+    a *= a;
+    CHECK(a == a.g_conditional_type_invalid_value);
   }
 };

@@ -38,13 +38,14 @@ namespace tloc { namespace core {
   // Constants
 
   template <STRING_BASE_TYPES>
-  const typename STRING_BASE_TYPE::EmptyString StringBase<T>::sm_emptyString = { 0 };
+  const typename StringBase<STRING_BASE_PARAMS>::EmptyString 
+    StringBase<T>::sm_emptyString = { 0 };
 
   template <typename T>
-  const tl_size STRING_BASE_TYPE::m_MaxSize = (tl_size) - 2;
+  const tl_size StringBase<STRING_BASE_PARAMS>::m_MaxSize = (tl_size) - 2;
 
   template <STRING_BASE_TYPES>
-  const tl_size STRING_BASE_TYPE::sm_defaultCapacity = 2;
+  const tl_size StringBase<STRING_BASE_PARAMS>::sm_defaultCapacity = 2;
 
   //------------------------------------------------------------------------
   // Ctors

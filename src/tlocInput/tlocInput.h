@@ -18,9 +18,9 @@ namespace tloc { namespace input {
   /// Incorrect parameter types will result in linking errors.
   ///-------------------------------------------------------------------------
   template <typename T1,
-            typename T2 = TLOC_DUMMY_PARAM(),
-            typename T3 = TLOC_DUMMY_PARAM(),
-            typename T4 = TLOC_DUMMY_PARAM()>
+            typename T2 = TLOC_DUMMY_PARAM,
+            typename T3 = TLOC_DUMMY_PARAM,
+            typename T4 = TLOC_DUMMY_PARAM>
   struct InputParameterList
   {
     T1  m_param1;

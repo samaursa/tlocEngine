@@ -7,6 +7,8 @@
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include <tlocGraphics/window/tlocWindowImplWin.h>
+#elif defined(TLOC_OS_IPHONE)
+# include <tlocGraphics/window/tlocWindowImplIphone.h>
 #else
 # error "WIP"
 #endif
@@ -183,6 +185,7 @@ namespace tloc { namespace graphics {
     {
       m_allObservers[i]->OnWindowEvent(a_event);
     }
+    m_events.push(a_event);
   }
 
   //````````````````````````````````````````````````````````````````````````

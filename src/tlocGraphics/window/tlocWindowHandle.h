@@ -32,6 +32,12 @@ namespace tloc { namespace graphics {
   {
     typedef void*         type;
   };
+  
+  template<>
+  struct WindowHandle<core::Platform_osx_iphone>
+  {
+    typedef void*         type;
+  };
 
   template<>
   struct WindowHandle<core::Platform_linux>

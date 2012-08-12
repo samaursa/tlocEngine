@@ -74,8 +74,8 @@ namespace tloc { namespace input { namespace priv {
   class KeyboardImplBase : public core::ImplBase<T_ParentKeyboard>
   {
   public:
-    typedef ImplBase<T_ParentKeyboard>                    base_type;
-    using base_type::parent_type;
+    typedef core::ImplBase<T_ParentKeyboard>              base_type;
+    typedef typename base_type::parent_type               parent_type;
 
     typedef T_ParamList                                   param_list_type;
     typedef typename parent_type::platform_type           platform_type;
@@ -85,7 +85,7 @@ namespace tloc { namespace input { namespace priv {
     typedef u32                                           index_type;
 
     KeyboardImplBase(parent_type* a_parent, param_list_type a_params)
-      : ImplBase(a_parent), m_params(a_params)
+      : base_type(a_parent), m_params(a_params)
     {
     }
 

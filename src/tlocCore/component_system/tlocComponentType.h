@@ -8,6 +8,9 @@ namespace tloc { namespace core { namespace component_system {
 
   namespace components
   {
+    // Built-in component types. These are (theoretically) the fastest component
+    // types. We (will) also allow setting component types dynamically which
+    // will have a slight runtime cost.
     enum type
     {
       transform = 0,

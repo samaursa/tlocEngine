@@ -960,6 +960,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="components and systems"
+			>
+			<Filter
+				Name="components"
+				>
+			</Filter>
+			<Filter
+				Name="systems"
+				>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>

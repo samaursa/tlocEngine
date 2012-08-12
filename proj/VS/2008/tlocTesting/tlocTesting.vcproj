@@ -990,59 +990,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tlocArrayFixedTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocArrayTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocForwardListTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocIteratorTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocListTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocMemoryPoolTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocMemoryTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\tlocPair.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\tlocRandomTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocStringTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocTableTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocTemplateDispatchTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocTimeTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocTupleTest.cpp"
 				>
 			</File>
 			<File
@@ -1056,10 +1008,34 @@
 			<Filter
 				Name="component_system"
 				>
+				<File
+					RelativePath=".\tlocEntityManagerTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocEntityTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocEventManagerTest.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="containers"
 				>
+				<File
+					RelativePath=".\tlocArrayFixedTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocArrayTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocForwardListTest.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\tlocHashMapTest.cpp"
 					>
@@ -1069,11 +1045,63 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocIteratorTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocListTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocQueueTest.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\tlocStackTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocStringTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="memory"
+				>
+				<File
+					RelativePath=".\tlocMemoryPoolTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMemoryTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="time"
+				>
+				<File
+					RelativePath=".\tlocTimeTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="data_structures"
+				>
+				<File
+					RelativePath=".\tlocTableTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocTupleTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="base_classes"
+				>
+				<File
+					RelativePath=".\tlocTemplateDispatchTest.cpp"
 					>
 				</File>
 			</Filter>
@@ -1085,30 +1113,38 @@
 				RelativePath=".\tlocMathTest.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\tlocMatrix2Test.cpp"
+			<Filter
+				Name="matrix"
 				>
-			</File>
-			<File
-				RelativePath=".\tlocMatrix3Test.cpp"
+				<File
+					RelativePath=".\tlocMatrix2Test.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMatrix3Test.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocMatrixTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="vector"
 				>
-			</File>
-			<File
-				RelativePath=".\tlocMatrixTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocVector2Test.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocVector3Test.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocVectorTest.cpp"
-				>
-			</File>
+				<File
+					RelativePath=".\tlocVector2Test.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocVector3Test.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocVectorTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Graphics"

@@ -1,5 +1,7 @@
 #include "tlocEntityManager.h"
 
+#include <tlocCore/component_system/tlocEntity.inl>
+
 namespace tloc { namespace core { namespace component_system {
 
   EntityManager::EntityManager(EventManager *a_eventManager)
@@ -61,6 +63,7 @@ namespace tloc { namespace core { namespace component_system {
   void EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
   {
     component_list& entityComps = a_entity->m_allComponents[a_component->GetType()];
+    entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
 
     {// Remove it from the entity
       component_list::iterator itr = core::find(entityComps, a_component);
@@ -68,9 +71,9 @@ namespace tloc { namespace core { namespace component_system {
     }
 
     {// Remove it from the component list
-      component_entity_list::iterator itr = core::find(m_componentsAndEntities, a_entity);
-      if (itr != m_componentsAndEntities.end())
-      { m_componentsAndEntities.erase(itr); }
+      entity_list::iterator itr = core::find(entityList, a_entity);
+      if (itr != entityList.end())
+      { entityList.erase(itr); }
     }
   }
 

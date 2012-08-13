@@ -11,14 +11,14 @@ namespace tloc { namespace core { namespace component_system {
   {
     TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
 
-    m_eventMgr->AddListener(this, entity_event::insert_component);
-    m_eventMgr->AddListener(this, entity_event::remove_component);
+    m_eventMgr->AddListener(this, entity_events::insert_component);
+    m_eventMgr->AddListener(this, entity_events::remove_component);
   }
 
   EntitySystemBase::~EntitySystemBase()
   {
-    m_eventMgr->RemoveListener(this, entity_event::insert_component);
-    m_eventMgr->RemoveListener(this, entity_event::remove_component);
+    m_eventMgr->RemoveListener(this, entity_events::insert_component);
+    m_eventMgr->RemoveListener(this, entity_events::remove_component);
   }
 
   void EntitySystemBase::ProcessActiveEntities()
@@ -37,8 +37,8 @@ namespace tloc { namespace core { namespace component_system {
 
     switch(type)
     {
-    case entity_event::insert_component:
-    case entity_event::remove_component:
+    case entity_events::insert_component:
+    case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
         Entity* ent = entEvent.m_entity;

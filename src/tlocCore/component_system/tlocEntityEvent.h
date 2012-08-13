@@ -7,7 +7,7 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace entity_event
+  namespace entity_events
   {
     enum Type
     {

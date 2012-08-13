@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace component_system {
       m_entities.push_back(e);
     }
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_event::create_entity, e) );
+    m_eventMgr->DispatchNow( EntityEvent(entity_events::create_entity, e) );
 
     return e;
   }
@@ -37,7 +37,7 @@ namespace tloc { namespace core { namespace component_system {
     m_entities[a_entity->m_index] = NULL;
     m_removedEntities.push_back(a_entity->m_index);
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_event::destroy_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent(entity_events::destroy_entity, a_entity) );
 
     delete a_entity;
   }
@@ -56,7 +56,7 @@ namespace tloc { namespace core { namespace component_system {
     a_entity->m_allComponents[a_component->GetType()].push_back(a_component);
 
     m_eventMgr->DispatchNow(
-      EntityComponentEvent(entity_event::insert_component, a_entity,
+      EntityComponentEvent(entity_events::insert_component, a_entity,
                            a_component->GetType()) );
   }
 

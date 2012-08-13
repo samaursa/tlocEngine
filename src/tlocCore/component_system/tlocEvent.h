@@ -35,8 +35,9 @@ namespace tloc { namespace core { namespace component_system {
     event_type m_type;
   };
 
-  struct EventListener
+  class EventListener
   {
+  public:
     virtual ~EventListener() {}
     virtual bool OnEvent(const EventBase& a_event) = 0;
   };

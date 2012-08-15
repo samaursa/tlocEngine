@@ -6,6 +6,7 @@
 #define private public
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
@@ -91,6 +92,8 @@ namespace TestingEventManager
     EventTracker tracker;
 
     Entity       dummyEnt(0);
+    components::value_type comp_type = components::transform;
+    Component    dummyComp(comp_type);
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);
@@ -111,6 +114,31 @@ namespace TestingEventManager
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 0);
+
+    currentEvent = entity_events::insert_component;
+    mgr.AddListener(&tracker, entity_events::insert_component);
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+
+    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
+    CHECK(tracker.GetEventCount(currentEvent) == 1);
+
+    mgr.RemoveListener(&tracker, entity_events::insert_component);
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+
+    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
+    CHECK(tracker.GetEventCount(currentEvent) == 1); // no change
+
+    currentEvent = entity_events::create_entity;
+    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+
+    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
+    CHECK(tracker.GetEventCount(currentEvent) == 2);
+
+    mgr.RemoveAllListeners();
+
+    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
+    CHECK(tracker.GetEventCount(currentEvent) == 2);
 
   }
 };

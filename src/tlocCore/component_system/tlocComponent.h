@@ -8,12 +8,14 @@ namespace tloc { namespace core { namespace component_system {
   class Component
   {
   public:
-    Component(components::type a_type) : m_type(a_type) {}
+    typedef components::value_type    component_type;
 
-    components::type  GetType() { return m_type; }
+    Component(component_type a_type) : m_type(a_type) {}
+
+    component_type GetType() { return m_type; }
 
   protected:
-    components::type m_type;
+    component_type m_type;
   };
 
 };};};

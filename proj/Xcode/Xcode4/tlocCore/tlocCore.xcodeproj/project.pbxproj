@@ -1,0 +1,916 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		978481A6157DA6A20007F526 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 978481A5157DA6A20007F526 /* Foundation.framework */; };
+		97C87BE815DE3F9600FE0A6C /* malloc.c.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BE715DE3F9600FE0A6C /* malloc.c.h */; };
+		97C87BEB15DE3FA000FE0A6C /* nedmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 97C87BE915DE3FA000FE0A6C /* nedmalloc.c */; };
+		97C87BEC15DE3FA000FE0A6C /* nedmalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BEA15DE3FA000FE0A6C /* nedmalloc.h */; };
+		97C87BF415DE400000FE0A6C /* tlocPair.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BF115DE400000FE0A6C /* tlocPair.h */; };
+		97C87BF515DE400000FE0A6C /* tlocAlgorithms.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BF215DE400000FE0A6C /* tlocAlgorithms.h */; };
+		97C87C0715DE417C00FE0A6C /* tlocPolicyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C0515DE417C00FE0A6C /* tlocPolicyBase.h */; };
+		97C87C0815DE417C00FE0A6C /* tlocNonCopyable.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C0615DE417C00FE0A6C /* tlocNonCopyable.h */; };
+		97C87C0A15DE418F00FE0A6C /* tlocPlatformImplBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C0915DE418F00FE0A6C /* tlocPlatformImplBase.h */; };
+		97C87C0D15DE432600FE0A6C /* tlocTemplateDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C0B15DE432600FE0A6C /* tlocTemplateDispatch.h */; };
+		97C87C0E15DE432600FE0A6C /* tlocTemplateDispatchDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C0C15DE432600FE0A6C /* tlocTemplateDispatchDefaults.h */; };
+		97C87C1B15DE438600FE0A6C /* tlocComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C1215DE438600FE0A6C /* tlocComponent.h */; };
+		97C87C1C15DE438600FE0A6C /* tlocComponentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C1315DE438600FE0A6C /* tlocComponentType.h */; };
+		97C87C1D15DE438600FE0A6C /* tlocComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C1415DE438600FE0A6C /* tlocComponent.cpp */; };
+		97C87C1E15DE438600FE0A6C /* tlocComponentMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C1615DE438600FE0A6C /* tlocComponentMapper.cpp */; };
+		97C87C1F15DE438600FE0A6C /* tlocComponentMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C1715DE438600FE0A6C /* tlocComponentMapper.h */; };
+		97C87C2015DE438600FE0A6C /* tlocComponentType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C1915DE438600FE0A6C /* tlocComponentType.cpp */; };
+		97C87C2715DE43CE00FE0A6C /* tlocEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C2115DE43CE00FE0A6C /* tlocEntity.cpp */; };
+		97C87C2815DE43CE00FE0A6C /* tlocEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C2215DE43CE00FE0A6C /* tlocEntity.h */; };
+		97C87C2915DE43CE00FE0A6C /* tlocEntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C2315DE43CE00FE0A6C /* tlocEntityManager.cpp */; };
+		97C87C2A15DE43CE00FE0A6C /* tlocEntityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C2415DE43CE00FE0A6C /* tlocEntityManager.h */; };
+		97C87C3115DE451200FE0A6C /* tlocEntityEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C2B15DE451200FE0A6C /* tlocEntityEvent.h */; };
+		97C87C3215DE451200FE0A6C /* tlocEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C2C15DE451200FE0A6C /* tlocEvent.h */; };
+		97C87C3315DE451200FE0A6C /* tlocEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C2D15DE451200FE0A6C /* tlocEventManager.h */; };
+		97C87C3415DE451200FE0A6C /* tlocEventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C2E15DE451200FE0A6C /* tlocEventManager.cpp */; };
+		97C87C3515DE451200FE0A6C /* tlocEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C2F15DE451200FE0A6C /* tlocEvent.cpp */; };
+		97C87C3F15DE459C00FE0A6C /* tlocContainers.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C3C15DE459C00FE0A6C /* tlocContainers.h */; };
+		97C87C4615DE45F300FE0A6C /* tlocArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C4015DE45F300FE0A6C /* tlocArray.h */; };
+		97C87C4715DE45F300FE0A6C /* tlocArrayFixed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C4215DE45F300FE0A6C /* tlocArrayFixed.cpp */; };
+		97C87C4815DE45F300FE0A6C /* tlocArrayFixed.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C4315DE45F300FE0A6C /* tlocArrayFixed.h */; };
+		97C87C4915DE45F300FE0A6C /* tlocArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C4515DE45F300FE0A6C /* tlocArray.cpp */; };
+		97C87C4D15DE460E00FE0A6C /* tlocHashmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C4A15DE460E00FE0A6C /* tlocHashmap.h */; };
+		97C87C4E15DE460E00FE0A6C /* tlocHashmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C4C15DE460E00FE0A6C /* tlocHashmap.cpp */; };
+		97C87C5215DE461F00FE0A6C /* tlocHashtable.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C4F15DE461F00FE0A6C /* tlocHashtable.h */; };
+		97C87C5315DE461F00FE0A6C /* tlocHashtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C5115DE461F00FE0A6C /* tlocHashtable.cpp */; };
+		97C87C5A15DE462E00FE0A6C /* tlocList.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C5415DE462E00FE0A6C /* tlocList.h */; };
+		97C87C5B15DE462E00FE0A6C /* tlocForwardList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C5615DE462E00FE0A6C /* tlocForwardList.cpp */; };
+		97C87C5C15DE462E00FE0A6C /* tlocForwardList.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C5715DE462E00FE0A6C /* tlocForwardList.h */; };
+		97C87C5D15DE462E00FE0A6C /* tlocList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C5915DE462E00FE0A6C /* tlocList.cpp */; };
+		97C87C6115DE464800FE0A6C /* tlocQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C5E15DE464800FE0A6C /* tlocQueue.cpp */; };
+		97C87C6215DE464800FE0A6C /* tlocQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C5F15DE464800FE0A6C /* tlocQueue.h */; };
+		97C87C6615DE465100FE0A6C /* tlocStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C6315DE465100FE0A6C /* tlocStack.cpp */; };
+		97C87C6715DE465100FE0A6C /* tlocStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C6415DE465100FE0A6C /* tlocStack.h */; };
+		97C87C6E15DE46B200FE0A6C /* tlocTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C6815DE46B200FE0A6C /* tlocTable.h */; };
+		97C87C6F15DE46B200FE0A6C /* tlocTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C6A15DE46B200FE0A6C /* tlocTable.cpp */; };
+		97C87C7015DE46B200FE0A6C /* tlocTuple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C6B15DE46B200FE0A6C /* tlocTuple.cpp */; };
+		97C87C7115DE46B200FE0A6C /* tlocTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C6C15DE46B200FE0A6C /* tlocTuple.h */; };
+		97C87C7415DE46CD00FE0A6C /* tlocIterator.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C7315DE46CD00FE0A6C /* tlocIterator.h */; };
+		97C87C7915DE473200FE0A6C /* tlocMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C7515DE473200FE0A6C /* tlocMemory.cpp */; };
+		97C87C7A15DE473200FE0A6C /* tlocMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C7615DE473200FE0A6C /* tlocMemory.h */; };
+		97C87C7B15DE473200FE0A6C /* tlocLinkMe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C7815DE473200FE0A6C /* tlocLinkMe.cpp */; };
+		97C87C8115DE474C00FE0A6C /* tlocAllocators.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C7E15DE474C00FE0A6C /* tlocAllocators.h */; };
+		97C87C8215DE474C00FE0A6C /* tlocAllocators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C8015DE474C00FE0A6C /* tlocAllocators.cpp */; };
+		97C87C8615DE475B00FE0A6C /* tlocMemoryPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C8415DE475B00FE0A6C /* tlocMemoryPool.h */; };
+		97C87C8715DE475B00FE0A6C /* tlocMemoryPoolIndexWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C8515DE475B00FE0A6C /* tlocMemoryPoolIndexWrapper.h */; };
+		97C87C8B15DE477100FE0A6C /* tlocPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C8815DE477100FE0A6C /* tlocPlatform.h */; };
+		97C87C8C15DE477100FE0A6C /* tlocPlatformDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C8915DE477100FE0A6C /* tlocPlatformDefines.h */; };
+		97C87C8D15DE477100FE0A6C /* tlocPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C8A15DE477100FE0A6C /* tlocPlatform.cpp */; };
+		97C87C9015DE479800FE0A6C /* tlocRandom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C8E15DE479800FE0A6C /* tlocRandom.cpp */; };
+		97C87C9115DE479800FE0A6C /* tlocRandom.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C8F15DE479800FE0A6C /* tlocRandom.h */; };
+		97C87C9615DE47A800FE0A6C /* tlocRngWell512.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C9415DE47A800FE0A6C /* tlocRngWell512.cpp */; };
+		97C87C9715DE47A800FE0A6C /* tlocRngWell512.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C9515DE47A800FE0A6C /* tlocRngWell512.h */; };
+		97C87C9C15DE47EB00FE0A6C /* tlocString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87C9815DE47EB00FE0A6C /* tlocString.cpp */; };
+		97C87C9D15DE47EB00FE0A6C /* tlocString.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C9A15DE47EB00FE0A6C /* tlocString.h */; };
+		97C87CA115DE481600FE0A6C /* tlocTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87C9F15DE481600FE0A6C /* tlocTime.h */; };
+		97C87CA215DE481600FE0A6C /* tlocTime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CA015DE481600FE0A6C /* tlocTime.cpp */; };
+		97C87CA815DE483900FE0A6C /* tlocTypeTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CA315DE483900FE0A6C /* tlocTypeTraits.h */; };
+		97C87CA915DE483900FE0A6C /* tlocTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CA415DE483900FE0A6C /* tlocTypes.h */; };
+		97C87CAA15DE483900FE0A6C /* tlocBasicTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CA515DE483900FE0A6C /* tlocBasicTypes.h */; };
+		97C87CAB15DE483900FE0A6C /* tlocTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CA615DE483900FE0A6C /* tlocTypes.cpp */; };
+		97C87CB315DE486700FE0A6C /* tlocTemplateParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CAE15DE486700FE0A6C /* tlocTemplateParams.h */; };
+		97C87CB415DE486700FE0A6C /* tlocTemplateTypesN.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CAF15DE486700FE0A6C /* tlocTemplateTypesN.h */; };
+		97C87CB515DE486700FE0A6C /* tlocTemplateTypesNxM.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CB015DE486700FE0A6C /* tlocTemplateTypesNxM.h */; };
+		97C87CB615DE486700FE0A6C /* tlocTemplateTypesNxM.helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CB115DE486700FE0A6C /* tlocTemplateTypesNxM.helper.h */; };
+		97C87CB715DE486700FE0A6C /* tlocTemplateTypesNxN.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CB215DE486700FE0A6C /* tlocTemplateTypesNxN.h */; };
+		97C87CBB15DE487100FE0A6C /* tlocConditionalType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CB815DE487100FE0A6C /* tlocConditionalType.cpp */; };
+		97C87CBC15DE487100FE0A6C /* tlocConditionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CB915DE487100FE0A6C /* tlocConditionalType.h */; };
+		97C87CC115DE488D00FE0A6C /* tlocPointerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CBD15DE488D00FE0A6C /* tlocPointerUtils.h */; };
+		97C87CC215DE488D00FE0A6C /* tlocUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CBE15DE488D00FE0A6C /* tlocUtils.h */; };
+		97C87CC315DE488D00FE0A6C /* tlocContainerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CBF15DE488D00FE0A6C /* tlocContainerUtils.h */; };
+		97C87CC415DE488D00FE0A6C /* tlocTemplateUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC015DE488D00FE0A6C /* tlocTemplateUtils.h */; };
+		97C87CC915DE48B500FE0A6C /* tlocBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC515DE48B400FE0A6C /* tlocBase.h */; };
+		97C87CCA15DE48B500FE0A6C /* tlocFunctional.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC615DE48B400FE0A6C /* tlocFunctional.h */; };
+		97C87CCB15DE48B500FE0A6C /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CC715DE48B400FE0A6C /* tlocDepVersionCheck.cpp */; };
+		97C87CCC15DE48B500FE0A6C /* tlocNoOpt.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC815DE48B500FE0A6C /* tlocNoOpt.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		978481A2157DA6A20007F526 /* tlocCore_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocCore_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		978481A5157DA6A20007F526 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97C87BE715DE3F9600FE0A6C /* malloc.c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = malloc.c.h; path = ../../../../src/3rdParty/nedmalloc/malloc.c.h; sourceTree = "<group>"; };
+		97C87BE915DE3FA000FE0A6C /* nedmalloc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = nedmalloc.c; path = ../../../../src/3rdParty/nedmalloc/nedmalloc.c; sourceTree = "<group>"; };
+		97C87BEA15DE3FA000FE0A6C /* nedmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nedmalloc.h; path = ../../../../src/3rdParty/nedmalloc/nedmalloc.h; sourceTree = "<group>"; };
+		97C87BF015DE400000FE0A6C /* tlocPair.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocPair.inl; path = ../../../../src/tlocCore/tlocPair.inl; sourceTree = "<group>"; };
+		97C87BF115DE400000FE0A6C /* tlocPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPair.h; path = ../../../../src/tlocCore/tlocPair.h; sourceTree = "<group>"; };
+		97C87BF215DE400000FE0A6C /* tlocAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAlgorithms.h; path = ../../../../src/tlocCore/tlocAlgorithms.h; sourceTree = "<group>"; };
+		97C87BF315DE400000FE0A6C /* tlocAlgorithms.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAlgorithms.inl; path = ../../../../src/tlocCore/tlocAlgorithms.inl; sourceTree = "<group>"; };
+		97C87C0515DE417C00FE0A6C /* tlocPolicyBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPolicyBase.h; path = ../../../../src/tlocCore/base_classes/tlocPolicyBase.h; sourceTree = "<group>"; };
+		97C87C0615DE417C00FE0A6C /* tlocNonCopyable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocNonCopyable.h; path = ../../../../src/tlocCore/base_classes/tlocNonCopyable.h; sourceTree = "<group>"; };
+		97C87C0915DE418F00FE0A6C /* tlocPlatformImplBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPlatformImplBase.h; path = ../../../../src/tlocCore/base_classes/tlocPlatformImplBase.h; sourceTree = "<group>"; };
+		97C87C0B15DE432600FE0A6C /* tlocTemplateDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateDispatch.h; path = ../../../../src/tlocCore/base_classes/tlocTemplateDispatch.h; sourceTree = "<group>"; };
+		97C87C0C15DE432600FE0A6C /* tlocTemplateDispatchDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateDispatchDefaults.h; path = ../../../../src/tlocCore/base_classes/tlocTemplateDispatchDefaults.h; sourceTree = "<group>"; };
+		97C87C1215DE438600FE0A6C /* tlocComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocComponent.h; path = ../../../../src/tlocCore/component_system/tlocComponent.h; sourceTree = "<group>"; };
+		97C87C1315DE438600FE0A6C /* tlocComponentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocComponentType.h; path = ../../../../src/tlocCore/component_system/tlocComponentType.h; sourceTree = "<group>"; };
+		97C87C1415DE438600FE0A6C /* tlocComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocComponent.cpp; path = ../../../../src/tlocCore/component_system/tlocComponent.cpp; sourceTree = "<group>"; };
+		97C87C1515DE438600FE0A6C /* tlocComponent.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocComponent.inl; path = ../../../../src/tlocCore/component_system/tlocComponent.inl; sourceTree = "<group>"; };
+		97C87C1615DE438600FE0A6C /* tlocComponentMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocComponentMapper.cpp; path = ../../../../src/tlocCore/component_system/tlocComponentMapper.cpp; sourceTree = "<group>"; };
+		97C87C1715DE438600FE0A6C /* tlocComponentMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocComponentMapper.h; path = ../../../../src/tlocCore/component_system/tlocComponentMapper.h; sourceTree = "<group>"; };
+		97C87C1815DE438600FE0A6C /* tlocComponentMapper.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocComponentMapper.inl; path = ../../../../src/tlocCore/component_system/tlocComponentMapper.inl; sourceTree = "<group>"; };
+		97C87C1915DE438600FE0A6C /* tlocComponentType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocComponentType.cpp; path = ../../../../src/tlocCore/component_system/tlocComponentType.cpp; sourceTree = "<group>"; };
+		97C87C1A15DE438600FE0A6C /* tlocComponentType.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocComponentType.inl; path = ../../../../src/tlocCore/component_system/tlocComponentType.inl; sourceTree = "<group>"; };
+		97C87C2115DE43CE00FE0A6C /* tlocEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocEntity.cpp; path = ../../../../src/tlocCore/component_system/tlocEntity.cpp; sourceTree = "<group>"; };
+		97C87C2215DE43CE00FE0A6C /* tlocEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocEntity.h; path = ../../../../src/tlocCore/component_system/tlocEntity.h; sourceTree = "<group>"; };
+		97C87C2315DE43CE00FE0A6C /* tlocEntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocEntityManager.cpp; path = ../../../../src/tlocCore/component_system/tlocEntityManager.cpp; sourceTree = "<group>"; };
+		97C87C2415DE43CE00FE0A6C /* tlocEntityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocEntityManager.h; path = ../../../../src/tlocCore/component_system/tlocEntityManager.h; sourceTree = "<group>"; };
+		97C87C2515DE43CE00FE0A6C /* tlocEntity.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocEntity.inl; path = ../../../../src/tlocCore/component_system/tlocEntity.inl; sourceTree = "<group>"; };
+		97C87C2615DE43CE00FE0A6C /* tlocEntityManager.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocEntityManager.inl; path = ../../../../src/tlocCore/component_system/tlocEntityManager.inl; sourceTree = "<group>"; };
+		97C87C2B15DE451200FE0A6C /* tlocEntityEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocEntityEvent.h; path = ../../../../src/tlocCore/component_system/tlocEntityEvent.h; sourceTree = "<group>"; };
+		97C87C2C15DE451200FE0A6C /* tlocEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocEvent.h; path = ../../../../src/tlocCore/component_system/tlocEvent.h; sourceTree = "<group>"; };
+		97C87C2D15DE451200FE0A6C /* tlocEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocEventManager.h; path = ../../../../src/tlocCore/component_system/tlocEventManager.h; sourceTree = "<group>"; };
+		97C87C2E15DE451200FE0A6C /* tlocEventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocEventManager.cpp; path = ../../../../src/tlocCore/component_system/tlocEventManager.cpp; sourceTree = "<group>"; };
+		97C87C2F15DE451200FE0A6C /* tlocEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocEvent.cpp; path = ../../../../src/tlocCore/component_system/tlocEvent.cpp; sourceTree = "<group>"; };
+		97C87C3015DE451200FE0A6C /* tlocEvent.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocEvent.inl; path = ../../../../src/tlocCore/component_system/tlocEvent.inl; sourceTree = "<group>"; };
+		97C87C3C15DE459C00FE0A6C /* tlocContainers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocContainers.h; path = ../../../../src/tlocCore/containers/tlocContainers.h; sourceTree = "<group>"; };
+		97C87C3D15DE459C00FE0A6C /* tlocContainers.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocContainers.inl; path = ../../../../src/tlocCore/containers/tlocContainers.inl; sourceTree = "<group>"; };
+		97C87C3E15DE459C00FE0A6C /* tlocContainersReadme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocContainersReadme.txt; path = ../../../../src/tlocCore/containers/tlocContainersReadme.txt; sourceTree = "<group>"; };
+		97C87C4015DE45F300FE0A6C /* tlocArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocArray.h; path = ../../../../src/tlocCore/containers/tlocArray.h; sourceTree = "<group>"; };
+		97C87C4115DE45F300FE0A6C /* tlocArray.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocArray.inl; path = ../../../../src/tlocCore/containers/tlocArray.inl; sourceTree = "<group>"; };
+		97C87C4215DE45F300FE0A6C /* tlocArrayFixed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocArrayFixed.cpp; path = ../../../../src/tlocCore/containers/tlocArrayFixed.cpp; sourceTree = "<group>"; };
+		97C87C4315DE45F300FE0A6C /* tlocArrayFixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocArrayFixed.h; path = ../../../../src/tlocCore/containers/tlocArrayFixed.h; sourceTree = "<group>"; };
+		97C87C4415DE45F300FE0A6C /* tlocArrayFixed.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocArrayFixed.inl; path = ../../../../src/tlocCore/containers/tlocArrayFixed.inl; sourceTree = "<group>"; };
+		97C87C4515DE45F300FE0A6C /* tlocArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocArray.cpp; path = ../../../../src/tlocCore/containers/tlocArray.cpp; sourceTree = "<group>"; };
+		97C87C4A15DE460E00FE0A6C /* tlocHashmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocHashmap.h; path = ../../../../src/tlocCore/containers/tlocHashmap.h; sourceTree = "<group>"; };
+		97C87C4B15DE460E00FE0A6C /* tlocHashmap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocHashmap.inl; path = ../../../../src/tlocCore/containers/tlocHashmap.inl; sourceTree = "<group>"; };
+		97C87C4C15DE460E00FE0A6C /* tlocHashmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocHashmap.cpp; path = ../../../../src/tlocCore/containers/tlocHashmap.cpp; sourceTree = "<group>"; };
+		97C87C4F15DE461F00FE0A6C /* tlocHashtable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocHashtable.h; path = ../../../../src/tlocCore/containers/tlocHashtable.h; sourceTree = "<group>"; };
+		97C87C5015DE461F00FE0A6C /* tlocHashtable.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocHashtable.inl; path = ../../../../src/tlocCore/containers/tlocHashtable.inl; sourceTree = "<group>"; };
+		97C87C5115DE461F00FE0A6C /* tlocHashtable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocHashtable.cpp; path = ../../../../src/tlocCore/containers/tlocHashtable.cpp; sourceTree = "<group>"; };
+		97C87C5415DE462E00FE0A6C /* tlocList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocList.h; path = ../../../../src/tlocCore/containers/tlocList.h; sourceTree = "<group>"; };
+		97C87C5515DE462E00FE0A6C /* tlocList.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocList.inl; path = ../../../../src/tlocCore/containers/tlocList.inl; sourceTree = "<group>"; };
+		97C87C5615DE462E00FE0A6C /* tlocForwardList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocForwardList.cpp; path = ../../../../src/tlocCore/containers/tlocForwardList.cpp; sourceTree = "<group>"; };
+		97C87C5715DE462E00FE0A6C /* tlocForwardList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocForwardList.h; path = ../../../../src/tlocCore/containers/tlocForwardList.h; sourceTree = "<group>"; };
+		97C87C5815DE462E00FE0A6C /* tlocForwardList.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocForwardList.inl; path = ../../../../src/tlocCore/containers/tlocForwardList.inl; sourceTree = "<group>"; };
+		97C87C5915DE462E00FE0A6C /* tlocList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocList.cpp; path = ../../../../src/tlocCore/containers/tlocList.cpp; sourceTree = "<group>"; };
+		97C87C5E15DE464800FE0A6C /* tlocQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocQueue.cpp; path = ../../../../src/tlocCore/containers/tlocQueue.cpp; sourceTree = "<group>"; };
+		97C87C5F15DE464800FE0A6C /* tlocQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocQueue.h; path = ../../../../src/tlocCore/containers/tlocQueue.h; sourceTree = "<group>"; };
+		97C87C6015DE464800FE0A6C /* tlocQueue.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocQueue.inl; path = ../../../../src/tlocCore/containers/tlocQueue.inl; sourceTree = "<group>"; };
+		97C87C6315DE465100FE0A6C /* tlocStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocStack.cpp; path = ../../../../src/tlocCore/containers/tlocStack.cpp; sourceTree = "<group>"; };
+		97C87C6415DE465100FE0A6C /* tlocStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocStack.h; path = ../../../../src/tlocCore/containers/tlocStack.h; sourceTree = "<group>"; };
+		97C87C6515DE465100FE0A6C /* tlocStack.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocStack.inl; path = ../../../../src/tlocCore/containers/tlocStack.inl; sourceTree = "<group>"; };
+		97C87C6815DE46B200FE0A6C /* tlocTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTable.h; path = ../../../../src/tlocCore/data_structures/tlocTable.h; sourceTree = "<group>"; };
+		97C87C6915DE46B200FE0A6C /* tlocTable.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocTable.inl; path = ../../../../src/tlocCore/data_structures/tlocTable.inl; sourceTree = "<group>"; };
+		97C87C6A15DE46B200FE0A6C /* tlocTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTable.cpp; path = ../../../../src/tlocCore/data_structures/tlocTable.cpp; sourceTree = "<group>"; };
+		97C87C6B15DE46B200FE0A6C /* tlocTuple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTuple.cpp; path = ../../../../src/tlocCore/data_structures/tlocTuple.cpp; sourceTree = "<group>"; };
+		97C87C6C15DE46B200FE0A6C /* tlocTuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTuple.h; path = ../../../../src/tlocCore/data_structures/tlocTuple.h; sourceTree = "<group>"; };
+		97C87C6D15DE46B200FE0A6C /* tlocTuple.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocTuple.inl; path = ../../../../src/tlocCore/data_structures/tlocTuple.inl; sourceTree = "<group>"; };
+		97C87C7215DE46CD00FE0A6C /* tlocIterator.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocIterator.inl; path = ../../../../src/tlocCore/iterators/tlocIterator.inl; sourceTree = "<group>"; };
+		97C87C7315DE46CD00FE0A6C /* tlocIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocIterator.h; path = ../../../../src/tlocCore/iterators/tlocIterator.h; sourceTree = "<group>"; };
+		97C87C7515DE473200FE0A6C /* tlocMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMemory.cpp; path = ../../../../src/tlocCore/memory/tlocMemory.cpp; sourceTree = "<group>"; };
+		97C87C7615DE473200FE0A6C /* tlocMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMemory.h; path = ../../../../src/tlocCore/memory/tlocMemory.h; sourceTree = "<group>"; };
+		97C87C7715DE473200FE0A6C /* tlocMemory.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMemory.inl; path = ../../../../src/tlocCore/memory/tlocMemory.inl; sourceTree = "<group>"; };
+		97C87C7815DE473200FE0A6C /* tlocLinkMe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocLinkMe.cpp; path = ../../../../src/tlocCore/memory/tlocLinkMe.cpp; sourceTree = "<group>"; };
+		97C87C7E15DE474C00FE0A6C /* tlocAllocators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAllocators.h; path = ../../../../src/tlocCore/memory/tlocAllocators.h; sourceTree = "<group>"; };
+		97C87C7F15DE474C00FE0A6C /* tlocAllocators.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAllocators.inl; path = ../../../../src/tlocCore/memory/tlocAllocators.inl; sourceTree = "<group>"; };
+		97C87C8015DE474C00FE0A6C /* tlocAllocators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAllocators.cpp; path = ../../../../src/tlocCore/memory/tlocAllocators.cpp; sourceTree = "<group>"; };
+		97C87C8315DE475B00FE0A6C /* tlocMemoryPool.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMemoryPool.inl; path = ../../../../src/tlocCore/memory/tlocMemoryPool.inl; sourceTree = "<group>"; };
+		97C87C8415DE475B00FE0A6C /* tlocMemoryPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMemoryPool.h; path = ../../../../src/tlocCore/memory/tlocMemoryPool.h; sourceTree = "<group>"; };
+		97C87C8515DE475B00FE0A6C /* tlocMemoryPoolIndexWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMemoryPoolIndexWrapper.h; path = ../../../../src/tlocCore/memory/tlocMemoryPoolIndexWrapper.h; sourceTree = "<group>"; };
+		97C87C8815DE477100FE0A6C /* tlocPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPlatform.h; path = ../../../../src/tlocCore/platform/tlocPlatform.h; sourceTree = "<group>"; };
+		97C87C8915DE477100FE0A6C /* tlocPlatformDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPlatformDefines.h; path = ../../../../src/tlocCore/platform/tlocPlatformDefines.h; sourceTree = "<group>"; };
+		97C87C8A15DE477100FE0A6C /* tlocPlatform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPlatform.cpp; path = ../../../../src/tlocCore/platform/tlocPlatform.cpp; sourceTree = "<group>"; };
+		97C87C8E15DE479800FE0A6C /* tlocRandom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRandom.cpp; path = ../../../../src/tlocCore/RNGs/tlocRandom.cpp; sourceTree = "<group>"; };
+		97C87C8F15DE479800FE0A6C /* tlocRandom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocRandom.h; path = ../../../../src/tlocCore/RNGs/tlocRandom.h; sourceTree = "<group>"; };
+		97C87C9315DE47A800FE0A6C /* tlocRngWell512.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocRngWell512.inl; path = ../../../../src/tlocCore/RNGs/tlocRngWell512.inl; sourceTree = "<group>"; };
+		97C87C9415DE47A800FE0A6C /* tlocRngWell512.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRngWell512.cpp; path = ../../../../src/tlocCore/RNGs/tlocRngWell512.cpp; sourceTree = "<group>"; };
+		97C87C9515DE47A800FE0A6C /* tlocRngWell512.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocRngWell512.h; path = ../../../../src/tlocCore/RNGs/tlocRngWell512.h; sourceTree = "<group>"; };
+		97C87C9815DE47EB00FE0A6C /* tlocString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocString.cpp; path = ../../../../src/tlocCore/string/tlocString.cpp; sourceTree = "<group>"; };
+		97C87C9915DE47EB00FE0A6C /* tlocString.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocString.inl; path = ../../../../src/tlocCore/string/tlocString.inl; sourceTree = "<group>"; };
+		97C87C9A15DE47EB00FE0A6C /* tlocString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocString.h; path = ../../../../src/tlocCore/string/tlocString.h; sourceTree = "<group>"; };
+		97C87C9B15DE47EB00FE0A6C /* tlocStringReadme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocStringReadme.txt; path = ../../../../src/tlocCore/string/tlocStringReadme.txt; sourceTree = "<group>"; };
+		97C87C9E15DE481600FE0A6C /* tlocTime.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocTime.inl; path = ../../../../src/tlocCore/time/tlocTime.inl; sourceTree = "<group>"; };
+		97C87C9F15DE481600FE0A6C /* tlocTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTime.h; path = ../../../../src/tlocCore/time/tlocTime.h; sourceTree = "<group>"; };
+		97C87CA015DE481600FE0A6C /* tlocTime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTime.cpp; path = ../../../../src/tlocCore/time/tlocTime.cpp; sourceTree = "<group>"; };
+		97C87CA315DE483900FE0A6C /* tlocTypeTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTypeTraits.h; path = ../../../../src/tlocCore/types/tlocTypeTraits.h; sourceTree = "<group>"; };
+		97C87CA415DE483900FE0A6C /* tlocTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTypes.h; path = ../../../../src/tlocCore/types/tlocTypes.h; sourceTree = "<group>"; };
+		97C87CA515DE483900FE0A6C /* tlocBasicTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocBasicTypes.h; path = ../../../../src/tlocCore/types/tlocBasicTypes.h; sourceTree = "<group>"; };
+		97C87CA615DE483900FE0A6C /* tlocTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTypes.cpp; path = ../../../../src/tlocCore/types/tlocTypes.cpp; sourceTree = "<group>"; };
+		97C87CA715DE483900FE0A6C /* tlocTypes.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocTypes.inl; path = ../../../../src/tlocCore/types/tlocTypes.inl; sourceTree = "<group>"; };
+		97C87CAE15DE486700FE0A6C /* tlocTemplateParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateParams.h; path = ../../../../src/tlocCore/types/tlocTemplateParams.h; sourceTree = "<group>"; };
+		97C87CAF15DE486700FE0A6C /* tlocTemplateTypesN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateTypesN.h; path = ../../../../src/tlocCore/types/tlocTemplateTypesN.h; sourceTree = "<group>"; };
+		97C87CB015DE486700FE0A6C /* tlocTemplateTypesNxM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateTypesNxM.h; path = ../../../../src/tlocCore/types/tlocTemplateTypesNxM.h; sourceTree = "<group>"; };
+		97C87CB115DE486700FE0A6C /* tlocTemplateTypesNxM.helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateTypesNxM.helper.h; path = ../../../../src/tlocCore/types/tlocTemplateTypesNxM.helper.h; sourceTree = "<group>"; };
+		97C87CB215DE486700FE0A6C /* tlocTemplateTypesNxN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateTypesNxN.h; path = ../../../../src/tlocCore/types/tlocTemplateTypesNxN.h; sourceTree = "<group>"; };
+		97C87CB815DE487100FE0A6C /* tlocConditionalType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocConditionalType.cpp; path = ../../../../src/tlocCore/types/tlocConditionalType.cpp; sourceTree = "<group>"; };
+		97C87CB915DE487100FE0A6C /* tlocConditionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocConditionalType.h; path = ../../../../src/tlocCore/types/tlocConditionalType.h; sourceTree = "<group>"; };
+		97C87CBA15DE487100FE0A6C /* tlocConditionalType.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocConditionalType.inl; path = ../../../../src/tlocCore/types/tlocConditionalType.inl; sourceTree = "<group>"; };
+		97C87CBD15DE488D00FE0A6C /* tlocPointerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPointerUtils.h; path = ../../../../src/tlocCore/utilities/tlocPointerUtils.h; sourceTree = "<group>"; };
+		97C87CBE15DE488D00FE0A6C /* tlocUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocUtils.h; path = ../../../../src/tlocCore/utilities/tlocUtils.h; sourceTree = "<group>"; };
+		97C87CBF15DE488D00FE0A6C /* tlocContainerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocContainerUtils.h; path = ../../../../src/tlocCore/utilities/tlocContainerUtils.h; sourceTree = "<group>"; };
+		97C87CC015DE488D00FE0A6C /* tlocTemplateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTemplateUtils.h; path = ../../../../src/tlocCore/utilities/tlocTemplateUtils.h; sourceTree = "<group>"; };
+		97C87CC515DE48B400FE0A6C /* tlocBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocBase.h; path = ../../../../src/tlocCore/tlocBase.h; sourceTree = "<group>"; };
+		97C87CC615DE48B400FE0A6C /* tlocFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFunctional.h; path = ../../../../src/tlocCore/tlocFunctional.h; sourceTree = "<group>"; };
+		97C87CC715DE48B400FE0A6C /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocCore/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
+		97C87CC815DE48B500FE0A6C /* tlocNoOpt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocNoOpt.h; path = ../../../../src/tlocCore/tlocNoOpt.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9784819F157DA6A20007F526 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				978481A6157DA6A20007F526 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9740461E15DE5E12007B5342 /* Memory */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BE515DE3EFD00FE0A6C /* DlMalloc */,
+				97C87BE615DE3F2E00FE0A6C /* Nedmalloc */,
+			);
+			name = Memory;
+			sourceTree = "<group>";
+		};
+		97848197157DA6A20007F526 = {
+			isa = PBXGroup;
+			children = (
+				97C87BDF15DE3DA200FE0A6C /* tlocCore */,
+				978481A4157DA6A20007F526 /* Frameworks */,
+				978481A3157DA6A20007F526 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		978481A3157DA6A20007F526 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				978481A2157DA6A20007F526 /* tlocCore_Debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		978481A4157DA6A20007F526 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				978481A5157DA6A20007F526 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97C87BDF15DE3DA200FE0A6C /* tlocCore */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BE415DE3EEA00FE0A6C /* 3rd_party */,
+				97C87BED15DE3FCD00FE0A6C /* _misc */,
+				97C87BF615DE405C00FE0A6C /* base_classes */,
+				97C87BF715DE407300FE0A6C /* component_system */,
+				97C87BF815DE408300FE0A6C /* containers */,
+				97C87BF915DE408E00FE0A6C /* data_structures */,
+				97C87BFA15DE409F00FE0A6C /* iterators */,
+				97C87BFB15DE40A600FE0A6C /* memory */,
+				97C87BFD15DE40BB00FE0A6C /* platform */,
+				97C87BFE15DE40C100FE0A6C /* RNGs */,
+				97C87BFF15DE40C900FE0A6C /* string */,
+				97C87C0015DE40CF00FE0A6C /* time */,
+				97C87C0115DE40DD00FE0A6C /* types */,
+				97C87C0215DE40ED00FE0A6C /* utilities */,
+				97C87CC515DE48B400FE0A6C /* tlocBase.h */,
+				97C87CC615DE48B400FE0A6C /* tlocFunctional.h */,
+				97C87CC715DE48B400FE0A6C /* tlocDepVersionCheck.cpp */,
+				97C87CC815DE48B500FE0A6C /* tlocNoOpt.h */,
+			);
+			name = tlocCore;
+			sourceTree = "<group>";
+		};
+		97C87BE415DE3EEA00FE0A6C /* 3rd_party */ = {
+			isa = PBXGroup;
+			children = (
+				9740461E15DE5E12007B5342 /* Memory */,
+			);
+			name = 3rd_party;
+			sourceTree = "<group>";
+		};
+		97C87BE515DE3EFD00FE0A6C /* DlMalloc */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BE715DE3F9600FE0A6C /* malloc.c.h */,
+			);
+			name = DlMalloc;
+			sourceTree = "<group>";
+		};
+		97C87BE615DE3F2E00FE0A6C /* Nedmalloc */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BE915DE3FA000FE0A6C /* nedmalloc.c */,
+				97C87BEA15DE3FA000FE0A6C /* nedmalloc.h */,
+			);
+			name = Nedmalloc;
+			sourceTree = "<group>";
+		};
+		97C87BED15DE3FCD00FE0A6C /* _misc */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BEF15DE3FE300FE0A6C /* algorithms */,
+				97C87BEE15DE3FDE00FE0A6C /* pair */,
+			);
+			name = _misc;
+			sourceTree = "<group>";
+		};
+		97C87BEE15DE3FDE00FE0A6C /* pair */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BF015DE400000FE0A6C /* tlocPair.inl */,
+				97C87BF115DE400000FE0A6C /* tlocPair.h */,
+			);
+			name = pair;
+			sourceTree = "<group>";
+		};
+		97C87BEF15DE3FE300FE0A6C /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				97C87BF215DE400000FE0A6C /* tlocAlgorithms.h */,
+				97C87BF315DE400000FE0A6C /* tlocAlgorithms.inl */,
+			);
+			name = algorithms;
+			sourceTree = "<group>";
+		};
+		97C87BF615DE405C00FE0A6C /* base_classes */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C0415DE416300FE0A6C /* cross_platform */,
+				97C87C0315DE415B00FE0A6C /* dispatchers */,
+				97C87C0515DE417C00FE0A6C /* tlocPolicyBase.h */,
+				97C87C0615DE417C00FE0A6C /* tlocNonCopyable.h */,
+			);
+			name = base_classes;
+			sourceTree = "<group>";
+		};
+		97C87BF715DE407300FE0A6C /* component_system */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C1115DE435800FE0A6C /* components */,
+				97C87C1015DE435300FE0A6C /* entity */,
+				97C87C0F15DE434C00FE0A6C /* events */,
+			);
+			name = component_system;
+			sourceTree = "<group>";
+		};
+		97C87BF815DE408300FE0A6C /* containers */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C3B15DE458300FE0A6C /* array */,
+				97C87C3A15DE457C00FE0A6C /* hashmap */,
+				97C87C3915DE457600FE0A6C /* hashtable */,
+				97C87C3815DE457100FE0A6C /* list */,
+				97C87C3715DE456B00FE0A6C /* queue */,
+				97C87C3615DE455000FE0A6C /* stack */,
+				97C87C3C15DE459C00FE0A6C /* tlocContainers.h */,
+				97C87C3D15DE459C00FE0A6C /* tlocContainers.inl */,
+				97C87C3E15DE459C00FE0A6C /* tlocContainersReadme.txt */,
+			);
+			name = containers;
+			sourceTree = "<group>";
+		};
+		97C87BF915DE408E00FE0A6C /* data_structures */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C6815DE46B200FE0A6C /* tlocTable.h */,
+				97C87C6915DE46B200FE0A6C /* tlocTable.inl */,
+				97C87C6A15DE46B200FE0A6C /* tlocTable.cpp */,
+				97C87C6C15DE46B200FE0A6C /* tlocTuple.h */,
+				97C87C6D15DE46B200FE0A6C /* tlocTuple.inl */,
+				97C87C6B15DE46B200FE0A6C /* tlocTuple.cpp */,
+			);
+			name = data_structures;
+			sourceTree = "<group>";
+		};
+		97C87BFA15DE409F00FE0A6C /* iterators */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C7315DE46CD00FE0A6C /* tlocIterator.h */,
+				97C87C7215DE46CD00FE0A6C /* tlocIterator.inl */,
+			);
+			name = iterators;
+			sourceTree = "<group>";
+		};
+		97C87BFB15DE40A600FE0A6C /* memory */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C7D15DE473E00FE0A6C /* allocators */,
+				97C87C7C15DE473600FE0A6C /* memory_pool */,
+				97C87C7515DE473200FE0A6C /* tlocMemory.cpp */,
+				97C87C7615DE473200FE0A6C /* tlocMemory.h */,
+				97C87C7715DE473200FE0A6C /* tlocMemory.inl */,
+				97C87C7815DE473200FE0A6C /* tlocLinkMe.cpp */,
+			);
+			name = memory;
+			sourceTree = "<group>";
+		};
+		97C87BFD15DE40BB00FE0A6C /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C8915DE477100FE0A6C /* tlocPlatformDefines.h */,
+				97C87C8815DE477100FE0A6C /* tlocPlatform.h */,
+				97C87C8A15DE477100FE0A6C /* tlocPlatform.cpp */,
+			);
+			name = platform;
+			sourceTree = "<group>";
+		};
+		97C87BFE15DE40C100FE0A6C /* RNGs */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C9215DE479C00FE0A6C /* generators */,
+				97C87C8E15DE479800FE0A6C /* tlocRandom.cpp */,
+				97C87C8F15DE479800FE0A6C /* tlocRandom.h */,
+			);
+			name = RNGs;
+			sourceTree = "<group>";
+		};
+		97C87BFF15DE40C900FE0A6C /* string */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C9815DE47EB00FE0A6C /* tlocString.cpp */,
+				97C87C9915DE47EB00FE0A6C /* tlocString.inl */,
+				97C87C9A15DE47EB00FE0A6C /* tlocString.h */,
+				97C87C9B15DE47EB00FE0A6C /* tlocStringReadme.txt */,
+			);
+			name = string;
+			sourceTree = "<group>";
+		};
+		97C87C0015DE40CF00FE0A6C /* time */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C9E15DE481600FE0A6C /* tlocTime.inl */,
+				97C87C9F15DE481600FE0A6C /* tlocTime.h */,
+				97C87CA015DE481600FE0A6C /* tlocTime.cpp */,
+			);
+			name = time;
+			sourceTree = "<group>";
+		};
+		97C87C0115DE40DD00FE0A6C /* types */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CAD15DE484800FE0A6C /* conditional_type */,
+				97C87CAC15DE483F00FE0A6C /* template types */,
+				97C87CA315DE483900FE0A6C /* tlocTypeTraits.h */,
+				97C87CA415DE483900FE0A6C /* tlocTypes.h */,
+				97C87CA515DE483900FE0A6C /* tlocBasicTypes.h */,
+				97C87CA615DE483900FE0A6C /* tlocTypes.cpp */,
+				97C87CA715DE483900FE0A6C /* tlocTypes.inl */,
+			);
+			name = types;
+			sourceTree = "<group>";
+		};
+		97C87C0215DE40ED00FE0A6C /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CBD15DE488D00FE0A6C /* tlocPointerUtils.h */,
+				97C87CBE15DE488D00FE0A6C /* tlocUtils.h */,
+				97C87CBF15DE488D00FE0A6C /* tlocContainerUtils.h */,
+				97C87CC015DE488D00FE0A6C /* tlocTemplateUtils.h */,
+			);
+			name = utilities;
+			sourceTree = "<group>";
+		};
+		97C87C0315DE415B00FE0A6C /* dispatchers */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C0B15DE432600FE0A6C /* tlocTemplateDispatch.h */,
+				97C87C0C15DE432600FE0A6C /* tlocTemplateDispatchDefaults.h */,
+			);
+			name = dispatchers;
+			sourceTree = "<group>";
+		};
+		97C87C0415DE416300FE0A6C /* cross_platform */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C0915DE418F00FE0A6C /* tlocPlatformImplBase.h */,
+			);
+			name = cross_platform;
+			sourceTree = "<group>";
+		};
+		97C87C0F15DE434C00FE0A6C /* events */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C2B15DE451200FE0A6C /* tlocEntityEvent.h */,
+				97C87C2C15DE451200FE0A6C /* tlocEvent.h */,
+				97C87C2D15DE451200FE0A6C /* tlocEventManager.h */,
+				97C87C2E15DE451200FE0A6C /* tlocEventManager.cpp */,
+				97C87C2F15DE451200FE0A6C /* tlocEvent.cpp */,
+				97C87C3015DE451200FE0A6C /* tlocEvent.inl */,
+			);
+			name = events;
+			sourceTree = "<group>";
+		};
+		97C87C1015DE435300FE0A6C /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C2115DE43CE00FE0A6C /* tlocEntity.cpp */,
+				97C87C2215DE43CE00FE0A6C /* tlocEntity.h */,
+				97C87C2315DE43CE00FE0A6C /* tlocEntityManager.cpp */,
+				97C87C2415DE43CE00FE0A6C /* tlocEntityManager.h */,
+				97C87C2515DE43CE00FE0A6C /* tlocEntity.inl */,
+				97C87C2615DE43CE00FE0A6C /* tlocEntityManager.inl */,
+			);
+			name = entity;
+			sourceTree = "<group>";
+		};
+		97C87C1115DE435800FE0A6C /* components */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C1215DE438600FE0A6C /* tlocComponent.h */,
+				97C87C1315DE438600FE0A6C /* tlocComponentType.h */,
+				97C87C1415DE438600FE0A6C /* tlocComponent.cpp */,
+				97C87C1515DE438600FE0A6C /* tlocComponent.inl */,
+				97C87C1615DE438600FE0A6C /* tlocComponentMapper.cpp */,
+				97C87C1715DE438600FE0A6C /* tlocComponentMapper.h */,
+				97C87C1815DE438600FE0A6C /* tlocComponentMapper.inl */,
+				97C87C1915DE438600FE0A6C /* tlocComponentType.cpp */,
+				97C87C1A15DE438600FE0A6C /* tlocComponentType.inl */,
+			);
+			name = components;
+			sourceTree = "<group>";
+		};
+		97C87C3615DE455000FE0A6C /* stack */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C6415DE465100FE0A6C /* tlocStack.h */,
+				97C87C6515DE465100FE0A6C /* tlocStack.inl */,
+				97C87C6315DE465100FE0A6C /* tlocStack.cpp */,
+			);
+			name = stack;
+			sourceTree = "<group>";
+		};
+		97C87C3715DE456B00FE0A6C /* queue */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C5F15DE464800FE0A6C /* tlocQueue.h */,
+				97C87C6015DE464800FE0A6C /* tlocQueue.inl */,
+				97C87C5E15DE464800FE0A6C /* tlocQueue.cpp */,
+			);
+			name = queue;
+			sourceTree = "<group>";
+		};
+		97C87C3815DE457100FE0A6C /* list */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C5615DE462E00FE0A6C /* tlocForwardList.cpp */,
+				97C87C5715DE462E00FE0A6C /* tlocForwardList.h */,
+				97C87C5815DE462E00FE0A6C /* tlocForwardList.inl */,
+				97C87C5415DE462E00FE0A6C /* tlocList.h */,
+				97C87C5515DE462E00FE0A6C /* tlocList.inl */,
+				97C87C5915DE462E00FE0A6C /* tlocList.cpp */,
+			);
+			name = list;
+			sourceTree = "<group>";
+		};
+		97C87C3915DE457600FE0A6C /* hashtable */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C4F15DE461F00FE0A6C /* tlocHashtable.h */,
+				97C87C5015DE461F00FE0A6C /* tlocHashtable.inl */,
+				97C87C5115DE461F00FE0A6C /* tlocHashtable.cpp */,
+			);
+			name = hashtable;
+			sourceTree = "<group>";
+		};
+		97C87C3A15DE457C00FE0A6C /* hashmap */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C4A15DE460E00FE0A6C /* tlocHashmap.h */,
+				97C87C4B15DE460E00FE0A6C /* tlocHashmap.inl */,
+				97C87C4C15DE460E00FE0A6C /* tlocHashmap.cpp */,
+			);
+			name = hashmap;
+			sourceTree = "<group>";
+		};
+		97C87C3B15DE458300FE0A6C /* array */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C4015DE45F300FE0A6C /* tlocArray.h */,
+				97C87C4115DE45F300FE0A6C /* tlocArray.inl */,
+				97C87C4515DE45F300FE0A6C /* tlocArray.cpp */,
+				97C87C4215DE45F300FE0A6C /* tlocArrayFixed.cpp */,
+				97C87C4315DE45F300FE0A6C /* tlocArrayFixed.h */,
+				97C87C4415DE45F300FE0A6C /* tlocArrayFixed.inl */,
+			);
+			name = array;
+			sourceTree = "<group>";
+		};
+		97C87C7C15DE473600FE0A6C /* memory_pool */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C8315DE475B00FE0A6C /* tlocMemoryPool.inl */,
+				97C87C8415DE475B00FE0A6C /* tlocMemoryPool.h */,
+				97C87C8515DE475B00FE0A6C /* tlocMemoryPoolIndexWrapper.h */,
+			);
+			name = memory_pool;
+			sourceTree = "<group>";
+		};
+		97C87C7D15DE473E00FE0A6C /* allocators */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C7E15DE474C00FE0A6C /* tlocAllocators.h */,
+				97C87C7F15DE474C00FE0A6C /* tlocAllocators.inl */,
+				97C87C8015DE474C00FE0A6C /* tlocAllocators.cpp */,
+			);
+			name = allocators;
+			sourceTree = "<group>";
+		};
+		97C87C9215DE479C00FE0A6C /* generators */ = {
+			isa = PBXGroup;
+			children = (
+				97C87C9315DE47A800FE0A6C /* tlocRngWell512.inl */,
+				97C87C9415DE47A800FE0A6C /* tlocRngWell512.cpp */,
+				97C87C9515DE47A800FE0A6C /* tlocRngWell512.h */,
+			);
+			name = generators;
+			sourceTree = "<group>";
+		};
+		97C87CAC15DE483F00FE0A6C /* template types */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CAE15DE486700FE0A6C /* tlocTemplateParams.h */,
+				97C87CAF15DE486700FE0A6C /* tlocTemplateTypesN.h */,
+				97C87CB015DE486700FE0A6C /* tlocTemplateTypesNxM.h */,
+				97C87CB115DE486700FE0A6C /* tlocTemplateTypesNxM.helper.h */,
+				97C87CB215DE486700FE0A6C /* tlocTemplateTypesNxN.h */,
+			);
+			name = "template types";
+			sourceTree = "<group>";
+		};
+		97C87CAD15DE484800FE0A6C /* conditional_type */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CB815DE487100FE0A6C /* tlocConditionalType.cpp */,
+				97C87CB915DE487100FE0A6C /* tlocConditionalType.h */,
+				97C87CBA15DE487100FE0A6C /* tlocConditionalType.inl */,
+			);
+			name = conditional_type;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		978481A0157DA6A20007F526 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87BE815DE3F9600FE0A6C /* malloc.c.h in Headers */,
+				97C87BEC15DE3FA000FE0A6C /* nedmalloc.h in Headers */,
+				97C87BF415DE400000FE0A6C /* tlocPair.h in Headers */,
+				97C87BF515DE400000FE0A6C /* tlocAlgorithms.h in Headers */,
+				97C87C0715DE417C00FE0A6C /* tlocPolicyBase.h in Headers */,
+				97C87C0815DE417C00FE0A6C /* tlocNonCopyable.h in Headers */,
+				97C87C0A15DE418F00FE0A6C /* tlocPlatformImplBase.h in Headers */,
+				97C87C0D15DE432600FE0A6C /* tlocTemplateDispatch.h in Headers */,
+				97C87C0E15DE432600FE0A6C /* tlocTemplateDispatchDefaults.h in Headers */,
+				97C87C1B15DE438600FE0A6C /* tlocComponent.h in Headers */,
+				97C87C1C15DE438600FE0A6C /* tlocComponentType.h in Headers */,
+				97C87C1F15DE438600FE0A6C /* tlocComponentMapper.h in Headers */,
+				97C87C2815DE43CE00FE0A6C /* tlocEntity.h in Headers */,
+				97C87C2A15DE43CE00FE0A6C /* tlocEntityManager.h in Headers */,
+				97C87C3115DE451200FE0A6C /* tlocEntityEvent.h in Headers */,
+				97C87C3215DE451200FE0A6C /* tlocEvent.h in Headers */,
+				97C87C3315DE451200FE0A6C /* tlocEventManager.h in Headers */,
+				97C87C3F15DE459C00FE0A6C /* tlocContainers.h in Headers */,
+				97C87C4615DE45F300FE0A6C /* tlocArray.h in Headers */,
+				97C87C4815DE45F300FE0A6C /* tlocArrayFixed.h in Headers */,
+				97C87C4D15DE460E00FE0A6C /* tlocHashmap.h in Headers */,
+				97C87C5215DE461F00FE0A6C /* tlocHashtable.h in Headers */,
+				97C87C5A15DE462E00FE0A6C /* tlocList.h in Headers */,
+				97C87C5C15DE462E00FE0A6C /* tlocForwardList.h in Headers */,
+				97C87C6215DE464800FE0A6C /* tlocQueue.h in Headers */,
+				97C87C6715DE465100FE0A6C /* tlocStack.h in Headers */,
+				97C87C6E15DE46B200FE0A6C /* tlocTable.h in Headers */,
+				97C87C7115DE46B200FE0A6C /* tlocTuple.h in Headers */,
+				97C87C7415DE46CD00FE0A6C /* tlocIterator.h in Headers */,
+				97C87C7A15DE473200FE0A6C /* tlocMemory.h in Headers */,
+				97C87C8115DE474C00FE0A6C /* tlocAllocators.h in Headers */,
+				97C87C8615DE475B00FE0A6C /* tlocMemoryPool.h in Headers */,
+				97C87C8715DE475B00FE0A6C /* tlocMemoryPoolIndexWrapper.h in Headers */,
+				97C87C8B15DE477100FE0A6C /* tlocPlatform.h in Headers */,
+				97C87C8C15DE477100FE0A6C /* tlocPlatformDefines.h in Headers */,
+				97C87C9115DE479800FE0A6C /* tlocRandom.h in Headers */,
+				97C87C9715DE47A800FE0A6C /* tlocRngWell512.h in Headers */,
+				97C87C9D15DE47EB00FE0A6C /* tlocString.h in Headers */,
+				97C87CA115DE481600FE0A6C /* tlocTime.h in Headers */,
+				97C87CA815DE483900FE0A6C /* tlocTypeTraits.h in Headers */,
+				97C87CA915DE483900FE0A6C /* tlocTypes.h in Headers */,
+				97C87CAA15DE483900FE0A6C /* tlocBasicTypes.h in Headers */,
+				97C87CB315DE486700FE0A6C /* tlocTemplateParams.h in Headers */,
+				97C87CB415DE486700FE0A6C /* tlocTemplateTypesN.h in Headers */,
+				97C87CB515DE486700FE0A6C /* tlocTemplateTypesNxM.h in Headers */,
+				97C87CB615DE486700FE0A6C /* tlocTemplateTypesNxM.helper.h in Headers */,
+				97C87CB715DE486700FE0A6C /* tlocTemplateTypesNxN.h in Headers */,
+				97C87CBC15DE487100FE0A6C /* tlocConditionalType.h in Headers */,
+				97C87CC115DE488D00FE0A6C /* tlocPointerUtils.h in Headers */,
+				97C87CC215DE488D00FE0A6C /* tlocUtils.h in Headers */,
+				97C87CC315DE488D00FE0A6C /* tlocContainerUtils.h in Headers */,
+				97C87CC415DE488D00FE0A6C /* tlocTemplateUtils.h in Headers */,
+				97C87CC915DE48B500FE0A6C /* tlocBase.h in Headers */,
+				97C87CCA15DE48B500FE0A6C /* tlocFunctional.h in Headers */,
+				97C87CCC15DE48B500FE0A6C /* tlocNoOpt.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		978481A1157DA6A20007F526 /* tlocCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 978481AF157DA6A20007F526 /* Build configuration list for PBXNativeTarget "tlocCore" */;
+			buildPhases = (
+				9784819E157DA6A20007F526 /* Sources */,
+				9784819F157DA6A20007F526 /* Frameworks */,
+				978481A0157DA6A20007F526 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocCore;
+			productName = tlocCore;
+			productReference = 978481A2157DA6A20007F526 /* tlocCore_Debug.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97848199157DA6A20007F526 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 9784819C157DA6A20007F526 /* Build configuration list for PBXProject "tlocCore" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97848197157DA6A20007F526;
+			productRefGroup = 978481A3157DA6A20007F526 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				978481A1157DA6A20007F526 /* tlocCore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9784819E157DA6A20007F526 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87BEB15DE3FA000FE0A6C /* nedmalloc.c in Sources */,
+				97C87C1D15DE438600FE0A6C /* tlocComponent.cpp in Sources */,
+				97C87C1E15DE438600FE0A6C /* tlocComponentMapper.cpp in Sources */,
+				97C87C2015DE438600FE0A6C /* tlocComponentType.cpp in Sources */,
+				97C87C2715DE43CE00FE0A6C /* tlocEntity.cpp in Sources */,
+				97C87C2915DE43CE00FE0A6C /* tlocEntityManager.cpp in Sources */,
+				97C87C3415DE451200FE0A6C /* tlocEventManager.cpp in Sources */,
+				97C87C3515DE451200FE0A6C /* tlocEvent.cpp in Sources */,
+				97C87C4715DE45F300FE0A6C /* tlocArrayFixed.cpp in Sources */,
+				97C87C4915DE45F300FE0A6C /* tlocArray.cpp in Sources */,
+				97C87C4E15DE460E00FE0A6C /* tlocHashmap.cpp in Sources */,
+				97C87C5315DE461F00FE0A6C /* tlocHashtable.cpp in Sources */,
+				97C87C5B15DE462E00FE0A6C /* tlocForwardList.cpp in Sources */,
+				97C87C5D15DE462E00FE0A6C /* tlocList.cpp in Sources */,
+				97C87C6115DE464800FE0A6C /* tlocQueue.cpp in Sources */,
+				97C87C6615DE465100FE0A6C /* tlocStack.cpp in Sources */,
+				97C87C6F15DE46B200FE0A6C /* tlocTable.cpp in Sources */,
+				97C87C7015DE46B200FE0A6C /* tlocTuple.cpp in Sources */,
+				97C87C7915DE473200FE0A6C /* tlocMemory.cpp in Sources */,
+				97C87C7B15DE473200FE0A6C /* tlocLinkMe.cpp in Sources */,
+				97C87C8215DE474C00FE0A6C /* tlocAllocators.cpp in Sources */,
+				97C87C8D15DE477100FE0A6C /* tlocPlatform.cpp in Sources */,
+				97C87C9015DE479800FE0A6C /* tlocRandom.cpp in Sources */,
+				97C87C9615DE47A800FE0A6C /* tlocRngWell512.cpp in Sources */,
+				97C87C9C15DE47EB00FE0A6C /* tlocString.cpp in Sources */,
+				97C87CA215DE481600FE0A6C /* tlocTime.cpp in Sources */,
+				97C87CAB15DE483900FE0A6C /* tlocTypes.cpp in Sources */,
+				97C87CBB15DE487100FE0A6C /* tlocConditionalType.cpp in Sources */,
+				97C87CCB15DE48B500FE0A6C /* tlocDepVersionCheck.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		978481AD157DA6A20007F526 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_FAST_OBJC_DISPATCH = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				OTHER_LDFLAGS = "";
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_PATH)/src/3rdParty/ $(TLOC_DEP_PATH)/src/";
+			};
+			name = Debug;
+		};
+		978481AE157DA6A20007F526 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_FAST_OBJC_DISPATCH = NO;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_RELEASE;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				OTHER_LDFLAGS = "";
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_PATH)/src/3rdParty/ $(TLOC_DEP_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		978481B0157DA6A20007F526 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Debug;
+		};
+		978481B1157DA6A20007F526 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9784819C157DA6A20007F526 /* Build configuration list for PBXProject "tlocCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				978481AD157DA6A20007F526 /* Debug */,
+				978481AE157DA6A20007F526 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		978481AF157DA6A20007F526 /* Build configuration list for PBXNativeTarget "tlocCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				978481B0157DA6A20007F526 /* Debug */,
+				978481B1157DA6A20007F526 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97848199157DA6A20007F526 /* Project object */;
+}

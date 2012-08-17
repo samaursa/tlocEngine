@@ -4,6 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace tloc { namespace core {
 
@@ -17,6 +18,7 @@ namespace tloc { namespace core {
   public:
 
     CallbackBase(const char* a_typename) : m_typename(a_typename) {}
+    virtual ~CallbackBase() {}
 
     const char* GetType()
     {

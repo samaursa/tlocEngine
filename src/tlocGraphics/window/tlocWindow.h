@@ -224,6 +224,37 @@ namespace tloc { namespace graphics {
     impl_type*                              m_impl;
     core::Queue<WindowEvent>                m_events;
   };
+  
+  //////////////////////////////////////////////////////////////////////////
+  // Global Functions
+  
+  ///-------------------------------------------------------------------------
+  /// Gets the current active window. This is the window that has focus.
+  ///
+  /// @return  The current active Window
+  ///-------------------------------------------------------------------------
+  Window<>* GetCurrentActiveWindow();
+  
+  namespace priv {
+  
+    ///-------------------------------------------------------------------------
+    /// Sets the current active window. This is primarily when a window gains 
+    /// focus.
+    ///
+    /// @param  a_window The Window
+    ///-------------------------------------------------------------------------
+    void SetCurrentActiveWindow(Window<>* a_window);
+    
+    ///-------------------------------------------------------------------------
+    /// Sets the window as non active. This is primarily when a window loses
+    /// focus. If it is the current active window, the current active window is
+    /// set to null.
+    ///
+    /// @param  a_window The Window
+    ///-------------------------------------------------------------------------
+    void SetNonActiveWindow(Window<>* a_window);
+  
+  };
 
 };};
 

@@ -4,18 +4,6 @@
 #include <tlocCore/containers/tlocArray.inl>
 
 //------------------------------------------------------------------------
-// Platform specific
-
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# define WIN32_LEAN_AND_MEAN
-# include <Windows.h>
-
-#else
-# error "Not implemented for other platforms"
-
-#endif
-
-//------------------------------------------------------------------------
 // Local functions/vars
 
 namespace
@@ -131,6 +119,6 @@ namespace tloc { namespace graphics {
     return m_properties;
   }
 
-  template GraphicsMode<>;
+  template class GraphicsMode<>;
 
 };};

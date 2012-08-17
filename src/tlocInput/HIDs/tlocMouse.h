@@ -41,6 +41,10 @@ namespace tloc { namespace input {
   struct MouseCallbackGroupT:
     public core::CallbackGroupTArray<T, MouseCallbacks>::type
   {
+    typedef typename core::CallbackGroupTArray<T, MouseCallbacks>::type 
+      base_type;
+    using base_type::m_observers;
+    
     virtual bool OnButtonPress(const tl_size a_caller,
                                const MouseEvent& a_event)
     {

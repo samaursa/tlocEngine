@@ -38,6 +38,10 @@ namespace tloc { namespace input {
   struct KeyboardCallbackGroupT:
     public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
+    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type  
+      base_type;
+    using base_type::m_observers;
+    
     virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {

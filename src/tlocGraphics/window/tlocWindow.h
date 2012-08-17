@@ -47,6 +47,10 @@ namespace tloc { namespace graphics {
   struct WindowCallbackGroupT :
     public core::CallbackGroupTArray<T, WindowCallbacks>::type
   {
+    typedef typename core::CallbackGroupTArray<T, WindowCallbacks>::type 
+      base_type;
+    using base_type::m_observers;
+    
     virtual void OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -83,7 +87,7 @@ namespace tloc { namespace graphics {
     ~Window();
 
     ///-------------------------------------------------------------------------
-    /// Creates a window with default everything
+    /// Creates an invisible window (lookup False Context)
     ///-------------------------------------------------------------------------
     void Create();
 

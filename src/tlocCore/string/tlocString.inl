@@ -10,6 +10,7 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <string.h>
+#include <ctype.h>
 
 #include <cstdlib>
 
@@ -130,6 +131,7 @@ namespace tloc { namespace core {
   TL_I StringBase<STRING_BASE_PARAMS>::
     StringBase(StringSprintf, const size_type aFormat, ...)
   {
+    TLOC_UNUSED(aFormat);
     //TLOC_STATIC_ASSERT_WIP();
     // TODO: Implement this string ctor
   }
@@ -250,6 +252,7 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I void StringBase<STRING_BASE_PARAMS>::resize(const size_type & newSize)
   {
+    TLOC_UNUSED(newSize);
     //TLOC_STATIC_ASSERT_WIP();
   }
 
@@ -257,6 +260,7 @@ namespace tloc { namespace core {
   TL_I void StringBase<STRING_BASE_PARAMS>::resize(const size_type & newSize, 
                                                    const T charToFill)
   {
+    TLOC_UNUSED_2(newSize, charToFill);
     //TLOC_STATIC_ASSERT_WIP();
   }
 
@@ -375,6 +379,7 @@ namespace tloc { namespace core {
   TL_I STRING_BASE_TYPE::this_type& 
     StringBase<STRING_BASE_PARAMS>::operator+=( const T& character )
   {
+    TLOC_UNUSED(character);
     return *this;
   }
 

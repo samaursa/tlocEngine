@@ -74,13 +74,13 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_osx)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_mac)
   {
     return platforms[osx];
   }
 
   template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_osx_iphone)
+  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_iphone)
   {
     return platforms[osx_iphone];
   }

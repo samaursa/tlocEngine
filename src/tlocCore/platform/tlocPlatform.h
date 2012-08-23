@@ -1,35 +1,9 @@
 #ifndef TLOC_PLATFORM_H
 #define TLOC_PLATFORM_H
 
+#include <tlocCore/platform/tlocPlatformDefines.h>
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
-
-#ifdef __APPLE__
-# include "TargetConditionals.h"
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-// Macros
-
-#if defined(_WIN64)
-# define TLOC_WIN64
-#elif defined(WIN32) || defined(_WIN32)
-# define TLOC_WIN32
-#elif defined(TARGET_OS_IPHONE)
-# define TLOC_OS_IPHONE
-#elif defined(TARGET_OS_MAC)
-# define TLOC_OS_MAC
-#elif defined(__linux__)
-# define TLOC_OS_LINUX
-#else
-# error "Unsupported Platform"
-#endif
-
-// Convenience Macro
-
-#if defined (TLOC_WIN32) || defined (TLOC_WIN64)
-# define TLOC_OS_WIN
-#endif
 
 
 namespace tloc { namespace core {
@@ -39,8 +13,8 @@ namespace tloc { namespace core {
   struct Platform_win64 : public Platform_win {};
   struct Platform_xbox : public Platform_win32 {};
 
-  struct Platform_osx {};
-  struct Platform_osx_iphone : public Platform_osx {};
+  struct Platform_mac {};
+  struct Platform_iphone : public Platform_mac {};
 
   struct Platform_linux {};
 
@@ -51,9 +25,9 @@ namespace tloc { namespace core {
 #elif defined(TLOC_WIN64)
   template <typename T_Platform = Platform_win64>
 #elif defined(TLOC_OS_MAC)
-  template <typename T_Platform = Platform_osx>
+  template <typename T_Platform = Platform_mac>
 #elif defined(TLOC_OS_IPHONE)
-  template <typename T_Platform = Platform_osx_iphone>
+  template <typename T_Platform = Platform_iphone>
 #elif defined(TLOC_OS_LINUX)
   template <typename T_Platform = Platform_linux>
 #endif
@@ -80,8 +54,8 @@ namespace tloc { namespace core {
     static const char*  DoGetPlatformName(Platform_win32);
     static const char*  DoGetPlatformName(Platform_win64);
     static const char*  DoGetPlatformName(Platform_xbox);
-    static const char*  DoGetPlatformName(Platform_osx);
-    static const char*  DoGetPlatformName(Platform_osx_iphone);
+    static const char*  DoGetPlatformName(Platform_mac);
+    static const char*  DoGetPlatformName(Platform_iphone);
     static const char*  DoGetPlatformName(Platform_linux);
     static const char*  DoGetPlatformName(Platform_ps3);
 

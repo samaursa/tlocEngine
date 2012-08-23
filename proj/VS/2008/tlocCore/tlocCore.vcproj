@@ -1275,6 +1275,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\platform\tlocPlatform.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\platform\tlocPlatformDefines.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="iterators"

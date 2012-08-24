@@ -10,6 +10,15 @@ namespace tloc { namespace core { namespace component_system {
     m_componentsAndEntities.resize(components::count);
   }
 
+  EntityManager::~EntityManager()
+  {
+    for (entity_list::iterator itr = m_entities.begin(),
+         itrEnd = m_entities.end(); itr != itrEnd; ++itr)
+    {
+      if (*itr) { DestroyEntity(*itr); }
+    }
+  }
+
   Entity* EntityManager::CreateEntity()
   {
     Entity* e = new Entity(m_nextId++);
@@ -50,6 +59,9 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::InsertComponent(Entity *a_entity, Component *a_component)
   {
+    TLOC_ASSERT(core::find(m_entities, a_entity) != m_entities.end(),
+                "Entity not found!");
+
     entity_list& entities = m_componentsAndEntities[a_component->GetType()];
 
     entities.push_back(a_entity);
@@ -60,7 +72,7 @@ namespace tloc { namespace core { namespace component_system {
                            a_component->GetType()) );
   }
 
-  void EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
+  bool EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
   {
     component_list& entityComps = a_entity->m_allComponents[a_component->GetType()];
     entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
@@ -68,13 +80,16 @@ namespace tloc { namespace core { namespace component_system {
     {// Remove it from the entity
       component_list::iterator itr = core::find(entityComps, a_component);
       if (itr != entityComps.end()) { entityComps.erase(itr); }
+      else { return false; }
     }
 
     {// Remove it from the component list
       entity_list::iterator itr = core::find(entityList, a_entity);
-      if (itr != entityList.end())
-      { entityList.erase(itr); }
+      TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
+      if (itr != entityList.end()) { entityList.erase(itr); }
     }
+
+    return true;
   }
 
   EntityManager::component_list*

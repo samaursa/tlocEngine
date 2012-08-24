@@ -43,7 +43,11 @@ namespace tloc { namespace core {
                       T_Function aFunc);
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator find(T_Container a_container, const T& a_value);
+  typename T_Container::iterator find(T_Container& a_container, const T& a_value);
+
+  template <typename T_Container, typename T>
+  typename T_Container::const_iterator find(const T_Container& a_container,
+                                            const T& a_value);
 
   template <typename T_InputIterator, typename T>
   T_InputIterator find(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,

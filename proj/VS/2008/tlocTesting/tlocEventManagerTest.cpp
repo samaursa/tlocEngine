@@ -20,7 +20,7 @@ namespace TestingEventManager
   class EventTracker : public EventListener
   {
   public:
-    typedef Pair<events::value_type, tl_int> pair_type;
+    typedef Pair<events::value_type, tl_int>  pair_type;
     typedef tl_array<pair_type>::type         container_type;
 
     EventTracker()

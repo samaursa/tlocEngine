@@ -1096,6 +1096,10 @@
 					RelativePath=".\tlocTupleTest.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\tlocVariadicTest.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="base_classes"

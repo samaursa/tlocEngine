@@ -1043,6 +1043,14 @@
 				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="types"

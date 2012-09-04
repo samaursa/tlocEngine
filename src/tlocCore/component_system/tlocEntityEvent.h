@@ -1,16 +1,17 @@
 #ifndef TLOC_ENTITY_EVENT_H
 #define TLOC_ENTITY_EVENT_H
 
+#include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocEvent.h>
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace entity_event
+  namespace entity_events
   {
     enum Type
     {
-      create_entity   = 1,
+      create_entity   = events::entity_events_begin,
       destroy_entity,
       insert_component,
       remove_component,

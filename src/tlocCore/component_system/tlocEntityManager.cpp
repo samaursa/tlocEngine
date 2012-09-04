@@ -1,11 +1,22 @@
 #include "tlocEntityManager.h"
 
+#include <tlocCore/component_system/tlocEntity.inl>
+
 namespace tloc { namespace core { namespace component_system {
 
   EntityManager::EntityManager(EventManager *a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
     m_componentsAndEntities.resize(components::count);
+  }
+
+  EntityManager::~EntityManager()
+  {
+    for (entity_list::iterator itr = m_entities.begin(),
+         itrEnd = m_entities.end(); itr != itrEnd; ++itr)
+    {
+      if (*itr) { DestroyEntity(*itr); }
+    }
   }
 
   Entity* EntityManager::CreateEntity()
@@ -25,7 +36,7 @@ namespace tloc { namespace core { namespace component_system {
       m_entities.push_back(e);
     }
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_event::create_entity, e) );
+    m_eventMgr->DispatchNow( EntityEvent(entity_events::create_entity, e) );
 
     return e;
   }
@@ -35,7 +46,7 @@ namespace tloc { namespace core { namespace component_system {
     m_entities[a_entity->m_index] = NULL;
     m_removedEntities.push_back(a_entity->m_index);
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_event::destroy_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent(entity_events::destroy_entity, a_entity) );
 
     delete a_entity;
   }
@@ -48,30 +59,37 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::InsertComponent(Entity *a_entity, Component *a_component)
   {
+    TLOC_ASSERT(core::find(m_entities, a_entity) != m_entities.end(),
+                "Entity not found!");
+
     entity_list& entities = m_componentsAndEntities[a_component->GetType()];
 
     entities.push_back(a_entity);
     a_entity->m_allComponents[a_component->GetType()].push_back(a_component);
 
     m_eventMgr->DispatchNow(
-      EntityComponentEvent(entity_event::insert_component, a_entity,
+      EntityComponentEvent(entity_events::insert_component, a_entity,
                            a_component->GetType()) );
   }
 
-  void EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
+  bool EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
   {
     component_list& entityComps = a_entity->m_allComponents[a_component->GetType()];
+    entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
 
     {// Remove it from the entity
       component_list::iterator itr = core::find(entityComps, a_component);
       if (itr != entityComps.end()) { entityComps.erase(itr); }
+      else { return false; }
     }
 
     {// Remove it from the component list
-      component_entity_list::iterator itr = core::find(m_componentsAndEntities, a_entity);
-      if (itr != m_componentsAndEntities.end())
-      { m_componentsAndEntities.erase(itr); }
+      entity_list::iterator itr = core::find(entityList, a_entity);
+      TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
+      if (itr != entityList.end()) { entityList.erase(itr); }
     }
+
+    return true;
   }
 
   EntityManager::component_list*

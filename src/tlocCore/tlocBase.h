@@ -242,7 +242,9 @@
 //------------------------------------------------------------------------
 // Define force inline for the VC++ compiler
 #if defined (_MSC_VER)
-# define TLOC_FORCE_INLINE __forceinline
+# pragma warning(disable : 4714)
+// NOTE: __forceinline increases build times substantially
+# define TLOC_FORCE_INLINE inline /*__forceinline*/
 //------------------------------------------------------------------------
 // Define force inline for the GCC and clang compilers. Since the
 // attribute always_inline, inlines regardless of optimization level

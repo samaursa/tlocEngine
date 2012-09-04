@@ -87,4 +87,24 @@ namespace TestingTuple
     CHECK( (p == q) == true);
     CHECK( (p != q) == false);
   }
+
+  TEST_CASE("Core/DataStructures/Tuple/ConvertFrom",
+    "Conversion from different sized tuples")
+  {
+    core::Tuple<tl_int, 3> a3(0);
+    core::Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
+    core::Tuple<tl_int, 5> a5(2);
+
+    a4_same.ConvertFrom(a3, core::p_tuple::overflow_same() );
+    CHECK_TUP(a4_same, 0, 0, 0, 10);
+    a4_one.ConvertFrom(a3, core::p_tuple::overflow_one() );
+    CHECK_TUP(a4_one, 0, 0, 0, 1);
+    a4_one.ConvertFrom(a3, core::p_tuple::overflow_zero() );
+    CHECK_TUP(a4_one, 0, 0, 0, 0);
+
+    a4_same.ConvertFrom(a5);
+    CHECK_TUP(a4_same, 2, 2, 2, 2);
+    a4_same.ConvertFrom(a3); // default overflow policy is overflow_one
+    CHECK_TUP(a4_same, 0, 0, 0, 1);
+  }
 };

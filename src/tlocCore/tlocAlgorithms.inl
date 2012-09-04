@@ -53,7 +53,14 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator find(T_Container a_container, const T& a_value)
+  typename T_Container::iterator find(T_Container& a_container, const T& a_value)
+  {
+    return find(a_container.begin(), a_container.end(), a_value);
+  }
+
+  template <typename T_Container, typename T>
+  typename T_Container::const_iterator find(const T_Container& a_container, 
+                                            const T& a_value)
   {
     return find(a_container.begin(), a_container.end(), a_value);
   }

@@ -35,7 +35,7 @@ namespace tloc { namespace core {
 
   struct hash_to_range_mod
   {
-    DECL_BINARY_FUNC(u32, u32, u32);
+    DECL_BINARY_FUNC(tl_uint, tl_uint, tl_uint);
 
     result_type operator() (first_argument_type a_hash,
                             second_argument_type a_tableSize) const;
@@ -197,9 +197,9 @@ namespace tloc { namespace core {
   {
     typedef tl_size size_type;
 
-    f32         m_maxLoadFactor;
-    f32         m_growthFactor;
-    mutable u32 m_nextResize;
+    f32             m_maxLoadFactor;
+    f32             m_growthFactor;
+    mutable tl_uint m_nextResize;
 
     prime_rehash_policy(f32 a_maxLoadFactor = 1.0f);
 
@@ -226,7 +226,7 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // typdefs
 
-    typedef u32                                  hash_code_type;
+    typedef tl_uint                              hash_code_type;
 
     typedef typename T_Policy::bucket_type       bucket_type;
     typedef typename T_Policy::element_type      element_type;
@@ -246,7 +246,7 @@ namespace tloc { namespace core {
     hash_code_type get_hash_code(const key_type& a_key) const
     { return (hash_code_type)hasher_base_type::operator()(a_key); }
 
-    size_type bucket_index(const u32& a_key, size_type a_bucketCount) const
+    size_type bucket_index(const tl_uint& a_key, size_type a_bucketCount) const
     {
       typedef typename range_hasher_base_type::first_argument_type  arg1;
       typedef typename range_hasher_base_type::second_argument_type arg2;
@@ -255,8 +255,8 @@ namespace tloc { namespace core {
         ( (arg1)a_key, (arg2)a_bucketCount);
     }
 
-    size_type bucket_index(const u32&, hash_code_type a_hash,
-      u32 a_bucketCount) const
+    size_type bucket_index(const tl_uint&, hash_code_type a_hash,
+                           tl_uint a_bucketCount) const
     {
       typedef typename hash_to_range_type::first_argument_type  arg1;
       typedef typename hash_to_range_type::second_argument_type arg2;
@@ -613,8 +613,8 @@ namespace tloc { namespace core {
     /// iterator or const_iterator to the found object or end() if not
     /// found.
     ///-------------------------------------------------------------------------
-    TL_FI iterator        find_by_hash(u32 a_hashCode);
-    TL_FI const_iterator  find_by_hash(u32 a_hashCode) const;
+    TL_FI iterator        find_by_hash(tl_uint a_hashCode);
+    TL_FI const_iterator  find_by_hash(tl_uint a_hashCode) const;
 
     TL_FI size_type       count(const key_type& a_key) const;
 

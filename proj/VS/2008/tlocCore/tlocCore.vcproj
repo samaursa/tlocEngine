@@ -1043,6 +1043,14 @@
 				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="types"
@@ -1311,6 +1319,22 @@
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocUtils.h"
 				>
 			</File>
+			<Filter
+				Name="counters"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocGroupID.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocObjectCounter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocObjectCtorCounter.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="string"
@@ -1428,6 +1452,26 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="system"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.h"
 					>
 				</File>
 			</Filter>

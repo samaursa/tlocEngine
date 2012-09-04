@@ -1,7 +1,7 @@
 #ifndef TLOC_TYPE_TRAITS_H
 #define TLOC_TYPE_TRAITS_H
 
-#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocBasicTypes.h>
 #include "3rdParty/loki/TypeTraits.h"
 
 namespace tloc

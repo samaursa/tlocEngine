@@ -1319,6 +1319,22 @@
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocUtils.h"
 				>
 			</File>
+			<Filter
+				Name="counters"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocGroupID.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocObjectCounter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\utilities\tlocObjectCtorCounter.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="string"

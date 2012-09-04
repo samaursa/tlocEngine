@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 

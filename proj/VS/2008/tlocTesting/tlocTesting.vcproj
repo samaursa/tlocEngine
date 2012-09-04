@@ -990,6 +990,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tlocGroupIDTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tlocObjectCounterTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tlocPair.cpp"
 				>
 			</File>

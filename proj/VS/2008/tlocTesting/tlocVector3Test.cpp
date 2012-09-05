@@ -3,7 +3,7 @@
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
 #include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector3.inl>
+#include <tlocMath/vector/tlocVector2.h>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
@@ -30,7 +30,7 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::math::Vec3f) == 12);
+    REQUIRE(sizeof(tloc::math::Vec3f) == (sizeof(tl_float) * 3));
 
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f); //-V550
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f); //-V550
@@ -191,6 +191,13 @@ namespace TestingVector3f
 
     c /= 14.0f;
     CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f); //-V550
+
+
+    //////////////////////////////////////////////////////////////////////////
+    // Vec2 to Vec3 conversion
+    math::Vec2f vec2dim(0);
+    c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
+    CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/Length", "Tests the "

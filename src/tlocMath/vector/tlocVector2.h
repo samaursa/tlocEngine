@@ -21,15 +21,15 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Vector2<T>                            this_type;
     typedef Vector<T, 2>                          base_type;
-    
+
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
     typedef typename base_type::const_reference   const_reference;
-    
+
     //------------------------------------------------------------------------
     // using declarations for access to base class
     using base_type::m_values;
-    
+
     //------------------------------------------------------------------------
     // Constructors
     TL_FI Vector2();
@@ -48,9 +48,11 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Typedefs
-  typedef Vector2<f32>    Vec2f;
-  typedef Vector2<f64>    Vec2d;
-  typedef Vector2<f128>   Vec2l;
+  typedef Vector2<f32>    Vec2f32;
+  typedef Vector2<f64>    Vec2f64;
+  typedef Vector2<f128>   Vec2f128;
+
+  typedef Vector2<tl_float> Vec2f;
 
   //------------------------------------------------------------------------
   // Static const definitions

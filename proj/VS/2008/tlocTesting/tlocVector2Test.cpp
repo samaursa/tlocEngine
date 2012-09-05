@@ -7,9 +7,10 @@
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-
 namespace TestingVector2f
 {
+  USING_TLOC;
+
   struct Vector2fFixture
   {
     Vector2fFixture()
@@ -27,7 +28,7 @@ namespace TestingVector2f
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::math::Vec2f) == 8);
+    REQUIRE(sizeof(tloc::math::Vec2f) == (sizeof(tl_float) * 2));
 
     CHECK_VEC2F(a, 1, 2);
     CHECK_VEC2F(b, 5, 6);

@@ -150,6 +150,82 @@ namespace tloc { namespace core {
     }
   }
 
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other)
+  {
+    DoConvertFrom<T_TupleSize, p_tuple::overflow_one>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+                T_Policy)
+  {
+    DoConvertFrom<T_TupleSize, T_Policy>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+                  incoming_bigger)
+  {
+    for (size_type i = 0; i < k_TupleSize; ++i)
+    {
+      m_values[i] = a_other[i];
+    }
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+                  incoming_smaller)
+  {
+    for (size_type i = 0; i < T_TupleSize; ++i)
+    {
+      m_values[i] = a_other[i];
+    }
+
+    DoFillRemaining<T_TupleSize>(T_Policy());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_same)
+  {
+    // Intentionally empty
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_one)
+  {
+    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    {
+      m_values[i] = 1;
+    }
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_zero)
+  {
+    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    {
+      m_values[i] = 0;
+    }
+  }
+
+
   //------------------------------------------------------------------------
   // Operators
 

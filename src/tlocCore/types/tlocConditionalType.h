@@ -2,6 +2,7 @@
 #define TLOC_CONDITIONAL_TYPE_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core {
 
@@ -14,21 +15,24 @@ namespace tloc { namespace core {
   // If you get the value of the <false> type the value returned is
   // g_conditional_type_invalid_value.
   //
+  // If T_DefineFalseType is false, a false type will fail to compile
+  //
   // @note You should NOT test against g_conditional_type_invalid_value to see
   // if your type is valid or not. Your first attempt should be to use compile
   // time type checking. At runtime, you can use the IsValid() function which
   // will return true for a <true> type.
-  template <typename T, bool T_DeclareValue>
+  template <typename T, bool T_DeclareValue, bool T_DefineFalseType = true>
   struct ConditionalType {};
 
   ///-------------------------------------------------------------------------
   /// @brief This type can be conditionally removed based on the boolean value.
   ///-------------------------------------------------------------------------
   template <typename T>
-  struct ConditionalType<T, false>
+  struct ConditionalType<T, false, true>
   {
-    typedef T                                   value_type;
-    typedef ConditionalType<value_type, false>  this_type;
+    typedef T                                         value_type;
+    typedef ConditionalType<value_type, false, true>  this_type;
+    typedef type_false                                declare_value_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);
@@ -91,6 +95,7 @@ namespace tloc { namespace core {
   {
     typedef T                                   value_type;
     typedef ConditionalType<value_type, true>   this_type;
+    typedef type_true                           declare_value_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);

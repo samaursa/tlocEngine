@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 
@@ -195,5 +194,69 @@ namespace TestingMemory
     s32 testNum = 0;
     TL_NESTED_CALL(AddToRef)(testNum);
     CHECK(testNum == 1);
+  }
+
+  struct getSet
+  {
+    getSet(tl_int a) : const_a(a) {}
+
+    TLOC_DECL_AND_DEF_GETTERS(tl_int, GetA, a);
+    TLOC_DECL_AND_DEF_GETTER(const tl_int, GetConstA, const_a);
+
+    TLOC_DECL_AND_DEF_GETTER(tl_float, GetB, b);
+    TLOC_DECL_AND_DEF_GETTER(tl_float*, GetC, c);
+
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(tl_int, GetADirect, a);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(const tl_int, GetConstADirect, const_a);
+
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(tl_float, GetBDirect, b);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(tl_float*, GetCDirect, c);
+
+    TLOC_DECL_AND_DEF_SETTER(tl_int, SetA, a);
+    TLOC_DECL_AND_DEF_SETTER(tl_float*, SetC, c);
+
+    void operator=(const getSet& a_other)
+    {
+      a = a_other.a;
+      b = a_other.b;
+      c = a_other.c;
+    }
+
+    tl_int          a;
+    const tl_int    const_a;
+
+    tl_float        b;
+    tl_float*       c;
+  };
+
+  TEST_CASE("Core/Utilities/GetterSetter", "Getter setter macros")
+  {
+    getSet g(314);
+    tl_float f = 3.0f;
+    tl_float ff = 5.0f;
+
+    g.a = 1;
+    g.b = 2.0f;
+    g.c = &f;
+
+    CHECK(g.GetA() == 1);
+    CHECK(g.GetConstA() == 314);
+    CHECK(g.GetB() == Approx(2.0f));
+    CHECK(g.GetC() == &f);
+
+    g.GetADirect() = 2;
+    g.GetBDirect() = 3.0f;
+    g.GetCDirect() = &ff;
+
+    CHECK(g.GetADirect() == 2);
+    CHECK(g.GetBDirect() == Approx(3.0f));
+    CHECK(g.GetCDirect() == &ff);
+
+    g.SetA(3);
+    tl_float fff = 9.0f;
+    g.SetC(&fff);
+
+    CHECK(g.GetA() == 3);
+    CHECK( *(g.GetC()) == Approx(9.0f));
   }
 };

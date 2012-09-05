@@ -50,6 +50,12 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
+  void EventManager::RemoveAllListeners()
+  {
+    m_listeners.clear();
+    m_globalListeners.clear();
+  }
+
   bool EventManager::DispatchNow(const EventBase& a_event) const
   {
     typedef listeners_list::const_iterator lis_itr;

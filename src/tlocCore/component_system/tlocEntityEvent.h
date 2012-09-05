@@ -41,6 +41,10 @@ namespace tloc { namespace core { namespace component_system {
                          , m_entity(a_entity)
                          , m_type(a_type) {}
 
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(Entity*, GetEntity, m_entity);
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(components_type, GetComponentType, m_type);
+
+  private:
     Entity*         m_entity;
     components_type m_type;
   };

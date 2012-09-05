@@ -23,7 +23,7 @@ namespace TestingEntityManager
 
   struct EmptyComponent2 : public Component
   {
-    EmptyComponent2() : Component(components::mesh) {}
+    EmptyComponent2() : Component(components::transform + 1) {}
   };
 
   struct EntityTracker : public EventListener
@@ -109,10 +109,10 @@ namespace TestingEntityManager
 
     CHECK(newEnt->GetComponents(components::transform).size() == 1);
 
-    Component invalidComp(components::mesh);
+    Component invalidComp(components::transform + 1);
 
     CHECK(eMgr.RemoveComponent(newEnt, &invalidComp) == false);
     CHECK(eMgr.RemoveComponent(newEnt, &testComp) == true);
-    CHECK(newEnt->GetComponents(components::transform).size() == 0);
+    CHECK(newEnt->GetComponents(components::transform + 1).size() == 0);
   }
 };

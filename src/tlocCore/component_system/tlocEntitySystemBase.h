@@ -6,6 +6,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -13,11 +14,21 @@ namespace tloc { namespace core { namespace component_system {
   {
   protected:
 
-    typedef EventBase::event_type       event_type;
-    typedef components::value_type      component_type;
+    // The maximum number of components a system is allowed to register for
+    // events listening
+    enum { max_component_types = 4 };
 
+    typedef EventBase::event_type                 event_type;
+    typedef components::value_type                component_type;
+    typedef tl_size                               size_type;
+
+    typedef tl_array_fixed
+      <component_type, max_component_types>::type component_type_array;
+
+    template <tl_uint T_VarSize>
     EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
-                     component_type a_typeFlag);
+                     const Variadic<component_type, T_VarSize>& a_typeFlags);
+
     ~EntitySystemBase();
 
     ///-------------------------------------------------------------------------
@@ -63,13 +74,36 @@ namespace tloc { namespace core { namespace component_system {
 
   private:
 
-    component_type    m_typeFlag;
-    entity_array      m_activeEntities;
+    component_type_array  m_typeFlags;
+    entity_array          m_activeEntities;
 
     EventManager*     m_eventMgr;
     EntityManager*    m_entityMgr;
 
   };
+
+  //------------------------------------------------------------------------
+  // Template definition
+
+  template <tl_uint T_VarSize>
+  EntitySystemBase::
+    EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
+                     const Variadic<component_type, T_VarSize>& a_typeFlags)
+    : m_eventMgr(a_eventMgr)
+    , m_entityMgr(a_entityMgr)
+  {
+    TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
+    TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,
+      Exceeded_max_components_supported);
+
+    for (tl_uint i = 0; i < a_typeFlags.GetSize(); ++i)
+    {
+      m_typeFlags.push_back(i);
+    }
+
+    m_eventMgr->AddListener(this, entity_events::insert_component);
+    m_eventMgr->AddListener(this, entity_events::remove_component);
+  }
 
 };};};
 

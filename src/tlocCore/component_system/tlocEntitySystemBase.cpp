@@ -1,19 +1,7 @@
 #include "tlocEntitySystemBase.h"
+#include <tlocCore/data_structures/tlocVariadic.inl>
 
 namespace tloc { namespace core { namespace component_system {
-
-  EntitySystemBase::EntitySystemBase(EventManager* a_eventMgr,
-                                     EntityManager* a_entityMgr,
-                                     component_type a_typeFlag)
-                                     : m_eventMgr(a_eventMgr)
-                                     , m_entityMgr(a_entityMgr)
-                                     , m_typeFlag(a_typeFlag)
-  {
-    TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
-
-    m_eventMgr->AddListener(this, entity_events::insert_component);
-    m_eventMgr->AddListener(this, entity_events::remove_component);
-  }
 
   EntitySystemBase::~EntitySystemBase()
   {
@@ -41,22 +29,28 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        Entity* ent = entEvent.m_entity;
+        Entity* ent = entEvent.GetEntity();
 
-        if (ent->HasComponent(entEvent.m_type) )
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+          itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
         {
-          m_activeEntities.push_back(ent);
-        }
-        else
-        {
-          entity_array::iterator itr = find(m_activeEntities, ent);
-          if (itr != m_activeEntities.end())
+          if (ent->HasComponent(*itr) )
           {
-            m_activeEntities.erase(itr);
+            entity_array::iterator entItr = core::find(m_activeEntities, ent);
+            if (entItr != m_activeEntities.end())
+            {
+              m_activeEntities.push_back(ent);
+            }
+          }
+          else
+          {
+            entity_array::iterator itr = find(m_activeEntities, ent);
+            if (itr != m_activeEntities.end())
+            {
+              m_activeEntities.erase(itr);
+            }
           }
         }
-
-        return true;
       }
     }
 

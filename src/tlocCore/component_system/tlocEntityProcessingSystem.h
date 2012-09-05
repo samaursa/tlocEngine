@@ -10,10 +10,15 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
 
-    typedef components::value_type      component_type;
+    typedef EntitySystemBase                    base_type;
+    using base_type::component_type;
+    using base_type::component_type_array;
+    using base_type::size_type;
 
+    template <size_type T_VarSize>
     EntityProcessingSystem(EventManager* a_eventMgr, EntityManager* a_entityMgr,
-                           component_type a_typeBits);
+                           const Variadic<component_type, T_VarSize>& a_typeFlags);
+
     virtual ~EntityProcessingSystem();
 
     virtual bool CheckProcessing();
@@ -23,6 +28,17 @@ namespace tloc { namespace core { namespace component_system {
                                         const entity_array& a_entities);
     virtual void Post_ProcessingActiveEntities();
   };
+
+  //------------------------------------------------------------------------
+  // Template definitions
+
+    template <tl_size T_VarSize>
+    EntityProcessingSystem::EntityProcessingSystem
+      (EventManager* a_eventMgr, EntityManager* a_entityMgr,
+       const Variadic<component_type, T_VarSize>& a_typeFlags)
+       : EntitySystemBase(a_eventMgr, a_entityMgr, a_typeFlags)
+    {
+    }
 
 };};};
 

@@ -7,7 +7,7 @@ namespace tloc { namespace core { namespace component_system {
   EntityManager::EntityManager(EventManager *a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
-    m_componentsAndEntities.resize(components::count);
+    m_componentsAndEntities.resize(components_group::count);
   }
 
   EntityManager::~EntityManager()

@@ -15,7 +15,7 @@ namespace tloc { namespace core { namespace component_system {
     : m_id(a_id)
     , m_index(size_type() - 1)
   {
-    m_allComponents.resize(components::count);
+    m_allComponents.resize(components_group::count);
   }
 
   TL_I bool Entity::HasComponent(component_type a_type)

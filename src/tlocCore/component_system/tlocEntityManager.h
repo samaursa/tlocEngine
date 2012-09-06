@@ -29,7 +29,7 @@ namespace tloc { namespace core { namespace component_system {
     Entity*     GetEntity(tl_int a_index);
 
     void        InsertComponent(Entity* a_entity, Component* a_component);
-    void        RemoveComponent(Entity* a_entity, Component* a_component);
+    bool        RemoveComponent(Entity* a_entity, Component* a_component);
 
     component_list* GetComponents(Entity* a_entity, components::value_type a_type);
 

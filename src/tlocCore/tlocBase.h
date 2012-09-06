@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include <3rdParty/loki/static_check.h>
+#include <tlocCore/platform/tlocPlatformDefines.h>
 
 #define USING_TLOC  using namespace tloc
 
@@ -73,7 +74,13 @@
 //////////////////////////////////////////////////////////////////////////
 // Platform specific
 
-#if defined(_WIN32) || defined(WIN32)
+#if defined(TLOC_OS_WIN)
+# define TLOC_MAIN main
+#elif defined(TLOC_OS_IPHONE)
+  int TLOC_MAIN(int argc, char** argv);
+#endif
+
+#if defined(TLOC_OS_WIN)
 # ifndef WIN32
 #   define WIN32
 # endif
@@ -235,7 +242,9 @@
 //------------------------------------------------------------------------
 // Define force inline for the VC++ compiler
 #if defined (_MSC_VER)
-# define TLOC_FORCE_INLINE __forceinline
+# pragma warning(disable : 4714)
+// NOTE: __forceinline increases build times substantially
+# define TLOC_FORCE_INLINE inline /*__forceinline*/
 //------------------------------------------------------------------------
 // Define force inline for the GCC and clang compilers. Since the
 // attribute always_inline, inlines regardless of optimization level
@@ -314,9 +323,10 @@
 //````````````````````````````````````````````````````````````````````````
 // Compile time
 
+// TODO: solve static assert problems on LLVM
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# if defined(__APPLE__)
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg)
+# if defined(__GNUC__) || defined (__clang__)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
 # else
 #   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
 # endif

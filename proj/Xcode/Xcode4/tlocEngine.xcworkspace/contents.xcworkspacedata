@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:tlocCore/tlocCore.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocMath/tlocMath.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocGraphics/tlocGraphics.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocInput/tlocInput.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocTesting/tlocTesting.xcodeproj">
+   </FileRef>
+</Workspace>

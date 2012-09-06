@@ -6,6 +6,7 @@
 template class tloc::math::Vector3<tloc::f32>;
 template class tloc::math::Vector3<tloc::f64>;
 template class tloc::math::Vector3<tloc::f128>;
+template class tloc::math::Vector3<tloc::tl_float>;
 
 #ifndef TLOC_FULL_SOURCE
 #include "tlocVector3.inl"

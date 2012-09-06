@@ -20,7 +20,7 @@ namespace TestingTime
   {
     // Timer<f64, u64, true>
     Timer<> timerOne, timerTwo, timerThree;
-    
+
     typedef Timer<f64, u64, true>   accurate_adjust_timer;
     typedef Timer<f64, u64, false>  accurate_no_adjust_timer;
 
@@ -62,10 +62,10 @@ namespace TestingTime
     {
       mach_timebase_info_data_t timebase;
       mach_timebase_info(&timebase);
-      ticksToSeconds = 
+      ticksToSeconds =
         (T_Real)timebase.numer / timebase.denom * (T_Real)0.000000001;
     }
-    
+
     return mach_absolute_time() * ticksToSeconds;
   }
 
@@ -74,7 +74,7 @@ namespace TestingTime
   {
     return (T_UInt)(GetCurrentTimeS<T_Real, T_UInt>() * (T_Real)1000.0);
   }
-  
+
   template <typename T_Real, typename T_UInt>
   T_UInt GetCurrentTimeMicroS()
   {
@@ -117,69 +117,69 @@ namespace TestingTime
       currentTime = (T_UInt)time(NULL);
     }
   }
-  
+
   template <typename T_TimerType>
   void TestTimerAgainstSelf()
   {
     typedef typename T_TimerType::sec_type    real_type;
     typedef typename T_TimerType::value_type  UInt_type;
-    
+
     T_TimerType timerOne, timerTwo;
-    
+
     //------------------------------------------------------------------------
     // Testing seconds
     timerOne.Reset ();
     timerTwo.Reset();
-    
+
     real_type timeOneS = timerOne.ElapsedSeconds();
     TimeTestSleepMicroS<real_type, UInt_type>(1);
     real_type timeTwoS = timerTwo.ElapsedSeconds();
-    
+
     CHECK(timeOneS < timeTwoS);
 
     timerTwo.Reset();
-    
+
     timeOneS = timerOne.ElapsedSeconds();
     timeTwoS = timerTwo.ElapsedSeconds();
-    
+
     CHECK(timeOneS > timeTwoS);
-    
+
     //------------------------------------------------------------------------
     // Testing Milliseconds
     timerOne.Reset();
     timerTwo.Reset();
-    
+
     UInt_type timeOneMS = timerOne.ElapsedMilliSeconds();
     TimeTestSleepMS<real_type, UInt_type>(2);
     UInt_type timeTwoMS = timerTwo.ElapsedMilliSeconds();
-    
+
     REQUIRE(timeOneMS < timeTwoMS);
     CHECK((timeTwoMS - timeOneMS) >= (UInt_type)1);
-    
+
     timerTwo.Reset();
-    
+
     timeOneMS = timerOne.ElapsedMilliSeconds();
     timeTwoMS = timerTwo.ElapsedMilliSeconds();
-    
+
     CHECK(timeOneMS > timeTwoMS);
-    
+
     //------------------------------------------------------------------------
     // Testing Microseconds
     timerOne.Reset();
     timerTwo.Reset();
-    
+
     UInt_type timeOneMicroS = timerOne.ElapsedMicroSeconds();
     TimeTestSleepMicroS<real_type, UInt_type>(2);
     UInt_type timeTwoMicroS = timerTwo.ElapsedMicroSeconds();
-    
+
     REQUIRE(timeOneMicroS < timeTwoMicroS);
     CHECK((timeTwoMicroS - timeOneMicroS) >= (UInt_type)1);
 
     timerTwo.Reset();
-    
+
     timeOneMicroS = timerOne.ElapsedMicroSeconds();
     timeTwoMicroS = timerTwo.ElapsedMicroSeconds();
-    
+
     CHECK(timeOneMicroS > timeTwoMicroS);
   }
 
@@ -208,7 +208,8 @@ namespace TestingTime
     CHECK((timeTwo - timeOne) <  (real_type)3.0);
   }
 
-  TEST_CASE_METHOD(TimeFixture, "Core/Containers/Time/TimerAgainstCTime", "")
+  // NOTE: Test NOT run normally, use asterisk in command line to run this test
+  TEST_CASE_METHOD(TimeFixture, "./Core/Containers/Time/TimerAgainstCTime", "")
   {
     TestTimerAgainstCTime<accurate_adjust_timer>();
     TestTimerAgainstCTime<accurate_no_adjust_timer>();

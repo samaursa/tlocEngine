@@ -7,6 +7,16 @@
 
 namespace tloc { namespace core {
 
+  // Tuple policies
+  namespace p_tuple
+  {
+    // The following policies determine what to do with the overflow when
+    // converting between different tuple types
+    struct overflow_same {};
+    struct overflow_zero {};
+    struct overflow_one {};
+  };
+
   template <typename T, tl_size T_Size>
   class Tuple
   {
@@ -63,6 +73,16 @@ namespace tloc { namespace core {
     // Swaps the tuple with the incoming vector
     TL_FI void Swap(this_type& aVector);
 
+    // Converts between different sized tuples. The default overflow policy
+    // applied here is p_tuple::overflow_one
+    template <tl_size T_TupleSize>
+    TL_FI void ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other);
+
+    // Converts between different sized tuples.
+    template <tl_size T_TupleSize, typename T_Policy>
+    TL_FI void ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+                           T_Policy a_conversionPolicy);
+
     //------------------------------------------------------------------------
     // Operators
 
@@ -88,6 +108,23 @@ namespace tloc { namespace core {
     template <typename T_TupleType>
     TL_FI void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
     TL_FI void DoSet(const this_type& aTuple, type_true);
+
+    typedef type_true     incoming_bigger;
+    typedef type_false    incoming_smaller;
+
+    template <tl_size T_TupleSize, typename T_Policy>
+    TL_FI void DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+                             incoming_bigger);
+    template <tl_size T_TupleSize, typename T_Policy>
+    TL_FI void DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+                             incoming_smaller);
+
+    template <tl_size T_TupleSize>
+    TL_FI void DoFillRemaining(p_tuple::overflow_same);
+    template <tl_size T_TupleSize>
+    TL_FI void DoFillRemaining(p_tuple::overflow_one);
+    template <tl_size T_TupleSize>
+    TL_FI void DoFillRemaining(p_tuple::overflow_zero);
   };
 
 };};

@@ -960,10 +960,18 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\..\..\..\src\tlocGraphics\placeholder.txt"
+		<Filter
+			Name="components and systems"
 			>
-		</File>
+			<Filter
+				Name="components"
+				>
+			</Filter>
+			<Filter
+				Name="systems"
+				>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>

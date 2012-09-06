@@ -12,8 +12,9 @@ namespace tloc { namespace graphics {
 
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
-# include <GL/gl.h>
-# include <GL/glu.h>
+# include <3rdParty/Graphics/GLEW/glew.h>
+//# include <GL/gl.h>
+//# include <GL/glu.h>
 
 #elif defined(TLOC_LINUX)
 
@@ -24,7 +25,7 @@ namespace tloc { namespace graphics {
 
 # include <OpenGL/gl.h>
 # include <OpenGl/glu.h>
-  
+
 #elif defined(TLOC_OS_IPHONE)
 
 # include <OpenGLES/ES2/gl.h>

@@ -1301,8 +1301,16 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="utilies"
+			Name="utilities"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocCheckpoints.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocCheckpoints.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocContainerUtils.h"
 				>

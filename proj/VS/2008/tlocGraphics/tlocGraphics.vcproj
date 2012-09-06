@@ -1016,6 +1016,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="shaders"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\shaders\tlocShaderProgram.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\shaders\tlocShaderProgram.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>

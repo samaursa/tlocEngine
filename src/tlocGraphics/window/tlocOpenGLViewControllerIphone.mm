@@ -17,7 +17,7 @@
 @synthesize windowImpl;
 
 - (id)initWithWindow:
-    (tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> > *)a_windowImpl
+    (ogl_view_controller::win_impl_type*)a_windowImpl
 {
   self = [super init];
   if (self) 

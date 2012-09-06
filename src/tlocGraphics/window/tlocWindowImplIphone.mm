@@ -154,6 +154,12 @@ namespace tloc { namespace graphics { namespace priv {
     while (CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, TRUE) == 
            kCFRunLoopRunHandledSource);
   }
+  
+  WINDOW_IMPL_IPHONE_TYPE::window_handle_type 
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetWindowHandle() const
+  {
+    return m_handle;
+  }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
   {

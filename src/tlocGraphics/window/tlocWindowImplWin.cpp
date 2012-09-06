@@ -226,6 +226,12 @@ namespace tloc { namespace graphics { namespace priv {
     }
   }
 
+  WINDOW_IMPL_WIN_TYPE::window_handle_type 
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetWindowHandle() const
+  {
+    return m_handle;
+  }
+
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVerticalSync(bool a_enable)
   {
     // Not using GLFW because it may not be initialized yet

@@ -88,6 +88,13 @@ namespace tloc { namespace graphics { namespace priv {
     size_type GetHeight() const;
 
     void ProcessEvents();
+    
+    ///-------------------------------------------------------------------------
+    /// Gets the window handle.
+    ///
+    /// @return The window handle.
+    ///-------------------------------------------------------------------------
+    window_handle_type GetWindowHandle() const;
 
     ///-------------------------------------------------------------------------
     /// Sets this window as active.

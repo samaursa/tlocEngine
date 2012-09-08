@@ -1,8 +1,6 @@
 #include "tlocTestCommon.h"
 #include "tlocCore/platform/tlocPlatformDefines.h"
 
-#define private public
-#define protected public
 #if defined(TLOC_OS_WIN)
 # include <tlocGraphics/window/tlocWindowImplWin.h>
 #elif defined(TLOC_OS_IPHONE)
@@ -67,7 +65,7 @@ namespace TestingWindow
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
 
-      CHECK(IsWindow(win.m_impl->m_handle) == 1);
+      CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);
     }
     CHECK(callbacks.m_windowEventCount == 2); // win2 was destroyed and lost focus,
@@ -117,6 +115,7 @@ namespace TestingWindow
                   WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
+      CHECK(win1.GetWindowHandle() != NULL);
     }
     
     {
@@ -127,6 +126,7 @@ namespace TestingWindow
                   WindowSettings("Testing"), WindowSettings::style_fullscreen);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
+      CHECK(win2.GetWindowHandle() != NULL);
     }
   }
   

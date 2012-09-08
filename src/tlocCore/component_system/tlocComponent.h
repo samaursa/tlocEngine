@@ -40,7 +40,7 @@ namespace tloc { namespace core { namespace component_system {
 
     ComponentT(component_type a_type) : Component(a_type) {}
 
-    using group_id_base_type::GetID;
+    using group_id_base_type::GetUniqueGroupID;
   };
 
 };};};

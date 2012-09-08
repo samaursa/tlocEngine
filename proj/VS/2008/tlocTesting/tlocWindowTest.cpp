@@ -33,16 +33,16 @@ namespace TestingWindow
     s32 m_windowEventCount;
     s32 m_counts[WindowEvent::events_count];
   };
-  
+
 };
 
 TLOC_DEF_TYPE(TestingWindow::sampleObject);
 
-namespace TestingWindow 
+namespace TestingWindow
 {
-  
+
 #if defined(TLOC_OS_WIN)
-  
+
   TEST_CASE("Graphics/Window/General", "")
   {
     typedef Window<>::graphics_mode graphics_mode;
@@ -72,6 +72,11 @@ namespace TestingWindow
                                               // 2 events were raised
     CHECK(callbacks.m_counts[WindowEvent::lost_focus] == 1);
     CHECK(callbacks.m_counts[WindowEvent::destroy] == 1);
+  }
+
+  TEST_CASE("./Graphics/Window/Fullscreen", "")
+  {
+    typedef Window<>::graphics_mode graphics_mode;
 
     Window<> win3;
     CHECK(win3.IsValid() == false);
@@ -101,9 +106,9 @@ namespace TestingWindow
     //CHECK(callbacks.m_windowEventCount == 1);
     //CHECK(callbacks.m_counts[WindowEvent::resized] == 1);
   }
-  
+
 #elif defined(TLOC_OS_IPHONE)
-  
+
   TEST_CASE("Graphics/Window/General", "")
   {
     typedef Window<>::graphics_mode graphics_mode;
@@ -117,7 +122,7 @@ namespace TestingWindow
       CHECK(win1.IsCreated() == true);
       CHECK(win1.GetWindowHandle() != NULL);
     }
-    
+
     {
       Window<> win2;
       CHECK(win2.IsValid() == false);
@@ -129,7 +134,7 @@ namespace TestingWindow
       CHECK(win2.GetWindowHandle() != NULL);
     }
   }
-  
+
   TEST_CASE("Graphics/Window/Callbacks", "")
   {
     typedef Window<>::graphics_mode graphics_mode;
@@ -140,17 +145,17 @@ namespace TestingWindow
                 WindowSettings("Test"), WindowSettings::style_titlebar);
     CHECK(win.IsValid() == true);
     CHECK(win.IsCreated() == true);
-    
+
     sampleObject callbacks;
     CHECK(callbacks.m_windowEventCount == 0);
     win.Register(&callbacks);
-    
+
     win.SetSize(100, 100);
     // TODO: Fix these tests
     //CHECK(callbacks.m_windowEventCount == 1);
     //CHECK(callbacks.m_counts[WindowEvent::resized] == 1);
   }
-  
+
 #endif
 
 };

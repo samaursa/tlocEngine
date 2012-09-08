@@ -1117,6 +1117,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="io"
+				>
+				<File
+					RelativePath=".\tlocFileIOTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Math"

@@ -1488,6 +1488,38 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="io"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="error"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocError.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocError.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocErrorTypes.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="parsers"
+			>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
 			>

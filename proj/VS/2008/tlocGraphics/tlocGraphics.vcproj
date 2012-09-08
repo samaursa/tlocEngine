@@ -948,6 +948,14 @@
 			Name="opengl"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLObject.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.h"
 				>
 			</File>
@@ -962,6 +970,14 @@
 			<Filter
 				Name="shaders"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderComponent.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderComponent.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderProgram.cpp"
 					>

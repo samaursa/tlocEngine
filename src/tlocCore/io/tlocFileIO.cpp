@@ -95,6 +95,12 @@ namespace tloc { namespace core { namespace io {
   }
 
   template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Close()
+  {
+    return DoClose();
+  }
+
+  template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
     FileIO<FILE_IO_PARAMS>::GetContents(String& a_out) const
   {

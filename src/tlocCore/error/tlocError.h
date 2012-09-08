@@ -2,12 +2,14 @@
 #define TLOC_ERROR_H
 
 #include <tlocCore/error/tlocErrorTypes.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace core { namespace error {
 
   class Error
   {
   public:
+    typedef Error                 this_type;
     typedef error_code_type       code_type;
 
     Error(code_type a_errorType);
@@ -15,7 +17,10 @@ namespace tloc { namespace core { namespace error {
     bool Succeeded() const;
     bool Failed() const;
 
-    code_type GetErrorCode() const;
+    bool operator==(const this_type& a_other);
+    bool operator==(const code_type& a_other);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST(code_type, GetErrorCode, m_error);
 
   private:
     code_type m_error;

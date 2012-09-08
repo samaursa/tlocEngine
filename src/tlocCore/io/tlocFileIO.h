@@ -35,6 +35,7 @@ namespace tloc { namespace core { namespace io {
     ~FileIO();
 
     error_type      Open();
+    error_type      Close();
     error_type      GetContents(String& a_out) const;
 
   private:

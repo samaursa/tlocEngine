@@ -26,6 +26,7 @@ namespace TestingFileIO
     fileReader.GetContents(fileContents);
 
     CHECK(fileContents.compare(sentence) == 0);
+    CHECK(fileReader.Close() == (error::common_error_types::error_success) );
 
     remove(fileName);
   }

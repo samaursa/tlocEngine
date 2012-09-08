@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   class GLObject
   {
@@ -17,6 +17,6 @@ namespace tloc { namespace graphics {
     object_handle m_handle;
   };
 
-};};
+};};};
 
 #endif

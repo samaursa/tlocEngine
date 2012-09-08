@@ -6,15 +6,13 @@
 
 // Taken from SFML (we will trust the paths they chose for diff. platforms
 
-namespace tloc { namespace graphics {
-
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
 # include <3rdParty/Graphics/GLEW/glew.h>
-//# include <GL/gl.h>
-//# include <GL/glu.h>
+# include <GL/gl.h>
+# include <GL/glu.h>
 
 #elif defined(TLOC_LINUX)
 
@@ -32,6 +30,11 @@ namespace tloc { namespace graphics {
 
 #endif
 
-};};
+
+namespace tloc { namespace graphics { namespace gl {
+
+  // Intentionally empty
+
+};};};
 
 #endif

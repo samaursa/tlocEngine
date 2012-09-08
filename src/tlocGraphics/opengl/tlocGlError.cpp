@@ -1,6 +1,6 @@
 #include "tlocGlError.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   bool GlError::Succeeded()
   {
@@ -18,4 +18,4 @@ namespace tloc { namespace graphics {
     return m_lastError;
   }
 
-};};
+};};};

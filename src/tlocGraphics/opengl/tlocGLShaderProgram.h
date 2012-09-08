@@ -7,7 +7,7 @@
 #include <tlocGraphics/opengl/tlocGLObject.h>
 #include <tlocGraphics/opengl/tlocGLShaderComponent.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   class GLShaderProgram : public GLObject
   {
@@ -30,6 +30,6 @@ namespace tloc { namespace graphics {
     core::utils::Checkpoints    m_flags;
   };
 
-};};
+};};};
 
 #endif

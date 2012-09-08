@@ -7,7 +7,7 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocGLObject.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   namespace p_shader_program
   {
@@ -40,6 +40,6 @@ namespace tloc { namespace graphics {
   };
 
 
-};};
+};};};
 
 #endif

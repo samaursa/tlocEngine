@@ -3,7 +3,7 @@
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   class GlError
   {
@@ -12,11 +12,12 @@ namespace tloc { namespace graphics {
     bool Failed();
 
     GLenum GetError();
+    void   GetErrorAsString();
 
   private:
     GLenum m_lastError;
   };
 
-};};
+};};};
 
 #endif

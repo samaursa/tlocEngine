@@ -7,7 +7,7 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocGlError.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   enum flags
   {
@@ -69,4 +69,4 @@ namespace tloc { namespace graphics {
   template bool GLShaderProgram::AttachShaders
     (core::Variadic<GLShaderComponent, 4>);
 
-};};
+};};};

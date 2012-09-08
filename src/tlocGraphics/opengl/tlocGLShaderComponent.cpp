@@ -3,7 +3,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocGraphics/opengl/tlocGlError.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   namespace detail
   {
@@ -78,6 +78,10 @@ namespace tloc { namespace graphics {
     glGetShaderiv(GetHandle(), GL_COMPILE_STATUS, &result);
     if (result == GL_FALSE)
     {
+      tl_int  logLen;
+      char    logBuffer[1000];
+      glGetShaderInfoLog(GetHandle(), sizeof(logBuffer), &logLen, logBuffer);
+
       // TODO: Write shader log
       return false;
     }
@@ -92,4 +96,4 @@ namespace tloc { namespace graphics {
   template bool GLShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Fragment);
   template bool GLShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Geometry);
 
-};};
+};};};

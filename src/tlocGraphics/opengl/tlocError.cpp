@@ -1,4 +1,4 @@
-#include "tlocGlError.h"
+#include "tlocError.h"
 
 namespace tloc { namespace graphics { namespace gl {
 

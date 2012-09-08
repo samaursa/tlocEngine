@@ -3,7 +3,7 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLExt.h>
 
-#include <tlocGraphics/opengl/tlocGLShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShaderComponent.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
 const char* vShaderStr =

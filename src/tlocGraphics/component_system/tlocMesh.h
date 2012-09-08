@@ -2,7 +2,7 @@
 #define TLOC_MESH_H
 
 #include <tlocCore/component_system/tlocComponent.h>
-#include <tlocGraphics/component_system/tlocGfxComponentType.h>
+#include <tlocGraphics/component_system/tlocComponentType.h>
 
 #include <tlocGraphics/data_types/tlocVertex.h>
 #include <tlocCore/containers/tlocContainers.h>

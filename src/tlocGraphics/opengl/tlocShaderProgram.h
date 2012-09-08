@@ -4,8 +4,8 @@
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
-#include <tlocGraphics/opengl/tlocGLObject.h>
-#include <tlocGraphics/opengl/tlocGLShaderComponent.h>
+#include <tlocGraphics/opengl/tlocObject.h>
+#include <tlocGraphics/opengl/tlocShaderComponent.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

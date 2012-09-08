@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/opengl/tlocGLObject.h>
+#include <tlocGraphics/opengl/tlocObject.h>
 
 namespace TestingGLShaderObject
 {

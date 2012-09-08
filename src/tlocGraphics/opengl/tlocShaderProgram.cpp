@@ -1,11 +1,11 @@
-#include "tlocGLShaderProgram.h"
+#include "tlocShaderProgram.h"
 
 #include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/string/tlocString.h>
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
-#include <tlocGraphics/opengl/tlocGlError.h>
+#include <tlocGraphics/opengl/tlocError.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

@@ -1,5 +1,5 @@
 #include "tlocMeshRenderSystem.h"
-#include <tlocGraphics/component_system/tlocGfxComponentType.h>
+#include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 
 #include <tlocCore/component_system/tlocComponentMapper.h>

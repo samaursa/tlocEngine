@@ -2,7 +2,7 @@
 #define TLOC_MATERIAL_H
 
 #include <tlocCore/component_system/tlocComponent.h>
-#include <tlocGraphics/component_system/tlocGfxComponentType.h>
+#include <tlocGraphics/component_system/tlocComponentType.h>
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/utilities/tlocUtils.h>

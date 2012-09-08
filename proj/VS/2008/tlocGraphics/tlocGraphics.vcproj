@@ -948,11 +948,11 @@
 			Name="opengl"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLObject.cpp"
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLObject.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.h"
 				>
 			</File>
 			<File
@@ -971,19 +971,19 @@
 				Name="shaders"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderComponent.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderComponent.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderProgram.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLShaderProgram.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
 					>
 				</File>
 			</Filter>
@@ -991,11 +991,11 @@
 				Name="error"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLError.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocError.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocGLError.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocError.h"
 					>
 				</File>
 			</Filter>
@@ -1007,7 +1007,7 @@
 				Name="components"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocGfxComponentType.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocComponentType.h"
 					>
 				</File>
 				<Filter

@@ -5,7 +5,7 @@
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
-#include <tlocGraphics/opengl/tlocGLObject.h>
+#include <tlocGraphics/opengl/tlocObject.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

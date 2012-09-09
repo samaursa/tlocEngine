@@ -18,19 +18,19 @@ namespace tloc { namespace graphics {
       error_none,
       error_init,
       error_already_init
-    }; typedef u32 error_type;
+    }; typedef tl_int error_type;
 
     static error_type Initialize();
     static bool       IsInitialized();
-    static u32        GetLastError();
+    static error_type GetLastError();
 
   private:
 
     OpenGLExt();
 
     // TODO: Make atomic
-    static bool m_initialized;
-    static u32  m_error;
+    static bool   m_initialized;
+    static tl_int m_error;
 
   };
 

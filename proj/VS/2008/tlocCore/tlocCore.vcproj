@@ -1015,6 +1015,30 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="data_structures"
@@ -1519,6 +1543,18 @@
 		<Filter
 			Name="parsers"
 			>
+		</Filter>
+		<Filter
+			Name="configs"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"

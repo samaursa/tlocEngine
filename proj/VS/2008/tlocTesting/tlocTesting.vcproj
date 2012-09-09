@@ -1061,6 +1061,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocProtectedBufferTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocQueueTest.cpp"
 					>
 				</File>

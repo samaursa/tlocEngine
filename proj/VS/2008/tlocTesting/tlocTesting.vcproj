@@ -1181,6 +1181,18 @@
 				RelativePath=".\tlocWindowTest.cpp"
 				>
 			</File>
+			<Filter
+				Name="opengl"
+				>
+				<File
+					RelativePath=".\tlocGLObjectTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocShaderComponentTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Input"

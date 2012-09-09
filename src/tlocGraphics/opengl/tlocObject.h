@@ -6,7 +6,7 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class GLObject
+  class Object
   {
   public:
     typedef tl_uint                     object_handle;

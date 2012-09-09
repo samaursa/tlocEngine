@@ -16,19 +16,19 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  GLShaderProgram::GLShaderProgram() : m_flags(count)
+  ShaderProgram::ShaderProgram() : m_flags(count)
   {
     GetHandle() = glCreateProgram();
   }
 
-  GLShaderProgram::~GLShaderProgram()
+  ShaderProgram::~ShaderProgram()
   {
     glDeleteProgram(GetHandle());
   }
 
-  template <GLShaderProgram::size_type T_Size>
-  bool GLShaderProgram::AttachShaders
-    (core::Variadic<GLShaderComponent, T_Size> a_shaderComponents)
+  template <ShaderProgram::size_type T_Size>
+  bool ShaderProgram::AttachShaders
+    (core::Variadic<ShaderComponent, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
-  bool GLShaderProgram::Link()
+  bool ShaderProgram::Link()
   {
     TLOC_ASSERT(m_flags[shader_attached],
       "No shaders attached - did you forget to call AttachShaders()?");
@@ -58,15 +58,20 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
+  void ShaderProgram::Enable()
+  {
+    glUseProgram(GetHandle());
+  }
+
   //------------------------------------------------------------------------
   // Explicit initialization
-  template bool GLShaderProgram::AttachShaders
-    (core::Variadic<GLShaderComponent, 1>);
-  template bool GLShaderProgram::AttachShaders
-    (core::Variadic<GLShaderComponent, 2>);
-  template bool GLShaderProgram::AttachShaders
-    (core::Variadic<GLShaderComponent, 3>);
-  template bool GLShaderProgram::AttachShaders
-    (core::Variadic<GLShaderComponent, 4>);
+  template bool ShaderProgram::AttachShaders
+    (core::Variadic<ShaderComponent, 1>);
+  template bool ShaderProgram::AttachShaders
+    (core::Variadic<ShaderComponent, 2>);
+  template bool ShaderProgram::AttachShaders
+    (core::Variadic<ShaderComponent, 3>);
+  template bool ShaderProgram::AttachShaders
+    (core::Variadic<ShaderComponent, 4>);
 
 };};};

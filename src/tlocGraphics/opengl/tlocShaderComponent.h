@@ -19,16 +19,16 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
-  class GLShaderComponent : public GLObject
+  class ShaderComponent : public Object
   {
   public:
-    typedef GLObject                    base_type;
+    typedef Object                    base_type;
     using base_type::object_handle;
 
     typedef core::tl_array<bool>::type  flag_type;
 
-    GLShaderComponent();
-    ~GLShaderComponent();
+    ShaderComponent();
+    ~ShaderComponent();
 
     template <typename T_ShaderType>
     bool LoadShader(const char* a_shaderSource, T_ShaderType a_type);

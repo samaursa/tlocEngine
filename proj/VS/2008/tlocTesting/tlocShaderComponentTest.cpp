@@ -46,13 +46,13 @@ namespace TestingShaderComponent
     // Initialize glew
     REQUIRE(OpenGLExt::Initialize() == OpenGLExt::error_none);
 
-    gl::GLShaderComponent vShader;
+    gl::ShaderComponent vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
     CHECK(vShader.LoadShader(vShaderStr, vertex_shader_type() ) == true);
     CHECK(vShader.CompileShader() == true);
 
-    gl::GLShaderComponent fShader;
+    gl::ShaderComponent fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
     CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);

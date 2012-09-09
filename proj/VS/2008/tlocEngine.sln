@@ -38,6 +38,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tlocInput", "tlocInput\tloc
 		{474E8EC2-6EF7-43C5-9E4B-8E5475E9D6FD} = {474E8EC2-6EF7-43C5-9E4B-8E5475E9D6FD}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tlocVersionTool", "tlocVersionTool\tlocVersionTool.vcproj", "{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_StdAlloc|Win32 = Debug_StdAlloc|Win32
@@ -198,11 +200,36 @@ Global
 		{299F4B28-85B5-49D7-A94C-696F38281EBF}.Release|Win32.Build.0 = Release|Win32
 		{299F4B28-85B5-49D7-A94C-696F38281EBF}.Release|x64.ActiveCfg = Release|x64
 		{299F4B28-85B5-49D7-A94C-696F38281EBF}.Release|x64.Build.0 = Release|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug_StdAlloc|Win32.ActiveCfg = Debug_StdAlloc|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug_StdAlloc|Win32.Build.0 = Debug_StdAlloc|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug_StdAlloc|x64.ActiveCfg = Debug_StdAlloc|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug_StdAlloc|x64.Build.0 = Debug_StdAlloc|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug|Win32.Build.0 = Debug|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug|x64.ActiveCfg = Debug|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Debug|x64.Build.0 = Debug|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_DebugInfo|Win32.ActiveCfg = Release_DebugInfo|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_DebugInfo|Win32.Build.0 = Release_DebugInfo|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_DebugInfo|x64.ActiveCfg = Release_DebugInfo|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_DebugInfo|x64.Build.0 = Release_DebugInfo|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc_DebugInfo|Win32.ActiveCfg = Release_StdAlloc_DebugInfo|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc_DebugInfo|Win32.Build.0 = Release_StdAlloc_DebugInfo|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc_DebugInfo|x64.ActiveCfg = Release_StdAlloc_DebugInfo|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc_DebugInfo|x64.Build.0 = Release_StdAlloc_DebugInfo|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc|Win32.ActiveCfg = Release_StdAlloc|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc|Win32.Build.0 = Release_StdAlloc|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc|x64.ActiveCfg = Release_StdAlloc|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release_StdAlloc|x64.Build.0 = Release_StdAlloc|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release|Win32.ActiveCfg = Release|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release|Win32.Build.0 = Release|Win32
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release|x64.ActiveCfg = Release|x64
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{474E8EC2-6EF7-43C5-9E4B-8E5475E9D6FD} = {D4F5DA46-33F8-422A-9690-E75322281942}
+		{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C} = {D4F5DA46-33F8-422A-9690-E75322281942}
 	EndGlobalSection
 EndGlobal

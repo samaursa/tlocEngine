@@ -9,21 +9,22 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class GLShaderProgram : public GLObject
+  class ShaderProgram : public Object
   {
   public:
-    typedef GLObject                    base_type;
+    typedef Object                    base_type;
     using base_type::object_handle;
 
     typedef tl_size                     size_type;
 
-    GLShaderProgram();
-    ~GLShaderProgram();
+    ShaderProgram();
+    ~ShaderProgram();
 
     template <size_type T_Size>
-    bool AttachShaders(core::Variadic<GLShaderComponent, T_Size>
+    bool AttachShaders(core::Variadic<ShaderComponent, T_Size>
                        a_shaderComponents);
     bool Link();
+    void Enable();
 
   private:
 

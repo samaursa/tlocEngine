@@ -7,19 +7,19 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace detail
   {
-    GLShaderComponent::object_handle
+    ShaderComponent::object_handle
       CreateShader(p_shader_program::shader_type::Vertex)
     {
       return glCreateShader(GL_VERTEX_SHADER);
     }
 
-    GLShaderComponent::object_handle
+    ShaderComponent::object_handle
       CreateShader(p_shader_program::shader_type::Fragment)
     {
       return glCreateShader(GL_FRAGMENT_SHADER);
     }
 
-    GLShaderComponent::object_handle
+    ShaderComponent::object_handle
       CreateShader(p_shader_program::shader_type::Geometry)
     {
       // TODO: glew.h does not have geometry shaders yet
@@ -37,17 +37,17 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  GLShaderComponent::GLShaderComponent() : m_flags(count)
+  ShaderComponent::ShaderComponent() : m_flags(count)
   {
   }
 
-  GLShaderComponent::~GLShaderComponent()
+  ShaderComponent::~ShaderComponent()
   {
     glDeleteShader(GetHandle());
   }
 
   template <typename T_ShaderType>
-  bool GLShaderComponent::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
+  bool ShaderComponent::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
   {
     GetHandle() = detail::CreateShader(a_type);
     if (!GetHandle())
@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
-  bool GLShaderComponent::CompileShader()
+  bool ShaderComponent::CompileShader()
   {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");
@@ -92,8 +92,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   //------------------------------------------------------------------------
   // Explicit instantiation
-  template bool GLShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Vertex);
-  template bool GLShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Fragment);
-  template bool GLShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Geometry);
+  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Vertex);
+  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Fragment);
+  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Geometry);
 
 };};};

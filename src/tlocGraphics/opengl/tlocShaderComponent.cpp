@@ -56,11 +56,11 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     // Load the shader
-    tl_int strLen = (tl_int)core::StrLen(a_shaderSource);
+    s32 strLen = (s32)core::StrLen(a_shaderSource);
     glShaderSource(GetHandle(), 1, &a_shaderSource, &strLen);
 
     // TODO: Log proper OpenGL errors
-    if(GlError().Failed())
+    if(Error().Failed())
     { return false; }
 
     m_flags.Mark(shader_loaded);
@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace gl {
     glGetShaderiv(GetHandle(), GL_COMPILE_STATUS, &result);
     if (result == GL_FALSE)
     {
-      tl_int  logLen;
+      s32     logLen;
       char    logBuffer[1000];
       glGetShaderInfoLog(GetHandle(), sizeof(logBuffer), &logLen, logBuffer);
 

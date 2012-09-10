@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TLOC_VARIADIC
-#define TLOC_VARIADIC
+#ifndef TLOC_VARIADIC_H
+#define TLOC_VARIADIC_H
 
 #include <tlocCore/data_structures/tlocTuple.h>
 

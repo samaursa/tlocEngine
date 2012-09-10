@@ -55,7 +55,7 @@ namespace TestingMatrix2
     Mat2f g(10);
     CHECK_MATRIX2F(g, 10, 10, 10, 10);
 
-    f32 array[4] = {9, 10, 11, 12};
+    tl_float array[4] = {9, 10, 11, 12};
     Mat2f h(array, Mat2f::k_RowMajor);
     CHECK_MATRIX2F(h, 9, 11, 10, 12);
 
@@ -86,7 +86,7 @@ namespace TestingMatrix2
 
     c.Zero();
     d.Zero();
-    f32 values[4] = {1, 2, 3, 4};
+    tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
     d.Set(values, Mat2f::k_ColMajor);
 
@@ -107,7 +107,7 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Det",
     "Test determinant")
   {
-    f32 values[4] = {1, 2, 3, 4};
+    tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
     CHECK(-2 == Approx(c.Determinant()));
   }
@@ -115,7 +115,7 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Inv",
     "Test inverse")
   {
-    f32 values[4] = {1, 2, 3, 4};
+    tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
     REQUIRE(c.Inverse() == true);
     CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
@@ -124,7 +124,7 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Adj",
     "Test adjoint")
   {
-    f32 values[4] = {1, 2, 3, 4};
+    tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
     d.Adjoint(c);
     CHECK_MATRIX2F(d, 4, -3, -2, 1);
@@ -136,13 +136,13 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/OrthoNorm",
     "Test orthonormalize")
   {
-    f32 values[4] = {1, 0, 0, 1};
+    tl_float values[4] = {1, 0, 0, 1};
     c.Set(values, Mat2f::k_ColMajor);
 
     c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
 
-    f32 values2[4] = {2, 0, 0, 2};
+    tl_float values2[4] = {2, 0, 0, 2};
     c.Set(values2, Mat2f::k_ColMajor);
 
     c.Orthonormalize();
@@ -152,7 +152,7 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/EigenDecomp",
     "Test eigen decomposition")
   {
-    f32 values[4] = {1, 2, 3, 4};
+    tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
 
     c.EigenDecomposition(d, e);

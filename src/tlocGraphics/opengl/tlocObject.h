@@ -4,16 +4,21 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
+#include <tlocCore/base_classes/tlocNonCopyable.h>
+
 namespace tloc { namespace graphics { namespace gl {
 
-  class Object
+  class Object : public core::NonCopyable
   {
   public:
-    typedef tl_uint                     object_handle;
+    typedef u32 object_handle;
+
+    Object() {}
 
     TLOC_DECL_AND_DEF_GETTERS_DIRECT(object_handle, GetHandle, m_handle);
 
   private:
+
     object_handle m_handle;
   };
 

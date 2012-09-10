@@ -14,14 +14,14 @@ namespace TestingGroupID
 
   TEST_CASE("Core/Utilities/GroupID", "")
   {
-    const tl_int count = 20;
+    const s32 count = 20;
 
     {
       core::Array<obj> a;
       a.push_back(obj());
       CHECK(a.back().GetUniqueGroupID() == 2); // obj was created twice
 
-      for (tl_int i = 0; i < count; ++i)
+      for (s32 i = 0; i < count; ++i)
       {
         a.push_back(obj());
       }
@@ -32,7 +32,7 @@ namespace TestingGroupID
     {
       core::Array<obj> a;
 
-      for (tl_int i = 0; i < count; ++i)
+      for (s32 i = 0; i < count; ++i)
       {
         a.push_back(obj());
       }

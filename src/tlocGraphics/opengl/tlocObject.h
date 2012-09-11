@@ -15,7 +15,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     Object() {}
 
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT(object_handle, GetHandle, m_handle);
+    TLOC_DECL_AND_DEF_GETTERS(object_handle, GetHandle, m_handle);
+    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   private:
 

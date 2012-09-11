@@ -9,7 +9,7 @@ namespace TestingGLShaderObject
   TEST_CASE("Graphics/ShaderComponent", "")
   {
     gl::Object obj;
-    obj.GetHandle() = 9;
+    obj.SetHandle(9);
     CHECK(obj.GetHandle() == 9);
   }
 };

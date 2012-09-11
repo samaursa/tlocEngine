@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderProgram::ShaderProgram() : m_flags(count)
   {
-    GetHandle() = glCreateProgram();
+    SetHandle(glCreateProgram());
     TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
   }
 
@@ -47,11 +47,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_flags[shader_attached],
       "No shaders attached - did you forget to call AttachShaders()?");
 
-    glLinkProgram(GetHandle());
+    object_handle handle = GetHandle();
+
+    glLinkProgram(handle);
 
     GLint result;
 
-    glGetShaderiv(GetHandle(), GL_LINK_STATUS, &result);
+    glGetProgramiv(handle, GL_LINK_STATUS, &result);
     if (result == GL_FALSE)
     {
       core::String errorString;

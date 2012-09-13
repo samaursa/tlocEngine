@@ -275,6 +275,9 @@ namespace tloc { namespace core {
   template <typename T>
   TL_I const T& tlMax(const T& a, const T& b);
 
+  template <typename T>
+  TL_I const T tlClamp(const T& a, const T& a_minValue, const T& a_maxValue);
+
   //------------------------------------------------------------------------
   // Modifying sequence operations
 

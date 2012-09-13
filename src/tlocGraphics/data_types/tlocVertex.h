@@ -4,7 +4,7 @@
 #include <tlocCore/types/tlocConditionalType.h>
 #include <tlocMath/vector/tlocVector3.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace types {
 
   namespace detail
   {
@@ -68,6 +68,6 @@ namespace tloc { namespace graphics {
       (math::Vec3f, GetColor, color_base_type::m_value);
   };
 
-};};
+};};};
 
 #endif

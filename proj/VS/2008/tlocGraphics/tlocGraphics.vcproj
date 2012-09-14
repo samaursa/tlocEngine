@@ -1052,9 +1052,37 @@
 			Name="data_types"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="media"
+			>
+			<Filter
+				Name="images"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImage.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImageLoader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImageLoader.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"

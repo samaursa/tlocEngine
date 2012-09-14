@@ -1197,6 +1197,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="types"
+				>
+				<File
+					RelativePath=".\tlocColorTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Input"

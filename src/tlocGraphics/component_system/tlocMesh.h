@@ -14,10 +14,10 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core::component_system::Component base_type;
 
-    typedef Vertex<true, true, true>          vertex_type;
-    typedef core::tl_array<vertex_type>::type container_type;
-    typedef container_type::iterator          iterator;
-    typedef container_type::const_iterator    const_iterator;
+    typedef types::Vertex<true, true, true>     vertex_type;
+    typedef core::tl_array<vertex_type>::type   container_type;
+    typedef container_type::iterator            iterator;
+    typedef container_type::const_iterator      const_iterator;
 
     Mesh();
 

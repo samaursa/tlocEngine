@@ -1,7 +1,7 @@
 #ifndef TLOC_VARIADIC_INL
 #define TLOC_VARIADIC_INL
 
-#ifndef TLOC_VARIADIC_INL
+#ifndef TLOC_VARIADIC_H
 #error "Must include header before including the inline file"
 #endif
 

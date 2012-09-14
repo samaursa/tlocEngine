@@ -20,8 +20,8 @@ namespace TestingObjectCounter
       core::Array<obj> objects;
       CHECK(obj::GetCurrentObjectCount() == 0);
 
-      const tl_int count = 100;
-      for (tl_int i = 0; i < count; ++i)
+      const s32 count = 100;
+      for (s32 i = 0; i < count; ++i)
       {
         objects.push_back(obj());
       }

@@ -89,6 +89,7 @@ namespace tloc { namespace core {
   bool ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::
     DoIsBufferValid(p_build_config::Release)
   {
+    return true;
   }
 
 };};

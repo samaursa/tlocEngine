@@ -51,7 +51,7 @@ namespace TestingMatrix3
     tloc::math::Mat3f k(v1, v2, v3, tloc::math::Mat3f::k_ColMajor);
     CHECK_MATRIX3F(k, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    tl_float values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     tloc::math::Mat3f m(values, tloc::math::Mat3f::k_RowMajor);
     CHECK_MATRIX3F(m, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
@@ -63,7 +63,7 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Math/Mul",
     "Test multiplication")
   {
-    f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    tl_float values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     a.Set(values, Mat3f::k_RowMajor);
     b.Set(values, Mat3f::k_RowMajor);
 
@@ -83,12 +83,12 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Det",
     "Test determinant")
   {
-    f32 values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    tl_float values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     a.Set(values, Mat3f::k_RowMajor);
 
     CHECK(a.Determinant() == Approx(0)); //-V550
 
-    f32 values2[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
+    tl_float values2[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
     a.Set(values2, Mat3f::k_RowMajor);
     CHECK(a.Determinant() == Approx(48)); //-V550
   }
@@ -96,13 +96,13 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Inv",
     "Test inverse")
   {
-    f32 values[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
+    tl_float values[9] = {4, 5, 6, 4, 9, 6, 4, 9, 9};
     a.Set(values, Mat3f::k_RowMajor);
 
     REQUIRE(b.Inverse(a) == true);
     CHECK_MATRIX3F(b, 0.5625f, -0.25f, 0, 0.1875f, 0.25, -0.33333f, -0.5f, 0, .33333f);
 
-    f32 values2[9] = {89, 58, 23, 97, 78, 72, 54, 32, 90};
+    tl_float values2[9] = {89, 58, 23, 97, 78, 72, 54, 32, 90};
     a.Set(values2, Mat3f::k_RowMajor);
     a.Inverse();
     CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f,
@@ -113,7 +113,7 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Adj",
     "Test adjoint")
   {
-    f32 values[9] = {2, 0, 1, 3, 2, -1, 1, 0, 0};
+    tl_float values[9] = {2, 0, 1, 3, 2, -1, 1, 0, 0};
     a.Set(values, Mat3f::k_RowMajor);
     b.Adjoint(a);
 
@@ -126,7 +126,7 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/OrthoNorm",
     "Test orthonormalize")
   {
-    f32 values[9] = {1, 4, 7, 4, 5, 8, 9, 15, 5};
+    tl_float values[9] = {1, 4, 7, 4, 5, 8, 9, 15, 5};
     a.Set(values, Mat3f::k_RowMajor);
 
     a.Orthonormalize();
@@ -144,7 +144,7 @@ namespace TestingMatrix3
     a.Zero();
     a.Set(values, Mat3f::k_RowMajor);
     a.FastOrthonormalize();
-    f32 prec = 1e-1f;
+    tl_float prec = 1e-1f;
     CHECK( (Mathf::Approx(a[0], 0.10f, prec)) == true );
     CHECK( (Mathf::Approx(a[1], 0.40f, prec)) == true );
     CHECK( (Mathf::Approx(a[2], 0.90f, prec)) == true );
@@ -177,8 +177,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakerEulerXYZ",
     "Test MakerEulerXYZ() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerXYZ(angle90, 0, 0);
     CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, 1, 0, -1, 0);
@@ -199,8 +199,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXZY",
     "Test MakeEulerXZY() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerXZY(angle45, angle90, angle45);
     a.Transpose();
@@ -210,8 +210,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYXZ",
     "Test MakeEulerYXZ() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerYXZ(angle45, angle90, angle45);
     a.Transpose();
@@ -221,8 +221,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYZX",
     "Test MakeEulerYZX() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerYZX(angle45, angle90, angle45);
     a.Transpose();
@@ -232,8 +232,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZXY",
     "Test MakeEulerZXY() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerZXY(angle45, angle90, angle45);
     a.Transpose();
@@ -243,8 +243,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZYX",
     "Test MakeEulerZYX() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerZYX(angle45, angle90, angle45);
     a.Transpose();
@@ -254,8 +254,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXYX",
     "Test MakeEulerXYX() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerXYX(angle45, angle90, angle45);
     a.Transpose();
@@ -267,8 +267,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXZX",
     "Test MakeEulerXZX() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerXZX(angle45, angle90, angle45);
     a.Transpose();
@@ -280,8 +280,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYXY",
     "Test MakeEulerYXY() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerYXY(angle45, angle90, angle45);
     a.Transpose();
@@ -293,8 +293,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYZY",
     "Test MakeEulerYZY() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerYZY(angle45, angle90, angle45);
     a.Transpose();
@@ -306,8 +306,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZXZ",
     "Test MakeEulerZXZ() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerZXZ(angle45, angle90, angle45);
     a.Transpose();
@@ -319,8 +319,8 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZYZ",
     "Test MakeEulerZYZ() method")
   {
-    f32 angle90 = 90 * Mathf::DEG_TO_RAD;
-    f32 angle45 = 45 * Mathf::DEG_TO_RAD;
+    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
+    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
 
     a.MakeEulerZYZ(angle45, angle90, angle45);
     a.Transpose();

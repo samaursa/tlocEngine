@@ -2,6 +2,7 @@
 
 #include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/data_structures/tlocVariadic.inl>
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -18,7 +19,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderProgram::ShaderProgram() : m_flags(count)
   {
-    GetHandle() = glCreateProgram();
+    SetHandle(glCreateProgram());
+    TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
   }
 
   ShaderProgram::~ShaderProgram()
@@ -28,11 +30,12 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <ShaderProgram::size_type T_Size>
   bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent, T_Size> a_shaderComponents)
+    (core::Variadic<ShaderComponent*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
-      glAttachShader(GetHandle(), a_shaderComponents[i].GetHandle());
+      glAttachShader(GetHandle(), a_shaderComponents[i]->GetHandle());
+      TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");
     }
 
     m_flags.Mark(shader_attached);
@@ -44,12 +47,18 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_flags[shader_attached],
       "No shaders attached - did you forget to call AttachShaders()?");
 
-    glLinkProgram(GetHandle());
+    object_handle handle = GetHandle();
+
+    glLinkProgram(handle);
 
     GLint result;
-    glGetShaderiv(GetHandle(), GL_LINK_STATUS, &result);
+
+    glGetProgramiv(handle, GL_LINK_STATUS, &result);
     if (result == GL_FALSE)
     {
+      core::String errorString;
+      gl::Error().GetErrorAsString(errorString);
+
       // TODO: Write shader log
       return false;
     }
@@ -65,13 +74,18 @@ namespace tloc { namespace graphics { namespace gl {
 
   //------------------------------------------------------------------------
   // Explicit initialization
+  template class core::Variadic<ShaderComponent*, 1>;
+  template class core::Variadic<ShaderComponent*, 2>;
+  template class core::Variadic<ShaderComponent*, 3>;
+  template class core::Variadic<ShaderComponent*, 4>;
+
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent, 1>);
+    (core::Variadic<ShaderComponent*, 1>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent, 2>);
+    (core::Variadic<ShaderComponent*, 2>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent, 3>);
+    (core::Variadic<ShaderComponent*, 3>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent, 4>);
+    (core::Variadic<ShaderComponent*, 4>);
 
 };};};

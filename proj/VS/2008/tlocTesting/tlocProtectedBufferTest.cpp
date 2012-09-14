@@ -8,6 +8,23 @@ namespace ProtectedBufferTest
 {
   using namespace tloc::core;
 
+  template <typename T_BuildConfig>
+  struct CheckBufferStatusForInvalidBuffer
+  {
+    void operator()(bool a_isValid)
+    {
+      CHECK(a_isValid == false);
+    }
+  };
+
+  template <>
+  struct CheckBufferStatusForInvalidBuffer<p_build_config::Release>
+  {
+    void operator()(bool)
+    {
+    }
+  };
+
   TEST_CASE("Core/containers/ProtectedBuffers", "")
   {
     typedef CharBuffer<5>                     char5;
@@ -28,7 +45,10 @@ namespace ProtectedBufferTest
       sprintf(p.Get(), "This ");
 
       bool isBufferValid = p.DoIsBufferValid(build_config_type());
-      CHECK(isBufferValid == false);
+
+      CheckBufferStatusForInvalidBuffer<BuildConfig<>::build_config_type>()(isBufferValid);
+      //CHECK(isBufferValid == false);
+
       p.DoInit(build_config_type()); // To avoid the assertion in the destructor
     }
   }

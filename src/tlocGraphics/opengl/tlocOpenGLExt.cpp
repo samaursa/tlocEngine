@@ -12,8 +12,6 @@ namespace tloc { namespace graphics {
 
   OpenGLExt::error_type OpenGLExt::Initialize()
   {
-    TLOC_ASSERT(m_initialized == false, "OpenGL Extensions already loaded!");
-
     if (!m_initialized)
     {
       GLenum err = glewInit();
@@ -37,6 +35,7 @@ namespace tloc { namespace graphics {
       }
     }
 
+    // LOG: GLEW already initialized
     m_error = error_already_init;
     return GetLastError();
   }

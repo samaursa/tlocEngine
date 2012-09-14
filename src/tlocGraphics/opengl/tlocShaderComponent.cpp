@@ -49,18 +49,20 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_ShaderType>
   bool ShaderComponent::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
   {
-    GetHandle() = detail::CreateShader(a_type);
-    if (!GetHandle())
+    SetHandle(detail::CreateShader(a_type));
+
+    object_handle handle = GetHandle();
+    if (!handle)
     {
       return false;
     }
 
     // Load the shader
-    tl_int strLen = (tl_int)core::StrLen(a_shaderSource);
-    glShaderSource(GetHandle(), 1, &a_shaderSource, &strLen);
+    s32 strLen = (s32)core::StrLen(a_shaderSource);
+    glShaderSource(handle, 1, &a_shaderSource, &strLen);
 
     // TODO: Log proper OpenGL errors
-    if(GlError().Failed())
+    if(Error().Failed())
     { return false; }
 
     m_flags.Mark(shader_loaded);
@@ -72,15 +74,16 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");
 
-    glCompileShader(GetHandle());
+    object_handle handle = GetHandle();
+    glCompileShader(handle);
 
     GLint result;
-    glGetShaderiv(GetHandle(), GL_COMPILE_STATUS, &result);
+    glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
     if (result == GL_FALSE)
     {
-      tl_int  logLen;
+      s32     logLen;
       char    logBuffer[1000];
-      glGetShaderInfoLog(GetHandle(), sizeof(logBuffer), &logLen, logBuffer);
+      glGetShaderInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
 
       // TODO: Write shader log
       return false;

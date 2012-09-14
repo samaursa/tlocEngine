@@ -1051,18 +1051,38 @@
 		<Filter
 			Name="data_types"
 			>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+			<Filter
+				Name="color"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rectangle"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="vertex"
 				>
-			</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="media"

@@ -61,6 +61,9 @@ namespace tloc { namespace graphics { namespace types {
     Color   operator - (const Color& a_other);
     Color&  operator -=(const Color& a_other);
 
+    bool    operator ==(const Color& a_other);
+    bool    operator !=(const Color& a_other);
+
   private:
     container_type      m_rgba;
   };

@@ -176,6 +176,19 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
+  bool Color::operator ==(const Color &a_other)
+  {
+    return ( m_rgba[0] == a_other[0] &&
+             m_rgba[1] == a_other[1] &&
+             m_rgba[2] == a_other[2] &&
+             m_rgba[3] == a_other[3] );
+  }
+
+  bool Color::operator !=(const Color &a_other)
+  {
+    return !operator==(a_other);
+  }
+
   //------------------------------------------------------------------------
   // Explicit initialization
 

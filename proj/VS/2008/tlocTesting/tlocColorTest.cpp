@@ -83,5 +83,12 @@ namespace TestingColor
     CHECK(f[1] == 0);
     CHECK(f[2] == 0);
     CHECK(f[3] == 0);
+
+    CHECK(f != e);
+    CHECK(e != f);
+    f = e;
+    CHECK(f == e);
+    CHECK(e == f);
+
   }
 };

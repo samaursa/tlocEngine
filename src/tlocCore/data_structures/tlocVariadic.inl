@@ -117,7 +117,6 @@ namespace tloc { namespace core {
     operator[](9) = a_10;
   }
 
-
 };};
 
 #endif

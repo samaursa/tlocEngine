@@ -248,7 +248,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
     {
@@ -259,7 +259,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple ) const
   {
     return !operator==(aTuple);
   }

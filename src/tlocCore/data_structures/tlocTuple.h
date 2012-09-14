@@ -91,8 +91,8 @@ namespace tloc { namespace core {
     template <typename T_ArrayType>
     TL_FI Tuple<T, T_Size>& operator= (const T_ArrayType (&aArray)[T_Size]);
 
-    TL_FI bool operator == (const this_type& aTuple);
-    TL_FI bool operator != (const this_type& aTuple);
+    TL_FI bool operator == (const this_type& aTuple) const;
+    TL_FI bool operator != (const this_type& aTuple) const;
 
   protected:
 
@@ -126,6 +126,18 @@ namespace tloc { namespace core {
     template <tl_size T_TupleSize>
     TL_FI void DoFillRemaining(p_tuple::overflow_zero);
   };
+
+  typedef Tuple<tl_float, 2>    Tuple2f;
+  typedef Tuple<tl_int, 2>      Tuple2i;
+  typedef Tuple<tl_uint, 2>     Tuple2u;
+
+  typedef Tuple<tl_float, 3>    Tuple3f;
+  typedef Tuple<tl_int, 3>      Tuple3i;
+  typedef Tuple<tl_uint, 3>     Tuple3u;
+
+  typedef Tuple<tl_float, 4>    Tuple4f;
+  typedef Tuple<tl_int, 4>      Tuple4i;
+  typedef Tuple<tl_uint, 4>     Tuple4u;
 
 };};
 

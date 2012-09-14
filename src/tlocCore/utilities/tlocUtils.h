@@ -29,11 +29,13 @@ namespace tloc { namespace core { namespace utils {
   ///
   /// @param object The type itself
   ///-------------------------------------------------------------------------
+#define TLOC_DECLARE_OPERATOR_NOT_EQUAL(object)\
+  bool operator !=(object const& a_other) const { return !(operator==(a_other)); }
 #define TLOC_DECLARE_OPERATORS(object) \
-  bool operator !=(const object& a_other) const { return !(operator==(a_other)); }\
-  bool operator > (const object& a_other) const { return a_other.operator<(*this); }\
-  bool operator <=(const object& a_other) const { return !(operator>(a_other)); }\
-  bool operator >=(const object& a_other) const { return !(operator<(a_other)); }
+  TLOC_DECLARE_OPERATOR_NOT_EQUAL(object) \
+  bool operator > (object const& a_other) const { return a_other.operator<(*this); }\
+  bool operator <=(object const& a_other) const { return !(operator>(a_other)); }\
+  bool operator >=(object const& a_other) const { return !(operator<(a_other)); }
 
 
   ///-------------------------------------------------------------------------

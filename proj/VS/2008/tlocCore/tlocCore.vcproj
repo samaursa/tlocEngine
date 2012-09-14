@@ -1075,6 +1075,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadicTypedefMacros.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="types"

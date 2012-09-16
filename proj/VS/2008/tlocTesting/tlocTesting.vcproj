@@ -1081,6 +1081,10 @@
 				Name="memory"
 				>
 				<File
+					RelativePath=".\tlocBufferArgTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocMemoryPoolTest.cpp"
 					>
 				</File>

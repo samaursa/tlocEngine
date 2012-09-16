@@ -130,9 +130,12 @@ namespace tloc { namespace core {
       if (minBucketCount > (f32)a_numOfBuckets)
       {
         minBucketCount = tlMax(minBucketCount, m_growthFactor * a_numOfBuckets);
+
+        u32 minBucketCountCeil = (u32)(minBucketCount + 0.5f);
+
         const u32 prime = *lower_bound(hash_detail::g_primeNumberArray,
           hash_detail::g_primeNumberArray + hash_detail::g_primeCount,
-          minBucketCount);
+          minBucketCountCeil);
         m_nextResize = (u32)CEILING(prime * m_maxLoadFactor);
 
         return Pair<bool, u32>(true, prime);

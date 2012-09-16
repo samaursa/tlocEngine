@@ -20,15 +20,21 @@ namespace tloc { namespace core { namespace error {
   // error codes type
   typedef tl_int  error_code_type;
 
+};};};
+
+namespace tloc {
+
   namespace common_error_types
   {
     enum Type
     {
-      error_success             = error_groups::error_common,
-      error_failure
+      error_success                     = core::error::error_groups::error_common,
+      error_failure,
+      error_no_data,                    // used for NULL
+      error_size_mismatch,
     };
   };
 
-};};};
+};
 
 #endif

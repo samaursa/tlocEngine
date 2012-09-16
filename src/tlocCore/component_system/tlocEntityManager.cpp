@@ -59,7 +59,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::InsertComponent(Entity *a_entity, Component *a_component)
   {
-    TLOC_ASSERT(core::find(m_entities, a_entity) != m_entities.end(),
+    TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
 
     entity_list& entities = m_componentsAndEntities[a_component->GetType()];
@@ -78,13 +78,13 @@ namespace tloc { namespace core { namespace component_system {
     entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
 
     {// Remove it from the entity
-      component_list::iterator itr = core::find(entityComps, a_component);
+      component_list::iterator itr = core::find_all(entityComps, a_component);
       if (itr != entityComps.end()) { entityComps.erase(itr); }
       else { return false; }
     }
 
     {// Remove it from the component list
-      entity_list::iterator itr = core::find(entityList, a_entity);
+      entity_list::iterator itr = core::find_all(entityList, a_entity);
       TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
       if (itr != entityList.end()) { entityList.erase(itr); }
     }

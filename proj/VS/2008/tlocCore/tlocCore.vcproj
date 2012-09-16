@@ -1547,6 +1547,14 @@
 				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocPath.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocPath.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="error"

@@ -94,6 +94,24 @@ namespace tloc { namespace core {
   // Comparisor operations
 
   template <typename T>
+  struct equal_to_stored : unary_function<T, bool>
+  {
+    equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+    bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
+  struct not_equal_to_stored : unary_function<T, bool>
+  {
+    not_equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+    bool operator()(const T& a_x) const { return m_toCompareWith != a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
   struct equal_to : binary_function<T, T, bool>
   {
     bool operator()(const T& a_x, const T& a_y) const { return a_x == a_y; }

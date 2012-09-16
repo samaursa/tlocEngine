@@ -686,6 +686,16 @@ namespace TestingAlgorithms
     UniqueAll<core::Array<tl_int>, core::List<tl_int> >();
     UniqueAll<core::List<tl_int>, core::List<tl_int> >();
     UniqueAll<core::String, core::String>();
+
+    String somePath("..//..//somePath.txt");
+    String fixedPath;
+    String toMatch = "/";
+    core::unique_copy_only_all(somePath, fixedPath, toMatch);
+    CHECK(fixedPath.compare("../../somePath.txt") == 0);
+    toMatch += ".";
+    somePath.clear();
+    core::unique_copy_only_all(fixedPath, somePath, toMatch);
+    CHECK(somePath.compare("././somePath.txt") == 0);
   }
 
   template <typename T_Container1, typename T_Container2>

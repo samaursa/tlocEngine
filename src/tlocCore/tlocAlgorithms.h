@@ -189,11 +189,78 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Modifiers (some are non-standard)
 
+  template <typename T_Container, typename T>
+  typename T_Container::iterator remove_all(T_Container& a_in, const T& a_value);
+
+  template <typename T_Container, typename T_UnaryPred>
+  typename T_Container::iterator remove_if_all(T_Container& a_in,
+                                               T_UnaryPred a_pred);
+
+  template <typename T_Container1, typename T_Container2, typename T>
+  void remove_copy_all(const T_Container1& a_in, T_Container2& a_out,
+                       const T& a_value);
+
+  template <typename T_Container1, typename T_Container2, typename T_UnaryPred>
+  void remove_copy_if_all(const T_Container1& a_in, T_Container2& a_out,
+                          T_UnaryPred a_pred);
+
+  template <typename T_ForwardItr, typename T>
+  T_ForwardItr remove(T_ForwardItr a_begin, T_ForwardItr a_end, const T& a_value);
+
+  template <typename T_ForwardItr, typename T_UnaryPred>
+  T_ForwardItr remove_if(T_ForwardItr a_begin, T_ForwardItr a_end,
+                         T_UnaryPred a_pred);
+
+  template <typename T_InputItr, typename T_OutputItr, typename T>
+  T_OutputItr remove_copy(T_InputItr a_begin, T_InputItr a_end,
+                          T_OutputItr a_output, const T& a_value);
+
+  template <typename T_InputItr, typename T_OutputItr, typename T_UnaryPred>
+  T_OutputItr remove_copy_if(T_InputItr a_begin, T_InputItr a_end,
+                             T_OutputItr a_output, T_UnaryPred a_pred);
+
+  template <typename T_Container, typename T>
+  typename T_Container::iterator
+    replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue);
+
+  template <typename T_Container, typename T_UnaryPred, typename T>
+  typename T_Container::iterator
+    replace_if_all(T_Container& a_in, const T& a_oldValue,
+                   T_UnaryPred a_pred, const T& a_newValue);
+
+  template <typename T_Container1, typename T_Container2, typename T>
+  void replace_copy_all(const T_Container1& a_in, T_Container2& a_out,
+                        const T& a_oldValue, const T& a_newValue);
+
+  template <typename T_Container1, typename T_Container2, typename T_UnaryPred,
+            typename T>
+  void replace_copy_if_all(const T_Container1& a_in, T_Container2& a_out,
+                           T_UnaryPred a_pred, const T& a_newValue);
+
+  template <typename T_ForwardItr, typename T>
+  void replace(T_ForwardItr a_begin, T_ForwardItr a_end,
+               const T& a_oldValue, const T& a_newValue);
+
+  template <typename T_ForwardItr, typename T_UnaryPred, typename T>
+  void replace_if(T_ForwardItr a_begin, T_ForwardItr a_end,
+                  T_UnaryPred a_pred, const T& a_newValue);
+
+  template <typename T_InputItr, typename T_OutputItr, typename T>
+  T_OutputItr replace_copy(T_InputItr a_begin, T_InputItr a_end,
+                           T_OutputItr a_output, const T& a_oldValue,
+                           const T& a_newValue);
+
+  template <typename T_InputItr, typename T_OutputItr, typename T_UnaryPred,
+            typename T>
+  T_OutputItr replace_copy_if(T_InputItr a_begin, T_InputItr a_end,
+                              T_OutputItr a_output, T_UnaryPred a_pred,
+                              const T& a_newValue);
+
   template <typename T_ForwardItr>
-  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end);
+  T_ForwardItr unique(T_ForwardItr a_begin, T_ForwardItr a_end);
 
   template <typename T_ForwardItr, typename T_BinaryPred>
-  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end,
+  T_ForwardItr unique(T_ForwardItr a_begin, T_ForwardItr a_end,
                       T_BinaryPred);
 
   template <typename T_Container>

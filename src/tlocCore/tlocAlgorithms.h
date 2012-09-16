@@ -36,18 +36,19 @@ namespace tloc { namespace core {
                                            T_Iterator a_end);
 
   template <typename T_Container, typename T_Function>
-  T_Function for_each(T_Container a_container, T_Function a_func);
+  T_Function for_each_all(T_Container a_container, T_Function a_func);
 
   template <typename T_InputIterator, typename T_Function>
   T_Function for_each(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                       T_Function aFunc);
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator find(T_Container& a_container, const T& a_value);
+  typename T_Container::iterator
+    find_all(T_Container& a_container, const T& a_value);
 
   template <typename T_Container, typename T>
-  typename T_Container::const_iterator find(const T_Container& a_container,
-                                            const T& a_value);
+  typename T_Container::const_iterator
+    find_all(const T_Container& a_container, const T& a_value);
 
   template <typename T_InputIterator, typename T>
   T_InputIterator find(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
@@ -114,14 +115,14 @@ namespace tloc { namespace core {
                                       T_BinaryPredicate  a_pred);
 
   template <typename T_Container, typename T>
-  tl_size count(T_Container a_container, const T& a_value);
+  tl_size count_all(T_Container a_container, const T& a_value);
 
   template <typename T_InputIterator, typename T>
   tl_size count(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                 const T& a_value);
 
   template <typename T_Container, typename T_Predicate>
-  tl_size count_if(T_Container a_container, T_Predicate a_pred);
+  tl_size count_if_all(T_Container a_container, T_Predicate a_pred);
 
   template <typename T_InputIterator, typename T_Predicate>
   tl_size count_if(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
@@ -184,6 +185,50 @@ namespace tloc { namespace core {
                              T_ForwardIterator a_rangeToSearchEnd,
                              T_Size a_count, const T& a_value,
                              T_BinaryPred a_pred);
+
+  //------------------------------------------------------------------------
+  // Modifiers (some are non-standard)
+
+  template <typename T_ForwardItr>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end);
+
+  template <typename T_ForwardItr, typename T_BinaryPred>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end,
+                      T_BinaryPred);
+
+  template <typename T_Container>
+  typename T_Container::iterator unique_all(T_Container& a_inOut);
+
+  template <typename T_Container1, typename T_Container2>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out);
+
+  ///-------------------------------------------------------------------------
+  /// @brief Removes duplicate elements.
+  ///
+  /// @param  a_pred        Binary predicate that returns true if values are
+  ///                       same.
+  ///-------------------------------------------------------------------------
+  template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out,
+                       T_BinaryPred);
+
+  ///-------------------------------------------------------------------------
+  /// @brief Removes duplicate elements only if they are found in a_matchList
+  ///-------------------------------------------------------------------------
+  template <typename T_Container1, typename T_Container2, typename T_Container3>
+  void unique_copy_only_all (const T_Container1& a_in, T_Container2& a_out,
+                             const T_Container3& a_matchList);
+
+  ///-------------------------------------------------------------------------
+  /// @brief Removes duplicate elements only if they are found in a_matchList
+  ///
+  /// @param  a_pred        Binary predicate that returns true if values are
+  ///                       same.
+  ///-------------------------------------------------------------------------
+  template <typename T_Container1, typename T_Container2, typename T_Container3,
+            typename T_BinaryPred>
+  void unique_copy_only_all (const T_Container1& a_in, T_Container2& a_out,
+                             const T_Container3& a_matchList, T_BinaryPred);
 
   //------------------------------------------------------------------------
   // Sorting

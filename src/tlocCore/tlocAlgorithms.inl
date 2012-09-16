@@ -30,7 +30,7 @@ namespace tloc { namespace core {
   // Non-modifying sequence operations
 
   template <typename T_Container, typename T_Function>
-  T_Function for_each(T_Container a_container, T_Function a_func)
+  T_Function for_each_all(T_Container a_container, T_Function a_func)
   {
     return for_each(a_container.begin(), a_container.end(), a_func);
   }
@@ -53,14 +53,15 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator find(T_Container& a_container, const T& a_value)
+  typename T_Container::iterator 
+    find_all(T_Container& a_container, const T& a_value)
   {
     return find(a_container.begin(), a_container.end(), a_value);
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::const_iterator find(const T_Container& a_container, 
-                                            const T& a_value)
+  typename T_Container::const_iterator 
+    find_all(const T_Container& a_container, const T& a_value)
   {
     return find(a_container.begin(), a_container.end(), a_value);
   }
@@ -396,7 +397,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  tl_size count(T_Container a_container, const T& a_value)
+  tl_size count_all(T_Container a_container, const T& a_value)
   {
     return count(a_container.begin(), a_container.end(), a_value);
   }
@@ -419,7 +420,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_Predicate>
-  tl_size count_if(T_Container a_container, T_Predicate a_pred)
+  tl_size count_if_all(T_Container a_container, T_Predicate a_pred)
   {
     return count_if(a_container.begin(), a_container.end(), a_pred);
   }
@@ -707,6 +708,127 @@ namespace tloc { namespace core {
     return a_rangeToSearchEnd;
   }
 
+  //------------------------------------------------------------------------
+  // Modifiers 
+
+  template <typename T_ForwardItr>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end)
+  {
+    unique(a_first, a_last, equal_to<T_ForwardItr::value_type>());
+  }
+
+  template <typename T_ForwardItr, typename T_BinaryPred>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end,
+                      T_BinaryPred)
+  {
+    T_ForwardItr prevItr = a_first++;
+
+    for (; a_first != a_end; ++a_first)
+    {
+      if (T_BinaryPred()(*itr, *prevItr) == false)
+      { 
+        ++prevItr;
+        *prevItr = *itr;
+      }
+    }
+
+    return ++prevItr;
+  }
+
+  template <typename T_Container>
+  typename T_Container::iterator unique_all(T_Container& a_inOut)
+  {
+    return unique(a_inOut.being(), a_inOut.end());
+  }
+
+  template <typename T_Container1, typename T_Container2>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out)
+  {
+    typedef T_Container1::value_type value_type;
+    unique_copy_all(a_in, a_out, equal_to<value_type>());
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out, 
+                                    T_BinaryPred)
+  {
+    typedef T_Container1::const_iterator     itr_type_1;
+    typedef T_Container1::value_type         value_type_1;
+    typedef T_Container2::value_type         value_type_2;
+
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_2>::value),
+      Container_value_type_must_match);
+
+    a_out.push_back( *(a_in.begin()) );
+
+    itr_type_1 prevItr  = a_in.begin();
+    itr_type_1 itr      = a_in.begin(); advance(itr, 1);
+    itr_type_1 itrEnd   = a_in.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      if (T_BinaryPred()(*itr, *prevItr) == false)
+      { 
+        a_out.push_back(*itr);
+        prevItr = itr;
+      }
+    }
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Container3>
+  void unique_copy_only_all(const T_Container1& a_in, 
+                                             T_Container2& a_out, 
+                                             const T_Container3& a_dupList)
+  {
+    typedef T_Container1::value_type value_type;
+    unique_copy_only_all(a_in, a_out, a_dupList, 
+                                          equal_to<value_type>());
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Container3,
+            typename T_BinaryPred>
+  void unique_copy_only_all(const T_Container1& a_in, 
+                                             T_Container2& a_out, 
+                                             const T_Container3& a_dupList, 
+                                             T_BinaryPred)
+  {
+    typedef T_Container1::const_iterator     itr_type_1;
+    typedef T_Container1::value_type         value_type_1;
+
+    typedef T_Container2::value_type         value_type_2;
+
+    typedef T_Container3::const_iterator     itr_type_3;
+    typedef T_Container3::value_type         value_type_3;
+
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_2>::value),
+      Container_value_type_must_match);
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_3>::value),
+      Container_value_type_must_match);
+
+    a_out.push_back( *(a_in.begin()) );
+
+    itr_type_1 prevItr  = a_in.begin();
+    itr_type_1 itr      = a_in.begin(); advance(itr, 1);
+    itr_type_1 itrEnd   = a_in.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      itr_type_3 itrDup = find_all(a_dupList, *itr);
+      if (itrDup != a_dupList.end())
+      {
+        if (T_BinaryPred()(*itr, *prevItr) == false)
+        { 
+          a_out.push_back(*itr);
+          prevItr = itr;
+        }
+      }
+      else
+      {
+        a_out.push_back(*itr);
+        prevItr = itr;
+      }
+    }
+  }
 
   //------------------------------------------------------------------------
   // Sorting

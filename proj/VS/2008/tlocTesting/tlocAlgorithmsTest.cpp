@@ -4,12 +4,12 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/utilities/tlocUtils.h>
-
+#include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/string/tlocString.h>
 
 namespace TestingAlgorithms
 {
@@ -330,8 +330,8 @@ namespace TestingAlgorithms
     TestForEach(intDynArray.begin());
     TestForEach(intList.begin());
 
-    for_each(intDynArray, ForEachFunc);
-    for_each(intList, ForEachFunc);
+    for_each_all(intDynArray, ForEachFunc);
+    for_each_all(intList, ForEachFunc);
   }
 
   template <typename T_Itr>
@@ -364,8 +364,8 @@ namespace TestingAlgorithms
     TestFind(intArray.begin());
     TestFind(intList.begin());
 
-    find(intArray, 0u);
-    find(intList, 0u);
+    find_all(intArray, 0u);
+    find_all(intList, 0u);
   }
 
   bool IsOdd (s32 i)
@@ -509,7 +509,7 @@ namespace TestingAlgorithms
       mycount = (s32) count (myvector.begin(), myvector.end(), 20);
       CHECK(mycount == 3);
 
-      mycount = (s32) count (myvector, 20);
+      mycount = (s32) count_all(myvector, 20);
       CHECK(mycount == 3);
     }
 
@@ -522,7 +522,7 @@ namespace TestingAlgorithms
       mycount = (s32) count_if (myvector.begin(), myvector.end(), IsOdd);
       CHECK(mycount == 5);
 
-      mycount = (s32) count_if (myvector, IsOdd);
+      mycount = (s32) count_if_all(myvector, IsOdd);
       CHECK(mycount == 5);
     }
   }
@@ -652,6 +652,96 @@ namespace TestingAlgorithms
     it = search_n (myvector.begin(), myvector.end(), 2, 10, mypredicate);
 
     CHECK(s32(it-myvector.begin()) == 5);
+  }
+
+  template <typename T_Container1, typename T_Container2>
+  void UniqueAll()
+  {
+    typedef T_Container1::value_type  value_type_1;
+    typedef T_Container2::iterator    itr_type_2;
+
+    value_type_1 myValues[] = { 1, 2, 3, 3, 3, 4, 5, 5, 5, 6, 7, 8, 8, 9, 10, 10};
+
+    T_Container1 myVec(myValues, myValues + utils::ArraySize(myValues));
+    T_Container2 myNewVec;
+
+    unique_copy_all(myVec, myNewVec);
+
+    bool testPassed = true;
+    value_type_1 counter = 1;
+    for (itr_type_2 itr = myNewVec.begin(), itrEnd = myNewVec.end();
+         itr != itrEnd; ++itr)
+    {
+      if(*itr != (value_type_1)counter++)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture,
+                   "Core/Algorithms/UniqueAll", "")
+  {
+    UniqueAll<core::Array<tl_int>, core::Array<tl_int> >();
+    UniqueAll<core::List<tl_int>, core::Array<tl_int> >();
+    UniqueAll<core::Array<tl_int>, core::List<tl_int> >();
+    UniqueAll<core::List<tl_int>, core::List<tl_int> >();
+    UniqueAll<core::String, core::String>();
+  }
+
+  template <typename T_Container1, typename T_Container2>
+  void UniqueOnly()
+  {
+    typedef T_Container1::value_type  value_type_1;
+    typedef T_Container2::iterator    itr_type_2;
+
+    value_type_1 myValues[] = { 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1};
+
+    T_Container1 myVec(myValues, myValues + utils::ArraySize(myValues));
+    T_Container2 myNewVec;
+
+    T_Container1 matchingVec;
+    matchingVec.push_back(1);
+    matchingVec.push_back(2);
+
+    unique_copy_only_all(myVec, myNewVec, matchingVec);
+
+    Array<value_type_1> newContainer;
+    newContainer.assign(myNewVec.begin(), myNewVec.end());
+
+    CHECK(newContainer.size() == 15);
+    if (newContainer.size() == 15)
+    {
+      bool testPassed = true;
+      if ( (newContainer[0]	 == 0 &&
+            newContainer[1]	 == 0 &&
+            newContainer[2]	 == 1 &&
+            newContainer[3]	 == 0 &&
+            newContainer[4]	 == 0 &&
+            newContainer[5]	 == 1 &&
+            newContainer[6]	 == 2 &&
+            newContainer[7]	 == 3 &&
+            newContainer[8]	 == 4 &&
+            newContainer[9]	 == 5 &&
+            newContainer[10] == 6 &&
+            newContainer[11] == 7 &&
+            newContainer[12] == 8 &&
+            newContainer[13] == 9 &&
+            newContainer[14] == 1) == false)
+      {
+        testPassed = false;
+      }
+      CHECK(testPassed);
+    }
+  }
+
+  TEST_CASE_METHOD(AlgorithmFixture,
+                   "Core/Algorithms/UniqueOnlyAll", "")
+  {
+    UniqueOnly<core::Array<tl_int>, core::Array<tl_int> >();
+    UniqueOnly<core::List<tl_int>, core::Array<tl_int> >();
+    UniqueOnly<core::Array<tl_int>, core::List<tl_int> >();
+    UniqueOnly<core::List<tl_int>, core::List<tl_int> >();
+    UniqueOnly<core::String, core::String>();
   }
 
   TEST_CASE_METHOD(AlgorithmFixture, "Core/Algorithsm/lower_bound", "")

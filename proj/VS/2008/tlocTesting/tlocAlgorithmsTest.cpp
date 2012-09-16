@@ -652,6 +652,125 @@ namespace TestingAlgorithms
     CHECK(s32(it-myvector.begin()) == 5);
   }
 
+  template <typename T_Container>
+  void Remove()
+  {
+    typedef typename T_Container::value_type value_type;
+    typedef typename T_Container::iterator itr_type;
+
+    value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
+
+    value_type* pbegin = myints;
+    value_type* pend = myints + utils::ArraySize(myints);
+
+    pend = core::remove(pbegin, pend, 20);
+
+    CHECK(myints[0] == 10);
+    CHECK(myints[1] == 30);
+    CHECK(myints[2] == 30);
+    CHECK(myints[3] == 10);
+    CHECK(myints[4] == 10);
+  }
+
+  TEST_CASE("Core/Algorithms/Remove", "")
+  {
+    Remove<core::Array<tl_int> >();
+    Remove<core::List<tl_int> >();
+    Remove<core::Array<tl_int> >();
+    Remove<core::List<tl_int> >();
+  }
+
+  template <typename T_Container>
+  void RemoveCopy()
+  {
+    typedef typename T_Container::value_type value_type;
+    typedef typename T_Container::iterator itr_type;
+
+    value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
+
+    value_type* pbegin = myints;
+    value_type* pend = myints + utils::ArraySize(myints);
+
+    T_Container myvector (8);
+    core::remove_copy(pbegin, pend, myvector.begin(), 20);
+
+    itr_type itr = myvector.begin();
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 0); ++itr;
+    CHECK(*itr == 0); ++itr;
+    CHECK(*itr == 0); ++itr;
+  }
+
+  TEST_CASE("Core/Algorithms/RemoveCopy", "")
+  {
+    RemoveCopy<core::Array<tl_int> >();
+    RemoveCopy<core::List<tl_int> >();
+  }
+
+  template <typename T_Container>
+  void ReplaceCopy()
+  {
+    typedef typename T_Container::value_type value_type;
+    typedef typename T_Container::iterator itr_type;
+
+    value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
+    T_Container myIntsVec;
+    myIntsVec.assign(myints, myints+ 8);
+    T_Container myvector;
+    core::replace_copy_all(myIntsVec, myvector, 20, 99);
+
+    itr_type itr = myvector.begin();
+    REQUIRE(myvector.size() == 8);
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 99); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 99); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 99); ++itr;
+  }
+
+  TEST_CASE("Core/Algorithms/ReplaceCopy", "")
+  {
+    ReplaceCopy<core::Array<tl_int> >();
+    ReplaceCopy<core::List<tl_int> >();
+  }
+
+  template <typename T_Container>
+  void Replace()
+  {
+    typedef typename T_Container::value_type value_type;
+    typedef typename T_Container::iterator itr_type;
+
+    value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
+    T_Container myvector (myints, myints+8);            // 10 20 30 30 20 10 10 20
+
+    core::replace_all(myvector, (value_type)20, (value_type)99); // 10 99 30 30 99 10 10 99
+
+    itr_type itr = myvector.begin();
+    REQUIRE(myvector.size() == 8);
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 99); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 99); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 99); ++itr;
+  }
+
+  TEST_CASE("Core/Algorithms/Replace", "")
+  {
+    Replace<core::Array<tl_int> >();
+    Replace<core::List<tl_int> >();
+    Replace<core::String>();
+  }
+
   template <typename T_Container1, typename T_Container2>
   void UniqueAll()
   {
@@ -752,20 +871,20 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithsm/lower_bound", "")
   {
-    //s32 intArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    s32 intArray[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-    //s32* result = lower_bound( intArray, intArray + 15, 9);
-    //CHECK(*result == 9);
+    s32* result = lower_bound( intArray, intArray + 15, 9);
+    CHECK(*result == 9);
 
-    //s32 myints[] = {10,20,30,30,20,10,10,20};
-    //Array<s32> v(myints,myints+8);           // 10 20 30 30 20 10 10 20
-    //Array<s32>::iterator low;
+    s32 myints[] = {10,20,30,30,20,10,10,20};
+    Array<s32> v(myints,myints+8);           // 10 20 30 30 20 10 10 20
+    Array<s32>::iterator low;
 
-    //sort (v.begin(), v.end());                // 10 10 10 20 20 20 30 30
+    sort (v.begin(), v.end());                // 10 10 10 20 20 20 30 30
 
-    //low = lower_bound (v.begin(), v.end(), 20); //          ^
+    low = lower_bound (v.begin(), v.end(), 20); //          ^
 
-    //CHECK( distance(v.begin(), low) == 3);
+    CHECK( distance(v.begin(), low) == 3);
   }
 
   template <typename T_SortType>

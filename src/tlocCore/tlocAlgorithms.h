@@ -220,13 +220,10 @@ namespace tloc { namespace core {
                              T_OutputItr a_output, T_UnaryPred a_pred);
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator
-    replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue);
+  void replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue);
 
   template <typename T_Container, typename T_UnaryPred, typename T>
-  typename T_Container::iterator
-    replace_if_all(T_Container& a_in, const T& a_oldValue,
-                   T_UnaryPred a_pred, const T& a_newValue);
+  void replace_if_all(T_Container& a_in, T_UnaryPred a_pred, const T& a_newValue);
 
   template <typename T_Container1, typename T_Container2, typename T>
   void replace_copy_all(const T_Container1& a_in, T_Container2& a_out,

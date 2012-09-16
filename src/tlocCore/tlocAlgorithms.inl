@@ -569,8 +569,8 @@ namespace tloc { namespace core {
   template <typename T_ForwardItr, typename T_Pred>
   T_ForwardItr remove_if(T_ForwardItr a_begin, T_ForwardItr a_end, T_Pred a_pred)
   {
-    typedef T_ForwardItr::value_type  value_type;
-    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type, T>::value),
+    typedef typename iterator_traits<T_ForwardItr>::value_type  value_type;
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type, T_Pred::argument_type>::value),
       Iterator_type_and_T_must_be_same);
 
     T_ForwardItr result = a_begin;
@@ -578,7 +578,7 @@ namespace tloc { namespace core {
     {
       if (a_pred(*a_begin) == false)
       {
-        *result = a_begin;
+        *result = *a_begin;
         ++result;
       }
     }
@@ -609,25 +609,22 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator 
-    replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue)
+  void replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue)
   {
-    return replace(a_in.begin(), a_in.end(), a_oldValue, a_newValue);
+    replace(a_in.begin(), a_in.end(), a_oldValue, a_newValue);
   }
 
   template <typename T_Container, typename T_Pred, typename T>
-  typename T_Container::iterator 
-    replace_if_all(T_Container& a_in, T_Pred a_pred, const T& a_newValue)
+  void replace_if_all(T_Container& a_in, T_Pred a_pred, const T& a_newValue)
   {
-    return replace_if(a_in.begin(), a_in.end(), a_pred, a_newValue);
+    replace_if(a_in.begin(), a_in.end(), a_pred, a_newValue);
   }
 
   template <typename T_Container1, typename T_Container2, typename T>
   void replace_copy_all(const T_Container1& a_in, T_Container2& a_out,
                         const T& a_oldValue, const T& a_newValue)
   {
-    replace_copy(a_in.begin(), a_in.end(), back_insert_iterator(a_out), 
-                 a_oldValue, a_newValue);
+    replace_copy_if_all(a_in, a_out, equal_to_stored<T>(a_oldValue), a_newValue);
   }
 
   template <typename T_Container1, typename T_Container2, typename T_Pred,
@@ -635,15 +632,15 @@ namespace tloc { namespace core {
   void replace_copy_if_all(const T_Container1& a_in, T_Container2& a_out,
                            T_Pred a_pred, const T& a_newValue)
   {
-    replace_copy_if(a_in.begin(), a_in.end(), back_insert_iterator(a_out), 
+    replace_copy_if(a_in.begin(), a_in.end(), back_inserter(a_out), 
                     a_pred, a_newValue); 
   }
 
   template <typename T_ForwardItr, typename T>
-  T_ForwardItr replace(T_ForwardItr a_begin, T_ForwardItr a_end,
+  void replace(T_ForwardItr a_begin, T_ForwardItr a_end,
                        const T& a_oldValue, const T& a_newValue)
   {
-    return replace(a_begin, a_end, equal_to_stored<T>(a_oldValue), a_newValue);
+    replace_if(a_begin, a_end, equal_to_stored<T>(a_oldValue), a_newValue);
   }
 
   template <typename T_ForwardItr, typename T_Pred, typename T>
@@ -678,8 +675,9 @@ namespace tloc { namespace core {
       { *a_output = a_newValue; }
       else
       { *a_output = *a_begin; }
-
     }
+
+    return a_output;
   }
 
   template <typename T_ForwardItr>

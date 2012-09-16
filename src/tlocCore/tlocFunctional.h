@@ -97,6 +97,10 @@ namespace tloc { namespace core {
   struct equal_to_stored : unary_function<T, bool>
   {
     equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+
+    void operator= (const equal_to_stored& a_other)
+    { m_toCompareWith = a_other.m_toCompareWith; }
+
     bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
 
     const T m_toCompareWith;

@@ -660,16 +660,23 @@ namespace TestingAlgorithms
 
     value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
 
+    T_Container myCont;
+
     value_type* pbegin = myints;
     value_type* pend = myints + utils::ArraySize(myints);
 
-    pend = core::remove(pbegin, pend, 20);
+    myCont.assign(pbegin, pend);
 
-    CHECK(myints[0] == 10);
-    CHECK(myints[1] == 30);
-    CHECK(myints[2] == 30);
-    CHECK(myints[3] == 10);
-    CHECK(myints[4] == 10);
+    itr_type itrEnd = core::remove_all(myCont, 20);
+    myCont.erase(itrEnd, myCont.end());
+    CHECK(myCont.size() == 5);
+
+    itr_type itr = myCont.begin();
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 30); ++itr;
+    CHECK(*itr == 10); ++itr;
+    CHECK(*itr == 10); ++itr;
   }
 
   TEST_CASE("Core/Algorithms/Remove", "")
@@ -721,7 +728,7 @@ namespace TestingAlgorithms
     T_Container myIntsVec;
     myIntsVec.assign(myints, myints+ 8);
     T_Container myvector;
-    core::replace_copy_all(myIntsVec, myvector, 20, 99);
+    core::replace_copy_all(myIntsVec, back_inserter(myvector), 20, 99);
 
     itr_type itr = myvector.begin();
     REQUIRE(myvector.size() == 8);

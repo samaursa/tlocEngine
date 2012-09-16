@@ -66,6 +66,9 @@ namespace tloc { namespace graphics { namespace types {
     }
   };
 
+  const Color Color::COLOR_BLACK = Color(0, 0, 0, 255);
+  const Color Color::COLOR_WHITE = Color(1, 1, 1, 255);
+
   Color::Color()
     : m_rgba(0)
   {

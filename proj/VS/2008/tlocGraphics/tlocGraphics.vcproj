@@ -943,6 +943,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="compression"
+				>
+				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\miniz\miniz.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="images"
+				>
+				<Filter
+					Name="lodepng"
+					>
+					<File
+						RelativePath="..\..\..\..\src\3rdParty\Graphics\lodepng\lodepng.c"
+						>
+						<FileConfiguration
+							Name="Debug_StdAlloc|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="4"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\3rdParty\Graphics\lodepng\lodepng.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="opengl"
@@ -1091,6 +1123,10 @@
 				Name="images"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImage.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImage.h"
 					>
 				</File>
@@ -1106,6 +1142,10 @@
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
 			>
 		</File>
 	</Files>

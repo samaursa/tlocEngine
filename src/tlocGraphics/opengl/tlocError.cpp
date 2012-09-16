@@ -1,4 +1,5 @@
 #include "tlocError.h"
+#include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -18,11 +19,17 @@ namespace tloc { namespace graphics { namespace gl {
     return m_lastError;
   }
 
-  void Error::GetErrorAsString(core::String& a_out)
+  template <typename T_String>
+  void Error::GetErrorAsString(T_String& a_out)
   {
     GetError();
     const char* myError = reinterpret_cast<const char*>(gluErrorString(m_lastError));
     if (myError) { a_out = myError; }
   }
+
+  //------------------------------------------------------------------------
+  // Explicit Instantiation
+
+  template void Error::GetErrorAsString(core::String&);
 
 };};};

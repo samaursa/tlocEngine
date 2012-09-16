@@ -88,10 +88,10 @@ namespace tloc { namespace core { namespace io {
                             file_format_type());
     if (m_file)
     {
-      return core::error::ErrorSuccess();
+      return ErrorSuccess();
     }
 
-    return core::error::ErrorFailure();
+    return ErrorFailure();
   }
 
   template <FILE_IO_TEMP>
@@ -113,14 +113,14 @@ namespace tloc { namespace core { namespace io {
     char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSize);
 
     tl_size result = fread(buffer, 1, fileSize, m_file);
-    if (result != fileSize) { return core::error::ErrorFailure(); }
+    if (result != fileSize) { return ErrorFailure(); }
 
     buffer[fileSize - 1] = '\0';
     a_out = buffer;
 
     TL_FREE(buffer);
 
-    return core::error::ErrorSuccess();
+    return ErrorSuccess();
   }
 
   template <FILE_IO_TEMP>
@@ -130,11 +130,11 @@ namespace tloc { namespace core { namespace io {
     {
       if (fclose(m_file) == EOF)
       {
-        return core::error::ErrorFailure();
+        return ErrorFailure();
       }
     }
 
-    return core::error::ErrorSuccess();
+    return ErrorSuccess();
   }
 
   //------------------------------------------------------------------------

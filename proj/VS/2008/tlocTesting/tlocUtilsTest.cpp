@@ -200,8 +200,7 @@ namespace TestingMemory
   {
     getSet(tl_int a) : const_a(a) {}
 
-    TLOC_DECL_AND_DEF_GETTERS(tl_int, GetA, a);
-    TLOC_DECL_AND_DEF_GETTER(const tl_int, GetConstA, const_a);
+    TLOC_DECL_AND_DEF_GETTER(tl_int, GetA, a);
 
     TLOC_DECL_AND_DEF_GETTER(tl_float, GetB, b);
     TLOC_DECL_AND_DEF_GETTER(tl_float*, GetC, c);
@@ -240,7 +239,6 @@ namespace TestingMemory
     g.c = &f;
 
     CHECK(g.GetA() == 1);
-    CHECK(g.GetConstA() == 314);
     CHECK(g.GetB() == Approx(2.0f));
     CHECK(g.GetC() == &f);
 

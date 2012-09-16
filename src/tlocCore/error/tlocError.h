@@ -20,24 +20,27 @@ namespace tloc { namespace core { namespace error {
     bool operator==(const this_type& a_other);
     bool operator==(const code_type& a_other);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST(code_type, GetErrorCode, m_error);
+    TLOC_DECL_AND_DEF_GETTER(code_type, GetErrorCode, m_error);
 
   private:
     code_type m_error;
   };
 
-  class ErrorSuccess : public Error
+};};};
+
+namespace tloc
+{
+  class ErrorSuccess : public core::error::Error
   {
   public:
     ErrorSuccess() : Error(common_error_types::error_success) {}
   };
 
-  class ErrorFailure : public Error
+  class ErrorFailure : public core::error::Error
   {
   public:
     ErrorFailure() : Error(common_error_types::error_failure) {}
   };
-
-};};};
+};
 
 #endif

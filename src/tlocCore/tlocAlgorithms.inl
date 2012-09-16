@@ -563,16 +563,15 @@ namespace tloc { namespace core {
   template <typename T_ForwardItr, typename T>
   T_ForwardItr remove(T_ForwardItr a_begin, T_ForwardItr a_end, const T& a_value)
   {
-    return remove_if(a_begin, a_end, equal_to_stored<T>(a_value));
+    // See NOTES_ITERATOR_VALUE_TYPE_TYPEDEF @ eof
+    typedef typename iterator_traits<T_ForwardItr>::value_type itr_value_type;
+
+    return remove_if(a_begin, a_end, equal_to_stored<itr_value_type>(a_value));
   }
 
   template <typename T_ForwardItr, typename T_Pred>
   T_ForwardItr remove_if(T_ForwardItr a_begin, T_ForwardItr a_end, T_Pred a_pred)
   {
-    typedef typename iterator_traits<T_ForwardItr>::value_type  value_type;
-    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type, T_Pred::argument_type>::value),
-      Iterator_type_and_T_must_be_same);
-
     T_ForwardItr result = a_begin;
     for (; a_begin != a_end; ++a_begin)
     {
@@ -589,7 +588,11 @@ namespace tloc { namespace core {
   T_OutputItr remove_copy(T_InputItr a_begin, T_InputItr a_end,
                           T_OutputItr a_output, const T& a_value)
   {
-    return remove_copy_if(a_begin, a_end, a_output, equal_to_stored<T>(a_value));
+    // See NOTES_ITERATOR_VALUE_TYPE_TYPEDEF @ eof
+    typedef typename iterator_traits<T_InputItr>::value_type itr_value_type;
+
+    return remove_copy_if(a_begin, a_end, a_output, 
+                          equal_to_stored<itr_value_type>(a_value));
   }
 
   template <typename T_InputItr, typename T_OutputItr, typename T_Pred>
@@ -624,7 +627,11 @@ namespace tloc { namespace core {
   void replace_copy_all(const T_Container1& a_in, T_Container2& a_out,
                         const T& a_oldValue, const T& a_newValue)
   {
-    replace_copy_if_all(a_in, a_out, equal_to_stored<T>(a_oldValue), a_newValue);
+    // See NOTES_ITERATOR_VALUE_TYPE_TYPEDEF @ eof
+    typedef typename T_Container1::value_type cont_value_type;
+
+    replace_copy_if_all(a_in, a_out, 
+                        equal_to_stored<cont_value_type>(a_oldValue), a_newValue);
   }
 
   template <typename T_Container1, typename T_Container2, typename T_Pred,
@@ -1556,3 +1563,14 @@ namespace tloc { namespace core {
 };};
 
 #endif
+
+//////////////////////////////////////////////////////////////////////////
+// NOTES
+// 
+// These notes are put here to avoid cluttering the code above
+// 
+// NOTES_ITERATOR_VALUE_TYPE_TYPEDEF
+//    Why use itr_value_type?
+//    We need to make equal_to_stored the same type as the iterator's type,
+//    otherwise we may get warnings of casting from itr_value_type to T when
+//    the predicate is called in remove_if() 

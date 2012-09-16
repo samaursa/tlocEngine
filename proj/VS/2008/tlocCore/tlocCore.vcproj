@@ -1299,6 +1299,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocBufferArg.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocBufferArg.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="platform"

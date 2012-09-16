@@ -39,6 +39,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tlocInput", "tlocInput\tloc
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tlocVersionTool", "tlocVersionTool\tlocVersionTool.vcproj", "{4AA154EB-8FE4-4C94-BE8C-F8921D4DE15C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{474E8EC2-6EF7-43C5-9E4B-8E5475E9D6FD} = {474E8EC2-6EF7-43C5-9E4B-8E5475E9D6FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

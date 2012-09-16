@@ -11,6 +11,7 @@
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/tlocFunctional.h>
 
 namespace tloc { namespace core {
 
@@ -30,7 +31,7 @@ namespace tloc { namespace core {
   // Non-modifying sequence operations
 
   template <typename T_Container, typename T_Function>
-  T_Function for_each(T_Container a_container, T_Function a_func)
+  T_Function for_each_all(T_Container a_container, T_Function a_func)
   {
     return for_each(a_container.begin(), a_container.end(), a_func);
   }
@@ -53,14 +54,15 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::iterator find(T_Container& a_container, const T& a_value)
+  typename T_Container::iterator 
+    find_all(T_Container& a_container, const T& a_value)
   {
     return find(a_container.begin(), a_container.end(), a_value);
   }
 
   template <typename T_Container, typename T>
-  typename T_Container::const_iterator find(const T_Container& a_container, 
-                                            const T& a_value)
+  typename T_Container::const_iterator 
+    find_all(const T_Container& a_container, const T& a_value)
   {
     return find(a_container.begin(), a_container.end(), a_value);
   }
@@ -109,41 +111,8 @@ namespace tloc { namespace core {
                                T_ForwardIterator2 a_rangeToFindBegin,
                                T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    const tl_size compareSize = distance(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator1 retItr = a_rangeToSearchEnd;
-
-    if (sourceSize >= compareSize)
-    {
-      T_ForwardIterator1 sourceItr;
-      T_ForwardIterator2 compareItr;
-      T_ForwardIterator1 sourceLimit = a_rangeToSearchEnd - compareSize + 1;
-
-      while (a_rangeToSearchBegin != sourceLimit)
-      {
-        sourceItr = a_rangeToSearchBegin;
-        compareItr = a_rangeToFindBegin;
-        while (compareItr != a_rangeToFindEnd)
-        {
-          if (*sourceItr != *compareItr) { break; }
-          ++compareItr;
-          ++sourceItr;
-        }
-
-        if (compareItr == a_rangeToFindEnd)
-        {
-          retItr = a_rangeToSearchBegin;
-        }
-
-        ++a_rangeToSearchBegin;
-      }
-    }
-
-    return retItr;
+    return find_end(a_rangeToSearchBegin, a_rangeToSearchEnd, a_rangeToFindBegin, 
+      a_rangeToFindEnd, equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -197,27 +166,9 @@ namespace tloc { namespace core {
                                     T_ForwardIterator2 a_rangeToFindBegin,
                                     T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator2 compareItr;
-
-    while (a_rangeToSearchBegin != a_rangeToSearchEnd)
-    {
-      compareItr = a_rangeToFindBegin;
-      while (compareItr != a_rangeToFindEnd)
-      {
-        if (*a_rangeToSearchBegin == *compareItr)
-        {
-          return a_rangeToSearchBegin;
-        }
-        ++compareItr;
-      }
-
-      ++a_rangeToSearchBegin;
-    }
-
-    return a_rangeToSearchEnd;
+    return find_first_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -257,31 +208,9 @@ namespace tloc { namespace core {
                                         T_ForwardIterator2 a_rangeToFindBegin,
                                         T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator2 compareItr;
-
-    while (a_rangeToSearchBegin != a_rangeToSearchEnd)
-    {
-      compareItr = a_rangeToFindBegin;
-
-      while (compareItr != a_rangeToFindEnd)
-      {
-        if (*compareItr == *a_rangeToSearchBegin) { break; }
-
-        ++compareItr;
-      }
-
-      if (compareItr == a_rangeToFindEnd)
-      {
-        return a_rangeToSearchBegin;
-      }
-
-      ++a_rangeToSearchBegin;
-    }
-
-    return a_rangeToSearchEnd;
+    return find_first_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -325,35 +254,9 @@ namespace tloc { namespace core {
                                        T_ForwardIterator2 a_rangeToFindBegin,
                                        T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    const tl_size searchSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    const tl_size findSize = distance(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator1 ret = a_rangeToSearchEnd;
-
-    if (findSize > 0)
-    {
-      for (u32 i = 0; i < searchSize; ++i)
-      {
-        u32 j = 0;
-        for (; j < findSize; ++j)
-        {
-          if ( *(a_rangeToSearchBegin + i) == *(a_rangeToFindBegin + j))
-          {
-            break;
-          }
-        }
-
-        if (j == findSize)
-        {
-          ret = a_rangeToSearchBegin + i;
-        }
-      }
-    }
-
-    return ret;
+     return find_last_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -396,7 +299,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  tl_size count(T_Container a_container, const T& a_value)
+  tl_size count_all(T_Container a_container, const T& a_value)
   {
     return count(a_container.begin(), a_container.end(), a_value);
   }
@@ -419,7 +322,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_Predicate>
-  tl_size count_if(T_Container a_container, T_Predicate a_pred)
+  tl_size count_if_all(T_Container a_container, T_Predicate a_pred)
   {
     return count_if(a_container.begin(), a_container.end(), a_pred);
   }
@@ -446,18 +349,8 @@ namespace tloc { namespace core {
     mismatch( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
               T_InputIterator2 a_rangeToCompare )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    while (a_rangeBegin != a_rangeEnd)
-    {
-      if (*a_rangeBegin != *a_rangeToCompare)
-        break;
-
-      ++a_rangeBegin;
-      ++a_rangeToCompare;
-    }
-
-    return MakePair(a_rangeBegin, a_rangeToCompare);
+    return mismatch(a_rangeBegin, a_rangeEnd, a_rangeToCompare, 
+      equal_to<iterator_traits<T_InputIterator1>::value_type>());
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
@@ -483,17 +376,8 @@ namespace tloc { namespace core {
   bool equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
               T_InputIterator2 a_rangeToCompare )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    while (a_rangeBegin != a_rangeEnd)
-    {
-      if (*a_rangeBegin != *a_rangeToCompare) { return false; }
-
-      ++a_rangeBegin;
-      ++a_rangeToCompare;
-    }
-
-    return true;
+    return equal(a_rangeBegin, a_rangeEnd, a_rangeToCompare, 
+      equal_to<iterator_traits<T_InputIterator1>::value_type>());
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2,
@@ -551,39 +435,8 @@ namespace tloc { namespace core {
                              T_ForwardIterator2 a_rangeToFindBegin,
                              T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    const tl_size compareSize = distance(a_rangeToFindBegin, a_rangeToFindEnd);
-    T_ForwardIterator1 sourceLimit = a_rangeToSearchEnd - compareSize + 1;
-
-    T_ForwardIterator1 sourceItr;
-    T_ForwardIterator2 compareItr;
-
-    if (sourceSize >= compareSize)
-    {
-      while (a_rangeToSearchBegin != sourceLimit)
-      {
-        sourceItr = a_rangeToSearchBegin;
-        compareItr = a_rangeToFindBegin;
-        while (compareItr != a_rangeToFindEnd)
-        {
-          if (*sourceItr != *compareItr) { break; }
-          ++sourceItr;
-          ++compareItr;
-        }
-
-        if (compareItr == a_rangeToFindEnd)
-        {
-          return a_rangeToSearchBegin;
-        }
-
-        ++a_rangeToSearchBegin;
-      }
-    }
-
-    return a_rangeToSearchEnd;
+    return search(a_rangeToSearchBegin, a_rangeToSearchEnd, a_rangeToFindBegin, 
+      a_rangeToFindEnd, equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -632,55 +485,26 @@ namespace tloc { namespace core {
   template <typename T_ForwardIterator, typename T_Size, typename T>
   T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
                               T_ForwardIterator a_rangeToSearchEnd,
-                              T_Size aCount, const T& a_value )
+                              T_Size a_count, const T& a_value )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-
-    const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-
-    if (sourceSize >= (tl_size)aCount)
-    {
-      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - aCount + 1;
-
-      T_ForwardIterator retItr = a_rangeToSearchEnd;
-      T_ForwardIterator retItrEnd;
-
-      while(a_rangeToSearchBegin != sourceLimit)
-      {
-        retItr = a_rangeToSearchBegin;
-        retItrEnd = a_rangeToSearchBegin + aCount;
-        while (retItr != retItrEnd)
-        {
-          if (*retItr != a_value) { break; }
-          ++retItr;
-        }
-
-        if (retItr == retItrEnd)
-        {
-          return a_rangeToSearchBegin;
-        }
-
-        ++a_rangeToSearchBegin;
-      }
-    }
-
-    return a_rangeToSearchEnd;
+    return search_n(a_rangeToSearchBegin, a_rangeToSearchEnd, a_count, a_value, 
+                  equal_to<T>());
   }
 
   template <typename T_ForwardIterator, typename T_Size, typename T,
             typename T_BinaryPred>
     T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
                                 T_ForwardIterator a_rangeToSearchEnd,
-                                T_Size aCount, const T& a_value,
+                                T_Size a_count, const T& a_value,
                                 T_BinaryPred a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
 
     const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
 
-    if (sourceSize >= (tl_size)aCount)
+    if (sourceSize >= (tl_size)a_count)
     {
-      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - aCount + 1;
+      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - a_count + 1;
 
       T_ForwardIterator retItr = a_rangeToSearchEnd;
       T_ForwardIterator retItrEnd;
@@ -688,7 +512,7 @@ namespace tloc { namespace core {
       while(a_rangeToSearchBegin != sourceLimit)
       {
         retItr = a_rangeToSearchBegin;
-        retItrEnd = a_rangeToSearchBegin + aCount;
+        retItrEnd = a_rangeToSearchBegin + a_count;
         while (retItr != retItrEnd)
         {
           if (!a_pred(*retItr, a_value) ) { break; }
@@ -707,6 +531,273 @@ namespace tloc { namespace core {
     return a_rangeToSearchEnd;
   }
 
+  //------------------------------------------------------------------------
+  // Modifiers 
+
+  template <typename T_Container, typename T>
+  typename T_Container::iterator remove_all(T_Container& a_in, const T& a_value)
+  {
+    return remove(a_in.begin(), a_in.end(), a_value);
+  }
+
+  template <typename T_Container, typename T_Pred>
+  typename T_Container::iterator remove_if_all(T_Container& a_in, T_Pred a_pred)
+  {
+    return remove_if(a_in.begin(), a_in.end(), a_pred);
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T>
+  void remove_copy_all(const T_Container1& a_in, T_Container2& a_out,
+                       const T& a_value)
+  {
+    remove_copy(a_in.begin(), a_in.end(), back_insert_iterator(a_out), a_value);
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Pred>
+  void remove_copy_if_all(const T_Container1& a_in, T_Container2& a_out,
+                          T_Pred a_pred)
+  {
+    remove_copy_if(a_in.begin(), a_in.end(), back_insert_iterator(a_out), a_pred);
+  }
+
+  template <typename T_ForwardItr, typename T>
+  T_ForwardItr remove(T_ForwardItr a_begin, T_ForwardItr a_end, const T& a_value)
+  {
+    return remove_if(a_begin, a_end, equal_to_stored<T>(a_value));
+  }
+
+  template <typename T_ForwardItr, typename T_Pred>
+  T_ForwardItr remove_if(T_ForwardItr a_begin, T_ForwardItr a_end, T_Pred a_pred)
+  {
+    typedef typename iterator_traits<T_ForwardItr>::value_type  value_type;
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type, T_Pred::argument_type>::value),
+      Iterator_type_and_T_must_be_same);
+
+    T_ForwardItr result = a_begin;
+    for (; a_begin != a_end; ++a_begin)
+    {
+      if (a_pred(*a_begin) == false)
+      {
+        *result = *a_begin;
+        ++result;
+      }
+    }
+    return result;
+  }
+
+  template <typename T_InputItr, typename T_OutputItr, typename T>
+  T_OutputItr remove_copy(T_InputItr a_begin, T_InputItr a_end,
+                          T_OutputItr a_output, const T& a_value)
+  {
+    return remove_copy_if(a_begin, a_end, a_output, equal_to_stored<T>(a_value));
+  }
+
+  template <typename T_InputItr, typename T_OutputItr, typename T_Pred>
+  T_OutputItr remove_copy_if(T_InputItr a_begin, T_InputItr a_end,
+                             T_OutputItr a_output, T_Pred a_pred)
+  {
+    for (; a_begin != a_end; ++a_begin)
+    {
+      if (a_pred(*a_begin) == false)
+      {
+        *a_output = *a_begin;
+        ++a_output;
+      }
+    }
+
+    return a_output;
+  }
+
+  template <typename T_Container, typename T>
+  void replace_all(T_Container& a_in, const T& a_oldValue, const T& a_newValue)
+  {
+    replace(a_in.begin(), a_in.end(), a_oldValue, a_newValue);
+  }
+
+  template <typename T_Container, typename T_Pred, typename T>
+  void replace_if_all(T_Container& a_in, T_Pred a_pred, const T& a_newValue)
+  {
+    replace_if(a_in.begin(), a_in.end(), a_pred, a_newValue);
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T>
+  void replace_copy_all(const T_Container1& a_in, T_Container2& a_out,
+                        const T& a_oldValue, const T& a_newValue)
+  {
+    replace_copy_if_all(a_in, a_out, equal_to_stored<T>(a_oldValue), a_newValue);
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Pred,
+            typename T>
+  void replace_copy_if_all(const T_Container1& a_in, T_Container2& a_out,
+                           T_Pred a_pred, const T& a_newValue)
+  {
+    replace_copy_if(a_in.begin(), a_in.end(), back_inserter(a_out), 
+                    a_pred, a_newValue); 
+  }
+
+  template <typename T_ForwardItr, typename T>
+  void replace(T_ForwardItr a_begin, T_ForwardItr a_end,
+                       const T& a_oldValue, const T& a_newValue)
+  {
+    replace_if(a_begin, a_end, equal_to_stored<T>(a_oldValue), a_newValue);
+  }
+
+  template <typename T_ForwardItr, typename T_Pred, typename T>
+  void replace_if(T_ForwardItr a_begin, T_ForwardItr a_end,
+                          T_Pred a_pred, const T& a_newValue)
+  {
+    for (; a_begin != a_end; ++a_begin)
+    {
+      if (a_pred(*a_begin)) 
+      { *a_begin = a_newValue; }
+    }
+  }
+
+  template <typename T_InputItr, typename T_OutputItr, typename T>
+  void replace_copy(T_InputItr a_begin, T_InputItr a_end,
+                           T_OutputItr a_output, const T& a_oldValue,
+                           const T& a_newValue)
+  {
+    replace_copy_if(a_begin, a_end, a_output, equal_to_stored<T>(a_oldValue), 
+                    a_newValue);
+  }
+
+  template <typename T_InputItr, typename T_OutputItr, typename T_Pred,
+            typename T>
+  T_OutputItr replace_copy_if(T_InputItr a_begin, T_InputItr a_end,
+                              T_OutputItr a_output, T_Pred a_pred,
+                              const T& a_newValue)
+  {
+    for (; a_begin != a_end; ++a_begin, ++a_output)
+    {
+      if (a_pred(*a_begin))
+      { *a_output = a_newValue; }
+      else
+      { *a_output = *a_begin; }
+    }
+
+    return a_output;
+  }
+
+  template <typename T_ForwardItr>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end)
+  {
+    unique(a_first, a_last, equal_to<iterator_traits<T_ForwardItr>::value_type>());
+  }
+
+  template <typename T_ForwardItr, typename T_BinaryPred>
+  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end,
+                      T_BinaryPred)
+  {
+    T_ForwardItr prevItr = a_first++;
+
+    for (; a_first != a_end; ++a_first)
+    {
+      if (T_BinaryPred()(*itr, *prevItr) == false)
+      { 
+        ++prevItr;
+        *prevItr = *itr;
+      }
+    }
+
+    return ++prevItr;
+  }
+
+  template <typename T_Container>
+  typename T_Container::iterator unique_all(T_Container& a_inOut)
+  {
+    return unique(a_inOut.being(), a_inOut.end());
+  }
+
+  template <typename T_Container1, typename T_Container2>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out)
+  {
+    typedef T_Container1::value_type value_type;
+    unique_copy_all(a_in, a_out, equal_to<value_type>());
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
+  void unique_copy_all(const T_Container1& a_in, T_Container2& a_out, 
+                                    T_BinaryPred)
+  {
+    typedef T_Container1::const_iterator     itr_type_1;
+    typedef T_Container1::value_type         value_type_1;
+    typedef T_Container2::value_type         value_type_2;
+
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_2>::value),
+      Container_value_type_must_match);
+
+    a_out.push_back( *(a_in.begin()) );
+
+    itr_type_1 prevItr  = a_in.begin();
+    itr_type_1 itr      = a_in.begin(); advance(itr, 1);
+    itr_type_1 itrEnd   = a_in.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      if (T_BinaryPred()(*itr, *prevItr) == false)
+      { 
+        a_out.push_back(*itr);
+        prevItr = itr;
+      }
+    }
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Container3>
+  void unique_copy_only_all(const T_Container1& a_in, 
+                                             T_Container2& a_out, 
+                                             const T_Container3& a_dupList)
+  {
+    typedef T_Container1::value_type value_type;
+    unique_copy_only_all(a_in, a_out, a_dupList, 
+                                          equal_to<value_type>());
+  }
+
+  template <typename T_Container1, typename T_Container2, typename T_Container3,
+            typename T_BinaryPred>
+  void unique_copy_only_all(const T_Container1& a_in, 
+                                             T_Container2& a_out, 
+                                             const T_Container3& a_dupList, 
+                                             T_BinaryPred)
+  {
+    typedef T_Container1::const_iterator     itr_type_1;
+    typedef T_Container1::value_type         value_type_1;
+
+    typedef T_Container2::value_type         value_type_2;
+
+    typedef T_Container3::const_iterator     itr_type_3;
+    typedef T_Container3::value_type         value_type_3;
+
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_2>::value),
+      Container_value_type_must_match);
+    TLOC_STATIC_ASSERT( (Loki::IsSameType<value_type_1, value_type_3>::value),
+      Container_value_type_must_match);
+
+    a_out.push_back( *(a_in.begin()) );
+
+    itr_type_1 prevItr  = a_in.begin();
+    itr_type_1 itr      = a_in.begin(); advance(itr, 1);
+    itr_type_1 itrEnd   = a_in.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      itr_type_3 itrDup = find_all(a_dupList, *itr);
+      if (itrDup != a_dupList.end())
+      {
+        if (T_BinaryPred()(*itr, *prevItr) == false)
+        { 
+          a_out.push_back(*itr);
+          prevItr = itr;
+        }
+      }
+      else
+      {
+        a_out.push_back(*itr);
+        prevItr = itr;
+      }
+    }
+  }
 
   //------------------------------------------------------------------------
   // Sorting
@@ -827,29 +918,7 @@ namespace tloc { namespace core {
   T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
     T_ForwardIterator a_last, const T& a_value)
   {
-    T_ForwardIterator itr;
-    typename iterator_traits<T_ForwardIterator>::difference_type count, step;
-
-    count = distance(a_first, a_last);
-
-    while (count > 0)
-    {
-      itr = a_first;
-      step = count / 2;
-      advance(itr, step);
-
-      if (*itr < a_value)
-      {
-        a_first = ++itr; 
-        count -= step - 1;
-      }
-      else
-      {
-        count = step;
-      }
-    }
-
-    return a_first;
+    return lower_bound(a_first, a_last, a_value, less<T>());
   }
 
   template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
@@ -858,6 +927,8 @@ namespace tloc { namespace core {
   {
     T_ForwardIterator itr;
     typename iterator_traits<T_ForwardIterator>::difference_type count, step;
+
+    count = distance(a_first, a_last);
 
     while (count > 0)
     {

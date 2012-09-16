@@ -662,8 +662,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                           T_InputIterator a_rangeEnd, 
                                           is_not_arith_t)
   {
-    TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
-
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
     if (size() < projectedSize)
     {

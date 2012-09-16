@@ -166,27 +166,9 @@ namespace tloc { namespace core {
                                     T_ForwardIterator2 a_rangeToFindBegin,
                                     T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator2 compareItr;
-
-    while (a_rangeToSearchBegin != a_rangeToSearchEnd)
-    {
-      compareItr = a_rangeToFindBegin;
-      while (compareItr != a_rangeToFindEnd)
-      {
-        if (*a_rangeToSearchBegin == *compareItr)
-        {
-          return a_rangeToSearchBegin;
-        }
-        ++compareItr;
-      }
-
-      ++a_rangeToSearchBegin;
-    }
-
-    return a_rangeToSearchEnd;
+    return find_first_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -226,31 +208,9 @@ namespace tloc { namespace core {
                                         T_ForwardIterator2 a_rangeToFindBegin,
                                         T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator2 compareItr;
-
-    while (a_rangeToSearchBegin != a_rangeToSearchEnd)
-    {
-      compareItr = a_rangeToFindBegin;
-
-      while (compareItr != a_rangeToFindEnd)
-      {
-        if (*compareItr == *a_rangeToSearchBegin) { break; }
-
-        ++compareItr;
-      }
-
-      if (compareItr == a_rangeToFindEnd)
-      {
-        return a_rangeToSearchBegin;
-      }
-
-      ++a_rangeToSearchBegin;
-    }
-
-    return a_rangeToSearchEnd;
+    return find_first_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -294,35 +254,9 @@ namespace tloc { namespace core {
                                        T_ForwardIterator2 a_rangeToFindBegin,
                                        T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    const tl_size searchSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    const tl_size findSize = distance(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    T_ForwardIterator1 ret = a_rangeToSearchEnd;
-
-    if (findSize > 0)
-    {
-      for (u32 i = 0; i < searchSize; ++i)
-      {
-        u32 j = 0;
-        for (; j < findSize; ++j)
-        {
-          if ( *(a_rangeToSearchBegin + i) == *(a_rangeToFindBegin + j))
-          {
-            break;
-          }
-        }
-
-        if (j == findSize)
-        {
-          ret = a_rangeToSearchBegin + i;
-        }
-      }
-    }
-
-    return ret;
+     return find_last_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
+      a_rangeToFindBegin, a_rangeToFindEnd, 
+      equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -415,18 +349,8 @@ namespace tloc { namespace core {
     mismatch( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
               T_InputIterator2 a_rangeToCompare )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    while (a_rangeBegin != a_rangeEnd)
-    {
-      if (*a_rangeBegin != *a_rangeToCompare)
-        break;
-
-      ++a_rangeBegin;
-      ++a_rangeToCompare;
-    }
-
-    return MakePair(a_rangeBegin, a_rangeToCompare);
+    return mismatch(a_rangeBegin, a_rangeEnd, a_rangeToCompare, 
+      equal_to<iterator_traits<T_InputIterator1>::value_type>());
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2, typename T_BinaryPred>
@@ -452,17 +376,8 @@ namespace tloc { namespace core {
   bool equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
               T_InputIterator2 a_rangeToCompare )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
-
-    while (a_rangeBegin != a_rangeEnd)
-    {
-      if (*a_rangeBegin != *a_rangeToCompare) { return false; }
-
-      ++a_rangeBegin;
-      ++a_rangeToCompare;
-    }
-
-    return true;
+    return equal(a_rangeBegin, a_rangeEnd, a_rangeToCompare, 
+      equal_to<iterator_traits<T_InputIterator1>::value_type>());
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2,
@@ -520,39 +435,8 @@ namespace tloc { namespace core {
                              T_ForwardIterator2 a_rangeToFindBegin,
                              T_ForwardIterator2 a_rangeToFindEnd )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
-
-    const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-    const tl_size compareSize = distance(a_rangeToFindBegin, a_rangeToFindEnd);
-    T_ForwardIterator1 sourceLimit = a_rangeToSearchEnd - compareSize + 1;
-
-    T_ForwardIterator1 sourceItr;
-    T_ForwardIterator2 compareItr;
-
-    if (sourceSize >= compareSize)
-    {
-      while (a_rangeToSearchBegin != sourceLimit)
-      {
-        sourceItr = a_rangeToSearchBegin;
-        compareItr = a_rangeToFindBegin;
-        while (compareItr != a_rangeToFindEnd)
-        {
-          if (*sourceItr != *compareItr) { break; }
-          ++sourceItr;
-          ++compareItr;
-        }
-
-        if (compareItr == a_rangeToFindEnd)
-        {
-          return a_rangeToSearchBegin;
-        }
-
-        ++a_rangeToSearchBegin;
-      }
-    }
-
-    return a_rangeToSearchEnd;
+    return search(a_rangeToSearchBegin, a_rangeToSearchEnd, a_rangeToFindBegin, 
+      a_rangeToFindEnd, equal_to<iterator_traits<T_ForwardIterator1>::value_type>());
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
@@ -601,55 +485,26 @@ namespace tloc { namespace core {
   template <typename T_ForwardIterator, typename T_Size, typename T>
   T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
                               T_ForwardIterator a_rangeToSearchEnd,
-                              T_Size aCount, const T& a_value )
+                              T_Size a_count, const T& a_value )
   {
-    TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
-
-    const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
-
-    if (sourceSize >= (tl_size)aCount)
-    {
-      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - aCount + 1;
-
-      T_ForwardIterator retItr = a_rangeToSearchEnd;
-      T_ForwardIterator retItrEnd;
-
-      while(a_rangeToSearchBegin != sourceLimit)
-      {
-        retItr = a_rangeToSearchBegin;
-        retItrEnd = a_rangeToSearchBegin + aCount;
-        while (retItr != retItrEnd)
-        {
-          if (*retItr != a_value) { break; }
-          ++retItr;
-        }
-
-        if (retItr == retItrEnd)
-        {
-          return a_rangeToSearchBegin;
-        }
-
-        ++a_rangeToSearchBegin;
-      }
-    }
-
-    return a_rangeToSearchEnd;
+    return search_n(a_rangeToSearchBegin, a_rangeToSearchEnd, a_count, a_value, 
+                  equal_to<T>());
   }
 
   template <typename T_ForwardIterator, typename T_Size, typename T,
             typename T_BinaryPred>
     T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
                                 T_ForwardIterator a_rangeToSearchEnd,
-                                T_Size aCount, const T& a_value,
+                                T_Size a_count, const T& a_value,
                                 T_BinaryPred a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
 
     const tl_size sourceSize = distance(a_rangeToSearchBegin, a_rangeToSearchEnd);
 
-    if (sourceSize >= (tl_size)aCount)
+    if (sourceSize >= (tl_size)a_count)
     {
-      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - aCount + 1;
+      T_ForwardIterator sourceLimit = a_rangeToSearchEnd - a_count + 1;
 
       T_ForwardIterator retItr = a_rangeToSearchEnd;
       T_ForwardIterator retItrEnd;
@@ -657,7 +512,7 @@ namespace tloc { namespace core {
       while(a_rangeToSearchBegin != sourceLimit)
       {
         retItr = a_rangeToSearchBegin;
-        retItrEnd = a_rangeToSearchBegin + aCount;
+        retItrEnd = a_rangeToSearchBegin + a_count;
         while (retItr != retItrEnd)
         {
           if (!a_pred(*retItr, a_value) ) { break; }
@@ -1054,29 +909,7 @@ namespace tloc { namespace core {
   T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
     T_ForwardIterator a_last, const T& a_value)
   {
-    T_ForwardIterator itr;
-    typename iterator_traits<T_ForwardIterator>::difference_type count, step;
-
-    count = distance(a_first, a_last);
-
-    while (count > 0)
-    {
-      itr = a_first;
-      step = count / 2;
-      advance(itr, step);
-
-      if (*itr < a_value)
-      {
-        a_first = ++itr; 
-        count -= step - 1;
-      }
-      else
-      {
-        count = step;
-      }
-    }
-
-    return a_first;
+    return lower_bound(a_first, a_last, a_value, less<T>());
   }
 
   template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
@@ -1085,6 +918,8 @@ namespace tloc { namespace core {
   {
     T_ForwardIterator itr;
     typename iterator_traits<T_ForwardIterator>::difference_type count, step;
+
+    count = distance(a_first, a_last);
 
     while (count > 0)
     {

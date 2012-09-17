@@ -5,6 +5,12 @@
 
 namespace tloc { namespace core { namespace io {
 
+  namespace
+  {
+    const char* g_pathSlash = "/";
+    const char* g_extension = ".";
+  };
+
   Path::Path(const char* a_path) : m_path(a_path)
   {
     DoFixPath();
@@ -12,9 +18,50 @@ namespace tloc { namespace core { namespace io {
 
   void Path::GetFileName(String& a_out) const
   {
-    // Walk backwards and find the first backslash
+    tl_size pos = m_path.find_last_of(g_pathSlash);
+    if (pos != String::npos)
+    { a_out = m_path.substr(pos + 1); }
+  }
+
+  void Path::GetFileNameWithoutExtension(String& a_out) const
+  {
+    GetFileName(a_out);
+    tl_size pos = a_out.find_last_of(g_extension);
+    if (pos != String::npos)
+    { a_out = a_out.substr(0, pos); }
+  }
+
+  void Path::GetExtension(String& a_out) const
+  {
+    tl_size pos = m_path.find_last_of(g_extension);
+    if (pos != String::npos)
+    { a_out = m_path.substr(pos + 1); }
+  }
+
+  void Path::GetPathWithoutFileName(String& a_out) const
+  {
+    tl_size pos = m_path.find_last_of(g_pathSlash);
+    a_out = m_path.substr(0, pos);
+  }
+
+  void Path::GetAbsolutePath(String& a_out) const
+  {
     TLOC_UNUSED(a_out);
   }
+
+  bool Path::Exists() const
+  {
+    return false;
+  }
+
+  void Path::SetPath(const char* a_path)
+  {
+    m_path = a_path;
+    DoFixPath();
+  }
+
+  //------------------------------------------------------------------------
+  // Helpers
 
   void Path::DoFixPath()
   {

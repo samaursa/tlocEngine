@@ -1196,8 +1196,8 @@ namespace tloc { namespace core {
   // Substr
 
   template <STRING_BASE_TYPES>
-  TL_I StringBase<T> StringBase<T>::substr( const size_type & aBeginIndex,
-                                            const size_type & aNumCharsToCopy )
+  TL_I StringBase<T> StringBase<T>::substr( size_type aBeginIndex,
+                                            size_type aNumCharsToCopy ) const
   {
     StringBase<T> temp;
     substr(aBeginIndex, aNumCharsToCopy, temp);
@@ -1205,9 +1205,9 @@ namespace tloc { namespace core {
   }
 
   template <STRING_BASE_TYPES>
-  TL_I void StringBase<T>::substr( const size_type & aBeginIndex,
-                                   const size_type & aNumCharsToCopy,
-                                   this_type& aSubStrOut )
+  TL_I void StringBase<T>::substr( size_type aBeginIndex,
+                                   size_type aNumCharsToCopy,
+                                   this_type& aSubStrOut ) const
   {
     const_iterator itrBegin = m_begin + aBeginIndex;
     const_iterator itrBeginPlusN = itrBegin + aNumCharsToCopy;
@@ -1496,7 +1496,17 @@ namespace tloc { namespace core {
     const tl_size size2 = aEnd2 - aBegin2;
     const tl_size sizeMin = tlMin(size1, size2);
 
-    return StrCmp(aBegin1, aBegin2, sizeMin);
+    const tl_int cmp = StrCmp(aBegin1, aBegin2, sizeMin);
+
+    if (cmp != 0)
+    { return cmp; }
+    else 
+    {
+      if (size1 < size2)
+      { return -1; }
+      else 
+      { return (size1 > size2) ? 1 : 0; }
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////

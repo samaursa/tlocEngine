@@ -54,7 +54,7 @@ namespace tloc { namespace core { namespace utils {
   // Getters
 
 #define TLOC_DECL_GETTER(_type_, _name_)\
-  _type_ const   _name_() const
+  const _type_ _name_() const
 #define TLOC_DECL_GETTER_DIRECT(_type_, _name_)\
   _type_&       _name_()
 #define TLOC_DECL_GETTER_CONST_DIRECT(_type_, _name_)\
@@ -79,10 +79,6 @@ namespace tloc { namespace core { namespace utils {
 
   //------------------------------------------------------------------------
   // Expansions
-
-#define TLOC_DECL_AND_DEF_GET_SET(_type_, _var_, _name_)\
-  TLOC_DECL_AND_DEF_GETTER(_type_, _var_, _name_);\
-  TLOC_DECL_AND_DEF_SETTER(_type_, _var_, _name_)
 
 #define TLOC_DECL_AND_DEF_GETTERS_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_AND_DEF_GETTER_DIRECT(_type_, _name_, _var_)\

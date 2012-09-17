@@ -529,7 +529,7 @@ namespace TestingStrings
     CHECK(StrCmp(str3.c_str(), "live in details.") == 0);
   }
 
-  TEST_CASE_METHOD(StringFixture, "Core/Strings/substr", "")
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/compare", "")
   {
     String str1 ("green apple");
     String str2 ("red apple");
@@ -539,6 +539,11 @@ namespace TestingStrings
     CHECK(str2.compare(str2.size() - 5, 5, "apple") == 0);
     CHECK(str1.compare(6, 5, str2, 4, 5) == 0);
     CHECK(str2.compare(0, 3, "red") == 0);
+    CHECK(str2.compare("green apple") != 0);
+
+    // Empty string test
+    str2.clear();
+    CHECK(str2.compare("green apple") != 0);
   }
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/UpperLower", "")

@@ -1132,6 +1132,10 @@
 					RelativePath=".\tlocFileIOTest.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\tlocPathTest.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

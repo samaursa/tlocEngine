@@ -13,7 +13,7 @@ namespace TestingFileIO
     const char* sentence = "This is a test sentence.";
     const char* fileName = "TestingFileIO.txt";
 
-    FILE* m_file = fopen("TestingFileIO.txt", "a");
+    FILE* m_file = fopen("TestingFileIO.txt", "w");
     REQUIRE(m_file != NULL);
 
     fputs(sentence, m_file);

@@ -284,11 +284,11 @@ namespace tloc { namespace core {
     //````````````````````````````````````````````````````````````````````````
     // Substring
 
-    TL_I this_type substr(const tl_size& aBeginIndex,
-                          const tl_size& aNumCharsToCopy = npos);
-    TL_I void              substr(const tl_size& aBeginIndex,
-                                  const tl_size& aNumCharsToCopy,
-                                  this_type&   aSubStrOut);
+    TL_I this_type substr(tl_size aBeginIndex,
+                          tl_size aNumCharsToCopy = npos) const;
+    TL_I void              substr(tl_size aBeginIndex,
+                                  tl_size aNumCharsToCopy,
+                                  this_type&   aSubStrOut) const;
 
     //````````````````````````````````````````````````````````````````````````
     // Compare

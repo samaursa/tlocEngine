@@ -110,12 +110,13 @@ namespace tloc { namespace core { namespace io {
     tl_size fileSize = ftell(m_file);
     rewind(m_file);
 
-    char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSize);
+    const tl_size fileSizeInclNull = fileSize + 1;
+    char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSizeInclNull);
 
-    tl_size result = fread(buffer, 1, fileSize, m_file);
+    tl_size result = fread(buffer, 1, fileSizeInclNull, m_file);
     if (result != fileSize) { return ErrorFailure(); }
 
-    buffer[fileSize - 1] = '\0';
+    buffer[fileSize] = '\0';
     a_out = buffer;
 
     TL_FREE(buffer);

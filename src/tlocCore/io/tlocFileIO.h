@@ -4,7 +4,7 @@
 #include <cstdio>
 
 #include <tlocCore/error/tlocError.h>
-#include <tlocCore/string/tlocString.h>
+#include <tlocCore/io/tlocPath.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace io {
     typedef T_FileFormat                    file_format_type;
     typedef error::Error                    error_type;
 
-    FileIO(const char* a_fileName);
+    FileIO(const Path& a_path);
     ~FileIO();
 
     error_type      Open();
@@ -44,7 +44,7 @@ namespace tloc { namespace core { namespace io {
     error_type DoClose();
 
     FILE*   m_file;
-    String  m_fileName;
+    Path    m_fileName;
   };
 
   //------------------------------------------------------------------------

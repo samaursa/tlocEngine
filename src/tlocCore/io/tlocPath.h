@@ -9,8 +9,6 @@ namespace tloc { namespace core { namespace io {
   class Path
   {
   public:
-    enum { ascii, binary, none }; typedef tl_int  file_type;
-  public:
     Path(const char* a_path);
 
     void GetFileName(String& a_out) const;
@@ -23,7 +21,7 @@ namespace tloc { namespace core { namespace io {
     ///
     /// @return ascii, binary or none if the file does not exist
     ///-------------------------------------------------------------------------
-    file_type FileExists() const;
+    bool FileExists() const;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -39,8 +37,6 @@ namespace tloc { namespace core { namespace io {
 
     TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
     void SetPath(const char* a_path);
-
-    //const char* GetPath() const;
 
   private:
     void DoFixPath();

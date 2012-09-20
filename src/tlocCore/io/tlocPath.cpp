@@ -50,20 +50,13 @@ namespace tloc { namespace core { namespace io {
     a_out = m_path.substr(0, pos);
   }
 
-  Path::file_type Path::FileExists() const
+  bool Path::FileExists() const
   {
-    {
-      FileIO_ReadA fileChecker(m_path.c_str());
-      if (fileChecker.Open() == tloc::common_error_types::error_success)
-      { return ascii; }
-    }
-    {
-      FileIO_ReadB fileChecker(m_path.c_str());
-      if (fileChecker.Open() == tloc::common_error_types::error_success)
-      { return binary; }
-    }
+    FileIO_ReadA fileChecker(m_path.c_str());
+    if (fileChecker.Open() == tloc::common_error_types::error_success)
+    { return true; }
 
-    return none;
+    return false;
   }
 
   bool Path::FolderExists() const
@@ -74,6 +67,7 @@ namespace tloc { namespace core { namespace io {
     FileIO_WriteA tempFile(tempPath.GetPath());
     if (tempFile.Open() == tloc::common_error_types::error_success)
     {
+      tempFile.Close();
       if (tempFile.Delete() == tloc::common_error_types::error_failure)
       { /* LOG: Could not erase temporary file */ }
 
@@ -85,7 +79,8 @@ namespace tloc { namespace core { namespace io {
 
   bool Path::HasFilename() const
   {
-    tl_size pos = m_path.find(g_extension);
+    tl_size pos = m_path.find_last_of(g_pathSlash);
+    pos = m_path.find(g_extension, pos);
 
     if (pos != String::npos)
     { return true; }

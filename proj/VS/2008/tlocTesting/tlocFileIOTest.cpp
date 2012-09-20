@@ -28,6 +28,6 @@ namespace TestingFileIO
     CHECK(fileContents.compare(sentence) == 0);
     CHECK(fileReader.Close() == (tloc::common_error_types::error_success) );
 
-    remove(fileName);
+    CHECK(fileReader.Delete() == (tloc::common_error_types::error_success) );
   }
 };

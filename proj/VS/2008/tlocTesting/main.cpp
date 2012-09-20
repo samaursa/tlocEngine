@@ -2,5 +2,5 @@
 # import <Foundation/Foundation.h>
 #endif
 
-#include "catch_with_main.hpp"
 #include "catch.hpp"
+#include "catch_with_main.hpp"

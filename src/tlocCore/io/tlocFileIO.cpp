@@ -1,6 +1,7 @@
 #include "tlocFileIO.h"
 
 #include <tlocCore/memory/tlocMemory.h>
+#include <stdio.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -70,8 +71,8 @@ namespace tloc { namespace core { namespace io {
 #define FILE_IO_TYPE    typename FileIO<FILE_IO_PARAMS>
 
   template <FILE_IO_TEMP>
-  FileIO<FILE_IO_PARAMS>::FileIO(const char* a_fileName)
-    : m_fileName(a_fileName)
+  FileIO<FILE_IO_PARAMS>::FileIO(const Path& a_path)
+    : m_fileName(a_path)
   {
   }
 
@@ -84,7 +85,7 @@ namespace tloc { namespace core { namespace io {
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Open()
   {
-    m_file = detail::DoOpen(m_fileName.c_str(), access_policy_type(),
+    m_file = detail::DoOpen(m_fileName.GetPath(), access_policy_type(),
                             file_format_type());
     if (m_file)
     {
@@ -98,6 +99,15 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Close()
   {
     return DoClose();
+  }
+
+  template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Delete()
+  {
+    if (::remove(m_fileName.GetPath()) == 0)
+    { return tloc::ErrorSuccess(); }
+    else
+    { return tloc::ErrorFailure(); }
   }
 
   template <FILE_IO_TEMP>

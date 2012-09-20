@@ -357,7 +357,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

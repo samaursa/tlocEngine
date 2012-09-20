@@ -600,7 +600,7 @@ namespace TestingStrings
     CHECK( (str == str2) == true);
 
     const char* testStr = "This is another test";
-    const char* testStr3 = "This is anotehr test.";
+    const char* testStr3 = "This is another test.";
 
     str = testStr;
     str2 = testStr3;
@@ -609,6 +609,19 @@ namespace TestingStrings
     CHECK( (testStr == str) == true);
     CHECK( (str2 != testStr) == true);
     CHECK( (testStr != str2) == true);
+
+    str2 = str2 + " Test 1...2...3...";
+    CHECK(str2.compare("This is another test. Test 1...2...3...") == 0);
+
+    str2 = "==> " + str;
+    CHECK(str2.compare("==> This is another test") == 0);
+
+    str2 = '>' + str;
+    CHECK(str2.compare(">This is another test") == 0);
+
+    str2 = str + '.';
+    CHECK(str2.compare("This is another test.") == 0);
+
   }
 
   TEST_CASE("Core/Strings/FreeFunctions/AsciiWideConversion", "")

@@ -15,14 +15,28 @@ namespace tloc { namespace core { namespace io {
     void GetFileNameWithoutExtension(String& a_out) const;
     void GetExtension(String& a_out) const;
     void GetPathWithoutFileName(String& a_out) const;
-    void GetAbsolutePath(String& a_out) const;
 
-    bool        Exists() const;
+    ///-------------------------------------------------------------------------
+    /// @brief Queries if the file in the path exists.
+    ///
+    /// @return ascii, binary or none if the file does not exist
+    ///-------------------------------------------------------------------------
+    bool FileExists() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Queries if the path folder exists
+    ///
+    /// @note False may be returned if the folder exists but is not
+    /// accessible.
+    ///
+    /// @return true if it succeeds, false if it fails.
+    ///-------------------------------------------------------------------------
+    bool FolderExists() const;
+    bool HasFilename() const;
 
     TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
     void SetPath(const char* a_path);
-
-    //const char* GetPath() const;
 
   private:
     void DoFixPath();

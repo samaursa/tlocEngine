@@ -379,7 +379,7 @@ namespace tloc { namespace core {
   TL_I STRING_BASE_TYPE::this_type& 
     StringBase<STRING_BASE_PARAMS>::operator+=( const T& character )
   {
-    TLOC_UNUSED(character);
+    append(1, character);
     return *this;
   }
 
@@ -1508,6 +1508,63 @@ namespace tloc { namespace core {
       { return (size1 > size2) ? 1 : 0; }
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Plus operator global
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, 
+                           const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const T* a_lhs, const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (T a_lhs, const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(1, a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, const T* a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, T a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  // Explicitly instantiate the operators for our string types
+  template String operator+ (const String& a_lhs, const String& a_rhs);
+  template String operator+ (const char8* a_lhs, const String& a_rhs);
+  template String operator+ (char8 a_lhs, const String& a_rhs);
+  template String operator+ (const String& a_lhs, const char8* a_rhs);
+  template String operator+ (const String& a_lhs, char8 a_rhs);
+
+  template StringW operator+ (const StringW& a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const char32* a_lhs, const StringW& a_rhs);
+  template StringW operator+ (char32 a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
+  template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions

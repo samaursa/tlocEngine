@@ -1,6 +1,7 @@
 #include "tlocFileIO.h"
 
 #include <tlocCore/memory/tlocMemory.h>
+#include <stdio.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -98,6 +99,15 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Close()
   {
     return DoClose();
+  }
+
+  template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Delete()
+  {
+    if (::remove(m_fileName.c_str()) == 0)
+    { return tloc::ErrorSuccess(); }
+    else
+    { return tloc::ErrorFailure(); }
   }
 
   template <FILE_IO_TEMP>

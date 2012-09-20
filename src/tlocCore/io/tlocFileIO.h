@@ -36,6 +36,7 @@ namespace tloc { namespace core { namespace io {
 
     error_type      Open();
     error_type      Close();
+    error_type      Delete();
     error_type      GetContents(String& a_out) const;
 
   private:

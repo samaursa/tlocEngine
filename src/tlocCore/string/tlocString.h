@@ -358,6 +358,25 @@ namespace tloc { namespace core {
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
   //////////////////////////////////////////////////////////////////////////
+  // Plus operator global
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs,
+                           const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const T* a_lhs, const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (T a_lhs, const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, const T* a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, T a_rhs);
+
+  //////////////////////////////////////////////////////////////////////////
   // Global functions
 
   template <typename T>

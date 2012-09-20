@@ -10,6 +10,12 @@ namespace TestingIOPath
   TEST_CASE("Core/io/Path", "")
   {
     {
+      const char* path = "..//..\\/doc///users/\\//\\/myFile.txt";
+      io::Path p(path);
+      CHECK(StrCmp(p.GetPath(), "../../doc/users/myFile.txt") == 0);
+    }
+
+    {
       const char* path = "../../doc/users/myFile.txt";
       io::Path p(path);
       CHECK(StrCmp(p.GetPath(), path) == 0);
@@ -31,12 +37,6 @@ namespace TestingIOPath
       ret.clear();
       p.GetPathWithoutFileName(ret);
       CHECK(ret.compare("../../doc/users") == 0);
-    }
-
-    {
-      const char* path = "..//..\\/doc///users/\\//\\/myFile.txt";
-      io::Path p(path);
-      CHECK(StrCmp(p.GetPath(), "../../doc/users/myFile.txt") == 0);
     }
   }
 };

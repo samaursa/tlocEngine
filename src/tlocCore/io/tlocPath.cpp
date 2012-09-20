@@ -3,6 +3,12 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
 
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/io/tlocFileIO.h>
+
+//------------------------------------------------------------------------
+// Platform specific functionality
+
 namespace tloc { namespace core { namespace io {
 
   namespace
@@ -44,13 +50,46 @@ namespace tloc { namespace core { namespace io {
     a_out = m_path.substr(0, pos);
   }
 
-  void Path::GetAbsolutePath(String& a_out) const
+  Path::file_type Path::FileExists() const
   {
-    TLOC_UNUSED(a_out);
+    {
+      FileIO_ReadA fileChecker(m_path.c_str());
+      if (fileChecker.Open() == tloc::common_error_types::error_success)
+      { return ascii; }
+    }
+    {
+      FileIO_ReadB fileChecker(m_path.c_str());
+      if (fileChecker.Open() == tloc::common_error_types::error_success)
+      { return binary; }
+    }
+
+    return none;
   }
 
-  bool Path::Exists() const
+  bool Path::FolderExists() const
   {
+    String tempFileName = m_path + "/temp.temp";
+    Path tempPath(tempFileName.c_str());
+
+    FileIO_WriteA tempFile(tempPath.GetPath());
+    if (tempFile.Open() == tloc::common_error_types::error_success)
+    {
+      if (tempFile.Delete() == tloc::common_error_types::error_failure)
+      { /* LOG: Could not erase temporary file */ }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  bool Path::HasFilename() const
+  {
+    tl_size pos = m_path.find(g_extension);
+
+    if (pos != String::npos)
+    { return true; }
+
     return false;
   }
 

@@ -56,17 +56,17 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/tlClamp", "Test the tlClamp() function")
   {
     tl_uint i = 10;
-    tl_uint clampedI = tlClamp(i, 0u, 10u);
+    tl_uint clampedI = tlClamp<tl_uint>(i, 0, 10);
     CHECK(clampedI == 10u);
 
-    clampedI = tlClamp(i, 0u, 5u);
-    CHECK(clampedI == 5u);
+    clampedI = tlClamp<tl_uint>(i, 0, 5);
+    CHECK(clampedI == 5);
 
-    clampedI = tlClamp(i, 4u, 5u);
-    CHECK(clampedI == 5u);
+    clampedI = tlClamp<tl_uint>(i, 4, 5);
+    CHECK(clampedI == 5);
 
-    clampedI = tlClamp(i, 12u, 15u);
-    CHECK(clampedI == 12u);
+    clampedI = tlClamp<tl_uint>(i, 12, 15);
+    CHECK(clampedI == 12);
   }
 
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")

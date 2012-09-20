@@ -961,11 +961,99 @@
 						RelativePath="..\..\..\..\src\3rdParty\Graphics\lodepng\lodepng.c"
 						>
 						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
 							Name="Debug_StdAlloc|Win32"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
-								WarningLevel="4"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug_StdAlloc|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_DebugInfo|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_DebugInfo|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc_DebugInfo|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc_DebugInfo|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
 							/>
 						</FileConfiguration>
 					</File>
@@ -1123,15 +1211,15 @@
 				Name="images"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImage.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImage.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImage.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\images\tlocImageLoader.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImageLoader.cpp"
 					>
 				</File>
 				<File

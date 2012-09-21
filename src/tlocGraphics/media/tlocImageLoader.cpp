@@ -62,7 +62,7 @@ namespace tloc { namespace graphics { namespace media {
 
     tl_uint lodePngErr = lodepng_decode32(&image, &width, &height,
                                           (unsigned const char*)fileCont.c_str(),
-                                          fileCont.length());
+                                          (u32)fileCont.length());
     if (lodePngErr)
     {
       // LOG: Take log from lodepng_error_text(lodePngErr);

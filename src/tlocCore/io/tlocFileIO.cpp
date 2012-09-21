@@ -131,7 +131,7 @@ namespace tloc { namespace core { namespace io {
     if (result != fileSize) { return ErrorFailure(); }
 
     buffer[fileSize] = '\0';
-    a_out = buffer;
+    a_out.assign(buffer, buffer + fileSize);
 
     TL_FREE(buffer);
 

@@ -74,6 +74,7 @@ namespace tloc { namespace core { namespace io {
   FileIO<FILE_IO_PARAMS>::FileIO(const Path& a_path)
     : m_fileName(a_path)
   {
+    TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
   }
 
   template <FILE_IO_TEMP>
@@ -85,6 +86,9 @@ namespace tloc { namespace core { namespace io {
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Open()
   {
+    if (m_fileName.HasFilename() == false)
+    { return common_error_types::error_path_incorrect; }
+
     m_file = detail::DoOpen(m_fileName.GetPath(), access_policy_type(),
                             file_format_type());
     if (m_file)

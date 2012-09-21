@@ -241,7 +241,7 @@ namespace TestingHashtable
       // Should be added to bucket # 2
       typename T_HashT::iterator itr = h.begin();
 
-      Pair<bool, typename T_HashT::size_type> result = 
+      Pair<bool, typename T_HashT::size_type> result =
         itr.GetCurrBucketNumber();
       REQUIRE(result.first == true);
       CHECK(result.second == 5 % 3); // bucket #2
@@ -253,9 +253,9 @@ namespace TestingHashtable
 
       result = itr.GetCurrBucketNumber();
       REQUIRE(result.first == true);
-      CHECK(result.second == 0) // 6 should be in bucket #0
+      CHECK(result.second == 0); // 6 should be in bucket #0
 
-        itr2 = h.insert(7);
+      itr2 = h.insert(7);
       itr = iterator_deref()(itr2);
       CHECK( (*itr) == 7);
 
@@ -292,7 +292,7 @@ namespace TestingHashtable
       CHECK( (itr == itrEnd) == true);
 
       TL_NESTED_FUNC_BEGIN(CheckBucket)
-        void CheckBucket(typename T_HashT::iterator a_itr, 
+        void CheckBucket(typename T_HashT::iterator a_itr,
                          tl_size a_valueToCheck)
       {
         CHECK(a_itr.GetCurrBucketNumber().second == a_valueToCheck);
@@ -329,7 +329,7 @@ namespace TestingHashtable
     // template <typename T_InputItr>
     // void                insert(T_InputItr a_first, T_InputItr a_last);
     {
-      typename T_HashT::value_type v[] = 
+      typename T_HashT::value_type v[] =
         {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
       T_HashT h;
@@ -354,7 +354,7 @@ namespace TestingHashtable
       }
 
       CHECK(h.count(5) == (Loki::IsSameType<typename T_HashT::unique_keys,
-        type_true>::value ? 1 : 10))
+        type_true>::value ? 1 : 10));
     }
   }
 
@@ -422,7 +422,7 @@ namespace TestingHashtable
       for (u32 i = 0; i < 10; ++i)
       {
         CHECK(h.count(i) == (Loki::IsSameType<typename T_HashT::unique_keys,
-          type_true>::value ? 1 : numOfInserts))
+          type_true>::value ? 1 : numOfInserts));
       }
     }
 
@@ -437,7 +437,7 @@ namespace TestingHashtable
         h.insert(i);
       }
 
-      Pair<typename T_HashT::iterator, typename T_HashT::iterator> p = 
+      Pair<typename T_HashT::iterator, typename T_HashT::iterator> p =
         h.equal_range(3);
 
       u32 count = 0;
@@ -509,7 +509,7 @@ namespace TestingHashtable
     //------------------------------------------------------------------------
     //iterator            erase(iterator a_first, iterator a_last);
     {
-      typename T_HashT::value_type v[] = 
+      typename T_HashT::value_type v[] =
         {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
       T_HashT h;

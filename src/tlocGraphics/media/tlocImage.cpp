@@ -1,5 +1,7 @@
 #include "tlocImage.h"
 
+#include <tlocCore/containers/tlocContainers.inl>
+
 namespace tloc { namespace graphics { namespace media {
 
   Image::Image() : m_width(0), m_height(0)
@@ -44,5 +46,10 @@ namespace tloc { namespace graphics { namespace media {
   {
     return m_pixels[a_X + (a_Y * m_width)];
   }
+
+  //------------------------------------------------------------------------
+  // Explicitly instantiate the container
+
+  template class core::Array<types::Color>;
 
 };};};

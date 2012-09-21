@@ -228,7 +228,7 @@ namespace TestingStackArray
       {
         ++count;
       }
-      CHECK(*itr == static_cast<tl_int>(count))
+      CHECK(*itr == static_cast<tl_int>(count));
     }
   }
 
@@ -257,7 +257,7 @@ namespace TestingStackArray
     CHECK(ints.empty());
 
     FILL_INT_STACK_ARRAY_BY_PUSH(ints, 20);
-    CHECK(ints.size() == 20)
+    CHECK(ints.size() == 20);
     itr = ints.erase(ints.begin(), ints.begin() + 10);
     CHECK(*itr == 10);
     CHECK(itr == ints.begin());

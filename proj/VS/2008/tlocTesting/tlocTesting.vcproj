@@ -1217,6 +1217,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="media"
+				>
+				<File
+					RelativePath=".\tlocImageLoaderTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Input"

@@ -46,7 +46,7 @@ namespace TestingMemory
     CHECK(a <= c);
   }
 
-  TEST_CASE("Core/Utilities", "Testing array size utility")
+  TEST_CASE("Core/Utilities/ArraySize", "Testing array size utility")
   {
     int someArray[50];
     char someCharArray[30];

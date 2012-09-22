@@ -4,47 +4,58 @@
 
 namespace tloc { namespace graphics { namespace media {
 
-  Image::Image() : m_width(0), m_height(0)
+  namespace
+  {
+    enum
+    {
+      width = types::dimension::width,
+      height = types::dimension::height,
+    };
+  };
+
+  Image::Image() : m_dim(0, 0)
   {
   }
 
   Image::error_type
-    Image::LoadFromMemory(const char* a_buffer, size_type a_size)
+    Image::LoadFromMemory(const char* a_buffer, dimension_type a_dim,
+                          size_type a_channels)
   {
-    if ((a_buffer == NULL) || (a_size == 0))
+    if ( (a_buffer == NULL) || a_dim[0] == 0 || a_dim[1] == 0 ||
+         (a_channels == 0) )
     { return error_type(common_error_types::error_no_data); }
 
     // Check if a_size can accommodate a whole number of Color*
-    TLOC_ASSERT( ((a_size % sizeof(color_type)) == 0),
+    TLOC_ASSERT( ((a_channels % sizeof(color_type)) == 0),
       "The buffer has an invalid size!");
 
     const color_type* buffer = reinterpret_cast<const color_type*>(a_buffer);
-    m_pixels.assign(buffer, buffer + a_size);
+    m_pixels.assign(buffer, buffer + (a_dim[0] * a_dim[1] * a_channels));
+
+    m_dim = a_dim;
 
     return tloc::ErrorSuccess();
   }
 
   Image::error_type
-    Image::Create(size_type a_width, size_type a_height,
-                  const color_type& a_color)
+    Image::Create(dimension_type a_dim, const color_type& a_color)
   {
-    m_width = a_width;
-    m_height = a_height;
+    m_dim = a_dim;
 
     m_pixels.clear();
-    m_pixels.resize(a_width * a_height, a_color);
+    m_pixels.resize(m_dim[width] * m_dim[height] , a_color);
 
     return tloc::ErrorSuccess();
   }
 
   void Image::SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)
   {
-    m_pixels[a_X + (a_Y * m_width)] = a_color;
+    m_pixels[a_X + (a_Y * m_dim[width])] = a_color;
   }
 
   const Image::color_type&  Image::GetPixel(size_type a_X, size_type a_Y) const
   {
-    return m_pixels[a_X + (a_Y * m_width)];
+    return m_pixels[a_X + (a_Y * m_dim[width])];
   }
 
   //------------------------------------------------------------------------

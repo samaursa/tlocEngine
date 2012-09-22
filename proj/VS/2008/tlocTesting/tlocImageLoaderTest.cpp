@@ -10,20 +10,21 @@ namespace TestingImageLoader
   using namespace tloc;
   using namespace tloc::graphics;
 
-  TEST_CASE("Graphics/media/ImageLoaderPng", "")
+  TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {
-    /*unsigned int error;
-    unsigned char* image;
-    unsigned int width, height;
-    unsigned char* png;
-    size_t pngsize;
-
-    lodepng_load_file(&png, &pngsize, "./png_test_1.png");
-    error = lodepng_decode32(&image, &width, &height, png, pngsize);
-    CHECK(error == 0);*/
-
     media::ImageLoaderPng  png;
     core::io::Path path("./png_test_1.png");
     CHECK(png.Load(path) == common_error_types::error_success);
+  }
+
+  TEST_CASE("Graphics/media/ImageLoaderPng/GetImage", "")
+  {
+    media::ImageLoaderPng png;
+    core::io::Path path("./png_test_1.png");
+    REQUIRE(png.Load(path) == common_error_types::error_success);
+
+    bool testPassed = true;
+    const media::Image& img = png.GetImage();
+    TLOC_UNUSED_2(testPassed, img);
   }
 };

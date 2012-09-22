@@ -8,8 +8,8 @@ namespace tloc { namespace graphics { namespace media {
 
   namespace
   {
-    typedef ImageLoaderPng::error_type   error_type;
-    typedef ImageLoaderPng::path_type    path_type;
+    typedef ImageLoaderPng::error_type      error_type;
+    typedef ImageLoaderPng::path_type       path_type;
 
     error_type DoLoadFromFile(const path_type& a_path, core::String& a_out)
     {
@@ -32,14 +32,15 @@ namespace tloc { namespace graphics { namespace media {
   IMAGE_LOADER_TYPE::error_type
     ImageLoader<IMAGE_LOADER_PARAMS>::Load(const path_type& a_path)
   {
-    return static_cast<derived_type*>(this)->Load(a_path);
+    return static_cast<derived_type*>(this)->DoLoad(a_path);
   }
 
   template <IMAGE_LOADER_TEMP>
   IMAGE_LOADER_TYPE::error_type ImageLoader<IMAGE_LOADER_PARAMS>::
-    DoLoadImageFromMemory(const char* a_buffer, size_type a_length)
+    DoLoadImageFromMemory(const char* a_buffer, dimention_type a_dim,
+                          size_type a_channels)
   {
-    return m_image.LoadFromMemory(a_buffer, a_length);
+    return m_image.LoadFromMemory(a_buffer, a_dim, a_channels);
   }
 
   //------------------------------------------------------------------------
@@ -48,7 +49,7 @@ namespace tloc { namespace graphics { namespace media {
 #include <3rdParty/Graphics/lodepng/lodepng.h>
 #include <3rdParty/Graphics/lodepng/lodepng.c>
 
-  ImageLoaderPng::error_type ImageLoaderPng::Load(const path_type& a_path)
+  ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
   {
     core::String fileCont;
 
@@ -67,12 +68,13 @@ namespace tloc { namespace graphics { namespace media {
     {
       // LOG: Take log from lodepng_error_text(lodePngErr);
       res = graphics::error::error_image_decoding;
-      goto gt_cleanup_and_return;
+    }
+    else
+    {
+      res = DoLoadImageFromMemory((const char*)image,
+                                   dimention_type(width, height), 4);
     }
 
-    res = DoLoadImageFromMemory((const char*)image, width * height * 32);
-
-gt_cleanup_and_return:
     free(image);
 
     return res;

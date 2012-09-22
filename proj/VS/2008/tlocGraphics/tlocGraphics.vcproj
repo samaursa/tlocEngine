@@ -1171,6 +1171,10 @@
 		<Filter
 			Name="data_types"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocDimension.h"
+				>
+			</File>
 			<Filter
 				Name="color"
 				>

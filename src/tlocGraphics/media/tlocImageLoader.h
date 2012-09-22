@@ -16,14 +16,17 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::error::Error    error_type;
     typedef core::io::Path        path_type;
     typedef tl_size               size_type;
+    typedef Image::dimension_type dimention_type;
 
     error_type Load(const path_type& a_path);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Image, GetImage, m_image);
+
   protected:
 
-    error_type DoLoadImageFromMemory(const char* a_buffer, size_type a_length);
-
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Image, GetImage, m_image);
+    error_type DoLoadImageFromMemory(const char* a_buffer,
+                                     dimention_type a_dim,
+                                     size_type a_channels);
 
   private:
     Image m_image;
@@ -32,13 +35,14 @@ namespace tloc { namespace graphics { namespace media {
   class ImageLoaderPng : public ImageLoader<ImageLoaderPng>
   {
   public:
-    typedef ImageLoader     base_type;
+    typedef ImageLoader<ImageLoaderPng>   base_type;
+    friend class base_type;
     using base_type::error_type;
     using base_type::path_type;
     using base_type::size_type;
 
-  public:
-    error_type  Load(const path_type& a_path);
+  protected:
+    error_type  DoLoad(const path_type& a_path);
 
   };
 

@@ -6,6 +6,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 
 #include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/data_types/tlocDimension.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -17,6 +18,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::tl_array<color_type>::type    pixel_container_type;
     typedef core::error::Error                  error_type;
     typedef Image                               this_type;
+    typedef types::Dimension2u                  dimension_type;
 
   public:
     Image();
@@ -24,23 +26,24 @@ namespace tloc { namespace graphics { namespace media {
     ///-------------------------------------------------------------------------
     /// @brief Loads color buffer from memory (assuming RGBA format)
     ///-------------------------------------------------------------------------
-    error_type    LoadFromMemory(const char* a_buffer, size_type a_size);
+    error_type        LoadFromMemory(const char* a_buffer,
+                                     dimension_type a_dim,
+                                     size_type a_channels);
 
-    error_type    Create(size_type a_width, size_type a_height,
-                         const color_type& a_color = color_type::COLOR_BLACK);
+    error_type        Create(dimension_type a_dim, const color_type& a_color);
 
     void              SetPixel(size_type a_X, size_type a_Y,
                                const color_type& a_color);
+
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_width);
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_height);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
                                           GetPixels, m_pixels);
 
   private:
-    size_type               m_width;
-    size_type               m_height;
+    dimension_type          m_dim;
     pixel_container_type    m_pixels;
   };
 

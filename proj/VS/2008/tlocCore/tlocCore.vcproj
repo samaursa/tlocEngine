@@ -1043,42 +1043,58 @@
 		<Filter
 			Name="data_structures"
 			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.cpp"
+			<Filter
+				Name="variadic"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadicTypedefMacros.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tuples"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="table"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadicTypedefMacros.h"
-				>
-			</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="types"

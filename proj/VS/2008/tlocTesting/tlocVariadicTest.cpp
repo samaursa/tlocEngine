@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
 
 namespace TestingVariadic
 {

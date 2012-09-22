@@ -13,4 +13,16 @@ typedef Variadic<_type_, 8>  Variadic8  ##_post_fix_; \
 typedef Variadic<_type_, 9>  Variadic9  ##_post_fix_; \
 typedef Variadic<_type_, 10> Variadic10 ##_post_fix_  \
 
+#define TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(_type_) \
+  template Variadic<_type_, 1>;\
+  template Variadic<_type_, 2>;\
+  template Variadic<_type_, 3>;\
+  template Variadic<_type_, 4>;\
+  template Variadic<_type_, 5>;\
+  template Variadic<_type_, 6>;\
+  template Variadic<_type_, 7>;\
+  template Variadic<_type_, 8>;\
+  template Variadic<_type_, 9>;\
+  template Variadic<_type_, 10>
+
 #endif

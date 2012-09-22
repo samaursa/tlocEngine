@@ -33,6 +33,9 @@ namespace tloc { namespace core {
     template <typename T_ArrayType>
     TL_FI Tuple(const T_ArrayType (&aArray)[T_Size]);
 
+    template <template <class, class> class T_Variadic>
+    TL_FI Tuple(const T_Variadic<T, tl_size>& a_vars);
+
     TL_FI explicit Tuple(const T& aValue);
 
     //------------------------------------------------------------------------

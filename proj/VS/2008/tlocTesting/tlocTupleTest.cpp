@@ -6,6 +6,8 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocTuple.inl>
 
+#include <tlocCore/data_structures/tlocVariadic.h>
+
 namespace TestingTuple
 {
   USING_TLOC;
@@ -74,6 +76,18 @@ namespace TestingTuple
 
     // Check Size
     CHECK (q.GetSize() == 4);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
+    "Test the Tuple ctor with varadic")
+  {
+    core::Tuple<tl_int, 4> p(core::Variadic4i(1, 2, 3, 4));
+
+    CHECK(p.GetSize() == 4);
+    CHECK(p[0] == 1);
+    CHECK(p[1] == 2);
+    CHECK(p[2] == 3);
+    CHECK(p[3] == 4);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Operators",

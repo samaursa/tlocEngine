@@ -1,5 +1,5 @@
-#ifndef TLOC_INPUT_WIN_H
-#define TLOC_INPUT_WIN_H
+#ifndef TLOC_INPUT_IPHONE_H
+#define TLOC_INPUT_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -8,13 +8,23 @@
 #include "tlocInputImpl.h"
 #include "tlocInputTypes.h"
 
+#import <UIKit/UIkit.h>
+#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
+
 namespace tloc { namespace input {
 
-  typedef InputParameterList<void*> input_param_type;
+  typedef InputParameterList<UIWindow*> input_param_type;
 
 };};
 
 namespace tloc { namespace input { namespace priv {
+
+  // TODO: Make InputDeviceInfo NOT use void*
+  struct InputDeviceInfo
+  {
+    bool  m_available;
+    void* m_devicePtr;
+  };
 
   template <typename T_ParentInputManager>
   class InputManagerImpl
@@ -31,6 +41,10 @@ namespace tloc { namespace input { namespace priv {
     typedef typename parent_type::policy_type         policy_type;
     typedef typename parent_type::size_type           size_type;
     typedef typename parent_type::input_type          input_type;
+    
+    //------------------------------------------------------------------------
+    // using declarations for access to base class
+    using base_type::m_params;
 
     InputManagerImpl(parent_type* a_parent,
                      param_type a_params);
@@ -82,6 +96,16 @@ namespace tloc { namespace input { namespace priv {
     size_type GetTotalHID(input_type a_inputType);
 
   public:
+    //------------------------------------------------------------------------
+    // Platform specific methods
+    
+    UIWindow* GetWindowHandle();
+    
+  private:
+    
+    OpenGLView* DoGetOpenGLViewHandle();
+
+    InputDeviceInfo m_iphoneHIDs[hid::count];
 
   };
 

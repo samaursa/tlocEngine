@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
 
 @interface OpenGLView : UIView
 
@@ -46,6 +47,15 @@
 /// application supports screen rotation.
 ///-------------------------------------------------------------------------
 - (void)UpdateRenderBufferDimensions;
+
+- (void)RegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (void)RegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 
 ///-------------------------------------------------------------------------
 /// Callback function that will be called once, immediately after the user 

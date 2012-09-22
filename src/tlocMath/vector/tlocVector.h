@@ -38,6 +38,7 @@ namespace tloc { namespace math {
     typedef core::Tuple<T, T_Size>                base_type;
 
     typedef typename base_type::value_type        value_type;
+    typedef typename base_type::size_type         size_type;
     typedef value_type&                           reference;
     typedef const value_type&                     const_reference;
 
@@ -45,7 +46,6 @@ namespace tloc { namespace math {
     // using declarations for access to base class
     using base_type::Set;
     using base_type::m_values;
-    using base_type::size_type;
 
     //------------------------------------------------------------------------
     // Constructors

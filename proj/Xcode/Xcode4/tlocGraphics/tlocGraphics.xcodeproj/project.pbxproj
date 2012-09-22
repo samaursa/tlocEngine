@@ -18,7 +18,7 @@
 		97C87D0515DE4BC700FE0A6C /* tlocWindowSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */; };
 		97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */; };
 		97C87D0D15DE4BF700FE0A6C /* tlocOpenGLViewIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */; };
-		97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */; };
+		97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */; };
 		97C87D0F15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */; };
 		97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */; };
 		97C87D1115DE4BF700FE0A6C /* tlocWindowImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */; };
@@ -46,7 +46,7 @@
 		97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowSettings.h; path = ../../../../src/tlocGraphics/window/tlocWindowSettings.h; sourceTree = "<group>"; };
 		97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocWindowImplIphone.mm; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.mm; sourceTree = "<group>"; };
 		97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.h; sourceTree = "<group>"; };
-		97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = tlocOpenGLViewIphone.m; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.m; sourceTree = "<group>"; };
+		97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocOpenGLViewIphone.mm; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.mm; sourceTree = "<group>"; };
 		97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewControllerIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.h; sourceTree = "<group>"; };
 		97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocOpenGLViewControllerIphone.mm; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.mm; sourceTree = "<group>"; };
 		97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowImplIphone.h; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.h; sourceTree = "<group>"; };
@@ -159,7 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */,
-				97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */,
+				97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */,
 				97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */,
 				97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */,
 				97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */,
@@ -259,7 +259,7 @@
 			files = (
 				97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */,
 				97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */,
-				97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.m in Sources */,
+				97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm in Sources */,
 				97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */,
 				97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */,
 				97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */,

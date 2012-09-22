@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace media {
 
   template <IMAGE_LOADER_TEMP>
   IMAGE_LOADER_TYPE::error_type ImageLoader<IMAGE_LOADER_PARAMS>::
-    DoLoadImageFromMemory(const char* a_buffer, dimention_type a_dim,
+    DoLoadImageFromMemory(const uchar8* a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
     return m_image.LoadFromMemory(a_buffer, a_dim, a_channels);
@@ -71,8 +71,7 @@ namespace tloc { namespace graphics { namespace media {
     }
     else
     {
-      res = DoLoadImageFromMemory((const char*)image,
-                                   dimention_type(width, height), 4);
+      res = DoLoadImageFromMemory(image, dimention_type(width, height), 4);
     }
 
     free(image);

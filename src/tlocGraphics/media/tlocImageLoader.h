@@ -24,7 +24,7 @@ namespace tloc { namespace graphics { namespace media {
 
   protected:
 
-    error_type DoLoadImageFromMemory(const char* a_buffer,
+    error_type DoLoadImageFromMemory(const uchar8* a_buffer,
                                      dimention_type a_dim,
                                      size_type a_channels);
 

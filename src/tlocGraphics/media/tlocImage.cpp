@@ -18,7 +18,7 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   Image::error_type
-    Image::LoadFromMemory(const char* a_buffer, dimension_type a_dim,
+    Image::LoadFromMemory(const uchar8* a_buffer, dimension_type a_dim,
                           size_type a_channels)
   {
     if ( (a_buffer == NULL) || a_dim[0] == 0 || a_dim[1] == 0 ||
@@ -30,7 +30,7 @@ namespace tloc { namespace graphics { namespace media {
       "The buffer has an invalid size!");
 
     const color_type* buffer = reinterpret_cast<const color_type*>(a_buffer);
-    m_pixels.assign(buffer, buffer + (a_dim[0] * a_dim[1] * a_channels));
+    m_pixels.assign(buffer, buffer + (a_dim[0] * a_dim[1]));
 
     m_dim = a_dim;
 

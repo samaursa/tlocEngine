@@ -26,7 +26,7 @@ namespace tloc { namespace graphics { namespace media {
     ///-------------------------------------------------------------------------
     /// @brief Loads color buffer from memory (assuming RGBA format)
     ///-------------------------------------------------------------------------
-    error_type        LoadFromMemory(const char* a_buffer,
+    error_type        LoadFromMemory(const uchar8* a_buffer,
                                      dimension_type a_dim,
                                      size_type a_channels);
 

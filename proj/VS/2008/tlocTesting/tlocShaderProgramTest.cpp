@@ -1,8 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
-#include <tlocGraphics/opengl/tlocOpenGLExt.h>
-
+#include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShaderComponent.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
@@ -37,7 +35,7 @@ void main(void)                     \n\
   using namespace tloc;
   using namespace graphics;
 
-  TEST_CASE("Graphics/ShaderProgram", "")
+  TEST_CASE("Graphics/ShaderProgram/HardCoded", "")
   {
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;
@@ -45,7 +43,7 @@ void main(void)                     \n\
       WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(OpenGLExt::Initialize() != OpenGLExt::error_init);
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::ShaderComponent vShader;
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;

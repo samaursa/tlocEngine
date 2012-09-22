@@ -1,8 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
-#include <tlocGraphics/opengl/tlocOpenGLExt.h>
-
+#include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/opengl/tlocShaderComponent.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
@@ -39,24 +37,24 @@ void main(void)                     \n\
 
   TEST_CASE("Graphics/ShaderComponent", "")
   {
-    //typedef Window<>::graphics_mode         graphics_mode;
-    //Window<> win;
-    //win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
-    //  WindowSettings("Atom & Eve"));
+    typedef Window<>::graphics_mode         graphics_mode;
+    Window<> win;
+    win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
+      WindowSettings("Atom & Eve"));
 
-    //// Initialize glew
-    //REQUIRE(OpenGLExt::Initialize() != OpenGLExt::error_init);
+    // Initialize glew
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    //gl::ShaderComponent vShader;
+    gl::ShaderComponent vShader;
 
-    //typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    //CHECK(vShader.LoadShader(vShaderStr, vertex_shader_type() ) == true);
-    //CHECK(vShader.CompileShader() == true);
+    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
+    CHECK(vShader.LoadShader(vShaderStr, vertex_shader_type() ) == true);
+    CHECK(vShader.CompileShader() == true);
 
-    //gl::ShaderComponent fShader;
+    gl::ShaderComponent fShader;
 
-    //typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    //CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
-    //CHECK(fShader.CompileShader() == true);
+    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
+    CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
+    CHECK(fShader.CompileShader() == true);
   }
 };

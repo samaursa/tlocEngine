@@ -13,23 +13,25 @@ namespace tloc { namespace graphics {
     };
   };
 
-  tl_size rendererCount = 0;
-
   Renderer::Renderer() : m_flags(count)
   {
-    ++rendererCount;
-    TLOC_ASSERT(rendererCount <= 1, "More than one renderer not supported!");
+    TLOC_ASSERT(GetCurrentObjectCount() <= 1,
+                "More than one renderer simultaneously is not supported!");
   }
 
   Renderer::error_type Renderer::Initialize()
   {
-    TLOC_ASSERT(m_flags[initialized] == false, "Renderer already initialized");
+    if (m_flags[initialized] == false)
+    {
+      error_type res = OpenGLExt::Initialize();
+      if (res != common_error_types::error_initialize)
+      { return res; }
 
-    if (OpenGLExt::Initialize() != OpenGLExt::error_none)
-    { return common_error_types::error_initialize; }
+      m_flags.Mark(initialized);
+      return common_error_types::error_success;
+    }
 
-    m_flags.Mark(initialized);
-    return common_error_types::error_success;
+    return common_error_types::error_already_initialized;
   }
 
 };};

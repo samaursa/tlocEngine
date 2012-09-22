@@ -3,6 +3,8 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/error/tlocError.h>
+#include <tlocCore/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics {
 
@@ -12,14 +14,9 @@ namespace tloc { namespace graphics {
   class OpenGLExt
   {
   public:
+    typedef core::error::Error    error_type;
 
-    enum
-    {
-      error_none,
-      error_init,
-      error_already_init
-    }; typedef tl_int error_type;
-
+  public:
     static error_type Initialize();
     static bool       IsInitialized();
     static error_type GetLastError();
@@ -29,8 +26,8 @@ namespace tloc { namespace graphics {
     OpenGLExt();
 
     // TODO: Make atomic
-    static bool   m_initialized;
-    static tl_int m_error;
+    static bool       m_initialized;
+    static error_type m_error;
 
   };
 

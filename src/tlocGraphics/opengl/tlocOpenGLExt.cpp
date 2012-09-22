@@ -3,8 +3,8 @@
 
 namespace tloc { namespace graphics {
 
-  bool    OpenGLExt::m_initialized = false;
-  tl_int  OpenGLExt::m_error       = error_none;
+  bool                  OpenGLExt::m_initialized = false;
+  OpenGLExt::error_type OpenGLExt::m_error = common_error_types::error_success;
 
   OpenGLExt::OpenGLExt()
   {
@@ -19,14 +19,14 @@ namespace tloc { namespace graphics {
       {
         // LOG: glewInit failed (log which GLEW error it was
         m_initialized = false;
-        m_error = error_init;
+        m_error = common_error_types::error_initialize;
 
         return GetLastError();
       }
       else
       {
         m_initialized = true;
-        m_error = error_none;
+        m_error = common_error_types::error_success;
 
         // LOG: OpenGL version, vendor, renderer, and number of supported
         //      extensions (use glGetString, glGetIntegerv etc.)
@@ -36,7 +36,7 @@ namespace tloc { namespace graphics {
     }
 
     // LOG: GLEW already initialized
-    m_error = error_already_init;
+    m_error = common_error_types::error_already_initialized;
     return GetLastError();
   }
 

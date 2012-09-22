@@ -6,7 +6,7 @@ namespace TestingGLShaderObject
 {
   using namespace tloc::graphics;
 
-  TEST_CASE("Graphics/ShaderComponent", "")
+  TEST_CASE("Graphics/gl/Object", "")
   {
     gl::Object obj;
     obj.SetHandle(9);

@@ -27,4 +27,14 @@ namespace tloc { namespace core { namespace error {
     return m_error == a_other;
   }
 
+  bool Error::operator !=(const this_type& a_other)
+  {
+    return operator!=(a_other.m_error);
+  }
+
+  bool Error::operator !=(const code_type& a_other)
+  {
+    return m_error != a_other;
+  }
+
 };};};

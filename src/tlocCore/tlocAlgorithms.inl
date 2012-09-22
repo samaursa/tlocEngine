@@ -1006,6 +1006,17 @@ namespace tloc { namespace core {
     return a < b ? b : a;
   }
 
+  template <typename T>
+  TL_I const T tlClamp(const T& a, const T& a_minValue, const T& a_maxValue)
+  {
+    if (a < a_minValue) 
+    { return a_minValue; }
+    else if (a > a_maxValue)
+    { return a_maxValue; }
+    else
+    { return a; }
+  }
+
   //------------------------------------------------------------------------
   // Modifying sequence operations
 

@@ -39,11 +39,34 @@ namespace TestingAlgorithms
 
   const tl_size g_testArraySize = 100; // array size used for loops etc.
 
-  TEST_CASE("Core/Algorithms/Swap", "Test the min() functions")
+  TEST_CASE("Core/Algorithms/tlMin", "Test the tlMin() function")
   {
-    u32 i = 10, j = 15;
-    u32 minimum = tlMin(i, j);
+    tl_uint i = 10, j = 15;
+    tl_uint minimum = tlMin(i, j);
     CHECK(minimum == i);
+  }
+
+  TEST_CASE("Core/Algorithms/tlMax", "Test the tlMax() function")
+  {
+    tl_uint i = 10, j = 15;
+    tl_uint maximum = tlMax(i, j);
+    CHECK(maximum == j);
+  }
+
+  TEST_CASE("Core/Algorithms/tlClamp", "Test the tlClamp() function")
+  {
+    tl_uint i = 10;
+    tl_uint clampedI = tlClamp<tl_uint>(i, 0, 10);
+    CHECK(clampedI == 10u);
+
+    clampedI = tlClamp<tl_uint>(i, 0, 5);
+    CHECK(clampedI == 5);
+
+    clampedI = tlClamp<tl_uint>(i, 4, 5);
+    CHECK(clampedI == 5);
+
+    clampedI = tlClamp<tl_uint>(i, 12, 15);
+    CHECK(clampedI == 12);
   }
 
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")

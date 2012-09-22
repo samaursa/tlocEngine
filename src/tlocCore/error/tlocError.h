@@ -20,6 +20,9 @@ namespace tloc { namespace core { namespace error {
     bool operator==(const this_type& a_other);
     bool operator==(const code_type& a_other);
 
+    bool operator!=(const this_type& a_other);
+    bool operator!=(const code_type& a_other);
+
     TLOC_DECL_AND_DEF_GETTER(code_type, GetErrorCode, m_error);
 
   private:

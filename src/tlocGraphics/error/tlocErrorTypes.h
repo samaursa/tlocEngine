@@ -2,6 +2,7 @@
 #define TLOC_GRAPHICS_ERROR_TYPES_H
 
 #include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics { namespace error {
 

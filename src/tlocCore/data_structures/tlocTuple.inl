@@ -48,7 +48,7 @@ namespace tloc { namespace core {
   {
     TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
       Size_mismatch_between_variadic_and_tuple);
-    operator=(static_cast<Tuple<T, T_Size>(a_vars));
+    operator=(static_cast<Tuple<T, T_Size> >(a_vars));
   }
 
   template <TUPLE_TEMP>

@@ -18,6 +18,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef tl_size               size_type;
     typedef Image::dimension_type dimention_type;
 
+  public:
     error_type Load(const path_type& a_path);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Image, GetImage, m_image);

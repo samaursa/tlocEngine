@@ -1232,6 +1232,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="renderer"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>

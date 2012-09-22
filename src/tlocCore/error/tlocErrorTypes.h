@@ -30,6 +30,7 @@ namespace tloc {
     {
       error_success                     = core::error::error_groups::error_common,
       error_failure,
+      error_initialize,
       error_no_data,                    // used for NULL
       error_corrupt_data,
       error_size_mismatch,

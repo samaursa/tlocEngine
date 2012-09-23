@@ -6,6 +6,7 @@
 
 namespace TestingFileIO
 {
+  using namespace tloc;
   using namespace tloc::core;
 
   TEST_CASE("Core/io/FileIO", "Testing file input output")
@@ -20,14 +21,14 @@ namespace TestingFileIO
     fclose(m_file);
 
     io::FileIO_ReadA fileReader(fileName);
-    fileReader.Open();
+    CHECK(fileReader.Open() == common_error_types::error_success);
 
     String fileContents;
     fileReader.GetContents(fileContents);
 
     CHECK(fileContents.compare(sentence) == 0);
-    CHECK(fileReader.Close() == (tloc::common_error_types::error_success) );
+    CHECK(fileReader.Close() == common_error_types::error_success );
 
-    CHECK(fileReader.Delete() == (tloc::common_error_types::error_success) );
+    CHECK(fileReader.Delete() == common_error_types::error_success );
   }
 };

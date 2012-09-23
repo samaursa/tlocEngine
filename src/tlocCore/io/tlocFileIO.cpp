@@ -128,10 +128,10 @@ namespace tloc { namespace core { namespace io {
     char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSizeInclNull);
 
     tl_size result = fread(buffer, 1, fileSizeInclNull, m_file);
-    if (result != fileSize) { return ErrorFailure(); }
+    if (result == 0) { return ErrorFailure(); }
 
-    buffer[fileSize] = '\0';
-    a_out.assign(buffer, buffer + fileSize);
+    buffer[result] = '\0';
+    a_out.assign(buffer, buffer + result);
 
     TL_FREE(buffer);
 

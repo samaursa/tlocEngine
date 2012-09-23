@@ -15,17 +15,20 @@ namespace TestingImageLoader
   extern color_type png_test_1[10][10];
   extern color_type png_test_2[10][10];
 
+  core::String g_png_test_1_path(g_resourcePath + core::String("./png_test_1.png"));
+  core::String g_png_test_2_path(g_resourcePath + core::String("./png_test_2.png"));
+
   TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {
     media::ImageLoaderPng  png;
-    core::io::Path path("./png_test_1.png");
+    core::io::Path path(g_png_test_1_path.c_str());
     CHECK(png.Load(path) == common_error_types::error_success);
   }
 
   TEST_CASE("Graphics/media/ImageLoaderPng/GetImage/png_test_1", "")
   {
     media::ImageLoaderPng png;
-    core::io::Path path("./png_test_1.png");
+    core::io::Path path(g_png_test_1_path.c_str());
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
@@ -47,7 +50,7 @@ namespace TestingImageLoader
   TEST_CASE("Graphics/media/ImageLoaderPng/GetImage/png_test_2", "")
   {
     media::ImageLoaderPng png;
-    core::io::Path path("./png_test_2.png");
+    core::io::Path path(g_png_test_2_path.c_str());
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;

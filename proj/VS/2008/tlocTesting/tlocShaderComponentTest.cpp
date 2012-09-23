@@ -1,5 +1,7 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/io/tlocFileIO.h>
+
 #include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/opengl/tlocShaderComponent.h>
 #include <tlocGraphics/window/tlocWindow.h>
@@ -33,16 +35,20 @@ void main(void)                     \n\
 
 
   using namespace tloc;
+  using namespace tloc::core;
   using namespace graphics;
 
-  TEST_CASE("Graphics/ShaderComponent", "")
+  String g_vShaderPath(g_resourcePath + String("./simple_vertex_shader.glsl") );
+  String g_fShaderPath(g_resourcePath + String("./simple_fragment_shader.glsl") );
+
+  TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;
     win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
       WindowSettings("Atom & Eve"));
 
-    // Initialize glew
+    // Initialize renderer
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::ShaderComponent vShader;
@@ -56,5 +62,35 @@ void main(void)                     \n\
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
     CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
     CHECK(fShader.CompileShader() == true);
+  }
+
+  TEST_CASE("Graphics/ShaderComponent/FromFile", "")
+  {
+    typedef Window<>::graphics_mode       graphics_mode;
+    Window<> win;
+    win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
+               WindowSettings("Atom & Eve"));
+
+    // Initialize renderer
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    // Load the files
+    io::FileIO_ReadA vsFile( g_vShaderPath.c_str() );
+    io::FileIO_ReadA fsFile( g_fShaderPath.c_str() );
+
+    REQUIRE(vsFile.Open() == common_error_types::error_success);
+    REQUIRE(fsFile.Open() == common_error_types::error_success);
+
+    String vsCode, fsCode;
+    REQUIRE(vsFile.GetContents(vsCode) == common_error_types::error_success);
+    REQUIRE(fsFile.GetContents(fsCode) == common_error_types::error_success);
+
+    // Start testing the shaders
+    gl::ShaderComponent vShader;
+
+    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
+    CHECK(vShader.LoadShader(vsCode.c_str(), vertex_shader_type()) == true);
+    CHECK(vShader.CompileShader() == true);
+
   }
 };

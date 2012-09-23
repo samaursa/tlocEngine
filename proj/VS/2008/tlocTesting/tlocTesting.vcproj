@@ -1234,8 +1234,40 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="resources"
+			>
+			<Filter
+				Name="images"
+				>
+				<File
+					RelativePath=".\resources\png_test_1.png"
+					>
+				</File>
+				<File
+					RelativePath=".\resources\png_test_2.png"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath=".\resources\simple_fragment_shader.glsl"
+					>
+				</File>
+				<File
+					RelativePath=".\resources\simple_vertex_shader.glsl"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\tlocTestCommon.cpp"
 			>
 		</File>
 		<File

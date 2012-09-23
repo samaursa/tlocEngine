@@ -13,29 +13,15 @@
 namespace tloc { namespace graphics {
 
   template <typename T_Platform> struct WindowHandle;
-  
+
 #if defined (TLOC_OS_WIN)
-  
+
   template<>
   struct WindowHandle<core::Platform_win>
   {
     typedef HWND         type;
   };
-  
-  template<>
-  struct WindowHandle<core::Platform_win32>
-    : public WindowHandle<core::Platform_win>
-  {
-    typedef WindowHandle<core::Platform_win>::type type;
-  };
-  
-  template<>
-  struct WindowHandle<core::Platform_win64>
-    : public WindowHandle<core::Platform_win>
-  {
-    typedef WindowHandle<core::Platform_win>::type type;
-  };
-  
+
 #elif defined (TLOC_OS_MAC)
 
   template<>
@@ -43,15 +29,15 @@ namespace tloc { namespace graphics {
   {
     typedef void*         type;
   };
- 
+
 #elif defined (TLOC_OS_IPHONE)
-  
+
   template<>
   struct WindowHandle<core::Platform_iphone>
   {
     typedef UIWindow*     type;
   };
-  
+
 #elif defined (TLOC_OS_LINUX)
 
   template<>
@@ -59,7 +45,7 @@ namespace tloc { namespace graphics {
   {
     typedef tl_size       type;
   };
-  
+
 #endif
 
 };};

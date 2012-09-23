@@ -1,7 +1,7 @@
 #include "tlocOpenGLExt.h"
 #include "3rdParty/Graphics/GLEW/glew.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   bool                  OpenGLExt::m_initialized = false;
   OpenGLExt::error_type OpenGLExt::m_error = common_error_types::error_success;
@@ -50,4 +50,4 @@ namespace tloc { namespace graphics {
     return m_error;
   }
 
-};};
+};};};

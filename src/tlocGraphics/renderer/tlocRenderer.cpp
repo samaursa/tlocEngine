@@ -75,7 +75,7 @@ namespace tloc { namespace graphics {
   {
     if (m_flags[initialized] == false)
     {
-      error_type res = OpenGLExt::Initialize();
+      error_type res = gl::OpenGLExt::Initialize();
       if (res != common_error_types::error_initialize)
       { return res; }
 

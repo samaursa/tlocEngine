@@ -6,7 +6,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/error/tlocErrorTypes.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
   ///-------------------------------------------------------------------------
   /// Currently used to wrap GLEW, may change later
@@ -31,6 +31,6 @@ namespace tloc { namespace graphics {
 
   };
 
-};};
+};};};
 
 #endif

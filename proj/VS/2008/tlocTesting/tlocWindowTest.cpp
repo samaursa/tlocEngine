@@ -25,7 +25,9 @@ namespace TestingWindow
 
     void OnWindowEvent(const WindowEvent& a_event)
     {
-      TLOC_ASSERT(a_event.m_type < WindowEvent::events_count, "Unknown event!");
+      INFO("Unknown event was passed.");
+      REQUIRE(a_event.m_type < WindowEvent::events_count);
+
       m_windowEventCount++;
       m_counts[a_event.m_type] = m_counts[a_event.m_type] + 1;
     }

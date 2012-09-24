@@ -314,12 +314,12 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Empty strings
 
-    typedef union EmptyString
+    union EmptyString
     {
       char8   m_Empty8[1];
       uchar8  m_EmptyU8[1];
       char32  m_Empty32[1];
-    }EmptyString;
+    };
 
     static const EmptyString sm_emptyString;
 

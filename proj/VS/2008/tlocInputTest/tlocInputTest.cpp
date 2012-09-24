@@ -280,8 +280,20 @@ namespace TestingInput
   //------------------------------------------------------------------------
   // Tests
 
+  struct InputDeviceInfo
+  {
+    bool          m_available;
+    GUID          m_productGuid;
+    GUID          m_deviceGuid;
+    core::String  m_deviceName;
+    void*         m_devicePtr;
+  };
+
   TEST_CASE("Input/InputManager/General", "")
   {
+    //core::Array< core::Array<InputDeviceInfo> > a;
+    //a.resize(5);
+
     core::Timer<> countDown;
 
     HWND wnd = CreateWin32Window();

@@ -176,10 +176,13 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Empty Strings
 
-  template <STRING_BASE_TYPES>
-  TL_I const char8* StringBase<STRING_BASE_PARAMS>::GetEmptyString( char8 )
+  template <typename T>
+  const char8* StringBase<T>::GetEmptyString( char8 )
   {
-    return sm_emptyString.m_Empty8;
+    const char8* address = sm_emptyString.m_Empty8;
+    //const char8* address = &(sm_emptyString.m_Empty8[0]);
+    return address;
+    //return sm_emptyString.m_Empty8;
   }
 
   template <STRING_BASE_TYPES>
@@ -1426,7 +1429,7 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoAllocateSelf()
   {
-    TLOC_ASSERT_STRING_EMPTY_STRING();
+    //TLOC_ASSERT_STRING_EMPTY_STRING();
 
     m_begin     = const_cast<T*>( GetEmptyString(T()) );
     m_end       = m_begin;
@@ -1453,7 +1456,8 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoDeallocateSelf()
   {
-    if (m_begin != GetEmptyString(T()))
+    const_pointer emptyString = GetEmptyString(T());
+    if (m_begin != emptyString)
     {
       DoFree(m_begin);
     }

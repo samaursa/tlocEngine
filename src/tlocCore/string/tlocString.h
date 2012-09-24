@@ -312,22 +312,6 @@ namespace tloc { namespace core {
     pointer  m_capacity;
 
     //------------------------------------------------------------------------
-    // Empty strings
-
-    union EmptyString
-    {
-      char8   m_Empty8[1];
-      uchar8  m_EmptyU8[1];
-      char32  m_Empty32[1];
-    };
-
-    static const EmptyString sm_emptyString;
-
-    TL_STATIC_I const char8*      GetEmptyString(char8);
-    TL_STATIC_I const uchar8*     GetEmptyString(uchar8);
-    TL_STATIC_I const char32*     GetEmptyString(char32);
-
-    //------------------------------------------------------------------------
     // Internal functions
 
     TL_I pointer          DoAllocate(const size_type& aSize);

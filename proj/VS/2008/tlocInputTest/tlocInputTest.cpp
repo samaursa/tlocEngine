@@ -291,9 +291,6 @@ namespace TestingInput
 
   TEST_CASE("Input/InputManager/General", "")
   {
-    //core::Array< core::Array<InputDeviceInfo> > a;
-    //a.resize(5);
-
     core::Timer<> countDown;
 
     HWND wnd = CreateWin32Window();

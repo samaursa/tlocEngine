@@ -38,10 +38,6 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Constants
 
-  template <STRING_BASE_TYPES>
-  const typename StringBase<STRING_BASE_PARAMS>::EmptyString 
-    StringBase<T>::sm_emptyString = { 0 };
-
   template <typename T>
   const tl_size StringBase<STRING_BASE_PARAMS>::m_MaxSize = (tl_size) - 2;
 
@@ -174,27 +170,27 @@ namespace tloc { namespace core {
   }
 
   //------------------------------------------------------------------------
-  // Empty Strings
+  // Empty Strings - not visible outside of this file
 
-  template <typename T>
-  const char8* StringBase<T>::GetEmptyString( char8 )
+  namespace
   {
-    const char8* address = sm_emptyString.m_Empty8;
-    //const char8* address = &(sm_emptyString.m_Empty8[0]);
-    return address;
-    //return sm_emptyString.m_Empty8;
-  }
+    const char8* GetEmptyString( char8 )
+    {
+      static const char8 address[] = {0};
+      return address;
+    }
 
-  template <STRING_BASE_TYPES>
-  TL_I const uchar8* StringBase<STRING_BASE_PARAMS>::GetEmptyString( uchar8 )
-  {
-    return sm_emptyString.m_EmptyU8;
-  }
+    TL_I const uchar8* GetEmptyString( uchar8 )
+    {
+      static const uchar8 address[] = {0};
+      return address;
+    }
 
-  template <STRING_BASE_TYPES>
-  TL_I const char32* StringBase<STRING_BASE_PARAMS>::GetEmptyString( char32 )
-  {
-    return sm_emptyString.m_Empty32;
+    TL_I const char32* GetEmptyString( char32 )
+    {
+      static const char32 address[] = {0};
+      return address;
+    }
   }
 
   //------------------------------------------------------------------------
@@ -1456,8 +1452,7 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I void StringBase<T>::DoDeallocateSelf()
   {
-    const_pointer emptyString = GetEmptyString(T());
-    if (m_begin != emptyString)
+    if ( (m_capacity - m_begin) > 1)
     {
       DoFree(m_begin);
     }

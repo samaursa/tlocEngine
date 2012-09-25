@@ -986,20 +986,20 @@
 			Name="Input"
 			>
 			<File
-				RelativePath=".\tlocInputTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocInputTest.cpp"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\input\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.h"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

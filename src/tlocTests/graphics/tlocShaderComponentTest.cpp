@@ -38,8 +38,8 @@ void main(void)                     \n\
   using namespace tloc::core;
   using namespace graphics;
 
-  String g_vShaderPath(g_resourcePath + String("./simple_vertex_shader.glsl") );
-  String g_fShaderPath(g_resourcePath + String("./simple_fragment_shader.glsl") );
+  String g_vShaderPath(g_resourcePath + String("./shaders/simple_vertex_shader.glsl") );
+  String g_fShaderPath(g_resourcePath + String("./shaders/simple_fragment_shader.glsl") );
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {

@@ -986,22 +986,22 @@
 			Name="Math"
 			>
 			<File
-				RelativePath=".\tlocMathTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMathTest.cpp"
 				>
 			</File>
 			<Filter
 				Name="matrix"
 				>
 				<File
-					RelativePath=".\tlocMatrix2Test.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrix2Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocMatrix3Test.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrix3Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocMatrixTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrixTest.cpp"
 					>
 				</File>
 			</Filter>
@@ -1009,29 +1009,29 @@
 				Name="vector"
 				>
 				<File
-					RelativePath=".\tlocVector2Test.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVector2Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocVector3Test.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVector3Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocVectorTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVectorTest.cpp"
 					>
 				</File>
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.h"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

@@ -15,8 +15,8 @@ namespace TestingImageLoader
   extern color_type png_test_1[10][10];
   extern color_type png_test_2[10][10];
 
-  core::String g_png_test_1_path(g_resourcePath + core::String("./png_test_1.png"));
-  core::String g_png_test_2_path(g_resourcePath + core::String("./png_test_2.png"));
+  core::String g_png_test_1_path(g_resourcePath + core::String("./images/png_test_1.png"));
+  core::String g_png_test_2_path(g_resourcePath + core::String("./images/png_test_2.png"));
 
   TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {

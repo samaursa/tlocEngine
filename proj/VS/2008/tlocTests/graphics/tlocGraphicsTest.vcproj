@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocInputTest"
-	ProjectGUID="{13665C2F-E56C-4199-BD73-11E12AD6A451}"
-	RootNamespace="tlocInputTest"
+	Name="tlocGraphicsTest"
+	ProjectGUID="{FE4E66D3-C4BD-4E03-B997-69FB87611B7B}"
+	RootNamespace="tlocGraphicsTest"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -983,23 +983,91 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Input"
+			Name="Graphics"
 			>
 			<File
-				RelativePath=".\tlocInputTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocGraphicsModesTest.cpp"
 				>
 			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocWindowTest.cpp"
+				>
+			</File>
+			<Filter
+				Name="opengl"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocGLObjectTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderComponentTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderProgramTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="types"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocColorTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocRectangleTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="media"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocImageLoaderTest.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="resources"
+			>
+			<Filter
+				Name="images"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\resources\images\png_test_1.png"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\resources\images\png_test_2.png"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\resources\shaders\simple_fragment_shader.glsl"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\resources\shaders\simple_vertex_shader.glsl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.h"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

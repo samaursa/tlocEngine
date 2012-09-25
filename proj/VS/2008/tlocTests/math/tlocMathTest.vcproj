@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocCoreTest"
-	ProjectGUID="{7ABE1B54-4A64-4D34-88F0-530A48F6B514}"
-	RootNamespace="tlocCoreTest"
+	Name="tlocMathTest"
+	ProjectGUID="{85154E99-578F-4F00-A532-E5397C436D1B}"
+	RootNamespace="tlocMathTest"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -983,171 +983,55 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Core"
+			Name="Math"
 			>
 			<File
-				RelativePath=".\tlocAlgorithmsTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocGroupIDTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocObjectCounterTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocPair.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocRandomTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocTypesTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tlocUtilsTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMathTest.cpp"
 				>
 			</File>
 			<Filter
-				Name="component_system"
+				Name="matrix"
 				>
 				<File
-					RelativePath=".\tlocEntityManagerTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrix2Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocEntityTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrix3Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocEventManagerTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocMatrixTest.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="containers"
+				Name="vector"
 				>
 				<File
-					RelativePath=".\tlocArrayFixedTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVector2Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocArrayTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVector3Test.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocForwardListTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocHashMapTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocHashtableTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocIteratorTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocListTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocProtectedBufferTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocQueueTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocStackTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocStringTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="memory"
-				>
-				<File
-					RelativePath=".\tlocBufferArgTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMemoryPoolTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocMemoryTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="time"
-				>
-				<File
-					RelativePath=".\tlocTimeTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="data_structures"
-				>
-				<File
-					RelativePath=".\tlocTableTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocTupleTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocVariadicTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="base_classes"
-				>
-				<File
-					RelativePath=".\tlocTemplateDispatchTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="io"
-				>
-				<File
-					RelativePath=".\tlocFileIOTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\tlocPathTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVectorTest.cpp"
 					>
 				</File>
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.h"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

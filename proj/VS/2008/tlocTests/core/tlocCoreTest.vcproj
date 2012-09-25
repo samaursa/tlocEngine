@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocGraphicsTest"
-	ProjectGUID="{FE4E66D3-C4BD-4E03-B997-69FB87611B7B}"
-	RootNamespace="tlocGraphicsTest"
+	Name="tlocCoreTest"
+	ProjectGUID="{7ABE1B54-4A64-4D34-88F0-530A48F6B514}"
+	RootNamespace="tlocCoreTest"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -983,91 +983,171 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Graphics"
+			Name="Core"
 			>
 			<File
-				RelativePath=".\tlocGraphicsModesTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocAlgorithmsTest.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\tlocWindowTest.cpp"
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocGroupIDTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocObjectCounterTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocPair.cpp"
+				>
+			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocRandomTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTypesTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocUtilsTest.cpp"
 				>
 			</File>
 			<Filter
-				Name="opengl"
+				Name="component_system"
 				>
 				<File
-					RelativePath=".\tlocGLObjectTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocEntityManagerTest.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocShaderComponentTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocEntityTest.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocShaderProgramTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocEventManagerTest.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="types"
+				Name="containers"
 				>
 				<File
-					RelativePath=".\tlocColorTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocArrayFixedTest.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\tlocRectangleTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocArrayTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocForwardListTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocHashMapTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocHashtableTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocIteratorTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocListTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocProtectedBufferTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocQueueTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocStackTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocStringTest.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="media"
+				Name="memory"
 				>
 				<File
-					RelativePath=".\tlocImageLoaderTest.cpp"
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocBufferArgTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocMemoryPoolTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocMemoryTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="time"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTimeTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="data_structures"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTableTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTupleTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocVariadicTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="base_classes"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTemplateDispatchTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="io"
+				>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocFileIOTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocPathTest.cpp"
 					>
 				</File>
 			</Filter>
 		</Filter>
-		<Filter
-			Name="resources"
-			>
-			<Filter
-				Name="images"
-				>
-				<File
-					RelativePath=".\resources\png_test_1.png"
-					>
-				</File>
-				<File
-					RelativePath=".\resources\png_test_2.png"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="shaders"
-				>
-				<File
-					RelativePath=".\resources\simple_fragment_shader.glsl"
-					>
-				</File>
-				<File
-					RelativePath=".\resources\simple_vertex_shader.glsl"
-					>
-				</File>
-			</Filter>
-		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\core\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.cpp"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\tlocTestCommon.h"
+			RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

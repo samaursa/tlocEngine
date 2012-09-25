@@ -2,5 +2,8 @@
 # import <Foundation/Foundation.h>
 #endif
 
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/memory/tlocLinkMe.cpp>
+
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>

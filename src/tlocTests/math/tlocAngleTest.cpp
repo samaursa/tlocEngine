@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocAngle.h>
+#include <tlocMath/angle/tlocAngle.h>
 
 namespace TestingAngle
 {

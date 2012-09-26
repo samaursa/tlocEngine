@@ -928,19 +928,19 @@
 			Name="angle"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocAngle.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocAngle.h"
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocAngle.inl"
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocAngleExplicitMacros.h"
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngleExplicitMacros.h"
 				>
 			</File>
 		</Filter>

@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocMath.h"
+#include <limits>
 #include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
@@ -13,79 +15,79 @@ namespace tloc {
   // Math<T>
 
   template <typename T>
-  TL_FI T Math<T>::Ceil(const T& aValue)
+  TL_FI T Math<T>::Ceil(T aValue)
   {
     return std::ceil(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Floor(const T& aValue)
+  TL_FI T Math<T>::Floor(T aValue)
   {
     return std::floor(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Abs(const T& aValue)
+  TL_FI T Math<T>::Abs(T aValue)
   {
     return std::abs(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::FAbs(const T& aValue)
+  TL_FI T Math<T>::FAbs(T aValue)
   {
     return std::fabs(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::ATan(const T& aValue)
+  TL_FI T Math<T>::ATan(T aValue)
   {
     return std::atan(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::ATan2(const T& aValue1, const T& aValue2)
+  TL_FI T Math<T>::ATan2(T aValue1, T aValue2)
   {
     return std::atan2(aValue1, aValue2);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Log( const T& aLog )
+  TL_FI T Math<T>::Log( T aLog )
   {
     return std::log(aLog);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Sin( const T& aValInRad )
+  TL_FI T Math<T>::Sin( T aValInRad )
   {
     return std::sin(aValInRad);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Cos( const T& aValInRad )
+  TL_FI T Math<T>::Cos( T aValInRad )
   {
     return std::cos(aValInRad);
   }
 
   template <typename T>
-  TL_FI T Math<T>::Degree(const T& aValueInRadian)
+  TL_FI T Math<T>::Degree(T aValueInRadian)
   {
     return aValueInRadian  * Math<T>::RAD_TO_DEG;
   }
 
   template <typename T>
-  TL_FI T Math<T>::Radian(const T& aValueInDegrees)
+  TL_FI T Math<T>::Radian(T aValueInDegrees)
   {
     return aValueInDegrees * Math<T>::DEG_TO_RAD;
   }
 
   template <typename T>
-  TL_FI T Math<T>::Sqrt(const T& aValue)
+  TL_FI T Math<T>::Sqrt(T aValue)
   {
     return std::sqrt(aValue);
   }
 
   template <typename T>
-  TL_FI T Math<T>::InvSqrt(const T& aValue)
+  TL_FI T Math<T>::InvSqrt(T aValue)
   {
     return ((T)1) / Sqrt(aValue);
   }
@@ -94,13 +96,19 @@ namespace tloc {
   // Misc Functions
 
   template <typename T>
-  TL_FI bool Math<T>::IsNaN(const T& aValue)
+  TL_FI bool Math<T>::IsEqual(T a_first, T a_second)
+  {
+    return Abs(a_first - a_second) < EPSILON;
+  }
+
+  template <typename T>
+  TL_FI bool Math<T>::IsNaN(T aValue)
   {
     return aValue != aValue; //-V501
   }
 
   template <typename T>
-  TL_FI bool Math<T>::Approx(const T& aValue1, const T& aValue2, T eps /* = T(1e-6) */)
+  TL_FI bool Math<T>::Approx(T aValue1, T aValue2, T eps /* = T(1e-6) */)
   {
     T toCompare = Abs(aValue1 - aValue2);
     return (toCompare < eps);
@@ -116,7 +124,7 @@ namespace tloc {
   // Fast specialized functions
 
   template <typename T>
-  TL_FI T Math<T>::FastInvSqrt(const T& aValue)
+  TL_FI T Math<T>::FastInvSqrt(T aValue)
   {
     f32 lLength = (f32)aValue;
 
@@ -147,10 +155,12 @@ namespace tloc {
   // Simple Interpolations
 
   template <typename T>
-  TL_FI T Math<T>::Lerp(const T& aValue1, const T& aValue2, const T& aBias)
+  TL_FI T Math<T>::Lerp(T aValue1, T aValue2, T aBias)
   {
     return (aBias * aValue1) + ((1 - aBias) * aValue2);
   }
+
+
 
 };
 

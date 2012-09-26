@@ -159,6 +159,13 @@ namespace tloc { namespace graphics {
     /// @return The window settings.
     ///-------------------------------------------------------------------------
     //const WindowSettings& GetSettings() const;
+    
+    ///-------------------------------------------------------------------------
+    /// Gets the window handle.
+    ///
+    /// @return The window handle.
+    ///-------------------------------------------------------------------------
+    window_handle_type GetWindowHandle() const;
 
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync

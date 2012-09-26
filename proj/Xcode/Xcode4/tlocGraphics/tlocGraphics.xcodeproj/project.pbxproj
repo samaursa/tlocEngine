@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E0815A2A61B00F3C248 /* Foundation.framework */; };
 		97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6015A3CCBB00F3C248 /* OpenGLES.framework */; };
+		9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */; };
 		97C87A1015DCE6C400FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */; };
 		97C87D0115DE4BC700FE0A6C /* tlocWindowHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */; };
 		97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */; };
@@ -35,6 +36,7 @@
 		97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocGraphics_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97812E0815A2A61B00F3C248 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97812E6015A3CCBB00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocGraphics/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
 		97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowHandle.h; path = ../../../../src/tlocGraphics/window/tlocWindowHandle.h; sourceTree = "<group>"; };
 		97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocWindow.cpp; path = ../../../../src/tlocGraphics/window/tlocWindow.cpp; sourceTree = "<group>"; };
@@ -102,15 +104,10 @@
 		97C87BE115DE3DAE00FE0A6C /* tlocGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				97C87CF715DE4B4B00FE0A6C /* opengl */,
 				97C87D9715DE584500FE0A6C /* application */,
+				97C87CF715DE4B4B00FE0A6C /* opengl */,
 				97C87CF615DE4B4500FE0A6C /* window */,
-				97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */,
-				97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */,
-				97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */,
-				97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */,
-				97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */,
-				97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */,
+				9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */,
 			);
 			name = tlocGraphics;
 			sourceTree = "<group>";
@@ -121,6 +118,12 @@
 				97C87CF915DE4B5800FE0A6C /* Context */,
 				97C87CF815DE4B5100FE0A6C /* Graphics Mode */,
 				97C87CFA15DE4B7C00FE0A6C /* Iphone */,
+				97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */,
+				97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */,
+				97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */,
+				97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */,
+				97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */,
+				97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */,
 			);
 			name = window;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */,
 				97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */,
 				97C87D9B15DE58BA00FE0A6C /* tlocAppDelegateIphone.mm in Sources */,
+				9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

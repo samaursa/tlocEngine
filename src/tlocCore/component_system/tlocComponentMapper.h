@@ -25,6 +25,9 @@ namespace tloc { namespace core { namespace component_system {
     }
 
   private:
+
+    void operator = (const ComponentMapper& a_other) {}
+
     const component_list& m_compList;
   };
 

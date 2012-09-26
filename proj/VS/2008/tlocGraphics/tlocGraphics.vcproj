@@ -943,10 +943,138 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="compression"
+				>
+				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\miniz\miniz.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="images"
+				>
+				<Filter
+					Name="lodepng"
+					>
+					<File
+						RelativePath="..\..\..\..\src\3rdParty\Graphics\lodepng\lodepng.c"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug_StdAlloc|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug_StdAlloc|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_DebugInfo|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_DebugInfo|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc_DebugInfo|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release_StdAlloc_DebugInfo|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								WarningLevel="0"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\3rdParty\Graphics\lodepng\lodepng.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="opengl"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.h"
 				>
@@ -959,21 +1087,169 @@
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGLExt.h"
 				>
 			</File>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="error"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocError.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocError.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
-			Name="components and systems"
+			Name="component_system"
 			>
 			<Filter
 				Name="components"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocComponentType.h"
+					>
+				</File>
+				<Filter
+					Name="mesh"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="material"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterial.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.h"
+					>
+				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="data_types"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocDimension.h"
+				>
+			</File>
+			<Filter
+				Name="color"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rectangle"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="vertex"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="media"
+			>
+			<Filter
+				Name="images"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImage.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImage.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImageLoader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\media\tlocImageLoader.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="renderer"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
 			>
 		</File>
 	</Files>

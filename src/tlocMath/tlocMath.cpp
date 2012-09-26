@@ -48,16 +48,16 @@ namespace tloc
   const T Math<T>::m_sinTable[64]   = {0};
 
   // Specialized f32 constants
-  template<> const f32 Mathf::EPSILON         = FLT_EPSILON;
-  template<> const f32 Mathf::MAX_REAL        = FLT_MAX;
+  template<> const f32 Mathf32::EPSILON         = FLT_EPSILON;
+  template<> const f32 Mathf32::MAX_REAL        = FLT_MAX;
 
   // Specialized f64 constants
-  template<> const f64 Mathd::EPSILON         = DBL_EPSILON;
-  template<> const f64 Mathd::MAX_REAL        = DBL_MAX;
+  template<> const f64 Mathf64::EPSILON         = DBL_EPSILON;
+  template<> const f64 Mathf64::MAX_REAL        = DBL_MAX;
 
   // Specialized f128 constants
-  template<> const f128 Mathl::EPSILON         = LDBL_EPSILON;
-  template<> const f128 Mathl::MAX_REAL        = LDBL_MAX;
+  template<> const f128 Mathf128::EPSILON         = LDBL_EPSILON;
+  template<> const f128 Mathf128::MAX_REAL        = LDBL_MAX;
 
   //------------------------------------------------------------------------
   // Functions

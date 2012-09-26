@@ -1015,42 +1015,86 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="data_structures"
 			>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.cpp"
+			<Filter
+				Name="variadic"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadicTypedefMacros.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tuples"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="table"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocVariadic.inl"
-				>
-			</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="types"
@@ -1271,6 +1315,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocBufferArg.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocBufferArg.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="platform"
@@ -1301,8 +1357,16 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="utilies"
+			Name="utilities"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocCheckpoints.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocCheckpoints.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocContainerUtils.h"
 				>
@@ -1362,119 +1426,183 @@
 			<Filter
 				Name="components"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.inl"
-					>
-				</File>
 			</Filter>
 			<Filter
-				Name="entity"
+				Name="systems"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.inl"
-					>
-				</File>
 			</Filter>
 			<Filter
-				Name="events"
+				Name="core"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityEvent.h"
+				<Filter
+					Name="components"
 					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.cpp"
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponent.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentMapper.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentType.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="events"
 					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.h"
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityEvent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="entity"
 					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEvent.inl"
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntity.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityManager.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="system"
 					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEventManager.h"
-					>
-				</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
-			<Filter
-				Name="system"
+		</Filter>
+		<Filter
+			Name="io"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.cpp"
 				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntityProcessingSystem.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocEntitySystemBase.h"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocPath.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tlocPath.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="error"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocError.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocError.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tlocErrorTypes.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="parsers"
+			>
+		</Filter>
+		<Filter
+			Name="configs"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"

@@ -218,6 +218,11 @@
   // Stub Func  
 }
 
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event
+{
+  // Stub Func
+}
+
 //------------------------------------------------------------------------
 // Private inherited functions
 

@@ -81,4 +81,15 @@
 ///-------------------------------------------------------------------------
 - (void)touchesMoved:(NSSet *)a_touches withEvent:(UIEvent *)a_event;
 
+///-------------------------------------------------------------------------
+/// Callback function that will be called when a system event (such as a
+/// low-memory warning) cancels a touch event.
+///
+/// @param  a_touches     A set of UITouch instances that represent the 
+///                       touches that are cancelled (usually all)
+/// @param  a_event       An object rpresenting the event to which the
+///                       touches belong.
+///-------------------------------------------------------------------------
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event;
+
 @end

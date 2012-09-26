@@ -329,7 +329,7 @@ namespace tloc { namespace core {
     TLOC_ASSERT_HASH_TABLE(a_bucketCount < 10000000, "Bucket count is too large!");
 
     size_type newBucketCount =
-      (size_type)m_rehashPolicy.get_next_bucket_count((u32)a_bucketCount);
+      (size_type)m_rehashPolicy.get_next_bucket_count((tl_uint)a_bucketCount);
     DoAllocateBuckets(newBucketCount);
   }
 
@@ -601,8 +601,12 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
     Hashtable<HASH_TABLE_PARAMS>::find(const key_type& a_key)
   {
+    size_type bucketCount = bucket_count();
+
+    if (bucketCount == 0) { return end(); } 
+
     const hash_code_type hc = get_hash_code(a_key);
-    const size_type n = (size_type)bucket_index(hc, (u32)bucket_count());
+    const size_type n = (size_type)bucket_index(hc, bucketCount);
 
     typename buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
@@ -627,9 +631,9 @@ namespace tloc { namespace core {
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::iterator
-    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode)
+    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(tl_uint a_hashCode)
   {
-    const size_type n = (size_type)bucket_index(a_hashCode, (u32)bucket_count());
+    const size_type n = (size_type)bucket_index(a_hashCode, (tl_uint)bucket_count());
 
     typename buckets_array_type::iterator itr = m_bucketArray.begin();
     advance(itr, n);
@@ -645,7 +649,7 @@ namespace tloc { namespace core {
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::const_iterator
-    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(u32 a_hashCode) const
+    Hashtable<HASH_TABLE_PARAMS>::find_by_hash(tl_uint a_hashCode) const
   {
     const_iterator itr = (remove_const(this))->find_by_hash(a_hashCode);
     add_const(this);
@@ -771,7 +775,7 @@ namespace tloc { namespace core {
 
       element_type newElement (a_value, c);
 
-      const size_type n = (size_type)bucket_index(c, (u32)bucket_count());
+      const size_type n = (size_type)bucket_index(c, (tl_uint)bucket_count());
       typename buckets_array_type::iterator itrB = m_bucketArray.begin();
       advance(itrB, n);
 
@@ -811,7 +815,7 @@ namespace tloc { namespace core {
     }
     else
     {
-      const size_type n = (size_type)bucket_index(c, (u32)bucket_count());
+      const size_type n = (size_type)bucket_index(c, (tl_uint)bucket_count());
 
       typename buckets_array_type::iterator itrB = m_bucketArray.begin();
       advance(itrB, n);

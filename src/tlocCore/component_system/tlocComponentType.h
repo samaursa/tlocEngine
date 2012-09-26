@@ -6,15 +6,42 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace components
+  namespace components_group
   {
+    // Built-in component types. These are (theoretically) the fastest component
+    // types. We (will) also allow setting component types dynamically which
+    // will have a slight runtime cost.
     enum type
     {
-      transform = 0,
-      mesh,
+      core		 = 0,
+      math		 = 20,
+      graphics = 40,
+      input		 = 60,
+      physics  = 80,
+      sound    = 100,
+      ai       = 120,
+
+      count    = 140
+    };
+  };
+
+  namespace components
+  {
+    // the component type (used for indexing)
+    typedef tl_int value_type;
+
+    enum type
+    {
+      transform = components_group::core,
+      listener,           // used for callback functionality
 
       count
-    }; typedef tl_int value_type;
+    };
+
+    namespace detail
+    {
+      void componentsCheck();
+    };
   };
 
 };};};

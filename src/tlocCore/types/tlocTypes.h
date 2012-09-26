@@ -44,4 +44,4 @@ struct tl_type_to_string
   }
 #endif // TLOC_DEF_TYPE
 
-#endif
+#endif // header guard

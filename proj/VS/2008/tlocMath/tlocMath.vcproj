@@ -924,6 +924,26 @@
 			Name="_misc"
 			>
 		</Filter>
+		<Filter
+			Name="angle"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngleExplicitMacros.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>

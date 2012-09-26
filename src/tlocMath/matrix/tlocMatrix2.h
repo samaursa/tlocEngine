@@ -16,20 +16,20 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Matrix2<T>                            this_type;
     typedef Matrix<T, 2>                          base_type;
-    
+
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
     typedef typename base_type::const_reference   const_reference;
-    
+
     //------------------------------------------------------------------------
     // using declarations for access to base class
     using base_type::MakeDiagonal;
     using base_type::m_values;
     using base_type::k_MatrixSize;
-    
+
     //------------------------------------------------------------------------
     // Constructors
-    
+
     // Empty default constructor
     TL_FI Matrix2();
 
@@ -47,12 +47,12 @@ namespace tloc { namespace math {
     TL_FI explicit Matrix2(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    TL_FI Matrix2(const Vector2<value_type>& aVec1, 
+    TL_FI Matrix2(const Vector2<value_type>& aVec1,
                   const Vector2<value_type>& aVec2,
                   typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix2(const value_type (&values)[k_MatrixSize], 
+    TL_FI Matrix2(const value_type (&values)[k_MatrixSize],
                   typename base_type::matrix_order aOrder);
 
     //------------------------------------------------------------------------
@@ -115,9 +115,11 @@ namespace tloc { namespace math {
     TL_I void EigenDecomposition(this_type& aRot, this_type& aDiag) const;
   };
 
-  typedef Matrix2<f32>  Mat2f;
-  typedef Matrix2<f64>  Mat2d;
-  typedef Matrix2<f128> Mat2l;
+  typedef Matrix2<f32>  Mat2f32;
+  typedef Matrix2<f64>  Mat2f64;
+  typedef Matrix2<f128> Mat2f128;
+
+  typedef Matrix2<tl_float> Mat2f;
 
 };};
 

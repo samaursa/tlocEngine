@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocContainers.h"
+
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/containers/tlocArrayFixed.inl>
 #include <tlocCore/containers/tlocList.inl>

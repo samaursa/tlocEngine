@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocMatrix3.h"
 #include <tlocMath/vector/tlocVector3.inl>
 #include <tlocMath/matrix/tlocMatrix.inl>
 

@@ -925,6 +925,18 @@
 			>
 		</Filter>
 		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocAngle.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocAngle.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocAngle.inl"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>
 		</File>

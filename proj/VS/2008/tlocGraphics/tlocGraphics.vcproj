@@ -1244,6 +1244,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="view_projection"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>

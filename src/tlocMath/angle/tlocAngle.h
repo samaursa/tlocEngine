@@ -8,7 +8,7 @@ namespace tloc { namespace math {
   template <typename T, class T_Derived>
   class Angle_T
   {
-  protected:
+  public:
     typedef T           value_type;
     typedef T_Derived   derived_type;
     typedef Angle_T       this_type;
@@ -44,6 +44,7 @@ namespace tloc { namespace math {
     bool operator == (this_type a_other) const;
     TLOC_DECLARE_OPERATORS(this_type);
 
+  protected:
     value_type    m_angle;
   };
 
@@ -51,7 +52,7 @@ namespace tloc { namespace math {
   // Radian
 
   template <typename T>
-  class Radian_T : public Angle_T<T, Radian_T<T> >
+  class Radian_T : protected Angle_T<T, Radian_T<T> >
   {
   public:
     template <typename T, class U> friend class Angle_T;
@@ -102,7 +103,7 @@ namespace tloc { namespace math {
   // Degree
 
   template <typename T>
-  class Degree_T : public Angle_T<T, Degree_T<T> >
+  class Degree_T : protected Angle_T<T, Degree_T<T> >
   {
   public:
     template <typename T, class U> friend class Angle_T;

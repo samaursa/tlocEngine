@@ -123,7 +123,10 @@ namespace tloc { namespace math {
   template <ANGLE_TEMP>
   bool Angle_T<ANGLE_PARAMS>::operator< (this_type a_other) const
   {
-    return m_angle < a_other.m_angle;
+    if (!operator== (a_other))
+    { return m_angle < derived_type(a_other.m_angle).m_angle; }
+    else
+    { return false; }
   }
 
   template <ANGLE_TEMP>
@@ -161,7 +164,7 @@ namespace tloc { namespace math {
   template <typename T_AngleType>
   void Radian_T<RADIAN_PARAMS>::DoSetAngle(T_AngleType a_angle)
   {
-    m_angle = a_angle.GetAs<Degree_T<value_type> >();
+    m_angle = a_angle.GetAs<Radian_T<value_type> >();
   }
 
   template <RADIAN_TEMP>

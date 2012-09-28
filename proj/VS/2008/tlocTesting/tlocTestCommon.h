@@ -6,7 +6,7 @@
 # import <Foundation/Foundation.h>
 #endif
 
-#include "catch.hpp"
+#include <catch.hpp>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
 

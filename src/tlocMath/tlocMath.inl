@@ -107,7 +107,7 @@ namespace tloc {
   }
 
   template <typename T>
-  TL_FI bool Math<T>::IsPowerOfTwo( const u32& aValue )
+  TL_FI bool Math<T>::IsPowerOfTwo( const tl_uint& aValue )
   {
     return (aValue != 0) && ((aValue & (aValue - 1)) == 0);
   }
@@ -137,7 +137,7 @@ namespace tloc {
   }
 
   template <typename T>
-  TL_FI s32 Math<T>::FastSignInt( const T& aRealIn )
+  TL_FI s32 Math<T>::FastSignInt( const f32& aRealIn )
   {
     if (((s32&)aRealIn & 0x7FFFFFF)==0) return 0;
     return (signed ((s32&)aRealIn & 0x80000000) >> 31) | 1;

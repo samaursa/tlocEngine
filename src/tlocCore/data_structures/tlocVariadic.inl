@@ -1,7 +1,7 @@
 #ifndef TLOC_VARIADIC_INL
 #define TLOC_VARIADIC_INL
 
-#ifndef TLOC_VARIADIC_INL
+#ifndef TLOC_VARIADIC_H
 #error "Must include header before including the inline file"
 #endif
 
@@ -116,7 +116,6 @@ namespace tloc { namespace core {
     operator[](8) = a_9;
     operator[](9) = a_10;
   }
-
 
 };};
 

@@ -170,7 +170,7 @@ namespace TestingInput
     core::Timer<> countDown;
     Keyboard<>* kb = a_im->GetHID<Keyboard<> >(hid::keyboard);
 
-    CHECK(kb != NULL)
+    CHECK(kb != NULL);
 
     if (kb)
     {
@@ -258,7 +258,7 @@ namespace TestingInput
       sampleInputMouse<Mouse<> > callback(mouse);
       mouse->Register(&callback);
 
-      SendMousePress(a_axis, a_data, 
+      SendMousePress(a_axis, a_data,
                      static_cast<LONG>(a_x), static_cast<LONG>(a_y));
 
       while (countDown.ElapsedMilliSeconds() < 1000 &&

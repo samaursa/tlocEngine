@@ -484,7 +484,7 @@ namespace TestingArray
     }
   }
 
-  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Reserve",
+  TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Capacity",
     "Test the reserve function")
   {
     ints.reserve(100);

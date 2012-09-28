@@ -36,7 +36,7 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_array::iterator entItr = core::find(m_activeEntities, ent);
+            entity_array::iterator entItr = core::find_all(m_activeEntities, ent);
             if (entItr != m_activeEntities.end())
             {
               m_activeEntities.push_back(ent);
@@ -44,7 +44,7 @@ namespace tloc { namespace core { namespace component_system {
           }
           else
           {
-            entity_array::iterator itr = find(m_activeEntities, ent);
+            entity_array::iterator itr = find_all(m_activeEntities, ent);
             if (itr != m_activeEntities.end())
             {
               m_activeEntities.erase(itr);

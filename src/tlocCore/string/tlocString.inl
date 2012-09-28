@@ -379,7 +379,7 @@ namespace tloc { namespace core {
   TL_I STRING_BASE_TYPE::this_type& 
     StringBase<STRING_BASE_PARAMS>::operator+=( const T& character )
   {
-    TLOC_UNUSED(character);
+    append(1, character);
     return *this;
   }
 
@@ -1196,8 +1196,8 @@ namespace tloc { namespace core {
   // Substr
 
   template <STRING_BASE_TYPES>
-  TL_I StringBase<T> StringBase<T>::substr( const size_type & aBeginIndex,
-                                            const size_type & aNumCharsToCopy )
+  TL_I StringBase<T> StringBase<T>::substr( size_type aBeginIndex,
+                                            size_type aNumCharsToCopy ) const
   {
     StringBase<T> temp;
     substr(aBeginIndex, aNumCharsToCopy, temp);
@@ -1205,9 +1205,9 @@ namespace tloc { namespace core {
   }
 
   template <STRING_BASE_TYPES>
-  TL_I void StringBase<T>::substr( const size_type & aBeginIndex,
-                                   const size_type & aNumCharsToCopy,
-                                   this_type& aSubStrOut )
+  TL_I void StringBase<T>::substr( size_type aBeginIndex,
+                                   size_type aNumCharsToCopy,
+                                   this_type& aSubStrOut ) const
   {
     const_iterator itrBegin = m_begin + aBeginIndex;
     const_iterator itrBeginPlusN = itrBegin + aNumCharsToCopy;
@@ -1496,8 +1496,75 @@ namespace tloc { namespace core {
     const tl_size size2 = aEnd2 - aBegin2;
     const tl_size sizeMin = tlMin(size1, size2);
 
-    return StrCmp(aBegin1, aBegin2, sizeMin);
+    const tl_int cmp = StrCmp(aBegin1, aBegin2, sizeMin);
+
+    if (cmp != 0)
+    { return cmp; }
+    else 
+    {
+      if (size1 < size2)
+      { return -1; }
+      else 
+      { return (size1 > size2) ? 1 : 0; }
+    }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Plus operator global
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, 
+                           const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const T* a_lhs, const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (T a_lhs, const StringBase<T>& a_rhs)
+  {
+    StringBase<T> temp(1, a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, const T* a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, T a_rhs)
+  {
+    StringBase<T> temp(a_lhs);
+    temp += a_rhs;
+    return temp;
+  }
+
+  // Explicitly instantiate the operators for our string types
+  template String operator+ (const String& a_lhs, const String& a_rhs);
+  template String operator+ (const char8* a_lhs, const String& a_rhs);
+  template String operator+ (char8 a_lhs, const String& a_rhs);
+  template String operator+ (const String& a_lhs, const char8* a_rhs);
+  template String operator+ (const String& a_lhs, char8 a_rhs);
+
+  template StringW operator+ (const StringW& a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const char32* a_lhs, const StringW& a_rhs);
+  template StringW operator+ (char32 a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
+  template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions

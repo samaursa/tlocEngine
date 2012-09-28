@@ -51,7 +51,7 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/IsPowerOfTwo", "")
   {
-    u32 tempVal = 8;
+    tl_uint tempVal = 8;
     CHECK(Mathu::IsPowerOfTwo(tempVal) == true);
 
     tempVal = 9;
@@ -60,7 +60,7 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/FastPowerOfTwo", "")
   {
-    u32 val = Mathu::FastPowOfTwo(8);
+    tl_uint val = Mathu::FastPowOfTwo(8);
     CHECK(val == 256);
     val = Mathu::FastPowOfTwo(16);
     CHECK(val == 65536);
@@ -68,7 +68,7 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/FastSignInt", "")
   {
-    u32 val = Mathf::FastSignInt(1.5f);
+    s32 val = Mathf::FastSignInt(1.5f);
     CHECK(val == 1);
     val = Mathf::FastSignInt(-50.9f);
     CHECK(val == -1);

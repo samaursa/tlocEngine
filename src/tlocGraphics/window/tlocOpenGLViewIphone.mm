@@ -1,11 +1,3 @@
-//
-//  OpenGLViewIphone.m
-//  tlocGraphics
-//
-//  Created by Skopworks Inc on 12-08-09.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "tlocOpenGLViewIphone.h"
 
 #import <OpenGLES/EAGL.h>
@@ -52,6 +44,8 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
        bitsPerDepth:(size_t)a_depthBits 
      bitsPerStencil:(size_t)a_stencilBits
 {
+  TLOC_ASSERT(a_frame.size.width > 0 && a_frame.size.height > 0,
+              "View must have a size of more than 0 per axis");
   self = [super initWithFrame:a_frame];
   if (self) 
   {
@@ -66,7 +60,8 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
       colorFormat = kEAGLColorFormatRGB565;
     }
     
-    assert(colorFormat);
+    TLOC_ASSERT(colorFormat, "Color format not supported. \
+                Bits per pixel can only be 32 bit or 8 bit ");
     
     // CAEGLLayer => rendering layer
     CAEAGLLayer* eaglLayer = (CAEAGLLayer*)self.layer;
@@ -85,12 +80,13 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
      nil];
     
     m_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    assert(m_context);
+    TLOC_ASSERT(m_context, "OpenGL ES 2.0 Context could not be created");
     
     // NOTE: All OpenGL calls will now use this context
     BOOL result;
     result = [EAGLContext setCurrentContext:m_context];
-    assert(result);
+    TLOC_ASSERT(result,
+                "OpenGL ES 2.0 context could not be set as the current context");
     (void)result;
     
     // Scale view to the main screen's scale (Retina screen)
@@ -132,7 +128,9 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
         m_depthBufferFormat = GL_DEPTH_COMPONENT24_OES;
       }
       
-      assert(m_depthBufferFormat);
+      TLOC_ASSERT(m_depthBufferFormat,
+                  "Depth/Stencil buffer format not supported. A 24 bit Depth \
+                  buffer, and/or 8 bit Stencil buffer are currently supported");
       
       GLint renderBufferWidth = 0;
       GLint renderBufferHeight = 0;
@@ -157,7 +155,8 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
       
     }
     
-    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    TLOC_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
+                "Framebuffer creation has failed");
     
     // This is so we can properly resize our view when orientation changes.
     self.autoresizingMask = 0;

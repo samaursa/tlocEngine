@@ -284,11 +284,11 @@ namespace tloc { namespace core {
     //````````````````````````````````````````````````````````````````````````
     // Substring
 
-    TL_I this_type substr(const tl_size& aBeginIndex,
-                          const tl_size& aNumCharsToCopy = npos);
-    TL_I void              substr(const tl_size& aBeginIndex,
-                                  const tl_size& aNumCharsToCopy,
-                                  this_type&   aSubStrOut);
+    TL_I this_type substr(tl_size aBeginIndex,
+                          tl_size aNumCharsToCopy = npos) const;
+    TL_I void              substr(tl_size aBeginIndex,
+                                  tl_size aNumCharsToCopy,
+                                  this_type&   aSubStrOut) const;
 
     //````````````````````````````````````````````````````````````````````````
     // Compare
@@ -356,6 +356,25 @@ namespace tloc { namespace core {
 
   template <typename T>
   const tl_size StringBase<T>::npos = (tl_size) - 1;
+
+  //////////////////////////////////////////////////////////////////////////
+  // Plus operator global
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs,
+                           const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const T* a_lhs, const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (T a_lhs, const StringBase<T>& a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, const T* a_rhs);
+
+  template <typename T>
+  StringBase<T> operator+ (const StringBase<T>& a_lhs, T a_rhs);
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions

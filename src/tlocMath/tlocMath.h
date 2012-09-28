@@ -42,7 +42,7 @@ namespace tloc {
       T eps = T(1e-6));
 
     // Taken from http://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2/600306#600306
-    TL_STATIC_FI bool IsPowerOfTwo(const u32& aValue);
+    TL_STATIC_FI bool IsPowerOfTwo(const tl_uint& aValue);
 
     //------------------------------------------------------------------------
     // Fast Specialized functions
@@ -52,7 +52,7 @@ namespace tloc {
 
     // returns 1 for positive floats, -1 for negative floats, 0 for 0.0f
     // taken from http://www.musicdsp.org/showone.php?id=249
-    TL_STATIC_FI s32 FastSignInt(const T& aRealIn);
+    TL_STATIC_FI s32 FastSignInt(const f32& aRealIn);
 
     //------------------------------------------------------------------------
     // Simple Interpolations
@@ -94,9 +94,12 @@ namespace tloc {
   // Typedefs
   typedef Math<s32>   Mathi;
   typedef Math<u32>   Mathu;
-  typedef Math<f32>   Mathf;
-  typedef Math<f64>   Mathd;
-  typedef Math<f128>  Mathl;
+
+  typedef Math<f32>   Mathf32;
+  typedef Math<f64>   Mathf64;
+  typedef Math<f128>  Mathf128;
+
+  typedef Math<tl_float>   Mathf;
 
 };
 

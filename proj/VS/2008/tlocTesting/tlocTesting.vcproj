@@ -357,7 +357,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/single_include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -1061,6 +1061,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tlocProtectedBufferTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\tlocQueueTest.cpp"
 					>
 				</File>
@@ -1076,6 +1080,10 @@
 			<Filter
 				Name="memory"
 				>
+				<File
+					RelativePath=".\tlocBufferArgTest.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\tlocMemoryPoolTest.cpp"
 					>
@@ -1114,6 +1122,18 @@
 				>
 				<File
 					RelativePath=".\tlocTemplateDispatchTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="io"
+				>
+				<File
+					RelativePath=".\tlocFileIOTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocPathTest.cpp"
 					>
 				</File>
 			</Filter>
@@ -1169,6 +1189,42 @@
 				RelativePath=".\tlocWindowTest.cpp"
 				>
 			</File>
+			<Filter
+				Name="opengl"
+				>
+				<File
+					RelativePath=".\tlocGLObjectTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocShaderComponentTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocShaderProgramTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="types"
+				>
+				<File
+					RelativePath=".\tlocColorTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tlocRectangleTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="media"
+				>
+				<File
+					RelativePath=".\tlocImageLoaderTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Input"

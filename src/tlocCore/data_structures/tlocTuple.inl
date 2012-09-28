@@ -43,6 +43,15 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
+  template <template <class, class> class T_Variadic>
+  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_Variadic<T, tl_size>& a_vars)
+  {
+    TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
+      Size_mismatch_between_variadic_and_tuple);
+    operator=(static_cast<Tuple<T, T_Size> >(a_vars));
+  }
+
+  template <TUPLE_TEMP>
   TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T& aValue)
   {
     Set(aValue);
@@ -248,7 +257,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
     {
@@ -259,7 +268,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple ) const
   {
     return !operator==(aTuple);
   }

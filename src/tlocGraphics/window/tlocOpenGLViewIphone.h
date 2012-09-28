@@ -1,13 +1,7 @@
-//
-//  OpenGLViewIphone.h
-//  tlocGraphics
-//
-//  Created by Skopworks Inc on 12-08-09.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
+#include <tlocCore/tlocBase.h>
+#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
 
 #import <UIKit/UIKit.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
 
 @interface OpenGLView : UIView
 

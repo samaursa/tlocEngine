@@ -1,8 +1,8 @@
 #ifndef TLOC_FUNCTIONAL_H
 #define TLOC_FUNCTIONAL_H
 
-#include "tlocBase.h"
-#include "tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core {
 
@@ -94,6 +94,28 @@ namespace tloc { namespace core {
   // Comparisor operations
 
   template <typename T>
+  struct equal_to_stored : unary_function<T, bool>
+  {
+    equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+
+    void operator= (const equal_to_stored& a_other)
+    { m_toCompareWith = a_other.m_toCompareWith; }
+
+    bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
+  struct not_equal_to_stored : unary_function<T, bool>
+  {
+    not_equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+    bool operator()(const T& a_x) const { return m_toCompareWith != a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
   struct equal_to : binary_function<T, T, bool>
   {
     bool operator()(const T& a_x, const T& a_y) const { return a_x == a_y; }
@@ -102,31 +124,31 @@ namespace tloc { namespace core {
   template <typename T>
   struct not_equal_to : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T != T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x != a_y; }
   };
 
   template <typename T>
   struct greater : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T > T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x > a_y; }
   };
 
   template <typename T>
   struct less : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T < T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x < a_y; }
   };
 
   template <typename T>
   struct greater_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T >= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x >= a_y; }
   };
 
   template <typename T>
   struct less_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T <= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x <= a_y; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -135,19 +157,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct logical_and : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T && T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x && a_y; }
   };
 
   template <typename T>
   struct logical_or: binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T || T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x || a_y; }
   };
 
   template <typename T>
   struct logical_not: unary_function<T, bool>
   {
-    bool operator()(const T& a_x) const { return !T; }
+    bool operator()(const T& a_x) const { return !a_x; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -237,7 +259,7 @@ namespace tloc { namespace core {
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
 
-    typename result_type& operator()(const T_Pair& a) const
+    result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };
 
@@ -246,7 +268,7 @@ namespace tloc { namespace core {
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::second_type);
 
-    typename result_type& operator()(const T_Pair& a) const
+    result_type& operator()(const T_Pair& a) const
     { return a.second; }
   };
 

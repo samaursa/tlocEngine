@@ -44,12 +44,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -110,12 +111,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -178,11 +180,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -246,11 +249,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -310,12 +314,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -376,12 +381,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -443,12 +449,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -511,12 +519,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -579,11 +589,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -647,11 +658,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -713,12 +725,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(WIN32_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -781,12 +795,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;;&quot;$(x64_SDK_DIR)\include\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -825,7 +841,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Base"
+			Name="_misc"
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocInput.cpp"
@@ -844,7 +860,7 @@
 				>
 			</File>
 			<Filter
-				Name="Win"
+				Name="win"
 				>
 				<File
 					RelativePath="..\..\..\..\src\tlocInput\tlocInputImplWin.cpp"
@@ -859,82 +875,86 @@
 		<Filter
 			Name="HIDs"
 			>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocJoystick.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocJoystick.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImpl.h"
-				>
-			</File>
 			<Filter
-				Name="Win"
+				Name="keyboard"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImplWin.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboard.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocJoystickImplWin.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Keyboard"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboard.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboard.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImpl.h"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImpl.h"
 					>
 				</File>
 				<Filter
-					Name="Win"
+					Name="win"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.cpp"
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImplWin.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\tlocKeyboardImplWin.h"
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImplWin.h"
 						>
 					</File>
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Mouse"
+				Name="mouse"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocMouse.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouse.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocMouse.h"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouse.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\tlocMouseImpl.h"
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImpl.h"
+					>
+				</File>
+				<Filter
+					Name="win"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImplWin.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImplWin.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="joystick"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystick.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystick.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImpl.h"
 					>
 				</File>
 				<Filter
 					Name="Win"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.cpp"
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImplWin.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\tlocMouseImplWin.h"
+						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImplWin.h"
 						>
 					</File>
 				</Filter>

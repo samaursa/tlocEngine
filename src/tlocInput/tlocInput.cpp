@@ -1,17 +1,19 @@
 #include "tlocInput.h"
 #include "tlocInputTypes.h"
 
-#include "tlocKeyboard.h"
-#include "tlocMouse.h"
-#include "tlocJoystick.h"
+#include <tlocInput/HIDs/tlocKeyboard.h>
+#include <tlocInput/HIDs/tlocMouse.h>
+#include <tlocInput/HIDs/tlocJoystick.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes
 
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+#if defined(TLOC_OS_WIN)
 # include "tlocInputImplWin.h"
 //# include "tlocKeyboardImplWin.h"
 //# include "tlocMouseImplWin.h"
+#elif defined(TLOC_OS_IPHONE)
+# include "tlocInputImplIphone.h"
 #else
 # error "WIP"
 #endif
@@ -22,13 +24,15 @@ namespace tloc { namespace input {
 #define INPUT_MANAGER_PARAM T_Policy, T_Platform
 #define INPUT_MANAGER_TYPE  typename InputManager<INPUT_MANAGER_PARAM>
 
-  template InputManager<InputPolicy::Buffered>;
-  template InputManager<InputPolicy::Immediate>;
+  template class InputManager<InputPolicy::Buffered>;
+  template class InputManager<InputPolicy::Immediate>;
 
   // Force instantiate the constructor for each platform
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+#if defined(TLOC_OS_WIN)
   template InputManager<InputPolicy::Buffered>::InputManager(input_param_type);
   template InputManager<InputPolicy::Immediate>::InputManager(input_param_type);
+#elif defined(TLOC_OS_IPHONE)
+  
 #else
 # error TODO
 #endif
@@ -37,9 +41,9 @@ namespace tloc { namespace input {
   // Force instantiate CreateHID for all supported types
 
 #define INSTANTIATE_FOR_HID(_HID_, _type_)\
-  template _HID_<_type_::policy_type>* _type_::CreateHID\
+  template class _HID_<_type_::policy_type>* _type_::CreateHID\
     <_HID_<_type_::policy_type> >(input_type, parameter_options::Type);\
-  template _HID_<_type_::policy_type>* _type_::GetHID\
+  template class _HID_<_type_::policy_type>* _type_::GetHID\
     <_HID_<_type_::policy_type> >(input_type, _type_::size_type );\
 
   INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);

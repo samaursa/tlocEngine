@@ -1,8 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
-#include "tlocCore/tlocTypeTraits.h"
-#include "tlocCore/tlocUtils.h"
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace input {
 
@@ -37,7 +37,7 @@ namespace tloc { namespace input {
       TL_WIN_DISCL_NONEXCLUSIVE = 1 << 3,
       TL_WIN_DISCL_NOWINKEY     = 1 << 4,
 
-      count = core::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
+      count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
     };
   }
 
@@ -85,7 +85,7 @@ namespace tloc { namespace input {
       typedef Loki::Select<T_RelOnly, type_true, type_false>  abs_only_type;
       typedef T_ValueType                                     value_type;
       // Relative and absolute types
-      typedef ConditionalTypePackage<value_type, value_type, T_RelOnly>
+      typedef core::ConditionalTypePackage<value_type, value_type, T_RelOnly>
                                                               rel_and_abs;
       typedef typename rel_and_abs::cond_type                 abs_type;
 

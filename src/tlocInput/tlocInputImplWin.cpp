@@ -1,11 +1,11 @@
 #include "tlocInputImplWin.h"
 
-#include "tlocCore/tlocArray.inl"
-#include "tlocCore/tlocString.inl"
-#include "tlocCore/tlocTypeTraits.h"
+#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/types/tlocTypeTraits.h>
 
-#include "tlocKeyboardImplWin.h"
-#include "tlocMouseImplWin.h"
+#include <tlocInput/HIDs/tlocKeyboardImplWin.h>
+#include <tlocInput/HIDs/tlocMouseImplWin.h>
 
 namespace tloc { namespace input { namespace priv {
 
@@ -16,8 +16,8 @@ namespace tloc { namespace input { namespace priv {
 #define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < hid::count,\
   "Unsupported input type passed!")
 
-  template InputManagerImpl<InputManager<InputPolicy::Buffered> >;
-  template InputManagerImpl<InputManager<InputPolicy::Immediate> >;
+  template class InputManagerImpl<InputManager<InputPolicy::Buffered> >;
+  template class InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
 #define INSTANTIATE_HID(_HID_) \
   template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::CreateHID<_HID_<InputPolicy::Buffered> >(input_type, parameter_options::Type);\

@@ -77,7 +77,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "nedmalloc.h"
 #include <errno.h>
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
  #include <malloc.h>
 #endif
 #ifdef __linux__
@@ -261,6 +261,17 @@ static LPVOID ChkedTlsGetValue(DWORD idx)
 #include "usermodepageallocator.c"
 #endif
 
+#if defined(__linux__) || defined(__FreeBSD__)
+/* Sadly we can't include <malloc.h> as it causes a redefinition error */
+size_t malloc_usable_size(void *);
+#elif defined(__APPLE__)
+#include <malloc/malloc.h>
+inline size_t malloc_size_wrapper(void *ptr)
+{
+  return malloc_size(ptr);
+}
+#endif
+
 #if defined(__cplusplus)
 #if !defined(NO_NED_NAMESPACE)
 namespace nedalloc {
@@ -303,7 +314,7 @@ size_t (*sysblksize)(void *)=
 	malloc_usable_size;
 #elif defined(__FreeBSD__) || defined(__APPLE__)
 	/* This is the BSD libc equivalent.  */
-	malloc_size;
+	malloc_size_wrapper;
 #else
 #error Cannot tolerate the memory allocator of an unknown system!
 #endif

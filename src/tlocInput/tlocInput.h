@@ -1,10 +1,10 @@
 #ifndef TLOC_INPUT_H
 #define TLOC_INPUT_H
 
-#include "tlocCore/tlocBase.h"
-#include "tlocCore/tlocPlatform.h"
-#include "tlocCore/tlocArray.h"
-#include "tlocCore/tlocTemplateUtils.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include "tlocInputImpl.h"
 #include "tlocInputTypes.h"
@@ -18,9 +18,9 @@ namespace tloc { namespace input {
   /// Incorrect parameter types will result in linking errors.
   ///-------------------------------------------------------------------------
   template <typename T1,
-            typename T2 = TLOC_DUMMY_PARAM(),
-            typename T3 = TLOC_DUMMY_PARAM(),
-            typename T4 = TLOC_DUMMY_PARAM()>
+            typename T2 = TLOC_DUMMY_PARAM,
+            typename T3 = TLOC_DUMMY_PARAM,
+            typename T4 = TLOC_DUMMY_PARAM>
   struct InputParameterList
   {
     T1  m_param1;

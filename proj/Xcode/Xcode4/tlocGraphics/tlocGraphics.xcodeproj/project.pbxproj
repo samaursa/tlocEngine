@@ -1,0 +1,382 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E0815A2A61B00F3C248 /* Foundation.framework */; };
+		97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6015A3CCBB00F3C248 /* OpenGLES.framework */; };
+		9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */; };
+		97C87A1015DCE6C400FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */; };
+		97C87D0115DE4BC700FE0A6C /* tlocWindowHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */; };
+		97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */; };
+		97C87D0315DE4BC700FE0A6C /* tlocWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */; };
+		97C87D0415DE4BC700FE0A6C /* tlocWindowImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */; };
+		97C87D0515DE4BC700FE0A6C /* tlocWindowSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */; };
+		97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */; };
+		97C87D0D15DE4BF700FE0A6C /* tlocOpenGLViewIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */; };
+		97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */; };
+		97C87D0F15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */; };
+		97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */; };
+		97C87D1115DE4BF700FE0A6C /* tlocWindowImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */; };
+		97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */; };
+		97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */; };
+		97C87D1A15DE4C3300FE0A6C /* tlocContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1715DE4C3300FE0A6C /* tlocContext.h */; };
+		97C87D1B15DE4C3300FE0A6C /* tlocGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */; };
+		97C87D1D15DE4C4200FE0A6C /* tlocOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */; };
+		97C87D1F15DE4CA100FE0A6C /* tlocGraphicsModes.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */; };
+		97C87D9B15DE58BA00FE0A6C /* tlocAppDelegateIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */; };
+		97C87D9C15DE58BA00FE0A6C /* tlocAppDelegateIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocGraphics_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97812E0815A2A61B00F3C248 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97812E6015A3CCBB00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocGraphics/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
+		97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowHandle.h; path = ../../../../src/tlocGraphics/window/tlocWindowHandle.h; sourceTree = "<group>"; };
+		97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocWindow.cpp; path = ../../../../src/tlocGraphics/window/tlocWindow.cpp; sourceTree = "<group>"; };
+		97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocWindow.inl; path = ../../../../src/tlocGraphics/window/tlocWindow.inl; sourceTree = "<group>"; };
+		97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindow.h; path = ../../../../src/tlocGraphics/window/tlocWindow.h; sourceTree = "<group>"; };
+		97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowImpl.h; path = ../../../../src/tlocGraphics/window/tlocWindowImpl.h; sourceTree = "<group>"; };
+		97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowSettings.h; path = ../../../../src/tlocGraphics/window/tlocWindowSettings.h; sourceTree = "<group>"; };
+		97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocWindowImplIphone.mm; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.mm; sourceTree = "<group>"; };
+		97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.h; sourceTree = "<group>"; };
+		97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = tlocOpenGLViewIphone.m; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.m; sourceTree = "<group>"; };
+		97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewControllerIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.h; sourceTree = "<group>"; };
+		97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocOpenGLViewControllerIphone.mm; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.mm; sourceTree = "<group>"; };
+		97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowImplIphone.h; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.h; sourceTree = "<group>"; };
+		97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGraphicsModes.cpp; path = ../../../../src/tlocGraphics/window/tlocGraphicsModes.cpp; sourceTree = "<group>"; };
+		97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocContext.cpp; path = ../../../../src/tlocGraphics/window/tlocContext.cpp; sourceTree = "<group>"; };
+		97C87D1715DE4C3300FE0A6C /* tlocContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocContext.h; path = ../../../../src/tlocGraphics/window/tlocContext.h; sourceTree = "<group>"; };
+		97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocGraphicsContext.h; path = ../../../../src/tlocGraphics/window/tlocGraphicsContext.h; sourceTree = "<group>"; };
+		97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGL.h; path = ../../../../src/tlocGraphics/opengl/tlocOpenGL.h; sourceTree = "<group>"; };
+		97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocGraphicsModes.h; path = ../../../../src/tlocGraphics/window/tlocGraphicsModes.h; sourceTree = "<group>"; };
+		97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocAppDelegateIphone.mm; path = ../../../../src/tlocGraphics/application/tlocAppDelegateIphone.mm; sourceTree = "<group>"; };
+		97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAppDelegateIphone.h; path = ../../../../src/tlocGraphics/application/tlocAppDelegateIphone.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97812E0215A2A61B00F3C248 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87A1015DCE6C400FE0A6C /* QuartzCore.framework in Frameworks */,
+				97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */,
+				97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		97812DFA15A2A61B00F3C248 = {
+			isa = PBXGroup;
+			children = (
+				97C87BE115DE3DAE00FE0A6C /* tlocGraphics */,
+				97812E0715A2A61B00F3C248 /* Frameworks */,
+				97812E0615A2A61B00F3C248 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97812E0615A2A61B00F3C248 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97812E0715A2A61B00F3C248 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */,
+				97812E6015A3CCBB00F3C248 /* OpenGLES.framework */,
+				97812E0815A2A61B00F3C248 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97C87BE115DE3DAE00FE0A6C /* tlocGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D9715DE584500FE0A6C /* application */,
+				97C87CF715DE4B4B00FE0A6C /* opengl */,
+				97C87CF615DE4B4500FE0A6C /* window */,
+				9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */,
+			);
+			name = tlocGraphics;
+			sourceTree = "<group>";
+		};
+		97C87CF615DE4B4500FE0A6C /* window */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CF915DE4B5800FE0A6C /* Context */,
+				97C87CF815DE4B5100FE0A6C /* Graphics Mode */,
+				97C87CFA15DE4B7C00FE0A6C /* Iphone */,
+				97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */,
+				97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */,
+				97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */,
+				97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */,
+				97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */,
+				97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */,
+			);
+			name = window;
+			sourceTree = "<group>";
+		};
+		97C87CF715DE4B4B00FE0A6C /* opengl */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */,
+			);
+			name = opengl;
+			sourceTree = "<group>";
+		};
+		97C87CF815DE4B5100FE0A6C /* Graphics Mode */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */,
+				97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */,
+			);
+			name = "Graphics Mode";
+			sourceTree = "<group>";
+		};
+		97C87CF915DE4B5800FE0A6C /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */,
+				97C87D1715DE4C3300FE0A6C /* tlocContext.h */,
+				97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */,
+			);
+			name = Context;
+			sourceTree = "<group>";
+		};
+		97C87CFA15DE4B7C00FE0A6C /* Iphone */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */,
+				97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.m */,
+				97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */,
+				97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */,
+				97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */,
+				97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */,
+			);
+			name = Iphone;
+			sourceTree = "<group>";
+		};
+		97C87D9715DE584500FE0A6C /* application */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D9815DE589D00FE0A6C /* Iphone */,
+			);
+			name = application;
+			sourceTree = "<group>";
+		};
+		97C87D9815DE589D00FE0A6C /* Iphone */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */,
+				97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */,
+			);
+			name = Iphone;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		97812E0315A2A61B00F3C248 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87D0115DE4BC700FE0A6C /* tlocWindowHandle.h in Headers */,
+				97C87D0315DE4BC700FE0A6C /* tlocWindow.h in Headers */,
+				97C87D0415DE4BC700FE0A6C /* tlocWindowImpl.h in Headers */,
+				97C87D0515DE4BC700FE0A6C /* tlocWindowSettings.h in Headers */,
+				97C87D0D15DE4BF700FE0A6C /* tlocOpenGLViewIphone.h in Headers */,
+				97C87D0F15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h in Headers */,
+				97C87D1115DE4BF700FE0A6C /* tlocWindowImplIphone.h in Headers */,
+				97C87D1A15DE4C3300FE0A6C /* tlocContext.h in Headers */,
+				97C87D1B15DE4C3300FE0A6C /* tlocGraphicsContext.h in Headers */,
+				97C87D1D15DE4C4200FE0A6C /* tlocOpenGL.h in Headers */,
+				97C87D1F15DE4CA100FE0A6C /* tlocGraphicsModes.h in Headers */,
+				97C87D9C15DE58BA00FE0A6C /* tlocAppDelegateIphone.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		97812E0415A2A61B00F3C248 /* tlocGraphics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97812E1215A2A61B00F3C248 /* Build configuration list for PBXNativeTarget "tlocGraphics" */;
+			buildPhases = (
+				97812E0115A2A61B00F3C248 /* Sources */,
+				97812E0215A2A61B00F3C248 /* Frameworks */,
+				97812E0315A2A61B00F3C248 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocGraphics;
+			productName = tlocGraphics;
+			productReference = 97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97812DFC15A2A61B00F3C248 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 97812DFF15A2A61B00F3C248 /* Build configuration list for PBXProject "tlocGraphics" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97812DFA15A2A61B00F3C248;
+			productRefGroup = 97812E0615A2A61B00F3C248 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97812E0415A2A61B00F3C248 /* tlocGraphics */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97812E0115A2A61B00F3C248 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */,
+				97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */,
+				97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.m in Sources */,
+				97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */,
+				97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */,
+				97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */,
+				97C87D9B15DE58BA00FE0A6C /* tlocAppDelegateIphone.mm in Sources */,
+				9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		97812E1015A2A61B00F3C248 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+			};
+			name = Debug;
+		};
+		97812E1115A2A61B00F3C248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_RELEASE;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97812E1315A2A61B00F3C248 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocGraphics.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		97812E1415A2A61B00F3C248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocGraphics.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97812DFF15A2A61B00F3C248 /* Build configuration list for PBXProject "tlocGraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97812E1015A2A61B00F3C248 /* Debug */,
+				97812E1115A2A61B00F3C248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97812E1215A2A61B00F3C248 /* Build configuration list for PBXNativeTarget "tlocGraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97812E1315A2A61B00F3C248 /* Debug */,
+				97812E1415A2A61B00F3C248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97812DFC15A2A61B00F3C248 /* Project object */;
+}

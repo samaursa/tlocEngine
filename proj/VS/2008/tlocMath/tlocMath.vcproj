@@ -44,12 +44,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -110,12 +111,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG"
+				PreprocessorDefinitions="TLOC_DEBUG;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -178,11 +180,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -246,11 +249,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -310,12 +314,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -376,12 +381,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -444,11 +450,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -512,11 +519,12 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -578,12 +586,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -646,12 +656,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -713,12 +725,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -781,12 +795,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
+				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -825,82 +841,106 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Matrix"
+			Name="matrix"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.h"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.inl"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix2.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.h"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix2.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.inl"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix2.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix3.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.h"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix3.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.inl"
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix3.inl"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Vector"
+			Name="vector"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.h"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.inl"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector2.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.h"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector2.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.inl"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector2.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector3.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.h"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector3.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.inl"
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector3.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="_misc"
+			>
+		</Filter>
+		<Filter
+			Name="angle"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngle.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngleExplicitMacros.h"
 				>
 			</File>
 		</Filter>

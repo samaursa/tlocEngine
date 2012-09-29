@@ -11,11 +11,11 @@ SET Paths_template_file=Paths.bat.template
 SET Paths_file=Paths.bat
 
 :: Call all labels
-CALL:CHECK_EXIT_TEMPLATE
+CALL:CHECK_EXIST_TEMPLATE
 CALL:CHECK_OVERWRITE_AND_INSTALL
 CALL:EXTRACT_INSTALLER
 
-:CHECK_EXIT_TEMPLATE
+:CHECK_EXIST_TEMPLATE
 IF NOT EXIST %Paths_template_file% (
   ECHO %Paths_template_file% does not exist! 
   GOTO:ERROR
@@ -32,6 +32,9 @@ IF EXIST %Paths_file% (
 
   ECHO Over-writing existing %Paths_file% and creating backup - %Paths_file%.bak
   COPY %Paths_file% %Paths_file%.bak
+  COPY %Paths_template_file% %Paths_file%
+  GOTO:EOF
+) ELSE (
   COPY %Paths_template_file% %Paths_file%
   GOTO:EOF
 )

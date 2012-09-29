@@ -14,3 +14,9 @@ syntax: glob
 *.exe
 *.htm
 *.orig
+.DS_Store
+*.build/**
+xcuserdata/**
+*.a
+*.app/**
+*.app.dSYM/**

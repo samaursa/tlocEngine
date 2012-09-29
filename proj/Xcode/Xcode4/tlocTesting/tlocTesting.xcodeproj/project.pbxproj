@@ -1,0 +1,485 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6315A3CCDE00F3C248 /* OpenGLES.framework */; };
+		97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */; };
+		97C87D5215DE53FE00FE0A6C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5015DE53FE00FE0A6C /* main.cpp */; };
+		97C87D5D15DE55AD00FE0A6C /* tlocMathTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5615DE55AD00FE0A6C /* tlocMathTest.cpp */; };
+		97C87D5E15DE55AD00FE0A6C /* tlocMatrixTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5715DE55AD00FE0A6C /* tlocMatrixTest.cpp */; };
+		97C87D5F15DE55AD00FE0A6C /* tlocVector3Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5815DE55AD00FE0A6C /* tlocVector3Test.cpp */; };
+		97C87D6015DE55AD00FE0A6C /* tlocMatrix2Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5915DE55AD00FE0A6C /* tlocMatrix2Test.cpp */; };
+		97C87D6115DE55AD00FE0A6C /* tlocMatrix3Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5A15DE55AD00FE0A6C /* tlocMatrix3Test.cpp */; };
+		97C87D6215DE55AD00FE0A6C /* tlocVector2Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5B15DE55AD00FE0A6C /* tlocVector2Test.cpp */; };
+		97C87D6315DE55AD00FE0A6C /* tlocVectorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5C15DE55AD00FE0A6C /* tlocVectorTest.cpp */; };
+		97C87D6715DE55F100FE0A6C /* tlocWindowTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6515DE55F100FE0A6C /* tlocWindowTest.cpp */; };
+		97C87D6815DE55F100FE0A6C /* tlocGraphicsModesTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6615DE55F100FE0A6C /* tlocGraphicsModesTest.cpp */; };
+		97C87D7E15DE564B00FE0A6C /* tlocTemplateDispatchTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6915DE564B00FE0A6C /* tlocTemplateDispatchTest.cpp */; };
+		97C87D7F15DE564B00FE0A6C /* tlocArrayFixedTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6A15DE564B00FE0A6C /* tlocArrayFixedTest.cpp */; };
+		97C87D8015DE564B00FE0A6C /* tlocTimeTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6B15DE564B00FE0A6C /* tlocTimeTest.cpp */; };
+		97C87D8115DE564B00FE0A6C /* tlocHashMapTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6C15DE564B00FE0A6C /* tlocHashMapTest.cpp */; };
+		97C87D8215DE564B00FE0A6C /* tlocListTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6D15DE564B00FE0A6C /* tlocListTest.cpp */; };
+		97C87D8315DE564B00FE0A6C /* tlocMemoryPoolTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6E15DE564B00FE0A6C /* tlocMemoryPoolTest.cpp */; };
+		97C87D8415DE564B00FE0A6C /* tlocStringTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D6F15DE564B00FE0A6C /* tlocStringTest.cpp */; };
+		97C87D8515DE564B00FE0A6C /* tlocForwardListTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7015DE564B00FE0A6C /* tlocForwardListTest.cpp */; };
+		97C87D8615DE564B00FE0A6C /* tlocHashtableTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7115DE564B00FE0A6C /* tlocHashtableTest.cpp */; };
+		97C87D8715DE564B00FE0A6C /* tlocStackTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7215DE564B00FE0A6C /* tlocStackTest.cpp */; };
+		97C87D8815DE564B00FE0A6C /* tlocAlgorithmsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7315DE564B00FE0A6C /* tlocAlgorithmsTest.cpp */; };
+		97C87D8915DE564B00FE0A6C /* tlocRandomTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7415DE564B00FE0A6C /* tlocRandomTest.cpp */; };
+		97C87D8A15DE564B00FE0A6C /* tlocArrayTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7515DE564B00FE0A6C /* tlocArrayTest.cpp */; };
+		97C87D8B15DE564B00FE0A6C /* tlocTypesTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7615DE564B00FE0A6C /* tlocTypesTest.cpp */; };
+		97C87D8C15DE564B00FE0A6C /* tlocIteratorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7715DE564B00FE0A6C /* tlocIteratorTest.cpp */; };
+		97C87D8D15DE564B00FE0A6C /* tlocPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7815DE564B00FE0A6C /* tlocPair.cpp */; };
+		97C87D8E15DE564B00FE0A6C /* tlocQueueTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7915DE564B00FE0A6C /* tlocQueueTest.cpp */; };
+		97C87D8F15DE564B00FE0A6C /* tlocTableTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7A15DE564B00FE0A6C /* tlocTableTest.cpp */; };
+		97C87D9015DE564B00FE0A6C /* tlocTupleTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7B15DE564B00FE0A6C /* tlocTupleTest.cpp */; };
+		97C87D9115DE564B00FE0A6C /* tlocUtilsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7C15DE564B00FE0A6C /* tlocUtilsTest.cpp */; };
+		97C87D9215DE564B00FE0A6C /* tlocMemoryTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D7D15DE564B00FE0A6C /* tlocMemoryTest.cpp */; };
+		97CC77071580A6D900764CF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77061580A6D900764CF3 /* UIKit.framework */; };
+		97CC77091580A6D900764CF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77081580A6D900764CF3 /* Foundation.framework */; };
+		97CC770B1580A6D900764CF3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC770A1580A6D900764CF3 /* CoreGraphics.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		97812E6315A3CCDE00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		97C87D5015DE53FE00FE0A6C /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = main.cpp; path = ../../../VS/2008/tlocTesting/main.cpp; sourceTree = "<group>"; };
+		97C87D5115DE53FE00FE0A6C /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../VS/2008/tlocTesting/tlocTestCommon.h; sourceTree = "<group>"; };
+		97C87D5615DE55AD00FE0A6C /* tlocMathTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMathTest.cpp; path = ../../../VS/2008/tlocTesting/tlocMathTest.cpp; sourceTree = "<group>"; };
+		97C87D5715DE55AD00FE0A6C /* tlocMatrixTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrixTest.cpp; path = ../../../VS/2008/tlocTesting/tlocMatrixTest.cpp; sourceTree = "<group>"; };
+		97C87D5815DE55AD00FE0A6C /* tlocVector3Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector3Test.cpp; path = ../../../VS/2008/tlocTesting/tlocVector3Test.cpp; sourceTree = "<group>"; };
+		97C87D5915DE55AD00FE0A6C /* tlocMatrix2Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix2Test.cpp; path = ../../../VS/2008/tlocTesting/tlocMatrix2Test.cpp; sourceTree = "<group>"; };
+		97C87D5A15DE55AD00FE0A6C /* tlocMatrix3Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix3Test.cpp; path = ../../../VS/2008/tlocTesting/tlocMatrix3Test.cpp; sourceTree = "<group>"; };
+		97C87D5B15DE55AD00FE0A6C /* tlocVector2Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector2Test.cpp; path = ../../../VS/2008/tlocTesting/tlocVector2Test.cpp; sourceTree = "<group>"; };
+		97C87D5C15DE55AD00FE0A6C /* tlocVectorTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVectorTest.cpp; path = ../../../VS/2008/tlocTesting/tlocVectorTest.cpp; sourceTree = "<group>"; };
+		97C87D6515DE55F100FE0A6C /* tlocWindowTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocWindowTest.cpp; path = ../../../VS/2008/tlocTesting/tlocWindowTest.cpp; sourceTree = "<group>"; };
+		97C87D6615DE55F100FE0A6C /* tlocGraphicsModesTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGraphicsModesTest.cpp; path = ../../../VS/2008/tlocTesting/tlocGraphicsModesTest.cpp; sourceTree = "<group>"; };
+		97C87D6915DE564B00FE0A6C /* tlocTemplateDispatchTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTemplateDispatchTest.cpp; path = ../../../VS/2008/tlocTesting/tlocTemplateDispatchTest.cpp; sourceTree = "<group>"; };
+		97C87D6A15DE564B00FE0A6C /* tlocArrayFixedTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocArrayFixedTest.cpp; path = ../../../VS/2008/tlocTesting/tlocArrayFixedTest.cpp; sourceTree = "<group>"; };
+		97C87D6B15DE564B00FE0A6C /* tlocTimeTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTimeTest.cpp; path = ../../../VS/2008/tlocTesting/tlocTimeTest.cpp; sourceTree = "<group>"; };
+		97C87D6C15DE564B00FE0A6C /* tlocHashMapTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocHashMapTest.cpp; path = ../../../VS/2008/tlocTesting/tlocHashMapTest.cpp; sourceTree = "<group>"; };
+		97C87D6D15DE564B00FE0A6C /* tlocListTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocListTest.cpp; path = ../../../VS/2008/tlocTesting/tlocListTest.cpp; sourceTree = "<group>"; };
+		97C87D6E15DE564B00FE0A6C /* tlocMemoryPoolTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMemoryPoolTest.cpp; path = ../../../VS/2008/tlocTesting/tlocMemoryPoolTest.cpp; sourceTree = "<group>"; };
+		97C87D6F15DE564B00FE0A6C /* tlocStringTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocStringTest.cpp; path = ../../../VS/2008/tlocTesting/tlocStringTest.cpp; sourceTree = "<group>"; };
+		97C87D7015DE564B00FE0A6C /* tlocForwardListTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocForwardListTest.cpp; path = ../../../VS/2008/tlocTesting/tlocForwardListTest.cpp; sourceTree = "<group>"; };
+		97C87D7115DE564B00FE0A6C /* tlocHashtableTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocHashtableTest.cpp; path = ../../../VS/2008/tlocTesting/tlocHashtableTest.cpp; sourceTree = "<group>"; };
+		97C87D7215DE564B00FE0A6C /* tlocStackTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocStackTest.cpp; path = ../../../VS/2008/tlocTesting/tlocStackTest.cpp; sourceTree = "<group>"; };
+		97C87D7315DE564B00FE0A6C /* tlocAlgorithmsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAlgorithmsTest.cpp; path = ../../../VS/2008/tlocTesting/tlocAlgorithmsTest.cpp; sourceTree = "<group>"; };
+		97C87D7415DE564B00FE0A6C /* tlocRandomTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRandomTest.cpp; path = ../../../VS/2008/tlocTesting/tlocRandomTest.cpp; sourceTree = "<group>"; };
+		97C87D7515DE564B00FE0A6C /* tlocArrayTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocArrayTest.cpp; path = ../../../VS/2008/tlocTesting/tlocArrayTest.cpp; sourceTree = "<group>"; };
+		97C87D7615DE564B00FE0A6C /* tlocTypesTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTypesTest.cpp; path = ../../../VS/2008/tlocTesting/tlocTypesTest.cpp; sourceTree = "<group>"; };
+		97C87D7715DE564B00FE0A6C /* tlocIteratorTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocIteratorTest.cpp; path = ../../../VS/2008/tlocTesting/tlocIteratorTest.cpp; sourceTree = "<group>"; };
+		97C87D7815DE564B00FE0A6C /* tlocPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPair.cpp; path = ../../../VS/2008/tlocTesting/tlocPair.cpp; sourceTree = "<group>"; };
+		97C87D7915DE564B00FE0A6C /* tlocQueueTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocQueueTest.cpp; path = ../../../VS/2008/tlocTesting/tlocQueueTest.cpp; sourceTree = "<group>"; };
+		97C87D7A15DE564B00FE0A6C /* tlocTableTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTableTest.cpp; path = ../../../VS/2008/tlocTesting/tlocTableTest.cpp; sourceTree = "<group>"; };
+		97C87D7B15DE564B00FE0A6C /* tlocTupleTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTupleTest.cpp; path = ../../../VS/2008/tlocTesting/tlocTupleTest.cpp; sourceTree = "<group>"; };
+		97C87D7C15DE564B00FE0A6C /* tlocUtilsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocUtilsTest.cpp; path = ../../../VS/2008/tlocTesting/tlocUtilsTest.cpp; sourceTree = "<group>"; };
+		97C87D7D15DE564B00FE0A6C /* tlocMemoryTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMemoryTest.cpp; path = ../../../VS/2008/tlocTesting/tlocMemoryTest.cpp; sourceTree = "<group>"; };
+		97CC77021580A6D900764CF3 /* tlocTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tlocTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97CC77061580A6D900764CF3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		97CC77081580A6D900764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97CC770A1580A6D900764CF3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		97E494AD15DE6D7600F8DE7F /* tlocTesting-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "tlocTesting-Info.plist"; path = "SupportingFiles/tlocTesting-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97CC76FF1580A6D900764CF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */,
+				97CC770B1580A6D900764CF3 /* CoreGraphics.framework in Frameworks */,
+				97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */,
+				97CC77071580A6D900764CF3 /* UIKit.framework in Frameworks */,
+				97CC77091580A6D900764CF3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		97C87BE315DE3DC500FE0A6C /* tlocTesting */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D5515DE541400FE0A6C /* Core */,
+				97C87D5315DE540800FE0A6C /* Math */,
+				97C87D6415DE55D100FE0A6C /* Graphics */,
+				97C87D5415DE540F00FE0A6C /* Input */,
+				97C87D5015DE53FE00FE0A6C /* main.cpp */,
+				97C87D5115DE53FE00FE0A6C /* tlocTestCommon.h */,
+				97C87D4F15DE51FD00FE0A6C /* Supporting Files */,
+			);
+			name = tlocTesting;
+			sourceTree = "<group>";
+		};
+		97C87D4F15DE51FD00FE0A6C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				97E494AD15DE6D7600F8DE7F /* tlocTesting-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		97C87D5315DE540800FE0A6C /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D5615DE55AD00FE0A6C /* tlocMathTest.cpp */,
+				97C87D5915DE55AD00FE0A6C /* tlocMatrix2Test.cpp */,
+				97C87D5A15DE55AD00FE0A6C /* tlocMatrix3Test.cpp */,
+				97C87D5715DE55AD00FE0A6C /* tlocMatrixTest.cpp */,
+				97C87D5B15DE55AD00FE0A6C /* tlocVector2Test.cpp */,
+				97C87D5815DE55AD00FE0A6C /* tlocVector3Test.cpp */,
+				97C87D5C15DE55AD00FE0A6C /* tlocVectorTest.cpp */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		97C87D5415DE540F00FE0A6C /* Input */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Input;
+			sourceTree = "<group>";
+		};
+		97C87D5515DE541400FE0A6C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D6915DE564B00FE0A6C /* tlocTemplateDispatchTest.cpp */,
+				97C87D6A15DE564B00FE0A6C /* tlocArrayFixedTest.cpp */,
+				97C87D6B15DE564B00FE0A6C /* tlocTimeTest.cpp */,
+				97C87D6C15DE564B00FE0A6C /* tlocHashMapTest.cpp */,
+				97C87D6D15DE564B00FE0A6C /* tlocListTest.cpp */,
+				97C87D6E15DE564B00FE0A6C /* tlocMemoryPoolTest.cpp */,
+				97C87D6F15DE564B00FE0A6C /* tlocStringTest.cpp */,
+				97C87D7015DE564B00FE0A6C /* tlocForwardListTest.cpp */,
+				97C87D7115DE564B00FE0A6C /* tlocHashtableTest.cpp */,
+				97C87D7215DE564B00FE0A6C /* tlocStackTest.cpp */,
+				97C87D7315DE564B00FE0A6C /* tlocAlgorithmsTest.cpp */,
+				97C87D7415DE564B00FE0A6C /* tlocRandomTest.cpp */,
+				97C87D7515DE564B00FE0A6C /* tlocArrayTest.cpp */,
+				97C87D7615DE564B00FE0A6C /* tlocTypesTest.cpp */,
+				97C87D7715DE564B00FE0A6C /* tlocIteratorTest.cpp */,
+				97C87D7815DE564B00FE0A6C /* tlocPair.cpp */,
+				97C87D7915DE564B00FE0A6C /* tlocQueueTest.cpp */,
+				97C87D7A15DE564B00FE0A6C /* tlocTableTest.cpp */,
+				97C87D7B15DE564B00FE0A6C /* tlocTupleTest.cpp */,
+				97C87D7C15DE564B00FE0A6C /* tlocUtilsTest.cpp */,
+				97C87D7D15DE564B00FE0A6C /* tlocMemoryTest.cpp */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		97C87D6415DE55D100FE0A6C /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D6515DE55F100FE0A6C /* tlocWindowTest.cpp */,
+				97C87D6615DE55F100FE0A6C /* tlocGraphicsModesTest.cpp */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		97CC76F71580A6D800764CF3 = {
+			isa = PBXGroup;
+			children = (
+				97C87BE315DE3DC500FE0A6C /* tlocTesting */,
+				97CC77051580A6D900764CF3 /* Frameworks */,
+				97CC77031580A6D900764CF3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97CC77031580A6D900764CF3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97CC77021580A6D900764CF3 /* tlocTesting.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97CC77051580A6D900764CF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */,
+				97812E6315A3CCDE00F3C248 /* OpenGLES.framework */,
+				97CC77061580A6D900764CF3 /* UIKit.framework */,
+				97CC77081580A6D900764CF3 /* Foundation.framework */,
+				97CC770A1580A6D900764CF3 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		97CC77011580A6D900764CF3 /* tlocTesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97CC771A1580A6D900764CF3 /* Build configuration list for PBXNativeTarget "tlocTesting" */;
+			buildPhases = (
+				97CC76FE1580A6D900764CF3 /* Sources */,
+				97CC76FF1580A6D900764CF3 /* Frameworks */,
+				97CC77001580A6D900764CF3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocTesting;
+			productName = tlocTesting;
+			productReference = 97CC77021580A6D900764CF3 /* tlocTesting.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97CC76F91580A6D800764CF3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 97CC76FC1580A6D800764CF3 /* Build configuration list for PBXProject "tlocTesting" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97CC76F71580A6D800764CF3;
+			productRefGroup = 97CC77031580A6D900764CF3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97CC77011580A6D900764CF3 /* tlocTesting */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		97CC77001580A6D900764CF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97CC76FE1580A6D900764CF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87D5215DE53FE00FE0A6C /* main.cpp in Sources */,
+				97C87D5D15DE55AD00FE0A6C /* tlocMathTest.cpp in Sources */,
+				97C87D5E15DE55AD00FE0A6C /* tlocMatrixTest.cpp in Sources */,
+				97C87D5F15DE55AD00FE0A6C /* tlocVector3Test.cpp in Sources */,
+				97C87D6015DE55AD00FE0A6C /* tlocMatrix2Test.cpp in Sources */,
+				97C87D6115DE55AD00FE0A6C /* tlocMatrix3Test.cpp in Sources */,
+				97C87D6215DE55AD00FE0A6C /* tlocVector2Test.cpp in Sources */,
+				97C87D6315DE55AD00FE0A6C /* tlocVectorTest.cpp in Sources */,
+				97C87D6715DE55F100FE0A6C /* tlocWindowTest.cpp in Sources */,
+				97C87D6815DE55F100FE0A6C /* tlocGraphicsModesTest.cpp in Sources */,
+				97C87D7E15DE564B00FE0A6C /* tlocTemplateDispatchTest.cpp in Sources */,
+				97C87D7F15DE564B00FE0A6C /* tlocArrayFixedTest.cpp in Sources */,
+				97C87D8015DE564B00FE0A6C /* tlocTimeTest.cpp in Sources */,
+				97C87D8115DE564B00FE0A6C /* tlocHashMapTest.cpp in Sources */,
+				97C87D8215DE564B00FE0A6C /* tlocListTest.cpp in Sources */,
+				97C87D8315DE564B00FE0A6C /* tlocMemoryPoolTest.cpp in Sources */,
+				97C87D8415DE564B00FE0A6C /* tlocStringTest.cpp in Sources */,
+				97C87D8515DE564B00FE0A6C /* tlocForwardListTest.cpp in Sources */,
+				97C87D8615DE564B00FE0A6C /* tlocHashtableTest.cpp in Sources */,
+				97C87D8715DE564B00FE0A6C /* tlocStackTest.cpp in Sources */,
+				97C87D8815DE564B00FE0A6C /* tlocAlgorithmsTest.cpp in Sources */,
+				97C87D8915DE564B00FE0A6C /* tlocRandomTest.cpp in Sources */,
+				97C87D8A15DE564B00FE0A6C /* tlocArrayTest.cpp in Sources */,
+				97C87D8B15DE564B00FE0A6C /* tlocTypesTest.cpp in Sources */,
+				97C87D8C15DE564B00FE0A6C /* tlocIteratorTest.cpp in Sources */,
+				97C87D8D15DE564B00FE0A6C /* tlocPair.cpp in Sources */,
+				97C87D8E15DE564B00FE0A6C /* tlocQueueTest.cpp in Sources */,
+				97C87D8F15DE564B00FE0A6C /* tlocTableTest.cpp in Sources */,
+				97C87D9015DE564B00FE0A6C /* tlocTupleTest.cpp in Sources */,
+				97C87D9115DE564B00FE0A6C /* tlocUtilsTest.cpp in Sources */,
+				97C87D9215DE564B00FE0A6C /* tlocMemoryTest.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		97CC77181580A6D900764CF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
+					TLOC_DEBUG,
+					TLOC_ENABLE_CPPUNWIND,
+					TLOC_ENABLE_CPPRTTI,
+					TLOC_USING_STL,
+					TLOC_ENABLE_ASSERT_LOW_LEVEL,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				PRELINK_FLAGS = "\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_DEP_PATH)/include/CATCH/include $(TLOC_DEP_PATH)/include/CATCH/single_include $(TLOC_PATH)/src/";
+				WARNING_CFLAGS = "";
+				WARNING_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+			};
+			name = Debug;
+		};
+		97CC77191580A6D900764CF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
+					TLOC_RELEASE,
+					TLOC_ENABLE_CPPUNWIND,
+					TLOC_ENABLE_CPPRTTI,
+					TLOC_USING_STL,
+					TLOC_ENABLE_ASSERT_LOW_LEVEL,
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				PRELINK_FLAGS = "\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\" \"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_DEP_PATH)/include/CATCH/include $(TLOC_DEP_PATH)/include/CATCH/single_include $(TLOC_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = "";
+				WARNING_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+			};
+			name = Release;
+		};
+		97CC771B1580A6D900764CF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		97CC771C1580A6D900764CF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97CC76FC1580A6D800764CF3 /* Build configuration list for PBXProject "tlocTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97CC77181580A6D900764CF3 /* Debug */,
+				97CC77191580A6D900764CF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97CC771A1580A6D900764CF3 /* Build configuration list for PBXNativeTarget "tlocTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97CC771B1580A6D900764CF3 /* Debug */,
+				97CC771C1580A6D900764CF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97CC76F91580A6D800764CF3 /* Project object */;
+}

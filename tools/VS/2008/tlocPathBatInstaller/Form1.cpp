@@ -45,7 +45,7 @@ System::Void Form1::loadBtn_Click( System::Object^ sender, System::EventArgs^ e 
 
     char tempPathDir[512];
     DoConvertSystemStringToCharString(m_pathDir, tempPathDir);
-    ret = m_pathBatManager->LoadPathFiles(tempPathDir, 
+    ret = m_pathBatManager->LoadPathFiles(tempPathDir,
                                           PathBatTemplatePriorityBtn->Checked);
 
     if (!ret)
@@ -77,12 +77,14 @@ System::Void Form1::loadBtn_Click( System::Object^ sender, System::EventArgs^ e 
     }
     messageLbl->Text = DoConvertCharStringToSystemString(
       m_pathBatManager->GetStatus());
+
+    DoCheckMainPath();
   }
 }
 
 System::Void Form1::browseBtn_Click( System::Object^ sender, System::EventArgs^ e )
 {
-  if (folderBrowserDialog1->ShowDialog() == 
+  if (folderBrowserDialog1->ShowDialog() ==
       System::Windows::Forms::DialogResult::OK)
   {
     m_pathDir = folderBrowserDialog1->SelectedPath;
@@ -100,11 +102,11 @@ System::Void Form1::saveBtn_Click( System::Object^ sender, System::EventArgs^ e 
   {
     if (m_variableName[i]->Text != "" && m_variable[i]->Text != "")
     {
-      DoConvertSystemStringToCharString(m_variableName[i]->Text, 
+      DoConvertSystemStringToCharString(m_variableName[i]->Text,
                                         l_tempVariableName);
-      DoConvertSystemStringToCharString(m_variable[i]->Text, 
+      DoConvertSystemStringToCharString(m_variable[i]->Text,
                                         l_tempVariableValue);
-      m_pathBatManager->PushBackVariable(l_tempVariableName, 
+      m_pathBatManager->PushBackVariable(l_tempVariableName,
                                          l_tempVariableValue);
     }
   }
@@ -318,11 +320,45 @@ void Form1::DoReset()
   for each(System::Windows::Forms::TextBox^ l_textBox in m_variableName)
   {
     l_textBox->Text = String::Empty;
+    l_textBox->BackColor = System::Drawing::Color::White;
   }
 
   for each(System::Windows::Forms::TextBox^ l_textBox in m_variable)
   {
     l_textBox->Text = String::Empty;
+    l_textBox->BackColor = System::Drawing::Color::White;
+  }
+
+  fix_it_button->Enabled = false;
+}
+
+void Form1::DoCheckMainPath()
+{
+  // Find TLOC_PATH and make sure it is our current directory, if not, then
+  // color the text box yellow and enable the fix it button
+  for(int i = 0; i < m_variableName->Count; ++i)
+  {
+    if (m_variableName[i]->Text == "TLOC_PATH")
+    {
+      System::String^ currDir = System::AppDomain::CurrentDomain->BaseDirectory;
+      if ( m_variable[i]->Text != currDir )
+      {
+        m_variableName[i]->BackColor = System::Drawing::Color::Orange;
+        m_variable[i]->BackColor = System::Drawing::Color::Orange;
+
+        fix_it_button->Enabled = true;
+      }
+      else
+      {
+        m_variableName[i]->BackColor = System::Drawing::Color::White;
+        m_variable[i]->BackColor = System::Drawing::Color::White;
+
+        fix_it_button->Enabled = false;
+      }
+
+      break;
+    }
+
   }
 }
 
@@ -370,7 +406,7 @@ void Form1::DoHandleBrowserBtnClick( size_t a_buttonNumber )
   a_buttonNumber -= 1;
   folderBrowserVariable->SelectedPath = m_variable[a_buttonNumber]->Text;
 
-  if (folderBrowserVariable->ShowDialog() == 
+  if (folderBrowserVariable->ShowDialog() ==
       System::Windows::Forms::DialogResult::OK)
   {
     m_variable[a_buttonNumber]->Text = folderBrowserVariable->SelectedPath;
@@ -379,8 +415,10 @@ void Form1::DoHandleBrowserBtnClick( size_t a_buttonNumber )
 
 void Form1::DoHandleVariableValueTextChange( System::Object^ a_modifiedObject )
 {
-  System::Windows::Forms::TextBox^ l_textbox = 
+  System::Windows::Forms::TextBox^ l_textbox =
     static_cast<System::Windows::Forms::TextBox^>(a_modifiedObject);
+
+  DoCheckMainPath();
 
   if (System::IO::Directory::Exists(l_textbox->Text))
   {
@@ -407,7 +445,7 @@ void Form1::DoHandleVariableNameTextChange( int a_objectNum )
   }
 }
 
-void Form1::DoConvertSystemStringToCharString( System::String^ a_input, 
+void Form1::DoConvertSystemStringToCharString( System::String^ a_input,
                                               char* a_output )
 {
   pin_ptr<const wchar_t> l_wch;

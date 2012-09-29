@@ -87,7 +87,7 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
     result = [EAGLContext setCurrentContext:m_context];
     TLOC_ASSERT(result,
                 "OpenGL ES 2.0 context could not be set as the current context");
-    (void)result;
+    TLOC_UNUSED(result);
     
     // Scale view to the main screen's scale (Retina screen)
     // Applicable iff property is available

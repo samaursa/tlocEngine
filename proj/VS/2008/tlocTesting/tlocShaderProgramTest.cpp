@@ -1,4 +1,5 @@
 #include "tlocTestCommon.h"
+#include <tlocCore/platform/tlocPlatform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLExt.h>
@@ -9,6 +10,9 @@
 
 namespace TestingShaderProgram
 {
+
+#if defined(TLOC_OS_WIN)
+
   const char* vShaderStr =
 "#version 140                       \n\
                                     \n\
@@ -33,6 +37,34 @@ void main(void)                     \n\
 {                                   \n\
    vFragColor = vVaryingColor;      \n\
 }";
+
+#elif defined(TLOC_OS_IPHONE)
+
+  const char* vShaderStr =
+"#version 100                       \n\
+                                    \n\
+attribute vec4 vVertex;             \n\
+attribute vec4 vColor;              \n\
+                                    \n\
+varying lowp vec4 vVaryingColor;    \n\
+                                    \n\
+void main(void)                     \n\
+{                                   \n\
+  vVaryingColor = vColor;           \n\
+  gl_Position   = vVertex;          \n\
+}";
+
+  const char* fShaderStr =
+"#version 100                       \n\
+                                    \n\
+varying lowp vec4 vVaryingColor;    \n\
+                                    \n\
+void main(void)                     \n\
+{                                   \n\
+  gl_FragColor = vVaryingColor;     \n\
+}";
+
+#endif
 
   using namespace tloc;
   using namespace graphics;

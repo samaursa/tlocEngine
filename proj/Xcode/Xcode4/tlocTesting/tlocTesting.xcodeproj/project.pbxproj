@@ -24,6 +24,7 @@
 		9701FFDD160E85E700F48A65 /* tlocColorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFDB160E85E700F48A65 /* tlocColorTest.cpp */; };
 		9701FFDE160E85E700F48A65 /* tlocRectangleTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFDC160E85E700F48A65 /* tlocRectangleTest.cpp */; };
 		97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6315A3CCDE00F3C248 /* OpenGLES.framework */; };
+		97B9C0351616D3A900A81C71 /* png_test_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B9C0341616D3A900A81C71 /* png_test_1.png */; };
 		97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */; };
 		97C87D5215DE53FE00FE0A6C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5015DE53FE00FE0A6C /* main.cpp */; };
 		97C87D5D15DE55AD00FE0A6C /* tlocMathTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D5615DE55AD00FE0A6C /* tlocMathTest.cpp */; };
@@ -67,18 +68,19 @@
 		9701FFBC160E832500F48A65 /* tlocEventManagerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocEventManagerTest.cpp; path = ../../../VS/2008/tlocTesting/tlocEventManagerTest.cpp; sourceTree = "<group>"; };
 		9701FFC0160E838800F48A65 /* tlocProtectedBufferTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocProtectedBufferTest.cpp; path = ../../../VS/2008/tlocTesting/tlocProtectedBufferTest.cpp; sourceTree = "<group>"; };
 		9701FFC2160E83EE00F48A65 /* tlocVariadicTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVariadicTest.cpp; path = ../../../VS/2008/tlocTesting/tlocVariadicTest.cpp; sourceTree = "<group>"; };
-		9701FFC4160E843100F48A65 /* tlocFileIOTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFileIOTest.cpp; path = ../../../VS/2008/tlocTesting/tlocFileIOTest.cpp; sourceTree = "<group>"; };
-		9701FFC5160E843100F48A65 /* tlocPathTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPathTest.cpp; path = ../../../VS/2008/tlocTesting/tlocPathTest.cpp; sourceTree = "<group>"; };
+		9701FFC4160E843100F48A65 /* tlocFileIOTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocFileIOTest.cpp; path = ../../../VS/2008/tlocTesting/tlocFileIOTest.cpp; sourceTree = "<group>"; };
+		9701FFC5160E843100F48A65 /* tlocPathTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocPathTest.cpp; path = ../../../VS/2008/tlocTesting/tlocPathTest.cpp; sourceTree = "<group>"; };
 		9701FFC8160E846800F48A65 /* tlocBufferArgTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocBufferArgTest.cpp; path = ../../../VS/2008/tlocTesting/tlocBufferArgTest.cpp; sourceTree = "<group>"; };
 		9701FFCA160E84B400F48A65 /* tlocGroupIDTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGroupIDTest.cpp; path = ../../../VS/2008/tlocTesting/tlocGroupIDTest.cpp; sourceTree = "<group>"; };
 		9701FFCB160E84B400F48A65 /* tlocObjectCounterTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocObjectCounterTest.cpp; path = ../../../VS/2008/tlocTesting/tlocObjectCounterTest.cpp; sourceTree = "<group>"; };
-		9701FFD3160E85A300F48A65 /* tlocImageLoaderTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocImageLoaderTest.cpp; path = ../../../VS/2008/tlocTesting/tlocImageLoaderTest.cpp; sourceTree = "<group>"; };
+		9701FFD3160E85A300F48A65 /* tlocImageLoaderTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocImageLoaderTest.cpp; path = ../../../VS/2008/tlocTesting/tlocImageLoaderTest.cpp; sourceTree = "<group>"; };
 		9701FFD5160E85CA00F48A65 /* tlocGLObjectTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGLObjectTest.cpp; path = ../../../VS/2008/tlocTesting/tlocGLObjectTest.cpp; sourceTree = "<group>"; };
 		9701FFD6160E85CA00F48A65 /* tlocShaderComponentTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocShaderComponentTest.cpp; path = ../../../VS/2008/tlocTesting/tlocShaderComponentTest.cpp; sourceTree = "<group>"; };
 		9701FFD7160E85CA00F48A65 /* tlocShaderProgramTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocShaderProgramTest.cpp; path = ../../../VS/2008/tlocTesting/tlocShaderProgramTest.cpp; sourceTree = "<group>"; };
 		9701FFDB160E85E700F48A65 /* tlocColorTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocColorTest.cpp; path = ../../../VS/2008/tlocTesting/tlocColorTest.cpp; sourceTree = "<group>"; };
 		9701FFDC160E85E700F48A65 /* tlocRectangleTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRectangleTest.cpp; path = ../../../VS/2008/tlocTesting/tlocRectangleTest.cpp; sourceTree = "<group>"; };
 		97812E6315A3CCDE00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		97B9C0341616D3A900A81C71 /* png_test_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = png_test_1.png; path = ../../../VS/2008/tlocTesting/png_test_1.png; sourceTree = "<group>"; };
 		97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		97C87D5015DE53FE00FE0A6C /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = main.cpp; path = ../../../VS/2008/tlocTesting/main.cpp; sourceTree = "<group>"; };
 		97C87D5115DE53FE00FE0A6C /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../VS/2008/tlocTesting/tlocTestCommon.h; sourceTree = "<group>"; };
@@ -255,6 +257,14 @@
 			name = media;
 			sourceTree = "<group>";
 		};
+		97B9C0161615A14D00A81C71 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				97B9C0341616D3A900A81C71 /* png_test_1.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		97C87BE315DE3DC500FE0A6C /* tlocTesting */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				97C87BE315DE3DC500FE0A6C /* tlocTesting */,
+				97B9C0161615A14D00A81C71 /* Resources */,
 				97CC77051580A6D900764CF3 /* Frameworks */,
 				97CC77031580A6D900764CF3 /* Products */,
 			);
@@ -406,6 +417,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97B9C0351616D3A900A81C71 /* png_test_1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,8 +18,8 @@ namespace TestingShaderComponent
     \n\
     void main(void)                     \n\
     {                                   \n\
-    vVaryingColor = vColor;           \n\
-    gl_Position   = vVertex;          \n\
+    vVaryingColor = vColor;             \n\
+    gl_Position   = vVertex;            \n\
     }";
 
   const char* fShaderStr =
@@ -29,7 +29,7 @@ namespace TestingShaderComponent
     \n\
     void main(void)                     \n\
     {                                   \n\
-    gl_FragColor = vVaryingColor;     \n\
+    gl_FragColor = vVaryingColor;       \n\
     }";
 
 

@@ -9,29 +9,28 @@
 namespace TestingShaderComponent
 {
   const char* vShaderStr =
-"#version 140                       \n\
-                                    \n\
-in vec4 vVertex;                    \n\
-in vec4 vColor;                     \n\
-                                    \n\
-out vec4 vVaryingColor;             \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-   vVaryingColor = vColor;          \n\
-   gl_Position   = vVertex;         \n\
-}";
+    "#version 120                       \n\
+    \n\
+    attribute vec4 vVertex;             \n\
+    attribute vec4 vColor;              \n\
+    \n\
+    varying lowp vec4 vVaryingColor;    \n\
+    \n\
+    void main(void)                     \n\
+    {                                   \n\
+    vVaryingColor = vColor;           \n\
+    gl_Position   = vVertex;          \n\
+    }";
 
   const char* fShaderStr =
-"#version 140                       \n\
-                                    \n\
-out vec4 vFragColor;                \n\
-in  vec4 vVaryingColor;             \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-   vFragColor = vVaryingColor;      \n\
-}";
+    "#version 120                       \n\
+    \n\
+    varying lowp vec4 vVaryingColor;    \n\
+    \n\
+    void main(void)                     \n\
+    {                                   \n\
+    gl_FragColor = vVaryingColor;     \n\
+    }";
 
 
   using namespace tloc;

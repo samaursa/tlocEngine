@@ -1,9 +1,9 @@
-#version 140
+#version 120
 
-in vec4 vVertex;
-in vec4 vColor;
+attribute vec4 vVertex;
+attribute vec4 vColor;
 
-out vec4 vVaryingColor;
+varying lowp vec4 vVaryingColor;
 
 void main(void)
 {

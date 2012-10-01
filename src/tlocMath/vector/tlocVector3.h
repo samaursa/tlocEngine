@@ -62,6 +62,7 @@ namespace tloc { namespace math {
     // NOTE: Only works on floats!
     TL_FI void FastNorm();
 
+    static const Vector3 ZERO;
     static const Vector3 UNIT_X;
     static const Vector3 UNIT_Y;
     static const Vector3 UNIT_Z;
@@ -81,6 +82,8 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Static const definitions
+  template <typename T>
+  const Vector3<T> Vector3<T>::ZERO       (0.0, 0.0, 0.0);
   template <typename T>
   const Vector3<T> Vector3<T>::UNIT_X     (1.0, 0.0, 0.0);
   template <typename T>

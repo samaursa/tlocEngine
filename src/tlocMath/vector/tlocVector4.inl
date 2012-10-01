@@ -24,10 +24,22 @@ namespace tloc { namespace math {
   { } 
 
   template <VECTOR_4_TEMP>
-  Vector4<VECTOR_4_PARAMS>::Vector4(value_type a_x, value_type a_y, 
-                                    value_type a_z, value_type a_w)
-                                    : base_type
-  {
-  }
+  Vector4<VECTOR_4_PARAMS>::
+    Vector4(value_type a_x, value_type a_y, value_type a_z, value_type a_w) 
+    : base_type(core::Variadic<value_type, 4>(a_x, a_y, a_z, a_w))
+  { } 
+
+  template <VECTOR_4_TEMP>
+  Vector4<VECTOR_4_PARAMS>::
+    Vector4(const core::Variadic<T, 4>& a_vars)
+    : base_type(a_vars)
+  { }
+
+  template <VECTOR_4_TEMP>
+  Vector4<VECTOR_4_PARAMS>::Vector4(const_reference a_value)
+    : base_type(a_value)
+  { }
 
 };};
+
+#endif

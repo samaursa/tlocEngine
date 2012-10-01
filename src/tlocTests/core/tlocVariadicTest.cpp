@@ -36,6 +36,12 @@ namespace TestingVariadic
     Variadic8i  h(1, 2, 3, 4, 5, 6, 7, 8);
     Variadic9i  i(1, 2, 3, 4, 5, 6, 7, 8, 9);
     Variadic10i j(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    Variadic11i k(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    Variadic12i l(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    Variadic13i m(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+    Variadic14i n(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+    Variadic15i o(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    Variadic16i p(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
     CheckVariadic(a);
     CheckVariadic(b);
@@ -47,6 +53,12 @@ namespace TestingVariadic
     CheckVariadic(h);
     CheckVariadic(i);
     CheckVariadic(j);
+    CheckVariadic(k);
+    CheckVariadic(l);
+    CheckVariadic(m);
+    CheckVariadic(n);
+    CheckVariadic(o);
+    CheckVariadic(p);
   }
 
   TEST_CASE("Core/DataStructures/VariadicArray", "Array Construction")
@@ -61,6 +73,12 @@ namespace TestingVariadic
     tl_int array8[]   = {1, 2, 3, 4, 5, 6, 7, 8};
     tl_int array9[]   = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     tl_int array10[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    tl_int array11[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    tl_int array12[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    tl_int array13[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+    tl_int array14[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    tl_int array15[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    tl_int array16[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
     Variadic1i  a(array1);
     Variadic2i  b(array2);
@@ -72,6 +90,12 @@ namespace TestingVariadic
     Variadic8i  h(array8);
     Variadic9i  i(array9);
     Variadic10i j(array10);
+    Variadic11i k(array11);
+    Variadic12i l(array12);
+    Variadic13i m(array13);
+    Variadic14i n(array14);
+    Variadic15i o(array15);
+    Variadic16i p(array16);
 
     CheckVariadic(a);
     CheckVariadic(b);
@@ -83,6 +107,12 @@ namespace TestingVariadic
     CheckVariadic(h);
     CheckVariadic(i);
     CheckVariadic(j);
+    CheckVariadic(k);
+    CheckVariadic(l);
+    CheckVariadic(m);
+    CheckVariadic(n);
+    CheckVariadic(o);
+    CheckVariadic(p);
 
   }
 };

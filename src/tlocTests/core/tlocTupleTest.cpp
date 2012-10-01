@@ -48,7 +48,7 @@ namespace TestingTuple
     CHECK_TUP(p, 8, 8, 8, 8);
     CHECK_TUP(q, 5, 5, 5, 5);
 
-    u32 numberSet[4] = {1, 2, 3, 4};
+    tl_int numberSet[4] = {1, 2, 3, 4};
     p.Set(numberSet);
     CHECK_TUP(p, 1, 2, 3, 4);
 

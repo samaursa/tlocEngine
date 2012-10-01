@@ -5,6 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocTable.h"
+#include <tlocCore/data_structures/tlocVariadic.inl>
+
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Table<N, N>
@@ -158,20 +161,20 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI void Table<TABLE_PARAMS>
-    ::Set(const Variadic<value_type, k_TableSize>& a_vars, 
+    ::Set(const core::Variadic<value_type, k_TableSize>& a_vars, 
           table_order a_tableOrder)
   {
     if (a_tableOrder == k_ColMajor)
     {
-      memcpy(m_values, a_vars, sizeof(T) * k_TableSize);
+      memcpy(m_values, &a_vars, sizeof(T) * k_TableSize);
     }
     else
     {
-      for (tl_size currRow = 0; currRow < T_Rows; ++currRow)
+      for (tl_size currRow = 0; currRow < k_Rows; ++currRow)
       {
-        for (tl_size currCol = 0; currCol < T_Cols; ++currCol)
+        for (tl_size currCol = 0; currCol < k_Cols; ++currCol)
         {
-          Set(currRow, currCol, a_vars[(currRow * T_Cols) + currCol] );
+          Set(currRow, currCol, a_vars.operator[]( (currRow * k_Cols) + currCol) );
         }
       }
     }

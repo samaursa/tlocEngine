@@ -40,6 +40,7 @@ namespace tloc { namespace math {
 
     TL_FI explicit Vector2(const_reference aValue);
 
+    static const Vector2 ZERO;
     static const Vector2 UNIT_X;
     static const Vector2 UNIT_Y;
     static const Vector2 NEG_UNIT_X;
@@ -57,6 +58,8 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Static const definitions
+  template<typename T>
+  const Vector2<T> Vector2<T>::ZERO       (0.0, 0.0);
   template<typename T>
   const Vector2<T> Vector2<T>::UNIT_X     (1.0, 0.0);
   template<typename T>

@@ -39,10 +39,19 @@ namespace tloc { namespace core {
   }
 
   template <TABLE_TEMPS>
-  TL_FI Table<TABLE_PARAMS>::Table(const T (&values)[k_TableSize],
+  template <typename T_ArrayType>
+  TL_FI Table<TABLE_PARAMS>::Table(const T_ArrayType (&values)[k_TableSize],
                                    table_order aTableOrder)
   {
     Set(values, aTableOrder);
+  }
+
+  template <TABLE_TEMPS>
+  TL_FI Table<TABLE_PARAMS>::Table
+    (const core::Variadic<value_type, k_TableSize>& a_vars, 
+     table_order a_tableOrder)
+  {
+    Set(a_vars, a_tableOrder);
   }
 
   //------------------------------------------------------------------------
@@ -137,15 +146,24 @@ namespace tloc { namespace core {
   }
 
   template <TABLE_TEMPS>
+  template <typename T_ArrayType>
   TL_FI void Table<TABLE_PARAMS>
-    ::Set(const T (&values)[k_TableSize], table_order aTableOrder)
+    ::Set(const T_ArrayType (&values)[k_TableSize], table_order aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
       L"Undefined behavior.");
 
-    if (aTableOrder == k_ColMajor)
+    Set(Variadic<value_type, k_TableSize>(values), aTableOrder);
+  }
+
+  template <TABLE_TEMPS>
+  TL_FI void Table<TABLE_PARAMS>
+    ::Set(const Variadic<value_type, k_TableSize>& a_vars, 
+          table_order a_tableOrder)
+  {
+    if (a_tableOrder == k_ColMajor)
     {
-      memcpy(m_values, values, sizeof(T) * k_TableSize);
+      memcpy(m_values, a_vars, sizeof(T) * k_TableSize);
     }
     else
     {
@@ -153,7 +171,7 @@ namespace tloc { namespace core {
       {
         for (tl_size currCol = 0; currCol < T_Cols; ++currCol)
         {
-          Set(currRow, currCol, values[(currRow * T_Cols) + currCol] );
+          Set(currRow, currCol, a_vars[(currRow * T_Cols) + currCol] );
         }
       }
     }

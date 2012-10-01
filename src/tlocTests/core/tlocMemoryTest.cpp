@@ -39,7 +39,7 @@ namespace TestingMemory
       (*this) = a_dummy;
     }
 
-    int operator= (const value_type& a_dummy)
+    tl_int operator= (const value_type& a_dummy)
     {
       dummy = a_dummy;
       return dummy;
@@ -56,7 +56,7 @@ namespace TestingMemory
 
   TEST_CASE("Core/Memory", "Testing memory allocators")
   {
-    int* a = new int();
+    tl_int* a = new tl_int();
     REQUIRE(a != NULL);
     delete a;
   }
@@ -69,9 +69,9 @@ namespace TestingMemory
 
     FILL_ARRAY_BY_INDEX(arraySource, 0, numToCopy);
 
-    T_IntegralType* arrayDestination = 
+    T_IntegralType* arrayDestination =
       (T_IntegralType*)TL_MALLOC(numToCopy * sizeof(T_IntegralType));
-    
+
     uninitialized_copy(arraySource, arraySource + numToCopy, arrayDestination);
 
     CHECK_ARRAY_BY_INDEX(arrayDestination, 0, numToCopy);
@@ -89,7 +89,7 @@ namespace TestingMemory
     const tl_size numToFill = 10;
     const tl_int fillValue = 12;
 
-    T_IntegralType* arrayDestination = 
+    T_IntegralType* arrayDestination =
       (T_IntegralType*)TL_MALLOC(numToFill * sizeof(T_IntegralType));
 
     uninitialized_fill_n(arrayDestination, numToFill, fillValue);

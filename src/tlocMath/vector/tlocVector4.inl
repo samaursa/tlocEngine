@@ -6,6 +6,7 @@
 #endif
 
 #include "tlocVector4.h"
+#include <tlocMath/vector/tlocVector.inl>
 
 namespace tloc { namespace math {
 

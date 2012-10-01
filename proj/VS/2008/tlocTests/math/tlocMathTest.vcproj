@@ -1017,6 +1017,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocVector4Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\math\tlocVectorTest.cpp"
 					>
 				</File>

@@ -28,6 +28,7 @@ namespace tloc { namespace math {
     explicit Vector4(const_reference a_value);
 
     static const Vector4  ZERO;
+    static const Vector4  ONE;
     static const Vector4  UNIT_X;
     static const Vector4  UNIT_Y;
     static const Vector4  UNIT_Z;
@@ -39,10 +40,20 @@ namespace tloc { namespace math {
   };
 
   //------------------------------------------------------------------------
+  // Typedefs
+  typedef Vector4<f32>  Vec4f32;
+  typedef Vector4<f64>  Vec4f64;
+  typedef Vector4<f128> Vec4f128;
+
+  typedef Vector4<tl_float> Vec4f;
+
+  //------------------------------------------------------------------------
   // Static const definitions
 
   template <typename T>
   const Vector4<T> Vector4<T>::ZERO       (0.0, 0.0, 0.0, 0.0);
+  template <typename T>
+  const Vector4<T> Vector4<T>::ONE        (1.0, 1.0, 1.0, 1.0);
   template <typename T>
   const Vector4<T> Vector4<T>::UNIT_X     (1.0, 0.0, 0.0, 0.0);
   template <typename T>

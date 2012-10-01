@@ -21,6 +21,9 @@ namespace tloc { namespace core {
     enum { size = 1 };
   public:
     Variadic(T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -30,6 +33,9 @@ namespace tloc { namespace core {
     enum { size = 2 };
   public:
     Variadic(T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -39,6 +45,9 @@ namespace tloc { namespace core {
     enum { size = 3 };
   public:
     Variadic(T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -48,6 +57,9 @@ namespace tloc { namespace core {
     enum { size = 4 };
   public:
     Variadic(T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -57,6 +69,9 @@ namespace tloc { namespace core {
     enum { size = 5 };
   public:
     Variadic(T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -66,6 +81,9 @@ namespace tloc { namespace core {
     enum { size = 6 };
   public:
     Variadic(T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -75,6 +93,9 @@ namespace tloc { namespace core {
     enum { size = 7 };
   public:
     Variadic(T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -84,6 +105,9 @@ namespace tloc { namespace core {
     enum { size = 8 };
   public:
     Variadic(T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -93,6 +117,9 @@ namespace tloc { namespace core {
     enum { size = 9 };
   public:
     Variadic(T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   template <typename T>
@@ -102,6 +129,9 @@ namespace tloc { namespace core {
     enum { size = 10 };
   public:
     Variadic(T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
   };
 
   //------------------------------------------------------------------------

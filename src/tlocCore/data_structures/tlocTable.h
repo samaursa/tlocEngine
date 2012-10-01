@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <memory.h>
 
@@ -31,6 +32,11 @@ namespace tloc { namespace core {
     typedef enum table_order { k_RowMajor, k_ColMajor } table_order;
 
     typedef T                                           value_type;
+    typedef T&                                          reference;
+    typedef T*                                          pointer;
+    typedef const T&                                    const_reference;
+    typedef const T*                                    const_pointer;
+
     typedef tl_size                                     size_type;
     typedef Table<value_type, k_Rows, k_Cols>           this_type;
     typedef Tuple<value_type, k_Rows>                   tuple_row_type;
@@ -40,7 +46,12 @@ namespace tloc { namespace core {
     TL_FI Table(const this_type& aTable);
 
     TL_FI explicit Table(const value_type& aValue);
-    TL_FI Table(const value_type (&values)[k_TableSize], table_order aTableOrder);
+
+    template <typename T_ArrayType>
+    TL_FI Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
+
+    TL_FI Table(const core::Variadic<value_type, k_TableSize>& a_vars,
+                table_order a_tableOrder);
 
     //------------------------------------------------------------------------
     // Accessors
@@ -64,8 +75,14 @@ namespace tloc { namespace core {
     // Modifiers
 
     TL_FI void Set(const value_type& aValue);
-    TL_FI void Set(const value_type (&values)[k_TableSize],
+
+    TL_FI void Set(const core::Variadic<value_type, k_TableSize>& a_vars,
+                   table_order a_tableOrder);
+
+    template <typename T_ArrayType>
+    TL_FI void Set(const T_ArrayType(&values)[k_TableSize],
                    table_order aTableOrder);
+
     TL_FI void Set(size_type aRow, size_type aCol, const T& aValue);
     TL_FI void SetRow(size_type aRow, const tuple_col_type& aRowIn);
     TL_FI void SetCol(size_type aCol, const tuple_row_type& aColIn);

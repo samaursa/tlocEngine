@@ -47,8 +47,7 @@ namespace tloc { namespace math {
 
   template <VECTOR_TYPES>
   TL_FI Vector<VECTOR_PARAMS>::Vector()
-  {
-  }
+  { }
 
   template <VECTOR_TYPES>
   TL_FI Vector<VECTOR_PARAMS>::Vector(const this_type& a_vector)
@@ -59,8 +58,18 @@ namespace tloc { namespace math {
   template <VECTOR_TYPES>
   TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) 
     : base_type(a_value)
-  {
-  }
+  { }
+
+  template <VECTOR_TYPES>
+  template <typename T_ArrayType>
+  TL_FI Vector<VECTOR_PARAMS>::Vector(const T_ArrayType (&aArray)[T_Size])
+    : base_type(aArray)
+  { }
+
+  template <VECTOR_TYPES>
+  TL_FI Vector<VECTOR_PARAMS>::Vector(const core::Variadic<T, T_Size>& a_vars)
+    : base_type(a_vars)
+  { }
 
   //------------------------------------------------------------------------
   // Modifiers

@@ -11,16 +11,17 @@
 namespace TestingVector3f
 {
   USING_TLOC;
+  using namespace math;
 
   struct Vector3fFixture
   {
     Vector3fFixture()
+      : b(core::Variadic3f(5, 6, 7))
     {
       a[0] = 1; a[1] = 2; a[2] = 3;
-      b[0] = 5; b[1] = 6; b[2] = 7;
     }
 
-    tloc::math::Vec3f a, b, c, d, e;
+    Vec3f a, b, c, d, e;
   };
 
 #define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approx(x)) ); \
@@ -30,7 +31,7 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::math::Vec3f) == (sizeof(tl_float) * 3));
+    REQUIRE(sizeof(Vec3f) == (sizeof(tl_float) * 3));
 
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f); //-V550
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f); //-V550
@@ -48,21 +49,21 @@ namespace TestingVector3f
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f); //-V550
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f); //-V550
 
-    c = tloc::math::Vec3f::ZERO;
+    c = Vec3f::ZERO;
     CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f); //-V550
-    c = tloc::math::Vec3f::ONE;
+    c = Vec3f::ONE;
     CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f); //-V550
-    c = tloc::math::Vec3f::UNIT_X;
+    c = Vec3f::UNIT_X;
     CHECK_VEC3F(c, 1.0f, 0.0f, 0.0f); //-V550
-    c = tloc::math::Vec3f::UNIT_Y;
+    c = Vec3f::UNIT_Y;
     CHECK_VEC3F(c, 0.0f, 1.0f, 0.0f); //-V550
-    c = tloc::math::Vec3f::UNIT_Z;
+    c = Vec3f::UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, 1.0f); //-V550
-    c = tloc::math::Vec3f::NEG_UNIT_X;
+    c = Vec3f::NEG_UNIT_X;
     CHECK_VEC3F(c, -1.0f, 0.0f, 0.0f); //-V550
-    c = tloc::math::Vec3f::NEG_UNIT_Y;
+    c = Vec3f::NEG_UNIT_Y;
     CHECK_VEC3F(c, 0.0f, -1.0f, 0.0f); //-V550
-    c = tloc::math::Vec3f::NEG_UNIT_Z;
+    c = Vec3f::NEG_UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f); //-V550
 
   }

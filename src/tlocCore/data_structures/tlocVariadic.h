@@ -134,6 +134,78 @@ namespace tloc { namespace core {
     Variadic(const T_ArrayType (&a_array)[size]);
   };
 
+  template <typename T>
+  class Variadic<T, 11> : public Tuple<T, 11>
+  {
+  public:
+    enum { size = 11 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
+  template <typename T>
+  class Variadic<T, 12> : public Tuple<T, 12>
+  {
+  public:
+    enum { size = 12 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
+  template <typename T>
+  class Variadic<T, 13> : public Tuple<T, 13>
+  {
+  public:
+    enum { size = 13 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
+  template <typename T>
+  class Variadic<T, 14> : public Tuple<T, 14>
+  {
+  public:
+    enum { size = 14 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
+  template <typename T>
+  class Variadic<T, 15> : public Tuple<T, 15>
+  {
+  public:
+    enum { size = 15 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
+  template <typename T>
+  class Variadic<T, 16> : public Tuple<T, 16>
+  {
+  public:
+    enum { size = 16 };
+  public:
+    Variadic(T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T);
+
+    template <typename T_ArrayType>
+    Variadic(const T_ArrayType (&a_array)[size]);
+  };
+
   //------------------------------------------------------------------------
   // Common typedefs for Variadics
 

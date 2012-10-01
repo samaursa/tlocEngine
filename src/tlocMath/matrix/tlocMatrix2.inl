@@ -24,11 +24,13 @@ namespace tloc { namespace math {
 
   template <MATRIX_2_TYPES>
   TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2()
-    : base_type() {}
+    : base_type() 
+  { }
 
   template <MATRIX_2_TYPES>
   TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2(const this_type& aMatrix)
-    : base_type(aMatrix) {}
+    : base_type(aMatrix) 
+  { }
 
   template <MATRIX_2_TYPES>
   TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2(value_type m00, value_type m01,
@@ -74,9 +76,16 @@ namespace tloc { namespace math {
 
   template <MATRIX_2_TYPES>
   TL_FI Matrix2<MATRIX_2_PARAMS>
-    ::Matrix2(const value_type (&values)[k_MatrixSize], 
-              typename base_type::matrix_order aOrder)
-    : base_type(values, aOrder) {}
+    ::Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder)
+    : base_type(values, aOrder) 
+  { }
+
+  template <MATRIX_2_TYPES>
+  TL_FI Matrix2<MATRIX_2_PARAMS>
+    ::Matrix2(const tloc::core::Variadic<value_type, 4>& a_vars, 
+              matrix_order a_order) 
+              : base_type(a_vars, a_order)
+  { }
 
   //------------------------------------------------------------------------
   // Math Operations

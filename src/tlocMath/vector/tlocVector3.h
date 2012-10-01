@@ -37,6 +37,7 @@ namespace tloc { namespace math {
     TL_FI Vector3(const_reference aX, const_reference aY, const_reference aZ);
     TL_FI Vector3(const this_type& aVector);
     TL_FI Vector3(const base_type& aVector);
+    TL_FI Vector3(const core::Variadic<value_type, 3>& a_vars);
 
     TL_FI explicit Vector3(const_reference aValue);
 

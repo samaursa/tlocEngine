@@ -78,7 +78,14 @@ namespace tloc { namespace math {
   template <MATRIX_3_TYPES>
   TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3(const value_type (&values)[k_MatrixSize], 
                                           typename base_type::matrix_order aOrder)
-    : base_type(values, aOrder) {}
+    : base_type(values, aOrder) 
+  { }
+
+  template <MATRIX_3_TYPES>
+  TL_FI Matrix3<MATRIX_3_PARAMS>::Matrix3
+    (const core::Variadic<value_type,k_MatrixSize> &a_vars, matrix_order a_order)
+    : base_type(a_vars, a_order)
+  { }
 
   //------------------------------------------------------------------------
   // Math Operations

@@ -879,6 +879,18 @@
 				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix3.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix4.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix4.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix4.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="vector"
@@ -917,6 +929,18 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector3.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector4.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector4.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector4.inl"
 				>
 			</File>
 		</Filter>

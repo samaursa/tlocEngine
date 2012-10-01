@@ -25,39 +25,41 @@ namespace TestingMatrix3
     {
     }
 
-    tloc::math::Mat3f a, b, c, d, e;
+    Mat3f a, b, c, d, e;
   };
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
   {
     a.Zero();
-    tloc::math::Mat3f f(a);
+    Mat3f f(a);
     CHECK_MATRIX3F(f, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    tloc::math::Mat3f g(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    Mat3f g(1, 2, 3, 4, 5, 6, 7, 8, 9);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Mat3f h(4, 5, 6);
+    Mat3f h(4, 5, 6);
     CHECK_MATRIX3F(h, 4, 0, 0, 0, 5, 0, 0, 0, 6);
 
-    tloc::math::Mat3f i(90);
+    Mat3f i(90);
     CHECK_MATRIX3F(i, 90, 90, 90, 90, 90, 90, 90, 90, 90);
 
-    tloc::math::Vec3f v1(1, 2, 3), v2(4, 5, 6), v3(7, 8, 9);
-    tloc::math::Mat3f j(v1, v2, v3, tloc::math::Mat3f::k_RowMajor);
+    Vec3f v1(1, 2, 3), v2(4, 5, 6), v3(7, 8, 9);
+    Mat3f j(v1, v2, v3, Mat3f::k_RowMajor);
     CHECK_MATRIX3F(j, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Mat3f k(v1, v2, v3, tloc::math::Mat3f::k_ColMajor);
+    Mat3f k(v1, v2, v3, Mat3f::k_ColMajor);
     CHECK_MATRIX3F(k, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     tl_float values[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    tloc::math::Mat3f m(values, tloc::math::Mat3f::k_RowMajor);
+    Mat3f m(values, Mat3f::k_RowMajor);
     CHECK_MATRIX3F(m, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Mat3f n(values, tloc::math::Mat3f::k_ColMajor);
+    Mat3f n(values, Mat3f::k_ColMajor);
     CHECK_MATRIX3F(n, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
+    Mat3f o(core::Variadic9f(values), Mat3f::k_ColMajor);
+    CHECK_MATRIX3F(o, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Math/Mul",

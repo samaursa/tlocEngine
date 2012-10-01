@@ -14,9 +14,9 @@ namespace TestingVector2f
   struct Vector2fFixture
   {
     Vector2fFixture()
+      : b(core::Variadic2f(5, 6))
     {
       a[0] = 1; a[1] = 2;
-      b[0] = 5; b[1] = 6;
     }
 
     tloc::math::Vec2f a, b, c, d, e;

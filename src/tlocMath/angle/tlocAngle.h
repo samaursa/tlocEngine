@@ -55,11 +55,12 @@ namespace tloc { namespace math {
   class Radian_T : protected Angle_T<T, Radian_T<T> >
   {
   public:
-    template <typename T, class U> friend class Angle_T;
+    template <typename U, class V> friend class Angle_T;
 
     typedef Radian_T<T>              this_type;
     typedef Angle_T<T, this_type>    base_type;
-    using base_type::value_type;
+
+    typedef typename base_type::value_type  value_type;
 
     using base_type::operator=;
     using base_type::operator+;
@@ -80,6 +81,7 @@ namespace tloc { namespace math {
 
     using base_type::GetAs;
     using base_type::GetAngle;
+    using base_type::m_angle;
 
   public:
     Radian_T(value_type a_angle = 0);
@@ -106,11 +108,12 @@ namespace tloc { namespace math {
   class Degree_T : protected Angle_T<T, Degree_T<T> >
   {
   public:
-    template <typename T, class U> friend class Angle_T;
+    template <typename U, class V> friend class Angle_T;
 
     typedef Degree_T<T>              this_type;
     typedef Angle_T<T, this_type>    base_type;
-    using base_type::value_type;
+
+    typedef typename base_type::value_type  value_type;
 
     using base_type::operator=;
     using base_type::operator+;
@@ -131,6 +134,7 @@ namespace tloc { namespace math {
 
     using base_type::GetAs;
     using base_type::GetAngle;
+    using base_type::m_angle;
 
   public:
     Degree_T(value_type a_angle = 0);

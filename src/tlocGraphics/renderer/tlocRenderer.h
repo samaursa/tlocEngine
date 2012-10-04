@@ -45,14 +45,18 @@ namespace tloc { namespace graphics {
   public:
     template <class T> friend class RendererBase;
 
-    typedef T_Platform                platform_type;
+    typedef T_Platform                  platform_type;
     typedef Renderer_T<platform_type>   this_type;
-    typedef RendererBase<this_type>   base_type;
-    using base_type::error_type;
+    typedef RendererBase<this_type>     base_type;
+
+    typedef typename base_type::error_type  error_type;
 
   public:
     using base_type::Initialize;
     using base_type::IsInitialized;
+
+  protected:
+    using base_type::m_flags;
 
   private:
     error_type DoInitialize();
@@ -69,14 +73,18 @@ namespace tloc { namespace graphics {
   public:
     template <class T> friend class RendererBase;
 
-    typedef core::Platform_win        platform_type;
+    typedef core::Platform_win          platform_type;
     typedef Renderer_T<platform_type>   this_type;
-    typedef RendererBase<this_type>   base_type;
-    using base_type::error_type;
+    typedef RendererBase<this_type>     base_type;
+
+    typedef typename base_type::error_type  error_type;
 
   public:
     using base_type::Initialize;
     using base_type::IsInitialized;
+
+  protected:
+    using base_type::m_flags;
 
   private:
     error_type DoInitialize();

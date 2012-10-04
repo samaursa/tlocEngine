@@ -17,8 +17,8 @@ namespace tloc { namespace graphics { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>
-    ::Rectangle(value_type a_left = 0, value_type a_right = 0,
-                value_type a_top = 0, value_type a_bottom = 0)
+    ::Rectangle(value_type a_left, value_type a_right,
+                value_type a_top, value_type a_bottom)
   {
     m_extents[left]   = a_left;
     m_extents[right]  = a_right;

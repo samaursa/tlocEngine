@@ -53,7 +53,7 @@ namespace tloc { namespace graphics {
   RENDERER_TYPE::error_type
     Renderer_T<RENDERER_PARAMS>::DoInitialize()
   {
-    m_flags[initialized] = true;
+    m_flags.Mark(initialized);
     return common_error_types::error_success;
   }
 

@@ -1,5 +1,5 @@
-#ifndef TLOC_WINDOW_IMPL_WIN_H
-#define TLOC_WINDOW_IMPL_WIN_H
+#ifndef TLOC_WINDOW_IMPL_IPHONE_H
+#define TLOC_WINDOW_IMPL_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>

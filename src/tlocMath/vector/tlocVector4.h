@@ -15,9 +15,10 @@ namespace tloc { namespace math {
   public:
     typedef Vector4<T>            this_type;
     typedef Vector<T, 4>          base_type;
-    using base_type::value_type;
-    using base_type::reference;
-    using base_type::const_reference;
+
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::reference         reference;
+    typedef typename base_type::const_reference   const_reference;
 
   public:
     Vector4();

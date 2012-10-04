@@ -4,6 +4,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tloccontainers.inl>
 
 #include <tlocGraphics/data_types/tlocColor.h>
 #include <tlocGraphics/data_types/tlocDimension.h>

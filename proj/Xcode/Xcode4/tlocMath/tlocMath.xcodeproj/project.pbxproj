@@ -23,6 +23,13 @@
 		97C87CF415DE4A7E00FE0A6C /* tlocMatrix3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CEE15DE4A7E00FE0A6C /* tlocMatrix3.cpp */; };
 		97C87CF515DE4A7E00FE0A6C /* tlocMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CEF15DE4A7E00FE0A6C /* tlocMatrix.cpp */; };
 		97CC765D157DD64400764CF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC765C157DD64400764CF3 /* Foundation.framework */; };
+		97F90644161D0F7300BD8A39 /* tlocAngle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90640161D0F7300BD8A39 /* tlocAngle.cpp */; };
+		97F90645161D0F7300BD8A39 /* tlocAngle.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90641161D0F7300BD8A39 /* tlocAngle.h */; };
+		97F90646161D0F7300BD8A39 /* tlocAngleExplicitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */; };
+		97F9064A161D1E8F00BD8A39 /* tlocVector4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */; };
+		97F9064B161D1E8F00BD8A39 /* tlocVector4.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90648161D1E8F00BD8A39 /* tlocVector4.h */; };
+		97F9064F161D1EA200BD8A39 /* tlocMatrix4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */; };
+		97F90650161D1EA200BD8A39 /* tlocMatrix4.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +57,16 @@
 		97C87CEF15DE4A7E00FE0A6C /* tlocMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix.cpp; sourceTree = "<group>"; };
 		97CC7659157DD64400764CF3 /* tlocMath_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocMath_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CC765C157DD64400764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97F90640161D0F7300BD8A39 /* tlocAngle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAngle.cpp; path = ../../../../src/tlocMath/angle/tlocAngle.cpp; sourceTree = "<group>"; };
+		97F90641161D0F7300BD8A39 /* tlocAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngle.h; path = ../../../../src/tlocMath/angle/tlocAngle.h; sourceTree = "<group>"; };
+		97F90642161D0F7300BD8A39 /* tlocAngle.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAngle.inl; path = ../../../../src/tlocMath/angle/tlocAngle.inl; sourceTree = "<group>"; };
+		97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngleExplicitMacros.h; path = ../../../../src/tlocMath/angle/tlocAngleExplicitMacros.h; sourceTree = "<group>"; };
+		97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector4.cpp; path = ../../../../src/tlocMath/vector/tlocVector4.cpp; sourceTree = "<group>"; };
+		97F90648161D1E8F00BD8A39 /* tlocVector4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector4.h; path = ../../../../src/tlocMath/vector/tlocVector4.h; sourceTree = "<group>"; };
+		97F90649161D1E8F00BD8A39 /* tlocVector4.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocVector4.inl; path = ../../../../src/tlocMath/vector/tlocVector4.inl; sourceTree = "<group>"; };
+		97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix4.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix4.cpp; sourceTree = "<group>"; };
+		97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMatrix4.h; path = ../../../../src/tlocMath/matrix/tlocMatrix4.h; sourceTree = "<group>"; };
+		97F9064E161D1EA200BD8A39 /* tlocMatrix4.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMatrix4.inl; path = ../../../../src/tlocMath/matrix/tlocMatrix4.inl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +84,7 @@
 		97C87BE015DE3DA800FE0A6C /* tlocMath */ = {
 			isa = PBXGroup;
 			children = (
+				97F9063E161D0F5900BD8A39 /* angle */,
 				97C87CD715DE49D200FE0A6C /* matrix */,
 				97C87CD615DE49C800FE0A6C /* vector */,
 				97C87CCF15DE49C500FE0A6C /* tlocMath.inl */,
@@ -89,6 +107,9 @@
 				97C87CDA15DE49F300FE0A6C /* tlocVector3.h */,
 				97C87CDB15DE49F300FE0A6C /* tlocVector3.inl */,
 				97C87CDF15DE49F300FE0A6C /* tlocVector3.cpp */,
+				97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */,
+				97F90648161D1E8F00BD8A39 /* tlocVector4.h */,
+				97F90649161D1E8F00BD8A39 /* tlocVector4.inl */,
 			);
 			name = vector;
 			sourceTree = "<group>";
@@ -105,6 +126,9 @@
 				97C87CEC15DE4A7E00FE0A6C /* tlocMatrix3.h */,
 				97C87CEA15DE4A7E00FE0A6C /* tlocMatrix3.inl */,
 				97C87CEE15DE4A7E00FE0A6C /* tlocMatrix3.cpp */,
+				97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */,
+				97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */,
+				97F9064E161D1EA200BD8A39 /* tlocMatrix4.inl */,
 			);
 			name = matrix;
 			sourceTree = "<group>";
@@ -134,6 +158,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		97F9063E161D0F5900BD8A39 /* angle */ = {
+			isa = PBXGroup;
+			children = (
+				97F90640161D0F7300BD8A39 /* tlocAngle.cpp */,
+				97F90641161D0F7300BD8A39 /* tlocAngle.h */,
+				97F90642161D0F7300BD8A39 /* tlocAngle.inl */,
+				97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */,
+			);
+			name = angle;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -148,6 +183,10 @@
 				97C87CF015DE4A7E00FE0A6C /* tlocMatrix.h in Headers */,
 				97C87CF115DE4A7E00FE0A6C /* tlocMatrix2.h in Headers */,
 				97C87CF215DE4A7E00FE0A6C /* tlocMatrix3.h in Headers */,
+				97F90645161D0F7300BD8A39 /* tlocAngle.h in Headers */,
+				97F90646161D0F7300BD8A39 /* tlocAngleExplicitMacros.h in Headers */,
+				97F9064B161D1E8F00BD8A39 /* tlocVector4.h in Headers */,
+				97F90650161D1EA200BD8A39 /* tlocMatrix4.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +248,9 @@
 				97C87CF315DE4A7E00FE0A6C /* tlocMatrix2.cpp in Sources */,
 				97C87CF415DE4A7E00FE0A6C /* tlocMatrix3.cpp in Sources */,
 				97C87CF515DE4A7E00FE0A6C /* tlocMatrix.cpp in Sources */,
+				97F90644161D0F7300BD8A39 /* tlocAngle.cpp in Sources */,
+				97F9064A161D1E8F00BD8A39 /* tlocVector4.cpp in Sources */,
+				97F9064F161D1EA200BD8A39 /* tlocMatrix4.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

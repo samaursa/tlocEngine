@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocVector3.h"
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocMath/tlocMath.inl>
 #include <tlocMath/vector/tlocVector.inl>
@@ -25,42 +26,34 @@ namespace tloc { namespace math {
 
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::Vector3()
-  {
-  }
+  { }
 
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const_reference aValue)
-  {
-    m_values[0] = aValue;
-    m_values[1] = aValue;
-    m_values[2] = aValue;
-  }
+    : base_type(aValue)
+  { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const_reference aX, 
-                            const_reference aY, 
-                            const_reference aZ)
-  {
-    m_values[0] = aX;
-    m_values[1] = aY;
-    m_values[2] = aZ;
-  }
+  TL_FI Vector3<VECTOR_3_PARAMS>::
+    Vector3(const_reference aX, const_reference aY, const_reference aZ) 
+    : base_type(core::Variadic<value_type, 3>(aX, aY, aZ) )
+  { }
 
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const this_type& aVector)
-  {
-    m_values[0] = aVector[0];
-    m_values[1] = aVector[1];
-    m_values[2] = aVector[2];
-  }
+    : base_type(aVector)
+  { }
 
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const base_type& aVector)
-  {
-    m_values[0] = aVector[0];
-    m_values[1] = aVector[1];
-    m_values[2] = aVector[2];
-  }
+    : base_type(aVector)
+  { }
+
+  template <VECTOR_3_TYPES>
+  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3
+    (const core::Variadic<value_type,3> &a_vars)
+    : base_type(a_vars)
+  { }
 
   //------------------------------------------------------------------------
   // Math operations

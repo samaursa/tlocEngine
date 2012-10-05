@@ -1,10 +1,5 @@
-//
-//  OpenGLViewIphone.h
-//  tlocGraphics
-//
-//  Created by Skopworks Inc on 12-08-09.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
+#include <tlocCore/tlocBase.h>
+#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
 
 #import <UIKit/UIKit.h>
 
@@ -47,6 +42,15 @@
 ///-------------------------------------------------------------------------
 - (void)UpdateRenderBufferDimensions;
 
+- (void)RegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (void)RegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+
 ///-------------------------------------------------------------------------
 /// Callback function that will be called once, immediately after the user 
 /// has started touching the screen. Must be called if overridden.
@@ -80,5 +84,16 @@
 ///                       touches belong.
 ///-------------------------------------------------------------------------
 - (void)touchesMoved:(NSSet *)a_touches withEvent:(UIEvent *)a_event;
+
+///-------------------------------------------------------------------------
+/// Callback function that will be called when a system event (such as a
+/// low-memory warning) cancels a touch event.
+///
+/// @param  a_touches     A set of UITouch instances that represent the 
+///                       touches that are cancelled (usually all)
+/// @param  a_event       An object rpresenting the event to which the
+///                       touches belong.
+///-------------------------------------------------------------------------
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event;
 
 @end

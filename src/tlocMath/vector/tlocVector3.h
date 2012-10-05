@@ -21,22 +21,23 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Vector3<T>                            this_type;
     typedef Vector<T, 3>                          base_type;
-    
+
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
     typedef typename base_type::const_reference   const_reference;
-    
+
     //------------------------------------------------------------------------
     // using declarations for access to base class
     using base_type::LengthSquared;
     using base_type::m_values;
-    
+
     //------------------------------------------------------------------------
     // Constructors
     TL_FI Vector3();
     TL_FI Vector3(const_reference aX, const_reference aY, const_reference aZ);
     TL_FI Vector3(const this_type& aVector);
     TL_FI Vector3(const base_type& aVector);
+    TL_FI Vector3(const core::Variadic<value_type, 3>& a_vars);
 
     TL_FI explicit Vector3(const_reference aValue);
 
@@ -61,6 +62,7 @@ namespace tloc { namespace math {
     // NOTE: Only works on floats!
     TL_FI void FastNorm();
 
+    static const Vector3 ZERO;
     static const Vector3 UNIT_X;
     static const Vector3 UNIT_Y;
     static const Vector3 UNIT_Z;
@@ -72,12 +74,16 @@ namespace tloc { namespace math {
 
   //------------------------------------------------------------------------
   // Typedefs
-  typedef Vector3<f32>  Vec3f;
-  typedef Vector3<f64>  Vec3d;
-  typedef Vector3<f128> Vec3l;
+  typedef Vector3<f32>  Vec3f32;
+  typedef Vector3<f64>  Vec3f64;
+  typedef Vector3<f128> Vec3f128;
+
+  typedef Vector3<tl_float> Vec3f;
 
   //------------------------------------------------------------------------
   // Static const definitions
+  template <typename T>
+  const Vector3<T> Vector3<T>::ZERO       (0.0, 0.0, 0.0);
   template <typename T>
   const Vector3<T> Vector3<T>::UNIT_X     (1.0, 0.0, 0.0);
   template <typename T>

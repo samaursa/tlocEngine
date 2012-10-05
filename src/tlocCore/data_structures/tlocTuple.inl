@@ -43,6 +43,15 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
+  template <template <class, class> class T_Variadic>
+  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_Variadic<T, tl_size>& a_vars)
+  {
+    TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
+      Size_mismatch_between_variadic_and_tuple);
+    operator=(static_cast<Tuple<T, T_Size> >(a_vars));
+  }
+
+  template <TUPLE_TEMP>
   TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T& aValue)
   {
     Set(aValue);
@@ -150,6 +159,82 @@ namespace tloc { namespace core {
     }
   }
 
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other)
+  {
+    DoConvertFrom<T_TupleSize, p_tuple::overflow_one>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+                T_Policy)
+  {
+    DoConvertFrom<T_TupleSize, T_Policy>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+                  incoming_bigger)
+  {
+    for (size_type i = 0; i < k_TupleSize; ++i)
+    {
+      m_values[i] = a_other[i];
+    }
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+                  incoming_smaller)
+  {
+    for (size_type i = 0; i < T_TupleSize; ++i)
+    {
+      m_values[i] = a_other[i];
+    }
+
+    DoFillRemaining<T_TupleSize>(T_Policy());
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_same)
+  {
+    // Intentionally empty
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_one)
+  {
+    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    {
+      m_values[i] = 1;
+    }
+  }
+
+  template <TUPLE_TEMP>
+  template <tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_zero)
+  {
+    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    {
+      m_values[i] = 0;
+    }
+  }
+
+
   //------------------------------------------------------------------------
   // Operators
 
@@ -172,7 +257,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
     {
@@ -183,7 +268,7 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple )
+  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple ) const
   {
     return !operator==(aTuple);
   }

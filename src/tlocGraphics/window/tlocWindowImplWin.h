@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace priv {
     typedef GraphicsMode<platform_type>                  graphics_mode;
     typedef base_type::parent_window_type                parent_window_type;
 
-    typedef void*                                        window_handle_type;
+    typedef HWND                                         window_handle_type;
     typedef WindowSettings::style_type                   window_style_type;
     typedef tl_size                                      size_type;
 
@@ -88,6 +88,13 @@ namespace tloc { namespace graphics { namespace priv {
     size_type GetHeight() const;
 
     void ProcessEvents();
+
+    ///-------------------------------------------------------------------------
+    /// Gets the window handle.
+    ///
+    /// @return The window handle.
+    ///-------------------------------------------------------------------------
+    window_handle_type GetWindowHandle() const;
 
     ///-------------------------------------------------------------------------
     /// Sets this window as active.
@@ -159,13 +166,13 @@ namespace tloc { namespace graphics { namespace priv {
 
   private:
 
-    HWND      m_handle;
-    size_type m_callbackPtr;
-    HCURSOR   m_cursor;
-    HICON     m_icon;
-    bool      m_isCursorIn;
-    HDC       m_deviceContext;
-    HGLRC     m_OpenGLContext;
+    window_handle_type  m_handle;
+    size_type           m_callbackPtr;
+    HCURSOR             m_cursor;
+    HICON               m_icon;
+    bool                m_isCursorIn;
+    HDC                 m_deviceContext;
+    HGLRC               m_OpenGLContext;
 
   };
 

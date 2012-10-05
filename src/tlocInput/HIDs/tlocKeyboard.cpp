@@ -5,8 +5,10 @@
 //------------------------------------------------------------------------
 // Platform dependent includes
 
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+#if defined(TLOC_OS_WIN)
 # include <tlocInput/HIDs/tlocKeyboardImplWin.h>
+#elif defined (TLOC_OS_IPHONE)
+# include <tlocInput/HIDs/tlocKeyboardImplIphone.h>
 #else
 # error "WIP"
 #endif
@@ -16,17 +18,6 @@ namespace tloc { namespace input {
 #define KEYBOARD_TEMP   typename T_Policy, typename T_Platform
 #define KEYBOARD_PARAMS T_Policy, T_Platform
 #define KEYBOARD_TYPE   typename Keyboard<KEYBOARD_PARAMS>
-
-  template Keyboard<InputPolicy::Buffered>;
-  template Keyboard<InputPolicy::Immediate>;
-
-  // Force instantiate the constructor for each platform
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-  template Keyboard<InputPolicy::Buffered>::Keyboard(const windows_keyboard_param_type&);
-  template Keyboard<InputPolicy::Immediate>::Keyboard(const windows_keyboard_param_type&);
-#else
-# error TODO
-#endif
 
   //------------------------------------------------------------------------
   // Method definitions
@@ -85,5 +76,23 @@ namespace tloc { namespace input {
   {
     m_impl->Update();
   }
+
+  //------------------------------------------------------------------------
+  // Forward Instantiations
+
+  template class Keyboard<InputPolicy::Buffered>;
+  template class Keyboard<InputPolicy::Immediate>;
+
+  //------------------------------------------------------------------------
+  // Force instantiate the constructor for each platform
+#if defined(TLOC_OS_WINDOW)
+  template Keyboard<InputPolicy::Buffered>::Keyboard(const windows_keyboard_param_type&);
+  template Keyboard<InputPolicy::Immediate>::Keyboard(const windows_keyboard_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Keyboard<InputPolicy::Buffered>::Keyboard(const iphone_keyboard_param_type&);
+  template Keyboard<InputPolicy::Immediate>::Keyboard(const iphone_keyboard_param_type&);
+#else
+# error TODO
+#endif
 
 };};

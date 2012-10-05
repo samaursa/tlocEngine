@@ -4,6 +4,7 @@
 #include <tlocInput/HIDs/tlocKeyboard.h>
 #include <tlocInput/HIDs/tlocMouse.h>
 #include <tlocInput/HIDs/tlocJoystick.h>
+#include <tlocInput/HIDs/tlocTouchSurface.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes
@@ -23,34 +24,6 @@ namespace tloc { namespace input {
 #define INPUT_MANAGER_TEMP  typename T_Policy, typename T_Platform
 #define INPUT_MANAGER_PARAM T_Policy, T_Platform
 #define INPUT_MANAGER_TYPE  typename InputManager<INPUT_MANAGER_PARAM>
-
-  template class InputManager<InputPolicy::Buffered>;
-  template class InputManager<InputPolicy::Immediate>;
-
-  // Force instantiate the constructor for each platform
-#if defined(TLOC_OS_WIN)
-  template InputManager<InputPolicy::Buffered>::InputManager(input_param_type);
-  template InputManager<InputPolicy::Immediate>::InputManager(input_param_type);
-#elif defined(TLOC_OS_IPHONE)
-  
-#else
-# error TODO
-#endif
-
-  //------------------------------------------------------------------------
-  // Force instantiate CreateHID for all supported types
-
-#define INSTANTIATE_FOR_HID(_HID_, _type_)\
-  template class _HID_<_type_::policy_type>* _type_::CreateHID\
-    <_HID_<_type_::policy_type> >(input_type, parameter_options::Type);\
-  template class _HID_<_type_::policy_type>* _type_::GetHID\
-    <_HID_<_type_::policy_type> >(input_type, _type_::size_type );\
-
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
-
-  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Immediate>);
 
   //------------------------------------------------------------------------
   // Method Definitions
@@ -74,7 +47,7 @@ namespace tloc { namespace input {
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
     CreateHID(input_type a_inputType, parameter_options::Type a_params)
   {
-    return m_impl->CreateHID<T_InputObject>(a_inputType, a_params);
+    return m_impl->template CreateHID<T_InputObject>(a_inputType, a_params);
   }
 
   template <INPUT_MANAGER_TEMP>
@@ -97,7 +70,7 @@ namespace tloc { namespace input {
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
     GetHID(input_type a_inputType, size_type a_index)
   {
-    return m_impl->GetHID<T_InputObject>(a_inputType, a_index);
+    return m_impl->template GetHID<T_InputObject>(a_inputType, a_index);
   }
 
   template <INPUT_MANAGER_TEMP>
@@ -106,5 +79,46 @@ namespace tloc { namespace input {
   {
     return m_impl->GetTotalHID(a_inputType);
   }
+
+  //------------------------------------------------------------------------
+  // Explicit Instantiations
+
+  template class InputManager<InputPolicy::Buffered>;
+  template class InputManager<InputPolicy::Immediate>;
+
+  //------------------------------------------------------------------------
+  // Force instantiate the constructor for each platform
+#if defined(TLOC_OS_WIN)
+  template InputManager<InputPolicy::Buffered>::InputManager(input_param_type);
+  template InputManager<InputPolicy::Immediate>::InputManager(input_param_type);
+#elif defined(TLOC_OS_IPHONE)
+  template InputManager<InputPolicy::Buffered>::InputManager(input_param_type);
+  template InputManager<InputPolicy::Immediate>::InputManager(input_param_type);
+#else
+# error TODO
+#endif
+
+  //------------------------------------------------------------------------
+  // Force instantiate CreateHID for all supported types
+
+#define INSTANTIATE_FOR_HID(_HID_, _type_)\
+  template class _HID_<_type_::policy_type>* _type_::CreateHID\
+  <_HID_<_type_::policy_type> >(input_type, parameter_options::Type);\
+  template class _HID_<_type_::policy_type>* _type_::GetHID\
+  <_HID_<_type_::policy_type> >(input_type, _type_::size_type );\
+
+#if defined(TLOC_OS_WIN)
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+
+  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Immediate>);
+#elif defined(TLOC_OS_IPHONE)
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+  
+  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Immediate>);
+#endif
 
 };};

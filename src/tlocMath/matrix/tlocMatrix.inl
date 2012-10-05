@@ -5,6 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include "tlocMatrix.h"
+#include <tlocCore/data_structures/tlocVariadic.inl>
+
 namespace tloc { namespace math {
 
   //////////////////////////////////////////////////////////////////////////
@@ -41,21 +44,30 @@ namespace tloc { namespace math {
 
   template <MATRIX_TYPES>
   TL_FI Matrix<MATRIX_PARAMS>::Matrix()
-    : base_type() {}
+    : base_type() 
+  { }
 
   template <MATRIX_TYPES>
   TL_FI Matrix<MATRIX_PARAMS>::Matrix(const this_type& aMatrix)
-    : base_type(aMatrix) {}
+    : base_type(aMatrix)
+  { }
 
   template <MATRIX_TYPES>
   TL_FI Matrix<MATRIX_PARAMS>::Matrix(const_reference aValue)
-    : base_type(aValue) {}
+    : base_type(aValue) 
+  { }
 
   template <MATRIX_TYPES>
   TL_FI Matrix<MATRIX_PARAMS>::Matrix(const value_type (&values)[k_MatrixSize],
-                                  matrix_order aOrder)
-                                  : base_type(values, aOrder)
-  {}
+                                      matrix_order aOrder) 
+                                      : base_type(values, aOrder)
+  { }
+
+  template <MATRIX_TYPES>
+  TL_FI Matrix<MATRIX_PARAMS>::Matrix
+    (const tloc::core::Variadic<T, k_MatrixSize> &a_vars, matrix_order a_order)
+    : base_type(a_vars, a_order)
+  { }
 
   //------------------------------------------------------------------------
   // Modifiers

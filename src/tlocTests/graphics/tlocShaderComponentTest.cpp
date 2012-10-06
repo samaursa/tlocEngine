@@ -9,13 +9,13 @@
 namespace TestingShaderComponent
 {
   const char* vShaderStr =
-    "#version 120                       \n\
-    \n\
+    "#version 100                       \n\
+                                        \n\
     attribute vec4 vVertex;             \n\
     attribute vec4 vColor;              \n\
-    \n\
+                                        \n\
     varying lowp vec4 vVaryingColor;    \n\
-    \n\
+                                        \n\
     void main(void)                     \n\
     {                                   \n\
     vVaryingColor = vColor;             \n\
@@ -23,10 +23,10 @@ namespace TestingShaderComponent
     }";
 
   const char* fShaderStr =
-    "#version 120                       \n\
-    \n\
+    "#version 100                       \n\
+                                        \n\
     varying lowp vec4 vVaryingColor;    \n\
-    \n\
+                                        \n\
     void main(void)                     \n\
     {                                   \n\
     gl_FragColor = vVaryingColor;       \n\
@@ -37,14 +37,14 @@ namespace TestingShaderComponent
   using namespace tloc::core;
   using namespace graphics;
 
-  String g_vShaderPath(g_resourcePath + String("./shaders/simple_vertex_shader.glsl") );
-  String g_fShaderPath(g_resourcePath + String("./shaders/simple_fragment_shader.glsl") );
+  String g_vShaderPath(GetResourcePath() + String("/shaders/simple_vertex_shader.glsl") );
+  String g_fShaderPath(GetResourcePath() + String("/shaders/simple_fragment_shader.glsl") );
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;
-    win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
     // Initialize renderer
@@ -67,7 +67,7 @@ namespace TestingShaderComponent
   {
     typedef Window<>::graphics_mode       graphics_mode;
     Window<> win;
-    win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
                WindowSettings("Atom & Eve"));
 
     // Initialize renderer

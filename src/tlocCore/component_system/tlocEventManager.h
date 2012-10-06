@@ -9,7 +9,7 @@ namespace tloc { namespace core { namespace component_system {
   class EventManager
   {
   public:
-    typedef events::event_type                    event_type;
+    typedef events::value_type                    event_type;
     typedef tl_doubly_list<EventListener*>::type  listeners_list;
     typedef tl_hash_map<event_type,
                         listeners_list>::type     listener_map;

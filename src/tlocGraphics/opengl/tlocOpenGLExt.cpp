@@ -1,10 +1,10 @@
 #include "tlocOpenGLExt.h"
 #include "3rdParty/Graphics/GLEW/glew.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace gl {
 
-  bool OpenGLExt::m_initialized = false;
-  u32  OpenGLExt::m_error       = error_none;
+  bool                  OpenGLExt::m_initialized = false;
+  OpenGLExt::error_type OpenGLExt::m_error = common_error_types::error_success;
 
   OpenGLExt::OpenGLExt()
   {
@@ -12,8 +12,6 @@ namespace tloc { namespace graphics {
 
   OpenGLExt::error_type OpenGLExt::Initialize()
   {
-    TLOC_ASSERT(m_initialized == false, "OpenGL Extensions already loaded!");
-
     if (!m_initialized)
     {
       GLenum err = glewInit();
@@ -21,14 +19,14 @@ namespace tloc { namespace graphics {
       {
         // LOG: glewInit failed (log which GLEW error it was
         m_initialized = false;
-        m_error = error_init;
+        m_error = common_error_types::error_initialize;
 
         return GetLastError();
       }
       else
       {
         m_initialized = true;
-        m_error = error_none;
+        m_error = common_error_types::error_success;
 
         // LOG: OpenGL version, vendor, renderer, and number of supported
         //      extensions (use glGetString, glGetIntegerv etc.)
@@ -37,7 +35,8 @@ namespace tloc { namespace graphics {
       }
     }
 
-    m_error = error_already_init;
+    // LOG: GLEW already initialized
+    m_error = common_error_types::error_already_initialized;
     return GetLastError();
   }
 
@@ -51,4 +50,4 @@ namespace tloc { namespace graphics {
     return m_error;
   }
 
-};};
+};};};

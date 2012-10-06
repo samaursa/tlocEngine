@@ -27,6 +27,20 @@
 
 #else
 
-TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+namespace tloc { namespace core {
+
+  template class Tuple<tl_float, 2>;
+  template class Tuple<tl_int, 2>;
+  template class Tuple<tl_uint, 2>;
+
+  template class Tuple<tl_float, 3>;
+  template class Tuple<tl_int, 3>;
+  template class Tuple<tl_uint, 3>;
+
+  template class Tuple<tl_float, 4>;
+  template class Tuple<tl_int, 4>;
+  template class Tuple<tl_uint, 4>;
+
+};};
 
 #endif

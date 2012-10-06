@@ -16,11 +16,15 @@ namespace tloc { namespace graphics { namespace priv {
       class WindowImpl<Window<> >;
 };};};
 
+namespace ogl_view_controller
+{
+  typedef tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> > win_impl_type;
+};
 
 @interface OpenGLViewController : UIViewController
 
 @property (assign) 
-  tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> >* windowImpl;
+  ogl_view_controller::win_impl_type* windowImpl;
 
 ///-------------------------------------------------------------------------
 /// Initializes the view controller with a parent window. This is essential
@@ -28,8 +32,7 @@ namespace tloc { namespace graphics { namespace priv {
 ///
 /// @param  a_window  The parent window that contains our view
 ///-------------------------------------------------------------------------
-- (id)initWithWindow:
-    (tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> > *)a_windowImpl;
+- (id)initWithWindow:(ogl_view_controller::win_impl_type*)a_windowImpl;
 
 ///-------------------------------------------------------------------------
 /// Callback function that is called if device is rotated. Returns a bool

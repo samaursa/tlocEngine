@@ -1,5 +1,5 @@
-#ifndef TLOC_WINDOW_IMPL_WIN_H
-#define TLOC_WINDOW_IMPL_WIN_H
+#ifndef TLOC_WINDOW_IMPL_IPHONE_H
+#define TLOC_WINDOW_IMPL_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -88,6 +88,13 @@ namespace tloc { namespace graphics { namespace priv {
     size_type GetHeight() const;
 
     void ProcessEvents();
+    
+    ///-------------------------------------------------------------------------
+    /// Gets the window handle.
+    ///
+    /// @return The window handle.
+    ///-------------------------------------------------------------------------
+    window_handle_type GetWindowHandle() const;
 
     ///-------------------------------------------------------------------------
     /// Sets this window as active.

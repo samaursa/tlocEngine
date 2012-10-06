@@ -126,6 +126,13 @@ namespace tloc { namespace graphics {
   }
   
   template <WINDOW_TEMP>
+  WINDOW_TYPE::window_handle_type Window<WINDOW_PARAMS>::GetWindowHandle() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetWindowHandle();
+  }
+  
+  template <WINDOW_TEMP>
   void Window<WINDOW_PARAMS>::SetVerticalSync(bool a_enable)
   {
     VALIDATE_WINDOW();

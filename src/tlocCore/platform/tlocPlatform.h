@@ -20,10 +20,8 @@ namespace tloc { namespace core {
 
   struct Platform_ps3 {};
 
-#if defined(TLOC_WIN32)
-  template <typename T_Platform = Platform_win32>
-#elif defined(TLOC_WIN64)
-  template <typename T_Platform = Platform_win64>
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+  template <typename T_Platform = Platform_win>
 #elif defined(TLOC_OS_MAC)
   template <typename T_Platform = Platform_mac>
 #elif defined(TLOC_OS_IPHONE)

@@ -153,7 +153,7 @@ namespace tloc { namespace graphics { namespace priv {
       core::CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
-      (s32)top, (s32)width, (s32)height, NULL, NULL, 
+      (s32)top, (s32)width, (s32)height, NULL, NULL,
       GetModuleHandle(NULL), this);
 
     if (fullScreen) { DoSwitchToFullscreen(a_mode); }
@@ -224,6 +224,12 @@ namespace tloc { namespace graphics { namespace priv {
         DispatchMessage(&msg);
       }
     }
+  }
+
+  WINDOW_IMPL_WIN_TYPE::window_handle_type 
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetWindowHandle() const
+  {
+    return m_handle;
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVerticalSync(bool a_enable)
@@ -305,9 +311,14 @@ namespace tloc { namespace graphics { namespace priv {
     // TODO: Register the user variable in Create()
     if (a_message == WM_CREATE)
     {
+      // Convert LPARAM to a meanigul structure i.e. CREATESTRUCT and then
+      // cast the lpCreateParams member to a long which a pointer to
+      // WindowImpl<> (this is set by CreateWindowEx function)
       long thisPtr = reinterpret_cast<long>(reinterpret_cast<CREATESTRUCT*>
         (a_lParam)->lpCreateParams);
 
+      // We set HWND's (a_handle) user data attribute to thisPtr, which is
+      // WindowImpl pointer (this is then queried later by GetWindowLongPtr)
       SetWindowLongPtr(a_handle, GWLP_USERDATA, thisPtr);
     }
 

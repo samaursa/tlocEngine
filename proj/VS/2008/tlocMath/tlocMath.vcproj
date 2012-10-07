@@ -968,6 +968,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="utilities"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>

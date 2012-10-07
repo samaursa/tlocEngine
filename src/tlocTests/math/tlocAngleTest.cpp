@@ -11,13 +11,13 @@ namespace TestingAngle
     tl_float initAngle = 0.1f;
 
     math::Radian r(initAngle);
-    CHECK(r.GetAs<math::Radian>() == Approx(initAngle));
-    CHECK(r.GetAs<math::Degree>() == Approx(Mathf::RAD_TO_DEG * initAngle));
+    CHECK(r.GetAngleAs<math::Radian>() == Approx(initAngle));
+    CHECK(r.GetAngleAs<math::Degree>() == Approx(Mathf::RAD_TO_DEG * initAngle));
     CHECK(r.GetAsDegree() == Approx(Mathf::RAD_TO_DEG * initAngle));
 
     math::Degree d(r);
-    CHECK(d.GetAs<math::Degree>() == Approx(Mathf::RAD_TO_DEG * initAngle));
-    CHECK(d.GetAs<math::Radian>() == Approx(initAngle));
+    CHECK(d.GetAngleAs<math::Degree>() == Approx(Mathf::RAD_TO_DEG * initAngle));
+    CHECK(d.GetAngleAs<math::Radian>() == Approx(initAngle));
     CHECK(d.GetAsRadian() == Approx(initAngle));
 
     CHECK((r == d) == true);
@@ -38,6 +38,9 @@ namespace TestingAngle
     CHECK(r.GetAsDegree() == Approx(d.GetAngle()) );
     CHECK(r.GetAsDegree() != Approx(dd.GetAngle()) );
     CHECK(d.GetAsRadian() == Approx(r.GetAngle()) );
-    CHECK(d.GetAsRadian() != Approx(dd.GetAs<math::Radian>()) );
+    CHECK(d.GetAsRadian() != Approx(dd.GetAngleAs<math::Radian>()) );
+
+    // This should not throw a warning
+    math::Degree(6.0f);
   }
 };

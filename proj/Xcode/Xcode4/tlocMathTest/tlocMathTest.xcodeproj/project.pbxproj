@@ -45,8 +45,8 @@
 		97F90635161D0EDF00BD8A39 /* tlocMathTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMathTest.cpp; path = ../../../../src/tlocTests/math/tlocMathTest.cpp; sourceTree = "<group>"; };
 		97F90637161D0F3200BD8A39 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../src/tlocTests/math/main.cpp; sourceTree = "<group>"; };
 		97F90638161D0F3200BD8A39 /* tlocAngleTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAngleTest.cpp; path = ../../../../src/tlocTests/math/tlocAngleTest.cpp; sourceTree = "<group>"; };
-		97F90639161D0F3200BD8A39 /* tlocTestCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTestCommon.cpp; path = ../../../../src/tlocTests/math/tlocTestCommon.cpp; sourceTree = "<group>"; };
-		97F9063A161D0F3200BD8A39 /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../../src/tlocTests/math/tlocTestCommon.h; sourceTree = "<group>"; };
+		97F90639161D0F3200BD8A39 /* tlocTestCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; name = tlocTestCommon.cpp; path = ../../../../src/tlocTests/math/tlocTestCommon.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		97F9063A161D0F3200BD8A39 /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; name = tlocTestCommon.h; path = ../../../../src/tlocTests/math/tlocTestCommon.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

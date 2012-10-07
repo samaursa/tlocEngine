@@ -37,8 +37,8 @@ namespace TestingShaderComponent
   using namespace tloc::core;
   using namespace graphics;
 
-  String g_vShaderPath(GetResourcePath() + String("/shaders/simple_vertex_shader.glsl") );
-  String g_fShaderPath(GetResourcePath() + String("/shaders/simple_fragment_shader.glsl") );
+  String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );
+  String g_fShaderPath(GetAssetPath() + String("/shaders/simple_fragment_shader.glsl") );
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {

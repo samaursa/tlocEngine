@@ -23,7 +23,7 @@ namespace tloc { namespace core { namespace utils {
 
     Checkpoints(tl_uint a_numberOfCheckpoints);
 
-    value_type operator[](tl_int a_index);
+    value_type operator[](tl_int a_index) const;
 
     void MarkAll();
     void UnmarkAll();

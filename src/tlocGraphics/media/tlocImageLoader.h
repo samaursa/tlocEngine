@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace media {
   {
   public:
     typedef ImageLoader<ImageLoaderPng>   base_type;
-    friend class base_type;
+    friend base_type;
     using base_type::error_type;
     using base_type::path_type;
     using base_type::size_type;

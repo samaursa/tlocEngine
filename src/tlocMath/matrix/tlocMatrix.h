@@ -32,24 +32,25 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Matrix<T, T_Size>                     this_type;
     typedef core::Table<T, T_Size, T_Size>        base_type;
-    
+
+    typedef typename base_type::table_order       table_order;
+    typedef table_order                           matrix_order;
+
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::value_type&       reference;
     typedef const typename base_type::value_type& const_reference;
-    
-    typedef typename base_type::table_order       matrix_order;
-    
+
     //------------------------------------------------------------------------
     // using declarations for access to base class
     using base_type::GetRow;
     using base_type::Set;
     using base_type::k_TableSize;
     using base_type::m_values;
-    
+
   protected:
-    
+
     enum { k_MatrixSize = k_TableSize };
-    
+
   public:
     //------------------------------------------------------------------------
     // Constructors
@@ -65,6 +66,8 @@ namespace tloc { namespace math {
 
     // Fill the matrix with values in a certain matrix order
     TL_FI Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+
+    TL_FI Matrix(const core::Variadic<T, k_MatrixSize>& a_vars, matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -138,7 +141,7 @@ namespace tloc { namespace math {
     TL_FI this_type   operator- (const this_type& a_matrix) const;
     TL_FI this_type   operator* (const this_type& a_matrix) const;
     TL_FI this_type   operator* (const_reference a_value) const;
-    TL_FI Vector<value_type, T_Size> 
+    TL_FI Vector<value_type, T_Size>
       operator* (const Vector<value_type, T_Size> a_vector) const;
     TL_FI this_type   operator/ (const_reference a_value) const;
 
@@ -165,15 +168,15 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Static const definitions
   template <typename T, tl_size T_Size>
-  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::ZERO = 
+  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::ZERO =
     typename Matrix<T, T_Size>::this_type(0);
 
   template <typename T, tl_size T_Size>
-  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY = 
+  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY =
     Matrix<T, T_Size>::this_type::pInternal_GetIdentity();
 
   template <typename T, tl_size T_Size>
-  typename Matrix<T, T_Size>::this_type 
+  typename Matrix<T, T_Size>::this_type
     Matrix<T, T_Size>::pInternal_GetIdentity()
   {
     this_type temp;

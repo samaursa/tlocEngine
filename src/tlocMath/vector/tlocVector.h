@@ -3,8 +3,9 @@
 #define TLOC_VECTOR_N_H
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
 
 #include "tlocMath/tlocMath.h"
 
@@ -38,6 +39,7 @@ namespace tloc { namespace math {
     typedef core::Tuple<T, T_Size>                base_type;
 
     typedef typename base_type::value_type        value_type;
+    typedef typename base_type::size_type         size_type;
     typedef value_type&                           reference;
     typedef const value_type&                     const_reference;
 
@@ -45,7 +47,6 @@ namespace tloc { namespace math {
     // using declarations for access to base class
     using base_type::Set;
     using base_type::m_values;
-    using base_type::size_type;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -54,10 +55,12 @@ namespace tloc { namespace math {
     TL_FI Vector();
     TL_FI Vector(const this_type& a_vector);
 
-    TL_FI explicit Vector(const_reference a_value);
+    template <typename T_ArrayType>
+    TL_FI Vector(const T_ArrayType (&aArray)[T_Size]);
 
-    /*TL_FI T& operator[](tl_size aIndex);
-    TL_FI const T& operator[](tl_size aIndex) const;*/
+    TL_FI Vector(const core::Variadic<T, T_Size>& a_vars);
+
+    TL_FI explicit Vector(const_reference a_value);
 
     //------------------------------------------------------------------------
     // Modifiers

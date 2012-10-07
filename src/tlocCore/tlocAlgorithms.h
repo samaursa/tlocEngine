@@ -164,11 +164,11 @@ namespace tloc { namespace core {
                    T_Predicate a_pred);
 
   template <typename T_Container1, typename T_InputItr>
-  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1), typename T_InputItr>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1), T_InputItr>
     mismatch_all(const T_Container1& a_toSearch, T_InputItr a_toCompare);
 
   template <typename T_Container1, typename T_InputItr, typename T_BinaryPred>
-  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1), typename T_InputItr>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1),  T_InputItr>
     mismatch_all(const T_Container1& a_toSearch, T_InputItr a_toCompare,
                  T_BinaryPred a_pred);
 
@@ -826,7 +826,7 @@ namespace tloc { namespace core {
     /// @return Returns a copy of the sorted container.
     ///-------------------------------------------------------------------------
     template <typename T_Container>
-    T_Container DoMergesort(const T_Container& a_unsorted);
+    T_Container DoMergesort(T_Container& a_unsorted);
 
     ///-------------------------------------------------------------------------
     /// Merges two sorted containers into a container and returns it.

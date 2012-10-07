@@ -30,13 +30,13 @@ namespace TestingMatrix
   {
     Matrix3Fixture()
     {
-      tloc::math::Vec3f row1;
-      tloc::math::Vec3f row2;
-      tloc::math::Vec3f row3;
+      Vec3f row1;
+      Vec3f row2;
+      Vec3f row3;
 
-      tloc::math::Vec3f col1;
-      tloc::math::Vec3f col2;
-      tloc::math::Vec3f col3;
+      Vec3f col1;
+      Vec3f col2;
+      Vec3f col3;
 
       row1[0] = 1; row1[1] = 2; row1[2] = 3;
       row2[0] = 4; row2[1] = 5; row2[2] = 6;
@@ -55,7 +55,7 @@ namespace TestingMatrix
       b.SetCol(2, col3);
     }
 
-    tloc::math::Matrix<tl_float, 3> a, b, c, d, e;
+    Matrix<tl_float, 3> a, b, c, d, e;
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -68,23 +68,27 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General",
     "Test general/basic functionality")
   {
-    tloc::math::Matrix<tl_float, 3> e(1);
+    Matrix<tl_float, 3> e(1);
     CHECK_MATRIX3F(e, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    tloc::math::Matrix<tl_float, 3> f(e);
+    Matrix<tl_float, 3> f(e);
     CHECK_MATRIX3F(f, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
     tl_float rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    tloc::math::Matrix<tl_float, 3> g(rawArray, tloc::math::Matrix<tl_float, 3>::k_RowMajor);
+    Matrix<tl_float, 3> g(rawArray, Matrix<tl_float, 3>::k_RowMajor);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    tloc::math::Matrix<tl_float, 3> h(rawArray, tloc::math::Matrix<tl_float, 3>::k_ColMajor);
+    Matrix<tl_float, 3> h(rawArray, Matrix<tl_float, 3>::k_ColMajor);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.Zero();
     c.Identity();
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
+
+    Matrix<tl_float, 3> i(core::Variadic9f(rawArray),
+                          Matrix<tl_float, 3>::k_ColMajor);
+    CHECK_MATRIX3F(i, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Modifiers",

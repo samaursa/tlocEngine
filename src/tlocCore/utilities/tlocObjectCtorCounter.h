@@ -12,7 +12,7 @@ namespace tloc { namespace core { namespace utils {
   template <typename T>
   class ObjectCtorCounter
   {
-    template <class T> friend class ObjectCounter;
+    template <class U> friend class ObjectCounter;
 
   public:
     typedef tl_size     size_type;
@@ -35,7 +35,7 @@ namespace tloc { namespace core { namespace utils {
   };
 
   template <typename T>
-  tl_uint  ObjectCtorCounter<T>::m_count = 0;
+  typename ObjectCtorCounter<T>::size_type  ObjectCtorCounter<T>::m_count = 0;
 
 };};};
 

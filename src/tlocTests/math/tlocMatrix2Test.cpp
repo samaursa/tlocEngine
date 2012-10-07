@@ -74,6 +74,9 @@ namespace TestingMatrix2
 
     Mat2f n(v1, v2, Mat2f::k_ColMajor);
     CHECK_MATRIX2F(n, 1, 2, 3, 4);
+
+    Mat2f o(core::Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
+    CHECK_MATRIX2F(o, 1, 2, 3, 4);
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",

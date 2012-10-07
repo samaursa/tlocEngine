@@ -17,6 +17,8 @@ namespace tloc { namespace math {
     typedef Matrix2<T>                            this_type;
     typedef Matrix<T, 2>                          base_type;
 
+    typedef typename base_type::matrix_order      matrix_order;
+
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
     typedef typename base_type::const_reference   const_reference;
@@ -52,8 +54,10 @@ namespace tloc { namespace math {
                   typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix2(const value_type (&values)[k_MatrixSize],
-                  typename base_type::matrix_order aOrder);
+    TL_FI Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+
+    TL_FI Matrix2(const core::Variadic<value_type, 4>& a_vars,
+                  matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Math operations

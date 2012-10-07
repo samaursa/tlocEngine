@@ -1,10 +1,5 @@
-//
-//  OpenGLViewIphone.h
-//  tlocGraphics
-//
-//  Created by Skopworks Inc on 12-08-09.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
+#include <tlocCore/tlocBase.h>
+#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
 
 #import <UIKit/UIKit.h>
 
@@ -46,6 +41,15 @@
 /// application supports screen rotation.
 ///-------------------------------------------------------------------------
 - (void)UpdateRenderBufferDimensions;
+
+- (void)RegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (void)RegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+- (bool)UnRegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 
 ///-------------------------------------------------------------------------
 /// Callback function that will be called once, immediately after the user 

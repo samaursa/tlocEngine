@@ -19,7 +19,7 @@ namespace TestingTuple
 
   TEST_CASE("Core/DataStructures/Tuple", "Testing the Tuple<T, size> class")
   {
-    core::Tuple<s32, 4> p(0);
+    core::Tuple<tl_int, 4> p(0);
     CHECK_TUP(p, 0, 0, 0, 0);
 
     p[0] = 0; p[1] = 1; p[2] = 2; p[3] = 3;
@@ -42,20 +42,20 @@ namespace TestingTuple
     // Check Size
     CHECK(p.GetSize() == 4);
 
-    core::Tuple<s32, 4> q(8);
+    core::Tuple<tl_int, 4> q(8);
     p.Swap(q);
 
     CHECK_TUP(p, 8, 8, 8, 8);
     CHECK_TUP(q, 5, 5, 5, 5);
 
-    u32 numberSet[4] = {1, 2, 3, 4};
+    tl_int numberSet[4] = {1, 2, 3, 4};
     p.Set(numberSet);
     CHECK_TUP(p, 1, 2, 3, 4);
 
     // Check Size
     CHECK(q.GetSize() == 4);
 
-    core::Tuple<s32, 4> r(numberSet);
+    core::Tuple<tl_int, 4> r(numberSet);
     CHECK_TUP(r, 1, 2, 3, 4);
 
     r.Set(0);
@@ -66,7 +66,7 @@ namespace TestingTuple
     // Check Size
     CHECK(r.GetSize() == 4);
 
-    core::Tuple<s32, 4> s(r);
+    core::Tuple<tl_int, 4> s(r);
     CHECK_TUP(s, 1, 2, 3, 4);
 
     s.Set(0);

@@ -6,6 +6,8 @@
 #endif
 
 #include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/data_structures/tlocVariadic.h>
+
 #include <tlocMath/tlocMath.inl>
 #include <tlocMath/vector/tlocVector.inl>
 
@@ -22,36 +24,34 @@ namespace tloc { namespace math {
 
   template <VECTOR_2_TYPES>
   TL_FI Vector2<VECTOR_2_PARAMS>::Vector2()
-  {
-  }
+    : base_type()
+  { }
 
   template <VECTOR_2_TYPES>
   TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const_reference aValue)
-  {
-    m_values[0] = aValue;
-    m_values[1] = aValue;
-  }
+    : base_type(aValue)
+  { }
 
   template <VECTOR_2_TYPES>
   TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const_reference aX, const_reference aY)
-  {
-    m_values[0] = aX;
-    m_values[1] = aY;
-  }
+    : base_type(core::Variadic<value_type, 2>(aX, aY))
+  { }
 
   template <VECTOR_2_TYPES>
   TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const this_type& aVector)
-  {
-    m_values[0] = aVector[0];
-    m_values[1] = aVector[1];
-  }
+    : base_type(aVector)
+  { }
 
   template <VECTOR_2_TYPES>
   TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const base_type& aVector)
-  {
-    m_values[0] = aVector[0];
-    m_values[1] = aVector[1];
-  }
+    : base_type(aVector)
+  { }
+
+  template <VECTOR_2_TYPES>
+  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2
+    (const core::Variadic<value_type, 2>& a_vars)
+    : base_type(a_vars)
+  { }
 
 };};
 

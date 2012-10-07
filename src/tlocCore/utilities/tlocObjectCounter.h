@@ -16,7 +16,9 @@ namespace tloc { namespace core { namespace utils {
     typedef ObjectCtorCounter<T>        base_type;
     typedef ObjectCounter<T>              this_type;
 
-    using base_type::size_type;
+    typedef typename base_type::size_type size_type;
+    
+    using base_type::m_count;
 
     TL_STATIC_I TLOC_DECL_AND_DEF_GETTER_DIRECT
       (size_type, GetCurrentObjectCount, base_type::GetTotalInstantiations() );

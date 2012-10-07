@@ -1,13 +1,36 @@
 #include "tlocTestCommon.h"
+#include <tlocCore/platform/tlocPlatform.h>
+
+#if defined(TLOC_OS_IPHONE)
+#import <Foundation/Foundation.h>
+#endif
+
+#include <stdio.h>
+#include <cstring>
 
 #include <tlocCore/io/tlocPath.h>
 
-#include <stdio.h>
+
 
 namespace TestingIOPath
 {
   using namespace tloc;
   using namespace tloc::core;
+
+  void GetPathToCreateFiles(char* a_path);
+
+#if defined(TLOC_OS_IPHONE)
+  void GetPathToCreateFiles(char* a_path)
+  {
+    const char* path = [NSTemporaryDirectory() cStringUsingEncoding:[NSString defaultCStringEncoding]];
+    strcpy(a_path, path);
+  }
+#else
+  void GetPathToCreateFiles(char* a_path)
+  {
+    strcpy(a_path, "/");
+  }
+#endif
 
   TEST_CASE("Core/io/Path", "")
   {
@@ -50,28 +73,39 @@ namespace TestingIOPath
 
   TEST_CASE("Core/io/Path/Exists", "")
   {
+    char pathToCreateFiles[1024];
+    GetPathToCreateFiles(pathToCreateFiles);
+
     {
       const char* fileName = "./testExists.txt";
+      char path[1024];
+      
+      strcpy(path, pathToCreateFiles);
+      strcat(path, fileName);
 
-      FILE* f = fopen(fileName, "w");
+      FILE* f = fopen(path, "w");
       fclose(f);
 
-      io::Path p(fileName);
+      io::Path p(path);
       CHECK(p.FileExists());
 
-      remove(fileName);
+      remove(path);
     }
 
     {
       const char* fileName = "./testExists.bin";
+      char path[1024];
 
-      FILE* f = fopen(fileName, "wb");
+      strcpy(path, pathToCreateFiles);
+      strcat(path, fileName);
+
+      FILE* f = fopen(path, "wb");
       fclose(f);
 
-      io::Path p(fileName);
+      io::Path p(path);
       CHECK(p.FileExists());
 
-      remove(fileName);
+      remove(path);
     }
 
     {
@@ -85,7 +119,7 @@ namespace TestingIOPath
     }
 
     {
-      io::Path p("../");
+      io::Path p(pathToCreateFiles);
       CHECK(p.FolderExists());
     }
   }

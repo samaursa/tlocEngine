@@ -17,6 +17,17 @@ namespace tloc { namespace graphics { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>
+    ::Rectangle(value_type a_halfWidth, value_type a_halfHeight)
+  {
+    m_extents[left]   = -a_halfWidth;
+    m_extents[right]  = a_halfWidth;
+
+    m_extents[top]    = a_halfHeight;
+    m_extents[bottom] = -a_halfHeight;
+  }
+
+  template <TLOC_RECTANGLE_TEMP>
+  Rectangle<TLOC_RECTANGLE_PARAMS>
     ::Rectangle(value_type a_left, value_type a_right,
                 value_type a_top, value_type a_bottom)
   {

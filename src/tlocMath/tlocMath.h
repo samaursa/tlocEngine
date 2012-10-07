@@ -17,6 +17,7 @@ namespace tloc {
     static T Floor(T aValue);
     static T Abs(T aValue);
     static T FAbs(T aValue);
+    static T Tan(T aValue);
     static T ATan(T aValue);
     static T ATan2(T aValue1, T aValue2);
     static T Log(T aLog);

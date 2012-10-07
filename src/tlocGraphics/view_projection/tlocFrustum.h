@@ -2,8 +2,20 @@
 #define _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
 
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/matrix/tlocMatrix4.h>
+
+#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocGraphics/data_types/tlocAspectRatio.h>
 
 namespace tloc { namespace graphics { namespace view_projection {
+
+  namespace p_frustum
+  {
+    struct FOVy{};
+    struct FOVx{};
+  };
 
   class Frustum
   {
@@ -28,16 +40,50 @@ namespace tloc { namespace graphics { namespace view_projection {
   public:
     typedef tl_float                                    real_type;
     typedef core::Tuple<real_type, Planes::k_count>     cont_type;
+    typedef types::Rectangle<real_type>                 rect_type;
     typedef tl_size                                     size_type;
+    typedef math::Radian                                angle_type;
+    typedef types::AspectRatio                          ar_type;
 
   public:
-    Frustum();
+    struct Params
+    {
+      Params();
+      Params&   SetNear(real_type a_near);
+      Params&   SetFar(real_type a_far);
+      Params&   SetAspectRatio(ar_type a_ar);
+      Params&   SetFOVy(angle_type a_angle);
+
+      TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
+      TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
+      TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);
+      TLOC_DECL_AND_DEF_GETTER(angle_type, GetFOVy, m_FOVy);
+      TLOC_DECL_AND_DEF_GETTER(angle_type, GetFOVx, m_FOVx);
+
+    private:
+      real_type     m_near;
+      real_type     m_far;
+      ar_type       m_aspectRatio;
+      angle_type    m_FOVy;
+      angle_type    m_FOVx;
+    };
+
+  public:
+    Frustum(const rect_type& a_rect, real_type a_near, real_type a_far);
+    Frustum(const Params& a_params);
+
     ~Frustum();
 
     void BuildFrustum();
 
   private:
-    cont_type m_planes;
+    typedef core::Variadic<real_type, Planes::k_count> plane_args;
+    void DoDefinePlanes(const plane_args& a_vars);
+    void DoBuildFrustumFromPlanes();
+
+    Params                        m_params;
+    cont_type                     m_planes;
+    math::Matrix4<real_type>      m_projMatrix;
   };
 
 };};};

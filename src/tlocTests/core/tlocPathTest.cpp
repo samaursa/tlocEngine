@@ -28,7 +28,7 @@ namespace TestingIOPath
 #else
   void GetPathToCreateFiles(char* a_path)
   {
-    a_path[0] = '\0';
+    strcpy(a_path, "/");
   }
 #endif
 

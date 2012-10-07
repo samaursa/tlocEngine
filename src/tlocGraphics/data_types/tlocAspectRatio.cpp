@@ -32,4 +32,9 @@ namespace tloc { namespace graphics { namespace types {
     m_ratio = a_other.m_ratio;
   }
 
+  AspectRatio::value_type AspectRatio::GetInv() const
+  {
+    return 1 / Get();
+  }
+
 };};};

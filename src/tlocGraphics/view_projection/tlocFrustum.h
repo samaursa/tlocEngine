@@ -54,6 +54,8 @@ namespace tloc { namespace graphics { namespace view_projection {
       Params&   SetAspectRatio(ar_type a_ar);
       Params&   SetFOVy(angle_type a_angle);
 
+      real_type CalculateFOVy(real_type a_near , real_type a_top);
+
       TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
       TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
       TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);

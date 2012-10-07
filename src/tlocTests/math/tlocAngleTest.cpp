@@ -42,5 +42,13 @@ namespace TestingAngle
 
     // This should not throw a warning
     math::Degree(6.0f);
+
+    math::Radian r1(1.0f);
+    r1 = r; // should not result in an ambiguous call
+    CHECK(r1 == r);
+
+    math::Degree d1(10.0f);
+    d1 = d; // should not result in an ambiguous call
+    CHECK(d1 == d);
   }
 };

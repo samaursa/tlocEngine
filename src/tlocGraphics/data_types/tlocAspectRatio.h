@@ -20,6 +20,7 @@ namespace tloc { namespace graphics { namespace types {
     AspectRatio    (const AspectRatio& a_other);
     void operator= (const AspectRatio& a_other);
 
+    value_type GetInv() const;
     TLOC_DECL_AND_DEF_GETTER(value_type, Get, m_ratio);
 
   private:

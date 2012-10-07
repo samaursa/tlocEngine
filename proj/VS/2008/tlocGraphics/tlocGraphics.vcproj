@@ -1219,6 +1219,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="fov"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="media"

@@ -27,10 +27,10 @@ namespace tloc { namespace math {
     }
 
     this_type&    operator=(value_type a_angle);
-    this_type&    operator=(this_type a_other);
+    this_type&    operator=(const this_type& a_other);
 
     template <typename T_AngleType>
-    this_type&    operator=(T_AngleType a_angle);
+    this_type&    operator=(const T_AngleType& a_angle);
 
     template <typename T_AngleType>
     value_type    GetAngleAs() const;
@@ -77,7 +77,6 @@ namespace tloc { namespace math {
 
     typedef typename base_type::value_type  value_type;
 
-    using base_type::operator=;
     using base_type::operator+;
     using base_type::operator+=;
     using base_type::operator-;
@@ -105,6 +104,9 @@ namespace tloc { namespace math {
     Radian_T(T_AngleType a_angle) : base_type(a_angle)
     { }
 
+    template <typename T_AngleType>
+    this_type&    operator=(const T_AngleType& a_angle);
+
     value_type GetAsDegree() const;
 
   private:
@@ -131,7 +133,6 @@ namespace tloc { namespace math {
 
     typedef typename base_type::value_type  value_type;
 
-    using base_type::operator=;
     using base_type::operator+;
     using base_type::operator+=;
     using base_type::operator-;
@@ -158,6 +159,9 @@ namespace tloc { namespace math {
     template <typename T_AngleType>
     Degree_T(T_AngleType a_angle) : base_type(a_angle)
     { }
+
+    template <typename T_AngleType>
+    this_type&    operator=(const T_AngleType& a_angle);
 
     value_type GetAsRadian() const;
 

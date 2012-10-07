@@ -42,12 +42,19 @@ namespace tloc { namespace graphics { namespace view_projection {
   Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
     : m_projMatrix(0)
   {
+    real_type top		 = a_rect.GetCoord(rect_type::top);
+    real_type bottom = a_rect.GetCoord(rect_type::bottom);
+    real_type left	 = a_rect.GetCoord(rect_type::left);
+    real_type right	 = a_rect.GetCoord(rect_type::right);
+
     DoDefinePlanes
-      (plane_args(a_near, a_far,
-                  a_rect.GetCoord(rect_type::top),
-                  a_rect.GetCoord(rect_type::bottom),
-                  a_rect.GetCoord(rect_type::left),
-                  a_rect.GetCoord(rect_type::right)) );
+      (plane_args(a_near, a_far, top, bottom, left, right));
+
+    //real_type width = Math<real_type>::Abs(right - left);
+    //real_type height = Math<real_type>::Abs(top - bottom);
+
+    //m_params.SetAspectRatio(ar_type(width, height)).
+    //  SetNear(a_near).SetFar(a_far).SetFOVy(
   }
 
   Frustum::Frustum(const Params& a_params)

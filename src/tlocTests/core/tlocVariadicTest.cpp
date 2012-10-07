@@ -8,7 +8,7 @@ namespace TestingVariadic
   USING_TLOC;
   using namespace core;
 
-  template <tl_int T_Size>
+  template <tl_size T_Size>
   void CheckVariadic(const Variadic<tl_int, T_Size>& a_variableArgs)
   {
     bool testPassed = true;

@@ -1,4 +1,4 @@
-#version 120
+#version 100
 
 varying lowp vec4 vVaryingColor;
 

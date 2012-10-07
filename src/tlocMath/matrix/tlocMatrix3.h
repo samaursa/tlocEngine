@@ -16,10 +16,12 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Matrix3<T>                            this_type;
     typedef Matrix<T, 3>                          base_type;
-    using base_type::matrix_order;
-    using base_type::value_type;
-    using base_type::reference;
-    using base_type::const_reference;
+
+    typedef typename base_type::matrix_order      matrix_order;
+
+    typedef typename base_type::value_type        value_type;
+    typedef typename base_type::reference         reference;
+    typedef typename base_type::const_reference   const_reference;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class

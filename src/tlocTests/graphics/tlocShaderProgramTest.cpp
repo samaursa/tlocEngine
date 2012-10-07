@@ -8,28 +8,27 @@
 namespace TestingShaderProgram
 {
   const char* vShaderStr =
-"#version 140                       \n\
+"#version 100                       \n\
                                     \n\
-in vec4 vVertex;                    \n\
-in vec4 vColor;                     \n\
+attribute vec4 vVertex;             \n\
+attribute vec4 vColor;              \n\
                                     \n\
-out vec4 vVaryingColor;             \n\
+varying lowp vec4 vVaryingColor;    \n\
                                     \n\
 void main(void)                     \n\
 {                                   \n\
-   vVaryingColor = vColor;          \n\
-   gl_Position   = vVertex;         \n\
+  vVaryingColor = vColor;           \n\
+  gl_Position   = vVertex;          \n\
 }";
 
   const char* fShaderStr =
-"#version 140                       \n\
+"#version 100                       \n\
                                     \n\
-out vec4 vFragColor;                \n\
-in  vec4 vVaryingColor;             \n\
+varying lowp vec4 vVaryingColor;    \n\
                                     \n\
 void main(void)                     \n\
 {                                   \n\
-   vFragColor = vVaryingColor;      \n\
+  gl_FragColor = vVaryingColor;     \n\
 }";
 
   using namespace tloc;
@@ -39,7 +38,7 @@ void main(void)                     \n\
   {
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;
-    win.Create(graphics_mode(graphics_mode::Properties(0, 0)),
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
     // Initialize glew

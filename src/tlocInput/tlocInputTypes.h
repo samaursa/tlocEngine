@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
@@ -19,6 +21,7 @@ namespace tloc { namespace input {
       keyboard = 0,
       mouse,
       joystick,
+      touch_surface,
 
       count
     };
@@ -45,9 +48,10 @@ namespace tloc { namespace input {
   {
     enum Sizes
     {
-      keyboard_buffer_size = 17,
-      mouse_buffer_size    = 128,
-      joystick_buffer_Size = 129
+      keyboard_buffer_size      = 17,
+      mouse_buffer_size         = 128,
+      joystick_buffer_Size      = 129,
+      touch_surface_buffer_size = 256,
     };
   }
 

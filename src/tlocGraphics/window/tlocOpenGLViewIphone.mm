@@ -1,11 +1,3 @@
-//
-//  OpenGLViewIphone.m
-//  tlocGraphics
-//
-//  Created by Skopworks Inc on 12-08-09.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "tlocOpenGLViewIphone.h"
 
 #import <OpenGLES/EAGL.h>
@@ -26,6 +18,9 @@
   GLuint m_viewRenderBuffer, m_depthRenderBuffer;
   
   GLenum m_depthBufferFormat;
+  
+  tloc::input::priv::TouchSurfaceDeviceImmediate* m_touchObserverImmediate;
+  tloc::input::priv::TouchSurfaceDeviceBuffered* m_touchObserverBuffered;
 }
 
 @end
@@ -37,12 +32,20 @@
 
 @synthesize context = m_context;
 
+typedef tloc::input::priv::TouchSurfaceDeviceBuffered::touch_handle_type
+                                              touch_handle_buffered_type;
+
+typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
+                                              touch_handle_immediate_type;
+
 - (id)initWithFrame:(CGRect)a_frame
       retainBacking:(BOOL)a_retained 
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits 
      bitsPerStencil:(size_t)a_stencilBits
 {
+  TLOC_ASSERT(a_frame.size.width > 0 && a_frame.size.height > 0,
+              "View must have a size of more than 0 per axis");
   self = [super initWithFrame:a_frame];
   if (self) 
   {
@@ -57,7 +60,8 @@
       colorFormat = kEAGLColorFormatRGB565;
     }
     
-    assert(colorFormat);
+    TLOC_ASSERT(colorFormat, "Color format not supported. \
+                Bits per pixel can only be 32 bit or 8 bit ");
     
     // CAEGLLayer => rendering layer
     CAEAGLLayer* eaglLayer = (CAEAGLLayer*)self.layer;
@@ -76,13 +80,14 @@
      nil];
     
     m_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    assert(m_context);
+    TLOC_ASSERT(m_context, "OpenGL ES 2.0 Context could not be created");
     
     // NOTE: All OpenGL calls will now use this context
     BOOL result;
     result = [EAGLContext setCurrentContext:m_context];
-    assert(result);
-    (void)result;
+    TLOC_ASSERT(result,
+                "OpenGL ES 2.0 context could not be set as the current context");
+    TLOC_UNUSED(result);
     
     // Scale view to the main screen's scale (Retina screen)
     // Applicable iff property is available
@@ -123,7 +128,9 @@
         m_depthBufferFormat = GL_DEPTH_COMPONENT24_OES;
       }
       
-      assert(m_depthBufferFormat);
+      TLOC_ASSERT(m_depthBufferFormat,
+                  "Depth/Stencil buffer format not supported. A 24 bit Depth \
+                  buffer, and/or 8 bit Stencil buffer are currently supported");
       
       GLint renderBufferWidth = 0;
       GLint renderBufferHeight = 0;
@@ -148,10 +155,13 @@
       
     }
     
-    assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
+    TLOC_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
+                "Framebuffer creation has failed");
     
     // This is so we can properly resize our view when orientation changes.
     self.autoresizingMask = 0;
+    
+    self.multipleTouchEnabled = YES;
     
     // This mimics the behaviour when creating a window on the Win32 platform.
     glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
@@ -203,24 +213,124 @@
   }
 }
 
+- (void)RegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+{
+  if (m_touchObserverBuffered == NULL)
+  {
+    m_touchObserverBuffered =
+      static_cast<tloc::input::priv::TouchSurfaceDeviceBuffered*>(a_touchDevice);
+  }
+}
+
+- (void)RegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+{
+  if (m_touchObserverImmediate == NULL)
+  {
+    m_touchObserverImmediate =
+      static_cast<tloc::input::priv::TouchSurfaceDeviceImmediate*>(a_touchDevice);
+  }
+}
+
+- (bool)UnRegisterTouchSurfaceDeviceBuffered:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+{
+  if (a_touchDevice == m_touchObserverBuffered)
+  {
+    m_touchObserverBuffered = NULL;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+- (bool)UnRegisterTouchSurfaceDeviceImmediate:
+    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+{
+  if (a_touchDevice == m_touchObserverImmediate)
+  {
+    m_touchObserverBuffered = NULL;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 - (void)touchesBegan:(NSSet *)a_touches withEvent:(UIEvent *)a_event
 {
-  // Stub Func
+  for (UITouch* touch in a_touches)
+  {
+    CGPoint touchLocation = [touch locationInView:self];
+    if (m_touchObserverBuffered != NULL)
+    {
+      m_touchObserverBuffered->SendOnTouchBegin((touch_handle_buffered_type)touch,
+                                                touchLocation.x, touchLocation.y);
+    }
+    if (m_touchObserverImmediate != NULL) 
+    {
+      m_touchObserverImmediate->SendOnTouchBegin((touch_handle_immediate_type)touch,
+                                                 touchLocation.x, touchLocation.y);
+    }
+  }
 }
 
 - (void)touchesEnded:(NSSet *)a_touches withEvent:(UIEvent *)a_event
 {
-  // Stub Func  
+  for (UITouch* touch in a_touches)
+  {
+    CGPoint touchLocation = [touch locationInView:self];
+    if (m_touchObserverBuffered != NULL)
+    {
+      m_touchObserverBuffered->SendOnTouchEnd((touch_handle_buffered_type)touch,
+                                              touchLocation.x, touchLocation.y);
+    }
+    if (m_touchObserverImmediate != NULL)
+    {
+      m_touchObserverImmediate->SendOnTouchEnd((touch_handle_immediate_type)touch,
+                                                 touchLocation.x, touchLocation.y);
+    }
+  }
 }
 
 - (void)touchesMoved:(NSSet *)a_touches withEvent:(UIEvent *)a_event
 {
-  // Stub Func  
+  for (UITouch* touch in a_touches)
+  {
+    CGPoint touchLocation = [touch locationInView:self];
+    if (m_touchObserverBuffered != NULL)
+    {
+      m_touchObserverBuffered->SendOnTouchMove((touch_handle_buffered_type)touch,
+                                               touchLocation.x, touchLocation.y);
+    }
+    if (m_touchObserverImmediate != NULL)
+    {
+      m_touchObserverImmediate->SendOnTouchMove((touch_handle_immediate_type)touch,
+                                                 touchLocation.x, touchLocation.y);
+    }
+  } 
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event
+- (void)touchesCancelled:(NSSet *)a_touches withEvent:(UIEvent *)a_event
 {
-  // Stub Func
+  for (UITouch* touch in a_touches)
+  {
+    CGPoint touchLocation = [touch locationInView:self];
+    if (m_touchObserverBuffered != NULL) 
+    {
+      m_touchObserverBuffered->SendOnTouchCancel((touch_handle_buffered_type)touch, 
+                                                    touchLocation.x, touchLocation.y);
+    }
+    if (m_touchObserverImmediate != NULL)
+    {
+      m_touchObserverImmediate->SendOnTouchCancel((touch_handle_immediate_type)touch,
+                                                  touchLocation.x, touchLocation.y);
+    }
+  }
 }
 
 //------------------------------------------------------------------------

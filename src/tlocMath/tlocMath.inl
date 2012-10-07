@@ -7,6 +7,7 @@
 
 #include "tlocMath.h"
 #include <limits>
+#include <cmath>
 #include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
@@ -63,9 +64,21 @@ namespace tloc {
   }
 
   template <typename T>
+  TL_FI T Math<T>::ASin( T aValInRad )
+  {
+    return std::asin(aValInRad);
+  }
+
+  template <typename T>
   TL_FI T Math<T>::Cos( T aValInRad )
   {
     return std::cos(aValInRad);
+  }
+
+  template <typename T>
+  TL_FI T Math<T>::ACos( T aValInRad )
+  {
+    return std::acos(aValInRad);
   }
 
   template <typename T>
@@ -98,7 +111,7 @@ namespace tloc {
   template <typename T>
   TL_FI bool Math<T>::IsEqual(T a_first, T a_second)
   {
-    return Abs(a_first - a_second) < EPSILON;
+    return Approx(a_first, a_second, EPSILON);
   }
 
   template <typename T>

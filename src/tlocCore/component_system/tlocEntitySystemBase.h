@@ -25,7 +25,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_array_fixed
       <component_type, max_component_types>::type component_type_array;
 
-    template <tl_uint T_VarSize>
+    template <tl_size T_VarSize>
     EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
                      const Variadic<component_type, T_VarSize>& a_typeFlags);
 
@@ -85,7 +85,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // Template definition
 
-  template <tl_uint T_VarSize>
+  template <tl_size T_VarSize>
   EntitySystemBase::
     EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
                      const Variadic<component_type, T_VarSize>& a_typeFlags)

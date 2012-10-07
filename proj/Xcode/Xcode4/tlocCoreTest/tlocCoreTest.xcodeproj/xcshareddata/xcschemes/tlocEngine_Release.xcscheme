@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
+   LastUpgradeVersion = "0450"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,7 +17,7 @@
                BlueprintIdentifier = "978481A1157DA6A20007F526"
                BuildableName = "tlocCore_Release.a"
                BlueprintName = "tlocCore"
-               ReferencedContainer = "container:tlocCore/tlocCore.xcodeproj">
+               ReferencedContainer = "container:../tlocCore/tlocCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -30,7 +31,7 @@
                BlueprintIdentifier = "97CC7658157DD64400764CF3"
                BuildableName = "tlocMath_Release.a"
                BlueprintName = "tlocMath"
-               ReferencedContainer = "container:tlocMath/tlocMath.xcodeproj">
+               ReferencedContainer = "container:../tlocMath/tlocMath.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -44,7 +45,7 @@
                BlueprintIdentifier = "97812E0415A2A61B00F3C248"
                BuildableName = "tlocGraphics_Release.a"
                BlueprintName = "tlocGraphics"
-               ReferencedContainer = "container:tlocGraphics/tlocGraphics.xcodeproj">
+               ReferencedContainer = "container:../tlocGraphics/tlocGraphics.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -58,7 +59,7 @@
                BlueprintIdentifier = "9736627A15B0F68D009F67B2"
                BuildableName = "tlocInput_Release.a"
                BlueprintName = "tlocInput"
-               ReferencedContainer = "container:tlocInput/tlocInput.xcodeproj">
+               ReferencedContainer = "container:../tlocInput/tlocInput.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -70,9 +71,51 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97CC77011580A6D900764CF3"
-               BuildableName = "tlocTesting.app"
-               BlueprintName = "tlocTesting"
-               ReferencedContainer = "container:tlocTesting/tlocTesting.xcodeproj">
+               BuildableName = "tlocCoreTest.app"
+               BlueprintName = "tlocCoreTest"
+               ReferencedContainer = "container:tlocCoreTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97CC77011580A6D900764CF3"
+               BuildableName = "tlocMathTest.app"
+               BlueprintName = "tlocMathTest"
+               ReferencedContainer = "container:../tlocMathTest/tlocMathTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97CC77011580A6D900764CF3"
+               BuildableName = "tlocGraphicsTest.app"
+               BlueprintName = "tlocGraphicsTest"
+               ReferencedContainer = "container:../tlocGraphicsTest/tlocGraphicsTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97CC77011580A6D900764CF3"
+               BuildableName = "tlocInputTest.app"
+               BlueprintName = "tlocInputTest"
+               ReferencedContainer = "container:../tlocInputTest/tlocInputTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -88,9 +131,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97CC77011580A6D900764CF3"
-            BuildableName = "tlocTesting.app"
-            BlueprintName = "tlocTesting"
-            ReferencedContainer = "container:tlocTesting/tlocTesting.xcodeproj">
+            BuildableName = "tlocCoreTest.app"
+            BlueprintName = "tlocCoreTest"
+            ReferencedContainer = "container:tlocCoreTest.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -99,7 +142,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
@@ -107,9 +150,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97CC77011580A6D900764CF3"
-            BuildableName = "tlocTesting.app"
-            BlueprintName = "tlocTesting"
-            ReferencedContainer = "container:tlocTesting/tlocTesting.xcodeproj">
+            BuildableName = "tlocCoreTest.app"
+            BlueprintName = "tlocCoreTest"
+            ReferencedContainer = "container:tlocCoreTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -121,6 +164,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "97CC77011580A6D900764CF3"
+            BuildableName = "tlocCoreTest.app"
+            BlueprintName = "tlocCoreTest"
+            ReferencedContainer = "container:tlocCoreTest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

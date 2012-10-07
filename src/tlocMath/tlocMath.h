@@ -21,7 +21,9 @@ namespace tloc {
     static T ATan2(T aValue1, T aValue2);
     static T Log(T aLog);
     static T Sin(T aValInRad);
+    static T ASin(T aValInRad);
     static T Cos(T aValInRad);
+    static T ACos(T aValInRad);
     static T Degree(T aValueInRadian);
     static T Radian(T aValueInDegrees);
     static T Sqrt(T aValue);
@@ -37,8 +39,7 @@ namespace tloc {
 
     // If the difference between the two values is < eps then this
     // returns true
-    static bool Approx(T aValue1, T aValue2,
-      T eps = T(1e-6));
+    static bool Approx(T aValue1, T aValue2, T eps = T(1e-6));
 
     // Taken from http://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2/600306#600306
     static bool IsPowerOfTwo(const tl_uint& aValue);

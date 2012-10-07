@@ -3,6 +3,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+#if !defined(__glu_h__) && !defined(__GLU_h__)
+
   //------------------------------------------------------------------------
   // Free defines
 
@@ -181,6 +183,16 @@ namespace tloc { namespace graphics { namespace gl {
 
     return "\0";
   }
+
+#else
+
+const char8* GetErrorString(GLenum a_errorCode)
+{
+  return reinterpret_cast<const char*>(gluErrorString(a_errorCode));
+}
+
+#endif
+
 
   //------------------------------------------------------------------------
   // Error

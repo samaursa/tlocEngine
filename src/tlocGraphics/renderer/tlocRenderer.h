@@ -77,7 +77,7 @@ namespace tloc { namespace graphics {
     typedef Renderer_T<platform_type>   this_type;
     typedef RendererBase<this_type>     base_type;
 
-    typedef typename base_type::error_type  error_type;
+    TLOC_COMPILER_TYPEDEF(base_type::error_type, error_type);
 
   public:
     using base_type::Initialize;

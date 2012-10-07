@@ -12,6 +12,17 @@
 		97CC77071580A6D900764CF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77061580A6D900764CF3 /* UIKit.framework */; };
 		97CC77091580A6D900764CF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77081580A6D900764CF3 /* Foundation.framework */; };
 		97CC770B1580A6D900764CF3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC770A1580A6D900764CF3 /* CoreGraphics.framework */; };
+		97DDC913161F9DF40011DDFD /* tlocImageLoaderTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC912161F9DF40011DDFD /* tlocImageLoaderTest.cpp */; };
+		97DDC917161F9E160011DDFD /* tlocGLObjectTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC914161F9E160011DDFD /* tlocGLObjectTest.cpp */; };
+		97DDC918161F9E160011DDFD /* tlocShaderComponentTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC915161F9E160011DDFD /* tlocShaderComponentTest.cpp */; };
+		97DDC919161F9E160011DDFD /* tlocShaderProgramTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC916161F9E160011DDFD /* tlocShaderProgramTest.cpp */; };
+		97DDC91E161F9E3B0011DDFD /* tlocColorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC91C161F9E3B0011DDFD /* tlocColorTest.cpp */; };
+		97DDC91F161F9E3B0011DDFD /* tlocRectangleTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC91D161F9E3B0011DDFD /* tlocRectangleTest.cpp */; };
+		97DDC922161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC920161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp */; };
+		97DDC923161F9E5F0011DDFD /* tlocWindowTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC921161F9E5F0011DDFD /* tlocWindowTest.cpp */; };
+		97DDC927161F9E800011DDFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC924161F9E800011DDFD /* main.cpp */; };
+		97DDC928161F9E800011DDFD /* tlocTestCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DDC925161F9E800011DDFD /* tlocTestCommon.cpp */; };
+		97DDC92B161FD36B0011DDFD /* resources in Resources */ = {isa = PBXBuildFile; fileRef = 97DDC92A161FD36B0011DDFD /* resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +32,18 @@
 		97CC77061580A6D900764CF3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		97CC77081580A6D900764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97CC770A1580A6D900764CF3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		97DDC912161F9DF40011DDFD /* tlocImageLoaderTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocImageLoaderTest.cpp; path = ../../../../src/tlocTests/graphics/tlocImageLoaderTest.cpp; sourceTree = "<group>"; };
+		97DDC914161F9E160011DDFD /* tlocGLObjectTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGLObjectTest.cpp; path = ../../../../src/tlocTests/graphics/tlocGLObjectTest.cpp; sourceTree = "<group>"; };
+		97DDC915161F9E160011DDFD /* tlocShaderComponentTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocShaderComponentTest.cpp; path = ../../../../src/tlocTests/graphics/tlocShaderComponentTest.cpp; sourceTree = "<group>"; };
+		97DDC916161F9E160011DDFD /* tlocShaderProgramTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocShaderProgramTest.cpp; path = ../../../../src/tlocTests/graphics/tlocShaderProgramTest.cpp; sourceTree = "<group>"; };
+		97DDC91C161F9E3B0011DDFD /* tlocColorTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocColorTest.cpp; path = ../../../../src/tlocTests/graphics/tlocColorTest.cpp; sourceTree = "<group>"; };
+		97DDC91D161F9E3B0011DDFD /* tlocRectangleTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRectangleTest.cpp; path = ../../../../src/tlocTests/graphics/tlocRectangleTest.cpp; sourceTree = "<group>"; };
+		97DDC920161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGraphicsModesTest.cpp; path = ../../../../src/tlocTests/graphics/tlocGraphicsModesTest.cpp; sourceTree = "<group>"; };
+		97DDC921161F9E5F0011DDFD /* tlocWindowTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocWindowTest.cpp; path = ../../../../src/tlocTests/graphics/tlocWindowTest.cpp; sourceTree = "<group>"; };
+		97DDC924161F9E800011DDFD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../src/tlocTests/graphics/main.cpp; sourceTree = "<group>"; };
+		97DDC925161F9E800011DDFD /* tlocTestCommon.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocTestCommon.cpp; path = ../../../../src/tlocTests/graphics/tlocTestCommon.cpp; sourceTree = "<group>"; };
+		97DDC926161F9E800011DDFD /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../../src/tlocTests/graphics/tlocTestCommon.h; sourceTree = "<group>"; };
+		97DDC92A161FD36B0011DDFD /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = resources; path = ../../../../resources; sourceTree = "<group>"; };
 		97E494AD15DE6D7600F8DE7F /* tlocGraphicsTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "tlocGraphicsTest-Info.plist"; path = "SupportingFiles/tlocGraphicsTest-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,6 +66,11 @@
 		97C87BE315DE3DC500FE0A6C /* tlocGraphicsTest */ = {
 			isa = PBXGroup;
 			children = (
+				97DDC90A161F8BA80011DDFD /* Graphics */,
+				97DDC92A161FD36B0011DDFD /* resources */,
+				97DDC924161F9E800011DDFD /* main.cpp */,
+				97DDC925161F9E800011DDFD /* tlocTestCommon.cpp */,
+				97DDC926161F9E800011DDFD /* tlocTestCommon.h */,
 				97C87D4F15DE51FD00FE0A6C /* Supporting Files */,
 			);
 			name = tlocGraphicsTest;
@@ -83,6 +111,45 @@
 				97CC770A1580A6D900764CF3 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97DDC90A161F8BA80011DDFD /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				97DDC90E161F9CF40011DDFD /* media */,
+				97DDC90D161F9CED0011DDFD /* opengl */,
+				97DDC90C161F9CE10011DDFD /* types */,
+				97DDC920161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp */,
+				97DDC921161F9E5F0011DDFD /* tlocWindowTest.cpp */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		97DDC90C161F9CE10011DDFD /* types */ = {
+			isa = PBXGroup;
+			children = (
+				97DDC91C161F9E3B0011DDFD /* tlocColorTest.cpp */,
+				97DDC91D161F9E3B0011DDFD /* tlocRectangleTest.cpp */,
+			);
+			name = types;
+			sourceTree = "<group>";
+		};
+		97DDC90D161F9CED0011DDFD /* opengl */ = {
+			isa = PBXGroup;
+			children = (
+				97DDC914161F9E160011DDFD /* tlocGLObjectTest.cpp */,
+				97DDC915161F9E160011DDFD /* tlocShaderComponentTest.cpp */,
+				97DDC916161F9E160011DDFD /* tlocShaderProgramTest.cpp */,
+			);
+			name = opengl;
+			sourceTree = "<group>";
+		};
+		97DDC90E161F9CF40011DDFD /* media */ = {
+			isa = PBXGroup;
+			children = (
+				97DDC912161F9DF40011DDFD /* tlocImageLoaderTest.cpp */,
+			);
+			name = media;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +202,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97DDC92B161FD36B0011DDFD /* resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +213,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97DDC913161F9DF40011DDFD /* tlocImageLoaderTest.cpp in Sources */,
+				97DDC917161F9E160011DDFD /* tlocGLObjectTest.cpp in Sources */,
+				97DDC918161F9E160011DDFD /* tlocShaderComponentTest.cpp in Sources */,
+				97DDC919161F9E160011DDFD /* tlocShaderProgramTest.cpp in Sources */,
+				97DDC91E161F9E3B0011DDFD /* tlocColorTest.cpp in Sources */,
+				97DDC91F161F9E3B0011DDFD /* tlocRectangleTest.cpp in Sources */,
+				97DDC922161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp in Sources */,
+				97DDC923161F9E5F0011DDFD /* tlocWindowTest.cpp in Sources */,
+				97DDC927161F9E800011DDFD /* main.cpp in Sources */,
+				97DDC928161F9E800011DDFD /* tlocTestCommon.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

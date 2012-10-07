@@ -130,6 +130,19 @@
 # error WIP
 #endif
 
+
+  //------------------------------------------------------------------------
+  // Typedef fix for compilers
+  // This fix is temporary until we can figure out a way to remove typename
+  // limitations from VS
+#if defined(_MSC_VER)
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef _type_ _alias_
+#else // For GCC and Clang
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef typename _type_ _alias_
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // Exceptions
 

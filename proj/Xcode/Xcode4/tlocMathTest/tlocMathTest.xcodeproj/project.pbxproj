@@ -12,6 +12,18 @@
 		97CC77071580A6D900764CF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77061580A6D900764CF3 /* UIKit.framework */; };
 		97CC77091580A6D900764CF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77081580A6D900764CF3 /* Foundation.framework */; };
 		97CC770B1580A6D900764CF3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC770A1580A6D900764CF3 /* CoreGraphics.framework */; };
+		97F90629161D0EA000BD8A39 /* tlocMatrix2Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90625161D0EA000BD8A39 /* tlocMatrix2Test.cpp */; };
+		97F9062A161D0EA000BD8A39 /* tlocMatrix3Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90626161D0EA000BD8A39 /* tlocMatrix3Test.cpp */; };
+		97F9062B161D0EA000BD8A39 /* tlocMatrix4Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90627161D0EA000BD8A39 /* tlocMatrix4Test.cpp */; };
+		97F9062C161D0EA000BD8A39 /* tlocMatrixTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90628161D0EA000BD8A39 /* tlocMatrixTest.cpp */; };
+		97F90631161D0EB600BD8A39 /* tlocVector2Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F9062D161D0EB600BD8A39 /* tlocVector2Test.cpp */; };
+		97F90632161D0EB600BD8A39 /* tlocVector3Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F9062E161D0EB600BD8A39 /* tlocVector3Test.cpp */; };
+		97F90633161D0EB600BD8A39 /* tlocVector4Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F9062F161D0EB600BD8A39 /* tlocVector4Test.cpp */; };
+		97F90634161D0EB600BD8A39 /* tlocVectorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90630161D0EB600BD8A39 /* tlocVectorTest.cpp */; };
+		97F90636161D0EDF00BD8A39 /* tlocMathTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90635161D0EDF00BD8A39 /* tlocMathTest.cpp */; };
+		97F9063B161D0F3200BD8A39 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90637161D0F3200BD8A39 /* main.cpp */; };
+		97F9063C161D0F3200BD8A39 /* tlocAngleTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90638161D0F3200BD8A39 /* tlocAngleTest.cpp */; };
+		97F9063D161D0F3200BD8A39 /* tlocTestCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90639161D0F3200BD8A39 /* tlocTestCommon.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +34,19 @@
 		97CC77081580A6D900764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97CC770A1580A6D900764CF3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		97E494AD15DE6D7600F8DE7F /* tlocMathTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "tlocMathTest-Info.plist"; path = "SupportingFiles/tlocMathTest-Info.plist"; sourceTree = "<group>"; };
+		97F90625161D0EA000BD8A39 /* tlocMatrix2Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix2Test.cpp; path = ../../../../src/tlocTests/math/tlocMatrix2Test.cpp; sourceTree = "<group>"; };
+		97F90626161D0EA000BD8A39 /* tlocMatrix3Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix3Test.cpp; path = ../../../../src/tlocTests/math/tlocMatrix3Test.cpp; sourceTree = "<group>"; };
+		97F90627161D0EA000BD8A39 /* tlocMatrix4Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix4Test.cpp; path = ../../../../src/tlocTests/math/tlocMatrix4Test.cpp; sourceTree = "<group>"; };
+		97F90628161D0EA000BD8A39 /* tlocMatrixTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrixTest.cpp; path = ../../../../src/tlocTests/math/tlocMatrixTest.cpp; sourceTree = "<group>"; };
+		97F9062D161D0EB600BD8A39 /* tlocVector2Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector2Test.cpp; path = ../../../../src/tlocTests/math/tlocVector2Test.cpp; sourceTree = "<group>"; };
+		97F9062E161D0EB600BD8A39 /* tlocVector3Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector3Test.cpp; path = ../../../../src/tlocTests/math/tlocVector3Test.cpp; sourceTree = "<group>"; };
+		97F9062F161D0EB600BD8A39 /* tlocVector4Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector4Test.cpp; path = ../../../../src/tlocTests/math/tlocVector4Test.cpp; sourceTree = "<group>"; };
+		97F90630161D0EB600BD8A39 /* tlocVectorTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVectorTest.cpp; path = ../../../../src/tlocTests/math/tlocVectorTest.cpp; sourceTree = "<group>"; };
+		97F90635161D0EDF00BD8A39 /* tlocMathTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMathTest.cpp; path = ../../../../src/tlocTests/math/tlocMathTest.cpp; sourceTree = "<group>"; };
+		97F90637161D0F3200BD8A39 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../src/tlocTests/math/main.cpp; sourceTree = "<group>"; };
+		97F90638161D0F3200BD8A39 /* tlocAngleTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAngleTest.cpp; path = ../../../../src/tlocTests/math/tlocAngleTest.cpp; sourceTree = "<group>"; };
+		97F90639161D0F3200BD8A39 /* tlocTestCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTestCommon.cpp; path = ../../../../src/tlocTests/math/tlocTestCommon.cpp; sourceTree = "<group>"; };
+		97F9063A161D0F3200BD8A39 /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../../src/tlocTests/math/tlocTestCommon.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +68,11 @@
 		97C87BE315DE3DC500FE0A6C /* tlocMathTest */ = {
 			isa = PBXGroup;
 			children = (
+				97F90621161D0E7500BD8A39 /* Math */,
+				97F90637161D0F3200BD8A39 /* main.cpp */,
+				97F90638161D0F3200BD8A39 /* tlocAngleTest.cpp */,
+				97F90639161D0F3200BD8A39 /* tlocTestCommon.cpp */,
+				97F9063A161D0F3200BD8A39 /* tlocTestCommon.h */,
 				97C87D4F15DE51FD00FE0A6C /* Supporting Files */,
 			);
 			name = tlocMathTest;
@@ -83,6 +113,38 @@
 				97CC770A1580A6D900764CF3 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97F90621161D0E7500BD8A39 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				97F90624161D0E8400BD8A39 /* matrix */,
+				97F90623161D0E7F00BD8A39 /* vector */,
+				97F90635161D0EDF00BD8A39 /* tlocMathTest.cpp */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		97F90623161D0E7F00BD8A39 /* vector */ = {
+			isa = PBXGroup;
+			children = (
+				97F9062D161D0EB600BD8A39 /* tlocVector2Test.cpp */,
+				97F9062E161D0EB600BD8A39 /* tlocVector3Test.cpp */,
+				97F9062F161D0EB600BD8A39 /* tlocVector4Test.cpp */,
+				97F90630161D0EB600BD8A39 /* tlocVectorTest.cpp */,
+			);
+			name = vector;
+			sourceTree = "<group>";
+		};
+		97F90624161D0E8400BD8A39 /* matrix */ = {
+			isa = PBXGroup;
+			children = (
+				97F90625161D0EA000BD8A39 /* tlocMatrix2Test.cpp */,
+				97F90626161D0EA000BD8A39 /* tlocMatrix3Test.cpp */,
+				97F90627161D0EA000BD8A39 /* tlocMatrix4Test.cpp */,
+				97F90628161D0EA000BD8A39 /* tlocMatrixTest.cpp */,
+			);
+			name = matrix;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +207,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97F90629161D0EA000BD8A39 /* tlocMatrix2Test.cpp in Sources */,
+				97F9062A161D0EA000BD8A39 /* tlocMatrix3Test.cpp in Sources */,
+				97F9062B161D0EA000BD8A39 /* tlocMatrix4Test.cpp in Sources */,
+				97F9062C161D0EA000BD8A39 /* tlocMatrixTest.cpp in Sources */,
+				97F90631161D0EB600BD8A39 /* tlocVector2Test.cpp in Sources */,
+				97F90632161D0EB600BD8A39 /* tlocVector3Test.cpp in Sources */,
+				97F90633161D0EB600BD8A39 /* tlocVector4Test.cpp in Sources */,
+				97F90634161D0EB600BD8A39 /* tlocVectorTest.cpp in Sources */,
+				97F90636161D0EDF00BD8A39 /* tlocMathTest.cpp in Sources */,
+				97F9063B161D0F3200BD8A39 /* main.cpp in Sources */,
+				97F9063C161D0F3200BD8A39 /* tlocAngleTest.cpp in Sources */,
+				97F9063D161D0F3200BD8A39 /* tlocTestCommon.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -85,7 +85,7 @@ namespace tloc { namespace input {
 
   //------------------------------------------------------------------------
   // Force instantiate the constructor for each platform
-#if defined(TLOC_OS_WINDOW)
+#if defined(TLOC_OS_WIN)
   template Keyboard<InputPolicy::Buffered>::Keyboard(const windows_keyboard_param_type&);
   template Keyboard<InputPolicy::Immediate>::Keyboard(const windows_keyboard_param_type&);
 #elif defined (TLOC_OS_IPHONE)

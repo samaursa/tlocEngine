@@ -19,6 +19,7 @@ namespace tloc { namespace core { namespace io {
 
   Path::Path(const char* a_path) : m_path(a_path)
   {
+    TLOC_ASSERT(!m_path.empty(), "Path string is empty!");
     DoFixPath();
   }
 

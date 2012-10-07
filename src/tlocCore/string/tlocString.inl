@@ -343,8 +343,11 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I void StringBase<STRING_BASE_PARAMS>::clear()
   {
-    *m_begin = T(0);
-    m_end   = m_begin;
+    if (!empty())
+    {
+      *m_begin = T(0);
+      m_end   = m_begin;
+    }
   }
 
   template <STRING_BASE_TYPES>

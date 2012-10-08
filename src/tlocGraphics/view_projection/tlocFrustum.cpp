@@ -7,7 +7,6 @@ namespace tloc { namespace graphics { namespace view_projection {
   // Params
 
   Frustum::Params::Params()
-    : m_FOVy(0.0f), m_FOVx(0.0f)
   { }
 
   Frustum::Params& Frustum::Params::SetNear(real_type a_near)

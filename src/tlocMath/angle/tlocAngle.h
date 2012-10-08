@@ -15,13 +15,17 @@ namespace tloc { namespace math {
     typedef T_Derived   derived_type;
     typedef Angle_T     this_type;
 
-    //Angle_T(value_type a_angle = 0);
+    Angle_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
     Angle_T(T_AngleType a_angle)
     {
       typedef Loki::TypeTraits<T_AngleType>                 unknown_type;
       typedef Loki::Int2Type<unknown_type::isFundamental>   resolved_angle_type;
+
+      TLOC_STATIC_ASSERT( (resolved_angle_type::value ||
+        Loki::Conversion<T_AngleType, this_type>::exists2Way),
+        Unsupported_type_passed_ctor_only_supports_integral_types_and_angles);
 
       DoSetAngleCtor(a_angle, resolved_angle_type() );
     }
@@ -98,7 +102,7 @@ namespace tloc { namespace math {
     using base_type::m_angle;
 
   public:
-    //Radian_T(value_type a_angle = 0);
+    Radian_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
     Radian_T(T_AngleType a_angle) : base_type(a_angle)
@@ -154,7 +158,7 @@ namespace tloc { namespace math {
     using base_type::m_angle;
 
   public:
-    //Degree_T(value_type a_angle = 0);
+    Degree_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
     Degree_T(T_AngleType a_angle) : base_type(a_angle)

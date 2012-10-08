@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace types {
         T_AngleOrientation);
 
     template <typename T_AngleOrientation>
-    FOV(const right_tri_type& a_rightAngledTriangle, ar_type a_ratio,
+    FOV(const right_tri_type& a_rightTriangle, ar_type a_ratio,
         T_AngleOrientation);
 
     template <typename T_AngleOrientation>

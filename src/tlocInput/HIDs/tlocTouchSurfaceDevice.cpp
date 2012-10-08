@@ -109,7 +109,7 @@ namespace tloc { namespace input { namespace priv {
     buffered_elem_type bufferedElem(buffered_elem_type::begin,
                                     a_touchHandle, a_x, a_y);
     DoPushBackBufferedElement(bufferedElem);
-    DoUpdateTouch(bufferedElem);
+    DoPushBackTouch(bufferedElem.m_event);
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -119,7 +119,11 @@ namespace tloc { namespace input { namespace priv {
     buffered_elem_type bufferedElem(buffered_elem_type::end,
                                     a_touchHandle, a_x, a_y);
     DoPushBackBufferedElement(bufferedElem);
-    DoUpdateTouch(bufferedElem);
+
+    const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
+    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
+
+    DoEraseTouch(itr);
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -129,7 +133,12 @@ namespace tloc { namespace input { namespace priv {
     buffered_elem_type bufferedElem(buffered_elem_type::move,
                                     a_touchHandle, a_x, a_y);
     DoPushBackBufferedElement(bufferedElem);
-    DoUpdateTouch(bufferedElem);
+
+    const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
+    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
+
+    (*itr).m_X.m_abs() = a_x;
+    (*itr).m_Y.m_abs() = a_y;
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -142,7 +151,7 @@ namespace tloc { namespace input { namespace priv {
   void TouchSurfaceDeviceBuffered::Reset()
   {
     m_bufferTouches.clear();
-    DoClear();
+    //DoClear();
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -193,41 +202,53 @@ namespace tloc { namespace input { namespace priv {
     SendOnTouchBegin(touch_handle_type a_touchHandle,
                      tl_float a_x, tl_float a_y)
   {
-    TouchSurfaceEvent event(a_touchHandle);
+    const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
 
-    event.m_X.m_abs() = a_x;
-    event.m_Y.m_abs() = a_y;
-
-    base_type::DoPushBackTouch(event);
+    if (itr == GetCurrentTouches().end())
+    {
+      TouchSurfaceEvent event(a_touchHandle, a_x, a_y);
+      DoPushBackTouch(event);
+    }
+    else
+    {
+      (*itr).m_X.m_abs() = a_x;
+      (*itr).m_Y.m_abs() = a_y;
+    }
   }
 
   void TouchSurfaceDeviceImmediate::
     SendOnTouchEnd(touch_handle_type a_touchHandle, tl_float a_x, tl_float a_y)
   {
-    const touch_container_type::iterator itr = base_type::DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be erased! (not found)");
-
-    base_type::DoEraseTouch(itr);
+    // Does nothing in immediate mode
   }
 
   void TouchSurfaceDeviceImmediate::
     SendOnTouchMove(touch_handle_type a_touchHandle, tl_float a_x, tl_float a_y)
   {
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
 
-    (*itr).m_X.m_abs() = a_x;
-    (*itr).m_Y.m_abs() = a_y;
+    if (itr == GetCurrentTouches().end())
+    {
+      TouchSurfaceEvent event(a_touchHandle, a_x, a_y);
+      DoPushBackTouch(event);
+    }
+    else
+    {
+      (*itr).m_X.m_abs() = a_x;
+      (*itr).m_Y.m_abs() = a_y;
+    }
+
   }
 
   void TouchSurfaceDeviceImmediate::
     SendOnTouchCancel(touch_handle_type a_touchHandle, tl_float a_x, tl_float a_y)
   {
-    SendOnTouchEnd(a_touchHandle, a_x, a_y);
+    // Does nothing in immediate mode
   }
 
   void TouchSurfaceDeviceImmediate::Reset()
   {
+    DoClear();
   }
 
 };};};

@@ -20,6 +20,7 @@ namespace tloc { namespace graphics { namespace types {
     enum { left = 0, right, top, bottom }; typedef size_type  side_type;
 
   public:
+    Rectangle(value_type a_halfWidth, value_type a_halfHeight);
     Rectangle(value_type a_left = 0, value_type a_right = 0,
               value_type a_top = 0, value_type a_bottom = 0);
 

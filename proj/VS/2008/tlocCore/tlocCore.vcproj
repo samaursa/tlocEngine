@@ -1159,6 +1159,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="strong_type"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="time"

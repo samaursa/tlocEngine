@@ -23,10 +23,6 @@ namespace tloc { namespace math {
       typedef Loki::TypeTraits<T_AngleType>                 unknown_type;
       typedef Loki::Int2Type<unknown_type::isFundamental>   resolved_angle_type;
 
-      TLOC_STATIC_ASSERT( (resolved_angle_type::value ||
-        Loki::Conversion<T_AngleType, this_type>::exists2Way),
-        Unsupported_type_passed_ctor_only_supports_integral_types_and_angles);
-
       DoSetAngleCtor(a_angle, resolved_angle_type() );
     }
 
@@ -37,8 +33,8 @@ namespace tloc { namespace math {
     this_type&    operator=(const T_AngleType& a_angle);
 
     template <typename T_AngleType>
-    value_type    GetAngleAs() const;
-    TLOC_DECL_AND_DEF_GETTER(value_type, GetAngle, m_angle);
+    value_type    GetAs() const;
+    TLOC_DECL_AND_DEF_GETTER(value_type, Get, m_angle);
 
     this_type   operator+  (this_type a_other) const;
     this_type&  operator+= (this_type a_other) ;
@@ -97,8 +93,8 @@ namespace tloc { namespace math {
     using base_type::operator<=;
     using base_type::operator>=;
 
-    using base_type::GetAngleAs;
-    using base_type::GetAngle;
+    using base_type::GetAs;
+    using base_type::Get;
     using base_type::m_angle;
 
   public:
@@ -153,8 +149,8 @@ namespace tloc { namespace math {
     using base_type::operator<=;
     using base_type::operator>=;
 
-    using base_type::GetAngleAs;
-    using base_type::GetAngle;
+    using base_type::GetAs;
+    using base_type::Get;
     using base_type::m_angle;
 
   public:

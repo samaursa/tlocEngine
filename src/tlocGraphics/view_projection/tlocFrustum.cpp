@@ -6,8 +6,11 @@ namespace tloc { namespace graphics { namespace view_projection {
   //------------------------------------------------------------------------
   // Params
 
-  Frustum::Params::Params()
-  { }
+  Frustum::Params::Params(const fov_type& a_fov)
+    : m_fov(a_fov)
+  {
+    m_aspectRatio = m_fov.GetAspectRatio();
+  }
 
   Frustum::Params& Frustum::Params::SetNear(real_type a_near)
   {
@@ -21,26 +24,16 @@ namespace tloc { namespace graphics { namespace view_projection {
     return *this;
   }
 
-  Frustum::Params& Frustum::Params::SetAspectRatio(ar_type a_ar)
-  {
-    m_aspectRatio = a_ar;
-    return *this;
-  }
-
-  Frustum::Params& Frustum::Params::SetFOVy(angle_type a_angle)
-  {
-    //m_FOVy = a_angle;
-    m_FOVx = 2.0f * Math<real_type>::ATan
-      (Math<real_type>::Tan(a_angle.GetAngleAs<math::Radian>() / 2.0f) * m_aspectRatio.Get());
-    return *this;
-  }
-
   //------------------------------------------------------------------------
   // Frustum
 
   Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
-    : m_projMatrix(0)
+    : m_projMatrix(0),
+    m_params(types::FOV(math::Degree(90.0f), ar_type(), types::p_FOV::horizontal() ))
   {
+    using namespace types;
+    using namespace math::utils;
+
     real_type top		 = a_rect.GetCoord(rect_type::top);
     real_type bottom = a_rect.GetCoord(rect_type::bottom);
     real_type left	 = a_rect.GetCoord(rect_type::left);
@@ -49,11 +42,16 @@ namespace tloc { namespace graphics { namespace view_projection {
     DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
 
-    //real_type width = Math<real_type>::Abs(right - left);
-    //real_type height = Math<real_type>::Abs(top - bottom);
+    ar_type::width width(Math<real_type>::Abs(right - left));
+    ar_type::height height(Math<real_type>::Abs(top - bottom));
 
-    //m_params.SetAspectRatio(ar_type(width, height)).
-    //  SetNear(a_near).SetFar(a_far).SetFOVy(
+    Pythagoras pythHalfAngle(Pythagoras::base(a_near),
+                             Pythagoras::opposite(right));
+    ar_type    ar(width, height);
+
+    m_params = Params(FOV(pythHalfAngle, ar, p_FOV::horizontal() ));
+    m_params.SetNear(a_near).SetFar(a_far);
+
   }
 
   Frustum::Frustum(const Params& a_params)

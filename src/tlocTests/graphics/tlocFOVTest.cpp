@@ -15,14 +15,21 @@ namespace TestingColor
 
     { // horizontal to vertical
       FOV f(math::Degree(90.0f), ar, p_FOV::horizontal() );
-      CHECK(f.GetFOV(p_FOV::horizontal()).GetAngleAs<math::Degree>() == Approx(90.0f));
-      CHECK(f.GetFOV(p_FOV::vertical()).GetAngleAs<math::Degree>() == Approx(58.715f));
+      CHECK(f.GetFOV<p_FOV::horizontal>().GetAs<math::Degree>() == Approx(90.0f));
+      CHECK(f.GetFOV<p_FOV::vertical>().GetAs<math::Degree>() == Approx(58.715f));
     }
 
     { // vertical to horizontal
       FOV f(math::Degree(36.0f), ar, p_FOV::vertical() );
-      CHECK(f.GetFOV(p_FOV::vertical()).GetAngleAs<math::Degree>() == Approx(36.0f));
-      CHECK(f.GetFOV(p_FOV::horizontal()).GetAngleAs<math::Degree>() == Approx(60.024f));
+      CHECK(f.GetFOV<p_FOV::vertical>().GetAs<math::Degree>() == Approx(36.0f));
+      CHECK(f.GetFOV<p_FOV::horizontal>().GetAs<math::Degree>() == Approx(60.024f));
+    }
+
+    {
+      using namespace math::utils;
+      Pythagoras pyth(Pythagoras::base(5), Pythagoras::opposite(5));
+      FOV f(pyth, types::AspectRatio(), p_FOV::horizontal() );
+      CHECK(f.GetFOV<p_FOV::vertical>().GetAs<math::Degree>() == Approx(pyth.GetAngle().Get() ) );
     }
   }
 };

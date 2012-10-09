@@ -5,19 +5,19 @@
 
 #if defined(TLOC_OS_WIN)
 
-const char* GetResourcePath()
+const char* GetAssetPath()
 {
-  static const char* resourcePath = "../../../../../resources/";
-  return resourcePath;
+  static const char* assetPath = "../../../../../assets/";
+  return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)
-const char* GetResourcePath()
+const char* GetAssetPath()
 {
-  static char resourcePath[1024];
-  strcpy(resourcePath, [[[NSBundle mainBundle] resourcePath]
+  static char assetPath[1024];
+  strcpy(assetPath, [[[NSBundle mainBundle] resourcePath]
                         cStringUsingEncoding:[NSString defaultCStringEncoding]]);
-  strcat(resourcePath, "/resources/");
+  strcat(assetPath, "/assets/");
 
-  return resourcePath;
+  return assetPath;
 }
 #endif

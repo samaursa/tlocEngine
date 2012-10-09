@@ -30,7 +30,7 @@ namespace tloc { namespace graphics { namespace types {
         T_AngleOrientation);
 
     template <typename T_AngleOrientation>
-    angle_type  GetFOV() const;
+    angle_type  Get() const;
 
     TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);
 

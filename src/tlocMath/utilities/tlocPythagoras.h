@@ -2,6 +2,7 @@
 #define _TLOC_MATH_UTILS_PYTHAGORAS_H_
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocMath/angle/tlocAngle.h>
@@ -14,6 +15,8 @@ namespace tloc { namespace math { namespace utils {
   public:
     typedef T                           value_type;
     typedef math::Degree_T<value_type>  angle_type;
+    typedef Pythagoras_T<value_type>    this_type;
+    typedef core::Tuple<value_type, 3>  cont_type;
 
     typedef core::types::StrongType_T<value_type, 0> base;
     typedef core::types::StrongType_T<value_type, 1> opposite;
@@ -33,12 +36,14 @@ namespace tloc { namespace math { namespace utils {
     template <typename T_TriSide>
     Pythagoras_T(angle_type a_angle, T_TriSide a_side);
 
+    Pythagoras_T(const this_type& a_other);
+
     angle_type GetAngle() const;
     angle_type GetAngleOpposite() const;
 
-    TLOC_DECL_AND_DEF_GETTER(value_type, GetBase, m_base);
-    TLOC_DECL_AND_DEF_GETTER(value_type, GetOpposite, m_oppos);
-    TLOC_DECL_AND_DEF_GETTER(value_type, GetHypotenuse, m_hypo);
+    template <typename T_Side>
+    value_type GetSide()
+    { return m_sides[T_Side::k_index]; }
 
   private:
 
@@ -53,7 +58,7 @@ namespace tloc { namespace math { namespace utils {
     void DoSet(angle_type, opposite);
     void DoSet(angle_type, hypotenuse);
 
-    value_type m_base, m_oppos, m_hypo;
+    cont_type m_sides;
 
   };
 

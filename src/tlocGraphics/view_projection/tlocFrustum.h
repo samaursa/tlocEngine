@@ -10,7 +10,7 @@
 #include <tlocGraphics/data_types/tlocAspectRatio.h>
 #include <tlocGraphics/data_types/tlocFOV.h>
 
-namespace tloc { namespace graphics { namespace view_projection {
+namespace tloc { namespace graphics { namespace view_proj {
 
   namespace p_frustum
   {
@@ -46,12 +46,14 @@ namespace tloc { namespace graphics { namespace view_projection {
     typedef math::Radian                                angle_type;
     typedef types::FOV                                  fov_type;
     typedef types::AspectRatio                          ar_type;
+    typedef math::Matrix4<real_type>                    matrix_type;
 
   public:
     struct Params
     {
       Params(const fov_type& a_fov);
       Params(const Params& a_other);
+
       Params&   SetNear(real_type a_near);
       Params&   SetFar(real_type a_far);
 
@@ -75,6 +77,8 @@ namespace tloc { namespace graphics { namespace view_projection {
 
     void BuildFrustum();
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
+                                          GetProjectionMatrix, m_projMatrix);
 
   private:
     typedef core::Variadic<real_type, Planes::k_count> plane_args;
@@ -84,7 +88,7 @@ namespace tloc { namespace graphics { namespace view_projection {
 
     Params                        m_params;
     cont_type                     m_planes;
-    math::Matrix4<real_type>      m_projMatrix;
+    matrix_type                   m_projMatrix;
   };
 
 };};};

@@ -1,5 +1,6 @@
 #include "tlocPythagoras.h"
 
+#include <tlocCore/data_structures/tlocTuple.inl>
 #include <tlocMath/tlocMath.h>
 #include <cmath>
 
@@ -42,10 +43,17 @@ namespace tloc { namespace math { namespace utils {
   }
 
   template <PYTHAGORAS_TEMP>
+  Pythagoras_T<PYTHAGORAS_PARAMS>::
+    Pythagoras_T(const this_type& a_other)
+    : m_sides(a_other.m_sides)
+  { }
+
+  template <PYTHAGORAS_TEMP>
   PYTHAGORAS_TYPE::angle_type
     Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngle() const
   {
-    return Math<value_type>::ACos(m_base / m_hypo);
+    return Math<value_type>::ACos(m_sides[base::k_index] /
+                                  m_sides[hypotenuse::k_index]);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -61,9 +69,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(base a_base, opposite a_oppos)
   {
-    m_base = a_base;
-    m_oppos = a_oppos;
-    m_hypo = GetHypo<value_type>(a_base, a_oppos);
+    m_sides[base::k_index]        = a_base;
+    m_sides[opposite::k_index]    = a_oppos;
+    m_sides[hypotenuse::k_index]  = GetHypo<value_type>(a_base, a_oppos);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -75,9 +83,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(base a_base, hypotenuse a_hypo)
   {
-    m_base = a_base;
-    m_hypo = a_hypo;
-    m_oppos = GetOther<value_type>(a_hypo, a_base);
+    m_sides[base::k_index]        = a_base;
+    m_sides[hypotenuse::k_index]  = a_hypo;
+    m_sides[opposite::k_index]    = GetOther<value_type>(a_hypo, a_base);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -89,9 +97,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(opposite a_oppos, hypotenuse a_hypo)
   {
-    m_oppos = a_oppos;
-    m_hypo = a_hypo;
-    m_base = GetOther<value_type>(a_hypo, a_oppos);
+    m_sides[opposite::k_index]    = a_oppos;
+    m_sides[hypotenuse::k_index]  = a_hypo;
+    m_sides[base::k_index] = GetOther<value_type>(a_hypo, a_oppos);
   }
 
   template <PYTHAGORAS_TEMP>

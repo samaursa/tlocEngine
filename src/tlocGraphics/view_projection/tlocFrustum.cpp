@@ -1,7 +1,7 @@
 #include "tlocFrustum.h"
 #include <tlocCore/data_structures/tlocTuple.inl>
 
-namespace tloc { namespace graphics { namespace view_projection {
+namespace tloc { namespace graphics { namespace view_proj {
 
   //------------------------------------------------------------------------
   // Params
@@ -11,6 +11,13 @@ namespace tloc { namespace graphics { namespace view_projection {
   {
     m_aspectRatio = m_fov.GetAspectRatio();
   }
+
+  Frustum::Params::Params(const Params& a_other)
+    : m_near(a_other.m_near)
+    , m_far (a_other.m_far)
+    , m_aspectRatio(a_other.m_aspectRatio)
+    , m_fov(a_other.m_fov)
+  { }
 
   Frustum::Params& Frustum::Params::SetNear(real_type a_near)
   {
@@ -28,8 +35,9 @@ namespace tloc { namespace graphics { namespace view_projection {
   // Frustum
 
   Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
-    : m_projMatrix(0),
-    m_params(types::FOV(math::Degree(90.0f), ar_type(), types::p_FOV::horizontal() ))
+    : m_projMatrix(0)
+    , m_params(types::FOV(math::Degree(90.0f), ar_type(),
+                          types::p_FOV::horizontal()) )
   {
     using namespace types;
     using namespace math::utils;
@@ -45,8 +53,8 @@ namespace tloc { namespace graphics { namespace view_projection {
     ar_type::width width(Math<real_type>::Abs(right - left));
     ar_type::height height(Math<real_type>::Abs(top - bottom));
 
-    Pythagoras pythHalfAngle(Pythagoras::base(a_near),
-                             Pythagoras::opposite(right));
+    Pythagoras pythHalfAngle =
+      Pythagoras( Pythagoras::base(a_near), Pythagoras::opposite(right) );
     ar_type    ar(width, height);
 
     m_params = Params(FOV(pythHalfAngle, ar, p_FOV::horizontal() ));

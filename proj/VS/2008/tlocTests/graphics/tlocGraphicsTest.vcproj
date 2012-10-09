@@ -1033,6 +1033,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="view_projection"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocFrustumTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="resources"

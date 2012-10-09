@@ -3,7 +3,7 @@
 #include <tlocMath/angle/tlocAngle.h>
 #include <tlocGraphics/data_types/tlocFOV.h>
 
-namespace TestingColor
+namespace TestingFOV
 {
   using namespace tloc;
   using namespace tloc::graphics;
@@ -27,9 +27,17 @@ namespace TestingColor
 
     {
       using namespace math::utils;
+      typedef types::AspectRatio ar_type;
+
       Pythagoras pyth(Pythagoras::base(5), Pythagoras::opposite(5));
-      FOV f(pyth, types::AspectRatio(), p_FOV::horizontal() );
-      CHECK(f.GetFOV<p_FOV::vertical>().GetAs<math::Degree>() == Approx(pyth.GetAngle().Get() ) );
+      FOV f(pyth,
+            ar_type(ar_type::width(10), ar_type::height(10)),
+            p_FOV::horizontal() );
+
+      CHECK(f.GetFOV<p_FOV::horizontal>().GetAs<math::Degree>() ==
+            Approx(pyth.GetAngle().Get() ) );
+      CHECK(f.GetFOV<p_FOV::vertical>().GetAs<math::Degree>() ==
+            Approx(pyth.GetAngle().Get() ) );
     }
   }
 };

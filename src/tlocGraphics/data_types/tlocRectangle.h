@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace graphics { namespace types {
@@ -16,19 +17,24 @@ namespace tloc { namespace graphics { namespace types {
     typedef Rectangle<value_type>       this_type;
     typedef core::Tuple<value_type, 2>  point_type;
 
-  public:
-    enum { left = 0, right, top, bottom }; typedef size_type  side_type;
+    typedef core::types::StrongType_T<value_type, 0> left;
+    typedef core::types::StrongType_T<value_type, 1> right;
+    typedef core::types::StrongType_T<value_type, 2> top;
+    typedef core::types::StrongType_T<value_type, 3> bottom;
+    typedef core::types::StrongType_T<value_type, 4> half_width;
+    typedef core::types::StrongType_T<value_type, 5> half_height;
 
   public:
-    Rectangle(value_type a_halfWidth, value_type a_halfHeight);
-    Rectangle(value_type a_left = 0, value_type a_right = 0,
-              value_type a_top = 0, value_type a_bottom = 0);
+    Rectangle(half_width a_w = half_width(0), half_height a_h = half_height(0));
+    Rectangle(left a_l, right a_r, top a_t, bottom a_b);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
-    value_type  GetCoord(side_type a_side) const;
-    void        SetCoord(side_type a_side, value_type a_newCoord);
+    template <typename T_Side>
+    value_type  GetCoord() const;
+    template <typename T_Side>
+    void        SetCoord(value_type a_newCoord);
 
     ///-------------------------------------------------------------------------
     /// @brief May return a negative width if rectangle is invalid
@@ -62,8 +68,29 @@ namespace tloc { namespace graphics { namespace types {
     extents_type  m_extents;
   };
 
-  typedef Rectangle<tl_int>     RectangleInt;
-  typedef Rectangle<tl_float>   RectangleFloat;
+  //------------------------------------------------------------------------
+  // Template definitions
+
+  template <typename T>
+  template <typename T_Side>
+  typename Rectangle<T>::value_type
+    Rectangle<T>::GetCoord() const
+  {
+    return m_extents[T_Side::k_index];
+  }
+
+  template <typename T>
+  template <typename T_Side>
+  void Rectangle<T>::SetCoord(value_type a_newCoord)
+  {
+    m_extents[T_Side::k_index] = a_newCoord;
+  }
+
+  //------------------------------------------------------------------------
+  // Typedefs
+
+  typedef Rectangle<tl_int>     Recti;
+  typedef Rectangle<tl_float>   Rectf;
 
 };};};
 

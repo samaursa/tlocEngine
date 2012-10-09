@@ -74,9 +74,11 @@ namespace tloc { namespace graphics { namespace view_projection {
     ~Frustum();
 
     void BuildFrustum();
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
   private:
     typedef core::Variadic<real_type, Planes::k_count> plane_args;
+
     void DoDefinePlanes(const plane_args& a_vars);
     void DoBuildFrustumFromPlanes();
 

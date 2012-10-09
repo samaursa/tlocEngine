@@ -34,10 +34,10 @@ namespace tloc { namespace graphics { namespace view_projection {
     using namespace types;
     using namespace math::utils;
 
-    real_type top		 = a_rect.GetCoord(rect_type::top);
-    real_type bottom = a_rect.GetCoord(rect_type::bottom);
-    real_type left	 = a_rect.GetCoord(rect_type::left);
-    real_type right	 = a_rect.GetCoord(rect_type::right);
+    real_type top		 = a_rect.GetCoord<rect_type::top>();
+    real_type bottom = a_rect.GetCoord<rect_type::bottom>();
+    real_type left	 = a_rect.GetCoord<rect_type::left>();
+    real_type right	 = a_rect.GetCoord<rect_type::right>();
 
     DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
@@ -51,7 +51,6 @@ namespace tloc { namespace graphics { namespace view_projection {
 
     m_params = Params(FOV(pythHalfAngle, ar, p_FOV::horizontal() ));
     m_params.SetNear(a_near).SetFar(a_far);
-
   }
 
   Frustum::Frustum(const Params& a_params)
@@ -66,6 +65,14 @@ namespace tloc { namespace graphics { namespace view_projection {
 
   Frustum::~Frustum()
   { }
+
+  void Frustum::BuildFrustum()
+  {
+    DoBuildFrustumFromPlanes();
+  }
+
+  //------------------------------------------------------------------------
+  // Helper functions
 
   void Frustum::DoDefinePlanes(const plane_args& a_vars)
   {
@@ -93,7 +100,7 @@ namespace tloc { namespace graphics { namespace view_projection {
                             m_planes[p::k_near])) * FminNReci;
     m_projMatrix(3, 2) = -1;
     m_projMatrix(2, 3) = -2 * m_planes[Planes::k_far] *
-                          m_planes[Planes::k_near] * FminNReci;
+                              m_planes[Planes::k_near] * FminNReci;
   }
 
   //------------------------------------------------------------------------

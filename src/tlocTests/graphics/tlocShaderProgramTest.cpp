@@ -8,28 +8,34 @@
 namespace TestingShaderProgram
 {
   const char* vShaderStr =
-"#version 100                       \n\
-                                    \n\
-attribute vec4 vVertex;             \n\
-attribute vec4 vColor;              \n\
-                                    \n\
-varying lowp vec4 vVaryingColor;    \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-  vVaryingColor = vColor;           \n\
-  gl_Position   = vVertex;          \n\
-}";
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 120                     \n\
+                                        \n\
+    attribute vec4 vVertex;             \n\
+    attribute vec4 vColor;              \n\
+                                        \n\
+    varying lowp vec4 vVaryingColor;    \n\
+                                        \n\
+    void main(void)                     \n\
+    {                                   \n\
+    vVaryingColor = vColor;             \n\
+    gl_Position   = vVertex;            \n\
+    }";
 
   const char* fShaderStr =
-"#version 100                       \n\
-                                    \n\
-varying lowp vec4 vVaryingColor;    \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-  gl_FragColor = vVaryingColor;     \n\
-}";
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 120                     \n\
+                                        \n\
+    varying lowp vec4 vVaryingColor;    \n\
+                                        \n\
+    void main(void)                     \n\
+    {                                   \n\
+    gl_FragColor = vVaryingColor;       \n\
+    }";
 
   using namespace tloc;
   using namespace graphics;

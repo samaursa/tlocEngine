@@ -52,7 +52,7 @@ namespace tloc { namespace math { namespace utils {
   PYTHAGORAS_TYPE::angle_type
     Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngleOpposite() const
   {
-    return 90 - GetAngle().GetAngleAs<angle_type>();
+    return 90 - GetAngle().GetAs<angle_type>();
   }
 
   //------------------------------------------------------------------------
@@ -104,7 +104,7 @@ namespace tloc { namespace math { namespace utils {
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, base a_base)
   {
     hypotenuse hypo = hypotenuse
-      (a_base / Math<value_type>::Cos(a_angle.GetAngleAs<angle_type>()) );
+      (a_base / Math<value_type>::Cos(a_angle.GetAs<angle_type>()) );
     DoSet(a_base, hypo);
   }
 
@@ -112,7 +112,7 @@ namespace tloc { namespace math { namespace utils {
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, opposite a_oppos)
   {
     hypotenuse hypo = hypotenuse
-      (a_oppos / Math<value_type>::Sin(a_angle.GetAngleAs<angle_type>()) );
+      (a_oppos / Math<value_type>::Sin(a_angle.GetAs<angle_type>()) );
     DoSet(a_oppos, hypo);
   }
 
@@ -120,7 +120,7 @@ namespace tloc { namespace math { namespace utils {
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, hypotenuse a_hypo)
   {
     opposite oppos = opposite
-      (a_hypo * Math<value_type>::Sin(a_angle.GetAngleAs<angle_type>()) );
+      (a_hypo * Math<value_type>::Sin(a_angle.GetAs<angle_type>()) );
     DoSet(oppos, a_hypo);
   }
 

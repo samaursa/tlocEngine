@@ -17,21 +17,22 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef tl_float                                      value_type;
-    typedef math::Radian_T<value_type>                    angle_type;
-    typedef math::utils::Pythagoras_T<value_type>         right_tri_type;
+    typedef math::Radian                                  angle_type;
+    typedef math::utils::Pythagoras                       right_tri_type;
     typedef types::AspectRatio                            ar_type;
 
   public:
     template <typename T_AngleOrientation>
-    FOV(angle_type a_angle, ar_type a_ratio,
+    FOV(angle_type a_angle, ar_type a_ratio, T_AngleOrientation);
+
+    template <typename T_AngleOrientation>
+    FOV(const right_tri_type& a_rightTriangle, ar_type a_ratio,
         T_AngleOrientation);
 
     template <typename T_AngleOrientation>
-    FOV(const right_tri_type& a_rightAngledTriangle, ar_type a_ratio,
-        T_AngleOrientation);
+    angle_type  GetFOV() const;
 
-    template <typename T_AngleOrientation>
-    angle_type  GetFOV(T_AngleOrientation) const;
+    TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);
 
   private:
     void DoSetAngle(angle_type a_angle, p_FOV::horizontal);

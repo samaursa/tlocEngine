@@ -9,7 +9,10 @@
 namespace TestingShaderComponent
 {
   const char* vShaderStr =
-    "#version 100                       \n\
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 120                     \n\
                                         \n\
     attribute vec4 vVertex;             \n\
     attribute vec4 vColor;              \n\
@@ -23,7 +26,10 @@ namespace TestingShaderComponent
     }";
 
   const char* fShaderStr =
-    "#version 100                       \n\
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 120                     \n\
                                         \n\
     varying lowp vec4 vVaryingColor;    \n\
                                         \n\

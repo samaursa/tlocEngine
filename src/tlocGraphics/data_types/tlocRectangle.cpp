@@ -17,24 +17,23 @@ namespace tloc { namespace graphics { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>
-    ::Rectangle(value_type a_halfWidth, value_type a_halfHeight)
+    ::Rectangle(half_width a_w, half_height a_h)
   {
-    m_extents[left]   = -a_halfWidth;
-    m_extents[right]  = a_halfWidth;
+    m_extents[left::k_index]   = -a_w;
+    m_extents[right::k_index]  = a_w;
 
-    m_extents[top]    = a_halfHeight;
-    m_extents[bottom] = -a_halfHeight;
+    m_extents[top::k_index]    = a_h;
+    m_extents[bottom::k_index] = -a_h;
   }
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>
-    ::Rectangle(value_type a_left, value_type a_right,
-                value_type a_top, value_type a_bottom)
+    ::Rectangle(left a_l, right a_r, top a_t, bottom a_b)
   {
-    m_extents[left]   = a_left;
-    m_extents[right]  = a_right;
-    m_extents[top]    = a_top;
-    m_extents[bottom] = a_bottom;
+    m_extents[left::k_index]   = a_l;
+    m_extents[right::k_index]  = a_r;
+    m_extents[top::k_index]    = a_t;
+    m_extents[bottom::k_index] = a_b;
   }
 
   template <TLOC_RECTANGLE_TEMP>
@@ -46,56 +45,42 @@ namespace tloc { namespace graphics { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::value_type
-    Rectangle<TLOC_RECTANGLE_PARAMS>::GetCoord(side_type a_side) const
-  {
-    return m_extents[a_side];
-  }
-
-  template <TLOC_RECTANGLE_TEMP>
-  void Rectangle<TLOC_RECTANGLE_PARAMS>
-    ::SetCoord(side_type a_side, value_type a_newCoord)
-  {
-    m_extents[a_side] = a_newCoord;
-  }
-
-  template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::value_type
     Rectangle<TLOC_RECTANGLE_PARAMS>::GetWidth() const
   {
-    return m_extents[right] - m_extents[left];
+    return m_extents[right::k_index] - m_extents[left::k_index];
   }
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::value_type
     Rectangle<TLOC_RECTANGLE_PARAMS>::GetHeight() const
   {
-    return m_extents[top] - m_extents[bottom];
+    return m_extents[top::k_index] - m_extents[bottom::k_index];
   }
 
   template <TLOC_RECTANGLE_TEMP>
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::IsValid() const
   {
-    return (m_extents[left] < m_extents[right] &&
-            m_extents[top] > m_extents[bottom]);
+    return (m_extents[left::k_index] < m_extents[right::k_index] &&
+            m_extents[top::k_index] > m_extents[bottom::k_index]);
   }
 
   template <TLOC_RECTANGLE_TEMP>
   void Rectangle<TLOC_RECTANGLE_PARAMS>::Offset(const point_type& a_offsetBy)
   {
-    m_extents[left]   += a_offsetBy[0];
-    m_extents[right]  += a_offsetBy[0];
-    m_extents[top]    += a_offsetBy[1];
-    m_extents[bottom] += a_offsetBy[1];
+    m_extents[left::k_index]   += a_offsetBy[0];
+    m_extents[right::k_index]  += a_offsetBy[0];
+    m_extents[top::k_index]    += a_offsetBy[1];
+    m_extents[bottom::k_index] += a_offsetBy[1];
   }
 
   template <TLOC_RECTANGLE_TEMP>
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::
     Contains(const point_type &a_xyPoint)
   {
-    return (a_xyPoint[0] >= m_extents[left]) &&
-           (a_xyPoint[0] <= m_extents[right]) &&
-           (a_xyPoint[1] <= m_extents[top]) &&
-           (a_xyPoint[1] >= m_extents[bottom]);
+    return (a_xyPoint[0] >= m_extents[left::k_index]) &&
+           (a_xyPoint[0] <= m_extents[right::k_index]) &&
+           (a_xyPoint[1] <= m_extents[top::k_index]) &&
+           (a_xyPoint[1] >= m_extents[bottom::k_index]);
   }
 
   template <TLOC_RECTANGLE_TEMP>
@@ -111,11 +96,13 @@ namespace tloc { namespace graphics { namespace types {
     Intersects(const this_type& a_other, this_type& a_overlapOut) const
   {
     using namespace core;
-    a_overlapOut =
-      Rectangle( tlMax(m_extents[left],   a_other.GetCoord(left)),
-                 tlMin(m_extents[right],  a_other.GetCoord(right)),
-                 tlMin(m_extents[top],    a_other.GetCoord(top)),
-                 tlMax(m_extents[bottom], a_other.GetCoord(bottom)) );
+
+    left    overL(tlMax(m_extents[left::k_index],  a_other.GetCoord<left>()));
+    right   overR(tlMin(m_extents[right::k_index], a_other.GetCoord<right>()));
+    top     overT(tlMin(m_extents[top::k_index],   a_other.GetCoord<top>()));
+    bottom  overB(tlMax(m_extents[bottom::k_index],a_other.GetCoord<bottom>()));
+
+    a_overlapOut = Rectangle(overL, overR, overT, overB);
 
     if (a_overlapOut.IsValid())
     { return true; }

@@ -8,6 +8,7 @@
 
 #include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/data_types/tlocAspectRatio.h>
+#include <tlocGraphics/data_types/tlocFOV.h>
 
 namespace tloc { namespace graphics { namespace view_projection {
 
@@ -43,31 +44,27 @@ namespace tloc { namespace graphics { namespace view_projection {
     typedef types::Rectangle<real_type>                 rect_type;
     typedef tl_size                                     size_type;
     typedef math::Radian                                angle_type;
+    typedef types::FOV                                  fov_type;
     typedef types::AspectRatio                          ar_type;
 
   public:
     struct Params
     {
-      Params();
+      Params(const fov_type& a_fov);
+      Params(const Params& a_other);
       Params&   SetNear(real_type a_near);
       Params&   SetFar(real_type a_far);
-      Params&   SetAspectRatio(ar_type a_ar);
-      Params&   SetFOVy(angle_type a_angle);
-
-      real_type CalculateFOVy(real_type a_near , real_type a_top);
 
       TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
       TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
       TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);
-      TLOC_DECL_AND_DEF_GETTER(angle_type, GetFOVy, m_FOVy);
-      TLOC_DECL_AND_DEF_GETTER(angle_type, GetFOVx, m_FOVx);
+      TLOC_DECL_AND_DEF_GETTER(fov_type, GetFOV, m_fov);
 
     private:
       real_type     m_near;
       real_type     m_far;
       ar_type       m_aspectRatio;
-      angle_type    m_FOVy;
-      angle_type    m_FOVx;
+      fov_type      m_fov;
     };
 
   public:
@@ -77,9 +74,11 @@ namespace tloc { namespace graphics { namespace view_projection {
     ~Frustum();
 
     void BuildFrustum();
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
   private:
     typedef core::Variadic<real_type, Planes::k_count> plane_args;
+
     void DoDefinePlanes(const plane_args& a_vars);
     void DoBuildFrustumFromPlanes();
 

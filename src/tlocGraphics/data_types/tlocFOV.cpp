@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace types {
   }
 
   template <typename T_AngleOrientation>
-  FOV::angle_type FOV::GetFOV() const
+  FOV::angle_type FOV::Get() const
   {
     return DoGetFOV(T_AngleOrientation());
   }
@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace types {
   template FOV::FOV(FOV::right_tri_type const &, FOV::ar_type, p_FOV::horizontal);
   template FOV::FOV(FOV::right_tri_type const &, FOV::ar_type, p_FOV::vertical);
 
-  template FOV::angle_type FOV::GetFOV<p_FOV::horizontal>() const;
-  template FOV::angle_type FOV::GetFOV<p_FOV::vertical>() const;
+  template FOV::angle_type FOV::Get<p_FOV::horizontal>() const;
+  template FOV::angle_type FOV::Get<p_FOV::vertical>() const;
 
 };};};

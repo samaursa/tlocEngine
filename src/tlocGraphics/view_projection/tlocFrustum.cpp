@@ -62,13 +62,22 @@ namespace tloc { namespace graphics { namespace view_proj {
   }
 
   Frustum::Frustum(const Params& a_params)
-    : m_params(a_params)
+    : m_projMatrix(0)
+    , m_params(a_params)
   {
-    real_type top = m_params.GetNear();
+    using namespace math::utils;
+
+    math::Degree halfFOV
+      (m_params.GetFOV().Get<types::p_FOV::vertical>().GetAs<math::Degree>() / 2);
+
+    Pythagoras pyth =
+      Pythagoras(halfFOV, Pythagoras::base(m_params.GetNear()));
+
+    real_type top = pyth.GetSide<Pythagoras::opposite>();
     real_type right = m_params.GetAspectRatio().Get() * top;
     DoDefinePlanes
       (plane_args(m_params.GetNear(), m_params.GetFar(),
-                  top, -top, right, -right) );
+                  top, -top, -right, right) );
   }
 
   Frustum::~Frustum()

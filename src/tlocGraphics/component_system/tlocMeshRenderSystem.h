@@ -5,6 +5,7 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
+#include <tlocCore/component_system/tlocEntity.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {

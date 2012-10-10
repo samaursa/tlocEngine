@@ -6,6 +6,7 @@
 #endif
 
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/tlocAlgorithms.inl>
 
 namespace tloc { namespace core {
 

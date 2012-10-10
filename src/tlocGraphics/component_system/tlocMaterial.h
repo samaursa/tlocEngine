@@ -9,10 +9,10 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Material : public core::component_system::ComponentT<Material>
+  class Material : public core::component_system::Component_T<Material>
   {
   public:
-    typedef core::component_system::ComponentT<Material>  base_type;
+    typedef core::component_system::Component_T<Material>  base_type;
 
     Material();
 

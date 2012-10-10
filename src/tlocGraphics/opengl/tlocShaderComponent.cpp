@@ -2,6 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

@@ -1091,11 +1091,11 @@
 				Name="shaders"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShader.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShader.h"
 					>
 				</File>
 				<File

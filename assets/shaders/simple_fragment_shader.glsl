@@ -1,7 +1,8 @@
 #ifdef GL_ES
 # version 100
 #else
-# version 120
+# version 140
+#endif
 
 varying lowp vec4 vVaryingColor;
 

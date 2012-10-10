@@ -28,8 +28,6 @@
 		9701FF9D160E693200F48A65 /* tlocImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF99160E693200F48A65 /* tlocImageLoader.h */; };
 		9701FFA2160E697C00F48A65 /* tlocError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFA0160E697C00F48A65 /* tlocError.cpp */; };
 		9701FFA3160E697C00F48A65 /* tlocError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFA1160E697C00F48A65 /* tlocError.h */; };
-		9701FFA8160E699A00F48A65 /* tlocShaderComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFA4160E699A00F48A65 /* tlocShaderComponent.cpp */; };
-		9701FFA9160E699A00F48A65 /* tlocShaderComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFA5160E699A00F48A65 /* tlocShaderComponent.h */; };
 		9701FFAA160E699A00F48A65 /* tlocShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */; };
 		9701FFAB160E699A00F48A65 /* tlocShaderProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */; };
 		9701FFAE160E69E300F48A65 /* tlocObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFAC160E69E300F48A65 /* tlocObject.cpp */; };
@@ -39,6 +37,8 @@
 		9734BB271625819B003956FE /* tlocFOV.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB251625819B003956FE /* tlocFOV.h */; };
 		9734BB2A162581B2003956FE /* tlocAspectRatio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB28162581B2003956FE /* tlocAspectRatio.cpp */; };
 		9734BB2B162581B2003956FE /* tlocAspectRatio.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB29162581B2003956FE /* tlocAspectRatio.h */; };
+		9734BB5916263795003956FE /* tlocShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB5716263795003956FE /* tlocShader.cpp */; };
+		9734BB5A16263795003956FE /* tlocShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB5816263795003956FE /* tlocShader.h */; };
 		97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E0815A2A61B00F3C248 /* Foundation.framework */; };
 		97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6015A3CCBB00F3C248 /* OpenGLES.framework */; };
 		9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */; };
@@ -91,8 +91,6 @@
 		9701FF99160E693200F48A65 /* tlocImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocImageLoader.h; path = ../../../../src/tlocGraphics/media/tlocImageLoader.h; sourceTree = "<group>"; };
 		9701FFA0160E697C00F48A65 /* tlocError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocError.cpp; path = ../../../../src/tlocGraphics/opengl/tlocError.cpp; sourceTree = "<group>"; };
 		9701FFA1160E697C00F48A65 /* tlocError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocError.h; path = ../../../../src/tlocGraphics/opengl/tlocError.h; sourceTree = "<group>"; };
-		9701FFA4160E699A00F48A65 /* tlocShaderComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderComponent.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderComponent.cpp; sourceTree = "<group>"; };
-		9701FFA5160E699A00F48A65 /* tlocShaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderComponent.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderComponent.h; sourceTree = "<group>"; };
 		9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderProgram.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderProgram.cpp; sourceTree = "<group>"; };
 		9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderProgram.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderProgram.h; sourceTree = "<group>"; };
 		9701FFAC160E69E300F48A65 /* tlocObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocObject.cpp; path = ../../../../src/tlocGraphics/opengl/tlocObject.cpp; sourceTree = "<group>"; };
@@ -102,6 +100,8 @@
 		9734BB251625819B003956FE /* tlocFOV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFOV.h; path = ../../../../src/tlocGraphics/data_types/tlocFOV.h; sourceTree = "<group>"; };
 		9734BB28162581B2003956FE /* tlocAspectRatio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAspectRatio.cpp; path = ../../../../src/tlocGraphics/data_types/tlocAspectRatio.cpp; sourceTree = "<group>"; };
 		9734BB29162581B2003956FE /* tlocAspectRatio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAspectRatio.h; path = ../../../../src/tlocGraphics/data_types/tlocAspectRatio.h; sourceTree = "<group>"; };
+		9734BB5716263795003956FE /* tlocShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShader.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShader.cpp; sourceTree = "<group>"; };
+		9734BB5816263795003956FE /* tlocShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShader.h; path = ../../../../src/tlocGraphics/opengl/tlocShader.h; sourceTree = "<group>"; };
 		97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocGraphics_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97812E0815A2A61B00F3C248 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97812E6015A3CCBB00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -289,8 +289,8 @@
 		9701FF9E160E695900F48A65 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				9701FFA4160E699A00F48A65 /* tlocShaderComponent.cpp */,
-				9701FFA5160E699A00F48A65 /* tlocShaderComponent.h */,
+				9734BB5716263795003956FE /* tlocShader.cpp */,
+				9734BB5816263795003956FE /* tlocShader.h */,
 				9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */,
 				9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */,
 			);
@@ -494,7 +494,6 @@
 				9701FF9B160E693200F48A65 /* tlocImage.h in Headers */,
 				9701FF9D160E693200F48A65 /* tlocImageLoader.h in Headers */,
 				9701FFA3160E697C00F48A65 /* tlocError.h in Headers */,
-				9701FFA9160E699A00F48A65 /* tlocShaderComponent.h in Headers */,
 				9701FFAB160E699A00F48A65 /* tlocShaderProgram.h in Headers */,
 				9701FFAF160E69E300F48A65 /* tlocObject.h in Headers */,
 				9701FFB1160E6A2200F48A65 /* tlocErrorTypes.h in Headers */,
@@ -503,6 +502,7 @@
 				97F9069B161DA9A600BD8A39 /* tlocFrustum.h in Headers */,
 				9734BB271625819B003956FE /* tlocFOV.h in Headers */,
 				9734BB2B162581B2003956FE /* tlocAspectRatio.h in Headers */,
+				9734BB5A16263795003956FE /* tlocShader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,13 +574,13 @@
 				9701FF9A160E693200F48A65 /* tlocImage.cpp in Sources */,
 				9701FF9C160E693200F48A65 /* tlocImageLoader.cpp in Sources */,
 				9701FFA2160E697C00F48A65 /* tlocError.cpp in Sources */,
-				9701FFA8160E699A00F48A65 /* tlocShaderComponent.cpp in Sources */,
 				9701FFAA160E699A00F48A65 /* tlocShaderProgram.cpp in Sources */,
 				9701FFAE160E69E300F48A65 /* tlocObject.cpp in Sources */,
 				97F90696161DA98D00BD8A39 /* tlocRenderer.cpp in Sources */,
 				97F9069A161DA9A600BD8A39 /* tlocFrustum.cpp in Sources */,
 				9734BB261625819B003956FE /* tlocFOV.cpp in Sources */,
 				9734BB2A162581B2003956FE /* tlocAspectRatio.cpp in Sources */,
+				9734BB5916263795003956FE /* tlocShader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

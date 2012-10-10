@@ -3,7 +3,7 @@
 #include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocGraphics/renderer/tlocRenderer.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
 namespace TestingShaderComponent
@@ -12,7 +12,7 @@ namespace TestingShaderComponent
     "#ifdef GL_ES                       \n\
      #  version 100                     \n\
      #else                              \n\
-     #  version 120                     \n\
+     #  version 140                     \n\
      #endif                             \n\
                                         \n\
     attribute vec4 vVertex;             \n\
@@ -30,7 +30,7 @@ namespace TestingShaderComponent
     "#ifdef GL_ES                       \n\
      #  version 100                     \n\
      #else                              \n\
-     #  version 120                     \n\
+     #  version 140                     \n\
      #endif                             \n\
                                         \n\
     varying lowp vec4 vVaryingColor;    \n\

@@ -20,13 +20,10 @@
   template _dt_<_vt_>::_dt_(_ot_<_vt_>);\
   \
   template _dt_<_vt_>& _dt_<_vt_>::operator= (const _vt_&);\
-  template _dt_<_vt_>& _dt_<_vt_>::operator= (const _dt_<_vt_>&);\
   template _dt_<_vt_>& _dt_<_vt_>::operator= (const _ot_<_vt_>&);\
   \
   template void _dt_<_vt_>::DoSetAngle(_ot_<_vt_>);\
-  template void _dt_<_vt_>::DoSetAngle(_dt_<_vt_>);\
   \
-  template _dt_<_vt_>::value_type _dt_<_vt_>::DoGetAs(_ot_<_vt_>) const;\
-  template _dt_<_vt_>::value_type _dt_<_vt_>::DoGetAs(_dt_<_vt_>) const
+  template _dt_<_vt_>::value_type _dt_<_vt_>::DoGetAs(_ot_<_vt_>) const;
 
 #endif

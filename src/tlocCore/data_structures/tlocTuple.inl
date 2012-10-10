@@ -9,6 +9,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/tlocAlgorithms.inl>
 
 namespace tloc { namespace core {
 

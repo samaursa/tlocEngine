@@ -13,6 +13,7 @@ namespace TestingShaderComponent
      #  version 100                     \n\
      #else                              \n\
      #  version 120                     \n\
+     #endif                             \n\
                                         \n\
     attribute vec4 vVertex;             \n\
     attribute vec4 vColor;              \n\
@@ -30,6 +31,7 @@ namespace TestingShaderComponent
      #  version 100                     \n\
      #else                              \n\
      #  version 120                     \n\
+     #endif                             \n\
                                         \n\
     varying lowp vec4 vVaryingColor;    \n\
                                         \n\

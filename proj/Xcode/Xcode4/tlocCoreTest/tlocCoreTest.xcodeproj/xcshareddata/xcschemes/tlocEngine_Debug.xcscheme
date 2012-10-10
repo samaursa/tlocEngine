@@ -150,9 +150,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97CC77011580A6D900764CF3"
-            BuildableName = "tlocCoreTest.app"
-            BlueprintName = "tlocCoreTest"
-            ReferencedContainer = "container:tlocCoreTest.xcodeproj">
+            BuildableName = "tlocGraphicsTest.app"
+            BlueprintName = "tlocGraphicsTest"
+            ReferencedContainer = "container:../tlocGraphicsTest/tlocGraphicsTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>

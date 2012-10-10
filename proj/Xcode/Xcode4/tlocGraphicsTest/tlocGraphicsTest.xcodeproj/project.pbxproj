@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9734BB3516258360003956FE /* tlocFOVTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB3416258360003956FE /* tlocFOVTest.cpp */; };
+		9734BB391625838A003956FE /* tlocFrustumTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB381625838A003956FE /* tlocFrustumTest.cpp */; };
 		9780B37A1621E2B3008A1DB5 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 9780B3791621E2B3008A1DB5 /* assets */; };
 		97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6315A3CCDE00F3C248 /* OpenGLES.framework */; };
 		97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9734BB3416258360003956FE /* tlocFOVTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFOVTest.cpp; path = ../../../../src/tlocTests/graphics/tlocFOVTest.cpp; sourceTree = "<group>"; };
+		9734BB381625838A003956FE /* tlocFrustumTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFrustumTest.cpp; path = ../../../../src/tlocTests/graphics/tlocFrustumTest.cpp; sourceTree = "<group>"; };
 		9780B3791621E2B3008A1DB5 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../../assets; sourceTree = "<group>"; };
 		97812E6315A3CCDE00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -63,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9734BB371625836A003956FE /* view_projection */ = {
+			isa = PBXGroup;
+			children = (
+				9734BB381625838A003956FE /* tlocFrustumTest.cpp */,
+			);
+			name = view_projection;
+			sourceTree = "<group>";
+		};
 		97C87BE315DE3DC500FE0A6C /* tlocGraphicsTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +131,7 @@
 				97DDC90E161F9CF40011DDFD /* media */,
 				97DDC90D161F9CED0011DDFD /* opengl */,
 				97DDC90C161F9CE10011DDFD /* types */,
+				9734BB371625836A003956FE /* view_projection */,
 				97DDC920161F9E5F0011DDFD /* tlocGraphicsModesTest.cpp */,
 				97DDC921161F9E5F0011DDFD /* tlocWindowTest.cpp */,
 			);
@@ -129,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				97DDC91C161F9E3B0011DDFD /* tlocColorTest.cpp */,
+				9734BB3416258360003956FE /* tlocFOVTest.cpp */,
 				97DDC91D161F9E3B0011DDFD /* tlocRectangleTest.cpp */,
 			);
 			name = types;
@@ -223,6 +237,8 @@
 				97DDC923161F9E5F0011DDFD /* tlocWindowTest.cpp in Sources */,
 				97DDC927161F9E800011DDFD /* main.cpp in Sources */,
 				97DDC928161F9E800011DDFD /* tlocTestCommon.cpp in Sources */,
+				9734BB3516258360003956FE /* tlocFOVTest.cpp in Sources */,
+				9734BB391625838A003956FE /* tlocFrustumTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

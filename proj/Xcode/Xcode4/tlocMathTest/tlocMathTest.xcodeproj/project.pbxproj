@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9734BB3316258329003956FE /* tlocPythagorasTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB3216258329003956FE /* tlocPythagorasTest.cpp */; };
 		97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6315A3CCDE00F3C248 /* OpenGLES.framework */; };
 		97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */; };
 		97CC77071580A6D900764CF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC77061580A6D900764CF3 /* UIKit.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9734BB3216258329003956FE /* tlocPythagorasTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPythagorasTest.cpp; path = ../../../../src/tlocTests/math/tlocPythagorasTest.cpp; sourceTree = "<group>"; };
 		97812E6315A3CCDE00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		97CC77021580A6D900764CF3 /* tlocMathTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tlocMathTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9734BB301625830B003956FE /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9734BB3216258329003956FE /* tlocPythagorasTest.cpp */,
+			);
+			name = utilities;
+			sourceTree = "<group>";
+		};
 		97C87BE315DE3DC500FE0A6C /* tlocMathTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				97F90624161D0E8400BD8A39 /* matrix */,
+				9734BB301625830B003956FE /* utilities */,
 				97F90623161D0E7F00BD8A39 /* vector */,
 				97F90635161D0EDF00BD8A39 /* tlocMathTest.cpp */,
 			);
@@ -219,6 +230,7 @@
 				97F9063B161D0F3200BD8A39 /* main.cpp in Sources */,
 				97F9063C161D0F3200BD8A39 /* tlocAngleTest.cpp in Sources */,
 				97F9063D161D0F3200BD8A39 /* tlocTestCommon.cpp in Sources */,
+				9734BB3316258329003956FE /* tlocPythagorasTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

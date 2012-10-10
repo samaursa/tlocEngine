@@ -19,10 +19,6 @@ namespace tloc { namespace math {
     : m_angle(a_angle) { }
 
   template <ANGLE_TEMP>
-  template <typename T_AngleType>
-  Angle_T<ANGLE_PARAMS>::Angle_T(T_AngleType a_angle);
-
-  template <ANGLE_TEMP>
   ANGLE_TYPE::this_type& 
     Angle_T<ANGLE_PARAMS>::operator= (value_type a_angle)
   {

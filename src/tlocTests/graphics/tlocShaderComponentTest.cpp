@@ -3,7 +3,7 @@
 #include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocGraphics/renderer/tlocRenderer.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
 namespace TestingShaderComponent

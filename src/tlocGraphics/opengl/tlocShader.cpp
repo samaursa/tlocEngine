@@ -1,4 +1,4 @@
-#include "tlocShaderComponent.h"
+#include "tlocShader.h"
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocGraphics/opengl/tlocError.h>

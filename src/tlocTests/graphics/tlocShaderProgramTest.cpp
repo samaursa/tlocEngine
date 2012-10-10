@@ -2,7 +2,7 @@
 
 #include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/window/tlocWindow.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 
 namespace TestingShaderProgram

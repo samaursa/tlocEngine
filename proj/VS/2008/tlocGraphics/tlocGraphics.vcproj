@@ -1175,6 +1175,14 @@
 				Name="systems"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.cpp"
 					>
 				</File>

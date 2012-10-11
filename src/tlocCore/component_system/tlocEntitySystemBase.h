@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
+#include <tlocCore/error/tlocError.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -18,18 +19,34 @@ namespace tloc { namespace core { namespace component_system {
     // events listening
     enum { max_component_types = 4 };
 
-    typedef EventBase::event_type                 event_type;
     typedef components::value_type                component_type;
     typedef tl_size                               size_type;
+    typedef core::error::Error                    error_type;
+
+    typedef core::component_system::EventManager        event_manager;
+    typedef core::component_system::EventBase           event_type;
+    typedef EventBase::event_type                       event_value_type;
+    typedef core::component_system::EntityManager       entity_manager;
+    typedef core::component_system::Entity              entity_type;
 
     typedef tl_array_fixed
       <component_type, max_component_types>::type component_type_array;
 
     template <tl_size T_VarSize>
-    EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
+    EntitySystemBase(event_manager* a_eventMgr, entity_manager* a_entityMgr,
                      const Variadic<component_type, T_VarSize>& a_typeFlags);
 
     ~EntitySystemBase();
+
+    ///-------------------------------------------------------------------------
+    /// @brief Gives derived classes opportunity to perform initialization.
+    ///-------------------------------------------------------------------------
+    virtual error_type Initialize() = 0;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Cleans up anything done in Initialize()
+    ///-------------------------------------------------------------------------
+    virtual error_type Shutdown() = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -41,7 +58,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
-    virtual void ProcessActiveEntities(EntityManager* a_mgr,
+    virtual void ProcessActiveEntities(entity_manager* a_mgr,
                                        const entity_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -70,7 +87,15 @@ namespace tloc { namespace core { namespace component_system {
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    bool OnEvent(const EventBase& a_event);
+    bool OnEvent(const event_type& a_event);
+
+    virtual void Pre_OnEvent(const event_type& a_event) = 0;
+    virtual void Post_OnEvent(const event_type& a_event) = 0;
+
+  private:
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_array, DoGetActiveEntities,
+                                          m_activeEntities);
 
   private:
 

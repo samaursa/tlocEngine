@@ -10,6 +10,6 @@
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
 
-const char* GetResourcePath();
+const char* GetAssetPath();
 
 #endif

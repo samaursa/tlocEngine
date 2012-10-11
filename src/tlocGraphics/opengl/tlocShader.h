@@ -4,7 +4,6 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocObject.h>
 
 namespace tloc { namespace graphics { namespace gl {
@@ -22,7 +21,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ShaderComponent : public Object
   {
   public:
-    typedef Object                    base_type;
+    typedef Object                        base_type;
     using base_type::object_handle;
 
     typedef core::tl_array<bool>::type  flag_type;

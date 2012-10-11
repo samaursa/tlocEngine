@@ -33,6 +33,8 @@ namespace tloc { namespace core { namespace types {
 
     TLOC_DECLARE_OPERATORS(StrongType_T);
 
+    enum { k_index = T_UniqueCounter };
+
     value_type m_value;
   };
 

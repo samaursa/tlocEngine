@@ -1029,6 +1029,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="utilities"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocPythagorasTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"

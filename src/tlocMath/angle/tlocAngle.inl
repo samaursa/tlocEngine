@@ -19,13 +19,6 @@ namespace tloc { namespace math {
     : m_angle(a_angle) { }
 
   template <ANGLE_TEMP>
-  template <typename T_AngleType>
-  Angle_T<ANGLE_PARAMS>::Angle_T(T_AngleType a_angle)
-  {
-    static_cast<derived_type*>(this)->DoSetAngle(a_angle);
-  }
-
-  template <ANGLE_TEMP>
   ANGLE_TYPE::this_type& 
     Angle_T<ANGLE_PARAMS>::operator= (value_type a_angle)
   {
@@ -35,7 +28,7 @@ namespace tloc { namespace math {
 
   template <ANGLE_TEMP>
   ANGLE_TYPE::this_type& 
-    Angle_T<ANGLE_PARAMS>::operator= (this_type a_other)
+    Angle_T<ANGLE_PARAMS>::operator= (const this_type& a_other)
   {
     m_angle = a_other.m_angle;
     return *this;
@@ -44,7 +37,7 @@ namespace tloc { namespace math {
   template <ANGLE_TEMP>
   template <typename T_AngleType>
   ANGLE_TYPE::this_type&
-    Angle_T<ANGLE_PARAMS>::operator= (T_AngleType a_angle)
+    Angle_T<ANGLE_PARAMS>::operator= (const T_AngleType& a_angle)
   {
     static_cast<derived_type*>(this)->DoSetAngle(a_angle);
     return *this;
@@ -55,7 +48,7 @@ namespace tloc { namespace math {
   ANGLE_TYPE::value_type 
     Angle_T<ANGLE_PARAMS>::GetAs() const
   {
-    return static_cast<const derived_type*>(this)->DoGetAs(T_AngleType());
+    return static_cast<const derived_type*>(this)->DoGetAs(T_AngleType(0.0f));
   }
 
   template <ANGLE_TEMP>
@@ -135,6 +128,19 @@ namespace tloc { namespace math {
     return Math<value_type>::IsEqual(m_angle, a_other.m_angle);
   }
 
+  template <ANGLE_TEMP>
+  void Angle_T<ANGLE_PARAMS>::DoSetAngleCtor(value_type a_angle, fundamental_type)
+  {
+    m_angle = a_angle;
+  }
+
+  template <ANGLE_TEMP>
+  template <typename T_AngleType>
+  void Angle_T<ANGLE_PARAMS>::DoSetAngleCtor(T_AngleType a_angle, angle_type)
+  {
+    static_cast<derived_type*>(this)->DoSetAngle(a_angle);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Radian
 
@@ -149,9 +155,12 @@ namespace tloc { namespace math {
 
   template <RADIAN_TEMP>
   template <typename T_AngleType>
-  Radian_T<RADIAN_PARAMS>::Radian_T(T_AngleType a_angle)
-    : base_type(a_angle)
-  { }
+  RADIAN_TYPE::this_type&
+    Radian_T<RADIAN_PARAMS>::operator= (const T_AngleType& a_angle)
+  {
+    base_type::operator=(a_angle);
+    return *this;
+  }
 
   template <RADIAN_TEMP>
   RADIAN_TYPE::value_type
@@ -202,9 +211,12 @@ namespace tloc { namespace math {
 
   template <DEGREE_TEMP>
   template <typename T_AngleType>
-  Degree_T<DEGREE_PARAMS>::Degree_T(T_AngleType a_angle)
-    : base_type(a_angle)
-  { }
+  DEGREE_TYPE::this_type&
+    Degree_T<DEGREE_PARAMS>::operator= (const T_AngleType& a_angle)
+  {
+    base_type::operator=(a_angle);
+    return *this;
+  }
 
   template <DEGREE_TEMP>
   DEGREE_TYPE::value_type

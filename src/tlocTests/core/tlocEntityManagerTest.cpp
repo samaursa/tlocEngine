@@ -6,6 +6,8 @@
 
 #define protected public
 #define private public
+#include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/component_system/tlocEntity.inl>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntityManager.inl>
 #include <tlocCore/component_system/tlocEvent.h>

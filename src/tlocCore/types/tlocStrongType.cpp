@@ -26,6 +26,7 @@ namespace tloc { namespace core { namespace types {
 
   TLOC_INSTANTIATE_STRONG_TYPE(f32);
   TLOC_INSTANTIATE_STRONG_TYPE(f64);
+  TLOC_INSTANTIATE_STRONG_TYPE(f128);
 
 
 };};};

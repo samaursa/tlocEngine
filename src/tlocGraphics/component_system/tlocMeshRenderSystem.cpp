@@ -1,4 +1,7 @@
 #include "tlocMeshRenderSystem.h"
+#include <tlocCore/component_system/tlocEntityManager.inl>
+#include <tlocCore/component_system/tlocEntity.inl>
+
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 

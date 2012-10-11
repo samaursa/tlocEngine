@@ -5,7 +5,7 @@
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

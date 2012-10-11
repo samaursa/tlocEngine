@@ -1,7 +1,9 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/memory/tlocBufferArg.h>
+
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace TestingBufferPtr
 {

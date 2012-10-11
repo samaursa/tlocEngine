@@ -20,9 +20,9 @@ namespace tloc { namespace graphics { namespace component_system {
     bool operator < (const Material& a_other) const;
     TLOC_DECLARE_OPERATORS(Material);
 
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT (core::String, GetVertexProgram,
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT (core::String, GetVertexSource,
                                       m_vertexProgram);
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT (core::String, GetFragmentProgram,
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT (core::String, GetFragmentSource,
                                       m_fragmentProgram);
 
   private:

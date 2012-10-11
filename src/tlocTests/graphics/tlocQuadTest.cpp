@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/component_system/tlocMesh.h>
+#include <tlocGraphics/component_system/tlocQuad.h>
 
 namespace TestingColor
 {

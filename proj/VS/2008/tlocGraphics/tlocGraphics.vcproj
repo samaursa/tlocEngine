@@ -1141,6 +1141,22 @@
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="material"

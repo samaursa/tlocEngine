@@ -1,11 +1,11 @@
-#include "tlocMesh.h"
+#include "tlocPrimitive.h"
 
 namespace tloc { namespace graphics { namespace component_system {
 
   //------------------------------------------------------------------------
-  // Mesh
+  // Primitive
 
-  Mesh::Mesh() : IPrimitive(component_system::components::mesh)
+  IPrimitive::IPrimitive(components::value_type a_id) : base_type(a_id)
   { }
 
 };};};

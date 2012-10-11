@@ -65,11 +65,11 @@ namespace tloc { namespace graphics { namespace types {
     typedef color_type            color_base_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (position_value_type, GetPosition, position_base_type::m_value);
+      (position_value_type, GetPosition, position_base_type::m_value.Get());
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (normal_value_type, GetNormal, normal_base_type::m_value);
+      (normal_value_type, GetNormal, normal_base_type::m_value.Get());
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (color_value_type, GetColor, color_base_type::m_value);
+      (color_value_type, GetColor, color_base_type::m_value.Get());
 
     TLOC_DECL_AND_DEF_SETTER(position_value_type, SetPosition,
                              position_base_type::m_value);

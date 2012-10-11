@@ -50,12 +50,17 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::types::StrongType_T<vert_type, 0>  vert_se;
     typedef core::types::StrongType_T<vert_type, 1>  vert_ne;
     typedef core::types::StrongType_T<vert_type, 2>  vert_nw;
-    typedef core::types::StrongType_T<vert_type, 0>  vert_sw;
+    typedef core::types::StrongType_T<vert_type, 3>  vert_sw;
+
+    template <typename T_VertexPos>
+    vert_type const & GetVertex() const
+    { return GetVertexes()[T_VertexPos::k_index]; }
 
   public:
     Quad();
-    Quad(const rect_type& a_vector);
+    Quad(const rect_type& a_rect);
 
+    void Set(const rect_type& a_rect);
   };
 
 };};};

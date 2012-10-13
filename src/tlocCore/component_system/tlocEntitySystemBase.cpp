@@ -21,6 +21,8 @@ namespace tloc { namespace core { namespace component_system {
 
   bool EntitySystemBase::OnEvent(const EventBase& a_event)
   {
+    Pre_OnEvent(a_event);
+
     event_value_type type = a_event.GetType();
 
     switch(type)
@@ -36,32 +38,26 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-            Pre_OnEvent(a_event);
 
             entity_array::iterator entItr = core::find_all(m_activeEntities, ent);
             if (entItr != m_activeEntities.end())
             {
               m_activeEntities.push_back(ent);
             }
-
-            Post_OnEvent(a_event);
           }
           else
           {
-            Pre_OnEvent(a_event);
-
             entity_array::iterator itr = find_all(m_activeEntities, ent);
             if (itr != m_activeEntities.end())
             {
               m_activeEntities.erase(itr);
             }
-
-            Post_OnEvent(a_event);
           }
         }
       }
     }
 
+    Post_OnEvent(a_event);
     return false;
   }
 

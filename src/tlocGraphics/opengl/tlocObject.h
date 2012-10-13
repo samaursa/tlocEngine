@@ -36,6 +36,8 @@ namespace tloc { namespace graphics { namespace gl {
   class Object_T : public ObjectBase
   {
   public:
+    typedef ObjectBase                  base_type;
+    typedef base_type::object_handle    object_handle;
   };
 
   template<>

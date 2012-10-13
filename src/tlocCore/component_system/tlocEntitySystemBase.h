@@ -92,12 +92,10 @@ namespace tloc { namespace core { namespace component_system {
     virtual void Pre_OnEvent(const event_type& a_event) = 0;
     virtual void Post_OnEvent(const event_type& a_event) = 0;
 
-  private:
-
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_array, DoGetActiveEntities,
                                           m_activeEntities);
 
-  private:
+  protected:
 
     component_type_array  m_typeFlags;
     entity_array          m_activeEntities;

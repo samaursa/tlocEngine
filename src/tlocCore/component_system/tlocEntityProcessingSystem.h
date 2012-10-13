@@ -6,7 +6,7 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntityProcessingSystem : EntitySystemBase
+  class EntityProcessingSystem : public EntitySystemBase
   {
   public:
 

@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef core::component_system::Component_T<Material>  base_type;
-    typedef gl::Object::base_type::object_handle           shader_handle;
+    typedef gl::ObjectBase::object_handle                  shader_handle;
 
     Material();
 

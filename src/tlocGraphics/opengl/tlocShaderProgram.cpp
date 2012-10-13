@@ -23,11 +23,6 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
   }
 
-  ShaderProgram::~ShaderProgram()
-  {
-    glDeleteProgram(GetHandle());
-  }
-
   template <ShaderProgram::size_type T_Size>
   bool ShaderProgram::AttachShaders
     (core::Variadic<ShaderComponent*, T_Size> a_shaderComponents)
@@ -70,6 +65,11 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderProgram::Enable()
   {
     glUseProgram(GetHandle());
+  }
+
+  void ShaderProgram::DoDestroy()
+  {
+    glDeleteProgram(GetHandle());
   }
 
   //------------------------------------------------------------------------

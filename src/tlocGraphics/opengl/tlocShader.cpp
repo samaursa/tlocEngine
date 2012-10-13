@@ -44,11 +44,6 @@ namespace tloc { namespace graphics { namespace gl {
   {
   }
 
-  ShaderComponent::~ShaderComponent()
-  {
-    glDeleteShader(GetHandle());
-  }
-
   template <typename T_ShaderType>
   bool ShaderComponent::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
   {
@@ -94,6 +89,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     m_flags.Mark(shader_compiled);
     return true;
+  }
+
+  void ShaderComponent::DoDestroy()
+  {
+    glDeleteShader(GetHandle());
   }
 
   //------------------------------------------------------------------------

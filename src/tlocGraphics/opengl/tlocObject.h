@@ -15,33 +15,91 @@ namespace tloc { namespace graphics { namespace gl {
     struct WithError{};
   };
 
-  class ObjectBase : public core::NonCopyable
+  class ObjectBase
   {
   public:
     typedef u32 object_handle;
-
-    ObjectBase();
 
     bool IsValid();
 
     TLOC_DECL_AND_DEF_GETTER(object_handle, GetHandle, m_handle);
     TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
-  private:
+  protected:
+    ObjectBase();
 
+  private:
     object_handle m_handle;
   };
 
-  template <typename T_Policy = p_object::OnlyID >
-  class Object_T : public ObjectBase
+  template <typename T_Derived>
+  class ObjectRefCounted : public ObjectBase
+  {
+  public:
+    typedef tl_size                             size_type;
+    typedef T_Derived                           derived_type;
+    typedef ObjectRefCounted<derived_type>      this_type;
+
+  public:
+    ObjectRefCounted(const ObjectRefCounted& a_other)
+      : ObjectBase()
+    {
+      operator=(a_other);
+    }
+
+    this_type& operator=(const ObjectRefCounted& a_other)
+    {
+      TLOC_ASSERT(GetHandle() == 0 || a_other.GetHandle() == GetHandle(),
+                  "gl::Object copying allowed only on same or invalid handle IDs");
+      m_refCount = a_other.m_refCount;
+      ++(*m_refCount);
+
+      return *this;
+    }
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetRefCount, *m_refCount );
+
+  protected:
+
+    ObjectRefCounted()
+      : ObjectBase()
+      , m_refCount(new size_type(0))
+    { }
+
+    ~ObjectRefCounted()
+    {
+      DoDestroy();
+    }
+
+
+    void DoDestroy()
+    {
+      size_type refCount = *m_refCount;
+
+      if ( refCount == 0)
+      { static_cast<derived_type*>(this)->DoDestroy(); }
+      else
+      { --(refCount); }
+
+      *m_refCount = refCount;
+    }
+
+  private:
+    size_type* m_refCount;
+  };
+
+  template < typename T_Derived,
+             typename T_Policy = p_object::OnlyID >
+  class Object_T : public ObjectRefCounted<T_Derived>
   {
   public:
     typedef ObjectBase                  base_type;
     typedef base_type::object_handle    object_handle;
   };
 
-  template<>
-  class Object_T<p_object::WithError> : public ObjectBase
+  template<typename T_Derived>
+  class Object_T<T_Derived, p_object::WithError>
+    : public ObjectRefCounted<T_Derived>
   {
   public:
     typedef ObjectBase                  base_type;
@@ -56,11 +114,6 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     string_type m_error;
   };
-
-  //------------------------------------------------------------------------
-  // Typedefs
-
-  typedef Object_T<>        Object;
 
 };};};
 

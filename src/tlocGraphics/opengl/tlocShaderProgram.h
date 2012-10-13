@@ -9,8 +9,11 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class ShaderProgram : public Object
+  class ShaderProgram : public Object_T<ShaderProgram>
   {
+  public:
+    template <typename T> friend class ObjectRefCounted;
+
   public:
     // Supported number of shader components
     typedef core::Variadic<ShaderComponent*, 1>     one_shader_component;
@@ -18,13 +21,13 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::Variadic<ShaderComponent*, 3>     three_shader_components;
     typedef core::Variadic<ShaderComponent*, 4>     four_shader_components;
 
-    typedef Object                      base_type;
+    typedef Object_T<ShaderProgram>     base_type;
     using base_type::object_handle;
 
     typedef tl_size                     size_type;
 
+  public:
     ShaderProgram();
-    ~ShaderProgram();
 
     template <size_type T_Size>
     bool AttachShaders(core::Variadic<ShaderComponent*, T_Size>
@@ -34,7 +37,9 @@ namespace tloc { namespace graphics { namespace gl {
     void Enable();
 
   private:
+    void DoDestroy();
 
+  private:
     core::utils::Checkpoints    m_flags;
   };
 

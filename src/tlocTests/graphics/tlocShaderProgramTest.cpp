@@ -52,12 +52,12 @@ namespace TestingShaderProgram
     // Initialize glew
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::ShaderComponent vShader;
+    gl::Shader vShader;
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
     REQUIRE(vShader.LoadShader(vShaderStr, vertex_shader_type()) == true);
     REQUIRE(vShader.CompileShader() == true);
 
-    gl::ShaderComponent fShader;
+    gl::Shader fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
     REQUIRE(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);

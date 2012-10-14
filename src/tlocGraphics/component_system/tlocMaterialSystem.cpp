@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
         // assume that both exist
         mat_type& currMat = *(mat[0]);
 
-        gl::ShaderComponent vShader, fShader;
+        gl::Shader vShader, fShader;
         bool result;
 
         vShader.LoadShader(currMat.GetVertexSource().c_str(),

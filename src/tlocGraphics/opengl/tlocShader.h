@@ -1,5 +1,5 @@
-#ifndef TLOC_GL_SHADER_COMPONENT_H
-#define TLOC_GL_SHADER_COMPONENT_H
+#ifndef _TLOC_GRAPHICS_GL_SHADER_H_
+#define _TLOC_GRAPHICS_GL_SHADER_H_
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
@@ -18,18 +18,18 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
-  class ShaderComponent : public Object_T<ShaderComponent>
+  class Shader : public Object_T<Shader>
   {
   public:
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef Object_T<ShaderComponent>   base_type;
+    typedef Object_T<Shader>   base_type;
     using base_type::object_handle;
 
     typedef core::tl_array<bool>::type  flag_type;
 
-    ShaderComponent();
+    Shader();
 
     template <typename T_ShaderType>
     bool LoadShader(const char* a_shaderSource, T_ShaderType a_type);

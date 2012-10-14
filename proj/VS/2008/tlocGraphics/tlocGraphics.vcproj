@@ -1296,6 +1296,14 @@
 			Name="view_projection"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.cpp"
 				>
 			</File>

@@ -39,10 +39,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                             size_type;
     typedef T_Derived                           derived_type;
     typedef ObjectRefCounted<derived_type>      this_type;
+    typedef ObjectBase                          base_type;
 
   public:
     ObjectRefCounted(const ObjectRefCounted& a_other)
       : ObjectBase()
+      , m_refCount(NULL)
     {
       operator=(a_other);
     }
@@ -52,12 +54,18 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_ASSERT(GetHandle() == 0 || a_other.GetHandle() == GetHandle(),
                   "gl::Object copying allowed only on same or invalid handle IDs");
 
-      if (GetHandle() == 0) { delete m_refCount; }
-
       m_refCount = a_other.m_refCount;
       ++(*m_refCount);
 
       return *this;
+    }
+
+    void SetHandle(object_handle const & a_handle)
+    {
+      TLOC_ASSERT(m_refCount == NULL, "Object already has a handle!");
+      m_refCount = new size_type(0);
+
+      base_type::SetHandle(a_handle);
     }
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetRefCount, *m_refCount );
@@ -66,14 +74,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     ObjectRefCounted()
       : ObjectBase()
-      , m_refCount(new size_type(0))
+      , m_refCount(NULL)
     { }
 
     ~ObjectRefCounted()
     {
       DoDestroy();
     }
-
 
     void DoDestroy()
     {
@@ -83,11 +90,13 @@ namespace tloc { namespace graphics { namespace gl {
       {
         static_cast<derived_type*>(this)->DoDestroy();
         delete m_refCount;
+        m_refCount = NULL;
       }
       else
       { --(refCount); }
 
-      *m_refCount = refCount;
+      if (m_refCount)
+      { *m_refCount = refCount; }
     }
 
   private:

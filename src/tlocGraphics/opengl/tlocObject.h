@@ -51,6 +51,9 @@ namespace tloc { namespace graphics { namespace gl {
     {
       TLOC_ASSERT(GetHandle() == 0 || a_other.GetHandle() == GetHandle(),
                   "gl::Object copying allowed only on same or invalid handle IDs");
+
+      if (GetHandle() == 0) { delete m_refCount; }
+
       m_refCount = a_other.m_refCount;
       ++(*m_refCount);
 
@@ -77,7 +80,10 @@ namespace tloc { namespace graphics { namespace gl {
       size_type refCount = *m_refCount;
 
       if ( refCount == 0)
-      { static_cast<derived_type*>(this)->DoDestroy(); }
+      {
+        static_cast<derived_type*>(this)->DoDestroy();
+        delete m_refCount;
+      }
       else
       { --(refCount); }
 

@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/opengl/tlocObject.h>
+#include <tlocGraphics/opengl/tlocShaderProgram.h>
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -14,35 +15,33 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef core::component_system::Component_T<Material>  base_type;
-    typedef gl::ObjectBase::object_handle                  shader_handle;
+    typedef gl::ShaderProgram                              shader_prog_type;
 
+  public:
     Material();
 
     bool operator ==(const Material& a_other) const;
     bool operator < (const Material& a_other) const;
     TLOC_DECLARE_OPERATORS(Material);
 
-    TLOC_DECL_AND_DEF_GETTER(core::String, GetVertexSource,
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core::String, GetVertexSource, m_vertexProgram);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core::String, GetFragmentSource, m_fragmentProgram);
+
+    TLOC_DECL_AND_DEF_SETTER(core::String, SetVertexSource,
                              m_vertexProgram);
-    TLOC_DECL_AND_DEF_GETTER(core::String, GetFragmentSource,
+    TLOC_DECL_AND_DEF_SETTER(core::String, SetFragmentSource,
                              m_fragmentProgram);
 
-    TLOC_DECL_AND_DEF_SETTER(core::String, GetVertexSource,
-                             m_vertexProgram);
-    TLOC_DECL_AND_DEF_SETTER(core::String, GetFragmentSource,
-                             m_fragmentProgram);
-
-    TLOC_DECL_AND_DEF_GETTER(shader_handle, GetShaderHandle,
-                             m_shaderId);
-    TLOC_DECL_AND_DEF_SETTER(shader_handle, SetShaderHandle,
-                             m_shaderId);
-
+    TLOC_DECL_AND_DEF_GETTER(shader_prog_type, GetShaderProg,
+                             m_shaderProgram);
+    TLOC_DECL_AND_DEF_SETTER(shader_prog_type, SetShaderProg,
+                             m_shaderProgram);
   private:
-
-    shader_handle           m_shaderId;
     core::String            m_vertexProgram;
     core::String            m_fragmentProgram;
-
+    gl::ShaderProgram       m_shaderProgram;
   };
 
 };};};

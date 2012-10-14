@@ -25,12 +25,6 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef gl::ShaderProgram                       shader_prog_type;
-    typedef gl::ShaderProgram::object_handle        shader_handle_type;
-    typedef core::Pair<shader_handle_type,
-                       const entity_type*>          shader_entity_pair_type;
-    typedef core::Array<shader_entity_pair_type>    cont_type;
-
   public:
     MaterialSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
 
@@ -43,9 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void Post_OnEvent(const event_type& a_event);
 
   private:
-    bool        m_dirty;
-    cont_type   m_shaderEntPair;
-
+    bool m_dirty;
   };
 
 };};};

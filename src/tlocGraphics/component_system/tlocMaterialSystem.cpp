@@ -17,18 +17,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   MaterialSystem::error_type MaterialSystem::Initialize()
   {
-    using namespace core::component_system;
-    typedef graphics::component_system::Material mat_type;
-
-    for (cont_type::iterator itr = m_shaderEntPair.begin(),
-         itrEnd = m_shaderEntPair.end(); itr != itrEnd; ++itr)
-    {
-      const entity_type* ent = itr->second;
-      ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
-
-
-    }
-
     return ErrorSuccess();
   }
 
@@ -47,7 +35,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void MaterialSystem::Pre_OnEvent(const event_type& a_event)
   {
-    using namespace tloc::core::component_system;
+    using namespace core::component_system;
+
+    typedef graphics::component_system::Material        mat_type;
+    typedef mat_type::shader_prog_type                  shader_prog_type;
+    typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
+    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
     event_value_type type = a_event.GetType();
 
@@ -58,8 +51,32 @@ namespace tloc { namespace graphics { namespace component_system {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
         const entity_type* ent = entEvent.GetEntity();
 
-        m_shaderEntPair.push_back(core::MakePair(shader_handle_type(0), ent));
-        m_dirty = true;
+        ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
+
+        // Material should have vertex and fragment shader data, for now we will
+        // assume that both exist
+        mat_type& currMat = *(mat[0]);
+
+        gl::ShaderComponent vShader, fShader;
+        bool result;
+
+        vShader.LoadShader(currMat.GetVertexSource().c_str(),
+          vertex_shader_type() );
+        result = vShader.CompileShader();
+        TLOC_ASSERT(result, "Could not compile vertex shader");
+
+        result = fShader.LoadShader(currMat.GetFragmentSource().c_str(),
+          fragment_shader_type() );
+        result = fShader.CompileShader();
+        TLOC_ASSERT(result, "Could not compile fragment shader");
+
+        shader_prog_type sp = currMat.GetShaderProg();
+        result = sp.AttachShaders(  shader_prog_type::two_shader_components
+                                    (&vShader, &fShader) );
+        TLOC_ASSERT(result, "Could not attach shader programs");
+        result = sp.Link();
+        TLOC_ASSERT(result, "Could not link shaders");
+
         break;
       }
     case entity_events::remove_component:

@@ -58,13 +58,13 @@ namespace TestingShaderComponent
     // Initialize renderer
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::ShaderComponent vShader;
+    gl::Shader vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
     CHECK(vShader.LoadShader(vShaderStr, vertex_shader_type() ) == true);
     CHECK(vShader.CompileShader() == true);
 
-    gl::ShaderComponent fShader;
+    gl::Shader fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
     CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
@@ -93,7 +93,7 @@ namespace TestingShaderComponent
     REQUIRE(fsFile.GetContents(fsCode) == common_error_types::error_success);
 
     // Start testing the shaders
-    gl::ShaderComponent vShader;
+    gl::Shader vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
     CHECK(vShader.LoadShader(vsCode.c_str(), vertex_shader_type()) == true);

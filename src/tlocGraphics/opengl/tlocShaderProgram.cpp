@@ -10,6 +10,21 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  namespace p_shader_program
+  {
+    const tl_int DeleteStatus            ::s_glStatusName = GL_DELETE_STATUS;
+    const tl_int LinkStatus              ::s_glStatusName = GL_LINK_STATUS;
+    const tl_int ValidateStatus          ::s_glStatusName = GL_VALIDATE_STATUS;
+    const tl_int InfoLogLength           ::s_glStatusName = GL_INFO_LOG_LENGTH;
+    const tl_int AttachedShaders         ::s_glStatusName = GL_ATTACHED_SHADERS;
+    const tl_int ActiveAttributes        ::s_glStatusName = GL_ACTIVE_ATTRIBUTES;
+    const tl_int ActiveAttributeMaxLength::s_glStatusName =
+                                                 GL_ACTIVE_ATTRIBUTE_MAX_LENGTH;
+    const tl_int ActiveUniforms          ::s_glStatusName = GL_ACTIVE_UNIFORMS;
+    const tl_int ActiveUniformMaxLength  ::s_glStatusName =
+                                                 GL_ACTIVE_UNIFORM_MAX_LENGTH;
+  };
+
   enum flags
   {
     shader_attached = 0,
@@ -23,14 +38,9 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
   }
 
-  ShaderProgram::~ShaderProgram()
-  {
-    glDeleteProgram(GetHandle());
-  }
-
   template <ShaderProgram::size_type T_Size>
   bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent*, T_Size> a_shaderComponents)
+    (core::Variadic<Shader*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -51,9 +61,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     glLinkProgram(handle);
 
-    GLint result;
-
-    glGetProgramiv(handle, GL_LINK_STATUS, &result);
+    GLint result = GetInfo<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
       core::String errorString;
@@ -67,25 +75,76 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
+  ShaderProgram::size_type ShaderProgram::GetNumAttributes() const
+  {
+    TLOC_ASSERT(m_flags[shader_linked],
+      "Shader not linked - did you forget to call Link()?");
+    return GetInfo<p_shader_program::ActiveAttributes>();
+  }
+
+  ShaderProgram::size_type ShaderProgram::GetNumUniforms() const
+  {
+    TLOC_ASSERT(m_flags[shader_linked],
+      "Shader not linked - did you forget to call Link()?");
+    return GetInfo<p_shader_program::ActiveUniforms>();
+  }
+
   void ShaderProgram::Enable()
   {
     glUseProgram(GetHandle());
   }
 
   //------------------------------------------------------------------------
+  // Private methods
+
+  void ShaderProgram::DoDestroy()
+  {
+    glDeleteProgram(GetHandle());
+  }
+
+  template <typename T_ProgramIvParam>
+  ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo() const
+  {
+    GLint result;
+    object_handle handle = GetHandle();
+    glGetProgramiv(handle, T_ProgramIvParam::s_glStatusName, &result);
+    return (gl_result_type)result;
+  }
+
+  //------------------------------------------------------------------------
   // Explicit initialization
-  template class core::Variadic<ShaderComponent*, 1>;
-  template class core::Variadic<ShaderComponent*, 2>;
-  template class core::Variadic<ShaderComponent*, 3>;
-  template class core::Variadic<ShaderComponent*, 4>;
+  template class core::Variadic<Shader*, 1>;
+  template class core::Variadic<Shader*, 2>;
+  template class core::Variadic<Shader*, 3>;
+  template class core::Variadic<Shader*, 4>;
 
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent*, 1>);
+    (core::Variadic<Shader*, 1>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent*, 2>);
+    (core::Variadic<Shader*, 2>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent*, 3>);
+    (core::Variadic<Shader*, 3>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<ShaderComponent*, 4>);
+    (core::Variadic<Shader*, 4>);
+
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::DeleteStatus>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::LinkStatus>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::ValidateStatus>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::InfoLogLength>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::AttachedShaders>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::ActiveAttributes>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::ActiveAttributeMaxLength>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::ActiveUniforms>() const;
+  template ShaderProgram::gl_result_type
+    ShaderProgram::DoGetInfo<p_shader_program::ActiveUniformMaxLength>() const;
 
 };};};

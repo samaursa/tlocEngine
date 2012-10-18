@@ -17,50 +17,46 @@ namespace TestingPythagoras
 
     {
       pyth p(pyth::base(2.0), pyth::hypotenuse(2.5));
-      CHECK(p.GetOpposite() == Approx(1.5));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(),
+                          90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::hypotenuse(2.5), pyth::base(2.0));
-      CHECK(p.GetOpposite() == Approx(1.5));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(),
+                          90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::opposite(1.5), pyth::base(2.0));
-      CHECK(p.GetHypotenuse() == Approx(2.5));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-        90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::base(2.0), pyth::opposite(1.5));
-      CHECK(p.GetHypotenuse() == Approx(2.5));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-        90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::opposite(1.5), pyth::hypotenuse(2.5));
-      CHECK(p.GetBase() == Approx(2.0));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-        90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::base>() == Approx(2.0));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::hypotenuse(2.5), pyth::opposite(1.5));
-      CHECK(p.GetBase() == Approx(2.0));
-      CHECK(Mathf::Approx(p.GetAngle().GetAngle(), 0.63665f, 0.01f));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-        90 - p.GetAngle().GetAngle()) );
+      CHECK(p.GetSide<pyth::base>() == Approx(2.0));
+      CHECK(Mathf::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     //------------------------------------------------------------------------
@@ -68,38 +64,43 @@ namespace TestingPythagoras
 
     {
       tl_float angle = Mathf::ATan(1.5f / 2.0f);
-      pyth p(math::Degree( angle ), pyth::base(2.0));
-      CHECK(p.GetOpposite() == Approx(1.5));
-      CHECK(p.GetHypotenuse() == Approx(2.5));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      pyth p(math::Degree( math::Radian(angle) ), pyth::base(2.0));
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
+      CHECK(p.GetAngle().GetAs<math::Degree>() == Approx(36.8698f));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       tl_float angle = Mathf::ASin(1.5f / 2.5f);
-      pyth p(math::Degree( angle ), pyth::opposite(1.5));
-      CHECK(p.GetBase() == Approx(2.0));
-      CHECK(p.GetHypotenuse() == Approx(2.5));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      pyth p(math::Degree( math::Radian(angle) ), pyth::opposite(1.5));
+      CHECK(p.GetSide<pyth::base>() == Approx(2.0));
+      CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       tl_float angle = Mathf::ACos(2.0f / 2.5f);
-      pyth p(math::Degree( angle ), pyth::base(2.0));
-      CHECK(p.GetOpposite() == Approx(1.5));
-      CHECK(p.GetHypotenuse() == Approx(2.5));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      pyth p(math::Degree( math::Radian(angle) ), pyth::base(2.0));
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       tl_float angle = Mathf::ACos(2.0f / 2.5f);
-      pyth p(math::Degree( angle ), pyth::hypotenuse(2.5));
-      CHECK(p.GetBase() == Approx(2.0));
-      CHECK(p.GetOpposite() == Approx(1.5));
-      CHECK(Mathf::Approx(p.GetAngleOpposite().GetAngle(),
-                          90 - p.GetAngle().GetAngle()) );
+      pyth p(math::Degree( math::Radian(angle) ), pyth::hypotenuse(2.5));
+      CHECK(p.GetSide<pyth::base>() == Approx(2.0));
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
+    }
+
+    {
+      tl_float angle = Mathf::ACos(2.0f / 2.5f);
+      pyth p(math::Radian( angle ), pyth::hypotenuse(2.5));
+      CHECK(p.GetSide<pyth::base>() == Approx(2.0));
+      CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
+      CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
   }
 };

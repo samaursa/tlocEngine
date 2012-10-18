@@ -1174,6 +1174,10 @@
 					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.inl"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongTypeExplicitMacros.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

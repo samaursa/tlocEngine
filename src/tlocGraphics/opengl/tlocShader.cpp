@@ -1,7 +1,10 @@
-#include "tlocShaderComponent.h"
+#include "tlocShader.h"
 
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
+
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

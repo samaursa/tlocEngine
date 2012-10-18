@@ -3,13 +3,17 @@
 #include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocGraphics/renderer/tlocRenderer.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
 namespace TestingShaderComponent
 {
   const char* vShaderStr =
-    "#version 100                       \n\
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 140                     \n\
+     #endif                             \n\
                                         \n\
     attribute vec4 vVertex;             \n\
     attribute vec4 vColor;              \n\
@@ -23,7 +27,11 @@ namespace TestingShaderComponent
     }";
 
   const char* fShaderStr =
-    "#version 100                       \n\
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 140                     \n\
+     #endif                             \n\
                                         \n\
     varying lowp vec4 vVaryingColor;    \n\
                                         \n\
@@ -37,8 +45,8 @@ namespace TestingShaderComponent
   using namespace tloc::core;
   using namespace graphics;
 
-  String g_vShaderPath(GetResourcePath() + String("/shaders/simple_vertex_shader.glsl") );
-  String g_fShaderPath(GetResourcePath() + String("/shaders/simple_fragment_shader.glsl") );
+  String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );
+  String g_fShaderPath(GetAssetPath() + String("/shaders/simple_fragment_shader.glsl") );
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {

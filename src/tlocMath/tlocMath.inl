@@ -40,6 +40,12 @@ namespace tloc {
   }
 
   template <typename T>
+  TL_FI T Math<T>::Tan(T aValue)
+  {
+    return std::tan(aValue);
+  }
+
+  template <typename T>
   TL_FI T Math<T>::ATan(T aValue)
   {
     return std::atan(aValue);

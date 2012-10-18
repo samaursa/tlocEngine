@@ -1,5 +1,6 @@
 #include "tlocPythagoras.h"
 
+#include <tlocCore/data_structures/tlocTuple.inl>
 #include <tlocMath/tlocMath.h>
 #include <cmath>
 
@@ -42,17 +43,25 @@ namespace tloc { namespace math { namespace utils {
   }
 
   template <PYTHAGORAS_TEMP>
+  Pythagoras_T<PYTHAGORAS_PARAMS>::
+    Pythagoras_T(const this_type& a_other)
+    : m_sides(a_other.m_sides)
+  { }
+
+  template <PYTHAGORAS_TEMP>
   PYTHAGORAS_TYPE::angle_type
     Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngle() const
   {
-    return Math<value_type>::ACos(m_base / m_hypo);
+    return math::Radian_T<value_type>
+      ( Math<value_type>::ACos(m_sides[base::k_index] /
+                               m_sides[hypotenuse::k_index]) );
   }
 
   template <PYTHAGORAS_TEMP>
   PYTHAGORAS_TYPE::angle_type
     Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngleOpposite() const
   {
-    return 90 - GetAngle().GetAngleAs<angle_type>();
+    return 90 - GetAngle().template GetAs<angle_type>();
   }
 
   //------------------------------------------------------------------------
@@ -61,9 +70,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(base a_base, opposite a_oppos)
   {
-    m_base = a_base;
-    m_oppos = a_oppos;
-    m_hypo = GetHypo<value_type>(a_base, a_oppos);
+    m_sides[base::k_index]        = a_base;
+    m_sides[opposite::k_index]    = a_oppos;
+    m_sides[hypotenuse::k_index]  = GetHypo<value_type>(a_base, a_oppos);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -75,9 +84,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(base a_base, hypotenuse a_hypo)
   {
-    m_base = a_base;
-    m_hypo = a_hypo;
-    m_oppos = GetOther<value_type>(a_hypo, a_base);
+    m_sides[base::k_index]        = a_base;
+    m_sides[hypotenuse::k_index]  = a_hypo;
+    m_sides[opposite::k_index]    = GetOther<value_type>(a_hypo, a_base);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -89,9 +98,9 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(opposite a_oppos, hypotenuse a_hypo)
   {
-    m_oppos = a_oppos;
-    m_hypo = a_hypo;
-    m_base = GetOther<value_type>(a_hypo, a_oppos);
+    m_sides[opposite::k_index]    = a_oppos;
+    m_sides[hypotenuse::k_index]  = a_hypo;
+    m_sides[base::k_index] = GetOther<value_type>(a_hypo, a_oppos);
   }
 
   template <PYTHAGORAS_TEMP>
@@ -103,24 +112,24 @@ namespace tloc { namespace math { namespace utils {
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, base a_base)
   {
-    hypotenuse hypo = hypotenuse
-      (a_base / Math<value_type>::Cos(a_angle.GetAngleAs<angle_type>()) );
+    hypotenuse hypo = hypotenuse(a_base
+      / Math<value_type>::Cos(a_angle.template GetAs<math::Radian_T<value_type> >()) );
     DoSet(a_base, hypo);
   }
 
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, opposite a_oppos)
   {
-    hypotenuse hypo = hypotenuse
-      (a_oppos / Math<value_type>::Sin(a_angle.GetAngleAs<angle_type>()) );
+    hypotenuse hypo = hypotenuse(a_oppos /
+       Math<value_type>::Sin(a_angle.template GetAs<math::Radian_T<value_type> >()) );
     DoSet(a_oppos, hypo);
   }
 
   template <PYTHAGORAS_TEMP>
   void Pythagoras_T<PYTHAGORAS_PARAMS>::DoSet(angle_type a_angle, hypotenuse a_hypo)
   {
-    opposite oppos = opposite
-      (a_hypo * Math<value_type>::Sin(a_angle.GetAngleAs<angle_type>()) );
+    opposite oppos = opposite(a_hypo *
+      Math<value_type>::Sin(a_angle.template GetAs<math::Radian_T<value_type> >()) );
     DoSet(oppos, a_hypo);
   }
 
@@ -137,9 +146,13 @@ namespace tloc { namespace math { namespace utils {
   template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::opposite, Pythagoras_T<_type_>::hypotenuse);\
   template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::hypotenuse, Pythagoras_T<_type_>::opposite);\
   \
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::angle_type, Pythagoras_T<_type_>::base);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::angle_type, Pythagoras_T<_type_>::opposite);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::angle_type, Pythagoras_T<_type_>::hypotenuse)
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Degree_T<_type_>, Pythagoras_T<_type_>::base);\
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Degree_T<_type_>, Pythagoras_T<_type_>::opposite);\
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Degree_T<_type_>, Pythagoras_T<_type_>::hypotenuse);\
+  \
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Radian_T<_type_>, Pythagoras_T<_type_>::base);\
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Radian_T<_type_>, Pythagoras_T<_type_>::opposite);\
+  template Pythagoras_T<_type_>::Pythagoras_T(math::Radian_T<_type_>, Pythagoras_T<_type_>::hypotenuse)
 
   TLOC_INSTANTIATE_PYTHAGORAS(f32);
   TLOC_INSTANTIATE_PYTHAGORAS(f64);

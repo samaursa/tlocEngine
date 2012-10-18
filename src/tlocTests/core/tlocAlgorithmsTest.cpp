@@ -10,6 +10,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace TestingAlgorithms
 {

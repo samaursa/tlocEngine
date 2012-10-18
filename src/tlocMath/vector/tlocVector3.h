@@ -50,18 +50,6 @@ namespace tloc { namespace math {
     TL_FI void Cross(const this_type& aVector1,
                      const this_type& aVector2);
 
-    // Modifies this vector to store the normalized version of the incoming
-    // vector with an approx 3% error. Inverse square root code taken from
-    // http://www.codemaestro.com/reviews/9 (originally from Quake)
-    //
-    // NOTE: Only works on floats!
-    TL_FI void FastNorm(const this_type& aVector);
-
-    // Same as FastNorm() but modifies this vector directly
-    //
-    // NOTE: Only works on floats!
-    TL_FI void FastNorm();
-
     static const Vector3 ZERO;
     static const Vector3 UNIT_X;
     static const Vector3 UNIT_Y;
@@ -83,19 +71,19 @@ namespace tloc { namespace math {
   //------------------------------------------------------------------------
   // Static const definitions
   template <typename T>
-  const Vector3<T> Vector3<T>::ZERO       (0.0, 0.0, 0.0);
+  const Vector3<T> Vector3<T>::ZERO       (0, 0, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::UNIT_X     (1.0, 0.0, 0.0);
+  const Vector3<T> Vector3<T>::UNIT_X     (1, 0, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::UNIT_Y     (0.0, 1.0, 0.0);
+  const Vector3<T> Vector3<T>::UNIT_Y     (0, 1, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::UNIT_Z     (0.0, 0.0, 1.0);
+  const Vector3<T> Vector3<T>::UNIT_Z     (0, 0, 1);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_X (-1.0, 0.0, 0.0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_X (-1, 0, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0.0, -1.0, 0.0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0, -1, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0.0, 0.0, -1.0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0, 0, -1);
 
 };};
 

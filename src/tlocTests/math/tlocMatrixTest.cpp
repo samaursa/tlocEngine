@@ -26,6 +26,25 @@ namespace TestingMatrix
                                CHECK((vec[1]) == (Approx(y)) ); \
                                CHECK((vec[2]) == (Approx(z)) );
 
+#define CHECK_MATRIX4F(mat,x1,y1,z1,w1,x2,y2,z2,w2,x3,y3,z3,w3,x4,y4,z4,w4) \
+  CHECK((mat[0]) == Approx(x1)); CHECK((mat[1]) == Approx(y1));\
+  CHECK((mat[2]) == Approx(z1)); CHECK((mat[3]) == Approx(w1));\
+\
+  CHECK((mat[4]) == Approx(x2)); CHECK((mat[5]) == Approx(y2));\
+  CHECK((mat[6]) == Approx(z2)); CHECK((mat[7]) == Approx(w2));\
+\
+  CHECK((mat[8]) == Approx(x3)); CHECK((mat[9]) == Approx(y3));\
+  CHECK((mat[10]) == Approx(z3)); CHECK((mat[11]) == Approx(w3));\
+\
+  CHECK((mat[12]) == Approx(x4)); CHECK((mat[13]) == Approx(y4));\
+  CHECK((mat[14]) == Approx(z4)); CHECK((mat[15]) == Approx(w4))
+
+
+#define CHECK_VEC4F(vec,x,y,z,w)  CHECK((vec[0]) == (Approx(x)) ); \
+                                  CHECK((vec[1]) == (Approx(y)) ); \
+                                  CHECK((vec[2]) == (Approx(z)) ); \
+                                  CHECK((vec[3]) == (Approx(w)) );
+
   struct Matrix3Fixture
   {
     Matrix3Fixture()
@@ -177,6 +196,24 @@ namespace TestingMatrix
     d = c;
     e.Mul(c, d);
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
+
+    Matrix<tl_float, 4> m(1);
+    m(0, 0) = 0.43301266f; m(0, 1) = -0.75f;        m(0, 2) = 0.5f;
+    m(1, 0) = 0.78914917f; m(1, 1) = 0.047367137f;  m(1, 2) = -0.6123724f;
+    m(2, 0) = 0.43559578f; m(2, 1) = 0.65973961f;   m(2, 2) = 0.6123724f;
+    m(3, 0) = 0;           m(3, 1) = 0;             m(3, 2) = 0;
+
+    Vector<tl_float, 4> v4(0), v4res;
+    v4[2] = -1; v4[3] = 1;
+
+    m.Mul(v4, v4res);
+
+    CHECK_VEC4F(v4res, 0.5f, 1.6123724f, 0.3876276f, 1);
+
+    v4[0] = 4; v4[1] = 3; v4[2] = 2; v4[3] = 1;
+    m.Mul(v4, v4res);
+
+    CHECK_VEC4F(v4res, 1.4820507f, 3.0739534f, 5.9463468f, 1);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/MulOperator",

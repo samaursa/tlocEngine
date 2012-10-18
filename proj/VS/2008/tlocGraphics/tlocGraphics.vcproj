@@ -1106,6 +1106,10 @@
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="error"

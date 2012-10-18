@@ -2,6 +2,7 @@
 #define TLOC_GL_OBJECT_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
 
@@ -110,6 +111,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef ObjectBase                  base_type;
     typedef base_type::object_handle    object_handle;
+    typedef core::error::Error          error_type;
   };
 
   template<typename T_Derived>

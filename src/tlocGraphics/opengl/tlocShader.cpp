@@ -44,6 +44,14 @@ namespace tloc { namespace graphics { namespace gl {
   {
   }
 
+  Shader::~Shader()
+  {
+    if (IsLastRef())
+    {
+      glDeleteShader(GetHandle());
+    }
+  }
+
   template <typename T_ShaderType>
   bool Shader::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
   {
@@ -93,7 +101,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   void Shader::DoDestroy()
   {
-    glDeleteShader(GetHandle());
   }
 
   //------------------------------------------------------------------------

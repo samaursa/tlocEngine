@@ -58,6 +58,10 @@ namespace TestingShaderComponent
     // Initialize renderer
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
+    {
+      gl::Shader s;
+    }
+
     gl::Shader vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;

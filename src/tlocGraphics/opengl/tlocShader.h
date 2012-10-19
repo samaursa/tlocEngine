@@ -30,6 +30,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::tl_array<bool>::type  flag_type;
 
     Shader();
+    ~Shader();
 
     template <typename T_ShaderType>
     bool LoadShader(const char* a_shaderSource, T_ShaderType a_type);

@@ -43,6 +43,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
     ShaderProgram();
+    ~ShaderProgram();
 
     template <size_type T_Size>
     bool AttachShaders(core::Variadic<Shader*, T_Size>
@@ -72,8 +73,6 @@ namespace tloc { namespace graphics { namespace gl {
     void Enable();
 
   private:
-    void DoDestroy();
-
     template <typename T_ProgramIvParam>
     gl_result_type DoGetInfo() const;
 

@@ -10,6 +10,12 @@ namespace tloc { namespace graphics { namespace error {
   {
     error_texture_load = core::error::error_groups::error_graphics,
     error_image_decoding,
+
+    // API (OpenGL for now)
+    error_api_invalid_handle,
+
+    // Shaders
+    error_
   };
 
 };};};

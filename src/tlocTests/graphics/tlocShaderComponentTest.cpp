@@ -59,19 +59,19 @@ namespace TestingShaderComponent
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     {
-      gl::Shader s;
+      gl::VertexShader vs;
     }
 
-    gl::Shader vShader;
+    gl::VertexShader vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    CHECK(vShader.LoadShader(vShaderStr, vertex_shader_type() ) == true);
+    CHECK(vShader.Load(vShaderStr) == true);
     CHECK(vShader.CompileShader() == true);
 
-    gl::Shader fShader;
+    gl::FragmentShader fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    CHECK(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
+    CHECK(fShader.Load(fShaderStr) == true);
     CHECK(fShader.CompileShader() == true);
   }
 
@@ -97,11 +97,14 @@ namespace TestingShaderComponent
     REQUIRE(fsFile.GetContents(fsCode) == common_error_types::error_success);
 
     // Start testing the shaders
-    gl::Shader vShader;
+    gl::VertexShader vShader;
 
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    CHECK(vShader.LoadShader(vsCode.c_str(), vertex_shader_type()) == true);
+    CHECK(vShader.Load(vsCode.c_str()) == true);
     CHECK(vShader.CompileShader() == true);
 
+    gl::FragmentShader fShader;
+
+    CHECK(fShader.Load(fsCode.c_str()) == true);
+    CHECK(fShader.CompileShader() == true);
   }
 };

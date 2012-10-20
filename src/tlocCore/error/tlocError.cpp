@@ -2,6 +2,11 @@
 
 namespace tloc { namespace core { namespace error {
 
+  Error::Error()
+    : m_error(common_error_types::error_success)
+  {
+  }
+
   Error::Error(code_type a_errorType)
     : m_error(a_errorType)
   {

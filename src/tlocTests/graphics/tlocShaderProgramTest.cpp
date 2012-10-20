@@ -72,15 +72,13 @@ namespace TestingShaderProgram
     // Initialize glew
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::Shader vShader;
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    REQUIRE(vShader.LoadShader(vShaderStr, vertex_shader_type()) == true);
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStr) == true);
     REQUIRE(vShader.CompileShader() == true);
 
-    gl::Shader fShader;
+    gl::FragmentShader fShader;
 
-    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    REQUIRE(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
+    REQUIRE(fShader.Load(fShaderStr) == true);
     REQUIRE(fShader.CompileShader() == true);
 
     gl::ShaderProgram sp;
@@ -97,10 +95,8 @@ namespace TestingShaderProgram
 
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::Shader vShader;
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    REQUIRE(vShader.LoadShader(vShaderStrWithAttrAndUni,
-                               vertex_shader_type()) == true);
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == true);
     REQUIRE(vShader.CompileShader() == true);
 
     gl::ShaderProgram sp;

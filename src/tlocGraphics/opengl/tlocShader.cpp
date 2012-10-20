@@ -6,23 +6,25 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
+#include <tlocGraphics/error/tlocErrorTypes.h>
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace detail
   {
-    Shader::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Vertex)
     {
       return glCreateShader(GL_VERTEX_SHADER);
     }
 
-    Shader::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Fragment)
     {
       return glCreateShader(GL_FRAGMENT_SHADER);
     }
 
-    Shader::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Geometry)
     {
       // TODO: glew.h does not have geometry shaders yet
@@ -40,11 +42,11 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  Shader::Shader() : m_flags(count)
+  Shader_I::Shader_I() : m_flags(count)
   {
   }
 
-  Shader::~Shader()
+  Shader_I::~Shader_I()
   {
     if (IsLastRef())
     {
@@ -53,14 +55,15 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   template <typename T_ShaderType>
-  bool Shader::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
+  Shader_I::error_type
+    Shader_I::DoLoad(const char *a_shaderSource)
   {
-    SetHandle(detail::CreateShader(a_type));
+    SetHandle( detail::CreateShader(T_ShaderType()) );
 
     object_handle handle = GetHandle();
     if (!handle)
     {
-      return false;
+      return error::error_api_invalid_handle;
     }
 
     // Load the shader
@@ -75,7 +78,7 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
-  bool Shader::CompileShader()
+  Shader_I::error_type Shader_I::CompileShader()
   {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");
@@ -99,14 +102,47 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
-  void Shader::DoDestroy()
+  //////////////////////////////////////////////////////////////////////////
+  // Fragment Shader
+
+  FragmentShader::FragmentShader() : Shader_I()
+  { }
+
+  FragmentShader::~FragmentShader()
+  { }
+
+  FragmentShader::error_type
+    FragmentShader::Load(const char* a_shaderSource)
   {
+    typedef p_shader_program::shader_type::Fragment fragment_shader_type;
+
+    return DoLoad<fragment_shader_type>(a_shaderSource);
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Vertex Shader
+
+  VertexShader::VertexShader() : Shader_I()
+  { }
+
+  VertexShader::~VertexShader()
+  { }
+
+  VertexShader::error_type
+    VertexShader::Load(const char* a_shaderSource)
+  {
+    typedef p_shader_program::shader_type::Vertex vertex_shader_type;
+
+    return DoLoad<vertex_shader_type>(a_shaderSource);
   }
 
   //------------------------------------------------------------------------
   // Explicit instantiation
-  template bool Shader::LoadShader(const char*, p_shader_program::shader_type::Vertex);
-  template bool Shader::LoadShader(const char*, p_shader_program::shader_type::Fragment);
-  template bool Shader::LoadShader(const char*, p_shader_program::shader_type::Geometry);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Vertex>(const char*);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Fragment>(const char*);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Geometry>(const char*);
 
 };};};

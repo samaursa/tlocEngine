@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <ShaderProgram::size_type T_Size>
   bool ShaderProgram::AttachShaders
-    (core::Variadic<Shader*, T_Size> a_shaderComponents)
+    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -117,19 +117,19 @@ namespace tloc { namespace graphics { namespace gl {
 
   //------------------------------------------------------------------------
   // Explicit initialization
-  template class core::Variadic<Shader*, 1>;
-  template class core::Variadic<Shader*, 2>;
-  template class core::Variadic<Shader*, 3>;
-  template class core::Variadic<Shader*, 4>;
+  template class core::Variadic<Shader_I*, 1>;
+  template class core::Variadic<Shader_I*, 2>;
+  template class core::Variadic<Shader_I*, 3>;
+  template class core::Variadic<Shader_I*, 4>;
 
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<Shader*, 1>);
+    (core::Variadic<Shader_I*, 1>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<Shader*, 2>);
+    (core::Variadic<Shader_I*, 2>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<Shader*, 3>);
+    (core::Variadic<Shader_I*, 3>);
   template bool ShaderProgram::AttachShaders
-    (core::Variadic<Shader*, 4>);
+    (core::Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGetInfo<p_shader_program::DeleteStatus>() const;

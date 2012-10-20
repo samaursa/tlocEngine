@@ -233,14 +233,14 @@ namespace TestingVector3f
     CHECK_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
     c.Norm();
     CHECK_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
-    tl_float length = c.NormLength();
+    tl_float length = c.Norm();
     CHECK(length == Approx(1.0f)); //-V550
 
     c[0] = 2; c[1] = 2; c[2] = 2;
-    c.FastNorm();
+    c.Norm<p_vector::fast>();
     tl_float percDiff = abs((c[0] - 0.577f) / c[0]);
     // Make sure all the values are the same
-    CHECK_VEC3F(c, c[0], c[0], c[0]); //-V550
+    CHECK_VEC3F(c, c[0], c[1], c[2]); //-V550
     CHECK (percDiff < 0.03f);
     length = c.Length();
     CHECK (length > 0.99f);

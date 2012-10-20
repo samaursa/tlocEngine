@@ -1041,6 +1041,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="component_system"
+				>
+				<Filter
+					Name="components"
+					>
+					<File
+						RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocQuadTest.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="resources"

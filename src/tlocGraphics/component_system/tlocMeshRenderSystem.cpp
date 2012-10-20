@@ -1,13 +1,9 @@
 #include "tlocMeshRenderSystem.h"
-#include <tlocCore/component_system/tlocEntityManager.inl>
-#include <tlocCore/component_system/tlocEntity.inl>
+
+#include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
-
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocComponentMapper.inl>
-
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -18,6 +14,12 @@ namespace tloc { namespace graphics { namespace component_system {
     , core::Variadic<component_type, 1>(components::mesh))
   {
   }
+
+  MeshRenderSystem::error_type MeshRenderSystem::Initialize()
+  { return ErrorSuccess(); }
+
+  MeshRenderSystem::error_type MeshRenderSystem::Shutdown()
+  { return ErrorSuccess(); }
 
   void MeshRenderSystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
@@ -35,5 +37,11 @@ namespace tloc { namespace graphics { namespace component_system {
     // Render
     TLOC_UNUSED(a_mgr);
   }
+
+  void MeshRenderSystem::Pre_OnEvent(const event_type& a_event)
+  { TLOC_UNUSED(a_event); }
+
+  void MeshRenderSystem::Post_OnEvent(const event_type& a_event)
+  { TLOC_UNUSED(a_event); }
 
 };};};

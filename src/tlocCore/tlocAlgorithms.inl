@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <cstring>
+
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocPair.inl>
 #include <tlocCore/iterators/tlocIterator.inl>

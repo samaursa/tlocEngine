@@ -103,14 +103,13 @@ namespace TestingShaderProgram
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
     CHECK(sp.Link() == ErrorSuccess());
 
-    CHECK(sp.GetNumAttributes() == 2);
-    CHECK(sp.GetNumUniforms() == 1);
-
-    CHECK(sp.GetInfo<gl::p_shader_program::DeleteStatus>() == 0);
-    CHECK(sp.GetInfo<gl::p_shader_program::LinkStatus>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::ValidateStatus>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::AttachedShaders>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::ActiveUniformMaxLength>() == 5);
-    CHECK(sp.GetInfo<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
+    CHECK(sp.Get<gl::p_shader_program::DeleteStatus>() == 0);
+    CHECK(sp.Get<gl::p_shader_program::LinkStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ValidateStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::AttachedShaders>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniforms>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniformMaxLength>() == 5);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributes>() == 2);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
   }
 };

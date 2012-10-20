@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace gl {
     error_type Link();
 
     template <typename T_ProgramIvParam>
-    gl_result_type GetInfo() const
+    gl_result_type Get() const
     {
       type_traits::AssertTypeIsSupported
         < T_ProgramIvParam,
@@ -64,17 +64,14 @@ namespace tloc { namespace graphics { namespace gl {
         p_shader_program::ActiveAttributeMaxLength,
         p_shader_program::ActiveUniforms,
         p_shader_program::ActiveUniformMaxLength>();
-      return DoGetInfo<T_ProgramIvParam>();
+      return DoGet<T_ProgramIvParam>();
     }
-
-    size_type GetNumAttributes() const;
-    size_type GetNumUniforms() const;
 
     void Enable();
 
   private:
     template <typename T_ProgramIvParam>
-    gl_result_type DoGetInfo() const;
+    gl_result_type DoGet() const;
 
   private:
     core::utils::Checkpoints    m_flags;

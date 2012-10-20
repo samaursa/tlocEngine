@@ -72,7 +72,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     glLinkProgram(handle);
 
-    GLint result = GetInfo<p_shader_program::LinkStatus>();
+    GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
       core::String errorString;
@@ -86,20 +86,6 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess();
   }
 
-  ShaderProgram::size_type ShaderProgram::GetNumAttributes() const
-  {
-    TLOC_ASSERT(m_flags[shader_linked],
-      "Shader not linked - did you forget to call Link()?");
-    return GetInfo<p_shader_program::ActiveAttributes>();
-  }
-
-  ShaderProgram::size_type ShaderProgram::GetNumUniforms() const
-  {
-    TLOC_ASSERT(m_flags[shader_linked],
-      "Shader not linked - did you forget to call Link()?");
-    return GetInfo<p_shader_program::ActiveUniforms>();
-  }
-
   void ShaderProgram::Enable()
   {
     glUseProgram(GetHandle());
@@ -110,7 +96,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <typename T_ProgramIvParam>
   ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo() const
+    ShaderProgram::DoGet() const
   {
     GLint result;
     object_handle handle = GetHandle();
@@ -135,22 +121,22 @@ namespace tloc { namespace graphics { namespace gl {
     (core::Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::DeleteStatus>() const;
+    ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::LinkStatus>() const;
+    ShaderProgram::DoGet<p_shader_program::LinkStatus>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::ValidateStatus>() const;
+    ShaderProgram::DoGet<p_shader_program::ValidateStatus>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::InfoLogLength>() const;
+    ShaderProgram::DoGet<p_shader_program::InfoLogLength>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::AttachedShaders>() const;
+    ShaderProgram::DoGet<p_shader_program::AttachedShaders>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::ActiveAttributes>() const;
+    ShaderProgram::DoGet<p_shader_program::ActiveAttributes>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::ActiveAttributeMaxLength>() const;
+    ShaderProgram::DoGet<p_shader_program::ActiveAttributeMaxLength>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::ActiveUniforms>() const;
+    ShaderProgram::DoGet<p_shader_program::ActiveUniforms>() const;
   template ShaderProgram::gl_result_type
-    ShaderProgram::DoGetInfo<p_shader_program::ActiveUniformMaxLength>() const;
+    ShaderProgram::DoGet<p_shader_program::ActiveUniformMaxLength>() const;
 
 };};};

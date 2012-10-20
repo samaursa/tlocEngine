@@ -10,9 +10,12 @@ namespace TestingGLShaderObject
   class glObject : public gl::Object_T<glObject>
   {
   public:
-    void DoDestroy()
+    ~glObject()
     {
-      ++m_destroyCount;
+      if (IsLastRef())
+      {
+        ++m_destroyCount;
+      }
     }
 
     static tl_size m_destroyCount;

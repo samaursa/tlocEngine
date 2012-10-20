@@ -71,6 +71,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetRefCount, *m_refCount );
 
+    bool IsLastRef()
+    { return m_refCount == NULL || GetRefCount() == 0; }
+
   protected:
 
     ObjectRefCounted()
@@ -80,24 +83,21 @@ namespace tloc { namespace graphics { namespace gl {
 
     ~ObjectRefCounted()
     {
-      DoDestroy();
-    }
-
-    void DoDestroy()
-    {
-      size_type refCount = *m_refCount;
-
-      if ( refCount == 0)
-      {
-        static_cast<derived_type*>(this)->DoDestroy();
-        delete m_refCount;
-        m_refCount = NULL;
-      }
-      else
-      { --(refCount); }
-
       if (m_refCount)
-      { *m_refCount = refCount; }
+      {
+        size_type refCount = *m_refCount;
+
+        if ( IsLastRef() )
+        {
+          delete m_refCount;
+          m_refCount = NULL;
+        }
+        else
+        { --(refCount); }
+
+        if (m_refCount)
+        { *m_refCount = refCount; }
+      }
     }
 
   private:

@@ -57,25 +57,25 @@ namespace tloc { namespace graphics { namespace component_system {
         // assume that both exist
         mat_type& currMat = *(mat[0]);
 
-        gl::Shader vShader, fShader;
-        bool result;
+        gl::VertexShader vShader;
+        gl::FragmentShader fShader;
+        gl::Shader_I::error_type result;
 
-        vShader.LoadShader(currMat.GetVertexSource().c_str(),
-          vertex_shader_type() );
+        vShader.Load(currMat.GetVertexSource().c_str() );
         result = vShader.CompileShader();
-        TLOC_ASSERT(result, "Could not compile vertex shader");
+        TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
 
-        result = fShader.LoadShader(currMat.GetFragmentSource().c_str(),
-          fragment_shader_type() );
+        result = fShader.Load(currMat.GetFragmentSource().c_str());
         result = fShader.CompileShader();
-        TLOC_ASSERT(result, "Could not compile fragment shader");
+        TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
 
         shader_prog_type sp = currMat.GetShaderProg();
-        result = sp.AttachShaders(  shader_prog_type::two_shader_components
-                                    (&vShader, &fShader) );
-        TLOC_ASSERT(result, "Could not attach shader programs");
+        result = sp.AttachShaders
+          (shader_prog_type::two_shader_components(&vShader, &fShader) );
+        TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
+
         result = sp.Link();
-        TLOC_ASSERT(result, "Could not link shaders");
+        TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
 
         break;
       }

@@ -72,20 +72,18 @@ namespace TestingShaderProgram
     // Initialize glew
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::Shader vShader;
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    REQUIRE(vShader.LoadShader(vShaderStr, vertex_shader_type()) == true);
-    REQUIRE(vShader.CompileShader() == true);
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
 
-    gl::Shader fShader;
+    gl::FragmentShader fShader;
 
-    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    REQUIRE(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
-    REQUIRE(fShader.CompileShader() == true);
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.CompileShader() == ErrorSuccess());
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    CHECK(sp.Link() == true);
+    CHECK(sp.Link() == ErrorSuccess());
   }
 
   TEST_CASE("Graphics/ShaderProgram/AttributesAndUniforms", "")
@@ -97,24 +95,21 @@ namespace TestingShaderProgram
 
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::Shader vShader;
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    REQUIRE(vShader.LoadShader(vShaderStrWithAttrAndUni,
-                               vertex_shader_type()) == true);
-    REQUIRE(vShader.CompileShader() == true);
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
-    CHECK(sp.Link() == true);
+    CHECK(sp.Link() == ErrorSuccess());
 
-    CHECK(sp.GetNumAttributes() == 2);
-    CHECK(sp.GetNumUniforms() == 1);
-
-    CHECK(sp.GetInfo<gl::p_shader_program::DeleteStatus>() == 0);
-    CHECK(sp.GetInfo<gl::p_shader_program::LinkStatus>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::ValidateStatus>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::AttachedShaders>() == 1);
-    CHECK(sp.GetInfo<gl::p_shader_program::ActiveUniformMaxLength>() == 5);
-    CHECK(sp.GetInfo<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
+    CHECK(sp.Get<gl::p_shader_program::DeleteStatus>() == 0);
+    CHECK(sp.Get<gl::p_shader_program::LinkStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ValidateStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::AttachedShaders>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniforms>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniformMaxLength>() == 5);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributes>() == 2);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
   }
 };

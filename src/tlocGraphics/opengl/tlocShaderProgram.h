@@ -46,9 +46,9 @@ namespace tloc { namespace graphics { namespace gl {
     ~ShaderProgram();
 
     template <size_type T_Size>
-    bool AttachShaders(core::Variadic<Shader_I*, T_Size>
-                       a_shaderComponents);
-    bool Link();
+    error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
+                             a_shaderComponents);
+    error_type Link();
 
     template <typename T_ProgramIvParam>
     gl_result_type GetInfo() const

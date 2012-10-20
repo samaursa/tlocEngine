@@ -8,6 +8,8 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocError.h>
 
+#include <tlocGraphics/error/tlocErrorTypes.h>
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_shader_program
@@ -47,7 +49,8 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   template <ShaderProgram::size_type T_Size>
-  bool ShaderProgram::AttachShaders
+  ShaderProgram::error_type
+    ShaderProgram::AttachShaders
     (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
@@ -60,7 +63,7 @@ namespace tloc { namespace graphics { namespace gl {
     return true;
   }
 
-  bool ShaderProgram::Link()
+  ShaderProgram::error_type ShaderProgram::Link()
   {
     TLOC_ASSERT(m_flags[shader_attached],
       "No shaders attached - did you forget to call AttachShaders()?");
@@ -76,11 +79,11 @@ namespace tloc { namespace graphics { namespace gl {
       gl::Error().GetErrorAsString(errorString);
 
       // TODO: Write shader log
-      return false;
+      return error::error_shader_program_link;
     }
 
     m_flags.Mark(shader_linked);
-    return true;
+    return ErrorSuccess();
   }
 
   ShaderProgram::size_type ShaderProgram::GetNumAttributes() const
@@ -122,13 +125,13 @@ namespace tloc { namespace graphics { namespace gl {
   template class core::Variadic<Shader_I*, 3>;
   template class core::Variadic<Shader_I*, 4>;
 
-  template bool ShaderProgram::AttachShaders
+  template ShaderProgram::error_type ShaderProgram::AttachShaders
     (core::Variadic<Shader_I*, 1>);
-  template bool ShaderProgram::AttachShaders
+  template ShaderProgram::error_type ShaderProgram::AttachShaders
     (core::Variadic<Shader_I*, 2>);
-  template bool ShaderProgram::AttachShaders
+  template ShaderProgram::error_type ShaderProgram::AttachShaders
     (core::Variadic<Shader_I*, 3>);
-  template bool ShaderProgram::AttachShaders
+  template ShaderProgram::error_type ShaderProgram::AttachShaders
     (core::Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type

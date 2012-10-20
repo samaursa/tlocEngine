@@ -73,17 +73,17 @@ namespace TestingShaderProgram
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader vShader;
-    REQUIRE(vShader.Load(vShaderStr) == true);
-    REQUIRE(vShader.CompileShader() == true);
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
 
     gl::FragmentShader fShader;
 
-    REQUIRE(fShader.Load(fShaderStr) == true);
-    REQUIRE(fShader.CompileShader() == true);
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.CompileShader() == ErrorSuccess());
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    CHECK(sp.Link() == true);
+    CHECK(sp.Link() == ErrorSuccess());
   }
 
   TEST_CASE("Graphics/ShaderProgram/AttributesAndUniforms", "")
@@ -96,12 +96,12 @@ namespace TestingShaderProgram
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader vShader;
-    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == true);
-    REQUIRE(vShader.CompileShader() == true);
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
-    CHECK(sp.Link() == true);
+    CHECK(sp.Link() == ErrorSuccess());
 
     CHECK(sp.GetNumAttributes() == 2);
     CHECK(sp.GetNumUniforms() == 1);

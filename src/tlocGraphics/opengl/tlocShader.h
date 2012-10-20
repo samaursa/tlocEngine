@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace gl {
   class FragmentShader : public Shader_I
   {
   public:
-    typedef Shader_I                              base_type;
+    typedef Shader_I                            base_type;
     typedef base_type::object_handle            object_handle;
     typedef base_type::error_type               error_type;
 
@@ -70,7 +70,7 @@ namespace tloc { namespace graphics { namespace gl {
   class VertexShader : public Shader_I
   {
   public:
-    typedef Shader_I                              base_type;
+    typedef Shader_I                            base_type;
     typedef base_type::object_handle            object_handle;
     typedef base_type::error_type               error_type;
 

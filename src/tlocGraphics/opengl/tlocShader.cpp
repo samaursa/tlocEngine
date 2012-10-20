@@ -63,7 +63,7 @@ namespace tloc { namespace graphics { namespace gl {
     object_handle handle = GetHandle();
     if (!handle)
     {
-      return error::error_api_invalid_handle;
+      return common_error_types::error_invalid_handle;
     }
 
     // Load the shader
@@ -72,10 +72,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     // TODO: Log proper OpenGL errors
     if(Error().Failed())
-    { return false; }
+    { return error::error_shader_source; }
 
     m_flags.Mark(shader_loaded);
-    return true;
+    return ErrorSuccess();
   }
 
   Shader_I::error_type Shader_I::CompileShader()
@@ -95,11 +95,11 @@ namespace tloc { namespace graphics { namespace gl {
       glGetShaderInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
 
       // TODO: Write shader log
-      return false;
+      return error::error_shader_compile;
     }
 
     m_flags.Mark(shader_compiled);
-    return true;
+    return ErrorSuccess();
   }
 
   //////////////////////////////////////////////////////////////////////////

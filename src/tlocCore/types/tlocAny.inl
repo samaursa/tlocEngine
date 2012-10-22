@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace types {
 
       template <SIMPLE_TYPE_TEMP>
       void SimpleType_T<SIMPLE_TYPE_PARAMS>
-        ::Delete(void** a_unknownType)
+        ::Delete(void** )
       { }
 
       template <SIMPLE_TYPE_TEMP>
@@ -84,8 +84,8 @@ namespace tloc { namespace core { namespace types {
 #define COMPLEX_TYPE_PARAMS T
 #define COMPLEX_TYPE_TYPE   typename ComplexType_T<COMPLEX_TYPE_PARAMS>
 
-      template <SIMPLE_TYPE_TEMP>
-      void SimpleType_T<SIMPLE_TYPE_PARAMS>
+      template <COMPLEX_TYPE_TEMP>
+      void ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::Delete(void** a_unknownType)
       {
         value_type** x = reinterpret_cast<value_type**>(a_unknownType);
@@ -93,46 +93,47 @@ namespace tloc { namespace core { namespace types {
         *x = NULL;
       }
 
-      template <SIMPLE_TYPE_TEMP>
-      void SimpleType_T<SIMPLE_TYPE_PARAMS>
+      template <COMPLEX_TYPE_TEMP>
+      void ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::Copy(void const* a_source, void** a_dest)
       { *a_dest = new value_type(*CastSource(a_source)); }
 
-      template <SIMPLE_TYPE_TEMP>
-      void SimpleType_T<SIMPLE_TYPE_PARAMS>
+      template <COMPLEX_TYPE_TEMP>
+      void ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::Clone(void* const* a_source, void** a_dest)
       { *a_dest = new value_type(*CastSource(a_source)); }
 
 
-      template <SIMPLE_TYPE_TEMP>
-      void SimpleType_T<SIMPLE_TYPE_PARAMS>
+      template <COMPLEX_TYPE_TEMP>
+      void ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::Move(void* const* a_source, void** a_dest)
       {
         (*(reinterpret_cast<value_type**>(a_dest)) )->~value_type();
         **(reinterpret_cast<value_type**>(a_dest)) = *CastSource(a_source);
       }
 
-      template <SIMPLE_TYPE_TEMP>
-      void* SimpleType_T<SIMPLE_TYPE_PARAMS>
+      template <COMPLEX_TYPE_TEMP>
+      void* ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::GetValue(void** a_source)
       { return *a_source; }
 
 #undef COMPLEX_TYPE_TEMP   
 #undef COMPLEX_TYPE_PARAMS
 #undef COMPLEX_TYPE_TYPE 
-
-      //////////////////////////////////////////////////////////////////////////
-      // Helper functions
-
-      template <typename T>
-      detail::Policy_I* GetPolicy()
-      {
-        TLOC_STATIC_ASSERT( (Loki::IsSameType<T, Any>::value == false),
-                             Cannot_use_Any_class_for_policy_selection);
-        static typename SelectPolicy<T>::type policyForT;
-        return &policyForT;
-      };
     };
+
+    //////////////////////////////////////////////////////////////////////////
+    // Helper functions
+
+    template <typename T>
+    detail::Policy_I* GetPolicy()
+    {
+      TLOC_STATIC_ASSERT( (Loki::IsSameType<T, Any>::value == false),
+        Cannot_use_Any_class_for_policy_selection);
+      static typename SelectPolicy<T>::type policyForT;
+      return &policyForT;
+    };
+
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -146,7 +147,7 @@ namespace tloc { namespace core { namespace types {
   }
 
   template <typename T>
-  void Any::Assign(const this_type& a_other)
+  void Any::Assign(const T& a_other)
   {
     Reset();
     m_policy = p_any::GetPolicy<T>();
@@ -162,3 +163,5 @@ namespace tloc { namespace core { namespace types {
   }
 
 };};};
+
+#endif

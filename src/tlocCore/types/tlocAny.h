@@ -148,7 +148,7 @@ namespace tloc { namespace core { namespace types {
 
     bool IsEmpty() const;
     void Reset();
-    bool IsSame(const this_type& a_other) const;
+    bool IsSameType(const this_type& a_other) const;
 
   private:
     typedef p_any::detail::Policy_I   policy_base_type;

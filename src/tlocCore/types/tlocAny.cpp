@@ -1,4 +1,5 @@
 #include "tlocAny.h"
+#include "tlocAny.inl"
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
@@ -50,11 +51,14 @@ namespace tloc { namespace core { namespace types {
 
   void Any::Reset()
   {
-    m_policy->Delete(&m_object);
-    m_policy = p_any::GetPolicy<p_any::detail::Empty>();
+    if (IsEmpty() == false)
+    {
+      m_policy->Delete(&m_object);
+      m_policy = p_any::GetPolicy<p_any::detail::Empty>();
+    }
   }
 
-  bool Any::IsSame( const this_type& a_other ) const
+  bool Any::IsSameType( const this_type& a_other ) const
   {
     return m_policy == a_other.m_policy;
   }

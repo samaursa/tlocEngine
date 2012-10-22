@@ -1137,6 +1137,10 @@
 				Name="types"
 				>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocAnyTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocStrongTypeTest.cpp"
 					>
 				</File>

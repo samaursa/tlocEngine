@@ -26,7 +26,7 @@ namespace tloc { namespace graphics { namespace gl {
     //------------------------------------------------------------------------
     // Variables
 
-    const tl_size g_buffSize = 40;
+    const u32 g_buffSize = 40; // u32 because of OpenGL's types
 
     //------------------------------------------------------------------------
     // Enums
@@ -70,7 +70,7 @@ namespace tloc { namespace graphics { namespace gl {
         "Uniform name length larger than buffer!");
 
       a_infoOut.resize(numOfUniforms);
-      for (size_type i = 0; i < numOfUniforms; ++i)
+      for (u32 i = 0; i < numOfUniforms; ++i)
       {
 
         glUniformInfo& currInfo = a_infoOut[i];
@@ -156,7 +156,7 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess();
   }
 
-  ShaderProgram::error_type ShaderProgram::AttachUniforms()
+  ShaderProgram::error_type ShaderProgram::LoadAllUniforms()
   {
     TLOC_ASSERT(m_flags[shader_linked],
                 "Shader not linked - did you forget to call Link()?");
@@ -170,7 +170,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       uniform_info_cont_type::iterator itrInfo, itrInfoEnd;
       for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-           itr != itrEnd; ++itr)
+           itrInfo != itrInfoEnd; ++itrInfo)
       {
         if (itr->GetName().compare(itrInfo->m_name.Get()) == 0)
         {
@@ -180,32 +180,32 @@ namespace tloc { namespace graphics { namespace gl {
             {
             case GL_FLOAT_VEC3:
               {
-                const Vec3f& v = itr->GetValueAs<Vec3f>();
+                const Vec3f32& v = itr->GetValueAs<Vec3f32>();
                 glUniform3f(itrInfo->m_location, v[0], v[1], v[2]);
                 break;
               }
             case GL_FLOAT_VEC4:
               {
-                const Vec4f& v = itr->GetValueAs<Vec4f>();
+                const Vec4f32& v = itr->GetValueAs<Vec4f32>();
                 glUniform4f(itrInfo->m_location, v[0], v[1], v[2], v[3]);
                 break;
               }
             case GL_FLOAT_MAT3:
               {
-                const Mat3f& m = itr->GetValueAs<Mat3f>();
-                TLOC_ASSERT(itrInfo->m_arraySize == Mat3f::k_TableSize,
+                const Mat3f32& m = itr->GetValueAs<Mat3f32>();
+                TLOC_ASSERT(itrInfo->m_arraySize == Mat3f32::k_TableSize,
                             "Mismatched uniform array size!");
                 glUniformMatrix3fv(itrInfo->m_location, GL_FALSE,
-                                   Mat3f::k_TableSize, m);
+                                   Mat3f32::k_TableSize, m);
                   break;
               }
             case GL_FLOAT_MAT4:
               {
-                const Mat4f& m = itr->GetValueAs<Mat4f>();
-                TLOC_ASSERT(itrInfo->m_arraySize == Mat3f::k_TableSize,
+                const Mat4f32& m = itr->GetValueAs<Mat4f32>();
+                TLOC_ASSERT(itrInfo->m_arraySize == Mat3f32::k_TableSize,
                             "Mismatched uniform array size!");
                 glUniformMatrix4fv(itrInfo->m_location, GL_FALSE,
-                                   Mat3f::k_TableSize, m);
+                                   Mat3f32::k_TableSize, m);
                 break;
               }
             }
@@ -214,6 +214,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             // TODO: Convert this assertion to a log
             TLOC_ASSERT(false, "Mismatched uniform type!");
+            return ErrorFailure();
           }
         }
       }

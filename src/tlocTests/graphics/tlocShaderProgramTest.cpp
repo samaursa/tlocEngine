@@ -119,18 +119,7 @@ namespace TestingShaderProgram
 
   TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
   {
-    //graphics::gl::Uniform u;
-    //u.SetValueAs(math::Vec3f(0, 0, 0));
-
-    //math::Vec3f v = u.GetValueAs<math::Vec3f>();
-    //CHECK(v[0] == 0); CHECK(v[1] == 0); CHECK(v[2] == 0);
-
-    core::types::Any a;
-    a.Assign(math::Vec4f(0, 0, 0, 1));
-
-    graphics::gl::Uniform u;
-    math::Vec4f v4(0, 0, 0, 1);
-    u.SetName("u_Uni").SetValueAs(v4);
+    using namespace math;
 
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;
@@ -147,6 +136,7 @@ namespace TestingShaderProgram
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
     CHECK(sp.Link() == ErrorSuccess());
 
-    //CHECK(sp.AttachUniforms() == ErrorSuccess());
+    sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
+    CHECK(sp.LoadAllUniforms() == ErrorSuccess());
   }
 };

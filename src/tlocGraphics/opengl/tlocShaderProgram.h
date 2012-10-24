@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace gl {
     error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
-    error_type AttachUniforms();
+    error_type LoadAllUniforms();
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const

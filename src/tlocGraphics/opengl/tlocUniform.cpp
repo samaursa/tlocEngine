@@ -13,16 +13,16 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <typename T> struct tlToGl;
 
-  template <> struct tlToGl<Mat3f>
+  template <> struct tlToGl<Mat3f32>
   { enum { k_glType = GL_FLOAT_MAT3 }; };
 
-  template <> struct tlToGl<Mat4f>
+  template <> struct tlToGl<Mat4f32>
   { enum { k_glType = GL_FLOAT_MAT4 }; };
 
-  template <> struct tlToGl<Vec3f>
+  template <> struct tlToGl<Vec3f32>
   { enum { k_glType = GL_FLOAT_VEC3 }; };
 
-  template <> struct tlToGl<Vec4f>
+  template <> struct tlToGl<Vec4f32>
   { enum { k_glType = GL_FLOAT_VEC4 }; };
 
   Uniform::Uniform()
@@ -50,9 +50,9 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Explicit instantiation
 
-  template Uniform& Uniform::SetValueAs(const Mat3f&);
-  template Uniform& Uniform::SetValueAs(const Mat4f&);
-  template Uniform& Uniform::SetValueAs(const Vec3f&);
-  template Uniform& Uniform::SetValueAs(const Vec4f&);
+  template Uniform& Uniform::SetValueAs(const Mat3f32&);
+  template Uniform& Uniform::SetValueAs(const Mat4f32&);
+  template Uniform& Uniform::SetValueAs(const Vec3f32&);
+  template Uniform& Uniform::SetValueAs(const Vec4f32&);
 
 };};};

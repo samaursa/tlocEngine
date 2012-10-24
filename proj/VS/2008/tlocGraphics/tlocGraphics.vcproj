@@ -1107,6 +1107,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.h"
 					>
 				</File>

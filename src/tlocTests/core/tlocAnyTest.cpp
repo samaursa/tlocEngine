@@ -12,6 +12,11 @@ namespace TestingAnyType
   using namespace tloc;
   using namespace core;
 
+#define CHECK_MATH_VEC3(_vec_, _x_, _y_, _z_)\
+  CHECK(_vec_.x == _x_);\
+  CHECK(_vec_.y == _y_);\
+  CHECK(_vec_.z == _z_)
+
   struct AnyTracker
   {
     AnyTracker()
@@ -38,6 +43,15 @@ namespace TestingAnyType
   struct ComplexObject
   {
     std::string m_string;
+  };
+
+  struct MathVec
+  {
+    MathVec(tl_float a_x, tl_float a_y, tl_float a_z)
+      : x(a_x), y(a_y), z(a_z)
+    { }
+
+    tl_float x, y, z;
   };
 
   TEST_CASE("core/types/Any", "")
@@ -86,6 +100,23 @@ namespace TestingAnyType
 
       CHECK(a.Cast<std::string>().compare("World") == 0);
       CHECK(b.Cast<std::string>().compare("Hello") == 0);
+    }
+
+    {
+      types::Any a, b;
+
+      a.Assign(MathVec(1, 2, 3));
+      b.Assign(MathVec(4, 5, 6));
+
+      TLOC_ASSERT(_CrtIsValidHeapPointer( &( a.Cast<MathVec>()) ), "!");
+
+      CHECK_MATH_VEC3(a.Cast<MathVec>(), 1, 2, 3);
+      CHECK_MATH_VEC3(b.Cast<MathVec>(), 4, 5, 6);
+
+      a.Swap(b);
+
+      CHECK_MATH_VEC3(a.Cast<MathVec>(), 4, 5, 6);
+      CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
     }
   }
 

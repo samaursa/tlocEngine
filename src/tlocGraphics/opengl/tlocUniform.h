@@ -36,7 +36,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
 
-  //private:
+  private:
     gl_type       m_type;
     value_type    m_value;
     string_type   m_name;

@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
-    m_value = a_value;
+    m_value.Assign(a_value);
     return *this;
   }
 

@@ -134,12 +134,11 @@ namespace tloc { namespace core { namespace types {
     void Assign(const T& a_other);
     void Assign(const this_type& a_other);
 
-    //// Disallowed by design
-    //template <typename T>
-    //this_type& operator= (const T& a_other)
-    //{
-    //  return Assign(a_other);
-    //}
+    template <typename T>
+    this_type& operator= (const T& a_other)
+    {
+      return Assign(a_other);
+    }
 
     this_type& Swap(this_type& a_other);
 

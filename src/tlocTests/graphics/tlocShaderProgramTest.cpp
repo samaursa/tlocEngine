@@ -127,13 +127,10 @@ namespace TestingShaderProgram
 
     core::types::Any a;
     a.Assign(math::Vec4f(0, 0, 0, 1));
-    TLOC_ASSERT(_CrtIsValidHeapPointer( &( a.Cast<math::Vec4f>()) ), "!");
 
     graphics::gl::Uniform u;
     math::Vec4f v4(0, 0, 0, 1);
-    u.SetValueAs(v4);
-    //u.SetName("u_Uni").SetValueAs(v4);
-    TLOC_ASSERT(_CrtIsValidHeapPointer(u.GetValueAs<math::Vec4f>()), "!");
+    u.SetName("u_Uni").SetValueAs(v4);
 
     typedef Window<>::graphics_mode         graphics_mode;
     Window<> win;

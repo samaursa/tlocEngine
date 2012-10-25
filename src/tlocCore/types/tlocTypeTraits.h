@@ -68,7 +68,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T15, T16, T17, T18, T19, T>();
+                            T12, T13, T14, T15, T16, T17, T18, T19, T19>();
     }
 
     template <class T_TypeToCheck,
@@ -79,7 +79,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T15, T16, T17, T18, T>();
+                            T12, T13, T14, T15, T16, T17, T18, T18>();
     }
 
     template <class T_TypeToCheck,
@@ -90,7 +90,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T15, T16, T17, T>();
+                            T12, T13, T14, T15, T16, T17, T17>();
     }
 
     template <class T_TypeToCheck,
@@ -101,7 +101,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T15, T16, T>();
+                            T12, T13, T14, T15, T16, T16>();
     }
 
     template <class T_TypeToCheck,
@@ -112,7 +112,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T15, T>();
+                            T12, T13, T14, T15, T15>();
     }
 
     template <class T_TypeToCheck,
@@ -123,7 +123,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T14, T>();
+                            T12, T13, T14, T14>();
     }
 
     template <class T_TypeToCheck,
@@ -134,7 +134,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T13, T>();
+                            T12, T13, T13>();
     }
 
     template <class T_TypeToCheck,
@@ -144,7 +144,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T12, T>();
+                            T12, T12>();
     }
 
     template <class T_TypeToCheck,
@@ -154,7 +154,7 @@ namespace tloc
     {
       typedef T_TypeToCheck T;
       AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
-                            T>();
+                            T11>();
     }
 
     template <class T_TypeToCheck,
@@ -163,7 +163,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T10>();
     }
 
     template <class T_TypeToCheck,
@@ -172,7 +172,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T9>();
     }
 
     template <class T_TypeToCheck,
@@ -181,7 +181,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T8>();
     }
 
     template <class T_TypeToCheck,
@@ -190,7 +190,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T7>();
     }
 
     template <class T_TypeToCheck,
@@ -198,7 +198,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T6>();
     }
 
     template <class T_TypeToCheck,
@@ -206,7 +206,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T5>();
     }
 
     template <class T_TypeToCheck,
@@ -214,7 +214,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T4, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T4>();
     }
 
     template <class T_TypeToCheck,
@@ -222,7 +222,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T3, T>();
+      AssertTypeIsSupported<T, T1, T2, T3, T3>();
     }
 
     template <class T_TypeToCheck,
@@ -230,7 +230,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T2, T>();
+      AssertTypeIsSupported<T, T1, T2, T2>();
     }
 
     template <class T_TypeToCheck,
@@ -238,7 +238,7 @@ namespace tloc
     void AssertTypeIsSupported()
     {
       typedef T_TypeToCheck T;
-      AssertTypeIsSupported<T, T1, T>();
+      AssertTypeIsSupported<T, T1, T1>();
     }
   }
 

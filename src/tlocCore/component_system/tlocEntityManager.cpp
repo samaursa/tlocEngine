@@ -77,6 +77,11 @@ namespace tloc { namespace core { namespace component_system {
     component_list& entityComps = a_entity->m_allComponents[a_component->GetType()];
     entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
 
+    // LOGIC: We allow the client to remove a component even if the component
+    // does not exist in the entity. Return true if it exists, o/w false. Then,
+    // remove it from the component list in manager which HAS TO exist (hence
+    // the assertion)
+
     {// Remove it from the entity
       component_list::iterator itr = core::find_all(entityComps, a_component);
       if (itr != entityComps.end()) { entityComps.erase(itr); }
@@ -88,6 +93,10 @@ namespace tloc { namespace core { namespace component_system {
       TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
       if (itr != entityList.end()) { entityList.erase(itr); }
     }
+
+    m_eventMgr->DispatchNow(
+      EntityComponentEvent(entity_events::remove_component, a_entity,
+                           a_component->GetType()) );
 
     return true;
   }

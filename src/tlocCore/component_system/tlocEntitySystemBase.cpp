@@ -40,7 +40,7 @@ namespace tloc { namespace core { namespace component_system {
           {
 
             entity_array::iterator entItr = core::find_all(m_activeEntities, ent);
-            if (entItr != m_activeEntities.end())
+            if (entItr == m_activeEntities.end())
             {
               m_activeEntities.push_back(ent);
             }

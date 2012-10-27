@@ -982,7 +982,7 @@ policies...
 		//! \brief Specifies what to do when the allocation fails. Defaults to throwing std::bad_alloc.
 		void policy_throwbadalloc(size_t bytes) const
 		{
-			throw std::bad_alloc();
+			//throw std::bad_alloc();
 		}
 		//! \brief Specifies if the type is POD. Is std::is_pod<T>::value on C++0x compilers, otherwise false.
 		static const bool policy_typeIsPOD=
@@ -1045,7 +1045,13 @@ policies...
 			nedpool *pool = _this()->policy_nedpool(size);
 			size_t alignment = _this()->policy_alignment(size);
 			unsigned flags = _this()->policy_flags(size);
+      
+#if defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 			void *ptr = nedpmalloc2(pool, size, alignment, flags);
+# pragma GCC diagnose pop
+#endif
 			if(!ptr)
 				_this()->policy_throwbadalloc(size);
 			return static_cast<T *>(ptr);
@@ -1194,7 +1200,7 @@ namespace nedpolicy
 		protected:
 			void policy_throwbadalloc(size_t bytes) const
 			{
-				throw T();
+				//throw T();
 			}
 		};
 	};

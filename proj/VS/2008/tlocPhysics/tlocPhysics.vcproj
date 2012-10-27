@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="tlocPhysics"
-	ProjectGUID="{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}"
+	ProjectGUID="{58EDDE38-3F46-49AC-8CCB-703D0B2F85B3}"
 	RootNamespace="tlocPhysics"
 	TargetFrameworkVersion="196613"
 	>

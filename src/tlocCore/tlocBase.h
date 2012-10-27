@@ -3,8 +3,22 @@
 #ifndef TLOC_BASE_H
 #define TLOC_BASE_H
 
+//////////////////////////////////////////////////////////////////////////
+// Macros that have to be included before any other file
+
+#ifdef _MSC_VER
+#  ifndef _CRT_SECURE_NO_WARNINGS
+#    define _CRT_SECURE_NO_WARNINGS
+#  endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// Header files that will be included in almost every file in the engine.
+// Avoid including extra headers here
+
 #include <assert.h>
 #include <3rdParty/loki/static_check.h>
+#include <tlocCore/platform/tlocPlatformDefines.h>
 
 #define USING_TLOC  using namespace tloc
 
@@ -19,7 +33,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Common macros
-#define _CRT_SECURE_NO_WARNINGS 1
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 # ifdef _SECURE_SCL
@@ -61,7 +74,13 @@
 //////////////////////////////////////////////////////////////////////////
 // Platform specific
 
-#if defined(_WIN32) || defined(WIN32)
+#if defined(TLOC_OS_WIN)
+# define TLOC_MAIN main
+#elif defined(TLOC_OS_IPHONE)
+  int TLOC_MAIN(int argc, char** argv);
+#endif
+
+#if defined(TLOC_OS_WIN)
 # ifndef WIN32
 #   define WIN32
 # endif
@@ -73,23 +92,19 @@
 //////////////////////////////////////////////////////////////////////////
 // Compiler specific
 
+//------------------------------------------------------------------------
+// Microsoft Visual C++ compiler
 #if defined(_MSC_VER)
-
   //------------------------------------------------------------------------
-  // Compiler specific checks
-# ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
-    //------------------------------------------------------------------------
-    // Check for exception handling
-#   if defined(_CPPUNWIND) && !defined(TLOC_ENABLE_CPPUNWIND)
-#     error "Exception handling must be disabled for this project."
-#   endif
-    //------------------------------------------------------------------------
-    // Check for RTTI
-#   if defined(_CPPRTTI) && !defined(TLOC_ENABLE_CPPRTTI)
-#     error "RTTI must be disabled for this project."
-#   endif
+  // Check for exception handling
+# if defined(_CPPUNWIND)
+#   define TLOC_CPPUNWIND_ENABLED
 # endif
-
+  //------------------------------------------------------------------------
+  // Check for RTTI
+# if defined(_CPPRTTI)
+#   define TLOC_RTTI_ENABLED
+# endif
   //------------------------------------------------------------------------
   // Optimizations
 # ifndef TLOC_DEBUG
@@ -97,6 +112,53 @@
 #   pragma auto_inline( on )
 # endif
 
+//------------------------------------------------------------------------
+// GCC compiler
+#elif defined (__GNUC__) || defined(__clang__)
+  //------------------------------------------------------------------------
+  // Check for exception handling
+# if defined (__EXCEPTIONS)
+#   define TLOC_CPPUNWIND_ENABLED
+# endif
+  //------------------------------------------------------------------------
+  // Check for RTTI
+# if defined (__GXX_RTTI)
+#   define TLOC_RTTI_ENABLED
+# endif
+
+#else
+# error WIP
+#endif
+
+
+  //------------------------------------------------------------------------
+  // Typedef fix for compilers
+  // This fix is temporary until we can figure out a way to remove typename
+  // limitations from VS
+#if defined(_MSC_VER)
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef _type_ _alias_
+#else // For GCC and Clang
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef typename _type_ _alias_
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// Exceptions
+
+#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
+# if defined (TLOC_CPPUNWIND_ENABLED) && !defined (TLOC_ENABLE_CPPUNWIND)
+#   error "Exception handling must be disabled for this project."
+# endif
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// RTTI
+
+#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
+# if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
+#   error "Exception handling must be disabled for this project."
+# endif
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -187,19 +249,31 @@
 //////////////////////////////////////////////////////////////////////////
 // Inlining
 
-#ifndef TLOC_DEBUG
-# define TLOC_INLINE inline
-# define TL_I TLOC_INLINE
+#define TLOC_INLINE inline
+#define TL_I TLOC_INLINE
 
-# define TLOC_FORCE_INLINE __forceinline
-# define TL_FI TLOC_FORCE_INLINE
+//------------------------------------------------------------------------
+// Define force inline for the VC++ compiler
+#if defined (_MSC_VER)
+# pragma warning(disable : 4714)
+// NOTE: __forceinline increases build times substantially
+# define TLOC_FORCE_INLINE inline /*__forceinline*/
+//------------------------------------------------------------------------
+// Define force inline for the GCC and clang compilers. Since the
+// attribute always_inline, inlines regardless of optimization level
+// always_inline is removed in debug builds, and replaced with inline.
+#elif defined (__GNUC__) || defined(__clang__)
+# if defined (TLOC_DEBUG)
+#   define TLOC_FORCE_INLINE inline
+# else
+#   define TLOC_FORCE_INLINE inline __attribute__ ((always_inline))
+# endif
+//------------------------------------------------------------------------
+// Define force inline as a normal inline for an unsupported compiler
 #else
-# define TLOC_INLINE
-# define TL_I
-
-# define TLOC_FORCE_INLINE
-# define TL_FI
+#  define TLOC_FORCE_INLINE inline
 #endif
+#define TL_FI TLOC_FORCE_INLINE
 
 #ifdef TLOC_FULL_SOURCE
 # define TL_STATIC_I  static TLOC_INLINE
@@ -218,6 +292,17 @@
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
 // Supported assert macros
+#if defined (__GNUC__) || defined(__clang__)
+// TODO: Fix the assert macros for mac
+
+# define _CRT_WIDE(_Msg)
+# define TLOC_ASSERT_MESSAGE(msg) assert(false)
+# define TLOC_ASSERT_MESSAGEW(msg) assert(false)
+# define TLOC_ASSERT(_Expression, _Msg) assert(_Expression)
+# define TLOC_ASSERTW(_Expression, _Msg) assert(_Expression)
+
+#else
+
 # define TLOC_ASSERT_MESSAGE(msg)\
   (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
 # define TLOC_ASSERT_MESSAGEW(msg)\
@@ -226,25 +311,38 @@
   (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
 # define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
   (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
+
+#endif
+
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
 // it will work properly with these asserts disabled
 #   ifndef TLOC_DISABLE_ASSERT_WARNINGS
 #     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " _CRT_WIDE(_Msg))
 #   else
-#     define TLOC_ASSERT_WARNG(_Expression, _Msg)
+#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
 #   endif
 
 #else
-#define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERTW(_Expression, _Msg)
-#define TLOC_ASSERT_WARN(_Expression, _Msg)
+#define TLOC_ASSERT(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
+#define TLOC_ASSERTW(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
+#define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
 #endif
+
+// Other common asserts
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ _CRT_WIDE(" cannot be NULL"))
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ _CRT_WIDE(" should be NULL"))
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time
+
+// TODO: solve static assert problems on LLVM
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg)
+# if defined(__GNUC__) || defined (__clang__)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
+# else
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+# endif
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
@@ -253,6 +351,14 @@
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
+# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
+# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer);
+# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
+# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
 
 //------------------------------------------------------------------------
 // Low level assertions
@@ -291,7 +397,13 @@
 // Avoid warnings about unused variables.  This is designed for variables
 // that are exposed in debug configurations but are hidden in release
 // configurations.
-#define TLOC_UNUSED(variable) (void)variable;
+#define TLOC_UNUSED(variable) (void)variable
+#define TLOC_UNUSED_2(variable1, variable2) TLOC_UNUSED(variable1); TLOC_UNUSED(variable2)
+#define TLOC_UNUSED_3(variable1, variable2, variable3) TLOC_UNUSED_2(variable1, variable2); TLOC_UNUSED(variable3)
+#define TLOC_UNUSED_4(variable1, variable2, variable3, variable4) TLOC_UNUSED_3(variable1, variable2, variable3); TLOC_UNUSED(variable4)
+#define TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5) TLOC_UNUSED_4(variable1, variable2, variable3, variable4); TLOC_UNUSED(variable5)
+#define TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5); TLOC_UNUSED(variable6)
+#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
 
 // If a source file is empty (usually because of #ifdef) then the linker will
 // generate the LNK4221 warning complaining that no symbols were found and hence
@@ -299,9 +411,30 @@
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
-  namespace { char NoEmptyFileDummy##__LINE__; }
-#define TLOC_NOT_EMPTY_SOURCE_FILE() \
-  namespace { char NoEmptyFileDummy##__LINE__; }
+#ifdef _MSC_VER
+# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
+    namespace { char NoEmptyFileDummy##__LINE__; }
+# define TLOC_NOT_EMPTY_SOURCE_FILE() \
+    namespace { char NoEmptyFileDummy##__LINE__; }
+#else
+# define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE()
+# define TLOC_NOT_EMPTY_SOURCE_FILE()
+#endif
+
+///-------------------------------------------------------------------------
+/// @brief This struct is used to diagnose template types.
+///-------------------------------------------------------------------------
+template <typename T>
+struct TemplateDiagnose;
+
+template <typename T>
+struct DiagnoseTemplate;
+
+
+// Punctuation - useful in macros using templates
+#ifndef COMMA
+# define COMMA() ,
+#endif
+
 
 #endif

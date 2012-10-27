@@ -15,7 +15,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef Entity::component_list              component_list;
     typedef typename component_list::size_type  size_type;
 
-    ComponentMapper(const component_list& a_list) : m_compList(a_list) {}
+    ComponentMapper(component_list const& a_list) : m_compList(a_list) {}
 
     size_type size() const { return m_compList.size(); }
 
@@ -28,7 +28,7 @@ namespace tloc { namespace core { namespace component_system {
 
     void operator = (const ComponentMapper& a_other) {}
 
-    const component_list& m_compList;
+    component_list const & m_compList;
   };
 
 };};};

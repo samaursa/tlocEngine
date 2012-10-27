@@ -324,9 +324,9 @@
 #   endif
 
 #else
-#define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERTW(_Expression, _Msg)
-#define TLOC_ASSERT_WARN(_Expression, _Msg)
+#define TLOC_ASSERT(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
+#define TLOC_ASSERTW(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
+#define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
 #endif
 
 // Other common asserts

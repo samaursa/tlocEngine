@@ -1091,11 +1091,11 @@
 				Name="shaders"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShader.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderComponent.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShader.h"
 					>
 				</File>
 				<File
@@ -1104,6 +1104,14 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.h"
 					>
 				</File>
 			</Filter>
@@ -1141,6 +1149,22 @@
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="material"
@@ -1158,6 +1182,14 @@
 			<Filter
 				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.cpp"
 					>
@@ -1207,6 +1239,30 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="aspect_ratio"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="fov"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="media"
@@ -1247,6 +1303,14 @@
 		<Filter
 			Name="view_projection"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.cpp"
 				>

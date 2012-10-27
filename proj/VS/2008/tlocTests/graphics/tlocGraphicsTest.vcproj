@@ -1017,6 +1017,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocFOVTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocRectangleTest.cpp"
 					>
 				</File>
@@ -1028,6 +1032,26 @@
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocImageLoaderTest.cpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="view_projection"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocFrustumTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="component_system"
+				>
+				<Filter
+					Name="components"
+					>
+					<File
+						RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocQuadTest.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

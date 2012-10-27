@@ -1006,10 +1006,6 @@
 				>
 			</File>
 			<File
-				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTypesTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocUtilsTest.cpp"
 				>
 			</File>
@@ -1134,6 +1130,22 @@
 				</File>
 				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocPathTest.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="types"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocAnyTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocStrongTypeTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTypesTest.cpp"
 					>
 				</File>
 			</Filter>

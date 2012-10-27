@@ -8,9 +8,10 @@
 #include <stdio.h>
 #include <cstring>
 
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
+
 #include <tlocCore/io/tlocPath.h>
-
-
 
 namespace TestingIOPath
 {

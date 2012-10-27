@@ -943,6 +943,10 @@
 				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector4.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVectorExplicitMacros.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="_misc"
@@ -965,6 +969,18 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocMath\angle\tlocAngleExplicitMacros.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="utilities"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.h"
 				>
 			</File>
 		</Filter>

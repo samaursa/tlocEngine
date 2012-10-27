@@ -1159,6 +1159,42 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="strong_type"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongType.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocStrongTypeExplicitMacros.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="any_type"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="time"

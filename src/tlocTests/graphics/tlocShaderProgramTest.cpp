@@ -2,34 +2,66 @@
 
 #include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/window/tlocWindow.h>
-#include <tlocGraphics/opengl/tlocShaderComponent.h>
+#include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+
+#include <tlocMath/vector/tlocVector4.h>
 
 namespace TestingShaderProgram
 {
   const char* vShaderStr =
-"#version 100                       \n\
-                                    \n\
-attribute vec4 vVertex;             \n\
-attribute vec4 vColor;              \n\
-                                    \n\
-varying lowp vec4 vVaryingColor;    \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-  vVaryingColor = vColor;           \n\
-  gl_Position   = vVertex;          \n\
-}";
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 140                     \n\
+     #endif                             \n\
+                                        \n\
+    attribute vec4 vVertex;             \n\
+    attribute vec4 vColor;              \n\
+                                        \n\
+    uniform vec4 u_Color;               \n\
+                                        \n\
+    varying lowp vec4 vVaryingColor;    \n\
+                                        \n\
+    void main(void)                     \n\
+    {                                   \n\
+    vVaryingColor = vColor * u_Color;   \n\
+    gl_Position   = vVertex;            \n\
+    }";
 
   const char* fShaderStr =
-"#version 100                       \n\
-                                    \n\
-varying lowp vec4 vVaryingColor;    \n\
-                                    \n\
-void main(void)                     \n\
-{                                   \n\
-  gl_FragColor = vVaryingColor;     \n\
-}";
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 140                     \n\
+     #endif                             \n\
+                                        \n\
+    varying lowp vec4 vVaryingColor;    \n\
+                                        \n\
+    void main(void)                     \n\
+    {                                   \n\
+    gl_FragColor = vVaryingColor;       \n\
+    }";
+
+  const char* vShaderStrWithAttrAndUni =
+    "#ifdef GL_ES                       \n\
+     #  version 100                     \n\
+     #else                              \n\
+     #  version 140                     \n\
+     #endif                             \n\
+                                        \n\
+    attribute vec4 vVertex;             \n\
+    attribute vec4 vColor;              \n\
+    uniform   vec4 uUni;                \n\
+                                        \n\
+    varying lowp vec4 vVaryingColor;    \n\
+                                        \n\
+    void main(void)                     \n\
+    {                                   \n\
+    vVaryingColor = vColor;             \n\
+    vVaryingColor.x = uUni.x;           \n\
+    gl_Position   = vVertex;            \n\
+    }";
 
   using namespace tloc;
   using namespace graphics;
@@ -44,19 +76,67 @@ void main(void)                     \n\
     // Initialize glew
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-    gl::ShaderComponent vShader;
-    typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    REQUIRE(vShader.LoadShader(vShaderStr, vertex_shader_type()) == true);
-    REQUIRE(vShader.CompileShader() == true);
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
 
-    gl::ShaderComponent fShader;
+    gl::FragmentShader fShader;
 
-    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    REQUIRE(fShader.LoadShader(fShaderStr, fragment_shader_type() ) == true);
-    REQUIRE(fShader.CompileShader() == true);
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.CompileShader() == ErrorSuccess());
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    CHECK(sp.Link() == true);
+    CHECK(sp.Link() == ErrorSuccess());
+  }
+
+  TEST_CASE("Graphics/ShaderProgram/Get<>", "")
+  {
+    typedef Window<>::graphics_mode         graphics_mode;
+    Window<> win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+      WindowSettings("Atom & Eve"));
+
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
+
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    CHECK(sp.Link() == ErrorSuccess());
+
+    CHECK(sp.Get<gl::p_shader_program::DeleteStatus>() == 0);
+    CHECK(sp.Get<gl::p_shader_program::LinkStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ValidateStatus>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::AttachedShaders>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniforms>() == 1);
+    CHECK(sp.Get<gl::p_shader_program::ActiveUniformMaxLength>() == 5);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributes>() == 2);
+    CHECK(sp.Get<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
+  }
+
+  TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
+  {
+    using namespace math;
+
+    typedef Window<>::graphics_mode         graphics_mode;
+    Window<> win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+      WindowSettings("Atom & Eve"));
+
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    gl::VertexShader vShader;
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
+    REQUIRE(vShader.CompileShader() == ErrorSuccess());
+
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    CHECK(sp.Link() == ErrorSuccess());
+
+    sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
+    CHECK(sp.LoadAllUniforms() == ErrorSuccess());
   }
 };

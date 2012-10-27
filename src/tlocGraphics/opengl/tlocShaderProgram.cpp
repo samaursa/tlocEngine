@@ -35,6 +35,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       shader_attached = 0,
       shader_linked,
+      shader_enabled,
       count
     };
 
@@ -209,6 +210,12 @@ namespace tloc { namespace graphics { namespace gl {
                 break;
               }
             }
+
+            // Check with OpenGL
+            if (gl::Error().Failed())
+            {
+              return error::error_shader_uniform_not_attached;
+            }
           }
           else
           {
@@ -228,9 +235,21 @@ namespace tloc { namespace graphics { namespace gl {
     m_uniforms.push_back(a_uniform);
   }
 
-  void ShaderProgram::Enable()
+  ShaderProgram::error_type
+    ShaderProgram::Enable() const
   {
     glUseProgram(GetHandle());
+    if (gl::Error().Failed())
+    {
+      return error::error_shader_program_enable;
+    }
+
+    return ErrorSuccess();
+  }
+
+  void ShaderProgram::Disable() const
+  {
+    glUseProgram(0);
   }
 
   //------------------------------------------------------------------------

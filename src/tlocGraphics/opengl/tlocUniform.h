@@ -33,7 +33,7 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     const T&  GetValueAs()
     {
-      DoCheckTypeCompatibility();
+      DoCheckTypeCompatibility<T>();
       return m_value.Cast<T>();
     }
 

@@ -13,15 +13,15 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace p_shader_program
   {
-    struct DeleteStatus{ static const tl_int s_glStatusName; };
-    struct LinkStatus{ static const tl_int s_glStatusName; };
-    struct ValidateStatus{ static const tl_int s_glStatusName; };
-    struct InfoLogLength{ static const tl_int s_glStatusName; };
-    struct AttachedShaders{ static const tl_int s_glStatusName; };
-    struct ActiveAttributes{ static const tl_int s_glStatusName; };
+    struct DeleteStatus            { static const tl_int s_glStatusName; };
+    struct LinkStatus              { static const tl_int s_glStatusName; };
+    struct ValidateStatus          { static const tl_int s_glStatusName; };
+    struct InfoLogLength           { static const tl_int s_glStatusName; };
+    struct AttachedShaders         { static const tl_int s_glStatusName; };
+    struct ActiveAttributes        { static const tl_int s_glStatusName; };
     struct ActiveAttributeMaxLength{ static const tl_int s_glStatusName; };
-    struct ActiveUniforms{ static const tl_int s_glStatusName; };
-    struct ActiveUniformMaxLength{ static const tl_int s_glStatusName; };
+    struct ActiveUniforms          { static const tl_int s_glStatusName; };
+    struct ActiveUniformMaxLength  { static const tl_int s_glStatusName; };
   };
 
   class ShaderProgram : public Object_T<ShaderProgram>

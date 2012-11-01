@@ -1,2 +1,2 @@
 @echo off
-runTests Release
+runTests Release -a

@@ -13,6 +13,11 @@
 
 namespace tloc { namespace core {
 
+  namespace memory
+  {
+    extern bool IsValidHeapPointer(const void * a_userData);
+  };
+
   template <typename T_InputIterator, typename T_OutputIterator>
   TL_I T_OutputIterator     uninitialized_copy(T_InputIterator aRangeBegin,
                                                T_InputIterator aRangeEnd,

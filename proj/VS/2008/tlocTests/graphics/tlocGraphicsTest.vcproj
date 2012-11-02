@@ -997,6 +997,10 @@
 				Name="opengl"
 				>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocGLGeneralTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocGLObjectTest.cpp"
 					>
 				</File>

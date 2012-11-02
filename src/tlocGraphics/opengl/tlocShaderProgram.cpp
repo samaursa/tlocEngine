@@ -247,9 +247,17 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess();
   }
 
-  void ShaderProgram::Disable() const
+  ShaderProgram::error_type
+    ShaderProgram::Disable() const
   {
     glUseProgram(0);
+
+    if (gl::Error().Failed())
+    {
+      return error::error_shader;
+    }
+
+    return ErrorSuccess();
   }
 
   //------------------------------------------------------------------------

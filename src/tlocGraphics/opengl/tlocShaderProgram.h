@@ -75,7 +75,7 @@ namespace tloc { namespace graphics { namespace gl {
     void AddUniform(const Uniform& a_uniform);
 
     error_type Enable() const;
-    void       Disable() const;
+    error_type Disable() const;
 
   private:
     template <typename T_ProgramIvParam>

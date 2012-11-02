@@ -263,6 +263,11 @@ namespace tloc { namespace graphics {
 
   };
 
+  //////////////////////////////////////////////////////////////////////////
+  // Typedefs
+
+  typedef Window_T<>    Window;
+
 };};
 
 #endif

@@ -68,8 +68,8 @@ namespace TestingShaderProgram
 
   TEST_CASE("Graphics/ShaderProgram/HardCoded", "")
   {
-    typedef Window_T<>::graphics_mode         graphics_mode;
-    Window_T<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
@@ -92,8 +92,8 @@ namespace TestingShaderProgram
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
   {
-    typedef Window_T<>::graphics_mode         graphics_mode;
-    Window_T<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
@@ -121,8 +121,8 @@ namespace TestingShaderProgram
   {
     using namespace math;
 
-    typedef Window_T<>::graphics_mode         graphics_mode;
-    Window_T<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 

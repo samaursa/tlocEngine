@@ -32,16 +32,16 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  namespace p_any
+  namespace p_get
   {
     namespace priv
     {
-      extern void DoGet(GLint&     a_out, tl_int a_paramName);
-      extern void DoGet(GLint*&    a_out, tl_int a_paramName);
-      extern void DoGet(GLfloat&   a_out, tl_int a_paramName);
-      extern void DoGet(GLfloat*&  a_out, tl_int a_paramName);
-      extern void DoGet(GLdouble&  a_out, tl_int a_paramName);
-      extern void DoGet(GLdouble*& a_out, tl_int a_paramName);
+      extern void DoGet(GLint&     a_out, const tl_int a_paramName);
+      extern void DoGet(GLint*&    a_out, const tl_int a_paramName);
+      extern void DoGet(GLfloat&   a_out, const tl_int a_paramName);
+      extern void DoGet(GLfloat*&  a_out, const tl_int a_paramName);
+      extern void DoGet(GLdouble&  a_out, const tl_int a_paramName);
+      extern void DoGet(GLdouble*& a_out, const tl_int a_paramName);
     };
 
     struct CurrentProgram
@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename T_GlPName::value_type  ret_type;
 
     ret_type toRet;
-    DoGet(&toRet, T_GlPName::s_glParamName);
+    p_get::priv::DoGet(toRet, T_GlPName::s_glParamName);
 
     return toRet;
   }

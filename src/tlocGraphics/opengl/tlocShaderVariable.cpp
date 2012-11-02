@@ -2,6 +2,7 @@
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
+#include <tlocGraphics/opengl/tlocAttribute.h>
 
 #include "tlocShaderVariable.h"
 #include <tlocMath/vector/tlocVector2.h>
@@ -82,6 +83,9 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit instantiation
 
 #include "tlocShaderVariableExplicitMacros.h"
+
+  //````````````````````````````````````````````````````````````````````````
+  // Uniform
   TLOC_SHADER_VARIABLE_EXPLICIT(Uniform);
 
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,       Uniform);
@@ -95,6 +99,22 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,   Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,   Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,   Uniform);
+
+  //````````````````````````````````````````````````````````````````````````
+  // Attribute
+  TLOC_SHADER_VARIABLE_EXPLICIT(Attribute);
+
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32, Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32, Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32, Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,   Attribute);
 #undef TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS
 
 };};};

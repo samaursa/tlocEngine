@@ -13,7 +13,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void Quad::Set(const rect_type& a_rect)
   {
-    typedef base_type::cont_type::value_type::position_value_type   vec_type;
+    typedef base_type::cont_type::value_type::attrib_1_type::value_type vec_type;
 
     base_type::cont_type& verts = DoGetVertexes();
     verts.resize(4);

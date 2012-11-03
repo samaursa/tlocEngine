@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
   protected:
     typedef core::component_system::Component base_type;
 
-    typedef types::Vert3fPNC                    vert_type;
+    typedef types::Vert3fpnc                    vert_type;
     typedef core::tl_array<vert_type>::type     cont_type;
     typedef cont_type::iterator                 iterator;
     typedef cont_type::const_iterator           const_iterator;

@@ -44,4 +44,19 @@ struct tl_type_to_string
   }
 #endif // TLOC_DEF_TYPE
 
+namespace tloc
+{
+  class EmptyType
+  {
+    typedef EmptyType   value_type;
+  };
+
+  // Useful for inheriting from several empty types
+  template <tl_size ID>
+  class EmptyType_T
+  {
+    typedef EmptyType_T<ID> value_type;
+  };
+};
+
 #endif // header guard

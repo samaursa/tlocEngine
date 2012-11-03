@@ -1,5 +1,5 @@
-#ifndef _TLOC_GRAPHICS_GL_UNIFORM_H_
-#define _TLOC_GRAPHICS_GL_UNIFORM_H_
+#ifndef _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
+#define _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
 
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
@@ -12,13 +12,13 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class Uniform : public ShaderVariable_TI<Uniform>
+  class Attribute : public ShaderVariable_TI<Attribute>
   {
   public:
     template <typename T_Derived> friend class ShaderVariable_TI;
 
-    typedef Uniform                         this_type;
-    typedef ShaderVariable_TI<this_type>    base_type;
+    typedef Attribute                     this_type;
+    typedef ShaderVariable_TI<this_type>  base_type;
 
   protected:
     template <typename T>

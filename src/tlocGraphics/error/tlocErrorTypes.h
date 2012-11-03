@@ -12,11 +12,14 @@ namespace tloc { namespace graphics { namespace error {
     error_image_decoding,
 
     // Shaders
+    error_shader,
     error_shader_source,
     error_shader_compile,
+    error_shader_program_enable,
     error_shader_program_link,
     error_shader_uniform_name_not_found,
     error_shader_uniform_invalid_type,
+    error_shader_uniform_not_attached,
 
   };
 

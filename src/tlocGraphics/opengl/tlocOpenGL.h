@@ -30,10 +30,38 @@
 
 #endif
 
-
 namespace tloc { namespace graphics { namespace gl {
 
-  // Intentionally empty
+  namespace p_get
+  {
+    namespace priv
+    {
+      extern void DoGet(GLint&     a_out, const tl_int a_paramName);
+      extern void DoGet(GLint*&    a_out, const tl_int a_paramName);
+      extern void DoGet(GLfloat&   a_out, const tl_int a_paramName);
+      extern void DoGet(GLfloat*&  a_out, const tl_int a_paramName);
+      extern void DoGet(GLdouble&  a_out, const tl_int a_paramName);
+      extern void DoGet(GLdouble*& a_out, const tl_int a_paramName);
+    };
+
+    struct CurrentProgram
+    {
+      typedef GLint value_type;
+      static const tl_int s_glParamName;
+    };
+  };
+
+  template <typename T_GlPName>
+  typename T_GlPName::value_type Get()
+  {
+    typedef typename T_GlPName::value_type  ret_type;
+
+    ret_type toRet;
+    p_get::priv::DoGet(toRet, T_GlPName::s_glParamName);
+
+    return toRet;
+  }
+
 
 };};};
 

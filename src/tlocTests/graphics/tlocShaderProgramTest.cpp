@@ -68,8 +68,8 @@ namespace TestingShaderProgram
 
   TEST_CASE("Graphics/ShaderProgram/HardCoded", "")
   {
-    typedef Window<>::graphics_mode         graphics_mode;
-    Window<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
@@ -92,8 +92,8 @@ namespace TestingShaderProgram
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
   {
-    typedef Window<>::graphics_mode         graphics_mode;
-    Window<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
@@ -121,8 +121,8 @@ namespace TestingShaderProgram
   {
     using namespace math;
 
-    typedef Window<>::graphics_mode         graphics_mode;
-    Window<> win;
+    typedef Window::graphics_mode         graphics_mode;
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
@@ -137,6 +137,8 @@ namespace TestingShaderProgram
     CHECK(sp.Link() == ErrorSuccess());
 
     sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
+    REQUIRE(sp.Enable() == ErrorSuccess() );
     CHECK(sp.LoadAllUniforms() == ErrorSuccess());
+    CHECK(sp.Disable() == ErrorSuccess() );
   }
 };

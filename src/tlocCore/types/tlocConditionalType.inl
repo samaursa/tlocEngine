@@ -310,6 +310,11 @@ namespace tloc { namespace core {
   }
 
   template <COND_TYPE_FALSE_TEMPS>
+  TL_FI void
+    ConditionalType<COND_TYPE_FALSE_PARAMS>::Set(const T&)
+  { }
+
+  template <COND_TYPE_FALSE_TEMPS>
   TL_FI T ConditionalType<COND_TYPE_FALSE_PARAMS>::Value() const
   {
     return g_conditional_type_invalid_value;
@@ -604,6 +609,13 @@ namespace tloc { namespace core {
     ConditionalType<COND_TYPE_TRUE_PARAMS>::Get() const
   {
     return m_value;
+  }
+
+  template <typename T>
+  TL_FI void
+    ConditionalType<COND_TYPE_TRUE_PARAMS>::Set(const T& a_value)
+  {
+    m_value = a_value;
   }
 
   template <typename T>

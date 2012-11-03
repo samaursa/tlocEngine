@@ -1012,6 +1012,10 @@
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderProgramTest.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocVertexTest.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="types"

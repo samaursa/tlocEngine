@@ -108,7 +108,7 @@ namespace TestingAnyType
       a.Assign(MathVec(1, 2, 3));
       b.Assign(MathVec(4, 5, 6));
 
-      TLOC_ASSERT(_CrtIsValidHeapPointer( &( a.Cast<MathVec>()) ), "!");
+      TLOC_ASSERT(tloc::core::memory::IsValidHeapPointer( &( a.Cast<MathVec>()) ), "!");
 
       CHECK_MATH_VEC3(a.Cast<MathVec>(), 1, 2, 3);
       CHECK_MATH_VEC3(b.Cast<MathVec>(), 4, 5, 6);

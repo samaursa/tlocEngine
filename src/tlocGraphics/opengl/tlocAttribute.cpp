@@ -1,6 +1,4 @@
-#include "tlocUniform.h"
-
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include "tlocAttribute.h"
 
 namespace tloc { namespace graphics { namespace gl {
 

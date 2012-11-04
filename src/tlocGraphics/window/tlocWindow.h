@@ -47,10 +47,10 @@ namespace tloc { namespace graphics {
   struct WindowCallbackGroupT :
     public core::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, WindowCallbacks>::type 
+    typedef typename core::CallbackGroupTArray<T, WindowCallbacks>::type
       base_type;
     using base_type::m_observers;
-    
+
     virtual void OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -68,14 +68,14 @@ namespace tloc { namespace graphics {
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Window :
+  class Window_T :
     public core::DispatcherBaseArray <WindowCallbacks, WindowCallbackGroupT>::type,
     public core::NonCopyable
   {
   public:
 
     typedef T_Platform                                   platform_type;
-    typedef Window<platform_type>                        this_type;
+    typedef Window_T<platform_type>                        this_type;
     typedef GraphicsMode<T_Platform>                     graphics_mode;
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
@@ -83,8 +83,8 @@ namespace tloc { namespace graphics {
 
   public:
 
-    Window();
-    ~Window();
+    Window_T();
+    ~Window_T();
 
     ///-------------------------------------------------------------------------
     /// Creates an invisible window (lookup False Context)
@@ -159,7 +159,7 @@ namespace tloc { namespace graphics {
     /// @return The window settings.
     ///-------------------------------------------------------------------------
     //const WindowSettings& GetSettings() const;
-    
+
     ///-------------------------------------------------------------------------
     /// Gets the window handle.
     ///
@@ -231,27 +231,27 @@ namespace tloc { namespace graphics {
     impl_type*                              m_impl;
     core::Queue<WindowEvent>                m_events;
   };
-  
+
   //////////////////////////////////////////////////////////////////////////
   // Global Functions
-  
+
   ///-------------------------------------------------------------------------
   /// Gets the current active window. This is the window that has focus.
   ///
   /// @return  The current active Window
   ///-------------------------------------------------------------------------
-  Window<>* GetCurrentActiveWindow();
-  
+  Window_T<>* GetCurrentActiveWindow();
+
   namespace priv {
-  
+
     ///-------------------------------------------------------------------------
-    /// Sets the current active window. This is primarily when a window gains 
+    /// Sets the current active window. This is primarily when a window gains
     /// focus.
     ///
     /// @param  a_window The Window
     ///-------------------------------------------------------------------------
-    void SetCurrentActiveWindow(Window<>* a_window);
-    
+    void SetCurrentActiveWindow(Window_T<>* a_window);
+
     ///-------------------------------------------------------------------------
     /// Sets the window as non active. This is primarily when a window loses
     /// focus. If it is the current active window, the current active window is
@@ -259,9 +259,14 @@ namespace tloc { namespace graphics {
     ///
     /// @param  a_window The Window
     ///-------------------------------------------------------------------------
-    void SetNonActiveWindow(Window<>* a_window);
-  
+    void SetNonActiveWindow(Window_T<>* a_window);
+
   };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Typedefs
+
+  typedef Window_T<>    Window;
 
 };};
 

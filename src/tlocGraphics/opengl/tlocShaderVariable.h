@@ -26,16 +26,16 @@ namespace tloc { namespace graphics { namespace gl {
     ~ShaderVariable_TI();
 
     template <typename T>
-    void GetValueAs(T& a_out)
+    void GetValueAs(T& a_out) const
     {
       static_cast<derived_type*>(this)->DoCheckTypeCompatibility<T>();
       a_out = m_value.Cast<T>();
     }
 
     template <typename T>
-    const T&  GetValueAs()
+    const T&  GetValueAs() const
     {
-      static_cast<derived_type*>(this)->DoCheckTypeCompatibility<T>();
+      static_cast<derived_type const*>(this)->DoCheckTypeCompatibility<T>();
       return m_value.Cast<T>();
     }
 

@@ -28,6 +28,8 @@ namespace tloc { namespace core { namespace types {
         virtual void Clone(void* const* a_source, void** a_dest) = 0;
         virtual void Move(void* const* a_source, void** a_dest) =  0;
         virtual void* GetValue(void** a_source) = 0;
+
+        virtual void const* GetValue(void* const * a_source) const = 0;
         virtual size_t GetSize() const = 0;
       };
 
@@ -57,6 +59,8 @@ namespace tloc { namespace core { namespace types {
         virtual void  Clone(void* const* a_source, void** a_dest);
         virtual void  Move(void* const* a_source, void** a_dest);
         virtual void* GetValue(void** a_source);
+
+        virtual void const * GetValue(void* const * a_source) const;
       };
 
       template <typename T>
@@ -70,6 +74,8 @@ namespace tloc { namespace core { namespace types {
         virtual void Clone(void* const* a_source, void** a_dest);
         virtual void Move(void* const* a_source, void** a_dest);
         virtual void* GetValue(void** a_source);
+
+        virtual void const * GetValue(void* const * a_source) const;
       };
     }
 
@@ -144,6 +150,9 @@ namespace tloc { namespace core { namespace types {
 
     template <typename T>
     T& Cast();
+
+    template <typename T>
+    T const & Cast() const;
 
     bool IsEmpty() const;
     void Reset();

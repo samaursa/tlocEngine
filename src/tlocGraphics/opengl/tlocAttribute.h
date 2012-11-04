@@ -22,7 +22,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   protected:
     template <typename T>
-    void DoCheckTypeCompatibility()
+    void DoCheckTypeCompatibility() const
     {
       type_traits::AssertTypeIsSupported
         <T,

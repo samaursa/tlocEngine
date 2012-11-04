@@ -73,6 +73,11 @@ namespace tloc { namespace core { namespace types {
         ::GetValue(void** a_source)
       { return reinterpret_cast<void*>(a_source); }
 
+      template <SIMPLE_TYPE_TEMP>
+      void const* SimpleType_T<SIMPLE_TYPE_PARAMS>
+        ::GetValue(void* const * a_source) const
+      { return reinterpret_cast<void const *>(a_source); }
+
 #undef SIMPLE_TYPE_TEMP   
 #undef SIMPLE_TYPE_PARAMS
 #undef SIMPLE_TYPE_TYPE 
@@ -117,6 +122,11 @@ namespace tloc { namespace core { namespace types {
         ::GetValue(void** a_source)
       { return *a_source; }
 
+      template <COMPLEX_TYPE_TEMP>
+      void const* ComplexType_T<COMPLEX_TYPE_PARAMS>
+        ::GetValue(void* const* a_source) const
+      { return *a_source; }
+
 #undef COMPLEX_TYPE_TEMP   
 #undef COMPLEX_TYPE_PARAMS
 #undef COMPLEX_TYPE_TYPE 
@@ -159,6 +169,14 @@ namespace tloc { namespace core { namespace types {
   {
     assert(m_policy == p_any::GetPolicy<T>());
     T* ret = reinterpret_cast<T*>(m_policy->GetValue(&m_object));
+    return *ret;
+  }
+
+  template <typename T>
+  T const & Any::Cast() const
+  {
+    assert(m_policy == p_any::GetPolicy<T>());
+    T const * ret = reinterpret_cast<T const*>(m_policy->GetValue(&m_object));
     return *ret;
   }
 

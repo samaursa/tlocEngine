@@ -8,6 +8,7 @@
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
+#include <tlocGraphics/opengl/tlocAttribute.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -41,6 +42,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::error_type       error_type;
 
     typedef core::Array<Uniform>        uniform_cont_type;
+    typedef core::Array<Attribute>      attribute_cont_type;
 
     typedef tl_size                     size_type;
     typedef s32                         gl_result_type;

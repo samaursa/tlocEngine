@@ -93,23 +93,54 @@ namespace tloc { namespace graphics { namespace gl {
     {
       using namespace core;
 
+      bool isArray = a_uniform.IsArray();
+
       switch(a_info.m_type)
       {
       case GL_FLOAT:
         {
-          const f32& f = a_uniform.GetValueAs<f32>();
-          glUniform1f(a_info.m_location, f);
+          if (isArray == false)
+          {
+            const f32& f = a_uniform.GetValueAs<f32>();
+            glUniform1f(a_info.m_location, f);
+          }
+          else
+          {
+            typedef Array<f32> array_type;
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            glUniform1fv(a_info.m_location, fa.size(), &(fa[0]) );
+          }
           break;
         }
       case GL_FLOAT_VEC2:
         {
-          const Vec2f32& v = a_uniform.GetValueAs<Vec2f32>();
-          glUniform2f(a_info.m_location, v[0], v[1]);
+          if (isArray == false)
+          {
+            const Vec2f32& v = a_uniform.GetValueAs<Vec2f32>();
+            glUniform2f(a_info.m_location, v[0], v[1]);
+          }
+          else
+          {
+            typedef Array<Vec2f32> array_type;
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            f32 const * faraw = reinterpret_cast<f32 const*>(&(fa[0]));
+            glUniform2fv(a_info.m_location, fa.size(), faraw);
+          }
         }
       case GL_FLOAT_VEC3:
         {
-          const Vec3f32& v = a_uniform.GetValueAs<Vec3f32>();
-          glUniform3f(a_info.m_location, v[0], v[1], v[2]);
+          if (isArray == false)
+          {
+            const Vec3f32& v = a_uniform.GetValueAs<Vec3f32>();
+            glUniform3f(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else
+          {
+            typedef Array<Vec3f32> array_type;
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            f32 const * faraw = reinterpret_cast<f32 const*>(&(fa[0]));
+            glUniform3fv(a_info.m_location, fa.size(), faraw);
+          }
           break;
         }
       case GL_FLOAT_VEC4:

@@ -36,7 +36,17 @@ namespace tloc { namespace graphics { namespace gl {
          core::Tuple4s32,
          math::Mat2f32,
          math::Mat3f32,
-         math::Mat4f32>();
+         math::Mat4f32,
+
+         core::Array<f32>,
+         core::Array<math::Vec2f32>,
+         core::Array<math::Vec3f32>,
+         core::Array<math::Vec4f32>,
+         core::Array<s32>,
+         core::Array<core::Tuple2s32>,
+         core::Array<core::Tuple3s32>,
+         core::Array<core::Tuple4s32>
+        >();
     }
 
   };

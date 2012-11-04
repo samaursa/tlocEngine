@@ -159,6 +159,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderProgram::error_type ShaderProgram::LoadAllUniforms()
   {
+    using namespace core;
+
     TLOC_ASSERT(m_flags[shader_linked],
                 "Shader not linked - did you forget to call Link()?");
 
@@ -179,6 +181,17 @@ namespace tloc { namespace graphics { namespace gl {
           {
             switch(itrInfo->m_type)
             {
+            case GL_FLOAT:
+              {
+                const f32& f = itr->GetValueAs<f32>();
+                glUniform1f(itrInfo->m_location, f);
+                break;
+              }
+            case GL_FLOAT_VEC2:
+              {
+                const Vec2f32& v = itr->GetValueAs<Vec2f32>();
+                glUniform2f(itrInfo->m_location, v[0], v[1]);
+              }
             case GL_FLOAT_VEC3:
               {
                 const Vec3f32& v = itr->GetValueAs<Vec3f32>();
@@ -191,6 +204,40 @@ namespace tloc { namespace graphics { namespace gl {
                 glUniform4f(itrInfo->m_location, v[0], v[1], v[2], v[3]);
                 break;
               }
+            case GL_INT:
+              {
+                const s32& i = itr->GetValueAs<s32>();
+                glUniform1i(itrInfo->m_location, i);
+                break;
+              }
+            case GL_INT_VEC2:
+              {
+                const Tuple2s32& t = itr->GetValueAs<Tuple2s32>();
+                glUniform2i(itrInfo->m_location, t[0], t[1]);
+                break;
+              }
+            case GL_INT_VEC3:
+              {
+                const Tuple3s32& t = itr->GetValueAs<Tuple3s32>();
+                glUniform3i(itrInfo->m_location, t[0], t[1], t[2]);
+                break;
+              }
+
+            case GL_INT_VEC4:
+              {
+                const Tuple4s32& t = itr->GetValueAs<Tuple4s32>();
+                glUniform4i(itrInfo->m_location, t[0], t[1], t[2], t[3]);
+                break;
+              }
+            case GL_FLOAT_MAT2:
+              {
+                const Mat2f32& m = itr->GetValueAs<Mat2f32>();
+                TLOC_ASSERT(itrInfo->m_arraySize == Mat2f32::k_TableSize,
+                            "Mismatched uniform array size!");
+                glUniformMatrix2fv(itrInfo->m_location, GL_FALSE,
+                                   Mat2f32::k_TableSize, m);
+                  break;
+              }
             case GL_FLOAT_MAT3:
               {
                 const Mat3f32& m = itr->GetValueAs<Mat3f32>();
@@ -198,7 +245,7 @@ namespace tloc { namespace graphics { namespace gl {
                             "Mismatched uniform array size!");
                 glUniformMatrix3fv(itrInfo->m_location, GL_FALSE,
                                    Mat3f32::k_TableSize, m);
-                  break;
+                break;
               }
             case GL_FLOAT_MAT4:
               {

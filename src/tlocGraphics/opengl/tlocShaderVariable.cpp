@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Tuple3s32, GL_INT_VEC3);
   TLOC_DECL_TL_TO_GL(Tuple4s32, GL_INT_VEC4);
 
-  TLOC_DECL_TL_TO_GL(Mat2f32, GL_FLOAT_MAT3);
+  TLOC_DECL_TL_TO_GL(Mat2f32, GL_FLOAT_MAT2);
   TLOC_DECL_TL_TO_GL(Mat3f32, GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Mat4f32, GL_FLOAT_MAT4);
 

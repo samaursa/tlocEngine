@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocInputTest"
-	ProjectGUID="{13665C2F-E56C-4199-BD73-11E12AD6A451}"
-	RootNamespace="tlocInputTest"
+	Name="tlocPhysicsTest"
+	ProjectGUID="{4F076A1C-E933-4859-AB75-2757C200F077}"
+	RootNamespace="tlocPhysicsTest"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -65,9 +65,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeForWindows98="0"
@@ -143,9 +143,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				TargetMachine="17"
@@ -220,9 +220,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -301,9 +301,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -379,9 +379,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeForWindows98="0"
@@ -457,9 +457,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				TargetMachine="17"
@@ -534,9 +534,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -615,9 +615,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -696,9 +696,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -780,9 +780,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -862,9 +862,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(WIN32_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -946,9 +946,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocInput_$(ConfigurationName).lib dinput8.lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocInput\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\WinSDK\&quot;;&quot;$(x64_SDK_DIR)\lib\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -982,24 +982,16 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Input"
-			>
-			<File
-				RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocInputTest.cpp"
-				>
-			</File>
-		</Filter>
 		<File
-			RelativePath="$(TLOC_PATH)\src\tlocTests\input\main.cpp"
+			RelativePath="..\..\..\..\..\src\tlocTests\physics\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocTestCommon.cpp"
+			RelativePath="..\..\..\..\..\src\tlocTests\physics\tlocTestCommon.cpp"
 			>
 		</File>
 		<File
-			RelativePath="$(TLOC_PATH)\src\tlocTests\input\tlocTestCommon.h"
+			RelativePath="..\..\..\..\..\src\tlocTests\physics\tlocTestCommon.h"
 			>
 		</File>
 	</Files>

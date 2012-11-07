@@ -848,6 +848,22 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="Box2D"
+			>
+			<Filter
+				Name="component_system"
+				>
+				<Filter
+					Name="components"
+					>
+				</Filter>
+				<Filter
+					Name="systems"
+					>
+				</Filter>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocPhysics\tlocDepVersionCheck.cpp"
 			>

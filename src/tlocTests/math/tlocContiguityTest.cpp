@@ -7,6 +7,10 @@
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/vector/tlocVector4.h>
 
+#include <tlocMath/matrix/tlocMatrix2.h>
+#include <tlocMath/matrix/tlocMatrix3.h>
+#include <tlocMath/matrix/tlocMatrix4.h>
+
 namespace TestingContiguity
 {
   using namespace tloc;
@@ -61,5 +65,47 @@ namespace TestingContiguity
     TestVec<Vec4f>();
     TestVec<Vec4f32>();
     TestVec<Vec4f64>();
+  }
+
+  template <typename T_Type>
+  void TestMatrix()
+  {
+    typedef T_Type                           test_type;
+    typedef typename test_type::value_type   value_type;
+    typedef Array<test_type>                 cont_type;
+
+    cont_type v(32);
+    value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
+    bool testPassed = true;
+
+    const tl_size numElements = typename T_Type::k_MatrixSize;
+
+    for (cont_type::size_type i = 0, size = v.size(); i != size; ++i)
+    {
+      for (tl_size j = 0; j < numElements; ++j)
+      {
+        if ( (first + ((i * numElements) + j) )   != (&(v[i][j])) )
+        {
+          testPassed = false; break;
+        }
+      }
+    }
+
+    CHECK(testPassed);
+  }
+
+  TEST_CASE("Math/Contiguity/Matrix", "")
+  {
+    TestMatrix<Mat2f>();
+    TestMatrix<Mat2f32>();
+    TestMatrix<Mat2f64>();
+
+    TestMatrix<Mat3f>();
+    TestMatrix<Mat3f32>();
+    TestMatrix<Mat3f64>();
+
+    TestMatrix<Mat4f>();
+    TestMatrix<Mat4f32>();
+    TestMatrix<Mat4f64>();
   }
 };

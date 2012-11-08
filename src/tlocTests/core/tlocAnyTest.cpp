@@ -120,4 +120,25 @@ namespace TestingAnyType
     }
   }
 
+  class Object
+  {
+    void getVertex();
+    void NumVertices();
+  };
+  class Vector;
+  void Dot();
+  void Min();
+  void Max();
+
+  void GetInterval(Object o, Vector axis, float& min, float& max)
+  {
+    min = max = Dot(axis, o.getVertex(0));
+    for (int i = 1, n = o.NumVertices(); i < n; ++i)
+    {
+      float value = Dot(axis, o.getVertex(i));
+      min = Min(min, value);
+      max = Max(max, value);
+    }
+  }
+
 };

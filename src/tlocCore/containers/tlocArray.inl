@@ -353,7 +353,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     while (a_rangeBegin != a_rangeEnd)
     {
-      a_rangeBegin->~value_type();
+      a_rangeBegin->~T(); // not using value_type here to avoid ambiguities
       ++a_rangeBegin;
     }
   }

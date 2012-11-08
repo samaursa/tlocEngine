@@ -1076,6 +1076,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.h"
 				>
 			</File>
@@ -1106,6 +1110,46 @@
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
 					>
 				</File>
+				<Filter
+					Name="variables"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariable.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableExplicitMacros.h"
+						>
+					</File>
+					<Filter
+						Name="attribute"
+						>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocAttribute.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocAttribute.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="uniform"
+						>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="error"
@@ -1174,6 +1218,14 @@
 			<Filter
 				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.cpp"
 					>
@@ -1287,6 +1339,14 @@
 		<Filter
 			Name="view_projection"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.cpp"
 				>

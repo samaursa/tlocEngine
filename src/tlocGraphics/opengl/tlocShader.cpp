@@ -6,23 +6,25 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
+#include <tlocGraphics/error/tlocErrorTypes.h>
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace detail
   {
-    ShaderComponent::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Vertex)
     {
       return glCreateShader(GL_VERTEX_SHADER);
     }
 
-    ShaderComponent::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Fragment)
     {
       return glCreateShader(GL_FRAGMENT_SHADER);
     }
 
-    ShaderComponent::object_handle
+    Shader_I::object_handle
       CreateShader(p_shader_program::shader_type::Geometry)
     {
       // TODO: glew.h does not have geometry shaders yet
@@ -40,24 +42,28 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  ShaderComponent::ShaderComponent() : m_flags(count)
+  Shader_I::Shader_I() : m_flags(count)
   {
   }
 
-  ShaderComponent::~ShaderComponent()
+  Shader_I::~Shader_I()
   {
-    glDeleteShader(GetHandle());
+    if (IsLastRef())
+    {
+      glDeleteShader(GetHandle());
+    }
   }
 
   template <typename T_ShaderType>
-  bool ShaderComponent::LoadShader(const char *a_shaderSource, T_ShaderType a_type)
+  Shader_I::error_type
+    Shader_I::DoLoad(const char *a_shaderSource)
   {
-    SetHandle(detail::CreateShader(a_type));
+    SetHandle( detail::CreateShader(T_ShaderType()) );
 
     object_handle handle = GetHandle();
     if (!handle)
     {
-      return false;
+      return common_error_types::error_invalid_handle;
     }
 
     // Load the shader
@@ -66,13 +72,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     // TODO: Log proper OpenGL errors
     if(Error().Failed())
-    { return false; }
+    { return error::error_shader_source; }
 
     m_flags.Mark(shader_loaded);
-    return true;
+    return ErrorSuccess();
   }
 
-  bool ShaderComponent::CompileShader()
+  Shader_I::error_type Shader_I::CompileShader()
   {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");
@@ -89,17 +95,54 @@ namespace tloc { namespace graphics { namespace gl {
       glGetShaderInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
 
       // TODO: Write shader log
-      return false;
+      return error::error_shader_compile;
     }
 
     m_flags.Mark(shader_compiled);
-    return true;
+    return ErrorSuccess();
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Fragment Shader
+
+  FragmentShader::FragmentShader() : Shader_I()
+  { }
+
+  FragmentShader::~FragmentShader()
+  { }
+
+  FragmentShader::error_type
+    FragmentShader::Load(const char* a_shaderSource)
+  {
+    typedef p_shader_program::shader_type::Fragment fragment_shader_type;
+
+    return DoLoad<fragment_shader_type>(a_shaderSource);
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Vertex Shader
+
+  VertexShader::VertexShader() : Shader_I()
+  { }
+
+  VertexShader::~VertexShader()
+  { }
+
+  VertexShader::error_type
+    VertexShader::Load(const char* a_shaderSource)
+  {
+    typedef p_shader_program::shader_type::Vertex vertex_shader_type;
+
+    return DoLoad<vertex_shader_type>(a_shaderSource);
   }
 
   //------------------------------------------------------------------------
   // Explicit instantiation
-  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Vertex);
-  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Fragment);
-  template bool ShaderComponent::LoadShader(const char*, p_shader_program::shader_type::Geometry);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Vertex>(const char*);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Fragment>(const char*);
+  template Shader_I::error_type
+    Shader_I::DoLoad<p_shader_program::shader_type::Geometry>(const char*);
 
 };};};

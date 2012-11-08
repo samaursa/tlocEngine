@@ -1179,6 +1179,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="any_type"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\types\tlocAny.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="time"
@@ -1397,6 +1413,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocTemplateUtils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocType.h"
 				>
 			</File>
 			<File

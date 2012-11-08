@@ -30,16 +30,34 @@
 namespace tloc { namespace core {
 
   template class Tuple<tl_float, 2>;
-  template class Tuple<tl_int, 2>;
-  template class Tuple<tl_uint, 2>;
+  template class Tuple<f32,			 2>;
+  template class Tuple<f64,			 2>;
+  template class Tuple<tl_int,	 2>;
+  template class Tuple<s32,			 2>;
+  template class Tuple<s64,			 2>;
+  template class Tuple<tl_uint,	 2>;
+  template class Tuple<u32,			 2>;
+  template class Tuple<u64,			 2>;
 
   template class Tuple<tl_float, 3>;
-  template class Tuple<tl_int, 3>;
-  template class Tuple<tl_uint, 3>;
+  template class Tuple<f32,			 3>;
+  template class Tuple<f64,			 3>;
+  template class Tuple<tl_int,	 3>;
+  template class Tuple<s32,			 3>;
+  template class Tuple<s64,			 3>;
+  template class Tuple<tl_uint,	 3>;
+  template class Tuple<u32,			 3>;
+  template class Tuple<u64,			 3>;
 
   template class Tuple<tl_float, 4>;
-  template class Tuple<tl_int, 4>;
-  template class Tuple<tl_uint, 4>;
+  template class Tuple<f32,			 4>;
+  template class Tuple<f64,			 4>;
+  template class Tuple<tl_int,	 4>;
+  template class Tuple<s32,			 4>;
+  template class Tuple<s64,			 4>;
+  template class Tuple<tl_uint,	 4>;
+  template class Tuple<u32,			 4>;
+  template class Tuple<u64,			 4>;
 
 };};
 

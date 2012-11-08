@@ -9,7 +9,8 @@
 
 namespace TestingVector2f
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace tloc::math;
 
   struct Vector2fFixture
   {
@@ -25,11 +26,16 @@ namespace TestingVector2f
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
                              CHECK((vec[1]) == (Approx(y)) );
 
+  TEST_CASE("Math/Vector2/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Vec2f) == (sizeof(tl_float) * 2));
+    REQUIRE(sizeof(Vec2f32) == (sizeof(f32) * 2));
+    REQUIRE(sizeof(Vec2f64) == (sizeof(f64) * 2));
+  }
+
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::math::Vec2f) == (sizeof(tl_float) * 2));
-
     CHECK_VEC2F(a, 1, 2);
     CHECK_VEC2F(b, 5, 6);
 

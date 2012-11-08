@@ -44,6 +44,13 @@ namespace TestingMatrix2
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
                              CHECK((vec[1]) == (Approx(y)) );
 
+  TEST_CASE("Math/Matrix2/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Mat2f) == (sizeof(tl_float) * 4));
+    REQUIRE(sizeof(Mat2f32) == (sizeof(f32) * 4));
+    REQUIRE(sizeof(Mat2f64) == (sizeof(f64) * 4));
+  }
+
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",
     "Test general/basic functionality")
   {

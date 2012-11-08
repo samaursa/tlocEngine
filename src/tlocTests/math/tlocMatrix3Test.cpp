@@ -29,6 +29,13 @@ namespace TestingMatrix3
     Mat3f a, b, c, d, e;
   };
 
+  TEST_CASE("Math/Matrix3/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Mat3f) == (sizeof(tl_float) * 9));
+    REQUIRE(sizeof(Mat3f32) == (sizeof(f32) * 9));
+    REQUIRE(sizeof(Mat3f64) == (sizeof(f64) * 9));
+  }
+
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
   {

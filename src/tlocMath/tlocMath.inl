@@ -6,7 +6,6 @@
 #endif
 
 #include "tlocMath.h"
-#include <limits>
 #include <cmath>
 #include <tlocCore/types/tlocTypes.inl>
 

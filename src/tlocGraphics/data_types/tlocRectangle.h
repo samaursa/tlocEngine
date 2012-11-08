@@ -90,7 +90,12 @@ namespace tloc { namespace graphics { namespace types {
   // Typedefs
 
   typedef Rectangle<tl_int>     Recti;
+  typedef Rectangle<s32>        Recti32;
+  typedef Rectangle<s64>        Recti64;
+
   typedef Rectangle<tl_float>   Rectf;
+  typedef Rectangle<f32>        Rectf32;
+  typedef Rectangle<f64>        Rectf64;
 
 };};};
 

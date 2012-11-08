@@ -7,6 +7,8 @@
 #include <tlocCore/containers/tlocProtectedBuffer.h>
 #include <tlocCore/containers/tlocProtectedBuffer.inl>
 
+#include <tlocCore/utilities/tlocType.h>
+
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/matrix/tlocMatrix3.h>
@@ -106,9 +108,13 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef Array<f32> array_type;
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            glUniform1fv(a_info.m_location, fa.size(), &(fa[0]) );
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform1fv(a_info.m_location, arraySize, faraw);
           }
           break;
         }
@@ -121,10 +127,13 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef Array<Vec2f32> array_type;
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            f32 const * faraw = reinterpret_cast<f32 const*>(&(fa[0]));
-            glUniform2fv(a_info.m_location, fa.size(), faraw);
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform2fv(a_info.m_location, arraySize, faraw);
           }
         }
       case GL_FLOAT_VEC3:
@@ -136,42 +145,113 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef Array<Vec3f32> array_type;
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            f32 const * faraw = reinterpret_cast<f32 const*>(&(fa[0]));
-            glUniform3fv(a_info.m_location, fa.size(), faraw);
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform3fv(a_info.m_location, arraySize, faraw);
           }
           break;
         }
       case GL_FLOAT_VEC4:
         {
-          const Vec4f32& v = a_uniform.GetValueAs<Vec4f32>();
-          glUniform4f(a_info.m_location, v[0], v[1], v[2], v[3]);
+          if (isArray == false)
+          {
+            const Vec4f32& v = a_uniform.GetValueAs<Vec4f32>();
+            glUniform4f(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else
+          {
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform4fv(a_info.m_location, arraySize, faraw);
+          }
           break;
         }
       case GL_INT:
         {
-          const s32& i = a_uniform.GetValueAs<s32>();
-          glUniform1i(a_info.m_location, i);
-          break;
+          if (isArray == false)
+          {
+            const s32& i = a_uniform.GetValueAs<s32>();
+            glUniform1i(a_info.m_location, i);
+            break;
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform1iv(a_info.m_location, arraySize, faraw);
+          }
         }
       case GL_INT_VEC2:
         {
-          const Tuple2s32& t = a_uniform.GetValueAs<Tuple2s32>();
-          glUniform2i(a_info.m_location, t[0], t[1]);
+          if (isArray == false)
+          {
+            const Tuple2s32& t = a_uniform.GetValueAs<Tuple2s32>();
+            glUniform2i(a_info.m_location, t[0], t[1]);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform2iv(a_info.m_location, arraySize, faraw);
+          }
+
           break;
         }
       case GL_INT_VEC3:
         {
-          const Tuple3s32& t = a_uniform.GetValueAs<Tuple3s32>();
-          glUniform3i(a_info.m_location, t[0], t[1], t[2]);
+          if (isArray == false)
+          {
+            const Tuple3s32& t = a_uniform.GetValueAs<Tuple3s32>();
+            glUniform3i(a_info.m_location, t[0], t[1], t[2]);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform3iv(a_info.m_location, arraySize, faraw);
+          }
+
           break;
         }
 
       case GL_INT_VEC4:
         {
-          const Tuple4s32& t = a_uniform.GetValueAs<Tuple4s32>();
-          glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
+          if (isArray == false)
+          {
+            const Tuple4s32& t = a_uniform.GetValueAs<Tuple4s32>();
+            glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform4iv(a_info.m_location, arraySize, faraw);
+          }
+
           break;
         }
       case GL_FLOAT_MAT2:

@@ -36,18 +36,18 @@ namespace tloc { namespace graphics { namespace gl {
   {
     namespace priv
     {
-      extern void DoGet(GLint&     a_out, const tl_int a_paramName);
-      extern void DoGet(GLint*&    a_out, const tl_int a_paramName);
-      extern void DoGet(GLfloat&   a_out, const tl_int a_paramName);
-      extern void DoGet(GLfloat*&  a_out, const tl_int a_paramName);
-      extern void DoGet(GLdouble&  a_out, const tl_int a_paramName);
-      extern void DoGet(GLdouble*& a_out, const tl_int a_paramName);
+      extern void DoGet(GLint&     a_out, const GLint a_paramName);
+      extern void DoGet(GLint*&    a_out, const GLint a_paramName);
+      extern void DoGet(GLfloat&   a_out, const GLint a_paramName);
+      extern void DoGet(GLfloat*&  a_out, const GLint a_paramName);
+      extern void DoGet(GLdouble&  a_out, const GLint a_paramName);
+      extern void DoGet(GLdouble*& a_out, const GLint a_paramName);
     };
 
     struct CurrentProgram
     {
       typedef GLint value_type;
-      static const tl_int s_glParamName;
+      static const GLint s_glParamName;
     };
   };
 

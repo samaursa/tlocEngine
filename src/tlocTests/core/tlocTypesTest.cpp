@@ -5,7 +5,7 @@
 
 namespace TESTING_TYPES
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
 
   struct ConditionalFixtureTrue

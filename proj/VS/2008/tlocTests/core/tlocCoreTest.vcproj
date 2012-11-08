@@ -1149,6 +1149,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="utilities"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocTypesUtilsTests.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\core\main.cpp"

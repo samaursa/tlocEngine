@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,9 +65,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeForWindows98="0"
@@ -121,7 +121,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -143,9 +143,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				TargetMachine="17"
@@ -199,7 +199,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -220,9 +220,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -280,7 +280,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -301,9 +301,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -357,7 +357,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -379,9 +379,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeForWindows98="0"
@@ -435,7 +435,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -457,9 +457,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				TargetMachine="17"
@@ -513,7 +513,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -534,9 +534,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -594,7 +594,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -615,9 +615,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -675,7 +675,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -696,9 +696,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -759,7 +759,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -780,9 +780,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -841,7 +841,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -862,9 +862,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -925,7 +925,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/Box2D/&quot;;&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -946,9 +946,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib"
+				AdditionalDependencies="tlocCore_$(ConfigurationName).lib tlocMath_$(ConfigurationName).lib tlocPhysics_$(ConfigurationName).lib Box2D_$(ConfigurationName).lib"
 				OutputFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;"
+				AdditionalLibraryDirectories="&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocCore\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocMath\&quot;;&quot;$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\tlocPhysics\&quot;;&quot;$(TLOC_DEP_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\Box2D\&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TLOC_PATH)\bin\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_link.pdb"
 				OptimizeReferences="2"
@@ -982,6 +982,10 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="Box2D"
+			>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\..\src\tlocTests\physics\main.cpp"
 			>

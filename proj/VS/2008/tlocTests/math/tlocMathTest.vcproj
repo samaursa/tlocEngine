@@ -1037,13 +1037,21 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="angle"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocAngleTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\..\src\tlocTests\math\tlocAngleTest.cpp"
+			RelativePath="..\..\..\..\..\src\tlocTests\math\tlocContiguityTest.cpp"
 			>
 		</File>
 		<File

@@ -1416,6 +1416,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocType.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocUtils.h"
 				>
 			</File>

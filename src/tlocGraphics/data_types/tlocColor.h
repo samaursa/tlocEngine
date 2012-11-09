@@ -34,22 +34,19 @@ namespace tloc { namespace graphics { namespace types {
     typedef u8                      value_type;
     typedef core::Tuple<u8, 4>      container_type;
     typedef u32                     int_type;
-    typedef tl_float                float_type;
+    typedef tl_float                real_type;
 
   public:
     Color();
-    Color(value_type a_R,
-          value_type a_G,
-          value_type a_B,
-          value_type a_A);
 
-    Color(float_type a_R,
-          float_type a_G,
-          float_type a_B,
-          float_type a_A, p_color::Float);
+    template <typename T_ValueType>
+    Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A);
 
     template <typename T_ColorFormat>
     int_type GetAs();
+
+    template <typename T_ColorFormat, typename T_VectorType>
+    void     GetAs(T_VectorType& a_vec);
 
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;

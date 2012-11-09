@@ -119,5 +119,4 @@ namespace TestingAnyType
       CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
     }
   }
-
 };

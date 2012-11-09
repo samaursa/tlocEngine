@@ -6,38 +6,38 @@ namespace tloc { namespace graphics { namespace gl {
   {
     namespace priv
     {
-      void DoGet(GLint& a_out, const tl_int a_paramName)
+      void DoGet(GLint& a_out, const GLint a_paramName)
       {
         glGetIntegerv(a_paramName, &a_out);
       }
 
-      void DoGet(GLint*& a_out, const tl_int a_paramName)
+      void DoGet(GLint*& a_out, const GLint a_paramName)
       {
         glGetIntegerv(a_paramName, a_out);
       }
 
-      void DoGet(GLfloat&		a_out, const tl_int a_paramName)
+      void DoGet(GLfloat&		a_out, const GLint a_paramName)
       {
         glGetFloatv(a_paramName, &a_out);
       }
 
-      void DoGet(GLfloat*&	a_out, const tl_int a_paramName)
+      void DoGet(GLfloat*&	a_out, const GLint a_paramName)
       {
         glGetFloatv(a_paramName, a_out);
       }
 
-      void DoGet(GLdouble&	a_out, const tl_int a_paramName)
+      void DoGet(GLdouble&	a_out, const GLint a_paramName)
       {
         glGetDoublev(a_paramName, &a_out);
       }
 
-      void DoGet(GLdouble*&	a_out, const tl_int a_paramName)
+      void DoGet(GLdouble*&	a_out, const GLint a_paramName)
       {
         glGetDoublev(a_paramName, a_out);
       }
     };
 
-    const tl_int CurrentProgram::s_glParamName = GL_CURRENT_PROGRAM;
+    const GLint CurrentProgram::s_glParamName = GL_CURRENT_PROGRAM;
   };
 
   //------------------------------------------------------------------------

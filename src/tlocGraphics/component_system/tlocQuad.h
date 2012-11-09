@@ -16,7 +16,7 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef Quad                   this_type;
     typedef IPrimitive             base_type;
-    typedef types::Rectf           rect_type;
+    typedef types::Rectf32         rect_type;
 
     // Order chosen based on winding order and n,s,e,w = north, south...
     typedef base_type::vert_type                     vert_type;

@@ -19,17 +19,17 @@ namespace tloc { namespace graphics { namespace component_system {
     verts.resize(4);
 
     vec_type vertSE(a_rect.GetCoord<rect_type::right>(),
-      a_rect.GetCoord<rect_type::bottom>(),
-      0);
+                    a_rect.GetCoord<rect_type::bottom>(),
+                    0);
     vec_type vertNE(a_rect.GetCoord<rect_type::right>(),
-      a_rect.GetCoord<rect_type::top>(),
-      0);
+                    a_rect.GetCoord<rect_type::top>(),
+                    0);
     vec_type vertNW(a_rect.GetCoord<rect_type::left>(),
-      a_rect.GetCoord<rect_type::top>(),
-      0);
+                    a_rect.GetCoord<rect_type::top>(),
+                    0);
     vec_type vertSW(a_rect.GetCoord<rect_type::left>(),
-      a_rect.GetCoord<rect_type::bottom>(),
-      0);
+                    a_rect.GetCoord<rect_type::bottom>(),
+                    0);
 
     verts[vert_se::k_index].SetPosition(vertSE);
     verts[vert_ne::k_index].SetPosition(vertNE);

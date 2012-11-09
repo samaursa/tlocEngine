@@ -55,7 +55,9 @@ namespace tloc { namespace graphics { namespace gl {
     error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
+
     error_type LoadAllUniforms();
+    error_type LoadAllAttributes();
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -75,6 +77,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     void AddUniform(const Uniform& a_uniform);
+    void AddAttribute(const Attribute& a_attribute);
 
     error_type Enable() const;
     error_type Disable() const;
@@ -85,6 +88,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   private:
     uniform_cont_type           m_uniforms;
+    attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
   };
 

@@ -1,6 +1,8 @@
 #include "tlocMath.h"
 #include "tlocMath.inl"
 
+#include <limits>
+
 namespace tloc
 {
 

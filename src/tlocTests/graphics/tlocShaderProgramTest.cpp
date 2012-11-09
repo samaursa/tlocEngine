@@ -4,6 +4,7 @@
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/data_types/tlocColor.h>
 
 #include <tlocMath/vector/tlocVector4.h>
 
@@ -139,6 +140,16 @@ namespace TestingShaderProgram
     sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
     REQUIRE(sp.Enable() == ErrorSuccess() );
     CHECK(sp.LoadAllUniforms() == ErrorSuccess());
+    CHECK(sp.Disable() == ErrorSuccess() );
+
+    Vec4f32 colVec;
+    graphics::types::Color col(0.5f, 0.5f, 0.5f, 1.0f);
+    col.GetAs<graphics::types::p_color::format::RGBA>(colVec);
+
+    sp.AddAttribute( gl::Attribute().SetName("vVertex").SetValueAs(Vec4f32(0, 0, 0, 1)) );
+    sp.AddAttribute( gl::Attribute().SetName("vColor").SetValueAs(colVec) );
+    REQUIRE(sp.Enable() == ErrorSuccess() );
+    CHECK(sp.LoadAllAttributes() == ErrorSuccess() );
     CHECK(sp.Disable() == ErrorSuccess() );
   }
 };

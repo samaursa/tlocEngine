@@ -1,18 +1,20 @@
 #include "tlocWorld.h"
 
+#include <tlocMath/vector/tlocVector2.inl>
+
 namespace tloc { namespace physics { namespace box2d {
 
-  World::World(const world_type& a_world) 
-    : m_world(a_world)
+  World::World(const math::Vec2f& a_gravity) 
+    : m_world(b2Vec2(a_gravity[0], a_gravity[1]))
   {
-  }
-
-  void World::SetWorld(world_type& a_world)
-  {
-    m_world = a_world;
   }
 
   World::world_type& World::GetWorld()
+  {
+    return m_world;
+  }
+
+  const World::world_type& World::GetWorld() const
   {
     return m_world;
   }

@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace error {
     error_shader_uniform_name_not_found,
     error_shader_uniform_invalid_type,
     error_shader_uniform_not_attached,
-
+    error_shader_attribute_not_attached,
   };
 
 };};};

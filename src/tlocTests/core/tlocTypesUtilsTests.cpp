@@ -18,10 +18,40 @@ namespace TestingTypeUtils
 
   TEST_CASE("core/utilities/type/CastNumber", "")
   {
+    // Uncomment and you SHOULD get assertion failures
+//#define CAUSE_PRECISION_FAILURES
+
+    CHECK( (utils::CastNumber<s8, s32>(100) == 100) );
+    CHECK( (utils::CastNumber<s8, s32>(-100) == -100) );
+
+    CHECK( (utils::CastNumber<s8, u32>(100) == 100) );
+
+    CHECK( (utils::CastNumber<u8, s32>(100) == 100) );
+    CHECK( (utils::CastNumber<u8, s32>(200) == 200) );
+
+    CHECK( (utils::CastNumber<u8, u32>(100) == 100) );
+    CHECK( (utils::CastNumber<u8, u32>(200) == 200) );
+
+    CHECK( (utils::CastNumber<s32, s8>(100) == 100) );
+    CHECK( (utils::CastNumber<s32, s8>(-100) == -100) );
+    CHECK( (utils::CastNumber<s32, u8>(100) == 100) );
+
+    CHECK( (utils::CastNumber<u32, s8>(100) == 100) );
+    CHECK( (utils::CastNumber<u32, u8>(100) == 100) );
+
     CHECK( (utils::CastNumber<u32, s32>(60) == 60) );
     CHECK( (utils::CastNumber<s32, u32>(60) == 60) );
 
     CHECK( (utils::CastNumber<u32, u32>(60) == 60) );
     CHECK( (utils::CastNumber<s32, s32>(60) == 60) );
+
+#ifdef CAUSE_PRECISION_FAILURES
+    CHECK( (utils::CastNumber<u32, s8>(-100) != 100) );
+    CHECK( (utils::CastNumber<u8, u32>(400) != 100) );
+    CHECK( (utils::CastNumber<u8, s32>(-100) != -100) );
+    CHECK( (utils::CastNumber<s8, u32>(200) != 100) );
+    CHECK( (utils::CastNumber<s8, s32>(200) != 100) );
+#endif
+
   }
 };

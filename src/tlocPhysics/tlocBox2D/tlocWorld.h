@@ -13,6 +13,9 @@ namespace tloc { namespace physics { namespace box2d {
   class World : public core::NonCopyable
   {
   public:
+    friend class PhysicsManager;
+
+  public:
     typedef World     this_type;
     typedef b2World   world_type;
 

@@ -852,6 +852,14 @@
 			Name="Box2D"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocPhysicsManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocPhysicsManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocWorld.cpp"
 				>
 			</File>

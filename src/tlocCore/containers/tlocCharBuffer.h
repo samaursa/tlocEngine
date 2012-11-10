@@ -7,15 +7,11 @@ namespace tloc { namespace core {
 
   template <tl_size T_Size>
   class CharBuffer : public ProtectedBuffer<char8, T_Size>
-  {
-  public:
-  };
+  { };
 
   template <tl_size T_Size>
   class CharBufferW : public ProtectedBuffer<char32, T_Size>
-  {
-  public:
-  };
+  { };
 
 };};
 

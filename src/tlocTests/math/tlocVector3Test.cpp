@@ -10,7 +10,7 @@
 
 namespace TestingVector3f
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace math;
 
   struct Vector3fFixture
@@ -28,11 +28,16 @@ namespace TestingVector3f
                                CHECK((vec[1]) == (Approx(y)) ); \
                                CHECK((vec[2]) == (Approx(z)) );
 
+  TEST_CASE("Math/Vector3/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Vec3f) == (sizeof(tl_float) * 3));
+    REQUIRE(sizeof(Vec3f32) == (sizeof(f32) * 3));
+    REQUIRE(sizeof(Vec3f64) == (sizeof(f64) * 3));
+  }
+
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(Vec3f) == (sizeof(tl_float) * 3));
-
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f); //-V550
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f); //-V550
 

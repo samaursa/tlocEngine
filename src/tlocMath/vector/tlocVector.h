@@ -40,6 +40,9 @@ namespace tloc { namespace math {
   class Vector : public core::Tuple<T, T_Size>
   {
   public:
+    enum { k_size = T_Size };
+
+  public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Vector<T, T_Size>                     this_type;

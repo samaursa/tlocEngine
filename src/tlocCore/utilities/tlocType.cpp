@@ -41,13 +41,15 @@ namespace tloc { namespace core { namespace utils {
   namespace p_cast_number
   {
 #define CHECK_AND_CAST_TO_SIGNED(_type_, _toCast_)\
-  TLOC_ASSERT(a_value < (_toCast_)std::numeric_limits<_type_>::max(), \
+  TLOC_ASSERT(a_value <= (_toCast_)std::numeric_limits<_type_>::max(), \
     "Casting will result in loss of information!");\
       return (_type_)a_value
 
-#define CHECK_AND_CAST_TO_UNSIGNED(_type_)\
-  TLOC_ASSERT(a_value >= 0, "Casting will result in loss of information!");\
-  return (_type_)a_value
+#define CHECK_AND_CAST_TO_UNSIGNED(_type_, _toCast_)\
+  TLOC_ASSERT(a_value >= 0 && a_value <= \
+              (_toCast_)std::numeric_limits<_type_>::max(), \
+                "Casting will result in loss of information!");\
+    return (_type_)a_value
 
     template <typename T_ReturnType, typename T_ToCast>
     T_ReturnType DoCastNumber(T_ToCast a_value)
@@ -59,7 +61,39 @@ namespace tloc { namespace core { namespace utils {
 
     template <>
     u32 DoCastNumber<u32, s32>(s32 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u32); }
+    { CHECK_AND_CAST_TO_UNSIGNED(u32, s32); }
+
+    template <>
+    s8 DoCastNumber<s8, s32>(s32 a_value)
+    { CHECK_AND_CAST_TO_SIGNED(s8, s32); }
+
+    template <>
+    s8 DoCastNumber<s8, s64>(s64 a_value)
+    { CHECK_AND_CAST_TO_SIGNED(s8, s64); }
+
+    template <>
+    s8 DoCastNumber<s8, u32>(u32 a_value)
+    { CHECK_AND_CAST_TO_SIGNED(s8, u32); }
+
+    template <>
+    s8 DoCastNumber<s8, u64>(u64 a_value)
+    { CHECK_AND_CAST_TO_SIGNED(s8, u64); }
+
+    template <>
+    u8 DoCastNumber<u8, s32>(s32 a_value)
+    { CHECK_AND_CAST_TO_UNSIGNED(u8, s32); }
+
+    template <>
+    u8 DoCastNumber<u8, s64>(s64 a_value)
+    { CHECK_AND_CAST_TO_UNSIGNED(u8, s64); }
+
+    template <>
+    u8 DoCastNumber<u8, u32>(u32 a_value)
+    { CHECK_AND_CAST_TO_UNSIGNED(u8, u32); }
+
+    template <>
+    u8 DoCastNumber<u8, u64>(u64 a_value)
+    { CHECK_AND_CAST_TO_UNSIGNED(u8, u64); }
 
 #undef CHECK_AND_CAST_TO_SIGNED
 
@@ -83,8 +117,27 @@ namespace tloc { namespace core { namespace utils {
   template f32 CastTo32(f32);
   template f32 CastTo32(f64);
 
+  template s8  CastNumber(s8);
+  template s8  CastNumber(u8);
+  template s8  CastNumber(s32);
+  template s8  CastNumber(u32);
+  template s8  CastNumber(s64);
+  template s8  CastNumber(u64);
+
+  template u8  CastNumber(s8);
+  template u8  CastNumber(u8);
+  template u8  CastNumber(s32);
+  template u8  CastNumber(u32);
+  template u8  CastNumber(s64);
+  template u8  CastNumber(u64);
+
+  template s32 CastNumber(s8);
+  template s32 CastNumber(u8);
   template s32 CastNumber(u32);
   template s32 CastNumber(s32);
+
+  template u32 CastNumber(s8);
+  template u32 CastNumber(u8);
   template u32 CastNumber(s32);
   template u32 CastNumber(u32);
 

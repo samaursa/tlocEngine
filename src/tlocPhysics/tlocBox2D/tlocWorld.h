@@ -2,11 +2,19 @@
 #define _TLOC_PHYSICS_BOX2D_WORLD_
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 #include <Box2D/Dynamics/b2World.h>
+
+namespace tloc { namespace math {
+
+  template <typename T>
+  class Vector2;
+  typedef Vector2<tl_float> Vec2f;
+
+};};
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -23,8 +31,7 @@ namespace tloc { namespace physics { namespace box2d {
     World(const math::Vec2f& a_gravity);
     
   public:
-    world_type& GetWorld();
-    const world_type& GetWorld() const;
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(world_type, GetWorld, m_world);
 
   private:
     world_type m_world;

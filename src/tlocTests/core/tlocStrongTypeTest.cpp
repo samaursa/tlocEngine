@@ -53,6 +53,9 @@ namespace TestingStrongType
 
   TEST_CASE("core/types/StrongType_T/Complex", "")
   {
+    // This is for testing purposes only, generally, you would want StrongType
+    // to be ONLY used in function arguments to facilitate strong type checking
+
     typedef types::StrongType_T<ComplexType, 0> type_1;
     typedef types::StrongType_T<ComplexType, 1> type_2;
     typedef types::StrongType_T<ComplexType, 2> type_3;
@@ -61,7 +64,7 @@ namespace TestingStrongType
     CHECK(ComplexType::counter == 0);
     ComplexType c;
     CHECK(ComplexType::counter == 1);
-    type_1 t1(&c);
+    type_1 t1(c);
     CHECK(ComplexType::counter == 1);
 
     const ComplexType& d = t1;

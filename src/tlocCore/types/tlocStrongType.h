@@ -2,6 +2,7 @@
 #define _TLOC_CORE_TYPES_STRONG_TYPE_H_
 
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace types {
 
@@ -13,20 +14,41 @@ namespace tloc { namespace core { namespace types {
   /// work (as it cannot know what 'T' of the parent class is simply
   /// because it is a preprocessor)
   ///-------------------------------------------------------------------------
-  template <typename T, tl_size T_UniqueCounter>
-  struct StrongType_T
+  template <typename T, tl_size T_UniqueCounter,
+            typename T_Ptr = T*, typename T_Ref = T&>
+  class StrongType_T
   {
+  public:
     typedef T                                           value_type;
+    typedef T_Ptr                                       pointer;
+    typedef T_Ref                                       reference;
+    typedef T const *                                   const_pointer;
+    typedef T const &                                   const_reference;
     typedef StrongType_T<value_type, T_UniqueCounter>   this_type;
 
-    explicit StrongType_T(const T a_value);
-    StrongType_T(const StrongType_T& a_other);
+    typedef typename Loki::Select<
+      Loki::TypeTraits<T>::isFundamental,
+                   T, T_Ref>::Result                  selected_value_type;
+    typedef typename Loki::Select<
+      Loki::TypeTraits<T>::isFundamental,
+      T, const_pointer>::Result                       const_selected_value_type_pointer;
+    typedef typename Loki::Select<
+      Loki::TypeTraits<T>::isFundamental,
+      T, const_reference>::Result                       const_selected_value_type_reference;
+    typedef typename Loki::Select<
+      Loki::TypeTraits<T>::isFundamental,
+      T, const_reference>::Result                       const_selected_return_type;
 
-    this_type& operator= (const StrongType_T& a_other);
-    this_type& operator= (value_type a_other);
+  public:
 
-    operator value_type& ();
-    operator const value_type& () const;
+    explicit StrongType_T(const_selected_value_type_pointer a_value);
+    StrongType_T(this_type const & a_other);
+
+    this_type& operator= (this_type const & a_other);
+    this_type& operator= (const_selected_value_type_pointer a_other);
+
+    // Generally called operator T() or operator T&()
+    operator const_selected_return_type () const;
 
     bool operator== (const this_type& a_other) const;
     bool operator< (const this_type& a_other) const;
@@ -35,7 +57,7 @@ namespace tloc { namespace core { namespace types {
 
     enum { k_index = T_UniqueCounter };
 
-    value_type m_value;
+    const_selected_value_type_pointer m_value;
   };
 
 };};};

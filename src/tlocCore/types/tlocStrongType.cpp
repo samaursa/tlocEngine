@@ -1,10 +1,7 @@
 #include "tlocStrongType.h"
 #include "tlocStrongType.inl"
 
-namespace tloc { namespace core { namespace types {
-
 #include "tlocStrongTypeExplicitMacros.h"
-
   TLOC_INSTANTIATE_STRONG_TYPE(s8);
   TLOC_INSTANTIATE_STRONG_TYPE(u8);
 
@@ -17,6 +14,3 @@ namespace tloc { namespace core { namespace types {
   TLOC_INSTANTIATE_STRONG_TYPE(f32);
   TLOC_INSTANTIATE_STRONG_TYPE(f64);
   TLOC_INSTANTIATE_STRONG_TYPE(f128);
-
-
-};};};

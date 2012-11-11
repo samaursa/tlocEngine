@@ -45,7 +45,18 @@ namespace tloc { namespace core { namespace utils {
     "Casting will result in loss of information!");\
       return (_type_)a_value
 
+#define CHECK_AND_CAST_SMALL_TO_SIGNED(_type_, _toCast_)\
+  TLOC_ASSERT( (_type_)a_value <= std::numeric_limits<_type_>::max(), \
+    "Casting will result in loss of information!");\
+      return (_type_)a_value
+
 #define CHECK_AND_CAST_TO_UNSIGNED(_type_, _toCast_)\
+  TLOC_ASSERT(a_value >= 0 && (_type_)a_value <= \
+              std::numeric_limits<_type_>::max(), \
+                "Casting will result in loss of information!");\
+    return (_type_)a_value
+
+#define CHECK_AND_CAST_TO_UNSIGNED_SMALL(_type_, _toCast_)\
   TLOC_ASSERT(a_value >= 0 && a_value <= \
               (_toCast_)std::numeric_limits<_type_>::max(), \
                 "Casting will result in loss of information!");\
@@ -53,15 +64,7 @@ namespace tloc { namespace core { namespace utils {
 
     template <typename T_ReturnType, typename T_ToCast>
     T_ReturnType DoCastNumber(T_ToCast a_value)
-    { return a_value; }
-
-    template <>
-    s32 DoCastNumber<s32, u32>(u32 a_value)
-    { CHECK_AND_CAST_TO_SIGNED(s32, u32); }
-
-    template <>
-    u32 DoCastNumber<u32, s32>(s32 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u32, s32); }
+    { return (T_ReturnType)a_value; }
 
     template <>
     s8 DoCastNumber<s8, s32>(s32 a_value)
@@ -81,19 +84,27 @@ namespace tloc { namespace core { namespace utils {
 
     template <>
     u8 DoCastNumber<u8, s32>(s32 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u8, s32); }
+    { CHECK_AND_CAST_TO_UNSIGNED_SMALL(u8, s32); }
 
     template <>
     u8 DoCastNumber<u8, s64>(s64 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u8, s64); }
+    { CHECK_AND_CAST_TO_UNSIGNED_SMALL(u8, s64); }
 
     template <>
     u8 DoCastNumber<u8, u32>(u32 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u8, u32); }
+    { CHECK_AND_CAST_TO_UNSIGNED_SMALL(u8, u32); }
 
     template <>
     u8 DoCastNumber<u8, u64>(u64 a_value)
-    { CHECK_AND_CAST_TO_UNSIGNED(u8, u64); }
+    { CHECK_AND_CAST_TO_UNSIGNED_SMALL(u8, u64); }
+
+    template <>
+    s32 DoCastNumber<s32, u32>(u32 a_value)
+    { CHECK_AND_CAST_TO_SIGNED(s32, u32); }
+
+    template <>
+    u32 DoCastNumber<u32, s32>(s32 a_value)
+    { CHECK_AND_CAST_TO_UNSIGNED(u32, s32); }
 
 #undef CHECK_AND_CAST_TO_SIGNED
 

@@ -1167,6 +1167,10 @@
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrefabMaterial.h"
+				>
+			</File>
 			<Filter
 				Name="components"
 				>
@@ -1232,6 +1236,14 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuadRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuadRenderSystem.h"
 					>
 				</File>
 			</Filter>

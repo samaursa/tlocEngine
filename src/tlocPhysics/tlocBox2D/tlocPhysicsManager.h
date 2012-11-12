@@ -3,15 +3,10 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tloccore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
-namespace tloc { namespace math {
-
-  template <typename T>
-  class Vector2;
-  typedef Vector2<tl_float> Vec2f;
-
-};};
+#include <tlocMath/vector/tlocVector2.h>
 
 namespace tloc { namespace physics { namespace box2d {
   
@@ -20,27 +15,41 @@ namespace tloc { namespace physics { namespace box2d {
   class PhysicsManager
   {
   public:
+    typedef PhysicsManager  this_type;
+    typedef s32             int_type;
+    typedef math::Vec2f     vec_type;
+
+    typedef core::types::StrongType_T<int_type, 0> velocity_iterations;
+    typedef core::types::StrongType_T<int_type, 1> position_iterations;
+
+    typedef core::types::StrongType_T<vec_type, 0> gravity;
+
+  public:
     PhysicsManager();
     ~PhysicsManager();
 
-    void Initialize(const math::Vec2f& a_gravity, 
-                    s32 a_velocityIterations = 8.0f, 
-                    s32 a_positionIterations = 3.0f);
+    void Initialize(gravity a_gravity, 
+                    velocity_iterations a_vel = velocity_iterations(8), 
+                    position_iterations a_pos = position_iterations(3));
 
     void Update(tl_float a_timeStep);
 
     TLOC_DECL_AND_DEF_GETTERS_DIRECT(World, GetWorld, *m_world);
 
-    TLOC_DECL_AND_DEF_GETTER(s32, GetVelocityIterations, m_velocityIterations);
-    TLOC_DECL_AND_DEF_GETTER(s32, GetPositionIterations, m_positionIterations);
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetVelocityIterations, 
+                             m_velocityIterations);
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetPositionIterations, 
+                             m_positionIterations);
 
-    TLOC_DECL_AND_DEF_SETTER(s32, SetVelocityIterations, m_velocityIterations);
-    TLOC_DECL_AND_DEF_SETTER(s32, SetPositionIterations, m_positionIterations);
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetVelocityIterations, 
+                             m_velocityIterations);
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetPositionIterations, 
+                             m_positionIterations);
 
   private:
     World* m_world;
-    s32 m_velocityIterations;
-    s32 m_positionIterations;
+    int_type m_velocityIterations;
+    int_type m_positionIterations;
   };
 
 };};};

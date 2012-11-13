@@ -985,6 +985,10 @@
 		<Filter
 			Name="Box2D"
 			>
+			<File
+				RelativePath="..\..\..\..\..\src\tlocTests\physics\tlocPhysicsManagerTest.cpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\..\src\tlocTests\physics\main.cpp"

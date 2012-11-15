@@ -983,7 +983,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Box2D"
+			Name="box2d"
 			>
 			<File
 				RelativePath="..\..\..\..\..\src\tlocTests\physics\tlocPhysicsManagerTest.cpp"

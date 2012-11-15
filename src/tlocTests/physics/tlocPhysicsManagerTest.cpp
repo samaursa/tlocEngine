@@ -5,14 +5,14 @@
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector2.inl>
 
-#include <tlocPhysics/tlocBox2D/tlocPhysicsManager.h>
+#include <tlocPhysics/box2d/tlocPhysicsManager.h>
 
 namespace TestingPhysicsManager
 {
   using namespace tloc;
   using namespace tloc::physics;
 
-  TEST_CASE("Physics/Box2D/PhysicsManager", "")
+  TEST_CASE("Physics/box2d/PhysicsManager", "")
   {
     using namespace tloc::core;
     using namespace math;

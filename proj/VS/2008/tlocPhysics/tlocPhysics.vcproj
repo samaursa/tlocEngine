@@ -849,34 +849,46 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Box2D"
+			Name="box2d"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocPhysicsManager.cpp"
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocPhysicsManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocPhysicsManager.h"
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocPhysicsManager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocWorld.cpp"
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\tlocBox2D\tlocWorld.h"
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="component_system"
+			>
 			<Filter
-				Name="component_system"
+				Name="systems"
 				>
 				<Filter
-					Name="components"
+					Name="box2d"
 					>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="components"
+				>
 				<Filter
-					Name="systems"
+					Name="box2d"
 					>
+					<Filter
+						Name="RigidBody"
+						>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -2,7 +2,7 @@
 
 #include <tlocMath/vector/tlocVector2.inl>
 
-#include <tlocPhysics/tlocBox2D/tlocWorld.h>
+#include <tlocPhysics/box2d/tlocWorld.h>
 
 namespace tloc { namespace physics { namespace box2d {
 

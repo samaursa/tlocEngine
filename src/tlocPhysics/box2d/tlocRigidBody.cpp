@@ -4,8 +4,9 @@
 
 namespace tloc { namespace physics { namespace box2d { namespace component_system{
 
-  RigidBody::RigidBody() 
+  RigidBody::RigidBody(const rigid_body_def_type& a_box2dRigidBodyDef)
     : base_type(components::k_rigid_body)
+    , m_box2dRigidBodyDef(a_box2dRigidBodyDef)
     , m_box2dRigidBody(NULL)
   {
   }

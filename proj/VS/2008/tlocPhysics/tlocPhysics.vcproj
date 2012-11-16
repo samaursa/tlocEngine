@@ -873,6 +873,14 @@
 				<Filter
 					Name="systems"
 					>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodySystem.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodySystem.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="components"

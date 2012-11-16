@@ -893,6 +893,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="Fixture"
+						>
+						<File
+							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixture.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixture.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

@@ -4,7 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/component_system/tlocComponent.h>
-#include <tloccore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 #include <Box2D/Dynamics/b2Body.h>
 
@@ -21,10 +21,10 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     RigidBody
       (const rigid_body_def_type& a_box2dRigidBodyDef = rigid_body_def_type());
 
-    TLOC_DECL_AND_DEF_GETTER(rigid_body_type*, GetBox2dRigidBody, 
-                             m_box2dRigidBody);
     TLOC_DECL_AND_DEF_GETTER(rigid_body_def_type, GetBox2dRigidBodyDef, 
                              m_box2dRigidBodyDef);
+    TLOC_DECL_AND_DEF_GETTER(rigid_body_type*, GetBox2dRigidBody, 
+                             m_box2dRigidBody);
 
     void SetBox2dRigidBody(rigid_body_type* a_box2dRigidBody);
     void SetBox2dRigidBodyToNull();

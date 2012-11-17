@@ -54,7 +54,7 @@ namespace tloc { namespace core { namespace utils {
   // Getters
 
 #define TLOC_DECL_GETTER(_type_, _name_)\
-  const _type_ _name_() const
+  _type_ const _name_() const
 #define TLOC_DECL_GETTER_DIRECT(_type_, _name_)\
   _type_&       _name_()
 #define TLOC_DECL_GETTER_CONST_DIRECT(_type_, _name_)\

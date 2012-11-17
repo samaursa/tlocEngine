@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
         // Material should have vertex and fragment shader data, for now we will
         // assume that both exist
-        mat_type& currMat = *(mat[0]);
+        mat_type& currMat = mat[0];
 
         gl::VertexShader vShader;
         gl::FragmentShader fShader;

@@ -11,6 +11,11 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
   {
   }
 
+  RigidBody::rigid_body_type* RigidBody::GetBox2dRigidBody()
+  {
+    return m_box2dRigidBody;
+  }
+
   void RigidBody::SetBox2dRigidBody(rigid_body_type* a_box2dRigidBody)
   {
     TLOC_ASSERT(!a_box2dRigidBody,

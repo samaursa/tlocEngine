@@ -2,6 +2,7 @@
 #ifndef _TLOC_PHYSICS_BOX2D_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
 #define _TLOC_PHYSICS_BOX2D_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
 
+#include <tlocCore/tlocBase.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
 #include <tlocPhysics/box2d/tlocComponentType.h>
@@ -27,16 +28,20 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
   public:
     RigidBodySystem
       (event_manager* a_eventMgr, entity_manager* a_entityMgr,
-       world_type* a_world)
-       : base_type(a_eventMgr, a_entityMgr, core::Variadic<component_type, 2>(components::k_rigid_body, components::k_fixture))
-       , m_world(a_world)
-    {
+       world_type* a_world);
 
-    }
+    virtual error_type Initialize();
+
+    virtual error_type Shutdown();
+
+    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+
+    virtual void Pre_OnEvent(const event_type& a_event);
+
+    virtual void Post_OnEvent(const event_type& a_event);
 
   private:
     world_type* m_world;
-
   };
 
 };};};};

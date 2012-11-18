@@ -8,25 +8,25 @@
 
 namespace tloc { namespace core {
 
-  template <typename T_Generator> class RNG;
+  template <typename T_Generator> class RNG_T;
 
   //////////////////////////////////////////////////////////////////////////
   // Supported RNG Types
 
   // Supported RNG types
-  typedef RNG<RngWell512> rng_well_512;
+  typedef RNG_T<RngWell512> rng_well_512;
 
   // Default RNG type
-  typedef rng_well_512    rng_default;
+  typedef rng_well_512      rng_default;
 
   // Default RNG that is used program wide
-  extern rng_default      g_defaultRNG;
+  extern rng_default        g_defaultRNG;
 
   ///-------------------------------------------------------------------------
   /// @brief Random number generator template class. The class requires an RNG that has the following functions at least.
   ///-------------------------------------------------------------------------
   template <typename T_Generator>
-  class RNG
+  class RNG_T
   {
   public:
 

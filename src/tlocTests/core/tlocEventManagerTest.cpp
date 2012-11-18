@@ -87,15 +87,24 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
+  class TransformComp : public core::component_system::Component_T<TransformComp>
+  {
+  public:
+    typedef core::component_system::Component_T<TransformComp>  base_type;
+  public:
+    TransformComp() : base_type(components::transform)
+    {}
+  };
+
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
     EventTracker globalTracker;
     EventTracker tracker;
 
-    Entity       dummyEnt(0);
-    components::value_type comp_type = components::transform;
-    Component    dummyComp(comp_type);
+    Entity        dummyEnt(0);
+    TransformComp transComp;
+    Component     dummyComp(transComp);
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);
@@ -119,13 +128,13 @@ namespace TestingEventManager
 
     currentEvent = entity_events::insert_component;
     mgr.AddListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 1);
 
     mgr.RemoveListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 1); // no change

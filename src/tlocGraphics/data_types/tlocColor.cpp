@@ -23,145 +23,147 @@ namespace tloc { namespace graphics { namespace types {
     typedef type_true         byte_type_true;
     typedef type_false        real_type_true;
 
-    template <typename T_Real>
-    T_Real DoNormalizeColor(Color::value_type a_color)
+    namespace priv
     {
-      using namespace core::utils;
-
-      static T_Real oneDivMax
-        = 1.0f / static_cast<T_Real>(g_maxValue);
-
-      return static_cast<T_Real>(a_color) * oneDivMax;
-    }
-
-    Color::int_type DoGetAs(const Color::container_type& a_colArray,
-                                  p_color::format::RGBA)
-    {
-      int_color_type  retVal = 0;
-      retVal |= a_colArray[Color::r] << 24;
-      retVal |= a_colArray[Color::g] << 16;
-      retVal |= a_colArray[Color::b] << 8;
-      retVal |= a_colArray[Color::a];
-
-      return retVal;
-    }
-
-    Color::int_type DoGetAs(const Color::container_type& a_colArray,
-                                  p_color::format::ABGR)
-    {
-      int_color_type  retVal = 0;
-      retVal |= a_colArray[Color::a] << 24;
-      retVal |= a_colArray[Color::b] << 16;
-      retVal |= a_colArray[Color::g] << 8;
-      retVal |= a_colArray[Color::r];
-
-      return retVal;
-    }
-
-    Color::int_type DoGetAs(const Color::container_type& a_colArray,
-                                  p_color::format::ARGB)
-    {
-      int_color_type  retVal = 0;
-      retVal |= a_colArray[Color::a] << 24;
-      retVal |= a_colArray[Color::r] << 16;
-      retVal |= a_colArray[Color::g] << 8;
-      retVal |= a_colArray[Color::b];
-
-      return retVal;
-    }
-
-    Color::int_type DoGetAs(const Color::container_type& a_colArray,
-                                  p_color::format::BGRA)
-    {
-      int_color_type  retVal = 0;
-      retVal |= a_colArray[Color::b] << 24;
-      retVal |= a_colArray[Color::g] << 16;
-      retVal |= a_colArray[Color::r] << 8;
-      retVal |= a_colArray[Color::a];
-
-      return retVal;
-    }
-
-    template <typename T_VectorType>
-    void DoGetAs(const Color::container_type& a_colArray, T_VectorType& a_vecOut,
-                 p_color::format::RGBA)
-    {
-      typedef typename T_VectorType::value_type value_type;
-
-      a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-      a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-      a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-      a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-    }
-
-    template <typename T_VectorType>
-    void DoGetAs(const Color::container_type& a_colArray, T_VectorType& a_vecOut,
-                 p_color::format::ABGR)
-    {
-      typedef typename T_VectorType::value_type value_type;
-
-      a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-      a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-      a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-      a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-    }
-
-    template <typename T_VectorType>
-    void DoGetAs(const Color::container_type& a_colArray, T_VectorType& a_vecOut,
-                 p_color::format::ARGB)
-    {
-      typedef typename T_VectorType::value_type value_type;
-
-      a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-      a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-      a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-      a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-    }
-
-    template <typename T_VectorType>
-    void DoGetAs(const Color::container_type& a_colArray, T_VectorType& a_vecOut,
-                 p_color::format::BGRA)
-    {
-      typedef typename T_VectorType::value_type value_type;
-
-      a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-      a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-      a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-      a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-    }
-
-    template <typename T_Integer>
-    void DoSetAs(T_Integer a_R, T_Integer a_G, T_Integer a_B, T_Integer a_A,
-                 Color::container_type& a_out,
-                 byte_type_true)
-    {
-      a_out[0] = core::utils::CastNumber<Color::value_type>(a_R);
-      a_out[1] = core::utils::CastNumber<Color::value_type>(a_G);
-      a_out[2] = core::utils::CastNumber<Color::value_type>(a_B);
-      a_out[3] = core::utils::CastNumber<Color::value_type>(a_A);
-    }
-
-    template <typename T_Real>
-    void DoSetAs(T_Real a_R, T_Real a_G, T_Real a_B, T_Real a_A,
-                 Color::container_type& a_out,
-                 real_type_true)
-    {
-      typedef T_Real              real_type;
-      typedef Color::value_type   value_type;
-
-      real_type clamped[4] =
+      template <typename T_Real>
+      T_Real DoNormalizeColor(Color::value_type a_color)
       {
-        core::tlClamp<real_type>(a_R, 0, 1),
-        core::tlClamp<real_type>(a_G, 0, 1),
-        core::tlClamp<real_type>(a_B, 0, 1),
-        core::tlClamp<real_type>(a_A, 0, 1),
-      };
+        using namespace core::utils;
 
-      a_out[0] = static_cast<value_type>(g_maxValue * clamped[0]);
-      a_out[1] = static_cast<value_type>(g_maxValue * clamped[1]);
-      a_out[2] = static_cast<value_type>(g_maxValue * clamped[2]);
-      a_out[3] = static_cast<value_type>(g_maxValue * clamped[3]);
-    }
+        static T_Real oneDivMax
+          = 1.0f / static_cast<T_Real>(g_maxValue);
+
+        return static_cast<T_Real>(a_color) * oneDivMax;
+      }
+
+      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+                              p_color::format::RGBA)
+      {
+        int_color_type  retVal = 0;
+        retVal |= a_colArray[Color::r] << 24;
+        retVal |= a_colArray[Color::g] << 16;
+        retVal |= a_colArray[Color::b] << 8;
+        retVal |= a_colArray[Color::a];
+
+        return retVal;
+      }
+
+      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+                              p_color::format::ABGR)
+      {
+        int_color_type  retVal = 0;
+        retVal |= a_colArray[Color::a] << 24;
+        retVal |= a_colArray[Color::b] << 16;
+        retVal |= a_colArray[Color::g] << 8;
+        retVal |= a_colArray[Color::r];
+
+        return retVal;
+      }
+
+      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+                              p_color::format::ARGB)
+      {
+        int_color_type  retVal = 0;
+        retVal |= a_colArray[Color::a] << 24;
+        retVal |= a_colArray[Color::r] << 16;
+        retVal |= a_colArray[Color::g] << 8;
+        retVal |= a_colArray[Color::b];
+
+        return retVal;
+      }
+
+      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+                              p_color::format::BGRA)
+      {
+        int_color_type  retVal = 0;
+        retVal |= a_colArray[Color::b] << 24;
+        retVal |= a_colArray[Color::g] << 16;
+        retVal |= a_colArray[Color::r] << 8;
+        retVal |= a_colArray[Color::a];
+
+        return retVal;
+      }
+
+      template <typename T_VectorType>
+      void DoGetAs(const Color::container_type& a_colArray,
+                   T_VectorType& a_vecOut, p_color::format::RGBA)
+      {
+        typedef typename T_VectorType::value_type value_type;
+
+        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
+        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
+        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
+        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
+      }
+
+      template <typename T_VectorType>
+      void DoGetAs(const Color::container_type& a_colArray,
+                   T_VectorType& a_vecOut, p_color::format::ABGR)
+      {
+        typedef typename T_VectorType::value_type value_type;
+
+        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
+        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
+        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
+        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
+      }
+
+      template <typename T_VectorType>
+      void DoGetAs(const Color::container_type& a_colArray,
+                   T_VectorType& a_vecOut, p_color::format::ARGB)
+      {
+        typedef typename T_VectorType::value_type value_type;
+
+        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
+        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
+        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
+        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
+      }
+
+      template <typename T_VectorType>
+      void DoGetAs(const Color::container_type& a_colArray,
+                   T_VectorType& a_vecOut, p_color::format::BGRA)
+      {
+        typedef typename T_VectorType::value_type value_type;
+
+        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
+        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
+        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
+        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
+      }
+
+      template <typename T_Integer>
+      void DoSetAs(T_Integer a_R, T_Integer a_G, T_Integer a_B, T_Integer a_A,
+                   Color::container_type& a_out, byte_type_true)
+      {
+        a_out[0] = core::utils::CastNumber<Color::value_type>(a_R);
+        a_out[1] = core::utils::CastNumber<Color::value_type>(a_G);
+        a_out[2] = core::utils::CastNumber<Color::value_type>(a_B);
+        a_out[3] = core::utils::CastNumber<Color::value_type>(a_A);
+      }
+
+      template <typename T_Real>
+      void DoSetAs(T_Real a_R, T_Real a_G, T_Real a_B, T_Real a_A,
+        Color::container_type& a_out,
+        real_type_true)
+      {
+        typedef T_Real              real_type;
+        typedef Color::value_type   value_type;
+
+        real_type clamped[4] =
+        {
+          core::tlClamp<real_type>(a_R, 0, 1),
+          core::tlClamp<real_type>(a_G, 0, 1),
+          core::tlClamp<real_type>(a_B, 0, 1),
+          core::tlClamp<real_type>(a_A, 0, 1),
+        };
+
+        a_out[0] = static_cast<value_type>(g_maxValue * clamped[0]);
+        a_out[1] = static_cast<value_type>(g_maxValue * clamped[1]);
+        a_out[2] = static_cast<value_type>(g_maxValue * clamped[2]);
+        a_out[3] = static_cast<value_type>(g_maxValue * clamped[3]);
+      }
+    };
   };
 
   const Color Color::COLOR_BLACK = Color(0, 0, 0, 255);
@@ -179,19 +181,19 @@ namespace tloc { namespace graphics { namespace types {
                           real_type_true, byte_type_true
                          >::Result  selected_type;
 
-    DoSetAs(a_R, a_G, a_B, a_A, m_rgba, selected_type() );
+    priv::DoSetAs(a_R, a_G, a_B, a_A, m_rgba, selected_type() );
   }
 
   template <typename T_ColorFormat>
-  Color::int_type Color::GetAs()
+  Color::int_type Color::DoGetAs()
   {
-    return DoGetAs(m_rgba, T_ColorFormat());
+    return priv::DoGetAs(m_rgba, T_ColorFormat());
   }
 
   template <typename T_ColorFormat, typename T_VectorType>
-  void Color::GetAs(T_VectorType& a_vec)
+  void Color::DoGetAs(T_VectorType& a_vec)
   {
-    DoGetAs(m_rgba, a_vec, T_ColorFormat());
+    priv::DoGetAs(m_rgba, a_vec, T_ColorFormat());
   }
 
   Color::value_type& Color::operator[](tl_int a_index)
@@ -283,10 +285,10 @@ namespace tloc { namespace graphics { namespace types {
   //------------------------------------------------------------------------
   // Explicit initialization
 
-  template int_color_type Color::GetAs<p_color::format::RGBA>();
-  template int_color_type Color::GetAs<p_color::format::ABGR>();
-  template int_color_type Color::GetAs<p_color::format::ARGB>();
-  template int_color_type Color::GetAs<p_color::format::BGRA>();
+  template int_color_type Color::DoGetAs<p_color::format::RGBA>();
+  template int_color_type Color::DoGetAs<p_color::format::ABGR>();
+  template int_color_type Color::DoGetAs<p_color::format::ARGB>();
+  template int_color_type Color::DoGetAs<p_color::format::BGRA>();
 
   template Color::Color(u8, u8, u8, u8);
   template Color::Color(uchar8, uchar8, uchar8, uchar8);
@@ -295,10 +297,10 @@ namespace tloc { namespace graphics { namespace types {
 
   using namespace tloc::math;
 #define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
-  template void Color::GetAs<p_color::format::RGBA, _type_>(_type_&);\
-  template void Color::GetAs<p_color::format::ABGR, _type_>(_type_&);\
-  template void Color::GetAs<p_color::format::ARGB, _type_>(_type_&);\
-  template void Color::GetAs<p_color::format::BGRA, _type_>(_type_&)
+  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&);\
+  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&);\
+  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&);\
+  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&)
 
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);

@@ -1,6 +1,7 @@
 #ifndef TLOC_GRAPHICS_TYPES_COLOR_H
 #define TLOC_GRAPHICS_TYPES_COLOR_H
 
+#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 
 namespace tloc { namespace graphics { namespace types {
@@ -43,10 +44,27 @@ namespace tloc { namespace graphics { namespace types {
     Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A);
 
     template <typename T_ColorFormat>
-    int_type GetAs();
+    int_type GetAs()
+    {
+      using namespace p_color::format;
+      type_traits::AssertTypeIsSupported
+        <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
+
+      return DoGetAs<T_ColorFormat>();
+    }
 
     template <typename T_ColorFormat, typename T_VectorType>
-    void     GetAs(T_VectorType& a_vec);
+    void     GetAs(T_VectorType& a_vec)
+    {
+      using namespace p_color::format;
+      type_traits::AssertTypeIsSupported
+        <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
+
+      type_traits::AssertTypeIsSupported
+        <T_VectorType, tloc::math::Vec4f32, tloc::math::Vec4f64>();
+
+      DoGetAs<T_ColorFormat>(a_vec);
+    }
 
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;
@@ -65,6 +83,12 @@ namespace tloc { namespace graphics { namespace types {
     static const Color COLOR_WHITE;
 
   private:
+    template <typename T_ColorFormat>
+    int_type DoGetAs();
+
+    template <typename T_ColorFormat, typename T_VectorType>
+    void DoGetAs(T_VectorType& a_vec);
+
     container_type      m_rgba;
   };
 

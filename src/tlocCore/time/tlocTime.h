@@ -7,12 +7,22 @@
 
 namespace tloc { namespace core {
 
-  template <typename T_Real = f64, typename T_UInt = u64, bool T_Adjust = true>
+  namespace p_timer_t
+  {
+    // Timer_T adjusts the final time by the amount of time it takes to call
+    // Reset() - this (theoretically) increases accuracy
+    struct Adjust   {};
+    struct NoAdjust {};
+  };
+
+  template <typename T_Real = f64, typename T_UInt = u64,
+            typename T_Adjust = p_timer_t::Adjust>
   class Timer_T
   {
   public:
-    typedef T_Real    sec_type;
-    typedef T_UInt    value_type;
+    typedef T_Real                    sec_type;
+    typedef T_UInt                    value_type;
+    typedef T_Adjust                  adjust_policy;
 
     Timer_T();
     ~Timer_T();
@@ -26,17 +36,22 @@ namespace tloc { namespace core {
     /// Use this function to re-calibrate a timer. This function is
     /// automatically called when the timer is first created.
     ///-------------------------------------------------------------------------
-    TL_I void       Calibrate(bool aCalibrate = T_Adjust);
+    TL_I void       Calibrate();
     TL_I void       Reset();
     TL_I sec_type   ElapsedSeconds();
     TL_I value_type ElapsedMilliSeconds();
     TL_I value_type ElapsedMicroSeconds();
 
   private:
+    typedef Loki::IsSameType<adjust_policy,
+                             p_timer_t::Adjust>  is_adjust_selected;
 
 #ifdef TLOC_OS_IPHONE
     TL_I static sec_type   DoGetTicksToSeconds();
 #endif
+
+    void            DoAdjust(p_timer_t::Adjust);
+    void            DoAdjust(p_timer_t::NoAdjust);
 
     TL_I void       DoInit();
     TL_I void       DoReset();
@@ -44,11 +59,11 @@ namespace tloc { namespace core {
     TL_I value_type DoGetElapsedMilliSeconds();
     TL_I value_type DoGetElapsedMicroSeconds();
 
-    value_type                              m_start;
-    ConditionalType<sec_type, T_Adjust>     m_adjustInSeconds;
+    value_type                                            m_start;
+    ConditionalType<sec_type, is_adjust_selected::value>  m_adjustInSeconds;
 
 #ifdef TLOC_OS_IPHONE
-    static const sec_type                         sm_ticksToSeconds;
+    static const sec_type                   sm_ticksToSeconds;
 #endif
 
   };

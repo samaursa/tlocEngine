@@ -21,11 +21,11 @@ namespace TestingTime
     // Timer<f64, u64, true>
     Timer_T<> timerOne, timerTwo, timerThree;
 
-    typedef Timer_T<f64, u64, true>   accurate_adjust_timer;
-    typedef Timer_T<f64, u64, false>  accurate_no_adjust_timer;
+    typedef Timer_T<f64, u64, p_timer_t::Adjust>    accurate_adjust_timer;
+    typedef Timer_T<f64, u64, p_timer_t::NoAdjust>  accurate_no_adjust_timer;
 
-    typedef Timer_T<f32, u32, true>   no_accurate_adjust_timer;
-    typedef Timer_T<f32, u32, false>  no_accurate_no_adjust_timer;
+    typedef Timer_T<f32, u32, p_timer_t::Adjust>    no_accurate_adjust_timer;
+    typedef Timer_T<f32, u32, p_timer_t::NoAdjust>  no_accurate_no_adjust_timer;
   };
 
 #if defined(TLOC_OS_WIN)

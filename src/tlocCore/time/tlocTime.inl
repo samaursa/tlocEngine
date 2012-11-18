@@ -17,7 +17,7 @@ namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
   // Macros
 
-#define TIMER_TYPES typename T_Real, typename T_UInt, bool T_Adjust
+#define TIMER_TYPES typename T_Real, typename T_UInt, typename T_Adjust
 #define TIMER_PARAMS T_Real, T_UInt, T_Adjust
 
   //////////////////////////////////////////////////////////////////////////
@@ -48,15 +48,21 @@ namespace tloc { namespace core {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer_T<TIMER_PARAMS>::Calibrate(bool aCalibrate)
+  void Timer_T<TIMER_PARAMS>::DoAdjust(p_timer_t::Adjust)
   {
-    if (aCalibrate)
-    {
-      m_adjustInSeconds = 0;
-      Reset();
-      m_adjustInSeconds = ElapsedSeconds();
-    }
+    m_adjustInSeconds = 0;
+    Reset();
+    m_adjustInSeconds = ElapsedSeconds();
+  }
 
+  template <TIMER_TYPES>
+  void Timer_T<TIMER_PARAMS>::DoAdjust(p_timer_t::NoAdjust)
+  { /* Intentionally empty */ }
+
+  template <TIMER_TYPES>
+  TL_I void Timer_T<TIMER_PARAMS>::Calibrate()
+  {
+    DoAdjust(adjust_policy());
     Reset();
   }
 

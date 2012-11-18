@@ -43,12 +43,14 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::DestroyEntity(Entity* a_entity)
   {
+    TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
+      "Entity does not exist!");
+
     m_entities[a_entity->m_index] = NULL;
     m_removedEntities.push_back(a_entity->m_index);
+    m_entitiesToRemove.push_back(a_entity);
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_events::destroy_entity, a_entity) );
-
-    delete a_entity;
+    m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
   }
 
   Entity* EntityManager::GetEntity(tloc::tl_int a_index)
@@ -69,36 +71,113 @@ namespace tloc { namespace core { namespace component_system {
 
     m_eventMgr->DispatchNow(
       EntityComponentEvent(entity_events::insert_component, a_entity,
-                           a_component->GetType()) );
+                           a_component) );
   }
 
   bool EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
   {
-    component_list& entityComps = a_entity->m_allComponents[a_component->GetType()];
-    entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
+    component_list& entityComps = a_entity->GetComponents(a_component->GetType());
+    component_list::iterator itr = core::find_all(entityComps, a_component);
 
+    if (itr == entityComps.end())
+    { return false; }
+
+    m_compToRemove.push_back(MakePair(a_entity, a_component));
+    EntityComponentEvent evt(entity_events::remove_component, a_entity,
+                             a_component);
+    m_eventMgr->DispatchNow(evt);
+
+    return true;
+  }
+
+  bool EntityManager::DoRemoveComponent(Entity* a_entity, Component* a_component)
+  {
     // LOGIC: We allow the client to remove a component even if the component
     // does not exist in the entity. Return true if it exists, o/w false. Then,
     // remove it from the component list in manager which HAS TO exist (hence
     // the assertion)
 
     {// Remove it from the entity
-      component_list::iterator itr = core::find_all(entityComps, a_component);
-      if (itr != entityComps.end()) { entityComps.erase(itr); }
-      else { return false; }
+      if (a_entity)
+      {
+        component_list& entityComps = a_entity->GetComponents(a_component->GetType());
+        component_list::iterator itr = core::find_all(entityComps, a_component);
+
+        if (itr != entityComps.end())
+        { entityComps.erase(itr); }
+        else
+        { return false; }
+      }
     }
 
     {// Remove it from the component list
+      entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
       entity_list::iterator itr = core::find_all(entityList, a_entity);
       TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
       if (itr != entityList.end()) { entityList.erase(itr); }
     }
 
-    m_eventMgr->DispatchNow(
-      EntityComponentEvent(entity_events::remove_component, a_entity,
-                           a_component->GetType()) );
-
     return true;
+  }
+
+  void EntityManager::DoUpdateComponents()
+  {
+    typedef ent_comp_pair_list::iterator ent_comp_pair_itr;
+    ent_comp_pair_itr itr = m_compToRemove.begin();
+    ent_comp_pair_itr itrEnd = m_compToRemove.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      DoRemoveComponent(itr->first, itr->second);
+    }
+
+    m_compToRemove.clear();
+  }
+
+  void EntityManager::DoUpdateEntities()
+  {
+    entity_list::iterator itr = m_entitiesToRemove.begin();
+    entity_list::iterator itrEnd = m_entitiesToRemove.end();
+
+    for(; itr != itrEnd; ++itr)
+    {
+      delete *itr;
+    }
+
+    m_entitiesToRemove.clear();
+  }
+
+  void EntityManager::Update()
+  {
+    // Go through all the entities that we have to remove, and mark their
+    // components for removal
+    entity_list::iterator itr = m_entitiesToRemove.begin();
+    entity_list::iterator itrEnd = m_entitiesToRemove.end();
+
+    for(; itr != itrEnd; ++itr)
+    {
+      for (components::value_type currComp = 0;
+           currComp < components_group::count; ++currComp)
+      {
+        if ( (*itr)->HasComponent(currComp))
+        {
+          component_list& clist = (*itr)->GetComponents(currComp);
+
+          component_list::iterator itrComp = clist.begin();
+          component_list::iterator itrCompEnd = clist.end();
+
+          for (; itrComp != itrCompEnd; ++itrComp)
+          {
+            RemoveComponent(*itr, *itrComp);
+          }
+        }
+      }
+    }
+
+    // Update the components (which involves removing them)
+    DoUpdateComponents();
+    // Update the entities (which involved removing them)
+    DoUpdateEntities();
   }
 
   EntityManager::component_list*

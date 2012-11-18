@@ -919,6 +919,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glewinfo.c"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glxew.h"
 					>
 				</File>

@@ -62,11 +62,11 @@ namespace tloc { namespace graphics { namespace component_system {
         gl::Shader_I::error_type result;
 
         vShader.Load(currMat.GetVertexSource().c_str() );
-        result = vShader.CompileShader();
+        result = vShader.Compile();
         TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
 
         result = fShader.Load(currMat.GetFragmentSource().c_str());
-        result = fShader.CompileShader();
+        result = fShader.Compile();
         TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
 
         shader_prog_type& sp = currMat.GetShaderProgRef();

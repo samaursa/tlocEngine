@@ -8,14 +8,14 @@
 namespace tloc { namespace core {
 
   template <typename T_Real = f64, typename T_UInt = u64, bool T_Adjust = true>
-  class Timer
+  class Timer_T
   {
   public:
     typedef T_Real    sec_type;
     typedef T_UInt    value_type;
 
-    Timer();
-    ~Timer();
+    Timer_T();
+    ~Timer_T();
 
     ///-------------------------------------------------------------------------
     /// Calibrates the timer if T_Adjust = true.
@@ -46,12 +46,19 @@ namespace tloc { namespace core {
 
     value_type                              m_start;
     ConditionalType<sec_type, T_Adjust>     m_adjustInSeconds;
-    
+
 #ifdef TLOC_OS_IPHONE
     static const sec_type                         sm_ticksToSeconds;
 #endif
 
   };
+
+  //------------------------------------------------------------------------
+  // Typedefs
+
+  typedef Timer_T<>             Timer;
+  typedef Timer_T<f32, u32>     Timer32;
+  typedef Timer_T<f64, u64>     Timer64;
 
 };};
 

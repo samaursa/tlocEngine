@@ -19,13 +19,13 @@ namespace TestingTime
   struct TimeFixture
   {
     // Timer<f64, u64, true>
-    Timer<> timerOne, timerTwo, timerThree;
+    Timer_T<> timerOne, timerTwo, timerThree;
 
-    typedef Timer<f64, u64, true>   accurate_adjust_timer;
-    typedef Timer<f64, u64, false>  accurate_no_adjust_timer;
+    typedef Timer_T<f64, u64, true>   accurate_adjust_timer;
+    typedef Timer_T<f64, u64, false>  accurate_no_adjust_timer;
 
-    typedef Timer<f32, u32, true>   no_accurate_adjust_timer;
-    typedef Timer<f32, u32, false>  no_accurate_no_adjust_timer;
+    typedef Timer_T<f32, u32, true>   no_accurate_adjust_timer;
+    typedef Timer_T<f32, u32, false>  no_accurate_no_adjust_timer;
   };
 
 #if defined(TLOC_OS_WIN)

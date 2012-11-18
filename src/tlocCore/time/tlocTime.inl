@@ -25,8 +25,8 @@ namespace tloc { namespace core {
 
 #if defined (TLOC_OS_IPHONE)
   template<TIMER_TYPES>
-  const typename Timer<TIMER_PARAMS>::sec_type Timer<TIMER_PARAMS>
-    ::sm_ticksToSeconds = Timer<TIMER_PARAMS>::DoGetTicksToSeconds();
+  const typename Timer_T<TIMER_PARAMS>::sec_type Timer_T<TIMER_PARAMS>
+    ::sm_ticksToSeconds = Timer_T<TIMER_PARAMS>::DoGetTicksToSeconds();
 #endif
 
   //////////////////////////////////////////////////////////////////////////
@@ -36,19 +36,19 @@ namespace tloc { namespace core {
   // Main Functions
 
   template <TIMER_TYPES>
-  Timer<TIMER_PARAMS>::Timer()
+  Timer_T<TIMER_PARAMS>::Timer_T()
   {
     DoInit();
     Calibrate();
   }
 
   template <TIMER_TYPES>
-  Timer<TIMER_PARAMS>::~Timer()
+  Timer_T<TIMER_PARAMS>::~Timer_T()
   {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::Calibrate(bool aCalibrate)
+  TL_I void Timer_T<TIMER_PARAMS>::Calibrate(bool aCalibrate)
   {
     if (aCalibrate)
     {
@@ -61,28 +61,28 @@ namespace tloc { namespace core {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::Reset()
+  TL_I void Timer_T<TIMER_PARAMS>::Reset()
   {
     DoReset();
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::ElapsedSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::ElapsedSeconds()
   {
     return DoGetElapsedSeconds();
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::ElapsedMilliSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::ElapsedMilliSeconds()
   {
     return DoGetElapsedMilliSeconds();
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::ElapsedMicroSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::ElapsedMicroSeconds()
   {
     return DoGetElapsedMicroSeconds();
   }
@@ -95,19 +95,19 @@ namespace tloc { namespace core {
 #if defined (TLOC_OS_WIN)
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoInit()
+  TL_I void Timer_T<TIMER_PARAMS>::DoInit()
   {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoReset()
+  TL_I void Timer_T<TIMER_PARAMS>::DoReset()
   {
     QueryPerformanceCounter( (LARGE_INTEGER*) &m_start);
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedSeconds()
   {
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
@@ -121,15 +121,15 @@ namespace tloc { namespace core {
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000.0);
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000000.0);
   }
@@ -139,35 +139,35 @@ namespace tloc { namespace core {
 #elif defined (TLOC_OS_MAC) 
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoInit()
+  TL_I void Timer_T<TIMER_PARAMS>::DoInit()
   {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoReset()
-  {
-    TLOC_ASSERT_WIP();
-  }
-
-  template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedSeconds()
+  TL_I void Timer_T<TIMER_PARAMS>::DoReset()
   {
     TLOC_ASSERT_WIP();
-    return 0;
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedSeconds()
   {
     TLOC_ASSERT_WIP();
     return 0;
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  {
+    TLOC_ASSERT_WIP();
+    return 0;
+  }
+
+  template <TIMER_TYPES>
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
   {
     TLOC_ASSERT_WIP();
     return 0;
@@ -178,8 +178,8 @@ namespace tloc { namespace core {
 #elif defined (TLOC_OS_IPHONE) 
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetTicksToSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::DoGetTicksToSeconds()
   {
     TLOC_ASSERT(sm_ticksToSeconds == (sec_type)0, 
       "Access sm_ticksToSeconds instead of this function");
@@ -190,20 +190,20 @@ namespace tloc { namespace core {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoInit()
+  TL_I void Timer_T<TIMER_PARAMS>::DoInit()
   {
 
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoReset()
+  TL_I void Timer_T<TIMER_PARAMS>::DoReset()
   {
     m_start = (value_type)mach_absolute_time();
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedSeconds()
   {
     value_type end = (value_type)mach_absolute_time();
     value_type delta = end - m_start;
@@ -212,15 +212,15 @@ namespace tloc { namespace core {
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000.0);
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000000.0);
   }
@@ -230,35 +230,35 @@ namespace tloc { namespace core {
 #elif defined (TLOC_OS_LINUX)
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoInit()
+  TL_I void Timer_T<TIMER_PARAMS>::DoInit()
   {
   }
 
   template <TIMER_TYPES>
-  TL_I void Timer<TIMER_PARAMS>::DoReset()
-  {
-    TLOC_ASSERT_WIP();
-  }
-
-  template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::sec_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedSeconds()
+  TL_I void Timer_T<TIMER_PARAMS>::DoReset()
   {
     TLOC_ASSERT_WIP();
-    return 0;
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::sec_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedSeconds()
   {
     TLOC_ASSERT_WIP();
     return 0;
   }
 
   template <TIMER_TYPES>
-  TL_I typename Timer<TIMER_PARAMS>::value_type 
-    Timer<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMilliSeconds()
+  {
+    TLOC_ASSERT_WIP();
+    return 0;
+  }
+
+  template <TIMER_TYPES>
+  TL_I typename Timer_T<TIMER_PARAMS>::value_type 
+    Timer_T<TIMER_PARAMS>::DoGetElapsedMicroSeconds()
   {
     TLOC_ASSERT_WIP();
     return 0;

@@ -24,46 +24,48 @@ namespace tloc { namespace core {
     typedef T_UInt                    value_type;
     typedef T_Adjust                  adjust_policy;
 
+  public:
     Timer_T();
     ~Timer_T();
 
     ///-------------------------------------------------------------------------
-    /// Calibrates the timer if T_Adjust = true.
+    /// Calibrates the timer if T_Adjust = p_timer_t::Adjust
     ///
-    /// @param  aCalibrate (optional) default is true.
-    ///
-    /// ### remarks
+    /// @remarks
     /// Use this function to re-calibrate a timer. This function is
     /// automatically called when the timer is first created.
     ///-------------------------------------------------------------------------
-    TL_I void       Calibrate();
-    TL_I void       Reset();
-    TL_I sec_type   ElapsedSeconds();
-    TL_I value_type ElapsedMilliSeconds();
-    TL_I value_type ElapsedMicroSeconds();
+    void              Calibrate();
+    void              Reset();
+    sec_type          ElapsedSeconds();
+    value_type        ElapsedMilliSeconds();
+    value_type        ElapsedMicroSeconds();
 
   private:
     typedef Loki::IsSameType<adjust_policy,
                              p_timer_t::Adjust>  is_adjust_selected;
 
+  private:
+    void              DoAdjust(p_timer_t::Adjust);
+    void              DoAdjust(p_timer_t::NoAdjust);
+
+    void              DoInit();
+    void              DoReset();
+    sec_type          DoGetElapsedSeconds();
+    value_type        DoGetElapsedMilliSeconds();
+    value_type        DoGetElapsedMicroSeconds();
+
 #ifdef TLOC_OS_IPHONE
-    TL_I static sec_type   DoGetTicksToSeconds();
+    static sec_type   DoGetTicksToSeconds();
 #endif
 
-    void            DoAdjust(p_timer_t::Adjust);
-    void            DoAdjust(p_timer_t::NoAdjust);
-
-    TL_I void       DoInit();
-    TL_I void       DoReset();
-    TL_I sec_type   DoGetElapsedSeconds();
-    TL_I value_type DoGetElapsedMilliSeconds();
-    TL_I value_type DoGetElapsedMicroSeconds();
-
-    value_type                                            m_start;
-    ConditionalType<sec_type, is_adjust_selected::value>  m_adjustInSeconds;
+  private:
+    value_type                                  m_start;
+    ConditionalType<sec_type,
+                    is_adjust_selected::value>  m_adjustInSeconds;
 
 #ifdef TLOC_OS_IPHONE
-    static const sec_type                   sm_ticksToSeconds;
+    static const sec_type                       sm_ticksToSeconds;
 #endif
 
   };

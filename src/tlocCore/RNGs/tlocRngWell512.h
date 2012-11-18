@@ -14,7 +14,7 @@ namespace tloc { namespace core {
 
   class RngWell512
   {
-    template <typename T_Generator> friend class RNG;
+    template <typename T_Generator> friend class RNG_T;
 
   private:
 

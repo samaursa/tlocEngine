@@ -1,10 +1,11 @@
 #include "tlocTestCommon.h"
 
-#define private public
+#include <tlocMath/vector/tlocVector4.h>
 #include <tlocGraphics/data_types/tlocColor.h>
 
 namespace TestingColor
 {
+  using namespace tloc;
   using namespace tloc::graphics::types;
 
   TEST_CASE("Graphics/types/Color", "")
@@ -89,6 +90,36 @@ namespace TestingColor
     f = e;
     CHECK(f == e);
     CHECK(e == f);
+  }
 
+  TEST_CASE("Graphics/types/Color/GetAs", "")
+  {
+    Color c(25, 35, 45, 55);
+
+    math::Vec4f cVec;
+
+    c.GetAs<p_color::format::RGBA>(cVec);
+    CHECK(cVec[0] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[1] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[2] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[3] == Approx(0.21568627450980392156862745098039));
+
+    c.GetAs<p_color::format::ABGR>(cVec);
+    CHECK(cVec[0] == Approx(0.21568627450980392156862745098039));
+    CHECK(cVec[1] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[2] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[3] == Approx(0.09803921568627450980392156862745f));
+
+    c.GetAs<p_color::format::ARGB>(cVec);
+    CHECK(cVec[0] == Approx(0.21568627450980392156862745098039));
+    CHECK(cVec[1] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[2] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[3] == Approx(0.17647058823529411764705882352941));
+
+    c.GetAs<p_color::format::BGRA>(cVec);
+    CHECK(cVec[0] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[1] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[2] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[3] == Approx(0.21568627450980392156862745098039));
   }
 };

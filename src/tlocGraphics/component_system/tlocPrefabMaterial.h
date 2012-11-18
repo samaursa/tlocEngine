@@ -18,22 +18,24 @@ namespace tloc { namespace graphics { namespace gl {
     component_system::Material
       Lambert(const types::Color& a_col)
     {
+      using namespace graphics::types;
+
       String   vProg =
-        "#ifdef GL_ES                  \n\
-        #  version 100                 \n\
-        #else                          \n\
-        #  version 140                 \n\
-        #endif                         \n\
+        "#ifdef GL_ES                \n\
+        #  version 100               \n\
+        #else                        \n\
+        #  version 140               \n\
+        #endif                       \n\
         \n\
-        attribute vec4 a_vertex;       \n\
-        attribute vec4 a_color;        \n\
+        attribute vec4 a_vertex;     \n\
+        attribute vec4 a_color;      \n\
         \n\
-        varying lowp vec4 v_color;     \n\
+        varying lowp vec4 v_color;   \n\
         \n\
-        void main(void)                \n\
-        {                              \n\
-          v_color = a_color;           \n\
-          gl_Position   = a_vertex;    \n\
+        void main(void)              \n\
+        {                            \n\
+          v_color = a_color;         \n\
+          gl_Position   = a_vertex;  \n\
         }";
 
       String fProg =
@@ -53,6 +55,13 @@ namespace tloc { namespace graphics { namespace gl {
       Material m;
       m.SetVertexSource(vProg);
       m.SetFragmentSource(fProg);
+
+      Material::shader_prog_type& sp = m.GetShaderProgRef();
+
+      Vec4f32 colVec;
+      Color col(0.5f, 0.5f, 0.5f, 1.0f);
+      col.GetAs<p_color::format::RGBA>(colVec);
+      sp.AddAttribute(colVec);
     }
 
 

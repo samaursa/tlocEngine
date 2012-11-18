@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
         // Material should have vertex and fragment shader data, for now we will
         // assume that both exist
-        mat_type& currMat = *(mat[0]);
+        mat_type& currMat = mat[0];
 
         gl::VertexShader vShader;
         gl::FragmentShader fShader;
@@ -69,12 +69,14 @@ namespace tloc { namespace graphics { namespace component_system {
         result = fShader.CompileShader();
         TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
 
-        shader_prog_type sp = currMat.GetShaderProg();
+        shader_prog_type& sp = currMat.GetShaderProgRef();
         result = sp.AttachShaders
           (shader_prog_type::two_shader_components(&vShader, &fShader) );
         TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
 
+        sp.Enable();
         result = sp.Link();
+        sp.Disable();
         TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
 
         break;

@@ -1,6 +1,7 @@
 #include "tlocQuadRenderSystem.h"
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
@@ -27,6 +28,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const entity_type* ent = a_ent;
     ComponentMapper<quad_type> mesh = ent->GetComponents(components::mesh);
+
+    Quad& q = mesh[0];
+    TLOC_UNUSED(q);
 
     if (a_ent->HasComponent(components::material))
     {

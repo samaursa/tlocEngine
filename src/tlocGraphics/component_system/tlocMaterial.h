@@ -34,10 +34,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER(core::String, SetFragmentSource,
                              m_fragmentProgram);
 
-    TLOC_DECL_AND_DEF_GETTER(shader_prog_type, GetShaderProg,
-                             m_shaderProgram);
-    TLOC_DECL_AND_DEF_SETTER(shader_prog_type, SetShaderProg,
-                             m_shaderProgram);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(shader_prog_type, GetShaderProgRef,
+                                    m_shaderProgram);
   private:
     core::String            m_vertexProgram;
     core::String            m_fragmentProgram;

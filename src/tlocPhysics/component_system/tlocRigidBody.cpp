@@ -1,6 +1,6 @@
 #include "tlocRigidBody.h"
 
-#include <tlocPhysics/box2d/tlocComponentType.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace box2d { namespace component_system{
 

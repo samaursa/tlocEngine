@@ -2,8 +2,8 @@
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
-#include <tlocPhysics/box2d/tlocRigidBody.h>
-#include <tlocPhysics/box2d/tlocFixture.h>
+#include <tlocPhysics/component_system/tlocRigidBody.h>
+#include <tlocPhysics/component_system/tlocFixture.h>
 
 namespace tloc { namespace physics { namespace box2d { namespace component_system {
 

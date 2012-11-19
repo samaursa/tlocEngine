@@ -867,52 +867,52 @@
 				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="component_system"
+			>
 			<Filter
-				Name="component_system"
+				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodySystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodySystem.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="components"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocComponentType.h"
+					>
+				</File>
 				<Filter
-					Name="systems"
+					Name="RigidBody"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodySystem.cpp"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBody.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodySystem.h"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBody.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="components"
+					Name="Fixture"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocComponentType.h"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixture.cpp"
 						>
 					</File>
-					<Filter
-						Name="RigidBody"
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixture.h"
 						>
-						<File
-							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBody.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBody.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Fixture"
-						>
-						<File
-							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixture.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixture.h"
-							>
-						</File>
-					</Filter>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

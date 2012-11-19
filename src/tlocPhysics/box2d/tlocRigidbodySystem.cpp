@@ -33,7 +33,7 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     ComponentMapper<RigidBody> rigidBodyComponents =
       ent->GetComponents(components::k_rigid_body);
 
-    RigidBody& currRigidBody = (*rigidBodyComponents[0]);
+    RigidBody& currRigidBody = rigidBodyComponents[0];
 
     // Transfer the transform to the transform component
     TLOC_UNUSED(currRigidBody);
@@ -68,7 +68,7 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
         ComponentMapper<rigid_body_type> rigidBodyComponents =
           ent->GetComponents(components::k_rigid_body);
 
-        rigid_body_type& currRigidBody = (*rigidBodyComponents[0]);
+        rigid_body_type& currRigidBody = rigidBodyComponents[0];
 
         if (eventValueType == entity_events::insert_component)
         {
@@ -90,12 +90,12 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
           for (size_type i = 0; i < numFixtures; ++i)
           {
             fixture_type::fixture_def_type box2dFixtureDef =
-              fixtureComponents[i]->GetBox2dFixtureDef();
+              fixtureComponents[i].GetBox2dFixtureDef();
 
             fixture_type::fixture_type* box2dFixture =
               box2dRigidBody->CreateFixture(&box2dFixtureDef);
 
-            fixtureComponents[i]->SetBox2dFixture(box2dFixture);
+            fixtureComponents[i].SetBox2dFixture(box2dFixture);
           }
         }
         else
@@ -116,7 +116,7 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
 
           for (size_type i = 0; i < numFixtures; ++i)
           {
-            fixtureComponents[i]->SetBox2dFixtureToNull();
+            fixtureComponents[i].SetBox2dFixtureToNull();
           }
         }
 

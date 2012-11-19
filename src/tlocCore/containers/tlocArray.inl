@@ -26,26 +26,30 @@ namespace tloc { namespace core {
 #define TLOC_ASSERT_ARRAY_NOT_FULL() \
   TLOC_ASSERT_ARRAY(full() == false, "Array is full!")
 
-#define TLOC_ASSERT_ARRAY_POSITION(a_position) \
-  TLOC_ASSERT_ARRAY(a_position >= m_begin && a_position <= m_end,\
-TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(a_position) )
+#define TLOC_ASSERT_ARRAY_POSITION(_position_) \
+  TLOC_ASSERT_ARRAY(_position_ >= m_begin && _position_ <= m_end,\
+TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(_position_) )
+
+#define TLOC_ASSERT_ARRAY_RANGE_BEGIN_AND_NOT_EQUAL_END(rangeBegin) \
+  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin < m_end,\
+TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_BEGIN(rangeBegin) \
-  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin && rangeBegin < m_end,\
+  TLOC_ASSERT_ARRAY(rangeBegin >= m_begin,\
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
 
 #define TLOC_ASSERT_ARRAY_RANGE_END(rangeEnd) \
   TLOC_ASSERT_ARRAY(rangeEnd <= m_end,\
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
-#define TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd) \
-  TLOC_ASSERT_ARRAY(a_rangeBegin <= a_rangeEnd, \
-# a_rangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# a_rangeEnd) L"!")
+#define TLOC_ASSERT_ARRAY_RANGE(_rangeBegin_, _rangeEnd_) \
+  TLOC_ASSERT_ARRAY(_rangeBegin_ <= _rangeEnd_, \
+# _rangeBegin_ _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# _rangeEnd_) L"!")
 
-#define TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(a_rangeBegin, a_rangeEnd) \
-  TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_rangeBegin);\
-  TLOC_ASSERT_ARRAY_RANGE_END(a_rangeEnd);\
-  TLOC_ASSERT_ARRAY_RANGE(a_rangeBegin, a_rangeEnd);
+#define TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(_rangeBegin_, _rangeEnd_) \
+  TLOC_ASSERT_ARRAY_RANGE_BEGIN(_rangeBegin_);\
+  TLOC_ASSERT_ARRAY_RANGE_END(_rangeEnd_);\
+  TLOC_ASSERT_ARRAY_RANGE(_rangeBegin_, _rangeEnd_);
 
   //////////////////////////////////////////////////////////////////////////
   // Template macros
@@ -395,7 +399,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::DoErase(iterator a_position, Array_Ordered)
   {
-    TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
+    TLOC_ASSERT_ARRAY_RANGE_BEGIN_AND_NOT_EQUAL_END(a_position);
 
     copy(a_position + 1, m_end, a_position);
     m_end->~value_type();
@@ -408,7 +412,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::DoErase(iterator a_position, Array_Unordered)
   {
-    TLOC_ASSERT_ARRAY_RANGE_BEGIN(a_position);
+    TLOC_ASSERT_ARRAY_RANGE_BEGIN_AND_NOT_EQUAL_END(a_position);
 
     --m_end;
     *a_position = *m_end;

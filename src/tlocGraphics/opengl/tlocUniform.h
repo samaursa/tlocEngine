@@ -49,6 +49,41 @@ namespace tloc { namespace graphics { namespace gl {
         >();
     }
 
+    template <typename T>
+    void DoCheckNonArrayTypes() const
+    {
+      type_traits::AssertTypeIsSupported
+        <T,
+         f32,
+         math::Vec2f32,
+         math::Vec3f32,
+         math::Vec4f32,
+         s32,
+         core::Tuple2s32,
+         core::Tuple3s32,
+         core::Tuple4s32,
+         math::Mat2f32,
+         math::Mat3f32,
+         math::Mat4f32
+        >();
+    }
+
+    template <typename T>
+    void DoCheckArrayTypes() const
+    {
+      type_traits::AssertTypeIsSupported
+        <core::Array<T>,
+         core::Array<f32>,
+         core::Array<math::Vec2f32>,
+         core::Array<math::Vec3f32>,
+         core::Array<math::Vec4f32>,
+         core::Array<s32>,
+         core::Array<core::Tuple2s32>,
+         core::Array<core::Tuple3s32>,
+         core::Array<core::Tuple4s32>
+        >();
+    }
+
   };
 
 };};};

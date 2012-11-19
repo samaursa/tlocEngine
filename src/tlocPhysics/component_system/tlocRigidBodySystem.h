@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _TLOC_PHYSICS_BOX2D_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
-#define _TLOC_PHYSICS_BOX2D_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
+#ifndef _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
+#define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
@@ -8,7 +8,7 @@
 #include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
 
-namespace tloc { namespace physics { namespace box2d { namespace component_system {
+namespace tloc { namespace physics { namespace component_system {
 
   class RigidBodySystem : public core::component_system::EntityProcessingSystem
   {
@@ -23,7 +23,7 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     typedef base_type::event_type       event_type;
     typedef base_type::event_value_type event_value_type;
 
-    typedef World                       world_type;
+    typedef box2d::World                       world_type;
 
   public:
     RigidBodySystem
@@ -44,7 +44,7 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     world_type* m_world;
   };
 
-};};};};
+};};};
 
 
 #endif

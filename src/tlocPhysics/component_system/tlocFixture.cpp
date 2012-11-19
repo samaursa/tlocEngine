@@ -2,7 +2,7 @@
 
 #include <tlocPhysics/component_system/tlocComponentType.h>
 
-namespace tloc { namespace physics { namespace box2d { namespace component_system {
+namespace tloc { namespace physics { namespace component_system {
 
   Fixture::Fixture(const fixture_def_type& a_box2dFixtureDef)
     : base_type(components::k_fixture)
@@ -25,4 +25,4 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     m_box2dFixture = NULL;
   }
 
-};};};};
+};};};

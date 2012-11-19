@@ -859,14 +859,26 @@
 				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocPhysicsManager.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.cpp"
+			<Filter
+				Name="world"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocWorld.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="fixture"
 				>
-			</File>
+			</Filter>
+			<Filter
+				Name="rigid_body"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="component_system"
@@ -891,7 +903,7 @@
 					>
 				</File>
 				<Filter
-					Name="RigidBody"
+					Name="rigid_body"
 					>
 					<File
 						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBody.cpp"
@@ -903,7 +915,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Fixture"
+					Name="fixture"
 					>
 					<File
 						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixture.cpp"

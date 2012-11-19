@@ -5,7 +5,7 @@
 #include <tlocPhysics/component_system/tlocRigidBody.h>
 #include <tlocPhysics/component_system/tlocFixture.h>
 
-namespace tloc { namespace physics { namespace box2d { namespace component_system {
+namespace tloc { namespace physics { namespace component_system {
 
   RigidBodySystem::RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
@@ -125,4 +125,4 @@ namespace tloc { namespace physics { namespace box2d { namespace component_syste
     }
   }
 
-};};};};
+};};};

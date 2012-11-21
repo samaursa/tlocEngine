@@ -326,6 +326,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core;
 
       bool isArray = a_attribute.IsArray();
+      bool isVertexArray = a_attribute.IsAttribArray();
 
       switch(a_info.m_type)
       {
@@ -335,6 +336,16 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const f32& f = a_attribute.GetValueAs<f32>();
             glVertexAttrib1f(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
           }
           else
           {
@@ -354,6 +365,16 @@ namespace tloc { namespace graphics { namespace gl {
             const Vec2f32& v = a_attribute.GetValueAs<Vec2f32>();
             glVertexAttrib2f(a_info.m_location, v[0], v[1]);
           }
+          else if (isVertexArray)
+          {
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
+          }
           else
           {
             typedef f32               num_type;
@@ -370,6 +391,16 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const Vec3f32& v = a_attribute.GetValueAs<Vec3f32>();
             glVertexAttrib3f(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
           }
           else
           {
@@ -388,6 +419,16 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const Vec4f32& v = a_attribute.GetValueAs<Vec4f32>();
             glVertexAttrib4f(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef f32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
           }
           else
           {

@@ -346,6 +346,7 @@ namespace tloc { namespace graphics { namespace gl {
             num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
             glVertexAttribPointer
               (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
           }
           else
           {
@@ -374,6 +375,7 @@ namespace tloc { namespace graphics { namespace gl {
             num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
             glVertexAttribPointer
               (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
           }
           else
           {
@@ -401,6 +403,7 @@ namespace tloc { namespace graphics { namespace gl {
             num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
             glVertexAttribPointer
               (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
           }
           else
           {
@@ -429,6 +432,7 @@ namespace tloc { namespace graphics { namespace gl {
             num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
             glVertexAttribPointer
               (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
           }
           else
           {

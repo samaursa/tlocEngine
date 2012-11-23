@@ -926,11 +926,11 @@
 					Name="rigid_body"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBody.cpp"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyComponent.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBody.h"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyComponent.h"
 						>
 					</File>
 				</Filter>
@@ -938,11 +938,11 @@
 					Name="fixture"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixture.cpp"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixtureComponent.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixture.h"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixtureComponent.h"
 						>
 					</File>
 				</Filter>

@@ -1,4 +1,4 @@
-#include "tlocRigidBody.h"
+#include "tlocRigidBodyComponent.h"
 
 #include <tlocPhysics/component_system/tlocComponentType.h>
 

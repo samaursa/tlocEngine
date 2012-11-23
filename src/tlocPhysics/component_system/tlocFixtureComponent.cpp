@@ -1,4 +1,4 @@
-#include "tlocFixture.h"
+#include "tlocFixtureComponent.h"
 
 #include <tlocPhysics/component_system/tlocComponentType.h>
 

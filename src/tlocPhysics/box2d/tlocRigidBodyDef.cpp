@@ -16,7 +16,7 @@ namespace tloc { namespace physics { namespace box2d {
     SetAwake(true);
     SetFixedRotation(false);
     SetBullet(false);
-    SetType(k_staticBody);
+    SetType(rigid_body::k_staticBody);
     SetActive(true);
     SetGravityScale(1.0f);
   }
@@ -32,9 +32,9 @@ namespace tloc { namespace physics { namespace box2d {
       m_rigidBodyDef.linearVelocity.y);
   }
 
-  void RigidBodyDef::SetType(rigid_body_type a_rigidBodyType)
+  void RigidBodyDef::SetType(rigid_body_type_type a_rigidBodyType)
   {
-    m_rigidBodyDef.type = (rigid_body_value_type)a_rigidBodyType;
+    m_rigidBodyDef.type = (rigid_body_value_type_type)a_rigidBodyType;
   }
 
   void RigidBodyDef::SetPosition(vec_type a_position)

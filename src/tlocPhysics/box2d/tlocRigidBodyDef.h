@@ -22,6 +22,9 @@ namespace tloc { namespace physics { namespace box2d {
     };
 
   public:
+    friend class RigidBody;
+
+  public:
     typedef RigidBodyDef  this_type;
     typedef b2BodyDef     rigid_body_def_value_type;
 

@@ -879,6 +879,18 @@
 				Name="rigid_body"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBody.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBody.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBody.inl"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyDef.cpp"
 					>
 				</File>

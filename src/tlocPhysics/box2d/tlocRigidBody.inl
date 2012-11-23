@@ -107,6 +107,11 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBody->GetGravityScale();
   }
 
+  RigidBody::rigid_body_type_type RigidBody::GetType() const
+  {
+    return (rigid_body_type_type)m_rigidBody->GetType();
+  }
+
   bool RigidBody::IsBullet() const
   {
     return m_rigidBody->IsBullet();
@@ -193,6 +198,11 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBody::SetGravityScale(float_type a_gravityScale)
   {
     m_rigidBody->SetGravityScale(a_gravityScale);
+  }
+
+  void RigidBody::SetType(rigid_body_type_type a_type)
+  {
+    m_rigidBody->SetType((rigid_body_value_type_type)a_type);
   }
 
   void RigidBody::SetBullet(bool a_flag)

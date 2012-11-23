@@ -70,9 +70,6 @@ namespace tloc { namespace physics { namespace box2d {
       (bool,        IsFixedRotation, m_rigidBodyDef.fixedRotation);
 
     TLOC_DECL_AND_DEF_GETTER
-      (void*,       GetUserData, m_rigidBodyDef.userData);
-
-    TLOC_DECL_AND_DEF_GETTER
       (float_type,  GetGravityScale, m_rigidBodyDef.gravityScale);
 
   public:
@@ -104,9 +101,6 @@ namespace tloc { namespace physics { namespace box2d {
     
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetFixedRotation, m_rigidBodyDef.fixedRotation);
-
-    TLOC_DECL_AND_DEF_SETTER
-      (void*,       SetUserData, m_rigidBodyDef.userData);
 
     TLOC_DECL_AND_DEF_SETTER
       (float_type,  SetGravityScale, m_rigidBodyDef.gravityScale);

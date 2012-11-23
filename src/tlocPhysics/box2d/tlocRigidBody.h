@@ -39,8 +39,10 @@ namespace tloc { namespace physics { namespace box2d {
     typedef math::Vec2f           vec_type;
     typedef math::Radian32        angle_type;
 
-    typedef RigidBodyDef          rigid_body_def_type;
-    typedef World                 world_type;
+    typedef RigidBodyDef            rigid_body_def_type;
+    typedef rigid_body::value_type  rigid_body_type_type;
+    typedef b2BodyType              rigid_body_value_type_type;
+    typedef World                   world_type;
   
   public:
 
@@ -66,6 +68,8 @@ namespace tloc { namespace physics { namespace box2d {
     float_type GetAngularDamping() const;
 
     float_type GetGravityScale() const;
+
+    rigid_body_type_type GetType() const;
 
     bool IsBullet() const;
     
@@ -93,6 +97,8 @@ namespace tloc { namespace physics { namespace box2d {
     void SetAngularDamping(float_type a_angularDamping);
 
     void SetGravityScale(float_type a_gravityScale);
+
+    void SetType(rigid_body_type_type a_type);
 
     void SetBullet(bool a_flag);
     

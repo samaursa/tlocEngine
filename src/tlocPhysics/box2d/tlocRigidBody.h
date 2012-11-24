@@ -15,7 +15,7 @@
 
 namespace tloc { namespace physics { namespace component_system {
   
-  class PhysicsManager;
+  class RigidBodySystem;
   class RigidBody;
 
 };};};
@@ -28,7 +28,7 @@ namespace tloc { namespace physics { namespace box2d {
   {
   public:
     friend class component_system::RigidBody;
-    friend class component_system::PhysicsManager;
+    friend class component_system::RigidBodySystem;
 
   public:
     typedef RigidBody             this_type;

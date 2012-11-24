@@ -68,18 +68,16 @@ namespace tloc { namespace physics { namespace component_system {
         ComponentMapper<rigid_body_type> rigidBodyComponents =
           ent->GetComponents(components::k_rigid_body);
 
-        rigid_body_type& currRigidBody = rigidBodyComponents[0];
+        rigid_body_type& currRigidBodyComponent = rigidBodyComponents[0];
+        rigid_body_type::rigid_body_value_type& currRigidBody =
+          currRigidBodyComponent.GetRigidBodyValue();
 
         if (eventValueType == entity_events::insert_component)
         {
-          rigid_body_type::rigid_body_def_type box2dRigidBodyDef =
-            currRigidBody.GetBox2dRigidBodyDef();
+          rigid_body_type::rigid_body_def_type& currRigidBodyDef =
+            currRigidBodyComponent.GetRigidBodyDef();
 
-          world_type::world_type& box2dWorld = m_world->GetWorld();
-          rigid_body_type::rigid_body_type* box2dRigidBody =
-            box2dWorld.CreateBody(&box2dRigidBodyDef);
-
-          currRigidBody.SetBox2dRigidBody(box2dRigidBody);
+          currRigidBody.Initialize(currRigidBodyDef, m_world);
 
           ComponentMapper<Fixture> fixtureComponents =
             ent->GetComponents(components::k_fixture);
@@ -89,25 +87,11 @@ namespace tloc { namespace physics { namespace component_system {
 
           for (size_type i = 0; i < numFixtures; ++i)
           {
-            fixture_type::fixture_def_type box2dFixtureDef =
-              fixtureComponents[i].GetBox2dFixtureDef();
-
-            fixture_type::fixture_type* box2dFixture =
-              box2dRigidBody->CreateFixture(&box2dFixtureDef);
-
-            fixtureComponents[i].SetBox2dFixture(box2dFixture);
+            //TODO:Initialize Fixtures
           }
         }
         else
         {
-          rigid_body_type::rigid_body_type* box2dRigidBody =
-            currRigidBody.GetBox2dRigidBody();
-
-          world_type::world_type& box2dWorld = m_world->GetWorld();
-          box2dWorld.DestroyBody(box2dRigidBody);
-
-          currRigidBody.SetBox2dRigidBodyToNull();
-
           ComponentMapper<Fixture> fixtureComponents =
             ent->GetComponents(components::k_fixture);
 
@@ -116,8 +100,10 @@ namespace tloc { namespace physics { namespace component_system {
 
           for (size_type i = 0; i < numFixtures; ++i)
           {
-            fixtureComponents[i].SetBox2dFixtureToNull();
+            //TODO:Shutdown Fixtures
           }
+
+          currRigidBody.Shutdown();
         }
 
         break;

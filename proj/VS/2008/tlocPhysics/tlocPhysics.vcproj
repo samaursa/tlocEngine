@@ -872,18 +872,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="fixture"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixtureDef.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocFixtureDef.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="rigid_body"
 				>
 				<File
@@ -904,6 +892,14 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyDef.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShape.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShape.h"
 					>
 				</File>
 			</Filter>

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _TLOC_PHYSICS_BOX2D_FIXTURE_DEF_H_
-#define _TLOC_PHYSICS_BOX2D_FIXTURE_DEF_H_
+#ifndef _TLOC_PHYSICS_BOX2D_RIGID_BODY_SHAPE_H_
+#define _TLOC_PHYSICS_BOX2D_RIGID_BODY_SHAPE_H_
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -9,19 +9,19 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  class FixtureDef
+  class RigidBodyShape
   {
   public:
     friend class Fixture;
 
   public:
-    typedef FixtureDef    this_type;
+    typedef RigidBodyShape    this_type;
     typedef b2FixtureDef  fixture_def_value_type;
 
     typedef f32 float_type;
 
   public:
-    FixtureDef()
+    RigidBodyShape()
     {
       SetFriction(0.2f);
       SetRestitution(0.0f);

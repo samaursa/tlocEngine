@@ -322,11 +322,13 @@ namespace tloc { namespace physics { namespace box2d {
 
   TL_I component_system::RigidBody* RigidBody::DoGetParent()
   {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return static_cast<component_system::RigidBody*>(m_rigidBody->GetUserData());
   }
 
   TL_I void RigidBody::DoSetParent(component_system::RigidBody* a_parent)
   {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetUserData(a_parent);
   }
 

@@ -907,6 +907,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="shape"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocCircleShape.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocCircleShape.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocShape.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocShape.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="component_system"

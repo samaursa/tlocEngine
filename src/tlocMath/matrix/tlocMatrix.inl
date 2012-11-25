@@ -163,7 +163,7 @@ namespace tloc { namespace math {
 
   template <MATRIX_TYPES>
   TL_FI void Matrix<MATRIX_PARAMS>::Mul(const this_type& aMatrix1,
-                                    const this_type& aMatrix2)
+                                        const this_type& aMatrix2)
   {
     base_type::operator=(aMatrix1);
     Mul(aMatrix2);
@@ -183,7 +183,7 @@ namespace tloc { namespace math {
 
   template <MATRIX_TYPES>
   TL_FI void Matrix<MATRIX_PARAMS>::Mul(const Vector<value_type, T_Size>& aVectorIn,
-                                        Vector<value_type, T_Size>& aVectorOut)
+                                        Vector<value_type, T_Size>& aVectorOut) const
   {
     ITERATE_MATRIX_HALF
     {

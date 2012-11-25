@@ -42,6 +42,11 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Mat3f32, GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Mat4f32, GL_FLOAT_MAT4);
 
+  TLOC_DECL_TL_TO_GL(core::Array<f32>, GL_FLOAT);
+  TLOC_DECL_TL_TO_GL(core::Array<math::Vec2f32>, GL_FLOAT_VEC2);
+  TLOC_DECL_TL_TO_GL(core::Array<math::Vec3f32>, GL_FLOAT_VEC3);
+  TLOC_DECL_TL_TO_GL(core::Array<math::Vec4f32>, GL_FLOAT_VEC4);
+
 #undef TLOC_DECL_TL_TO_GL
 
   //------------------------------------------------------------------------
@@ -129,6 +134,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,   Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,   Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,   Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<f32>,   Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec2f32>,   Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec3f32>,   Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec4f32>,   Uniform);
 
   //````````````````````````````````````````````````````````````````````````
   // Attribute
@@ -145,6 +154,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<f32>,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec2f32>,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec3f32>,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec4f32>,   Attribute);
 #undef TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS
 
 };};};

@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess();
   }
 
-  Shader_I::error_type Shader_I::CompileShader()
+  Shader_I::error_type Shader_I::Compile()
   {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");

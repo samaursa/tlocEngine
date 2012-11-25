@@ -52,14 +52,14 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     derived_type& SetValueAs(const T& a_value)
     {
-      static_cast<derived_type*>(this)->DoCheckTypeCompatibility<T>();
+      static_cast<derived_type*>(this)->DoCheckNonArrayTypes<T>();
       return DoSetValueAs(a_value);
     }
 
     template <typename T, typename T_Technique>
-    derived_type& SetValueAs(core::Array<T>& a_array)
+    derived_type& SetValueAs(core::Array<T>& a_array, T_Technique)
     {
-      static_cast<derived_type*>(this)->DoCheckTypeCompatibility<T>();
+      static_cast<derived_type*>(this)->DoCheckArrayTypes<T>();
       return DoSetValueAs(a_array, T_Technique());
     }
 

@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::tl_array<bool>::type  flag_type;
 
   public:
-    error_type CompileShader();
+    error_type Compile();
 
   protected:
     Shader_I();

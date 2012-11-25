@@ -116,7 +116,7 @@ namespace tloc { namespace math {
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
     TL_FI void Mul(const Vector<value_type, T_Size>& aVectorIn,
-                   Vector<value_type, T_Size>& aVectorOut);
+                   Vector<value_type, T_Size>& aVectorOut) const;
 
     // Modifies this matrix by dividing the incoming real number
     TL_FI this_type& Div(const_reference aReal);

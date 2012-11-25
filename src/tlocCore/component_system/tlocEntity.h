@@ -23,7 +23,7 @@ namespace tloc { namespace core { namespace component_system {
 
     Entity(entity_id  a_id);
 
-    bool                        HasComponent(component_type a_type);
+    bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
     entity_id                   GetID() const;

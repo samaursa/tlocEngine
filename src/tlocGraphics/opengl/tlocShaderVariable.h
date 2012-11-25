@@ -2,10 +2,12 @@
 #define _TLOC_GRAPHICS_GL_SHADER_VARIABLE_H_
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/string/tlocString.h>
+
 #include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocAny.inl>
-#include <tlocCore/string/tlocString.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+
 #include <tlocCore/containers/tlocContainers.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>

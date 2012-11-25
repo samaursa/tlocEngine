@@ -16,15 +16,13 @@ namespace tloc { namespace core { namespace component_system {
     if (CheckProcessing())
     {
       Pre_ProcessActiveEntities();
-      ProcessActiveEntities(m_entityMgr, m_activeEntities);
+      DoProcessActiveEntities(m_entityMgr, m_activeEntities);
       Post_ProcessActiveEntities();
     }
   }
 
   bool EntitySystemBase::OnEvent(const EventBase& a_event)
   {
-    Pre_OnEvent(a_event);
-
     event_value_type type = a_event.GetType();
 
     switch(type)
@@ -40,7 +38,6 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-
             entity_array::iterator entItr = core::find_all(m_activeEntities, ent);
             if (entItr == m_activeEntities.end())
             {
@@ -59,7 +56,6 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    Post_OnEvent(a_event);
     return false;
   }
 

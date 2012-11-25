@@ -10,6 +10,15 @@
 namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
+  // C++11 NULL define (this will be removed when compiling as C++11)
+
+#ifdef nullptr
+# error "nullptr is already defined!"
+#else
+# define nullptr NULL
+#endif
+
+  //////////////////////////////////////////////////////////////////////////
   // Windows Types
 
 #if defined(WIN32) || defined(_WIN32) || defined (_WIN64)

@@ -72,7 +72,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FileIO_T<FILE_IO_PARAMS>::FileIO_T(const Path& a_path)
-    : m_fileName(a_path)
+    : m_fileName(a_path), m_file(nullptr)
   {
     TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
   }
@@ -97,6 +97,12 @@ namespace tloc { namespace core { namespace io {
     }
 
     return ErrorFailure();
+  }
+
+  template <FILE_IO_TEMP>
+  bool FileIO_T<FILE_IO_PARAMS>::IsOpen()
+  {
+    return m_file != nullptr;
   }
 
   template <FILE_IO_TEMP>
@@ -149,6 +155,7 @@ namespace tloc { namespace core { namespace io {
       }
     }
 
+    m_file = nullptr;
     return ErrorSuccess();
   }
 

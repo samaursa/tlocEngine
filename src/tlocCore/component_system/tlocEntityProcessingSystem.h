@@ -9,7 +9,6 @@ namespace tloc { namespace core { namespace component_system {
   class EntityProcessingSystem : public EntitySystemBase
   {
   public:
-
     typedef EntitySystemBase                    base_type;
     using base_type::component_type;
     using base_type::component_type_array;
@@ -22,6 +21,10 @@ namespace tloc { namespace core { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
+  public:
+    friend class EntitySystemBase;
+
+  protected:
     template <size_type T_VarSize>
     EntityProcessingSystem(event_manager* a_eventMgr,
                            entity_manager* a_entityMgr,
@@ -29,12 +32,33 @@ namespace tloc { namespace core { namespace component_system {
 
     virtual ~EntityProcessingSystem();
 
+  protected: // Initialization
+    virtual error_type Pre_Initialize();
+    virtual error_type InitializeEntity(entity_manager* a_mgr,
+                                        entity_type* a_ent) = 0;
+    virtual error_type Post_Initialize();
+
+  protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities();
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent) = 0;
-    virtual void ProcessActiveEntities (entity_manager* a_mgr,
-                                        const entity_array& a_entities);
     virtual void Post_ProcessingActiveEntities();
+
+  protected: // Shutdown
+    virtual error_type Pre_Shutdown();
+    virtual error_type ShutdownEntity(entity_manager* a_mgr,
+                                      entity_type* a_ent) = 0;
+    virtual error_type Post_Shutdown();
+
+  private:
+    virtual void DoProcessActiveEntities (entity_manager* a_mgr,
+                                          const entity_array& a_entities);
+
+    virtual error_type DoInitialize(entity_manager* a_mgr,
+                                    const entity_array& a_entities);
+
+    virtual error_type DoShutdown(entity_manager* a_mgr,
+                                  const entity_array& a_entities);
   };
 
   //------------------------------------------------------------------------

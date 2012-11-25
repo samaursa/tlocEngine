@@ -495,7 +495,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_flags.Mark(shader_attached);
-    return true;
+    return ErrorSuccess();
   }
 
   ShaderProgram::error_type ShaderProgram::Link()

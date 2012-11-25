@@ -29,14 +29,13 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     QuadRenderSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
 
-    virtual error_type Initialize();
-    virtual error_type Shutdown();
-    virtual void Pre_ProcessActiveEntities() {}
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
-    virtual void Post_ProcessActiveEntities() {}
 
-    virtual void Pre_OnEvent(const event_type& a_event);
-    virtual void Post_OnEvent(const event_type& a_event);
+    virtual error_type InitializeEntity(entity_manager* a_mgr,
+                                        entity_type* a_ent);
+    virtual error_type ShutdownEntity(entity_manager* a_mgr,
+                                      entity_type* a_ent);
+
+    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
 
   private:
     vec3_cont_type  m_quadList;

@@ -297,13 +297,12 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   TL_I RigidBody::error_type
-    RigidBody::Initialize(const rigid_body_def_type& a_rigidBodyDef,
-    world_type* a_world)
+    RigidBody::Initialize(rigid_body_value_type* a_rigidBody)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
+    TLOC_ASSERT_NOT_NULL(a_rigidBody);
 
-    world_type::world_type& box2dWorld = a_world->GetWorld();
-    m_rigidBody = box2dWorld.CreateBody(&a_rigidBodyDef.GetRigidBodyDef());
+    m_rigidBody = a_rigidBody;
 
     m_flags.Mark(initialized);
     return ErrorSuccess();
@@ -313,11 +312,15 @@ namespace tloc { namespace physics { namespace box2d {
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    world_type::world_type* box2dWorld = m_rigidBody->GetWorld();
-    box2dWorld->DestroyBody(m_rigidBody);
+    m_rigidBody = NULL;
 
     m_flags.Unmark(initialized);
     return ErrorSuccess();
+  }
+
+  TL_I RigidBody::rigid_body_value_type* RigidBody::GetInternalRigidBody()
+  {
+    return m_rigidBody;
   }
 
   TL_I component_system::RigidBody* RigidBody::DoGetParent()

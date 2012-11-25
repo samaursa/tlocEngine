@@ -9,6 +9,12 @@
 
 #include <Box2D/Dynamics/b2Body.h>
 
+namespace tloc { namespace physics { namespace component_system {
+
+  class RigidBodySystem;
+
+};};};
+
 namespace tloc { namespace physics { namespace box2d {
 
   namespace rigid_body
@@ -24,7 +30,7 @@ namespace tloc { namespace physics { namespace box2d {
   class RigidBodyDef
   {
   public:
-    friend class RigidBody;
+    friend class component_system::RigidBodySystem;
 
   public:
     typedef RigidBodyDef  this_type;

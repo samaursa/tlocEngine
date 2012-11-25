@@ -51,8 +51,16 @@ namespace tloc { namespace physics { namespace component_system {
     using namespace tloc::core;
     using namespace tloc::core::component_system;
 
-    typedef RigidBody                   rigid_body_type;
-    typedef Fixture                     fixture_type;
+    typedef RigidBody                               rigid_body_type;
+    typedef rigid_body_type::rigid_body_value_type  rigid_body_value_type;
+
+    typedef rigid_body_value_type::rigid_body_value_type
+                                                    rigid_body_internal_type;
+
+    typedef rigid_body_type::rigid_body_def_type    rigid_body_def_type;
+
+    typedef rigid_body_def_type::rigid_body_def_value_type
+                                                    rigid_body_def_value_type;
 
     event_value_type eventValueType = a_event.GetType();
 
@@ -69,39 +77,28 @@ namespace tloc { namespace physics { namespace component_system {
           ent->GetComponents(components::k_rigid_body);
 
         rigid_body_type& currRigidBodyComponent = rigidBodyComponents[0];
-        rigid_body_type::rigid_body_value_type& currRigidBody =
+        rigid_body_value_type& currRigidBody =
           currRigidBodyComponent.GetRigidBodyValue();
 
         if (eventValueType == entity_events::insert_component)
         {
-          rigid_body_type::rigid_body_def_type& currRigidBodyDef =
+          rigid_body_def_type& currRigidBodyDef =
             currRigidBodyComponent.GetRigidBodyDef();
 
-          currRigidBody.Initialize(currRigidBodyDef, m_world);
+          const rigid_body_def_value_type* currRigidBodyDefValue =
+            &currRigidBodyDef.GetRigidBodyDef();
 
-          ComponentMapper<Fixture> fixtureComponents =
-            ent->GetComponents(components::k_fixture);
+          rigid_body_internal_type* currRigidBodyInternal =
+            m_world->GetWorld().CreateBody(currRigidBodyDefValue);
 
-          typedef ComponentMapper<Fixture>::size_type size_type;
-          size_type numFixtures = fixtureComponents.size();
-
-          for (size_type i = 0; i < numFixtures; ++i)
-          {
-            //TODO:Initialize Fixtures
-          }
+          currRigidBody.Initialize(currRigidBodyInternal);
         }
         else
         {
-          ComponentMapper<Fixture> fixtureComponents =
-            ent->GetComponents(components::k_fixture);
+          rigid_body_internal_type* currRigidBodyInternal
+            = currRigidBody.GetInternalRigidBody();
 
-          typedef ComponentMapper<Fixture>::size_type size_type;
-          size_type numFixtures = fixtureComponents.size();
-
-          for (size_type i = 0; i < numFixtures; ++i)
-          {
-            //TODO:Shutdown Fixtures
-          }
+          m_world->GetWorld().DestroyBody(currRigidBodyInternal);
 
           currRigidBody.Shutdown();
         }

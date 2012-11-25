@@ -14,7 +14,7 @@ namespace tloc { namespace physics { namespace box2d {
   class RigidBodyShape
   {
   public:
-    friend class Fixture;
+    friend class RigidBody;
 
   public:
     typedef RigidBodyShape    this_type;

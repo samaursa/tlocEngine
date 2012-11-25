@@ -1045,6 +1045,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="component_system"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocTransformTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"

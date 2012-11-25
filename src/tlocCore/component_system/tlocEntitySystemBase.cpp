@@ -5,10 +5,28 @@
 
 namespace tloc { namespace core { namespace component_system {
 
+  //////////////////////////////////////////////////////////////////////////
+  // typedefs]
+
+  typedef EntitySystemBase::error_type      error_type;
+
   EntitySystemBase::~EntitySystemBase()
   {
     m_eventMgr->RemoveListener(this, entity_events::insert_component);
     m_eventMgr->RemoveListener(this, entity_events::remove_component);
+  }
+
+  error_type EntitySystemBase::Initialize()
+  {
+    if (Pre_Initialize() == ErrorSuccess())
+    {
+      if (DoInitialize(m_entityMgr, m_activeEntities) == ErrorSuccess())
+      {
+        return Post_Initialize();
+      }
+    }
+
+    return ErrorFailure();
   }
 
   void EntitySystemBase::ProcessActiveEntities()
@@ -19,6 +37,19 @@ namespace tloc { namespace core { namespace component_system {
       DoProcessActiveEntities(m_entityMgr, m_activeEntities);
       Post_ProcessActiveEntities();
     }
+  }
+
+  error_type EntitySystemBase::Shutdown()
+  {
+    if (Pre_Shutdown() == ErrorSuccess())
+    {
+      if (DoShutdown(m_entityMgr, m_activeEntities) == ErrorSuccess())
+      {
+        return Post_Shutdown();
+      }
+    }
+
+    return ErrorFailure();
   }
 
   bool EntitySystemBase::OnEvent(const EventBase& a_event)

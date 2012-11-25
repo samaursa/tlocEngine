@@ -47,7 +47,7 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
-  void EntityProcessingSystem::Post_ProcessingActiveEntities()
+  void EntityProcessingSystem::Post_ProcessActiveEntities()
   { }
 
   //````````````````````````````````````````````````````````````````````````

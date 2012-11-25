@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace component_system {
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities();
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent) = 0;
-    virtual void Post_ProcessingActiveEntities();
+    virtual void Post_ProcessActiveEntities();
 
   protected: // Shutdown
     virtual error_type Pre_Shutdown();

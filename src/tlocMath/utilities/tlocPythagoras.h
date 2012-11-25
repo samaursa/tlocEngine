@@ -47,17 +47,6 @@ namespace tloc { namespace math { namespace utils {
 
   private:
 
-    void DoSet(base, opposite);
-    void DoSet(opposite, base);
-    void DoSet(base, hypotenuse);
-    void DoSet(hypotenuse, base);
-    void DoSet(opposite, hypotenuse);
-    void DoSet(hypotenuse, opposite);
-
-    void DoSet(angle_type, base);
-    void DoSet(angle_type, opposite);
-    void DoSet(angle_type, hypotenuse);
-
     cont_type m_sides;
 
   };

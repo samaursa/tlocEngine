@@ -26,17 +26,17 @@ namespace tloc { namespace graphics { namespace media {
 
 #define IMAGE_LOADER_TEMP   typename T_DerivedClass
 #define IMAGE_LOADER_PARAMS T_DerivedClass
-#define IMAGE_LOADER_TYPE typename ImageLoader<IMAGE_LOADER_PARAMS>
+#define IMAGE_LOADER_TYPE typename ImageLoader_TI<IMAGE_LOADER_PARAMS>
 
   template <IMAGE_LOADER_TEMP>
   IMAGE_LOADER_TYPE::error_type
-    ImageLoader<IMAGE_LOADER_PARAMS>::Load(const path_type& a_path)
+    ImageLoader_TI<IMAGE_LOADER_PARAMS>::Load(const path_type& a_path)
   {
     return static_cast<derived_type*>(this)->DoLoad(a_path);
   }
 
   template <IMAGE_LOADER_TEMP>
-  IMAGE_LOADER_TYPE::error_type ImageLoader<IMAGE_LOADER_PARAMS>::
+  IMAGE_LOADER_TYPE::error_type ImageLoader_TI<IMAGE_LOADER_PARAMS>::
     DoLoadImageFromMemory(const uchar8* a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
@@ -82,6 +82,6 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // Explicit instantiation for ImageLoader
 
-  template class ImageLoader<ImageLoaderPng>;
+  template class ImageLoader_TI<ImageLoaderPng>;
 
 };};};

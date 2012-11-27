@@ -984,6 +984,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="component_system"
+			>
+			<Filter
+				Name="components"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocComponentType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocTransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocTransform.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>

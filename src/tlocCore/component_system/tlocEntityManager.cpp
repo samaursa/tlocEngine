@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace component_system {
     entity_list& entities = m_componentsAndEntities[a_component->GetType()];
 
     entities.push_back(a_entity);
-    a_entity->m_allComponents[a_component->GetType()].push_back(a_component);
+    a_entity->InsertComponent(a_component);
 
     m_eventMgr->DispatchNow(
       EntityComponentEvent(entity_events::insert_component, a_entity,

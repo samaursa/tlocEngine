@@ -223,7 +223,7 @@ namespace TESTING_TYPES
     num = num * a;
     CHECK(num == 5);
     num = num / a;
-    //CHECK(num == 5);
+    CHECK(num == 5);
 
     a += a;
     CHECK(a == a.g_conditional_type_invalid_value);

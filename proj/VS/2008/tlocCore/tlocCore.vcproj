@@ -1276,6 +1276,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocNonNewable.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocPolicyBase.h"
 				>
 			</File>

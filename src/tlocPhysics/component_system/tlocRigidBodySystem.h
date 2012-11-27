@@ -30,15 +30,13 @@ namespace tloc { namespace physics { namespace component_system {
       (event_manager* a_eventMgr, entity_manager* a_entityMgr,
        world_type* a_world);
 
-    virtual error_type Initialize();
+    virtual error_type InitializeEntity(entity_manager* a_mgr, 
+                                        entity_type* a_ent);
 
-    virtual error_type Shutdown();
+    virtual error_type ShutdownEntity(entity_manager* a_mgr, 
+                                      entity_type* a_ent);
 
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
-
-    virtual void Pre_OnEvent(const event_type& a_event);
-
-    virtual void Post_OnEvent(const event_type& a_event);
 
   private:
     world_type* m_world;

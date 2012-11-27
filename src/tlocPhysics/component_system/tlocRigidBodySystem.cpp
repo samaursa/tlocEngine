@@ -15,19 +15,85 @@ namespace tloc { namespace physics { namespace component_system {
   {
   }
 
-  RigidBodySystem::error_type RigidBodySystem::Initialize()
+  RigidBodySystem::error_type
+    RigidBodySystem::InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
+    using namespace tloc::core;
+    using namespace tloc::core::component_system;
+
+    typedef RigidBody                               rigid_body_component_type;
+
+    typedef rigid_body_component_type::rigid_body_value_type
+                                                    rigid_body_type;
+
+    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+
+    typedef rigid_body_component_type::rigid_body_def_type
+                                                    rigid_body_def_type;
+
+    typedef rigid_body_def_type::rigid_body_def_value_type
+                                                    rigid_body_def_internal_type;
+
+    // TODO: Make this into a function
+    const entity_type* ent = a_ent;
+
+    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
+      ent->GetComponents(components::k_rigid_body);
+
+    rigid_body_component_type& currRBComponent = rigidBodyComponents[0];
+    rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
+
+    const rigid_body_def_type& currRBDef = currRBComponent.GetRigidBodyDef();
+    const rigid_body_def_internal_type& currRBDefInternal =
+      currRBDef.GetRigidBodyDef();
+
+    rigid_body_internal_type* currRBInternal =
+      m_world->GetWorld().CreateBody(&currRBDefInternal);
+
+    currRB.Initialize(currRBInternal);
+
+    TLOC_UNUSED(a_mgr);
+
     return ErrorSuccess();
   }
 
-  RigidBodySystem::error_type RigidBodySystem::Shutdown()
+  RigidBodySystem::error_type
+    RigidBodySystem::ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent )
   {
+    using namespace tloc::core;
+    using namespace tloc::core::component_system;
+
+    typedef RigidBody                               rigid_body_component_type;
+
+    typedef rigid_body_component_type::rigid_body_value_type
+                                                    rigid_body_type;
+
+    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+
+    // TODO: Make this into a function
+    const entity_type* ent = a_ent;
+
+    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
+      ent->GetComponents(components::k_rigid_body);
+
+    rigid_body_component_type& currRBComponent = rigidBodyComponents[0];
+    rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
+
+    rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+
+    m_world->GetWorld().DestroyBody(currRBInternal);
+
+    currRB.Shutdown();
+
+    TLOC_UNUSED(a_mgr);
+
     return ErrorSuccess();
   }
 
   void RigidBodySystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
-    using namespace core::component_system;
+    using namespace tloc::core;
+    using namespace tloc::core::component_system;
 
     const entity_type* ent = a_ent;
     ComponentMapper<RigidBody> rigidBodyComponents =
@@ -39,73 +105,6 @@ namespace tloc { namespace physics { namespace component_system {
     TLOC_UNUSED(currRigidBody);
 
     TLOC_UNUSED(a_mgr);
-  }
-
-  void RigidBodySystem::Pre_OnEvent(const event_type& a_event)
-  {
-    TLOC_UNUSED(a_event);
-  }
-
-  void RigidBodySystem::Post_OnEvent(const event_type& a_event)
-  {
-    using namespace tloc::core;
-    using namespace tloc::core::component_system;
-
-    typedef RigidBody                               rigid_body_type;
-    typedef rigid_body_type::rigid_body_value_type  rigid_body_value_type;
-
-    typedef rigid_body_value_type::rigid_body_value_type
-                                                    rigid_body_internal_type;
-
-    typedef rigid_body_type::rigid_body_def_type    rigid_body_def_type;
-
-    typedef rigid_body_def_type::rigid_body_def_value_type
-                                                    rigid_body_def_value_type;
-
-    event_value_type eventValueType = a_event.GetType();
-
-    switch(eventValueType)
-    {
-    case entity_events::insert_component:
-    case entity_events::remove_component:
-      {
-        const EntityComponentEvent& entEvent =
-          a_event.GetAs<EntityComponentEvent>();
-        const Entity* ent = entEvent.GetEntity();
-
-        ComponentMapper<rigid_body_type> rigidBodyComponents =
-          ent->GetComponents(components::k_rigid_body);
-
-        rigid_body_type& currRigidBodyComponent = rigidBodyComponents[0];
-        rigid_body_value_type& currRigidBody =
-          currRigidBodyComponent.GetRigidBodyValue();
-
-        if (eventValueType == entity_events::insert_component)
-        {
-          rigid_body_def_type& currRigidBodyDef =
-            currRigidBodyComponent.GetRigidBodyDef();
-
-          const rigid_body_def_value_type* currRigidBodyDefValue =
-            &currRigidBodyDef.GetRigidBodyDef();
-
-          rigid_body_internal_type* currRigidBodyInternal =
-            m_world->GetWorld().CreateBody(currRigidBodyDefValue);
-
-          currRigidBody.Initialize(currRigidBodyInternal);
-        }
-        else
-        {
-          rigid_body_internal_type* currRigidBodyInternal
-            = currRigidBody.GetInternalRigidBody();
-
-          m_world->GetWorld().DestroyBody(currRigidBodyInternal);
-
-          currRigidBody.Shutdown();
-        }
-
-        break;
-      }
-    }
   }
 
 };};};

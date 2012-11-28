@@ -7,6 +7,25 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  //------------------------------------------------------------------------
+  // Free Functions
+
+  typedef RigidBody                               rigid_body_component_type;
+
+  rigid_body_component_type&
+    GetRigidBodyComponent(const RigidBodySystem::entity_type* a_ent)
+  {
+    using namespace tloc::core::component_system;
+
+    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
+      a_ent->GetComponents(components::k_rigid_body);
+
+    return rigidBodyComponents[0];
+  }
+
+  //------------------------------------------------------------------------
+  // RigidBodySystem
+
   RigidBodySystem::RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
@@ -34,13 +53,7 @@ namespace tloc { namespace physics { namespace component_system {
     typedef rigid_body_def_type::rigid_body_def_value_type
                                                     rigid_body_def_internal_type;
 
-    // TODO: Make this into a function
-    const entity_type* ent = a_ent;
-
-    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
-      ent->GetComponents(components::k_rigid_body);
-
-    rigid_body_component_type& currRBComponent = rigidBodyComponents[0];
+    rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
     rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
 
     const rigid_body_def_type& currRBDef = currRBComponent.GetRigidBodyDef();
@@ -70,13 +83,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
 
-    // TODO: Make this into a function
-    const entity_type* ent = a_ent;
-
-    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
-      ent->GetComponents(components::k_rigid_body);
-
-    rigid_body_component_type& currRBComponent = rigidBodyComponents[0];
+    rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
     rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
 
     rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();

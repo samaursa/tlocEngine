@@ -116,7 +116,8 @@ namespace tloc { namespace physics { namespace box2d {
   protected:
     RigidBody();
 
-    error_type Initialize(rigid_body_internal_type* a_rigidBody);
+    error_type Initialize(rigid_body_internal_type* a_rigidBody, 
+                          component_system::RigidBody* a_parent);
     error_type Shutdown();
 
   protected:
@@ -124,6 +125,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     component_system::RigidBody* DoGetParent();
     void DoSetParent(component_system::RigidBody* a_parent);
+    void DoSetParentNull();
 
   private:
     core::utils::Checkpoints m_flags;

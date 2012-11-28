@@ -10,15 +10,13 @@ namespace tloc { namespace physics { namespace component_system {
   //------------------------------------------------------------------------
   // Free Functions
 
-  typedef RigidBody                               rigid_body_component_type;
-
-  rigid_body_component_type&
+  RigidBodySystem::rigid_body_component_type&
     GetRigidBodyComponent(const RigidBodySystem::entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
-    ComponentMapper<rigid_body_component_type> rigidBodyComponents =
-      a_ent->GetComponents(components::k_rigid_body);
+    ComponentMapper<RigidBodySystem::rigid_body_component_type>
+      rigidBodyComponents = a_ent->GetComponents(components::k_rigid_body);
 
     return rigidBodyComponents[0];
   }
@@ -37,64 +35,33 @@ namespace tloc { namespace physics { namespace component_system {
   RigidBodySystem::error_type
     RigidBodySystem::InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
-    using namespace tloc::core;
-    using namespace tloc::core::component_system;
-
-    typedef RigidBody                               rigid_body_component_type;
-
-    typedef rigid_body_component_type::rigid_body_value_type
-                                                    rigid_body_type;
-
-    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
-
-    typedef rigid_body_component_type::rigid_body_def_type
-                                                    rigid_body_def_type;
-
-    typedef rigid_body_def_type::rigid_body_def_value_type
-                                                    rigid_body_def_internal_type;
-
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
-    rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
 
-    const rigid_body_def_type& currRBDef = currRBComponent.GetRigidBodyDef();
-    const rigid_body_def_internal_type& currRBDefInternal =
-      currRBDef.GetRigidBodyDef();
+    error_type result = DoInitializeRigidBodyComponent(currRBComponent);
 
-    rigid_body_internal_type* currRBInternal =
-      m_world->GetWorld().CreateBody(&currRBDefInternal);
-
-    currRB.Initialize(currRBInternal);
+    if (result == ErrorSuccess())
+    {
+    }
 
     TLOC_UNUSED(a_mgr);
 
-    return ErrorSuccess();
+    return result;
   }
 
   RigidBodySystem::error_type
     RigidBodySystem::ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent )
   {
-    using namespace tloc::core;
-    using namespace tloc::core::component_system;
-
-    typedef RigidBody                               rigid_body_component_type;
-
-    typedef rigid_body_component_type::rigid_body_value_type
-                                                    rigid_body_type;
-
-    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
-
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
-    rigid_body_type& currRB = currRBComponent.GetRigidBodyValue();
 
-    rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+    error_type result = DoShutdownRigidBodyComponent(currRBComponent);
 
-    m_world->GetWorld().DestroyBody(currRBInternal);
-
-    currRB.Shutdown();
+    if (result == ErrorSuccess())
+    {
+    }
 
     TLOC_UNUSED(a_mgr);
 
-    return ErrorSuccess();
+    return result;
   }
 
   void RigidBodySystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
@@ -112,6 +79,54 @@ namespace tloc { namespace physics { namespace component_system {
     TLOC_UNUSED(currRigidBody);
 
     TLOC_UNUSED(a_mgr);
+  }
+
+  RigidBodySystem::error_type RigidBodySystem::
+    DoInitializeRigidBodyComponent(rigid_body_component_type& a_component)
+  {
+    using namespace tloc::core::component_system;
+
+    typedef rigid_body_component_type::rigid_body_value_type
+                                                    rigid_body_type;
+
+    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+
+    typedef rigid_body_component_type::rigid_body_def_type
+                                                    rigid_body_def_type;
+
+    typedef rigid_body_def_type::rigid_body_def_value_type
+                                                    rigid_body_def_internal_type;
+
+    rigid_body_type& currRB = a_component.GetRigidBodyValue();
+
+    const rigid_body_def_type& currRBDef = a_component.GetRigidBodyDef();
+    const rigid_body_def_internal_type& currRBDefInternal =
+      currRBDef.GetRigidBodyDef();
+
+    rigid_body_internal_type* currRBInternal =
+      m_world->GetWorld().CreateBody(&currRBDefInternal);
+
+    currRB.Initialize(currRBInternal);
+    return ErrorSuccess();
+  }
+
+  RigidBodySystem::error_type RigidBodySystem::
+    DoShutdownRigidBodyComponent(rigid_body_component_type& a_component)
+  {
+    using namespace tloc::core::component_system;
+
+    typedef rigid_body_component_type::rigid_body_value_type
+                                                    rigid_body_type;
+
+    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+
+    rigid_body_type& currRB = a_component.GetRigidBodyValue();
+    rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+
+    m_world->GetWorld().DestroyBody(currRBInternal);
+
+    currRB.Shutdown();
+    return ErrorSuccess();
   }
 
 };};};

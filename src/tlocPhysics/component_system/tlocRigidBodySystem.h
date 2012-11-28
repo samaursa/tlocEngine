@@ -10,6 +10,8 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  class RigidBody;
+
   class RigidBodySystem : public core::component_system::EntityProcessingSystem
   {
   public:
@@ -23,7 +25,9 @@ namespace tloc { namespace physics { namespace component_system {
     typedef base_type::event_type       event_type;
     typedef base_type::event_value_type event_value_type;
 
-    typedef box2d::World                       world_type;
+    typedef box2d::World                world_type;
+
+    typedef RigidBody                   rigid_body_component_type;
 
   public:
     RigidBodySystem
@@ -37,6 +41,13 @@ namespace tloc { namespace physics { namespace component_system {
                                       entity_type* a_ent);
 
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+
+  private:
+    error_type 
+      DoInitializeRigidBodyComponent(rigid_body_component_type& a_component);
+
+    error_type
+      DoShutdownRigidBodyComponent(rigid_body_component_type& a_component);
 
   private:
     world_type* m_world;

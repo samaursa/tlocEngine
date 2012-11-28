@@ -34,10 +34,10 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef RigidBodyDef  this_type;
-    typedef b2BodyDef     rigid_body_def_value_type;
+    typedef b2BodyDef     rigid_body_def_internal_type;
 
     typedef rigid_body::value_type  rigid_body_type_type;
-    typedef b2BodyType              rigid_body_value_type_type;
+    typedef b2BodyType              rigid_body_internal_type_type;
     typedef math::Vec2f32           vec_type;
     typedef f32                     float_type;
 
@@ -97,14 +97,14 @@ namespace tloc { namespace physics { namespace box2d {
 
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetBullet, m_rigidBodyDef.bullet);
-    
+
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetAllowsSleep, m_rigidBodyDef.allowSleep);
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetAwake, m_rigidBodyDef.awake);
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetActive, m_rigidBodyDef.active);
-    
+
     TLOC_DECL_AND_DEF_SETTER
       (bool,        SetFixedRotation, m_rigidBodyDef.fixedRotation);
 
@@ -113,10 +113,10 @@ namespace tloc { namespace physics { namespace box2d {
 
   protected:
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (rigid_body_def_value_type, GetRigidBodyDef, m_rigidBodyDef);
+      (rigid_body_def_internal_type, GetRigidBodyDef, m_rigidBodyDef);
 
   private:
-    rigid_body_def_value_type m_rigidBodyDef;
+    rigid_body_def_internal_type m_rigidBodyDef;
   };
 
 };};};

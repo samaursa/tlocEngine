@@ -256,7 +256,7 @@ namespace tloc { namespace physics { namespace box2d {
   TL_I void RigidBody::SetType(rigid_body_type_type a_type)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetType((rigid_body_value_type_type)a_type);
+    m_rigidBody->SetType((rigid_body_internal_type_type)a_type);
   }
 
   TL_I void RigidBody::SetBullet(bool a_flag)
@@ -297,7 +297,7 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   TL_I RigidBody::error_type
-    RigidBody::Initialize(rigid_body_value_type* a_rigidBody)
+    RigidBody::Initialize(rigid_body_internal_type* a_rigidBody)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
@@ -318,7 +318,7 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::rigid_body_value_type* RigidBody::GetInternalRigidBody()
+  TL_I RigidBody::rigid_body_internal_type* RigidBody::GetInternalRigidBody()
   {
     return m_rigidBody;
   }

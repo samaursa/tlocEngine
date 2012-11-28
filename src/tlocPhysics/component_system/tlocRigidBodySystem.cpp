@@ -3,7 +3,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
-#include <tlocPhysics/component_system/tlocFixtureComponent.h>
+#include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -86,18 +86,19 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_value_type
+    typedef rigid_body_component_type::rigid_body_type
                                                     rigid_body_type;
 
-    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+    typedef rigid_body_type::rigid_body_internal_type  
+                                                    rigid_body_internal_type;
 
     typedef rigid_body_component_type::rigid_body_def_type
                                                     rigid_body_def_type;
 
-    typedef rigid_body_def_type::rigid_body_def_value_type
+    typedef rigid_body_def_type::rigid_body_def_internal_type
                                                     rigid_body_def_internal_type;
 
-    rigid_body_type& currRB = a_component.GetRigidBodyValue();
+    rigid_body_type& currRB = a_component.GetRigidBody();
 
     const rigid_body_def_type& currRBDef = a_component.GetRigidBodyDef();
     const rigid_body_def_internal_type& currRBDefInternal =
@@ -115,12 +116,11 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_value_type
-                                                    rigid_body_type;
+    typedef rigid_body_component_type::rigid_body_type rigid_body_type;
 
-    typedef rigid_body_type::rigid_body_value_type  rigid_body_internal_type;
+    typedef rigid_body_type::rigid_body_internal_type  rigid_body_internal_type;
 
-    rigid_body_type& currRB = a_component.GetRigidBodyValue();
+    rigid_body_type& currRB = a_component.GetRigidBody();
     rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
 
     m_world->GetWorld().DestroyBody(currRBInternal);

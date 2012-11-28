@@ -18,8 +18,7 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef RigidBodyShape    this_type;
-    typedef b2FixtureDef  fixture_def_value_type;
-    typedef Shape         shape_type;
+    typedef Shape             shape_type;
 
     typedef f32 float_type;
 
@@ -36,7 +35,7 @@ namespace tloc { namespace physics { namespace box2d {
     void SetShape(const Shape* a_shape)
     {
       m_shape = a_shape;
-      m_fixtureDef.shape = m_shape->GetShapeValue();
+      m_fixtureDef.shape = m_shape->GetInternalShape();
     }
 
     TLOC_DECL_AND_DEF_GETTER(shape_type*, GetShape, m_shape);
@@ -53,11 +52,13 @@ namespace tloc { namespace physics { namespace box2d {
     //TODO: Set collision filter
 
   protected:
+    typedef b2FixtureDef      fixture_def_internal_type;
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (fixture_def_value_type, GetFixtureDef, m_fixtureDef);
+      (fixture_def_internal_type, GetFixtureDef, m_fixtureDef);
 
   private:
-    fixture_def_value_type m_fixtureDef;
+    fixture_def_internal_type m_fixtureDef;
     const shape_type* m_shape;
   };
 

@@ -14,7 +14,7 @@
 #include <Box2D/Dynamics/b2Body.h>
 
 namespace tloc { namespace physics { namespace component_system {
-  
+
   class RigidBodySystem;
   class RigidBody;
 
@@ -32,18 +32,23 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef RigidBody             this_type;
-    typedef b2Body                rigid_body_value_type;
+    typedef b2Body                rigid_body_internal_type;
     typedef core::error::Error    error_type;
 
     typedef f32                   float_type;
     typedef math::Vec2f           vec_type;
     typedef math::Radian32        angle_type;
 
-    typedef RigidBodyDef            rigid_body_def_type;
-    typedef rigid_body::value_type  rigid_body_type_type;
-    typedef b2BodyType              rigid_body_value_type_type;
-    typedef World                   world_type;
-  
+    typedef RigidBodyDef                       rigid_body_def_type;
+
+    typedef rigid_body_def_type::rigid_body_type_type
+                                               rigid_body_type_type;
+
+    typedef rigid_body_def_type::rigid_body_internal_type_type
+                                               rigid_body_internal_type_type;
+
+    typedef World                              world_type;
+
   public:
 
     void GetTransform(vec_type& a_position, angle_type& a_angle) const;
@@ -72,7 +77,7 @@ namespace tloc { namespace physics { namespace box2d {
     rigid_body_type_type GetType() const;
 
     bool IsBullet() const;
-    
+
     bool IsSleepingAllowed() const;
     bool IsAwake() const;
     bool IsActive() const;
@@ -101,28 +106,28 @@ namespace tloc { namespace physics { namespace box2d {
     void SetType(rigid_body_type_type a_type);
 
     void SetBullet(bool a_flag);
-    
+
     void SetSleepingAllowed(bool a_flag);
     void SetAwake(bool a_flag);
     void SetActive(bool a_flag);
-    
+
     void SetFixedRotation(bool a_flag);
 
   protected:
     RigidBody();
 
-    error_type Initialize(rigid_body_value_type* a_rigidBody);
+    error_type Initialize(rigid_body_internal_type* a_rigidBody);
     error_type Shutdown();
 
   protected:
-    rigid_body_value_type* GetInternalRigidBody();
+    rigid_body_internal_type* GetInternalRigidBody();
 
     component_system::RigidBody* DoGetParent();
     void DoSetParent(component_system::RigidBody* a_parent);
 
   private:
     core::utils::Checkpoints m_flags;
-    rigid_body_value_type* m_rigidBody;
+    rigid_body_internal_type* m_rigidBody;
 
   };
 

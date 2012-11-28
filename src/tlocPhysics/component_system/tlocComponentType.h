@@ -14,7 +14,7 @@ namespace tloc { namespace physics { namespace component_system {
     enum type
     {
       k_rigid_body = core::component_system::components_group::physics,
-      k_fixture,
+      k_rigid_body_shape,
 
       count
     }; typedef tl_int value_type;

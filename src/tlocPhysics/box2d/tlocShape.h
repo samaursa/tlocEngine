@@ -16,8 +16,8 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef Shape   this_type;
-    typedef b2Shape shape_value_type;
-    
+    typedef b2Shape shape_internal_type;
+
     typedef f32     float_type;
 
   public:
@@ -29,7 +29,7 @@ namespace tloc { namespace physics { namespace box2d {
     virtual TLOC_DECL_SETTER(float_type, SetRadius) = 0;
 
   protected:
-    virtual const shape_value_type* GetShapeValue() const = 0;
+    virtual const shape_internal_type* GetInternalShape() const = 0;
 
   };
 

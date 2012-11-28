@@ -962,11 +962,11 @@
 					Name="fixture"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixtureComponent.cpp"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyShapeComponent.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocFixtureComponent.h"
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyShapeComponent.h"
 						>
 					</File>
 				</Filter>

@@ -6,32 +6,26 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
-#include <Box2D/Dynamics/b2Fixture.h>
-
+#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
   class RigidBodyShape : public core::component_system::Component_T<RigidBodyShape>
   {
   public:
-    typedef core::component_system::Component_T<RigidBodyShape>  base_type;
-    typedef b2FixtureDef                                  rigid_body_shape_type;
-    typedef b2Fixture                                     fixture_type;
+    typedef core::component_system::Component_T<RigidBodyShape> base_type;
+    
+    typedef RigidBodyShape        this_type;
+    typedef box2d::RigidBodyShape rigid_body_shape_type;
 
   public:
-    RigidBodyShape(const rigid_body_shape_type& a_box2dFixtureDef);
+    RigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape);
 
-    TLOC_DECL_AND_DEF_GETTER(rigid_body_shape_type, GetBox2dFixtureDef,
-                             m_box2dFixtureDef);
-    TLOC_DECL_AND_DEF_GETTER(fixture_type*, GetBox2dFixture,
-                             m_box2dFixture);
-
-    void SetBox2dFixture(fixture_type* a_box2dFixture);
-    void SetBox2dFixtureToNull();
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (rigid_body_shape_type, GetRigidBodyShape, m_rigidBodyShape);
 
   private:
-    rigid_body_shape_type m_box2dFixtureDef;
-    fixture_type* m_box2dFixture;
+    rigid_body_shape_type m_rigidBodyShape;
   };
 
 };};};

@@ -10,6 +10,7 @@
 #include <tlocPhysics/box2d/tlocWorld.h>
 #include <Box2D/Common/b2Math.h>
 
+
 namespace tloc { namespace physics { namespace box2d {
 
   //////////////////////////////////////////////////////////////////////////
@@ -33,6 +34,17 @@ namespace tloc { namespace physics { namespace box2d {
   //////////////////////////////////////////////////////////////////////////
   // RigidBody
 
+  TL_I RigidBody::error_type 
+    RigidBody::CreateRigidBodyShape(rigid_body_shape_type& a_rigidBodyShape)
+  {
+    typedef rigid_body_shape_type::fixture_def_internal_type
+      fixture_def_internal_type;
+    const fixture_def_internal_type& fixtureDef = 
+      a_rigidBodyShape.GetFixtureDef();
+
+    m_rigidBody->CreateFixture(&fixtureDef);
+  }
+  
   TL_I void RigidBody::GetTransform(vec_type& a_position, angle_type& a_angle) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();

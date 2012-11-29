@@ -89,7 +89,7 @@ namespace tloc { namespace physics { namespace component_system {
     typedef rigid_body_component_type::rigid_body_type
                                                     rigid_body_type;
 
-    typedef rigid_body_type::rigid_body_internal_type  
+    typedef rigid_body_type::rigid_body_internal_type
                                                     rigid_body_internal_type;
 
     typedef rigid_body_component_type::rigid_body_def_type
@@ -107,7 +107,7 @@ namespace tloc { namespace physics { namespace component_system {
     rigid_body_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
 
-    currRB.Initialize(currRBInternal);
+    currRB.Initialize(currRBInternal, &a_component);
     return ErrorSuccess();
   }
 

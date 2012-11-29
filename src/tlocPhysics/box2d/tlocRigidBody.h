@@ -10,6 +10,7 @@
 #include <tlocMath/angle/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
+#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
 
 #include <Box2D/Dynamics/b2Body.h>
 
@@ -47,7 +48,12 @@ namespace tloc { namespace physics { namespace box2d {
     typedef rigid_body_def_type::rigid_body_internal_type_type
                                                rigid_body_internal_type_type;
 
+    typedef RigidBodyShape                     rigid_body_shape_type;
+
     typedef World                              world_type;
+
+  public:
+    error_type CreateRigidBodyShape(rigid_body_shape_type& a_rigidBodyShape);
 
   public:
 

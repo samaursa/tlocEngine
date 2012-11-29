@@ -6,6 +6,7 @@
 #endif
 
 #include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/matrix/tlocMatrix2.inl>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
 #include <Box2D/Common/b2Math.h>
@@ -45,6 +46,14 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBody->CreateFixture(&fixtureDef);
     return ErrorSuccess();
   }
+
+  TL_I void RigidBody::
+    GetTransform(vec_type& a_position, matrix_type& a_orientation) const
+  {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
+    GetPosition(a_position);
+    GetOrientation(a_orientation);
+  }
   
   TL_I void RigidBody::GetTransform(vec_type& a_position, angle_type& a_angle) const
   {
@@ -60,6 +69,17 @@ namespace tloc { namespace physics { namespace box2d {
     const b2Vec2& position = m_rigidBody->GetTransform().p;
     a_position[0] = position.x;
     a_position[1] = position.y;
+  }
+
+  TL_I void RigidBody::GetOrientation(matrix_type& a_orientation) const
+  {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
+
+    const b2Rot& orientation = m_rigidBody->GetTransform().q;
+    float_type values[4] = {orientation.c, -orientation.s,
+                            orientation.s,  orientation.c};
+
+    a_orientation.Set(values, matrix_type::k_RowMajor);
   }
 
   TL_I RigidBody::angle_type RigidBody::GetAngle() const

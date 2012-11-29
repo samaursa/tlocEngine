@@ -7,6 +7,7 @@
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/matrix/tlocMatrix2.h>
 #include <tlocMath/angle/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
@@ -37,7 +38,8 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::error::Error    error_type;
 
     typedef f32                   float_type;
-    typedef math::Vec2f           vec_type;
+    typedef math::Vec2f32         vec_type;
+    typedef math::Mat2f32         matrix_type;
     typedef math::Radian32        angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
@@ -57,9 +59,11 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
 
+    void GetTransform(vec_type& a_position, matrix_type& a_orientation) const;
     void GetTransform(vec_type& a_position, angle_type& a_angle) const;
 
     void GetPosition(math::Vec2f& a_position) const;
+    void GetOrientation(matrix_type& a_orientation) const;
     angle_type GetAngle() const;
 
     void GetCenterOfMassWorld(vec_type& a_center) const;
@@ -122,7 +126,7 @@ namespace tloc { namespace physics { namespace box2d {
   protected:
     RigidBody();
 
-    error_type Initialize(rigid_body_internal_type* a_rigidBody, 
+    error_type Initialize(rigid_body_internal_type* a_rigidBody,
                           component_system::RigidBody* a_parent);
     error_type Shutdown();
 

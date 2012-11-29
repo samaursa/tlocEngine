@@ -43,6 +43,7 @@ namespace tloc { namespace physics { namespace box2d {
       a_rigidBodyShape.GetFixtureDef();
 
     m_rigidBody->CreateFixture(&fixtureDef);
+    return ErrorSuccess();
   }
   
   TL_I void RigidBody::GetTransform(vec_type& a_position, angle_type& a_angle) const

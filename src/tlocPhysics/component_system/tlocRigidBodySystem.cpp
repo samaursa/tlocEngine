@@ -21,6 +21,47 @@ namespace tloc { namespace physics { namespace component_system {
     return rigidBodyComponents[0];
   }
 
+  RigidBodySystem::error_type
+    InitializeRigidBodyShapeComponents(const RigidBodySystem::entity_type* a_ent)
+  {
+    using namespace tloc::core::component_system;
+
+    typedef RigidBodySystem::rigid_body_component_type  rb_component_type;
+    typedef rb_component_type::rigid_body_type          rb_type;
+    typedef rb_type::error_type                         error_type;
+
+    typedef RigidBodySystem::rigid_body_shape_component_type
+                                                        rb_shape_component_type;
+    typedef rb_shape_component_type::rigid_body_shape_type
+                                                        rb_shape_type;
+
+    typedef ComponentMapper<rb_shape_component_type>    component_mapper_type;
+    typedef component_mapper_type::size_type            size_type;
+
+    rb_component_type& rbComponent = GetRigidBodyComponent(a_ent);
+    rb_type& rb = rbComponent.GetRigidBody();
+
+    ComponentMapper<rb_shape_component_type> rigidBodyShapeComponents =
+      a_ent->GetComponents(components::k_rigid_body_shape);
+
+    size_type numComponents = rigidBodyShapeComponents.size();
+    error_type result;
+
+    for (size_type i = 0; i < numComponents; ++i)
+    {
+      rb_shape_type rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+
+      result = rb.CreateRigidBodyShape(rbShape);
+
+      if (result != ErrorSuccess())
+      {
+        break;
+      }
+    }
+
+    return result;
+  }
+
   //------------------------------------------------------------------------
   // RigidBodySystem
 
@@ -41,6 +82,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     if (result == ErrorSuccess())
     {
+      result = InitializeRigidBodyShapeComponents(a_ent);
     }
 
     TLOC_UNUSED(a_mgr);
@@ -57,6 +99,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     if (result == ErrorSuccess())
     {
+
     }
 
     TLOC_UNUSED(a_mgr);

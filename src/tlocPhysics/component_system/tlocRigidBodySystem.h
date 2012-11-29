@@ -11,6 +11,7 @@
 namespace tloc { namespace physics { namespace component_system {
 
   class RigidBody;
+  class RigidBodyShape;
 
   class RigidBodySystem : public core::component_system::EntityProcessingSystem
   {
@@ -28,6 +29,7 @@ namespace tloc { namespace physics { namespace component_system {
     typedef box2d::World                world_type;
 
     typedef RigidBody                   rigid_body_component_type;
+    typedef RigidBodyShape              rigid_body_shape_component_type;
 
   public:
     RigidBodySystem

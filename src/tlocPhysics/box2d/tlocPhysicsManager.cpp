@@ -19,24 +19,28 @@ namespace tloc { namespace physics { namespace box2d {
   {
   }
 
-  PhysicsManager::~PhysicsManager()
-  {
-    delete m_world;
-  }
-
-  PhysicsManager::error_type 
-    PhysicsManager::Initialize(gravity a_gravity, 
-                               velocity_iterations a_velocityIterations, 
+  PhysicsManager::error_type
+    PhysicsManager::Initialize(gravity a_gravity,
+                               velocity_iterations a_velocityIterations,
                                position_iterations a_positionIterations)
   {
-    TLOC_ASSERT(!m_flags[initialized], 
+    TLOC_ASSERT(!m_flags[initialized],
                 "PhysicsManager has already been initialized!");
 
     m_world = new World(a_gravity);
     m_velocityIterations = a_velocityIterations;
     m_positionIterations = a_positionIterations;
-    
+
     m_flags.Mark(initialized);
+    return ErrorSuccess();
+  }
+
+  PhysicsManager::error_type PhysicsManager::Shutdown()
+  {
+    TLOC_ASSERT(m_flags[initialized],
+                "PhysicsManager has not been initialized!");
+
+    delete m_world;
     return ErrorSuccess();
   }
 
@@ -45,7 +49,7 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT(m_flags[initialized], "PhysicsManager is not initialized!");
     TLOC_ASSERT_NOT_NULL(m_world);
 
-    m_world->GetWorld().Step(a_timeStep, 
+    m_world->GetWorld().Step(a_timeStep,
                              m_velocityIterations, m_positionIterations);
   }
 

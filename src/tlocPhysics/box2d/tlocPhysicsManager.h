@@ -30,11 +30,12 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     PhysicsManager();
-    ~PhysicsManager();
 
     error_type Initialize(gravity a_gravity, 
                           velocity_iterations a_vel = velocity_iterations(8), 
                           position_iterations a_pos = position_iterations(3));
+
+    error_type Shutdown();
 
     void Update(tl_float a_timeStep);
 

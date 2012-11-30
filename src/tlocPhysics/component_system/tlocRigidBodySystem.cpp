@@ -2,6 +2,9 @@
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
+#include <tlocMath/component_system/tlocComponentType.h>
+#include <tlocMath/component_system/tlocTransform.h>
+
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 
@@ -109,17 +112,38 @@ namespace tloc { namespace physics { namespace component_system {
 
   void RigidBodySystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
-    using namespace tloc::core;
     using namespace tloc::core::component_system;
 
+    typedef rigid_body_component_type::rigid_body_type  rb_type;
+    typedef tloc::math::component_system::Transform     transform_type;
+    typedef transform_type::real_type                   real_type;
+
+    rigid_body_component_type& rbComponent = GetRigidBodyComponent(a_ent);
+    rb_type& rb = rbComponent.GetRigidBody();
+
+    rb_type::vec_type     rbPosition;
+    rb_type::matrix_type  rbOrientation;
+
+    rb.GetTransform(rbPosition, rbOrientation);
+
     const entity_type* ent = a_ent;
-    ComponentMapper<RigidBody> rigidBodyComponents =
-      ent->GetComponents(components::k_rigid_body);
 
-    RigidBody& currRigidBody = rigidBodyComponents[0];
+    ComponentMapper<transform_type> transformComponents =
+      ent->GetComponents(tloc::math::component_system::components::transform);
 
-    // Transfer the transform to the transform component
-    TLOC_UNUSED(currRigidBody);
+    transform_type& transform = transformComponents[0];
+
+    transform_type::position_type position((real_type)rbPosition[0],
+                                           (real_type)rbPosition[1],
+                                           transform.GetPosition()[2]);
+
+    transform_type::orientation_type orientation
+      ((real_type)rbOrientation[0], (real_type)rbOrientation[2], (real_type)0,
+       (real_type)rbOrientation[1], (real_type)rbOrientation[3], (real_type)0,
+       (real_type)0,                (real_type)0,                (real_type)1);
+
+    transform.SetPosition(position);
+    transform.SetOrientation(orientation);
 
     TLOC_UNUSED(a_mgr);
   }

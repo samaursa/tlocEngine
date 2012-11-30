@@ -35,12 +35,14 @@ namespace tloc { namespace physics { namespace box2d {
   //////////////////////////////////////////////////////////////////////////
   // RigidBody
 
-  TL_I RigidBody::error_type 
+  TL_I RigidBody::error_type
     RigidBody::CreateRigidBodyShape(rigid_body_shape_type& a_rigidBodyShape)
   {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
+
     typedef rigid_body_shape_type::fixture_def_internal_type
       fixture_def_internal_type;
-    const fixture_def_internal_type& fixtureDef = 
+    const fixture_def_internal_type& fixtureDef =
       a_rigidBodyShape.GetFixtureDef();
 
     m_rigidBody->CreateFixture(&fixtureDef);
@@ -54,7 +56,7 @@ namespace tloc { namespace physics { namespace box2d {
     GetPosition(a_position);
     GetOrientation(a_orientation);
   }
-  
+
   TL_I void RigidBody::GetTransform(vec_type& a_position, angle_type& a_angle) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
@@ -330,7 +332,7 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   TL_I RigidBody::error_type
-    RigidBody::Initialize(rigid_body_internal_type* a_rigidBody, 
+    RigidBody::Initialize(rigid_body_internal_type* a_rigidBody,
                           component_system::RigidBody* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();

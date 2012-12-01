@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="tlocPlatform"
+	Name="tlocPrefab"
 	ProjectGUID="{31FD3057-FF46-432C-9900-4450CC7D15AE}"
-	RootNamespace="tlocPlatform"
+	RootNamespace="tlocPrefab"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -217,7 +217,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\..\src\tlocPlatform\placeholder.txt"
+			RelativePath="..\..\..\..\src\tlocPrefab\placeholder.txt"
 			>
 		</File>
 	</Files>

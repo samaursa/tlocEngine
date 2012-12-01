@@ -67,6 +67,22 @@ namespace tloc { namespace physics { namespace box2d {
     return *m_world;
   }
 
+  void PhysicsManager::SendOnContactBegin(const contact_event_type& a_event)
+  {
+    for (size_type i = 0; i < m_allObservers.size(); ++i)
+    {
+      m_allObservers[i]->OnContactBegin(a_event);
+    }
+  }
+
+  void PhysicsManager::SendOnContactEnd(const contact_event_type& a_event)
+  {
+    for (size_type i = 0; i < m_allObservers.size(); ++i)
+    {
+      m_allObservers[i]->OnContactEnd(a_event);
+    }
+  }
+
 };};};
 
 #include <tlocCore/types/tlocStrongType.inl>

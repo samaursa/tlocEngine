@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9734BB1E162580D3003956FE /* tlocPythagoras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB1C162580D3003956FE /* tlocPythagoras.cpp */; };
+		9734BB1F162580D3003956FE /* tlocPythagoras.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB1D162580D3003956FE /* tlocPythagoras.h */; };
+		97C87CD315DE49C500FE0A6C /* tlocMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CD015DE49C500FE0A6C /* tlocMath.cpp */; };
+		97C87CD415DE49C500FE0A6C /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CD115DE49C500FE0A6C /* tlocDepVersionCheck.cpp */; };
+		97C87CD515DE49C500FE0A6C /* tlocMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CD215DE49C500FE0A6C /* tlocMath.h */; };
+		97C87CE115DE49F300FE0A6C /* tlocVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CD815DE49F300FE0A6C /* tlocVector.h */; };
+		97C87CE215DE49F300FE0A6C /* tlocVector3.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CDA15DE49F300FE0A6C /* tlocVector3.h */; };
+		97C87CE315DE49F300FE0A6C /* tlocVector2.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CDC15DE49F300FE0A6C /* tlocVector2.h */; };
+		97C87CE415DE49F300FE0A6C /* tlocVector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CDD15DE49F300FE0A6C /* tlocVector2.cpp */; };
+		97C87CE515DE49F300FE0A6C /* tlocVector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CDF15DE49F300FE0A6C /* tlocVector3.cpp */; };
+		97C87CE615DE49F300FE0A6C /* tlocVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CE015DE49F300FE0A6C /* tlocVector.cpp */; };
+		97C87CF015DE4A7E00FE0A6C /* tlocMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CE715DE4A7E00FE0A6C /* tlocMatrix.h */; };
+		97C87CF115DE4A7E00FE0A6C /* tlocMatrix2.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CEB15DE4A7E00FE0A6C /* tlocMatrix2.h */; };
+		97C87CF215DE4A7E00FE0A6C /* tlocMatrix3.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CEC15DE4A7E00FE0A6C /* tlocMatrix3.h */; };
+		97C87CF315DE4A7E00FE0A6C /* tlocMatrix2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CED15DE4A7E00FE0A6C /* tlocMatrix2.cpp */; };
+		97C87CF415DE4A7E00FE0A6C /* tlocMatrix3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CEE15DE4A7E00FE0A6C /* tlocMatrix3.cpp */; };
+		97C87CF515DE4A7E00FE0A6C /* tlocMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CEF15DE4A7E00FE0A6C /* tlocMatrix.cpp */; };
+		97CC765D157DD64400764CF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC765C157DD64400764CF3 /* Foundation.framework */; };
+		97F90644161D0F7300BD8A39 /* tlocAngle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90640161D0F7300BD8A39 /* tlocAngle.cpp */; };
+		97F90645161D0F7300BD8A39 /* tlocAngle.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90641161D0F7300BD8A39 /* tlocAngle.h */; };
+		97F90646161D0F7300BD8A39 /* tlocAngleExplicitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */; };
+		97F9064A161D1E8F00BD8A39 /* tlocVector4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */; };
+		97F9064B161D1E8F00BD8A39 /* tlocVector4.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90648161D1E8F00BD8A39 /* tlocVector4.h */; };
+		97F9064F161D1EA200BD8A39 /* tlocMatrix4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */; };
+		97F90650161D1EA200BD8A39 /* tlocMatrix4.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9734BB1C162580D3003956FE /* tlocPythagoras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPythagoras.cpp; path = ../../../../src/tlocMath/utilities/tlocPythagoras.cpp; sourceTree = "<group>"; };
+		9734BB1D162580D3003956FE /* tlocPythagoras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPythagoras.h; path = ../../../../src/tlocMath/utilities/tlocPythagoras.h; sourceTree = "<group>"; };
+		97C87CCF15DE49C500FE0A6C /* tlocMath.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMath.inl; path = ../../../../src/tlocMath/tlocMath.inl; sourceTree = "<group>"; };
+		97C87CD015DE49C500FE0A6C /* tlocMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMath.cpp; path = ../../../../src/tlocMath/tlocMath.cpp; sourceTree = "<group>"; };
+		97C87CD115DE49C500FE0A6C /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocMath/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
+		97C87CD215DE49C500FE0A6C /* tlocMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMath.h; path = ../../../../src/tlocMath/tlocMath.h; sourceTree = "<group>"; };
+		97C87CD815DE49F300FE0A6C /* tlocVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector.h; path = ../../../../src/tlocMath/vector/tlocVector.h; sourceTree = "<group>"; };
+		97C87CD915DE49F300FE0A6C /* tlocVector.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocVector.inl; path = ../../../../src/tlocMath/vector/tlocVector.inl; sourceTree = "<group>"; };
+		97C87CDA15DE49F300FE0A6C /* tlocVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector3.h; path = ../../../../src/tlocMath/vector/tlocVector3.h; sourceTree = "<group>"; };
+		97C87CDB15DE49F300FE0A6C /* tlocVector3.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocVector3.inl; path = ../../../../src/tlocMath/vector/tlocVector3.inl; sourceTree = "<group>"; };
+		97C87CDC15DE49F300FE0A6C /* tlocVector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector2.h; path = ../../../../src/tlocMath/vector/tlocVector2.h; sourceTree = "<group>"; };
+		97C87CDD15DE49F300FE0A6C /* tlocVector2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector2.cpp; path = ../../../../src/tlocMath/vector/tlocVector2.cpp; sourceTree = "<group>"; };
+		97C87CDE15DE49F300FE0A6C /* tlocVector2.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocVector2.inl; path = ../../../../src/tlocMath/vector/tlocVector2.inl; sourceTree = "<group>"; };
+		97C87CDF15DE49F300FE0A6C /* tlocVector3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector3.cpp; path = ../../../../src/tlocMath/vector/tlocVector3.cpp; sourceTree = "<group>"; };
+		97C87CE015DE49F300FE0A6C /* tlocVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector.cpp; path = ../../../../src/tlocMath/vector/tlocVector.cpp; sourceTree = "<group>"; };
+		97C87CE715DE4A7E00FE0A6C /* tlocMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMatrix.h; path = ../../../../src/tlocMath/matrix/tlocMatrix.h; sourceTree = "<group>"; };
+		97C87CE815DE4A7E00FE0A6C /* tlocMatrix.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMatrix.inl; path = ../../../../src/tlocMath/matrix/tlocMatrix.inl; sourceTree = "<group>"; };
+		97C87CE915DE4A7E00FE0A6C /* tlocMatrix2.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMatrix2.inl; path = ../../../../src/tlocMath/matrix/tlocMatrix2.inl; sourceTree = "<group>"; };
+		97C87CEA15DE4A7E00FE0A6C /* tlocMatrix3.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMatrix3.inl; path = ../../../../src/tlocMath/matrix/tlocMatrix3.inl; sourceTree = "<group>"; };
+		97C87CEB15DE4A7E00FE0A6C /* tlocMatrix2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMatrix2.h; path = ../../../../src/tlocMath/matrix/tlocMatrix2.h; sourceTree = "<group>"; };
+		97C87CEC15DE4A7E00FE0A6C /* tlocMatrix3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMatrix3.h; path = ../../../../src/tlocMath/matrix/tlocMatrix3.h; sourceTree = "<group>"; };
+		97C87CED15DE4A7E00FE0A6C /* tlocMatrix2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix2.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix2.cpp; sourceTree = "<group>"; };
+		97C87CEE15DE4A7E00FE0A6C /* tlocMatrix3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix3.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix3.cpp; sourceTree = "<group>"; };
+		97C87CEF15DE4A7E00FE0A6C /* tlocMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix.cpp; sourceTree = "<group>"; };
+		97CC7659157DD64400764CF3 /* tlocMath_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocMath_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97CC765C157DD64400764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97F90640161D0F7300BD8A39 /* tlocAngle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAngle.cpp; path = ../../../../src/tlocMath/angle/tlocAngle.cpp; sourceTree = "<group>"; };
+		97F90641161D0F7300BD8A39 /* tlocAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngle.h; path = ../../../../src/tlocMath/angle/tlocAngle.h; sourceTree = "<group>"; };
+		97F90642161D0F7300BD8A39 /* tlocAngle.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAngle.inl; path = ../../../../src/tlocMath/angle/tlocAngle.inl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngleExplicitMacros.h; path = ../../../../src/tlocMath/angle/tlocAngleExplicitMacros.h; sourceTree = "<group>"; };
+		97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector4.cpp; path = ../../../../src/tlocMath/vector/tlocVector4.cpp; sourceTree = "<group>"; };
+		97F90648161D1E8F00BD8A39 /* tlocVector4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector4.h; path = ../../../../src/tlocMath/vector/tlocVector4.h; sourceTree = "<group>"; };
+		97F90649161D1E8F00BD8A39 /* tlocVector4.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocVector4.inl; path = ../../../../src/tlocMath/vector/tlocVector4.inl; sourceTree = "<group>"; };
+		97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMatrix4.cpp; path = ../../../../src/tlocMath/matrix/tlocMatrix4.cpp; sourceTree = "<group>"; };
+		97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMatrix4.h; path = ../../../../src/tlocMath/matrix/tlocMatrix4.h; sourceTree = "<group>"; };
+		97F9064E161D1EA200BD8A39 /* tlocMatrix4.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMatrix4.inl; path = ../../../../src/tlocMath/matrix/tlocMatrix4.inl; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97CC7656157DD64400764CF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97CC765D157DD64400764CF3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9734BB1B162580B0003956FE /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9734BB1C162580D3003956FE /* tlocPythagoras.cpp */,
+				9734BB1D162580D3003956FE /* tlocPythagoras.h */,
+			);
+			name = utilities;
+			sourceTree = "<group>";
+		};
+		97C87BE015DE3DA800FE0A6C /* tlocMath */ = {
+			isa = PBXGroup;
+			children = (
+				97F9063E161D0F5900BD8A39 /* angle */,
+				97C87CD715DE49D200FE0A6C /* matrix */,
+				9734BB1B162580B0003956FE /* utilities */,
+				97C87CD615DE49C800FE0A6C /* vector */,
+				97C87CCF15DE49C500FE0A6C /* tlocMath.inl */,
+				97C87CD015DE49C500FE0A6C /* tlocMath.cpp */,
+				97C87CD115DE49C500FE0A6C /* tlocDepVersionCheck.cpp */,
+				97C87CD215DE49C500FE0A6C /* tlocMath.h */,
+			);
+			name = tlocMath;
+			sourceTree = "<group>";
+		};
+		97C87CD615DE49C800FE0A6C /* vector */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CD815DE49F300FE0A6C /* tlocVector.h */,
+				97C87CD915DE49F300FE0A6C /* tlocVector.inl */,
+				97C87CE015DE49F300FE0A6C /* tlocVector.cpp */,
+				97C87CDC15DE49F300FE0A6C /* tlocVector2.h */,
+				97C87CDE15DE49F300FE0A6C /* tlocVector2.inl */,
+				97C87CDD15DE49F300FE0A6C /* tlocVector2.cpp */,
+				97C87CDA15DE49F300FE0A6C /* tlocVector3.h */,
+				97C87CDB15DE49F300FE0A6C /* tlocVector3.inl */,
+				97C87CDF15DE49F300FE0A6C /* tlocVector3.cpp */,
+				97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */,
+				97F90648161D1E8F00BD8A39 /* tlocVector4.h */,
+				97F90649161D1E8F00BD8A39 /* tlocVector4.inl */,
+			);
+			name = vector;
+			sourceTree = "<group>";
+		};
+		97C87CD715DE49D200FE0A6C /* matrix */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CE715DE4A7E00FE0A6C /* tlocMatrix.h */,
+				97C87CE815DE4A7E00FE0A6C /* tlocMatrix.inl */,
+				97C87CEF15DE4A7E00FE0A6C /* tlocMatrix.cpp */,
+				97C87CEB15DE4A7E00FE0A6C /* tlocMatrix2.h */,
+				97C87CE915DE4A7E00FE0A6C /* tlocMatrix2.inl */,
+				97C87CED15DE4A7E00FE0A6C /* tlocMatrix2.cpp */,
+				97C87CEC15DE4A7E00FE0A6C /* tlocMatrix3.h */,
+				97C87CEA15DE4A7E00FE0A6C /* tlocMatrix3.inl */,
+				97C87CEE15DE4A7E00FE0A6C /* tlocMatrix3.cpp */,
+				97F9064C161D1EA200BD8A39 /* tlocMatrix4.cpp */,
+				97F9064D161D1EA200BD8A39 /* tlocMatrix4.h */,
+				97F9064E161D1EA200BD8A39 /* tlocMatrix4.inl */,
+			);
+			name = matrix;
+			sourceTree = "<group>";
+		};
+		97CC764E157DD64400764CF3 = {
+			isa = PBXGroup;
+			children = (
+				97C87BE015DE3DA800FE0A6C /* tlocMath */,
+				97CC765B157DD64400764CF3 /* Frameworks */,
+				97CC765A157DD64400764CF3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97CC765A157DD64400764CF3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97CC7659157DD64400764CF3 /* tlocMath_Debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97CC765B157DD64400764CF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97CC765C157DD64400764CF3 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97F9063E161D0F5900BD8A39 /* angle */ = {
+			isa = PBXGroup;
+			children = (
+				97F90640161D0F7300BD8A39 /* tlocAngle.cpp */,
+				97F90641161D0F7300BD8A39 /* tlocAngle.h */,
+				97F90642161D0F7300BD8A39 /* tlocAngle.inl */,
+				97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */,
+			);
+			name = angle;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		97CC7657157DD64400764CF3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87CD515DE49C500FE0A6C /* tlocMath.h in Headers */,
+				97C87CE115DE49F300FE0A6C /* tlocVector.h in Headers */,
+				97C87CE215DE49F300FE0A6C /* tlocVector3.h in Headers */,
+				97C87CE315DE49F300FE0A6C /* tlocVector2.h in Headers */,
+				97C87CF015DE4A7E00FE0A6C /* tlocMatrix.h in Headers */,
+				97C87CF115DE4A7E00FE0A6C /* tlocMatrix2.h in Headers */,
+				97C87CF215DE4A7E00FE0A6C /* tlocMatrix3.h in Headers */,
+				97F90645161D0F7300BD8A39 /* tlocAngle.h in Headers */,
+				97F90646161D0F7300BD8A39 /* tlocAngleExplicitMacros.h in Headers */,
+				97F9064B161D1E8F00BD8A39 /* tlocVector4.h in Headers */,
+				97F90650161D1EA200BD8A39 /* tlocMatrix4.h in Headers */,
+				9734BB1F162580D3003956FE /* tlocPythagoras.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		97CC7658157DD64400764CF3 /* tlocMath */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97CC7666157DD64400764CF3 /* Build configuration list for PBXNativeTarget "tlocMath" */;
+			buildPhases = (
+				97CC7655157DD64400764CF3 /* Sources */,
+				97CC7656157DD64400764CF3 /* Frameworks */,
+				97CC7657157DD64400764CF3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocMath;
+			productName = tlocMath;
+			productReference = 97CC7659157DD64400764CF3 /* tlocMath_Debug.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97CC7650157DD64400764CF3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 97CC7653157DD64400764CF3 /* Build configuration list for PBXProject "tlocMath" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97CC764E157DD64400764CF3;
+			productRefGroup = 97CC765A157DD64400764CF3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97CC7658157DD64400764CF3 /* tlocMath */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97CC7655157DD64400764CF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87CD315DE49C500FE0A6C /* tlocMath.cpp in Sources */,
+				97C87CD415DE49C500FE0A6C /* tlocDepVersionCheck.cpp in Sources */,
+				97C87CE415DE49F300FE0A6C /* tlocVector2.cpp in Sources */,
+				97C87CE515DE49F300FE0A6C /* tlocVector3.cpp in Sources */,
+				97C87CE615DE49F300FE0A6C /* tlocVector.cpp in Sources */,
+				97C87CF315DE4A7E00FE0A6C /* tlocMatrix2.cpp in Sources */,
+				97C87CF415DE4A7E00FE0A6C /* tlocMatrix3.cpp in Sources */,
+				97C87CF515DE4A7E00FE0A6C /* tlocMatrix.cpp in Sources */,
+				97F90644161D0F7300BD8A39 /* tlocAngle.cpp in Sources */,
+				97F9064A161D1E8F00BD8A39 /* tlocVector4.cpp in Sources */,
+				97F9064F161D1EA200BD8A39 /* tlocMatrix4.cpp in Sources */,
+				9734BB1E162580D3003956FE /* tlocPythagoras.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		97CC7664157DD64400764CF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
+					TLOC_DEBUG,
+					GLEW_STATIC,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+			};
+			name = Debug;
+		};
+		97CC7665157DD64400764CF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
+					TLOC_RELEASE,
+					GLEW_STATIC,
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97CC7667157DD64400764CF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocMath.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		97CC7668157DD64400764CF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocMath.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97CC7653157DD64400764CF3 /* Build configuration list for PBXProject "tlocMath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97CC7664157DD64400764CF3 /* Debug */,
+				97CC7665157DD64400764CF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97CC7666157DD64400764CF3 /* Build configuration list for PBXNativeTarget "tlocMath" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97CC7667157DD64400764CF3 /* Debug */,
+				97CC7668157DD64400764CF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97CC7650157DD64400764CF3 /* Project object */;
+}

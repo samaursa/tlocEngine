@@ -6,12 +6,13 @@ ECHO ---------------------------------------------------------------------------
 ECHO.
 
 :: File path for the dependency revision number
-SET dependencyFilePath=%TLOC_PATH%/tlocDep.txt
-SET dependencyRootPath=%TLOC_DEP_PATH%
+SET depFilePath=%TLOC_PATH%/tlocDep.txt
+SET depVerCheck=%TLOC_PATH%/src/tlocCore/tlocDepVersionCheck.cpp
+SET depRootPath=%TLOC_DEP_PATH%
 
 :: Check if directory exists
-IF NOT EXIST %dependencyRootPath% (
-	ECHO ERROR: Non-existent dependency folder: %dependencyRootPath%
+IF NOT EXIST %depRootPath% (
+	ECHO ERROR: Non-existent dependency folder: %depRootPath%
 	EXIT /b 1
 )
 
@@ -22,7 +23,7 @@ SET dependencyIDFile=id.txt
 SetLocal EnableDelayedExpansion
 ::This line is just in case n has been defined before the batch file is run
 SET n=
-SET _InputFile=%dependencyFilePath%
+SET _InputFile=%depFilePath%
 FOR /F "tokens=*" %%I IN (%_InputFile%) DO (
 SET /a n+=1
 SET _var!n!=%%I
@@ -31,9 +32,9 @@ SET _var!n!=%%I
 ECHO Project is dependent on: %_var1%
 
 :: Set directory to the dependency path
-CD %dependencyRootPath%
+CD %depRootPath%
 :: Get the revision number from mercurial
-hg id > %dependencyIDFile%
+hg id -n > %dependencyIDFile%
 
 SET n=
 SET _InputFile=%dependencyIDFile%
@@ -62,7 +63,7 @@ IF %ERRORLEVEL% NEQ 0 (
 	EXIT /b %ERRORLEVEL%
 )
 
-CD %dependencyRootPath%
+CD %depRootPath%
 CD ci
 CALL buildEngine.bat %buildConfig% %buildType% %platform%
 

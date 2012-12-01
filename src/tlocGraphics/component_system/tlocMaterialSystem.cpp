@@ -1,0 +1,76 @@
+#include "tlocMaterialSystem.h"
+
+#include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/containers/tlocContainers.inl>
+
+#include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/component_system/tlocMaterial.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
+
+namespace tloc { namespace graphics { namespace component_system {
+
+  //////////////////////////////////////////////////////////////////////////
+  // typedefs
+
+  typedef MaterialSystem::error_type    error_type;
+
+  //////////////////////////////////////////////////////////////////////////
+  // MaterialSystem
+
+  MaterialSystem::MaterialSystem
+    (event_manager* a_eventMgr, entity_manager* a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr
+    , core::Variadic<component_type, 1>(components::material))
+  { }
+
+  error_type MaterialSystem::InitializeEntity(entity_manager*,
+                                              entity_type* a_ent)
+  {
+    using namespace core::component_system;
+
+    typedef graphics::component_system::Material        mat_type;
+    typedef mat_type::shader_prog_type                  shader_prog_type;
+    typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
+    typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
+
+    const entity_type* ent = a_ent;
+
+    ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
+
+    // Material should have vertex and fragment shader data, for now we will
+    // assume that both exist
+    mat_type& currMat = mat[0];
+
+    gl::VertexShader vShader;
+    gl::FragmentShader fShader;
+    gl::Shader_I::error_type result;
+
+    vShader.Load(currMat.GetVertexSource().c_str() );
+    result = vShader.Compile();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
+
+    result = fShader.Load(currMat.GetFragmentSource().c_str());
+    result = fShader.Compile();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
+
+    shader_prog_type& sp = currMat.GetShaderProgRef();
+    result = sp.AttachShaders
+      (shader_prog_type::two_shader_components(&vShader, &fShader) );
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
+
+    sp.Enable();
+    result = sp.Link();
+    sp.Disable();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
+
+    return ErrorSuccess();
+  }
+
+  error_type
+    MaterialSystem::ShutdownEntity(entity_manager*, entity_type*)
+  { return ErrorSuccess(); }
+
+  void MaterialSystem::ProcessEntity(entity_manager*, entity_type* )
+  { }
+
+};};};

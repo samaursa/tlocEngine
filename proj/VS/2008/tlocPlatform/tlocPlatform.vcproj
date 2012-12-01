@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="tlocPlatform"
-	ProjectGUID="{7148BE5B-8225-4FFE-AAC3-2DE1E1C5790B}"
+	ProjectGUID="{31FD3057-FF46-432C-9900-4450CC7D15AE}"
 	RootNamespace="tlocPlatform"
 	TargetFrameworkVersion="196613"
 	>

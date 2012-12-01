@@ -3,8 +3,75 @@
 #include <tlocMath/vector/tlocVector2.inl>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
+#include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
+
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Dynamics/b2Fixture.h>
 
 namespace tloc { namespace physics { namespace box2d {
+
+  //------------------------------------------------------------------------
+  // Free functions
+
+  ContactEvent::rigid_body_shape_type*
+    GetParentRigidBodyShape(b2Fixture* a_fixture)
+  {
+    typedef ContactEvent::rigid_body_shape_type rigid_body_shape_component_type;
+
+    return static_cast<rigid_body_shape_component_type*>
+      (a_fixture->GetUserData());
+  }
+
+  ContactEvent CreateContactEvent(b2Fixture* a_fixtureA, b2Fixture* a_fixtureB)
+  {
+    typedef ContactEvent::rigid_body_shape_type rigid_body_shape_component_type;
+
+    rigid_body_shape_component_type* rbShapeA;
+    rigid_body_shape_component_type* rbShapeB;
+
+    rbShapeA = GetParentRigidBodyShape(a_fixtureA);
+    rbShapeB = GetParentRigidBodyShape(a_fixtureB);
+
+    return ContactEvent(rbShapeA, rbShapeB);
+  }
+
+  //------------------------------------------------------------------------
+  // ContactListener
+
+  class ContactListener : public b2ContactListener
+  {
+  public:
+    typedef PhysicsManager                      physics_manager_type;
+    typedef ContactEvent                        contact_event_type;
+
+  public:
+    ContactListener(physics_manager_type* a_physicsManager)
+      : m_physicsManager(a_physicsManager) {}
+
+  public:
+    void BeginContact(b2Contact* contact)
+    {
+      contact_event_type event =
+        CreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+
+      m_physicsManager->SendOnContactBegin(event);
+    }
+
+    void EndContact(b2Contact* contact)
+    {
+      contact_event_type event =
+        CreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+
+      m_physicsManager->SendOnContactEnd(event);
+    }
+
+  private:
+    physics_manager_type* m_physicsManager;
+  };
+
+  //------------------------------------------------------------------------
+  // PhysicsManager
 
   enum flags
   {
@@ -16,6 +83,7 @@ namespace tloc { namespace physics { namespace box2d {
   PhysicsManager::PhysicsManager()
     : m_flags(count)
     , m_world(NULL)
+    , m_contactListener(NULL)
   {
   }
 
@@ -31,6 +99,9 @@ namespace tloc { namespace physics { namespace box2d {
     m_velocityIterations = a_velocityIterations;
     m_positionIterations = a_positionIterations;
 
+    m_contactListener = new contact_listener_type(this);
+    m_world->GetWorld().SetContactListener(m_contactListener);
+
     m_flags.Mark(initialized);
     return ErrorSuccess();
   }
@@ -41,6 +112,8 @@ namespace tloc { namespace physics { namespace box2d {
                 "PhysicsManager has not been initialized!");
 
     delete m_world;
+    delete m_contactListener;
+
     return ErrorSuccess();
   }
 

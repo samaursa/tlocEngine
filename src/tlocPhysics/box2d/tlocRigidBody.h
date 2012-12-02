@@ -5,6 +5,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
+#include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/matrix/tlocMatrix2.h>
@@ -124,17 +125,19 @@ namespace tloc { namespace physics { namespace box2d {
     void SetFixedRotation(bool a_flag);
 
   protected:
+    typedef core::component_system::Entity  entity_type ;
+
     RigidBody();
 
     error_type Initialize(rigid_body_internal_type* a_rigidBody,
-                          component_system::RigidBody* a_parent);
+                          entity_type* a_parent);
     error_type Shutdown();
 
   protected:
     rigid_body_internal_type* GetInternalRigidBody();
 
-    component_system::RigidBody* DoGetParent();
-    void DoSetParent(component_system::RigidBody* a_parent);
+    entity_type* DoGetParent();
+    void DoSetParent(entity_type* a_parent);
     void DoSetParentNull();
 
   private:

@@ -46,10 +46,10 @@ namespace tloc { namespace physics { namespace component_system {
 
   private:
     error_type 
-      DoInitializeRigidBodyComponent(rigid_body_component_type& a_component);
+      DoInitializeRigidBodyComponent(entity_type* a_ent);
 
     error_type
-      DoShutdownRigidBodyComponent(rigid_body_component_type& a_component);
+      DoShutdownRigidBodyComponent(entity_type* a_ent);
 
   private:
     world_type* m_world;

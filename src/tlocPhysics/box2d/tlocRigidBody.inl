@@ -333,7 +333,7 @@ namespace tloc { namespace physics { namespace box2d {
 
   TL_I RigidBody::error_type
     RigidBody::Initialize(rigid_body_internal_type* a_rigidBody,
-                          component_system::RigidBody* a_parent)
+                          entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
@@ -361,13 +361,13 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBody;
   }
 
-  TL_I component_system::RigidBody* RigidBody::DoGetParent()
+  TL_I RigidBody::entity_type* RigidBody::DoGetParent()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    return static_cast<component_system::RigidBody*>(m_rigidBody->GetUserData());
+    return static_cast<entity_type*>(m_rigidBody->GetUserData());
   }
 
-  TL_I void RigidBody::DoSetParent(component_system::RigidBody* a_parent)
+  TL_I void RigidBody::DoSetParent(entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     TLOC_ASSERT(a_parent != NULL, "Use DoSetParentNull instead!");

@@ -1,0 +1,124 @@
+#ifndef _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_
+#define _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_
+
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tloccore/types/tlocStrongType.h>
+#include <tlocCore/utilities/tlocUtils.h>
+#include <tloccore/error/tlocError.h>
+#include <tloccore/utilities/tlocCheckpoints.h>
+
+#include <tlocMath/vector/tlocVector2.h>
+
+namespace tloc { namespace physics { namespace box2d {
+  
+  class ContactListener;
+  class World;
+
+  struct ContactEvent
+  {
+    typedef core::component_system::Entity entity_type;
+    
+    ContactEvent
+      (entity_type* a_entityA, entity_type* a_entityB)
+      : m_entityA(a_entityA), m_entityB(a_entityB) {}
+
+    entity_type* m_entityA;
+    entity_type* m_entityB;
+  };
+
+  struct ContactCallbacks
+  {
+    virtual void OnContactBegin(const ContactEvent& a_event) = 0;
+    virtual void OnContactEnd(const ContactEvent& a_event) = 0;
+  };
+
+  template <typename T>
+  struct ContactCallbackGroupT :
+    public core::CallbackGroupTArray<T, ContactCallbacks>::type
+  {
+    typedef typename core::CallbackGroupTArray<T, ContactCallbacks>::type
+      base_type;
+    typedef typename base_type::size_type size_type;
+
+    using base_type::m_observers;
+
+    virtual void OnContactBegin(const ContactEvent& a_event)
+    {
+      for (size_type i = 0; i < m_observers.size(); ++i)
+      {
+        m_observers[i]->OnContactBegin(a_event);
+      }
+    }
+
+    virtual void OnContactEnd(const ContactEvent& a_event)
+    {
+      for (size_type i = 0; i < m_observers.size(); ++i)
+      {
+        m_observers[i]->OnContactEnd(a_event);
+      }
+    }
+  };
+
+  class PhysicsManager : 
+    public core::DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
+  {
+  public:
+    typedef PhysicsManager                              this_type;
+    typedef core::DispatcherBaseArray
+      <ContactCallbacks, ContactCallbackGroupT>::type   base_type;
+
+    typedef base_type::size_type  size_type;
+    typedef s32                   int_type;
+    typedef math::Vec2f           vec_type;
+    typedef core::error::Error    error_type;
+    typedef World                 world_type;
+    typedef ContactEvent          contact_event_type;
+    typedef ContactListener       contact_listener_type;
+
+    typedef core::types::StrongType_T<int_type, 0> velocity_iterations;
+    typedef core::types::StrongType_T<int_type, 1> position_iterations;
+
+    typedef core::types::StrongType_T<vec_type, 0> gravity;
+
+  public:
+    PhysicsManager();
+
+    error_type Initialize(gravity a_gravity, 
+                          velocity_iterations a_vel = velocity_iterations(8), 
+                          position_iterations a_pos = position_iterations(3));
+
+    error_type Shutdown();
+
+    void Update(tl_float a_timeStep);
+
+    world_type& GetWorld();
+    const world_type& GetWorld() const;
+
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetVelocityIterations, 
+                             m_velocityIterations);
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetPositionIterations, 
+                             m_positionIterations);
+
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetVelocityIterations, 
+                             m_velocityIterations);
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetPositionIterations, 
+                             m_positionIterations);
+
+  public:
+    void SendOnContactBegin(const contact_event_type& a_event);
+    void SendOnContactEnd(const contact_event_type& a_event);
+
+  private:
+    core::utils::Checkpoints m_flags;
+    world_type* m_world;
+    int_type m_velocityIterations;
+    int_type m_positionIterations;
+    contact_listener_type* m_contactListener;
+  };
+
+};};};
+
+#endif

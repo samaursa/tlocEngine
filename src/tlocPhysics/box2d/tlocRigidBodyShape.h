@@ -4,16 +4,11 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocPhysics/box2d/tlocShape.h>
 
 #include <Box2D/Dynamics/b2Fixture.h>
-
-namespace tloc { namespace physics { namespace component_system{ 
-
-  class RigidBodyShape;
-
-};};};
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -21,13 +16,10 @@ namespace tloc { namespace physics { namespace box2d {
   {
   public:
     friend class RigidBody;
-    friend class component_system::RigidBodyShape;
 
   public:
     typedef RigidBodyShape    this_type;
     typedef Shape             shape_type;
-
-    typedef component_system::RigidBodyShape  rigid_body_shape_component;
 
     typedef f32 float_type;
 
@@ -61,13 +53,14 @@ namespace tloc { namespace physics { namespace box2d {
     //TODO: Set collision filter
 
   protected:
-    typedef b2FixtureDef      fixture_def_internal_type;
+    typedef b2FixtureDef                      fixture_def_internal_type;
+    typedef core::component_system::Entity    entity_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (fixture_def_internal_type, GetFixtureDef, m_fixtureDef);
 
     TLOC_DECL_AND_DEF_SETTER
-      (rigid_body_shape_component*, DoSetParent, m_fixtureDef.userData);
+      (entity_type*, DoSetParent, m_fixtureDef.userData);
 
   private:
     fixture_def_internal_type m_fixtureDef;

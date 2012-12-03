@@ -8,7 +8,6 @@ namespace tloc { namespace physics { namespace component_system {
     : base_type(components::k_rigid_body_shape)
     , m_rigidBodyShape(a_rigidBodyShape)
   {
-    m_rigidBodyShape.DoSetParent(this);
   }
 
 };};};

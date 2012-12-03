@@ -42,6 +42,9 @@ namespace tloc { namespace physics { namespace box2d {
 
     typedef rigid_body_shape_type::fixture_def_internal_type
       fixture_def_internal_type;
+
+    a_rigidBodyShape.DoSetParent(DoGetParent());
+
     const fixture_def_internal_type& fixtureDef =
       a_rigidBodyShape.GetFixtureDef();
 

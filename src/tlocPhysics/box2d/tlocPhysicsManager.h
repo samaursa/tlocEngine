@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tloccore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -11,12 +12,6 @@
 
 #include <tlocMath/vector/tlocVector2.h>
 
-namespace tloc { namespace physics { namespace component_system {
-
-  class RigidBodyShape;
-
-};};};
-
 namespace tloc { namespace physics { namespace box2d {
   
   class ContactListener;
@@ -24,14 +19,14 @@ namespace tloc { namespace physics { namespace box2d {
 
   struct ContactEvent
   {
-    typedef component_system::RigidBodyShape rigid_body_shape_type;
+    typedef core::component_system::Entity entity_type;
     
     ContactEvent
-      (rigid_body_shape_type* a_rbShapeA, rigid_body_shape_type* a_rbShapeB)
-      : m_rigidBodyShapeA(a_rbShapeA), m_rigidBodyShapeB(a_rbShapeB) {}
+      (entity_type* a_entityA, entity_type* a_entityB)
+      : m_entityA(a_entityA), m_entityB(a_entityB) {}
 
-    rigid_body_shape_type* m_rigidBodyShapeA;
-    rigid_body_shape_type* m_rigidBodyShapeB;
+    entity_type* m_entityA;
+    entity_type* m_entityB;
   };
 
   struct ContactCallbacks

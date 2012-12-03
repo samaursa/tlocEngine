@@ -3,7 +3,6 @@
 #include <tlocMath/vector/tlocVector2.inl>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
-#include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
@@ -14,26 +13,26 @@ namespace tloc { namespace physics { namespace box2d {
   //------------------------------------------------------------------------
   // Free functions
 
-  ContactEvent::rigid_body_shape_type*
-    GetParentRigidBodyShape(b2Fixture* a_fixture)
+  ContactEvent::entity_type*
+    GetParentEntity(b2Fixture* a_fixture)
   {
-    typedef ContactEvent::rigid_body_shape_type rigid_body_shape_component_type;
+    typedef ContactEvent::entity_type entity_type;
 
-    return static_cast<rigid_body_shape_component_type*>
+    return static_cast<entity_type*>
       (a_fixture->GetUserData());
   }
 
   ContactEvent CreateContactEvent(b2Fixture* a_fixtureA, b2Fixture* a_fixtureB)
   {
-    typedef ContactEvent::rigid_body_shape_type rigid_body_shape_component_type;
+    typedef ContactEvent::entity_type entity_type;
 
-    rigid_body_shape_component_type* rbShapeA;
-    rigid_body_shape_component_type* rbShapeB;
+    entity_type* entityA;
+    entity_type* entityB;
 
-    rbShapeA = GetParentRigidBodyShape(a_fixtureA);
-    rbShapeB = GetParentRigidBodyShape(a_fixtureB);
+    entityA = GetParentEntity(a_fixtureA);
+    entityB = GetParentEntity(a_fixtureB);
 
-    return ContactEvent(rbShapeA, rbShapeB);
+    return ContactEvent(entityA, entityB);
   }
 
   //------------------------------------------------------------------------

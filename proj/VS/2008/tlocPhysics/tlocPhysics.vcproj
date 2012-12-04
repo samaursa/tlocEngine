@@ -970,6 +970,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="rigid_body_listener"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidbodyListenerComponent.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File

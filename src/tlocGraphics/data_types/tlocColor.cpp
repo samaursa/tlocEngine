@@ -176,6 +176,13 @@ namespace tloc { namespace graphics { namespace types {
   Color::Color(T_ValueType a_R, T_ValueType a_G,
                T_ValueType a_B, T_ValueType a_A)
   {
+    SetAs(a_R, a_G, a_B, a_A);
+  }
+
+  template <typename T_ValueType>
+  void Color::SetAs(T_ValueType a_R, T_ValueType a_G,
+                    T_ValueType a_B, T_ValueType a_A)
+  {
     typedef Loki::Select <
                           Loki::TypeTraits<T_ValueType>::isFloat,
                           real_type_true, byte_type_true
@@ -294,6 +301,11 @@ namespace tloc { namespace graphics { namespace types {
   template Color::Color(uchar8, uchar8, uchar8, uchar8);
   template Color::Color(f32, f32, f32, f32);
   template Color::Color(f64, f64, f64, f64);
+
+  template void Color::SetAs(u8, u8, u8, u8);
+  template void Color::SetAs(uchar8, uchar8, uchar8, uchar8);
+  template void Color::SetAs(f32, f32, f32, f32);
+  template void Color::SetAs(f64, f64, f64, f64);
 
   using namespace tloc::math;
 #define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\

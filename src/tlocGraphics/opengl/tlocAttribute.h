@@ -20,6 +20,19 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Attribute                     this_type;
     typedef ShaderVariable_TI<this_type>  base_type;
 
+  public:
+    Attribute() : m_isAttribArray(false)
+    { }
+
+    template <typename T, typename T_Technique>
+    derived_type& SetVertexArray(core::Array<T>& a_array, T_Technique)
+    {
+      m_isAttribArray = true;
+      return base_type::SetValueAs(a_array, T_Technique());
+    }
+
+    TLOC_DECL_AND_DEF_GETTER(bool, IsAttribArray, m_isAttribArray);
+
   protected:
     template <typename T>
     void DoCheckTypeCompatibility() const
@@ -61,6 +74,9 @@ namespace tloc { namespace graphics { namespace gl {
          core::Array<math::Vec4f32>
         >();
     }
+
+  private:
+    bool    m_isAttribArray;
 
   };
 

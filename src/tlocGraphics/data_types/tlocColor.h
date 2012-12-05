@@ -43,6 +43,10 @@ namespace tloc { namespace graphics { namespace types {
     template <typename T_ValueType>
     Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A);
 
+    template <typename T_ValueType>
+    void SetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
+               T_ValueType a_A);
+
     template <typename T_ColorFormat>
     int_type GetAs()
     {
@@ -79,6 +83,9 @@ namespace tloc { namespace graphics { namespace types {
     bool    operator ==(const Color& a_other);
     bool    operator !=(const Color& a_other);
 
+    TLOC_DECL_AND_DEF_GETTER(container_type, Get, m_rgba);
+
+  public:
     static const Color COLOR_BLACK;
     static const Color COLOR_WHITE;
 

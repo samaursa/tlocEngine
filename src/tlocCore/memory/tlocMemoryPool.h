@@ -6,7 +6,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace memory {
 
   //------------------------------------------------------------------------
   // Memory pool index policies
@@ -56,8 +56,6 @@ namespace tloc { namespace core {
   {
   public:
 
-#pragma region typedefs
-
     typedef T_PolicyAllocation                        policy_allocation_type;
     typedef T_PolicyIndexing                          policy_indexing_type;
 
@@ -71,7 +69,7 @@ namespace tloc { namespace core {
       p_memory_pool_index::indexing::Wrapper>::value>
                                                   policy_indexing_result_type;
 
-    typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
+    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
@@ -94,7 +92,7 @@ namespace tloc { namespace core {
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
        Wrapper<value_type, index_type>,
-       Wrapper<value_type, index_type>*>::Result       selected_wrapper_type;
+       Wrapper<value_type, index_type>*>::Result        selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
@@ -103,23 +101,27 @@ namespace tloc { namespace core {
 
     // Declare our element wrapper
     typedef typename Loki::Select
-      <policy_indexing_result_type::value,
-       selected_wrapper_type, selected_user_type>::Result    wrapper_type;
+      <
+        policy_indexing_result_type::value,
+        selected_wrapper_type, selected_user_type
+      >::Result                                         wrapper_type;
 
     // Select the proper array
-    typedef typename tl_array<wrapper_type, Array_Unordered>::type d_array_type;
-    typedef typename tl_array_fixed<wrapper_type,
-                                    pool_size_type::value>::type   s_array_type;
+    typedef typename tl_array<wrapper_type,
+                              Array_Unordered>::type    d_array_type;
+    typedef typename tl_array_fixed
+      <wrapper_type, pool_size_type::value>::type       s_array_type;
 
     typedef typename
-      Loki::Select<pool_size_type::value == 0,
-                   d_array_type, s_array_type >::Result   container_type;
+      Loki::Select
+      <
+        pool_size_type::value == 0,
+        d_array_type, s_array_type
+      >::Result                                         container_type;
 
     // Declare iterator types
-    typedef typename container_type::iterator             iterator;
-    typedef typename container_type::const_iterator       const_iterator;
-
-#pragma endregion typedefs
+    typedef typename container_type::iterator           iterator;
+    typedef typename container_type::const_iterator     const_iterator;
 
   public:
 
@@ -249,6 +251,6 @@ namespace tloc { namespace core {
     static const index_type   sm_invalidIndex;
   };
 
-};};
+};};};
 
 #endif

@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_MEMORY_POOL_INDEX(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace memory {
 
 #define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation, class T_PolicyIndexing
 #define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation, T_PolicyIndexing
@@ -393,6 +393,6 @@ namespace tloc { namespace core {
     }
   }
 
-};};
+};};};
 
 #endif

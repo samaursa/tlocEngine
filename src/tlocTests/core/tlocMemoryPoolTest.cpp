@@ -12,24 +12,25 @@
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
 #define TEST_MEMORY_POOL_INDEX(funcName)\
-  funcName<core::MemoryPoolIndex<tl_uint, 100>, 100>();\
-  funcName<core::MemoryPoolIndex<tl_uint>, 100>();\
-  funcName<core::MemoryPoolIndex<tl_uint, 100,\
-           core::p_memory_pool_index::allocation::On_Stack>, 100>();\
-  funcName<core::MemoryPoolIndex<tl_uint, 0,\
-           core::p_memory_pool_index::allocation::On_Heap>, 100>();\
+  funcName<MemoryPoolIndex<tl_uint, 100>, 100>();\
+  funcName<MemoryPoolIndex<tl_uint>, 100>();\
+  funcName<MemoryPoolIndex<tl_uint, 100,\
+           p_memory_pool_index::allocation::On_Stack>, 100>();\
+  funcName<MemoryPoolIndex<tl_uint, 0,\
+           p_memory_pool_index::allocation::On_Heap>, 100>();\
 \
-  funcName<core::MemoryPoolIndex<indexed, 100,\
-           core::p_memory_pool_index::allocation::On_Stack, \
-           core::p_memory_pool_index::indexing::User>, 100>();\
-  funcName<core::MemoryPoolIndex<indexed, 100,\
-           core::p_memory_pool_index::allocation::On_Heap, \
-           core::p_memory_pool_index::indexing::User>, 100>();\
+  funcName<MemoryPoolIndex<indexed, 100,\
+           p_memory_pool_index::allocation::On_Stack, \
+           p_memory_pool_index::indexing::User>, 100>();\
+  funcName<MemoryPoolIndex<indexed, 100,\
+           p_memory_pool_index::allocation::On_Heap, \
+           p_memory_pool_index::indexing::User>, 100>();\
 
 
 namespace TestingMemoryPool
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::memory;
 
   struct indexed
   {
@@ -42,10 +43,10 @@ namespace TestingMemoryPool
     tl_int m_index;
   };
 
-  typedef core::p_memory_pool_index::allocation::On_Stack p_on_stack;
-  typedef core::p_memory_pool_index::allocation::On_Heap  p_on_heap;
-  typedef core::p_memory_pool_index::indexing::Wrapper    p_wrapper;
-  typedef core::p_memory_pool_index::indexing::User       p_user;
+  typedef p_memory_pool_index::allocation::On_Stack p_on_stack;
+  typedef p_memory_pool_index::allocation::On_Heap  p_on_heap;
+  typedef p_memory_pool_index::indexing::Wrapper    p_wrapper;
+  typedef p_memory_pool_index::indexing::User       p_user;
 
   //------------------------------------------------------------------------
   // Helper functions
@@ -286,7 +287,7 @@ recycle_test_finished:
     typename T_PoolType::wrapper_type& elem = a_pool.GetNext();
     CHECK(a_pool.IsValid(elem) );
 
-    CHECK(GetIndex(elem, typename T_PoolType::policy_allocation_type()) == 
+    CHECK(GetIndex(elem, typename T_PoolType::policy_allocation_type()) ==
           (typename T_PoolType::index_type)prevSize);
     CHECK(a_pool.GetTotal() > prevSize);
   }

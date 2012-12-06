@@ -1335,7 +1335,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPoolIndexWrapper.h"
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPoolIndexedWrapper.h"
 					>
 				</File>
 			</Filter>

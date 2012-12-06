@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace memory {
                             policy_allocation_type>     this_type;
 
   private:
-#include "tlocMemoryPoolIndexWrapper.h"
+#include "tlocMemoryPoolIndexedWrapper.h"
   public:
 
     // Select T or T* as the value_type

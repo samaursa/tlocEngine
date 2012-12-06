@@ -15,8 +15,8 @@ namespace tloc { namespace physics {
     typedef core::component_system::Entity entity_type;
 
   public:
-    virtual void OnContactBegin(entity_type* a_ent) = 0; 
-    virtual void OnContactEnd(entity_type* a_ent) = 0;
+    virtual void OnContactBegin(const entity_type* a_ent) = 0; 
+    virtual void OnContactEnd(const entity_type* a_ent) = 0;
   };
 
 };};

@@ -931,6 +931,14 @@
 				Name="systems"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerSystem.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodySystem.cpp"
 					>
 				</File>

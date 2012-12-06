@@ -12,16 +12,79 @@ TLOC_DEF_TYPE(tloc::physics::component_system::RigidBodyListenerSystem);
 
 namespace tloc { namespace physics { namespace component_system {
 
-  namespace contact
-  {
-    enum type
-    {
-      k_begin,
-      k_end,
+  //------------------------------------------------------------------------
+  // Free functions and definitions
 
-      k_count
+  namespace {
+
+    typedef RigidBodyListener                         rb_listener_component_type;
+
+    typedef rb_listener_component_type::rigid_body_listener_type
+                                                      rb_listener_type;
+
+    typedef RigidBodyListenerSystem::entity_type      entity_type;
+    typedef entity_type::component_list               component_list;
+
+    namespace contact
+    {
+      enum type
+      {
+        k_begin,
+        k_end,
+
+        k_count
+      };
     };
+
+    rb_listener_type*
+      GetRigidBodyListener(const component_list* a_rbListenerComponents)
+    {
+      using namespace tloc::core::component_system;
+
+      ComponentMapper<rb_listener_component_type>
+        rbListenerComponentsMapped = *a_rbListenerComponents;
+
+      rb_listener_component_type& rbListenerComponent =
+        rbListenerComponentsMapped[0];
+
+      return rbListenerComponent.GetRigidBodyListener();
+    }
+
+    void SendOnContactBegin(const entity_type* a_sendToEnt,
+                            const entity_type* a_contactWithEnt)
+    {
+      const entity_type::component_list* rbListenerComponents;
+      rb_listener_type* rbListener;
+
+      rbListenerComponents =
+        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+
+      if (!rbListenerComponents->empty())
+      {
+        rbListener = GetRigidBodyListener(rbListenerComponents);
+        rbListener->OnContactBegin(a_contactWithEnt);
+      }
+    }
+
+    void SendOnContactEnd(const entity_type* a_sendToEnt,
+      const entity_type* a_contactWithEnt)
+    {
+      const entity_type::component_list* rbListenerComponents;
+      rb_listener_type* rbListener;
+
+      rbListenerComponents =
+        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+
+      if (!rbListenerComponents->empty())
+      {
+        rbListener = GetRigidBodyListener(rbListenerComponents);
+        rbListener->OnContactEnd(a_contactWithEnt);
+      }
+    }
   };
+
+  //------------------------------------------------------------------------
+  // RigidBodyListenerSystem
 
   RigidBodyListenerSystem::RigidBodyListenerSystem(event_manager* a_eventMgr,
                                                    entity_manager* a_entityMgr,
@@ -65,13 +128,6 @@ namespace tloc { namespace physics { namespace component_system {
 
   void RigidBodyListenerSystem::Pre_ProcessActiveEntities()
   {
-    using namespace tloc::core::component_system;
-
-    typedef RigidBodyListener                       rb_listener_component_type;
-
-    typedef rb_listener_component_type::rigid_body_listener_type
-      rb_listener_type;
-
     typedef contact_event_list::const_iterator      const_contact_iterator;
 
     contact_event_list* currContactEventList =
@@ -80,44 +136,10 @@ namespace tloc { namespace physics { namespace component_system {
     const_contact_iterator contactItr = currContactEventList->begin();
     const_contact_iterator contactItrEnd = currContactEventList->end();
 
-    const entity_type::component_list* rbListenerComponents;
-
     for (/* */; contactItr != contactItrEnd; ++contactItr)
     {
-      rbListenerComponents =
-        &contactItr->m_entityA->GetComponents(components::k_rigid_body_listener);
-
-      if (!rbListenerComponents->empty())
-      {
-        ComponentMapper<rb_listener_component_type>
-          rbListenerComponentsMapped = *rbListenerComponents;
-
-        rb_listener_component_type& rbListenerComponent =
-          rbListenerComponentsMapped[0];
-
-        rb_listener_type* rbListener =
-          rbListenerComponent.GetRigidBodyListener();
-
-        rbListener->OnContactBegin(contactItr->m_entityB);
-      }
-
-      rbListenerComponents =
-        &contactItr->m_entityB->GetComponents(components::k_rigid_body_listener);
-
-      if (!rbListenerComponents->empty())
-      {
-        ComponentMapper<rb_listener_component_type>
-          rbListenerComponentsMapped = *rbListenerComponents;
-
-        rb_listener_component_type& rbListenerComponent =
-          rbListenerComponentsMapped[0];
-
-        rb_listener_type* rbListener =
-          rbListenerComponent.GetRigidBodyListener();
-
-        rbListener->OnContactBegin(contactItr->m_entityA);
-      }
-
+      SendOnContactBegin(contactItr->m_entityA, contactItr->m_entityB);
+      SendOnContactBegin(contactItr->m_entityB, contactItr->m_entityA);
     }
 
     currContactEventList = &m_allContactEvents[contact::k_end];
@@ -127,39 +149,8 @@ namespace tloc { namespace physics { namespace component_system {
 
     for (/* */; contactItr != contactItrEnd; ++contactItr)
     {
-      rbListenerComponents =
-        &contactItr->m_entityA->GetComponents(components::k_rigid_body_listener);
-
-      if (!rbListenerComponents->empty())
-      {
-        ComponentMapper<rb_listener_component_type>
-          rbListenerComponentsMapped = *rbListenerComponents;
-
-        rb_listener_component_type& rbListenerComponent =
-          rbListenerComponentsMapped[0];
-
-        rb_listener_type* rbListener =
-          rbListenerComponent.GetRigidBodyListener();
-
-        rbListener->OnContactEnd(contactItr->m_entityB);
-      }
-
-      rbListenerComponents =
-        &contactItr->m_entityB->GetComponents(components::k_rigid_body_listener);
-
-      if (!rbListenerComponents->empty())
-      {
-        ComponentMapper<rb_listener_component_type>
-          rbListenerComponentsMapped = *rbListenerComponents;
-
-        rb_listener_component_type& rbListenerComponent =
-          rbListenerComponentsMapped[0];
-
-        rb_listener_type* rbListener =
-          rbListenerComponent.GetRigidBodyListener();
-
-        rbListener->OnContactEnd(contactItr->m_entityA);
-      }
+      SendOnContactEnd(contactItr->m_entityA, contactItr->m_entityB);
+      SendOnContactEnd(contactItr->m_entityB, contactItr->m_entityA);
     }
   }
 

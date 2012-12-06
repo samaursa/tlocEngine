@@ -22,11 +22,11 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::component_system::Entity entity_type;
     
     ContactEvent
-      (entity_type* a_entityA, entity_type* a_entityB)
+      (const entity_type* a_entityA = NULL, const entity_type* a_entityB = NULL)
       : m_entityA(a_entityA), m_entityB(a_entityB) {}
 
-    entity_type* m_entityA;
-    entity_type* m_entityB;
+    const entity_type* m_entityA;
+    const entity_type* m_entityB;
   };
 
   struct ContactCallbacks

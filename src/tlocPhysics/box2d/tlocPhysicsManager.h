@@ -31,8 +31,8 @@ namespace tloc { namespace physics { namespace box2d {
 
   struct ContactCallbacks
   {
-    virtual void OnContactBegin(const ContactEvent& a_event) = 0;
-    virtual void OnContactEnd(const ContactEvent& a_event) = 0;
+    virtual bool OnContactBegin(const ContactEvent& a_event) = 0;
+    virtual bool OnContactEnd(const ContactEvent& a_event) = 0;
   };
 
   template <typename T>
@@ -45,20 +45,28 @@ namespace tloc { namespace physics { namespace box2d {
 
     using base_type::m_observers;
 
-    virtual void OnContactBegin(const ContactEvent& a_event)
+    virtual bool OnContactBegin(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnContactBegin(a_event);
+        if (m_observers[i]->OnContactBegin(a_event) == true)
+        {
+          return true; // Veto - event will not be passed to remaining observers
+        }
       }
+      return false;
     }
 
-    virtual void OnContactEnd(const ContactEvent& a_event)
+    virtual bool OnContactEnd(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnContactEnd(a_event);
+        if (m_observers[i]->OnContactEnd(a_event) == true)
+        {
+          return true; // Veto - event will not be passed to remaining observers
+        }
       }
+      return false;
     }
   };
 

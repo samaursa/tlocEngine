@@ -5,6 +5,9 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
+#include <tlocCore/memory/tlocMemoryPool.h>
+#include <tlocCore/memory/tlocMemoryPool.inl>
+
 namespace TestingSmartPtr
 {
   using namespace tloc;
@@ -55,6 +58,34 @@ namespace TestingSmartPtr
       CHECK(Shared::m_numDtors == 0);
     }
     CHECK(Shared::m_numDtors == 1);
+
+    {
+      smart_ptr::SharedPtr<Shared> sp;
+      smart_ptr::SharedPtr<Shared> sp2 = sp; // should not crash
+      CHECK(sp.GetRefCount() == 0);
+      CHECK(sp2.GetRefCount() == 0);
+
+    } // Should not crash when being destroyed
+
+    {
+      Shared::m_numCtors = 0;
+      Shared::m_numDtors = 0;
+
+      smart_ptr::SharedPtr<Shared> sp(new Shared(10));
+      smart_ptr::SharedPtr<Shared> sp2 = sp;
+      CHECK(sp.GetRefCount() == 2);
+
+      smart_ptr::SharedPtr<Shared> sp3(new Shared(50));
+      sp2 = sp3;
+      CHECK(sp.GetRefCount() == 1);
+      CHECK(sp3.GetRefCount() == 2);
+
+      CHECK(Shared::m_numDtors == 0);
+      sp = sp3;
+      CHECK(Shared::m_numDtors == 1);
+      CHECK(sp3.GetRefCount() == 3);
+    }
+    CHECK(Shared::m_numDtors == 2);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/with_arrays", "")
@@ -92,5 +123,38 @@ namespace TestingSmartPtr
 
     CHECK(Shared::m_numCtors == count);
     CHECK(Shared::m_numDtors == count);
+  }
+
+  struct MyComponent
+  {
+    MyComponent()
+    { }
+
+    MyComponent(float x, float y, float z)
+      : x(x), y(y), z(z)
+    { }
+
+    float x, y, z;
+  };
+
+  TEST_CASE("core/smart_ptr/shared_ptr/with_memory_pools", "")
+  {
+    typedef smart_ptr::SharedPtr<MyComponent>             my_comp_ptr;
+    typedef memory::MemoryPoolIndexed<my_comp_ptr>        my_mem_pool;
+    typedef my_mem_pool::iterator                         pool_type;
+
+    my_mem_pool memPool;
+    memPool.Initialize(10);
+
+    pool_type ptr = memPool.GetNext();
+    ptr->GetElement() = my_comp_ptr(new MyComponent(5, 6, 7));
+
+    my_mem_pool::iterator itr = memPool.begin();
+    my_mem_pool::iterator itrEnd = memPool.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      CHECK(itr->GetElement()->x == 5);
+    }
   }
 }

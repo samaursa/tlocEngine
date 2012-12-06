@@ -90,9 +90,6 @@ namespace tloc { namespace core { namespace memory {
 #define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
   TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
 
-  template <MEMORY_POOL_INDEX_TEMP> MEMORY_POOL_INDEX_TYPE::wrapper_type  
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::npos;
-
   template <MEMORY_POOL_INDEX_TEMP> MEMORY_POOL_INDEX_TYPE::index_type
     const MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::sm_invalidIndex = -1;
 
@@ -119,7 +116,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+  MEMORY_POOL_INDEX_TYPE::iterator
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetNext()
   {
     TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
@@ -130,7 +127,9 @@ namespace tloc { namespace core { namespace memory {
       // TODO: Store the element as used (as per the policy)
       const size_type index = DoGetAvailIndex();
       m_numAvail--;
-      return m_allElements[ index ];
+      iterator itr = m_allElements.begin();
+      advance(itr, index);
+      return itr;
     }
 
     const size_type prevSize = GetTotal();
@@ -140,7 +139,7 @@ namespace tloc { namespace core { namespace memory {
       return GetNext();
     }
 
-    return MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::npos;
+    return m_allElements.end();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -196,7 +195,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  const MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+  MEMORY_POOL_INDEX_TYPE::wrapper_type const & 
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index) const
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < GetTotal() - GetAvail(),
@@ -256,12 +255,12 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    IsValid(const wrapper_type& a_element) const
+    IsValid(const iterator a_element) const
   {
     return (m_numAvail != sm_invalidIndex) &&
-           (&a_element != &npos) && 
-           (DoGetIndex(a_element, policy_allocation_type()) != sm_invalidIndex) &&
-           (DoGetIndex(a_element, policy_allocation_type()) < (index_type)GetUsed());
+           (a_element != m_allElements.end()) && 
+           (DoGetIndex(*a_element, policy_allocation_type()) != sm_invalidIndex) &&
+           (DoGetIndex(*a_element, policy_allocation_type()) < (index_type)GetUsed());
   }
 
   //------------------------------------------------------------------------

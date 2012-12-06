@@ -140,7 +140,7 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The next.
     ///-------------------------------------------------------------------------
-    wrapper_type& GetNext();
+    iterator      GetNext();
 
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
@@ -172,8 +172,8 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type& operator[](tl_int a_index);
-    const wrapper_type& operator[](tl_int a_index) const;
+    wrapper_type&       operator[](tl_int a_index);
+    wrapper_type const& operator[](tl_int a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;
@@ -202,9 +202,9 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return true if valid, false if not.
     ///-------------------------------------------------------------------------
-    bool            IsValid(const wrapper_type& a_element) const;
+    bool            IsValid(const iterator a_element) const;
 
-  protected:
+  public:
 
     typedef type_false                                 fixed_container_selected;
     typedef type_true                                  dynamic_container_selected;
@@ -247,7 +247,6 @@ namespace tloc { namespace core { namespace memory {
     container_type            m_allElements;
     index_type                m_numAvail;
 
-    static wrapper_type       npos;
     static const index_type   sm_invalidIndex;
   };
 

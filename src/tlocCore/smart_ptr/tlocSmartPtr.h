@@ -22,26 +22,36 @@ namespace tloc { namespace core { namespace smart_ptr {
     SharedPtr()
       : m_rawPtr(nullptr)
       , m_refCount(nullptr)
-    { DoAddRef(); }
+    { }
 
     SharedPtr(pointer a_rawPtr)
       : m_rawPtr(a_rawPtr)
       , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
-    { DoAddRef(); }
-
-    ~SharedPtr()
     {
-      DoRemoveRef();
-      if (GetRefCount() == 0)
-      {
-        delete m_rawPtr;
-        delete m_refCount;
-      }
+      DoAddRef();
     }
 
     SharedPtr(const this_type& a_other)
       : m_rawPtr(a_other.m_rawPtr), m_refCount(a_other.m_refCount)
-    { DoAddRef(); }
+    {
+      // Mainly for containers
+      DoAddRef();
+    }
+
+    ~SharedPtr()
+    {
+      DoRemoveRef();
+    }
+
+    this_type& operator= (const this_type& a_other)
+    {
+      DoRemoveRef();
+      m_rawPtr = a_other.m_rawPtr;
+      m_refCount = a_other.m_refCount;
+      DoAddRef();
+
+      return *this;
+    }
 
     pointer Expose()
     { return m_rawPtr; }
@@ -68,10 +78,23 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   private:
     void DoAddRef()
-    { ++*m_refCount; }
+    {
+      if (m_refCount)
+      { ++*m_refCount; }
+    }
 
     void DoRemoveRef()
-    { --*m_refCount; }
+    {
+      if (m_refCount)
+      {
+        --*m_refCount;
+        if (GetRefCount() == 0)
+        {
+          delete m_rawPtr;
+          delete m_refCount;
+        }
+      }
+    }
 
   private:
     pointer           m_rawPtr;

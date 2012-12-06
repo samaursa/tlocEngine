@@ -6,8 +6,6 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
-#define private public
-#define protected public
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
@@ -25,7 +23,6 @@
   funcName<MemoryPoolIndexed<indexed, 100,\
            p_memory_pool_index::allocation::On_Heap, \
            p_memory_pool_index::indexing::User>, 100>();\
-
 
 namespace TestingMemoryPool
 {
@@ -64,52 +61,52 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1, typename T_IndexType>
-  void SetIndex(T_Elem1& a, T_IndexType a_index, p_on_stack)
-  {
-    a.m_index = a_index;
-  }
-
-  template <typename T_Elem1, typename T_IndexType>
-  void SetIndex(T_Elem1& a, T_IndexType a_index, p_on_heap)
+  void SetIndex(T_Elem1 a, T_IndexType a_index, p_on_stack)
   {
     a->m_index = a_index;
   }
 
-  template <typename T_Elem1>
-  tl_int GetIndex(T_Elem1& a, p_on_stack)
+  template <typename T_Elem1, typename T_IndexType>
+  void SetIndex(T_Elem1 a, T_IndexType a_index, p_on_heap)
   {
-    return (tl_int)a.m_index;
+    (*a)->m_index = a_index;
   }
 
   template <typename T_Elem1>
-  tl_int GetIndex(T_Elem1& a, p_on_heap)
+  tl_int GetIndex(T_Elem1 a, p_on_stack)
   {
-    return (tl_int)a->m_index;
+    return (tl_int)a->GetIndex();
+  }
+
+  template <typename T_Elem1>
+  tl_int GetIndex(T_Elem1 a, p_on_heap)
+  {
+    return (tl_int) (*a)->GetIndex();
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1& a, const T_Elem2& b, p_on_stack, p_wrapper)
-  {
-    a.GetElement() = b;
-  }
-
-  template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1& a, const T_Elem2& b, p_on_heap, p_wrapper)
+  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
   {
     a->GetElement() = b;
   }
 
+  template <typename T_Elem1, typename T_Elem2>
+  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
+  {
+    (*a)->GetElement() = b;
+  }
+
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1& a, const T_Elem2& b, p_on_stack, p_user)
+  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_stack, p_user)
   {
-    a.m_element = b;
+    a->m_element = b;
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1& a, const T_Elem2& b, p_on_heap, p_user)
+  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_heap, p_user)
   {
-    a->m_element = b;
+    (*a)->m_element = b;
   }
 
   template <typename T_Elem1>
@@ -155,40 +152,6 @@ namespace TestingMemoryPool
   TEST_CASE("Core/MemoryPool/Initialize", "")
   {
     TEST_MEMORY_POOL_INDEX(TestInitialize);
-  }
-
-  template <typename T_PoolType, tl_uint T_PoolSize>
-  void TestIsValid()
-  {
-    typedef typename T_PoolType::wrapper_type wrapper_type;
-    T_PoolType pool;
-
-    wrapper_type invalid;
-    wrapper_type valid;
-    SetIndex(valid, 0, T_PoolType::policy_allocation_type());
-
-    wrapper_type& s_invalid = T_PoolType::npos;
-
-    CHECK(pool.IsValid(invalid) == false);
-    CHECK(pool.IsValid(valid) == false);
-    CHECK(pool.IsValid(s_invalid) == false);
-
-    pool.Initialize(T_PoolSize);
-
-    CHECK(pool.IsValid(invalid) == false);
-    CHECK(pool.IsValid(valid) == false); // we have 0 used elements
-    CHECK(pool.IsValid(s_invalid) == false);
-
-    pool.GetNext();
-
-    CHECK(pool.IsValid(invalid) == false);
-    CHECK(pool.IsValid(valid) == true);
-    CHECK(pool.IsValid(s_invalid) == false);
-  }
-
-  TEST_CASE("Core/MemoryPool/IsValid", "")
-  {
-    //TEST_MEMORY_POOL_INDEX(TestIsValid);
   }
 
   template <typename T_PoolType, tl_uint T_PoolSize>
@@ -284,8 +247,8 @@ recycle_test_finished:
   {
     typename T_PoolType::size_type prevSize = a_pool.GetTotal();
 
-    typename T_PoolType::wrapper_type& elem = a_pool.GetNext();
-    CHECK(a_pool.IsValid(elem) );
+    typename T_PoolType::iterator elem = a_pool.GetNext();
+    CHECK(a_pool.IsValid( elem ) );
 
     CHECK(GetIndex(elem, typename T_PoolType::policy_allocation_type()) ==
           (typename T_PoolType::index_type)prevSize);
@@ -297,7 +260,7 @@ recycle_test_finished:
   {
     typename T_PoolType::size_type prevSize = a_pool.GetTotal();
 
-    CHECK(a_pool.IsValid(a_pool.GetNext()) == false);
+    CHECK(a_pool.IsValid( a_pool.GetNext() ) == false);
     CHECK(a_pool.GetTotal() == prevSize);
   }
 

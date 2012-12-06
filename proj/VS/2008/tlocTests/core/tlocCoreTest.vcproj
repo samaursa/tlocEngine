@@ -1157,6 +1157,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="smart_ptr"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSmartPtrTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\core\main.cpp"

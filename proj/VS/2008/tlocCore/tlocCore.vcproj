@@ -1482,6 +1482,18 @@
 			<Filter
 				Name="core"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentPoolManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentPoolManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\component_system\tlocComponentPoolManager.inl"
+					>
+				</File>
 				<Filter
 					Name="components"
 					>
@@ -1649,6 +1661,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="smart_ptr"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
 				>
 			</File>
 		</Filter>

@@ -15,6 +15,7 @@ namespace tloc { namespace physics { namespace component_system {
     {
       k_rigid_body = core::component_system::components_group::physics,
       k_rigid_body_shape,
+      k_rigid_body_listener,
 
       count
     }; typedef tl_int value_type;

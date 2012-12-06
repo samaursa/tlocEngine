@@ -931,6 +931,14 @@
 				Name="systems"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerSystem.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodySystem.cpp"
 					>
 				</File>
@@ -967,6 +975,18 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyShapeComponent.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="rigid_body_listener"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidBodyListenerComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocPhysics\component_system\tlocRigidbodyListenerComponent.h"
 						>
 					</File>
 				</Filter>

@@ -1335,7 +1335,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPoolIndexWrapper.h"
+					RelativePath="..\..\..\..\src\tlocCore\memory\tlocMemoryPoolIndexedWrapper.h"
 					>
 				</File>
 			</Filter>
@@ -1669,6 +1669,10 @@
 			>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.inl"
 				>
 			</File>
 		</Filter>

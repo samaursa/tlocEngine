@@ -33,7 +33,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef ComponentPool_I                                 base_type;
     typedef T_Component                                     component_type;
     typedef ComponentPool_TI<component_type>                this_type;
-    //typedef core::memory::MemoryPoolIndex<component_type>   pool_type;
+    //typedef core::memory::MemoryPoolIndexed<component_type>   pool_type;
 
   public:
 

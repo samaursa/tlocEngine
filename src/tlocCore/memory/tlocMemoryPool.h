@@ -6,7 +6,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace memory {
 
   //------------------------------------------------------------------------
   // Memory pool index policies
@@ -52,11 +52,9 @@ namespace tloc { namespace core {
             tl_uint T_Capacity = 0,
             class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
-  class MemoryPoolIndex
+  class MemoryPoolIndexed
   {
   public:
-
-#pragma region typedefs
 
     typedef T_PolicyAllocation                        policy_allocation_type;
     typedef T_PolicyIndexing                          policy_indexing_type;
@@ -71,19 +69,19 @@ namespace tloc { namespace core {
       p_memory_pool_index::indexing::Wrapper>::value>
                                                   policy_indexing_result_type;
 
-    typedef typename Loki::Int2Type<T_Capacity>       pool_size_type;
+    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
 
-    typedef MemoryPoolIndex<value_type,
+    typedef MemoryPoolIndexed<value_type,
                             T_Capacity,
                             policy_allocation_type>     this_type;
 
   private:
-#include "tlocMemoryPoolIndexWrapper.h"
+#include "tlocMemoryPoolIndexedWrapper.h"
   public:
 
     // Select T or T* as the value_type
@@ -94,7 +92,7 @@ namespace tloc { namespace core {
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
        Wrapper<value_type, index_type>,
-       Wrapper<value_type, index_type>*>::Result       selected_wrapper_type;
+       Wrapper<value_type, index_type>*>::Result        selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
@@ -103,33 +101,38 @@ namespace tloc { namespace core {
 
     // Declare our element wrapper
     typedef typename Loki::Select
-      <policy_indexing_result_type::value,
-       selected_wrapper_type, selected_user_type>::Result    wrapper_type;
+      <
+        policy_indexing_result_type::value,
+        selected_wrapper_type, selected_user_type
+      >::Result                                         wrapper_type;
 
     // Select the proper array
-    typedef typename tl_array<wrapper_type, Array_Unordered>::type d_array_type;
-    typedef typename tl_array_fixed<wrapper_type,
-                                    pool_size_type::value>::type   s_array_type;
+    typedef typename tl_array<wrapper_type,
+                              Array_Unordered>::type    d_array_type;
+    typedef typename tl_array_fixed
+      <wrapper_type, pool_size_type::value>::type       s_array_type;
 
     typedef typename
-      Loki::Select<pool_size_type::value == 0,
-                   d_array_type, s_array_type >::Result   container_type;
+      Loki::Select
+      <
+        pool_size_type::value == 0,
+        d_array_type, s_array_type
+      >::Result                                         container_type;
 
     // Declare iterator types
-    typedef typename container_type::iterator             iterator;
-    typedef typename container_type::const_iterator       const_iterator;
-
-#pragma endregion typedefs
+    typedef typename container_type::iterator           iterator;
+    typedef typename container_type::const_iterator     const_iterator;
 
   public:
 
     //------------------------------------------------------------------------
     // Methods
 
-    MemoryPoolIndex();
-    ~MemoryPoolIndex();
+    MemoryPoolIndexed();
+    explicit MemoryPoolIndexed(size_type a_initialSize);
+    ~MemoryPoolIndexed();
 
-    void Initialize(size_type a_initialSize);
+    void Resize(size_type a_size);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -138,7 +141,7 @@ namespace tloc { namespace core {
     ///
     /// @return The next.
     ///-------------------------------------------------------------------------
-    wrapper_type& GetNext();
+    iterator      GetNext();
 
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
@@ -170,8 +173,8 @@ namespace tloc { namespace core {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type& operator[](tl_int a_index);
-    const wrapper_type& operator[](tl_int a_index) const;
+    wrapper_type&       operator[](tl_int a_index);
+    wrapper_type const& operator[](tl_int a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;
@@ -200,9 +203,9 @@ namespace tloc { namespace core {
     ///
     /// @return true if valid, false if not.
     ///-------------------------------------------------------------------------
-    bool            IsValid(const wrapper_type& a_element) const;
+    bool            IsValid(const iterator a_element) const;
 
-  protected:
+  public:
 
     typedef type_false                                 fixed_container_selected;
     typedef type_true                                  dynamic_container_selected;
@@ -222,8 +225,8 @@ namespace tloc { namespace core {
     void            DoInitializeRange(iterator a_begin, iterator a_end,
                                       index_type a_startingIndex);
 
-    bool            DoExpand(fixed_container_selected);
-    bool            DoExpand(dynamic_container_selected);
+    bool            DoExpand(size_type a_size, fixed_container_selected);
+    bool            DoExpand(size_type a_size, dynamic_container_selected);
 
     index_type      DoGetAvailIndex() const;
 
@@ -245,10 +248,9 @@ namespace tloc { namespace core {
     container_type            m_allElements;
     index_type                m_numAvail;
 
-    static wrapper_type       npos;
     static const index_type   sm_invalidIndex;
   };
 
-};};
+};};};
 
 #endif

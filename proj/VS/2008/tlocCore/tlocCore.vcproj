@@ -1664,6 +1664,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="smart_ptr"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
 			>

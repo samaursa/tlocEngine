@@ -87,12 +87,12 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
-  class TransformComp : public core::component_system::Component_T<TransformComp>
+  class CompToTest : public core::component_system::Component_T<CompToTest>
   {
   public:
-    typedef core::component_system::Component_T<TransformComp>  base_type;
+    typedef core::component_system::Component_T<CompToTest>  base_type;
   public:
-    TransformComp() : base_type(components::transform)
+    CompToTest() : base_type(components::listener)
     {}
   };
 
@@ -103,7 +103,7 @@ namespace TestingEventManager
     EventTracker tracker;
 
     Entity        dummyEnt(0);
-    TransformComp transComp;
+    CompToTest transComp;
     Component     dummyComp(transComp);
 
     EventManager mgr;

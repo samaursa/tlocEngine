@@ -129,9 +129,10 @@ namespace tloc { namespace core { namespace memory {
     // Methods
 
     MemoryPoolIndexed();
+    explicit MemoryPoolIndexed(size_type a_initialSize);
     ~MemoryPoolIndexed();
 
-    void Initialize(size_type a_initialSize);
+    void Resize(size_type a_size);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -224,8 +225,8 @@ namespace tloc { namespace core { namespace memory {
     void            DoInitializeRange(iterator a_begin, iterator a_end,
                                       index_type a_startingIndex);
 
-    bool            DoExpand(fixed_container_selected);
-    bool            DoExpand(dynamic_container_selected);
+    bool            DoExpand(size_type a_size, fixed_container_selected);
+    bool            DoExpand(size_type a_size, dynamic_container_selected);
 
     index_type      DoGetAvailIndex() const;
 

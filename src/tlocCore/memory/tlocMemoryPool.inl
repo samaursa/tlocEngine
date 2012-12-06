@@ -95,8 +95,15 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndexed()
-    : m_numAvail(sm_invalidIndex)
+    : m_numAvail(0)
   {
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    MemoryPoolIndexed(size_type a_initialSize)
+  {
+    Resize(a_initialSize);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -106,20 +113,16 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::Initialize(size_type a_initialSize)
+  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::Resize(size_type a_size)
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(a_initialSize > 0, "Invalid # of elements!");
-
-    m_allElements.resize(a_initialSize);
-    DoInitializeRange(m_allElements.begin(), m_allElements.end(), 0);
-    m_numAvail = static_cast<index_type>(a_initialSize);
+    DoExpand(a_size, container_dynamic_type());
+    m_numAvail = m_allElements.size();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::iterator
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetNext()
   {
-    TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
     TLOC_ASSERT_MEMORY_POOL_INDEX(m_numAvail >= 0, "Serious logical error!");
 
     if (m_numAvail != 0)
@@ -133,7 +136,7 @@ namespace tloc { namespace core { namespace memory {
     }
 
     const size_type prevSize = GetTotal();
-    if (DoExpand(container_dynamic_type()) )
+    if (DoExpand(prevSize * 2, container_dynamic_type()) )
     {
       m_numAvail = GetTotal() - prevSize;
       return GetNext();
@@ -146,8 +149,6 @@ namespace tloc { namespace core { namespace memory {
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     RecycleElement(const wrapper_type& a_retElem)
   {
-    TLOC_ASSERT_MEMORY_POOL_INITIALIZED();
-
     if (m_numAvail >= (index_type)m_allElements.size())
     {
       TLOC_ASSERT_MEMORY_POOL_INDEX(false, 
@@ -295,18 +296,33 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoExpand(fixed_container_selected)
+    DoExpand(size_type a_size, fixed_container_selected)
   {
+    const size_type prevSize = m_allElements.size();
+    const size_type maxSize = tlMin(a_size, m_allElements.capacity());
+
+    if (prevSize != m_allElements.capacity())
+    {
+      m_allElements.resize(maxSize);
+
+      iterator startingPos = m_allElements.begin();
+      advance(startingPos, prevSize);
+
+      DoInitializeRange(startingPos, m_allElements.end(), prevSize);
+
+      return true;
+    }
+
     return false;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoExpand(dynamic_container_selected)
+    DoExpand(size_type a_size, dynamic_container_selected)
   {
     const size_type prevSize = m_allElements.size();
 
-    m_allElements.resize(m_allElements.size() * 2);
+    m_allElements.resize(a_size);
 
     iterator startingPos = m_allElements.begin();
     advance(startingPos, prevSize);
@@ -385,11 +401,7 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_heap)
   {
-    for (typename container_type::iterator itr = m_allElements.begin(), 
-      itrEnd = m_allElements.end(); itr != itrEnd; ++itr)
-    {
-      delete (*itr);
-    }
+    delete_ptrs(m_allElements.begin(), m_allElements.end());
   }
 
 };};};

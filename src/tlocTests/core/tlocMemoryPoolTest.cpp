@@ -139,19 +139,26 @@ namespace TestingMemoryPool
   // Tests
 
   template <typename T_PoolType, tl_uint T_PoolSize>
-  void TestInitialize()
+  void TestResize()
   {
     typedef T_PoolType    pool_type;
 
-    pool_type pool;
-    pool.Initialize(T_PoolSize);
+    {
+      pool_type pool(T_PoolSize);
+      CHECK(pool.GetAvail() == T_PoolSize);
+    }
 
-    CHECK(pool.GetAvail() == T_PoolSize);
+    {
+      pool_type pool;
+      CHECK(pool.GetAvail() == 0);
+      pool.Resize(T_PoolSize);
+      CHECK(pool.GetAvail() == T_PoolSize);
+    }
   }
 
-  TEST_CASE("Core/MemoryPool/Initialize", "")
+  TEST_CASE("Core/MemoryPool/resize", "")
   {
-    TEST_MEMORY_POOL_INDEX(TestInitialize);
+    TEST_MEMORY_POOL_INDEX(TestResize);
   }
 
   template <typename T_PoolType, tl_uint T_PoolSize>
@@ -165,7 +172,7 @@ namespace TestingMemoryPool
     CHECK(pool.GetAvail() == 0);
     CHECK(pool.GetUsed() == 0);
 
-    pool.Initialize(T_PoolSize);
+    pool.Resize(T_PoolSize);
 
     CHECK(pool.GetTotal() == T_PoolSize);
     CHECK(pool.GetAvail() == T_PoolSize);
@@ -184,8 +191,7 @@ namespace TestingMemoryPool
     typedef typename pool_type::policy_allocation_type p_alloc_type;
     typedef typename pool_type::policy_indexing_type   p_index_type;
 
-    pool_type pool;
-    pool.Initialize(T_PoolSize);
+    pool_type pool(T_PoolSize);
 
     CHECK(pool.GetAvail() == T_PoolSize);
 
@@ -269,8 +275,7 @@ recycle_test_finished:
   {
     typedef T_PoolType    pool_type;
 
-    pool_type pool;
-    pool.Initialize(T_PoolSize);
+    pool_type pool(T_PoolSize);
 
     CHECK(pool.GetAvail() == T_PoolSize);
 

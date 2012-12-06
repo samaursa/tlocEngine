@@ -128,33 +128,68 @@ namespace TestingSmartPtr
   struct MyComponent
   {
     MyComponent()
-    { }
+    {
+      m_ctorCount++;
+    }
 
-    MyComponent(float x, float y, float z)
+    MyComponent(tl_int x, tl_int y, tl_int z)
       : x(x), y(y), z(z)
-    { }
+    {
+      m_ctorCount++;
+    }
 
-    float x, y, z;
+    ~MyComponent()
+    {
+      m_dtorCount++;
+    }
+
+    tl_int x, y, z;
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
   };
+
+  tl_int MyComponent::m_ctorCount;
+  tl_int MyComponent::m_dtorCount;
 
   TEST_CASE("core/smart_ptr/shared_ptr/with_memory_pools", "")
   {
-    typedef smart_ptr::SharedPtr<MyComponent>             my_comp_ptr;
-    typedef memory::MemoryPoolIndexed<my_comp_ptr>        my_mem_pool;
-    typedef my_mem_pool::iterator                         pool_type;
-
-    my_mem_pool memPool;
-    memPool.Initialize(10);
-
-    pool_type ptr = memPool.GetNext();
-    ptr->GetElement() = my_comp_ptr(new MyComponent(5, 6, 7));
-
-    my_mem_pool::iterator itr = memPool.begin();
-    my_mem_pool::iterator itrEnd = memPool.end();
-
-    for (; itr != itrEnd; ++itr)
+    const tl_int poolSize = 100;
     {
-      CHECK(itr->GetElement()->x == 5);
+      typedef smart_ptr::SharedPtr<MyComponent>             my_comp_ptr;
+      typedef memory::MemoryPoolIndexed<my_comp_ptr>        my_mem_pool;
+      typedef my_mem_pool::iterator                         pool_type;
+
+      my_mem_pool memPool(poolSize);
+      memPool.GetNext()->GetElement() = my_comp_ptr(new MyComponent(0, 1, 2));
+      memPool.GetNext()->GetElement() = my_comp_ptr(new MyComponent(1, 2, 3));
+
+      for (tl_int i = 2; i < poolSize; ++i)
+      {
+        memPool.GetNext()->GetElement() =
+          my_comp_ptr(new MyComponent(i, i + 1, i + 2));
+      }
+
+      CHECK(MyComponent::m_ctorCount == poolSize);
+
+      my_mem_pool::iterator itr = memPool.begin();
+      my_mem_pool::iterator itrEnd = memPool.end();
+
+      bool testPassed = true;
+      tl_int counter = 0;
+      for (; itr != itrEnd; ++itr)
+      {
+        if (itr->GetElement()->x != counter &&
+          itr->GetElement()->y != counter + 1 &&
+          itr->GetElement()->z != counter + 2)
+        {
+          testPassed = false;
+          break;
+        }
+        ++counter;
+      }
+      CHECK(testPassed);
     }
+    CHECK(MyComponent::m_dtorCount == poolSize);
   }
 }

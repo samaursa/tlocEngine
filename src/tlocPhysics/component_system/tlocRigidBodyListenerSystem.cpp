@@ -114,7 +114,21 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodyListenerSystem::InitializeEntity(entity_manager* a_mgr,
                                               entity_type* a_ent)
   {
-    TLOC_UNUSED_2(a_mgr, a_ent);
+    const entity_type* ent = a_ent;
+
+    const entity_type::component_list& rbComponents =
+      ent->GetComponents(components::k_rigid_body);
+
+    if (rbComponents.empty())
+    {
+      TLOC_ASSERT(false, "There is no RigidBody component attached to this \
+                  entity! A RigidBody component is needed for a \
+                  RigidBodyListener component to function!");
+
+      // LOG: No RigidBody component attached to this entity!
+    }
+
+    TLOC_UNUSED(a_mgr);
     return ErrorSuccess();
   }
 

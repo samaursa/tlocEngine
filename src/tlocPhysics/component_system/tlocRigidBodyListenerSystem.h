@@ -6,16 +6,6 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/containers/tlocArray.h>
 
-#include <tlocPhysics/component_system/tlocComponentType.h>
-
-
-#include <tlocCore/error/tlocError.h>
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-
-#include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
-#include <tlocPhysics/box2d/tlocPhysicsManager.h>
-
 namespace tloc { namespace physics { namespace box2d {
 
   struct ContactEvent;
@@ -24,17 +14,6 @@ namespace tloc { namespace physics { namespace box2d {
 };};};
 
 namespace tloc { namespace physics { namespace component_system {
-
-  namespace contact
-  {
-    enum type
-    {
-      k_begin,
-      k_end,
-
-      k_count
-    };
-  };
 
   class RigidBodyListenerSystem : 
     public core::component_system::EntityProcessingSystem
@@ -57,157 +36,20 @@ namespace tloc { namespace physics { namespace component_system {
 
   public:
     RigidBodyListenerSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr, 
-                            physics_manager* a_physicsMgr)
-      : base_type(a_eventMgr, a_entityMgr
-      , core::Variadic<component_type, 1>(components::k_rigid_body_listener))
-      , m_physicsMgr(a_physicsMgr)
-    {
-    }
+                            physics_manager* a_physicsMgr);
 
-    virtual error_type Pre_Initialize()
-    {
-      m_physicsMgr->Register(this);
-      m_allContactEvents.resize(contact::k_count);
-      return ErrorSuccess();
-    }
+    virtual error_type Pre_Initialize();
+    virtual error_type Post_Shutdown();
 
-    virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
-    {
-      TLOC_UNUSED_2(a_mgr, a_ent);
-      return ErrorSuccess();
-    }
+    virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent);
 
-    virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent)
-    {
-      TLOC_UNUSED_2(a_mgr, a_ent);
-      return ErrorSuccess();
-    }
-
-    virtual error_type Post_Shutdown()
-    {
-      m_allContactEvents.clear();
-      return ErrorSuccess();
-    }
-
-    virtual void Pre_ProcessActiveEntities()
-    {
-      using namespace tloc::core::component_system;
-
-      typedef RigidBodyListener                       rb_listener_component_type;
-      
-      typedef rb_listener_component_type::rigid_body_listener_type
-                                                      rb_listener_type;
-      
-      typedef contact_event_list::const_iterator      const_contact_iterator;
-      
-      contact_event_list* currContactEventList = 
-        &m_allContactEvents[contact::k_begin];
-
-      const_contact_iterator contactItr = currContactEventList->begin();
-      const_contact_iterator contactItrEnd = currContactEventList->end();
-
-      const entity_type::component_list* rbListenerComponents;
-
-      for (/* */; contactItr != contactItrEnd; ++contactItr)
-      {
-         rbListenerComponents = 
-          &contactItr->m_entityA->GetComponents(components::k_rigid_body_listener);
-
-        if (!rbListenerComponents->empty())
-        {
-          ComponentMapper<rb_listener_component_type>
-            rbListenerComponentsMapped = *rbListenerComponents;
-
-          rb_listener_component_type& rbListenerComponent = 
-            rbListenerComponentsMapped[0];
-
-          rb_listener_type* rbListener = 
-            rbListenerComponent.GetRigidBodyListener();
-
-          rbListener->OnContactBegin(contactItr->m_entityB);
-        }
-
-        rbListenerComponents = 
-          &contactItr->m_entityB->GetComponents(components::k_rigid_body_listener);
-
-        if (!rbListenerComponents->empty())
-        {
-          ComponentMapper<rb_listener_component_type>
-            rbListenerComponentsMapped = *rbListenerComponents;
-
-          rb_listener_component_type& rbListenerComponent = 
-            rbListenerComponentsMapped[0];
-
-          rb_listener_type* rbListener = 
-            rbListenerComponent.GetRigidBodyListener();
-
-          rbListener->OnContactBegin(contactItr->m_entityA);
-        }
-
-      }
-    
-      currContactEventList = &m_allContactEvents[contact::k_end];
-
-      contactItr = currContactEventList->begin();
-      contactItrEnd = currContactEventList->end();
-
-      for (/* */; contactItr != contactItrEnd; ++contactItr)
-      {
-        rbListenerComponents = 
-          &contactItr->m_entityA->GetComponents(components::k_rigid_body_listener);
-
-        if (!rbListenerComponents->empty())
-        {
-          ComponentMapper<rb_listener_component_type>
-            rbListenerComponentsMapped = *rbListenerComponents;
-
-          rb_listener_component_type& rbListenerComponent = 
-            rbListenerComponentsMapped[0];
-
-          rb_listener_type* rbListener = 
-            rbListenerComponent.GetRigidBodyListener();
-
-          rbListener->OnContactEnd(contactItr->m_entityB);
-        }
-
-        rbListenerComponents = 
-          &contactItr->m_entityB->GetComponents(components::k_rigid_body_listener);
-
-        if (!rbListenerComponents->empty())
-        {
-          ComponentMapper<rb_listener_component_type>
-            rbListenerComponentsMapped = *rbListenerComponents;
-
-          rb_listener_component_type& rbListenerComponent = 
-            rbListenerComponentsMapped[0];
-
-          rb_listener_type* rbListener = 
-            rbListenerComponent.GetRigidBodyListener();
-
-          rbListener->OnContactEnd(contactItr->m_entityA);
-        }
-
-      }
-
-    }
-
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
-    {
-      TLOC_UNUSED_2(a_mgr, a_ent);
-    }
+    virtual void Pre_ProcessActiveEntities();
+    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
 
   public:
-    bool OnContactBegin(const contact_event_type& a_event)
-    {
-      m_allContactEvents[contact::k_begin].push_back(a_event);
-      return false;
-    }
-
-    bool OnContactEnd(const contact_event_type& a_event)
-    {
-      m_allContactEvents[contact::k_end].push_back(a_event);
-      return false;
-    }
+    bool OnContactBegin(const contact_event_type& a_event);
+    bool OnContactEnd(const contact_event_type& a_event);
 
   private:
     physics_manager* m_physicsMgr;
@@ -216,6 +58,5 @@ namespace tloc { namespace physics { namespace component_system {
 
 };};};
 
-TLOC_DEF_TYPE(tloc::physics::component_system::RigidBodyListenerSystem);
 
 #endif

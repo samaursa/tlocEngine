@@ -13,17 +13,16 @@
 namespace TestingEntityManager
 {
   using namespace tloc;
-  using namespace core;
-  using namespace component_system;
+  using namespace core::component_system;
 
   struct EmptyComponent1 : public Component
   {
-    EmptyComponent1() : Component(components::transform) {}
+    EmptyComponent1() : Component(components::listener) {}
   };
 
   struct EmptyComponent2 : public Component
   {
-    EmptyComponent2() : Component(components::transform + 1) {}
+    EmptyComponent2() : Component(components::listener + 1) {}
   };
 
   struct EntityTracker : public EventListener
@@ -113,11 +112,11 @@ namespace TestingEntityManager
     CHECK(entTrack.m_entEventCounter == 1);
     CHECK(entTrack.m_compEventCounter == 0);
 
-    Component testComp(components::transform);
+    Component testComp(components::listener);
     eMgr.InsertComponent(newEnt, &testComp);
     CHECK(entTrack.m_compEventCounter == 1);
 
-    Component invalidComp(components::transform + 1);
+    Component invalidComp(components::listener + 1);
 
     CHECK_FALSE(eMgr.RemoveComponent(newEnt, &invalidComp));
     eMgr.Update();

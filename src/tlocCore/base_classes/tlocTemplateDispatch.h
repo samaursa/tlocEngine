@@ -103,12 +103,7 @@ namespace tloc { namespace core {
     {
       typedef typename container_type::iterator itr_type;
 
-      for (itr_type itr = m_allObservers.begin(),
-           itrEnd = m_allObservers.end();
-           itr != itrEnd; ++itr)
-      {
-        delete *itr;
-      }
+      core::delete_ptrs(m_allObservers.begin(), m_allObservers.end());
 
       m_allObservers.clear();
     }

@@ -12,17 +12,17 @@
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
 #define TEST_MEMORY_POOL_INDEX(funcName)\
-  funcName<MemoryPoolIndex<tl_uint, 100>, 100>();\
-  funcName<MemoryPoolIndex<tl_uint>, 100>();\
-  funcName<MemoryPoolIndex<tl_uint, 100,\
+  funcName<MemoryPoolIndexed<tl_uint, 100>, 100>();\
+  funcName<MemoryPoolIndexed<tl_uint>, 100>();\
+  funcName<MemoryPoolIndexed<tl_uint, 100,\
            p_memory_pool_index::allocation::On_Stack>, 100>();\
-  funcName<MemoryPoolIndex<tl_uint, 0,\
+  funcName<MemoryPoolIndexed<tl_uint, 0,\
            p_memory_pool_index::allocation::On_Heap>, 100>();\
 \
-  funcName<MemoryPoolIndex<indexed, 100,\
+  funcName<MemoryPoolIndexed<indexed, 100,\
            p_memory_pool_index::allocation::On_Stack, \
            p_memory_pool_index::indexing::User>, 100>();\
-  funcName<MemoryPoolIndex<indexed, 100,\
+  funcName<MemoryPoolIndexed<indexed, 100,\
            p_memory_pool_index::allocation::On_Heap, \
            p_memory_pool_index::indexing::User>, 100>();\
 

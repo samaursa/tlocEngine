@@ -52,7 +52,7 @@ namespace tloc { namespace core { namespace memory {
             tl_uint T_Capacity = 0,
             class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
-  class MemoryPoolIndex
+  class MemoryPoolIndexed
   {
   public:
 
@@ -76,7 +76,7 @@ namespace tloc { namespace core { namespace memory {
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
 
-    typedef MemoryPoolIndex<value_type,
+    typedef MemoryPoolIndexed<value_type,
                             T_Capacity,
                             policy_allocation_type>     this_type;
 
@@ -128,8 +128,8 @@ namespace tloc { namespace core { namespace memory {
     //------------------------------------------------------------------------
     // Methods
 
-    MemoryPoolIndex();
-    ~MemoryPoolIndex();
+    MemoryPoolIndexed();
+    ~MemoryPoolIndexed();
 
     void Initialize(size_type a_initialSize);
 

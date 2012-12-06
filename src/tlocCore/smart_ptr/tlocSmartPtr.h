@@ -19,82 +19,24 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef SharedPtr<value_type>   this_type;
 
   public:
-    SharedPtr()
-      : m_rawPtr(nullptr)
-      , m_refCount(nullptr)
-    { }
+    SharedPtr();
+    SharedPtr(pointer a_rawPtr);
+    SharedPtr(const this_type& a_other);
+    ~SharedPtr();
 
-    SharedPtr(pointer a_rawPtr)
-      : m_rawPtr(a_rawPtr)
-      , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
-    {
-      DoAddRef();
-    }
+    this_type& operator= (const this_type& a_other);
 
-    SharedPtr(const this_type& a_other)
-      : m_rawPtr(a_other.m_rawPtr), m_refCount(a_other.m_refCount)
-    {
-      // Mainly for containers
-      DoAddRef();
-    }
+    pointer       Expose();
+    const_pointer Expose() const;
 
-    ~SharedPtr()
-    {
-      DoRemoveRef();
-    }
+    pointer   operator->() const;
+    reference operator*() const;
 
-    this_type& operator= (const this_type& a_other)
-    {
-      DoRemoveRef();
-      m_rawPtr = a_other.m_rawPtr;
-      m_refCount = a_other.m_refCount;
-      DoAddRef();
-
-      return *this;
-    }
-
-    pointer Expose()
-    { return m_rawPtr; }
-
-    const_pointer Expose() const
-    { return m_rawPtr; }
-
-    pointer operator->() const
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference NULL ptr!");
-      return m_rawPtr;
-    }
-
-    reference operator*() const
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference NULL ptr!");
-      return *m_rawPtr;
-    }
-
-    ref_count_type GetRefCount() const
-    {
-      return m_refCount ? *m_refCount : 0;
-    }
+    ref_count_type GetRefCount() const;
 
   private:
-    void DoAddRef()
-    {
-      if (m_refCount)
-      { ++*m_refCount; }
-    }
-
-    void DoRemoveRef()
-    {
-      if (m_refCount)
-      {
-        --*m_refCount;
-        if (GetRefCount() == 0)
-        {
-          delete m_rawPtr;
-          delete m_refCount;
-        }
-      }
-    }
+    void DoAddRef();
+    void DoRemoveRef();
 
   private:
     pointer           m_rawPtr;

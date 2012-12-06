@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>

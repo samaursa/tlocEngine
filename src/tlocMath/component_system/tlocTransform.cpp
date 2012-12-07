@@ -1,7 +1,10 @@
 #include "tlocTransform.h"
-#include <tlocMath/component_system/tlocComponentType.h>
+
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
@@ -74,5 +77,14 @@ namespace tloc { namespace math { namespace component_system {
 
   template Transform_T<f32>;
   template Transform_T<f64>;
+
+  // SmartPtr
+  template core::smart_ptr::SharedPtr<Transform_T<f32> >;
+  template core::smart_ptr::SharedPtr<Transform_T<f64> >;
+
+  // Pool
+  template core::component_system::ComponentPool_TI<TransformPtr>;
+  template core::component_system::ComponentPool_TI<TransformPtr32>;
+  template core::component_system::ComponentPool_TI<TransformPtr64>;
 
 };};};

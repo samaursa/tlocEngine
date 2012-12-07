@@ -146,8 +146,18 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::iterator
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    Find(const wrapper_type& a_returnedElement)
+  {
+    iterator itr = m_allElements.begin();
+    advance(itr, DoGetIndex(a_returnedElement, policy_allocation_type()));
+    return itr;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    RecycleElement(const wrapper_type& a_retElem)
+    RecycleElement(iterator a_retElem)
   {
     if (m_numAvail >= (index_type)m_allElements.size())
     {
@@ -161,7 +171,7 @@ namespace tloc { namespace core { namespace memory {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    wrapper_type& toSwap = this->operator[]( DoGetIndex(a_retElem, policy_allocation_type()) );
+    wrapper_type& toSwap = this->operator[]( DoGetIndex(*a_retElem, policy_allocation_type()) );
     tlSwap(toSwap, m_allElements[lastUsedElem]);
     tlSwap(DoGetIndex(toSwap, policy_allocation_type()), 
            DoGetIndex(m_allElements[lastUsedElem], policy_allocation_type()) );
@@ -173,7 +183,10 @@ namespace tloc { namespace core { namespace memory {
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (index_type)m_allElements.size(),
                                   "Index out of bounds!");
-    RecycleElement(m_allElements[a_index]);
+
+    iterator itr = m_allElements.begin();
+    advance(itr, a_index);
+    RecycleElement( itr );
   }
 
   template <MEMORY_POOL_INDEX_TEMP>

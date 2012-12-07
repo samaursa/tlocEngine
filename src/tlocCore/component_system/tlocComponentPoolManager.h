@@ -8,6 +8,9 @@ namespace tloc { namespace core { namespace component_system {
 
   class ComponentPoolManager;
 
+  template <typename T_Component>
+  class ComponentPool_TI;
+
   class ComponentPool_I
   {
   public:
@@ -20,6 +23,18 @@ namespace tloc { namespace core { namespace component_system {
     virtual ~ComponentPool_I()
     { }
 
+    template <typename T>
+    ComponentPool_TI<T>* GetAs()
+    {
+      return static_cast<ComponentPool_TI*>(this);
+    }
+
+    template <typename T>
+    ComponentPool_TI<T> const * GetAs() const
+    {
+      return static_cast<ComponentPool_TI const *>(this);
+    }
+
   protected:
     ComponentPool_I()
     { }
@@ -27,21 +42,79 @@ namespace tloc { namespace core { namespace component_system {
   };
 
   template <typename T_Component>
-  class ComponentPool_TI : public ComponentPool_I
+  class ComponentPool_TI
+    : public ComponentPool_I
   {
   public:
     typedef ComponentPool_I                                 base_type;
+    typedef core::memory::MemoryPoolIndexed<T_Component>    pool_base_type;
+
     typedef T_Component                                     component_type;
     typedef ComponentPool_TI<component_type>                this_type;
-    //typedef core::memory::MemoryPoolIndexed<component_type>   pool_type;
+
+    typedef core::memory::MemoryPoolIndexed
+            <component_type>                                pool_type;
+    typedef typename pool_type::iterator                    iterator;
+    typedef typename pool_type::const_iterator              const_iterator;
+    typedef typename pool_type::size_type                   size_type;
 
   public:
+    virtual ~ComponentPool_TI()
+    {
+      iterator itr = begin();
+      iterator itrEnd = end();
+
+      for (; itr != itrEnd; ++itr)
+      {
+        TLOC_ASSERT(itr->GetElement().GetRefCount() == 1,
+                    "Element still in use!");
+      }
+    }
+
+    iterator        GetNext()
+    { return m_pool.GetNext(); }
+
+    iterator        begin()
+    { return m_pool.begin(); }
+
+    const_iterator  begin() const
+    { return m_pool.begin(); }
+
+    iterator        end()
+    { return m_pool.end(); }
+
+    const_iterator  end() const
+    { return m_pool.end(); }
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Will recycle all the components that are not in use (i.e. their
+    /// reference count is 1). Returns the iterator to the first unused element.
+    ///-------------------------------------------------------------------------
+    void RecycleAllUnused()
+    {
+      iterator itr    = begin();
+      iterator itrEnd = end();
+
+      for (; itr != itrEnd; ++itr)
+      {
+        if (itr->GetElement().GetRefCount() == 1)
+        {
+          m_pool.RecycleElement(itr);
+        }
+      }
+    }
+
+    size_type       GetUsed() const
+    { return m_pool.GetUsed(); }
 
   protected:
-    ComponentPool_TI();
+    ComponentPool_TI()
+    {
+    }
 
   private:
-    //pool_type m_pool;
+    pool_type     m_pool;
   };
 
   class ComponentPoolManager
@@ -66,6 +139,9 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_Component>
     iterator CreateNewPool(component_type a_compNumber)
     {
+      TLOC_STATIC_ASSERT( (Loki::Conversion<T_Component, SmartPtr>::exists),
+        T_Component_is_required_to_be_a_smart_pointer_carrying_the_component);
+
       DoResize(a_compNumber);
 
       iterator itr = m_pools.begin();
@@ -82,18 +158,18 @@ namespace tloc { namespace core { namespace component_system {
                   "Pool not allocated for passed component type");
     }
 
+    iterator GetPool(component_type a_number)
+    {
+      TLOC_ASSERT( (size_type)a_number < m_pools.size(),
+                  "Pool not allocated for passed component type");
 
+      iterator itr = m_pools.begin();
+      core::advance(itr, a_number);
 
-    //iterator GetPool(component_type a_number)
-    //{
-    //  TLOC_ASSERT( (size_type)a_number < m_pools.size(),
-    //              "Pool not allocated for passed component type");
+      return itr;
+    }
 
-    //  iterator itr = m_pools.begin();
-    //  core::advance(itr, a_number);
-
-    //  return itr;
-    //}
+    // Add a function GetPool<T> where T is the pool type
 
   private:
     // a_index = component's ID which will be used to resize the array to the

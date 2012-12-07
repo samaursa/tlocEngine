@@ -36,6 +36,11 @@ namespace TestingMemoryPool
       return m_element == a_rhs.m_element;
     }
 
+    tl_int GetIndex()
+    {
+      return m_index;
+    }
+
     tl_int m_element;
     tl_int m_index;
   };
@@ -182,6 +187,25 @@ namespace TestingMemoryPool
   TEST_CASE("Core/MemoryPool/SizeQueries", "")
   {
     TEST_MEMORY_POOL_INDEX(TestSizeQueries);
+  }
+
+  template <typename T_PoolType, tl_uint T_PoolSize>
+  void TestFind()
+  {
+    typedef T_PoolType                                      pool_type;
+    typedef typename pool_type::iterator                    iterator;
+    typedef typename pool_type::policy_allocation_type      pol_alloc_type;
+
+    pool_type pool(T_PoolSize);
+    iterator itr = pool.GetNext();
+
+    iterator itrFound = pool.Find(*itr);
+    CHECK(pool[GetIndex(itr, pol_alloc_type())] == *itrFound);
+  }
+
+  TEST_CASE("Core/MemoryPool/Find", "")
+  {
+    TEST_MEMORY_POOL_INDEX(TestFind);
   }
 
   template <typename T_PoolType, tl_uint T_PoolSize>

@@ -1,8 +1,10 @@
 #ifndef _TLOC_CORE_COMPONENT_SYSTEM_TRANSFORM_H_
 #define _TLOC_CORE_COMPONENT_SYSTEM_TRANSFORM_H_
 
-#include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/matrix/tlocMatrix3.h>
@@ -46,6 +48,17 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<tl_float>   Transform;
   typedef Transform_T<f32>        Transformf32;
   typedef Transform_T<f64>        Transformf64;
+
+  typedef core::smart_ptr::SharedPtr<Transform>    TransformPtr;
+  typedef core::smart_ptr::SharedPtr<Transformf32> TransformPtr32;
+  typedef core::smart_ptr::SharedPtr<Transformf64> TransformPtr64;
+
+  typedef
+  core::component_system::ComponentPool_TI<TransformPtr>   transform_pool;
+  typedef
+  core::component_system::ComponentPool_TI<TransformPtr32> transform_pool32;
+  typedef
+  core::component_system::ComponentPool_TI<TransformPtr64> transform_pool64;
 
 };};};
 

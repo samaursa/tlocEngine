@@ -5,8 +5,21 @@
 
 namespace tloc { namespace core { namespace smart_ptr {
 
+  ///-------------------------------------------------------------------------
+  /// @brief Used only for distinguishing a normal object from a SmartPtr
+  ///-------------------------------------------------------------------------
+  class SmartPtr
+  {
+  protected: // to disallow the user from doing anything with this base class
+    SmartPtr()
+    { /* Intentionally Empty */ }
+
+    ~SmartPtr()
+    { /* Intentionally Empty */ }
+  };
+
   template <typename T>
-  class SharedPtr
+  class SharedPtr : public SmartPtr
   {
   public:
     typedef T                       value_type;

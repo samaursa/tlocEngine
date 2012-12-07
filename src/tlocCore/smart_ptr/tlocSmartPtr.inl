@@ -9,8 +9,8 @@
 
 namespace tloc { namespace core { namespace smart_ptr {
 
-#define SHARED_PTR_TEMPS  typename T_Value
-#define SHARED_PTR_PARAMS T_Value
+#define SHARED_PTR_TEMPS  typename T
+#define SHARED_PTR_PARAMS T
 #define SHARED_PTR_TYPE   typename SharedPtr<SHARED_PTR_PARAMS>
 
   template <SHARED_PTR_TEMPS>
@@ -35,6 +35,16 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
+  template <typename T_Other>
+  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const SharedPtr<T_Other>& a_other)
+    : m_rawPtr  (a_other.Expose() )
+    , m_refCount(a_other.DoExposeCounter() )
+  {
+    // Mainly for containers
+    DoAddRef();
+  }
+
+  template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::~SharedPtr()
   {
       DoRemoveRef();
@@ -53,14 +63,37 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
+  template <typename T_Other>
+  SHARED_PTR_TYPE::this_type&
+  SharedPtr<SHARED_PTR_PARAMS>::operator= (const SharedPtr<T_Other>& a_other)
+  {
+    DoRemoveRef();
+    m_rawPtr = a_other.Expose();
+    m_refCount = a_other.DoExposeCounter();
+    DoAddRef();
+
+    return *this;
+  }
+
+  template <SHARED_PTR_TEMPS>
+  template <typename T_Other> void 
+  SharedPtr<SHARED_PTR_PARAMS>::CastFrom(const SharedPtr<T_Other>& a_other)
+  {
+    DoRemoveRef();
+    m_rawPtr = static_cast<pointer>(a_other.Expose());
+    m_refCount = a_other.DoExposeCounter();
+    DoAddRef();
+  }
+
+  template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::pointer
-  SharedPtr<SHARED_PTR_PARAMS>::Expose()
+  SharedPtr<SHARED_PTR_PARAMS>::Expose() const
   { return m_rawPtr; }
 
   template <SHARED_PTR_TEMPS>
-  SHARED_PTR_TYPE::const_pointer
-  SharedPtr<SHARED_PTR_PARAMS>::Expose() const
-  { return m_rawPtr; }
+  SHARED_PTR_TYPE::ref_count_type*
+  SharedPtr<SHARED_PTR_PARAMS>::DoExposeCounter() const
+  { return m_refCount; }
 
   template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::pointer

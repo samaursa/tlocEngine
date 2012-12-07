@@ -193,4 +193,70 @@ namespace TestingSmartPtr
     }
     CHECK(MyComponent::m_dtorCount == poolSize);
   }
+
+  struct base
+  {
+    base() : m_value(0)
+    {
+      m_ctorCount++;
+    }
+
+    virtual ~base()
+    {
+      m_dtorCount++;
+    }
+
+    virtual void foo(tl_int) = 0;
+    tl_int m_value;
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
+  };
+
+  tl_int base::m_ctorCount;
+  tl_int base::m_dtorCount;
+
+  struct derived : public base
+  {
+    virtual void foo(tl_int a_num)
+    {
+      m_value = a_num;
+    }
+  };
+
+  TEST_CASE("core/smart_ptr/shared_ptr/polymorphic_behavior", "")
+  {
+    {
+      CHECK(base::m_ctorCount == 0);
+      smart_ptr::SharedPtr<base> basePtr(new derived());
+      CHECK(base::m_ctorCount == 1);
+    }
+    CHECK(base::m_dtorCount == 1);
+
+    {
+      smart_ptr::SharedPtr<base> basePtr(new derived());
+      CHECK(basePtr->m_value == 0);
+      basePtr->foo(5);
+      CHECK(basePtr->m_value == 5);
+
+      smart_ptr::SharedPtr<derived> derPtr(new derived());
+      derPtr->foo(10);
+      basePtr = derPtr;
+      CHECK(base::m_dtorCount == 2);
+      CHECK(basePtr->m_value == 10);
+
+      smart_ptr::SharedPtr<base> basePtr2(derPtr);
+
+      // This should fail to compile - so don't uncomment :)
+      //smart_ptr::SharedPtr<derived> d(basePtr2);
+
+      smart_ptr::SharedPtr<derived> convToDer;
+      CHECK(base::m_ctorCount == 3);
+      CHECK(base::m_dtorCount == 2);
+      convToDer.CastFrom(basePtr2);
+      CHECK(convToDer->m_value == 10);
+    }
+    CHECK(base::m_ctorCount == 3);
+    CHECK(base::m_dtorCount == 3);
+  }
 }

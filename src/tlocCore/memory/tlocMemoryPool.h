@@ -143,12 +143,14 @@ namespace tloc { namespace core { namespace memory {
     ///-------------------------------------------------------------------------
     iterator      GetNext();
 
+    iterator      Find(const wrapper_type& a_returnedElement);
+
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
     ///
     /// @param  a_returnedElement The returned element.
     ///-------------------------------------------------------------------------
-    void          RecycleElement(const wrapper_type& a_returnedElement);
+    void          RecycleElement(iterator a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief

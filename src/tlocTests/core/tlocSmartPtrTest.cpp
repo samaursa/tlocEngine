@@ -89,15 +89,16 @@ namespace TestingSmartPtr
     CHECK(Shared::m_numDtors == 2);
   }
 
-  TEST_CASE("core/smart_ptr/shared_ptr/with_arrays", "")
+  template <typename T_ContainerType>
+  void TestContainers()
   {
     Shared::m_numCtors = 0;
     Shared::m_numDtors = 0;
 
     typedef smart_ptr::SharedPtr<Shared>      shared_ptr_type;
-    typedef tl_array<shared_ptr_type>::type   shared_array_type;
+    typedef T_ContainerType                   shared_array_type;
 
-    const tl_int count = 100;
+    const tl_int count = 2;
 
     {
       shared_array_type sa;
@@ -124,6 +125,13 @@ namespace TestingSmartPtr
 
     CHECK(Shared::m_numCtors == count);
     CHECK(Shared::m_numDtors == count);
+  }
+
+  TEST_CASE("core/smart_ptr/shared_ptr/with_containers", "")
+  {
+    TestContainers<tl_array<smart_ptr::SharedPtr<Shared> >::type>();
+    TestContainers<tl_singly_list<smart_ptr::SharedPtr<Shared> >::type>();
+    TestContainers<tl_doubly_list<smart_ptr::SharedPtr<Shared> >::type>();
   }
 
   struct MyComponent

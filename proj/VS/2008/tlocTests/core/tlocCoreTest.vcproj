@@ -1013,6 +1013,10 @@
 				Name="component_system"
 				>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocComponentPoolManagerTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocEntityManagerTest.cpp"
 					>
 				</File>

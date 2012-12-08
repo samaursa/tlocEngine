@@ -26,13 +26,13 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T>
     ComponentPool_TI<T>* GetAs()
     {
-      return static_cast<ComponentPool_TI*>(this);
+      return static_cast<ComponentPool_TI<T>*>(this);
     }
 
     template <typename T>
     ComponentPool_TI<T> const * GetAs() const
     {
-      return static_cast<ComponentPool_TI const *>(this);
+      return static_cast<ComponentPool_TI<T> const *>(this);
     }
 
   protected:
@@ -45,6 +45,9 @@ namespace tloc { namespace core { namespace component_system {
   class ComponentPool_TI
     : public ComponentPool_I
   {
+  public:
+    friend class ComponentPoolManager;
+
   public:
     typedef ComponentPool_I                                 base_type;
     typedef core::memory::MemoryPoolIndexed<T_Component>    pool_base_type;
@@ -139,10 +142,7 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_Component>
     iterator CreateNewPool(component_type a_compNumber)
     {
-      TLOC_STATIC_ASSERT( (Loki::Conversion<T_Component, SmartPtr>::exists),
-        T_Component_is_required_to_be_a_smart_pointer_carrying_the_component);
-
-      DoResize(a_compNumber);
+      DoResize(a_compNumber + 1);
 
       iterator itr = m_pools.begin();
       core::advance(itr, a_compNumber);

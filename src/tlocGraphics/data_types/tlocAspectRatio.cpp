@@ -1,5 +1,7 @@
 #include "tlocAspectRatio.h"
 
+#include <tlocMath/tlocMath.h>
+
 namespace tloc { namespace graphics { namespace types {
 
   AspectRatio::AspectRatio(width a_width, height a_height)

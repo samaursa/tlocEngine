@@ -193,6 +193,8 @@ namespace TestingRigidBodySystem
 
     // Ball is falling. At the end of the max iterations it will hit
     // another ball and stop
+    bool deltaPTest = true;
+    bool actualPTest = true;
     for (tl_size i = 0; i < maxIterations; ++i)
     {
       physicsMgr.Update(timeStep);
@@ -201,15 +203,20 @@ namespace TestingRigidBodySystem
 
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
-      CHECK((previousPosition != position));
+
+      if((previousPosition != position) == false)
+      { deltaPTest = false; break; }
 
       // +1 since we've already told the physics manager to move "ahead" one step.
       float time = timeStep * (i + 1);
       float calculatedPositionY =
         rbDynamicStartPositionY + 0.5f * gravityY * time * time;
 
-      CHECK(Mathf::Approx(calculatedPositionY, position[1], tolerance));
+      if(Mathf::Approx(calculatedPositionY, position[1], tolerance) == false)
+      { actualPTest = false; break; }
     }
+    CHECK(deltaPTest);
+    CHECK(actualPTest);
 
     // Ball has hit the floor, But has not registered the hit yet
     CHECK(myWorldContactCallback.m_numEvents == 0);

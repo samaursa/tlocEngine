@@ -4,8 +4,10 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tloccore/utilities/tlocUtils.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 namespace tloc { namespace physics {
 
@@ -45,6 +47,14 @@ namespace tloc { namespace physics { namespace component_system {
   private:
     rigid_body_listener_type* m_rigidBodyListener;
   };
+
+  //------------------------------------------------------------------------
+  // Typedefs
+
+  typedef core::smart_ptr::SharedPtr<RigidBodyListener> RigidBodyListenerPtr;
+
+  typedef core::component_system::ComponentPool_TI<RigidBodyListenerPtr>
+                                                        rigid_body_listener_pool;
 
 };};};
 

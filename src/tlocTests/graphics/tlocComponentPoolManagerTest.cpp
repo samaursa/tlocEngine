@@ -19,7 +19,7 @@ namespace TestingComponentPoolManager
   enum
   {
     k_int = 0,
-    k_float = 1,
+    k_uint = 1,
   };
 
   class IntComponent
@@ -36,42 +36,42 @@ namespace TestingComponentPoolManager
   };
   typedef core::smart_ptr::SharedPtr<IntComponent>   IntComponentPtr;
 
-  class FloatComponent
-    : public core::component_system::Component_T<FloatComponent>
+  class UIntComponent
+    : public core::component_system::Component_T<UIntComponent>
   {
   public:
-    typedef core::component_system::Component_T<FloatComponent>   base_type;
+    typedef core::component_system::Component_T<UIntComponent>   base_type;
 
   public:
-    FloatComponent() : base_type(k_float)
+    UIntComponent() : base_type(k_uint)
     { }
 
-    tl_float m_value;
+    tl_uint m_value;
   };
-  typedef core::smart_ptr::SharedPtr<IntComponent>   FloatComponentPtr;
+  typedef core::smart_ptr::SharedPtr<IntComponent>   UIntComponentPtr;
 
-  TEST_CASE("Core/component_system/ComponentPoolManager/Pools", "")
+  template <typename T_PoolType>
+  void TestWithManager(ComponentPoolManager& a_mgr, tl_int a_compType)
   {
-    typedef ComponentPool_TI<IntComponentPtr>   IntComponentPtrPool;
-    typedef ComponentPool_TI<FloatComponentPtr> FloatComponentPtrPool;
-
     const tl_int elementsToPool = 10;
 
-    ComponentPoolManager mgr;
+    typedef T_PoolType                        pool_type;
+    // iterator of ComponentPool
+    typedef typename pool_type::value_type    value_type;
 
     {
       ComponentPoolManager::iterator compPool =
-        mgr.CreateNewPool<IntComponentPtr>(k_int);
+        a_mgr.CreateNewPool<value_type>(a_compType);
 
 
-      IntComponentPtrPool* intCompPool =
-        (*compPool)->GetAs<IntComponentPtrPool>();
+      pool_type* intCompPool =
+        (*compPool)->GetAs<T_PoolType>();
 
-      IntComponentPtrPool::iterator itr = intCompPool->GetNext();
+      pool_type::iterator itr = intCompPool->GetNext();
 
       {
-        IntComponentPtr& myPtr = itr->GetElement();
-        myPtr = new IntComponent();
+        value_type& myPtr = itr->GetElement();
+        myPtr = new value_type::value_type();
         myPtr->m_value = 0;
       }
 
@@ -80,19 +80,19 @@ namespace TestingComponentPoolManager
       for (tl_int i = 1; i < 10; ++i)
       {
         itr = intCompPool->GetNext();
-        IntComponentPtr& myPtr = itr->GetElement();
-        myPtr = new IntComponent();
+        value_type& myPtr = itr->GetElement();
+        myPtr = new value_type::value_type();
         myPtr->m_value = i;
       }
     }
 
     {
-      ComponentPoolManager::iterator compPool = mgr.GetPool(k_int);
+      ComponentPoolManager::iterator compPool = a_mgr.GetPool(a_compType);
 
-      IntComponentPtrPool* intCompPool = (*compPool)->GetAs<IntComponentPtrPool>();
+      pool_type* intCompPool = (*compPool)->GetAs<pool_type>();
 
-      IntComponentPtrPool::iterator itr = intCompPool->begin();
-      IntComponentPtrPool::iterator itrEnd = intCompPool->end();
+      pool_type::iterator itr = intCompPool->begin();
+      pool_type::iterator itrEnd = intCompPool->end();
 
       REQUIRE(distance(itr, itrEnd) == elementsToPool);
 
@@ -107,5 +107,23 @@ namespace TestingComponentPoolManager
       }
       CHECK(testPassed);
     }
+  }
+
+  TEST_CASE("Core/component_system/ComponentPoolManager/Pools", "")
+  {
+    typedef ComponentPool_TI<IntComponentPtr>   IntComponentPtrPool;
+    typedef ComponentPool_TI<UIntComponentPtr>  UIntComponentPtrPool;
+
+    ComponentPoolManager mgr;
+
+    CHECK_FALSE(mgr.Exists(k_int));
+    TestWithManager<IntComponentPtrPool>(mgr, k_int);
+    CHECK(mgr.size() == 1);
+    CHECK(mgr.Exists(k_int));
+
+    CHECK_FALSE(mgr.Exists(k_uint));
+    TestWithManager<UIntComponentPtrPool>(mgr, k_uint);
+    CHECK(mgr.size() == 2);
+    CHECK(mgr.Exists(k_uint));
   }
 };

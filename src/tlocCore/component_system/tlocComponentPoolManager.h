@@ -3,6 +3,7 @@
 
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/utilities/tlocType.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -139,6 +140,9 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_Component>
     iterator CreateNewPool(component_type a_compNumber)
     {
+      TLOC_ASSERT(Exists(a_compNumber) == false,
+                  "ComponentPool of type a_compNumber already exists!");
+
       DoResize(a_compNumber + 1);
 
       iterator itr = m_pools.begin();
@@ -166,6 +170,22 @@ namespace tloc { namespace core { namespace component_system {
       return itr;
     }
 
+    bool Exists(component_type a_number)
+    {
+      if (core::utils::CastNumber<size_type, component_type>(a_number) >= size())
+      { return false; }
+
+      iterator itr = m_pools.begin();
+      advance(itr, a_number);
+      if (*itr == NULL)
+      { return false; }
+
+      return true;
+    }
+
+    size_type size()
+    { return m_pools.size(); }
+
     // Add a function GetPool<T> where T is the pool type
 
   private:
@@ -174,7 +194,7 @@ namespace tloc { namespace core { namespace component_system {
     void DoResize(size_type a_index)
     {
       if (a_index >= m_pools.size())
-      { m_pools.resize(a_index, NULL); }
+      { m_pools.resize(a_index, nullptr); }
     }
 
   private:

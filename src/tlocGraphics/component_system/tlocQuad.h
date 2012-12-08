@@ -5,6 +5,8 @@
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/data_types/tlocVertex.h>
 #include <tlocGraphics/data_types/tlocRectangle.h>
@@ -35,6 +37,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void Set(const rect_type& a_rect);
   };
+
+  typedef core::smart_ptr::SharedPtr<Quad>    QuadPtr;
+  typedef core::component_system::
+          ComponentPool_TI<QuadPtr>           QuadPool;
 
 };};};
 

@@ -1,5 +1,8 @@
 #include "tlocQuad.h"
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+
 namespace tloc { namespace graphics { namespace component_system {
 
   Quad::Quad() : IPrimitive(component_system::components::quad)
@@ -36,5 +39,11 @@ namespace tloc { namespace graphics { namespace component_system {
     verts[vert_nw::k_index].SetPosition(vertNW);
     verts[vert_sw::k_index].SetPosition(vertSW);
   }
+
+  // SmartPtr
+  template core::smart_ptr::SharedPtr<Quad>;
+
+  // Pool
+  template core::component_system::ComponentPool_TI<QuadPtr>;
 
 };};};

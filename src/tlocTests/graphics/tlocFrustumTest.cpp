@@ -28,8 +28,7 @@ namespace TestingFrustum
     FOV fov(math::Degree(60.0f), ar, p_FOV::vertical());
 
     view_proj::Frustum::Params params(fov);
-    params.SetFar(1000.0f);
-    params.SetNear(5.0f);
+    params.SetFar(1000.0f).SetNear(5.0f);
 
     view_proj::Frustum fr(params);
     fr.BuildFrustum();

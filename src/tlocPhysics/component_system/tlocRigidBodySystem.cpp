@@ -1,6 +1,7 @@
 #include "tlocRigidBodySystem.h"
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>

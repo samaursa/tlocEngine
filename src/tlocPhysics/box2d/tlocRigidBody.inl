@@ -344,9 +344,10 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
 
     m_rigidBody = a_rigidBody;
-    DoSetParent(a_parent);
 
     m_flags.Mark(initialized);
+    DoSetParent(a_parent);
+
     return ErrorSuccess();
   }
 

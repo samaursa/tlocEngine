@@ -4,6 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
+#include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocWorld.h>

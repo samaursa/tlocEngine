@@ -36,6 +36,7 @@ namespace TestingRigidBodySystem
     typedef math::component_system::Transform transform_type;
 
     typedef box2d::PhysicsManager physics_manager;
+    typedef box2d::ContactEvent   contact_event_type;
     typedef box2d::RigidBodyShape rigid_body_shape;
     typedef box2d::CircleShape    circle_shape_type;
     typedef box2d::RigidBodyDef   rigid_body_def_type;
@@ -50,6 +51,36 @@ namespace TestingRigidBodySystem
 
   typedef RigidBodySystemFixture rb_sys_fixture;
 
+  class WorldContactCallback
+  {
+  public:
+
+    WorldContactCallback() : m_numEvents(0) {}
+
+    bool OnContactBegin(const rb_sys_fixture::contact_event_type& a_event)
+    {
+      ++m_numEvents;
+      TLOC_UNUSED(a_event);
+      return false;
+    }
+
+    bool OnContactEnd(const rb_sys_fixture::contact_event_type& a_event)
+    {
+      ++m_numEvents;
+      TLOC_UNUSED(a_event);
+      return false;
+    }
+
+      tl_size m_numEvents;
+  };
+
+};
+
+TLOC_DEF_TYPE(TestingRigidBodySystem::WorldContactCallback);
+
+namespace TestingRigidBodySystem
+{
+
   TEST_CASE("Physics/component_system/RigidBodySystem/General", "")
   {
     const float gravityY = -1000.0f;
@@ -59,6 +90,9 @@ namespace TestingRigidBodySystem
     rb_sys_fixture::physics_manager::vec_type gravity(0.0f, gravityY);
 
     physicsMgr.Initialize(rb_sys_fixture::physics_manager::gravity(gravity));
+
+    WorldContactCallback myWorldContactCallback;
+    physicsMgr.Register(&myWorldContactCallback);
 
     rb_sys_fixture::event_manager evntMgr;
     rb_sys_fixture::entity_manager entityMgr(&evntMgr);
@@ -111,6 +145,8 @@ namespace TestingRigidBodySystem
     rbDynamicComponent.GetRigidBody().GetPosition(position);
     CHECK(position[1] == Approx(3.0f));
 
+    CHECK(myWorldContactCallback.m_numEvents == 0);
+
     // Note: The "tolerance" of 0.25f is only valid within the first 4
     // iterations on the Box2D platform. Adjust if necessary.
     const tl_float tolerance = 0.25f;
@@ -148,6 +184,9 @@ namespace TestingRigidBodySystem
       rbDynamicComponent.GetRigidBody().GetPosition(position);
       CHECK((position == previousPosition));
     }
+
+    CHECK(myWorldContactCallback.m_numEvents == 1);
+
 
     CHECK(rigidBodySys.Shutdown() == ErrorSuccess());
     CHECK(physicsMgr.Shutdown() == ErrorSuccess());

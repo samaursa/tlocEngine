@@ -52,20 +52,60 @@ namespace TestingComponentPoolManager
 
   TEST_CASE("Core/component_system/ComponentPoolManager/Pools", "")
   {
+    typedef ComponentPool_TI<IntComponentPtr>   IntComponentPtrPool;
+    typedef ComponentPool_TI<FloatComponentPtr> FloatComponentPtrPool;
+
+    const tl_int elementsToPool = 10;
+
     ComponentPoolManager mgr;
 
-    ComponentPoolManager::iterator itr =
-      mgr.CreateNewPool<IntComponentPtr>(k_int);
+    {
+      ComponentPoolManager::iterator compPool =
+        mgr.CreateNewPool<IntComponentPtr>(k_int);
 
-    typedef ComponentPool_TI<IntComponentPtr> IntComponentPtrPool;
 
-    IntComponentPtrPool::iterator itr2 =
-      (*itr)->GetAs<IntComponentPtr>()->GetNext();
+      IntComponentPtrPool* intCompPool =
+        (*compPool)->GetAs<IntComponentPtrPool>();
 
-    IntComponentPtr& myPtr = itr2->GetElement();
-    myPtr = new IntComponent();
-    myPtr->m_value = 10;
+      IntComponentPtrPool::iterator itr = intCompPool->GetNext();
 
-    CHECK(itr2->GetElement().GetRefCount() == 1);
+      {
+        IntComponentPtr& myPtr = itr->GetElement();
+        myPtr = new IntComponent();
+        myPtr->m_value = 0;
+      }
+
+      CHECK(itr->GetElement().GetRefCount() == 1);
+
+      for (tl_int i = 1; i < 10; ++i)
+      {
+        itr = intCompPool->GetNext();
+        IntComponentPtr& myPtr = itr->GetElement();
+        myPtr = new IntComponent();
+        myPtr->m_value = i;
+      }
+    }
+
+    {
+      ComponentPoolManager::iterator compPool = mgr.GetPool(k_int);
+
+      IntComponentPtrPool* intCompPool = (*compPool)->GetAs<IntComponentPtrPool>();
+
+      IntComponentPtrPool::iterator itr = intCompPool->begin();
+      IntComponentPtrPool::iterator itrEnd = intCompPool->end();
+
+      REQUIRE(distance(itr, itrEnd) == elementsToPool);
+
+      tl_int counter = 0;
+      bool testPassed = true;
+      for (; itr != itrEnd; ++itr)
+      {
+        if(itr->GetElement()->m_value != counter)
+        { testPassed = false; break; }
+
+        ++counter;
+      }
+      CHECK(testPassed);
+    }
   }
 };

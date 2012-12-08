@@ -8,9 +8,6 @@ namespace tloc { namespace core { namespace component_system {
 
   class ComponentPoolManager;
 
-  template <typename T_Component>
-  class ComponentPool_TI;
-
   class ComponentPool_I
   {
   public:
@@ -23,16 +20,16 @@ namespace tloc { namespace core { namespace component_system {
     virtual ~ComponentPool_I()
     { }
 
-    template <typename T>
-    ComponentPool_TI<T>* GetAs()
+    template <typename T_PoolType>
+    T_PoolType* GetAs()
     {
-      return static_cast<ComponentPool_TI<T>*>(this);
+      return static_cast<T_PoolType*>(this);
     }
 
-    template <typename T>
-    ComponentPool_TI<T> const * GetAs() const
+    template <typename T_PoolType>
+    T_PoolType const * GetAs() const
     {
-      return static_cast<ComponentPool_TI<T> const *>(this);
+      return static_cast<T_PoolType const *>(this);
     }
 
   protected:
@@ -52,11 +49,11 @@ namespace tloc { namespace core { namespace component_system {
     typedef ComponentPool_I                                 base_type;
     typedef core::memory::MemoryPoolIndexed<T_Component>    pool_base_type;
 
-    typedef T_Component                                     component_type;
-    typedef ComponentPool_TI<component_type>                this_type;
+    typedef T_Component                                     value_type;
+    typedef ComponentPool_TI<value_type>                    this_type;
 
     typedef core::memory::MemoryPoolIndexed
-            <component_type>                                pool_type;
+            <value_type>                                    pool_type;
     typedef typename pool_type::iterator                    iterator;
     typedef typename pool_type::const_iterator              const_iterator;
     typedef typename pool_type::size_type                   size_type;

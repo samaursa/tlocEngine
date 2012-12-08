@@ -356,7 +356,6 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     m_rigidBody = NULL;
-    DoSetParentNull();
 
     m_flags.Unmark(initialized);
     return ErrorSuccess();

@@ -155,7 +155,7 @@ namespace TestingMemoryPool
 
     {
       pool_type pool;
-      CHECK(pool.GetAvail() == 0);
+      CHECK(pool.GetAvail() == 1); // default starting size is 1
       pool.Resize(T_PoolSize);
       CHECK(pool.GetAvail() == T_PoolSize);
     }
@@ -173,8 +173,8 @@ namespace TestingMemoryPool
 
     pool_type pool;
 
-    CHECK(pool.GetTotal() == 0);
-    CHECK(pool.GetAvail() == 0);
+    CHECK(pool.GetTotal() == 1); // default starting size is 1
+    CHECK(pool.GetAvail() == 1); // default starting size is 1
     CHECK(pool.GetUsed() == 0);
 
     pool.Resize(T_PoolSize);

@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -200,7 +200,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -281,7 +281,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -358,7 +358,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -436,7 +436,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STD_ALLOC;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -514,7 +514,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -595,7 +595,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -676,7 +676,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -760,7 +760,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -842,7 +842,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -926,7 +926,7 @@
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/CATCH/include/&quot;;&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(TLOC_PATH)/src/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;TLOC_ENABLE_ASSERT_LOW_LEVEL;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;TLOC_ENABLE_CPPUNWIND;TLOC_ENABLE_CPPRTTI;TLOC_USING_STL;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
@@ -1012,6 +1012,10 @@
 			<Filter
 				Name="component_system"
 				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocComponentPoolManagerTest.cpp"
+					>
+				</File>
 				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocEntityManagerTest.cpp"
 					>
@@ -1154,6 +1158,14 @@
 				>
 				<File
 					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocTypesUtilsTests.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="smart_ptr"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSmartPtrTest.cpp"
 					>
 				</File>
 			</Filter>

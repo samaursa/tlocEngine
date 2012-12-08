@@ -136,14 +136,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::DoUpdateEntities()
   {
-    entity_list::iterator itr = m_entitiesToRemove.begin();
-    entity_list::iterator itrEnd = m_entitiesToRemove.end();
-
-    for(; itr != itrEnd; ++itr)
-    {
-      delete *itr;
-    }
-
+    delete_ptrs(m_entitiesToRemove.begin(), m_entitiesToRemove.end());
     m_entitiesToRemove.clear();
   }
 

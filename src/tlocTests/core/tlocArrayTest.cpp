@@ -427,6 +427,9 @@ namespace TestingArray
   {
     ints.resize(0); // should not crash or do anything
     CHECK(ints.size() == 0);
+    ints.resize(2); // should not crash
+    CHECK(ints.size() == 2);
+    ints.clear();
 
     u32 firstElement = 0;
     u32 arraySize = 10;

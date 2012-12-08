@@ -32,8 +32,7 @@ namespace tloc { namespace core { namespace component_system {
 
     enum type
     {
-      transform = components_group::core,
-      listener,           // used for callback functionality
+      listener= components_group::core, // used for callback functionality
 
       count
     };

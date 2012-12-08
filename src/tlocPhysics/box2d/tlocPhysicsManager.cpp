@@ -143,7 +143,10 @@ namespace tloc { namespace physics { namespace box2d {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      m_allObservers[i]->OnContactBegin(a_event);
+      if (m_allObservers[i]->OnContactBegin(a_event) == true)
+      {
+        return;
+      }
     }
   }
 
@@ -151,7 +154,11 @@ namespace tloc { namespace physics { namespace box2d {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      m_allObservers[i]->OnContactEnd(a_event);
+      if (m_allObservers[i]->OnContactEnd(a_event) == true)
+      {
+        return;
+      }
+
     }
   }
 

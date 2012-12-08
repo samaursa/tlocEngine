@@ -36,17 +36,19 @@ namespace tloc { namespace physics { namespace box2d {
   // RigidBody
 
   TL_I RigidBody::error_type
-    RigidBody::CreateRigidBodyShape(rigid_body_shape_type& a_rigidBodyShape)
+    RigidBody::CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     typedef rigid_body_shape_type::fixture_def_internal_type
       fixture_def_internal_type;
 
-    a_rigidBodyShape.DoSetParent(DoGetParent());
+    rigid_body_shape_type rigidBodyShape = a_rigidBodyShape;
+
+    rigidBodyShape.DoSetParent(DoGetParent());
 
     const fixture_def_internal_type& fixtureDef =
-      a_rigidBodyShape.GetFixtureDef();
+      rigidBodyShape.GetFixtureDef();
 
     m_rigidBody->CreateFixture(&fixtureDef);
     return ErrorSuccess();
@@ -342,9 +344,10 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
 
     m_rigidBody = a_rigidBody;
-    DoSetParent(a_parent);
 
     m_flags.Mark(initialized);
+    DoSetParent(a_parent);
+
     return ErrorSuccess();
   }
 
@@ -353,7 +356,6 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     m_rigidBody = NULL;
-    DoSetParentNull();
 
     m_flags.Unmark(initialized);
     return ErrorSuccess();

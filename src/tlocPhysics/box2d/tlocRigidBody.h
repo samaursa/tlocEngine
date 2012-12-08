@@ -56,7 +56,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef World                              world_type;
 
   public:
-    error_type CreateRigidBodyShape(rigid_body_shape_type& a_rigidBodyShape);
+    error_type CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape);
 
   public:
 

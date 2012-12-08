@@ -990,6 +990,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="component_system"
+			>
+			<File
+				RelativePath="..\..\..\..\..\src\tlocTests\physics\tlocRigidBodySystemTest.cpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\..\src\tlocTests\physics\main.cpp"
 			>

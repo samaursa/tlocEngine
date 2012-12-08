@@ -62,7 +62,21 @@ namespace TestingSmartPtr
 
     {
       smart_ptr::SharedPtr<Shared> sp;
-      smart_ptr::SharedPtr<Shared> sp2 = sp; // should not crash
+
+      // This SHOULD fire an assertion - because null copy is disabled
+      // smart_ptr::SharedPtr<Shared> sp2 = sp;
+      CHECK(sp.GetRefCount() == 0);
+      //CHECK(sp2.GetRefCount() == 0);
+
+    } // Should not crash when being destroyed
+
+    {
+      typedef smart_ptr::SharedPtr<Shared,
+              smart_ptr::p_shared_ptr::null_copy::Allow> shared_ptr_type;
+
+      shared_ptr_type sp;
+      shared_ptr_type sp2 = sp; // Should NOT fire an assertion
+
       CHECK(sp.GetRefCount() == 0);
       CHECK(sp2.GetRefCount() == 0);
 

@@ -9,8 +9,8 @@
 
 namespace tloc { namespace core { namespace smart_ptr {
 
-#define SHARED_PTR_TEMPS  typename T
-#define SHARED_PTR_PARAMS T
+#define SHARED_PTR_TEMPS  typename T, typename T_NullCopyPolicy 
+#define SHARED_PTR_PARAMS T, T_NullCopyPolicy
 #define SHARED_PTR_TYPE   typename SharedPtr<SHARED_PTR_PARAMS>
 
   template <SHARED_PTR_TEMPS>
@@ -30,6 +30,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const this_type& a_other)
     : m_rawPtr(a_other.m_rawPtr), m_refCount(a_other.m_refCount)
   {
+    CheckNullBeforeCopy(m_rawPtr);
     // Mainly for containers
     DoAddRef();
   }

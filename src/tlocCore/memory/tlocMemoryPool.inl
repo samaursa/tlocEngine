@@ -87,6 +87,8 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Memory Pool Index
 
+  static const tl_size g_initialStartSize = 1;
+
 #define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
   TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
 
@@ -97,6 +99,7 @@ namespace tloc { namespace core { namespace memory {
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndexed()
     : m_numAvail(0)
   {
+    Resize(g_initialStartSize); // Our default size
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -139,6 +142,7 @@ namespace tloc { namespace core { namespace memory {
     if (DoExpand(prevSize * 2, container_dynamic_type()) )
     {
       m_numAvail = GetTotal() - prevSize;
+
       return GetNext();
     }
 
@@ -222,6 +226,8 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::size_type 
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetTotal() const
   {
+    TLOC_ASSERT_MEMORY_POOL_INDEX(m_allElements.size() > 0, 
+      "m_allElements.size() should never be 0 as g_initialStartSize is > 0");
     return m_allElements.size();
   }
 

@@ -106,6 +106,7 @@ namespace tloc { namespace physics { namespace component_system {
   RigidBodyListenerSystem::error_type
     RigidBodyListenerSystem::Post_Shutdown()
   {
+    m_physicsMgr->UnRegister(this);
     m_allContactEvents.clear();
     return ErrorSuccess();
   }

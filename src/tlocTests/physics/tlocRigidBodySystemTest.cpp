@@ -17,7 +17,10 @@
 
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
+#include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
+
 #include <tlocPhysics/component_system/tlocRigidBodySystem.h>
+#include <tlocPhysics/component_system/tlocRigidBodyListenerSystem.h>
 
 namespace TestingRigidBodySystem
 {
@@ -41,12 +44,14 @@ namespace TestingRigidBodySystem
     typedef box2d::CircleShape    circle_shape_type;
     typedef box2d::RigidBodyDef   rigid_body_def_type;
 
-    typedef RigidBodyShape  rigid_body_shape_component;
-    typedef RigidBody       rigid_body_component;
+    typedef RigidBodyShape                      rigid_body_shape_component;
+    typedef RigidBody                           rigid_body_component;
+    typedef component_system::RigidBodyListener rigid_body_listener_component;
 
     typedef rigid_body_component::rigid_body_type::vec_type  vec_type;
 
-    typedef RigidBodySystem rigid_body_system;
+    typedef RigidBodySystem         rigid_body_system;
+    typedef RigidBodyListenerSystem rigid_body_listener_system;
   };
 
   typedef RigidBodySystemFixture rb_sys_fixture;
@@ -74,6 +79,27 @@ namespace TestingRigidBodySystem
       tl_size m_numEvents;
   };
 
+  class ComponentContactCallback : public  physics::RigidBodyListener
+  {
+  public:
+
+    ComponentContactCallback() : m_numEvents(0) {}
+
+    void OnContactBegin(const entity_type* a_ent)
+    {
+      ++m_numEvents;
+      TLOC_UNUSED(a_ent);
+    }
+
+    void OnContactEnd(const entity_type* a_ent)
+    {
+      ++m_numEvents;
+      TLOC_UNUSED(a_ent);
+    }
+
+    tl_size m_numEvents;
+  };
+
 };
 
 TLOC_DEF_TYPE(TestingRigidBodySystem::WorldContactCallback);
@@ -99,6 +125,9 @@ namespace TestingRigidBodySystem
 
     rb_sys_fixture::rigid_body_system
       rigidBodySys(&evntMgr, &entityMgr, &physicsMgr.GetWorld());
+
+    rb_sys_fixture::rigid_body_listener_system
+      rigidBodyListenerSys(&evntMgr, &entityMgr, &physicsMgr);
 
     // Create a static rigid body entity
     rb_sys_fixture::entity_type* rbStaticEntity = entityMgr.CreateEntity();
@@ -132,11 +161,17 @@ namespace TestingRigidBodySystem
 
     rb_sys_fixture::rigid_body_shape_component rbShapeComponent2(&rbCircleShape);
 
+    ComponentContactCallback myComponentContactCallback;
+    rb_sys_fixture::rigid_body_listener_component
+      rbListenerComponent(&myComponentContactCallback);
+
     entityMgr.InsertComponent(rbDynamicEntity, &transformComponent2);
     entityMgr.InsertComponent(rbDynamicEntity, &rbDynamicComponent);
     entityMgr.InsertComponent(rbDynamicEntity, &rbShapeComponent2);
+    entityMgr.InsertComponent(rbDynamicEntity, &rbListenerComponent);
 
     CHECK(rigidBodySys.Initialize() == ErrorSuccess());
+    CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess());
 
     // Update everything once so everything is in the right position
     rigidBodySys.ProcessActiveEntities();
@@ -146,6 +181,7 @@ namespace TestingRigidBodySystem
     CHECK(position[1] == Approx(3.0f));
 
     CHECK(myWorldContactCallback.m_numEvents == 0);
+    CHECK(myComponentContactCallback.m_numEvents == 0);
 
     // Note: The "tolerance" of 0.25f is only valid within the first 4
     // iterations on the Box2D platform. Adjust if necessary.
@@ -161,6 +197,7 @@ namespace TestingRigidBodySystem
     {
       physicsMgr.Update(timeStep);
       rigidBodySys.ProcessActiveEntities();
+      rigidBodyListenerSys.ProcessActiveEntities();
 
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
@@ -174,11 +211,17 @@ namespace TestingRigidBodySystem
       CHECK(Mathf::Approx(calculatedPositionY, position[1], tolerance));
     }
 
+    // Ball has hit the floor, But has not registered the hit yet
+    CHECK(myWorldContactCallback.m_numEvents == 0);
+    CHECK(myComponentContactCallback.m_numEvents == 0);
+
+
     // Update one more time. The ball should have hit the floor and "stopped"
     // thus having the same position
     {
       physicsMgr.Update(timeStep);
       rigidBodySys.ProcessActiveEntities();
+      rigidBodyListenerSys.ProcessActiveEntities();
 
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
@@ -186,8 +229,9 @@ namespace TestingRigidBodySystem
     }
 
     CHECK(myWorldContactCallback.m_numEvents == 1);
+    CHECK(myComponentContactCallback.m_numEvents == 1);
 
-
+    CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess());
     CHECK(rigidBodySys.Shutdown() == ErrorSuccess());
     CHECK(physicsMgr.Shutdown() == ErrorSuccess());
   }

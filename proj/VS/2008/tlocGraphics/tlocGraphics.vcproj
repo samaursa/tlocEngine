@@ -1222,6 +1222,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="projection"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocProjectionComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocProjectionComponent.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="systems"

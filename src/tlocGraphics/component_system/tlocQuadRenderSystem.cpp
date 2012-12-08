@@ -1,7 +1,10 @@
 #include "tlocQuadRenderSystem.h"
 
+#include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
+
+#include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
@@ -20,9 +23,45 @@ namespace tloc { namespace graphics { namespace component_system {
 
   QuadRenderSystem::QuadRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::quad))
-  { }
+     : base_type(a_eventMgr, a_entityMgr,
+                 core::Variadic<component_type, 1>(components::quad))
+     , m_sharedCam(nullptr)
+  {
+  }
+
+  void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
+  {
+    m_sharedCam = a_cameraEntity;
+
+    // Ensure that camera entity has the projection component
+    TLOC_ASSERT( m_sharedCam->HasComponent(components::projection),
+      "The passed entity does not have the projection component!");
+  }
+
+  error_type QuadRenderSystem::Pre_Initialize()
+  {
+    using namespace core::component_system;
+    using namespace math::component_system::components;
+    using namespace graphics::component_system::components;
+
+    matrix_type viewMat;
+    viewMat.Identity();
+
+    if (m_sharedCam)
+    {
+      if (m_sharedCam->HasComponent(transform))
+      {
+        ComponentMapper<math::component_system::Transform> viewMatList =
+          m_sharedCam->GetComponents(math::component_system::components::transform);
+      }
+
+      if (m_sharedCam->HasComponent(projection))
+      {
+      }
+    }
+
+    return ErrorSuccess();
+  }
 
   error_type QuadRenderSystem::InitializeEntity(entity_manager*,
     entity_type* a_ent)

@@ -9,10 +9,10 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class IPrimitive : public core::component_system::Component
+  class IPrimitive : public core::component_system::Component_T<IPrimitive>
   {
   protected:
-    typedef core::component_system::Component base_type;
+    typedef core::component_system::Component_T<IPrimitive>   base_type;
 
     typedef types::Vert3fpnc                    vert_type;
     typedef core::tl_array<vert_type>::type     cont_type;

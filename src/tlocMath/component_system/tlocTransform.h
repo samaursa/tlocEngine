@@ -53,12 +53,12 @@ namespace tloc { namespace math { namespace component_system {
   typedef core::smart_ptr::SharedPtr<Transformf32> TransformPtr32;
   typedef core::smart_ptr::SharedPtr<Transformf64> TransformPtr64;
 
-  typedef
-  core::component_system::ComponentPool_TI<TransformPtr>   transform_pool;
-  typedef
-  core::component_system::ComponentPool_TI<TransformPtr32> transform_pool32;
-  typedef
-  core::component_system::ComponentPool_TI<TransformPtr64> transform_pool64;
+  typedef core::component_system::
+          ComponentPool_TI<TransformPtr>           TransformPool;
+  typedef core::component_system::
+          ComponentPool_TI<TransformPtr32>         TransformPool32;
+  typedef core::component_system::
+          ComponentPool_TI<TransformPtr64>         TransformPool64;
 
 };};};
 

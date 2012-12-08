@@ -18,8 +18,40 @@ namespace tloc { namespace core { namespace smart_ptr {
     { /* Intentionally Empty */ }
   };
 
-  template <typename T>
-  class SharedPtr : public SmartPtr
+  namespace p_shared_ptr
+  {
+    namespace null_copy
+    {
+      struct Allow
+      {
+        template <typename T_Ptr>
+        void CheckNullBeforeCopy(T_Ptr )
+        { /* Intentionally Empty */ }
+
+      };
+
+      struct DisAllow
+      {
+        template <typename T_Ptr>
+        void CheckNullBeforeCopy(T_Ptr a_rawPtr)
+        {
+          TLOC_ASSERT_LOW_LEVEL(a_rawPtr != nullptr,
+            "Copy of NULL SharedPtr is disabled");
+          TLOC_UNUSED(a_rawPtr);
+        }
+
+      };
+    };
+  };
+
+  template
+    <
+      typename T,
+      typename T_NullCopyPolicy = p_shared_ptr::null_copy::DisAllow
+    >
+  class SharedPtr
+    : public SmartPtr
+    , public T_NullCopyPolicy
   {
   public:
     typedef T                       value_type;
@@ -30,6 +62,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     typedef tl_int                  ref_count_type;
     typedef SharedPtr<value_type>   this_type;
+
+    typedef T_NullCopyPolicy        null_copy_policy_type;
 
   public:
     SharedPtr();

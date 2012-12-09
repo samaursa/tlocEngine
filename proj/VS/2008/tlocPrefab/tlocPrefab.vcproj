@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -109,7 +109,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -177,7 +177,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -245,7 +245,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
@@ -309,7 +309,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -375,7 +375,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -450,6 +450,14 @@
 		<Filter
 			Name="physics"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\physics\tlocRigidBody.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\physics\tlocRigidBody.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocPrefab\placeholder.txt"

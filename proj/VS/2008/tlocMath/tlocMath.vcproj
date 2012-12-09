@@ -891,6 +891,10 @@
 				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix4.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrixExplicitMacros.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="vector"
@@ -1018,6 +1022,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocMathExplicitMacros.h"
 			>
 		</File>
 	</Files>

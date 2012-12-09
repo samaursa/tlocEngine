@@ -1282,12 +1282,12 @@ namespace tloc { namespace core {
   template <STRING_BASE_TYPES>
   TL_I tl_int StringBase<T>::compare( const this_type& aStr ) const
   {
-    return compare(0, length(), aStr.c_str(), 0, aStr.length());
+    return StrCmp(c_str(), aStr.c_str());
   }
   template <STRING_BASE_TYPES>
   TL_I tl_int StringBase<T>::compare( const T* aCharStr ) const
   {
-    return compare(0, length(), aCharStr, 0, StrLen(aCharStr));
+    return StrCmp(c_str(), aCharStr);
   }
   template <STRING_BASE_TYPES>
   TL_I tl_int StringBase<T>::compare( const tl_size& aThisPos,
@@ -1608,18 +1608,26 @@ namespace tloc { namespace core {
     return 0;
   }
 
+  TL_I tl_int StrCmp( const char8* src, const char8* dst)
+  {
+    // std implementation is faster
+    return strcmp(src, dst);
+  }
+
   template <typename T>
   TL_I tl_int StrCmp( const T* aPtr1, const T* aPtr2, const tl_size& aNumChars )
   {
+    tl_int ret = 0;
+
     for (tl_size i = aNumChars; i > 0; --i)
     {
       if (*aPtr1 != *aPtr2)
       {
-        return *aPtr1 > *aPtr2 ? 1 : -1;
+        ret = *aPtr1 > *aPtr2 ? 1 : -1;
       }
     }
 
-    return 0;
+    return ret;
   }
 
   template <>

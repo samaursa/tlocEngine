@@ -35,10 +35,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     enum flags
     {
-      shader_attached = 0,
-      shader_linked,
-      shader_enabled,
-      count
+      k_shaderAttached = 0,
+      k_shaderLinked,
+      k_shaderEnabled,
+      k_count
     };
 
     //------------------------------------------------------------------------
@@ -469,7 +469,7 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Shader Program
 
-  ShaderProgram::ShaderProgram() : m_flags(count)
+  ShaderProgram::ShaderProgram() : m_flags(k_count)
   {
     SetHandle(glCreateProgram());
     TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
@@ -494,13 +494,13 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");
     }
 
-    m_flags.Mark(shader_attached);
+    m_flags.Mark(k_shaderAttached);
     return ErrorSuccess();
   }
 
   ShaderProgram::error_type ShaderProgram::Link()
   {
-    TLOC_ASSERT(m_flags[shader_attached],
+    TLOC_ASSERT(m_flags[k_shaderAttached],
       "No shaders attached - did you forget to call AttachShaders()?");
 
     object_handle handle = GetHandle();
@@ -517,13 +517,18 @@ namespace tloc { namespace graphics { namespace gl {
       return error::error_shader_program_link;
     }
 
-    m_flags.Mark(shader_linked);
+    m_flags.Mark(k_shaderLinked);
     return ErrorSuccess();
+  }
+
+  bool ShaderProgram::IsLinked()
+  {
+    return m_flags[k_shaderLinked];
   }
 
   ShaderProgram::error_type ShaderProgram::LoadAllUniforms()
   {
-    TLOC_ASSERT(m_flags[shader_linked],
+    TLOC_ASSERT(m_flags[k_shaderLinked],
                 "Shader not linked - did you forget to call Link()?");
 
     glsl_var_info_cont_type uniCont;
@@ -562,7 +567,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderProgram::error_type ShaderProgram::LoadAllAttributes()
   {
-    TLOC_ASSERT(m_flags[shader_linked],
+    TLOC_ASSERT(m_flags[k_shaderLinked],
       "Shader not linked - did you forget to call Link()?");
 
     glsl_var_info_cont_type attrCont;

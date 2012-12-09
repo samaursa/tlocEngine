@@ -1,5 +1,8 @@
 #include "tlocRigidBodyComponent.h"
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+
 #include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system{
@@ -9,5 +12,11 @@ namespace tloc { namespace physics { namespace component_system{
     , m_rigidBodyDef(a_box2dRigidBodyDef)
   {
   }
+
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template class core::smart_ptr::SharedPtr<RigidBody>;
+  template class core::component_system::ComponentPool_TI<RigidBodyPtr>;
 
 };};};

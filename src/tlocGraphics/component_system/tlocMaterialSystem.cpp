@@ -45,6 +45,11 @@ namespace tloc { namespace graphics { namespace component_system {
     gl::FragmentShader fShader;
     gl::Shader_I::error_type result;
 
+    shader_prog_type& sp = currMat.GetShaderProgRef();
+
+    if (sp.IsLinked())
+    { return ErrorSuccess(); }
+
     vShader.Load(currMat.GetVertexSource().c_str() );
     result = vShader.Compile();
     TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
@@ -53,7 +58,6 @@ namespace tloc { namespace graphics { namespace component_system {
     result = fShader.Compile();
     TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
 
-    shader_prog_type& sp = currMat.GetShaderProgRef();
     result = sp.AttachShaders
       (shader_prog_type::two_shader_components(&vShader, &fShader) );
     TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");

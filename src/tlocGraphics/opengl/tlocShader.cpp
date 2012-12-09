@@ -37,8 +37,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
     shader_loaded = 0,
     shader_compiled,
-    shader_attached,
-    shader_linked,
+    k_shaderAttached,
+    k_shaderLinked,
     count
   };
 

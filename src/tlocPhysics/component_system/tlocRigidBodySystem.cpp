@@ -6,6 +6,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 
@@ -97,13 +98,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
     error_type result = DoShutdownRigidBodyComponent(a_ent);
 
-    if (result == ErrorSuccess())
-    {
-
-    }
-
     TLOC_UNUSED(a_mgr);
-
     return result;
   }
 
@@ -173,6 +168,12 @@ namespace tloc { namespace physics { namespace component_system {
     rigid_body_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
 
+    if (currRBInternal == NULL)
+    {
+      TLOC_ASSERT(false, "Box2D RigidBody could not be allocated!");
+      return error::error_rigid_body_could_not_be_allocated;
+    }
+
     currRB.Initialize(currRBInternal, a_ent);
     return ErrorSuccess();
   }
@@ -193,8 +194,9 @@ namespace tloc { namespace physics { namespace component_system {
 
     m_world->GetWorld().DestroyBody(currRBInternal);
 
-    currRB.Shutdown();
-    return ErrorSuccess();
+    error_type result = currRB.Shutdown();
+
+    return result;
   }
 
 };};};

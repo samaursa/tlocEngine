@@ -8,6 +8,7 @@
 #include <tlocMath/vector/tlocVector2.inl>
 #include <tlocMath/matrix/tlocMatrix2.inl>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
 #include <Box2D/Common/b2Math.h>
 
@@ -41,7 +42,9 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     typedef rigid_body_shape_type::fixture_def_internal_type
-      fixture_def_internal_type;
+                                                      fixture_def_internal_type;
+    
+    typedef b2Fixture                                 fixture_interal_type;
 
     rigid_body_shape_type rigidBodyShape = a_rigidBodyShape;
 
@@ -50,7 +53,14 @@ namespace tloc { namespace physics { namespace box2d {
     const fixture_def_internal_type& fixtureDef =
       rigidBodyShape.GetFixtureDef();
 
-    m_rigidBody->CreateFixture(&fixtureDef);
+    fixture_interal_type* fixture = m_rigidBody->CreateFixture(&fixtureDef);
+
+    if (fixture == NULL)
+    {
+      TLOC_ASSERT(false, "Box2D Fixture could not be allocated!");
+      return error::error_rigid_body_shape_could_not_be_created;
+    }
+
     return ErrorSuccess();
   }
 

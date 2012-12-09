@@ -1,7 +1,12 @@
 #ifndef TLOC_PAIR_H
 #define TLOC_PAIR_H
 
-#include "tlocBase.h"
+#include <tlocCore/tlocBase.h>
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4512)
+#endif
 
 namespace tloc { namespace core {
 
@@ -26,7 +31,7 @@ namespace tloc { namespace core {
   Pair<T_First, T_Second> MakePair(const Pair<T_First, T_Second>& aOtherPair);
 
   template <typename T_First, typename T_Second>
-  Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_First& aSecond);
+  Pair<T_First, T_Second> MakePair(const T_First& aFirst, const T_Second& aSecond);
 
   //////////////////////////////////////////////////////////////////////////
   // Global operators
@@ -50,5 +55,9 @@ namespace tloc { namespace core {
   TL_FI bool operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b);
 
 };};
+
+#if _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif

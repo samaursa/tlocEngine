@@ -40,7 +40,9 @@ namespace tloc { namespace core {
     ~ProtectedBuffer();
 
     T* operator*();
+    const T* operator*() const;
     T* Get();
+    const T* Get() const;
 
     size_type GetSize() const;
 

@@ -1107,6 +1107,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderOperator.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderOperator.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.cpp"
 					>
 				</File>

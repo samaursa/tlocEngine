@@ -3,14 +3,11 @@
 
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/containers/tlocContainers.h>
 
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
-#include <tlocGraphics/opengl/tlocUniform.h>
-#include <tlocGraphics/opengl/tlocAttribute.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -43,9 +40,6 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::object_handle    object_handle;
     typedef base_type::error_type       error_type;
 
-    typedef core::Array<Uniform>        uniform_cont_type;
-    typedef core::Array<Attribute>      attribute_cont_type;
-
     typedef tl_size                     size_type;
     typedef s32                         gl_result_type;
 
@@ -58,9 +52,6 @@ namespace tloc { namespace graphics { namespace gl {
                              a_shaderComponents);
     error_type Link();
     bool       IsLinked() const;
-
-    //error_type LoadAllUniforms();
-    //error_type LoadAllAttributes();
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -79,9 +70,6 @@ namespace tloc { namespace graphics { namespace gl {
       return DoGet<T_ProgramIvParam>();
     }
 
-    void AddUniform(const Uniform& a_uniform);
-    void AddAttribute(const Attribute& a_attribute);
-
     error_type Enable() const;
     error_type Disable() const;
 
@@ -90,8 +78,6 @@ namespace tloc { namespace graphics { namespace gl {
     gl_result_type DoGet() const;
 
   private:
-    uniform_cont_type           m_uniforms;
-    attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
   };
 

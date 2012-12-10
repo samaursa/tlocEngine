@@ -69,12 +69,16 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     typedef graphics::component_system::Quad      quad_type;
     typedef graphics::component_system::Material  material_type;
+    typedef material_type::shader_op_ptr          shader_op_ptr;
 
     m_quadList.reserve(4); // number of vertexes a quad has
 
     const entity_type* ent = a_ent;
     ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
     Quad& q = quad[0];
+
+    // TODO: This is also where you enable the shader, add attributes and
+    // uniforms, and then cache their locations for next use
 
     if (ent->HasComponent(components::material))
     {
@@ -88,11 +92,40 @@ namespace tloc { namespace graphics { namespace component_system {
       m_quadList.push_back(q.GetVertex<Quad::vert_se>().GetPosition());
       m_quadList.push_back(q.GetVertex<Quad::vert_sw>().GetPosition());
 
-      gl::Attribute a_vData;
-      a_vData.SetName("a_vPos").SetVertexArray
+      gl::AttributePtr a_vData = gl::AttributePtr(new gl::Attribute());
+      a_vData->SetName("a_vPos").SetVertexArray
         (m_quadList, gl::p_shader_variable_ti::CopyArray() );
 
-      mat.GetShaderProgRef().AddAttribute(a_vData);
+      shader_op_ptr so = shader_op_ptr(new shader_op_ptr::value_type());
+      so->AddAttribute(a_vData);
+
+      // Add user's attributes and uniforms
+      if ( ( &*mat.GetMasterShaderOperator()) != nullptr)
+      {
+        {
+          gl::ShaderOperator::uniform_iterator itr, itrEnd;
+          itr = mat.GetMasterShaderOperator()->begin_uniform();
+          itrEnd = mat.GetMasterShaderOperator()->end_uniform();
+
+          for (; itr != itrEnd; ++itr)
+          {
+            so->AddUniform(*itr);
+          }
+        }
+
+        {
+          gl::ShaderOperator::attribute_iterator itr, itrEnd;
+          itr = mat.GetMasterShaderOperator()->begin_attribute();
+          itrEnd = mat.GetMasterShaderOperator()->end_attribute();
+
+          for (; itr != itrEnd; ++itr)
+          {
+            so->AddAttribute(*itr);
+          }
+        }
+      }
+
+      mat.DoGetShaderOpContainerRef().push_back(so);
     }
 
     return ErrorSuccess();
@@ -115,14 +148,34 @@ namespace tloc { namespace graphics { namespace component_system {
         ent->GetComponents(components::material);
       material_type& mat = matArr[0];
 
-      mat.GetShaderProgRef().Enable();
-      mat.GetShaderProgRef().LoadAllUniforms();
-      mat.GetShaderProgRef().LoadAllAttributes();
+      material_type::shader_prog_ptr sp = mat.GetShaderProgRef();
 
-      glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+      if ( m_shaderPtr.IsNull() || m_shaderPtr.Expose() != sp.Expose() )
+      {
+        sp->Enable();
+        m_shaderPtr = sp;
+      }
 
-      mat.GetShaderProgRef().Disable();
+      material_type::shader_op_cont::iterator itr, itrEnd;
+      material_type::shader_op_cont& cont = mat.DoGetShaderOpContainerRef();
+
+      for (itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+      {
+        material_type::shader_op_ptr so = *itr;
+
+        so->LoadAllUniforms(*m_shaderPtr);
+        so->LoadAllAttributes(*m_shaderPtr);
+
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+      }
+
+      //sp->Disable();
     }
+  }
+
+  void QuadRenderSystem::Post_ProcessActiveEntities()
+  {
+    m_shaderPtr = shader_prog_ptr();
   }
 
 };};};

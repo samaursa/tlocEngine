@@ -36,7 +36,7 @@ namespace tloc { namespace prefab { namespace graphics {
     quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->GetElement() = new Quad(a_rect);
+    itrQuad->GetElement() = QuadPtr(new Quad(a_rect));
 
     // Create the transform component (and the transform pool if necessary)
     cpool;
@@ -51,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = new Transform();
+    itrTransform->GetElement() = TransformPtr(new Transform());
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

@@ -1,22 +1,18 @@
-#include "tlocShaderProgram.h"
+#include "tlocShaderOperator.h"
 
-#include <tlocCore/string/tlocString.h>
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/data_structures/tlocVariadic.inl>
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl>
-
+#include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/containers/tlocProtectedBuffer.h>
 #include <tlocCore/containers/tlocProtectedBuffer.inl>
-
-#include <tlocCore/utilities/tlocType.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/matrix/tlocMatrix3.h>
 #include <tlocMath/matrix/tlocMatrix4.h>
 
-// GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -36,11 +32,14 @@ namespace tloc { namespace graphics { namespace gl {
 
     enum flags
     {
-      k_shaderAttached = 0,
-      k_shaderLinked,
-      k_shaderEnabled,
+      k_isCached = 0,
       k_count
     };
+
+    bool DoCheckIfShaderIsAttached()
+    {
+      return Get<p_get::CurrentProgram>() != 0;
+    }
 
     //------------------------------------------------------------------------
     // Structs
@@ -66,7 +65,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoGetUniformInfo(const ShaderProgram& a_shaderProgram,
                           glsl_var_info_cont_type& a_infoOut)
     {
-      typedef ShaderProgram::size_type  size_type;
+      typedef ShaderOperator::size_type  size_type;
 
       const size_type uniformMaxLength =
         a_shaderProgram.Get<p_shader_program::ActiveUniformMaxLength>();
@@ -322,6 +321,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     }
 
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     void DoSetAttribute(const glslVarInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
@@ -448,250 +449,149 @@ namespace tloc { namespace graphics { namespace gl {
         }
       }
     }
-
-
-  };
-
-  namespace p_shader_program
-  {
-    const tl_int DeleteStatus            ::s_glStatusName = GL_DELETE_STATUS;
-    const tl_int LinkStatus              ::s_glStatusName = GL_LINK_STATUS;
-    const tl_int ValidateStatus          ::s_glStatusName = GL_VALIDATE_STATUS;
-    const tl_int InfoLogLength           ::s_glStatusName = GL_INFO_LOG_LENGTH;
-    const tl_int AttachedShaders         ::s_glStatusName = GL_ATTACHED_SHADERS;
-    const tl_int ActiveAttributes        ::s_glStatusName = GL_ACTIVE_ATTRIBUTES;
-    const tl_int ActiveAttributeMaxLength::s_glStatusName =
-                                                 GL_ACTIVE_ATTRIBUTE_MAX_LENGTH;
-    const tl_int ActiveUniforms          ::s_glStatusName = GL_ACTIVE_UNIFORMS;
-    const tl_int ActiveUniformMaxLength  ::s_glStatusName =
-                                                 GL_ACTIVE_UNIFORM_MAX_LENGTH;
-  };
-
-  //////////////////////////////////////////////////////////////////////////
-  // Shader Program
-
-  ShaderProgram::ShaderProgram() : m_flags(k_count)
-  {
-    SetHandle(glCreateProgram());
-    TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
   }
 
-  ShaderProgram::~ShaderProgram()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::
+    ShaderOperator() : m_flags(k_count)
+  { }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    AddUniform(const uniform_ptr_type& a_uniform)
+  { m_uniforms.push_back(a_uniform); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    AddAttribute(const attribute_ptr_type& a_attribute)
+  { m_attributes.push_back(a_attribute); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::error_type
+    ShaderOperator::
+    LoadAllUniforms(const ShaderProgram& a_shaderProgram)
   {
-    if (IsLastRef())
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+
+    glsl_var_info_cont_type uniCont;
+    DoGetUniformInfo(a_shaderProgram, uniCont);
+
+    uniform_cont_type::iterator itr, itrEnd;
+    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+         itr != itrEnd; ++itr)
     {
-      glDeleteProgram(GetHandle());
-    }
-  }
+      glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
+      for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
+           itrInfo != itrInfoEnd; ++itrInfo)
+      {
+        UniformPtr uniformPtr = *itr;
 
-  template <ShaderProgram::size_type T_Size>
-  ShaderProgram::error_type
-    ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
-  {
-    for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
-    {
-      glAttachShader(GetHandle(), a_shaderComponents[i]->GetHandle());
-      TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");
-    }
+        if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+        {
+          if ( uniformPtr->GetType() == itrInfo->m_type &&
+               itrInfo->m_location != -1)
+          {
+            DoSetUniform(*itrInfo, *uniformPtr);
 
-    m_flags.Mark(k_shaderAttached);
-    return ErrorSuccess();
-  }
-
-  ShaderProgram::error_type ShaderProgram::Link()
-  {
-    TLOC_ASSERT(m_flags[k_shaderAttached],
-      "No shaders attached - did you forget to call AttachShaders()?");
-
-    object_handle handle = GetHandle();
-
-    glLinkProgram(handle);
-
-    GLint result = Get<p_shader_program::LinkStatus>();
-    if (result == GL_FALSE)
-    {
-      core::String errorString;
-      gl::Error().GetErrorAsString(errorString);
-
-      // TODO: Write shader log
-      return error::error_shader_program_link;
-    }
-
-    m_flags.Mark(k_shaderLinked);
-    return ErrorSuccess();
-  }
-
-  bool ShaderProgram::IsLinked() const
-  {
-    return m_flags[k_shaderLinked];
-  }
-
-  //ShaderProgram::error_type ShaderProgram::LoadAllUniforms()
-  //{
-  //  TLOC_ASSERT(m_flags[k_shaderLinked],
-  //              "Shader not linked - did you forget to call Link()?");
-
-  //  glsl_var_info_cont_type uniCont;
-  //  DoGetUniformInfo(*this, uniCont);
-
-  //  uniform_cont_type::iterator itr, itrEnd;
-  //  for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-  //       itr != itrEnd; ++itr)
-  //  {
-  //    glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
-  //    for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-  //         itrInfo != itrInfoEnd; ++itrInfo)
-  //    {
-  //      if (itr->GetName().compare(itrInfo->m_name.Get()) == 0)
-  //      {
-  //        if (itr->GetType() == itrInfo->m_type && itrInfo->m_location != -1)
-  //        {
-  //          DoSetUniform(*itrInfo, *itr);
-
-  //          // Check with OpenGL
-  //          if (gl::Error().Failed())
-  //          { return error::error_shader_uniform_not_attached; }
-  //        }
-  //        else
-  //        {
-  //          // TODO: Convert this assertion to a log
-  //          TLOC_ASSERT(false, "Mismatched uniform type!");
-  //          return ErrorFailure();
-  //        }
-  //      }
-  //    }
-  //  }
-
-  //  return ErrorSuccess();
-  //}
-
-  //ShaderProgram::error_type ShaderProgram::LoadAllAttributes()
-  //{
-  //  TLOC_ASSERT(m_flags[k_shaderLinked],
-  //    "Shader not linked - did you forget to call Link()?");
-
-  //  glsl_var_info_cont_type attrCont;
-  //  DoGetAttributeInfo(*this, attrCont);
-
-  //  attribute_cont_type::iterator itr, itrEnd;
-  //  for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-  //       itr != itrEnd; ++itr)
-  //  {
-  //    glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
-  //    for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-  //         itrInfo != itrInfoEnd; ++itrInfo)
-  //    {
-  //      if (itr->GetName().compare(itrInfo->m_name.Get()) == 0)
-  //      {
-  //        if (itr->GetType() == itrInfo->m_type && itrInfo->m_location != -1)
-  //        {
-  //          DoSetAttribute(*itrInfo, *itr);
-
-  //          // Check with OpenGL
-  //          if (gl::Error().Failed())
-  //          { return error::error_shader_attribute_not_attached; }
-  //        }
-  //        else
-  //        {
-  //          // TODO: Convert this assertion to a log
-  //          TLOC_ASSERT(false, "Mismatched attribute type!");
-  //          return ErrorFailure();
-  //        }
-  //      }
-  //    }
-  //  }
-
-  //  return ErrorSuccess();
-  //}
-
-  void ShaderProgram::AddUniform(const Uniform& a_uniform)
-  {
-    m_uniforms.push_back(a_uniform);
-  }
-
-  void ShaderProgram::AddAttribute(const Attribute& a_attribute)
-  {
-    m_attributes.push_back(a_attribute);
-  }
-
-  ShaderProgram::error_type
-    ShaderProgram::Enable() const
-  {
-    glUseProgram(GetHandle());
-    if (gl::Error().Failed())
-    {
-      return error::error_shader_program_enable;
+            // Check with OpenGL
+            if (gl::Error().Failed())
+            { return error::error_shader_uniform_not_attached; }
+          }
+          else
+          {
+            // TODO: Convert this assertion to a log
+            TLOC_ASSERT(false, "Mismatched uniform type!");
+            return ErrorFailure();
+          }
+        }
+      }
     }
 
     return ErrorSuccess();
   }
 
-  ShaderProgram::error_type
-    ShaderProgram::Disable() const
-  {
-    glUseProgram(0);
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    if (gl::Error().Failed())
+  ShaderOperator::error_type
+    ShaderOperator::
+    LoadAllAttributes(const ShaderProgram& a_shaderProgram)
+  {
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+
+    glsl_var_info_cont_type attrCont;
+    DoGetAttributeInfo(a_shaderProgram, attrCont);
+
+    attribute_cont_type::iterator itr, itrEnd;
+    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
+         itr != itrEnd; ++itr)
     {
-      return error::error_shader;
+      glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
+      for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
+           itrInfo != itrInfoEnd; ++itrInfo)
+      {
+        AttributePtr attribPtr = *itr;
+
+        if ( attribPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+        {
+          if ( attribPtr->GetType() == itrInfo->m_type &&
+               itrInfo->m_location  != -1)
+          {
+            DoSetAttribute(*itrInfo, *attribPtr);
+
+            // Check with OpenGL
+            if (gl::Error().Failed())
+            { return error::error_shader_attribute_not_attached; }
+          }
+          else
+          {
+            // TODO: Convert this assertion to a log
+            TLOC_ASSERT(false, "Mismatched attribute type!");
+            return ErrorFailure();
+          }
+        }
+      }
     }
 
     return ErrorSuccess();
+
+  }
+
+  ShaderOperator::uniform_iterator ShaderOperator::
+    begin_uniform()
+  {
+    return m_uniforms.begin();
+  }
+
+  ShaderOperator::uniform_iterator ShaderOperator::
+    end_uniform()
+  {
+    return m_uniforms.end();
+  }
+
+  ShaderOperator::attribute_iterator ShaderOperator::
+    begin_attribute()
+  {
+    return m_attributes.begin();
+  }
+
+  ShaderOperator::attribute_iterator ShaderOperator::
+    end_attribute()
+  {
+    return m_attributes.end();
   }
 
   //------------------------------------------------------------------------
-  // Private methods
+  // explicit instantiation
 
-  template <typename T_ProgramIvParam>
-  ShaderProgram::gl_result_type
-    ShaderProgram::DoGet() const
-  {
-    GLint result;
-    object_handle handle = GetHandle();
-    glGetProgramiv(handle, T_ProgramIvParam::s_glStatusName, &result);
-    return (gl_result_type)result;
-  }
+  template class tloc::core::smart_ptr::SharedPtr<ShaderOperator>;
+  template class tloc::core::Array<UniformPtr>;
+  template class tloc::core::Array<AttributePtr>;
 
-  //------------------------------------------------------------------------
-  // Explicit initialization
-
-  // Supporting up to 4 shader attachments
-  template class core::Variadic<Shader_I*, 1>;
-  template class core::Variadic<Shader_I*, 2>;
-  template class core::Variadic<Shader_I*, 3>;
-  template class core::Variadic<Shader_I*, 4>;
-
-  template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 1>);
-  template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 2>);
-  template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 3>);
-  template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 4>);
-
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::LinkStatus>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::ValidateStatus>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::InfoLogLength>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::AttachedShaders>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::ActiveAttributes>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::ActiveAttributeMaxLength>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::ActiveUniforms>() const;
-  template ShaderProgram::gl_result_type
-    ShaderProgram::DoGet<p_shader_program::ActiveUniformMaxLength>() const;
-
-  // SmartPtr
-
-  template class tloc::core::smart_ptr::SharedPtr<ShaderProgram>;
 
 };};};

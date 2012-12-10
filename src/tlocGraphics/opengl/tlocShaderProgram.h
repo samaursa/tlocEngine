@@ -5,6 +5,8 @@
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/containers/tlocContainers.h>
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
@@ -55,10 +57,10 @@ namespace tloc { namespace graphics { namespace gl {
     error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
-    bool       IsLinked();
+    bool       IsLinked() const;
 
-    error_type LoadAllUniforms();
-    error_type LoadAllAttributes();
+    //error_type LoadAllUniforms();
+    //error_type LoadAllAttributes();
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -92,6 +94,11 @@ namespace tloc { namespace graphics { namespace gl {
     attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef tloc::core::smart_ptr::SharedPtr<ShaderProgram>     ShaderProgramPtr;
 
 };};};
 

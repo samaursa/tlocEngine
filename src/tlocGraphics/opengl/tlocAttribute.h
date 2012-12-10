@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
 #define _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/vector/tlocVector4.h>
@@ -79,6 +81,11 @@ namespace tloc { namespace graphics { namespace gl {
     bool    m_isAttribArray;
 
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef tloc::core::smart_ptr::SharedPtr<Attribute>   AttributePtr;
 
 };};};
 

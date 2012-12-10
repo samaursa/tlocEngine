@@ -27,7 +27,10 @@ namespace tloc { namespace graphics { namespace component_system {
                  core::Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
-    m_quadList.reserve(4); // number of vertexes a quad has
+    m_quadList.resize(4); // number of vertexes a quad has
+
+    m_vData = gl::AttributePtr(new gl::Attribute());
+    m_vData->SetName("a_vPos");
   }
 
   void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -68,38 +71,6 @@ namespace tloc { namespace graphics { namespace component_system {
     entity_type* a_ent)
   {
     TLOC_UNUSED(a_ent);
-    //using namespace core::component_system;
-    //typedef graphics::component_system::Quad      quad_type;
-    //typedef graphics::component_system::Material  material_type;
-    //typedef material_type::shader_op_ptr          shader_op_ptr;
-
-    //const entity_type* ent = a_ent;
-
-    //// TODO: This is also where you enable the shader, add attributes and
-    //// uniforms, and then cache their locations for next use
-
-    ////if (ent->HasComponent(components::material))
-    ////{
-    ////  ComponentMapper<material_type> matArr =
-    ////    ent->GetComponents(components::material);
-    ////  material_type& mat = matArr[0];
-
-    ////  //m_quadList.clear();
-    ////  //m_quadList.push_back(q.GetVertex<Quad::vert_ne>().GetPosition());
-    ////  //m_quadList.push_back(q.GetVertex<Quad::vert_nw>().GetPosition());
-    ////  //m_quadList.push_back(q.GetVertex<Quad::vert_se>().GetPosition());
-    ////  //m_quadList.push_back(q.GetVertex<Quad::vert_sw>().GetPosition());
-
-    ////  //gl::AttributePtr a_vData = gl::AttributePtr(new gl::Attribute());
-    ////  //a_vData->SetName("a_vPos").SetVertexArray
-    ////  //  (m_quadList, gl::p_shader_variable_ti::CopyArray() );
-
-    ////  //shader_op_ptr so = shader_op_ptr(new shader_op_ptr::value_type());
-    ////  //so->AddAttribute(a_vData);
-
-    ////  mat.DoGetShaderOpContainerRef().push_back(so);
-    ////}
-
     return ErrorSuccess();
   }
 
@@ -128,18 +99,15 @@ namespace tloc { namespace graphics { namespace component_system {
       ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
       Quad& q = quad[0];
 
-      m_quadList.clear();
-      m_quadList.push_back(q.GetVertex<Quad::vert_ne>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_nw>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_se>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_sw>().GetPosition());
+      m_quadList[0] = q.GetVertex<Quad::vert_ne>().GetPosition();
+      m_quadList[1] = q.GetVertex<Quad::vert_nw>().GetPosition();
+      m_quadList[2] = q.GetVertex<Quad::vert_se>().GetPosition();
+      m_quadList[3] = q.GetVertex<Quad::vert_sw>().GetPosition();
 
-      gl::AttributePtr a_vData = gl::AttributePtr(new gl::Attribute());
-      a_vData->SetName("a_vPos").SetVertexArray
-        (m_quadList, gl::p_shader_variable_ti::CopyArray() );
+      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
-      so_quad->AddAttribute(a_vData);
+      so_quad->AddAttribute(m_vData);
 
       //------------------------------------------------------------------------
       // Enable the shader

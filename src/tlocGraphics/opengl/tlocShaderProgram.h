@@ -1,6 +1,7 @@
 #ifndef TLOC_SHADER_PROGRAM_H
 #define TLOC_SHADER_PROGRAM_H
 
+#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
@@ -8,6 +9,7 @@
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
+#include <tlocGraphics/opengl/tlocShaderVariableInfo.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -43,6 +45,9 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                     size_type;
     typedef s32                         gl_result_type;
 
+    typedef ShaderVariableInfo                        glsl_var_info_type;
+    typedef core::tl_array<ShaderVariableInfo>::type  glsl_var_info_cont_type;
+
   public:
     ShaderProgram();
     ~ShaderProgram();
@@ -52,6 +57,14 @@ namespace tloc { namespace graphics { namespace gl {
                              a_shaderComponents);
     error_type Link();
     bool       IsLinked() const;
+
+    void LoadUniformInfo();
+    void LoadAttributeInfo();
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetUniformInfoRef, m_uniformInfo);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetAttributeInfoRef, m_attributeInfo);
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -78,7 +91,9 @@ namespace tloc { namespace graphics { namespace gl {
     gl_result_type DoGet() const;
 
   private:
-    core::utils::Checkpoints    m_flags;
+    core::utils::Checkpoints         m_flags;
+    glsl_var_info_cont_type          m_attributeInfo;
+    glsl_var_info_cont_type          m_uniformInfo;
   };
 
   //------------------------------------------------------------------------

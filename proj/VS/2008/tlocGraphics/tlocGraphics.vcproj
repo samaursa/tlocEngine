@@ -1122,6 +1122,10 @@
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableInfo.cpp"
+					>
+				</File>
 				<Filter
 					Name="variables"
 					>
@@ -1135,6 +1139,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableExplicitMacros.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableInfo.h"
 						>
 					</File>
 					<Filter

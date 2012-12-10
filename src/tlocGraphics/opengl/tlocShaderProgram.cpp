@@ -15,6 +15,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace
   {
+    typedef ShaderProgram::glsl_var_info_cont_type   glsl_var_info_cont_type;
+    typedef ShaderProgram::size_type                 size_type;
+
     //------------------------------------------------------------------------
     // Variables
 
@@ -28,8 +31,78 @@ namespace tloc { namespace graphics { namespace gl {
       k_shaderAttached = 0,
       k_shaderLinked,
       k_shaderEnabled,
+      k_uniformInfoLoaded,
+      k_attributeInfoLoaded,
       k_count
     };
+
+    //------------------------------------------------------------------------
+    // Shader variables info
+
+    //````````````````````````````````````````````````````````````````````````
+    // Uniforms
+
+    void DoGetUniformInfo(const ShaderProgram& a_shaderProgram,
+                          glsl_var_info_cont_type& a_infoOut)
+    {
+      const size_type uniformMaxLength =
+        a_shaderProgram.Get<p_shader_program::ActiveUniformMaxLength>();
+      const size_type numOfUniforms =
+        a_shaderProgram.Get<p_shader_program::ActiveUniforms>();
+
+      TLOC_ASSERT(uniformMaxLength < g_buffSize,
+                  "Uniform name length larger than buffer!");
+
+      a_infoOut.resize(numOfUniforms);
+      for (u32 i = 0; i < numOfUniforms; ++i)
+      {
+        ShaderVariableInfo& currInfo = a_infoOut[i];
+        glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
+                           &currInfo.m_nameLength, &currInfo.m_arraySize,
+                           &currInfo.m_type, currInfo.m_name.Get());
+      }
+
+      glsl_var_info_cont_type::iterator itr, itrEnd;
+      for (itr = a_infoOut.begin(), itrEnd = a_infoOut.end();
+           itr != itrEnd; ++itr)
+      {
+        itr->m_location = glGetUniformLocation
+          (a_shaderProgram.GetHandle(), itr->m_name.Get());
+      }
+    }
+
+    //````````````````````````````````````````````````````````````````````````
+    // Attributes
+
+    void DoGetAttributeInfo(const ShaderProgram& a_shaderProgram,
+                            glsl_var_info_cont_type& a_infoOut)
+    {
+      const size_type attributeMaxLength =
+        a_shaderProgram.Get<p_shader_program::ActiveAttributeMaxLength>();
+      const size_type numOfAttributes =
+        a_shaderProgram.Get<p_shader_program::ActiveAttributes>();
+
+      TLOC_ASSERT(attributeMaxLength < g_buffSize,
+                  "Attribute name length larger than buffer!");
+
+      a_infoOut.resize(numOfAttributes);
+      for (u32 i = 0; i < numOfAttributes; ++i)
+      {
+        ShaderVariableInfo& currInfo = a_infoOut[i];
+        glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
+                          &currInfo.m_nameLength, &currInfo.m_arraySize,
+                          &currInfo.m_type, currInfo.m_name.Get());
+      }
+
+      glsl_var_info_cont_type::iterator itr, itrEnd;
+      for (itr = a_infoOut.begin(), itrEnd = a_infoOut.end();
+           itr != itrEnd; ++itr)
+      {
+        itr->m_location = glGetAttribLocation
+          (a_shaderProgram.GetHandle(), itr->m_name.Get());
+      }
+
+    }
 
   };
 
@@ -106,6 +179,18 @@ namespace tloc { namespace graphics { namespace gl {
   bool ShaderProgram::IsLinked() const
   {
     return m_flags[k_shaderLinked];
+  }
+
+  void ShaderProgram::LoadUniformInfo()
+  {
+    if (m_flags.ReturnAndMark(k_uniformInfoLoaded) == false)
+    { DoGetUniformInfo(*this, m_uniformInfo); }
+  }
+
+  void ShaderProgram::LoadAttributeInfo()
+  {
+    if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
+    { DoGetAttributeInfo(*this, m_attributeInfo); }
   }
 
   ShaderProgram::error_type

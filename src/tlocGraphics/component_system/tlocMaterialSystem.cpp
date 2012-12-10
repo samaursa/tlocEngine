@@ -65,6 +65,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     sp->Enable();
     result = sp->Link();
+    sp->LoadUniformInfo();
+    sp->LoadAttributeInfo();
     sp->Disable();
     TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
 

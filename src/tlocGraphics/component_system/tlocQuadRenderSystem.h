@@ -11,6 +11,7 @@
 
 #include <tlocGraphics/view_projection/tlocFrustum.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/matrix/tlocMatrix4.h>
@@ -52,9 +53,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   private:
     shader_prog_ptr     m_shaderPtr;
-    vec3_cont_type      m_quadList;
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
+
+    // Cache
+    vec3_cont_type      m_quadList;
+    gl::AttributePtr    m_vData;
   };
 
 };};};

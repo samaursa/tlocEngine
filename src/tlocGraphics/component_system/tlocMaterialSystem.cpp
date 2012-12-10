@@ -6,6 +6,7 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -66,6 +67,41 @@ namespace tloc { namespace graphics { namespace component_system {
     result = sp->Link();
     sp->Disable();
     TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
+
+    //------------------------------------------------------------------------
+    // Add user attributes and uniforms
+
+    typedef mat_type::shader_op_ptr          shader_op_ptr;
+
+    // Add user's attributes and uniforms
+    if ( ( &*currMat.GetMasterShaderOperator()) != nullptr)
+    {
+      shader_op_ptr so_user = shader_op_ptr(new shader_op_ptr::value_type());
+
+      {
+        gl::ShaderOperator::uniform_iterator itr, itrEnd;
+        itr = currMat.GetMasterShaderOperator()->begin_uniform();
+        itrEnd = currMat.GetMasterShaderOperator()->end_uniform();
+
+        for (; itr != itrEnd; ++itr)
+        {
+          so_user->AddUniform(*itr);
+        }
+      }
+
+      {
+        gl::ShaderOperator::attribute_iterator itr, itrEnd;
+        itr = currMat.GetMasterShaderOperator()->begin_attribute();
+        itrEnd = currMat.GetMasterShaderOperator()->end_attribute();
+
+        for (; itr != itrEnd; ++itr)
+        {
+          so_user->AddAttribute(*itr);
+        }
+      }
+
+      currMat.DoGetShaderOpContainerRef().push_back(so_user);
+    }
 
     return ErrorSuccess();
   }

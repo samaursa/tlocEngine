@@ -992,6 +992,14 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="error"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tlocErrorTypes.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocPhysics\tlocDepVersionCheck.cpp"
 			>

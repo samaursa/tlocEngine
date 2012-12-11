@@ -4,6 +4,7 @@
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
 #include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
@@ -127,6 +128,7 @@ namespace tloc { namespace physics { namespace component_system {
                   RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
+      return error::error_rigid_body_not_attached;
     }
 
     TLOC_UNUSED(a_mgr);

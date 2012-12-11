@@ -4,6 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
@@ -14,7 +15,7 @@
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBodyShape.h>
 
-#include <Box2D/Dynamics/b2Body.h>
+class b2Body;
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -47,9 +48,6 @@ namespace tloc { namespace physics { namespace box2d {
 
     typedef rigid_body_def_type::rigid_body_type_type
                                                rigid_body_type_type;
-
-    typedef rigid_body_def_type::rigid_body_internal_type_type
-                                               rigid_body_internal_type_type;
 
     typedef RigidBodyShape                     rigid_body_shape_type;
 
@@ -114,7 +112,16 @@ namespace tloc { namespace physics { namespace box2d {
 
     void SetGravityScale(float_type a_gravityScale);
 
-    void SetType(rigid_body_type_type a_type);
+    template <typename T_RigidBodyType>
+    void SetType(rigid_body_type_type a_type)
+    {
+      type_traits::AssertTypeIsSupported
+        < T_RigidBodyType,
+        p_rigid_body::StaticBody,
+        p_rigid_body::KinematicBody,
+        p_rigid_body::DynamicBody>();
+      DoSetType<T_RigidBodyType>();
+    }
 
     void SetBullet(bool a_flag);
 
@@ -139,6 +146,10 @@ namespace tloc { namespace physics { namespace box2d {
     entity_type* DoGetParent();
     void DoSetParent(entity_type* a_parent);
     void DoSetParentNull();
+
+  private:
+    template <typename T_RigidBodyType>
+    void DoSetType();
 
   private:
     core::utils::Checkpoints m_flags;

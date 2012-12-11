@@ -87,7 +87,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
         for (; itr != itrEnd; ++itr)
         {
-          so_user->AddUniform(*itr);
+          so_user->AddUniform(itr->first);
         }
       }
 
@@ -98,9 +98,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
         for (; itr != itrEnd; ++itr)
         {
-          so_user->AddAttribute(*itr);
+          so_user->AddAttribute(itr->first);
         }
       }
+
+      so_user->PrepareAllUniforms(*sp);
+      so_user->PrepareAllAttributes(*sp);
 
       currMat.DoGetShaderOpContainerRef().push_back(so_user);
     }

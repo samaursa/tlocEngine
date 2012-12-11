@@ -129,12 +129,12 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         material_type::shader_op_ptr so = *itr;
 
-        so->LoadAllUniforms(*m_shaderPtr);
-        so->LoadAllAttributes(*m_shaderPtr);
+        so->EnableAllUniforms(*m_shaderPtr);
+        so->EnableAllUniforms(*m_shaderPtr);
       }
 
-      so_quad->LoadAllUniforms(*m_shaderPtr);
-      so_quad->LoadAllAttributes(*m_shaderPtr);
+      so_quad->PrepareAllAttributes(*m_shaderPtr);
+      so_quad->EnableAllAttributes(*m_shaderPtr);
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 

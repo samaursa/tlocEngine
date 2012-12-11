@@ -410,19 +410,68 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
-  { m_uniforms.push_back(a_uniform); }
+  { m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) ); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
-  { m_attributes.push_back(a_attribute); }
+  { m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) ); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void ShaderOperator::
+    EnableAllUniforms(const ShaderProgram& a_shaderProgram)
+  {
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(m_flags.IsMarked(k_uniformsCached),
+      "Uniforms not loaded - did you forget to call PrepareAllUniforms()?");
+
+    const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
+
+    uniform_cont_type::iterator itr, itrEnd;
+    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+         itr != itrEnd; ++itr)
+    {
+      UniformPtr uniformPtr = itr->first;
+
+      if (itr->second >= 0)
+      { DoSetUniform(uniCont[itr->second], *uniformPtr); }
+    }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+  void ShaderOperator::
+    EnableAllAttributes(const ShaderProgram& a_shaderProgram)
+  {
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(m_flags.IsMarked(k_attributesCached),
+      "Attributes not loaded - did you forget to call PrepareAllAttributes()?");
+
+    const glsl_var_info_cont_type&
+      attrCont = a_shaderProgram.GetAttributeInfoRef();
+
+    attribute_cont_type::iterator itr, itrEnd;
+    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
+         itr != itrEnd; ++itr)
+    {
+      AttributePtr attribPtr = itr->first;
+
+      // If we already know which info to pick
+      if (itr->second >= 0)
+      { DoSetAttribute(attrCont[itr->second], *attribPtr); }
+    }
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::error_type
     ShaderOperator::
-    LoadAllUniforms(const ShaderProgram& a_shaderProgram)
+    PrepareAllUniforms(const ShaderProgram& a_shaderProgram)
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -433,22 +482,20 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
+      UniformPtr uniformPtr = itr->first;
+
+      index_type index = 0;
       glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
       for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-           itrInfo != itrInfoEnd; ++itrInfo)
+        itrInfo != itrInfoEnd; ++itrInfo)
       {
-        UniformPtr uniformPtr = *itr;
-
         if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
         {
           if ( uniformPtr->GetType() == itrInfo->m_type &&
-               itrInfo->m_location != -1)
+            itrInfo->m_location != -1)
           {
-            DoSetUniform(*itrInfo, *uniformPtr);
-
-            // Check with OpenGL
-            if (gl::Error().Failed())
-            { return error::error_shader_uniform_not_attached; }
+            itr->second = index;
+            DoSetUniform(uniCont[itr->second], *uniformPtr);
           }
           else
           {
@@ -457,9 +504,11 @@ namespace tloc { namespace graphics { namespace gl {
             return ErrorFailure();
           }
         }
+        ++index;
       }
     }
 
+    m_flags.Mark(k_uniformsCached);
     return ErrorSuccess();
   }
 
@@ -467,34 +516,32 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderOperator::error_type
     ShaderOperator::
-    LoadAllAttributes(const ShaderProgram& a_shaderProgram)
+    PrepareAllAttributes(const ShaderProgram& a_shaderProgram)
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
 
-    const glsl_var_info_cont_type& attrCont =
-      a_shaderProgram.GetAttributeInfoRef();
+    const glsl_var_info_cont_type&
+      attrCont = a_shaderProgram.GetAttributeInfoRef();
 
     attribute_cont_type::iterator itr, itrEnd;
     for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     {
+      AttributePtr attribPtr = itr->first;
+
+      index_type index = 0;
       glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
       for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-           itrInfo != itrInfoEnd; ++itrInfo)
+        itrInfo != itrInfoEnd; ++itrInfo)
       {
-        AttributePtr attribPtr = *itr;
-
         if ( attribPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
         {
           if ( attribPtr->GetType() == itrInfo->m_type &&
-               itrInfo->m_location  != -1)
+            itrInfo->m_location  != -1)
           {
-            DoSetAttribute(*itrInfo, *attribPtr);
-
-            // Check with OpenGL
-            if (gl::Error().Failed())
-            { return error::error_shader_attribute_not_attached; }
+            itr->second = index;
+            DoSetAttribute(attrCont[itr->second], *attribPtr);
           }
           else
           {
@@ -503,9 +550,11 @@ namespace tloc { namespace graphics { namespace gl {
             return ErrorFailure();
           }
         }
+        ++index;
       }
     }
 
+    m_flags.Mark(k_attributesCached);
     return ErrorSuccess();
 
   }

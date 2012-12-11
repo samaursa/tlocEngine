@@ -177,6 +177,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
@@ -246,6 +247,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
@@ -586,6 +588,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
@@ -655,6 +658,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"

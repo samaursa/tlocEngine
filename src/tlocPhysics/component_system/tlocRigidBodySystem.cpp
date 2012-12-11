@@ -161,9 +161,9 @@ namespace tloc { namespace physics { namespace component_system {
 
     rigid_body_type& currRB = currRBComponent.GetRigidBody();
 
-    const rigid_body_def_type& currRBDef = currRBComponent.GetRigidBodyDef();
+    const rigid_body_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
     const rigid_body_def_internal_type& currRBDefInternal =
-      currRBDef.GetRigidBodyDef();
+      currRBDef->GetRigidBodyDef();
 
     rigid_body_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);

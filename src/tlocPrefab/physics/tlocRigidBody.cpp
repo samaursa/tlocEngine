@@ -46,7 +46,7 @@ namespace tloc { namespace prefab { namespace physics {
     return ent;
   }
 
-  void AddRigidBody(const tloc::physics::box2d::RigidBodyDef& a_rbDef,
+  void AddRigidBody(const tloc::physics::box2d::RigidBodyDef* a_rbDef,
                     core::component_system::Entity* a_ent,
                     core::component_system::EntityManager& a_mgr,
                     core::component_system::ComponentPoolManager& a_poolMgr)

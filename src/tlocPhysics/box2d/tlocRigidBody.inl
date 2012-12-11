@@ -10,8 +10,9 @@
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
-#include <Box2D/Common/b2Math.h>
 
+#include <Box2D/Common/b2Math.h>
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -303,12 +304,6 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBody->SetGravityScale(a_gravityScale);
   }
 
-  TL_I void RigidBody::SetType(rigid_body_type_type a_type)
-  {
-    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetType((rigid_body_internal_type_type)a_type);
-  }
-
   TL_I void RigidBody::SetBullet(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
@@ -393,6 +388,16 @@ namespace tloc { namespace physics { namespace box2d {
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetUserData(NULL);
+  }
+
+  template <typename T_RigidBodyType>
+  TL_I void RigidBody::DoSetType()
+  {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
+    b2BodyType bodyType = 
+      static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType); 
+
+    m_rigidBody->SetType(bodyType);
   }
 
 };};};

@@ -134,7 +134,8 @@ namespace TestingRigidBodySystem
 
     rb_sys_fixture::transform_type transformComponent1;
 
-    rb_sys_fixture::rigid_body_component rbStaticComponent;
+    rb_sys_fixture::rigid_body_def_type rbDef1;
+    rb_sys_fixture::rigid_body_component rbStaticComponent(&rbDef1);
 
     rb_sys_fixture::circle_shape_type circleShape;
     circleShape.SetRadius(1.0f);
@@ -153,11 +154,11 @@ namespace TestingRigidBodySystem
 
     const float rbDynamicStartPositionY = 3.0f;
 
-    rb_sys_fixture::rigid_body_def_type rbDef;
-    rbDef.SetType(box2d::rigid_body::k_dynamicBody);
-    rbDef.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
+    rb_sys_fixture::rigid_body_def_type rbDef2;
+    rbDef2.SetType<box2d::p_rigid_body::DynamicBody>();
+    rbDef2.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
 
-    rb_sys_fixture::rigid_body_component rbDynamicComponent(rbDef);
+    rb_sys_fixture::rigid_body_component rbDynamicComponent(&rbDef2);
 
     rb_sys_fixture::rigid_body_shape_component rbShapeComponent2(&rbCircleShape);
 

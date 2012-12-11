@@ -212,6 +212,13 @@ namespace tloc { namespace graphics {
     void SetVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
+    /// @brief Sets the window title. May not work on all platforms.
+    ///
+    /// @param  a_title The title of the window.
+    ///-------------------------------------------------------------------------
+    void SetTitle(const char* a_title);
+
+    ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();

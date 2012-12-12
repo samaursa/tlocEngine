@@ -37,17 +37,17 @@ namespace tloc { namespace physics { namespace box2d {
   //////////////////////////////////////////////////////////////////////////
   // RigidBody
 
-  TL_I RigidBody::error_type
-    RigidBody::CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape)
+  TL_I RigidBody::error_type RigidBody::
+    CreateRigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    typedef rigid_body_shape_type::fixture_def_internal_type
+    typedef rigid_body_shape_def_type::fixture_def_internal_type
                                                       fixture_def_internal_type;
     
     typedef b2Fixture                                 fixture_interal_type;
 
-    rigid_body_shape_type rigidBodyShape = a_rigidBodyShape;
+    rigid_body_shape_def_type rigidBodyShape = a_rigidBodyShape;
 
     rigidBodyShape.DoSetParent(DoGetParent());
 

@@ -37,7 +37,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef RigidBodySystem::rigid_body_shape_component_type
                                                         rb_shape_component_type;
-    typedef rb_shape_component_type::rigid_body_shape_type
+    typedef rb_shape_component_type::rigid_body_shape_def_type
                                                         rb_shape_type;
 
     typedef ComponentMapper<rb_shape_component_type>    component_mapper_type;

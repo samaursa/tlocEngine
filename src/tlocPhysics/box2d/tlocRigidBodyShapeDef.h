@@ -12,19 +12,19 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  class RigidBodyShape
+  class RigidBodyShapeDef
   {
   public:
     friend class RigidBody;
 
   public:
-    typedef RigidBodyShape    this_type;
+    typedef RigidBodyShapeDef    this_type;
     typedef Shape             shape_type;
 
     typedef f32 float_type;
 
   public:
-    RigidBodyShape(const shape_type* a_shape)
+    RigidBodyShapeDef(const shape_type* a_shape)
     {
       SetShape(a_shape);
       SetFriction(0.2f);

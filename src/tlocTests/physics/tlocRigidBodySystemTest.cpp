@@ -11,7 +11,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
-#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
+#include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
 #include <tlocPhysics/box2d/tlocCircleShape.h>
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 
@@ -38,11 +38,11 @@ namespace TestingRigidBodySystem
 
     typedef math::component_system::Transform transform_type;
 
-    typedef box2d::PhysicsManager physics_manager;
-    typedef box2d::ContactEvent   contact_event_type;
-    typedef box2d::RigidBodyShape rigid_body_shape;
-    typedef box2d::CircleShape    circle_shape_type;
-    typedef box2d::RigidBodyDef   rigid_body_def_type;
+    typedef box2d::PhysicsManager     physics_manager;
+    typedef box2d::ContactEvent       contact_event_type;
+    typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
+    typedef box2d::CircleShape        circle_shape_type;
+    typedef box2d::RigidBodyDef       rigid_body_def_type;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
@@ -140,7 +140,7 @@ namespace TestingRigidBodySystem
     rb_sys_fixture::circle_shape_type circleShape;
     circleShape.SetRadius(1.0f);
 
-    rb_sys_fixture::rigid_body_shape rbCircleShape(&circleShape);
+    rb_sys_fixture::rigid_body_shape_def_type rbCircleShape(&circleShape);
     rb_sys_fixture::rigid_body_shape_component rbShapeComponent1(&rbCircleShape);
 
     entityMgr.InsertComponent(rbStaticEntity, &transformComponent1);

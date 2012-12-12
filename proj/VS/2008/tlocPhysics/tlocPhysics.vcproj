@@ -899,11 +899,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShape.cpp"
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShapeDef.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShape.h"
+					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocRigidBodyShapeDef.h"
 					>
 				</File>
 			</Filter>

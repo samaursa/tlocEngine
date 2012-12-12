@@ -13,7 +13,7 @@
 #include <tlocMath/angle/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
-#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
+#include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
 
 class b2Body;
 
@@ -49,12 +49,13 @@ namespace tloc { namespace physics { namespace box2d {
     typedef rigid_body_def_type::rigid_body_type_type
                                                rigid_body_type_type;
 
-    typedef RigidBodyShape                     rigid_body_shape_type;
+    typedef RigidBodyShapeDef                  rigid_body_shape_def_type;
 
     typedef World                              world_type;
 
   public:
-    error_type CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape);
+    error_type
+      CreateRigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape);
 
   public:
 

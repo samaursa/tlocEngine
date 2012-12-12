@@ -7,6 +7,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 

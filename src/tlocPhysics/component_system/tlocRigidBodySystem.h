@@ -6,7 +6,6 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
-#include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
 
 namespace tloc { namespace physics { namespace component_system {

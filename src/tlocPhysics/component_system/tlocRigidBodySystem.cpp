@@ -21,7 +21,7 @@ namespace tloc { namespace physics { namespace component_system {
     using namespace tloc::core::component_system;
 
     ComponentMapper<RigidBodySystem::rigid_body_component_type>
-      rigidBodyComponents = a_ent->GetComponents(components::k_rigid_body);
+      rigidBodyComponents = a_ent->GetComponents(components::k_rigidBody);
 
     return rigidBodyComponents[0];
   }
@@ -47,7 +47,7 @@ namespace tloc { namespace physics { namespace component_system {
     rb_type& rb = rbComponent.GetRigidBody();
 
     ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
-      a_ent->GetComponents(components::k_rigid_body_shape);
+      a_ent->GetComponents(components::k_rigidBodyShape);
 
     size_type numComponents = rigidBodyShapeComponents.size();
     error_type result;
@@ -73,7 +73,7 @@ namespace tloc { namespace physics { namespace component_system {
   RigidBodySystem::RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigid_body))
+    , core::Variadic<component_type, 1>(components::k_rigidBody))
     , m_world(a_world)
   {
   }
@@ -162,7 +162,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     const rb_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
     const rb_def_internal_type& currRBDefInternal =
-      currRBDef->GetRigidBodyDef();
+      currRBDef->DoGetRigidBodyDef();
 
     rb_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
@@ -173,7 +173,7 @@ namespace tloc { namespace physics { namespace component_system {
       return error::error_rigid_body_could_not_be_allocated;
     }
 
-    currRB.Initialize(currRBInternal, a_ent);
+    currRB.DoInitialize(currRBInternal, a_ent);
     return ErrorSuccess();
   }
 
@@ -189,11 +189,11 @@ namespace tloc { namespace physics { namespace component_system {
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
 
     rb_type& currRB = currRBComponent.GetRigidBody();
-    rb_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+    rb_internal_type* currRBInternal = currRB.DoGetInternalRigidBody();
 
     m_world->GetWorld().DestroyBody(currRBInternal);
 
-    error_type result = currRB.Shutdown();
+    error_type result = currRB.DoShutdown();
 
     return result;
   }

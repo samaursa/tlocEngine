@@ -58,7 +58,7 @@ namespace tloc { namespace physics { namespace component_system {
       rb_listener_type* rbListener;
 
       rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
 
       if (!rbListenerComponents->empty())
       {
@@ -74,7 +74,7 @@ namespace tloc { namespace physics { namespace component_system {
       rb_listener_type* rbListener;
 
       rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
 
       if (!rbListenerComponents->empty())
       {
@@ -91,7 +91,7 @@ namespace tloc { namespace physics { namespace component_system {
                                                    entity_manager* a_entityMgr,
                                                    physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigid_body_listener))
+    , core::Variadic<component_type, 1>(components::k_rigidBodyListener))
     , m_physicsMgr(a_physicsMgr)
   {
   }
@@ -119,7 +119,7 @@ namespace tloc { namespace physics { namespace component_system {
     const entity_type* ent = a_ent;
 
     const entity_type::component_list& rbComponents =
-      ent->GetComponents(components::k_rigid_body);
+      ent->GetComponents(components::k_rigidBody);
 
     if (rbComponents.empty())
     {

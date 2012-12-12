@@ -193,7 +193,7 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   const RigidBodyDef::rigid_body_def_internal_type& RigidBodyDef::
-    GetRigidBodyDef() const
+    DoGetRigidBodyDef() const
   {
     return *m_rigidBodyDef;
   }

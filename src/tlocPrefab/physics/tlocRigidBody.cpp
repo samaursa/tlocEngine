@@ -60,10 +60,10 @@ namespace tloc { namespace prefab { namespace physics {
 
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
-    if (a_poolMgr.Exists(k_rigid_body) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigid_body); }
+    if (a_poolMgr.Exists(k_rigidBody) == false)
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBody); }
     else
-    { cpool = a_poolMgr.GetPool(k_rigid_body); }
+    { cpool = a_poolMgr.GetPool(k_rigidBody); }
 
     typedef rigid_body_pool  rb_pool;
 
@@ -89,10 +89,10 @@ namespace tloc { namespace prefab { namespace physics {
 
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
-    if (a_poolMgr.Exists(k_rigid_body_shape) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigid_body_shape); }
+    if (a_poolMgr.Exists(k_rigidBodyShape) == false)
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyShape); }
     else
-    { cpool = a_poolMgr.GetPool(k_rigid_body_shape); }
+    { cpool = a_poolMgr.GetPool(k_rigidBodyShape); }
 
     typedef rigid_body_shape_pool  rb_shape_pool;
 
@@ -139,10 +139,10 @@ namespace tloc { namespace prefab { namespace physics {
 
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
-    if (a_poolMgr.Exists(k_rigid_body_listener) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigid_body_listener); }
+    if (a_poolMgr.Exists(k_rigidBodyListener) == false)
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyListener); }
     else
-    { cpool = a_poolMgr.GetPool(k_rigid_body_listener); }
+    { cpool = a_poolMgr.GetPool(k_rigidBodyListener); }
 
     typedef rigid_body_listener_pool rb_listener_pool;
 

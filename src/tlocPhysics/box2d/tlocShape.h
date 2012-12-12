@@ -29,7 +29,7 @@ namespace tloc { namespace physics { namespace box2d {
     virtual TLOC_DECL_SETTER(float_type, SetRadius) = 0;
 
   protected:
-    virtual const shape_internal_type* GetInternalShape() const = 0;
+    virtual const shape_internal_type* DoGetInternalShape() const = 0;
 
   };
 

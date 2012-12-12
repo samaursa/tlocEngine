@@ -3,7 +3,7 @@
 #define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_LISTENER_H_
 
 #include <tlocCore/tlocBase.h>
-#include <tloccore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocComponent.h>
@@ -17,7 +17,7 @@ namespace tloc { namespace physics {
     typedef core::component_system::Entity entity_type;
 
   public:
-    virtual void OnContactBegin(const entity_type* a_ent) = 0; 
+    virtual void OnContactBegin(const entity_type* a_ent) = 0;
     virtual void OnContactEnd(const entity_type* a_ent) = 0;
   };
 

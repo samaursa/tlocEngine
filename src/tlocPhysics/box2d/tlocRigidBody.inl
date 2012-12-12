@@ -20,18 +20,18 @@ namespace tloc { namespace physics { namespace box2d {
   // Assertion macros
 
 #define TLOC_ASSERT_RIGID_BODY_INITIALIZED() \
-  TLOC_ASSERT(m_flags[initialized], "Rigid body has not been initialized!");
+  TLOC_ASSERT(m_flags[k_initialized], "Rigid body has not been initialized!");
 
 #define TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED() \
-  TLOC_ASSERT(!m_flags[initialized], "Rigid body has already been initialized!");
+  TLOC_ASSERT(!m_flags[k_initialized], "Rigid body has already been initialized!");
 
   //////////////////////////////////////////////////////////////////////////
   // Constants
 
   enum flags
   {
-    initialized,
-    count
+    k_initialized,
+    k_count
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     typedef rigid_body_shape_def_type::fixture_def_internal_type
                                                       fixture_def_internal_type;
-    
+
     typedef b2Fixture                                 fixture_interal_type;
 
     rigid_body_shape_def_type rigidBodyShape = a_rigidBodyShape;
@@ -52,7 +52,7 @@ namespace tloc { namespace physics { namespace box2d {
     rigidBodyShape.DoSetParent(DoGetParent());
 
     const fixture_def_internal_type& fixtureDef =
-      rigidBodyShape.GetFixtureDef();
+      rigidBodyShape.DoGetFixtureDef();
 
     fixture_interal_type* fixture = m_rigidBody->CreateFixture(&fixtureDef);
 
@@ -335,14 +335,14 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   TL_I RigidBody::RigidBody()
-    : m_flags(count)
+    : m_flags(k_count)
     , m_rigidBody(NULL)
   {
 
   }
 
   TL_I RigidBody::error_type
-    RigidBody::Initialize(rigid_body_internal_type* a_rigidBody,
+    RigidBody::DoInitialize(rigid_body_internal_type* a_rigidBody,
                           entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
@@ -350,23 +350,23 @@ namespace tloc { namespace physics { namespace box2d {
 
     m_rigidBody = a_rigidBody;
 
-    m_flags.Mark(initialized);
+    m_flags.Mark(k_initialized);
     DoSetParent(a_parent);
 
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::error_type RigidBody::Shutdown()
+  TL_I RigidBody::error_type RigidBody::DoShutdown()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     m_rigidBody = NULL;
 
-    m_flags.Unmark(initialized);
+    m_flags.Unmark(k_initialized);
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::rigid_body_internal_type* RigidBody::GetInternalRigidBody()
+  TL_I RigidBody::rigid_body_internal_type* RigidBody::DoGetInternalRigidBody()
   {
     return m_rigidBody;
   }
@@ -394,8 +394,8 @@ namespace tloc { namespace physics { namespace box2d {
   TL_I void RigidBody::DoSetType()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2BodyType bodyType = 
-      static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType); 
+    b2BodyType bodyType =
+      static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType);
 
     m_rigidBody->SetType(bodyType);
   }

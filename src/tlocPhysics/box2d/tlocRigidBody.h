@@ -137,12 +137,12 @@ namespace tloc { namespace physics { namespace box2d {
 
     RigidBody();
 
-    error_type Initialize(rigid_body_internal_type* a_rigidBody,
-                          entity_type* a_parent);
-    error_type Shutdown();
+    error_type DoInitialize(rigid_body_internal_type* a_rigidBody,
+                            entity_type* a_parent);
+    error_type DoShutdown();
 
   protected:
-    rigid_body_internal_type* GetInternalRigidBody();
+    rigid_body_internal_type* DoGetInternalRigidBody();
 
     entity_type* DoGetParent();
     void DoSetParent(entity_type* a_parent);

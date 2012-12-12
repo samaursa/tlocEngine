@@ -96,7 +96,7 @@ namespace tloc { namespace physics { namespace box2d {
     void SetGravityScale(float_type a_gravityScale);
 
   protected:
-    const rigid_body_def_internal_type& GetRigidBodyDef() const;
+    const rigid_body_def_internal_type& DoGetRigidBodyDef() const;
 
   private:
     template <typename T_RigidBodyType>

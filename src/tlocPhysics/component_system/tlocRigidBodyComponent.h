@@ -23,7 +23,7 @@ namespace tloc { namespace physics { namespace component_system {
 
   public:
     RigidBody
-      (const rigid_body_def_type* a_box2dRigidBodyDef);
+      (const rigid_body_def_type* a_rigidBodyDef);
 
     TLOC_DECL_AND_DEF_GETTERS_DIRECT
       (rigid_body_type, GetRigidBody, m_rigidBody);

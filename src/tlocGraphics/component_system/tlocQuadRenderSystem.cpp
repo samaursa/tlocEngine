@@ -8,6 +8,7 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
@@ -93,16 +94,27 @@ namespace tloc { namespace graphics { namespace component_system {
         ent->GetComponents(components::material);
       material_type& mat = matArr[0];
 
-      //------------------------------------------------------------------------
-      // Prepare the Quad
-
       ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
       Quad& q = quad[0];
 
-      m_quadList[0] = q.GetVertex<Quad::vert_ne>().GetPosition();
-      m_quadList[1] = q.GetVertex<Quad::vert_nw>().GetPosition();
-      m_quadList[2] = q.GetVertex<Quad::vert_se>().GetPosition();
-      m_quadList[3] = q.GetVertex<Quad::vert_sw>().GetPosition();
+      //------------------------------------------------------------------------
+      // Prepare the Quad
+
+      typedef types::Rectf32    rect_type;
+
+      const f32 halfSize = q.GetSize() * 0.5f;
+
+      rect_type   rect(rect_type::half_width(halfSize * 1.0f),
+                       rect_type::half_height(halfSize * 1.0f));
+
+      m_quadList[0] = vec3_type(rect.GetCoord<rect_type::right>(),
+                                rect.GetCoord<rect_type::top>(), 0);
+      m_quadList[1] = vec3_type(rect.GetCoord<rect_type::left>(),
+                                rect.GetCoord<rect_type::top>(), 0);
+      m_quadList[2] = vec3_type(rect.GetCoord<rect_type::right>(),
+                                rect.GetCoord<rect_type::bottom>(), 0);
+      m_quadList[3] = vec3_type(rect.GetCoord<rect_type::left>(),
+                                rect.GetCoord<rect_type::bottom>(), 0);
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
 

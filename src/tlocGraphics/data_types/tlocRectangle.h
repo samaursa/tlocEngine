@@ -5,6 +5,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace graphics { namespace types {
 
@@ -12,10 +13,10 @@ namespace tloc { namespace graphics { namespace types {
   class Rectangle
   {
   public:
-    typedef tl_size                     size_type;
-    typedef T                           value_type;
-    typedef Rectangle<value_type>       this_type;
-    typedef core::Tuple<value_type, 2>  point_type;
+    typedef tl_size                                  size_type;
+    typedef T                                        value_type;
+    typedef Rectangle<value_type>                    this_type;
+    typedef core::Tuple<value_type, 2>               point_type;
 
     typedef core::types::StrongType_T<value_type, 0> left;
     typedef core::types::StrongType_T<value_type, 1> right;
@@ -76,6 +77,7 @@ namespace tloc { namespace graphics { namespace types {
   typename Rectangle<T>::value_type
     Rectangle<T>::GetCoord() const
   {
+    tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
     return m_extents[T_Side::k_index];
   }
 
@@ -83,6 +85,7 @@ namespace tloc { namespace graphics { namespace types {
   template <typename T_Side>
   void Rectangle<T>::SetCoord(value_type a_newCoord)
   {
+    tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
     m_extents[T_Side::k_index] = a_newCoord;
   }
 

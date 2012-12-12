@@ -3,27 +3,38 @@
 
 namespace tloc { namespace core { namespace utils {
 
-  Checkpoints::Checkpoints(tl_uint a_numberOfCheckpoints)
+  Checkpoints::
+    Checkpoints(tl_uint a_numberOfCheckpoints)
     : m_flags(a_numberOfCheckpoints)
   {
   }
 
-  Checkpoints::value_type Checkpoints::operator [](tl_int a_index) const
+  Checkpoints::value_type Checkpoints::
+    operator [](tl_int a_index) const
   {
     return m_flags[a_index];
   }
 
-  void Checkpoints::MarkAll()
+  bool Checkpoints::
+    IsMarked(tl_int a_index) const
+  {
+    return m_flags[a_index];
+  }
+
+  void Checkpoints::
+    MarkAll()
   {
     SetAllTo(false);
   }
 
-  void Checkpoints::UnmarkAll()
+  void Checkpoints::
+    UnmarkAll()
   {
     SetAllTo(true);
   }
 
-  void Checkpoints::ToggleAll()
+  void Checkpoints::
+    ToggleAll()
   {
     for (flags_type::iterator itr = m_flags.begin(), itrEnd = m_flags.end();
           itr != itrEnd; ++itr)
@@ -32,7 +43,8 @@ namespace tloc { namespace core { namespace utils {
     }
   }
 
-  void Checkpoints::SetAllTo(value_type a_flag)
+  void Checkpoints::
+    SetAllTo(value_type a_flag)
   {
     for (flags_type::iterator itr = m_flags.begin(), itrEnd = m_flags.end();
           itr != itrEnd; ++itr)
@@ -41,19 +53,46 @@ namespace tloc { namespace core { namespace utils {
     }
   }
 
-  void Checkpoints::Mark(size_type a_index)
+  void Checkpoints::
+    Mark(size_type a_index)
   {
     m_flags[a_index] = true;
   }
 
-  void Checkpoints::Unmark(size_type a_index)
+  void Checkpoints::
+    Unmark(size_type a_index)
   {
     m_flags[a_index] = true;
   }
 
-  void Checkpoints::Toggle(size_type a_index)
+  void Checkpoints::
+    Toggle(size_type a_index)
   {
     m_flags[a_index] = !m_flags[a_index];
+  }
+
+  Checkpoints::value_type Checkpoints::
+    ReturnAndMark(size_type a_index)
+  {
+    value_type toRet = IsMarked(a_index);
+    Mark(a_index);
+    return toRet;
+  }
+
+  Checkpoints::value_type Checkpoints::
+    ReturnAndUnmark(size_type a_index)
+  {
+    value_type toRet = IsMarked(a_index);
+    Unmark(a_index);
+    return toRet;
+  }
+
+  Checkpoints::value_type Checkpoints::
+    ReturnAndToggle(size_type a_index)
+  {
+    value_type toRet = IsMarked(a_index);
+    Toggle(a_index);
+    return toRet;
   }
 
 };};};

@@ -44,7 +44,19 @@ namespace tloc { namespace core {
   }
 
   template <PROTECTED_BUFFER_TEMP>
+  const T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::operator *() const
+  {
+    return m_buffer;
+  }
+
+  template <PROTECTED_BUFFER_TEMP>
   T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::Get()
+  {
+    return m_buffer;
+  }
+
+  template <PROTECTED_BUFFER_TEMP>
+  const T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::Get() const
   {
     return m_buffer;
   }

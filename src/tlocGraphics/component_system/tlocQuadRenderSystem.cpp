@@ -8,6 +8,7 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
@@ -27,6 +28,10 @@ namespace tloc { namespace graphics { namespace component_system {
                  core::Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
+    m_quadList.resize(4); // number of vertexes a quad has
+
+    m_vData = gl::AttributePtr(new gl::Attribute());
+    m_vData->SetName("a_vPos");
   }
 
   void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -66,35 +71,7 @@ namespace tloc { namespace graphics { namespace component_system {
   error_type QuadRenderSystem::InitializeEntity(entity_manager*,
     entity_type* a_ent)
   {
-    using namespace core::component_system;
-    typedef graphics::component_system::Quad      quad_type;
-    typedef graphics::component_system::Material  material_type;
-
-    m_quadList.reserve(4); // number of vertexes a quad has
-
-    const entity_type* ent = a_ent;
-    ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
-    Quad& q = quad[0];
-
-    if (ent->HasComponent(components::material))
-    {
-      ComponentMapper<material_type> matArr =
-        ent->GetComponents(components::material);
-      material_type& mat = matArr[0];
-
-      m_quadList.clear();
-      m_quadList.push_back(q.GetVertex<Quad::vert_ne>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_nw>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_se>().GetPosition());
-      m_quadList.push_back(q.GetVertex<Quad::vert_sw>().GetPosition());
-
-      gl::Attribute a_vData;
-      a_vData.SetName("a_vPos").SetVertexArray
-        (m_quadList, gl::p_shader_variable_ti::CopyArray() );
-
-      mat.GetShaderProgRef().AddAttribute(a_vData);
-    }
-
+    TLOC_UNUSED(a_ent);
     return ErrorSuccess();
   }
 
@@ -106,23 +83,80 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     typedef graphics::component_system::Quad      quad_type;
     typedef graphics::component_system::Material  material_type;
+    typedef material_type::shader_op_ptr          shader_op_ptr;
 
     const entity_type* ent = a_ent;
 
     if (ent->HasComponent(components::material))
     {
+
       ComponentMapper<material_type> matArr =
         ent->GetComponents(components::material);
       material_type& mat = matArr[0];
 
-      mat.GetShaderProgRef().Enable();
-      mat.GetShaderProgRef().LoadAllUniforms();
-      mat.GetShaderProgRef().LoadAllAttributes();
+      ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
+      Quad& q = quad[0];
+
+      //------------------------------------------------------------------------
+      // Prepare the Quad
+
+      typedef types::Rectf32    rect_type;
+
+      const f32 halfSize = q.GetSize() * 0.5f;
+
+      rect_type   rect(rect_type::half_width(halfSize * 1.0f),
+                       rect_type::half_height(halfSize * 1.0f));
+
+      m_quadList[0] = vec3_type(rect.GetCoord<rect_type::right>(),
+                                rect.GetCoord<rect_type::top>(), 0);
+      m_quadList[1] = vec3_type(rect.GetCoord<rect_type::left>(),
+                                rect.GetCoord<rect_type::top>(), 0);
+      m_quadList[2] = vec3_type(rect.GetCoord<rect_type::right>(),
+                                rect.GetCoord<rect_type::bottom>(), 0);
+      m_quadList[3] = vec3_type(rect.GetCoord<rect_type::left>(),
+                                rect.GetCoord<rect_type::bottom>(), 0);
+
+      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
+
+      shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
+      so_quad->AddAttribute(m_vData);
+
+      //------------------------------------------------------------------------
+      // Enable the shader
+
+      material_type::shader_prog_ptr sp = mat.GetShaderProgRef();
+
+      // Don't 're-enable' the shader if it was already enabled by the previous
+      // entity
+      if ( m_shaderPtr.IsNull() || m_shaderPtr.Expose() != sp.Expose() )
+      {
+        sp->Enable();
+        m_shaderPtr = sp;
+      }
+
+      material_type::shader_op_cont::iterator itr, itrEnd;
+      material_type::shader_op_cont& cont = mat.DoGetShaderOpContainerRef();
+
+      for (itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+      {
+        material_type::shader_op_ptr so = *itr;
+
+        so->EnableAllUniforms(*m_shaderPtr);
+        so->EnableAllUniforms(*m_shaderPtr);
+      }
+
+      so_quad->PrepareAllAttributes(*m_shaderPtr);
+      so_quad->EnableAllAttributes(*m_shaderPtr);
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-      mat.GetShaderProgRef().Disable();
+      //sp->Disable();
     }
+  }
+
+  void QuadRenderSystem::Post_ProcessActiveEntities()
+  {
+    m_shaderPtr = shader_prog_ptr();
   }
 
 };};};

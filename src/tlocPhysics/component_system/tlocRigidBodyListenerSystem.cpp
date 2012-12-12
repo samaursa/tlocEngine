@@ -18,9 +18,9 @@ namespace tloc { namespace physics { namespace component_system {
 
   namespace {
 
-    typedef RigidBodyListener                         rb_listener_component_type;
+    typedef RigidBodyListener                         rb_listener_component;
 
-    typedef rb_listener_component_type::rigid_body_listener_type
+    typedef rb_listener_component::rigid_body_listener_type
                                                       rb_listener_type;
 
     typedef RigidBodyListenerSystem::entity_type      entity_type;
@@ -42,10 +42,10 @@ namespace tloc { namespace physics { namespace component_system {
     {
       using namespace tloc::core::component_system;
 
-      ComponentMapper<rb_listener_component_type>
+      ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component_type& rbListenerComponent =
+      rb_listener_component& rbListenerComponent =
         rbListenerComponentsMapped[0];
 
       return rbListenerComponent.GetRigidBodyListener();

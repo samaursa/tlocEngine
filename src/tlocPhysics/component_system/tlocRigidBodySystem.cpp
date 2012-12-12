@@ -31,22 +31,22 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef RigidBodySystem::rigid_body_component_type  rb_component_type;
-    typedef rb_component_type::rigid_body_type          rb_type;
+    typedef RigidBodySystem::rigid_body_component_type  rb_component;
+    typedef rb_component::rigid_body_type               rb_type;
     typedef rb_type::error_type                         error_type;
 
     typedef RigidBodySystem::rigid_body_shape_component_type
-                                                        rb_shape_component_type;
-    typedef rb_shape_component_type::rigid_body_shape_def_type
+                                                        rb_shape_component;
+    typedef rb_shape_component::rigid_body_shape_def_type
                                                         rb_shape_type;
 
-    typedef ComponentMapper<rb_shape_component_type>    component_mapper_type;
+    typedef ComponentMapper<rb_shape_component>         component_mapper_type;
     typedef component_mapper_type::size_type            size_type;
 
-    rb_component_type& rbComponent = GetRigidBodyComponent(a_ent);
+    rb_component& rbComponent = GetRigidBodyComponent(a_ent);
     rb_type& rb = rbComponent.GetRigidBody();
 
-    ComponentMapper<rb_shape_component_type> rigidBodyShapeComponents =
+    ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
       a_ent->GetComponents(components::k_rigid_body_shape);
 
     size_type numComponents = rigidBodyShapeComponents.size();
@@ -146,26 +146,25 @@ namespace tloc { namespace physics { namespace component_system {
     using namespace tloc::core::component_system;
 
     typedef rigid_body_component_type::rigid_body_type
-                                                    rigid_body_type;
+                                                    rb_type;
 
-    typedef rigid_body_type::rigid_body_internal_type
-                                                    rigid_body_internal_type;
+    typedef rb_type::rigid_body_internal_type       rb_internal_type;
 
     typedef rigid_body_component_type::rigid_body_def_type
-                                                    rigid_body_def_type;
+                                                    rb_def_type;
 
-    typedef rigid_body_def_type::rigid_body_def_internal_type
-                                                    rigid_body_def_internal_type;
+    typedef rb_def_type::rigid_body_def_internal_type
+                                                    rb_def_internal_type;
 
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
 
-    rigid_body_type& currRB = currRBComponent.GetRigidBody();
+    rb_type& currRB = currRBComponent.GetRigidBody();
 
-    const rigid_body_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
-    const rigid_body_def_internal_type& currRBDefInternal =
+    const rb_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
+    const rb_def_internal_type& currRBDefInternal =
       currRBDef->GetRigidBodyDef();
 
-    rigid_body_internal_type* currRBInternal =
+    rb_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
 
     if (currRBInternal == NULL)
@@ -183,14 +182,14 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_type rigid_body_type;
+    typedef rigid_body_component_type::rigid_body_type  rb_type;
 
-    typedef rigid_body_type::rigid_body_internal_type  rigid_body_internal_type;
+    typedef rb_type::rigid_body_internal_type           rb_internal_type;
 
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
 
-    rigid_body_type& currRB = currRBComponent.GetRigidBody();
-    rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+    rb_type& currRB = currRBComponent.GetRigidBody();
+    rb_internal_type* currRBInternal = currRB.GetInternalRigidBody();
 
     m_world->GetWorld().DestroyBody(currRBInternal);
 

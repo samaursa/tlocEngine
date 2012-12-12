@@ -106,7 +106,7 @@ namespace tloc { namespace prefab { namespace physics {
 
   void AddRigidBodyShape
     (const core::
-    tl_array<const tloc::physics::box2d::RigidBodyShapeDef*>::type a_rbShapes,
+    tl_array<const tloc::physics::box2d::RigidBodyShapeDef*>::type& a_rbShapes,
     core::component_system::Entity* a_ent,
     core::component_system::EntityManager& a_mgr,
     core::component_system::ComponentPoolManager& a_poolMgr)

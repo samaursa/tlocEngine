@@ -11,7 +11,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
-#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
+#include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
 #include <tlocPhysics/box2d/tlocCircleShape.h>
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 
@@ -38,11 +38,11 @@ namespace TestingRigidBodySystem
 
     typedef math::component_system::Transform transform_type;
 
-    typedef box2d::PhysicsManager physics_manager;
-    typedef box2d::ContactEvent   contact_event_type;
-    typedef box2d::RigidBodyShape rigid_body_shape;
-    typedef box2d::CircleShape    circle_shape_type;
-    typedef box2d::RigidBodyDef   rigid_body_def_type;
+    typedef box2d::PhysicsManager     physics_manager;
+    typedef box2d::ContactEvent       contact_event_type;
+    typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
+    typedef box2d::CircleShape        circle_shape_type;
+    typedef box2d::RigidBodyDef       rigid_body_def_type;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
@@ -134,12 +134,13 @@ namespace TestingRigidBodySystem
 
     rb_sys_fixture::transform_type transformComponent1;
 
-    rb_sys_fixture::rigid_body_component rbStaticComponent;
+    rb_sys_fixture::rigid_body_def_type rbDef1;
+    rb_sys_fixture::rigid_body_component rbStaticComponent(&rbDef1);
 
     rb_sys_fixture::circle_shape_type circleShape;
     circleShape.SetRadius(1.0f);
 
-    rb_sys_fixture::rigid_body_shape rbCircleShape(&circleShape);
+    rb_sys_fixture::rigid_body_shape_def_type rbCircleShape(&circleShape);
     rb_sys_fixture::rigid_body_shape_component rbShapeComponent1(&rbCircleShape);
 
     entityMgr.InsertComponent(rbStaticEntity, &transformComponent1);
@@ -153,11 +154,11 @@ namespace TestingRigidBodySystem
 
     const float rbDynamicStartPositionY = 3.0f;
 
-    rb_sys_fixture::rigid_body_def_type rbDef;
-    rbDef.SetType(box2d::rigid_body::k_dynamicBody);
-    rbDef.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
+    rb_sys_fixture::rigid_body_def_type rbDef2;
+    rbDef2.SetType<box2d::p_rigid_body::DynamicBody>();
+    rbDef2.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
 
-    rb_sys_fixture::rigid_body_component rbDynamicComponent(rbDef);
+    rb_sys_fixture::rigid_body_component rbDynamicComponent(&rbDef2);
 
     rb_sys_fixture::rigid_body_shape_component rbShapeComponent2(&rbCircleShape);
 

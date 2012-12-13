@@ -8,7 +8,7 @@
 namespace tloc { namespace physics { namespace component_system {
 
   RigidBodyListener::RigidBodyListener(rigid_body_listener_type* a_listener)
-    : base_type(components::k_rigid_body_listener)
+    : base_type(components::k_rigidBodyListener)
     , m_rigidBodyListener(a_listener)
   {
   }

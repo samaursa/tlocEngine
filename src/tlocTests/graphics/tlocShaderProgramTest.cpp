@@ -118,7 +118,7 @@ namespace TestingShaderProgram
     CHECK(sp.Get<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
   }
 
-  TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
+  /*TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
   {
     using namespace math;
 
@@ -151,5 +151,5 @@ namespace TestingShaderProgram
     REQUIRE(sp.Enable() == ErrorSuccess() );
     CHECK(sp.LoadAllAttributes() == ErrorSuccess() );
     CHECK(sp.Disable() == ErrorSuccess() );
-  }
+  }*/
 };

@@ -68,12 +68,11 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   public:
     SharedPtr();
-    SharedPtr(pointer a_rawPtr);
+    explicit SharedPtr(pointer a_rawPtr);
     SharedPtr(const this_type& a_other);
 
     template <typename T_Other>
     SharedPtr(const SharedPtr<T_Other>& a_other);
-
     ~SharedPtr();
 
     template <typename T_Other>
@@ -105,6 +104,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     ref_count_type GetRefCount() const;
 
+    bool IsNull() const;
+
   private:
     void DoAddRef();
     void DoRemoveRef();
@@ -113,6 +114,20 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer           m_rawPtr;
     ref_count_type*   m_refCount;
   };
+
+  //------------------------------------------------------------------------
+  // Template definitions
+
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename T_Other>
+  SharedPtr<T, T_NullCopyPolicy>::
+    SharedPtr(const SharedPtr<T_Other>& a_other)
+    : m_rawPtr  (a_other.Expose() )
+    , m_refCount(a_other.DoExposeCounter() )
+  {
+    // Mainly for containers
+    DoAddRef();
+  }
 
 };};};
 

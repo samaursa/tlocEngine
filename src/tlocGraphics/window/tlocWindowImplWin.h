@@ -141,6 +141,13 @@ namespace tloc { namespace graphics { namespace priv {
     void SetVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
+    /// @brief Sets the window title.
+    ///
+    /// @param  a_title The title of the window.
+    ///-------------------------------------------------------------------------
+    void SetTitle(const char* a_title);
+
+    ///-------------------------------------------------------------------------
     /// @brief Calls IsWindow() on the handle and returns the result
     ///
     /// @return true if window has bee created, false if not.

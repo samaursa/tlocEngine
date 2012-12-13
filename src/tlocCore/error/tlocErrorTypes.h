@@ -14,6 +14,7 @@ namespace tloc { namespace core { namespace error {
       error_math      = 2000,
       error_graphics  = 3000,
       error_input     = 4000,
+      error_physics   = 5000,
     };
   };
 

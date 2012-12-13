@@ -1,7 +1,12 @@
 #include "tlocAttribute.h"
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+
 namespace tloc { namespace graphics { namespace gl {
 
-  TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+  //------------------------------------------------------------------------
+  //
+
+  template class tloc::core::smart_ptr::SharedPtr<Attribute>;
 
 };};};

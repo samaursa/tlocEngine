@@ -38,7 +38,7 @@ namespace tloc { namespace physics { namespace box2d {
 
   protected:
     virtual TLOC_DECL_AND_DEF_GETTER
-      (shape_internal_type*, GetInternalShape, (shape_internal_type*)&m_shape);
+      (shape_internal_type*, DoGetInternalShape, (shape_internal_type*)&m_shape);
 
   private:
     circle_shape_internal_type m_shape;

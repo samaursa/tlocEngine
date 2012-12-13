@@ -24,6 +24,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
 
+    // The index_type of the pair is used to get the pointer quickly the second
+    // time around
     typedef core::Pair<uniform_ptr_type, index_type>   uniform_pair_type;
     typedef core::Pair<attribute_ptr_type, index_type> attribute_pair_type;
 
@@ -38,6 +40,12 @@ namespace tloc { namespace graphics { namespace gl {
 
     void AddUniform(const uniform_ptr_type& a_uniform);
     void AddAttribute(const attribute_ptr_type& a_attribute);
+
+    void RemoveUniform(const uniform_ptr_type& a_uniform);
+    void RemoveAttribute(const attribute_ptr_type& a_attribute);
+
+    void RemoveAllUniforms();
+    void RemoveAllAttributes();
 
     uniform_iterator begin_uniform();
     uniform_iterator end_uniform();
@@ -65,6 +73,11 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram);
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram);
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
+                             m_uniforms.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributes,
+                             m_attributes.size());
 
   private:
     uniform_cont_type           m_uniforms;

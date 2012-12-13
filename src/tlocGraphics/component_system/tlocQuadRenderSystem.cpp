@@ -6,11 +6,14 @@
 
 #include <tlocMath/component_system/tlocTransform.h>
 
+#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
+
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
-#include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/component_system/tlocProjectionComponent.h>
+
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -32,6 +35,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vData = gl::AttributePtr(new gl::Attribute());
     m_vData->SetName("a_vPos");
+
+    m_projectionOperator = gl::ShaderOperatorPtr(new gl::ShaderOperator());
   }
 
   void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -77,6 +82,44 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type QuadRenderSystem::ShutdownEntity(entity_manager*, entity_type*)
   { return ErrorSuccess(); }
+
+  void QuadRenderSystem::Pre_ProcessActiveEntities()
+  {
+    using namespace core::component_system;
+    using namespace math::component_system::components;
+    using namespace graphics::component_system::components;
+
+    matrix_type viewMat;
+    viewMat.Identity();
+    m_vpMatrix.Identity();
+
+    // vMVP, but since we are doing column major, it becomes PVMv
+
+    //if (m_sharedCam)
+    //{
+    //  if (m_sharedCam->HasComponent(projection))
+    //  {
+    //    ComponentMapper<graphics::component_system::Projection> projMatList =
+    //      m_sharedCam->GetComponents(graphics::component_system::components::projection);
+    //    m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix();
+    //  }
+
+    //  if (m_sharedCam->HasComponent(transform))
+    //  {
+    //    ComponentMapper<math::component_system::Transform> viewMatList =
+    //      m_sharedCam->GetComponents(math::component_system::components::transform);
+    //    viewMat = viewMatList[0].GetTransformation();
+    //  }
+    //}
+
+    m_vpMatrix.Mul(viewMat);
+
+    gl::UniformPtr vpMat(new gl::Uniform());
+    vpMat->SetName("u_mvp").SetValueAs(m_vpMatrix);
+
+    m_projectionOperator->RemoveAllUniforms();
+    m_projectionOperator->AddUniform(vpMat);
+  }
 
   void QuadRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
@@ -147,6 +190,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
       so_quad->PrepareAllAttributes(*m_shaderPtr);
       so_quad->EnableAllAttributes(*m_shaderPtr);
+
+      // Add the mvp
+      m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
+      m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 

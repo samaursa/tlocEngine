@@ -125,7 +125,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -177,9 +176,6 @@
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -192,7 +188,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -245,9 +240,6 @@
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -260,7 +252,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -309,9 +300,6 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -324,7 +312,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -374,9 +361,6 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -389,7 +373,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"

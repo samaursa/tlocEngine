@@ -44,17 +44,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -67,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -112,14 +105,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -135,7 +125,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -183,13 +173,10 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -205,7 +192,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -254,13 +241,10 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -276,7 +260,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -320,14 +304,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -343,7 +324,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -388,14 +369,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -411,7 +389,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+				OutputFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -459,8 +437,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -530,8 +508,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -600,8 +578,8 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -671,8 +649,8 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -741,8 +719,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -812,8 +790,8 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"

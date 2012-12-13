@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -114,7 +114,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(x64_SDK_DIR)/include/&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

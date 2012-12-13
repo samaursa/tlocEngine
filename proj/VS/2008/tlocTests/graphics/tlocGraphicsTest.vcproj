@@ -23,6 +23,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -100,6 +101,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -177,6 +179,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -257,6 +260,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -337,6 +341,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -414,6 +419,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -491,6 +497,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -571,6 +578,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -651,6 +659,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -734,6 +743,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -817,6 +827,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -900,6 +911,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\tlocEngineTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>

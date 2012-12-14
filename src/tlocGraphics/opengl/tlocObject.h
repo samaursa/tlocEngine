@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef u32 object_handle;
+    typedef s32 object_handle; // s32 because GLint is s32
 
     bool IsValid();
 

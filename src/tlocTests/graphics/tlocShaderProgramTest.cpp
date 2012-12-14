@@ -90,6 +90,11 @@ namespace TestingShaderProgram
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     CHECK(sp.Link() == ErrorSuccess());
+
+    CHECK(gl::Error().Succeeded());
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
+    CHECK(gl::Error().Succeeded());
   }
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
@@ -108,6 +113,9 @@ namespace TestingShaderProgram
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
     CHECK(sp.Link() == ErrorSuccess());
+
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
 
     CHECK(sp.Get<gl::p_shader_program::DeleteStatus>() == 0);
     CHECK(sp.Get<gl::p_shader_program::LinkStatus>() == 1);

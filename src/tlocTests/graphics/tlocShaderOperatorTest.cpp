@@ -5,9 +5,15 @@
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
+#include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/data_types/tlocColor.h>
 
+#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/vector/tlocVector3.h>
+#include <tlocMath/vector/tlocVector3.inl>
 #include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/vector/tlocVector4.inl>
 
 namespace TestingShaderOperator
 {
@@ -26,10 +32,6 @@ namespace TestingShaderOperator
     "  uniform ivec2 u_ivec2;           \n"
     "  uniform ivec3 u_ivec3;           \n"
     "  uniform ivec4 u_ivec4;           \n"
-    "  uniform uint  u_uint;            \n"
-    "  uniform uvec2 u_uvec2;           \n"
-    "  uniform uvec3 u_uvec3;           \n"
-    "  uniform uvec4 u_uvec4;           \n"
     "  uniform bool  u_bool;            \n"
     "  uniform bvec2 u_bvec2;           \n"
     "  uniform bvec3 u_bvec3;           \n"
@@ -47,17 +49,15 @@ namespace TestingShaderOperator
     "  ivec3 index3 = u_ivec3;\n"
     "  ivec4 index4 = u_ivec4;\n"
     "\n"
-    "  uint  uindex = u_uint;\n"
-    "  uvec2 uindex2 = u_uvec2;\n"
-    "  uvec3 uindex3 = u_uvec3;\n"
-    "  uvec4 uindex4 = u_uvec4;\n"
-    "\n"
     "  bool  tf = u_bool;\n"
     "  bvec2 tf2 = u_bvec2;\n"
     "  bvec3 tf3 = u_bvec3;\n"
     "  bvec4 tf4 = u_bvec4;\n"
     "\n"
     "  gl_Position   = pos4;            \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;            \n"
+    "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;            \n"
+    "  gl_Position.z = float(u_bool) * float(u_bvec2.x) * float(u_bvec3.x) * float(u_bvec4.x);            \n"
     "}\n";
 
   const char* fShaderStr =
@@ -71,7 +71,7 @@ namespace TestingShaderOperator
                                         \n\
     void main(void)                     \n\
     {                                   \n\
-    gl_FragColor = vVaryingColor;       \n\
+      gl_FragColor = vVaryingColor;       \n\
     }";
 
   using namespace tloc;
@@ -79,8 +79,9 @@ namespace TestingShaderOperator
 
   struct fixture
   {
-    typedef gl::UniformPtr      uniform_ptr_type;
-    typedef gl::AttributePtr    attribute_ptr_type;
+    typedef gl::UniformPtr          uniform_ptr_type;
+    typedef gl::AttributePtr        attribute_ptr_type;
+    typedef gl::ShaderOperatorPtr   shader_op_ptr;
   };
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/", "Basic functionality")
@@ -98,10 +99,118 @@ namespace TestingShaderOperator
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
     REQUIRE(vShader.Compile() == ErrorSuccess());
 
-    uniform_ptr_type    uniform;
-    attribute_ptr_type  attribute;
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    REQUIRE(sp.Link() == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
 
-    gl::ShaderOperator  so;
+    // Cache the attributes and uniforms
+    sp.Enable();
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
+    sp.Disable();
+    CHECK(gl::Error().Succeeded());
+
+    shader_op_ptr so(new gl::ShaderOperator());
+
+    //------------------------------------------------------------------------
+    // Add all the uniforms
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_float");
+      uniform->SetValueAs(f32(5.0f));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_vec2");
+      uniform->SetValueAs(math::Vec2f32(0.1f, 0.2f));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_vec3");
+      uniform->SetValueAs(math::Vec3f32(0.1f, 0.2f, 0.3f));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_vec4");
+      uniform->SetValueAs(math::Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_int");
+      uniform->SetValueAs(s32(5));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec2");
+      uniform->SetValueAs(math::Vector2<s32>(1, 2));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec3");
+      uniform->SetValueAs(math::Vector3<s32>(2, 3, 4));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec4");
+      uniform->SetValueAs(math::Vector4<s32>(4, 5, 6, 7));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_bool");
+      uniform->SetValueAs(true);
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_bvec2");
+      uniform->SetValueAs(core::Tuple<bool, 2>(true));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_bvec3");
+      uniform->SetValueAs(core::Tuple<bool, 3>(false));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_bvec4");
+      uniform->SetValueAs(core::Tuple<bool, 4>(false));
+
+      so->AddUniform(uniform);
+    }
+
+    //------------------------------------------------------------------------
+    // Add all the attributes
+    {
+      attribute_ptr_type  attribute(new gl::Attribute());
+    }
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
   }
 
   //TEST_CASE("Graphics/ShaderProgram/Uniforms", "")

@@ -120,6 +120,7 @@ namespace tloc { namespace graphics { namespace gl {
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2fv(a_info.m_location, arraySize, faraw);
           }
+          break;
         }
       case GL_FLOAT_VEC3:
         {
@@ -165,7 +166,6 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const s32& i = a_uniform.GetValueAs<s32>();
             glUniform1i(a_info.m_location, i);
-            break;
           }
           else
           {
@@ -177,6 +177,7 @@ namespace tloc { namespace graphics { namespace gl {
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform1iv(a_info.m_location, arraySize, faraw);
           }
+          break;
         }
       case GL_INT_VEC2:
         {
@@ -195,7 +196,6 @@ namespace tloc { namespace graphics { namespace gl {
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2iv(a_info.m_location, arraySize, faraw);
           }
-
           break;
         }
       case GL_INT_VEC3:
@@ -215,7 +215,6 @@ namespace tloc { namespace graphics { namespace gl {
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform3iv(a_info.m_location, arraySize, faraw);
           }
-
           break;
         }
 
@@ -536,13 +535,18 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
+                "Shader noet enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
+
+    error_type retError = ErrorSuccess();
 
     uniform_cont_type::iterator itr, itrEnd;
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
+
       UniformPtr uniformPtr = itr->first;
 
       index_type index = 0;
@@ -557,20 +561,32 @@ namespace tloc { namespace graphics { namespace gl {
           {
             itr->second = index;
             DoSetUniform(uniCont[itr->second], *uniformPtr);
+
+            TLOC_ASSERT(gl::Error().Succeeded(),
+                        "glUniform* failed in DoSetUniform()");
+            break;
           }
           else
           {
             // TODO: Convert this assertion to a log
             TLOC_ASSERT(false, "Mismatched uniform type!");
-            return ErrorFailure();
+            retError = ErrorFailure();
+            break;
           }
         }
         ++index;
       }
+
+      // We could not find the user specified uniform in the shader
+      if (itrInfo == itrInfoEnd)
+      {
+        TLOC_ASSERT(false, "Uniform type not found in shader!");
+        retError = ErrorFailure();
+      }
     }
 
     m_flags.Mark(k_uniformsCached);
-    return ErrorSuccess();
+    return retError;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -581,6 +597,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
+                "Shader noet enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();

@@ -60,6 +60,8 @@ namespace tloc { namespace graphics { namespace gl {
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
                            &currInfo.m_type, currInfo.m_name.Get());
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -92,6 +94,8 @@ namespace tloc { namespace graphics { namespace gl {
         glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
                           &currInfo.m_nameLength, &currInfo.m_arraySize,
                           &currInfo.m_type, currInfo.m_name.Get());
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -183,14 +187,36 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderProgram::LoadUniformInfo()
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
+
     if (m_flags.ReturnAndMark(k_uniformInfoLoaded) == false)
     { DoGetUniformInfo(*this, m_uniformInfo); }
   }
 
   void ShaderProgram::LoadAttributeInfo()
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
+
     if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
     { DoGetAttributeInfo(*this, m_attributeInfo); }
+  }
+
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetUniformInfoRef() const
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_uniformInfoLoaded),
+          "Uniforms not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_uniformInfo;
+  }
+
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetAttributeInfoRef() const
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_attributeInfoLoaded),
+          "Attributes not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_attributeInfo;
   }
 
   ShaderProgram::error_type
@@ -203,6 +229,15 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     return ErrorSuccess();
+  }
+
+  bool ShaderProgram::
+    IsEnabled() const
+  {
+    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    { return true; }
+
+    return false;
   }
 
   ShaderProgram::error_type

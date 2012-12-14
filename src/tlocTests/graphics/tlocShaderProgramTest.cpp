@@ -5,6 +5,7 @@
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/opengl/tlocError.h>
 
 #include <tlocMath/vector/tlocVector4.h>
 

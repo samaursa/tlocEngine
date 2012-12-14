@@ -241,29 +241,38 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_FLOAT_MAT2:
         {
+          typedef f32                 num_type;
+
           const Mat2f32& m = a_uniform.GetValueAs<Mat2f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat2f32::k_TableSize,
+          const GLint matSize = 2 * 2;
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat2f32::k_TableSize,
             "Mismatched uniform array size!");
-          glUniformMatrix2fv(a_info.m_location, GL_FALSE,
-            Mat2f32::k_TableSize, m);
+          glUniformMatrix2fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT3:
         {
+          typedef f32                 num_type;
+
           const Mat3f32& m = a_uniform.GetValueAs<Mat3f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
+          const GLint matSize = 3 * 3;
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat3f32::k_TableSize,
             "Mismatched uniform array size!");
-          glUniformMatrix3fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
+          glUniformMatrix3fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT4:
         {
+          typedef f32                 num_type;
+
           const Mat4f32& m = a_uniform.GetValueAs<Mat4f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
+          const GLint matSize = 4 * 4;
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat4f32::k_TableSize,
             "Mismatched uniform array size!");
-          glUniformMatrix4fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
+          glUniformMatrix4fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       }
@@ -417,6 +426,58 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
   { m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) ); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveUniform(const uniform_ptr_type& a_uniform)
+  {
+    uniform_iterator itr, itrEnd;
+    for(itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+        itr != itrEnd; ++itr)
+    {
+      if (itr->first.Expose() == a_uniform.Expose())
+      { break; }
+    }
+
+    if (itr != m_uniforms.end())
+    { m_uniforms.erase(itr); }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAttribute(const attribute_ptr_type& a_attribute)
+  {
+    attribute_iterator itr, itrEnd;
+    for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
+        itr != itrEnd; ++itr)
+    {
+      if (itr->first.Expose() == a_attribute.Expose())
+      { break; }
+    }
+
+    if (itr != m_attributes.end())
+    { m_attributes.erase(itr); }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAllUniforms()
+  {
+    m_flags.Unmark(k_uniformsCached);
+    m_uniforms.clear();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAllAttributes()
+  {
+    m_flags.Unmark(k_attributesCached);
+    m_attributes.clear();
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

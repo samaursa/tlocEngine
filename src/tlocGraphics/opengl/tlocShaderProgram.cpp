@@ -262,12 +262,38 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Private methods
 
+  namespace
+  {
+    template <typename T_ProgramIvParam>
+    struct DoGetOperation
+    {
+      void operator()(ShaderProgram::object_handle)
+      { /* intentionally empty */ }
+    };
+
+    template <>
+    struct DoGetOperation<p_shader_program::ValidateStatus>
+    {
+      void operator()(ShaderProgram::object_handle a_shaderHandle)
+      {
+        // This is required BEFORE a call to
+        // glGetProgramiv(#, GL_VALIDATE_STATUS, ...) is called.
+        glValidateProgram(a_shaderHandle);
+      }
+    };
+  }
+
   template <typename T_ProgramIvParam>
   ShaderProgram::gl_result_type
     ShaderProgram::DoGet() const
   {
     GLint result;
     object_handle handle = GetHandle();
+
+    // Perform any operation that may be required before the following call
+    // 'means' anything
+    DoGetOperation<T_ProgramIvParam>()(handle);
+
     glGetProgramiv(handle, T_ProgramIvParam::s_glStatusName, &result);
     return (gl_result_type)result;
   }

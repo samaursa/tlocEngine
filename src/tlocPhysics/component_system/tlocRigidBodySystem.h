@@ -13,6 +13,12 @@ namespace tloc { namespace physics { namespace component_system {
   class RigidBody;
   class RigidBodyShape;
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodySystem manages all rigid body components. When processing
+  /// it transfers the rigid body components transform to the entity's transform
+  /// component. NOTE: All RigidBodyShapes must be added to the entity before
+  /// this system is initialized.
+  ///-------------------------------------------------------------------------
   class RigidBodySystem : public core::component_system::EntityProcessingSystem
   {
   public:
@@ -28,7 +34,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef box2d::World                world_type;
 
-    typedef RigidBody                   rigid_body_component_type;
+    typedef RigidBody                   rigid_body_component;
     typedef RigidBodyShape              rigid_body_shape_component_type;
 
   public:
@@ -36,16 +42,16 @@ namespace tloc { namespace physics { namespace component_system {
       (event_manager* a_eventMgr, entity_manager* a_entityMgr,
        world_type* a_world);
 
-    virtual error_type InitializeEntity(entity_manager* a_mgr, 
+    virtual error_type InitializeEntity(entity_manager* a_mgr,
                                         entity_type* a_ent);
 
-    virtual error_type ShutdownEntity(entity_manager* a_mgr, 
+    virtual error_type ShutdownEntity(entity_manager* a_mgr,
                                       entity_type* a_ent);
 
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
 
   private:
-    error_type 
+    error_type
       DoInitializeRigidBodyComponent(entity_type* a_ent);
 
     error_type

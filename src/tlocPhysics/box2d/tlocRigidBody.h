@@ -28,6 +28,10 @@ namespace tloc { namespace physics { namespace box2d {
 
   class World;
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBody is an internal class used in RigidBodyComponent. Defines
+  /// the "invisible" physical attributes of a rigid body.
+  ///-------------------------------------------------------------------------
   class RigidBody
   {
   public:

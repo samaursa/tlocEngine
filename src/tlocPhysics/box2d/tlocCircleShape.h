@@ -12,6 +12,9 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  CircleShape defines a circle for a RigidBodyShape.
+  ///-------------------------------------------------------------------------
   class CircleShape : public Shape
   {
   public:

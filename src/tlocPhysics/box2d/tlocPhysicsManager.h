@@ -13,11 +13,21 @@
 
 #include <tlocMath/vector/tlocVector2.h>
 
+namespace tloc { namespace physics { namespace box2d { namespace priv {
+
+  class ContactListener;
+
+};};};};
+
 namespace tloc { namespace physics { namespace box2d {
   
-  class ContactListener;
   class World;
 
+  ///-------------------------------------------------------------------------
+  /// @brief  ContactEvent is used to send back contact information between two
+  /// entities. Instance is sent through contact callback registered with the
+  /// PhysicsManager.
+  ///-------------------------------------------------------------------------
   struct ContactEvent
   {
     typedef core::component_system::Entity entity_type;
@@ -46,7 +56,8 @@ namespace tloc { namespace physics { namespace box2d {
 
     using base_type::m_observers;
 
-    virtual bool OnContactBegin(const ContactEvent& a_event)
+    virtual bool 
+      OnContactBegin(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
       {
@@ -58,7 +69,8 @@ namespace tloc { namespace physics { namespace box2d {
       return false;
     }
 
-    virtual bool OnContactEnd(const ContactEvent& a_event)
+    virtual bool 
+      OnContactEnd(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
       {
@@ -71,6 +83,11 @@ namespace tloc { namespace physics { namespace box2d {
     }
   };
 
+  ///-------------------------------------------------------------------------
+  /// @brief  Physics manager manages the creation, simulation and destruction of
+  /// the physics world. Currently supports one world. Dispatches world contact
+  /// events to callback classes registered to it.
+  ///-------------------------------------------------------------------------
   class PhysicsManager : 
     public core::DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
   {
@@ -85,7 +102,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::error::Error    error_type;
     typedef World                 world_type;
     typedef ContactEvent          contact_event_type;
-    typedef ContactListener       contact_listener_type;
+    typedef priv::ContactListener contact_listener_type;
 
     typedef core::types::StrongType_T<int_type, 0> velocity_iterations;
     typedef core::types::StrongType_T<int_type, 1> position_iterations;
@@ -103,7 +120,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     void Update(tl_float a_timeStep);
 
-    world_type& GetWorld();
+    world_type&       GetWorld();
     const world_type& GetWorld() const;
 
     TLOC_DECL_AND_DEF_GETTER(int_type, GetVelocityIterations, 

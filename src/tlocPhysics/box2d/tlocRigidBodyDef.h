@@ -26,6 +26,11 @@ namespace tloc { namespace physics { namespace box2d {
     struct DynamicBody    { static const value_type s_rigidBodyType; };
   };
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyDef is used in conjunction with RigidBody and RigidBody
+  /// component. Used to define "invisible" attributes of the RigidBody before
+  /// construction.
+  ///-------------------------------------------------------------------------
   class RigidBodyDef : public core::NonCopyable
   {
   public:

@@ -6,12 +6,18 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
+  //////////////////////////////////////////////////////////////////////////
+  // RigidBody - RigidBodyDef Policy types
+
   namespace p_rigid_body
   {
     const value_type StaticBody   ::s_rigidBodyType = b2_staticBody;
     const value_type KinematicBody::s_rigidBodyType = b2_kinematicBody;
     const value_type DynamicBody  ::s_rigidBodyType = b2_dynamicBody;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // RigidBodyDef
 
   RigidBodyDef::
     RigidBodyDef()
@@ -33,11 +39,15 @@ namespace tloc { namespace physics { namespace box2d {
     SetGravityScale(1.0f);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::
     ~RigidBodyDef()
   {
     delete m_rigidBodyDef;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyDef::rigid_body_type_type RigidBodyDef::
     GetType() const
@@ -45,17 +55,23 @@ namespace tloc { namespace physics { namespace box2d {
     return static_cast<rigid_body_type_type>(m_rigidBodyDef->type);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::vec_type RigidBodyDef::
     GetPosition() const
   {
     return vec_type(m_rigidBodyDef->position.x, m_rigidBodyDef->position.y);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::float_type RigidBodyDef::
     GetAngle() const
   {
     return m_rigidBodyDef->angle;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyDef::vec_type RigidBodyDef::
     GetLinearVelocity() const
@@ -64,11 +80,15 @@ namespace tloc { namespace physics { namespace box2d {
                     m_rigidBodyDef->linearVelocity.y);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::float_type RigidBodyDef::
     GetAngularVelocity() const
   {
     return m_rigidBodyDef->angularVelocity;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyDef::float_type RigidBodyDef::
     GetLinearDamping() const
@@ -76,11 +96,15 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBodyDef->linearDamping;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::float_type RigidBodyDef::
     GetAngularDamping() const
   {
     return m_rigidBodyDef->angularDamping;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool RigidBodyDef::
     IsBullet() const
@@ -88,11 +112,15 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBodyDef->bullet;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool RigidBodyDef::
     IsSleepingAllowed() const
   {
     return m_rigidBodyDef->allowSleep;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool RigidBodyDef::
     IsAwake() const
@@ -100,11 +128,15 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBodyDef->awake;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool RigidBodyDef::
     IsActive() const
   {
     return m_rigidBodyDef->active;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool RigidBodyDef::
     IsFixedrotation() const
@@ -112,11 +144,15 @@ namespace tloc { namespace physics { namespace box2d {
     return m_rigidBodyDef->fixedRotation;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodyDef::float_type RigidBodyDef::
     GetGravityScale() const
   {
     return m_rigidBodyDef->gravityScale;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetPosition(vec_type a_position)
@@ -125,11 +161,15 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->position.y = a_position[1];
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetAngle(float_type a_angle)
   {
     m_rigidBodyDef->angle = a_angle;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetLinearVelocity(vec_type a_linearVelocity)
@@ -138,11 +178,15 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->linearVelocity.y = a_linearVelocity[1];
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetAngularVelocity(float a_angularVelocity)
   {
     m_rigidBodyDef->angularVelocity = a_angularVelocity;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetLinearDamping(float_type a_linearDamping)
@@ -150,11 +194,15 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->linearDamping = a_linearDamping;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetAngularDamping(float_type a_angularDamping)
   {
     m_rigidBodyDef->angularDamping = a_angularDamping;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetBullet(bool a_bullet)
@@ -162,11 +210,15 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->bullet = a_bullet;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetAllowsSleep(bool a_allowSleep)
   {
     m_rigidBodyDef->allowSleep = a_allowSleep;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetAwake(bool a_awake)
@@ -174,11 +226,15 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->awake = a_awake;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetActive(bool a_active)
   {
     m_rigidBodyDef->active = a_active;
   }
+
+  ////xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
     SetFixedRotation(bool a_fixedRotation)
@@ -186,17 +242,23 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBodyDef->fixedRotation = a_fixedRotation;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void RigidBodyDef::
     SetGravityScale(float_type a_gravityScale)
   {
     m_rigidBodyDef->gravityScale = a_gravityScale;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   const RigidBodyDef::rigid_body_def_internal_type& RigidBodyDef::
     DoGetRigidBodyDef() const
   {
     return *m_rigidBodyDef;
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_RigidBodyType>
   void RigidBodyDef::
@@ -206,7 +268,7 @@ namespace tloc { namespace physics { namespace box2d {
       static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType);
   }
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Explicit instantiation
 
   template void RigidBodyDef::DoSetType<p_rigid_body::StaticBody>();

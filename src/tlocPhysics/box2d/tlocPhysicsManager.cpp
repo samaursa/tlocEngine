@@ -18,6 +18,8 @@ namespace tloc { namespace physics { namespace box2d {
     typedef ContactEvent::entity_type   entity_type;
     typedef b2Fixture                   fixture_type;
 
+    typedef f32                         float_internal_type;
+
     enum flags
     {
       initialized,
@@ -144,7 +146,7 @@ namespace tloc { namespace physics { namespace box2d {
     TLOC_ASSERT(m_flags[initialized], "PhysicsManager is not initialized!");
     TLOC_ASSERT_NOT_NULL(m_world);
 
-    m_world->GetWorld().Step(a_timeStep,
+    m_world->GetWorld().Step(static_cast<float_internal_type>(a_timeStep),
                              m_velocityIterations, m_positionIterations);
   }
 

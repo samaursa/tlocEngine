@@ -7,6 +7,15 @@
 namespace tloc { namespace physics { namespace box2d {
 
   //////////////////////////////////////////////////////////////////////////
+  // Free definitions
+
+  namespace {
+
+    typedef f32 float_internal_type;
+
+  }
+
+  //////////////////////////////////////////////////////////////////////////
   // RigidBody - RigidBodyDef Policy types
 
   namespace p_rigid_body
@@ -157,8 +166,8 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetPosition(vec_type a_position)
   {
-    m_rigidBodyDef->position.x = a_position[0];
-    m_rigidBodyDef->position.y = a_position[1];
+    m_rigidBodyDef->position.x = static_cast<float_internal_type>(a_position[0]);
+    m_rigidBodyDef->position.y = static_cast<float_internal_type>(a_position[1]);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -166,7 +175,7 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetAngle(float_type a_angle)
   {
-    m_rigidBodyDef->angle = a_angle;
+    m_rigidBodyDef->angle = static_cast<float_internal_type>(a_angle);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -174,16 +183,20 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetLinearVelocity(vec_type a_linearVelocity)
   {
-    m_rigidBodyDef->linearVelocity.x = a_linearVelocity[0];
-    m_rigidBodyDef->linearVelocity.y = a_linearVelocity[1];
+    m_rigidBodyDef->linearVelocity.x =
+      static_cast<float_internal_type>(a_linearVelocity[0]);
+
+    m_rigidBodyDef->linearVelocity.y =
+      static_cast<float_internal_type>(a_linearVelocity[1]);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyDef::
-    SetAngularVelocity(float a_angularVelocity)
+    SetAngularVelocity(float_type a_angularVelocity)
   {
-    m_rigidBodyDef->angularVelocity = a_angularVelocity;
+    m_rigidBodyDef->angularVelocity =
+      static_cast<float_internal_type>(a_angularVelocity);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -191,7 +204,8 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetLinearDamping(float_type a_linearDamping)
   {
-    m_rigidBodyDef->linearDamping = a_linearDamping;
+    m_rigidBodyDef->linearDamping =
+      static_cast<float_internal_type>(a_linearDamping);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -199,7 +213,8 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetAngularDamping(float_type a_angularDamping)
   {
-    m_rigidBodyDef->angularDamping = a_angularDamping;
+    m_rigidBodyDef->angularDamping =
+      static_cast<float_internal_type>(a_angularDamping);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -247,7 +262,8 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyDef::
     SetGravityScale(float_type a_gravityScale)
   {
-    m_rigidBodyDef->gravityScale = a_gravityScale;
+    m_rigidBodyDef->gravityScale =
+      static_cast<float_internal_type>(a_gravityScale);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

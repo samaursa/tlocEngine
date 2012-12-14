@@ -43,10 +43,10 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2Body                rigid_body_internal_type;
     typedef core::error::Error    error_type;
 
-    typedef f32                   float_type;
-    typedef math::Vec2f32         vec_type;
-    typedef math::Mat2f32         matrix_type;
-    typedef math::Radian32        angle_type;
+    typedef tl_float              float_type;
+    typedef math::Vec2f           vec_type;
+    typedef math::Mat2f           matrix_type;
+    typedef math::Radian          angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
 

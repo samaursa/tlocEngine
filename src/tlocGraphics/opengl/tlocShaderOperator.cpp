@@ -112,11 +112,12 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec2f32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2fv(a_info.m_location, arraySize, faraw);
           }
@@ -131,11 +132,12 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec3f32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform3fv(a_info.m_location, arraySize, faraw);
           }
@@ -150,11 +152,12 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec4f32 num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform4fv(a_info.m_location, arraySize, faraw);
           }
@@ -183,16 +186,17 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Tuple2s32& t = a_uniform.GetValueAs<Tuple2s32>();
+            const Vec2s32& t = a_uniform.GetValueAs<Vec2s32>();
             glUniform2i(a_info.m_location, t[0], t[1]);
           }
           else
           {
-            typedef s32               num_type;
+            typedef Vec2s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2iv(a_info.m_location, arraySize, faraw);
           }
@@ -202,16 +206,17 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Tuple3s32& t = a_uniform.GetValueAs<Tuple3s32>();
+            const Vec3s32& t = a_uniform.GetValueAs<Vec3s32>();
             glUniform3i(a_info.m_location, t[0], t[1], t[2]);
           }
           else
           {
-            typedef s32               num_type;
+            typedef Vec3s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform3iv(a_info.m_location, arraySize, faraw);
           }
@@ -222,16 +227,17 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Tuple4s32& t = a_uniform.GetValueAs<Tuple4s32>();
+            const Vec4s32& t = a_uniform.GetValueAs<Vec4s32>();
             glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
           else
           {
-            typedef s32               num_type;
+            typedef Vec4s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform4iv(a_info.m_location, arraySize, faraw);
           }
@@ -273,6 +279,10 @@ namespace tloc { namespace graphics { namespace gl {
             "Mismatched uniform array size!");
           glUniformMatrix4fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
+        }
+      default:
+        {
+          TLOC_ASSERT(false, "Unsupported shader variable type!");
         }
       }
     }

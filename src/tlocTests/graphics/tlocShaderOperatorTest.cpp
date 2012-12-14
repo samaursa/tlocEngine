@@ -18,61 +18,55 @@
 namespace TestingShaderOperator
 {
   const char* vShaderStr =
-    "#ifdef GL_ES                       \n"
-    "#  version 100                     \n"
-    "#else                              \n"
-    "#  version 140                     \n"
-    "#endif                             \n"
-    "                                   \n"
-    "  uniform float u_float;           \n"
-    "  uniform vec2  u_vec2;            \n"
-    "  uniform vec3  u_vec3;            \n"
-    "  uniform vec4  u_vec4;            \n"
-    "  uniform int   u_int;             \n"
-    "  uniform ivec2 u_ivec2;           \n"
-    "  uniform ivec3 u_ivec3;           \n"
-    "  uniform ivec4 u_ivec4;           \n"
-    "  uniform bool  u_bool;            \n"
-    "  uniform bvec2 u_bvec2;           \n"
-    "  uniform bvec3 u_bvec3;           \n"
-    "  uniform bvec4 u_bvec4;           \n"
-    "                                   \n"
-    "void main(void)                    \n"
-    "{                                  \n"
-    "  float pos  = u_float;            \n"
-    "  vec2  pos2 = u_vec2;             \n"
-    "  vec3  pos3 = u_vec3;             \n"
-    "  vec4  pos4 = u_vec4;             \n"
-    "                                   \n"
-    "  int   index = u_int;             \n"
-    "  ivec2 index2 = u_ivec2;\n"
-    "  ivec3 index3 = u_ivec3;\n"
-    "  ivec4 index4 = u_ivec4;\n"
-    "\n"
-    "  bool  tf = u_bool;\n"
-    "  bvec2 tf2 = u_bvec2;\n"
-    "  bvec3 tf3 = u_bvec3;\n"
-    "  bvec4 tf4 = u_bvec4;\n"
-    "\n"
-    "  gl_Position   = pos4;            \n"
-    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;            \n"
-    "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;            \n"
-    "  gl_Position.z = float(u_bool) * float(u_bvec2.x) * float(u_bvec3.x) * float(u_bvec4.x);            \n"
+    "#ifdef GL_ES                                                      \n"
+    "#  version 100                                                    \n"
+    "#else                                                             \n"
+    "#  version 140                                                    \n"
+    "#endif                                                            \n"
+    "                                                                  \n"
+    "  uniform float u_float;                                          \n"
+    "  uniform vec2  u_vec2;                                           \n"
+    "  uniform vec3  u_vec3;                                           \n"
+    "  uniform vec4  u_vec4;                                           \n"
+    "  uniform int   u_int;                                            \n"
+    "  uniform ivec2 u_ivec2;                                          \n"
+    "  uniform ivec3 u_ivec3;                                          \n"
+    "  uniform ivec4 u_ivec4;                                          \n"
+    "  uniform mat2  u_mat2;                                           \n"
+    "  uniform mat3  u_mat3;                                           \n"
+    "  uniform mat4  u_mat4;                                           \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position   = u_vec4;                                         \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+    "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
     "}\n";
 
-  const char* fShaderStr =
-    "#ifdef GL_ES                       \n\
-     #  version 100                     \n\
-     #else                              \n\
-     #  version 140                     \n\
-     #endif                             \n\
-                                        \n\
-    varying lowp vec4 vVaryingColor;    \n\
-                                        \n\
-    void main(void)                     \n\
-    {                                   \n\
-      gl_FragColor = vVaryingColor;       \n\
-    }";
+const char* vShaderStr2 =
+    "#ifdef GL_ES                                                      \n"
+    "#  version 100                                                    \n"
+    "#else                                                             \n"
+    "#  version 140                                                    \n"
+    "#endif                                                            \n"
+    "                                                                  \n"
+    "  uniform float u_float[2];                                       \n"
+    "  uniform vec2  u_vec2[2];                                        \n"
+    "  uniform vec3  u_vec3[2];                                        \n"
+    "  uniform vec4  u_vec4[2];                                        \n"
+    "  uniform int   u_int[2];                                         \n"
+    "  uniform ivec2 u_ivec2[2];                                       \n"
+    "  uniform ivec3 u_ivec3[2];                                       \n"
+    "  uniform ivec4 u_ivec4[2];                                       \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position   = u_vec4[0];                                      \n"
+    "  gl_Position.x = u_float[0] * u_vec2[0].x * u_vec3[0].x;         \n"
+    "  gl_Position.y = u_int[0] * u_ivec2[0].x * u_ivec3[0].x  *       \n"
+    "                  u_ivec4[0].x;                                   \n"
+    "}\n";
 
   using namespace tloc;
   using namespace graphics;
@@ -84,7 +78,7 @@ namespace TestingShaderOperator
     typedef gl::ShaderOperatorPtr   shader_op_ptr;
   };
 
-  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/", "Basic functionality")
+  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Uniforms", "")
   {
     typedef Window::graphics_mode       graphics_mode;
 
@@ -171,31 +165,120 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
+
+    //------------------------------------------------------------------------
+    // Add all the attributes
+    {
+      attribute_ptr_type  attribute(new gl::Attribute());
+    }
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
+  }
+
+  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
+  {
+    typedef Window::graphics_mode       graphics_mode;
+
+    Window win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+               WindowSettings("Atom & Eve"));
+
+    // Initialize glew
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    gl::VertexShader  vShader;
+    REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess());
+    REQUIRE(vShader.Compile() == ErrorSuccess());
+
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    REQUIRE(sp.Link() == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+
+    // Cache the attributes and uniforms
+    sp.Enable();
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
+    sp.Disable();
+    CHECK(gl::Error().Succeeded());
+
+    shader_op_ptr so(new gl::ShaderOperator());
+
+    //------------------------------------------------------------------------
+    // Add all the uniforms
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_bool");
-      uniform->SetValueAs(true);
+      uniform->SetName("u_float[0]");
+
+      core::Array<f32>  floats(2, 2.0f);
+      uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_bvec2");
-      uniform->SetValueAs(core::Tuple<bool, 2>(true));
+      uniform->SetName("u_vec2[0]");
+
+      core::Array<math::Vec2f32>  floats(2, math::Vec2f32(5.0f, 6.0f));
+      uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_bvec3");
-      uniform->SetValueAs(core::Tuple<bool, 3>(false));
+      uniform->SetName("u_vec3[0]");
+
+      core::Array<math::Vec3f32>  floats(2, math::Vec3f32(1, 2, 3));
+      uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_bvec4");
-      uniform->SetValueAs(core::Tuple<bool, 4>(false));
+      uniform->SetName("u_vec4[0]");
+
+      core::Array<math::Vec4f32>  floats(2, math::Vec4f32(1, 2, 3, 4));
+      uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_int[0]");
+
+      core::Array<s32>  ints(2, 1);
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec2[0]");
+
+      core::Array<math::Vec2s32>  ints(2, math::Vec2s32(1, 2));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec3[0]");
+
+      core::Array<math::Vec3s32>  ints(2, math::Vec3s32(1, 2, 3));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_ivec4[0]");
+
+      core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
     }

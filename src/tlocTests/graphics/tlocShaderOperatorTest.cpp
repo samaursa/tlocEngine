@@ -212,7 +212,7 @@ const char* vShaderStr2 =
     // Add all the uniforms
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_float[0]");
+      uniform->SetName("u_float");
 
       core::Array<f32>  floats(2, 2.0f);
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
@@ -221,7 +221,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_vec2[0]");
+      uniform->SetName("u_vec2");
 
       core::Array<math::Vec2f32>  floats(2, math::Vec2f32(5.0f, 6.0f));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
@@ -230,7 +230,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_vec3[0]");
+      uniform->SetName("u_vec3");
 
       core::Array<math::Vec3f32>  floats(2, math::Vec3f32(1, 2, 3));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
@@ -239,7 +239,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_vec4[0]");
+      uniform->SetName("u_vec4");
 
       core::Array<math::Vec4f32>  floats(2, math::Vec4f32(1, 2, 3, 4));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
@@ -248,7 +248,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_int[0]");
+      uniform->SetName("u_int");
 
       core::Array<s32>  ints(2, 1);
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
@@ -257,7 +257,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_ivec2[0]");
+      uniform->SetName("u_ivec2");
 
       core::Array<math::Vec2s32>  ints(2, math::Vec2s32(1, 2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
@@ -266,7 +266,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_ivec3[0]");
+      uniform->SetName("u_ivec3");
 
       core::Array<math::Vec3s32>  ints(2, math::Vec3s32(1, 2, 3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
@@ -275,7 +275,7 @@ const char* vShaderStr2 =
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
-      uniform->SetName("u_ivec4[0]");
+      uniform->SetName("u_ivec4");
 
       core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());

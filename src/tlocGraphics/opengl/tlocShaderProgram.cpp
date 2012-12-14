@@ -54,12 +54,18 @@ namespace tloc { namespace graphics { namespace gl {
                   "Uniform name length larger than buffer!");
 
       a_infoOut.resize(numOfUniforms);
+      core::String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
                            &currInfo.m_type, currInfo.m_name.Get());
+
+        // remove [0] from the names which appears on some cards
+        fixedName = currInfo.m_name.Get();
+        fixedName = fixedName.substr(0, fixedName.find('['));
+        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }

@@ -6,6 +6,8 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 
@@ -20,7 +22,7 @@ namespace tloc { namespace physics { namespace component_system {
     using namespace tloc::core::component_system;
 
     ComponentMapper<RigidBodySystem::rigid_body_component_type>
-      rigidBodyComponents = a_ent->GetComponents(components::k_rigid_body);
+      rigidBodyComponents = a_ent->GetComponents(components::k_rigidBody);
 
     return rigidBodyComponents[0];
   }
@@ -30,23 +32,23 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef RigidBodySystem::rigid_body_component_type  rb_component_type;
-    typedef rb_component_type::rigid_body_type          rb_type;
+    typedef RigidBodySystem::rigid_body_component_type  rb_component;
+    typedef rb_component::rigid_body_type               rb_type;
     typedef rb_type::error_type                         error_type;
 
     typedef RigidBodySystem::rigid_body_shape_component_type
-                                                        rb_shape_component_type;
-    typedef rb_shape_component_type::rigid_body_shape_type
+                                                        rb_shape_component;
+    typedef rb_shape_component::rigid_body_shape_def_type
                                                         rb_shape_type;
 
-    typedef ComponentMapper<rb_shape_component_type>    component_mapper_type;
+    typedef ComponentMapper<rb_shape_component>         component_mapper_type;
     typedef component_mapper_type::size_type            size_type;
 
-    rb_component_type& rbComponent = GetRigidBodyComponent(a_ent);
+    rb_component& rbComponent = GetRigidBodyComponent(a_ent);
     rb_type& rb = rbComponent.GetRigidBody();
 
-    ComponentMapper<rb_shape_component_type> rigidBodyShapeComponents =
-      a_ent->GetComponents(components::k_rigid_body_shape);
+    ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
+      a_ent->GetComponents(components::k_rigidBodyShape);
 
     size_type numComponents = rigidBodyShapeComponents.size();
     error_type result;
@@ -72,7 +74,7 @@ namespace tloc { namespace physics { namespace component_system {
   RigidBodySystem::RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigid_body))
+    , core::Variadic<component_type, 1>(components::k_rigidBody))
     , m_world(a_world)
   {
   }
@@ -97,13 +99,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
     error_type result = DoShutdownRigidBodyComponent(a_ent);
 
-    if (result == ErrorSuccess())
-    {
-
-    }
-
     TLOC_UNUSED(a_mgr);
-
     return result;
   }
 
@@ -151,29 +147,34 @@ namespace tloc { namespace physics { namespace component_system {
     using namespace tloc::core::component_system;
 
     typedef rigid_body_component_type::rigid_body_type
-                                                    rigid_body_type;
+                                                    rb_type;
 
-    typedef rigid_body_type::rigid_body_internal_type
-                                                    rigid_body_internal_type;
+    typedef rb_type::rigid_body_internal_type       rb_internal_type;
 
     typedef rigid_body_component_type::rigid_body_def_type
-                                                    rigid_body_def_type;
+                                                    rb_def_type;
 
-    typedef rigid_body_def_type::rigid_body_def_internal_type
-                                                    rigid_body_def_internal_type;
+    typedef rb_def_type::rigid_body_def_internal_type
+                                                    rb_def_internal_type;
 
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
 
-    rigid_body_type& currRB = currRBComponent.GetRigidBody();
+    rb_type& currRB = currRBComponent.GetRigidBody();
 
-    const rigid_body_def_type& currRBDef = currRBComponent.GetRigidBodyDef();
-    const rigid_body_def_internal_type& currRBDefInternal =
-      currRBDef.GetRigidBodyDef();
+    const rb_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
+    const rb_def_internal_type& currRBDefInternal =
+      currRBDef->DoGetRigidBodyDef();
 
-    rigid_body_internal_type* currRBInternal =
+    rb_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
 
-    currRB.Initialize(currRBInternal, a_ent);
+    if (currRBInternal == NULL)
+    {
+      TLOC_ASSERT(false, "Box2D RigidBody could not be allocated!");
+      return error::error_rigid_body_could_not_be_allocated;
+    }
+
+    currRB.DoInitialize(currRBInternal, a_ent);
     return ErrorSuccess();
   }
 
@@ -182,19 +183,20 @@ namespace tloc { namespace physics { namespace component_system {
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_type rigid_body_type;
+    typedef rigid_body_component_type::rigid_body_type  rb_type;
 
-    typedef rigid_body_type::rigid_body_internal_type  rigid_body_internal_type;
+    typedef rb_type::rigid_body_internal_type           rb_internal_type;
 
     rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
 
-    rigid_body_type& currRB = currRBComponent.GetRigidBody();
-    rigid_body_internal_type* currRBInternal = currRB.GetInternalRigidBody();
+    rb_type& currRB = currRBComponent.GetRigidBody();
+    rb_internal_type* currRBInternal = currRB.DoGetInternalRigidBody();
 
     m_world->GetWorld().DestroyBody(currRBInternal);
 
-    currRB.Shutdown();
-    return ErrorSuccess();
+    error_type result = currRB.DoShutdown();
+
+    return result;
   }
 
 };};};

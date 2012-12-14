@@ -8,9 +8,11 @@
 #include <tlocMath/vector/tlocVector2.inl>
 #include <tlocMath/matrix/tlocMatrix2.inl>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
-#include <Box2D/Common/b2Math.h>
 
+#include <Box2D/Common/b2Math.h>
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -18,39 +20,48 @@ namespace tloc { namespace physics { namespace box2d {
   // Assertion macros
 
 #define TLOC_ASSERT_RIGID_BODY_INITIALIZED() \
-  TLOC_ASSERT(m_flags[initialized], "Rigid body has not been initialized!");
+  TLOC_ASSERT(m_flags[k_initialized], "Rigid body has not been initialized!");
 
 #define TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED() \
-  TLOC_ASSERT(!m_flags[initialized], "Rigid body has already been initialized!");
+  TLOC_ASSERT(!m_flags[k_initialized], "Rigid body has already been initialized!");
 
   //////////////////////////////////////////////////////////////////////////
   // Constants
 
   enum flags
   {
-    initialized,
-    count
+    k_initialized,
+    k_count
   };
 
   //////////////////////////////////////////////////////////////////////////
   // RigidBody
 
-  TL_I RigidBody::error_type
-    RigidBody::CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape)
+  TL_I RigidBody::error_type RigidBody::
+    CreateRigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    typedef rigid_body_shape_type::fixture_def_internal_type
-      fixture_def_internal_type;
+    typedef rigid_body_shape_def_type::fixture_def_internal_type
+                                                      fixture_def_internal_type;
 
-    rigid_body_shape_type rigidBodyShape = a_rigidBodyShape;
+    typedef b2Fixture                                 fixture_interal_type;
+
+    rigid_body_shape_def_type rigidBodyShape = a_rigidBodyShape;
 
     rigidBodyShape.DoSetParent(DoGetParent());
 
     const fixture_def_internal_type& fixtureDef =
-      rigidBodyShape.GetFixtureDef();
+      rigidBodyShape.DoGetFixtureDef();
 
-    m_rigidBody->CreateFixture(&fixtureDef);
+    fixture_interal_type* fixture = m_rigidBody->CreateFixture(&fixtureDef);
+
+    if (fixture == NULL)
+    {
+      TLOC_ASSERT(false, "Box2D Fixture could not be allocated!");
+      return error::error_rigid_body_shape_could_not_be_created;
+    }
+
     return ErrorSuccess();
   }
 
@@ -293,12 +304,6 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBody->SetGravityScale(a_gravityScale);
   }
 
-  TL_I void RigidBody::SetType(rigid_body_type_type a_type)
-  {
-    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetType((rigid_body_internal_type_type)a_type);
-  }
-
   TL_I void RigidBody::SetBullet(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
@@ -330,14 +335,14 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
   TL_I RigidBody::RigidBody()
-    : m_flags(count)
+    : m_flags(k_count)
     , m_rigidBody(NULL)
   {
 
   }
 
   TL_I RigidBody::error_type
-    RigidBody::Initialize(rigid_body_internal_type* a_rigidBody,
+    RigidBody::DoInitialize(rigid_body_internal_type* a_rigidBody,
                           entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
@@ -345,23 +350,23 @@ namespace tloc { namespace physics { namespace box2d {
 
     m_rigidBody = a_rigidBody;
 
-    m_flags.Mark(initialized);
+    m_flags.Mark(k_initialized);
     DoSetParent(a_parent);
 
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::error_type RigidBody::Shutdown()
+  TL_I RigidBody::error_type RigidBody::DoShutdown()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
     m_rigidBody = NULL;
 
-    m_flags.Unmark(initialized);
+    m_flags.Unmark(k_initialized);
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::rigid_body_internal_type* RigidBody::GetInternalRigidBody()
+  TL_I RigidBody::rigid_body_internal_type* RigidBody::DoGetInternalRigidBody()
   {
     return m_rigidBody;
   }
@@ -383,6 +388,16 @@ namespace tloc { namespace physics { namespace box2d {
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetUserData(NULL);
+  }
+
+  template <typename T_RigidBodyType>
+  TL_I void RigidBody::DoSetType()
+  {
+    TLOC_ASSERT_RIGID_BODY_INITIALIZED();
+    b2BodyType bodyType =
+      static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType);
+
+    m_rigidBody->SetType(bodyType);
   }
 
 };};};

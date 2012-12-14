@@ -35,15 +35,15 @@ namespace tloc { namespace core { namespace smart_ptr {
     DoAddRef();
   }
 
-  template <SHARED_PTR_TEMPS>
-  template <typename T_Other>
-  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const SharedPtr<T_Other>& a_other)
-    : m_rawPtr  (a_other.Expose() )
-    , m_refCount(a_other.DoExposeCounter() )
-  {
-    // Mainly for containers
-    DoAddRef();
-  }
+  //template <SHARED_PTR_TEMPS>
+  //template <typename T_Other>
+  //SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const SharedPtr<T_Other>& a_other)
+  //  : m_rawPtr  (a_other.Expose() )
+  //  , m_refCount(a_other.DoExposeCounter() )
+  //{
+  //  // Mainly for containers
+  //  DoAddRef();
+  //}
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::~SharedPtr()
@@ -117,6 +117,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   SharedPtr<SHARED_PTR_PARAMS>::GetRefCount() const
   {
     return m_refCount ? *m_refCount : 0;
+  }
+
+  template <SHARED_PTR_TEMPS>
+  bool SharedPtr<SHARED_PTR_PARAMS>::IsNull() const
+  {
+    return m_rawPtr == NULL;
   }
 
   template <SHARED_PTR_TEMPS>

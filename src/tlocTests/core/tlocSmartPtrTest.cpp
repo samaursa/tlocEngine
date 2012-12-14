@@ -117,7 +117,7 @@ namespace TestingSmartPtr
     {
       shared_array_type sa;
       for (int i = 0; i < count; ++i)
-      { sa.push_back( new Shared(i) ); }
+      { sa.push_back( shared_ptr_type(new Shared(i)) ); }
 
       CHECK(Shared::m_numCtors == count);
 

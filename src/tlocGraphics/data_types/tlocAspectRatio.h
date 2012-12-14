@@ -10,13 +10,12 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef tl_float                                      value_type;
-    typedef core::types::StrongType_T<tl_float, 0>        width;
-    typedef core::types::StrongType_T<tl_float, 1>        height;
+    typedef core::types::StrongType_T<value_type, 0>      width;
+    typedef core::types::StrongType_T<value_type, 1>      height;
 
   public:
     AspectRatio    (width a_width = width(640.0f),
                     height a_height = height(480.0f));
-    AspectRatio    (height a_height, width a_width);
     AspectRatio    (const AspectRatio& a_other);
     void operator= (const AspectRatio& a_other);
 

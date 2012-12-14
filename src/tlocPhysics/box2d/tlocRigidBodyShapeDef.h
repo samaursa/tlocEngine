@@ -12,19 +12,19 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  class RigidBodyShape
+  class RigidBodyShapeDef
   {
   public:
     friend class RigidBody;
 
   public:
-    typedef RigidBodyShape    this_type;
+    typedef RigidBodyShapeDef    this_type;
     typedef Shape             shape_type;
 
     typedef f32 float_type;
 
   public:
-    RigidBodyShape(const shape_type* a_shape)
+    RigidBodyShapeDef(const shape_type* a_shape)
     {
       SetShape(a_shape);
       SetFriction(0.2f);
@@ -36,7 +36,7 @@ namespace tloc { namespace physics { namespace box2d {
     void SetShape(const Shape* a_shape)
     {
       m_shape = a_shape;
-      m_fixtureDef.shape = m_shape->GetInternalShape();
+      m_fixtureDef.shape = m_shape->DoGetInternalShape();
     }
 
     TLOC_DECL_AND_DEF_GETTER(shape_type*, GetShape, m_shape);
@@ -57,7 +57,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::component_system::Entity    entity_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (fixture_def_internal_type, GetFixtureDef, m_fixtureDef);
+      (fixture_def_internal_type, DoGetFixtureDef, m_fixtureDef);
 
     TLOC_DECL_AND_DEF_SETTER
       (entity_type*, DoSetParent, m_fixtureDef.userData);

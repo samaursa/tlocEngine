@@ -8,32 +8,10 @@ namespace TestingColor
 
   TEST_CASE("Graphics/component_system/Quad", "")
   {
-    Quad::rect_type rect(Quad::rect_type::half_width(1),
-                         Quad::rect_type::half_height(1));
-    Quad q(rect);
+    Quad q(Quad::size(2.0f));
+    CHECK(q.GetSize() == Approx(2.0f));
 
-    {
-      Quad::vert_type const & vert = q.GetVertex<Quad::vert_se>();
-      CHECK(vert.GetPosition()[0] == Approx(1.0f));
-      CHECK(vert.GetPosition()[1] == Approx(-1.0f));
-    }
-
-    {
-      Quad::vert_type vert = q.GetVertex<Quad::vert_ne>();
-      CHECK(vert.GetPosition()[0] == Approx(1.0f));
-      CHECK(vert.GetPosition()[1] == Approx(1.0f));
-    }
-
-    {
-      Quad::vert_type vert = q.GetVertex<Quad::vert_nw>();
-      CHECK(vert.GetPosition()[0] == Approx(-1.0f));
-      CHECK(vert.GetPosition()[1] == Approx(1.0f));
-    }
-
-    {
-      Quad::vert_type vert = q.GetVertex<Quad::vert_sw>();
-      CHECK(vert.GetPosition()[0] == Approx(-1.0f));
-      CHECK(vert.GetPosition()[1] == Approx(-1.0f));
-    }
+    q.SetSize(Quad::size(1.0f));
+    CHECK(q.GetSize() == Approx(1.0f));
   }
 };

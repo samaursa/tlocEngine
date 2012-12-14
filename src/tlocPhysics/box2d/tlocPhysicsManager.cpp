@@ -41,11 +41,11 @@ namespace tloc { namespace physics { namespace box2d {
   class ContactListener : public b2ContactListener
   {
   public:
-    typedef PhysicsManager                      physics_manager_type;
+    typedef PhysicsManager                      physics_manager;
     typedef ContactEvent                        contact_event_type;
 
   public:
-    ContactListener(physics_manager_type* a_physicsManager)
+    ContactListener(physics_manager* a_physicsManager)
       : m_physicsManager(a_physicsManager) {}
 
   public:
@@ -66,7 +66,7 @@ namespace tloc { namespace physics { namespace box2d {
     }
 
   private:
-    physics_manager_type* m_physicsManager;
+    physics_manager* m_physicsManager;
   };
 
   //------------------------------------------------------------------------

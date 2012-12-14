@@ -1,14 +1,15 @@
-#ifndef _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_
-#define _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_
+#pragma once
+#ifndef _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_H_
+#define _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_H_
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
-#include <tloccore/types/tlocStrongType.h>
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tloccore/error/tlocError.h>
-#include <tloccore/utilities/tlocCheckpoints.h>
+#include <tlocCore/error/tlocError.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 

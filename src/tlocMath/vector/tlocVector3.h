@@ -66,6 +66,12 @@ namespace tloc { namespace math {
   typedef Vector3<f64>  Vec3f64;
   typedef Vector3<f128> Vec3f128;
 
+  typedef Vector3<s32>  Vec3s32;
+  typedef Vector3<s64>  Vec3s64;
+
+  typedef Vector3<u32>  Vec3u32;
+  typedef Vector3<u64>  Vec3u64;
+
   typedef Vector3<tl_float> Vec3f;
 
   //------------------------------------------------------------------------

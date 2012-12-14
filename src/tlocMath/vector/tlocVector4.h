@@ -46,31 +46,37 @@ namespace tloc { namespace math {
   typedef Vector4<f64>  Vec4f64;
   typedef Vector4<f128> Vec4f128;
 
+  typedef Vector4<s32>  Vec4s32;
+  typedef Vector4<s64>  Vec4s64;
+
+  typedef Vector4<u32>  Vec4u32;
+  typedef Vector4<u64>  Vec4u64;
+
   typedef Vector4<tl_float> Vec4f;
 
   //------------------------------------------------------------------------
   // Static const definitions
 
   template <typename T>
-  const Vector4<T> Vector4<T>::ZERO       (0.0, 0.0, 0.0, 0.0);
+  const Vector4<T> Vector4<T>::ZERO       (0, 0, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::ONE        (1.0, 1.0, 1.0, 1.0);
+  const Vector4<T> Vector4<T>::ONE        (1, 1, 1, 1);
   template <typename T>
-  const Vector4<T> Vector4<T>::UNIT_X     (1.0, 0.0, 0.0, 0.0);
+  const Vector4<T> Vector4<T>::UNIT_X     (1, 0, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::UNIT_Y     (0.0, 1.0, 0.0, 0.0);
+  const Vector4<T> Vector4<T>::UNIT_Y     (0, 1, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::UNIT_Z     (0.0, 0.0, 1.0, 0.0);
+  const Vector4<T> Vector4<T>::UNIT_Z     (0, 0, 1, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::UNIT_W     (0.0, 0.0, 0.0, 1.0);
+  const Vector4<T> Vector4<T>::UNIT_W     (0, 0, 0, 1);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_X (-1.0, 0.0, 0.0, 0.0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_X (-1, 0, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_Y (0.0, -1.0, 0.0, 0.0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_Y (0, -1, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_Z (0.0, 0.0, -1.0, 0.0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_Z (0, 0, -1, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_W (0.0, 0.0, 0.0, -1.0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_W (0, 0, 0, -1);
 
 };};
 

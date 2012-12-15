@@ -399,17 +399,17 @@ namespace TestingShaderOperator
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
     "  attribute ivec4 u_ivec4;                                        \n"
-    "  attribute uint  u_uint;                                          \n"
-    "  attribute uvec2 u_uvec2;                                        \n"
-    "  attribute uvec3 u_uvec3;                                        \n"
-    "  attribute uvec4 u_uvec4;                                        \n"
+    "  attribute uint  u_uint;                                         \n"
+    "  attribute uvec2 u_uivec2;                                       \n"
+    "  attribute uvec3 u_uivec3;                                       \n"
+    "  attribute uvec4 u_uivec4;                                       \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4;                                         \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_uint * u_uvec2.x * u_uvec3.x * u_uvec4.x;     \n"
+    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Attributes", "")
@@ -444,6 +444,83 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_float");
       attribute->SetValueAs(f32(5.0f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec2");
+      attribute->SetValueAs(math::Vec2f32(0.1f, 0.2f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec3");
+      attribute->SetValueAs(math::Vec3f32(0.1f, 0.2f, 0.3f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec4");
+      attribute->SetValueAs(math::Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_int");
+      attribute->SetValueAs(s32(5));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec2");
+      attribute->SetValueAs(math::Vector2<s32>(1, 2));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec3");
+      attribute->SetValueAs(math::Vector3<s32>(2, 3, 4));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec4");
+      attribute->SetValueAs(math::Vector4<s32>(4, 5, 6, 7));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uint");
+      attribute->SetValueAs(u32(5));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec2");
+      attribute->SetValueAs(math::Vector2<u32>(1, 2));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec3");
+      attribute->SetValueAs(math::Vector3<u32>(2, 3, 4));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec4");
+      attribute->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
 
       so->AddAttribute(attribute);
     }

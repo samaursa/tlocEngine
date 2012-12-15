@@ -209,8 +209,8 @@ namespace TestingRigidBodySystem
       { deltaPTest = false; break; }
 
       // +1 since we've already told the physics manager to move "ahead" one step.
-      float time = timeStep * (i + 1);
-      float calculatedPositionY =
+      tl_float time = timeStep * (i + 1);
+      tl_float calculatedPositionY =
         rbDynamicStartPositionY + 0.5f * gravityY * time * time;
 
       if(Mathf::Approx(calculatedPositionY, position[1], tolerance) == false)

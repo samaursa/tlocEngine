@@ -71,9 +71,9 @@ namespace tloc { namespace math {
   template<typename T>
   const Vector2<T> Vector2<T>::UNIT_Y     (0, 1);
   template<typename T>
-  const Vector2<T> Vector2<T>::NEG_UNIT_X (-1, 0);
+  const Vector2<T> Vector2<T>::NEG_UNIT_X (T(-1), 0);
   template<typename T>
-  const Vector2<T> Vector2<T>::NEG_UNIT_Y (0, -1);
+  const Vector2<T> Vector2<T>::NEG_UNIT_Y (0, T(-1));
 
 };};
 

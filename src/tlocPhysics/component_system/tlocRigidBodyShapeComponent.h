@@ -12,6 +12,10 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyShape component defines the "visible" physical structure
+  /// of a RigidBody. Multiple RigidBodyShapes can be attached to one RigidBody.
+  ///-------------------------------------------------------------------------
   class RigidBodyShape : public core::component_system::Component_T<RigidBodyShape>
   {
   public:
@@ -30,7 +34,7 @@ namespace tloc { namespace physics { namespace component_system {
     const rigid_body_shape_def_type* m_rigidBodyShape;
   };
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
   typedef core::smart_ptr::SharedPtr<RigidBodyShape>  RigidBodyShapePtr;

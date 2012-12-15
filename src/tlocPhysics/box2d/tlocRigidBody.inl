@@ -26,13 +26,24 @@ namespace tloc { namespace physics { namespace box2d {
   TLOC_ASSERT(!m_flags[k_initialized], "Rigid body has already been initialized!");
 
   //////////////////////////////////////////////////////////////////////////
-  // Constants
+  // Free definitions
 
-  enum flags
-  {
-    k_initialized,
-    k_count
-  };
+  namespace {
+
+    //////////////////////////////////////////////////////////////////////////
+    // Typedefs
+    typedef f32   float_internal_type;
+    
+    //////////////////////////////////////////////////////////////////////////
+    // Constants
+
+    enum flags
+    {
+      k_initialized,
+      k_count
+    };
+
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // RigidBody
@@ -65,6 +76,8 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   TL_I void RigidBody::
     GetTransform(vec_type& a_position, matrix_type& a_orientation) const
   {
@@ -73,14 +86,20 @@ namespace tloc { namespace physics { namespace box2d {
     GetOrientation(a_orientation);
   }
 
-  TL_I void RigidBody::GetTransform(vec_type& a_position, angle_type& a_angle) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetTransform(vec_type& a_position, angle_type& a_angle) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     GetPosition(a_position);
     a_angle = GetAngle();
   }
 
-  TL_I void RigidBody::GetPosition(math::Vec2f& a_position) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetPosition(math::Vec2f& a_position) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -89,7 +108,10 @@ namespace tloc { namespace physics { namespace box2d {
     a_position[1] = position.y;
   }
 
-  TL_I void RigidBody::GetOrientation(matrix_type& a_orientation) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetOrientation(matrix_type& a_orientation) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -100,13 +122,19 @@ namespace tloc { namespace physics { namespace box2d {
     a_orientation.Set(values, matrix_type::k_RowMajor);
   }
 
-  TL_I RigidBody::angle_type RigidBody::GetAngle() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::angle_type RigidBody::
+    GetAngle() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return angle_type(m_rigidBody->GetAngle());
   }
 
-  TL_I void RigidBody::GetCenterOfMassWorld(vec_type& a_center) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetCenterOfMassWorld(vec_type& a_center) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -115,7 +143,10 @@ namespace tloc { namespace physics { namespace box2d {
     a_center[1] = center.y;
   }
 
-  TL_I void RigidBody::GetCenterOfMassLocal(vec_type& a_center) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetCenterOfMassLocal(vec_type& a_center) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -124,7 +155,10 @@ namespace tloc { namespace physics { namespace box2d {
     a_center[1] = center.y;
   }
 
-  TL_I void RigidBody::GetLinearVelocity(vec_type& a_velocity) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    GetLinearVelocity(vec_type& a_velocity) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -133,217 +167,332 @@ namespace tloc { namespace physics { namespace box2d {
     a_velocity[1] = velocity.y;
   }
 
-  TL_I RigidBody::angle_type RigidBody::GetAngularVelocity() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::angle_type RigidBody::
+    GetAngularVelocity() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return angle_type(m_rigidBody->GetAngularVelocity());
   }
 
-  TL_I RigidBody::float_type RigidBody::GetMass() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::float_type RigidBody::
+    GetMass() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->GetMass();
   }
 
-  TL_I RigidBody::float_type RigidBody::GetInertia() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::float_type RigidBody::
+    GetInertia() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->GetInertia();
   }
 
-  TL_I RigidBody::vec_type
-    RigidBody::GetLinearVelocityFromWorldPoint(const vec_type& a_worldPoint) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::vec_type RigidBody::
+    GetLinearVelocityFromWorldPoint(const vec_type& a_worldPoint) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    const b2Vec2 worldPoint(a_worldPoint[0], a_worldPoint[1]);
+    const b2Vec2 worldPoint( static_cast<float_internal_type>(a_worldPoint[0]),
+                             static_cast<float_internal_type>(a_worldPoint[1]) );
     const b2Vec2 linearVelocity =
       m_rigidBody->GetLinearVelocityFromWorldPoint(worldPoint);
 
     return vec_type(linearVelocity.x, linearVelocity.y);
   }
 
-  TL_I RigidBody::vec_type
-    RigidBody::GetLinearVelocityFromLocalPoint(const vec_type& a_localPoint) const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::vec_type RigidBody::
+    GetLinearVelocityFromLocalPoint(const vec_type& a_localPoint) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    const b2Vec2 localPoint(a_localPoint[0], a_localPoint[1]);
+    const b2Vec2 localPoint( static_cast<float_internal_type>(a_localPoint[0]),
+                             static_cast<float_internal_type>(a_localPoint[1]) );
     const b2Vec2 linearVelocity =
       m_rigidBody->GetLinearVelocityFromLocalPoint(localPoint);
 
     return vec_type(linearVelocity.x, linearVelocity.y);
   }
 
-  TL_I RigidBody::float_type RigidBody::GetLinearDamping() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::float_type RigidBody::
+    GetLinearDamping() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->GetLinearDamping();
   }
 
-  TL_I RigidBody::float_type RigidBody::GetAngularDamping() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::float_type RigidBody::
+    GetAngularDamping() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->GetAngularDamping();
   }
 
-  TL_I RigidBody::float_type RigidBody::GetGravityScale() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::float_type RigidBody::
+    GetGravityScale() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->GetGravityScale();
   }
 
-  TL_I RigidBody::rigid_body_type_type RigidBody::GetType() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::rigid_body_type_type RigidBody::
+    GetType() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return (rigid_body_type_type)m_rigidBody->GetType();
   }
 
-  TL_I bool RigidBody::IsBullet() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I bool RigidBody::
+    IsBullet() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->IsBullet();
   }
 
-  TL_I bool RigidBody::IsSleepingAllowed() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I bool RigidBody::
+    IsSleepingAllowed() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->IsSleepingAllowed();
   }
 
-  TL_I bool RigidBody::IsAwake() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I bool RigidBody::
+    IsAwake() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->IsAwake();
   }
 
-  TL_I bool RigidBody::IsActive() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I bool RigidBody::
+    IsActive() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->IsActive();
   }
 
-  TL_I bool RigidBody::IsFixedRotation() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I bool RigidBody::
+    IsFixedRotation() const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return m_rigidBody->IsFixedRotation();
   }
 
-  TL_I void RigidBody::SetTransform(const vec_type& a_position, angle_type a_angle)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetTransform(const vec_type& a_position, angle_type a_angle)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 position(a_position[0], a_position[1]);
-    m_rigidBody->SetTransform(position, a_angle.Get());
+    b2Vec2 position( static_cast<float_internal_type>(a_position[0]), 
+                     static_cast<float_internal_type>(a_position[1]) );
+
+    float_internal_type angle = static_cast<float_internal_type>(a_angle.Get());
+
+    m_rigidBody->SetTransform(position, angle);
   }
 
-  TL_I void RigidBody::SetLinearVelocity(const vec_type& a_velocity)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetLinearVelocity(const vec_type& a_velocity)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 velocity(a_velocity[0], a_velocity[1]);
+    b2Vec2 velocity( static_cast<float_internal_type>(a_velocity[0]), 
+                     static_cast<float_internal_type>(a_velocity[1]) );
+    
     m_rigidBody->SetLinearVelocity(velocity);
   }
 
-  TL_I void RigidBody::SetAngularVelocity(angle_type a_omega)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetAngularVelocity(angle_type a_omega)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetAngularVelocity(a_omega.Get());
+
+    float_internal_type omega = static_cast<float_internal_type>(a_omega.Get());
+
+    m_rigidBody->SetAngularVelocity(omega);
   }
 
-  TL_I void RigidBody::ApplyForce(const vec_type& a_force, const vec_type& a_point)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    ApplyForce(const vec_type& a_force, const vec_type& a_point)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-
-    b2Vec2 force(a_force[0], a_force[1]);
-    b2Vec2 point(a_point[0], a_point[1]);
+    b2Vec2 force( static_cast<float_internal_type>(a_force[0]), 
+                  static_cast<float_internal_type>(a_force[1]) );
+    
+    b2Vec2 point( static_cast<float_internal_type>(a_point[0]), 
+                  static_cast<float_internal_type>(a_point[1]) );
+    
     m_rigidBody->ApplyForce(force, point);
   }
 
-  TL_I void RigidBody::ApplyForceToCenter(const vec_type& a_force)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    ApplyForceToCenter(const vec_type& a_force)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 force(a_force[0], a_force[1]);
+    b2Vec2 force( static_cast<float_internal_type>(a_force[0]), 
+                  static_cast<float_internal_type>(a_force[1]) );
     m_rigidBody->ApplyForceToCenter(force);
   }
 
-  TL_I void RigidBody::ApplyTorque(float_type a_torque)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    ApplyTorque(float_type a_torque)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->ApplyTorque(a_torque);
+    m_rigidBody->ApplyTorque( static_cast<float_internal_type>(a_torque) );
   }
 
-  TL_I void RigidBody::ApplyLinearImpulse(const vec_type& a_impulse,
-    const vec_type& a_point)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    ApplyLinearImpulse(const vec_type& a_impulse,
+                       const vec_type& a_point)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 impulse(a_impulse[0], a_impulse[1]);
-    b2Vec2 point(a_point[0], a_point[1]);
+    b2Vec2 impulse( static_cast<float_internal_type>(a_impulse[0]), 
+                    static_cast<float_internal_type>(a_impulse[1]) );
+    
+    b2Vec2 point( static_cast<float_internal_type>(a_point[0]), 
+                  static_cast<float_internal_type>(a_point[1]) );
+    
     m_rigidBody->ApplyLinearImpulse(impulse, point);
   }
 
-  TL_I void RigidBody::ApplyAngularImpulse(float_type a_impulse)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    ApplyAngularImpulse(float_type a_impulse)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->ApplyAngularImpulse(a_impulse);
+    m_rigidBody->
+      ApplyAngularImpulse( static_cast<float_internal_type>(a_impulse) );
   }
 
-  TL_I void RigidBody::SetLinearDamping(float_type a_linearDamping)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetLinearDamping(float_type a_linearDamping)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetLinearDamping(a_linearDamping);
+    m_rigidBody->
+      SetLinearDamping( static_cast<float_internal_type>(a_linearDamping) );
   }
 
-  TL_I void RigidBody::SetAngularDamping(float_type a_angularDamping)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetAngularDamping(float_type a_angularDamping)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetAngularDamping(a_angularDamping);
+    m_rigidBody->
+      SetAngularDamping( static_cast<float_internal_type>(a_angularDamping) );
   }
 
-  TL_I void RigidBody::SetGravityScale(float_type a_gravityScale)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetGravityScale(float_type a_gravityScale)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetGravityScale(a_gravityScale);
+    m_rigidBody->
+      SetGravityScale( static_cast<float_internal_type>(a_gravityScale) );
   }
 
-  TL_I void RigidBody::SetBullet(bool a_flag)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetBullet(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetBullet(a_flag);
   }
 
-  TL_I void RigidBody::SetSleepingAllowed(bool a_flag)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetSleepingAllowed(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetSleepingAllowed(a_flag);
   }
 
-  TL_I void RigidBody::SetAwake(bool a_flag)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetAwake(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetAwake(a_flag);
   }
 
-  TL_I void RigidBody::SetActive(bool a_flag)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetActive(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetActive(a_flag);
   }
 
-  TL_I void RigidBody::SetFixedRotation(bool a_flag)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    SetFixedRotation(bool a_flag)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetFixedRotation(a_flag);
   }
 
-  TL_I RigidBody::RigidBody()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::
+    RigidBody()
     : m_flags(k_count)
     , m_rigidBody(NULL)
   {
-
   }
 
-  TL_I RigidBody::error_type
-    RigidBody::DoInitialize(rigid_body_internal_type* a_rigidBody,
-                          entity_type* a_parent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::error_type RigidBody::
+    DoInitialize(rigid_body_internal_type* a_rigidBody,
+                 entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
@@ -356,7 +505,10 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::error_type RigidBody::DoShutdown()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::error_type RigidBody::
+    DoShutdown()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
@@ -366,32 +518,47 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
-  TL_I RigidBody::rigid_body_internal_type* RigidBody::DoGetInternalRigidBody()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::rigid_body_internal_type* RigidBody::
+    DoGetInternalRigidBody()
   {
     return m_rigidBody;
   }
 
-  TL_I RigidBody::entity_type* RigidBody::DoGetParent()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I RigidBody::entity_type* RigidBody::
+    DoGetParent()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     return static_cast<entity_type*>(m_rigidBody->GetUserData());
   }
 
-  TL_I void RigidBody::DoSetParent(entity_type* a_parent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    DoSetParent(entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     TLOC_ASSERT(a_parent != NULL, "Use DoSetParentNull instead!");
     m_rigidBody->SetUserData(a_parent);
   }
 
-  TL_I void RigidBody::DoSetParentNull()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TL_I void RigidBody::
+    DoSetParentNull()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     m_rigidBody->SetUserData(NULL);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T_RigidBodyType>
-  TL_I void RigidBody::DoSetType()
+  TL_I void RigidBody::
+    DoSetType()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     b2BodyType bodyType =

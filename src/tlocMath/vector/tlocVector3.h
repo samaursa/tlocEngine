@@ -85,11 +85,11 @@ namespace tloc { namespace math {
   template <typename T>
   const Vector3<T> Vector3<T>::UNIT_Z     (0, 0, 1);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_X (-1, 0, 0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_X (T(-1), 0, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0, -1, 0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0, T(-1), 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0, 0, -1);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0, 0, T(-1));
 
 };};
 

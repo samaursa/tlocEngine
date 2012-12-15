@@ -14,7 +14,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
   }
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 
   template class core::smart_ptr::SharedPtr<RigidBodyShape>;

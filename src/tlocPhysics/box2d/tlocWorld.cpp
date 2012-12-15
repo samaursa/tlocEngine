@@ -4,13 +4,27 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  World::World(gravity a_gravity) 
-    : m_world(b2Vec2( ((gravity::const_sel_return_type)a_gravity)[0], 
-                      ((gravity::const_sel_return_type)a_gravity)[1]) )
+  //////////////////////////////////////////////////////////////////////////
+  // Free definitions
+
+  namespace {
+
+    typedef f32 float_type;
+
+  }
+
+  World::
+    World(gravity a_gravity)
+    : m_world
+    (b2Vec2( static_cast<float_type>(((gravity::const_sel_return_type)a_gravity)[0]),
+             static_cast<float_type>(((gravity::const_sel_return_type)a_gravity)[1])) )
   {
   }
 
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiation
 
 #include <tlocCore/types/tlocStrongType.inl>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>

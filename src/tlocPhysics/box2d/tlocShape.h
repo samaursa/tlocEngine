@@ -9,6 +9,10 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  Shape is base helper interface class used to define a simple shape
+  /// (circle, rectangle) for a RigidBodyShape.
+  ///-------------------------------------------------------------------------
   class Shape
   {
   public:

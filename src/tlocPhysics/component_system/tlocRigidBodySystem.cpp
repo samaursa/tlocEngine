@@ -13,65 +13,72 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Free Functions
 
-  RigidBodySystem::rigid_body_component_type&
-    GetRigidBodyComponent(const RigidBodySystem::entity_type* a_ent)
-  {
-    using namespace tloc::core::component_system;
+  namespace {
 
-    ComponentMapper<RigidBodySystem::rigid_body_component_type>
-      rigidBodyComponents = a_ent->GetComponents(components::k_rigidBody);
+    typedef RigidBodySystem::rigid_body_component rb_component;
+    typedef RigidBodySystem::entity_type          entity_type;
+    typedef RigidBodySystem::error_type           error_type;
 
-    return rigidBodyComponents[0];
-  }
-
-  RigidBodySystem::error_type
-    InitializeRigidBodyShapeComponents(const RigidBodySystem::entity_type* a_ent)
-  {
-    using namespace tloc::core::component_system;
-
-    typedef RigidBodySystem::rigid_body_component_type  rb_component;
-    typedef rb_component::rigid_body_type               rb_type;
-    typedef rb_type::error_type                         error_type;
-
-    typedef RigidBodySystem::rigid_body_shape_component_type
-                                                        rb_shape_component;
-    typedef rb_shape_component::rigid_body_shape_def_type
-                                                        rb_shape_type;
-
-    typedef ComponentMapper<rb_shape_component>         component_mapper_type;
-    typedef component_mapper_type::size_type            size_type;
-
-    rb_component& rbComponent = GetRigidBodyComponent(a_ent);
-    rb_type& rb = rbComponent.GetRigidBody();
-
-    ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
-      a_ent->GetComponents(components::k_rigidBodyShape);
-
-    size_type numComponents = rigidBodyShapeComponents.size();
-    error_type result;
-
-    for (size_type i = 0; i < numComponents; ++i)
+    rb_component&
+      GetRigidBodyComponent(const entity_type* a_ent)
     {
-      const rb_shape_type* rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+      using namespace tloc::core::component_system;
 
-      result = rb.CreateRigidBodyShape(*rbShape);
+      ComponentMapper<rb_component> rigidBodyComponents =
+        a_ent->GetComponents(components::k_rigidBody);
 
-      if (result != ErrorSuccess())
-      {
-        break;
-      }
+      return rigidBodyComponents[0];
     }
 
-    return result;
-  }
+    error_type
+      InitializeRigidBodyShapeComponents(const entity_type* a_ent)
+    {
+      using namespace tloc::core::component_system;
 
-  //------------------------------------------------------------------------
+      typedef rb_component::rigid_body_type               rb_type;
+
+      typedef RigidBodySystem::rigid_body_shape_component_type
+                                                          rb_shape_component;
+      typedef rb_shape_component::rigid_body_shape_def_type
+                                                          rb_shape_type;
+
+      typedef ComponentMapper<rb_shape_component>         component_mapper_type;
+      typedef component_mapper_type::size_type            size_type;
+
+      rb_component& rbComponent = GetRigidBodyComponent(a_ent);
+      rb_type& rb = rbComponent.GetRigidBody();
+
+      ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
+        a_ent->GetComponents(components::k_rigidBodyShape);
+
+      size_type numComponents = rigidBodyShapeComponents.size();
+      error_type result;
+
+      for (size_type i = 0; i < numComponents; ++i)
+      {
+        const rb_shape_type* rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+
+        result = rb.CreateRigidBodyShape(*rbShape);
+
+        if (result != ErrorSuccess())
+        {
+          break;
+        }
+      }
+
+      return result;
+    }
+
+  };
+
+  //////////////////////////////////////////////////////////////////////////
   // RigidBodySystem
 
-  RigidBodySystem::RigidBodySystem
+  RigidBodySystem::
+    RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
     , core::Variadic<component_type, 1>(components::k_rigidBody))
@@ -79,8 +86,10 @@ namespace tloc { namespace physics { namespace component_system {
   {
   }
 
-  RigidBodySystem::error_type
-    RigidBodySystem::InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodySystem::error_type RigidBodySystem::
+    InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
     error_type result = DoInitializeRigidBodyComponent(a_ent);
 
@@ -94,8 +103,10 @@ namespace tloc { namespace physics { namespace component_system {
     return result;
   }
 
-  RigidBodySystem::error_type
-    RigidBodySystem::ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent )
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodySystem::error_type RigidBodySystem::
+    ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent )
   {
     error_type result = DoShutdownRigidBodyComponent(a_ent);
 
@@ -103,15 +114,18 @@ namespace tloc { namespace physics { namespace component_system {
     return result;
   }
 
-  void RigidBodySystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodySystem::
+    ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_type  rb_type;
+    typedef rigid_body_component::rigid_body_type  rb_type;
     typedef tloc::math::component_system::Transform     transform_type;
     typedef transform_type::real_type                   real_type;
 
-    rigid_body_component_type& rbComponent = GetRigidBodyComponent(a_ent);
+    rigid_body_component& rbComponent = GetRigidBodyComponent(a_ent);
     rb_type& rb = rbComponent.GetRigidBody();
 
     rb_type::vec_type     rbPosition;
@@ -141,23 +155,25 @@ namespace tloc { namespace physics { namespace component_system {
     TLOC_UNUSED(a_mgr);
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodySystem::error_type RigidBodySystem::
     DoInitializeRigidBodyComponent(entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_type
+    typedef rigid_body_component::rigid_body_type
                                                     rb_type;
 
     typedef rb_type::rigid_body_internal_type       rb_internal_type;
 
-    typedef rigid_body_component_type::rigid_body_def_type
+    typedef rigid_body_component::rigid_body_def_type
                                                     rb_def_type;
 
     typedef rb_def_type::rigid_body_def_internal_type
                                                     rb_def_internal_type;
 
-    rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
+    rigid_body_component& currRBComponent = GetRigidBodyComponent(a_ent);
 
     rb_type& currRB = currRBComponent.GetRigidBody();
 
@@ -178,16 +194,18 @@ namespace tloc { namespace physics { namespace component_system {
     return ErrorSuccess();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   RigidBodySystem::error_type RigidBodySystem::
     DoShutdownRigidBodyComponent(entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
-    typedef rigid_body_component_type::rigid_body_type  rb_type;
+    typedef rigid_body_component::rigid_body_type  rb_type;
 
     typedef rb_type::rigid_body_internal_type           rb_internal_type;
 
-    rigid_body_component_type& currRBComponent = GetRigidBodyComponent(a_ent);
+    rigid_body_component& currRBComponent = GetRigidBodyComponent(a_ent);
 
     rb_type& currRB = currRBComponent.GetRigidBody();
     rb_internal_type* currRBInternal = currRB.DoGetInternalRigidBody();

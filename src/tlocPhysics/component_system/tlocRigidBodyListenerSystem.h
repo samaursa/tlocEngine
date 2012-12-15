@@ -15,6 +15,12 @@ namespace tloc { namespace physics { namespace box2d {
 
 namespace tloc { namespace physics { namespace component_system {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyListenerSystem manages all of the
+  /// RigidBodyListenerComponents. If an entity has a RigidBody, RigidBodyShape
+  /// and a RigidBodyListener, the listener that is tied with the
+  /// RigidBodyListener will be called if a contact event occurs.
+  ///-------------------------------------------------------------------------
   class RigidBodyListenerSystem : 
     public core::component_system::EntityProcessingSystem
   {

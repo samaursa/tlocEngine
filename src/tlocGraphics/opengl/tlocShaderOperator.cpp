@@ -117,7 +117,7 @@ namespace tloc { namespace graphics { namespace gl {
             else
             {
               // TODO: Convert this assertion to a log
-              TLOC_ASSERT(false, "Mismatched uniform type!");
+              TLOC_ASSERT(false, "Mismatched uniform/attribute type!");
               retError = ErrorFailure();
               break;
             }

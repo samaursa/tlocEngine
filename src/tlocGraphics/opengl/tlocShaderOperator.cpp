@@ -554,6 +554,240 @@ namespace tloc { namespace graphics { namespace gl {
           }
           break;
         }
+      case GL_INT:
+        {
+          if (isArray == false)
+          {
+            const s32& f = a_attribute.GetValueAs<s32>();
+            glVertexAttribI1i(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Vec2s32& v = a_attribute.GetValueAs<Vec2s32>();
+            glVertexAttribI2i(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2iv(a_info.m_location, faraw);
+          }
+        }
+      case GL_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Vec3s32& v = a_attribute.GetValueAs<Vec3s32>();
+            glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Vec4s32& v = a_attribute.GetValueAs<Vec4s32>();
+            glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT:
+        {
+          if (isArray == false)
+          {
+            const u32& f = a_attribute.GetValueAs<u32>();
+            glVertexAttribI1ui(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Vec2u32& v = a_attribute.GetValueAs<Vec2u32>();
+            glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2uiv(a_info.m_location, faraw);
+          }
+        }
+      case GL_UNSIGNED_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Vec3u32& v = a_attribute.GetValueAs<Vec3u32>();
+            glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Vec4u32& v = a_attribute.GetValueAs<Vec4u32>();
+            glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      default:
+        {
+          TLOC_ASSERT(false, "Unsupported shader variable type!");
+        }
       }
     }
   }

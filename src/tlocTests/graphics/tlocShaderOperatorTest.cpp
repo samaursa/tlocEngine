@@ -80,7 +80,6 @@ namespace TestingShaderOperator
 
     // Cache the attributes and uniforms
     sp.Enable();
-    sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     sp.Disable();
     CHECK(gl::Error().Succeeded());
@@ -174,12 +173,6 @@ namespace TestingShaderOperator
       so->AddUniform(uniform);
     }
 
-    //------------------------------------------------------------------------
-    // Add all the attributes
-    {
-      attribute_ptr_type  attribute(new gl::Attribute());
-    }
-
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
@@ -239,7 +232,6 @@ namespace TestingShaderOperator
 
     // Cache the attributes and uniforms
     sp.Enable();
-    sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     sp.Disable();
     CHECK(gl::Error().Succeeded());
@@ -358,12 +350,6 @@ namespace TestingShaderOperator
       so->AddUniform(uniform);
     }
 
-    //------------------------------------------------------------------------
-    // Add all the attributes
-    {
-      attribute_ptr_type  attribute(new gl::Attribute());
-    }
-
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
@@ -386,20 +372,60 @@ namespace TestingShaderOperator
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
     "  attribute ivec4 u_ivec4;                                        \n"
-    "  attribute mat2  u_mat2;                                         \n"
-    "  attribute mat3  u_mat3;                                         \n"
-    "  attribute mat4  u_mat4;                                         \n"
+    "  attribute uint  u_uint;                                          \n"
+    "  attribute uvec2 u_uvec2;                                        \n"
+    "  attribute uvec3 u_uvec3;                                        \n"
+    "  attribute uvec4 u_uvec4;                                        \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4;                                         \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
+    "  gl_Position.z = u_uint * u_uvec2.x * u_uvec3.x * u_uvec4.x;     \n"
     "}\n";
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Attributes", "")
   {
+    typedef Window::graphics_mode       graphics_mode;
+
+    Window win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+               WindowSettings("Atom & Eve"));
+
+    // Initialize glew
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    gl::VertexShader  vShader;
+    REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess());
+    REQUIRE(vShader.Compile() == ErrorSuccess());
+
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    REQUIRE(sp.Link() == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+
+    // Cache the attributes and uniforms
+    sp.Enable();
+    sp.LoadAttributeInfo();
+    sp.Disable();
+    CHECK(gl::Error().Succeeded());
+
+    shader_op_ptr so(new gl::ShaderOperator());
+
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_float");
+      attribute->SetValueAs(f32(5.0f));
+
+      so->AddAttribute(attribute);
+    }
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
   }
 
   //TEST_CASE("Graphics/ShaderProgram/Uniforms", "")

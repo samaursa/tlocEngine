@@ -76,7 +76,7 @@ namespace tloc { namespace graphics { namespace gl {
     //------------------------------------------------------------------------
     // Functions
 
-    void DoSetUniform(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+    void DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
     {
       using namespace core;
 
@@ -370,8 +370,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void DoSetAttribute(const ShaderVariableInfo& a_info,
-                        const Attribute& a_attribute)
+    void DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
 
@@ -588,7 +587,7 @@ namespace tloc { namespace graphics { namespace gl {
       UniformPtr uniformPtr = itr->first;
 
       if (itr->second >= 0)
-      { DoSetUniform(uniCont[itr->second], *uniformPtr); }
+      { DoSet(uniCont[itr->second], *uniformPtr); }
     }
   }
 
@@ -614,7 +613,75 @@ namespace tloc { namespace graphics { namespace gl {
 
       // If we already know which info to pick
       if (itr->second >= 0)
-      { DoSetAttribute(attrCont[itr->second], *attribPtr); }
+      { DoSet(attrCont[itr->second], *attribPtr); }
+    }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  //------------------------------------------------------------------------
+  // Helper function for PrepareAll*
+
+  namespace
+  {
+    template <typename T_ShaderVariableContainer,
+              typename T_ShaderVariableInfoContainer>
+    ShaderOperator::error_type
+    DoPrepareVariables(T_ShaderVariableContainer& a_shaderVars,
+                       const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
+    {
+      typedef T_ShaderVariableContainer             svc;
+      typedef T_ShaderVariableInfoContainer         svcInfo;
+      typedef typename svc::iterator                svc_iterator;
+      typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
+      typedef typename svc::value_type::first_type  shader_var_ptr_type;
+
+      ShaderOperator::error_type retError = ErrorSuccess();
+
+      svc_iterator itr, itrEnd;
+      for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
+        itr != itrEnd; ++itr)
+      {
+        UniformPtr uniformPtr = itr->first;
+
+        ShaderOperator::index_type index = 0;
+        svcInfo_const_iterator itrInfo, itrInfoEnd;
+        for (itrInfo = a_shaderVarsInfo.begin(),
+          itrInfoEnd = a_shaderVarsInfo.end();
+          itrInfo != itrInfoEnd; ++itrInfo)
+        {
+          if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+          {
+            if ( uniformPtr->GetType() == itrInfo->m_type &&
+              itrInfo->m_location != -1)
+            {
+              itr->second = index;
+              DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
+
+              TLOC_ASSERT(gl::Error().Succeeded(),
+                "glUniform* failed in DoSetUniform()");
+              break;
+            }
+            else
+            {
+              // TODO: Convert this assertion to a log
+              TLOC_ASSERT(false, "Mismatched uniform type!");
+              retError = ErrorFailure();
+              break;
+            }
+          }
+          ++index;
+        }
+
+        // We could not find the user specified uniform in the shader
+        if (itrInfo == itrInfoEnd)
+        {
+          TLOC_ASSERT(false, "Uniform type not found in shader!");
+          retError = ErrorFailure();
+        }
+      }
+
+      return retError;
     }
   }
 
@@ -631,50 +698,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    error_type retError = ErrorSuccess();
-
-    uniform_cont_type::iterator itr, itrEnd;
-    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-         itr != itrEnd; ++itr)
-    {
-
-      UniformPtr uniformPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( uniformPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location != -1)
-          {
-            itr->second = index;
-            DoSetUniform(uniCont[itr->second], *uniformPtr);
-
-            TLOC_ASSERT(gl::Error().Succeeded(),
-                        "glUniform* failed in DoSetUniform()");
-            break;
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched uniform type!");
-            retError = ErrorFailure();
-            break;
-          }
-        }
-        ++index;
-      }
-
-      // We could not find the user specified uniform in the shader
-      if (itrInfo == itrInfoEnd)
-      {
-        TLOC_ASSERT(false, "Uniform type not found in shader!");
-        retError = ErrorFailure();
-      }
-    }
+    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
 
     m_flags.Mark(k_uniformsCached);
     return retError;
@@ -711,7 +735,7 @@ namespace tloc { namespace graphics { namespace gl {
             itrInfo->m_location  != -1)
           {
             itr->second = index;
-            DoSetAttribute(attrCont[itr->second], *attribPtr);
+            DoSet(attrCont[itr->second], *attribPtr);
           }
           else
           {

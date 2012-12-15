@@ -12,14 +12,18 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyShapeDef is used in conjunction with RigidBodyShape
+  /// component. Used to define "visible" physical attributes of the RigidBody.
+  ///-------------------------------------------------------------------------
   class RigidBodyShapeDef
   {
   public:
     friend class RigidBody;
 
   public:
-    typedef RigidBodyShapeDef    this_type;
-    typedef Shape             shape_type;
+    typedef RigidBodyShapeDef   this_type;
+    typedef Shape               shape_type;
 
     typedef f32 float_type;
 

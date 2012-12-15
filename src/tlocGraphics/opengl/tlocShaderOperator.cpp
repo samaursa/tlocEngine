@@ -642,7 +642,7 @@ namespace tloc { namespace graphics { namespace gl {
       for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
         itr != itrEnd; ++itr)
       {
-        UniformPtr uniformPtr = itr->first;
+        shader_var_ptr_type uniformPtr = itr->first;
 
         ShaderOperator::index_type index = 0;
         svcInfo_const_iterator itrInfo, itrInfoEnd;
@@ -718,35 +718,7 @@ namespace tloc { namespace graphics { namespace gl {
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    attribute_cont_type::iterator itr, itrEnd;
-    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    {
-      AttributePtr attribPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( attribPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( attribPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location  != -1)
-          {
-            itr->second = index;
-            DoSet(attrCont[itr->second], *attribPtr);
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched attribute type!");
-            return ErrorFailure();
-          }
-        }
-        ++index;
-      }
-    }
+    error_type retError = DoPrepareVariables(m_attributes, attrCont);
 
     m_flags.Mark(k_attributesCached);
     return ErrorSuccess();

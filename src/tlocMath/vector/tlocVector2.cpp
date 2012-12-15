@@ -5,6 +5,8 @@
 // Explicit template instantiations
 template class tloc::math::Vector2<tloc::s32>;
 template class tloc::math::Vector2<tloc::s64>;
+template class tloc::math::Vector2<tloc::u32>;
+template class tloc::math::Vector2<tloc::u64>;
 template class tloc::math::Vector2<tloc::f32>;
 template class tloc::math::Vector2<tloc::f64>;
 template class tloc::math::Vector2<tloc::f128>;

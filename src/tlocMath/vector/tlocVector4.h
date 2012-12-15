@@ -70,13 +70,13 @@ namespace tloc { namespace math {
   template <typename T>
   const Vector4<T> Vector4<T>::UNIT_W     (0, 0, 0, 1);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_X (-1, 0, 0, 0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_X (T(-1), 0, 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_Y (0, -1, 0, 0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_Y (0, T(-1), 0, 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_Z (0, 0, -1, 0);
+  const Vector4<T> Vector4<T>::NEG_UNIT_Z (0, 0, T(-1), 0);
   template <typename T>
-  const Vector4<T> Vector4<T>::NEG_UNIT_W (0, 0, 0, -1);
+  const Vector4<T> Vector4<T>::NEG_UNIT_W (0, 0, 0, T(-1));
 
 };};
 

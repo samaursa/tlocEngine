@@ -172,6 +172,33 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat2");
+      uniform->SetValueAs(math::Mat2f32(1, 0,
+                                        0, 1));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat3");
+      uniform->SetValueAs(math::Mat3f32(1, 0, 0,
+                                        0, 1, 0,
+                                        0, 0, 1));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat4");
+      uniform->SetValueAs(math::Mat4f32(1, 0, 0, 0,
+                                        0, 1, 0, 0,
+                                        0, 0, 1, 0,
+                                        0, 0, 0, 1));
+
+      so->AddUniform(uniform);
+    }
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());

@@ -66,6 +66,7 @@ namespace tloc { namespace graphics { namespace gl {
         fixedName = currInfo.m_name.Get();
         fixedName = fixedName.substr(0, fixedName.find('['));
         core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
+        currInfo.m_name.Get()[fixedName.length()] = '\0';
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }

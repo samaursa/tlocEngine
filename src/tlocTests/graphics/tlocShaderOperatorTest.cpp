@@ -24,48 +24,28 @@ namespace TestingShaderOperator
     "#  version 140                                                    \n"
     "#endif                                                            \n"
     "                                                                  \n"
-    "  uniform float u_float;                                          \n"
-    "  uniform vec2  u_vec2;                                           \n"
-    "  uniform vec3  u_vec3;                                           \n"
-    "  uniform vec4  u_vec4;                                           \n"
-    "  uniform int   u_int;                                            \n"
-    "  uniform ivec2 u_ivec2;                                          \n"
-    "  uniform ivec3 u_ivec3;                                          \n"
-    "  uniform ivec4 u_ivec4;                                          \n"
-    "  uniform mat2  u_mat2;                                           \n"
-    "  uniform mat3  u_mat3;                                           \n"
-    "  uniform mat4  u_mat4;                                           \n"
+    "  uniform float  u_float;                                         \n"
+    "  uniform vec2   u_vec2;                                          \n"
+    "  uniform vec3   u_vec3;                                          \n"
+    "  uniform vec4   u_vec4;                                          \n"
+    "  uniform int    u_int;                                           \n"
+    "  uniform ivec2  u_ivec2;                                         \n"
+    "  uniform ivec3  u_ivec3;                                         \n"
+    "  uniform ivec4  u_ivec4;                                         \n"
+    "  uniform uint   u_uint;                                          \n"
+    "  uniform uvec2  u_uivec2;                                        \n"
+    "  uniform uvec3  u_uivec3;                                        \n"
+    "  uniform uvec4  u_uivec4;                                        \n"
+    "  uniform mat2   u_mat2;                                          \n"
+    "  uniform mat3   u_mat3;                                          \n"
+    "  uniform mat4   u_mat4;                                          \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
-    "  gl_Position   = u_vec4;                                         \n"
-    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;       \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
     "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
-    "}\n";
-
-const char* vShaderStr2 =
-    "#ifdef GL_ES                                                      \n"
-    "#  version 100                                                    \n"
-    "#else                                                             \n"
-    "#  version 140                                                    \n"
-    "#endif                                                            \n"
-    "                                                                  \n"
-    "  uniform float u_float[2];                                       \n"
-    "  uniform vec2  u_vec2[2];                                        \n"
-    "  uniform vec3  u_vec3[2];                                        \n"
-    "  uniform vec4  u_vec4[2];                                        \n"
-    "  uniform int   u_int[2];                                         \n"
-    "  uniform ivec2 u_ivec2[2];                                       \n"
-    "  uniform ivec3 u_ivec3[2];                                       \n"
-    "  uniform ivec4 u_ivec4[2];                                       \n"
-    "                                                                  \n"
-    "void main(void)                                                   \n"
-    "{                                                                 \n"
-    "  gl_Position   = u_vec4[0];                                      \n"
-    "  gl_Position.x = u_float[0] * u_vec2[0].x * u_vec3[0].x;         \n"
-    "  gl_Position.y = u_int[0] * u_ivec2[0].x * u_ivec3[0].x  *       \n"
-    "                  u_ivec4[0].x;                                   \n"
+    "  gl_Position.a = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
   using namespace tloc;
@@ -165,6 +145,34 @@ const char* vShaderStr2 =
 
       so->AddUniform(uniform);
     }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uint");
+      uniform->SetValueAs(u32(5));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec2");
+      uniform->SetValueAs(math::Vector2<u32>(1, 2));
+
+      so->AddUniform(uniform);
+    }
+ /*   {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec3");
+      uniform->SetValueAs(math::Vector3<u32>(2, 3, 4));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec4");
+      uniform->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
+
+      so->AddUniform(uniform);
+    }*/
 
     //------------------------------------------------------------------------
     // Add all the attributes
@@ -178,6 +186,30 @@ const char* vShaderStr2 =
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
+
+  const char* vShaderStr2 =
+    "#ifdef GL_ES                                                      \n"
+    "#  version 100                                                    \n"
+    "#else                                                             \n"
+    "#  version 140                                                    \n"
+    "#endif                                                            \n"
+    "                                                                  \n"
+    "  uniform float u_float[2];                                       \n"
+    "  uniform vec2  u_vec2[2];                                        \n"
+    "  uniform vec3  u_vec3[2];                                        \n"
+    "  uniform vec4  u_vec4[2];                                        \n"
+    "  uniform int   u_int[2];                                         \n"
+    "  uniform ivec2 u_ivec2[2];                                       \n"
+    "  uniform ivec3 u_ivec3[2];                                       \n"
+    "  uniform ivec4 u_ivec4[2];                                       \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position.x = u_float[0] * u_vec2[0].x * u_vec3[0].x *        \n"
+    "                  u_vec4[0].x;                                    \n"
+    "  gl_Position.y = u_int[0] * u_ivec2[0].x * u_ivec3[0].x  *       \n"
+    "                  u_ivec4[0].x;                                   \n"
+    "}\n";
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
   {
@@ -294,6 +326,37 @@ const char* vShaderStr2 =
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
     CHECK(gl::Error().Succeeded());
     sp.Disable();
+  }
+
+  const char* vShaderStr3 =
+    "#ifdef GL_ES                                                      \n"
+    "#  version 100                                                    \n"
+    "#else                                                             \n"
+    "#  version 140                                                    \n"
+    "#endif                                                            \n"
+    "                                                                  \n"
+    "  attribute float u_float;                                        \n"
+    "  attribute vec2  u_vec2;                                         \n"
+    "  attribute vec3  u_vec3;                                         \n"
+    "  attribute vec4  u_vec4;                                         \n"
+    "  attribute int   u_int;                                          \n"
+    "  attribute ivec2 u_ivec2;                                        \n"
+    "  attribute ivec3 u_ivec3;                                        \n"
+    "  attribute ivec4 u_ivec4;                                        \n"
+    "  attribute mat2  u_mat2;                                         \n"
+    "  attribute mat3  u_mat3;                                         \n"
+    "  attribute mat4  u_mat4;                                         \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position   = u_vec4;                                         \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+    "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
+    "}\n";
+
+  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Attributes", "")
+  {
   }
 
   //TEST_CASE("Graphics/ShaderProgram/Uniforms", "")

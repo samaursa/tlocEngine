@@ -159,7 +159,7 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
- /*   {
+    {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec3");
       uniform->SetValueAs(math::Vector3<u32>(2, 3, 4));
@@ -172,7 +172,7 @@ namespace TestingShaderOperator
       uniform->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
 
       so->AddUniform(uniform);
-    }*/
+    }
 
     //------------------------------------------------------------------------
     // Add all the attributes
@@ -202,6 +202,10 @@ namespace TestingShaderOperator
     "  uniform ivec2 u_ivec2[2];                                       \n"
     "  uniform ivec3 u_ivec3[2];                                       \n"
     "  uniform ivec4 u_ivec4[2];                                       \n"
+    "  uniform int   u_uint[2];                                        \n"
+    "  uniform ivec2 u_uivec2[2];                                      \n"
+    "  uniform ivec3 u_uivec3[2];                                      \n"
+    "  uniform ivec4 u_uivec4[2];                                      \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
@@ -209,6 +213,8 @@ namespace TestingShaderOperator
     "                  u_vec4[0].x;                                    \n"
     "  gl_Position.y = u_int[0] * u_ivec2[0].x * u_ivec3[0].x  *       \n"
     "                  u_ivec4[0].x;                                   \n"
+    "  gl_Position.z = u_uint[0] + u_uivec2[0].x + u_uivec3[0].x *     \n"
+    "                  u_uivec4[0].x;                                  \n"
     "}\n";
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
@@ -310,6 +316,43 @@ namespace TestingShaderOperator
       uniform->SetName("u_ivec4");
 
       core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uint");
+
+      core::Array<u32>  ints(2, 1);
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec2");
+
+      core::Array<math::Vec2u32>  ints(2, math::Vec2u32(1, 2));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec3");
+
+      core::Array<math::Vec3u32>  ints(2, math::Vec3u32(1, 2, 3));
+      uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_uivec4");
+
+      core::Array<math::Vec4u32>  ints(2, math::Vec4u32(1, 2, 3, 4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);

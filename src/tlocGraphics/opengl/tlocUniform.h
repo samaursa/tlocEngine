@@ -94,6 +94,10 @@ namespace tloc { namespace graphics { namespace gl {
          core::Array<math::Vec2s32>,
          core::Array<math::Vec3s32>,
          core::Array<math::Vec4s32>,
+         core::Array<u32>,
+         core::Array<math::Vec2u32>,
+         core::Array<math::Vec3u32>,
+         core::Array<math::Vec4u32>,
          core::Array<math::Mat2f32>,
          core::Array<math::Mat3f32>,
          core::Array<math::Mat4f32>

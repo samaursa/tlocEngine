@@ -76,7 +76,67 @@ namespace tloc { namespace graphics { namespace gl {
     //------------------------------------------------------------------------
     // Functions
 
-    void DoSetUniform(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+    template <typename T_ShaderVariableContainer,
+              typename T_ShaderVariableInfoContainer>
+    ShaderOperator::error_type
+    DoPrepareVariables(T_ShaderVariableContainer& a_shaderVars,
+                       const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
+    {
+      typedef T_ShaderVariableContainer             svc;
+      typedef T_ShaderVariableInfoContainer         svcInfo;
+      typedef typename svc::iterator                svc_iterator;
+      typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
+      typedef typename svc::value_type::first_type  shader_var_ptr_type;
+
+      ShaderOperator::error_type retError = ErrorSuccess();
+
+      svc_iterator itr, itrEnd;
+      for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
+        itr != itrEnd; ++itr)
+      {
+        shader_var_ptr_type uniformPtr = itr->first;
+
+        ShaderOperator::index_type index = 0;
+        svcInfo_const_iterator itrInfo, itrInfoEnd;
+        for (itrInfo = a_shaderVarsInfo.begin(),
+          itrInfoEnd = a_shaderVarsInfo.end();
+          itrInfo != itrInfoEnd; ++itrInfo)
+        {
+          if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+          {
+            if ( uniformPtr->GetType() == itrInfo->m_type &&
+              itrInfo->m_location != -1)
+            {
+              itr->second = index;
+              DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
+
+              TLOC_ASSERT(gl::Error().Succeeded(),
+                "glUniform*/glAttribute* failed in DoSet()");
+              break;
+            }
+            else
+            {
+              // TODO: Convert this assertion to a log
+              TLOC_ASSERT(false, "Mismatched uniform/attribute type!");
+              retError = ErrorFailure();
+              break;
+            }
+          }
+          ++index;
+        }
+
+        // We could not find the user specified uniform in the shader
+        if (itrInfo == itrInfoEnd)
+        {
+          TLOC_ASSERT(false, "Uniform/Attribute type not found in shader!");
+          retError = ErrorFailure();
+        }
+      }
+
+      return retError;
+    }
+
+    void DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
     {
       using namespace core;
 
@@ -370,8 +430,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void DoSetAttribute(const ShaderVariableInfo& a_info,
-                        const Attribute& a_attribute)
+    void DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
 
@@ -495,6 +554,240 @@ namespace tloc { namespace graphics { namespace gl {
           }
           break;
         }
+      case GL_INT:
+        {
+          if (isArray == false)
+          {
+            const s32& f = a_attribute.GetValueAs<s32>();
+            glVertexAttribI1i(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Vec2s32& v = a_attribute.GetValueAs<Vec2s32>();
+            glVertexAttribI2i(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2iv(a_info.m_location, faraw);
+          }
+        }
+      case GL_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Vec3s32& v = a_attribute.GetValueAs<Vec3s32>();
+            glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Vec4s32& v = a_attribute.GetValueAs<Vec4s32>();
+            glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT:
+        {
+          if (isArray == false)
+          {
+            const u32& f = a_attribute.GetValueAs<u32>();
+            glVertexAttribI1ui(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Vec2u32& v = a_attribute.GetValueAs<Vec2u32>();
+            glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2uiv(a_info.m_location, faraw);
+          }
+        }
+      case GL_UNSIGNED_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Vec3u32& v = a_attribute.GetValueAs<Vec3u32>();
+            glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Vec4u32& v = a_attribute.GetValueAs<Vec4u32>();
+            glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      default:
+        {
+          TLOC_ASSERT(false, "Unsupported shader variable type!");
+        }
       }
     }
   }
@@ -588,7 +881,7 @@ namespace tloc { namespace graphics { namespace gl {
       UniformPtr uniformPtr = itr->first;
 
       if (itr->second >= 0)
-      { DoSetUniform(uniCont[itr->second], *uniformPtr); }
+      { DoSet(uniCont[itr->second], *uniformPtr); }
     }
   }
 
@@ -614,7 +907,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       // If we already know which info to pick
       if (itr->second >= 0)
-      { DoSetAttribute(attrCont[itr->second], *attribPtr); }
+      { DoSet(attrCont[itr->second], *attribPtr); }
     }
   }
 
@@ -631,50 +924,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    error_type retError = ErrorSuccess();
-
-    uniform_cont_type::iterator itr, itrEnd;
-    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-         itr != itrEnd; ++itr)
-    {
-
-      UniformPtr uniformPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( uniformPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location != -1)
-          {
-            itr->second = index;
-            DoSetUniform(uniCont[itr->second], *uniformPtr);
-
-            TLOC_ASSERT(gl::Error().Succeeded(),
-                        "glUniform* failed in DoSetUniform()");
-            break;
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched uniform type!");
-            retError = ErrorFailure();
-            break;
-          }
-        }
-        ++index;
-      }
-
-      // We could not find the user specified uniform in the shader
-      if (itrInfo == itrInfoEnd)
-      {
-        TLOC_ASSERT(false, "Uniform type not found in shader!");
-        retError = ErrorFailure();
-      }
-    }
+    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
 
     m_flags.Mark(k_uniformsCached);
     return retError;
@@ -694,35 +944,7 @@ namespace tloc { namespace graphics { namespace gl {
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    attribute_cont_type::iterator itr, itrEnd;
-    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    {
-      AttributePtr attribPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( attribPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( attribPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location  != -1)
-          {
-            itr->second = index;
-            DoSetAttribute(attrCont[itr->second], *attribPtr);
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched attribute type!");
-            return ErrorFailure();
-          }
-        }
-        ++index;
-      }
-    }
+    error_type retError = DoPrepareVariables(m_attributes, attrCont);
 
     m_flags.Mark(k_attributesCached);
     return ErrorSuccess();

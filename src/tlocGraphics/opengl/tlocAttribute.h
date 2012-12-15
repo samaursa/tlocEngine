@@ -26,6 +26,19 @@ namespace tloc { namespace graphics { namespace gl {
     Attribute() : m_isAttribArray(false)
     { }
 
+    template <typename T>
+    derived_type& SetValueAs(const T& a_value)
+    {
+      return base_type::SetValueAs(a_value);
+    }
+
+    template <typename T, typename T_Technique>
+    derived_type& SetValueAs(core::Array<T>& a_array, T_Technique)
+    {
+      TLOC_STATIC_ASSERT(false,
+        Constant_attribute_arrays_are_illegal_use_SetVertexArray_instead);
+    }
+
     template <typename T, typename T_Technique>
     derived_type& SetVertexArray(core::Array<T>& a_array, T_Technique)
     {
@@ -45,11 +58,26 @@ namespace tloc { namespace graphics { namespace gl {
          math::Vec2f32,
          math::Vec3f32,
          math::Vec4f32,
-
+         s32,
+         math::Vec2s32,
+         math::Vec3s32,
+         math::Vec4s32,
+         u32,
+         math::Vec2u32,
+         math::Vec3u32,
+         math::Vec4u32,
          core::Array<f32>,
          core::Array<math::Vec2f32>,
          core::Array<math::Vec3f32>,
-         core::Array<math::Vec4f32>
+         core::Array<math::Vec4f32>,
+         core::Array<s32>,
+         core::Array<math::Vec2s32>,
+         core::Array<math::Vec3s32>,
+         core::Array<math::Vec4s32>,
+         core::Array<u32>,
+         core::Array<math::Vec2u32>,
+         core::Array<math::Vec3u32>,
+         core::Array<math::Vec4u32>
         >();
     }
 
@@ -61,8 +89,21 @@ namespace tloc { namespace graphics { namespace gl {
          f32,
          math::Vec2f32,
          math::Vec3f32,
-         math::Vec4f32
+         math::Vec4f32,
+         s32,
+         math::Vec2s32,
+         math::Vec3s32,
+         math::Vec4s32,
+         u32,
+         math::Vec2u32,
+         math::Vec3u32,
+         math::Vec4u32
         >();
+    }
+
+    template <typename T>
+    void DoCheckVertexArrayTypes() const
+    {
     }
 
     template <typename T>
@@ -73,7 +114,15 @@ namespace tloc { namespace graphics { namespace gl {
          core::Array<f32>,
          core::Array<math::Vec2f32>,
          core::Array<math::Vec3f32>,
-         core::Array<math::Vec4f32>
+         core::Array<math::Vec4f32>,
+         core::Array<s32>,
+         core::Array<math::Vec2s32>,
+         core::Array<math::Vec3s32>,
+         core::Array<math::Vec4s32>,
+         core::Array<u32>,
+         core::Array<math::Vec2u32>,
+         core::Array<math::Vec3u32>,
+         core::Array<math::Vec4u32>
         >();
     }
 

@@ -80,7 +80,6 @@ namespace TestingShaderOperator
 
     // Cache the attributes and uniforms
     sp.Enable();
-    sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     sp.Disable();
     CHECK(gl::Error().Succeeded());
@@ -173,11 +172,32 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
-
-    //------------------------------------------------------------------------
-    // Add all the attributes
     {
-      attribute_ptr_type  attribute(new gl::Attribute());
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat2");
+      uniform->SetValueAs(math::Mat2f32(1, 0,
+                                        0, 1));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat3");
+      uniform->SetValueAs(math::Mat3f32(1, 0, 0,
+                                        0, 1, 0,
+                                        0, 0, 1));
+
+      so->AddUniform(uniform);
+    }
+    {
+      uniform_ptr_type    uniform(new gl::Uniform());
+      uniform->SetName("u_mat4");
+      uniform->SetValueAs(math::Mat4f32(1, 0, 0, 0,
+                                        0, 1, 0, 0,
+                                        0, 0, 1, 0,
+                                        0, 0, 0, 1));
+
+      so->AddUniform(uniform);
     }
 
     sp.Enable();
@@ -239,7 +259,6 @@ namespace TestingShaderOperator
 
     // Cache the attributes and uniforms
     sp.Enable();
-    sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     sp.Disable();
     CHECK(gl::Error().Succeeded());
@@ -358,12 +377,6 @@ namespace TestingShaderOperator
       so->AddUniform(uniform);
     }
 
-    //------------------------------------------------------------------------
-    // Add all the attributes
-    {
-      attribute_ptr_type  attribute(new gl::Attribute());
-    }
-
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
@@ -386,54 +399,309 @@ namespace TestingShaderOperator
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
     "  attribute ivec4 u_ivec4;                                        \n"
-    "  attribute mat2  u_mat2;                                         \n"
-    "  attribute mat3  u_mat3;                                         \n"
-    "  attribute mat4  u_mat4;                                         \n"
+    "  attribute uint  u_uint;                                         \n"
+    "  attribute uvec2 u_uivec2;                                       \n"
+    "  attribute uvec3 u_uivec3;                                       \n"
+    "  attribute uvec4 u_uivec4;                                       \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4;                                         \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
+    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
-  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Attributes", "")
+  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/ConstantAttributes", "")
   {
+    typedef Window::graphics_mode       graphics_mode;
+
+    Window win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+               WindowSettings("Atom & Eve"));
+
+    // Initialize glew
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+
+    gl::VertexShader  vShader;
+    REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess());
+    REQUIRE(vShader.Compile() == ErrorSuccess());
+
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    REQUIRE(sp.Link() == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+
+    // Cache the attributes and uniforms
+    sp.Enable();
+    sp.LoadAttributeInfo();
+    sp.Disable();
+    CHECK(gl::Error().Succeeded());
+
+    shader_op_ptr so(new gl::ShaderOperator());
+
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_float");
+      attribute->SetValueAs(f32(5.0f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec2");
+      attribute->SetValueAs(math::Vec2f32(0.1f, 0.2f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec3");
+      attribute->SetValueAs(math::Vec3f32(0.1f, 0.2f, 0.3f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec4");
+      attribute->SetValueAs(math::Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_int");
+      attribute->SetValueAs(s32(5));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec2");
+      attribute->SetValueAs(math::Vector2<s32>(1, 2));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec3");
+      attribute->SetValueAs(math::Vector3<s32>(2, 3, 4));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec4");
+      attribute->SetValueAs(math::Vector4<s32>(4, 5, 6, 7));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uint");
+      attribute->SetValueAs(u32(5));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec2");
+      attribute->SetValueAs(math::Vector2<u32>(1, 2));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec3");
+      attribute->SetValueAs(math::Vector3<u32>(2, 3, 4));
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec4");
+      attribute->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
+
+      so->AddAttribute(attribute);
+    }
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
   }
 
-  //TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
-  //{
-  //  using namespace math;
+  const char* vShaderStr4 =
+    "#ifdef GL_ES                                                      \n"
+    "#  version 100                                                    \n"
+    "#else                                                             \n"
+    "#  version 140                                                    \n"
+    "#endif                                                            \n"
+    "                                                                  \n"
+    "  attribute float u_float;                                        \n"
+    "  attribute vec2  u_vec2;                                         \n"
+    "  attribute vec3  u_vec3;                                         \n"
+    "  attribute vec4  u_vec4;                                         \n"
+    "  attribute int   u_int;                                          \n"
+    "  attribute ivec2 u_ivec2;                                        \n"
+    "  attribute ivec3 u_ivec3;                                        \n"
+    "  attribute ivec4 u_ivec4;                                        \n"
+    "  attribute uint  u_uint;                                         \n"
+    "  attribute uvec2 u_uivec2;                                       \n"
+    "  attribute uvec3 u_uivec3;                                       \n"
+    "  attribute uvec4 u_uivec4;                                       \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position   = u_vec4;                                         \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+    "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
+    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
+    "}\n";
 
-  //  typedef Window::graphics_mode         graphics_mode;
-  //  Window win;
-  //  win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
-  //    WindowSettings("Atom & Eve"));
+  TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/AttributesArrays", "")
+  {
+    typedef Window::graphics_mode       graphics_mode;
 
-  //  REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    Window win;
+    win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+               WindowSettings("Atom & Eve"));
 
-  //  gl::VertexShader vShader;
-  //  REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
-  //  REQUIRE(vShader.Compile() == ErrorSuccess());
+    // Initialize glew
+    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
-  //  gl::ShaderProgram sp;
-  //  sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
-  //  CHECK(sp.Link() == ErrorSuccess());
+    gl::VertexShader  vShader;
+    REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess());
+    REQUIRE(vShader.Compile() == ErrorSuccess());
 
-  //  sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
-  //  REQUIRE(sp.Enable() == ErrorSuccess() );
-  //  CHECK(sp.LoadAllUniforms() == ErrorSuccess());
-  //  CHECK(sp.Disable() == ErrorSuccess() );
+    gl::ShaderProgram sp;
+    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    REQUIRE(sp.Link() == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
 
-  //  Vec4f32 colVec;
-  //  graphics::types::Color col(0.5f, 0.5f, 0.5f, 1.0f);
-  //  col.GetAs<graphics::types::p_color::format::RGBA>(colVec);
+    // Cache the attributes and uniforms
+    sp.Enable();
+    sp.LoadAttributeInfo();
+    sp.Disable();
+    CHECK(gl::Error().Succeeded());
 
-  //  sp.AddAttribute( gl::Attribute().SetName("vVertex").SetValueAs(Vec4f32(0, 0, 0, 1)) );
-  //  sp.AddAttribute( gl::Attribute().SetName("vColor").SetValueAs(colVec) );
-  //  REQUIRE(sp.Enable() == ErrorSuccess() );
-  //  CHECK(sp.LoadAllAttributes() == ErrorSuccess() );
-  //  CHECK(sp.Disable() == ErrorSuccess() );
-  //}
+    shader_op_ptr so(new gl::ShaderOperator());
+
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_float");
+
+      core::Array<f32>  floats(2, 2.0f);
+      attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec2");
+
+      core::Array<math::Vec2f32>  floats(2, math::Vec2f32(5.0f, 6.0f));
+      attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec3");
+
+      core::Array<math::Vec3f32>  floats(2, math::Vec3f32(1, 2, 3));
+      attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_vec4");
+
+      core::Array<math::Vec4f32>  floats(2, math::Vec4f32(1, 2, 3, 4));
+      attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_int");
+
+      core::Array<s32>  ints(2, 1);
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec2");
+
+      core::Array<math::Vec2s32>  ints(2, math::Vec2s32(1, 2));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec3");
+
+      core::Array<math::Vec3s32>  ints(2, math::Vec3s32(1, 2, 3));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_ivec4");
+
+      core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uint");
+
+      core::Array<u32>  ints(2, 1);
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec2");
+
+      core::Array<math::Vec2u32>  ints(2, math::Vec2u32(1, 2));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec3");
+
+      core::Array<math::Vec3u32>  ints(2, math::Vec3u32(1, 2, 3));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+    {
+      attribute_ptr_type attribute(new gl::Attribute());
+      attribute->SetName("u_uivec4");
+
+      core::Array<math::Vec4u32>  ints(2, math::Vec4u32(1, 2, 3, 4));
+      attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
+
+      so->AddAttribute(attribute);
+    }
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess());
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
+  }
 };

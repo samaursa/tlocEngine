@@ -1,10 +1,11 @@
 #include "tlocShaderVariable.h"
 
+#include <tlocCore/containers/tlocContainers.inl>
+
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocAttribute.h>
 
-#include "tlocShaderVariable.h"
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
 #include <tlocMath/vector/tlocVector4.h>
@@ -25,6 +26,12 @@ namespace tloc { namespace graphics { namespace gl {
 #define TLOC_DECL_TL_TO_GL(_type_, _glType_)\
   template <> struct tlToGl< _type_ >\
   { enum { k_glType = _glType_ }; }
+
+  TLOC_DECL_TL_TO_GL(s8, GL_BYTE);
+  TLOC_DECL_TL_TO_GL(u8, GL_UNSIGNED_BYTE);
+
+  TLOC_DECL_TL_TO_GL(short, GL_SHORT);
+  TLOC_DECL_TL_TO_GL(ushort, GL_UNSIGNED_SHORT);
 
   TLOC_DECL_TL_TO_GL(f32, GL_FLOAT);
 
@@ -53,6 +60,11 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Mat2f32, GL_FLOAT_MAT2);
   TLOC_DECL_TL_TO_GL(Mat3f32, GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Mat4f32, GL_FLOAT_MAT4);
+
+  TLOC_DECL_TL_TO_GL(core::Array<s8>,     GL_BYTE);
+  TLOC_DECL_TL_TO_GL(core::Array<u8>,     GL_UNSIGNED_BYTE);
+  TLOC_DECL_TL_TO_GL(core::Array<short>,  GL_SHORT);
+  TLOC_DECL_TL_TO_GL(core::Array<ushort>, GL_UNSIGNED_SHORT);
 
   TLOC_DECL_TL_TO_GL(core::Array<f32>, GL_FLOAT);
   TLOC_DECL_TL_TO_GL(core::Array<math::Vec2f32>, GL_FLOAT_VEC2);
@@ -202,29 +214,14 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2u32,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3u32,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4u32,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,      Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,   Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<s8>,              Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<u8>,              Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<short>,           Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<ushort>,          Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<f32>,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec2f32>,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec3f32>,   Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec4f32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<s32>,             Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec2s32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec3s32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec4s32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<u32>,             Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec2u32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec3u32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<math::Vec4u32>,   Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<bool>,            Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<Tuple2b>,         Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<Tuple3b>,         Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(core::Array<Tuple4b>,         Attribute);
 #undef TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS
 
 };};};

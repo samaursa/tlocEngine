@@ -123,7 +123,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
+    TLOC_UNUSED(a_ent);
     using namespace core::component_system;
+    typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Quad      quad_type;
     typedef graphics::component_system::Material  material_type;
     typedef material_type::shader_op_ptr          shader_op_ptr;
@@ -158,6 +160,16 @@ namespace tloc { namespace graphics { namespace component_system {
                                 rect.GetCoord<rect_type::bottom>(), 0);
       m_quadList[3] = vec3_type(rect.GetCoord<rect_type::left>(),
                                 rect.GetCoord<rect_type::bottom>(), 0);
+
+      ComponentMapper<transform_type> posList =
+        ent->GetComponents(math::component_system::components::transform);
+      math::component_system::Transform& pos = posList[0];
+
+      // Change the position of the quad
+      for (int i = 0; i < 4; ++i)
+      {
+        m_quadList[i] += pos.GetPosition();
+      }
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
 

@@ -35,7 +35,7 @@ namespace tloc { namespace core { namespace component_system {
     void                  SetID(entity_id a_id);
     void                  SetIndex(size_type a_index);
 
-    component_list&       GetComponents(component_type a_type);
+    component_list&       DoGetComponents(component_type a_type);
     void                  InsertComponent(Component* a_type);
 
     component_list_list&        GetComponentsList();

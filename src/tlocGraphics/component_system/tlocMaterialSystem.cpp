@@ -102,8 +102,10 @@ namespace tloc { namespace graphics { namespace component_system {
         }
       }
 
+      sp->Enable();
       so_user->PrepareAllUniforms(*sp);
       so_user->PrepareAllAttributes(*sp);
+      sp->Disable();
 
       currMat.DoGetShaderOpContainerRef().push_back(so_user);
     }

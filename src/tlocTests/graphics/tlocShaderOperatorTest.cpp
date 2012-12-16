@@ -50,6 +50,7 @@ namespace TestingShaderOperator
 
   using namespace tloc;
   using namespace graphics;
+  using namespace core;
 
   struct fixture
   {
@@ -126,21 +127,21 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec2");
-      uniform->SetValueAs(math::Vector2<s32>(1, 2));
+      uniform->SetValueAs(Tuple2s32(2));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec3");
-      uniform->SetValueAs(math::Vector3<s32>(2, 3, 4));
+      uniform->SetValueAs(Tuple3s32(3));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec4");
-      uniform->SetValueAs(math::Vector4<s32>(4, 5, 6, 7));
+      uniform->SetValueAs(Tuple4s32(4));
 
       so->AddUniform(uniform);
     }
@@ -154,21 +155,21 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec2");
-      uniform->SetValueAs(math::Vector2<u32>(1, 2));
+      uniform->SetValueAs(Tuple2u32(2));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec3");
-      uniform->SetValueAs(math::Vector3<u32>(2, 3, 4));
+      uniform->SetValueAs(Tuple3u32(3));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec4");
-      uniform->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
+      uniform->SetValueAs(Tuple4u32(4));
 
       so->AddUniform(uniform);
     }
@@ -316,7 +317,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec2");
 
-      core::Array<math::Vec2s32>  ints(2, math::Vec2s32(1, 2));
+      core::Array<Tuple2s32>  ints(2, Tuple2s32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -325,7 +326,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec3");
 
-      core::Array<math::Vec3s32>  ints(2, math::Vec3s32(1, 2, 3));
+      core::Array<Tuple3s32>  ints(2, Tuple3s32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -334,7 +335,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_ivec4");
 
-      core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
+      core::Array<Tuple4s32>  ints(2, Tuple4s32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -353,7 +354,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec2");
 
-      core::Array<math::Vec2u32>  ints(2, math::Vec2u32(1, 2));
+      core::Array<Tuple2u32>  ints(2, Tuple2u32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -362,7 +363,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec3");
 
-      core::Array<math::Vec3u32>  ints(2, math::Vec3u32(1, 2, 3));
+      core::Array<Tuple3u32>  ints(2, Tuple3u32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -371,7 +372,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uivec4");
 
-      core::Array<math::Vec4u32>  ints(2, math::Vec4u32(1, 2, 3, 4));
+      core::Array<Tuple4u32>  ints(2, Tuple4u32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -478,21 +479,21 @@ namespace TestingShaderOperator
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec2");
-      attribute->SetValueAs(math::Vector2<s32>(1, 2));
+      attribute->SetValueAs(Tuple2s32(2));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec3");
-      attribute->SetValueAs(math::Vector3<s32>(2, 3, 4));
+      attribute->SetValueAs(Tuple3s32(3));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec4");
-      attribute->SetValueAs(math::Vector4<s32>(4, 5, 6, 7));
+      attribute->SetValueAs(Tuple4s32(4));
 
       so->AddAttribute(attribute);
     }
@@ -506,21 +507,21 @@ namespace TestingShaderOperator
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec2");
-      attribute->SetValueAs(math::Vector2<u32>(1, 2));
+      attribute->SetValueAs(Tuple2u32(2));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec3");
-      attribute->SetValueAs(math::Vector3<u32>(2, 3, 4));
+      attribute->SetValueAs(Tuple3u32(3));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec4");
-      attribute->SetValueAs(math::Vector4<u32>(4, 5, 6, 7));
+      attribute->SetValueAs(Tuple4u32(4));
 
       so->AddAttribute(attribute);
     }
@@ -637,7 +638,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec2");
 
-      core::Array<math::Vec2s32>  ints(2, math::Vec2s32(1, 2));
+      core::Array<Tuple2s32>  ints(2, Tuple2s32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -646,7 +647,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec3");
 
-      core::Array<math::Vec3s32>  ints(2, math::Vec3s32(1, 2, 3));
+      core::Array<Tuple3s32>  ints(2, Tuple3s32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -655,7 +656,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_ivec4");
 
-      core::Array<math::Vec4s32>  ints(2, math::Vec4s32(1, 2, 3, 4));
+      core::Array<Tuple4s32>  ints(2, Tuple4s32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -674,7 +675,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec2");
 
-      core::Array<math::Vec2u32>  ints(2, math::Vec2u32(1, 2));
+      core::Array<Tuple2u32>  ints(2, Tuple2u32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -683,7 +684,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec3");
 
-      core::Array<math::Vec3u32>  ints(2, math::Vec3u32(1, 2, 3));
+      core::Array<Tuple3u32>  ints(2, Tuple3u32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -692,7 +693,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uivec4");
 
-      core::Array<math::Vec4u32>  ints(2, math::Vec4u32(1, 2, 3, 4));
+      core::Array<Tuple4u32>  ints(2, Tuple4u32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);

@@ -52,52 +52,46 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckTypeCompatibility() const
     {
+      using namespace core;
+      using namespace math;
+
       type_traits::AssertTypeIsSupported
         <T,
          f32,
-         math::Vec2f32,
-         math::Vec3f32,
-         math::Vec4f32,
+         Vec2f32, Vec3f32, Vec4f32,
          s32,
-         math::Vec2s32,
-         math::Vec3s32,
-         math::Vec4s32,
+         Tuple2s32, Tuple3s32, Tuple4s32,
          u32,
-         math::Vec2u32,
-         math::Vec3u32,
-         math::Vec4u32,
-         core::Array<f32>,
-         core::Array<math::Vec2f32>,
-         core::Array<math::Vec3f32>,
-         core::Array<math::Vec4f32>,
-         core::Array<s32>,
-         core::Array<math::Vec2s32>,
-         core::Array<math::Vec3s32>,
-         core::Array<math::Vec4s32>,
-         core::Array<u32>,
-         core::Array<math::Vec2u32>,
-         core::Array<math::Vec3u32>,
-         core::Array<math::Vec4u32>
+         Tuple2u32, Tuple3u32, Tuple4u32,
+         Array<f32>,
+         Array<Vec2f32>,
+         Array<Vec3f32>,
+         Array<Vec4f32>,
+         Array<s32>,
+         Array<Tuple2s32>,
+         Array<Tuple3s32>,
+         Array<Tuple4s32>,
+         Array<u32>,
+         Array<Tuple2u32>,
+         Array<Tuple3u32>,
+         Array<Tuple4u32>
         >();
     }
 
     template <typename T>
     void DoCheckNonArrayTypes() const
     {
+      using namespace core;
+      using namespace math;
+
       type_traits::AssertTypeIsSupported
         <T,
          f32,
-         math::Vec2f32,
-         math::Vec3f32,
-         math::Vec4f32,
+         Vec2f32, Vec3f32, Vec4f32,
          s32,
-         math::Vec2s32,
-         math::Vec3s32,
-         math::Vec4s32,
+         Tuple2s32, Tuple3s32, Tuple4s32,
          u32,
-         math::Vec2u32,
-         math::Vec3u32,
-         math::Vec4u32
+         Tuple2u32, Tuple3u32, Tuple4u32
         >();
     }
 
@@ -109,20 +103,23 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckArrayTypes() const
     {
+      using namespace core;
+      using namespace math;
+
       type_traits::AssertTypeIsSupported
-        <core::Array<T>,
-         core::Array<f32>,
-         core::Array<math::Vec2f32>,
-         core::Array<math::Vec3f32>,
-         core::Array<math::Vec4f32>,
-         core::Array<s32>,
-         core::Array<math::Vec2s32>,
-         core::Array<math::Vec3s32>,
-         core::Array<math::Vec4s32>,
-         core::Array<u32>,
-         core::Array<math::Vec2u32>,
-         core::Array<math::Vec3u32>,
-         core::Array<math::Vec4u32>
+        <Array<T>,
+         Array<f32>,
+         Array<Vec2f32>,
+         Array<Vec3f32>,
+         Array<Vec4f32>,
+         Array<s32>,
+         Array<Tuple2s32>,
+         Array<Tuple3s32>,
+         Array<Tuple4s32>,
+         Array<u32>,
+         Array<Tuple2u32>,
+         Array<Tuple3u32>,
+         Array<Tuple4u32>
         >();
     }
 

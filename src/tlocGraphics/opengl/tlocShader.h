@@ -21,7 +21,7 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Base class for shaders
 
-  class Shader_I : public Object_T<Shader_I>
+  class Shader_I : public Object_T<Shader_I, p_object::WithError>
   {
   public:
     template <typename T> friend class ObjectRefCounted;

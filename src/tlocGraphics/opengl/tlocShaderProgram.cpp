@@ -54,12 +54,21 @@ namespace tloc { namespace graphics { namespace gl {
                   "Uniform name length larger than buffer!");
 
       a_infoOut.resize(numOfUniforms);
+      core::String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
                            &currInfo.m_type, currInfo.m_name.Get());
+
+        // remove [0] from the names which appears on some cards
+        fixedName = currInfo.m_name.Get();
+        fixedName = fixedName.substr(0, fixedName.find('['));
+        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
+        currInfo.m_name.Get()[fixedName.length()] = '\0';
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -92,6 +101,8 @@ namespace tloc { namespace graphics { namespace gl {
         glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
                           &currInfo.m_nameLength, &currInfo.m_arraySize,
                           &currInfo.m_type, currInfo.m_name.Get());
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -183,14 +194,36 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderProgram::LoadUniformInfo()
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
+
     if (m_flags.ReturnAndMark(k_uniformInfoLoaded) == false)
     { DoGetUniformInfo(*this, m_uniformInfo); }
   }
 
   void ShaderProgram::LoadAttributeInfo()
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
+
     if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
     { DoGetAttributeInfo(*this, m_attributeInfo); }
+  }
+
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetUniformInfoRef() const
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_uniformInfoLoaded),
+          "Uniforms not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_uniformInfo;
+  }
+
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetAttributeInfoRef() const
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_attributeInfoLoaded),
+          "Attributes not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_attributeInfo;
   }
 
   ShaderProgram::error_type
@@ -203,6 +236,15 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     return ErrorSuccess();
+  }
+
+  bool ShaderProgram::
+    IsEnabled() const
+  {
+    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    { return true; }
+
+    return false;
   }
 
   ShaderProgram::error_type
@@ -221,12 +263,38 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Private methods
 
+  namespace
+  {
+    template <typename T_ProgramIvParam>
+    struct DoGetOperation
+    {
+      void operator()(ShaderProgram::object_handle)
+      { /* intentionally empty */ }
+    };
+
+    template <>
+    struct DoGetOperation<p_shader_program::ValidateStatus>
+    {
+      void operator()(ShaderProgram::object_handle a_shaderHandle)
+      {
+        // This is required BEFORE a call to
+        // glGetProgramiv(#, GL_VALIDATE_STATUS, ...) is called.
+        glValidateProgram(a_shaderHandle);
+      }
+    };
+  }
+
   template <typename T_ProgramIvParam>
   ShaderProgram::gl_result_type
     ShaderProgram::DoGet() const
   {
     GLint result;
     object_handle handle = GetHandle();
+
+    // Perform any operation that may be required before the following call
+    // 'means' anything
+    DoGetOperation<T_ProgramIvParam>()(handle);
+
     glGetProgramiv(handle, T_ProgramIvParam::s_glStatusName, &result);
     return (gl_result_type)result;
   }

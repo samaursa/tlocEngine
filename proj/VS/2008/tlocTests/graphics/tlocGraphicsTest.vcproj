@@ -925,6 +925,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocShaderOperatorTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderProgramTest.cpp"
 					>
 				</File>

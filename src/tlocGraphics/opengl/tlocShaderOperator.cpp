@@ -387,37 +387,43 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_FLOAT_MAT2:
         {
+          const GLint matSize = 2 * 2;
+          TLOC_ASSERT( matSize == Mat2f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
           typedef f32                 num_type;
 
           const Mat2f32& m = a_uniform.GetValueAs<Mat2f32>();
-          const GLint matSize = 2 * 2;
           num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
-          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat2f32::k_TableSize,
-            "Mismatched uniform array size!");
           glUniformMatrix2fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT3:
         {
+          const GLint matSize = 3 * 3;
+          TLOC_ASSERT( matSize == Mat3f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
           typedef f32                 num_type;
 
           const Mat3f32& m = a_uniform.GetValueAs<Mat3f32>();
-          const GLint matSize = 3 * 3;
           num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
-          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat3f32::k_TableSize,
-            "Mismatched uniform array size!");
           glUniformMatrix3fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT4:
         {
+          const GLint matSize = 4 * 4;
+          TLOC_ASSERT( matSize == Mat4f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
           typedef f32                 num_type;
 
           const Mat4f32& m = a_uniform.GetValueAs<Mat4f32>();
-          const GLint matSize = 4 * 4;
           num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
-          TLOC_ASSERT(a_info.m_arraySize * matSize == Mat4f32::k_TableSize,
-            "Mismatched uniform array size!");
           glUniformMatrix4fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
@@ -947,7 +953,7 @@ namespace tloc { namespace graphics { namespace gl {
     error_type retError = DoPrepareVariables(m_attributes, attrCont);
 
     m_flags.Mark(k_attributesCached);
-    return ErrorSuccess();
+    return retError;
 
   }
 

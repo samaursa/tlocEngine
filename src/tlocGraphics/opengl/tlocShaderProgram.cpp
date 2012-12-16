@@ -52,6 +52,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       TLOC_ASSERT(uniformMaxLength < g_buffSize,
                   "Uniform name length larger than buffer!");
+      TLOC_UNUSED(uniformMaxLength);
 
       a_infoOut.resize(numOfUniforms);
       core::String fixedName;
@@ -93,6 +94,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       TLOC_ASSERT(attributeMaxLength < g_buffSize,
                   "Attribute name length larger than buffer!");
+      TLOC_UNUSED(attributeMaxLength);
 
       a_infoOut.resize(numOfAttributes);
       for (u32 i = 0; i < numOfAttributes; ++i)

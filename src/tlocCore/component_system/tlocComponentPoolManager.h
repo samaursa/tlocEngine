@@ -157,6 +157,7 @@ namespace tloc { namespace core { namespace component_system {
       const size_type index = a_number;
       TLOC_ASSERT(index < m_pools.size(),
                   "Pool not allocated for passed component type");
+      TLOC_UNUSED(index);
     }
 
     iterator GetPool(component_type a_number)

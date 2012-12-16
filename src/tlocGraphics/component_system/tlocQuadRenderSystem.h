@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math::Vec3f32                                     vec3_type;
     typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
-    typedef view_proj::Frustum::matrix_type                   matrix_type;
+    typedef math::Mat4f32                                     matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 

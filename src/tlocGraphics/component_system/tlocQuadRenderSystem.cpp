@@ -95,22 +95,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // vMVP, but since we are doing column major, it becomes PVMv
 
-    //if (m_sharedCam)
-    //{
-    //  if (m_sharedCam->HasComponent(projection))
-    //  {
-    //    ComponentMapper<graphics::component_system::Projection> projMatList =
-    //      m_sharedCam->GetComponents(graphics::component_system::components::projection);
-    //    m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix();
-    //  }
+    if (m_sharedCam)
+    {
+      if (m_sharedCam->HasComponent(projection))
+      {
+        ComponentMapper<graphics::component_system::Projection> projMatList =
+          m_sharedCam->GetComponents(graphics::component_system::components::projection);
+        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix();
+      }
 
-    //  if (m_sharedCam->HasComponent(transform))
-    //  {
-    //    ComponentMapper<math::component_system::Transform> viewMatList =
-    //      m_sharedCam->GetComponents(math::component_system::components::transform);
-    //    viewMat = viewMatList[0].GetTransformation();
-    //  }
-    //}
+      if (m_sharedCam->HasComponent(transform))
+      {
+        ComponentMapper<math::component_system::Transform> viewMatList =
+          m_sharedCam->GetComponents(math::component_system::components::transform);
+        viewMat = viewMatList[0].GetTransformation();
+      }
+    }
 
     m_vpMatrix.Mul(viewMat);
 

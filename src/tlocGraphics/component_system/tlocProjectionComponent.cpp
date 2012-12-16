@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef frustum_type::fov_type  fov_type;
       typedef fov_type::ar_type       ar_type;
 
-      ar_type   ar(ar_type::width(1920), ar_type::height(1080));
+      ar_type   ar(ar_type::width(800), ar_type::height(600));
       fov_type  fov(math::Degree(70.0f), ar, types::p_FOV::vertical());
 
       frustum_param_type params(fov);
@@ -31,7 +31,9 @@ namespace tloc { namespace graphics { namespace component_system {
   Projection::Projection()
     : base_type(components::projection)
     , m_frustum(GetDefaultFrustumParams())
-  { }
+  {
+    m_frustum.BuildFrustum();
+  }
 
   Projection::Projection(const frustum_type& a_frustum)
     : base_type(components::projection)

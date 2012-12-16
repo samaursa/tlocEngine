@@ -246,12 +246,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec2s32& t = a_uniform.GetValueAs<Vec2s32>();
+            const Tuple2s32& t = a_uniform.GetValueAs<Tuple2s32>();
             glUniform2i(a_info.m_location, t[0], t[1]);
           }
           else
           {
-            typedef Vec2s32           num_type;
+            typedef Tuple2s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -266,12 +266,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec3s32& t = a_uniform.GetValueAs<Vec3s32>();
+            const Tuple3s32& t = a_uniform.GetValueAs<Tuple3s32>();
             glUniform3i(a_info.m_location, t[0], t[1], t[2]);
           }
           else
           {
-            typedef Vec3s32           num_type;
+            typedef Tuple3s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -287,12 +287,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec4s32& t = a_uniform.GetValueAs<Vec4s32>();
+            const Tuple4s32& t = a_uniform.GetValueAs<Tuple4s32>();
             glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
           else
           {
-            typedef Vec4s32           num_type;
+            typedef Tuple4s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -327,12 +327,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec2u32& t = a_uniform.GetValueAs<Vec2u32>();
+            const Tuple2u32& t = a_uniform.GetValueAs<Tuple2u32>();
             glUniform2ui(a_info.m_location, t[0], t[1]);
           }
           else
           {
-            typedef Vec2u32           num_type;
+            typedef Tuple2u32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -347,12 +347,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec3u32& t = a_uniform.GetValueAs<Vec3u32>();
+            const Tuple3u32& t = a_uniform.GetValueAs<Tuple3u32>();
             glUniform3ui(a_info.m_location, t[0], t[1], t[2]);
           }
           else
           {
-            typedef Vec3u32           num_type;
+            typedef Tuple3u32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -368,12 +368,12 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec4u32& t = a_uniform.GetValueAs<Vec4u32>();
+            const Tuple4u32& t = a_uniform.GetValueAs<Tuple4u32>();
             glUniform4ui(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
           else
           {
-            typedef Vec4u32           num_type;
+            typedef Tuple4u32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
@@ -587,7 +587,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec2s32& v = a_attribute.GetValueAs<Vec2s32>();
+            const Tuple2s32& v = a_attribute.GetValueAs<Tuple2s32>();
             glVertexAttribI2i(a_info.m_location, v[0], v[1]);
           }
           else if (isVertexArray)
@@ -615,7 +615,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec3s32& v = a_attribute.GetValueAs<Vec3s32>();
+            const Tuple3s32& v = a_attribute.GetValueAs<Tuple3s32>();
             glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
           }
           else if (isVertexArray)
@@ -644,7 +644,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec4s32& v = a_attribute.GetValueAs<Vec4s32>();
+            const Tuple4s32& v = a_attribute.GetValueAs<Tuple4s32>();
             glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
           else if (isVertexArray)
@@ -702,7 +702,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec2u32& v = a_attribute.GetValueAs<Vec2u32>();
+            const Tuple2u32& v = a_attribute.GetValueAs<Tuple2u32>();
             glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
           }
           else if (isVertexArray)
@@ -730,7 +730,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec3u32& v = a_attribute.GetValueAs<Vec3u32>();
+            const Tuple3u32& v = a_attribute.GetValueAs<Tuple3u32>();
             glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
           }
           else if (isVertexArray)
@@ -759,7 +759,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if (isArray == false)
           {
-            const Vec4u32& v = a_attribute.GetValueAs<Vec4u32>();
+            const Tuple4u32& v = a_attribute.GetValueAs<Tuple4u32>();
             glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
           else if (isVertexArray)

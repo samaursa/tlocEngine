@@ -76,7 +76,7 @@ namespace tloc { namespace core { namespace component_system {
 
   bool EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
   {
-    component_list& entityComps = a_entity->GetComponents(a_component->GetType());
+    component_list& entityComps = a_entity->DoGetComponents(a_component->GetType());
     component_list::iterator itr = core::find_all(entityComps, a_component);
 
     if (itr == entityComps.end())
@@ -100,7 +100,7 @@ namespace tloc { namespace core { namespace component_system {
     {// Remove it from the entity
       if (a_entity)
       {
-        component_list& entityComps = a_entity->GetComponents(a_component->GetType());
+        component_list& entityComps = a_entity->DoGetComponents(a_component->GetType());
         component_list::iterator itr = core::find_all(entityComps, a_component);
 
         if (itr != entityComps.end())
@@ -154,7 +154,7 @@ namespace tloc { namespace core { namespace component_system {
       {
         if ( (*itr)->HasComponent(currComp))
         {
-          component_list& clist = (*itr)->GetComponents(currComp);
+          component_list& clist = (*itr)->DoGetComponents(currComp);
 
           component_list::iterator itrComp = clist.begin();
           component_list::iterator itrCompEnd = clist.end();

@@ -76,7 +76,67 @@ namespace tloc { namespace graphics { namespace gl {
     //------------------------------------------------------------------------
     // Functions
 
-    void DoSetUniform(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+    template <typename T_ShaderVariableContainer,
+              typename T_ShaderVariableInfoContainer>
+    ShaderOperator::error_type
+    DoPrepareVariables(T_ShaderVariableContainer& a_shaderVars,
+                       const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
+    {
+      typedef T_ShaderVariableContainer             svc;
+      typedef T_ShaderVariableInfoContainer         svcInfo;
+      typedef typename svc::iterator                svc_iterator;
+      typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
+      typedef typename svc::value_type::first_type  shader_var_ptr_type;
+
+      ShaderOperator::error_type retError = ErrorSuccess();
+
+      svc_iterator itr, itrEnd;
+      for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
+        itr != itrEnd; ++itr)
+      {
+        shader_var_ptr_type uniformPtr = itr->first;
+
+        ShaderOperator::index_type index = 0;
+        svcInfo_const_iterator itrInfo, itrInfoEnd;
+        for (itrInfo = a_shaderVarsInfo.begin(),
+          itrInfoEnd = a_shaderVarsInfo.end();
+          itrInfo != itrInfoEnd; ++itrInfo)
+        {
+          if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+          {
+            if ( uniformPtr->GetType() == itrInfo->m_type &&
+              itrInfo->m_location != -1)
+            {
+              itr->second = index;
+              DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
+
+              TLOC_ASSERT(gl::Error().Succeeded(),
+                "glUniform*/glAttribute* failed in DoSet()");
+              break;
+            }
+            else
+            {
+              // TODO: Convert this assertion to a log
+              TLOC_ASSERT(false, "Mismatched uniform/attribute type!");
+              retError = ErrorFailure();
+              break;
+            }
+          }
+          ++index;
+        }
+
+        // We could not find the user specified uniform in the shader
+        if (itrInfo == itrInfoEnd)
+        {
+          TLOC_ASSERT(false, "Uniform/Attribute type not found in shader!");
+          retError = ErrorFailure();
+        }
+      }
+
+      return retError;
+    }
+
+    void DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
     {
       using namespace core;
 
@@ -112,14 +172,16 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec2f32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2fv(a_info.m_location, arraySize, faraw);
           }
+          break;
         }
       case GL_FLOAT_VEC3:
         {
@@ -130,11 +192,12 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec3f32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform3fv(a_info.m_location, arraySize, faraw);
           }
@@ -149,11 +212,12 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32               num_type;
+            typedef Vec4f32 num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform4fv(a_info.m_location, arraySize, faraw);
           }
@@ -165,7 +229,6 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const s32& i = a_uniform.GetValueAs<s32>();
             glUniform1i(a_info.m_location, i);
-            break;
           }
           else
           {
@@ -177,6 +240,7 @@ namespace tloc { namespace graphics { namespace gl {
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform1iv(a_info.m_location, arraySize, faraw);
           }
+          break;
         }
       case GL_INT_VEC2:
         {
@@ -187,15 +251,15 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32               num_type;
+            typedef Tuple2s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform2iv(a_info.m_location, arraySize, faraw);
           }
-
           break;
         }
       case GL_INT_VEC3:
@@ -207,15 +271,15 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32               num_type;
+            typedef Tuple3s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform3iv(a_info.m_location, arraySize, faraw);
           }
-
           break;
         }
 
@@ -228,51 +292,151 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32               num_type;
+            typedef Tuple4s32           num_type;
             typedef Array<num_type>   array_type;
 
             array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
             GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
             glUniform4iv(a_info.m_location, arraySize, faraw);
           }
 
           break;
         }
+      case GL_UNSIGNED_INT:
+        {
+          if (isArray == false)
+          {
+            const u32& i = a_uniform.GetValueAs<u32>();
+            glUniform1ui(a_info.m_location, i);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform1uiv(a_info.m_location, arraySize, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Tuple2u32& t = a_uniform.GetValueAs<Tuple2u32>();
+            glUniform2ui(a_info.m_location, t[0], t[1]);
+          }
+          else
+          {
+            typedef Tuple2u32           num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform2uiv(a_info.m_location, arraySize, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Tuple3u32& t = a_uniform.GetValueAs<Tuple3u32>();
+            glUniform3ui(a_info.m_location, t[0], t[1], t[2]);
+          }
+          else
+          {
+            typedef Tuple3u32           num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform3uiv(a_info.m_location, arraySize, faraw);
+          }
+          break;
+        }
+
+      case GL_UNSIGNED_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Tuple4u32& t = a_uniform.GetValueAs<Tuple4u32>();
+            glUniform4ui(a_info.m_location, t[0], t[1], t[2], t[3]);
+          }
+          else
+          {
+            typedef Tuple4u32           num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_uniform.GetValueAs<array_type>();
+            num_type::value_type const * faraw =
+              reinterpret_cast<num_type::value_type const*>(&(fa[0]));
+            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            glUniform4uiv(a_info.m_location, arraySize, faraw);
+          }
+
+          break;
+        }
       case GL_FLOAT_MAT2:
         {
+          const GLint matSize = 2 * 2;
+          TLOC_ASSERT( matSize == Mat2f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
+          typedef f32                 num_type;
+
           const Mat2f32& m = a_uniform.GetValueAs<Mat2f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat2f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix2fv(a_info.m_location, GL_FALSE,
-            Mat2f32::k_TableSize, m);
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          glUniformMatrix2fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT3:
         {
+          const GLint matSize = 3 * 3;
+          TLOC_ASSERT( matSize == Mat3f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
+          typedef f32                 num_type;
+
           const Mat3f32& m = a_uniform.GetValueAs<Mat3f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix3fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          glUniformMatrix3fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
         }
       case GL_FLOAT_MAT4:
         {
+          const GLint matSize = 4 * 4;
+          TLOC_ASSERT( matSize == Mat4f32::k_TableSize,
+                       "Mismatched uniform array size!");
+          TLOC_UNUSED(matSize);
+
+          typedef f32                 num_type;
+
           const Mat4f32& m = a_uniform.GetValueAs<Mat4f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix4fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
+          num_type const * faraw = reinterpret_cast<num_type const*>(&(m[0]));
+          glUniformMatrix4fv(a_info.m_location, 1, GL_FALSE, faraw);
           break;
+        }
+      default:
+        {
+          TLOC_ASSERT(false, "Unsupported shader variable type!");
         }
       }
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void DoSetAttribute(const ShaderVariableInfo& a_info,
-                        const Attribute& a_attribute)
+    void DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
 
@@ -396,6 +560,240 @@ namespace tloc { namespace graphics { namespace gl {
           }
           break;
         }
+      case GL_INT:
+        {
+          if (isArray == false)
+          {
+            const s32& f = a_attribute.GetValueAs<s32>();
+            glVertexAttribI1i(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Tuple2s32& v = a_attribute.GetValueAs<Tuple2s32>();
+            glVertexAttribI2i(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2iv(a_info.m_location, faraw);
+          }
+        }
+      case GL_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Tuple3s32& v = a_attribute.GetValueAs<Tuple3s32>();
+            glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Tuple4s32& v = a_attribute.GetValueAs<Tuple4s32>();
+            glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef s32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4iv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT:
+        {
+          if (isArray == false)
+          {
+            const u32& f = a_attribute.GetValueAs<u32>();
+            glVertexAttribI1ui(a_info.m_location, f);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI1uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC2:
+        {
+          if (isArray == false)
+          {
+            const Tuple2u32& v = a_attribute.GetValueAs<Tuple2u32>();
+            glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI2uiv(a_info.m_location, faraw);
+          }
+        }
+      case GL_UNSIGNED_INT_VEC3:
+        {
+          if (isArray == false)
+          {
+            const Tuple3u32& v = a_attribute.GetValueAs<Tuple3u32>();
+            glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI3uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      case GL_UNSIGNED_INT_VEC4:
+        {
+          if (isArray == false)
+          {
+            const Tuple4u32& v = a_attribute.GetValueAs<Tuple4u32>();
+            glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
+          }
+          else if (isVertexArray)
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribPointer
+              (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+            glEnableVertexAttribArray(a_info.m_location);
+          }
+          else
+          {
+            typedef u32               num_type;
+            typedef Array<num_type>   array_type;
+
+            array_type const & fa = a_attribute.GetValueAs<array_type>();
+            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
+            glVertexAttribI4uiv(a_info.m_location, faraw);
+          }
+          break;
+        }
+      default:
+        {
+          TLOC_ASSERT(false, "Unsupported shader variable type!");
+        }
       }
     }
   }
@@ -420,6 +818,58 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  void ShaderOperator::
+    RemoveUniform(const uniform_ptr_type& a_uniform)
+  {
+    uniform_iterator itr, itrEnd;
+    for(itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+        itr != itrEnd; ++itr)
+    {
+      if (itr->first.Expose() == a_uniform.Expose())
+      { break; }
+    }
+
+    if (itr != m_uniforms.end())
+    { m_uniforms.erase(itr); }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAttribute(const attribute_ptr_type& a_attribute)
+  {
+    attribute_iterator itr, itrEnd;
+    for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
+        itr != itrEnd; ++itr)
+    {
+      if (itr->first.Expose() == a_attribute.Expose())
+      { break; }
+    }
+
+    if (itr != m_attributes.end())
+    { m_attributes.erase(itr); }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAllUniforms()
+  {
+    m_flags.Unmark(k_uniformsCached);
+    m_uniforms.clear();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    RemoveAllAttributes()
+  {
+    m_flags.Unmark(k_attributesCached);
+    m_attributes.clear();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     void ShaderOperator::
     EnableAllUniforms(const ShaderProgram& a_shaderProgram)
   {
@@ -437,7 +887,7 @@ namespace tloc { namespace graphics { namespace gl {
       UniformPtr uniformPtr = itr->first;
 
       if (itr->second >= 0)
-      { DoSetUniform(uniCont[itr->second], *uniformPtr); }
+      { DoSet(uniCont[itr->second], *uniformPtr); }
     }
   }
 
@@ -463,7 +913,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       // If we already know which info to pick
       if (itr->second >= 0)
-      { DoSetAttribute(attrCont[itr->second], *attribPtr); }
+      { DoSet(attrCont[itr->second], *attribPtr); }
     }
   }
 
@@ -475,41 +925,15 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
+                "Shader noet enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    uniform_cont_type::iterator itr, itrEnd;
-    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-         itr != itrEnd; ++itr)
-    {
-      UniformPtr uniformPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( uniformPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location != -1)
-          {
-            itr->second = index;
-            DoSetUniform(uniCont[itr->second], *uniformPtr);
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched uniform type!");
-            return ErrorFailure();
-          }
-        }
-        ++index;
-      }
-    }
+    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
 
     m_flags.Mark(k_uniformsCached);
-    return ErrorSuccess();
+    return retError;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -520,42 +944,16 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
+                "Shader noet enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    attribute_cont_type::iterator itr, itrEnd;
-    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    {
-      AttributePtr attribPtr = itr->first;
-
-      index_type index = 0;
-      glsl_var_info_cont_type::const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-        itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if ( attribPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if ( attribPtr->GetType() == itrInfo->m_type &&
-            itrInfo->m_location  != -1)
-          {
-            itr->second = index;
-            DoSetAttribute(attrCont[itr->second], *attribPtr);
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched attribute type!");
-            return ErrorFailure();
-          }
-        }
-        ++index;
-      }
-    }
+    error_type retError = DoPrepareVariables(m_attributes, attrCont);
 
     m_flags.Mark(k_attributesCached);
-    return ErrorSuccess();
+    return retError;
 
   }
 

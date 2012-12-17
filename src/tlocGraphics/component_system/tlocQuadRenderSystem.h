@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math::Vec3f32                                     vec3_type;
     typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
-    typedef view_proj::Frustum::matrix_type                   matrix_type;
+    typedef math::Mat4f32                                     matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 
@@ -49,6 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type ShutdownEntity(entity_manager* a_mgr,
                                       entity_type* a_ent);
 
+    virtual void Pre_ProcessActiveEntities();
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
     virtual void Post_ProcessActiveEntities();
 
@@ -56,6 +57,8 @@ namespace tloc { namespace graphics { namespace component_system {
     shader_prog_ptr     m_shaderPtr;
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
+
+    gl::ShaderOperatorPtr   m_projectionOperator;
 
     // Cache
     vec3_cont_type      m_quadList;

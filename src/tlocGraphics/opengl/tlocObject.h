@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef u32 object_handle;
+    typedef s32 object_handle; // s32 because GLint is s32
 
     bool IsValid();
 
@@ -126,7 +126,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);
 
   protected:
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(string_type, DoGetError, m_error);
+    TLOC_DECL_AND_DEF_SETTER(string_type, DoSetError, m_error);
 
   private:
     string_type m_error;

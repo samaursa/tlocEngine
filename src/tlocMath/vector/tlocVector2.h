@@ -54,6 +54,12 @@ namespace tloc { namespace math {
   typedef Vector2<f64>    Vec2f64;
   typedef Vector2<f128>   Vec2f128;
 
+  typedef Vector2<s32>    Vec2s32;
+  typedef Vector2<s64>    Vec2s64;
+
+  typedef Vector2<u32>    Vec2u32;
+  typedef Vector2<u64>    Vec2u64;
+
   typedef Vector2<tl_float> Vec2f;
 
   //------------------------------------------------------------------------
@@ -65,9 +71,9 @@ namespace tloc { namespace math {
   template<typename T>
   const Vector2<T> Vector2<T>::UNIT_Y     (0, 1);
   template<typename T>
-  const Vector2<T> Vector2<T>::NEG_UNIT_X (-1, 0);
+  const Vector2<T> Vector2<T>::NEG_UNIT_X (T(-1), 0);
   template<typename T>
-  const Vector2<T> Vector2<T>::NEG_UNIT_Y (0, -1);
+  const Vector2<T> Vector2<T>::NEG_UNIT_Y (0, T(-1));
 
 };};
 

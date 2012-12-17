@@ -3,7 +3,6 @@
 #include <tlocCore/error/tlocError.h>
 
 #include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
 

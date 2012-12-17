@@ -61,10 +61,10 @@ namespace tloc { namespace graphics { namespace gl {
     void LoadUniformInfo();
     void LoadAttributeInfo();
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (glsl_var_info_cont_type, GetUniformInfoRef, m_uniformInfo);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (glsl_var_info_cont_type, GetAttributeInfoRef, m_attributeInfo);
+    TLOC_DECL_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetUniformInfoRef);
+    TLOC_DECL_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetAttributeInfoRef);
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -84,6 +84,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     error_type Enable() const;
+    bool       IsEnabled() const;
     error_type Disable() const;
 
   private:

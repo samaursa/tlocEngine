@@ -63,6 +63,9 @@ namespace tloc
   typedef char              char8;
   typedef wchar_t           char32;
 
+  // typedef short          short; // cannot typedef this for obvious reasons
+  typedef unsigned short    ushort;
+
   typedef TLOC_INT8_TYPE    s8;
   typedef TLOC_INT16_TYPE   s16;
   typedef TLOC_INT32_TYPE   s32;

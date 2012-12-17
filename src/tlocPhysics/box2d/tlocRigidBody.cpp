@@ -3,7 +3,7 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Explicit instantiation
 
   template void RigidBody::DoSetType<p_rigid_body::StaticBody>();

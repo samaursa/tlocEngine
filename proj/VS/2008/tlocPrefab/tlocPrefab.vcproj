@@ -23,6 +23,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -43,16 +44,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -65,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -88,6 +83,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -109,13 +105,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -131,7 +125,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -154,6 +147,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -178,15 +172,10 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
-				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -199,7 +188,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -222,6 +210,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -247,15 +236,10 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
-				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -268,7 +252,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -291,6 +274,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -311,16 +295,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -333,7 +312,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -356,6 +334,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -377,16 +356,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -399,7 +373,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

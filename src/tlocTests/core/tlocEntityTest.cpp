@@ -53,7 +53,7 @@ namespace TestingEntity
     CHECK(e->HasComponent(g_component) == true);
     CHECK(e->HasComponent(g_component + 1) == true);
 
-    Entity::component_list& clist = e->GetComponents(g_component);
+    Entity::component_list& clist = e->DoGetComponents(g_component);
 
     REQUIRE(clist.size() == 1);
     CHECK(clist[0] == &c1);

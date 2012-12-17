@@ -26,6 +26,11 @@ namespace tloc { namespace physics { namespace box2d {
     struct DynamicBody    { static const value_type s_rigidBodyType; };
   };
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyDef is used in conjunction with RigidBody and RigidBody
+  /// component. Used to define "invisible" attributes of the RigidBody before
+  /// construction.
+  ///-------------------------------------------------------------------------
   class RigidBodyDef : public core::NonCopyable
   {
   public:
@@ -36,8 +41,8 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2BodyDef     rigid_body_def_internal_type;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;
-    typedef math::Vec2f32             vec_type;
-    typedef f32                       float_type;
+    typedef math::Vec2f               vec_type;
+    typedef tl_float                  float_type;
 
   public:
     RigidBodyDef();
@@ -80,7 +85,7 @@ namespace tloc { namespace physics { namespace box2d {
     void SetAngle(float_type a_angle);
 
     void SetLinearVelocity(vec_type a_linearVelocity);
-    void SetAngularVelocity(float a_angularVelocity);
+    void SetAngularVelocity(float_type a_angularVelocity);
 
     void SetLinearDamping(float_type a_linearDamping);
     void SetAngularDamping(float_type a_angularDamping);

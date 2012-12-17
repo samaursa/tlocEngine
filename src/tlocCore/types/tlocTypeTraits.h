@@ -30,7 +30,8 @@ namespace tloc
               class T1, class T2, class T3, class T4, class T5, class T6,
               class T7, class T8, class T9, class T10, class T11, class T12,
               class T13, class T14, class T15, class T16, class T17, class T18,
-              class T19, class T20>
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25, class T26, class T27, class T28, class T29, class T30>
     void AssertTypeIsSupported()
     {
       TLOC_STATIC_ASSERT
@@ -54,9 +55,153 @@ namespace tloc
             (Loki::IsSameType<T_TypeToCheck, T17>::value) ||
             (Loki::IsSameType<T_TypeToCheck, T18>::value) ||
             (Loki::IsSameType<T_TypeToCheck, T19>::value) ||
-            (Loki::IsSameType<T_TypeToCheck, T20>::value) ) ,
+            (Loki::IsSameType<T_TypeToCheck, T20>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T21>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T22>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T23>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T24>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T25>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T26>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T27>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T28>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T29>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T30>::value) ) ,
           Type_does_not_match_with_any_supported_type
         );
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25, class T26, class T27, class T28, class T29>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T25, T26, T27, T28, T29, T29>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25, class T26, class T27, class T28>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T25, T26, T27, T28, T28>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25, class T26, class T27>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T25, T26, T27, T27>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25, class T26>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T25, T26, T26>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T25, T25>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T24>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T23>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T22>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T19, T20,
+                            T21, T21>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20>
+    void AssertTypeIsSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T20>();
     }
 
     template <class T_TypeToCheck,
@@ -250,7 +395,8 @@ namespace tloc
               class T1, class T2, class T3, class T4, class T5, class T6,
               class T7, class T8, class T9, class T10, class T11, class T12,
               class T13, class T14, class T15, class T16, class T17, class T18,
-              class T19, class T20>
+              class T19, class T20, class T21, class T22, class T23, class T24,
+              class T25>
     void AssertTypeIsNotSupported()
     {
       TLOC_STATIC_ASSERT
@@ -274,9 +420,78 @@ namespace tloc
             (Loki::IsSameType<T_TypeToCheck, T17>::value) ||
             (Loki::IsSameType<T_TypeToCheck, T18>::value) ||
             (Loki::IsSameType<T_TypeToCheck, T19>::value) ||
-            (Loki::IsSameType<T_TypeToCheck, T20>::value) ) == false ,
+            (Loki::IsSameType<T_TypeToCheck, T20>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T21>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T22>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T23>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T24>::value) ||
+            (Loki::IsSameType<T_TypeToCheck, T25>::value) ) == false ,
           Type_passed_is_explicitly_not_a_supported_type
         );
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23, class T24>
+    void AssertTypeIsNotSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsNotSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T24, T24>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22, class T23>
+    void AssertTypeIsNotSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsNotSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T23, T23>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21, class T22>
+    void AssertTypeIsNotSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsNotSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T21,
+                            T22, T22>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20, class T21>
+    void AssertTypeIsNotSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsNotSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T19, T20,
+                            T21, T21>();
+    }
+
+    template <class T_TypeToCheck,
+              class T1, class T2, class T3, class T4, class T5, class T6,
+              class T7, class T8, class T9, class T10, class T11, class T12,
+              class T13, class T14, class T15, class T16, class T17, class T18,
+              class T19, class T20>
+    void AssertTypeIsNotSupported()
+    {
+      typedef T_TypeToCheck T;
+      AssertTypeIsNotSupported<T, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11,
+                            T12, T13, T14, T15, T16, T17, T18, T19, T20, T20>();
     }
 
     template <class T_TypeToCheck,

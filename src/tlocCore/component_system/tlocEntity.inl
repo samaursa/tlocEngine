@@ -33,7 +33,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   TL_I Entity::component_list&
-    Entity::GetComponents(component_type a_type) 
+    Entity::DoGetComponents(component_type a_type) 
   {
     TLOC_ASSERT(a_type < (component_type)m_allComponents.size(), 
                 "Inserting an unsupported component!");

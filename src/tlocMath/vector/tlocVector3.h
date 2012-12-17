@@ -66,6 +66,12 @@ namespace tloc { namespace math {
   typedef Vector3<f64>  Vec3f64;
   typedef Vector3<f128> Vec3f128;
 
+  typedef Vector3<s32>  Vec3s32;
+  typedef Vector3<s64>  Vec3s64;
+
+  typedef Vector3<u32>  Vec3u32;
+  typedef Vector3<u64>  Vec3u64;
+
   typedef Vector3<tl_float> Vec3f;
 
   //------------------------------------------------------------------------
@@ -79,11 +85,11 @@ namespace tloc { namespace math {
   template <typename T>
   const Vector3<T> Vector3<T>::UNIT_Z     (0, 0, 1);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_X (-1, 0, 0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_X (T(-1), 0, 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0, -1, 0);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Y (0, T(-1), 0);
   template <typename T>
-  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0, 0, -1);
+  const Vector3<T> Vector3<T>::NEG_UNIT_Z (0, 0, T(-1));
 
 };};
 

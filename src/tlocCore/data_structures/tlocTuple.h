@@ -160,6 +160,10 @@ namespace tloc { namespace core {
   typedef Tuple<u32,			4>    Tuple4u32;
   typedef Tuple<u64,			4>    Tuple4u64;
 
+  typedef Tuple<bool,     2>    Tuple2b;
+  typedef Tuple<bool,     3>    Tuple3b;
+  typedef Tuple<bool,     4>    Tuple4b;
+
 };};
 
 #ifdef TLOC_FULL_SOURCE

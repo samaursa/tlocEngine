@@ -1,5 +1,7 @@
 #include "tlocRigidBodyDef.h"
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+
 #include <tlocMath/vector/tlocVector2.inl>
 
 #include <Box2D/Dynamics/b2Body.h>
@@ -30,9 +32,8 @@ namespace tloc { namespace physics { namespace box2d {
 
   RigidBodyDef::
     RigidBodyDef()
+    : m_rigidBodyDef(new rigid_body_def_internal_type)
   {
-    m_rigidBodyDef = new rigid_body_def_internal_type;
-
     SetPosition(vec_type(0.0f,0.0f));
     SetAngle(0.0f);
     SetLinearVelocity(vec_type(0.0f,0.0f));
@@ -53,7 +54,7 @@ namespace tloc { namespace physics { namespace box2d {
   RigidBodyDef::
     ~RigidBodyDef()
   {
-    delete m_rigidBodyDef;
+    //delete m_rigidBodyDef;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

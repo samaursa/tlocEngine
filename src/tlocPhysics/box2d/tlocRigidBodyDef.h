@@ -3,8 +3,8 @@
 #define _TLOC_PHYSICS_BOX2D_RIGID_BODY_DEF_H_
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 
@@ -31,14 +31,18 @@ namespace tloc { namespace physics { namespace box2d {
   /// component. Used to define "invisible" attributes of the RigidBody before
   /// construction.
   ///-------------------------------------------------------------------------
-  class RigidBodyDef : public core::NonCopyable
+  class RigidBodyDef
   {
   public:
     friend class component_system::RigidBodySystem;
 
   public:
     typedef RigidBodyDef  this_type;
-    typedef b2BodyDef     rigid_body_def_internal_type;
+
+    typedef b2BodyDef                         rigid_body_def_internal_type;
+    
+    typedef core::smart_ptr::SharedPtr<rigid_body_def_internal_type>     
+                                              rigid_body_def_internal_type_ptr;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;
     typedef math::Vec2f               vec_type;
@@ -108,7 +112,7 @@ namespace tloc { namespace physics { namespace box2d {
     void DoSetType();
 
   private:
-    rigid_body_def_internal_type* m_rigidBodyDef;
+    rigid_body_def_internal_type_ptr m_rigidBodyDef;
   };
 
 };};};

@@ -825,7 +825,7 @@ namespace tloc { namespace graphics { namespace gl {
     for(itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
         itr != itrEnd; ++itr)
     {
-      if (itr->first.Expose() == a_uniform.Expose())
+      if (itr->first.get() == a_uniform.get())
       { break; }
     }
 
@@ -842,7 +842,7 @@ namespace tloc { namespace graphics { namespace gl {
     for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
         itr != itrEnd; ++itr)
     {
-      if (itr->first.Expose() == a_attribute.Expose())
+      if (itr->first.get() == a_attribute.get())
       { break; }
     }
 

@@ -75,7 +75,7 @@ namespace TestingComponentPoolManager
         myPtr->m_value = 0;
       }
 
-      CHECK(itr->GetElement().GetRefCount() == 1);
+      CHECK(itr->GetElement().use_count() == 1);
 
       for (tl_int i = 1; i < 10; ++i)
       {

@@ -59,6 +59,10 @@ namespace tloc { namespace core {
   template class Tuple<u32,			 4>;
   template class Tuple<u64,			 4>;
 
+  template class Tuple<bool, 2>;
+  template class Tuple<bool, 3>;
+  template class Tuple<bool, 4>;
+
 };};
 
 #endif

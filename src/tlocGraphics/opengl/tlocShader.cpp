@@ -94,6 +94,8 @@ namespace tloc { namespace graphics { namespace gl {
       char    logBuffer[1000];
       glGetShaderInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
 
+      DoSetError(logBuffer);
+
       // TODO: Write shader log
       return error::error_shader_compile;
     }

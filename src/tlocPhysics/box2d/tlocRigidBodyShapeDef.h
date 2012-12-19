@@ -12,34 +12,28 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  class RigidBodyShape
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyShapeDef is used in conjunction with RigidBodyShape
+  /// component. Used to define "visible" physical attributes of the RigidBody.
+  ///-------------------------------------------------------------------------
+  class RigidBodyShapeDef
   {
   public:
     friend class RigidBody;
 
   public:
-    typedef RigidBodyShape    this_type;
-    typedef Shape             shape_type;
+    typedef RigidBodyShapeDef   this_type;
+    typedef Shape               shape_type;
+
+    typedef shape_type::shape_internal_type_ptr   shape_internal_type_ptr;
 
     typedef f32 float_type;
 
   public:
-    RigidBodyShape(const shape_type* a_shape)
-    {
-      SetShape(a_shape);
-      SetFriction(0.2f);
-      SetRestitution(0.0f);
-      SetDensity(0.0f);
-      SetSensor(false);
-    }
+    RigidBodyShapeDef(const shape_type& a_shape);
 
-    void SetShape(const Shape* a_shape)
-    {
-      m_shape = a_shape;
-      m_fixtureDef.shape = m_shape->GetInternalShape();
-    }
+    void SetShape(const shape_type& a_shape);
 
-    TLOC_DECL_AND_DEF_GETTER(shape_type*, GetShape, m_shape);
     TLOC_DECL_AND_DEF_GETTER(float_type, GetFriction, m_fixtureDef.friction);
     TLOC_DECL_AND_DEF_GETTER(float_type, GetRestitution, m_fixtureDef.restitution);
     TLOC_DECL_AND_DEF_GETTER(float_type, GetDensity, m_fixtureDef.density);
@@ -57,14 +51,14 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::component_system::Entity    entity_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (fixture_def_internal_type, GetFixtureDef, m_fixtureDef);
+      (fixture_def_internal_type, DoGetFixtureDef, m_fixtureDef);
 
     TLOC_DECL_AND_DEF_SETTER
       (entity_type*, DoSetParent, m_fixtureDef.userData);
 
   private:
+    shape_internal_type_ptr   m_internalShape;
     fixture_def_internal_type m_fixtureDef;
-    const shape_type* m_shape;
   };
 
 };};};

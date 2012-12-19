@@ -68,25 +68,21 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   public:
     SharedPtr();
-    SharedPtr(pointer a_rawPtr);
+    explicit SharedPtr(pointer a_rawPtr);
     SharedPtr(const this_type& a_other);
 
     template <typename T_Other>
     SharedPtr(const SharedPtr<T_Other>& a_other);
-
     ~SharedPtr();
 
     template <typename T_Other>
     this_type& operator= (const SharedPtr<T_Other>& a_other);
     this_type& operator= (const this_type& a_other);
 
-    template <typename T_Other>
-    void  CastFrom(const SharedPtr<T_Other>& a_other);
-
     ///-------------------------------------------------------------------------
     /// @brief Dangerous to use this. Use SharedPtr<> semantics
     ///-------------------------------------------------------------------------
-    pointer       Expose() const;
+    pointer       get() const;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -102,8 +98,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     pointer   operator->() const;
     reference operator*() const;
+    operator  bool() const;
 
-    ref_count_type GetRefCount() const;
+    ref_count_type use_count() const;
+    bool           unique() const;
+
+    void           reset();
+    template <typename Y>
+    void           reset(Y* a_ptr);
 
   private:
     void DoAddRef();
@@ -113,6 +115,20 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer           m_rawPtr;
     ref_count_type*   m_refCount;
   };
+
+  //------------------------------------------------------------------------
+  // Template definitions
+
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename T_Other>
+  SharedPtr<T, T_NullCopyPolicy>::
+    SharedPtr(const SharedPtr<T_Other>& a_other)
+    : m_rawPtr  (a_other.get() )
+    , m_refCount(a_other.DoExposeCounter() )
+  {
+    // Mainly for containers
+    DoAddRef();
+  }
 
 };};};
 

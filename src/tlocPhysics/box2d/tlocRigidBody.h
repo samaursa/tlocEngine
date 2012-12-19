@@ -4,6 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
@@ -12,9 +13,9 @@
 #include <tlocMath/angle/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
-#include <tlocPhysics/box2d/tlocRigidBodyShape.h>
+#include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
 
-#include <Box2D/Dynamics/b2Body.h>
+class b2Body;
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -27,6 +28,10 @@ namespace tloc { namespace physics { namespace box2d {
 
   class World;
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBody is an internal class used in RigidBodyComponent. Defines
+  /// the "invisible" physical attributes of a rigid body.
+  ///-------------------------------------------------------------------------
   class RigidBody
   {
   public:
@@ -38,25 +43,23 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2Body                rigid_body_internal_type;
     typedef core::error::Error    error_type;
 
-    typedef f32                   float_type;
-    typedef math::Vec2f32         vec_type;
-    typedef math::Mat2f32         matrix_type;
-    typedef math::Radian32        angle_type;
+    typedef tl_float              float_type;
+    typedef math::Vec2f           vec_type;
+    typedef math::Mat2f           matrix_type;
+    typedef math::Radian          angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
 
     typedef rigid_body_def_type::rigid_body_type_type
                                                rigid_body_type_type;
 
-    typedef rigid_body_def_type::rigid_body_internal_type_type
-                                               rigid_body_internal_type_type;
-
-    typedef RigidBodyShape                     rigid_body_shape_type;
+    typedef RigidBodyShapeDef                  rigid_body_shape_def_type;
 
     typedef World                              world_type;
 
   public:
-    error_type CreateRigidBodyShape(const rigid_body_shape_type& a_rigidBodyShape);
+    error_type
+      CreateRigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape);
 
   public:
 
@@ -114,7 +117,16 @@ namespace tloc { namespace physics { namespace box2d {
 
     void SetGravityScale(float_type a_gravityScale);
 
-    void SetType(rigid_body_type_type a_type);
+    template <typename T_RigidBodyType>
+    void SetType(rigid_body_type_type a_type)
+    {
+      type_traits::AssertTypeIsSupported
+        < T_RigidBodyType,
+        p_rigid_body::StaticBody,
+        p_rigid_body::KinematicBody,
+        p_rigid_body::DynamicBody>();
+      DoSetType<T_RigidBodyType>();
+    }
 
     void SetBullet(bool a_flag);
 
@@ -129,16 +141,20 @@ namespace tloc { namespace physics { namespace box2d {
 
     RigidBody();
 
-    error_type Initialize(rigid_body_internal_type* a_rigidBody,
-                          entity_type* a_parent);
-    error_type Shutdown();
+    error_type DoInitialize(rigid_body_internal_type* a_rigidBody,
+                            entity_type* a_parent);
+    error_type DoShutdown();
 
   protected:
-    rigid_body_internal_type* GetInternalRigidBody();
+    rigid_body_internal_type* DoGetInternalRigidBody();
 
     entity_type* DoGetParent();
     void DoSetParent(entity_type* a_parent);
     void DoSetParentNull();
+
+  private:
+    template <typename T_RigidBodyType>
+    void DoSetType();
 
   private:
     core::utils::Checkpoints m_flags;

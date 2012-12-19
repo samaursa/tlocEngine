@@ -284,6 +284,11 @@ namespace tloc { namespace graphics { namespace priv {
     ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
   }
 
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetTitle(const char* a_title)
+  {
+    SetWindowText(m_handle, a_title);
+  }
+
   bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::IsCreated() const
   {
     return IsWindow(m_handle) == 1;

@@ -1,10 +1,38 @@
 #include "tlocRigidBodyDef.h"
 
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+
 #include <tlocMath/vector/tlocVector2.inl>
+
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace tloc { namespace physics { namespace box2d {
 
-  RigidBodyDef::RigidBodyDef()
+  //////////////////////////////////////////////////////////////////////////
+  // Free definitions
+
+  namespace {
+
+    typedef f32 float_internal_type;
+
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // RigidBody - RigidBodyDef Policy types
+
+  namespace p_rigid_body
+  {
+    const value_type StaticBody   ::s_rigidBodyType = b2_staticBody;
+    const value_type KinematicBody::s_rigidBodyType = b2_kinematicBody;
+    const value_type DynamicBody  ::s_rigidBodyType = b2_dynamicBody;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // RigidBodyDef
+
+  RigidBodyDef::
+    RigidBodyDef()
+    : m_rigidBodyDef(new rigid_body_def_internal_type)
   {
     SetPosition(vec_type(0.0f,0.0f));
     SetAngle(0.0f);
@@ -16,37 +44,252 @@ namespace tloc { namespace physics { namespace box2d {
     SetAwake(true);
     SetFixedRotation(false);
     SetBullet(false);
-    SetType(rigid_body::k_staticBody);
+    SetType<p_rigid_body::StaticBody>();
     SetActive(true);
     SetGravityScale(1.0f);
   }
 
-  RigidBodyDef::vec_type RigidBodyDef::GetPosition() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::
+    ~RigidBodyDef()
   {
-    return vec_type(m_rigidBodyDef.position.x, m_rigidBodyDef.position.y);
+    //delete m_rigidBodyDef;
   }
 
-  RigidBodyDef::vec_type RigidBodyDef::GetLinearVelocity() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::rigid_body_type_type RigidBodyDef::
+    GetType() const
   {
-    return vec_type(m_rigidBodyDef.linearVelocity.x,
-      m_rigidBodyDef.linearVelocity.y);
+    return static_cast<rigid_body_type_type>(m_rigidBodyDef->type);
   }
 
-  void RigidBodyDef::SetType(rigid_body_type_type a_rigidBodyType)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::vec_type RigidBodyDef::
+    GetPosition() const
   {
-    m_rigidBodyDef.type = (rigid_body_internal_type_type)a_rigidBodyType;
+    return vec_type(m_rigidBodyDef->position.x, m_rigidBodyDef->position.y);
   }
 
-  void RigidBodyDef::SetPosition(vec_type a_position)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::float_type RigidBodyDef::
+    GetAngle() const
   {
-    m_rigidBodyDef.position.x = a_position[0];
-    m_rigidBodyDef.position.y = a_position[1];
+    return m_rigidBodyDef->angle;
   }
 
-  void RigidBodyDef::SetLinearVelocity(vec_type a_linearVelocity)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::vec_type RigidBodyDef::
+    GetLinearVelocity() const
   {
-    m_rigidBodyDef.linearVelocity.x = a_linearVelocity[0];
-    m_rigidBodyDef.linearVelocity.y = a_linearVelocity[1];
+    return vec_type(m_rigidBodyDef->linearVelocity.x,
+                    m_rigidBodyDef->linearVelocity.y);
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::float_type RigidBodyDef::
+    GetAngularVelocity() const
+  {
+    return m_rigidBodyDef->angularVelocity;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::float_type RigidBodyDef::
+    GetLinearDamping() const
+  {
+    return m_rigidBodyDef->linearDamping;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::float_type RigidBodyDef::
+    GetAngularDamping() const
+  {
+    return m_rigidBodyDef->angularDamping;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyDef::
+    IsBullet() const
+  {
+    return m_rigidBodyDef->bullet;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyDef::
+    IsSleepingAllowed() const
+  {
+    return m_rigidBodyDef->allowSleep;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyDef::
+    IsAwake() const
+  {
+    return m_rigidBodyDef->awake;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyDef::
+    IsActive() const
+  {
+    return m_rigidBodyDef->active;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyDef::
+    IsFixedrotation() const
+  {
+    return m_rigidBodyDef->fixedRotation;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyDef::float_type RigidBodyDef::
+    GetGravityScale() const
+  {
+    return m_rigidBodyDef->gravityScale;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetPosition(vec_type a_position)
+  {
+    m_rigidBodyDef->position.x = static_cast<float_internal_type>(a_position[0]);
+    m_rigidBodyDef->position.y = static_cast<float_internal_type>(a_position[1]);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetAngle(float_type a_angle)
+  {
+    m_rigidBodyDef->angle = static_cast<float_internal_type>(a_angle);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetLinearVelocity(vec_type a_linearVelocity)
+  {
+    m_rigidBodyDef->linearVelocity.x =
+      static_cast<float_internal_type>(a_linearVelocity[0]);
+
+    m_rigidBodyDef->linearVelocity.y =
+      static_cast<float_internal_type>(a_linearVelocity[1]);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetAngularVelocity(float_type a_angularVelocity)
+  {
+    m_rigidBodyDef->angularVelocity =
+      static_cast<float_internal_type>(a_angularVelocity);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetLinearDamping(float_type a_linearDamping)
+  {
+    m_rigidBodyDef->linearDamping =
+      static_cast<float_internal_type>(a_linearDamping);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetAngularDamping(float_type a_angularDamping)
+  {
+    m_rigidBodyDef->angularDamping =
+      static_cast<float_internal_type>(a_angularDamping);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetBullet(bool a_bullet)
+  {
+    m_rigidBodyDef->bullet = a_bullet;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetAllowsSleep(bool a_allowSleep)
+  {
+    m_rigidBodyDef->allowSleep = a_allowSleep;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetAwake(bool a_awake)
+  {
+    m_rigidBodyDef->awake = a_awake;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetActive(bool a_active)
+  {
+    m_rigidBodyDef->active = a_active;
+  }
+
+  ////xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetFixedRotation(bool a_fixedRotation)
+  {
+    m_rigidBodyDef->fixedRotation = a_fixedRotation;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyDef::
+    SetGravityScale(float_type a_gravityScale)
+  {
+    m_rigidBodyDef->gravityScale =
+      static_cast<float_internal_type>(a_gravityScale);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const RigidBodyDef::rigid_body_def_internal_type& RigidBodyDef::
+    DoGetRigidBodyDef() const
+  {
+    return *m_rigidBodyDef;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_RigidBodyType>
+  void RigidBodyDef::
+    DoSetType()
+  {
+    m_rigidBodyDef->type =
+      static_cast<b2BodyType>(T_RigidBodyType::s_rigidBodyType);
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Explicit instantiation
+
+  template void RigidBodyDef::DoSetType<p_rigid_body::StaticBody>();
+  template void RigidBodyDef::DoSetType<p_rigid_body::KinematicBody>();
+  template void RigidBodyDef::DoSetType<p_rigid_body::DynamicBody>();
 
 };};};

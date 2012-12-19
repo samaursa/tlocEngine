@@ -5,6 +5,7 @@
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/opengl/tlocError.h>
 
 #include <tlocMath/vector/tlocVector4.h>
 
@@ -89,6 +90,11 @@ namespace TestingShaderProgram
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     CHECK(sp.Link() == ErrorSuccess());
+
+    CHECK(gl::Error().Succeeded());
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
+    CHECK(gl::Error().Succeeded());
   }
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
@@ -108,6 +114,9 @@ namespace TestingShaderProgram
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
     CHECK(sp.Link() == ErrorSuccess());
 
+    sp.LoadAttributeInfo();
+    sp.LoadUniformInfo();
+
     CHECK(sp.Get<gl::p_shader_program::DeleteStatus>() == 0);
     CHECK(sp.Get<gl::p_shader_program::LinkStatus>() == 1);
     CHECK(sp.Get<gl::p_shader_program::ValidateStatus>() == 1);
@@ -118,7 +127,7 @@ namespace TestingShaderProgram
     CHECK(sp.Get<gl::p_shader_program::ActiveAttributeMaxLength>() == 8);
   }
 
-  TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
+  /*TEST_CASE("Graphics/ShaderProgram/Uniforms", "")
   {
     using namespace math;
 
@@ -151,5 +160,5 @@ namespace TestingShaderProgram
     REQUIRE(sp.Enable() == ErrorSuccess() );
     CHECK(sp.LoadAllAttributes() == ErrorSuccess() );
     CHECK(sp.Disable() == ErrorSuccess() );
-  }
+  }*/
 };

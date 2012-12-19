@@ -3,11 +3,12 @@
 #define _TLOC_PHYSICS_BOX2D_RIGID_BODY_DEF_H_
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 
-#include <Box2D/Dynamics/b2Body.h>
+struct b2BodyDef;
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -17,16 +18,19 @@ namespace tloc { namespace physics { namespace component_system {
 
 namespace tloc { namespace physics { namespace box2d {
 
-  namespace rigid_body
+  namespace p_rigid_body
   {
-    enum RigidBodyType
-    {
-      k_staticBody = b2_staticBody,
-      k_kinematicBody = b2_kinematicBody,
-      k_dynamicBody = b2_dynamicBody
-    }; typedef u32 value_type;
+    typedef u32   value_type;
+    struct StaticBody     { static const value_type s_rigidBodyType; };
+    struct KinematicBody  { static const value_type s_rigidBodyType; };
+    struct DynamicBody    { static const value_type s_rigidBodyType; };
   };
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBodyDef is used in conjunction with RigidBody and RigidBody
+  /// component. Used to define "invisible" attributes of the RigidBody before
+  /// construction.
+  ///-------------------------------------------------------------------------
   class RigidBodyDef
   {
   public:
@@ -34,89 +38,81 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef RigidBodyDef  this_type;
-    typedef b2BodyDef     rigid_body_def_internal_type;
 
-    typedef rigid_body::value_type  rigid_body_type_type;
-    typedef b2BodyType              rigid_body_internal_type_type;
-    typedef math::Vec2f32           vec_type;
-    typedef f32                     float_type;
+    typedef b2BodyDef                         rigid_body_def_internal_type;
+    
+    typedef core::smart_ptr::SharedPtr<rigid_body_def_internal_type>     
+                                              rigid_body_def_internal_type_ptr;
+
+    typedef p_rigid_body::value_type  rigid_body_type_type;
+    typedef math::Vec2f               vec_type;
+    typedef tl_float                  float_type;
 
   public:
     RigidBodyDef();
+    ~RigidBodyDef();
 
-    TLOC_DECL_AND_DEF_GETTER
-      (rigid_body_type_type, GetType, (rigid_body_type_type)m_rigidBodyDef.type);
+    rigid_body_type_type GetType() const;
 
-    vec_type        GetPosition() const;
+    vec_type   GetPosition() const;
+    float_type GetAngle() const;
 
-    TLOC_DECL_AND_DEF_GETTER
-      (float_type,  GetAngle, m_rigidBodyDef.angle);
+    vec_type   GetLinearVelocity() const;
+    float_type GetAngularVelocity() const;
 
-    vec_type        GetLinearVelocity() const;
+    float_type GetLinearDamping() const;
+    float_type GetAngularDamping() const;
 
-    TLOC_DECL_AND_DEF_GETTER
-      (float_type,  GetAngularVelocity, m_rigidBodyDef.angularVelocity);
+    bool IsBullet() const;
 
-    TLOC_DECL_AND_DEF_GETTER
-      (float_type,  GetLinearDamping, m_rigidBodyDef.linearDamping);
-    TLOC_DECL_AND_DEF_GETTER
-      (float_type,  GetAngularDamping, m_rigidBodyDef.angularDamping);
+    bool IsSleepingAllowed() const;
+    bool IsAwake() const;
+    bool IsActive() const;
 
-    TLOC_DECL_AND_DEF_GETTER
-      (bool,        IsBullet, m_rigidBodyDef.bullet);
+    bool IsFixedrotation() const;
 
-    TLOC_DECL_AND_DEF_GETTER
-      (bool,        IsSleepingAllowed, m_rigidBodyDef.allowSleep);
-    TLOC_DECL_AND_DEF_GETTER
-      (bool,        IsAwake, m_rigidBodyDef.awake);
-    TLOC_DECL_AND_DEF_GETTER
-      (bool,        IsActive, m_rigidBodyDef.active);
-
-    TLOC_DECL_AND_DEF_GETTER
-      (bool,        IsFixedRotation, m_rigidBodyDef.fixedRotation);
-
-    TLOC_DECL_AND_DEF_GETTER
-      (float_type,  GetGravityScale, m_rigidBodyDef.gravityScale);
+    float_type GetGravityScale() const;
 
   public:
-    void            SetType(rigid_body_type_type a_rigidBodyType);
+    template <typename T_RigidBodyType>
+    void SetType()
+    {
+      type_traits::AssertTypeIsSupported
+        < T_RigidBodyType,
+        p_rigid_body::StaticBody,
+        p_rigid_body::KinematicBody,
+        p_rigid_body::DynamicBody>();
+      DoSetType<T_RigidBodyType>();
+    }
 
-    void            SetPosition(vec_type a_position);
+    void SetPosition(vec_type a_position);
+    void SetAngle(float_type a_angle);
 
-    TLOC_DECL_AND_DEF_SETTER
-      (float_type,  SetAngle, m_rigidBodyDef.angle);
+    void SetLinearVelocity(vec_type a_linearVelocity);
+    void SetAngularVelocity(float_type a_angularVelocity);
 
-    void            SetLinearVelocity(vec_type a_linearVelocity);
+    void SetLinearDamping(float_type a_linearDamping);
+    void SetAngularDamping(float_type a_angularDamping);
 
-    TLOC_DECL_AND_DEF_SETTER
-      (float_type,  SetAngularVelocity, m_rigidBodyDef.angularVelocity);
-    TLOC_DECL_AND_DEF_SETTER
-      (float_type,  SetLinearDamping, m_rigidBodyDef.linearDamping);
-    TLOC_DECL_AND_DEF_SETTER
-      (float_type,  SetAngularDamping, m_rigidBodyDef.angularDamping);
+    void SetBullet(bool a_bullet);
 
-    TLOC_DECL_AND_DEF_SETTER
-      (bool,        SetBullet, m_rigidBodyDef.bullet);
+    void SetAllowsSleep(bool a_allowSleep);
+    void SetAwake(bool a_awake);
+    void SetActive(bool a_active);
 
-    TLOC_DECL_AND_DEF_SETTER
-      (bool,        SetAllowsSleep, m_rigidBodyDef.allowSleep);
-    TLOC_DECL_AND_DEF_SETTER
-      (bool,        SetAwake, m_rigidBodyDef.awake);
-    TLOC_DECL_AND_DEF_SETTER
-      (bool,        SetActive, m_rigidBodyDef.active);
+    void SetFixedRotation(bool a_fixedRotation);
 
-    TLOC_DECL_AND_DEF_SETTER
-      (bool,        SetFixedRotation, m_rigidBodyDef.fixedRotation);
-
-    TLOC_DECL_AND_DEF_SETTER
-      (float_type,  SetGravityScale, m_rigidBodyDef.gravityScale);
+    void SetGravityScale(float_type a_gravityScale);
 
   protected:
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (rigid_body_def_internal_type, GetRigidBodyDef, m_rigidBodyDef);
+    const rigid_body_def_internal_type& DoGetRigidBodyDef() const;
 
   private:
-    rigid_body_def_internal_type m_rigidBodyDef;
+    template <typename T_RigidBodyType>
+    void DoSetType();
+
+  private:
+    rigid_body_def_internal_type_ptr m_rigidBodyDef;
   };
 
 };};};

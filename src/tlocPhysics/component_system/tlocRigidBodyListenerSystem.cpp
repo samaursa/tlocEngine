@@ -4,6 +4,7 @@
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
+#include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
 #include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
@@ -12,14 +13,14 @@ TLOC_DEF_TYPE(tloc::physics::component_system::RigidBodyListenerSystem);
 
 namespace tloc { namespace physics { namespace component_system {
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Free functions and definitions
 
   namespace {
 
-    typedef RigidBodyListener                         rb_listener_component_type;
+    typedef RigidBodyListener                         rb_listener_component;
 
-    typedef rb_listener_component_type::rigid_body_listener_type
+    typedef rb_listener_component::rigid_body_listener_type
                                                       rb_listener_type;
 
     typedef RigidBodyListenerSystem::entity_type      entity_type;
@@ -37,88 +38,101 @@ namespace tloc { namespace physics { namespace component_system {
     };
 
     rb_listener_type*
-      GetRigidBodyListener(const component_list* a_rbListenerComponents)
+      DoGetRigidBodyListener(const component_list* a_rbListenerComponents)
     {
       using namespace tloc::core::component_system;
 
-      ComponentMapper<rb_listener_component_type>
+      ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component_type& rbListenerComponent =
+      rb_listener_component& rbListenerComponent =
         rbListenerComponentsMapped[0];
 
       return rbListenerComponent.GetRigidBodyListener();
     }
 
-    void SendOnContactBegin(const entity_type* a_sendToEnt,
-                            const entity_type* a_contactWithEnt)
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      DoSendOnContactBegin(const entity_type* a_sendToEnt,
+                           const entity_type* a_contactWithEnt)
     {
       const entity_type::component_list* rbListenerComponents;
       rb_listener_type* rbListener;
 
       rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
 
       if (!rbListenerComponents->empty())
       {
-        rbListener = GetRigidBodyListener(rbListenerComponents);
+        rbListener = DoGetRigidBodyListener(rbListenerComponents);
         rbListener->OnContactBegin(a_contactWithEnt);
       }
     }
 
-    void SendOnContactEnd(const entity_type* a_sendToEnt,
-      const entity_type* a_contactWithEnt)
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      SendOnContactEnd(const entity_type* a_sendToEnt,
+                       const entity_type* a_contactWithEnt)
     {
       const entity_type::component_list* rbListenerComponents;
       rb_listener_type* rbListener;
 
       rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigid_body_listener);
+        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
 
       if (!rbListenerComponents->empty())
       {
-        rbListener = GetRigidBodyListener(rbListenerComponents);
+        rbListener = DoGetRigidBodyListener(rbListenerComponents);
         rbListener->OnContactEnd(a_contactWithEnt);
       }
     }
   };
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // RigidBodyListenerSystem
 
-  RigidBodyListenerSystem::RigidBodyListenerSystem(event_manager* a_eventMgr,
-                                                   entity_manager* a_entityMgr,
-                                                   physics_manager* a_physicsMgr)
+  RigidBodyListenerSystem::
+    RigidBodyListenerSystem(event_manager* a_eventMgr,
+                            entity_manager* a_entityMgr,
+                            physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigid_body_listener))
+    , core::Variadic<component_type, 1>(components::k_rigidBodyListener))
     , m_physicsMgr(a_physicsMgr)
   {
   }
 
-  RigidBodyListenerSystem::error_type
-    RigidBodyListenerSystem::Pre_Initialize()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+    Pre_Initialize()
   {
     m_physicsMgr->Register(this);
     m_allContactEvents.resize(contact::k_count);
     return ErrorSuccess();
   }
 
-  RigidBodyListenerSystem::error_type
-    RigidBodyListenerSystem::Post_Shutdown()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+    Post_Shutdown()
   {
     m_physicsMgr->UnRegister(this);
     m_allContactEvents.clear();
     return ErrorSuccess();
   }
 
-  RigidBodyListenerSystem::error_type
-    RigidBodyListenerSystem::InitializeEntity(entity_manager* a_mgr,
-                                              entity_type* a_ent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+    InitializeEntity(entity_manager* a_mgr,
+                     entity_type* a_ent)
   {
     const entity_type* ent = a_ent;
 
     const entity_type::component_list& rbComponents =
-      ent->GetComponents(components::k_rigid_body);
+      ent->GetComponents(components::k_rigidBody);
 
     if (rbComponents.empty())
     {
@@ -127,21 +141,27 @@ namespace tloc { namespace physics { namespace component_system {
                   RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
+      return error::error_rigid_body_not_attached;
     }
 
     TLOC_UNUSED(a_mgr);
     return ErrorSuccess();
   }
 
-  RigidBodyListenerSystem::error_type
-    RigidBodyListenerSystem::ShutdownEntity(entity_manager* a_mgr,
-                                            entity_type* a_ent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+    ShutdownEntity(entity_manager* a_mgr,
+                   entity_type* a_ent)
   {
     TLOC_UNUSED_2(a_mgr, a_ent);
     return ErrorSuccess();
   }
 
-  void RigidBodyListenerSystem::Pre_ProcessActiveEntities()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyListenerSystem::
+    Pre_ProcessActiveEntities()
   {
     typedef contact_event_list::const_iterator      const_contact_iterator;
 
@@ -153,8 +173,8 @@ namespace tloc { namespace physics { namespace component_system {
 
     for (/* */; contactItr != contactItrEnd; ++contactItr)
     {
-      SendOnContactBegin(contactItr->m_entityA, contactItr->m_entityB);
-      SendOnContactBegin(contactItr->m_entityB, contactItr->m_entityA);
+      DoSendOnContactBegin(contactItr->m_entityA, contactItr->m_entityB);
+      DoSendOnContactBegin(contactItr->m_entityB, contactItr->m_entityA);
     }
 
     currContactEventList = &m_allContactEvents[contact::k_end];
@@ -169,19 +189,28 @@ namespace tloc { namespace physics { namespace component_system {
     }
   }
 
-  void RigidBodyListenerSystem::ProcessEntity(entity_manager* a_mgr,
-                                              entity_type* a_ent)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void RigidBodyListenerSystem::
+    ProcessEntity(entity_manager* a_mgr,
+                  entity_type* a_ent)
   {
     TLOC_UNUSED_2(a_mgr, a_ent);
   }
 
-  bool RigidBodyListenerSystem::OnContactBegin(const contact_event_type& a_event)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyListenerSystem::
+    OnContactBegin(const contact_event_type& a_event)
   {
     m_allContactEvents[contact::k_begin].push_back(a_event);
     return false;
   }
 
-  bool RigidBodyListenerSystem::OnContactEnd(const contact_event_type& a_event)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool RigidBodyListenerSystem::
+    OnContactEnd(const contact_event_type& a_event)
   {
     m_allContactEvents[contact::k_end].push_back(a_event);
     return false;

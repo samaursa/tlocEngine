@@ -10,86 +10,105 @@
 
 namespace tloc { namespace physics { namespace box2d {
 
-  //------------------------------------------------------------------------
-  // Free functions
+  //////////////////////////////////////////////////////////////////////////
+  // Free functions and definitions
 
-  ContactEvent::entity_type*
-    GetParentEntity(b2Fixture* a_fixture)
-  {
-    typedef ContactEvent::entity_type entity_type;
+  namespace {
 
-    return static_cast<entity_type*>
-      (a_fixture->GetUserData());
-  }
+    typedef ContactEvent::entity_type   entity_type;
+    typedef b2Fixture                   fixture_type;
 
-  ContactEvent CreateContactEvent(b2Fixture* a_fixtureA, b2Fixture* a_fixtureB)
-  {
-    typedef ContactEvent::entity_type entity_type;
+    typedef f32                         float_internal_type;
 
-    entity_type* entityA;
-    entity_type* entityB;
-
-    entityA = GetParentEntity(a_fixtureA);
-    entityB = GetParentEntity(a_fixtureB);
-
-    return ContactEvent(entityA, entityB);
-  }
-
-  //------------------------------------------------------------------------
-  // ContactListener
-
-  class ContactListener : public b2ContactListener
-  {
-  public:
-    typedef PhysicsManager                      physics_manager_type;
-    typedef ContactEvent                        contact_event_type;
-
-  public:
-    ContactListener(physics_manager_type* a_physicsManager)
-      : m_physicsManager(a_physicsManager) {}
-
-  public:
-    void BeginContact(b2Contact* contact)
+    enum flags
     {
-      contact_event_type event =
-        CreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+      initialized,
+      count
+    };
 
-      m_physicsManager->SendOnContactBegin(event);
+    entity_type*
+      DoGetParentEntity(fixture_type* a_fixture)
+    {
+      return static_cast<entity_type*>
+        (a_fixture->GetUserData());
     }
 
-    void EndContact(b2Contact* contact)
-    {
-      contact_event_type event =
-        CreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      m_physicsManager->SendOnContactEnd(event);
+    ContactEvent
+      DoCreateContactEvent(fixture_type* a_fixtureA, fixture_type* a_fixtureB)
+    {
+      entity_type* entityA;
+      entity_type* entityB;
+
+      entityA = DoGetParentEntity(a_fixtureA);
+      entityB = DoGetParentEntity(a_fixtureB);
+
+      return ContactEvent(entityA, entityB);
     }
 
-  private:
-    physics_manager_type* m_physicsManager;
   };
 
-  //------------------------------------------------------------------------
+  namespace priv {
+
+    //////////////////////////////////////////////////////////////////////////
+    // ContactListener
+
+    // Note: This is defined in a priv namespace so that we can keep a pointer to
+    // an instance in the PhysicsManager itself. If defined in an anonymous
+    // namespace, the compiler will not be able to find the constructor.
+    class ContactListener : public b2ContactListener
+    {
+    public:
+      typedef PhysicsManager                      physics_manager;
+      typedef ContactEvent                        contact_event_type;
+
+    public:
+      ContactListener(physics_manager* a_physicsManager)
+        : m_physicsManager(a_physicsManager) {}
+
+    public:
+      void
+        BeginContact(b2Contact* contact)
+      {
+        contact_event_type event =
+          DoCreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+
+        m_physicsManager->SendOnContactBegin(event);
+      }
+
+      void
+        EndContact(b2Contact* contact)
+      {
+        contact_event_type event =
+          DoCreateContactEvent(contact->GetFixtureA(), contact->GetFixtureB());
+
+        m_physicsManager->SendOnContactEnd(event);
+      }
+
+    private:
+      physics_manager* m_physicsManager;
+    };
+
+  };
+
+  //////////////////////////////////////////////////////////////////////////
   // PhysicsManager
 
-  enum flags
-  {
-    // CHANGE FLAG TYPE
-    initialized,
-    count
-  };
-
-  PhysicsManager::PhysicsManager()
+  PhysicsManager::
+    PhysicsManager()
     : m_flags(count)
     , m_world(NULL)
     , m_contactListener(NULL)
   {
   }
 
-  PhysicsManager::error_type
-    PhysicsManager::Initialize(gravity a_gravity,
-                               velocity_iterations a_velocityIterations,
-                               position_iterations a_positionIterations)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  PhysicsManager::error_type PhysicsManager::
+    Initialize(gravity a_gravity,
+               velocity_iterations a_velocityIterations,
+               position_iterations a_positionIterations)
   {
     TLOC_ASSERT(!m_flags[initialized],
                 "PhysicsManager has already been initialized!");
@@ -105,7 +124,10 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
-  PhysicsManager::error_type PhysicsManager::Shutdown()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  PhysicsManager::error_type PhysicsManager::
+    Shutdown()
   {
     TLOC_ASSERT(m_flags[initialized],
                 "PhysicsManager has not been initialized!");
@@ -116,30 +138,42 @@ namespace tloc { namespace physics { namespace box2d {
     return ErrorSuccess();
   }
 
-  void PhysicsManager::Update(tl_float a_timeStep)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void PhysicsManager::
+    Update(tl_float a_timeStep)
   {
     TLOC_ASSERT(m_flags[initialized], "PhysicsManager is not initialized!");
     TLOC_ASSERT_NOT_NULL(m_world);
 
-    m_world->GetWorld().Step(a_timeStep,
+    m_world->GetWorld().Step(static_cast<float_internal_type>(a_timeStep),
                              m_velocityIterations, m_positionIterations);
   }
 
-  PhysicsManager::world_type& PhysicsManager::GetWorld()
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  PhysicsManager::world_type& PhysicsManager::
+    GetWorld()
   {
     TLOC_ASSERT(m_flags[initialized], "PhysicsManager is not initialized!");
     TLOC_ASSERT_NOT_NULL(m_world);
     return *m_world;
   }
 
-  const PhysicsManager::world_type& PhysicsManager::GetWorld() const
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const PhysicsManager::world_type& PhysicsManager::
+    GetWorld() const
   {
     TLOC_ASSERT(m_flags[initialized], "PhysicsManager is not initialized!");
     TLOC_ASSERT_NOT_NULL(m_world);
     return *m_world;
   }
 
-  void PhysicsManager::SendOnContactBegin(const contact_event_type& a_event)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void PhysicsManager::
+    SendOnContactBegin(const contact_event_type& a_event)
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
@@ -150,7 +184,10 @@ namespace tloc { namespace physics { namespace box2d {
     }
   }
 
-  void PhysicsManager::SendOnContactEnd(const contact_event_type& a_event)
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void PhysicsManager::
+    SendOnContactEnd(const contact_event_type& a_event)
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
@@ -163,6 +200,9 @@ namespace tloc { namespace physics { namespace box2d {
   }
 
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiation
 
 #include <tlocCore/types/tlocStrongType.inl>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>

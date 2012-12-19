@@ -14,6 +14,12 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  ///-------------------------------------------------------------------------
+  /// @brief  RigidBody component is used for giving an entity the "invisible"
+  /// physical attributes of a rigid body, such as position, velocity and type.
+  /// Note: The component is initialized during the RigidBodySystem
+  /// initialization.
+  ///-------------------------------------------------------------------------
   class RigidBody : public core::component_system::Component_T<RigidBody>
   {
   public:
@@ -23,12 +29,12 @@ namespace tloc { namespace physics { namespace component_system {
 
   public:
     RigidBody
-      (const rigid_body_def_type& a_box2dRigidBodyDef = rigid_body_def_type());
+      (const rigid_body_def_type a_rigidBodyDef);
 
     TLOC_DECL_AND_DEF_GETTERS_DIRECT
       (rigid_body_type, GetRigidBody, m_rigidBody);
 
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT
+    TLOC_DECL_AND_DEF_GETTER
       (rigid_body_def_type, GetRigidBodyDef, m_rigidBodyDef);
 
   private:
@@ -36,7 +42,7 @@ namespace tloc { namespace physics { namespace component_system {
     rigid_body_type m_rigidBody;
   };
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
   typedef core::smart_ptr::SharedPtr<RigidBody>                   RigidBodyPtr;

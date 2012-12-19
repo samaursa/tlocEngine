@@ -7,13 +7,14 @@
 
 namespace tloc { namespace physics { namespace component_system{
 
-  RigidBody::RigidBody(const rigid_body_def_type& a_box2dRigidBodyDef)
-    : base_type(components::k_rigid_body)
-    , m_rigidBodyDef(a_box2dRigidBodyDef)
+  RigidBody::
+    RigidBody(const rigid_body_def_type a_rigidBodyDef)
+    : base_type(components::k_rigidBody)
+    , m_rigidBodyDef(a_rigidBodyDef)
   {
   }
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 
   template class core::smart_ptr::SharedPtr<RigidBody>;

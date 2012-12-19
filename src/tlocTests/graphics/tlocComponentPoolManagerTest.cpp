@@ -57,11 +57,11 @@ namespace TestingComponentPoolManager
 
     typedef T_PoolType                        pool_type;
     // iterator of ComponentPool
-    typedef typename pool_type::value_type    value_type;
+    typedef typename pool_type::value_type    smart_ptr_value_type;
 
     {
       ComponentPoolManager::iterator compPool =
-        a_mgr.CreateNewPool<value_type>(a_compType);
+        a_mgr.CreateNewPool<smart_ptr_value_type>(a_compType);
 
 
       pool_type* intCompPool =
@@ -70,18 +70,18 @@ namespace TestingComponentPoolManager
       pool_type::iterator itr = intCompPool->GetNext();
 
       {
-        value_type& myPtr = itr->GetElement();
-        myPtr = new value_type::value_type();
+        smart_ptr_value_type& myPtr = itr->GetElement();
+        myPtr = smart_ptr_value_type(new smart_ptr_value_type::value_type);
         myPtr->m_value = 0;
       }
 
-      CHECK(itr->GetElement().GetRefCount() == 1);
+      CHECK(itr->GetElement().use_count() == 1);
 
       for (tl_int i = 1; i < 10; ++i)
       {
         itr = intCompPool->GetNext();
-        value_type& myPtr = itr->GetElement();
-        myPtr = new value_type::value_type();
+        smart_ptr_value_type& myPtr = itr->GetElement();
+        myPtr = smart_ptr_value_type(new smart_ptr_value_type::value_type);
         myPtr->m_value = i;
       }
     }

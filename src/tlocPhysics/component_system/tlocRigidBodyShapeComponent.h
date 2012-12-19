@@ -25,13 +25,13 @@ namespace tloc { namespace physics { namespace component_system {
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
 
   public:
-    RigidBodyShape(const rigid_body_shape_def_type* a_rigidBodyShape);
+    RigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape);
 
     TLOC_DECL_AND_DEF_GETTER
-      (rigid_body_shape_def_type*, GetRigidBodyShape, m_rigidBodyShape);
+      (rigid_body_shape_def_type, GetRigidBodyShape, m_rigidBodyShape);
 
   private:
-    const rigid_body_shape_def_type* m_rigidBodyShape;
+    rigid_body_shape_def_type m_rigidBodyShape;
   };
 
   //////////////////////////////////////////////////////////////////////////

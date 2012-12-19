@@ -29,16 +29,16 @@ namespace tloc { namespace physics { namespace component_system {
 
   public:
     RigidBody
-      (const rigid_body_def_type* a_rigidBodyDef);
+      (const rigid_body_def_type a_rigidBodyDef);
 
     TLOC_DECL_AND_DEF_GETTERS_DIRECT
       (rigid_body_type, GetRigidBody, m_rigidBody);
 
     TLOC_DECL_AND_DEF_GETTER
-      (rigid_body_def_type*, GetRigidBodyDef, m_rigidBodyDef);
+      (rigid_body_def_type, GetRigidBodyDef, m_rigidBodyDef);
 
   private:
-    const rigid_body_def_type* m_rigidBodyDef;
+    rigid_body_def_type m_rigidBodyDef;
     rigid_body_type m_rigidBody;
   };
 

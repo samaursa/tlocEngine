@@ -17,7 +17,7 @@ namespace tloc { namespace physics { namespace box2d {
   void RigidBodyShapeDef::SetShape(const shape_type& a_shape)
   {
     m_internalShape = a_shape.DoGetInternalShape();
-    m_fixtureDef.shape = m_internalShape.Expose();
+    m_fixtureDef.shape = m_internalShape.get();
   }
 
 };};};

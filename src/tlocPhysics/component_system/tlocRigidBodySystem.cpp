@@ -59,9 +59,9 @@ namespace tloc { namespace physics { namespace component_system {
 
       for (size_type i = 0; i < numComponents; ++i)
       {
-        const rb_shape_type* rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+        const rb_shape_type rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
 
-        result = rb.CreateRigidBodyShape(*rbShape);
+        result = rb.CreateRigidBodyShape(rbShape);
 
         if (result != ErrorSuccess())
         {

@@ -20,7 +20,9 @@ namespace tloc { namespace physics { namespace box2d {
   public:
     typedef CircleShape                     this_type;
     typedef Shape                           base_type;
-    typedef base_type::shape_internal_type  shape_internal_type;
+    typedef base_type::shape_interal_type   shape_interal_type;
+    typedef base_type::shape_internal_type_ptr  
+                                            shape_internal_type_ptr;
 
     typedef base_type::float_type           float_type;
     typedef math::Vec2f32                   vec_type;
@@ -28,23 +30,20 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2CircleShape                   circle_shape_internal_type;
 
   public:
+    CircleShape();
+
     void GetPositionLocal(vec_type& a_position);
 
-    virtual TLOC_DECL_AND_DEF_GETTER
-      (float_type, GetRadius, m_shape.m_radius);
+    float_type GetRadius();
 
   public:
     void SetPositionLocal(const vec_type& a_position);
 
-    virtual TLOC_DECL_AND_DEF_SETTER
-      (float_type, SetRadius, m_shape.m_radius);
-
-  protected:
-    virtual TLOC_DECL_AND_DEF_GETTER
-      (shape_internal_type*, DoGetInternalShape, (shape_internal_type*)&m_shape);
+    void SetRadius(float_type a_radius);
 
   private:
-    circle_shape_internal_type m_shape;
+    circle_shape_internal_type* DoGetInternalCircleShape();
+
   };
 
 };};};

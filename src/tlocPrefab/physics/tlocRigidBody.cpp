@@ -90,7 +90,7 @@ namespace tloc { namespace prefab { namespace physics {
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(k_rigidBodyShape) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyShape); }
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyShapePtr>(k_rigidBodyShape); }
     else
     { cpool = a_poolMgr.GetPool(k_rigidBodyShape); }
 
@@ -140,7 +140,7 @@ namespace tloc { namespace prefab { namespace physics {
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(k_rigidBodyListener) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyListener); }
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyListenerPtr>(k_rigidBodyListener); }
     else
     { cpool = a_poolMgr.GetPool(k_rigidBodyListener); }
 

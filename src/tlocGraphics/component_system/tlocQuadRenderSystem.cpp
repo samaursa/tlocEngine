@@ -183,7 +183,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr.IsNull() || m_shaderPtr.Expose() != sp.Expose() )
+      if ( m_shaderPtr || m_shaderPtr.get() != sp.get() )
       {
         sp->Enable();
         m_shaderPtr = sp;

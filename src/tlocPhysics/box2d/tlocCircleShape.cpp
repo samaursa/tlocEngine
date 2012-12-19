@@ -61,7 +61,7 @@ namespace tloc { namespace physics { namespace box2d {
     DoGetInternalCircleShape()
   {
     shape_internal_type_ptr shape = DoGetInternalShape();
-    return static_cast<circle_shape_internal_type*>(shape.Expose());;
+    return static_cast<circle_shape_internal_type*>(shape.get());;
   }
 
 

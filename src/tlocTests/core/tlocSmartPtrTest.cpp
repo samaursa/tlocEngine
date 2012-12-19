@@ -33,20 +33,21 @@ namespace TestingSmartPtr
 
   void PassSharedPtr(const smart_ptr::SharedPtr<Shared>& a_other)
   {
-    tl_int currCount = a_other.GetRefCount();
+    tl_int currCount = a_other.use_count();
     smart_ptr::SharedPtr<Shared> localPtr = a_other;
-    CHECK(localPtr.GetRefCount() == currCount + 1);
+    CHECK(localPtr.use_count() == currCount + 1);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr", "")
   {
     {
       smart_ptr::SharedPtr<Shared> sp( new Shared(5) );
+      CHECK(sp);
       CHECK(Shared::m_numCtors == 1);
-      CHECK(sp.GetRefCount() == 1);
+      CHECK(sp.use_count() == 1);
       smart_ptr::SharedPtr<Shared> sp2 = sp;
       CHECK(Shared::m_numCtors == 1);
-      CHECK(sp.GetRefCount() == 2);
+      CHECK(sp.use_count() == 2);
 
       CHECK(sp->m_value == 5);
       CHECK(sp2->m_value == 5);
@@ -62,11 +63,11 @@ namespace TestingSmartPtr
 
     {
       smart_ptr::SharedPtr<Shared> sp;
-
+      CHECK_FALSE(sp);
       // This SHOULD fire an assertion - because null copy is disabled
       // smart_ptr::SharedPtr<Shared> sp2 = sp;
-      CHECK(sp.GetRefCount() == 0);
-      //CHECK(sp2.GetRefCount() == 0);
+      CHECK(sp.use_count() == 0);
+      //CHECK(sp2.use_count() == 0);
 
     } // Should not crash when being destroyed
 
@@ -77,8 +78,8 @@ namespace TestingSmartPtr
       shared_ptr_type sp;
       shared_ptr_type sp2 = sp; // Should NOT fire an assertion
 
-      CHECK(sp.GetRefCount() == 0);
-      CHECK(sp2.GetRefCount() == 0);
+      CHECK(sp.use_count() == 0);
+      CHECK(sp2.use_count() == 0);
 
     } // Should not crash when being destroyed
 
@@ -88,19 +89,61 @@ namespace TestingSmartPtr
 
       smart_ptr::SharedPtr<Shared> sp(new Shared(10));
       smart_ptr::SharedPtr<Shared> sp2 = sp;
-      CHECK(sp.GetRefCount() == 2);
+      CHECK(sp.use_count() == 2);
 
       smart_ptr::SharedPtr<Shared> sp3(new Shared(50));
       sp2 = sp3;
-      CHECK(sp.GetRefCount() == 1);
-      CHECK(sp3.GetRefCount() == 2);
+      CHECK(sp.use_count() == 1);
+      CHECK(sp3.use_count() == 2);
 
       CHECK(Shared::m_numDtors == 0);
       sp = sp3;
       CHECK(Shared::m_numDtors == 1);
-      CHECK(sp3.GetRefCount() == 3);
+      CHECK(sp3.use_count() == 3);
     }
     CHECK(Shared::m_numDtors == 2);
+  }
+
+  TEST_CASE("core/smart_ptr/shared_ptr/reset", "")
+  {
+    {
+      Shared::m_numCtors = 0;
+      Shared::m_numDtors = 0;
+      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
+      CHECK(Shared::m_numCtors == 1);
+      sp.reset();
+      CHECK(Shared::m_numDtors == 1);
+    }
+
+    {
+      Shared::m_numCtors = 0;
+      Shared::m_numDtors = 0;
+      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
+      smart_ptr::SharedPtr<Shared> sp2(sp);
+      sp.reset();
+
+      CHECK(Shared::m_numDtors == 0);
+    }
+
+    {
+      Shared::m_numCtors = 0;
+      Shared::m_numDtors = 0;
+      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
+      CHECK(Shared::m_numCtors == 1);
+      CHECK(Shared::m_numDtors == 0);
+      sp.reset(new Shared(10));
+      CHECK(Shared::m_numCtors == 2);
+      CHECK(Shared::m_numDtors == 1);
+
+      CHECK(sp.use_count() == 1);
+
+      smart_ptr::SharedPtr<Shared> sp2(sp);
+      CHECK(sp.use_count() == 2);
+      sp.reset();
+      CHECK(Shared::m_numDtors == 1);
+      sp2.reset();
+      CHECK(Shared::m_numDtors == 2);
+    }
   }
 
   template <typename T_ContainerType>
@@ -275,8 +318,10 @@ namespace TestingSmartPtr
       smart_ptr::SharedPtr<derived> convToDer;
       CHECK(base::m_ctorCount == 3);
       CHECK(base::m_dtorCount == 2);
-      convToDer.CastFrom(basePtr2);
-      CHECK(convToDer->m_value == 10);
+
+      // TODO: Test with static_pointer_cast<>() when it is available
+      //convToDer.CastFrom(basePtr2);
+      //CHECK(convToDer->m_value == 10);
     }
     CHECK(base::m_ctorCount == 3);
     CHECK(base::m_dtorCount == 3);

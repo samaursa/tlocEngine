@@ -10,7 +10,7 @@
 
 namespace TestingVector3f
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace math;
 
   struct Vector3fFixture
@@ -28,11 +28,16 @@ namespace TestingVector3f
                                CHECK((vec[1]) == (Approx(y)) ); \
                                CHECK((vec[2]) == (Approx(z)) );
 
+  TEST_CASE("Math/Vector3/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Vec3f) == (sizeof(tl_float) * 3));
+    REQUIRE(sizeof(Vec3f32) == (sizeof(f32) * 3));
+    REQUIRE(sizeof(Vec3f64) == (sizeof(f64) * 3));
+  }
+
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(Vec3f) == (sizeof(tl_float) * 3));
-
     CHECK_VEC3F(a, 1.0f, 2.0f, 3.0f); //-V550
     CHECK_VEC3F(b, 5.0f, 6.0f, 7.0f); //-V550
 
@@ -233,14 +238,14 @@ namespace TestingVector3f
     CHECK_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
     c.Norm();
     CHECK_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
-    tl_float length = c.NormLength();
+    tl_float length = c.Norm();
     CHECK(length == Approx(1.0f)); //-V550
 
     c[0] = 2; c[1] = 2; c[2] = 2;
-    c.FastNorm();
+    c.Norm<p_vector::fast>();
     tl_float percDiff = abs((c[0] - 0.577f) / c[0]);
     // Make sure all the values are the same
-    CHECK_VEC3F(c, c[0], c[0], c[0]); //-V550
+    CHECK_VEC3F(c, c[0], c[1], c[2]); //-V550
     CHECK (percDiff < 0.03f);
     length = c.Length();
     CHECK (length > 0.99f);

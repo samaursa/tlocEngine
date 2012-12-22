@@ -1,5 +1,8 @@
 #include "tlocVector.h"
+#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 #include "tlocVector.inl"
+
+#include <tlocMath/tlocMath.inl>
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -24,6 +27,18 @@
 
 #else
 
-TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+namespace tloc { namespace math {
+
+#include "tlocVectorExplicitMacros.h"
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f32, 1);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f64, 1);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f32, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f64, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f32, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f64, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f32, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f64, 4);
+
+};};
 
 #endif // TLOC_NO_SOURCE

@@ -4,14 +4,19 @@
 
 :: The following must be changed for each engine depending on the engine's
 :: environment variables
+
 SET TLOC_PATH=%CD%\..\
 SET WORKSPACE_PATH=%TLOC_PATH%
+
 SET buildPath=%WORKSPACE_PATH%\proj\VS\2008\tlocEngine.sln
+SET pathFile=%WORKSPACE_PATH%\Paths.bat
+SET versionFile=tlocVersion.h
 
 :: The following are the batch file arguments, leave them alone
 SET buildConfig=%1%
 SET buildType=%2%
 SET platform=%3%
+SET hgrevert=%4%
 
 :START
 
@@ -59,45 +64,51 @@ IF NOT "%platform%"=="Win32" (
 	EXIT /B
 )
 
-:BUILD_DEPENDENCY
+:: Check to see if revert was selected
+IF NOT "%hgrevert%"=="revert" (
+  IF NOT "%hgrevert%"=="" (
+    %ColorError%
+    ECHO "ERROR: Unsupported hg command type (%hgrevert%) selected"
+    SET errorlevel=1
+    EXIT /B
+  )
+)
 
-:: Build dependency first
-CALL %WORKSPACE_PATH%\ci\buildDependency.bat
-
-IF NOT %ERRORLEVEL%==0 (
-	%ColorError%
-	ECHO ERROR: Dependencies failed to build, check log.
-	SET buildFailed=1
-	GOTO EXIT_BUILD
+:LOAD_PATHS
+IF EXIST %pathFile% (
+  CALL %pathFile%
+) ELSE (
+  %ColorError%
+  ECHO "ERROR: Cannot file the paths.bat file"
+  SET errorlevel=1
+  EXIT /B
 )
 
 %ColorBuilding%
-
 :START_BUILDING
 
-SET VcBuildPath="%VS90COMNTOOLS%\..\..\VC\vcpackages\vcbuild.exe"
+SET BuildToolPath="%VS90COMNTOOLS%..\IDE\devenv.com"
 
 SET _buildType=Building
 IF "%buildType%"=="rebuild" (
 	SET _buildType=Re-building
 	SET buildType=/rebuild
 ) ELSE (
-	SET buildType=
+	SET buildType=/build
 )
 
 ECHO -------------------------------------------------------------------------------
 ECHO %_buildType% %buildPath%
 ECHO -------------------------------------------------------------------------------
-
-%VcBuildPath% %buildType% /upgrade %buildPath% "%buildConfig%|%platform%" | %WORKSPACE_PATH%\ci\tee.exe %WORKSPACE_PATH%\ci\output.txt
+%BuildToolPath% %buildPath% %buildType% "%buildConfig%|%platform%" | %WORKSPACE_PATH%\ci\tee.exe %WORKSPACE_PATH%\ci\output.txt
 
 :: Visual studio does not set the errorlevel flag, so we will search output.txt instead
 :: We search for "0 Projects Failed" and error
-FINDSTR /C:"0 Projects failed" %WORKSPACE_PATH%\ci\output.txt
+FINDSTR /C:", 0 failed," %WORKSPACE_PATH%\ci\output.txt
 
 SET buildFailed=%ERRORLEVEL%
 
-IF NOT %ERRORLEVEL%==0 (
+IF NOT ERRORLEVEL 0 (
 	FINDSTR /C:"error" %WORKSPACE_PATH%\ci\output.txt
 	
 	:: Now if ERRORLEVEL==0 we need to put buildFailed to 1
@@ -108,12 +119,16 @@ IF NOT %ERRORLEVEL%==0 (
 
 ECHO Build Status: %buildFailed%
 
+:: revert version file
+IF "%hgrevert%"=="revert" (
+  hg revert %WORKSPACE_PATH%\src\%versionFile%
+)
+
 :EXIT_BUILD
 IF %buildFailed%==0 (
-	:: Delete output.txt
-	del %WORKSPACE_PATH%\ci\output.txt
-
 	%ColorOk%
+  :: Delete output.txt
+  del %WORKSPACE_PATH%\ci\output.txt
 	EXIT /b 0	
 ) ELSE (
 	%ColorError%

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9734BB1E162580D3003956FE /* tlocPythagoras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB1C162580D3003956FE /* tlocPythagoras.cpp */; };
+		9734BB1F162580D3003956FE /* tlocPythagoras.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB1D162580D3003956FE /* tlocPythagoras.h */; };
 		97C87CD315DE49C500FE0A6C /* tlocMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CD015DE49C500FE0A6C /* tlocMath.cpp */; };
 		97C87CD415DE49C500FE0A6C /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CD115DE49C500FE0A6C /* tlocDepVersionCheck.cpp */; };
 		97C87CD515DE49C500FE0A6C /* tlocMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CD215DE49C500FE0A6C /* tlocMath.h */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9734BB1C162580D3003956FE /* tlocPythagoras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPythagoras.cpp; path = ../../../../src/tlocMath/utilities/tlocPythagoras.cpp; sourceTree = "<group>"; };
+		9734BB1D162580D3003956FE /* tlocPythagoras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPythagoras.h; path = ../../../../src/tlocMath/utilities/tlocPythagoras.h; sourceTree = "<group>"; };
 		97C87CCF15DE49C500FE0A6C /* tlocMath.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocMath.inl; path = ../../../../src/tlocMath/tlocMath.inl; sourceTree = "<group>"; };
 		97C87CD015DE49C500FE0A6C /* tlocMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMath.cpp; path = ../../../../src/tlocMath/tlocMath.cpp; sourceTree = "<group>"; };
 		97C87CD115DE49C500FE0A6C /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocMath/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
@@ -59,7 +63,7 @@
 		97CC765C157DD64400764CF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97F90640161D0F7300BD8A39 /* tlocAngle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAngle.cpp; path = ../../../../src/tlocMath/angle/tlocAngle.cpp; sourceTree = "<group>"; };
 		97F90641161D0F7300BD8A39 /* tlocAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngle.h; path = ../../../../src/tlocMath/angle/tlocAngle.h; sourceTree = "<group>"; };
-		97F90642161D0F7300BD8A39 /* tlocAngle.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAngle.inl; path = ../../../../src/tlocMath/angle/tlocAngle.inl; sourceTree = "<group>"; };
+		97F90642161D0F7300BD8A39 /* tlocAngle.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocAngle.inl; path = ../../../../src/tlocMath/angle/tlocAngle.inl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		97F90643161D0F7300BD8A39 /* tlocAngleExplicitMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAngleExplicitMacros.h; path = ../../../../src/tlocMath/angle/tlocAngleExplicitMacros.h; sourceTree = "<group>"; };
 		97F90647161D1E8F00BD8A39 /* tlocVector4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVector4.cpp; path = ../../../../src/tlocMath/vector/tlocVector4.cpp; sourceTree = "<group>"; };
 		97F90648161D1E8F00BD8A39 /* tlocVector4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVector4.h; path = ../../../../src/tlocMath/vector/tlocVector4.h; sourceTree = "<group>"; };
@@ -81,11 +85,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9734BB1B162580B0003956FE /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9734BB1C162580D3003956FE /* tlocPythagoras.cpp */,
+				9734BB1D162580D3003956FE /* tlocPythagoras.h */,
+			);
+			name = utilities;
+			sourceTree = "<group>";
+		};
 		97C87BE015DE3DA800FE0A6C /* tlocMath */ = {
 			isa = PBXGroup;
 			children = (
 				97F9063E161D0F5900BD8A39 /* angle */,
 				97C87CD715DE49D200FE0A6C /* matrix */,
+				9734BB1B162580B0003956FE /* utilities */,
 				97C87CD615DE49C800FE0A6C /* vector */,
 				97C87CCF15DE49C500FE0A6C /* tlocMath.inl */,
 				97C87CD015DE49C500FE0A6C /* tlocMath.cpp */,
@@ -187,6 +201,7 @@
 				97F90646161D0F7300BD8A39 /* tlocAngleExplicitMacros.h in Headers */,
 				97F9064B161D1E8F00BD8A39 /* tlocVector4.h in Headers */,
 				97F90650161D1EA200BD8A39 /* tlocMatrix4.h in Headers */,
+				9734BB1F162580D3003956FE /* tlocPythagoras.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +266,7 @@
 				97F90644161D0F7300BD8A39 /* tlocAngle.cpp in Sources */,
 				97F9064A161D1E8F00BD8A39 /* tlocVector4.cpp in Sources */,
 				97F9064F161D1EA200BD8A39 /* tlocMatrix4.cpp in Sources */,
+				9734BB1E162580D3003956FE /* tlocPythagoras.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,6 +2,7 @@
 
 #include <tlocMath/matrix/tlocMatrix3.h>
 #include <tlocMath/matrix/tlocMatrix3.inl>
+#include <tlocCore/RNGs/tlocRandom.h>
 
 namespace TestingMatrix3
 {
@@ -27,6 +28,13 @@ namespace TestingMatrix3
 
     Mat3f a, b, c, d, e;
   };
+
+  TEST_CASE("Math/Matrix3/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Mat3f) == (sizeof(tl_float) * 9));
+    REQUIRE(sizeof(Mat3f32) == (sizeof(f32) * 9));
+    REQUIRE(sizeof(Mat3f64) == (sizeof(f64) * 9));
+  }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
@@ -156,6 +164,30 @@ namespace TestingMatrix3
     CHECK( (Mathf::Approx(a[6], 0.53f, prec)) == true );
     CHECK( (Mathf::Approx(a[7], 0.74f, prec)) == true );
     CHECK( (Mathf::Approx(a[8], -0.39f, prec)) == true );
+
+    // Multiplying any vector with an orthonormal matrix should yield a vector
+    // with the same length as the original vector
+    {
+      a.Set(values, Mat3f::k_RowMajor);
+      a.Orthonormalize();
+      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
+                   core::g_defaultRNG.GetRandomFloat(),
+                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      tl_float vecLength = vecRot.Length();
+      a.Mul(vecRot, vecRes);
+      CHECK(vecLength == Approx(vecRes.Length()) );
+    }
+    {
+      a.Set(values, Mat3f::k_RowMajor);
+      a.FastOrthonormalize();
+      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
+                   core::g_defaultRNG.GetRandomFloat(),
+                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      tl_float vecLength = vecRot.Length();
+      a.Mul(vecRot, vecRes);
+      CHECK( Mathf::Approx(vecLength, vecRes.Length(), prec) == true);
+    }
+
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/EigenDecomp",

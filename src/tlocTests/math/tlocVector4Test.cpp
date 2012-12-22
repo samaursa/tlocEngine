@@ -4,7 +4,7 @@
 
 namespace TestingVector4f
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace math;
 
   struct Vector4fFixture
@@ -23,11 +23,16 @@ namespace TestingVector4f
                                   CHECK((vec[2]) == (Approx(z)) ); \
                                   CHECK((vec[3]) == (Approx(w)) );
 
+  TEST_CASE("Math/Vector4/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Vec4f) == (sizeof(tl_float) * 4));
+    REQUIRE(sizeof(Vec4f32) == (sizeof(f32) * 4));
+    REQUIRE(sizeof(Vec4f64) == (sizeof(f64) * 4));
+  }
+
   TEST_CASE_METHOD(Vector4fFixture, "Math/Vector4f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(Vec4f) == (sizeof(tl_float) * 4));
-
     CHECK_VEC4F(a, 1.0f, 2.0f, 3.0f, 4.0f); //-V550
     CHECK_VEC4F(b, 5.0f, 6.0f, 7.0f, 8.0f); //-V550
 

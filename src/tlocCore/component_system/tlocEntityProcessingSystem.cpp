@@ -2,14 +2,43 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  EntityProcessingSystem::~EntityProcessingSystem() { }
+  typedef EntityProcessingSystem::error_type    error_type;
 
-  bool EntityProcessingSystem::CheckProcessing() { return true; }
+  EntityProcessingSystem::~EntityProcessingSystem()
+  { }
 
-  void EntityProcessingSystem::Pre_ProcessActiveEntities() { }
+  //````````````````````````````````````````````````````````````````````````
+  // Initialization
+
+  error_type EntityProcessingSystem::Pre_Initialize()
+  { return ErrorSuccess(); }
+
+  error_type EntityProcessingSystem::
+    DoInitialize(EntityManager* a_mgr, const entity_array& a_entities)
+  {
+    for (entity_array::const_iterator itr = a_entities.begin(),
+         itrEnd = a_entities.end(); itr != itrEnd; ++itr)
+    {
+      InitializeEntity(a_mgr, *itr);
+    }
+
+    return ErrorSuccess();
+  }
+
+  error_type EntityProcessingSystem::Post_Initialize()
+  { return ErrorSuccess(); }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Processing
+
+  bool EntityProcessingSystem::CheckProcessing()
+  { return true; }
+
+  void EntityProcessingSystem::Pre_ProcessActiveEntities()
+  { }
 
   void EntityProcessingSystem::
-    ProcessActiveEntities(EntityManager* a_mgr, const entity_array& a_entities)
+    DoProcessActiveEntities(EntityManager* a_mgr, const entity_array& a_entities)
   {
     for (entity_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
@@ -18,6 +47,28 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
-  void EntityProcessingSystem::Post_ProcessingActiveEntities() { }
+  void EntityProcessingSystem::Post_ProcessActiveEntities()
+  { }
+
+  //````````````````````````````````````````````````````````````````````````
+  // Shutdown
+
+  error_type EntityProcessingSystem::Pre_Shutdown()
+  { return ErrorSuccess(); }
+
+  error_type EntityProcessingSystem::
+    DoShutdown(EntityManager* a_mgr, const entity_array& a_entities)
+  {
+    for (entity_array::const_iterator itr = a_entities.begin(),
+         itrEnd = a_entities.end(); itr != itrEnd; ++itr)
+    {
+      ShutdownEntity(a_mgr, *itr);
+    }
+
+    return ErrorSuccess();
+  }
+
+  error_type EntityProcessingSystem::Post_Shutdown()
+  { return ErrorSuccess(); }
 
 };};};

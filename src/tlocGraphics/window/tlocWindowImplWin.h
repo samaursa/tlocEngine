@@ -24,8 +24,8 @@
 namespace tloc { namespace graphics { namespace priv {
 
   template <>
-  class WindowImpl<Window<> >
-    : public WindowImplBase<Window<> >
+  class WindowImpl<Window_T<> >
+    : public WindowImplBase<Window_T<> >
 
   {
   public:
@@ -33,8 +33,8 @@ namespace tloc { namespace graphics { namespace priv {
     // TODO: Static assert to prevent other platforms from using this class
 
     typedef core::PlatformInfo<>::platform_type          platform_type;
-    typedef WindowImpl<Window<> >                        this_type;
-    typedef WindowImplBase<Window<> >                    base_type;
+    typedef WindowImpl<Window_T<> >                        this_type;
+    typedef WindowImplBase<Window_T<> >                    base_type;
     typedef GraphicsMode<platform_type>                  graphics_mode;
     typedef base_type::parent_window_type                parent_window_type;
 
@@ -139,6 +139,13 @@ namespace tloc { namespace graphics { namespace priv {
     /// @param  a_visible true to show, false to hide.
     ///-------------------------------------------------------------------------
     void SetVisibility(bool a_visible);
+
+    ///-------------------------------------------------------------------------
+    /// @brief Sets the window title.
+    ///
+    /// @param  a_title The title of the window.
+    ///-------------------------------------------------------------------------
+    void SetTitle(const char* a_title);
 
     ///-------------------------------------------------------------------------
     /// @brief Calls IsWindow() on the handle and returns the result

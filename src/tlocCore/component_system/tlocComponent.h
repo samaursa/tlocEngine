@@ -30,15 +30,15 @@ namespace tloc { namespace core { namespace component_system {
   };
 
   template <typename T_Component>
-  class ComponentT : private utils::GroupID<T_Component>,
-                     public Component
+  class Component_T : private utils::GroupID<T_Component>,
+                      public Component
   {
   public:
 
     typedef Component                             base_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    ComponentT(component_type a_type) : Component(a_type) {}
+    Component_T(component_type a_type) : Component(a_type) {}
 
     using group_id_base_type::GetUniqueGroupID;
   };

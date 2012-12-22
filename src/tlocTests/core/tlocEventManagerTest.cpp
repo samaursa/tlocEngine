@@ -5,6 +5,8 @@
 #define protected public
 #define private public
 #include <tlocCore/component_system/tlocEventManager.h>
+#include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/component_system/tlocEntity.inl>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
@@ -85,15 +87,24 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
+  class CompToTest : public core::component_system::Component_T<CompToTest>
+  {
+  public:
+    typedef core::component_system::Component_T<CompToTest>  base_type;
+  public:
+    CompToTest() : base_type(components::listener)
+    {}
+  };
+
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
     EventTracker globalTracker;
     EventTracker tracker;
 
-    Entity       dummyEnt(0);
-    components::value_type comp_type = components::transform;
-    Component    dummyComp(comp_type);
+    Entity        dummyEnt(0);
+    CompToTest transComp;
+    Component     dummyComp(transComp);
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);
@@ -117,13 +128,13 @@ namespace TestingEventManager
 
     currentEvent = entity_events::insert_component;
     mgr.AddListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 1);
 
     mgr.RemoveListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, comp_type));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 1); // no change

@@ -130,17 +130,39 @@ namespace tloc { namespace core {
     TL_FI void DoFillRemaining(p_tuple::overflow_zero);
   };
 
-  typedef Tuple<tl_float, 2>    Tuple2f;
-  typedef Tuple<tl_int, 2>      Tuple2i;
-  typedef Tuple<tl_uint, 2>     Tuple2u;
+  typedef Tuple<tl_float,	2>    Tuple2f;
+  typedef Tuple<f32,			2>    Tuple2f32;
+  typedef Tuple<f64,			2>    Tuple2f64;
+  typedef Tuple<tl_int,		2>    Tuple2s;
+  typedef Tuple<s32,			2>    Tuple2s32;
+  typedef Tuple<s64,			2>    Tuple2s64;
+  typedef Tuple<tl_uint,	2>    Tuple2u;
+  typedef Tuple<u32,			2>    Tuple2u32;
+  typedef Tuple<u64,			2>    Tuple2u64;
 
-  typedef Tuple<tl_float, 3>    Tuple3f;
-  typedef Tuple<tl_int, 3>      Tuple3i;
-  typedef Tuple<tl_uint, 3>     Tuple3u;
+  typedef Tuple<tl_float,	3>    Tuple3f;
+  typedef Tuple<f32,			3>    Tuple3f32;
+  typedef Tuple<f64,			3>    Tuple3f64;
+  typedef Tuple<tl_int,		3>    Tuple3s;
+  typedef Tuple<s32,			3>    Tuple3s32;
+  typedef Tuple<s64,			3>    Tuple3s64;
+  typedef Tuple<tl_uint,	3>    Tuple3u;
+  typedef Tuple<u32,			3>    Tuple3u32;
+  typedef Tuple<u64,			3>    Tuple3u64;
 
-  typedef Tuple<tl_float, 4>    Tuple4f;
-  typedef Tuple<tl_int, 4>      Tuple4i;
-  typedef Tuple<tl_uint, 4>     Tuple4u;
+  typedef Tuple<tl_float,	4>    Tuple4f;
+  typedef Tuple<f32,			4>    Tuple4f32;
+  typedef Tuple<f64,			4>    Tuple4f64;
+  typedef Tuple<tl_int,		4>    Tuple4s;
+  typedef Tuple<s32,			4>    Tuple4s32;
+  typedef Tuple<s64,			4>    Tuple4s64;
+  typedef Tuple<tl_uint,	4>    Tuple4u;
+  typedef Tuple<u32,			4>    Tuple4u32;
+  typedef Tuple<u64,			4>    Tuple4u64;
+
+  typedef Tuple<bool,     2>    Tuple2b;
+  typedef Tuple<bool,     3>    Tuple3b;
+  typedef Tuple<bool,     4>    Tuple4b;
 
 };};
 

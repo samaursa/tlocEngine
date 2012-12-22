@@ -130,6 +130,19 @@
 # error WIP
 #endif
 
+
+  //------------------------------------------------------------------------
+  // Typedef fix for compilers
+  // This fix is temporary until we can figure out a way to remove typename
+  // limitations from VS
+#if defined(_MSC_VER)
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef _type_ _alias_
+#else // For GCC and Clang
+# define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
+  typedef typename _type_ _alias_
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // Exceptions
 
@@ -353,7 +366,7 @@
 // e.g. out of bounds access. These asserts are in areas that can be potentially
 // performance sensitive (e.g. vector/matrix accessors).
 
-#ifdef TLOC_ENABLE_ASSERT_LOW_LEVEL
+#ifndef TLOC_DISABLE_ASSERT_LOW_LEVEL
 # define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)

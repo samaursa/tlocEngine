@@ -77,6 +77,7 @@ namespace tloc { namespace core {
     TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   Get() const;
+    TL_FI void       Set(const T&);
     TL_FI T          Value() const;
 
     TL_FI bool       IsValid() const;
@@ -140,6 +141,7 @@ namespace tloc { namespace core {
     TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   Get() const;
+    TL_FI void       Set(const T& a_value);
     TL_FI T          Value() const;
 
     TL_FI bool       IsValid() const;

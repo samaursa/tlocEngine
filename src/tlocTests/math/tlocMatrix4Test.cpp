@@ -36,6 +36,13 @@ namespace TestingMatrix4
     Mat4f a, b, c, d, e;
   };
 
+  TEST_CASE("Math/Matrix4/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Mat4f) == (sizeof(tl_float) * 16));
+    REQUIRE(sizeof(Mat4f32) == (sizeof(f32) * 16));
+    REQUIRE(sizeof(Mat4f64) == (sizeof(f64) * 16));
+  }
+
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
     "Test general/basic functionality")
   {

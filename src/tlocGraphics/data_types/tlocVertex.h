@@ -2,71 +2,147 @@
 #define TLOC_VERTEX_H
 
 #include <tlocCore/types/tlocConditionalType.h>
+#include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
+#include <tlocGraphics/data_types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace types {
 
-  namespace detail
+  // All types here are 4 bytes as that is what OpenGL works with
+  namespace p_vertex_t
   {
-    template <typename T, bool T_Declare>
+    template <typename T>
     class VertexPos
     {
-    protected:
+    public:
+      typedef T                                     value_type;
 
-      typedef T     value_type;
+    public:
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetPosition, m_value);
+      TLOC_DECL_AND_DEF_SETTER(value_type, SetPosition, m_value);
 
-      core::ConditionalType<T, T_Declare> m_value;
+    private:
+      value_type    m_value;
     };
 
-    template <typename T, bool T_Declare>
+    template <typename T>
     class VertexNorm
     {
-    protected:
+    public:
+      typedef T                                     value_type;
 
-      typedef T     value_type;
+    public:
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetNormal, m_value);
+      TLOC_DECL_AND_DEF_SETTER(value_type, SetNormal, m_value);
 
-      core::ConditionalType<T, T_Declare> m_value;
+    private:
+      value_type    m_value;
     };
 
-    template <typename T, bool T_Declare>
     class VertexCol
     {
-    protected:
+    public:
+      typedef types::Color     value_type;
 
-      typedef T     value_type;
+    public:
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetColor, m_value);
+      TLOC_DECL_AND_DEF_SETTER(value_type, SetColor, m_value);
 
-      core::ConditionalType<T, T_Declare> m_value;
+    private:
+      value_type   m_value;
     };
+
+    class TexCoord
+    {
+    public:
+      typedef math::Vec2f32           value_type;
+
+    public:
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetTexCoord, m_value);
+      TLOC_DECL_AND_DEF_SETTER(value_type, SetTexCoord, m_value);
+
+    private:
+      value_type   m_value;
+
+    };
+
+    //------------------------------------------------------------------------
+    // Typedefs
+
+    typedef VertexPos<math::Vec2f32>    VertexPos2f;
+    typedef VertexPos<math::Vec3f32>    VertexPos3f;
+
+    typedef VertexNorm<math::Vec2f32>   VertexNorm2f;
+    typedef VertexNorm<math::Vec3f32>   VertexNorm3f;
   };
 
-  template <bool T_Position, bool T_Normal, bool T_Color>
-  class Vertex : detail::VertexPos<math::Vec3f, T_Position>,
-                 detail::VertexNorm<math::Vec3f, T_Normal>,
-                 detail::VertexCol<math::Vec3f, T_Color>
+  template <class T_Attrib1>
+  class Vertex1_T : public T_Attrib1
   {
   public:
-    ~Vertex() {}
-
-    typedef math::Vec3f                                     value_type;
-    typedef detail::VertexPos<value_type, T_Position>       position_type;
-    typedef detail::VertexNorm<value_type, T_Normal>        normal_type;
-    typedef detail::VertexCol<value_type, T_Color>          color_type;
-
-    typedef Loki::Select<T_Position, type_true, type_false> position_selected;
-    typedef Loki::Select<T_Normal, type_true, type_false>   normal_selected;
-    typedef Loki::Select<T_Color, type_true, type_false>    color_selected;
-
-    typedef position_type         position_base_type;
-    typedef normal_type           normal_base_type;
-    typedef color_type            color_base_type;
-
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT
-      (math::Vec3f, GetPosition, position_base_type::m_value);
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT
-      (math::Vec3f, GetNormal, normal_base_type::m_value);
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT
-      (math::Vec3f, GetColor, color_base_type::m_value);
+    typedef T_Attrib1                           attrib_1_type;
   };
+
+  template <class T_Attrib1, class T_Attrib2>
+  class Vertex2_T : public T_Attrib1, public T_Attrib2
+  {
+  public:
+    typedef T_Attrib1                           attrib_1_type;
+    typedef T_Attrib1                           attrib_2_type;
+  };
+
+  template <class T_Attrib1, class T_Attrib2, class T_Attrib3>
+  class Vertex3_T : public T_Attrib1, public T_Attrib2, public T_Attrib3
+  {
+  public:
+    typedef T_Attrib1                           attrib_1_type;
+    typedef T_Attrib1                           attrib_2_type;
+    typedef T_Attrib3                           attrib_3_type;
+  };
+
+  template <class T_Attrib1, class T_Attrib2, class T_Attrib3, class T_Attrib4>
+  class Vertex4_T : public T_Attrib1, public T_Attrib2,
+                    public T_Attrib3, public T_Attrib4
+  {
+  public:
+    typedef T_Attrib1                           attrib_1_type;
+    typedef T_Attrib1                           attrib_2_type;
+    typedef T_Attrib3                           attrib_3_type;
+    typedef T_Attrib4                           attrib_4_type;
+  };
+
+  //------------------------------------------------------------------------
+  // Typedefs
+
+  //````````````````````````````````````````````````````````````````````````
+  // 2D
+  typedef Vertex1_T<p_vertex_t::VertexPos2f>                 Vert2fp;
+  typedef Vertex2_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexNorm3f>                Vert2fpn;
+  typedef Vertex3_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexNorm3f,
+                    p_vertex_t::VertexCol>                   Vert2fpnc;
+  typedef Vertex4_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexNorm3f,
+                    p_vertex_t::VertexCol,
+                    p_vertex_t::TexCoord>                    Vert2fpnct;
+  typedef Vertex2_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::TexCoord>                    Vert2fpt;
+
+  //````````````````````````````````````````````````````````````````````````
+  // 3D
+  typedef Vertex1_T<p_vertex_t::VertexPos3f>                 Vert3fp;
+  typedef Vertex2_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexNorm3f>                Vert3fpn;
+  typedef Vertex3_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexNorm3f,
+                    p_vertex_t::VertexCol>                   Vert3fpnc;
+  typedef Vertex4_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexNorm3f,
+                    p_vertex_t::VertexCol,
+                    p_vertex_t::TexCoord>                    Vert3fpnct;
+  typedef Vertex2_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::TexCoord>                    Vert3fpt;
 
 };};};
 

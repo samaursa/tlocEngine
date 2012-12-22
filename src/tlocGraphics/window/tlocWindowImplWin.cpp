@@ -5,7 +5,7 @@
 
 namespace tloc { namespace graphics { namespace priv {
 
-#define WINDOW_IMPL_WIN_PARAMS Window<>
+#define WINDOW_IMPL_WIN_PARAMS Window_T<>
 #define WINDOW_IMPL_WIN_TYPE WindowImpl<WINDOW_IMPL_WIN_PARAMS>
 
 #define VERIFY_DEVICE_CONTEXT() \
@@ -226,7 +226,7 @@ namespace tloc { namespace graphics { namespace priv {
     }
   }
 
-  WINDOW_IMPL_WIN_TYPE::window_handle_type 
+  WINDOW_IMPL_WIN_TYPE::window_handle_type
     WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetWindowHandle() const
   {
     return m_handle;
@@ -282,6 +282,11 @@ namespace tloc { namespace graphics { namespace priv {
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)
   {
     ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetTitle(const char* a_title)
+  {
+    SetWindowText(m_handle, a_title);
   }
 
   bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::IsCreated() const

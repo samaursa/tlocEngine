@@ -7,8 +7,7 @@ namespace tloc { namespace graphics { namespace gl {
   OpenGLExt::error_type OpenGLExt::m_error = common_error_types::error_success;
 
   OpenGLExt::OpenGLExt()
-  {
-  }
+  { }
 
   OpenGLExt::error_type OpenGLExt::Initialize()
   {

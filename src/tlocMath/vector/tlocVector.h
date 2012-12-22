@@ -4,6 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
@@ -29,9 +30,18 @@ namespace tloc { namespace math {
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
 
+  namespace p_vector
+  {
+    struct    accurate{};
+    struct    fast{};
+  };
+
   template <typename T, tl_size T_Size>
   class Vector : public core::Tuple<T, T_Size>
   {
+  public:
+    enum { k_size = T_Size };
+
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
@@ -123,28 +133,48 @@ namespace tloc { namespace math {
     // the result in this vector
     TL_FI this_type&  Div(const value_type a_real);
 
-    // Same as Length() but returns the value instead
+    // Faster then Length()
     TL_FI value_type  LengthSquared() const;
 
     // Same as Length() but returns the value instead
     TL_FI value_type  Length() const;
+    template <typename T_Accuracy>
+    TL_FI value_type  Length() const
+    {
+      type_traits::AssertTypeIsSupported
+        <T_Accuracy, p_vector::fast, p_vector::accurate>();
+      return DoLength<T_Accuracy>(*this);
+    }
 
     // Normalizes this vector
-    TL_FI this_type&  Norm();
+    TL_FI value_type Norm();
+    template <typename T_Accuracy>
+    TL_FI value_type Norm()
+    {
+      type_traits::AssertTypeIsSupported
+        <T_Accuracy, p_vector::fast, p_vector::accurate>();
+      return DoNorm<T_Accuracy>(*this);
+    }
 
     // Modifies this vector to store the normalized version of the incoming
     // vector.
-    TL_FI this_type&  Norm(const this_type& a_vector);
+    TL_FI value_type Norm(const this_type& a_vector);
+    template <typename T_Accuracy>
+    TL_FI value_type Norm(const this_type& a_vector)
+    {
+      type_traits::AssertTypeIsSupported
+        <T_Accuracy, p_vector::fast, p_vector::accurate>();
+      return DoNorm<T_Accuracy>(a_vector);
+    }
 
-    // Same as Norm(), but returns the length as well
-    TL_FI value_type  NormLength();
-
-    // Same as Norm() but returns the length as well
-    TL_FI value_type  NormLength(const this_type& a_vector);
-
-    // Returns the distance between two vectors (expensive operation). Use
-    // DistanceApprox() for a faster (with more error) result
     TL_FI value_type  Distance(const this_type& a_vector) const;
+    template <typename T_Accuracy>
+    TL_FI value_type  Distance(const this_type& a_vector) const
+    {
+      type_traits::AssertTypeIsSupported
+        <T_Accuracy, p_vector::fast, p_vector::accurate>();
+      return DoDistance<T_Accuracy>(a_vector);
+    }
 
     // Returns the distance squared between two vectors (faster than
     // Distance())
@@ -197,6 +227,18 @@ namespace tloc { namespace math {
 
     static const this_type ZERO;
     static const this_type ONE;
+
+  private:
+
+    template <typename T_Accuracy>
+    value_type DoLength(const this_type& a_vector) const;
+
+    template <typename T_Accuracy>
+    value_type DoNorm(const this_type& a_vector);
+
+    template <typename T_Accuracy>
+    value_type DoDistance(const this_type& a_vector) const;
+
   };
 
   //------------------------------------------------------------------------

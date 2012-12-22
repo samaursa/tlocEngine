@@ -10,7 +10,9 @@ namespace tloc { namespace graphics { namespace component_system {
     enum type
     {
       mesh = core::component_system::components_group::graphics,
+      quad, // specialized mesh
       material,
+      projection,
 
       count
     }; typedef tl_int value_type;

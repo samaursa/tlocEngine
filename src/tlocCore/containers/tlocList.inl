@@ -1085,7 +1085,7 @@ namespace tloc { namespace core {
   {
     node_type* node = m_node().getNext();
 
-    while (node->getNext() != &m_node())
+    while (node != &m_node())
     {
       node_type* tempNode = node;
       node = node->getNext();

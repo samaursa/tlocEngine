@@ -19,7 +19,7 @@ namespace tloc { namespace input {
   struct TouchSurfaceEvent
   {
     typedef tl_uintptr              touch_handle_type;
-    typedef Component::AxisRelAbsf  axis_type;
+    typedef Component::AxisAbsf     axis_type;
     typedef axis_type::value_type   axis_value_type;
     
     TouchSurfaceEvent(touch_handle_type a_touchHandle = 0) 

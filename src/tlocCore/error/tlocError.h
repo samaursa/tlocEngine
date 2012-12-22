@@ -12,6 +12,7 @@ namespace tloc { namespace core { namespace error {
     typedef Error                 this_type;
     typedef error_code_type       code_type;
 
+    Error();
     Error(code_type a_errorType);
 
     bool Succeeded() const;

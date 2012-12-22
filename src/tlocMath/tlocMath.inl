@@ -6,11 +6,39 @@
 #endif
 
 #include "tlocMath.h"
-#include <limits>
 #include <cmath>
 #include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
+
+  namespace {
+    template <typename T>
+    T GetAbs(T a_value)
+    {
+      return std::abs(a_value);
+    }
+
+    s64 GetAbs(s64 a_value)
+    {
+      return (s64)std::abs((s32)a_value);
+    }
+
+    template <typename T>
+    T GetSqrt(T a_value)
+    {
+      return std::sqrt(a_value);
+    }
+
+    s32 GetSqrt(s32 a_value)
+    {
+      return (s32)std::sqrt((tl_float)a_value);
+    }
+
+    s64 GetSqrt(s64 a_value)
+    {
+      return (s64)std::sqrt((tl_float)a_value);
+    }
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Math<T>
@@ -30,13 +58,19 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::Abs(T aValue)
   {
-    return std::abs(aValue);
+    return GetAbs(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::FAbs(T aValue)
   {
     return std::fabs(aValue);
+  }
+
+  template <typename T>
+  TL_FI T Math<T>::Tan(T aValue)
+  {
+    return std::tan(aValue);
   }
 
   template <typename T>
@@ -64,9 +98,21 @@ namespace tloc {
   }
 
   template <typename T>
+  TL_FI T Math<T>::ASin( T aValInRad )
+  {
+    return std::asin(aValInRad);
+  }
+
+  template <typename T>
   TL_FI T Math<T>::Cos( T aValInRad )
   {
     return std::cos(aValInRad);
+  }
+
+  template <typename T>
+  TL_FI T Math<T>::ACos( T aValInRad )
+  {
+    return std::acos(aValInRad);
   }
 
   template <typename T>
@@ -84,7 +130,7 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::Sqrt(T aValue)
   {
-    return std::sqrt(aValue);
+    return GetSqrt(aValue);
   }
 
   template <typename T>
@@ -99,7 +145,7 @@ namespace tloc {
   template <typename T>
   TL_FI bool Math<T>::IsEqual(T a_first, T a_second)
   {
-    return Abs(a_first - a_second) < EPSILON;
+    return Approx(a_first, a_second, EPSILON);
   }
 
   template <typename T>

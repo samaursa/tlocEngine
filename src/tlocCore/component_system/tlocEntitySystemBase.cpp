@@ -1,7 +1,14 @@
 #include "tlocEntitySystemBase.h"
+
 #include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/component_system/tlocEntity.inl>
 
 namespace tloc { namespace core { namespace component_system {
+
+  //////////////////////////////////////////////////////////////////////////
+  // typedefs]
+
+  typedef EntitySystemBase::error_type      error_type;
 
   EntitySystemBase::~EntitySystemBase()
   {
@@ -9,19 +16,45 @@ namespace tloc { namespace core { namespace component_system {
     m_eventMgr->RemoveListener(this, entity_events::remove_component);
   }
 
+  error_type EntitySystemBase::Initialize()
+  {
+    if (Pre_Initialize() == ErrorSuccess())
+    {
+      if (DoInitialize(m_entityMgr, m_activeEntities) == ErrorSuccess())
+      {
+        return Post_Initialize();
+      }
+    }
+
+    return ErrorFailure();
+  }
+
   void EntitySystemBase::ProcessActiveEntities()
   {
     if (CheckProcessing())
     {
       Pre_ProcessActiveEntities();
-      ProcessActiveEntities(m_entityMgr, m_activeEntities);
+      DoProcessActiveEntities(m_entityMgr, m_activeEntities);
       Post_ProcessActiveEntities();
     }
   }
 
+  error_type EntitySystemBase::Shutdown()
+  {
+    if (Pre_Shutdown() == ErrorSuccess())
+    {
+      if (DoShutdown(m_entityMgr, m_activeEntities) == ErrorSuccess())
+      {
+        return Post_Shutdown();
+      }
+    }
+
+    return ErrorFailure();
+  }
+
   bool EntitySystemBase::OnEvent(const EventBase& a_event)
   {
-    event_type type = a_event.GetType();
+    event_value_type type = a_event.GetType();
 
     switch(type)
     {
@@ -32,12 +65,12 @@ namespace tloc { namespace core { namespace component_system {
         Entity* ent = entEvent.GetEntity();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
-          itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
         {
           if (ent->HasComponent(*itr) )
           {
             entity_array::iterator entItr = core::find_all(m_activeEntities, ent);
-            if (entItr != m_activeEntities.end())
+            if (entItr == m_activeEntities.end())
             {
               m_activeEntities.push_back(ent);
             }

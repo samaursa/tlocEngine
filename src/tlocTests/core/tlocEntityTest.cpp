@@ -14,14 +14,16 @@ namespace TestingEntity
   using namespace core;
   using namespace component_system;
 
+  components::value_type  g_component = components::listener;
+
   struct EmptyComponent1 : public Component
   {
-    EmptyComponent1() : Component(components::transform) {}
+    EmptyComponent1() : Component(g_component) {}
   };
 
   struct EmptyComponent2 : public Component
   {
-    EmptyComponent2() : Component(components::transform + 1) {}
+    EmptyComponent2() : Component(g_component + 1) {}
   };
 
   TEST_CASE("Core/component_system/entity/entity", "")
@@ -40,23 +42,23 @@ namespace TestingEntity
     EmptyComponent1 c1;
     EmptyComponent2 c2;
 
-    CHECK(e->HasComponent(components::transform) == false);
-    CHECK(e->HasComponent(components::transform + 1) == false);
+    CHECK(e->HasComponent(g_component) == false);
+    CHECK(e->HasComponent(g_component + 1) == false);
 
     e->InsertComponent(&c1);
-    CHECK(e->HasComponent(components::transform) == true);
-    CHECK(e->HasComponent(components::transform + 1) == false);
+    CHECK(e->HasComponent(g_component) == true);
+    CHECK(e->HasComponent(g_component + 1) == false);
 
     e->InsertComponent(&c2);
-    CHECK(e->HasComponent(components::transform) == true);
-    CHECK(e->HasComponent(components::transform + 1) == true);
+    CHECK(e->HasComponent(g_component) == true);
+    CHECK(e->HasComponent(g_component + 1) == true);
 
-    Entity::component_list& clist = e->GetComponents(components::transform);
+    Entity::component_list& clist = e->DoGetComponents(g_component);
 
     REQUIRE(clist.size() == 1);
     CHECK(clist[0] == &c1);
 
-    clist = e->GetComponents(components::transform + 1);
+    clist = e->GetComponents(g_component + 1);
     REQUIRE(clist.size() == 1);
     CHECK(clist[0] == &c2);
   }

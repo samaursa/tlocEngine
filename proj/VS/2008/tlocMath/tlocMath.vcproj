@@ -943,6 +943,22 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="data_types"
+			>
+			<Filter
+				Name="circle"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\data_types\tlocCircle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\data_types\tlocCircle.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>

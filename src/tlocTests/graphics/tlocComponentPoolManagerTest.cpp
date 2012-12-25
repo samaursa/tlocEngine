@@ -7,8 +7,8 @@
 
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace TestingComponentPoolManager
 {

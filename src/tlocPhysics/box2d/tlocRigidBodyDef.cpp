@@ -1,6 +1,6 @@
 #include "tlocRigidBodyDef.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocMath/vector/tlocVector2.inl>
 

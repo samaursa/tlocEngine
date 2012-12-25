@@ -1,6 +1,6 @@
 #include "tlocShape.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace tloc { namespace physics { namespace box2d {
 

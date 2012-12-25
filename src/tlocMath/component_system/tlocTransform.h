@@ -2,7 +2,7 @@
 #define _TLOC_CORE_COMPONENT_SYSTEM_TRANSFORM_H_
 
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 

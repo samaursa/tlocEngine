@@ -1069,7 +1069,7 @@
 				Name="smart_ptr"
 				>
 				<File
-					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSmartPtrTest.cpp"
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSharedPtrTest.cpp"
 					>
 				</File>
 			</Filter>

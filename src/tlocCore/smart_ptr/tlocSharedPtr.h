@@ -17,7 +17,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
       };
 
-      struct DisAllow
+      struct Disallow
       {
         template <typename T_Ptr>
         void CheckNullBeforeCopy(T_Ptr a_rawPtr)
@@ -34,7 +34,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template
     <
       typename T,
-      typename T_NullCopyPolicy = p_shared_ptr::null_copy::DisAllow
+      typename T_NullCopyPolicy = p_shared_ptr::null_copy::Disallow
     >
   class SharedPtr
     : public SmartPtr
@@ -92,6 +92,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     void           reset();
     template <typename Y>
     void           reset(Y* a_ptr);
+
+    void           swap(this_type& a_other);
 
   private:
     void DoAddRef();

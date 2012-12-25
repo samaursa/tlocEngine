@@ -102,6 +102,27 @@ namespace TestingSmartPtr
       CHECK(sp3.use_count() == 3);
     }
     CHECK(Shared::m_numDtors == 2);
+
+    {
+      Shared::m_numCtors = 0;
+      Shared::m_numDtors = 0;
+
+      smart_ptr::SharedPtr<Shared> sp(new Shared(10));
+      smart_ptr::SharedPtr<Shared> sp2(new Shared(5));
+
+      CHECK(sp->m_value == 10);
+      CHECK(sp2->m_value == 5);
+
+      sp.swap(sp2);
+
+      CHECK(sp->m_value == 5);
+      CHECK(sp2->m_value == 10);
+
+      CHECK(Shared::m_numCtors == 2);
+      CHECK(Shared::m_numDtors == 0);
+    }
+    CHECK(Shared::m_numCtors == 2);
+    CHECK(Shared::m_numDtors == 2);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/reset", "")

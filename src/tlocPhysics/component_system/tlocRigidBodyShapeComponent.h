@@ -3,7 +3,7 @@
 #define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_SHAPE_H_
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -20,7 +20,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
   public:
     typedef core::component_system::Component_T<RigidBodyShape> base_type;
-    
+
     typedef RigidBodyShape            this_type;
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
 
@@ -38,8 +38,8 @@ namespace tloc { namespace physics { namespace component_system {
   // Typedefs
 
   typedef core::smart_ptr::SharedPtr<RigidBodyShape>  RigidBodyShapePtr;
-  
-  typedef core::component_system::ComponentPool_TI<RigidBodyShapePtr> 
+
+  typedef core::component_system::ComponentPool_TI<RigidBodyShapePtr>
                                                       rigid_body_shape_pool;
 
 };};};

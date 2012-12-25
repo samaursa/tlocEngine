@@ -1,6 +1,6 @@
 #include "tlocProjectionComponent.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>

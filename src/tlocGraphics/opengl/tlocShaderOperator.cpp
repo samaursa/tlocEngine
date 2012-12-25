@@ -1,6 +1,6 @@
 #include "tlocShaderOperator.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/containers/tlocContainers.inl>
 

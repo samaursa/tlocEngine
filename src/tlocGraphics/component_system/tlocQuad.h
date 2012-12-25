@@ -5,7 +5,7 @@
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/data_types/tlocVertex.h>

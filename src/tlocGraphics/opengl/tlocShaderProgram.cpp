@@ -2,7 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocCore/utilities/tlocType.h>
 

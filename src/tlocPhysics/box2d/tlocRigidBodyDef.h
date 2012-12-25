@@ -4,7 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocMath/vector/tlocVector2.h>
 
@@ -40,8 +40,8 @@ namespace tloc { namespace physics { namespace box2d {
     typedef RigidBodyDef  this_type;
 
     typedef b2BodyDef                         rigid_body_def_internal_type;
-    
-    typedef core::smart_ptr::SharedPtr<rigid_body_def_internal_type>     
+
+    typedef core::smart_ptr::SharedPtr<rigid_body_def_internal_type>
                                               rigid_body_def_internal_type_ptr;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;

@@ -1,6 +1,6 @@
 #include "tlocQuad.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 namespace tloc { namespace graphics { namespace component_system {

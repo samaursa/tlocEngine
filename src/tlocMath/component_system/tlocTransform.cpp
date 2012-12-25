@@ -1,6 +1,6 @@
 #include "tlocTransform.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocMath/vector/tlocVector4.h>

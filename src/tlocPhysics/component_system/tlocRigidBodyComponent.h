@@ -3,7 +3,7 @@
 #define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_H_
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocUtils.h>

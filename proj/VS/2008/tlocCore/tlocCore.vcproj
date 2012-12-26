@@ -1618,6 +1618,14 @@
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.inl"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.inl"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"

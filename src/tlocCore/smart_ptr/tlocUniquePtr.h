@@ -18,26 +18,28 @@ namespace tloc { namespace core { namespace smart_ptr {
     : public SmartPtr
   {
   public:
-    typename T                      value_type;
-    typename T*                     pointer;
-    typename T const *              const_pointer;
-    typename T&                     reference;
-    typename T const &              const_reference;
+    typedef T                      value_type;
+    typedef T*                     pointer;
+    typedef T const *              const_pointer;
+    typedef T&                     reference;
+    typedef T const &              const_reference;
 
-    typename UniquePtr<value_type>  this_type;
+    typedef UniquePtr<value_type>  this_type;
 
   public:
     UniquePtr();
     explicit UniquePtr(pointer a_rawPtr);
-    UniquePtr(const this_type& a_other);
+    explicit UniquePtr(const this_type& a_other);
 
     template <typename T_Other>
-    UniquePtr(<const UniquePtr<T_Other>& a_other);
+    explicit UniquePtr(const UniquePtr<T_Other>& a_other);
     ~UniquePtr();
 
-    template <typename T_Other>
-    this_type& operator=(const UniquePtr<T_Other>& a_other);
-    this_type& operator=(const this_type& a_other);
+    // This is intentionally commented out - UniquePtr's assignment operator
+    // only works with move semantics which is not available in C++03
+    //template <typename T_Other>
+    //this_type& operator=(const UniquePtr<T_Other>& a_other);
+    //this_type& operator=(const this_type& a_other);
 
     pointer   release(pointer a_ptr = pointer() );
     void      reset(pointer a_ptr = pointer() );
@@ -48,6 +50,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     reference operator*() const;
     pointer   operator->() const;
+
+  private:
+    void      DoDestroyRawPtr();
+
+    this_type& operator=(const this_type& a_other);
+
+  private:
+    pointer   m_rawPtr;
 
   };
 

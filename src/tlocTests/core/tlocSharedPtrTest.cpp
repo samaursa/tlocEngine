@@ -9,17 +9,17 @@
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
-namespace TestingSmartPtr
+namespace TestingSharedPtr
 {
   using namespace tloc;
   using namespace core;
 
-  struct Shared
+  struct SharedStruct
   {
-    Shared(tl_int a_value) : m_value(a_value)
+    SharedStruct(tl_int a_value) : m_value(a_value)
     { ++m_numCtors; }
 
-    ~Shared()
+    ~SharedStruct()
     { ++m_numDtors; }
 
     tl_int m_value;
@@ -28,25 +28,31 @@ namespace TestingSmartPtr
     static tl_int m_numDtors;
   };
 
-  tl_int Shared::m_numCtors;
-  tl_int Shared::m_numDtors;
+  tl_int SharedStruct::m_numCtors;
+  tl_int SharedStruct::m_numDtors;
 
-  void PassSharedPtr(const smart_ptr::SharedPtr<Shared>& a_other)
+  void ResetSharedStructStaticVars()
+  {
+    SharedStruct::m_numCtors = 0;
+    SharedStruct::m_numDtors = 0;
+  }
+
+  void PassSharedPtr(const smart_ptr::SharedPtr<SharedStruct>& a_other)
   {
     tl_int currCount = a_other.use_count();
-    smart_ptr::SharedPtr<Shared> localPtr = a_other;
+    smart_ptr::SharedPtr<SharedStruct> localPtr = a_other;
     CHECK(localPtr.use_count() == currCount + 1);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr", "")
   {
     {
-      smart_ptr::SharedPtr<Shared> sp( new Shared(5) );
+      smart_ptr::SharedPtr<SharedStruct> sp( new SharedStruct(5) );
       CHECK(sp);
-      CHECK(Shared::m_numCtors == 1);
+      CHECK(SharedStruct::m_numCtors == 1);
       CHECK(sp.use_count() == 1);
-      smart_ptr::SharedPtr<Shared> sp2 = sp;
-      CHECK(Shared::m_numCtors == 1);
+      smart_ptr::SharedPtr<SharedStruct> sp2 = sp;
+      CHECK(SharedStruct::m_numCtors == 1);
       CHECK(sp.use_count() == 2);
 
       CHECK(sp->m_value == 5);
@@ -55,14 +61,14 @@ namespace TestingSmartPtr
       CHECK( (*sp).m_value == 5);
       CHECK( (*sp2).m_value == 5);
 
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numDtors == 0);
       PassSharedPtr(sp);
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numDtors == 0);
     }
-    CHECK(Shared::m_numDtors == 1);
+    CHECK(SharedStruct::m_numDtors == 1);
 
     {
-      smart_ptr::SharedPtr<Shared> sp;
+      smart_ptr::SharedPtr<SharedStruct> sp;
       CHECK_FALSE(sp);
       // This SHOULD fire an assertion - because null copy is disabled
       // smart_ptr::SharedPtr<Shared> sp2 = sp;
@@ -72,7 +78,7 @@ namespace TestingSmartPtr
     } // Should not crash when being destroyed
 
     {
-      typedef smart_ptr::SharedPtr<Shared,
+      typedef smart_ptr::SharedPtr<SharedStruct,
               smart_ptr::p_shared_ptr::null_copy::Allow> shared_ptr_type;
 
       shared_ptr_type sp;
@@ -84,31 +90,29 @@ namespace TestingSmartPtr
     } // Should not crash when being destroyed
 
     {
-      Shared::m_numCtors = 0;
-      Shared::m_numDtors = 0;
+      ResetSharedStructStaticVars();
 
-      smart_ptr::SharedPtr<Shared> sp(new Shared(10));
-      smart_ptr::SharedPtr<Shared> sp2 = sp;
+      smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(10));
+      smart_ptr::SharedPtr<SharedStruct> sp2 = sp;
       CHECK(sp.use_count() == 2);
 
-      smart_ptr::SharedPtr<Shared> sp3(new Shared(50));
+      smart_ptr::SharedPtr<SharedStruct> sp3(new SharedStruct(50));
       sp2 = sp3;
       CHECK(sp.use_count() == 1);
       CHECK(sp3.use_count() == 2);
 
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numDtors == 0);
       sp = sp3;
-      CHECK(Shared::m_numDtors == 1);
+      CHECK(SharedStruct::m_numDtors == 1);
       CHECK(sp3.use_count() == 3);
     }
-    CHECK(Shared::m_numDtors == 2);
+    CHECK(SharedStruct::m_numDtors == 2);
 
     {
-      Shared::m_numCtors = 0;
-      Shared::m_numDtors = 0;
+      ResetSharedStructStaticVars();
 
-      smart_ptr::SharedPtr<Shared> sp(new Shared(10));
-      smart_ptr::SharedPtr<Shared> sp2(new Shared(5));
+      smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(10));
+      smart_ptr::SharedPtr<SharedStruct> sp2(new SharedStruct(5));
 
       CHECK(sp->m_value == 10);
       CHECK(sp2->m_value == 5);
@@ -118,62 +122,61 @@ namespace TestingSmartPtr
       CHECK(sp->m_value == 5);
       CHECK(sp2->m_value == 10);
 
-      CHECK(Shared::m_numCtors == 2);
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numCtors == 2);
+      CHECK(SharedStruct::m_numDtors == 0);
     }
-    CHECK(Shared::m_numCtors == 2);
-    CHECK(Shared::m_numDtors == 2);
+    CHECK(SharedStruct::m_numCtors == 2);
+    CHECK(SharedStruct::m_numDtors == 2);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/reset", "")
   {
     {
-      Shared::m_numCtors = 0;
-      Shared::m_numDtors = 0;
-      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
-      CHECK(Shared::m_numCtors == 1);
+      ResetSharedStructStaticVars();
+
+      smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      CHECK(SharedStruct::m_numCtors == 1);
       sp.reset();
-      CHECK(Shared::m_numDtors == 1);
+      CHECK(SharedStruct::m_numDtors == 1);
     }
 
     {
-      Shared::m_numCtors = 0;
-      Shared::m_numDtors = 0;
-      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
-      smart_ptr::SharedPtr<Shared> sp2(sp);
+      ResetSharedStructStaticVars();
+
+      smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      smart_ptr::SharedPtr<SharedStruct> sp2(sp);
       sp.reset();
 
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numDtors == 0);
     }
 
     {
-      Shared::m_numCtors = 0;
-      Shared::m_numDtors = 0;
-      smart_ptr::SharedPtr<Shared> sp(new Shared(50));
-      CHECK(Shared::m_numCtors == 1);
-      CHECK(Shared::m_numDtors == 0);
-      sp.reset(new Shared(10));
-      CHECK(Shared::m_numCtors == 2);
-      CHECK(Shared::m_numDtors == 1);
+      ResetSharedStructStaticVars();
+
+      smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      CHECK(SharedStruct::m_numCtors == 1);
+      CHECK(SharedStruct::m_numDtors == 0);
+      sp.reset(new SharedStruct(10));
+      CHECK(SharedStruct::m_numCtors == 2);
+      CHECK(SharedStruct::m_numDtors == 1);
 
       CHECK(sp.use_count() == 1);
 
-      smart_ptr::SharedPtr<Shared> sp2(sp);
+      smart_ptr::SharedPtr<SharedStruct> sp2(sp);
       CHECK(sp.use_count() == 2);
       sp.reset();
-      CHECK(Shared::m_numDtors == 1);
+      CHECK(SharedStruct::m_numDtors == 1);
       sp2.reset();
-      CHECK(Shared::m_numDtors == 2);
+      CHECK(SharedStruct::m_numDtors == 2);
     }
   }
 
   template <typename T_ContainerType>
   void TestContainers()
   {
-    Shared::m_numCtors = 0;
-    Shared::m_numDtors = 0;
+    ResetSharedStructStaticVars();
 
-    typedef smart_ptr::SharedPtr<Shared>      shared_ptr_type;
+    typedef smart_ptr::SharedPtr<SharedStruct>      shared_ptr_type;
     typedef T_ContainerType                   shared_array_type;
 
     const tl_int count = 2;
@@ -181,9 +184,9 @@ namespace TestingSmartPtr
     {
       shared_array_type sa;
       for (int i = 0; i < count; ++i)
-      { sa.push_back( shared_ptr_type(new Shared(i)) ); }
+      { sa.push_back( shared_ptr_type(new SharedStruct(i)) ); }
 
-      CHECK(Shared::m_numCtors == count);
+      CHECK(SharedStruct::m_numCtors == count);
 
       bool testsPassed = true;
       tl_int counter = 0;
@@ -197,19 +200,19 @@ namespace TestingSmartPtr
         ++counter;
       }
       CHECK(testsPassed);
-      CHECK(Shared::m_numCtors == count);
-      CHECK(Shared::m_numDtors == 0);
+      CHECK(SharedStruct::m_numCtors == count);
+      CHECK(SharedStruct::m_numDtors == 0);
     }
 
-    CHECK(Shared::m_numCtors == count);
-    CHECK(Shared::m_numDtors == count);
+    CHECK(SharedStruct::m_numCtors == count);
+    CHECK(SharedStruct::m_numDtors == count);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/with_containers", "")
   {
-    TestContainers<tl_array<smart_ptr::SharedPtr<Shared> >::type>();
-    TestContainers<tl_singly_list<smart_ptr::SharedPtr<Shared> >::type>();
-    TestContainers<tl_doubly_list<smart_ptr::SharedPtr<Shared> >::type>();
+    TestContainers<tl_array<smart_ptr::SharedPtr<SharedStruct> >::type>();
+    TestContainers<tl_singly_list<smart_ptr::SharedPtr<SharedStruct> >::type>();
+    TestContainers<tl_doubly_list<smart_ptr::SharedPtr<SharedStruct> >::type>();
   }
 
   struct MyComponent

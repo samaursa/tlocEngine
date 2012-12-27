@@ -54,6 +54,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   public:
     SharedPtr();
+    SharedPtr(nullptr_t);
     explicit SharedPtr(pointer a_rawPtr);
     SharedPtr(const this_type& a_other);
 

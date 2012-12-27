@@ -25,6 +25,12 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
+    UniquePtr(nullptr_t)
+    : m_rawPtr(nullptr)
+  { }
+
+  template <UNIQUE_PTR_TEMPS>
+  UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   { }

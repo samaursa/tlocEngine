@@ -47,6 +47,11 @@ namespace TestingSharedPtr
   TEST_CASE("core/smart_ptr/shared_ptr", "")
   {
     {
+      smart_ptr::SharedPtr<SharedStruct> sp(nullptr);
+      CHECK_FALSE(sp);
+    }
+
+    {
       smart_ptr::SharedPtr<SharedStruct> sp( new SharedStruct(5) );
       CHECK(sp);
       CHECK(SharedStruct::m_numCtors == 1);

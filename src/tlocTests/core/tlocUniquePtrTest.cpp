@@ -44,6 +44,11 @@ namespace TestingUniquePtr
   TEST_CASE("core/smart_ptr/unique_ptr", "")
   {
     {
+      smart_ptr::UniquePtr<UniqueStruct> up = nullptr;
+      CHECK_FALSE(up);
+    }
+
+    {
       smart_ptr::UniquePtr<UniqueStruct> up;
       CHECK_CTOR_DTOR_COUNT(0, 0);
     }

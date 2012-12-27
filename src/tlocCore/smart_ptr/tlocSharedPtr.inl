@@ -6,7 +6,7 @@
 #endif
 
 #include "tlocSharedPtr.h"
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
@@ -19,6 +19,11 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr() 
+    : m_rawPtr(nullptr) , m_refCount(nullptr)
+  { }
+
+  template <SHARED_PTR_TEMPS>
+  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(nullptr_t)
     : m_rawPtr(nullptr) , m_refCount(nullptr)
   { }
 

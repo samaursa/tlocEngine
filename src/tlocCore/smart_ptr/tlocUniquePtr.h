@@ -28,6 +28,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   public:
     UniquePtr();
+    UniquePtr(nullptr_t);
     explicit UniquePtr(pointer a_rawPtr);
     explicit UniquePtr(const this_type& a_other);
 

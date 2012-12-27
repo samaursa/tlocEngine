@@ -44,6 +44,10 @@ namespace TestingSharedPtr
     CHECK(localPtr.use_count() == currCount + 1);
   }
 
+#define CHECK_CTOR_DTOR_COUNT(_ctorCount_, _dtorCount_)\
+  CHECK(SharedStruct::m_numCtors == _ctorCount_);\
+  CHECK(SharedStruct::m_numDtors == _dtorCount_)
+
   TEST_CASE("core/smart_ptr/shared_ptr", "")
   {
     {
@@ -54,10 +58,10 @@ namespace TestingSharedPtr
     {
       smart_ptr::SharedPtr<SharedStruct> sp( new SharedStruct(5) );
       CHECK(sp);
-      CHECK(SharedStruct::m_numCtors == 1);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
       CHECK(sp.use_count() == 1);
       smart_ptr::SharedPtr<SharedStruct> sp2 = sp;
-      CHECK(SharedStruct::m_numCtors == 1);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
       CHECK(sp.use_count() == 2);
 
       CHECK(sp->m_value == 5);
@@ -66,11 +70,11 @@ namespace TestingSharedPtr
       CHECK( (*sp).m_value == 5);
       CHECK( (*sp2).m_value == 5);
 
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
       PassSharedPtr(sp);
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
     }
-    CHECK(SharedStruct::m_numDtors == 1);
+    CHECK_CTOR_DTOR_COUNT(1, 1);
 
     {
       smart_ptr::SharedPtr<SharedStruct> sp;
@@ -106,12 +110,12 @@ namespace TestingSharedPtr
       CHECK(sp.use_count() == 1);
       CHECK(sp3.use_count() == 2);
 
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(2, 0);
       sp = sp3;
-      CHECK(SharedStruct::m_numDtors == 1);
+      CHECK_CTOR_DTOR_COUNT(2, 1);
       CHECK(sp3.use_count() == 3);
     }
-    CHECK(SharedStruct::m_numDtors == 2);
+    CHECK_CTOR_DTOR_COUNT(2, 2);
 
     {
       ResetSharedStructStaticVars();
@@ -127,11 +131,22 @@ namespace TestingSharedPtr
       CHECK(sp->m_value == 5);
       CHECK(sp2->m_value == 10);
 
-      CHECK(SharedStruct::m_numCtors == 2);
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(2, 0);
     }
-    CHECK(SharedStruct::m_numCtors == 2);
-    CHECK(SharedStruct::m_numDtors == 2);
+    CHECK_CTOR_DTOR_COUNT(2, 2);
+  }
+
+  TEST_CASE("core/smart_ptr/shared_ptr/const", "")
+  {
+    {
+      smart_ptr::SharedPtr<const SharedStruct> sp(nullptr);
+      CHECK_FALSE(sp);
+    }
+
+    {
+      smart_ptr::SharedPtr<const SharedStruct> sp(new SharedStruct(10));
+      CHECK(sp);
+    }
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/reset", "")
@@ -140,9 +155,9 @@ namespace TestingSharedPtr
       ResetSharedStructStaticVars();
 
       smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
-      CHECK(SharedStruct::m_numCtors == 1);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
       sp.reset();
-      CHECK(SharedStruct::m_numDtors == 1);
+      CHECK_CTOR_DTOR_COUNT(1, 1);
     }
 
     {
@@ -152,27 +167,25 @@ namespace TestingSharedPtr
       smart_ptr::SharedPtr<SharedStruct> sp2(sp);
       sp.reset();
 
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
     }
 
     {
       ResetSharedStructStaticVars();
 
       smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
-      CHECK(SharedStruct::m_numCtors == 1);
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(1, 0);
       sp.reset(new SharedStruct(10));
-      CHECK(SharedStruct::m_numCtors == 2);
-      CHECK(SharedStruct::m_numDtors == 1);
+      CHECK_CTOR_DTOR_COUNT(2, 1);
 
       CHECK(sp.use_count() == 1);
 
       smart_ptr::SharedPtr<SharedStruct> sp2(sp);
       CHECK(sp.use_count() == 2);
       sp.reset();
-      CHECK(SharedStruct::m_numDtors == 1);
+      CHECK_CTOR_DTOR_COUNT(2, 1);
       sp2.reset();
-      CHECK(SharedStruct::m_numDtors == 2);
+      CHECK_CTOR_DTOR_COUNT(2, 2);
     }
   }
 
@@ -205,12 +218,9 @@ namespace TestingSharedPtr
         ++counter;
       }
       CHECK(testsPassed);
-      CHECK(SharedStruct::m_numCtors == count);
-      CHECK(SharedStruct::m_numDtors == 0);
+      CHECK_CTOR_DTOR_COUNT(count, 0);
     }
-
-    CHECK(SharedStruct::m_numCtors == count);
-    CHECK(SharedStruct::m_numDtors == count);
+    CHECK_CTOR_DTOR_COUNT(count, count);
   }
 
   TEST_CASE("core/smart_ptr/shared_ptr/with_containers", "")
@@ -347,6 +357,7 @@ namespace TestingSharedPtr
       smart_ptr::SharedPtr<derived> convToDer;
       CHECK(base::m_ctorCount == 3);
       CHECK(base::m_dtorCount == 2);
+
 
       // TODO: Test with static_pointer_cast<>() when it is available
       //convToDer.CastFrom(basePtr2);

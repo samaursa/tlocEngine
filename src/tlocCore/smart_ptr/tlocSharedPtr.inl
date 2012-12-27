@@ -6,7 +6,7 @@
 #endif
 
 #include "tlocSharedPtr.h"
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>

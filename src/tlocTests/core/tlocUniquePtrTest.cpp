@@ -116,6 +116,19 @@ namespace TestingUniquePtr
     }
   }
 
+  TEST_CASE("core/smart_ptr/unique_ptr/const", "")
+  {
+    {
+      smart_ptr::UniquePtr<const UniqueStruct> sp(nullptr);
+      CHECK_FALSE(sp);
+    }
+
+    {
+      smart_ptr::UniquePtr<const UniqueStruct> sp(new UniqueStruct(10));
+      CHECK(sp);
+    }
+  }
+
   template <typename T_ContainerType>
   void TestContainers()
   {

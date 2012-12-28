@@ -87,7 +87,7 @@ namespace TestingEntityManager
     CHECK(entTrack.m_entEventCounter == 0);
 
     bool stressTestPassed = true;
-    EntityManager::entity_list myList;
+    EntityManager::entity_cont myList;
 
     for (tl_uint i = 0; i < 100; ++i)
     {
@@ -99,7 +99,7 @@ namespace TestingEntityManager
     CHECK(entTrack.m_entEventCounter == 100);
     CHECK(stressTestPassed);
 
-    for (EntityManager::entity_list::iterator itr = myList.begin(),
+    for (EntityManager::entity_cont::iterator itr = myList.begin(),
       itrEnd = myList.end(); itr != itrEnd; ++itr)
     {
       eMgr.DestroyEntity(*itr);

@@ -12,7 +12,7 @@ namespace tloc { namespace core { namespace component_system {
 
   EntityManager::~EntityManager()
   {
-    for (entity_list::iterator itr = m_entities.begin(),
+    for (entity_cont::iterator itr = m_entities.begin(),
          itrEnd = m_entities.end(); itr != itrEnd; ++itr)
     {
       if (*itr) { DestroyEntity(*itr); }
@@ -64,7 +64,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
 
-    entity_list& entities = m_componentsAndEntities[a_component->GetType()];
+    entity_cont& entities = m_componentsAndEntities[a_component->GetType()];
 
     entities.push_back(a_entity);
     a_entity->InsertComponent(a_component);
@@ -111,8 +111,8 @@ namespace tloc { namespace core { namespace component_system {
     }
 
     {// Remove it from the component list
-      entity_list& entityList = m_componentsAndEntities[a_component->GetType()];
-      entity_list::iterator itr = core::find_all(entityList, a_entity);
+      entity_cont& entityList = m_componentsAndEntities[a_component->GetType()];
+      entity_cont::iterator itr = core::find_all(entityList, a_entity);
       TLOC_ASSERT(itr != entityList.end(), "Entity not found for component!");
       if (itr != entityList.end()) { entityList.erase(itr); }
     }
@@ -122,7 +122,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::DoUpdateComponents()
   {
-    typedef ent_comp_pair_list::iterator ent_comp_pair_itr;
+    typedef ent_comp_pair_cont::iterator ent_comp_pair_itr;
     ent_comp_pair_itr itr = m_compToRemove.begin();
     ent_comp_pair_itr itrEnd = m_compToRemove.end();
 
@@ -144,8 +144,8 @@ namespace tloc { namespace core { namespace component_system {
   {
     // Go through all the entities that we have to remove, and mark their
     // components for removal
-    entity_list::iterator itr = m_entitiesToRemove.begin();
-    entity_list::iterator itrEnd = m_entitiesToRemove.end();
+    entity_cont::iterator itr = m_entitiesToRemove.begin();
+    entity_cont::iterator itrEnd = m_entitiesToRemove.end();
 
     for(; itr != itrEnd; ++itr)
     {

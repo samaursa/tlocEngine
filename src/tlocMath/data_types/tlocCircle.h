@@ -49,6 +49,14 @@ namespace tloc { namespace math { namespace types {
     point_type m_position;    
   };
 
+  //////////////////////////////////////////////////////////////////////////
+  // Typedefs
+
+  typedef Circle<tl_float>  Circlef;
+  typedef Circle<f32>       Circlef32;
+  typedef Circle<f64>       Circlef64;
+  typedef Circle<f128>      Circlef128;
+
 };};};
 
 #endif

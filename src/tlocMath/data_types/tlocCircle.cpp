@@ -10,7 +10,7 @@ namespace tloc { namespace math { namespace types {
   // Assertion Macros
 
 #define TLOC_ASSERT_CIRCLE_VALID() \
-  TLOC_ASSERT_LOW_LEVEL(IsValid(), "Circle radius must be >= 0!")
+  TLOC_ASSERT_LOW_LEVEL(m_radius >= 0, "Circle radius must be >= 0!")
 
   //////////////////////////////////////////////////////////////////////////
   // Template macros
@@ -122,11 +122,11 @@ namespace tloc { namespace math { namespace types {
     
     value_type distance = displacement.Length();
 
-    return distance <= m_radius + a_other.m_radius;
+    return distance < m_radius + a_other.m_radius;
   }
 
   //////////////////////////////////////////////////////////////////////////
-  // Explicit instantiation
+  // Explicit instantiation for Circle<>
   
   template class Circle<f32>;
   template class Circle<f64>;
@@ -134,3 +134,11 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiation for StrongType<>
+
+#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
+TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef32::point_type);
+TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef64::point_type);
+TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef128::point_type);

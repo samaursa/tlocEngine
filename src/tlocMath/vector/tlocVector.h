@@ -212,8 +212,8 @@ namespace tloc { namespace math {
     TL_FI this_type&  operator/= (const_reference a_value);
     TL_FI this_type&  operator/= (const this_type& a_vector);
 
-    TL_FI bool        operator == (const this_type& a_vector);
-    TL_FI bool        operator != (const this_type& a_vector);
+    TL_FI bool        operator == (const this_type& a_vector) const;
+    TL_FI bool        operator != (const this_type& a_vector) const;
 
     //------------------------------------------------------------------------
     // Checks

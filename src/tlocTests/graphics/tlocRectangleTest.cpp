@@ -8,7 +8,7 @@
 namespace TestingRectangle
 {
   using namespace tloc;
-  using namespace tloc::graphics::types;
+  using namespace tloc::math::types;
 
   TEST_CASE("Graphics/types/Rectangle", "")
   {

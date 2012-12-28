@@ -1,10 +1,10 @@
 #ifndef _TLOC_PREFAB_GRAPHICS_QUAD_H_
 #define _TLOC_PREFAB_GRAPHICS_QUAD_H_
 
+#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocProjectionComponent.h>
-#include <tlocMath/data_types/tlocRectangle.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 

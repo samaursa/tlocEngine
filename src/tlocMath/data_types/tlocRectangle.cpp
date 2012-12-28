@@ -9,7 +9,7 @@
   TLOC_ASSERT_LOW_LEVEL( (_left <= _right) && (_bottom_ <= _top_),\
   "Rectangle extents are incorrect!");
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
 #define TLOC_RECTANGLE_TEMP typename T
 #define TLOC_RECTANGLE_PARAMS T

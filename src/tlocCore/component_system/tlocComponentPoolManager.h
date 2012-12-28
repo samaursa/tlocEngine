@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace component_system {
 
       for (; itr != itrEnd; ++itr)
       {
-        TLOC_ASSERT(itr->GetElement().GetRefCount() == 1,
+        TLOC_ASSERT(itr->GetElement().use_count() == 1,
                     "Element still in use!");
       }
     }
@@ -99,7 +99,7 @@ namespace tloc { namespace core { namespace component_system {
 
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetElement().GetRefCount() == 1)
+        if (itr->GetElement().use_count() == 1)
         {
           m_pool.RecycleElement(itr);
         }

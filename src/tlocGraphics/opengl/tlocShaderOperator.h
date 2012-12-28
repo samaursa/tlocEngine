@@ -2,7 +2,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/error/tlocError.h>
 
 #include <tlocGraphics/opengl/tlocAttribute.h>

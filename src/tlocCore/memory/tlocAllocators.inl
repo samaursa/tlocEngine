@@ -25,7 +25,8 @@
   TL_FI void operator delete (void* ptr) 
     ALLOCATOR_DECL_NO_THROW()
   {
-    TL_FREE(ptr);
+    if (ptr) 
+      TL_FREE(ptr);
   }
 
   TL_FI void* operator new (std::size_t size, const std::nothrow_t&) 
@@ -38,7 +39,8 @@
   TL_FI void operator delete (void* ptr, const std::nothrow_t&) 
     ALLOCATOR_DECL_NO_THROW()
   {
-    TL_FREE(ptr);
+    if (ptr) 
+      TL_FREE(ptr);
   }
 
 #endif

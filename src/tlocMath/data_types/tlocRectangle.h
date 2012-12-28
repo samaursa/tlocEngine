@@ -1,5 +1,5 @@
-#ifndef TLOC_GRAPHICS_TYPES_RECTANGLE_H
-#define TLOC_GRAPHICS_TYPES_RECTANGLE_H
+#ifndef _TLOC_MATH_TYPES_RECTANGLE_H_
+#define _TLOC_MATH_TYPES_RECTANGLE_H_
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/data_structures/tlocTuple.h>
@@ -7,7 +7,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Rectangle

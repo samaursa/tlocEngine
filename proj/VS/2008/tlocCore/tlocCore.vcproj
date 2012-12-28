@@ -1603,11 +1603,27 @@
 			Name="smart_ptr"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSharedPtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSharedPtr.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.inl"
 				>
 			</File>
 		</Filter>

@@ -3,10 +3,10 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocMath/angle/tlocAngle.h>
 #include <tlocMath/matrix/tlocMatrix4.h>
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/data_types/tlocAspectRatio.h>
 #include <tlocGraphics/data_types/tlocFOV.h>
 
@@ -41,7 +41,7 @@ namespace tloc { namespace graphics { namespace view_proj {
   public:
     typedef tl_float                                    real_type;
     typedef core::Tuple<real_type, Planes::k_count>     cont_type;
-    typedef types::Rectangle<real_type>                 rect_type;
+    typedef math::types::Rectangle<real_type>           rect_type;
     typedef tl_size                                     size_type;
     typedef math::Radian                                angle_type;
     typedef types::FOV                                  fov_type;

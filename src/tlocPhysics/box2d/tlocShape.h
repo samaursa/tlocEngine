@@ -4,7 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
 
@@ -21,10 +21,10 @@ namespace tloc { namespace physics { namespace box2d {
 
   public:
     typedef Shape   this_type;
-    
+
     typedef b2Shape                                   shape_interal_type;
-    
-    typedef core::smart_ptr::SharedPtr<shape_interal_type> 
+
+    typedef core::smart_ptr::SharedPtr<shape_interal_type>
                                                       shape_internal_type_ptr;
 
     typedef f32     float_type;

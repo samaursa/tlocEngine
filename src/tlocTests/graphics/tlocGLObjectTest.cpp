@@ -29,11 +29,11 @@ namespace TestingGLShaderObject
       glObject obj;
       obj.SetHandle(9);
       CHECK(obj.GetHandle() == 9);
-      CHECK(obj.GetRefCount() == 0);
+      CHECK(obj.use_count() == 0);
 
       {
         glObject temp = obj;
-        CHECK(obj.GetRefCount() == 1);
+        CHECK(obj.use_count() == 1);
         CHECK(glObject::m_destroyCount == 0);
       }
 

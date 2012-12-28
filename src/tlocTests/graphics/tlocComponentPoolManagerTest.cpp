@@ -7,8 +7,8 @@
 
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace TestingComponentPoolManager
 {
@@ -75,7 +75,7 @@ namespace TestingComponentPoolManager
         myPtr->m_value = 0;
       }
 
-      CHECK(itr->GetElement().GetRefCount() == 1);
+      CHECK(itr->GetElement().use_count() == 1);
 
       for (tl_int i = 1; i < 10; ++i)
       {

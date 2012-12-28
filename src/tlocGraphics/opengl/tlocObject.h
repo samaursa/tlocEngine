@@ -69,10 +69,10 @@ namespace tloc { namespace graphics { namespace gl {
       base_type::SetHandle(a_handle);
     }
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetRefCount, *m_refCount );
+    TLOC_DECL_AND_DEF_GETTER(size_type, use_count, *m_refCount );
 
     bool IsLastRef()
-    { return m_refCount == NULL || GetRefCount() == 0; }
+    { return m_refCount == NULL || use_count() == 0; }
 
   protected:
 

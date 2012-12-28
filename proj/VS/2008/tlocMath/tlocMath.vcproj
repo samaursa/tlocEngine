@@ -958,6 +958,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="rectangle"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\data_types\tlocRectangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\data_types\tlocRectangle.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"

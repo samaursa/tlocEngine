@@ -6,7 +6,7 @@
 #include <tlocMath/angle/tlocAngle.h>
 #include <tlocMath/matrix/tlocMatrix4.h>
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocGraphics/data_types/tlocAspectRatio.h>
 #include <tlocGraphics/data_types/tlocFOV.h>
 

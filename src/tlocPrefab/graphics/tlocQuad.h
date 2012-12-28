@@ -4,7 +4,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocProjectionComponent.h>
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 

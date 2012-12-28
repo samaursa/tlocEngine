@@ -6,7 +6,7 @@
 
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>

@@ -4,13 +4,15 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  EntityManager::EntityManager(EventManager *a_eventManager)
+  EntityManager::
+    EntityManager(EventManager *a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
     m_componentsAndEntities.resize(components_group::count);
   }
 
-  EntityManager::~EntityManager()
+  EntityManager::
+    ~EntityManager()
   {
     for (entity_cont::iterator itr = m_entities.begin(),
          itrEnd = m_entities.end(); itr != itrEnd; ++itr)
@@ -19,7 +21,8 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
-  Entity* EntityManager::CreateEntity()
+  EntityManager::entity_ptr_type EntityManager::
+    CreateEntity()
   {
     Entity* e = new Entity(m_nextId++);
 
@@ -41,7 +44,8 @@ namespace tloc { namespace core { namespace component_system {
     return e;
   }
 
-  void EntityManager::DestroyEntity(Entity* a_entity)
+  void EntityManager::
+    DestroyEntity(Entity* a_entity)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
@@ -53,13 +57,15 @@ namespace tloc { namespace core { namespace component_system {
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
   }
 
-  Entity* EntityManager::GetEntity(tloc::tl_int a_index)
+  EntityManager::entity_ptr_type EntityManager::
+    GetEntity(tloc::tl_int a_index)
   {
     TLOC_ASSERT(a_index < (tl_int)m_entities.size(), "Index out of range!");
     return m_entities[a_index];
   }
 
-  void EntityManager::InsertComponent(Entity *a_entity, Component *a_component)
+  void EntityManager::
+    InsertComponent(Entity *a_entity, Component *a_component)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
@@ -74,10 +80,11 @@ namespace tloc { namespace core { namespace component_system {
                            a_component) );
   }
 
-  bool EntityManager::RemoveComponent(Entity* a_entity, Component* a_component)
+  bool EntityManager::
+    RemoveComponent(Entity* a_entity, Component* a_component)
   {
-    component_list& entityComps = a_entity->DoGetComponents(a_component->GetType());
-    component_list::iterator itr = core::find_all(entityComps, a_component);
+    component_cont& entityComps = a_entity->DoGetComponents(a_component->GetType());
+    component_cont::iterator itr = core::find_all(entityComps, a_component);
 
     if (itr == entityComps.end())
     { return false; }
@@ -90,7 +97,8 @@ namespace tloc { namespace core { namespace component_system {
     return true;
   }
 
-  bool EntityManager::DoRemoveComponent(Entity* a_entity, Component* a_component)
+  bool EntityManager::
+    DoRemoveComponent(Entity* a_entity, Component* a_component)
   {
     // LOGIC: We allow the client to remove a component even if the component
     // does not exist in the entity. Return true if it exists, o/w false. Then,
@@ -100,8 +108,8 @@ namespace tloc { namespace core { namespace component_system {
     {// Remove it from the entity
       if (a_entity)
       {
-        component_list& entityComps = a_entity->DoGetComponents(a_component->GetType());
-        component_list::iterator itr = core::find_all(entityComps, a_component);
+        component_cont& entityComps = a_entity->DoGetComponents(a_component->GetType());
+        component_cont::iterator itr = core::find_all(entityComps, a_component);
 
         if (itr != entityComps.end())
         { entityComps.erase(itr); }
@@ -120,7 +128,8 @@ namespace tloc { namespace core { namespace component_system {
     return true;
   }
 
-  void EntityManager::DoUpdateComponents()
+  void EntityManager::
+    DoUpdateComponents()
   {
     typedef ent_comp_pair_cont::iterator ent_comp_pair_itr;
     ent_comp_pair_itr itr = m_compToRemove.begin();
@@ -134,7 +143,8 @@ namespace tloc { namespace core { namespace component_system {
     m_compToRemove.clear();
   }
 
-  void EntityManager::DoUpdateEntities()
+  void EntityManager::
+    DoUpdateEntities()
   {
     delete_ptrs(m_entitiesToRemove.begin(), m_entitiesToRemove.end());
     m_entitiesToRemove.clear();
@@ -154,10 +164,10 @@ namespace tloc { namespace core { namespace component_system {
       {
         if ( (*itr)->HasComponent(currComp))
         {
-          component_list& clist = (*itr)->DoGetComponents(currComp);
+          component_cont& clist = (*itr)->DoGetComponents(currComp);
 
-          component_list::iterator itrComp = clist.begin();
-          component_list::iterator itrCompEnd = clist.end();
+          component_cont::iterator itrComp = clist.begin();
+          component_cont::iterator itrCompEnd = clist.end();
 
           for (; itrComp != itrCompEnd; ++itrComp)
           {
@@ -173,8 +183,8 @@ namespace tloc { namespace core { namespace component_system {
     DoUpdateEntities();
   }
 
-  EntityManager::component_list*
-    EntityManager::GetComponents(Entity* a_entity, components::value_type a_type)
+  EntityManager::component_cont* EntityManager::
+    GetComponents(Entity* a_entity, components::value_type a_type)
   {
     typedef Entity::component_list_list comp_d_list;
 

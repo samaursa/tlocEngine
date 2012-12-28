@@ -38,7 +38,8 @@ namespace tloc { namespace core { namespace component_system {
   // typedefs
   typedef smart_ptr::SharedPtr<Component>       component_sptr;
   typedef smart_ptr::SharedPtr<const Component> component_const_sptr;
-  typedef tl_array<Component*>::type            component_array;
+
+  typedef tl_array<Component*>::type            component_ptr_array;
   typedef tl_array<component_sptr>::type        component_sptr_array;
 
   //////////////////////////////////////////////////////////////////////////

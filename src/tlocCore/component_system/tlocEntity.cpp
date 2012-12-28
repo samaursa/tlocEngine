@@ -10,5 +10,4 @@ namespace tloc { namespace core { namespace component_system {
 
   template class core::Array<Entity*>;
   template class core::Array<entity_sptr>;
-  template class core::Array<entity_const_sptr>;
 };};};

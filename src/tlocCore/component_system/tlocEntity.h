@@ -19,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef components::value_type          component_type;
     typedef core::component_system::
-                  component_array           component_list;
+                  component_ptr_array           component_list;
     typedef tl_array<component_list>::type  component_list_list;
     typedef tl_uint                         entity_id;
     typedef tl_size                         size_type;
@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace component_system {
   typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
   typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;
 
-  typedef tl_array<Entity*>::type                            entity_array;
+  typedef tl_array<Entity*>::type                            entity_ptr_array;
   typedef tl_array<entity_sptr>::type                        entity_sptr_array;
 };};};
 

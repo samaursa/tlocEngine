@@ -976,6 +976,10 @@
 					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocCircleTest.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocRectangleTest.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File

@@ -1237,18 +1237,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="rectangle"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="vertex"
 				>
 				<File

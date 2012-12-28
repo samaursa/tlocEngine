@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>
@@ -8,7 +8,7 @@
 namespace TestingRectangle
 {
   using namespace tloc;
-  using namespace tloc::graphics::types;
+  using namespace tloc::math::types;
 
   TEST_CASE("Graphics/types/Rectangle", "")
   {

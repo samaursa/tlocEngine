@@ -1,14 +1,16 @@
 #ifndef TLOC_ENTITY_H
 #define TLOC_ENTITY_H
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EntityWorld;
   class EntityManager;
-  class Component;
 
   class Entity
   {
@@ -16,7 +18,8 @@ namespace tloc { namespace core { namespace component_system {
     friend class EntityManager;
 
     typedef components::value_type          component_type;
-    typedef tl_array<Component*>::type      component_list;
+    typedef core::component_system::
+                  component_array           component_list;
     typedef tl_array<component_list>::type  component_list_list;
     typedef tl_uint                         entity_id;
     typedef tl_size                         size_type;
@@ -47,9 +50,11 @@ namespace tloc { namespace core { namespace component_system {
     component_list_list m_allComponents;
   };
 
-  typedef tl_array<Entity*>::type                              entity_array;
-  typedef tl_array<Entity*, core::Array_Unordered>::type       entity_array_o;
+  typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
+  typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;
 
+  typedef tl_array<Entity*>::type                            entity_array;
+  typedef tl_array<entity_sptr>::type                        entity_sptr_array;
 };};};
 
 #endif

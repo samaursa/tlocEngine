@@ -175,8 +175,11 @@ namespace TestingSharedPtr
       ResetSharedStructStaticVars();
 
       smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      smart_ptr::SharedPtr<SharedStruct> sp3(sp);
       CHECK_CTOR_DTOR_COUNT(1, 0);
       sp.reset(new SharedStruct(10));
+      CHECK(sp3);
+      sp3.reset();
       CHECK_CTOR_DTOR_COUNT(2, 1);
 
       CHECK(sp.use_count() == 1);

@@ -134,7 +134,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   void SharedPtr<SHARED_PTR_PARAMS>::
     reset(Y* a_ptr) 
   {
-    *this = this_type(a_ptr);
+    this_type(a_ptr).swap(*this);
   }
 
   template <SHARED_PTR_TEMPS>

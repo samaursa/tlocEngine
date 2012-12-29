@@ -84,7 +84,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     reset(pointer a_ptr)
   {
     DoDestroyRawPtr();
-    a_ptr = m_rawPtr;
+    this_type(a_ptr).swap(*this);
   }
 
   template <UNIQUE_PTR_TEMPS>

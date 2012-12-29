@@ -317,6 +317,14 @@ namespace TestingSharedPtr
       m_dtorCount++;
     }
 
+    bool operator ==(const base& a_other)
+    { return m_value == a_other.m_value; }
+
+    bool operator <(const base& a_other)
+    { return m_value < a_other.m_value; }
+
+    //TLOC_DECLARE_OPERATORS(base);
+
     virtual void foo(tl_int) = 0;
     tl_int m_value;
 
@@ -376,5 +384,45 @@ namespace TestingSharedPtr
 
   TEST_CASE("core/smart_ptr/shared_ptr/global operators", "")
   {
+      SharedPtr<base> basePtr(new derived());
+      basePtr->foo(5);
+
+      SharedPtr<derived> derPtr(new derived());
+      derPtr->foo(10);
+
+      CHECK( (basePtr == basePtr) );
+      CHECK_FALSE( (basePtr != basePtr) );
+      CHECK_FALSE( (basePtr == derPtr) );
+      CHECK( (basePtr != derPtr) );
+      CHECK_FALSE( (basePtr < basePtr) );
+
+      bool baseSmallerThanDerived = basePtr.get() < derPtr.get();
+      bool baseGreaterThanDerived = basePtr.get() > derPtr.get();
+      bool baseSmallerEqualThanDerived = basePtr.get() <= derPtr.get();
+      bool baseGreaterEqualThanDerived = basePtr.get() >= derPtr.get();
+
+      CHECK( (basePtr < derPtr) == baseSmallerThanDerived );
+      CHECK_FALSE( (basePtr > derPtr) == baseSmallerThanDerived );
+      CHECK( (basePtr > derPtr) == baseGreaterThanDerived);
+
+      CHECK( (basePtr <= derPtr) == baseSmallerEqualThanDerived);
+      CHECK( (basePtr >= derPtr) == baseGreaterEqualThanDerived);
+
+      CHECK_FALSE( (basePtr == nullptr));
+      CHECK_FALSE( (nullptr == basePtr));
+      CHECK( (basePtr != nullptr) );
+      CHECK( (nullptr != basePtr) );
+
+      CHECK_FALSE( (basePtr < nullptr) );
+      CHECK_FALSE( (basePtr < nullptr) );
+      CHECK( (nullptr < basePtr) );
+      CHECK( (basePtr > nullptr) );
+      CHECK( (nullptr > basePtr) );
+
+      CHECK_FALSE( (basePtr <= nullptr) );
+      CHECK( (nullptr <= basePtr) );
+      CHECK( (basePtr >= nullptr) );
+      CHECK_FALSE( (nullptr >= basePtr) );
+
   }
 }

@@ -123,11 +123,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   // Global operators
 
   template <class T, class U>
-  bool operator ==(const SharedPtr<T> a, const SharedPtr<U>& b)
+  bool operator ==(const SharedPtr<T>& a, const SharedPtr<U>& b)
   { return a.get() == b.get(); }
 
   template <class T, class U>
-  bool operator !=(const SharedPtr<T> a, const SharedPtr<U>& b)
+  bool operator !=(const SharedPtr<T>& a, const SharedPtr<U>& b)
   { return a.get() != b.get(); }
 
   template <class T, class U>

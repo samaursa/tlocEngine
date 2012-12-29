@@ -37,6 +37,44 @@ namespace TestingUniquePtr
     UniqueStruct::m_numDtors = 0;
   }
 
+  struct base
+  {
+    base() : m_value(0)
+    {
+      m_ctorCount++;
+    }
+
+    virtual ~base()
+    {
+      m_dtorCount++;
+    }
+
+    bool operator ==(const base& a_other)
+    { return m_value == a_other.m_value; }
+
+    bool operator <(const base& a_other)
+    { return m_value < a_other.m_value; }
+
+    //TLOC_DECLARE_OPERATORS(base);
+
+    virtual void foo(tl_int) = 0;
+    tl_int m_value;
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
+  };
+
+  tl_int base::m_ctorCount;
+  tl_int base::m_dtorCount;
+
+  struct derived : public base
+  {
+    virtual void foo(tl_int a_num)
+    {
+      m_value = a_num;
+    }
+  };
+
 #define CHECK_CTOR_DTOR_COUNT(_ctorCount_, _dtorCount_)\
   CHECK(UniqueStruct::m_numCtors == _ctorCount_);\
   CHECK(UniqueStruct::m_numDtors == _dtorCount_)
@@ -168,5 +206,51 @@ namespace TestingUniquePtr
     TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_singly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_doubly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
+  }
+
+  TEST_CASE("core/smart_ptr/unique_ptr/global operators", "")
+  {
+    using tloc::core::smart_ptr::UniquePtr;
+
+    UniquePtr<base> basePtr(new derived());
+    basePtr->foo(5);
+
+    UniquePtr<derived> derPtr(new derived());
+    derPtr->foo(10);
+
+    CHECK( (basePtr == basePtr) );
+    CHECK_FALSE( (basePtr != basePtr) );
+    CHECK_FALSE( (basePtr == derPtr) );
+    CHECK( (basePtr != derPtr) );
+    CHECK_FALSE( (basePtr < basePtr) );
+
+    bool baseSmallerThanDerived = basePtr.get() < derPtr.get();
+    bool baseGreaterThanDerived = basePtr.get() > derPtr.get();
+    bool baseSmallerEqualThanDerived = basePtr.get() <= derPtr.get();
+    bool baseGreaterEqualThanDerived = basePtr.get() >= derPtr.get();
+
+    CHECK( (basePtr < derPtr) == baseSmallerThanDerived );
+    CHECK_FALSE( (basePtr > derPtr) == baseSmallerThanDerived );
+    CHECK( (basePtr > derPtr) == baseGreaterThanDerived);
+
+    CHECK( (basePtr <= derPtr) == baseSmallerEqualThanDerived);
+    CHECK( (basePtr >= derPtr) == baseGreaterEqualThanDerived);
+
+    CHECK_FALSE( (basePtr == nullptr));
+    CHECK_FALSE( (nullptr == basePtr));
+    CHECK( (basePtr != nullptr) );
+    CHECK( (nullptr != basePtr) );
+
+    CHECK_FALSE( (basePtr < nullptr) );
+    CHECK_FALSE( (basePtr < nullptr) );
+    CHECK( (nullptr < basePtr) );
+    CHECK( (basePtr > nullptr) );
+    CHECK( (nullptr > basePtr) );
+
+    CHECK_FALSE( (basePtr <= nullptr) );
+    CHECK( (nullptr <= basePtr) );
+    CHECK( (basePtr >= nullptr) );
+    CHECK_FALSE( (nullptr >= basePtr) );
+
   }
 }

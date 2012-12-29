@@ -58,6 +58,18 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCenter() const
+  {
+    point_type center;
+    center[0] = (m_extents[left::k_index] + m_extents[right::k_index]) / 2;
+    center[1] = (m_extents[top::k_index] + m_extents[bottom::k_index]) / 2;
+
+    return center;
+  }
+
+  template <TLOC_RECTANGLE_TEMP>
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::IsValid() const
   {
     return (m_extents[left::k_index] < m_extents[right::k_index] &&

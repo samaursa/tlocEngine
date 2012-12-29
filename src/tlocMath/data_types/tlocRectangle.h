@@ -47,6 +47,8 @@ namespace tloc { namespace math { namespace types {
     ///-------------------------------------------------------------------------
     value_type  GetHeight() const;
 
+    point_type  GetCenter() const;
+
     ///-------------------------------------------------------------------------
     /// @brief
     /// If rectangle's left &gt;= right || top &lt;= bottom, rectangle is

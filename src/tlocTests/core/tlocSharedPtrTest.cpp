@@ -158,6 +158,7 @@ namespace TestingSharedPtr
       CHECK_CTOR_DTOR_COUNT(1, 0);
       sp.reset();
       CHECK_CTOR_DTOR_COUNT(1, 1);
+      CHECK(sp.use_count() == 0);
     }
 
     {
@@ -166,8 +167,8 @@ namespace TestingSharedPtr
       smart_ptr::SharedPtr<SharedStruct> sp(new SharedStruct(50));
       smart_ptr::SharedPtr<SharedStruct> sp2(sp);
       sp.reset();
-
       CHECK_CTOR_DTOR_COUNT(1, 0);
+      CHECK(sp2.use_count() == 1);
     }
 
     {

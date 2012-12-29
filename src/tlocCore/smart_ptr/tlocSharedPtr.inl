@@ -160,10 +160,13 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        delete m_rawPtr; m_rawPtr = nullptr;
+        delete m_rawPtr;
         delete m_refCount;
       }
     }
+
+    m_rawPtr = nullptr;
+    m_refCount = nullptr;
   }
 
 };};};

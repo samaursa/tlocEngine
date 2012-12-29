@@ -8,11 +8,11 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/data_types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
-#include <tlocPhysics/box2d/tlocCircleShape.h>
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
@@ -36,12 +36,12 @@ namespace TestingRigidBodySystem
     typedef core::component_system::EntityManager entity_manager;
     typedef core::component_system::Entity        entity_type;
 
+    typedef math::types::Circlef              circle_shape_type;
     typedef math::component_system::Transform transform_type;
 
     typedef box2d::PhysicsManager     physics_manager;
     typedef box2d::ContactEvent       contact_event_type;
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
-    typedef box2d::CircleShape        circle_shape_type;
     typedef box2d::RigidBodyDef       rigid_body_def_type;
 
     typedef RigidBodyShape                      rigid_body_shape_component;

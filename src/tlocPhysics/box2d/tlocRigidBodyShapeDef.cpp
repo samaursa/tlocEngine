@@ -1,6 +1,7 @@
 #include "tlocRigidBodyShapeDef.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/utilities/tlocType.h>
 
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Collision/Shapes/b2Shape.h>
@@ -23,16 +24,20 @@ namespace tloc { namespace physics { namespace box2d {
 
   void RigidBodyShapeDef::DoSetShape(const rect_type& a_rect)
   {
-    typedef b2PolygonShape  polygon_shape_internal_type;
+    using core::utils::CastTo32;
+    typedef b2PolygonShape          polygon_shape_internal_type;
+    typedef rect_type::point_type   point_type;
 
     polygon_shape_internal_type* rect = new polygon_shape_internal_type;
 
-    float_internal_type width =
-      static_cast<float_internal_type>( a_rect.GetWidth() );
-    float_internal_type height =
-      static_cast<float_internal_type>( a_rect.GetHeight() );
+    float_internal_type halfWidth =
+      CastTo32<float_internal_type, float_type>( a_rect.GetWidth() ) / 2.f;
+    float_internal_type halfHeight =
+      CastTo32<float_internal_type, float_type>( a_rect.GetHeight() ) / 2.f;
 
-    rect->SetAsBox(width, height);
+    point_type center = a_rect.GetCenter();
+
+    rect->SetAsBox(halfWidth, halfHeight, b2Vec2(center[0], center[1]), 0.f);
 
     m_fixtureDef.shape = rect;
     m_internalShape = shape_internal_type_sptr(rect);

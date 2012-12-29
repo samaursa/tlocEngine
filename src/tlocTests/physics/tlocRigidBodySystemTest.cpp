@@ -8,6 +8,7 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocMath/data_types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
@@ -36,6 +37,7 @@ namespace TestingRigidBodySystem
     typedef core::component_system::EntityManager entity_manager;
     typedef core::component_system::Entity        entity_type;
 
+    typedef math::types::Rectf                rect_shape_type;
     typedef math::types::Circlef              circle_shape_type;
     typedef math::component_system::Transform transform_type;
 
@@ -129,12 +131,34 @@ namespace TestingRigidBodySystem
     rb_sys_fixture::rigid_body_listener_system
       rigidBodyListenerSys(&evntMgr, &entityMgr, &physicsMgr);
 
-    // Create a static rigid body entity
+    // Create a static rigid body entity (Box)
+    rb_sys_fixture::entity_type* rbStaticRectEntity = entityMgr.CreateEntity();
+
+    rb_sys_fixture::transform_type transformComponent;
+
+    rb_sys_fixture::rigid_body_def_type rbDef;
+    rb_sys_fixture::rigid_body_component rbStaticRectComponent(rbDef);
+
+    rb_sys_fixture::rect_shape_type rectShape
+      (rb_sys_fixture::rect_shape_type::half_width(10.0f),
+       rb_sys_fixture::rect_shape_type::half_height(1.0f) );
+
+    rb_sys_fixture::rigid_body_shape_def_type rbRectShape(rectShape);
+    rb_sys_fixture::rigid_body_shape_component rbShapeComponent(rbRectShape);
+
+    entityMgr.InsertComponent(rbStaticRectEntity, &transformComponent);
+    entityMgr.InsertComponent(rbStaticRectEntity, &rbStaticRectComponent);
+    entityMgr.InsertComponent(rbStaticRectEntity, &rbShapeComponent);
+
+    // Create a static rigid body entity (Circle)
     rb_sys_fixture::entity_type* rbStaticEntity = entityMgr.CreateEntity();
 
     rb_sys_fixture::transform_type transformComponent1;
 
+    const float rbDynamicStartPositionY = 3.0f;
+
     rb_sys_fixture::rigid_body_def_type rbDef1;
+    //rbDef1.SetPosition(rb_sys_fixture::vec_type(-1.0f, rbDynamicStartPositionY));
     rb_sys_fixture::rigid_body_component rbStaticComponent(rbDef1);
 
     rb_sys_fixture::circle_shape_type circleShape;
@@ -147,16 +171,14 @@ namespace TestingRigidBodySystem
     entityMgr.InsertComponent(rbStaticEntity, &rbStaticComponent);
     entityMgr.InsertComponent(rbStaticEntity, &rbShapeComponent1);
 
-    // Create a dynamic rigid body
+    // Create a dynamic rigid body (Circle)
     rb_sys_fixture::entity_type* rbDynamicEntity = entityMgr.CreateEntity();
 
     rb_sys_fixture::transform_type transformComponent2;
 
-    const float rbDynamicStartPositionY = 3.0f;
-
     rb_sys_fixture::rigid_body_def_type rbDef2;
     rbDef2.SetType<box2d::p_rigid_body::DynamicBody>();
-    rbDef2.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
+    rbDef2.SetPosition(rb_sys_fixture::vec_type(1.0f, rbDynamicStartPositionY));
 
     rb_sys_fixture::rigid_body_component rbDynamicComponent(rbDef2);
 
@@ -205,7 +227,7 @@ namespace TestingRigidBodySystem
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
 
-      if((previousPosition != position) == false)
+      if((position[1] < previousPosition[1]) == false)
       { deltaPTest = false; break; }
 
       // +1 since we've already told the physics manager to move "ahead" one step.
@@ -225,7 +247,6 @@ namespace TestingRigidBodySystem
 
 
     // Update one more time. The ball should have hit the floor and "stopped"
-    // thus having the same position
     {
       physicsMgr.Update(timeStep);
       rigidBodySys.ProcessActiveEntities();
@@ -233,7 +254,7 @@ namespace TestingRigidBodySystem
 
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
-      CHECK((position == previousPosition));
+      CHECK(position[1] >= previousPosition[1]);
     }
 
     CHECK(myWorldContactCallback.m_numEvents == 1);

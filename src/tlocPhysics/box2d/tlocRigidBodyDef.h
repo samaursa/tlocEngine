@@ -115,6 +115,11 @@ namespace tloc { namespace physics { namespace box2d {
     rigid_body_def_internal_type_ptr m_rigidBodyDef;
   };
 
+  //////////////////////////////////////////////////////////////////////////
+  // Typedefs
+
+  typedef core::smart_ptr::SharedPtr<RigidBodyDef> rigid_body_def_sptr;
+
 };};};
 
 #endif

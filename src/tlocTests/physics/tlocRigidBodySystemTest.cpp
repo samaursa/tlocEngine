@@ -41,10 +41,11 @@ namespace TestingRigidBodySystem
     typedef math::types::Circlef              circle_shape_type;
     typedef math::component_system::Transform transform_type;
 
-    typedef box2d::PhysicsManager     physics_manager;
-    typedef box2d::ContactEvent       contact_event_type;
-    typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
-    typedef box2d::RigidBodyDef       rigid_body_def_type;
+    typedef box2d::PhysicsManager       physics_manager;
+    typedef box2d::ContactEvent         contact_event_type;
+    typedef box2d::RigidBodyShapeDef    rigid_body_shape_def_type;
+    typedef box2d::RigidBodyDef         rigid_body_def_type;
+    typedef box2d::rigid_body_def_sptr  rigid_body_def_sptr;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
@@ -145,7 +146,7 @@ namespace TestingRigidBodySystem
 
     transform_type transformComponent;
 
-    rigid_body_def_type rbDef;
+    rigid_body_def_sptr rbDef(new rigid_body_def_type);
     rigid_body_component rbStaticRectComponent(rbDef);
 
     rect_shape_type rectShape(rect_shape_type::half_width(10.0f),
@@ -166,8 +167,8 @@ namespace TestingRigidBodySystem
 
     const float circleStartPosition = 3.0f;
 
-    rigid_body_def_type rbDef1;
-    rbDef1.SetPosition(vec_type(-2.0f, circleStartPosition));
+    rigid_body_def_sptr rbDef1(new rigid_body_def_type);
+    rbDef1->SetPosition(vec_type(-2.0f, circleStartPosition));
     rigid_body_component rbStaticComponent(rbDef1);
 
     circle_shape_type circleShape;
@@ -186,9 +187,9 @@ namespace TestingRigidBodySystem
 
     transform_type transformComponent2;
 
-    rigid_body_def_type rbDef2;
-    rbDef2.SetType<box2d::p_rigid_body::DynamicBody>();
-    rbDef2.SetPosition(vec_type(2.0f, circleStartPosition));
+    rigid_body_def_sptr rbDef2(new rigid_body_def_type);
+    rbDef2->SetType<box2d::p_rigid_body::DynamicBody>();
+    rbDef2->SetPosition(vec_type(2.0f, circleStartPosition));
 
     rigid_body_component rbDynamicComponent(rbDef2);
 

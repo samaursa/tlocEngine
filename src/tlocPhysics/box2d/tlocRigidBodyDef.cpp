@@ -292,4 +292,7 @@ namespace tloc { namespace physics { namespace box2d {
   template void RigidBodyDef::DoSetType<p_rigid_body::KinematicBody>();
   template void RigidBodyDef::DoSetType<p_rigid_body::DynamicBody>();
 
+  template class core::smart_ptr::SharedPtr<RigidBodyDef>;
+  //template class core::smart_ptr::SharedPtr<b2BodyDef>;
+
 };};};

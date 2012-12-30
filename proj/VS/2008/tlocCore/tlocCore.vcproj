@@ -1615,6 +1615,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
 				>
 			</File>

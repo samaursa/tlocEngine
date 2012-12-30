@@ -253,4 +253,50 @@ namespace TestingUniquePtr
     CHECK_FALSE( (nullptr >= basePtr) );
 
   }
+
+  void DoDebugTest(smart_ptr::p_smart_ptr_tracker::Debug)
+  {
+    using smart_ptr::UniquePtr;
+
+    {
+      derived* d1 = new derived();
+      derived* d2 = new derived();
+      derived* d3 = new derived();
+
+      UniquePtr<derived> derPtr(d1);
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d1));
+      CHECK_FALSE(smart_ptr::Unsafe_IsPtrTracked( (void*)d2));
+      CHECK_FALSE(smart_ptr::Unsafe_IsPtrTracked( (void*)d3));
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+
+      UniquePtr<derived> derPtrS(derPtr);
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+
+      // This SHOULD fail
+      // TODO: Turn this into a real test once we have a throwing assertion
+      // UniquePtr<derived> derPtrSS(d1);
+
+      derPtr.swap(derPtrS);
+      derPtr.reset();
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 0);
+
+      derPtr.reset(d2);
+      UniquePtr<derived> derPtr2(d3);
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d2));
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d3));
+
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 2);
+    }
+
+    CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 0);
+  }
+
+  void DoDebugTest(smart_ptr::p_smart_ptr_tracker::NoDebug)
+  { /* intentionally empty */}
+
+  TEST_CASE("core/smart_ptr/unique_ptr/debug test", "")
+  {
+    DoDebugTest(smart_ptr::SmartPtrTracker::policy_type());
+  }
 }

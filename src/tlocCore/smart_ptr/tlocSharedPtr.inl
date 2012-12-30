@@ -19,17 +19,22 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr() 
-    : m_rawPtr(nullptr) , m_refCount(nullptr)
+    : base_type(nullptr)
+    , m_rawPtr(nullptr) 
+    , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(nullptr_t)
-    : m_rawPtr(nullptr) , m_refCount(nullptr)
+    : base_type(nullptr)
+    , m_rawPtr(nullptr)
+    , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(pointer a_rawPtr)
-    : m_rawPtr(a_rawPtr)
+    : base_type( (void*)a_rawPtr)
+    , m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
     DoAddRef();
@@ -37,7 +42,9 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const this_type& a_other)
-    : m_rawPtr(a_other.m_rawPtr), m_refCount(a_other.m_refCount)
+    : base_type(nullptr)
+    , m_rawPtr(a_other.m_rawPtr)
+    , m_refCount(a_other.m_refCount)
   {
     CheckNullBeforeCopy(m_rawPtr);
     // Mainly for containers
@@ -160,6 +167,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
+        DoStopTrackingPtr( (void*)m_rawPtr);
         delete m_rawPtr;
         delete m_refCount;
       }

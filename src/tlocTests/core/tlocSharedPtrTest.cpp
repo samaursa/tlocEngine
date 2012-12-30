@@ -425,4 +425,49 @@ namespace TestingSharedPtr
       CHECK_FALSE( (nullptr >= basePtr) );
 
   }
+
+  void DoDebugTest(smart_ptr::p_smart_ptr_tracker::Debug)
+  {
+    {
+      derived* d1 = new derived();
+      derived* d2 = new derived();
+      derived* d3 = new derived();
+
+      SharedPtr<derived> derPtr(d1);
+      SharedPtr<derived> derPtrS(derPtr);
+
+      // This SHOULD fail
+      // TODO: Turn this into a real test once we have a throwing assertion
+      // SharedPtr<derived> derPtrSS(d1);
+
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d1));
+      CHECK_FALSE(smart_ptr::Unsafe_IsPtrTracked( (void*)d2));
+      CHECK_FALSE(smart_ptr::Unsafe_IsPtrTracked( (void*)d3));
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+
+      derPtrS.reset();
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 1);
+
+      derPtr.reset();
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 0);
+
+      derPtr.reset(d2);
+      SharedPtr<derived> derPtr2(d3);
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d2));
+      CHECK(smart_ptr::Unsafe_IsPtrTracked( (void*)d3));
+
+      CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 2);
+    }
+
+    CHECK(smart_ptr::Unsafe_GetPtrTrackedSize() == 0);
+  }
+
+  void DoDebugTest(smart_ptr::p_smart_ptr_tracker::NoDebug)
+  { /* intentionally empty */}
+
+  TEST_CASE("core/smart_ptr/shared_ptr/debug test", "")
+  {
+    DoDebugTest(smart_ptr::SmartPtrTracker::policy_type());
+  }
 }

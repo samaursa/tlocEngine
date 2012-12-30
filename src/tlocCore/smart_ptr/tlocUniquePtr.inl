@@ -20,32 +20,37 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr()
-    : m_rawPtr(nullptr)
+    : base_type(nullptr)
+    , m_rawPtr(nullptr)
   { }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(nullptr_t)
-    : m_rawPtr(nullptr)
+    : base_type(nullptr)
+    , m_rawPtr(nullptr)
   { }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(pointer a_rawPtr)
-    : m_rawPtr(a_rawPtr)
+    : base_type( (void*)a_rawPtr )
+    , m_rawPtr(a_rawPtr)
   { }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(const this_type& a_other)
-    : m_rawPtr( const_cast<this_type*>(&a_other)->release() )
+    : base_type(nullptr)
+    , m_rawPtr( const_cast<this_type*>(&a_other)->release() )
   { }
 
   template <UNIQUE_PTR_TEMPS>
   template <typename T_Other>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(const UniquePtr<T_Other>& a_other)
-    : m_rawPtr( static_cast<pointer>(a_other.release()) )
+    : base_type(nullptr)
+    , m_rawPtr( static_cast<pointer>(a_other.release()) )
   { }
 
   template <UNIQUE_PTR_TEMPS>
@@ -130,6 +135,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     { 
+      DoStopTrackingPtr( (void*)m_rawPtr);
       delete m_rawPtr;
       m_rawPtr = nullptr;
     }

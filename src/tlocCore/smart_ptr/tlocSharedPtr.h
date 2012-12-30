@@ -37,10 +37,12 @@ namespace tloc { namespace core { namespace smart_ptr {
       typename T_NullCopyPolicy = p_shared_ptr::null_copy::Disallow
     >
   class SharedPtr
-    : public SmartPtr
+    : public SmartPtrTracker
     , public T_NullCopyPolicy
   {
   public:
+    typedef SmartPtrTracker         base_type;
+
     typedef T                       value_type;
     typedef T*                      pointer;
     typedef T const *               const_pointer;
@@ -112,7 +114,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   SharedPtr<T, T_NullCopyPolicy>::
     SharedPtr(const SharedPtr<T_Other>& a_other)
-    : m_rawPtr  (a_other.get() )
+    : base_type(nullptr)
+    , m_rawPtr  (a_other.get() )
     , m_refCount(a_other.DoExposeCounter() )
   {
     // Mainly for containers

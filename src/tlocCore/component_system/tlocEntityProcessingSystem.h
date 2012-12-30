@@ -53,13 +53,13 @@ namespace tloc { namespace core { namespace component_system {
 
   private:
     virtual void DoProcessActiveEntities (entity_manager* a_mgr,
-                                          const entity_array& a_entities);
+                                          const entity_ptr_array& a_entities);
 
     virtual error_type DoInitialize(entity_manager* a_mgr,
-                                    const entity_array& a_entities);
+                                    const entity_ptr_array& a_entities);
 
     virtual error_type DoShutdown(entity_manager* a_mgr,
-                                  const entity_array& a_entities);
+                                  const entity_ptr_array& a_entities);
   };
 
   //------------------------------------------------------------------------

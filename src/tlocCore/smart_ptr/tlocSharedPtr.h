@@ -41,6 +41,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     , public T_NullCopyPolicy
   {
   public:
+    typedef SmartPtr                base_type;
+
     typedef T                       value_type;
     typedef T*                      pointer;
     typedef T const *               const_pointer;
@@ -54,6 +56,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   public:
     SharedPtr();
+    SharedPtr(nullptr_t);
     explicit SharedPtr(pointer a_rawPtr);
     SharedPtr(const this_type& a_other);
 
@@ -118,6 +121,87 @@ namespace tloc { namespace core { namespace smart_ptr {
     DoAddRef();
   }
 
+  //////////////////////////////////////////////////////////////////////////
+  // Global operators
+
+  template <class T, class U>
+  bool operator ==(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U>
+  bool operator !=(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U>
+  bool operator <(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  {
+    using tloc::core::less;
+    using tloc::type_traits::common_type;
+
+    return less<common_type<T*, U*>::type>()( a.get(), b.get() );
+  }
+
+  template <class T, class U>
+  bool operator >(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  { return b < a; }
+
+  template <class T, class U>
+  bool operator <=(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  { return !(b < a); }
+
+  template <class T, class U>
+  bool operator >=(const SharedPtr<T>& a, const SharedPtr<U>& b)
+  { return !(a < b); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <class T>
+  bool operator ==(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return !a; }
+
+  template <class T>
+  bool operator ==(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return !b; }
+
+  template <class T>
+  bool operator !=(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return (bool)a; }
+
+  template <class T>
+  bool operator !=(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return (bool)b; }
+
+  template <class T>
+  bool operator <(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return tloc::core::less<T*>()(a.get(), nullptr ); }
+
+  template <class T>
+  bool operator <(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return tloc::core::less<T*>()(nullptr, b.get()); }
+
+  template <class T>
+  bool operator <=(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return !(nullptr < a); }
+
+  template <class T>
+  bool operator <=(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return !(b < nullptr); }
+
+  template <class T>
+  bool operator >(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return nullptr <= a; }
+
+  template <class T>
+  bool operator >(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return !(b < nullptr); }
+
+  template <class T>
+  bool operator >=(const SharedPtr<T>& a, tloc::nullptr_t)
+  { return !(a < nullptr); }
+
+  template <class T>
+  bool operator >=(tloc::nullptr_t, const SharedPtr<T>& b)
+  { return !(nullptr < b); }
 
 };};};
 

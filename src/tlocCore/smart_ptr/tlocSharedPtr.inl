@@ -7,6 +7,7 @@
 
 #include "tlocSharedPtr.h"
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
@@ -19,7 +20,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr() 
-    : m_rawPtr(nullptr) , m_refCount(nullptr)
+    : m_rawPtr(nullptr) 
+    , m_refCount(nullptr)
+  { }
+
+  template <SHARED_PTR_TEMPS>
+  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(nullptr_t)
+    : m_rawPtr(nullptr)
+    , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
@@ -27,12 +35,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
+    priv::DoStartTrackingPtr( (void*)a_rawPtr);
     DoAddRef();
   }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const this_type& a_other)
-    : m_rawPtr(a_other.m_rawPtr), m_refCount(a_other.m_refCount)
+    : m_rawPtr(a_other.m_rawPtr)
+    , m_refCount(a_other.m_refCount)
   {
     CheckNullBeforeCopy(m_rawPtr);
     // Mainly for containers
@@ -129,7 +139,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   void SharedPtr<SHARED_PTR_PARAMS>::
     reset(Y* a_ptr) 
   {
-    *this = this_type(a_ptr);
+    this_type(a_ptr).swap(*this);
   }
 
   template <SHARED_PTR_TEMPS>
@@ -155,10 +165,14 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        delete m_rawPtr; m_rawPtr = nullptr;
+        priv::DoStopTrackingPtr( (void*)m_rawPtr);
+        delete m_rawPtr;
         delete m_refCount;
       }
     }
+
+    m_rawPtr = nullptr;
+    m_refCount = nullptr;
   }
 
 };};};

@@ -68,7 +68,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
     virtual error_type DoInitialize(entity_manager* a_mgr,
-                                    const entity_array& a_entities) = 0;
+                                    const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -85,7 +85,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
     virtual error_type DoShutdown(entity_manager* a_mgr,
-                                  const entity_array& a_entities) = 0;
+                                  const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -111,7 +111,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
     virtual void DoProcessActiveEntities(entity_manager* a_mgr,
-                                         const entity_array& a_entities) = 0;
+                                         const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
@@ -127,12 +127,12 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_array, DoGetActiveEntities,
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                           m_activeEntities);
 
   protected:
     component_type_array  m_typeFlags;
-    entity_array          m_activeEntities;
+    entity_ptr_array          m_activeEntities;
 
     EventManager*     m_eventMgr;
     EntityManager*    m_entityMgr;

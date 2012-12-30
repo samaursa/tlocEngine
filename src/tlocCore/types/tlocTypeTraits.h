@@ -4,6 +4,8 @@
 #include <tlocCore/types/tlocBasicTypes.h>
 #include "3rdParty/loki/TypeTraits.h"
 
+#include <tlocCore/types/tlocTypeTraitsCommonType.h>
+
 namespace tloc
 {
   typedef Loki::Int2Type<1>  type_true;

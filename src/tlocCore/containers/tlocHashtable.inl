@@ -912,8 +912,8 @@ namespace tloc { namespace core {
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::size_type
     Hashtable<HASH_TABLE_PARAMS>::DoErase(const key_type& a_key, keys_are_unique)
   {
-    //const hash_code_type hc = get_hash_code(a_key);
-    iterator itr = find_by_hash(a_key);
+    const hash_code_type hc = get_hash_code(a_key);
+    iterator itr = find_by_hash(hc);
 
     if (itr == end()) return 0;
 
@@ -930,7 +930,7 @@ namespace tloc { namespace core {
     // Relies on values with the sake key to be placed in sequence
 
     const hash_code_type hc = get_hash_code(a_key);
-    iterator itr = find_by_hash(a_key);
+    iterator itr = find_by_hash(hc);
 
     if (itr == end()) return 0;
 

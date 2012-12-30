@@ -14,31 +14,36 @@ namespace tloc { namespace core { namespace component_system {
   class EntityManager
   {
   public:
-    typedef tl_array<Entity*>::type               entity_list;
-    typedef tl_array<Entity::entity_id>::type     entity_id_list;
-    typedef tl_array<entity_list>::type           component_entity_list;
+    typedef Entity*                               entity_ptr_type;
+    typedef Component*                            component_ptr_type;
 
-    typedef Pair<Entity*, Component*>             entity_component_pair;
-    typedef tl_array<entity_component_pair>::type ent_comp_pair_list;
+    typedef tl_array<entity_ptr_type>::type       entity_cont;
+    typedef tl_array<Entity::entity_id>::type     entity_id_cont;
+    typedef tl_array<entity_cont>::type           component_entity_cont;
 
-    typedef Entity::component_list                component_list;
-    typedef Entity::entity_id                     entity_id;
+    typedef Pair<entity_ptr_type,
+                 component_ptr_type>              ent_comp_pair_type;
+    typedef tl_array
+            <ent_comp_pair_type>::type            ent_comp_pair_cont;
+
+    typedef Entity::component_list                component_cont;
+    typedef Entity::entity_id                     entity_id_type;
 
     EntityManager(EventManager* a_eventManager);
     virtual ~EntityManager();
 
-    Entity*     CreateEntity();
-    void        DestroyEntity(Entity* a_entity);
-    Entity*     GetEntity(tl_int a_index);
+    entity_ptr_type   CreateEntity();
+    void              DestroyEntity(Entity* a_entity);
+    entity_ptr_type   GetEntity(tl_int a_index);
 
     void        InsertComponent(Entity* a_entity, Component* a_component);
     bool        RemoveComponent(Entity* a_entity, Component* a_component);
 
     void        Update();
 
-    component_list* GetComponents(Entity* a_entity, components::value_type a_type);
+    component_cont* GetComponents(Entity* a_entity, components::value_type a_type);
 
-    TLOC_DECL_AND_DEF_GETTER(entity_list::size_type, GetUnusedEntities,
+    TLOC_DECL_AND_DEF_GETTER(entity_cont::size_type, GetUnusedEntities,
                              m_removedEntities.size());
 
   private:
@@ -50,14 +55,14 @@ namespace tloc { namespace core { namespace component_system {
 
   private:
 
-    entity_list             m_entities;
-    entity_id_list          m_removedEntities;
-    component_entity_list   m_componentsAndEntities;
+    entity_cont             m_entities;
+    entity_id_cont          m_removedEntities;
+    component_entity_cont   m_componentsAndEntities;
     EventManager*           m_eventMgr;
-    entity_id               m_nextId;
+    entity_id_type          m_nextId;
 
-    ent_comp_pair_list      m_compToRemove;
-    entity_list             m_entitiesToRemove;
+    ent_comp_pair_cont      m_compToRemove;
+    entity_cont             m_entitiesToRemove;
   };
 
 };};};

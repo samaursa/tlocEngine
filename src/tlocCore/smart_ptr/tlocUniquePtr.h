@@ -15,10 +15,10 @@ namespace tloc { namespace core { namespace smart_ptr {
       typename T
     >
   class UniquePtr
-    : public SmartPtrTracker
+    : public SmartPtr
   {
   public:
-    typedef SmartPtrTracker        base_type;
+    typedef SmartPtr               base_type;
 
     typedef T                      value_type;
     typedef T*                     pointer;

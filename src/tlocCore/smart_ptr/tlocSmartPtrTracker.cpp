@@ -1,10 +1,9 @@
-#include "tlocSmartPtr.h"
-#include "tlocSmartPtr.inl"
+#include "tlocSmartPtrTracker.h"
 
 #include <tlocCore/containers/tlocHashmap.h>
 #include <tlocCore/containers/tlocHashmap.inl>
 
-namespace tloc { namespace core { namespace smart_ptr {
+namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
   namespace {
     class PointerMap
@@ -45,17 +44,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     PointerMap::map_type  PointerMap::m_ptrMap;
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // SmartPtrTracker_T<>
-
-#define SMART_PTR_TRACKER_TEMPS typename T_DebugPolicy
-#define SMART_PTR_TRACKER_PARAMS T_DebugPolicy
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <SMART_PTR_TRACKER_TEMPS>
-  SmartPtrTracker_T<SMART_PTR_TRACKER_PARAMS>::
-    SmartPtrTracker_T(void* a_pointer)
+  void DoStartTrackingPtr(void* a_pointer)
   {
     TLOC_ASSERT_LOW_LEVEL(PointerMap::Exists(a_pointer) == false,
       "a_pointer is already managed by another (set of) smart pointers");
@@ -64,9 +53,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <SMART_PTR_TRACKER_TEMPS>
-  void SmartPtrTracker_T<SMART_PTR_TRACKER_PARAMS>::
-    DoStopTrackingPtr(void* a_pointer)
+  void DoStopTrackingPtr(void* a_pointer)
   {
     TLOC_ASSERT_LOW_LEVEL(PointerMap::Exists(a_pointer),
       "a_pointer has already been removed by another (set of) smart pointers");
@@ -85,9 +72,4 @@ namespace tloc { namespace core { namespace smart_ptr {
     return PointerMap::size();
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  template class SmartPtrTracker_T<p_smart_ptr_tracker::Debug>;
-
-};};};
+};};};};

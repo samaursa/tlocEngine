@@ -7,6 +7,7 @@
 
 #include "tlocUniquePtr.h"
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
@@ -20,29 +21,27 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr()
-    : base_type(nullptr)
-    , m_rawPtr(nullptr)
+    : m_rawPtr(nullptr)
   { }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(nullptr_t)
-    : base_type(nullptr)
-    , m_rawPtr(nullptr)
+    : m_rawPtr(nullptr)
   { }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(pointer a_rawPtr)
-    : base_type( (void*)a_rawPtr )
-    , m_rawPtr(a_rawPtr)
-  { }
+    : m_rawPtr(a_rawPtr)
+  { 
+    priv::DoStartTrackingPtr( (void*)a_rawPtr);
+  }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(const this_type& a_other)
-    : base_type(nullptr)
-    , m_rawPtr( const_cast<this_type*>(&a_other)->release() )
+    : m_rawPtr( const_cast<this_type*>(&a_other)->release() )
   { }
 
   template <UNIQUE_PTR_TEMPS>
@@ -135,7 +134,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     { 
-      DoStopTrackingPtr( (void*)m_rawPtr);
+      priv::DoStopTrackingPtr( (void*)m_rawPtr);
       delete m_rawPtr;
       m_rawPtr = nullptr;
     }

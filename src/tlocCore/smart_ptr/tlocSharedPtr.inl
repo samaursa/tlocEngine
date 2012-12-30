@@ -7,6 +7,7 @@
 
 #include "tlocSharedPtr.h"
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl>
@@ -19,31 +20,28 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr() 
-    : base_type(nullptr)
-    , m_rawPtr(nullptr) 
+    : m_rawPtr(nullptr) 
     , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(nullptr_t)
-    : base_type(nullptr)
-    , m_rawPtr(nullptr)
+    : m_rawPtr(nullptr)
     , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(pointer a_rawPtr)
-    : base_type( (void*)a_rawPtr)
-    , m_rawPtr(a_rawPtr)
+    : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
+    priv::DoStartTrackingPtr( (void*)a_rawPtr);
     DoAddRef();
   }
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const this_type& a_other)
-    : base_type(nullptr)
-    , m_rawPtr(a_other.m_rawPtr)
+    : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
     CheckNullBeforeCopy(m_rawPtr);
@@ -167,7 +165,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        DoStopTrackingPtr( (void*)m_rawPtr);
+        priv::DoStopTrackingPtr( (void*)m_rawPtr);
         delete m_rawPtr;
         delete m_refCount;
       }

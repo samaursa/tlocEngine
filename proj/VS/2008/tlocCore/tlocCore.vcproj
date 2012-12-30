@@ -1615,15 +1615,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtrTracker.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtrTracker.h"
 				>
 			</File>
 			<File

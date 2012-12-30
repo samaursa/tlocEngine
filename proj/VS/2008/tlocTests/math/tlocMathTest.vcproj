@@ -969,6 +969,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="data_types"
+				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocCircleTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\math\tlocRectangleTest.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="$(TLOC_PATH)\src\tlocTests\math\main.cpp"

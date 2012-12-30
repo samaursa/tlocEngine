@@ -504,7 +504,7 @@ namespace tloc { namespace math {
   }
 
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector)
+  TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector) const
   {
     ITERATE_VECTOR
     {
@@ -515,7 +515,7 @@ namespace tloc { namespace math {
   }
 
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector)
+  TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector) const
   {
     return !operator==(a_vector);
   }

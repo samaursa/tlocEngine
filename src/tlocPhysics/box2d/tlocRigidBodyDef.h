@@ -8,7 +8,7 @@
 
 #include <tlocMath/vector/tlocVector2.h>
 
-struct b2BodyDef;
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -39,10 +39,7 @@ namespace tloc { namespace physics { namespace box2d {
   public:
     typedef RigidBodyDef  this_type;
 
-    typedef b2BodyDef                         rigid_body_def_internal_type;
-
-    typedef core::smart_ptr::SharedPtr<rigid_body_def_internal_type>
-                                              rigid_body_def_internal_type_ptr;
+    typedef b2BodyDef     rigid_body_def_internal_type;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;
     typedef math::Vec2f               vec_type;
@@ -112,7 +109,7 @@ namespace tloc { namespace physics { namespace box2d {
     void DoSetType();
 
   private:
-    rigid_body_def_internal_type_ptr m_rigidBodyDef;
+    rigid_body_def_internal_type m_rigidBodyDef;
   };
 
   //////////////////////////////////////////////////////////////////////////

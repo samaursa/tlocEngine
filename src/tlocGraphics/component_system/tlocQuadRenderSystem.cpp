@@ -166,15 +166,23 @@ namespace tloc { namespace graphics { namespace component_system {
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
+      //const math::Mat4f32& tMatrix = pos.GetTransformation();
+
+      const math::Mat3f32 mat3 = pos.GetOrientation();
+      const math::Vec3f32 vec3 = pos.GetPosition();
       for (int i = 0; i < 4; ++i)
       {
-        m_quadList[i] += pos.GetPosition();
+        math::Vec3f32 qv3 = m_quadList[i];
+        mat3.Mul(qv3, m_quadList[i]);
+
+        m_quadList[i] += vec3;
       }
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
+
 
       //------------------------------------------------------------------------
       // Enable the shader
@@ -183,7 +191,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr || m_shaderPtr.get() != sp.get() )
+      if ( !m_shaderPtr && m_shaderPtr.get() != sp.get() )
       {
         sp->Enable();
         m_shaderPtr = sp;
@@ -215,7 +223,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Post_ProcessActiveEntities()
   {
-    m_shaderPtr = shader_prog_ptr();
+    m_shaderPtr->Disable();
+    m_shaderPtr.reset();
   }
 
 };};};

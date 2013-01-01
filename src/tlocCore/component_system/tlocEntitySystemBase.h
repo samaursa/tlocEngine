@@ -132,7 +132,7 @@ namespace tloc { namespace core { namespace component_system {
 
   protected:
     component_type_array  m_typeFlags;
-    entity_ptr_array          m_activeEntities;
+    entity_ptr_array      m_activeEntities;
 
     EventManager*     m_eventMgr;
     EntityManager*    m_entityMgr;

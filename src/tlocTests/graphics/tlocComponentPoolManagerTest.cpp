@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocCore/memory/tlocMemoryPool.inl>
 

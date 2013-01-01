@@ -58,5 +58,14 @@ namespace TestingTransform
     Vec4f32 answer;
 
     t.GetTransformation().Mul(pos4, answer);
+
+    Vec3f32 answerToCheck;
+    answerToCheck.ConvertFrom(pos4);
+
+    answerToCheck = t.GetOrientation() * answerToCheck;
+    answerToCheck += t.GetPosition();
+
+    bool isEqual = answer.ConvertTo<f32, 3>() == answerToCheck;
+    CHECK( isEqual );
   }
 };

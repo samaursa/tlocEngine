@@ -10,6 +10,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core {
 
@@ -97,13 +98,15 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::operator T*()
+  TL_FI TUPLE_TYPE::value_type* Tuple<TUPLE_PARAMS>::
+    data()
   {
     return m_values;
   }
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::operator const T*() const
+  TL_FI TUPLE_TYPE::value_type const * Tuple<TUPLE_PARAMS>::
+    data() const
   {
     return m_values;
   }
@@ -164,28 +167,63 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize>
+  template <typename T_OtherValueType, tl_size T_TupleSize>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other)
+    ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other)
   {
-    DoConvertFrom<T_TupleSize, p_tuple::overflow_one>
+    DoConvertFrom<T_OtherValueType, T_TupleSize, p_tuple::overflow_one>
       (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
   }
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
+  template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+    ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
                 T_Policy)
   {
-    DoConvertFrom<T_TupleSize, T_Policy>
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy, 
+        p_tuple::overflow_one, 
+        p_tuple::overflow_same,
+        p_tuple::overflow_zero
+      >();
+
+    DoConvertFrom<T_OtherValueType, T_TupleSize, T_Policy>
       (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
   }
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
+  template <typename T_OtherValueType, tl_size T_TupleSize>
+  TL_FI Tuple<T_OtherValueType, T_TupleSize> Tuple<TUPLE_PARAMS>::
+      ConvertTo()
+  {
+    Tuple<T_OtherValueType, T_TupleSize> toRet;
+    toRet.ConvertFrom(*this);
+    return toRet;
+  }
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
+  TL_FI Tuple<T_OtherValueType, T_TupleSize> Tuple<TUPLE_PARAMS>::
+      ConvertTo()
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy, 
+        p_tuple::overflow_one, 
+        p_tuple::overflow_zero
+      >();
+
+    Tuple<T_OtherValueType, T_TupleSize> toRet;
+    toRet.ConvertFrom(*this, T_Policy());
+    return toRet;
+  }
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+    DoConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other, 
                   incoming_bigger)
   {
     for (size_type i = 0; i < k_TupleSize; ++i)
@@ -195,9 +233,9 @@ namespace tloc { namespace core {
   }
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
+  template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+    DoConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other, 
                   incoming_smaller)
   {
     for (size_type i = 0; i < T_TupleSize; ++i)
@@ -302,7 +340,7 @@ namespace tloc { namespace core {
   template <TUPLE_TEMP>
   void Tuple<TUPLE_PARAMS>::DoSet(const this_type& aTuple, type_true)
   {
-    memcpy(m_values, aTuple, sizeof(T) * T_Size);
+    memcpy(m_values, aTuple.data(), sizeof(T) * T_Size);
   }
 
   template <TUPLE_TEMP>

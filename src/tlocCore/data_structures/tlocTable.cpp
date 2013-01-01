@@ -1,4 +1,5 @@
 #include "tlocTable.h"
+#include "tlocTable.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -28,6 +29,24 @@
 
 #else
 
-TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE();
+namespace tloc { namespace core {
+
+#define INSTANTIATE_TABLE_FOR_ALL_TYPES(_row_,_col_)\
+  template class Table<tl_float, _row_, _col_>;\
+  template class Table<f32,			 _row_, _col_>;\
+  template class Table<f64,			 _row_, _col_>;\
+  template class Table<tl_int,	 _row_, _col_>;\
+  template class Table<s32,			 _row_, _col_>;\
+  template class Table<s64,			 _row_, _col_>;\
+  template class Table<tl_uint,	 _row_, _col_>;\
+  template class Table<u32,			 _row_, _col_>;\
+  template class Table<u64,			 _row_, _col_>
+
+  INSTANTIATE_TABLE_FOR_ALL_TYPES(1, 1);
+  INSTANTIATE_TABLE_FOR_ALL_TYPES(2, 2);
+  INSTANTIATE_TABLE_FOR_ALL_TYPES(3, 3);
+  INSTANTIATE_TABLE_FOR_ALL_TYPES(4, 4);
+
+};};
 
 #endif

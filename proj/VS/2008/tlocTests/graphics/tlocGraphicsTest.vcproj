@@ -948,10 +948,6 @@
 					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocFOVTest.cpp"
 					>
 				</File>
-				<File
-					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocRectangleTest.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="media"

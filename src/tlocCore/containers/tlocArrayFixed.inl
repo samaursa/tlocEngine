@@ -28,15 +28,15 @@ namespace tloc { namespace core{
   TLOC_ASSERT_STACK_ARRAY(full() == false, "Stack Array is full!")
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_EXCLUSIVE(a_position) \
-  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position <= m_end, \
+  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin.data() && a_position <= m_end, \
 TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_POSITION_END_INCLUSIVE(a_position) \
-  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin && a_position < m_end, \
+  TLOC_ASSERT_STACK_ARRAY(a_position >= m_begin.data() && a_position < m_end, \
   TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_position) )
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN(a_rangeBegin) \
-  TLOC_ASSERT_STACK_ARRAY(a_rangeBegin >= m_begin, \
+  TLOC_ASSERT_STACK_ARRAY(a_rangeBegin >= m_begin.data(), \
 TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeBegin) )
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE_END(a_rangeEnd) \
@@ -70,7 +70,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <STACK_ARRAY_TYPES>
   TL_FI ArrayFixed<STACK_ARRAY_PARAMS>::ArrayFixed()
     : m_begin()
-    , m_end(m_begin)
+    , m_end(m_begin.data())
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
   }
@@ -82,7 +82,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_toCopy.size());
 
-    m_end = m_begin + a_toCopy.size();
+    m_end = m_begin.data() + a_toCopy.size();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -104,8 +104,9 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_numElemsToInsert);
 
-    fill_n(static_cast<value_type*>(m_begin), a_numElemsToInsert, a_valueToCopy);
-    m_end = m_begin + a_numElemsToInsert;
+    fill_n(static_cast<value_type*>(m_begin.data()), 
+           a_numElemsToInsert, a_valueToCopy);
+    m_end = m_begin.data() + a_numElemsToInsert;
   }
 
   template <STACK_ARRAY_TYPES>
@@ -115,18 +116,19 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_count);
 
-    m_end = m_begin + a_count;
+    m_end = m_begin.data() + a_count;
   }
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
   TL_FI ArrayFixed<STACK_ARRAY_PARAMS>::ArrayFixed(T_InputIterator a_rangeBegin, 
                                                    T_InputIterator a_rangeEnd)
-     : m_begin(), m_end(m_begin)
+     : m_begin(), m_end(m_begin.data())
   {
     TLOC_STATIC_ASSERT_STACK_ARRAY_CAPACITY_GREATER_THAN_ZERO();
 
-    insert(static_cast<value_type*>(m_begin), a_rangeBegin, a_rangeEnd);
+    insert(static_cast<value_type*>(m_begin.data()), 
+           a_rangeBegin, a_rangeEnd);
   }
 
   //------------------------------------------------------------------------
@@ -189,7 +191,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     ArrayFixed<STACK_ARRAY_PARAMS>::front()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return *m_begin;
+    return *m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -197,7 +199,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     ArrayFixed<STACK_ARRAY_PARAMS>::front() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
-    return *m_begin;
+    return *m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -220,7 +222,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::pointer
     ArrayFixed<STACK_ARRAY_PARAMS>::data()
   {
-    return m_begin;
+    return m_begin.data();
   }
 
   //------------------------------------------------------------------------
@@ -230,14 +232,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::begin()
   {
-    return m_begin;
+    return m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
   TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::begin() const
   {
-    return m_begin;
+    return m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -261,7 +263,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
     ArrayFixed<STACK_ARRAY_PARAMS>::size() const
   {
-    return (m_end - m_begin);
+    return (m_end - m_begin.data());
   }
 
   template <STACK_ARRAY_TYPES>
@@ -436,7 +438,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   template <STACK_ARRAY_TYPES>
   TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::clear()
   {
-    m_end = m_begin;
+    m_end = m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
@@ -458,9 +460,10 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     ArrayFixed<STACK_ARRAY_PARAMS>::
     DoOperatorEqual(const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy)
   {
-    m_end = m_begin;
+    m_end = m_begin.data();
     advance(m_end, a_toCopy.size());
-    copy(a_toCopy.begin(), a_toCopy.end(), static_cast<value_type*>(m_begin));
+    copy(a_toCopy.begin(), a_toCopy.end(), 
+         static_cast<value_type*>(m_begin.data()) );
 
     return *this;
   }
@@ -481,7 +484,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     }
     else
     {
-      erase(m_begin + a_newSize, m_end);
+      erase(m_begin.data() + a_newSize, m_end);
     }
   }
 
@@ -509,10 +512,10 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(projectedSize);
 
-    m_end = m_begin;
+    m_end = m_begin.data();
     tloc::core::advance(m_end, projectedSize);
 
-    copy(a_rangeBegin, a_rangeEnd, static_cast<value_type*>(m_begin));
+    copy(a_rangeBegin, a_rangeEnd, static_cast<value_type*>(m_begin.data()) );
   }
 
   //------------------------------------------------------------------------

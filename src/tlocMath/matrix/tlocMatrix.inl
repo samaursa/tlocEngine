@@ -6,6 +6,7 @@
 #endif
 
 #include "tlocMatrix.h"
+#include <tlocCore/data_structures/tlocTable.inl>
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
 namespace tloc { namespace math {
@@ -291,7 +292,7 @@ namespace tloc { namespace math {
   template <MATRIX_TYPES>
   TL_FI Vector<typename Matrix<MATRIX_PARAMS>::value_type, T_Size> 
     Matrix<MATRIX_PARAMS>
-    ::operator* (const Vector<value_type, T_Size> a_vector) const
+    ::operator* (const Vector<value_type, T_Size>& a_vector) const
   {
     TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     Vector<value_type, T_Size> returnVec;

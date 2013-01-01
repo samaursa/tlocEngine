@@ -3,6 +3,7 @@
 
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace graphics { namespace types {
 

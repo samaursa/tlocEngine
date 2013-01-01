@@ -33,13 +33,13 @@ namespace tloc { namespace physics { namespace box2d {
     //////////////////////////////////////////////////////////////////////////
     // Typedefs
     typedef f32   float_internal_type;
-    
+
     //////////////////////////////////////////////////////////////////////////
     // Constants
 
     enum flags
     {
-      k_initialized,
+      k_initialized = 0,
       k_count
     };
 
@@ -311,7 +311,7 @@ namespace tloc { namespace physics { namespace box2d {
     SetTransform(const vec_type& a_position, angle_type a_angle)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 position( static_cast<float_internal_type>(a_position[0]), 
+    b2Vec2 position( static_cast<float_internal_type>(a_position[0]),
                      static_cast<float_internal_type>(a_position[1]) );
 
     float_internal_type angle = static_cast<float_internal_type>(a_angle.Get());
@@ -325,9 +325,9 @@ namespace tloc { namespace physics { namespace box2d {
     SetLinearVelocity(const vec_type& a_velocity)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 velocity( static_cast<float_internal_type>(a_velocity[0]), 
+    b2Vec2 velocity( static_cast<float_internal_type>(a_velocity[0]),
                      static_cast<float_internal_type>(a_velocity[1]) );
-    
+
     m_rigidBody->SetLinearVelocity(velocity);
   }
 
@@ -349,12 +349,12 @@ namespace tloc { namespace physics { namespace box2d {
     ApplyForce(const vec_type& a_force, const vec_type& a_point)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 force( static_cast<float_internal_type>(a_force[0]), 
+    b2Vec2 force( static_cast<float_internal_type>(a_force[0]),
                   static_cast<float_internal_type>(a_force[1]) );
-    
-    b2Vec2 point( static_cast<float_internal_type>(a_point[0]), 
+
+    b2Vec2 point( static_cast<float_internal_type>(a_point[0]),
                   static_cast<float_internal_type>(a_point[1]) );
-    
+
     m_rigidBody->ApplyForce(force, point);
   }
 
@@ -364,7 +364,7 @@ namespace tloc { namespace physics { namespace box2d {
     ApplyForceToCenter(const vec_type& a_force)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 force( static_cast<float_internal_type>(a_force[0]), 
+    b2Vec2 force( static_cast<float_internal_type>(a_force[0]),
                   static_cast<float_internal_type>(a_force[1]) );
     m_rigidBody->ApplyForceToCenter(force);
   }
@@ -385,12 +385,12 @@ namespace tloc { namespace physics { namespace box2d {
                        const vec_type& a_point)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    b2Vec2 impulse( static_cast<float_internal_type>(a_impulse[0]), 
+    b2Vec2 impulse( static_cast<float_internal_type>(a_impulse[0]),
                     static_cast<float_internal_type>(a_impulse[1]) );
-    
-    b2Vec2 point( static_cast<float_internal_type>(a_point[0]), 
+
+    b2Vec2 point( static_cast<float_internal_type>(a_point[0]),
                   static_cast<float_internal_type>(a_point[1]) );
-    
+
     m_rigidBody->ApplyLinearImpulse(impulse, point);
   }
 
@@ -486,6 +486,7 @@ namespace tloc { namespace physics { namespace box2d {
     : m_flags(k_count)
     , m_rigidBody(NULL)
   {
+    m_flags;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

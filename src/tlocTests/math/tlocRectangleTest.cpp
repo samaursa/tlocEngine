@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>
@@ -8,7 +8,7 @@
 namespace TestingRectangle
 {
   using namespace tloc;
-  using namespace tloc::graphics::types;
+  using namespace tloc::math::types;
 
   TEST_CASE("Graphics/types/Rectangle", "")
   {
@@ -22,6 +22,11 @@ namespace TestingRectangle
     CHECK(r.GetWidth() == 0);
     CHECK(r.GetHeight() == 0);
 
+    Recti::point_type center;
+    center[0] = 0;
+    center[1] = 0;
+    CHECK((r.GetCenter() == center));
+
     r = Recti(Recti::left(0), Recti::right(2), Recti::top(5), Recti::bottom(0));
     CHECK(r.GetCoord<Recti::left>()    == 0);
     CHECK(r.GetCoord<Recti::right>()   == 2);
@@ -30,6 +35,10 @@ namespace TestingRectangle
     CHECK(r.GetWidth() == 2);
     CHECK(r.GetHeight() == 5);
 
+    center[0] = 1;
+    center[1] = 2;
+    CHECK((r.GetCenter() == center));
+
     CHECK(r.IsValid() == true);
 
     r.SetCoord<Recti::left>(-1);
@@ -37,6 +46,10 @@ namespace TestingRectangle
     CHECK(r.IsValid() == true);
     CHECK(r.GetWidth() == 3);
     CHECK(r.GetHeight() == 5);
+
+    center[0] = 0;
+    center[1] = 2;
+    CHECK((r.GetCenter() == center));
 
     r = Recti(Recti::left(0), Recti::right(5), Recti::top(2), Recti::bottom(0) );
     r.Offset(core::Variadic2i(2, 2) );
@@ -47,6 +60,10 @@ namespace TestingRectangle
     CHECK(r.IsValid() == true);
     CHECK(r.GetWidth() == 5);
     CHECK(r.GetHeight() == 2);
+
+    center[0] = 4;
+    center[1] = 3;
+    CHECK((r.GetCenter() == center));
 
     r = Recti(Recti::left(0), Recti::right(2), Recti::top(5), Recti::bottom(0) );
     CHECK(r.Contains(core::Variadic2i(1, 1)) );
@@ -75,5 +92,9 @@ namespace TestingRectangle
     r = Recti(Recti::half_width(1), Recti::half_height(2));
     CHECK(r.GetWidth() == 2);
     CHECK(r.GetHeight() == 4);
+
+    center[0] = 0;
+    center[1] = 0;
+    CHECK((r.GetCenter() == center));
   }
 };

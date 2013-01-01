@@ -17,7 +17,7 @@ namespace tloc { namespace math {
     // typedefs (similar to std containers)
     typedef Matrix4<T>                            this_type;
     typedef Matrix<T, 4>                          base_type;
-    
+
     typedef typename base_type::matrix_order      matrix_order;
 
     typedef typename base_type::value_type        value_type;

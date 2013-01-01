@@ -9,7 +9,7 @@
   TLOC_ASSERT_LOW_LEVEL( (_left <= _right) && (_bottom_ <= _top_),\
   "Rectangle extents are incorrect!");
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
 #define TLOC_RECTANGLE_TEMP typename T
 #define TLOC_RECTANGLE_PARAMS T
@@ -55,6 +55,18 @@ namespace tloc { namespace graphics { namespace types {
     Rectangle<TLOC_RECTANGLE_PARAMS>::GetHeight() const
   {
     return m_extents[top::k_index] - m_extents[bottom::k_index];
+  }
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCenter() const
+  {
+    point_type center;
+    center[0] = (m_extents[left::k_index] + m_extents[right::k_index]) / 2;
+    center[1] = (m_extents[top::k_index] + m_extents[bottom::k_index]) / 2;
+
+    return center;
   }
 
   template <TLOC_RECTANGLE_TEMP>

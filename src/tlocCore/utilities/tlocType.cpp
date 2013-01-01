@@ -152,4 +152,22 @@ namespace tloc { namespace core { namespace utils {
   template u32 CastNumber(s32);
   template u32 CastNumber(u32);
 
+  template f32 CastNumber(s8);
+  template f32 CastNumber(u8);
+  template f32 CastNumber(s32);
+  template f32 CastNumber(u32);
+  template f32 CastNumber(s64);
+  template f32 CastNumber(u64);
+  template f32 CastNumber(f32);
+  template f32 CastNumber(f64);
+
+  template f64 CastNumber(s8);
+  template f64 CastNumber(u8);
+  template f64 CastNumber(s32);
+  template f64 CastNumber(u32);
+  template f64 CastNumber(s64);
+  template f64 CastNumber(u64);
+  template f64 CastNumber(f32);
+  template f64 CastNumber(f64);
+
 };};};

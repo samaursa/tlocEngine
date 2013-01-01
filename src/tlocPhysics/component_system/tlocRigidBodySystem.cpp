@@ -59,9 +59,9 @@ namespace tloc { namespace physics { namespace component_system {
 
       for (size_type i = 0; i < numComponents; ++i)
       {
-        const rb_shape_type* rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+        const rb_shape_type rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
 
-        result = rb.CreateRigidBodyShape(*rbShape);
+        result = rb.CreateRigidBodyShape(rbShape);
 
         if (result != ErrorSuccess())
         {
@@ -167,7 +167,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef rb_type::rigid_body_internal_type       rb_internal_type;
 
-    typedef rigid_body_component::rigid_body_def_type
+    typedef rigid_body_component::rigid_body_def_sptr::value_type
                                                     rb_def_type;
 
     typedef rb_def_type::rigid_body_def_internal_type
@@ -177,9 +177,9 @@ namespace tloc { namespace physics { namespace component_system {
 
     rb_type& currRB = currRBComponent.GetRigidBody();
 
-    const rb_def_type* currRBDef = currRBComponent.GetRigidBodyDef();
+    const rb_def_type currRBDef = *(currRBComponent.GetRigidBodyDef());
     const rb_def_internal_type& currRBDefInternal =
-      currRBDef->DoGetRigidBodyDef();
+      currRBDef.DoGetRigidBodyDef();
 
     rb_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);

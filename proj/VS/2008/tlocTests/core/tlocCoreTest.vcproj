@@ -1056,6 +1056,10 @@
 					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocTypesTest.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocTypeTraitsTest.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="utilities"
@@ -1069,7 +1073,11 @@
 				Name="smart_ptr"
 				>
 				<File
-					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSmartPtrTest.cpp"
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocSharedPtrTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocUniquePtrTest.cpp"
 					>
 				</File>
 			</Filter>

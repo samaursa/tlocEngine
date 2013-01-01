@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocTuple.inl>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocMath/tlocMath.inl>
 
@@ -504,7 +504,7 @@ namespace tloc { namespace math {
   }
 
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector)
+  TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector) const
   {
     ITERATE_VECTOR
     {
@@ -515,7 +515,7 @@ namespace tloc { namespace math {
   }
 
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector)
+  TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector) const
   {
     return !operator==(a_vector);
   }

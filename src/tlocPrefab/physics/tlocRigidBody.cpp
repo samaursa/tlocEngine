@@ -13,9 +13,10 @@
 namespace tloc { namespace prefab { namespace physics {
 
   core::component_system::Entity*
-    CreateRigidBody(const tloc::physics::box2d::RigidBodyDef& a_rbDef,
-                    core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr)
+    CreateRigidBody
+    (tloc::physics::box2d::rigid_body_def_sptr a_rbDef,
+     core::component_system::EntityManager& a_mgr,
+     core::component_system::ComponentPoolManager& a_poolMgr)
   {
     using namespace core::component_system;
     using namespace math::component_system;
@@ -46,10 +47,11 @@ namespace tloc { namespace prefab { namespace physics {
     return ent;
   }
 
-  void AddRigidBody(const tloc::physics::box2d::RigidBodyDef* a_rbDef,
-                    core::component_system::Entity* a_ent,
-                    core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr)
+  void AddRigidBody
+    (tloc::physics::box2d::rigid_body_def_sptr a_rbDef,
+     core::component_system::Entity* a_ent,
+     core::component_system::EntityManager& a_mgr,
+     core::component_system::ComponentPoolManager& a_poolMgr)
   {
     using namespace core::component_system;
     using namespace tloc::physics::component_system;
@@ -75,7 +77,7 @@ namespace tloc { namespace prefab { namespace physics {
     a_mgr.InsertComponent(a_ent, &*(itrRb->GetElement()) );
   }
 
-  void AddRigidBodyShape(const tloc::physics::box2d::RigidBodyShapeDef* a_rbShape,
+  void AddRigidBodyShape(const tloc::physics::box2d::RigidBodyShapeDef a_rbShape,
                          core::component_system::Entity* a_ent,
                          core::component_system::EntityManager& a_mgr,
                          core::component_system::ComponentPoolManager& a_poolMgr)
@@ -90,7 +92,7 @@ namespace tloc { namespace prefab { namespace physics {
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(k_rigidBodyShape) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyShape); }
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyShapePtr>(k_rigidBodyShape); }
     else
     { cpool = a_poolMgr.GetPool(k_rigidBodyShape); }
 
@@ -106,12 +108,12 @@ namespace tloc { namespace prefab { namespace physics {
 
   void AddRigidBodyShape
     (const core::
-    tl_array<const tloc::physics::box2d::RigidBodyShapeDef*>::type& a_rbShapes,
+    tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type& a_rbShapes,
     core::component_system::Entity* a_ent,
     core::component_system::EntityManager& a_mgr,
     core::component_system::ComponentPoolManager& a_poolMgr)
   {
-    typedef core::tl_array<const tloc::physics::box2d::RigidBodyShapeDef*>::type
+    typedef core::tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type
       rb_shape_ptr_array;
 
     typedef rb_shape_ptr_array::const_iterator  rb_const_iterator;
@@ -140,7 +142,7 @@ namespace tloc { namespace prefab { namespace physics {
     // Create the RigidBody (and the RigidBody pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(k_rigidBodyListener) == false)
-    { cpool = a_poolMgr.CreateNewPool<RigidBodyPtr>(k_rigidBodyListener); }
+    { cpool = a_poolMgr.CreateNewPool<RigidBodyListenerPtr>(k_rigidBodyListener); }
     else
     { cpool = a_poolMgr.GetPool(k_rigidBodyListener); }
 

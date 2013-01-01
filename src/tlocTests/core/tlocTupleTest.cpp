@@ -31,10 +31,10 @@ namespace TestingTuple
     CHECK(p.Get(3) == 3);
 
     // Direct access
-    CHECK( *(p + 0) == 0);
-    CHECK( *(p + 1) == 1);
-    CHECK( *(p + 2) == 2);
-    CHECK( *(p + 3) == 3);
+    CHECK( *(p.data() + 0) == 0);
+    CHECK( *(p.data() + 1) == 1);
+    CHECK( *(p.data() + 2) == 2);
+    CHECK( *(p.data() + 3) == 3);
 
     p.Set(5);
     CHECK_TUP(p, 5, 5, 5, 5);
@@ -119,6 +119,24 @@ namespace TestingTuple
     a4_same.ConvertFrom(a5);
     CHECK_TUP(a4_same, 2, 2, 2, 2);
     a4_same.ConvertFrom(a3); // default overflow policy is overflow_one
+    CHECK_TUP(a4_same, 0, 0, 0, 1);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/ConvertTo",
+    "Conversion from different sized tuples")
+  {
+    core::Tuple<tl_int, 3> a3(0);
+    core::Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
+    core::Tuple<tl_int, 5> a5(2);
+
+    a4_one = a3.ConvertTo<tl_int, 4, core::p_tuple::overflow_one>();
+    CHECK_TUP(a4_one, 0, 0, 0, 1);
+    a4_one = a3.ConvertTo<tl_int, 4, core::p_tuple::overflow_zero>();
+    CHECK_TUP(a4_one, 0, 0, 0, 0);
+
+    a4_same = a5.ConvertTo<tl_int, 4>();
+    CHECK_TUP(a4_same, 2, 2, 2, 2);
+    a4_same = a3.ConvertTo<tl_int, 4>(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
   }
 };

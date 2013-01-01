@@ -1054,6 +1054,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypeTraits.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tlocTypeTraitsCommonType.h"
+				>
+			</File>
 			<Filter
 				Name="template types"
 				>
@@ -1603,11 +1607,35 @@
 			Name="smart_ptr"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSharedPtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSharedPtr.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtr.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtrTracker.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSmartPtrTracker.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocUniquePtr.inl"
 				>
 			</File>
 		</Filter>

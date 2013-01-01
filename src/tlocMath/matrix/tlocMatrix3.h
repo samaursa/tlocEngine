@@ -79,7 +79,7 @@ namespace tloc { namespace math {
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
     TL_FI void Mul(const Vector<value_type, 3>& aVectorIn,
-                   Vector<value_type, 3>& aVectorOut);
+                   Vector<value_type, 3>& aVectorOut) const;
 
     // Returns the determinant of this Matrix
     TL_I value_type Determinant() const;
@@ -122,13 +122,13 @@ namespace tloc { namespace math {
     // eigenvalues are ordered as d0 <= d1.
     void EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
-    // Modifies thia matrix to be a rotation matrix about the x-axis
+    // Modifies this matrix to be a rotation matrix about the x-axis
     TL_I this_type& MakeRotationX(const_reference aXAngle);
 
-    // Modifies thia matrix to be a rotation matrix about the y-axis
+    // Modifies this matrix to be a rotation matrix about the y-axis
     TL_I this_type& MakeRotationY(const_reference aYAngle);
 
-    // Modifies thia matrix to be a rotation matrix about the z-axis
+    // Modifies this matrix to be a rotation matrix about the z-axis
     TL_I this_type& MakeRotationZ(const_reference aZAngle);
 
     // Modifies this vector by creating a rotation matrix from the incoming

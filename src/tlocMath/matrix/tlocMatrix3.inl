@@ -135,7 +135,7 @@ namespace tloc { namespace math {
 
   template <MATRIX_3_TYPES>
   TL_FI void Matrix3<MATRIX_3_PARAMS>::Mul(const Vector<value_type, 3>& aVectorIn,
-                                           Vector<value_type, 3>& aVectorOut)
+                                           Vector<value_type, 3>& aVectorOut) const
   {
     aVectorOut[0] = m_values[0] * aVectorIn[0] +
                     m_values[3] * aVectorIn[1] +

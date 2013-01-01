@@ -328,7 +328,7 @@ namespace TestingMatrix
     CHECK( (a == b) == true);
     CHECK( (a == b) != false);
 
-    a[0] += 0.0000001f;
+    a[0] += (Mathf::EPSILON * 0.1f);
     CHECK( (a == b) == true);
   }
 };

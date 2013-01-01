@@ -38,7 +38,7 @@ namespace tloc { namespace math {
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::value_type&       reference;
-    typedef const typename base_type::value_type& const_reference;
+    typedef typename base_type::value_type const& const_reference;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -141,9 +141,10 @@ namespace tloc { namespace math {
     TL_FI this_type   operator- (const this_type& a_matrix) const;
     TL_FI this_type   operator* (const this_type& a_matrix) const;
     TL_FI this_type   operator* (const_reference a_value) const;
-    TL_FI Vector<value_type, T_Size>
-      operator* (const Vector<value_type, T_Size> a_vector) const;
     TL_FI this_type   operator/ (const_reference a_value) const;
+
+    TL_FI Vector<value_type, T_Size>
+      operator* (const Vector<value_type, T_Size>& a_vector) const;
 
     TL_FI this_type&   operator+= (const this_type& a_matrix);
     TL_FI this_type&   operator-= (const this_type& a_matrix);

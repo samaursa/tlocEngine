@@ -40,7 +40,7 @@ namespace tloc {
 
     // If the difference between the two values is < eps then this
     // returns true
-    static bool Approx(T aValue1, T aValue2, T eps = T(1e-6));
+    static bool Approx(T aValue1, T aValue2, T eps = T(Math<T>::EPSILON));
 
     // Taken from http://stackoverflow.com/questions/600293/how-to-check-if-a-number-is-a-power-of-2/600306#600306
     static bool IsPowerOfTwo(const tl_uint& aValue);

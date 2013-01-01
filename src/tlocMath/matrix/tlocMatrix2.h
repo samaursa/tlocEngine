@@ -75,7 +75,7 @@ namespace tloc { namespace math {
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
     TL_FI void Mul(const Vector2<value_type>& aVectorIn,
-                         Vector2<value_type>& aVectorOut);
+                         Vector2<value_type>& aVectorOut) const;
 
     // Returns the determinant of this Matrix
     TL_I value_type Determinant() const;

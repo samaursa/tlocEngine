@@ -86,7 +86,9 @@ namespace TestingTable
     CHECK(tup[0] == 1); CHECK(tup[1] == 4); CHECK(tup[2] == 7);
 
     // Col-major ordering
-    CHECK( *(a + 0) == 1); CHECK( *(a + 1) == 4); CHECK( *(a + 2) == 7);
+    CHECK( *(a.data() + 0) == 1);
+    CHECK( *(a.data() + 1) == 4);
+    CHECK( *(a.data() + 2) == 7);
   }
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Modifiers",
@@ -127,8 +129,13 @@ namespace TestingTable
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Operators",
     "Test all operator functions")
   {
-    a = c;
+    c = a;
     CHECK( (a == c) == true);
     CHECK( (a != c) == false);
+
+    c = a;
+    CHECK(c[0] == 1); CHECK(c[1] == 4); CHECK(c[2] == 7);
+    CHECK(c[3] == 2); CHECK(c[4] == 5); CHECK(c[5] == 8);
+    CHECK(c[6] == 3); CHECK(c[7] == 6); CHECK(c[8] == 9);
   }
 };

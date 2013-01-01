@@ -1,4 +1,5 @@
 #include "tlocTuple.h"
+#include "tlocTuple.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------

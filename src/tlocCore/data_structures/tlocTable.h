@@ -67,9 +67,12 @@ namespace tloc { namespace core {
     TL_FI void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
     TL_FI void GetCol(size_type aCol, tuple_row_type& aColOut) const;
 
+    TL_FI value_type& operator[] (tl_int aIndex);
+    TL_FI const value_type& operator[] (tl_int aIndex) const;
+
     // Direct array access. Generally not recommended but useful for memcpy
-    TL_FI operator T* ();
-    TL_FI operator const T* () const;
+    TL_FI T*        data();
+    TL_FI T const*  data() const;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -96,9 +99,5 @@ namespace tloc { namespace core {
   };
 
 };};
-
-#ifdef TLOC_FULL_SOURCE
-#include "tlocTable.inl"
-#endif
 
 #endif

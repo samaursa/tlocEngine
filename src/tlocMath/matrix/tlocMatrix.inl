@@ -6,6 +6,7 @@
 #endif
 
 #include "tlocMatrix.h"
+#include <tlocCore/data_structures/tlocTable.inl>
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
 namespace tloc { namespace math {

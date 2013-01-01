@@ -121,17 +121,35 @@ namespace tloc { namespace core {
   {
     ASSERT_NUM_COLS;
 
-    memcpy(aColOut, m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
+    memcpy(aColOut.data(), m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
   }
 
   template <TABLE_TEMPS>
-  TL_FI Table<TABLE_PARAMS>::operator T*()
+  TL_FI T& Table<TABLE_PARAMS>::operator [](tl_int aIndex)
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <TABLE_TEMPS>
+  TL_FI const T& Table<TABLE_PARAMS>::operator [](tl_int aIndex) const
+  {
+    TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
+
+    return m_values[aIndex];
+  }
+
+  template <TABLE_TEMPS>
+  TL_FI typename Table<TABLE_PARAMS>::value_type* Table<TABLE_PARAMS>::
+    data()
   {
     return m_values;
   }
 
   template <TABLE_TEMPS>
-  TL_FI Table<TABLE_PARAMS>::operator const T*() const
+  TL_FI typename Table<TABLE_PARAMS>::value_type const * Table<TABLE_PARAMS>::
+    data() const
   {
     return m_values;
   }
@@ -207,7 +225,7 @@ namespace tloc { namespace core {
   {
     ASSERT_NUM_COLS;
 
-    memcpy(m_values + (aCol * T_Rows), aColIn, sizeof(T) * T_Rows);
+    memcpy(m_values + (aCol * T_Rows), aColIn.data(), sizeof(T) * T_Rows);
   }
 
   //------------------------------------------------------------------------
@@ -217,7 +235,7 @@ namespace tloc { namespace core {
   TL_FI TABLE_TYPE::this_type& Table<TABLE_PARAMS>
     ::operator = (const this_type& aTable)
   {
-    memcpy(m_values, aTable, sizeof(T) * k_TableSize);
+    memcpy(m_values, aTable.data(), sizeof(T) * k_TableSize);
 
     return *this;
   }

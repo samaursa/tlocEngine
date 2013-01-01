@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocTuple.inl>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocMath/tlocMath.inl>
 

@@ -51,7 +51,7 @@ namespace tloc { namespace math {
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::size_type         size_type;
     typedef value_type&                           reference;
-    typedef const value_type&                     const_reference;
+    typedef value_type const&                     const_reference;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -250,6 +250,21 @@ namespace tloc { namespace math {
   template<typename T, tl_size T_Size>
   const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE =
     typename Vector<T, T_Size>::this_type(1);
+
+  //------------------------------------------------------------------------
+  // Global operators
+
+  template <typename T, tl_size T_Size>
+  Vector<T, T_Size> operator* (T a_lhs, const Vector<T, T_Size>& a_rhs)
+  {
+    return a_rhs.operator*(a_lhs);
+  }
+
+  template <typename T, tl_size T_Size>
+  Vector<T, T_Size> operator/ (T a_lhs, const Vector<T, T_Size>& a_rhs)
+  {
+    return a_rhs.operator/(a_lhs);
+  }
 
 };};
 

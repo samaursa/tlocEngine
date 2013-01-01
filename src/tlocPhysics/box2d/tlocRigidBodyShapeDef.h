@@ -46,7 +46,7 @@ namespace tloc { namespace physics { namespace box2d {
 
       SetFriction(0.2f);
       SetRestitution(0.0f);
-      SetDensity(0.0f);
+      SetDensity(1.0f);
       SetSensor(false);
     }
 

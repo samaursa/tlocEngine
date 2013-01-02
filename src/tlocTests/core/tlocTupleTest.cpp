@@ -129,14 +129,14 @@ namespace TestingTuple
     core::Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
     core::Tuple<tl_int, 5> a5(2);
 
-    a4_one = a3.ConvertTo<tl_int, 4, core::p_tuple::overflow_one>();
+    a4_one = a3.ConvertTo<core::Tuple<int, 4>, core::p_tuple::overflow_one>();
     CHECK_TUP(a4_one, 0, 0, 0, 1);
-    a4_one = a3.ConvertTo<tl_int, 4, core::p_tuple::overflow_zero>();
+    a4_one = a3.ConvertTo<core::Tuple<int, 4>, core::p_tuple::overflow_zero>();
     CHECK_TUP(a4_one, 0, 0, 0, 0);
 
-    a4_same = a5.ConvertTo<tl_int, 4>();
+    a4_same = a5.ConvertTo<core::Tuple<int, 4> >();
     CHECK_TUP(a4_same, 2, 2, 2, 2);
-    a4_same = a3.ConvertTo<tl_int, 4>(); // default overflow policy is overflow_one
+    a4_same = a3.ConvertTo<core::Tuple<int, 4> >(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
   }
 };

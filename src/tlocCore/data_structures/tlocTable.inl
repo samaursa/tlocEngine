@@ -26,7 +26,15 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI Table<TABLE_PARAMS>::Table()
+  { }
+
+  template <TABLE_TEMPS>
+  template <typename T_RealType>
+  TL_FI Table<TABLE_PARAMS>::
+    Table(const Table<T_RealType, k_Rows, k_Cols>& aTable)
   {
+    ITERATE_TABLE
+    { m_values[i] = aTable[i]; }
   }
 
   template <TABLE_TEMPS>
@@ -232,8 +240,8 @@ namespace tloc { namespace core {
   // Operators
 
   template <TABLE_TEMPS>
-  TL_FI TABLE_TYPE::this_type& Table<TABLE_PARAMS>
-    ::operator = (const this_type& aTable)
+  TL_FI Table<TABLE_PARAMS>& Table<TABLE_PARAMS>
+    ::operator= (const Table& aTable)
   {
     memcpy(m_values, aTable.data(), sizeof(T) * k_TableSize);
 

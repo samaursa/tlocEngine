@@ -1013,6 +1013,10 @@
 					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTuple.inl"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTupleExplicitMacros.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="table"

@@ -65,7 +65,7 @@ namespace TestingTransform
     answerToCheck = t.GetOrientation() * answerToCheck;
     answerToCheck += t.GetPosition();
 
-    bool isEqual = answer.ConvertTo<f32, 3>() == answerToCheck;
+    bool isEqual = answer.ConvertTo<Vec3f32>() == answerToCheck;
     CHECK( isEqual );
   }
 };

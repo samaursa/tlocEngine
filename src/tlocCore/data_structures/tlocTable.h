@@ -43,6 +43,8 @@ namespace tloc { namespace core {
     typedef Tuple<value_type, k_Cols>                   tuple_col_type;
 
     TL_FI Table();
+    template <typename T_RealType>
+    TL_FI Table(const Table<T_RealType, k_Rows, k_Cols>& aTable);
     TL_FI Table(const this_type& aTable);
 
     TL_FI explicit Table(const value_type& aValue);
@@ -93,7 +95,7 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI this_type& operator = (const this_type& aTable);
+    TL_FI Table& operator= (const Table& aTable);
     TL_FI bool operator == (const Table& aTable);
     TL_FI bool operator != (const Table& aTable);
   };

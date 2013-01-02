@@ -6,6 +6,8 @@
 namespace TestingTable
 {
   USING_TLOC;
+  using tloc::core::Table;
+
   typedef tloc::core::Tuple<tl_int, 3> tuple_int_type;
 
   struct Table3Fixture
@@ -37,7 +39,7 @@ namespace TestingTable
       b.SetCol(2, col3);
     }
 
-    tloc::core::Table<tl_int, 3, 3> a, b, c, d;
+    Table<tl_int, 3, 3> a, b, c, d;
   };
 
 #define CHECK_TABLE(tab,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -53,6 +55,9 @@ namespace TestingTable
   {
     CHECK_TABLE(a, 1, 4, 7, 2, 5, 8, 3, 6, 9);
     CHECK_TABLE(b, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    Table<tl_uint, 3, 3> ut(a);
+    CHECK_TABLE(ut, 1, 4, 7, 2, 5, 8, 3, 6, 9);
   }
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Accessors",

@@ -84,6 +84,10 @@ namespace TestingMatrix2
 
     Mat2f o(core::Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
     CHECK_MATRIX2F(o, 1, 2, 3, 4);
+
+    // Convert from Table to Matrix
+    c = Mat2f(core::Table<tl_float, 2, 2>(10.0f));
+    CHECK_MATRIX2F(c, 10.0f, 10.0f, 10.0f, 10.0f);
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",

@@ -29,6 +29,10 @@ namespace tloc { namespace math {
     : base_type(aMatrix) {}
 
   template <MATRIX_4_TYPES>
+  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const base_type& aMatrix)
+    : base_type(aMatrix) {}
+
+  template <MATRIX_4_TYPES>
   TL_FI Matrix4<MATRIX_4_PARAMS>
     ::Matrix4(value_type m00, value_type m01, value_type m02, value_type m03, 
               value_type m10, value_type m11, value_type m12, value_type m13, 

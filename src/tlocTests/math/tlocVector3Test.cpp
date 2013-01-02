@@ -71,6 +71,9 @@ namespace TestingVector3f
     c = Vec3f::NEG_UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f); //-V550
 
+    // Convert from Tuple to Vec
+    c = Vec3f(core::Tuple<tl_float, 3>(1.0f));
+    CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator",

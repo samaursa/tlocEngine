@@ -68,6 +68,11 @@ namespace TestingMatrix3
 
     Mat3f o(core::Variadic9f(values), Mat3f::k_ColMajor);
     CHECK_MATRIX3F(o, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    // Convert from Table to Matrix
+    c = Mat3f(core::Table<tl_float, 3, 3>(10.0f));
+    CHECK_MATRIX3F(c, 10.0f, 10.0f, 10.0f, 10.0f,
+                   10.0f, 10.0f, 10.0f, 10.0f, 10.0f);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Math/Mul",

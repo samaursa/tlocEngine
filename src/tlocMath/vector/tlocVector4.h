@@ -22,6 +22,7 @@ namespace tloc { namespace math {
 
   public:
     Vector4();
+    Vector4(const base_type& aVector);
     Vector4(const this_type& a_other);
     Vector4(value_type a_x, value_type a_y, value_type a_z, value_type a_w);
 

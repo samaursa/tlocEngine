@@ -61,6 +61,9 @@ namespace tloc { namespace math {
     // Copy constructor
     TL_FI Matrix(const this_type& aMatrix);
 
+    // Copy constructor
+    TL_FI Matrix(const base_type& aMatrix);
+
     // Modifies this matrix by filling it with the incoming value
     TL_FI explicit Matrix(const_reference aValue);
 
@@ -152,8 +155,9 @@ namespace tloc { namespace math {
     TL_FI this_type&   operator*= (const_reference a_value);
     TL_FI this_type&   operator/= (const_reference a_value);
 
-    TL_FI bool operator == (const this_type& aMatrix);
-    TL_FI bool operator != (const this_type& aMatrix);
+    //TL_FI this_type& operator=(const this_type& a_other);
+    TL_FI bool operator== (const this_type& aMatrix);
+    TL_FI bool operator!= (const this_type& aMatrix);
 
     //------------------------------------------------------------------------
     // Special Matrices
@@ -163,7 +167,7 @@ namespace tloc { namespace math {
 
   private:
 
-    static this_type pInternal_GetIdentity();
+    static this_type DoGetIdentity();
   };
 
   //------------------------------------------------------------------------
@@ -174,11 +178,11 @@ namespace tloc { namespace math {
 
   template <typename T, tl_size T_Size>
   const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY =
-    Matrix<T, T_Size>::this_type::pInternal_GetIdentity();
+    Matrix<T, T_Size>::this_type::DoGetIdentity();
 
   template <typename T, tl_size T_Size>
   typename Matrix<T, T_Size>::this_type
-    Matrix<T, T_Size>::pInternal_GetIdentity()
+    Matrix<T, T_Size>::DoGetIdentity()
   {
     this_type temp;
     temp.Identity();

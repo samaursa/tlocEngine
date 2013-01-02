@@ -29,112 +29,133 @@ namespace tloc { namespace core {
   // Constructors
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple()
-  {
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple()
+  { /* Intentionally empty */ }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const this_type& aTuple)
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const this_type& aTuple)
   { Set(aTuple); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_TupleType>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const Tuple<T_TupleType, T_Size>& aTuple)
-  { 
-    Set(aTuple); 
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const Tuple<T_TupleType, T_Size>& aTuple)
+  { Set(aTuple); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_ArrayType (&aArray)[T_Size])
-  {
-    Set(aArray);
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T_ArrayType (&aArray)[T_Size])
+  { Set(aArray); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <template <class, class> class T_Variadic>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_Variadic<T, tl_size>& a_vars)
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T_Variadic<T, tl_size>& a_vars)
   {
     TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
       Size_mismatch_between_variadic_and_tuple);
     operator=(static_cast<Tuple<T, T_Size> >(a_vars));
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T& aValue)
-  {
-    Set(aValue);
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T& aValue)
+  { Set(aValue); }
 
   //------------------------------------------------------------------------
   // Accessors
 
   template <TUPLE_TEMP>
-  TL_FI T& Tuple<TUPLE_PARAMS>::operator [](tl_int aIndex)
+  TL_FI T& Tuple<TUPLE_PARAMS>::
+    operator [](tl_int aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI const T& Tuple<TUPLE_PARAMS>::operator [](tl_int aIndex) const
+  TL_FI const T& Tuple<TUPLE_PARAMS>::
+    operator [](tl_int aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI T& Tuple<TUPLE_PARAMS>::Get(tl_size aIndex)
+  TL_FI T& Tuple<TUPLE_PARAMS>::
+    Get(tl_size aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI const T& Tuple<TUPLE_PARAMS>::Get(tl_size aIndex) const
+  TL_FI const T& Tuple<TUPLE_PARAMS>::
+    Get(tl_size aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   TL_FI TUPLE_TYPE::value_type* Tuple<TUPLE_PARAMS>::
     data()
-  {
-    return m_values;
-  }
+  { return m_values; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   TL_FI TUPLE_TYPE::value_type const * Tuple<TUPLE_PARAMS>::
     data() const
-  {
-    return m_values;
-  }
+  { return m_values; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI tl_size Tuple<TUPLE_PARAMS>::GetSize() const
-  {
-    return k_TupleSize;
-  }
+  TL_FI tl_size Tuple<TUPLE_PARAMS>::
+    GetSize() const
+  { return k_TupleSize; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple>
-  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>::
-      ConvertTo() const
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+    ConvertTo() const
   {
     T_OtherTuple toRet;
     toRet.ConvertFrom(*this);
     return toRet;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
-  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>::
-      ConvertTo() const
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+    ConvertTo() const
   {
     type_traits::AssertTypeIsSupported
       <
@@ -148,22 +169,23 @@ namespace tloc { namespace core {
     return toRet;
   }
 
-
   //------------------------------------------------------------------------
   // Modifiers
 
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::Set(T aValue)
+  void Tuple<TUPLE_PARAMS>::
+    Set(T aValue)
   {
     ITERATE_TUPLE
-    {
-      m_values[i] = aValue;
-    }
+    { m_values[i] = aValue; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_TupleType>
-  void Tuple<TUPLE_PARAMS>::Set(const Tuple<T_TupleType, T_Size>& aTuple)
+  void Tuple<TUPLE_PARAMS>::
+    Set(const Tuple<T_TupleType, T_Size>& aTuple)
   {
     // We go through the trouble of identifying the type for the sole reason of
     // letting the compiler generate type mismatch warnings
@@ -175,9 +197,12 @@ namespace tloc { namespace core {
     DoSet(aTuple, is_same_type());
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  void Tuple<TUPLE_PARAMS>::Set(const T_ArrayType (&aArray)[T_Size])
+  void Tuple<TUPLE_PARAMS>::
+    Set(const T_ArrayType (&aArray)[T_Size])
   {
     // We go through the trouble of identifying the type for the sole reason of
     // letting the compiler generate type mismatch warnings
@@ -189,14 +214,17 @@ namespace tloc { namespace core {
     DoSet(aArray, is_same_type());
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::Swap(this_type& aVector)
+  void Tuple<TUPLE_PARAMS>::
+    Swap(this_type& aVector)
   {
     ITERATE_TUPLE
-    {
-      tlSwap(m_values[(tl_int)i], aVector[(tl_int)i]);
-    }
+    { tlSwap(m_values[(tl_int)i], aVector[(tl_int)i]); }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
@@ -205,10 +233,10 @@ namespace tloc { namespace core {
                   incoming_bigger)
   {
     for (size_type i = 0; i < k_TupleSize; ++i)
-    {
-      m_values[i] = a_other[i];
-    }
+    { m_values[i] = a_other[i]; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
@@ -217,12 +245,12 @@ namespace tloc { namespace core {
                   incoming_smaller)
   {
     for (size_type i = 0; i < T_OtherTuple::k_TupleSize; ++i)
-    {
-      m_values[i] = a_other[i];
-    }
+    { m_values[i] = a_other[i]; }
 
     DoFillRemaining<T_OtherTuple::k_TupleSize>(T_Policy());
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
@@ -236,10 +264,10 @@ namespace tloc { namespace core {
     DoFillRemaining(p_tuple::overflow_one)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
-    {
-      m_values[i] = 1;
-    }
+    { m_values[i] = 1; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
@@ -247,10 +275,10 @@ namespace tloc { namespace core {
     DoFillRemaining(p_tuple::overflow_zero)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
-    {
-      m_values[i] = 0;
-    }
+    { m_values[i] = 0; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_OtherValueType, tl_size T_TupleSize>
@@ -260,6 +288,8 @@ namespace tloc { namespace core {
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, p_tuple::overflow_one>
       (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
@@ -283,71 +313,74 @@ namespace tloc { namespace core {
   // Operators
 
   template <TUPLE_TEMP>
-  Tuple<TUPLE_PARAMS>& 
-    Tuple<TUPLE_PARAMS>::operator =(const Tuple& a_other)
+  Tuple<TUPLE_PARAMS>& Tuple<TUPLE_PARAMS>::
+    operator =(const Tuple& a_other)
   {
     Set(a_other);
     return *this;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple ) const
+  TL_FI bool Tuple<TUPLE_PARAMS>::
+    operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
-    {
-      if (m_values[(tl_int)i] != aTuple[(tl_int)i]) { return false; }
-    }
+    { if (m_values[(tl_int)i] != aTuple[(tl_int)i]) { return false; } }
 
     return true;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple ) const
-  {
-    return !operator==(aTuple);
-  }
+  TL_FI bool Tuple<TUPLE_PARAMS>::
+    operator!=( const this_type& aTuple ) const
+  { return !operator==(aTuple); }
 
   //------------------------------------------------------------------------
   // Details
 
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::DoSet(const T (&aArray)[T_Size], type_true)
-  {
-    memcpy(m_values, aArray, sizeof(T) * T_Size);
-  }
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const T (&aArray)[T_Size], type_true)
+  { memcpy(m_values, aArray, sizeof(T) * T_Size); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  void Tuple<TUPLE_PARAMS>::DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
   {
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
       Array_type_must_be_the_same_size_as_the_tuple_type);
 
     ITERATE_TUPLE
-    {
-      m_values[i] = aArray[i];
-    }
+    { m_values[i] = aArray[i]; }
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::DoSet(const this_type& aTuple, type_true)
-  {
-    memcpy(m_values, aTuple.data(), sizeof(T) * T_Size);
-  }
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const this_type& aTuple, type_true)
+  { memcpy(m_values, aTuple.data(), sizeof(T) * T_Size); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_TupleType>
-  void Tuple<TUPLE_PARAMS>::DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
   {
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
       Tuple_type_must_be_the_same_size_as_this_tuple_type);
 
     ITERATE_TUPLE
-    {
-      m_values[i] = aTuple[i];
-    }
+    { m_values[i] = aTuple[i]; }
   }
-
 
 };};
 

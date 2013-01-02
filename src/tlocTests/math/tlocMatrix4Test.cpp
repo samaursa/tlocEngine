@@ -78,5 +78,12 @@ namespace TestingMatrix4
 
     Mat4f o(core::Variadic16f(values), Mat4f::k_ColMajor);
     CHECK_MATRIX4F(o, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+
+    // Convert from Table to Matrix
+    c = Mat4f(core::Table<tl_float, 4, 4>(10.0f));
+    CHECK_MATRIX4F(c, 10.0f, 10.0f, 10.0f, 10.0f,
+                      10.0f, 10.0f, 10.0f, 10.0f,
+                      10.0f, 10.0f, 10.0f, 10.0f,
+                      10.0f, 10.0f, 10.0f, 10.0f);
   }
 };

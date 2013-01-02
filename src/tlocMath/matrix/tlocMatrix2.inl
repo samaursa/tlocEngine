@@ -33,6 +33,11 @@ namespace tloc { namespace math {
   { }
 
   template <MATRIX_2_TYPES>
+  TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2(const base_type& aMatrix)
+    : base_type(aMatrix) 
+  { }
+
+  template <MATRIX_2_TYPES>
   TL_FI Matrix2<MATRIX_2_PARAMS>::Matrix2(value_type m00, value_type m01,
                                           value_type m10, value_type m11)
   {

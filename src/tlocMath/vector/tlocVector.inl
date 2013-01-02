@@ -78,10 +78,9 @@ namespace tloc { namespace math {
   { }
 
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const this_type& a_vector)
-  {
-    *this = a_vector;
-  }
+  TL_FI Vector<VECTOR_PARAMS>::Vector(const base_type& a_vector)
+    : base_type(a_vector)
+  { }
 
   template <VECTOR_TEMP>
   TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) 

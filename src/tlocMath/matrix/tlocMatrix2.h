@@ -38,6 +38,9 @@ namespace tloc { namespace math {
     // Copy constructor
     TL_FI Matrix2(const this_type& aMatrix);
 
+    // Copy constructor
+    TL_FI Matrix2(const base_type& aMatrix);
+
     // Generate a matrix by inputs in row-major order
     TL_FI Matrix2(value_type m00, value_type m01,
                   value_type m10, value_type m11);

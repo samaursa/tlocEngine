@@ -20,6 +20,11 @@ namespace tloc { namespace math {
   { } 
 
   template <VECTOR_4_TEMP>
+  Vector4<VECTOR_4_PARAMS>::Vector4(const base_type& a_other)
+    : base_type(a_other)
+  { } 
+
+  template <VECTOR_4_TEMP>
   Vector4<VECTOR_4_PARAMS>::Vector4(const this_type& a_other)
     : base_type(a_other)
   { } 

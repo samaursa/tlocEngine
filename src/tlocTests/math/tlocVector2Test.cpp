@@ -64,6 +64,10 @@ namespace TestingVector2f
     CHECK_VEC2F(c, -1.0f, 0.0f);
     c = tloc::math::Vec2f::NEG_UNIT_Y;
     CHECK_VEC2F(c, 0.0f, -1.0f);
+
+    // Convert from Tuple to Vec
+    c = Vec2f(core::Tuple<tl_float, 2>(1.0f));
+    CHECK_VEC2F(c, 1.0f, 1.0f);
   }
 
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/[]Operator",

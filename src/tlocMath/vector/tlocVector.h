@@ -63,7 +63,7 @@ namespace tloc { namespace math {
 
     // Empty default constructor
     TL_FI Vector();
-    TL_FI Vector(const this_type& a_vector);
+    TL_FI Vector(const base_type& a_vector);
 
     template <typename T_ArrayType>
     TL_FI Vector(const T_ArrayType (&aArray)[T_Size]);

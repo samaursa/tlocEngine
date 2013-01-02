@@ -49,6 +49,9 @@ namespace tloc { namespace math {
     // Copy constructor
     TL_FI Matrix4(const this_type& aMatrix);
 
+    // Copy constructor
+    TL_FI Matrix4(const base_type& aMatrix);
+
     // Modifies this matrix by filling it with the incoming value
     TL_FI explicit Matrix4(const_reference aValue);
 

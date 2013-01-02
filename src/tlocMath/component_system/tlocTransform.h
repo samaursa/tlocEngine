@@ -21,8 +21,8 @@ namespace tloc { namespace math { namespace component_system {
     typedef Transform_T<real_type>    this_type;
 
     typedef Matrix4<real_type>        transform_type;
-    typedef Vector3<T_Real>           position_type;
-    typedef Matrix3<T_Real>           orientation_type;
+    typedef Vector3<real_type>        position_type;
+    typedef Matrix3<real_type>        orientation_type;
 
     typedef core::component_system::Component_T<this_type>    base_type;
 

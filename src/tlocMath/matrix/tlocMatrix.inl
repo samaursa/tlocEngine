@@ -54,6 +54,11 @@ namespace tloc { namespace math {
   { }
 
   template <MATRIX_TYPES>
+  TL_FI Matrix<MATRIX_PARAMS>::Matrix(const base_type& aMatrix)
+    : base_type(aMatrix)
+  { }
+
+  template <MATRIX_TYPES>
   TL_FI Matrix<MATRIX_PARAMS>::Matrix(const_reference aValue)
     : base_type(aValue) 
   { }
@@ -296,8 +301,7 @@ namespace tloc { namespace math {
   {
     TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     Vector<value_type, T_Size> returnVec;
-
-    returnVec.Mul(a_vector, returnVec);
+    Mul(a_vector, returnVec);
 
     return returnVec;
   }
@@ -353,6 +357,14 @@ namespace tloc { namespace math {
     Div(a_value);
     return *this;
   }
+
+  //template <MATRIX_TYPES>
+  //TL_FI Matrix<MATRIX_PARAMS>& Matrix<MATRIX_PARAMS>::
+  //  operator=(const this_type& aMatrix )
+  //{
+  //  base_type::operator =(aMatrix);
+  //  return *this;
+  //}
 
   template <MATRIX_TYPES>
   TL_FI bool Matrix<MATRIX_PARAMS>::operator==( const this_type& aMatrix )

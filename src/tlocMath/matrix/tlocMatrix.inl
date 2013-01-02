@@ -21,20 +21,6 @@ namespace tloc { namespace math {
 #define MATRIX_PARAMS T, T_Size
 
   //////////////////////////////////////////////////////////////////////////
-  // Assertion Macros
-
-  // If TLOC_MATRIX_ALLOW_EASY_OPERATIONS is defined, easy math operations such
-  // as +,-,/,* will be available, otherwise, explicit functions must be
-  // called. This can be selectively turned on/off for different files
-  // depending on performance requirements. 
-#ifdef TLOC_MATRIX_ALLOW_EASY_OPERATIONS
-#define TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS
-#else
-#define TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS \
-  TLOC_STATIC_ASSERT(false, Operator_operations_unavailable_Use_explicit_functions)
-#endif 
-
-  //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
 #define ITERATE_MATRIX      for (tl_size i = 0; i < k_MatrixSize; ++i)
@@ -250,7 +236,6 @@ namespace tloc { namespace math {
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::operator+ (const this_type& a_matrix) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat(*this);
 
     returnMat.Add(a_matrix);
@@ -262,7 +247,6 @@ namespace tloc { namespace math {
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::operator- (const this_type& a_matrix) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat(*this);
 
     returnMat.Sub(a_matrix);
@@ -274,7 +258,6 @@ namespace tloc { namespace math {
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::operator* (const this_type& a_matrix) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat(*this);
 
     returnMat.Mul(a_matrix);
@@ -286,7 +269,6 @@ namespace tloc { namespace math {
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::operator* (const_reference a_value) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat(*this);
 
     returnMat.Mul(a_value);
@@ -299,7 +281,6 @@ namespace tloc { namespace math {
     Matrix<MATRIX_PARAMS>
     ::operator* (const Vector<value_type, T_Size>& a_vector) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     Vector<value_type, T_Size> returnVec;
     Mul(a_vector, returnVec);
 
@@ -310,7 +291,6 @@ namespace tloc { namespace math {
   TL_FI typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::operator/ (const_reference a_matrix) const
   {
-    TLOC_MATRIX_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnMat(*this);
 
     returnMat.Div(a_matrix);

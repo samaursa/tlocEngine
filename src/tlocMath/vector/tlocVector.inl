@@ -49,20 +49,6 @@ namespace tloc { namespace math {
 #define VECTOR_TYPE typename Vector<T, T_Size>
 
   //////////////////////////////////////////////////////////////////////////
-  // Assertion Macros
-
-  // If TLOC_VECTOR_ALLOW_EASY_OPERATIONS is defined, easy math operations such
-  // as +,-,/,* will be available, otherwise, explicit functions must be
-  // called. This can be selectively turned on/off for different files
-  // depending on performance requirements. 
-#ifdef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
-#define TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS
-#else
-#define TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS \
-  TLOC_STATIC_ASSERT(false, Operator_operations_unavailable_Use_explicit_functions)
-#endif 
-
-  //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
   // Note that we have tl_int and not tl_size for the iteration. This is because
@@ -374,7 +360,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 
@@ -387,7 +372,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 
@@ -400,7 +384,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator* (const_reference a_value) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 
@@ -413,7 +396,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 
@@ -426,7 +408,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator/ (const_reference a_value) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 
@@ -439,7 +420,6 @@ namespace tloc { namespace math {
   TL_FI VECTOR_TYPE::this_type 
     Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector) const
   {
-    TLOC_VECTOR_STATIC_ASSERT_EASY_OPERATIONS;
     this_type returnVec;
     returnVec = (*this);
 

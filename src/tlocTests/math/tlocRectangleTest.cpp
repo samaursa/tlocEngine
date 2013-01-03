@@ -122,4 +122,20 @@ namespace TestingRectangle
     center[1] = 0;
     CHECK((r.GetPosition() == center));
   }
+
+  TEST_CASE("Graphics/types/Rectangle/GetCoord", "")
+  {
+    using math::Vec2f;
+
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+    CHECK( (r.GetCoord<Rectf::top, Rectf::left>() == Vec2f(-0.5f, 1.0f)) );
+    CHECK( (r.GetCoord<Rectf::top, Rectf::right>() == Vec2f(0.5f, 1.0f)) );
+    CHECK( (r.GetCoord<Rectf::bottom, Rectf::left>() == Vec2f(-0.5f, -1.0f)) );
+    CHECK( (r.GetCoord<Rectf::bottom, Rectf::right>() == Vec2f(0.5f, -1.0f)) );
+
+    CHECK( (r.GetCoord_TopLeft() == Vec2f(-0.5f, 1.0f)) );
+    CHECK( (r.GetCoord_TopRight() == Vec2f(0.5f, 1.0f)) );
+    CHECK( (r.GetCoord_BottomLeft() == Vec2f(-0.5f, -1.0f)) );
+    CHECK( (r.GetCoord_BottomRight() == Vec2f(0.5f, -1.0f)) );
+  }
 };

@@ -10,6 +10,61 @@
 
 namespace tloc { namespace math { namespace types {
 
+  namespace priv {
+
+    template <typename T_Real>
+    typename Rectangle<T_Real>::point_type
+      DoGetCoord(const Rectangle<T_Real>& a_rect,
+                 typename Rectangle<T_Real>::top,
+                 typename Rectangle<T_Real>::left)
+    {
+      typedef Rectangle<T_Real>               rect_type;
+      typedef typename rect_type::point_type  point_type;
+
+      return point_type(a_rect.GetValue<typename rect_type::left>(),
+                        a_rect.GetValue<typename rect_type::top>());
+    }
+
+    template <typename T_Real>
+    typename Rectangle<T_Real>::point_type
+      DoGetCoord(const Rectangle<T_Real>& a_rect,
+                 typename Rectangle<T_Real>::top,
+                 typename Rectangle<T_Real>::right)
+    {
+      typedef Rectangle<T_Real>               rect_type;
+      typedef typename rect_type::point_type  point_type;
+
+      return point_type(a_rect.GetValue<typename rect_type::right>(),
+                        a_rect.GetValue<typename rect_type::top>());
+    }
+
+    template <typename T_Real>
+    typename Rectangle<T_Real>::point_type
+      DoGetCoord(const Rectangle<T_Real>& a_rect,
+                 typename Rectangle<T_Real>::bottom,
+                 typename Rectangle<T_Real>::left)
+    {
+      typedef Rectangle<T_Real>               rect_type;
+      typedef typename rect_type::point_type  point_type;
+
+      return point_type(a_rect.GetValue<typename rect_type::left>(),
+                        a_rect.GetValue<typename rect_type::bottom>());
+    }
+
+    template <typename T_Real>
+    typename Rectangle<T_Real>::point_type
+      DoGetCoord(const Rectangle<T_Real>& a_rect,
+                 typename Rectangle<T_Real>::bottom,
+                 typename Rectangle<T_Real>::right)
+    {
+      typedef Rectangle<T_Real>               rect_type;
+      typedef typename rect_type::point_type  point_type;
+
+      return point_type(a_rect.GetValue<typename rect_type::right>(),
+                        a_rect.GetValue<typename rect_type::bottom>());
+    }
+  };
+
 #define TLOC_RECTANGLE_TEMP typename T
 #define TLOC_RECTANGLE_PARAMS T
 #define TLOC_RECTANGLE_TYPE typename Rectangle<TLOC_RECTANGLE_PARAMS>
@@ -72,6 +127,26 @@ namespace tloc { namespace math { namespace types {
   { m_extents[height::k_index] = a_value; }
 
   template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCoord_TopLeft() const
+  { return DoGetCoord<top, left>(); }
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCoord_TopRight() const
+  { return DoGetCoord<top, right>(); }
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCoord_BottomLeft() const
+  { return DoGetCoord<bottom, left>(); }
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
+    GetCoord_BottomRight() const
+  { return DoGetCoord<bottom, right>(); }
+
+  template <TLOC_RECTANGLE_TEMP>
   void Rectangle<TLOC_RECTANGLE_PARAMS>::
     SetPosition(const point_type& a_centerPosition)
   { m_position = a_centerPosition; }
@@ -97,8 +172,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type
-    Rectangle<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
     GetPosition() const
   { return m_position; }
 
@@ -160,11 +234,30 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
+  template <TLOC_RECTANGLE_TEMP>
+  template <typename T_Side1, typename T_Side2>
+  TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
+    DoGetCoord() const
+  {
+    return priv::DoGetCoord<real_type>(*this, T_Side1(0), T_Side2(0));
+  }
+
   //------------------------------------------------------------------------
   // Explicit initialization
 
-  template class Rectangle<f32>;
-  template class Rectangle<f64>;
-  template class Rectangle<f128>;
+#define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(_type_)\
+  template class Rectangle<_type_>;\
+  template Rectangle<_type_>::point_type \
+  Rectangle<_type_>::DoGetCoord<Rectangle<_type_>::top, Rectangle<_type_>::left>() const;\
+  template Rectangle<_type_>::point_type \
+  Rectangle<_type_>::DoGetCoord<Rectangle<_type_>::top, Rectangle<_type_>::right>() const;\
+  template Rectangle<_type_>::point_type \
+  Rectangle<_type_>::DoGetCoord<Rectangle<_type_>::bottom, Rectangle<_type_>::left>() const;\
+  template Rectangle<_type_>::point_type \
+  Rectangle<_type_>::DoGetCoord<Rectangle<_type_>::bottom, Rectangle<_type_>::right>() const
+
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f128);
 
 };};};

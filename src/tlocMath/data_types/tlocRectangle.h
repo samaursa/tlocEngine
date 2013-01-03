@@ -15,19 +15,19 @@ namespace tloc { namespace math { namespace types {
   class Rectangle
   {
   public:
-    typedef tl_size                                  size_type;
-    typedef T                                        real_type;
-    typedef Rectangle<real_type>                     this_type;
+    typedef tl_size                                 size_type;
+    typedef T                                       real_type;
+    typedef Rectangle<real_type>                    this_type;
     typedef math::Vector2<real_type>                point_type;
 
-    typedef core::types::StrongType_T<real_type, 0> width;
-    typedef core::types::StrongType_T<real_type, 1> height;
-    typedef core::types::StrongType_T<real_type, 2> left;
-    typedef core::types::StrongType_T<real_type, 3> right;
-    typedef core::types::StrongType_T<real_type, 4> top;
-    typedef core::types::StrongType_T<real_type, 5> bottom;
+    typedef core::types::StrongType_T<real_type, 0>   width;
+    typedef core::types::StrongType_T<real_type, 1>   height;
+    typedef core::types::StrongType_T<real_type, 2>   left;
+    typedef core::types::StrongType_T<real_type, 3>   right;
+    typedef core::types::StrongType_T<real_type, 4>   top;
+    typedef core::types::StrongType_T<real_type, 5>   bottom;
 
-    typedef core::types::StrongType_T<point_type, 0> position;
+    typedef core::types::StrongType_T<point_type, 0>  position;
 
   public:
     Rectangle();
@@ -46,6 +46,13 @@ namespace tloc { namespace math { namespace types {
 
     template <typename T_Side>
     real_type   GetValue() const;
+    template <typename T_Side1, typename T_Side2>
+    point_type  GetCoord() const;
+
+    point_type  GetCoord_TopLeft() const;
+    point_type  GetCoord_TopRight() const;
+    point_type  GetCoord_BottomLeft() const;
+    point_type  GetCoord_BottomRight() const;
 
     void        SetPosition(const point_type& a_centerPosition);
     void        ResetPosition();
@@ -68,6 +75,8 @@ namespace tloc { namespace math { namespace types {
 
   private:
     real_type   DoGetValue(tl_int a_index) const;
+    template <typename T_Side1, typename T_Side2>
+    point_type  DoGetCoord() const;
 
   private:
     point_type    m_extents;
@@ -84,6 +93,16 @@ namespace tloc { namespace math { namespace types {
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
     return DoGetValue(T_Side::k_index);
+  }
+
+  template <typename T>
+  template <typename T_Side1, typename T_Side2>
+  typename Rectangle<T>::point_type
+    Rectangle<T>::GetCoord() const
+  {
+    tloc::type_traits::AssertTypeIsSupported<T_Side1, top, bottom>();
+    tloc::type_traits::AssertTypeIsSupported<T_Side2, left, right>();
+    return DoGetCoord<T_Side1, T_Side2>();
   }
 
   //------------------------------------------------------------------------

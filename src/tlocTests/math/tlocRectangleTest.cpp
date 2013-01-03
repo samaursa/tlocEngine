@@ -116,7 +116,7 @@ namespace TestingRectangle
 
     r = Rectf(Rectf::width(1), Rectf::height(2));
     CHECK(r.GetWidth() == Approx(1));
-    CHECK(r.GetHeight() == Approx(2.2));
+    CHECK(r.GetHeight() == Approx(2));
 
     center[0] = 0;
     center[1] = 0;

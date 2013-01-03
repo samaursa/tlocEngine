@@ -30,8 +30,9 @@ namespace tloc { namespace math { namespace types {
     typedef core::types::StrongType_T<point_type, 0> position;
 
   public:
-    Rectangle( width a_w = width(0), height a_h = height(0),
-               position a_pos = position(point_type(0)) );
+    Rectangle();
+    Rectangle(width a_w, height a_h,
+              position a_pos = position(point_type(0)) );
     Rectangle(left a_l, right a_r, top a_t, bottom a_b);
     Rectangle(const this_type& a_other);
 

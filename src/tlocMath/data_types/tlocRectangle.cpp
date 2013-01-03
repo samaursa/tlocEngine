@@ -16,6 +16,13 @@ namespace tloc { namespace math { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>::
+    Rectangle()
+    : m_extents(0.0f, 0.0f)
+    , m_position(0, 0)
+  { }
+
+  template <TLOC_RECTANGLE_TEMP>
+  Rectangle<TLOC_RECTANGLE_PARAMS>::
     Rectangle(width a_w, height a_h, position a_pos)
     : m_extents(a_w, a_h)
     , m_position(a_pos)

@@ -7,6 +7,8 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
+#include <tlocMath/vector/tlocVector2.h>
+
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
@@ -14,40 +16,40 @@ namespace tloc { namespace math { namespace types {
   {
   public:
     typedef tl_size                                  size_type;
-    typedef T                                        value_type;
-    typedef Rectangle<value_type>                    this_type;
-    typedef core::Tuple<value_type, 2>               point_type;
+    typedef T                                        real_type;
+    typedef Rectangle<real_type>                     this_type;
+    typedef math::Vector2<real_type>                point_type;
 
-    typedef core::types::StrongType_T<value_type, 0> left;
-    typedef core::types::StrongType_T<value_type, 1> right;
-    typedef core::types::StrongType_T<value_type, 2> top;
-    typedef core::types::StrongType_T<value_type, 3> bottom;
-    typedef core::types::StrongType_T<value_type, 4> half_width;
-    typedef core::types::StrongType_T<value_type, 5> half_height;
+    typedef core::types::StrongType_T<real_type, 0> width;
+    typedef core::types::StrongType_T<real_type, 1> height;
+    typedef core::types::StrongType_T<real_type, 2> left;
+    typedef core::types::StrongType_T<real_type, 3> right;
+    typedef core::types::StrongType_T<real_type, 4> top;
+    typedef core::types::StrongType_T<real_type, 5> bottom;
+
+    typedef core::types::StrongType_T<point_type, 0> position;
 
   public:
-    Rectangle(half_width a_w = half_width(0), half_height a_h = half_height(0));
+    Rectangle( width a_w = width(0), height a_h = height(0),
+               position a_pos = position(point_type(0)) );
     Rectangle(left a_l, right a_r, top a_t, bottom a_b);
+    Rectangle(const this_type& a_other);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
+    real_type   GetWidth() const;
+    real_type   GetHeight() const;
+    void        SetWidth(real_type a_value);
+    void        SetHeight(real_type a_value);
+
     template <typename T_Side>
-    value_type  GetCoord() const;
-    template <typename T_Side>
-    void        SetCoord(value_type a_newCoord);
+    real_type   GetValue() const;
 
-    ///-------------------------------------------------------------------------
-    /// @brief May return a negative width if rectangle is invalid
-    ///-------------------------------------------------------------------------
-    value_type  GetWidth() const;
-
-    ///-------------------------------------------------------------------------
-    /// @brief May return a negative height if rectangle is invalid
-    ///-------------------------------------------------------------------------
-    value_type  GetHeight() const;
-
-    point_type  GetCenter() const;
+    void        SetPosition(const point_type& a_centerPosition);
+    void        ResetPosition();
+    void        Offset(const point_type& a_offsetBy);
+    point_type  GetPosition() const;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -58,17 +60,17 @@ namespace tloc { namespace math { namespace types {
     ///-------------------------------------------------------------------------
     bool        IsValid() const;
 
-    void        Offset(const point_type& a_offsetBy);
     bool        Contains(const point_type& a_xyPoint);
     bool        Intersects(const this_type& a_other) const;
     bool        Intersects(const this_type& a_other,
                            this_type& a_overlapOut) const;
 
   private:
-    typedef core::Tuple<value_type, 4>  extents_type;
+    real_type   DoGetValue(tl_int a_index) const;
 
   private:
-    extents_type  m_extents;
+    point_type    m_extents;
+    point_type    m_position;
   };
 
   //------------------------------------------------------------------------
@@ -76,27 +78,15 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   template <typename T_Side>
-  typename Rectangle<T>::value_type
-    Rectangle<T>::GetCoord() const
+  typename Rectangle<T>::real_type
+    Rectangle<T>::GetValue() const
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
-    return m_extents[T_Side::k_index];
-  }
-
-  template <typename T>
-  template <typename T_Side>
-  void Rectangle<T>::SetCoord(value_type a_newCoord)
-  {
-    tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
-    m_extents[T_Side::k_index] = a_newCoord;
+    return DoGetValue(T_Side::k_index);
   }
 
   //------------------------------------------------------------------------
   // Typedefs
-
-  typedef Rectangle<tl_int>     Recti;
-  typedef Rectangle<s32>        Recti32;
-  typedef Rectangle<s64>        Recti64;
 
   typedef Rectangle<tl_float>   Rectf;
   typedef Rectangle<f32>        Rectf32;

@@ -42,10 +42,10 @@ namespace tloc { namespace graphics { namespace view_proj {
     using namespace types;
     using namespace math::utils;
 
-    real_type top		 = a_rect.GetCoord<rect_type::top>();
-    real_type bottom = a_rect.GetCoord<rect_type::bottom>();
-    real_type left	 = a_rect.GetCoord<rect_type::left>();
-    real_type right	 = a_rect.GetCoord<rect_type::right>();
+    real_type top		 = a_rect.GetValue<rect_type::top>();
+    real_type bottom = a_rect.GetValue<rect_type::bottom>();
+    real_type left	 = a_rect.GetValue<rect_type::left>();
+    real_type right	 = a_rect.GetValue<rect_type::right>();
 
     DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));

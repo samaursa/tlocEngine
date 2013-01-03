@@ -35,9 +35,9 @@ namespace tloc { namespace physics { namespace box2d {
     float_internal_type halfHeight =
       CastTo32<float_internal_type, float_type>( a_rect.GetHeight() ) / 2.f;
 
-    point_type center = a_rect.GetCenter();
+    point_type position = a_rect.GetPosition();
 
-    rect->SetAsBox(halfWidth, halfHeight, b2Vec2(center[0], center[1]), 0.f);
+    rect->SetAsBox(halfWidth, halfHeight, b2Vec2(position[0], position[1]), 0.f);
 
     m_fixtureDef.shape = rect;
     m_internalShape = shape_internal_type_sptr(rect);

@@ -147,19 +147,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
       typedef math::types::Rectf32    rect_type;
 
-      const f32 halfSize = q.GetSize() * 0.5f;
+      rect_type   rect(rect_type::width(q.GetSize()),
+                       rect_type::height(q.GetSize()));
 
-      rect_type   rect(rect_type::half_width(halfSize * 1.0f),
-                       rect_type::half_height(halfSize * 1.0f));
-
-      m_quadList[0] = vec3_type(rect.GetCoord<rect_type::right>(),
-                                rect.GetCoord<rect_type::top>(), 0);
-      m_quadList[1] = vec3_type(rect.GetCoord<rect_type::left>(),
-                                rect.GetCoord<rect_type::top>(), 0);
-      m_quadList[2] = vec3_type(rect.GetCoord<rect_type::right>(),
-                                rect.GetCoord<rect_type::bottom>(), 0);
-      m_quadList[3] = vec3_type(rect.GetCoord<rect_type::left>(),
-                                rect.GetCoord<rect_type::bottom>(), 0);
+      m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
+                                rect.GetValue<rect_type::top>(), 0);
+      m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
+                                rect.GetValue<rect_type::top>(), 0);
+      m_quadList[2] = vec3_type(rect.GetValue<rect_type::right>(),
+                                rect.GetValue<rect_type::bottom>(), 0);
+      m_quadList[3] = vec3_type(rect.GetValue<rect_type::left>(),
+                                rect.GetValue<rect_type::bottom>(), 0);
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);

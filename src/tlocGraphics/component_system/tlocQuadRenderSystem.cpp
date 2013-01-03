@@ -147,8 +147,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       typedef math::types::Rectf32    rect_type;
 
-      rect_type   rect(rect_type::width(q.GetSize()),
-                       rect_type::height(q.GetSize()));
+      const rect_type& rect = q.GetRectangleRef();
 
       m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
                                 rect.GetValue<rect_type::top>(), 0);

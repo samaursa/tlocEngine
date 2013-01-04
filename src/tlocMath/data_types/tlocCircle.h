@@ -9,6 +9,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/angle/tlocAngle.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -19,7 +20,7 @@ namespace tloc { namespace math { namespace types {
     typedef T                           value_type;
     typedef Circle<value_type>          this_type;
     typedef math::Vector2<value_type>   point_type;
-
+    typedef tl_size                     size_type;
 
     typedef core::types::StrongType_T<value_type, 0> radius;
     typedef core::types::StrongType_T<value_type, 2> diameter;
@@ -41,12 +42,15 @@ namespace tloc { namespace math { namespace types {
     bool        Contains(const this_type& a_other) const;
     bool        Intersects(const this_type& a_other) const;
 
+    // The angle follows the ASTC rules when it comes to start/end points
+    point_type  GetCoord(Radian_T<value_type> a_angle) const;
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(point_type, GetPosition, m_position);
     TLOC_DECL_AND_DEF_SETTER(point_type, SetPosition, m_position);
 
   private:
     value_type m_radius;
-    point_type m_position;    
+    point_type m_position;
   };
 
   //////////////////////////////////////////////////////////////////////////

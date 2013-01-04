@@ -3,6 +3,7 @@
 #include <tlocCore/data_structures/tlocTuple.inl>
 
 #include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/angle/tlocAngle.inl>
 
 namespace tloc { namespace math { namespace types {
 
@@ -89,7 +90,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
     displacement.Sub(a_xyPoint);
-    
+
     value_type distance = displacement.Length();
 
     return distance <= m_radius;
@@ -104,7 +105,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
     displacement.Sub(a_other.m_position);
-    
+
     value_type outerDistance = displacement.Length() + a_other.m_radius;
 
     return outerDistance <= m_radius;
@@ -119,15 +120,29 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
     displacement.Sub(a_other.m_position);
-    
+
     value_type distance = displacement.Length();
 
     return distance < m_radius + a_other.m_radius;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  TLOC_CIRCLE_TYPE::point_type  Circle<TLOC_CIRCLE_PARAMS>::
+    GetCoord(Radian_T<value_type> a_angle) const
+  {
+    // Get the point on a unit circle
+    value_type r = a_angle.Get();
+    value_type rCos = Math<value_type>::Cos(r);
+    value_type rSin = Math<value_type>::Sin(r);
+
+    return point_type(m_radius * rCos, m_radius * rSin) + m_position;
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiation for Circle<>
-  
+
   template class Circle<f32>;
   template class Circle<f64>;
   template class Circle<f128>;

@@ -147,8 +147,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       typedef math::types::Rectf32    rect_type;
 
-      rect_type   rect(rect_type::width(q.GetSize()),
-                       rect_type::height(q.GetSize()));
+      const rect_type& rect = q.GetRectangleRef();
 
       m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
                                 rect.GetValue<rect_type::top>(), 0);
@@ -164,16 +163,15 @@ namespace tloc { namespace graphics { namespace component_system {
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
-      //const math::Mat4f32& tMatrix = pos.GetTransformation();
+      const math::Mat4f32& tMatrix = pos.GetTransformation();
 
-      const math::Mat3f32 mat3 = pos.GetOrientation();
-      const math::Vec3f32 vec3 = pos.GetPosition();
+      math::Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        math::Vec3f32 qv3 = m_quadList[i];
-        mat3.Mul(qv3, m_quadList[i]);
+        qPos = m_quadList[i].ConvertTo<math::Vec4f32>();
+        qPos = tMatrix * qPos;
 
-        m_quadList[i] += vec3;
+        m_quadList[i].ConvertFrom(qPos);
       }
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );

@@ -10,7 +10,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   template <typename T_Real>
   core::component_system::Entity*
-    CreateQuad(T_Real a_size,
+    CreateQuad(math::types::Rectangle<T_Real> a_rect,
                core::component_system::EntityManager& a_mgr,
                core::component_system::ComponentPoolManager& a_poolMgr)
   {
@@ -22,7 +22,6 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef ComponentPoolManager    pool_mgr;
     typedef pool_mgr::iterator      comp_pool_ptr;
-
 
     // Create the quad (and the quad pool if necessary)
     comp_pool_ptr cpool;
@@ -36,7 +35,7 @@ namespace tloc { namespace prefab { namespace graphics {
     quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->GetElement() = QuadPtr(new Quad(Quad::size(a_size) ));
+    itrQuad->GetElement() = QuadPtr(new Quad(a_rect) );
 
     // Create the transform component (and the transform pool if necessary)
     cpool;

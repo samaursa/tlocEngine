@@ -1139,6 +1139,14 @@
 					Name="mesh"
 					>
 					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.cpp"
 						>
 					</File>
@@ -1191,6 +1199,14 @@
 			<Filter
 				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
 					>

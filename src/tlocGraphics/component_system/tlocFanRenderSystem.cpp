@@ -1,16 +1,16 @@
-#include "tlocQuadRenderSystem.h"
+#include "tlocFanRenderSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
 
-#include <tlocMath/data_types/tlocRectangle.h>
+#include <tlocMath/data_types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
@@ -20,18 +20,18 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
-  typedef QuadRenderSystem::error_type    error_type;
+  typedef FanRenderSystem::error_type    error_type;
 
   //////////////////////////////////////////////////////////////////////////
   // QuadRenderSystem
 
-  QuadRenderSystem::QuadRenderSystem
+  FanRenderSystem::FanRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 core::Variadic<component_type, 1>(components::quad))
+                 core::Variadic<component_type, 1>(components::fan))
      , m_sharedCam(nullptr)
   {
-    m_quadList.resize(4); // number of vertexes a quad has
+    m_vertList.reserve(30);
 
     m_vData = gl::AttributePtr(new gl::Attribute());
     m_vData->SetName("a_vPos");
@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator = gl::ShaderOperatorPtr(new gl::ShaderOperator());
   }
 
-  void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
+  void FanRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
   {
     m_sharedCam = a_cameraEntity;
 
@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace component_system {
       "The passed entity does not have the projection component!");
   }
 
-  error_type QuadRenderSystem::Pre_Initialize()
+  error_type FanRenderSystem::Pre_Initialize()
   {
     using namespace core::component_system;
     using namespace math::component_system::components;
@@ -73,17 +73,13 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess();
   }
 
-  error_type QuadRenderSystem::InitializeEntity(entity_manager*,
-    entity_type* a_ent)
-  {
-    TLOC_UNUSED(a_ent);
-    return ErrorSuccess();
-  }
-
-  error_type QuadRenderSystem::ShutdownEntity(entity_manager*, entity_type*)
+  error_type FanRenderSystem::InitializeEntity(entity_manager*, entity_type* )
   { return ErrorSuccess(); }
 
-  void QuadRenderSystem::Pre_ProcessActiveEntities()
+  error_type FanRenderSystem::ShutdownEntity(entity_manager*, entity_type*)
+  { return ErrorSuccess(); }
+
+  void FanRenderSystem::Pre_ProcessActiveEntities()
   {
     using namespace core::component_system;
     using namespace math::component_system::components;
@@ -121,12 +117,11 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator->AddUniform(vpMat);
   }
 
-  void QuadRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
+  void FanRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
-    TLOC_UNUSED(a_ent);
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;
-    typedef graphics::component_system::Quad      quad_type;
+    typedef graphics::component_system::Fan       fan_type;
     typedef graphics::component_system::Material  material_type;
     typedef material_type::shader_op_ptr          shader_op_ptr;
 
@@ -139,45 +134,50 @@ namespace tloc { namespace graphics { namespace component_system {
         ent->GetComponents(components::material);
       material_type& mat = matArr[0];
 
-      ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
-      Quad& q = quad[0];
+      ComponentMapper<fan_type> fan = ent->GetComponents(components::fan);
+      Fan& f = fan[0];
 
       //------------------------------------------------------------------------
-      // Prepare the Quad
+      // Prepare the Fan
 
-      typedef math::types::Rectf32    rect_type;
+      typedef math::types::Circlef32 circle_type;
+      using math::Vec3f32;
+      using math::Vec4f32;
 
-      const rect_type& rect = q.GetRectangleRef();
+      m_vertList.clear();
+      const circle_type& circ = f.GetEllipseRef();
 
-      m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[2] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
-      m_quadList[3] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
+      const tl_int    numSides = f.GetNumSides();
+      const tl_float  angleInterval = 360.0f/numSides;
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
       math::component_system::Transform& pos = posList[0];
-
-      // Change the position of the quad
       const math::Mat4f32& tMatrix = pos.GetTransformation();
 
-      math::Vec4f32 qPos;
-      for (int i = 0; i < 4; ++i)
+      // Push the center vertex
       {
-        qPos = m_quadList[i].ConvertTo<math::Vec4f32>();
-        qPos = tMatrix * qPos;
-
-        m_quadList[i].ConvertFrom(qPos);
+        Vec4f32 newCoord = circ.GetPosition().
+          ConvertTo<Vec4f32, core::p_tuple::overflow_zero>();
+        newCoord[3] = 1;
+        newCoord = tMatrix * newCoord;
+        m_vertList.push_back(newCoord.ConvertTo<Vec3f32>());
       }
 
-      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
+      for (int i = 0; i <= numSides; ++i)
+      {
+        Vec4f32 newCoord = (circ.GetCoord(math::Degree32(angleInterval * i))
+          .ConvertTo<Vec4f32, core::p_tuple::overflow_zero>());
+        newCoord[3] = 1;
+        newCoord = tMatrix * newCoord;
 
-      shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
-      so_quad->AddAttribute(m_vData);
+        m_vertList.push_back(newCoord.ConvertTo<Vec3f32>());
+      }
+
+      m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::CopyArray() );
+
+      shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
+      so_fan->AddAttribute(m_vData);
 
 
       //------------------------------------------------------------------------
@@ -204,20 +204,20 @@ namespace tloc { namespace graphics { namespace component_system {
         so->EnableAllUniforms(*m_shaderPtr);
       }
 
-      so_quad->PrepareAllAttributes(*m_shaderPtr);
-      so_quad->EnableAllAttributes(*m_shaderPtr);
+      so_fan->PrepareAllAttributes(*m_shaderPtr);
+      so_fan->EnableAllAttributes(*m_shaderPtr);
 
       // Add the mvp
       m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
       m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
 
-      glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+      glDrawArrays(GL_TRIANGLE_FAN, 0, m_vertList.size());
 
       //sp->Disable();
     }
   }
 
-  void QuadRenderSystem::Post_ProcessActiveEntities()
+  void FanRenderSystem::Post_ProcessActiveEntities()
   {
     m_shaderPtr->Disable();
     m_shaderPtr.reset();

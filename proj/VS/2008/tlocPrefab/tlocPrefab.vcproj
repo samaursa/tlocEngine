@@ -410,6 +410,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocFan.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocFan.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocQuad.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocQuad.h"
 				>
 			</File>

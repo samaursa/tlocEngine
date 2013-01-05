@@ -7,7 +7,7 @@
 
 namespace tloc { namespace core {
 
-  RngWell512::RngWell512()
+  TL_I RngWell512::RngWell512()
   {
     Params defaultParams;
     defaultParams.m_seed	= (int_type)time(NULL);
@@ -16,7 +16,7 @@ namespace tloc { namespace core {
     SetSeed(defaultParams);
   }
 
-  void RngWell512::SetSeed(const Params& a_seed)
+  TL_I void RngWell512::SetSeed(const Params& a_seed)
   {
     m_params = a_seed;
 
@@ -28,12 +28,12 @@ namespace tloc { namespace core {
     }
   }
 
-  const RngWell512::Params& RngWell512::GetSeed() const
+  TL_I const RngWell512::Params& RngWell512::GetSeed() const
   {
     return m_params;
   }
 
-  const RngWell512::int_type RngWell512::GetRandomInteger()
+  TL_I const RngWell512::int_type RngWell512::GetRandomInteger()
   {
     u32 a = m_params.m_state[m_params.m_index];
     u32 c = m_params.m_state[(m_params.m_index+13)&15];
@@ -48,13 +48,13 @@ namespace tloc { namespace core {
     return m_params.m_state[m_params.m_index];
   }
 
-  const RngWell512::real_type RngWell512::GetRandomFloat()
+  TL_I const RngWell512::real_type RngWell512::GetRandomFloat()
   {
     // Get a random integer, and divide by 2^32
     return (GetRandomInteger()/4294967296.0f);
   }
 
-  const RngWell512::int_type
+  TL_I const RngWell512::int_type
     RngWell512::GetRandomInteger(const RngWell512::int_type& a_min,
                                  const RngWell512::int_type& a_max)
   {
@@ -64,7 +64,7 @@ namespace tloc { namespace core {
     return (int_type)((real_type)range * (real_type)(GetRandomFloat()) ) + a_min;
   }
 
-  const RngWell512::real_type
+  TL_I const RngWell512::real_type
     RngWell512::GetRandomFloat(const RngWell512::real_type& a_min,
                                const RngWell512::real_type& a_max)
   {

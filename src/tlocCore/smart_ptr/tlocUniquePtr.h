@@ -1,5 +1,5 @@
-#ifndef _TLOC_CORE_SMART_PTR_SHARED_PTR_H_
-#define _TLOC_CORE_SMART_PTR_SHARED_PTR_H_
+#ifndef _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
+#define _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
 
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>

@@ -1,7 +1,7 @@
 #ifndef _TLOC_CORE_SMART_PTR_UNIQUE_PTR_INL_
 #define _TLOC_CORE_SMART_PTR_UNIQUE_PTR_INL_
 
-#ifndef _TLOC_CORE_SMART_PTR_SHARED_PTR_H_
+#ifndef _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
 #error "Must include header before including the inline file"
 #endif
 

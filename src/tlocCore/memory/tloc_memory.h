@@ -9,4 +9,13 @@
 
 #include <tlocCore/memory/tlocMemory.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_mem = core::memory;
+
+};
+
 #endif

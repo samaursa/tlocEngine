@@ -17,4 +17,13 @@
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_cs = core::component_system;
+
+};
+
 #endif

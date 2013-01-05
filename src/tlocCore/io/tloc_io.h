@@ -4,4 +4,13 @@
 #include <tlocCore/io/tlocFileIO.h>
 #include <tlocCore/io/tlocPath.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_io = core::io;
+
+};
+
 #endif

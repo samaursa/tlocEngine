@@ -12,4 +12,13 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_utils = core::utils;
+
+};
+
 #endif

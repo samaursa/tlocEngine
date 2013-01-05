@@ -14,4 +14,13 @@
 
 #include <tlocCore/types/tlocTemplateParams.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_types = core::types;
+
+};
+
 #endif

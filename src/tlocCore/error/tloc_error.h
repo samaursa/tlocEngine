@@ -4,4 +4,13 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/error/tlocErrorTypes.h>
 
+//////////////////////////////////////////////////////////////////////////
+// namespace alias
+
+namespace tloc {
+
+  namespace core_error = core::error;
+
+};
+
 #endif

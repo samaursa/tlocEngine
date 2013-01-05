@@ -73,9 +73,10 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Typedefs
 
-  typedef Timer_T<>             Timer;
-  typedef Timer_T<f32, u32>     Timer32;
-  typedef Timer_T<f64, u64>     Timer64;
+  typedef Timer_T<>                   Timer;
+  typedef Timer_T<tl_float, tl_uint>  Timerf;
+  typedef Timer_T<f32, u32>           Timer32;
+  typedef Timer_T<f64, u64>           Timer64;
 
 };};
 

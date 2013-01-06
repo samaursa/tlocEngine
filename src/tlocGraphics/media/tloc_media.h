@@ -4,4 +4,10 @@
 #include <tlocGraphics/media/tlocImage.h>
 #include <tlocGraphics/media/tlocImageLoader.h>
 
+namespace tloc {
+
+  namespace gfx_media = graphics::media;
+
+};
+
 #endif

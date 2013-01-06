@@ -3,4 +3,10 @@
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
+namespace tloc {
+
+  namespace gfx_error = graphics::error;
+
+};
+
 #endif

@@ -17,4 +17,10 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLExt.h>
 
+namespace tloc {
+
+  namespace gfx_gl = graphics::gl;
+
+};
+
 #endif

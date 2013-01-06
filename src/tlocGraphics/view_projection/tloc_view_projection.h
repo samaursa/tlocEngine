@@ -4,4 +4,10 @@
 #include <tlocGraphics/view_projection/tlocCamera.h>
 #include <tlocGraphics/view_projection/tlocFrustum.h>
 
+namespace tloc {
+
+  namespace gfx_vp = graphics::view_proj;
+
+};
+
 #endif

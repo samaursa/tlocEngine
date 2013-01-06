@@ -11,4 +11,10 @@
 
 #include <tlocGraphics/types/tlocDimension.h>
 
+namespace tloc {
+
+  namespace gfx_types = graphics::types;
+
+};
+
 #endif

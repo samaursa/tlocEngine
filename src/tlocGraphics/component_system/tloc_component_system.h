@@ -19,4 +19,10 @@
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 
+namespace tloc {
+
+  namespace gfx_cs = graphics::component_system;
+
+};
+
 #endif

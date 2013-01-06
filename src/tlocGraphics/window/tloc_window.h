@@ -9,4 +9,13 @@
 #include <tlocGraphics/window/tlocWindowImplWin.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
+namespace tloc {
+
+  // TODO: Remove this temporary when we have the 'window' namespace
+  namespace graphics { namespace window { }; };
+
+  namespace gfx_win = graphics::window;
+
+};
+
 #endif

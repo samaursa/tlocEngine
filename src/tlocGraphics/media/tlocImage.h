@@ -6,8 +6,8 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tloccontainers.inl>
 
-#include <tlocGraphics/data_types/tlocColor.h>
-#include <tlocGraphics/data_types/tlocDimension.h>
+#include <tlocGraphics/types/tlocColor.h>
+#include <tlocGraphics/types/tlocDimension.h>
 
 namespace tloc { namespace graphics { namespace media {
 

@@ -3,7 +3,7 @@
 
 #include <tlocMath/angle/tlocAngle.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
-#include <tlocGraphics/data_types/tlocAspectRatio.h>
+#include <tlocGraphics/types/tlocAspectRatio.h>
 
 namespace tloc { namespace graphics { namespace types {
 

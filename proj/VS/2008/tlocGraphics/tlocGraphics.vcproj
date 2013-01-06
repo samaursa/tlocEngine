@@ -1234,21 +1234,21 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="data_types"
+			Name="types"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocDimension.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tlocDimension.h"
 				>
 			</File>
 			<Filter
 				Name="color"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.h"
 					>
 				</File>
 			</Filter>
@@ -1256,7 +1256,7 @@
 				Name="vertex"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocVertex.h"
 					>
 				</File>
 			</Filter>
@@ -1264,11 +1264,11 @@
 				Name="aspect_ratio"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.h"
 					>
 				</File>
 			</Filter>
@@ -1276,11 +1276,11 @@
 				Name="fov"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.h"
 					>
 				</File>
 			</Filter>

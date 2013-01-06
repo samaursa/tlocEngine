@@ -5,7 +5,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/data_types/tlocVertex.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 

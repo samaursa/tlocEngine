@@ -4,7 +4,7 @@
 #include <tlocCore/types/tlocConditionalType.h>
 #include <tlocMath/vector/tlocVector2.h>
 #include <tlocMath/vector/tlocVector3.h>
-#include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace types {
 

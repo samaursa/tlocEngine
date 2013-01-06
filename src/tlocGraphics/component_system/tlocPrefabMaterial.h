@@ -4,7 +4,7 @@
 #include <tlocCore/string/tlocString.h>
 
 #include <tlocGraphics/component_system/tlocMaterial.h>
-#include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

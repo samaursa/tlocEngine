@@ -5,7 +5,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace time {
 
   namespace p_timer_t
   {
@@ -78,6 +78,6 @@ namespace tloc { namespace core {
   typedef Timer_T<f32, u32>           Timer32;
   typedef Timer_T<f64, u64>           Timer64;
 
-};};
+};};};
 
 #endif

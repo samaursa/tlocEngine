@@ -10,7 +10,7 @@ namespace tloc { namespace core { namespace rng {
   TL_I RngWell512::RngWell512()
   {
     Params defaultParams;
-    defaultParams.m_seed	= (int_type)time(NULL);
+    defaultParams.m_seed	= (int_type)::time(NULL);
     defaultParams.m_index	= 0;
 
     SetSeed(defaultParams);

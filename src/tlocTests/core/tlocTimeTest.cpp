@@ -15,6 +15,7 @@ namespace TestingTime
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::time;
 
   struct TimeFixture
   {
@@ -109,12 +110,12 @@ namespace TestingTime
   template <typename T_UInt>
   void TimeTestSleepCTimeS(T_UInt durationS)
   {
-    T_UInt startTime = (T_UInt)time(NULL);
+    T_UInt startTime = (T_UInt)::time(NULL);
     T_UInt currentTime = startTime;
 
     while (currentTime - startTime < durationS)
     {
-      currentTime = (T_UInt)time(NULL);
+      currentTime = (T_UInt)::time(NULL);
     }
   }
 

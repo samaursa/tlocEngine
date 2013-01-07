@@ -167,7 +167,7 @@ namespace TestingInput
 
   void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
   {
-    core::Timer_T<> countDown;
+    core::time::Timer_T<> countDown;
     Keyboard<>* kb = a_im->GetHID<Keyboard<> >(hid::keyboard);
 
     CHECK(kb != NULL);
@@ -215,7 +215,7 @@ namespace TestingInput
   void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_buttonDown,
                        WORD a_buttonUp, WORD a_extraData)
   {
-    core::Timer_T<> countDown;
+    core::time::Timer_T<> countDown;
     Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
 
     CHECK(mouse != NULL);
@@ -248,7 +248,7 @@ namespace TestingInput
   MouseEvent TestMouseMove(InputManager<>* a_im, HWND a_wnd, WORD a_axis,
                      tl_int a_x, tl_int a_y, WORD a_data)
   {
-    core::Timer_T<> countDown;
+    core::time::Timer_T<> countDown;
     Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
 
     CHECK(mouse != NULL);
@@ -291,7 +291,7 @@ namespace TestingInput
 
   TEST_CASE("Input/InputManager/General", "")
   {
-    core::Timer_T<> countDown;
+    core::time::Timer_T<> countDown;
 
     HWND wnd = CreateWin32Window();
 

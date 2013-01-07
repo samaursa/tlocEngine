@@ -3,4 +3,10 @@
 
 #include <tlocCore/time/tlocTime.h>
 
+namespace tloc {
+
+  namespace core_time = core::time;
+
+};
+
 #endif

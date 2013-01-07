@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template <typename T, class T_Derived>
   class Angle_T
@@ -186,6 +186,6 @@ namespace tloc { namespace math {
   typedef Degree_T<f32>           Degree32;
   typedef Degree_T<f64>           Degree64;
 
-};};
+};};};
 
 #endif

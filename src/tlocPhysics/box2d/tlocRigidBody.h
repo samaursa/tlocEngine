@@ -46,7 +46,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef tl_float              float_type;
     typedef math::Vec2f           vec_type;
     typedef math::Mat2f           matrix_type;
-    typedef math::Radian          angle_type;
+    typedef math::types::Radian   angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
 

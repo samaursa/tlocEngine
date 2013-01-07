@@ -13,10 +13,10 @@ namespace tloc { namespace math { namespace utils {
   class Pythagoras_T
   {
   public:
-    typedef T                           value_type;
-    typedef math::Degree_T<value_type>  angle_type;
-    typedef Pythagoras_T<value_type>    this_type;
-    typedef core::Tuple<value_type, 3>  cont_type;
+    typedef T                                   value_type;
+    typedef math::types::Degree_T<value_type>   angle_type;
+    typedef Pythagoras_T<value_type>            this_type;
+    typedef core::Tuple<value_type, 3>          cont_type;
 
     typedef core::types::StrongType_T<value_type, 0> base;
     typedef core::types::StrongType_T<value_type, 1> opposite;

@@ -8,7 +8,7 @@
 #include "tlocAngle.h"
 #include <tlocMath/tlocMath.h>
 
-namespace tloc { namespace math { 
+namespace tloc { namespace math { namespace types {
 
 #define ANGLE_TEMP    typename T, class T_Derived 
 #define ANGLE_PARAMS  T, T_Derived
@@ -253,6 +253,6 @@ namespace tloc { namespace math {
     return m_angle;
   }
 
-};};
+};};};
 
 #endif

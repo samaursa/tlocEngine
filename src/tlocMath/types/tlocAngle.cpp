@@ -1,7 +1,7 @@
 #include "tlocAngle.h"
 #include "tlocAngle.inl"
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template class Radian_T<f32>;
   template class Radian_T<f64>;
@@ -18,4 +18,4 @@ namespace tloc { namespace math {
   TLOC_EXPLICITLY_INSTANTIATE_ANGLE(f32, Degree_T, Radian_T);
   TLOC_EXPLICITLY_INSTANTIATE_ANGLE(f64, Degree_T, Radian_T);
 
-};};
+};};};

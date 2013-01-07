@@ -120,6 +120,8 @@ namespace tloc { namespace graphics { namespace component_system {
   void FanRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
     using namespace core::component_system;
+    using math::types::Degree32;
+
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Fan       fan_type;
     typedef graphics::component_system::Material  material_type;
@@ -166,7 +168,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       for (int i = 0; i <= numSides; ++i)
       {
-        Vec4f32 newCoord = (circ.GetCoord(math::Degree32(angleInterval * i))
+        Vec4f32 newCoord = (circ.GetCoord(Degree32(angleInterval * i))
           .ConvertTo<Vec4f32, core::p_tuple::overflow_zero>());
         newCoord[3] = 1;
         newCoord = tMatrix * newCoord;

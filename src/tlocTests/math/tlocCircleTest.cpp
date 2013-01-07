@@ -124,17 +124,18 @@ namespace TestingCircle
 
   TEST_CASE("Math/types/Circle/GetCoord", "")
   {
+    using math::types::Degree;
     using tloc::math::utils::Pythagoras;
 
     circle_type c1(circle_type::radius(1.0f));
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::base>(),
                                 pyth.GetSide<Pythagoras::opposite>() );
-      circle_type::point_type pFromC = c1.GetCoord(math::Degree(5.0f));
+      circle_type::point_type pFromC = c1.GetCoord(Degree(5.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(pFromC[0], p[0], 0.01f));
@@ -143,11 +144,11 @@ namespace TestingCircle
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::base>(),
                                 pyth.GetSide<Pythagoras::opposite>() );
-      circle_type::point_type pFromC = c1.GetCoord(math::Degree(-5.0f));
+      circle_type::point_type pFromC = c1.GetCoord(Degree(-5.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(pFromC[0], p[0], 0.01f));
@@ -156,11 +157,11 @@ namespace TestingCircle
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::opposite>(),
                                 pyth.GetSide<Pythagoras::base>() );
-      circle_type::point_type pFromC = c1.GetCoord(math::Degree(85.0f));
+      circle_type::point_type pFromC = c1.GetCoord(Degree(85.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(pFromC[0], p[0], 0.01f));
@@ -169,11 +170,11 @@ namespace TestingCircle
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::opposite>(),
                                 pyth.GetSide<Pythagoras::base>() );
-      circle_type::point_type pFromC = c1.GetCoord(math::Degree(95.0f));
+      circle_type::point_type pFromC = c1.GetCoord(Degree(95.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(-pFromC[0], p[0], 0.01f));
@@ -182,11 +183,11 @@ namespace TestingCircle
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::base>(),
                                 pyth.GetSide<Pythagoras::opposite>() );
-      circle_type::point_type pFromC = c1.GetCoord(math::Degree(355.0f));
+      circle_type::point_type pFromC = c1.GetCoord(Degree(355.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(pFromC[0], p[0], 0.01f));
@@ -198,18 +199,16 @@ namespace TestingCircle
 
     {
       // Check against pythagoras
-      Pythagoras pyth(math::Degree(5.0f), Pythagoras::base(1.0f));
+      Pythagoras pyth(Degree(5.0f), Pythagoras::base(1.0f));
 
       circle_type::point_type p(pyth.GetSide<Pythagoras::base>(),
                                 pyth.GetSide<Pythagoras::opposite>() );
       p += c2.GetPosition();
-      circle_type::point_type pFromC = c2.GetCoord(math::Degree(5.0f));
+      circle_type::point_type pFromC = c2.GetCoord(Degree(5.0f));
 
       // cos/sin accuracy is terrible
       CHECK(Mathf::Approx(pFromC[0], p[0], 0.01f));
       CHECK(Mathf::Approx(pFromC[1], p[1], 0.01f));
     }
-
-
   }
 };

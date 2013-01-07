@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef tl_float                                      value_type;
-    typedef math::Radian                                  angle_type;
+    typedef math::types::Radian                           angle_type;
     typedef math::utils::Pythagoras                       right_tri_type;
     typedef types::AspectRatio                            ar_type;
 

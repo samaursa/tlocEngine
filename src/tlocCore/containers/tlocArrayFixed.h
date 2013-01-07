@@ -34,7 +34,7 @@ namespace tloc { namespace core { namespace containers {
     typedef tl_size                                       size_type;
     typedef tl_ptrdiff                                    difference_type;
 
-    typedef Tuple<value_type, T_Capacity>                 container_type;
+    typedef data_structs::Tuple<value_type, T_Capacity>   container_type;
 
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;

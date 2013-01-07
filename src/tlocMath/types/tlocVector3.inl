@@ -36,7 +36,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::
     Vector3(const_reference aX, const_reference aY, const_reference aZ) 
-    : base_type(core::Variadic<value_type, 3>(aX, aY, aZ) )
+    : base_type(core::data_structs::Variadic<value_type, 3>(aX, aY, aZ) )
   { }
 
   template <VECTOR_3_TYPES>
@@ -51,7 +51,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_3_TYPES>
   TL_FI Vector3<VECTOR_3_PARAMS>::Vector3
-    (const core::Variadic<value_type,3> &a_vars)
+    (const core::data_structs::Variadic<value_type,3> &a_vars)
     : base_type(a_vars)
   { }
 

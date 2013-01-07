@@ -10,4 +10,10 @@
 
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
+namespace tloc {
+
+  namespace core_ds = core::data_structs;
+
+};
+
 #endif

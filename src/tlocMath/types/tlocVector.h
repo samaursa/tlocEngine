@@ -35,7 +35,7 @@ namespace tloc { namespace math { namespace types {
   };
 
   template <typename T, tl_size T_Size>
-  class Vector : public core::Tuple<T, T_Size>
+  class Vector : public core::data_structs::Tuple<T, T_Size>
   {
   public:
     enum { k_size = T_Size };
@@ -44,7 +44,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Vector<T, T_Size>                     this_type;
-    typedef core::Tuple<T, T_Size>                base_type;
+    typedef core::data_structs::Tuple<T, T_Size>  base_type;
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::size_type         size_type;
@@ -66,7 +66,7 @@ namespace tloc { namespace math { namespace types {
     template <typename T_ArrayType>
     TL_FI Vector(const T_ArrayType (&aArray)[T_Size]);
 
-    TL_FI Vector(const core::Variadic<T, T_Size>& a_vars);
+    TL_FI Vector(const core::data_structs::Variadic<T, T_Size>& a_vars);
 
     TL_FI explicit Vector(const_reference a_value);
 

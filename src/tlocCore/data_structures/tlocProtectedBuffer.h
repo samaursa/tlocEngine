@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   namespace priv
   {
@@ -64,6 +64,6 @@ namespace tloc { namespace core {
     static T  s_protectedArea[overflow_type::size + 1];
   };
 
-};};
+};};};
 
 #endif

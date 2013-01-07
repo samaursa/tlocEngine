@@ -33,10 +33,10 @@ namespace tloc { namespace graphics { namespace types {
       channel_count
     }; typedef tl_size              channel_type;
 
-    typedef u8                      value_type;
-    typedef core::Tuple<u8, 4>      container_type;
-    typedef u32                     int_type;
-    typedef tl_float                real_type;
+    typedef u8                                value_type;
+    typedef core::data_structs::Tuple<u8, 4>  container_type;
+    typedef u32                               int_type;
+    typedef tl_float                          real_type;
 
   public:
     Color();

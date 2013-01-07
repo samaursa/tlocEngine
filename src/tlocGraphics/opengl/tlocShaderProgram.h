@@ -33,10 +33,10 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
     // Supported number of shader components
-    typedef core::Variadic<Shader_I*, 1>     one_shader_component;
-    typedef core::Variadic<Shader_I*, 2>     two_shader_components;
-    typedef core::Variadic<Shader_I*, 3>     three_shader_components;
-    typedef core::Variadic<Shader_I*, 4>     four_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 1>  one_shader_component;
+    typedef core::data_structs::Variadic<Shader_I*, 2>  two_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 3>  three_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 4>  four_shader_components;
 
     typedef Object_T<ShaderProgram>         base_type;
     typedef base_type::object_handle        object_handle;
@@ -54,7 +54,7 @@ namespace tloc { namespace graphics { namespace gl {
     ~ShaderProgram();
 
     template <size_type T_Size>
-    error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
+    error_type AttachShaders(core::data_structs::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
     bool       IsLinked() const;

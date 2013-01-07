@@ -124,6 +124,8 @@ namespace tloc { namespace graphics { namespace view_proj {
   //------------------------------------------------------------------------
   // Instantiate tuple for the number of planes we have
 
-  template class core::Tuple<Frustum::real_type, Frustum::Planes::k_count>;
+  using core::data_structs::Tuple;
+
+  template class Tuple<Frustum::real_type, Frustum::Planes::k_count>;
 
 };};};

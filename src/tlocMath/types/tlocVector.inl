@@ -80,7 +80,8 @@ namespace tloc { namespace math { namespace types {
   { }
 
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const core::Variadic<T, T_Size>& a_vars)
+  TL_FI Vector<VECTOR_PARAMS>::
+    Vector(const core::data_structs::Variadic<T, T_Size>& a_vars)
     : base_type(a_vars)
   { }
 

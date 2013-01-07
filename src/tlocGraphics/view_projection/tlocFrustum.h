@@ -40,7 +40,8 @@ namespace tloc { namespace graphics { namespace view_proj {
 
   public:
     typedef tl_float                                    real_type;
-    typedef core::Tuple<real_type, Planes::k_count>     cont_type;
+    typedef core::data_structs::Tuple
+      <real_type, Planes::k_count>                      cont_type;
     typedef math::types::Rectangle<real_type>           rect_type;
     typedef tl_size                                     size_type;
     typedef math::types::Radian                         angle_type;
@@ -81,7 +82,7 @@ namespace tloc { namespace graphics { namespace view_proj {
                                           GetProjectionMatrix, m_projMatrix);
 
   private:
-    typedef core::Variadic<real_type, Planes::k_count> plane_args;
+    typedef core::data_structs::Variadic<real_type, Planes::k_count> plane_args;
 
     void DoDefinePlanes(const plane_args& a_vars);
     void DoBuildFrustumFromPlanes();

@@ -3,7 +3,7 @@
 
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   template <tl_size T_Size>
   class CharBuffer : public ProtectedBuffer<char8, T_Size>
@@ -13,6 +13,6 @@ namespace tloc { namespace core {
   class CharBufferW : public ProtectedBuffer<char32, T_Size>
   { };
 
-};};
+};};};
 
 #endif

@@ -10,12 +10,13 @@
 namespace TestingVector2f
 {
   using namespace tloc;
-  using namespace tloc::math::types;
+  using namespace core::data_structs;
+  using namespace math::types;
 
   struct Vector2fFixture
   {
     Vector2fFixture()
-      : b(core::Variadic2f(5, 6))
+      : b(Variadic2f(5, 6))
     {
       a[0] = 1; a[1] = 2;
     }
@@ -66,7 +67,7 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 0.0f, -1.0f);
 
     // Convert from Tuple to Vec
-    c = Vec2f(core::Tuple<tl_float, 2>(1.0f));
+    c = Vec2f(Tuple<tl_float, 2>(1.0f));
     CHECK_VEC2F(c, 1.0f, 1.0f);
   }
 

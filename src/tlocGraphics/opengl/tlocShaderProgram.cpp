@@ -13,6 +13,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  using namespace core::data_structs;
+
   namespace
   {
     typedef ShaderProgram::glsl_var_info_cont_type   glsl_var_info_cont_type;
@@ -154,7 +156,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <ShaderProgram::size_type T_Size>
   ShaderProgram::error_type
     ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
+    (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -305,19 +307,19 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit initialization
 
   // Supporting up to 4 shader attachments
-  template class core::Variadic<Shader_I*, 1>;
-  template class core::Variadic<Shader_I*, 2>;
-  template class core::Variadic<Shader_I*, 3>;
-  template class core::Variadic<Shader_I*, 4>;
+  template class Variadic<Shader_I*, 1>;
+  template class Variadic<Shader_I*, 2>;
+  template class Variadic<Shader_I*, 3>;
+  template class Variadic<Shader_I*, 4>;
 
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 1>);
+    (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 2>);
+    (Variadic<Shader_I*, 2>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 3>);
+    (Variadic<Shader_I*, 3>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 4>);
+    (Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;

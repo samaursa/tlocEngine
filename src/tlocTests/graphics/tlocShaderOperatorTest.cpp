@@ -52,6 +52,7 @@ namespace TestingShaderOperator
   using namespace graphics;
   using namespace core;
   using namespace core::containers;
+  using namespace core::data_structs;
 
   struct fixture
   {

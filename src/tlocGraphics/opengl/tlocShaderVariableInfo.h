@@ -10,7 +10,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       enum { g_buffSize = 40 }; // try to keep it divisible by 4 and 8
 
-      typedef core::ProtectedBuffer<char8, g_buffSize>  buff_type;
+      typedef core::data_structs::ProtectedBuffer<char8, g_buffSize>  buff_type;
 
       GLsizei     m_nameLength;
       GLint       m_arraySize;

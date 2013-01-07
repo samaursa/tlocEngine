@@ -10,6 +10,8 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -21,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
   MaterialSystem::MaterialSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::material))
+    , Variadic<component_type, 1>(components::material))
   { }
 
   error_type MaterialSystem::InitializeEntity(entity_manager*,

@@ -15,7 +15,7 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::core;
+  using namespace tloc::core::data_structs;
   using namespace tloc::core::containers;
   using namespace tloc::math::types;
 

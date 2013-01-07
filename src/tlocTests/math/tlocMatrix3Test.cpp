@@ -7,6 +7,7 @@
 namespace TestingMatrix3
 {
   USING_TLOC;
+  using namespace core::data_structs;
   using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -66,11 +67,11 @@ namespace TestingMatrix3
     Mat3f n(values, Mat3f::k_ColMajor);
     CHECK_MATRIX3F(n, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    Mat3f o(core::Variadic9f(values), Mat3f::k_ColMajor);
+    Mat3f o(Variadic9f(values), Mat3f::k_ColMajor);
     CHECK_MATRIX3F(o, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     // Convert from Table to Matrix
-    c = Mat3f(core::Table<tl_float, 3, 3>(10.0f));
+    c = Mat3f(Table<tl_float, 3, 3>(10.0f));
     CHECK_MATRIX3F(c, 10.0f, 10.0f, 10.0f, 10.0f,
                    10.0f, 10.0f, 10.0f, 10.0f, 10.0f);
   }

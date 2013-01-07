@@ -7,7 +7,7 @@
 
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
 #define PROTECTED_BUFFER_TEMP typename T, tl_size T_Size
 #define PROTECTED_BUFFER_PARAMS T, T_Size
@@ -105,6 +105,6 @@ namespace tloc { namespace core {
     return true;
   }
 
-};};
+};};};
 
 #endif

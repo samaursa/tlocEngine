@@ -29,7 +29,7 @@
 
 #else
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
 #define INSTANTIATE_TABLE_FOR_ALL_TYPES(_row_,_col_)\
   template class Table<tl_float, _row_, _col_>;\
@@ -47,6 +47,6 @@ namespace tloc { namespace core {
   INSTANTIATE_TABLE_FOR_ALL_TYPES(3, 3);
   INSTANTIATE_TABLE_FOR_ALL_TYPES(4, 4);
 
-};};
+};};};
 
 #endif

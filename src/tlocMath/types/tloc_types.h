@@ -5,4 +5,10 @@
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/types/tlocRectangle.h>
 
+namespace tloc {
+
+  namespace math_t = math::types;
+
+};
+
 #endif

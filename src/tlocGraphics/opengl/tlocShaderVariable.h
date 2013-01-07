@@ -25,7 +25,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
   public:
     typedef core::types::Any                 value_type;
-    typedef core::String                     string_type;
+    typedef core::string::String             string_type;
     typedef u32                              gl_type;
     typedef T_Derived                        derived_type;
     typedef ShaderVariable_TI<derived_type>  this_type;

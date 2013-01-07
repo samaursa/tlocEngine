@@ -282,11 +282,11 @@ namespace TestingInput
 
   struct InputDeviceInfo
   {
-    bool          m_available;
-    GUID          m_productGuid;
-    GUID          m_deviceGuid;
-    core::String  m_deviceName;
-    void*         m_devicePtr;
+    bool                  m_available;
+    GUID                  m_productGuid;
+    GUID                  m_deviceGuid;
+    core::string::String  m_deviceName;
+    void*                 m_devicePtr;
   };
 
   TEST_CASE("Input/InputManager/General", "")

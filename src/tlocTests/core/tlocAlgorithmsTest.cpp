@@ -17,6 +17,7 @@ namespace TestingAlgorithms
   USING_TLOC;
   using namespace core;
   using namespace core::containers;
+  using string::String;
 
   struct AlgorithmFixture
   {

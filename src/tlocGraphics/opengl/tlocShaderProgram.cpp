@@ -14,6 +14,7 @@
 namespace tloc { namespace graphics { namespace gl {
 
   using namespace core::data_structs;
+  using namespace core::string;
 
   namespace
   {
@@ -57,7 +58,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_UNUSED(uniformMaxLength);
 
       a_infoOut.resize(numOfUniforms);
-      core::String fixedName;
+      String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
         ShaderVariableInfo& currInfo = a_infoOut[i];
@@ -180,7 +181,7 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      core::String errorString;
+      String errorString;
       gl::Error().GetErrorAsString(errorString);
 
       // TODO: Write shader log

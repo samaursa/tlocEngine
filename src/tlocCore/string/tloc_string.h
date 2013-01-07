@@ -3,4 +3,10 @@
 
 #include <tlocCore/string/tlocString.h>
 
+namespace tloc {
+
+  namespace core_str = core::string;
+
+};
+
 #endif

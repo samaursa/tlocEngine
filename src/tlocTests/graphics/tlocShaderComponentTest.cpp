@@ -42,7 +42,8 @@ namespace TestingShaderComponent
 
 
   using namespace tloc;
-  using namespace tloc::core;
+  using namespace core;
+  using namespace string;
   using namespace graphics;
 
   String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );

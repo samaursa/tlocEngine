@@ -27,6 +27,9 @@ namespace tloc { namespace core { namespace io {
   class FileIO_T
   {
   public:
+    typedef string::String                  string_type;
+
+  public:
     typedef T_AccessPolicy                  access_policy_type;
     typedef T_FileFormat                    file_format_type;
     typedef error::Error                    error_type;
@@ -37,7 +40,7 @@ namespace tloc { namespace core { namespace io {
     error_type      Open();
     error_type      Close();
     error_type      Delete();
-    error_type      GetContents(String& a_out) const;
+    error_type      GetContents(string_type& a_out) const;
 
     bool            IsOpen();
 

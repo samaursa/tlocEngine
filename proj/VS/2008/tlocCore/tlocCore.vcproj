@@ -962,30 +962,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="buffers"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.inl"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="data_structures"
@@ -1055,6 +1031,30 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocTable.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocCharBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocCharBuffer.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.inl"
 					>
 				</File>
 			</Filter>

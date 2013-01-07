@@ -15,6 +15,7 @@ namespace TestingList
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::containers;
 
 #define DECLARE_TYPEDEFS(_type_, _name_)\
   typedef List<_type_, ListNode<_type_, doubly_linked_tag>, List_Dynamic(), true>  _name_ ## ListWithSize;\
@@ -1202,7 +1203,7 @@ namespace TestingList
   template <typename T_LinkedTag, bool T_DedicatedSize>
   void testIterator()
   {
-    typedef core::List<testItr, ListNode<testItr, T_LinkedTag>,
+    typedef List<testItr, ListNode<testItr, T_LinkedTag>,
                        List_Dynamic(), T_DedicatedSize>           list_type;
     list_type myList;
     typename list_type::iterator itr;

@@ -12,6 +12,7 @@ namespace TestingIterator
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::containers;
 
   TEST_CASE("Core/Iterator/globals", "")
   {
@@ -44,11 +45,11 @@ namespace TestingIterator
 
   TEST_CASE("Core/Iteraor/back_insert_iterator", "")
   {
-    core::Array<s32> firstvector, secondvector;
+    Array<s32> firstvector, secondvector;
     for (s32 i=1; i<=5; i++)
     { firstvector.push_back(i); secondvector.push_back(i*10); }
 
-    back_insert_iterator< core::Array<s32> > back_it (firstvector);
+    back_insert_iterator< Array<s32> > back_it (firstvector);
 
     copy (secondvector.begin(),secondvector.end(),back_it);
 
@@ -68,14 +69,14 @@ namespace TestingIterator
 
   TEST_CASE("Core/Iteraor/insert_iterator", "")
   {
-    core::Array<s32> firstlist, secondlist;
+    Array<s32> firstlist, secondlist;
     for (s32 i=1; i<=5; i++)
     { firstlist.push_back(i); secondlist.push_back(i*10); }
 
-    core::Array<s32>::iterator it;
+    Array<s32>::iterator it;
     it = firstlist.begin(); advance (it,3);
 
-    insert_iterator< core::Array<s32> > insert_it (firstlist,it);
+    insert_iterator< Array<s32> > insert_it (firstlist,it);
 
     copy (secondlist.begin(),secondlist.end(),insert_it);
 

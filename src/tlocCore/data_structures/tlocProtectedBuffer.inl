@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/containers/tlocProtectedBuffer.h>
+#include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
 namespace tloc { namespace core {
 

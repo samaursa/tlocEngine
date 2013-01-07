@@ -5,6 +5,9 @@
   #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/data_structures/tlocCharBuffer.inl>
+#include <tlocCore/data_structures/tlocProtectedBuffer.inl>
+
 #include <tlocCore/data_structures/tlocTable.inl>
 
 #include <tlocCore/data_structures/tlocTuple.inl>

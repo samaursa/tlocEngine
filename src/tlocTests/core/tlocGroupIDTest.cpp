@@ -7,6 +7,7 @@
 namespace TestingGroupID
 {
   USING_TLOC;
+  using namespace tloc::core::containers;
 
   struct obj : public core::utils::GroupID<obj>
   {
@@ -17,7 +18,7 @@ namespace TestingGroupID
     const s32 count = 20;
 
     {
-      core::Array<obj> a;
+      Array<obj> a;
       a.push_back(obj());
       CHECK(a.back().GetUniqueGroupID() == 2); // obj was created twice
 
@@ -30,7 +31,7 @@ namespace TestingGroupID
     }
 
     {
-      core::Array<obj> a;
+      Array<obj> a;
 
       for (s32 i = 0; i < count; ++i)
       {
@@ -38,10 +39,10 @@ namespace TestingGroupID
       }
 
       bool testPassed = true;
-      for (core::Array<obj>::iterator itr = a.begin(), itrEnd = a.end();
+      for (Array<obj>::iterator itr = a.begin(), itrEnd = a.end();
            itr != itrEnd; ++itr)
       {
-        for (core::Array<obj>::iterator itr2 = itr, itrEnd2 = a.end();
+        for (Array<obj>::iterator itr2 = itr, itrEnd2 = a.end();
              itr2 != itrEnd2;)
         {
           ++itr2;

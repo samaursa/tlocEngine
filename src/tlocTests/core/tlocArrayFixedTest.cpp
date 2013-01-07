@@ -10,6 +10,7 @@ namespace TestingStackArray
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {

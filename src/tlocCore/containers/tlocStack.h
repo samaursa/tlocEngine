@@ -28,7 +28,7 @@
 # define TLOC_ASSERT_STACK(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
 	template <typename T, typename T_Container = List<T> >
 	class Stack
@@ -85,6 +85,6 @@ namespace tloc { namespace core {
     T_Container             m_container;
 	};
 
-};};
+};};};
 
 #endif

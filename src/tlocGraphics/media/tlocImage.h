@@ -14,12 +14,12 @@ namespace tloc { namespace graphics { namespace media {
   class Image
   {
   public:
-    typedef tl_size                             size_type;
-    typedef types::Color                        color_type;
-    typedef core::tl_array<color_type>::type    pixel_container_type;
-    typedef core::error::Error                  error_type;
-    typedef Image                               this_type;
-    typedef types::Dimension2u                  dimension_type;
+    typedef tl_size                                       size_type;
+    typedef types::Color                                  color_type;
+    typedef core::containers::tl_array<color_type>::type  pixel_container_type;
+    typedef core::error::Error                            error_type;
+    typedef Image                                         this_type;
+    typedef types::Dimension2u                            dimension_type;
 
   public:
     Image();

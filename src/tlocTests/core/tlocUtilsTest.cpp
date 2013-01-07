@@ -48,10 +48,12 @@ namespace TestingMemory
 
   TEST_CASE("Core/Utilities/ArraySize", "Testing array size utility")
   {
+    using namespace core::containers;
+
     int someArray[50];
     char someCharArray[30];
-    core::Array<int> dynArray; dynArray.resize(20);
-    core::List<int> dynList; dynList.resize(5);
+    Array<int> dynArray; dynArray.resize(20);
+    List<int> dynList; dynList.resize(5);
 
     CHECK(core::utils::ArraySize(someArray) == 50);
     CHECK(core::utils::ArraySize(someCharArray) == 30);

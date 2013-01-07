@@ -4,9 +4,6 @@
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
 
-#include <tlocCore/containers/tlocCharBuffer.h>
-#include <tlocCore/containers/tlocProtectedBuffer.h>
-
 #include <tlocCore/containers/tlocHashmap.h>
 
 #include <tlocCore/containers/tlocHashtable.h>
@@ -19,5 +16,11 @@
 #include <tlocCore/containers/tlocStack.h>
 
 #include <tlocCore/containers/tlocContainers.h>
+
+namespace tloc {
+
+  namespace core_conts = core::containers;
+
+};
 
 #endif

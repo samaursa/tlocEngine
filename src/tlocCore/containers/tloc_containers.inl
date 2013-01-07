@@ -8,9 +8,6 @@
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/containers/tlocArrayFixed.inl>
 
-#include <tlocCore/containers/tlocCharBuffer.inl>
-#include <tlocCore/containers/tlocProtectedBuffer.inl>
-
 #include <tlocCore/containers/tlocHashmap.inl>
 #include <tlocCore/containers/tlocHashtable.inl>
 

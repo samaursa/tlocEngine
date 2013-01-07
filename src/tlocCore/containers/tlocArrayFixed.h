@@ -15,7 +15,7 @@
 # define TLOC_ASSERT_STACK_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, tl_size T_Capacity>
   class ArrayFixed
@@ -205,6 +205,6 @@ namespace tloc { namespace core {
 
   };
 
-};};
+};};};
 
 #endif

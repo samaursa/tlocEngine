@@ -11,6 +11,7 @@ namespace TestingHashMap
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::containers;
 
   struct HashMapFixture
   {

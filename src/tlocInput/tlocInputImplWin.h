@@ -112,7 +112,9 @@ namespace tloc { namespace input { namespace priv {
 
     IDirectInput8*                m_directInput;
 
-    typedef core::Array<core::Array<InputDeviceInfo> >  win_HID_array;
+    typedef core::containers::Array<InputDeviceInfo>    input_dinfo_array;
+    typedef core::containers::Array<input_dinfo_array>  win_HID_array;
+
     win_HID_array m_winHIDs;
 
   };

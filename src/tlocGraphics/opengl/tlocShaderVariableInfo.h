@@ -2,7 +2,7 @@
 #define _TLOC_GRAPHICS_GL_SHADER_VARIABLE_INFO_H_
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
-#include <tlocCore/containers/tlocProtectedBuffer.h>
+#include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

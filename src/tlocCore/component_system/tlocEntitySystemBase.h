@@ -29,8 +29,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::component_system::EntityManager       entity_manager;
     typedef core::component_system::Entity              entity_type;
 
-    typedef tl_array_fixed
-      <component_type, max_component_types>::type component_type_array;
+    typedef containers::tl_array_fixed
+      <component_type, max_component_types>::type       component_type_array;
 
   public:
 

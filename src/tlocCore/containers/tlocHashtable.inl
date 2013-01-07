@@ -8,7 +8,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/iterators/tlocIterator.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Hash to range mod
@@ -1058,6 +1058,6 @@ namespace tloc { namespace core {
     m_rehashPolicy.set_max_load_factor(a_maxLoadFactor);
   }
 
-};};
+};};};
 
 #endif

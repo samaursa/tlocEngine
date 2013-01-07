@@ -29,11 +29,11 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::Pair<uniform_ptr_type, index_type>   uniform_pair_type;
     typedef core::Pair<attribute_ptr_type, index_type> attribute_pair_type;
 
-    typedef core::Array<uniform_pair_type>	 uniform_cont_type;
-    typedef uniform_cont_type::iterator      uniform_iterator;
+    typedef core::containers::Array<uniform_pair_type>	 uniform_cont_type;
+    typedef uniform_cont_type::iterator                  uniform_iterator;
 
-    typedef core::Array<attribute_pair_type> attribute_cont_type;
-    typedef attribute_cont_type::iterator    attribute_iterator;
+    typedef core::containers::Array<attribute_pair_type> attribute_cont_type;
+    typedef attribute_cont_type::iterator                attribute_iterator;
 
   public:
     ShaderOperator();

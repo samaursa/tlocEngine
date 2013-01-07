@@ -33,14 +33,16 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     template <typename T, typename T_Technique>
-    derived_type& SetValueAs(core::Array<T>& a_array, T_Technique)
+    derived_type& SetValueAs(core::containers::Array<T>& a_array,
+                             T_Technique)
     {
       TLOC_STATIC_ASSERT(false,
         Constant_attribute_arrays_are_illegal_use_SetVertexArray_instead);
     }
 
     template <typename T, typename T_Technique>
-    derived_type& SetVertexArray(core::Array<T>& a_array, T_Technique)
+    derived_type& SetVertexArray(core::containers::Array<T>& a_array,
+                                 T_Technique)
     {
       m_isAttribArray = true;
       return base_type::SetValueAs(a_array, T_Technique());
@@ -104,6 +106,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckArrayTypes() const
     {
       using namespace core;
+      using namespace core::containers;
       using namespace math::types;
 
       type_traits::AssertTypeIsSupported

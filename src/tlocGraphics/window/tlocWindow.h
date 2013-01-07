@@ -236,7 +236,7 @@ namespace tloc { namespace graphics {
 
     typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
-    core::Queue<WindowEvent>                m_events;
+    core::containers::Queue<WindowEvent>    m_events;
   };
 
   //////////////////////////////////////////////////////////////////////////

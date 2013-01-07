@@ -38,15 +38,16 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::Variadic<Shader_I*, 3>     three_shader_components;
     typedef core::Variadic<Shader_I*, 4>     four_shader_components;
 
-    typedef Object_T<ShaderProgram>     base_type;
-    typedef base_type::object_handle    object_handle;
-    typedef base_type::error_type       error_type;
+    typedef Object_T<ShaderProgram>         base_type;
+    typedef base_type::object_handle        object_handle;
+    typedef base_type::error_type           error_type;
 
-    typedef tl_size                     size_type;
-    typedef s32                         gl_result_type;
+    typedef tl_size                         size_type;
+    typedef s32                             gl_result_type;
 
-    typedef ShaderVariableInfo                        glsl_var_info_type;
-    typedef core::tl_array<ShaderVariableInfo>::type  glsl_var_info_cont_type;
+    typedef ShaderVariableInfo              glsl_var_info_type;
+    typedef core::containers::tl_array
+            <ShaderVariableInfo>::type      glsl_var_info_cont_type;
 
   public:
     ShaderProgram();

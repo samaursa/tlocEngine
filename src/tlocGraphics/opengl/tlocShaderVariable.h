@@ -59,7 +59,8 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     template <typename T, typename T_Technique>
-    derived_type& SetValueAs(core::Array<T>& a_array, T_Technique)
+    derived_type&
+      SetValueAs(core::containers::Array<T>& a_array, T_Technique)
     {
       static_cast<derived_type*>(this)->DoCheckArrayTypes<T>();
       return DoSetValueAs(a_array, T_Technique());
@@ -76,10 +77,12 @@ namespace tloc { namespace graphics { namespace gl {
     derived_type& DoSetValueAs(const T& a_value);
 
     template <typename T>
-    derived_type& DoSetValueAs(const core::Array<T>& a_array, copy_array_policy);
+    derived_type& DoSetValueAs(const core::containers::Array<T>& a_array,
+                               copy_array_policy);
 
     template <typename T>
-    derived_type& DoSetValueAs(core::Array<T>& a_array, swap_array_policy);
+    derived_type& DoSetValueAs(core::containers::Array<T>& a_array,
+                               swap_array_policy);
 
   private:
     gl_type       m_type;

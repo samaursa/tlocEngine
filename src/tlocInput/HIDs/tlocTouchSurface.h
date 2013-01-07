@@ -20,9 +20,9 @@
 #include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
 
 namespace tloc { namespace input {
-  
+
   template <typename T_Policy, typename T_Platform> class TouchSurface;
-  
+
   struct TouchSurfaceCallbacks
   {
     virtual bool OnTouchPress(const tl_size a_caller,
@@ -32,7 +32,7 @@ namespace tloc { namespace input {
     virtual bool OnTouchMove(const tl_size a_caller,
                              const TouchSurfaceEvent& a_event) = 0;
   };
-  
+
   template <typename T>
   struct TouchSurfaceCallbackGroupT:
     public core::CallbackGroupTArray<T, TouchSurfaceCallbacks>::type
@@ -40,20 +40,20 @@ namespace tloc { namespace input {
     typedef typename core::CallbackGroupTArray<T, TouchSurfaceCallbacks>::type
       base_type;
     using base_type::m_observers;
-    
+
     virtual bool OnTouchPress(const tl_size a_caller,
                               const TouchSurfaceEvent& a_event)
     {
       for (tl_size i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnTouchPress(a_caller, a_event) == true) 
+        if (m_observers[i]->OnTouchPress(a_caller, a_event) == true)
         {
           return true; // Veto the rest of the events
         }
       }
       return false;
     }
-    
+
     virtual bool OnTouchRelease(const tl_size a_caller,
                                 const TouchSurfaceEvent& a_event)
     {
@@ -66,13 +66,13 @@ namespace tloc { namespace input {
       }
       return false;
     }
-    
+
     virtual bool OnTouchMove(const tl_size a_caller,
                              const TouchSurfaceEvent& a_event)
     {
       for (tl_size i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnTouchMove(a_caller, a_event) == true) 
+        if (m_observers[i]->OnTouchMove(a_caller, a_event) == true)
         {
           return true;
         }
@@ -80,7 +80,7 @@ namespace tloc { namespace input {
       return false;
     }
   };
-  
+
   template <class T1,
             class T2 = TLOC_DUMMY_PARAM,
             class T3 = TLOC_DUMMY_PARAM,
@@ -92,23 +92,23 @@ namespace tloc { namespace input {
     T3 m_param3;
     T4 m_param4;
   };
-  
+
   template <typename T_Policy = InputPolicy::Buffered,
     typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class TouchSurface:
-    public core::DispatcherBaseArray<TouchSurfaceCallbacks, 
+    public core::DispatcherBaseArray<TouchSurfaceCallbacks,
                                      TouchSurfaceCallbackGroupT>::type,
     public core::NonCopyable
   {
   public:
-    typedef T_Platform                            platform_type;
-    typedef T_Policy                              policy_type;
-    typedef TouchSurfaceEvent                     touch_type;
-    typedef touch_type::touch_handle_type         touch_handle_type;
-    typedef core::tl_array<touch_type>::type      touch_container_type;
-    
+    typedef T_Platform                                    platform_type;
+    typedef T_Policy                                      policy_type;
+    typedef TouchSurfaceEvent                             touch_type;
+    typedef touch_type::touch_handle_type                 touch_handle_type;
+    typedef core::containers::tl_array<touch_type>::type  touch_container_type;
+
     typedef TouchSurface<policy_type, platform_type> this_type;
-    
+
     template <typename T_ParamList>
     TouchSurface(const T_ParamList& a_paramList);
     ~TouchSurface();
@@ -116,20 +116,20 @@ namespace tloc { namespace input {
     const touch_container_type& GetCurrentTouches() const;
     const touch_type* GetTouch(touch_handle_type a_touch) const;
     bool IsTouchDown(touch_handle_type a_touch) const;
-    
+
     void SendOnTouchPress(const touch_type& a_event);
     void SendOnTouchRelease(const touch_type& a_event);
     void SendOnTouchMove(const touch_type& a_event);
-    
+
     void Update();
     void Reset();
-    
+
   private:
-    
+
     typedef priv::TouchSurfaceImpl<this_type> impl_type;
-    impl_type*  m_impl;    
+    impl_type*  m_impl;
   };
-  
+
 };};
 
 

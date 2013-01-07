@@ -16,6 +16,7 @@ namespace TestingAlgorithms
 {
   USING_TLOC;
   using namespace core;
+  using namespace core::containers;
 
   struct AlgorithmFixture
   {
@@ -397,8 +398,8 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/FindIf", "")
   {
-    core::List<s32> myvector;
-    core::List<s32>::iterator it;
+    List<s32> myvector;
+    List<s32>::iterator it;
 
     myvector.push_back(10);
     myvector.push_back(25);
@@ -417,8 +418,8 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/FindEnd", "")
   {
     s32 myints[] = {1,2,3,4,5,1,2,3,4,5};
-    core::Array<s32> myvector (myints,myints+10);
-    core::Array<s32>::iterator it;
+    Array<s32> myvector (myints,myints+10);
+    Array<s32>::iterator it;
 
     s32 match1[] = {1,2,3};
 
@@ -448,8 +449,8 @@ namespace TestingAlgorithms
   {
     {
       int mychars[] = {'a','b','c','A','B','C'};
-      core::Array<int> myvector (mychars,mychars+6);
-      core::Array<int>::iterator it;
+      Array<int> myvector (mychars,mychars+6);
+      Array<int>::iterator it;
 
       int match[] = {'A','B','C'};
 
@@ -466,8 +467,8 @@ namespace TestingAlgorithms
     }
     {
       int mychars[] = {'t','i','s','9','i','s'};
-      core::Array<int> myvector (mychars, mychars + 6);
-      core::Array<int>::iterator it;
+      Array<int> myvector (mychars, mychars + 6);
+      Array<int>::iterator it;
 
       int match[] = {'a','b','c','s','9'};
 
@@ -485,8 +486,8 @@ namespace TestingAlgorithms
     s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
     s32 allowed[] = {1,2,3,4,5,6,7,8,9};
 
-    core::Array<s32> myvector(myInts, myInts + 10);
-    core::Array<s32>::iterator itr;
+    Array<s32> myvector(myInts, myInts + 10);
+    Array<s32>::iterator itr;
 
     itr = find_first_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 23);
@@ -503,8 +504,8 @@ namespace TestingAlgorithms
     s32 myInts[] = {1,23,3,41,5,6,7,8,9,10};
     s32 allowed[] = {1,2,3,4,5,6,7,8,9};
 
-    core::Array<s32> myvector(myInts, myInts + 10);
-    core::Array<s32>::iterator itr;
+    Array<s32> myvector(myInts, myInts + 10);
+    Array<s32>::iterator itr;
 
     itr = find_last_not_of(myvector.begin(), myvector.end(), allowed, allowed + 9);
     CHECK(*itr == 10);
@@ -527,7 +528,7 @@ namespace TestingAlgorithms
       CHECK(mycount == 3);
 
       // counting elements in container:
-      core::Array<s32> myvector (myints, myints+8);
+      Array<s32> myvector (myints, myints+8);
       mycount = (s32) count (myvector.begin(), myvector.end(), 20);
       CHECK(mycount == 3);
 
@@ -538,7 +539,7 @@ namespace TestingAlgorithms
     {//count_if
       s32 mycount;
 
-      core::Array<s32> myvector;
+      Array<s32> myvector;
       for (s32 i=1; i<10; i++) myvector.push_back(i); // myvector: 1 2 3 4 5 6 7 8 9
 
       mycount = (s32) count_if (myvector.begin(), myvector.end(), IsOdd);
@@ -556,12 +557,12 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/Mismatch", "")
   {
-    core::Array<s32> myvector;
+    Array<s32> myvector;
     for (s32 i=1; i<6; i++) myvector.push_back (i*10); // myvector: 10 20 30 40 50
 
     s32 myints[] = {10,20,80,320,1024};                //   myints: 10 20 80 320 1024
 
-    Pair<core::Array<s32>::iterator,s32*> mypair;
+    Pair<Array<s32>::iterator,s32*> mypair;
 
     // using default comparison:
     mypair = mismatch (myvector.begin(), myvector.end(), myints);
@@ -582,7 +583,7 @@ namespace TestingAlgorithms
   {
     bool retValue = false;
     s32 myints[] = {20,40,60,80,100};          //   myints: 20 40 60 80 100
-    core::Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
+    Array<s32>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
 
     retValue = equal(myvector.begin(), myvector.end(), myints);
     CHECK(retValue == true);
@@ -638,8 +639,8 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/Search", "")
   {
-    core::Array<s32> myvector;
-    core::Array<s32>::iterator it;
+    Array<s32> myvector;
+    Array<s32>::iterator it;
 
     // set some values:        myvector: 10 20 30 40 50 60 70 80 90
     for (s32 i=1; i<10; i++) myvector.push_back(i*10);
@@ -661,9 +662,9 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/SearchN", "")
   {
     s32 myints[]={10,20,30,30,20,10,10,20};
-    core::Array<s32> myvector (myints,myints+8);
+    Array<s32> myvector (myints,myints+8);
 
-    core::Array<s32>::iterator it;
+    Array<s32>::iterator it;
 
     // using default comparison:
     it = search_n (myvector.begin(), myvector.end(), 2, 30);
@@ -691,7 +692,7 @@ namespace TestingAlgorithms
 
     myCont.assign(pbegin, pend);
 
-    itr_type itrEnd = core::remove_all(myCont, 20);
+    itr_type itrEnd = remove_all(myCont, 20);
     myCont.erase(itrEnd, myCont.end());
     CHECK(myCont.size() == 5);
 
@@ -705,10 +706,10 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/Remove", "")
   {
-    Remove<core::Array<tl_int> >();
-    Remove<core::List<tl_int> >();
-    Remove<core::Array<tl_int> >();
-    Remove<core::List<tl_int> >();
+    Remove<Array<tl_int> >();
+    Remove<List<tl_int> >();
+    Remove<Array<tl_int> >();
+    Remove<List<tl_int> >();
   }
 
   template <typename T_Container>
@@ -723,7 +724,7 @@ namespace TestingAlgorithms
     value_type* pend = myints + utils::ArraySize(myints);
 
     T_Container myvector (8);
-    core::remove_copy(pbegin, pend, myvector.begin(), 20);
+    remove_copy(pbegin, pend, myvector.begin(), 20);
 
     itr_type itr = myvector.begin();
     CHECK(*itr == 10); ++itr;
@@ -738,8 +739,8 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/RemoveCopy", "")
   {
-    RemoveCopy<core::Array<tl_int> >();
-    RemoveCopy<core::List<tl_int> >();
+    RemoveCopy<Array<tl_int> >();
+    RemoveCopy<List<tl_int> >();
   }
 
   template <typename T_Container>
@@ -752,7 +753,7 @@ namespace TestingAlgorithms
     T_Container myIntsVec;
     myIntsVec.assign(myints, myints+ 8);
     T_Container myvector;
-    core::replace_copy_all(myIntsVec, back_inserter(myvector), 20, 99);
+    replace_copy_all(myIntsVec, back_inserter(myvector), 20, 99);
 
     itr_type itr = myvector.begin();
     REQUIRE(myvector.size() == 8);
@@ -768,8 +769,8 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/ReplaceCopy", "")
   {
-    ReplaceCopy<core::Array<tl_int> >();
-    ReplaceCopy<core::List<tl_int> >();
+    ReplaceCopy<Array<tl_int> >();
+    ReplaceCopy<List<tl_int> >();
   }
 
   template <typename T_Container>
@@ -781,7 +782,7 @@ namespace TestingAlgorithms
     value_type myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
     T_Container myvector (myints, myints+8);            // 10 20 30 30 20 10 10 20
 
-    core::replace_all(myvector, (value_type)20, (value_type)99); // 10 99 30 30 99 10 10 99
+    replace_all(myvector, (value_type)20, (value_type)99); // 10 99 30 30 99 10 10 99
 
     itr_type itr = myvector.begin();
     REQUIRE(myvector.size() == 8);
@@ -797,9 +798,9 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/Replace", "")
   {
-    Replace<core::Array<tl_int> >();
-    Replace<core::List<tl_int> >();
-    Replace<core::String>();
+    Replace<Array<tl_int> >();
+    Replace<List<tl_int> >();
+    Replace<String>();
   }
 
   template <typename T_Container1, typename T_Container2>
@@ -828,20 +829,20 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/UniqueAll", "")
   {
-    UniqueAll<core::Array<tl_int>, core::Array<tl_int> >();
-    UniqueAll<core::List<tl_int>, core::Array<tl_int> >();
-    UniqueAll<core::Array<tl_int>, core::List<tl_int> >();
-    UniqueAll<core::List<tl_int>, core::List<tl_int> >();
-    UniqueAll<core::String, core::String>();
+    UniqueAll<Array<tl_int>, Array<tl_int> >();
+    UniqueAll<List<tl_int>, Array<tl_int> >();
+    UniqueAll<Array<tl_int>, List<tl_int> >();
+    UniqueAll<List<tl_int>, List<tl_int> >();
+    UniqueAll<String, String>();
 
     String somePath("..//..//somePath.txt");
     String fixedPath;
     String toMatch = "/";
-    core::unique_copy_only_all(somePath, fixedPath, toMatch);
+    unique_copy_only_all(somePath, fixedPath, toMatch);
     CHECK(fixedPath.compare("../../somePath.txt") == 0);
     toMatch += ".";
     somePath.clear();
-    core::unique_copy_only_all(fixedPath, somePath, toMatch);
+    unique_copy_only_all(fixedPath, somePath, toMatch);
     CHECK(somePath.compare("././somePath.txt") == 0);
   }
 
@@ -893,11 +894,11 @@ namespace TestingAlgorithms
 
   TEST_CASE("Core/Algorithms/UniqueOnlyAll", "")
   {
-    UniqueOnly<core::Array<tl_int>, core::Array<tl_int> >();
-    UniqueOnly<core::List<tl_int>, core::Array<tl_int> >();
-    UniqueOnly<core::Array<tl_int>, core::List<tl_int> >();
-    UniqueOnly<core::List<tl_int>, core::List<tl_int> >();
-    UniqueOnly<core::String, core::String>();
+    UniqueOnly<Array<tl_int>, Array<tl_int> >();
+    UniqueOnly<List<tl_int>, Array<tl_int> >();
+    UniqueOnly<Array<tl_int>, List<tl_int> >();
+    UniqueOnly<List<tl_int>, List<tl_int> >();
+    UniqueOnly<String, String>();
   }
 
   TEST_CASE("Core/Algorithsm/lower_bound", "")
@@ -951,7 +952,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
-                                  T_SortType() );
+                               T_SortType() );
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -964,7 +965,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
-                                  T_SortType() );
+                               T_SortType() );
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -1064,21 +1065,21 @@ namespace TestingAlgorithms
     Array<s32> myIntsArray(itrBegin, itrEnd);
     List<s32>  myIntsList(itrBegin, itrEnd);
 
-    tloc::core::sort(itrBegin, itrEnd);
+    core::sort(itrBegin, itrEnd);
 
     for (u32 i = 1; i < 26; ++i)
     {
       CHECK( myints[i] >= myints[i - 1]);
     }
 
-    tloc::core::sort(myIntsArray.begin(), myIntsArray.end());
+    core::sort(myIntsArray.begin(), myIntsArray.end());
 
     for (u32 i = 1; i < 26; ++i)
     {
       CHECK( myIntsArray[i] >= myIntsArray[i - 1]);
     }
 
-    tloc::core::sort(myIntsList.begin(), myIntsList.end());
+    core::sort(myIntsList.begin(), myIntsList.end());
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();

@@ -19,7 +19,7 @@
 # define TLOC_ASSERT_HASH_MAP(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T_Key, typename T_ValueType,
             typename T_HashFunc = hash<T_Key>,
@@ -42,7 +42,7 @@ namespace tloc { namespace core {
     typedef Hashtable<
                        HashtablePolicy<T_Key,
                        use_first<typename T_BucketType::value_type::value_type::value_type >,
-                       T_HashFunc, hash_to_range_mod, tloc::core::range_hash_default,
+                       T_HashFunc, hash_to_range_mod, tloc::core::containers::range_hash_default,
                        T_KeyEqual, prime_rehash_policy, T_BucketType,
                        T_CacheHashCode, true> >                     base_type;
     typedef HashMap<T_Key, T_ValueType, T_HashFunc, T_KeyEqual,
@@ -84,6 +84,6 @@ namespace tloc { namespace core {
     TL_FI mapped_type& operator[](const key_type& aKey);
   };
 
-};};
+};};};
 
 #endif

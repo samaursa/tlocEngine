@@ -5,6 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/containers/tlocProtectedBuffer.inl>
+#include <tlocCore/data_structures/tlocProtectedBuffer.inl>
 
 #endif

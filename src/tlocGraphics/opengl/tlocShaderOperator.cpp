@@ -4,10 +4,10 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
@@ -17,7 +17,7 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::math;
+  using namespace tloc::math::types;
 
   namespace
   {

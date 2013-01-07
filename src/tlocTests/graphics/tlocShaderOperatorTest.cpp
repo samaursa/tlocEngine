@@ -6,14 +6,14 @@
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/opengl/tlocError.h>
-#include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocGraphics/types/tlocColor.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector3.inl>
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/vector/tlocVector4.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector3.inl>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.inl>
 
 namespace TestingShaderOperator
 {
@@ -62,6 +62,7 @@ namespace TestingShaderOperator
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Uniforms", "")
   {
     typedef Window::graphics_mode       graphics_mode;
+    using namespace math::types;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -99,21 +100,21 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec2");
-      uniform->SetValueAs(math::Vec2f32(0.1f, 0.2f));
+      uniform->SetValueAs(Vec2f32(0.1f, 0.2f));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec3");
-      uniform->SetValueAs(math::Vec3f32(0.1f, 0.2f, 0.3f));
+      uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
       so->AddUniform(uniform);
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec4");
-      uniform->SetValueAs(math::Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+      uniform->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
       so->AddUniform(uniform);
     }
@@ -176,7 +177,7 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat2");
-      uniform->SetValueAs(math::Mat2f32(1, 0,
+      uniform->SetValueAs(Mat2f32(1, 0,
                                         0, 1));
 
       so->AddUniform(uniform);
@@ -184,7 +185,7 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat3");
-      uniform->SetValueAs(math::Mat3f32(1, 0, 0,
+      uniform->SetValueAs(Mat3f32(1, 0, 0,
                                         0, 1, 0,
                                         0, 0, 1));
 
@@ -193,7 +194,7 @@ namespace TestingShaderOperator
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat4");
-      uniform->SetValueAs(math::Mat4f32(1, 0, 0, 0,
+      uniform->SetValueAs(Mat4f32(1, 0, 0, 0,
                                         0, 1, 0, 0,
                                         0, 0, 1, 0,
                                         0, 0, 0, 1));
@@ -241,6 +242,7 @@ namespace TestingShaderOperator
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
   {
     typedef Window::graphics_mode       graphics_mode;
+    using namespace math::types;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -281,7 +283,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec2");
 
-      core::Array<math::Vec2f32>  floats(2, math::Vec2f32(5.0f, 6.0f));
+      core::Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -290,7 +292,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec3");
 
-      core::Array<math::Vec3f32>  floats(2, math::Vec3f32(1, 2, 3));
+      core::Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -299,7 +301,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_vec4");
 
-      core::Array<math::Vec4f32>  floats(2, math::Vec4f32(1, 2, 3, 4));
+      core::Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(uniform);
@@ -416,6 +418,7 @@ namespace TestingShaderOperator
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/ConstantAttributes", "")
   {
     typedef Window::graphics_mode       graphics_mode;
+    using namespace math::types;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -451,21 +454,21 @@ namespace TestingShaderOperator
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec2");
-      attribute->SetValueAs(math::Vec2f32(0.1f, 0.2f));
+      attribute->SetValueAs(Vec2f32(0.1f, 0.2f));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec3");
-      attribute->SetValueAs(math::Vec3f32(0.1f, 0.2f, 0.3f));
+      attribute->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
       so->AddAttribute(attribute);
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec4");
-      attribute->SetValueAs(math::Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+      attribute->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
       so->AddAttribute(attribute);
     }
@@ -564,6 +567,7 @@ namespace TestingShaderOperator
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/AttributesArrays", "")
   {
     typedef Window::graphics_mode       graphics_mode;
+    using namespace math::types;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -602,7 +606,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec2");
 
-      core::Array<math::Vec2f32>  floats(2, math::Vec2f32(5.0f, 6.0f));
+      core::Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -611,7 +615,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec3");
 
-      core::Array<math::Vec3f32>  floats(2, math::Vec3f32(1, 2, 3));
+      core::Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);
@@ -620,7 +624,7 @@ namespace TestingShaderOperator
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_vec4");
 
-      core::Array<math::Vec4f32>  floats(2, math::Vec4f32(1, 2, 3, 4));
+      core::Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(attribute);

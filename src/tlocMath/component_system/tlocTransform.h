@@ -6,9 +6,9 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 namespace tloc { namespace math { namespace component_system {
 
@@ -20,9 +20,9 @@ namespace tloc { namespace math { namespace component_system {
     typedef T_Real                    real_type;
     typedef Transform_T<real_type>    this_type;
 
-    typedef Matrix4<real_type>        transform_type;
-    typedef Vector3<real_type>        position_type;
-    typedef Matrix3<real_type>        orientation_type;
+    typedef types::Matrix4<real_type> transform_type;
+    typedef types::Vector3<real_type> position_type;
+    typedef types::Matrix3<real_type> orientation_type;
 
     typedef core::component_system::Component_T<this_type>    base_type;
 

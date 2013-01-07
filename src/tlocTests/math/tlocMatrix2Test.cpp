@@ -1,25 +1,29 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix2.inl>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix2.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
 
 namespace TestingMatrix2
 {
   USING_TLOC;
   using namespace math;
+  using math::types::Mat2f;
+  using math::types::Vec2f;
+  using math::types::Mat2f32;
+  using math::types::Mat2f64;
 
   struct Matrix2Fixture
   {
     Matrix2Fixture()
     {
-      tloc::math::Vec2f row1;
-      tloc::math::Vec2f row2;
+      Vec2f row1;
+      Vec2f row2;
 
-      tloc::math::Vec2f col1;
-      tloc::math::Vec2f col2;
+      Vec2f col1;
+      Vec2f col2;
 
       row1[0] = 1; row1[1] = 2;
       row2[0] = 4; row2[1] = 5;
@@ -34,7 +38,7 @@ namespace TestingMatrix2
       b.SetCol(1, col2);
     }
 
-    tloc::math::Mat2f a, b, c, d, e;
+    Mat2f a, b, c, d, e;
   };
 
 #define CHECK_MATRIX2F(mat,x1,y1,x2,y2) \

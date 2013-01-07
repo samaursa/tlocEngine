@@ -13,8 +13,8 @@
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -33,9 +33,9 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef math::Vec3f32                                     vec3_type;
+    typedef math::types::Vec3f32                              vec3_type;
     typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
-    typedef math::Mat4f32                                     matrix_type;
+    typedef math::types::Mat4f32                              matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 

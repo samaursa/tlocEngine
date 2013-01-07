@@ -1,6 +1,6 @@
 #include "tlocPhysicsManager.h"
 
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
 

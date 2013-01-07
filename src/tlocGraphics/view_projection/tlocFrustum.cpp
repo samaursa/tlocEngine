@@ -36,7 +36,7 @@ namespace tloc { namespace graphics { namespace view_proj {
 
   Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
     : m_projMatrix(0)
-    , m_params(types::FOV(math::Degree(90.0f), ar_type(),
+    , m_params(types::FOV(math::types::Degree(90.0f), ar_type(),
                           types::p_FOV::horizontal()) )
   {
     using namespace types;
@@ -66,9 +66,10 @@ namespace tloc { namespace graphics { namespace view_proj {
     , m_params(a_params)
   {
     using namespace math::utils;
+    using math::types::Degree;
 
-    math::Degree halfFOV
-      (m_params.GetFOV().Get<types::p_FOV::vertical>().GetAs<math::Degree>() / 2);
+    Degree halfFOV
+      (m_params.GetFOV().Get<types::p_FOV::vertical>().GetAs<Degree>() / 2);
 
     Pythagoras pyth =
       Pythagoras(halfFOV, Pythagoras::base(m_params.GetNear()));

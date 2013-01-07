@@ -2,8 +2,8 @@
 
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
@@ -11,7 +11,7 @@
 namespace TestingVector3f
 {
   using namespace tloc;
-  using namespace math;
+  using namespace math::types;
 
   struct Vector3fFixture
   {
@@ -204,7 +204,7 @@ namespace TestingVector3f
 
     //////////////////////////////////////////////////////////////////////////
     // Vec2 to Vec3 conversion
-    math::Vec2f vec2dim(0);
+    Vec2f vec2dim(0);
     c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
     CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
   }

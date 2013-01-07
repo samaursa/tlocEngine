@@ -4,7 +4,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
 
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -120,6 +120,8 @@ namespace tloc { namespace graphics { namespace component_system {
   void FanRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
     using namespace core::component_system;
+    using math::types::Degree32;
+
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Fan       fan_type;
     typedef graphics::component_system::Material  material_type;
@@ -141,8 +143,9 @@ namespace tloc { namespace graphics { namespace component_system {
       // Prepare the Fan
 
       typedef math::types::Circlef32 circle_type;
-      using math::Vec3f32;
-      using math::Vec4f32;
+      using math::types::Vec3f32;
+      using math::types::Vec4f32;
+      using math::types::Mat4f32;
 
       m_vertList.clear();
       const circle_type& circ = f.GetEllipseRef();
@@ -153,7 +156,7 @@ namespace tloc { namespace graphics { namespace component_system {
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
       math::component_system::Transform& pos = posList[0];
-      const math::Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation();
 
       // Push the center vertex
       {
@@ -166,7 +169,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       for (int i = 0; i <= numSides; ++i)
       {
-        Vec4f32 newCoord = (circ.GetCoord(math::Degree32(angleInterval * i))
+        Vec4f32 newCoord = (circ.GetCoord(Degree32(angleInterval * i))
           .ConvertTo<Vec4f32, core::p_tuple::overflow_zero>());
         newCoord[3] = 1;
         newCoord = tMatrix * newCoord;

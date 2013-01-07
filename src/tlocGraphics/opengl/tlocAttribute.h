@@ -3,12 +3,12 @@
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 
@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckTypeCompatibility() const
     {
       using namespace core;
-      using namespace math;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -82,7 +82,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckNonArrayTypes() const
     {
       using namespace core;
-      using namespace math;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -104,7 +104,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckArrayTypes() const
     {
       using namespace core;
-      using namespace math;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <Array<T>,

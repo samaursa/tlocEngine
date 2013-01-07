@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TLOC_GRAPHICS_GL_SHADER_VARIABLE_INFO_H_
+#define _TLOC_GRAPHICS_GL_SHADER_VARIABLE_INFO_H_
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocCore/containers/tlocProtectedBuffer.h>
@@ -19,3 +20,5 @@ namespace tloc { namespace graphics { namespace gl {
     };
 
 };};};
+
+#endif

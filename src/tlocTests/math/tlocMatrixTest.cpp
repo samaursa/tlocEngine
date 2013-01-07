@@ -1,19 +1,15 @@
 #include "tlocTestCommon.h"
 
-#define TLOC_MATRIX_ALLOW_EASY_OPERATIONS
+#include <tlocMath/types/tlocMatrix.h>
+#include <tlocMath/types/tlocMatrix.inl>
 
-#include <tlocMath/matrix/tlocMatrix.h>
-#include <tlocMath/matrix/tlocMatrix.inl>
-
-#undef TLOC_MATRIX_ALLOW_EASY_OPERATIONS
-
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector3.inl>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector3.inl>
 
 namespace TestingMatrix
 {
   USING_TLOC;
-  using namespace math;
+  using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
   CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \

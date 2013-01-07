@@ -18,7 +18,7 @@ namespace TestingRectangle
     CHECK(r.IsValid());
     CHECK(r.GetWidth() == Approx(1));
     CHECK(r.GetHeight() == Approx(1));
-    CHECK(r.GetPosition() == math::Vec2f(-0.5f, -0.5f));
+    CHECK(r.GetPosition() == Vec2f(-0.5f, -0.5f));
     CHECK(r.GetWidth() == Approx(1));
     CHECK(r.GetHeight() == Approx(1));
 
@@ -33,7 +33,7 @@ namespace TestingRectangle
     CHECK(r.GetValue<Rectf::bottom>() == Approx(-2.5f));
 
     r = Rectf(Rectf::width(1.0f), Rectf::height(1.0f),
-              Rectf::position(math::Vec2f(0.5f, 0.5f)) );
+              Rectf::position(Vec2f(0.5f, 0.5f)) );
     CHECK(r.GetWidth() == 1.0f);
     CHECK(r.GetHeight() == 1.0f);
     CHECK(r.GetValue<Rectf::left>()   == Approx(0.0f));
@@ -77,7 +77,7 @@ namespace TestingRectangle
     CHECK(r.IsValid() == true);
 
     r = Rectf(Rectf::left(0), Rectf::right(5), Rectf::top(2), Rectf::bottom(0) );
-    r.Offset(math::Vec2f(2, 2) );
+    r.Offset(Vec2f(2, 2) );
     CHECK(r.GetValue<Rectf::left>()    == 2);
     CHECK(r.GetValue<Rectf::right>()   == 7);
     CHECK(r.GetValue<Rectf::top>()     == 4);
@@ -91,14 +91,14 @@ namespace TestingRectangle
     CHECK((r.GetPosition() == center));
 
     r = Rectf(Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0) );
-    CHECK(r.Contains(math::Vec2f(1, 1)) );
-    CHECK(r.Contains(math::Vec2f(0, 0)) );
-    CHECK(r.Contains(math::Vec2f(2, 2)) );
+    CHECK(r.Contains(Vec2f(1, 1)) );
+    CHECK(r.Contains(Vec2f(0, 0)) );
+    CHECK(r.Contains(Vec2f(2, 2)) );
 
-    CHECK_FALSE(r.Contains(math::Vec2f(3, 2)) );
-    CHECK_FALSE(r.Contains(math::Vec2f(1, 6)) );
-    CHECK_FALSE(r.Contains(math::Vec2f(-1, 2)));
-    CHECK_FALSE(r.Contains(math::Vec2f(1, -1)));
+    CHECK_FALSE(r.Contains(Vec2f(3, 2)) );
+    CHECK_FALSE(r.Contains(Vec2f(1, 6)) );
+    CHECK_FALSE(r.Contains(Vec2f(-1, 2)));
+    CHECK_FALSE(r.Contains(Vec2f(1, -1)));
 
     r = Rectf(Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0) );
     {
@@ -125,8 +125,6 @@ namespace TestingRectangle
 
   TEST_CASE("Graphics/types/Rectangle/GetCoord", "")
   {
-    using math::Vec2f;
-
     Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
     CHECK( (r.GetCoord<Rectf::top, Rectf::left>() == Vec2f(-0.5f, 1.0f)) );
     CHECK( (r.GetCoord<Rectf::top, Rectf::right>() == Vec2f(0.5f, 1.0f)) );

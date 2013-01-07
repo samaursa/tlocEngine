@@ -143,8 +143,9 @@ namespace tloc { namespace graphics { namespace component_system {
       // Prepare the Fan
 
       typedef math::types::Circlef32 circle_type;
-      using math::Vec3f32;
-      using math::Vec4f32;
+      using math::types::Vec3f32;
+      using math::types::Vec4f32;
+      using math::types::Mat4f32;
 
       m_vertList.clear();
       const circle_type& circ = f.GetEllipseRef();
@@ -155,7 +156,7 @@ namespace tloc { namespace graphics { namespace component_system {
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
       math::component_system::Transform& pos = posList[0];
-      const math::Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation();
 
       // Push the center vertex
       {

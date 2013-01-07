@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace view_proj {
     typedef math::types::Radian                         angle_type;
     typedef types::FOV                                  fov_type;
     typedef types::AspectRatio                          ar_type;
-    typedef math::Matrix4<real_type>                    matrix_type;
+    typedef math::types::Matrix4<real_type>             matrix_type;
 
   public:
     struct Params

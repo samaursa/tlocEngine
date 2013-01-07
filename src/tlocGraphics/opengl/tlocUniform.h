@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckNonArrayTypes() const
     {
       using namespace core;
-      using namespace math;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -75,7 +75,7 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckArrayTypes() const
     {
       using namespace core;
-      using namespace math;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <Array<T>,

@@ -146,6 +146,8 @@ namespace tloc { namespace graphics { namespace component_system {
       // Prepare the Quad
 
       typedef math::types::Rectf32    rect_type;
+      using math::types::Mat4f32;
+      using math::types::Vec4f32;
 
       const rect_type& rect = q.GetRectangleRef();
 
@@ -163,12 +165,12 @@ namespace tloc { namespace graphics { namespace component_system {
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
-      const math::Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation();
 
-      math::Vec4f32 qPos;
+      Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        qPos = m_quadList[i].ConvertTo<math::Vec4f32>();
+        qPos = m_quadList[i].ConvertTo<Vec4f32>();
         qPos = tMatrix * qPos;
 
         m_quadList[i].ConvertFrom(qPos);

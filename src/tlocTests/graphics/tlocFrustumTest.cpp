@@ -34,7 +34,7 @@ namespace TestingFrustum
     view_proj::Frustum fr(params);
     fr.BuildFrustum();
 
-    math::Mat4f projMat = fr.GetProjectionMatrix();
+    math::types::Mat4f projMat = fr.GetProjectionMatrix();
 
     CHECK_MATRIX4F(projMat, 1.2990381, 0, 0, 0,
                             0, 1.7320509, 0, 0,

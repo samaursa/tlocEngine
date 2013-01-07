@@ -22,7 +22,7 @@
  * column vector and so on.
  */
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   class Matrix : public core::Table<T, T_Size, T_Size>
@@ -189,6 +189,6 @@ namespace tloc { namespace math {
     return temp;
   }
 
-};};
+};};};
 
 #endif

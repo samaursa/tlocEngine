@@ -6,7 +6,7 @@
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix.h>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Matrix3 : public Matrix<T, 3>
@@ -187,6 +187,6 @@ namespace tloc { namespace math {
 
   typedef Matrix3<tl_float> Mat3f;
 
-};};
+};};};
 
 #endif

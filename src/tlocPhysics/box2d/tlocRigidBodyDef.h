@@ -42,7 +42,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2BodyDef     rigid_body_def_internal_type;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;
-    typedef math::Vec2f               vec_type;
+    typedef math::types::Vec2f        vec_type;
     typedef tl_float                  float_type;
 
   public:

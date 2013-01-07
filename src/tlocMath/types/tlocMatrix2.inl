@@ -8,7 +8,7 @@
 #include <tlocMath/types/tlocVector2.inl>
 #include <tlocMath/types/tlocMatrix.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Matrix2f<T>
@@ -283,6 +283,6 @@ namespace tloc { namespace math {
     aRot.m_values[3] = cs;
   }
 
-};};
+};};};
 
 #endif

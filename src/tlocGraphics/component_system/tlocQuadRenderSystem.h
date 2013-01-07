@@ -32,9 +32,9 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef math::Vec3f32                                     vec3_type;
+    typedef math::types::Vec3f32                              vec3_type;
     typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
-    typedef math::Mat4f32                                     matrix_type;
+    typedef math::types::Mat4f32                              matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 

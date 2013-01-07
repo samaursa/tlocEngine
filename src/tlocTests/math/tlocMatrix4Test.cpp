@@ -6,7 +6,7 @@
 namespace TestingMatrix4
 {
   USING_TLOC;
-  using namespace math;
+  using namespace math::types;
 
 #define CHECK_MATRIX4F(mat,x1,y1,z1,w1,x2,y2,z2,w2,x3,y3,z3,w3,x4,y4,z4,w4) \
   CHECK((mat[0]) == Approx(x1)); CHECK((mat[1]) == Approx(y1));\

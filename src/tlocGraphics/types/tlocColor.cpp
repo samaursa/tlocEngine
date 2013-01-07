@@ -292,6 +292,8 @@ namespace tloc { namespace graphics { namespace types {
   //------------------------------------------------------------------------
   // Explicit initialization
 
+  using namespace tloc::math::types;
+
   template int_color_type Color::DoGetAs<p_color::format::RGBA>();
   template int_color_type Color::DoGetAs<p_color::format::ABGR>();
   template int_color_type Color::DoGetAs<p_color::format::ARGB>();
@@ -307,7 +309,6 @@ namespace tloc { namespace graphics { namespace types {
   template void Color::SetAs(f32, f32, f32, f32);
   template void Color::SetAs(f64, f64, f64, f64);
 
-  using namespace tloc::math;
 #define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
   template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&);\
   template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&);\

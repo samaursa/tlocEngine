@@ -9,7 +9,7 @@
 #include <tlocMath/types/tlocVector3.inl>
 #include <tlocMath/types/tlocMatrix.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Matrix3f<T>
@@ -962,6 +962,6 @@ namespace tloc { namespace math {
     return false;
   }
 
-};};
+};};};
 
 #endif

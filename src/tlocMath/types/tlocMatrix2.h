@@ -6,7 +6,7 @@
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocMatrix.h>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Matrix2 : public Matrix<T, 2>
@@ -128,6 +128,6 @@ namespace tloc { namespace math {
 
   typedef Matrix2<tl_float> Mat2f;
 
-};};
+};};};
 
 #endif

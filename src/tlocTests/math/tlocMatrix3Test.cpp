@@ -7,7 +7,7 @@
 namespace TestingMatrix3
 {
   USING_TLOC;
-  using namespace math;
+  using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
   CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \

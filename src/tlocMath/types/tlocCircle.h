@@ -19,7 +19,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef T                           value_type;
     typedef Circle<value_type>          this_type;
-    typedef math::Vector2<value_type>   point_type;
+    typedef Vector2<value_type>         point_type;
     typedef tl_size                     size_type;
 
     typedef core::types::StrongType_T<value_type, 0> radius;

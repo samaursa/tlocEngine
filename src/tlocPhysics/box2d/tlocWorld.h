@@ -26,7 +26,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef World     this_type;
     typedef b2World   world_type;
 
-    typedef math::Vec2f vec_type;
+    typedef math::types::Vec2f vec_type;
 
     typedef core::types::StrongType_T<vec_type, 0> gravity;
 

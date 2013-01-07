@@ -10,8 +10,6 @@
 
 #include "tlocMath/tlocMath.h"
 
-
-
 // If defined, simple assertions will be enabled in this class. Enabled by
 // default in debug
 #ifdef TLOC_DEBUG
@@ -25,7 +23,7 @@
 #define TLOC_ASSERT_VEC(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Vector<N>
@@ -266,6 +264,6 @@ namespace tloc { namespace math {
     return a_rhs.operator/(a_lhs);
   }
 
-};};
+};};};
 
 #endif

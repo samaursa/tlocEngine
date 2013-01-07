@@ -98,7 +98,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     typedef base_type::size_type  size_type;
     typedef s32                   int_type;
-    typedef math::Vec2f           vec_type;
+    typedef math::types::Vec2f    vec_type;
     typedef core::error::Error    error_type;
     typedef World                 world_type;
     typedef ContactEvent          contact_event_type;

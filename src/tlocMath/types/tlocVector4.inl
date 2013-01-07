@@ -8,7 +8,7 @@
 #include "tlocVector4.h"
 #include <tlocMath/types/tlocVector.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
 #define VECTOR_4_TEMP     typename T
 #define VECTOR_4_PARAMS   T
@@ -46,6 +46,6 @@ namespace tloc { namespace math {
     : base_type(a_value)
   { }
 
-};};
+};};};
 
 #endif

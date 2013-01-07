@@ -8,7 +8,7 @@
 namespace TestingVector4f
 {
   using namespace tloc;
-  using namespace math;
+  using namespace math::types;
 
   struct Vector4fFixture
   {
@@ -129,7 +129,7 @@ namespace TestingVector4f
 
     //////////////////////////////////////////////////////////////////////////
     // Vec3 to Vec4 conversion
-    math::Vec3f vec2dim(1);
+    Vec3f vec2dim(1);
     c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
     CHECK_VEC4F(c, 1.0f, 1.0f, 1.0f, 0.0f);
   }

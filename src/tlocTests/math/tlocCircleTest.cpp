@@ -195,7 +195,7 @@ namespace TestingCircle
     }
 
     circle_type c2(circle_type::radius(1.0f),
-                   circle_type::position( math::Vec2f(1.0f, 1.0f) ));
+                   circle_type::position(Vec2f(1.0f, 1.0f) ));
 
     {
       // Check against pythagoras

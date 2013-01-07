@@ -9,7 +9,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocMath/tlocMath.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   namespace
   {
@@ -524,6 +524,6 @@ namespace tloc { namespace math {
     return true;
   }
 
-};};
+};};};
 
 #endif

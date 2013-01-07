@@ -18,7 +18,7 @@ namespace tloc { namespace math { namespace types {
     typedef tl_size                                 size_type;
     typedef T                                       real_type;
     typedef Rectangle<real_type>                    this_type;
-    typedef math::Vector2<real_type>                point_type;
+    typedef Vector2<real_type>                      point_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
     typedef core::types::StrongType_T<real_type, 1>   height;

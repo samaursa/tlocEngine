@@ -27,7 +27,7 @@
 
 #else
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
 #include "tlocMatrixExplicitMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f32, 2);
@@ -38,6 +38,6 @@ namespace tloc { namespace math {
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f64, 3);
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f64, 4);
 
-};};
+};};};
 
 #endif // TLOC_NO_SOURCE

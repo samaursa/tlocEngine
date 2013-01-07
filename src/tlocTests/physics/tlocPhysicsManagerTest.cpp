@@ -14,7 +14,7 @@ namespace TestingPhysicsManager
   TEST_CASE("Physics/box2d/PhysicsManager", "")
   {
     using namespace tloc::core;
-    using namespace math;
+    using namespace math::types;
 
     typedef box2d::PhysicsManager pm_type;
     pm_type physicsMgr;
@@ -22,7 +22,7 @@ namespace TestingPhysicsManager
     typedef core::error::Error error_type;
     error_type result;
 
-    result = physicsMgr.Initialize(pm_type::gravity(math::Vec2f(0.0f,-10.0f)),
+    result = physicsMgr.Initialize(pm_type::gravity(Vec2f(0.0f,-10.0f)),
                                    pm_type::velocity_iterations(6),
                                    pm_type::position_iterations(2));
 

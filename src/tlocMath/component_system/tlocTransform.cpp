@@ -12,6 +12,8 @@ namespace tloc { namespace math { namespace component_system {
 #define TRANSFORM_PARAMS  T_Real
 #define TRANSFORM_TYPE    typename Transform_T<TRANSFORM_PARAMS>
 
+  using types::Vector4;
+
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::Transform_T()
     : base_type(components::transform)

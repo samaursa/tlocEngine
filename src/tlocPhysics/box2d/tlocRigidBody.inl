@@ -99,7 +99,7 @@ namespace tloc { namespace physics { namespace box2d {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   TL_I void RigidBody::
-    GetPosition(math::Vec2f& a_position) const
+    GetPosition(vec_type& a_position) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 

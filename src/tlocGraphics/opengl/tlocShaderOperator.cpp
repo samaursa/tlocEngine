@@ -17,7 +17,7 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::math;
+  using namespace tloc::math::types;
 
   namespace
   {

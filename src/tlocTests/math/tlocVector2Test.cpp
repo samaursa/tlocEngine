@@ -10,7 +10,7 @@
 namespace TestingVector2f
 {
   using namespace tloc;
-  using namespace tloc::math;
+  using namespace tloc::math::types;
 
   struct Vector2fFixture
   {
@@ -20,7 +20,7 @@ namespace TestingVector2f
       a[0] = 1; a[1] = 2;
     }
 
-    tloc::math::Vec2f a, b, c, d, e;
+    Vec2f a, b, c, d, e;
   };
 
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
@@ -52,17 +52,17 @@ namespace TestingVector2f
     CHECK_VEC2F(a, 1.0f, 2.0f);
     CHECK_VEC2F(b, 5.0f, 6.0f);
 
-    c = tloc::math::Vec2f::ZERO;
+    c = Vec2f::ZERO;
     CHECK_VEC2F(c, 0.0f, 0.0f);
-    c = tloc::math::Vec2f::ONE;
+    c = Vec2f::ONE;
     CHECK_VEC2F(c, 1.0f, 1.0f);
-    c = tloc::math::Vec2f::UNIT_X;
+    c = Vec2f::UNIT_X;
     CHECK_VEC2F(c, 1.0f, 0.0f);
-    c = tloc::math::Vec2f::UNIT_Y;
+    c = Vec2f::UNIT_Y;
     CHECK_VEC2F(c, 0.0f, 1.0f);
-    c = tloc::math::Vec2f::NEG_UNIT_X;
+    c = Vec2f::NEG_UNIT_X;
     CHECK_VEC2F(c, -1.0f, 0.0f);
-    c = tloc::math::Vec2f::NEG_UNIT_Y;
+    c = Vec2f::NEG_UNIT_Y;
     CHECK_VEC2F(c, 0.0f, -1.0f);
 
     // Convert from Tuple to Vec

@@ -9,7 +9,7 @@
 #include <tlocMath/types/tlocVector4.inl>
 #include <tlocMath/types/tlocMatrix.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Matrix4f<T>
@@ -105,6 +105,6 @@ namespace tloc { namespace math {
     : base_type(a_vars, a_order)
   { }
 
-};};
+};};};
 
 #endif

@@ -7,7 +7,7 @@
 
 #include <tlocMath/types/tlocVector.h>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Vector4 : public Vector<T, 4>
@@ -79,6 +79,6 @@ namespace tloc { namespace math {
   template <typename T>
   const Vector4<T> Vector4<T>::NEG_UNIT_W (0, 0, 0, T(-1));
 
-};};
+};};};
 
 #endif

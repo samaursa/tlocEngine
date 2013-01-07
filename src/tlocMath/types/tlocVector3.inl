@@ -10,7 +10,7 @@
 #include <tlocMath/tlocMath.inl>
 #include <tlocMath/types/tlocVector.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Vector3
@@ -85,6 +85,6 @@ namespace tloc { namespace math {
     Cross(aVector2);
   }
 
-};};
+};};};
 
 #endif

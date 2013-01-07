@@ -27,7 +27,7 @@
 
 #else
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
 #include "tlocVectorExplicitMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f32,  1);
@@ -43,6 +43,6 @@ namespace tloc { namespace math {
   TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f64,  4);
   TLOC_EXPLICITLY_INSTANTIATE_VECTOR(f128, 4);
 
-};};
+};};};
 
 #endif // TLOC_NO_SOURCE

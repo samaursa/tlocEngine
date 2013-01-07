@@ -9,7 +9,7 @@
 #include <tlocCore/data_structures/tlocTable.inl>
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
-namespace tloc { namespace math {
+namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
   // Matrix<N, N>
@@ -363,6 +363,6 @@ namespace tloc { namespace math {
     return !operator==(aMatrix);
   }
 
-};};
+};};};
 
 #endif

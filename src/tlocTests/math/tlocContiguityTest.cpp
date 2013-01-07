@@ -16,6 +16,7 @@ namespace TestingContiguity
   using namespace tloc;
   using namespace tloc::core;
   using namespace tloc::math;
+  using namespace tloc::math::types;
 
   // The purpose of these tests is to test that certain classes are laid out
   // contiguously in memory without any padding. This is very important for

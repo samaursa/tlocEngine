@@ -6,7 +6,7 @@
 
 namespace TestingObjectCounter
 {
-  USING_TLOC;
+  using namespace tloc;
 
   struct obj : public core::utils::ObjectCounter<obj>
   {

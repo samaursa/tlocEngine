@@ -9,7 +9,7 @@
 
 namespace TestingQueue
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
   using namespace core::containers;
 

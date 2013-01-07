@@ -5,7 +5,7 @@
 
 namespace TestingTable
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace tloc::core::data_structs;
 
   typedef Tuple<tl_int, 3> tuple_int_type;

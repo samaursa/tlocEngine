@@ -14,7 +14,7 @@
 
 namespace TestingMemory
 {
-  USING_TLOC;
+  using namespace tloc;
 
   TEST_CASE("Core/Utilities", "Testing operator macro")
   {

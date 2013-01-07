@@ -6,7 +6,7 @@
 
 namespace TestingGroupID
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace tloc::core::containers;
 
   struct obj : public core::utils::GroupID<obj>

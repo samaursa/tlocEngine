@@ -6,7 +6,7 @@
 
 namespace TestingMatrix3
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core::data_structs;
   using namespace core::rng;
   using namespace math::types;

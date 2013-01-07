@@ -10,7 +10,7 @@
 
 namespace TestingTuple
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core::data_structs;
 
 #define CHECK_TUP(tup,x,y,z,w)   CHECK(tup[0] == x); \

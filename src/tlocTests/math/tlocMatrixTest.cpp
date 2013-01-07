@@ -8,7 +8,7 @@
 
 namespace TestingMatrix
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core::data_structs;
   using namespace math::types;
 

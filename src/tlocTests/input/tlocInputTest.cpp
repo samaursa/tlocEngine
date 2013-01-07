@@ -18,7 +18,7 @@
 
 namespace TestingInput
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace input;
 
   template <typename T_Keyboard>

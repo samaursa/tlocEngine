@@ -8,4 +8,10 @@
 #include <tlocCore/base_classes/tlocTemplateDispatch.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 
+namespace tloc {
+
+  namespace core_base_classes = core::base_classes;
+
+};
+
 #endif

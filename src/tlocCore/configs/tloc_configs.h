@@ -3,4 +3,10 @@
 
 #include <tlocCore/configs/tlocBuildConfig.h>
 
+namespace tloc {
+
+  namespace core_cfg = core::configs;
+
+};
+
 #endif

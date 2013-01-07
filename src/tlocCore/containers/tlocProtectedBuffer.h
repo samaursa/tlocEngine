@@ -17,7 +17,7 @@ namespace tloc { namespace core {
       };
 
       template <>
-      struct Overflow<p_build_config::Release>
+      struct Overflow<configs::p_build_config::Release>
       {
         enum { size = 0 };
       };
@@ -30,7 +30,8 @@ namespace tloc { namespace core {
   public:
     typedef T                                           value_type;
     typedef tl_size                                     size_type;
-    typedef typename BuildConfig<>::build_config_type   build_config_type;
+    typedef typename
+      configs::BuildConfig<>:: build_config_type        build_config_type;
 
     typedef priv::p_procted_buffer::Overflow<build_config_type>   overflow_type;
 
@@ -51,11 +52,11 @@ namespace tloc { namespace core {
     template <typename T_BuildConfig>
     void DoInit(T_BuildConfig);
 
-    void DoInit(p_build_config::Release);
+    void DoInit(configs::p_build_config::Release);
 
     template <typename T_BuildConfig>
     bool DoIsBufferValid(T_BuildConfig);
-    bool DoIsBufferValid(p_build_config::Release);
+    bool DoIsBufferValid(configs::p_build_config::Release);
 
     enum { buffer_size_for_debugging = buffer_size + overflow_type::size};
 

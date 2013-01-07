@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace configs {
 
   namespace p_build_config
   {
@@ -41,6 +41,6 @@ namespace tloc { namespace core {
     static const char* m_buildTypes[total_build_configs];
   };
 
-};};
+};};};
 
 #endif

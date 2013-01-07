@@ -26,7 +26,7 @@ namespace tloc { namespace core { namespace component_system {
 
     template <typename T_Iterator>
     void DoAssertElementsNotInUse(T_Iterator, T_Iterator, 
-                                  p_build_config::Release)
+                                  configs::p_build_config::Release)
     { /* Intentioanlly Empty */ }
   }
 
@@ -44,7 +44,7 @@ namespace tloc { namespace core { namespace component_system {
     ~ComponentPool_TI()
   {
     DoAssertElementsNotInUse(begin(), end(), 
-                             BuildConfig<>::GetBuildConfigType());
+                             configs::BuildConfig<>::GetBuildConfigType());
   }
 
   template <COMPONENT_POOL_TEMPS>

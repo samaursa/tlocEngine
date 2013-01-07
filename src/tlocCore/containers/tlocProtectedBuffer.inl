@@ -80,7 +80,8 @@ namespace tloc { namespace core {
   }
 
   template <PROTECTED_BUFFER_TEMP>
-  void ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::DoInit(p_build_config::Release)
+  void ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::
+    DoInit(configs::p_build_config::Release)
   {
   }
 
@@ -99,7 +100,7 @@ namespace tloc { namespace core {
 
   template <PROTECTED_BUFFER_TEMP>
   bool ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::
-    DoIsBufferValid(p_build_config::Release)
+    DoIsBufferValid(configs::p_build_config::Release)
   {
     return true;
   }

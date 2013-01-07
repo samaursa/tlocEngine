@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocAngle.h>
 #include <tlocGraphics/types/tlocFOV.h>
 
 namespace TestingFOV

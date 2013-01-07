@@ -7,7 +7,7 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
-#include <tlocMath/data_types/tlocRectangle.h>
+#include <tlocMath/types/tlocRectangle.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 

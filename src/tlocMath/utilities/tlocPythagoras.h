@@ -5,7 +5,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocAngle.h>
 
 namespace tloc { namespace math { namespace utils {
 

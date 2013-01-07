@@ -1,7 +1,7 @@
 #ifndef _TLOC_GRAPHICS_TYPES_FOV_H_
 #define _TLOC_GRAPHICS_TYPES_FOV_H_
 
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
 #include <tlocGraphics/types/tlocAspectRatio.h>
 

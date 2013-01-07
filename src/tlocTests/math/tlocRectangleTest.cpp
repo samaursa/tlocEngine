@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/data_types/tlocRectangle.h>
+#include <tlocMath/types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>

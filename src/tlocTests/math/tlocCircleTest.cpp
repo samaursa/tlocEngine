@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
 
 namespace TestingCircle

@@ -3,8 +3,8 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/matrix/tlocMatrix4.h>
 
 #include <tlocGraphics/types/tlocAspectRatio.h>

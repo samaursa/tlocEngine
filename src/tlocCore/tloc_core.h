@@ -18,7 +18,7 @@
 #include <tlocCore/iterators/tloc_iterators.h>
 #include <tlocCore/memory/tloc_memory.h>
 #include <tlocCore/platform/tloc_platform.h>
-#include <tlocCore/RNGs/tloc_RNGs.h>
+#include <tlocCore/rng/tloc_rng.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/string/tloc_string.h>
 #include <tlocCore/time/tloc_time.h>

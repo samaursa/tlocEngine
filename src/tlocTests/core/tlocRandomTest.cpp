@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingRandom
 {

@@ -12,7 +12,7 @@
 #include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/rng/tlocRandom.h>
 #include <tlocCore/tlocFunctional.h>
 
 namespace tloc { namespace core {

@@ -1,12 +1,13 @@
 #include "tlocTestCommon.h"
 
 #define private public
-#include <tlocCore/containers/tlocCharBuffer.h>
-#include <tlocCore/containers/tlocCharBuffer.inl>
+#include <tlocCore/data_structures/tlocCharBuffer.h>
+#include <tlocCore/data_structures/tlocCharBuffer.inl>
 
 namespace ProtectedBufferTest
 {
   using namespace tloc::core;
+  using namespace tloc::core::data_structs;
 
   template <typename T_BuildConfig>
   struct CheckBufferStatusForInvalidBuffer

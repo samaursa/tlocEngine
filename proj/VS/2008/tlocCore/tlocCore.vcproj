@@ -1247,15 +1247,15 @@
 			Name="rng"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.h"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.inl"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.inl"
 				>
 			</File>
 			<File

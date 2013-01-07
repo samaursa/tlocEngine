@@ -2,7 +2,7 @@
 
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix3.inl>
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingMatrix3
 {

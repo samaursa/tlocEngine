@@ -5,6 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/RNGs/tlocRngWell512.inl>
+#include <tlocCore/rng/tlocRngWell512.inl>
 
 #endif

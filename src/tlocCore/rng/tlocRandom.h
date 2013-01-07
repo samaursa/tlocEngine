@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
-#include <tlocCore/RNGs/tlocRngWell512.h>
+#include <tlocCore/rng/tlocRngWell512.h>
 
 namespace tloc { namespace core { namespace rng {
 

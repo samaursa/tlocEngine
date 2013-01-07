@@ -1244,41 +1244,41 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="RNGs"
+			Name="rng"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tloc_RNGs.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tloc_RNGs.h"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tloc_RNGs.inl"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_RNGs.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tlocRandom.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.h"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tlocRandom.h"
 				>
 			</File>
 			<Filter
 				Name="generators"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.h"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.inl"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.inl"
 					>
 				</File>
 			</Filter>

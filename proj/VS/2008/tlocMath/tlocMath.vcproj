@@ -779,6 +779,18 @@
 			Name="matrix"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tloc_matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tloc_matrix.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\matrix\tloc_matrix.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocMath\matrix\tlocMatrix.cpp"
 				>
 			</File>
@@ -834,6 +846,18 @@
 		<Filter
 			Name="vector"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tloc_vector.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tloc_vector.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\vector\tloc_vector.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocMath\vector\tlocVector.cpp"
 				>
@@ -915,6 +939,18 @@
 			Name="utilities"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.cpp"
 				>
 			</File>
@@ -926,6 +962,18 @@
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.inl"
+				>
+			</File>
 			<Filter
 				Name="components"
 				>
@@ -946,6 +994,18 @@
 		<Filter
 			Name="types"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.inl"
+				>
+			</File>
 			<Filter
 				Name="circle"
 				>
@@ -991,6 +1051,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.inl"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>

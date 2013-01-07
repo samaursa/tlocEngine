@@ -8,6 +8,7 @@ namespace TestingMatrix3
 {
   USING_TLOC;
   using namespace core::data_structs;
+  using namespace core::rng;
   using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -176,9 +177,9 @@ namespace TestingMatrix3
     {
       a.Set(values, Mat3f::k_RowMajor);
       a.Orthonormalize();
-      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      Vec3f vecRot(g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
       CHECK(vecLength == Approx(vecRes.Length()) );
@@ -186,9 +187,9 @@ namespace TestingMatrix3
     {
       a.Set(values, Mat3f::k_RowMajor);
       a.FastOrthonormalize();
-      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      Vec3f vecRot(g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
       CHECK( Mathf::Approx(vecLength, vecRes.Length(), prec) == true);

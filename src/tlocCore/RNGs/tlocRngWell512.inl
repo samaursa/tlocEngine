@@ -5,7 +5,7 @@
 
 #include <time.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace rng {
 
   TL_I RngWell512::RngWell512()
   {
@@ -74,6 +74,6 @@ namespace tloc { namespace core {
     return (range * (real_type)(GetRandomFloat()) ) + a_min;
   }
 
-};};
+};};};
 
 #endif

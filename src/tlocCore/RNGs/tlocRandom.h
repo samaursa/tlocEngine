@@ -6,7 +6,7 @@
 
 #include <tlocCore/RNGs/tlocRngWell512.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace rng {
 
   template <typename T_Generator> class RNG_T;
 
@@ -117,6 +117,6 @@ namespace tloc { namespace core {
 
   };
 
-};};
+};};};
 
 #endif

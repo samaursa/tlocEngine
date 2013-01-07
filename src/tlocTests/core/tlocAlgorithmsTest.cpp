@@ -599,7 +599,7 @@ namespace TestingAlgorithms
     TL_NESTED_FUNC_BEGIN(getRandom) tl_size getRandom(tl_size a_num)
     {
       return static_cast<u32>
-        (g_defaultRNG.GetRandomInteger(static_cast<u32>(a_num)));
+        (rng::g_defaultRNG.GetRandomInteger(static_cast<u32>(a_num)));
     }
     TL_NESTED_FUNC_END();
 

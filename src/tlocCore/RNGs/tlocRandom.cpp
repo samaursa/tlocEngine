@@ -2,7 +2,7 @@
 
 #include "tlocRngWell512.inl"
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace rng {
 
   // Supported RNG types instantiation
   template class RNG_T<RngWell512>;
@@ -10,4 +10,4 @@ namespace tloc { namespace core {
   // Default global RNG
   rng_default   g_defaultRNG;
 
-};};
+};};};

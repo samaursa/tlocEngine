@@ -5,4 +5,10 @@
 
 #include <tlocCore/RNGs/tlocRandom.h>
 
+namespace tloc {
+
+  namespace core_rng = core::rng;
+
+};
+
 #endif

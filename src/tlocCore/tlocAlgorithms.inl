@@ -536,11 +536,12 @@ namespace tloc { namespace core {
       rangeSize, i;
     rangeSize = a_last - a_first;
 
-    typedef typename rng_default::int_type int_type;
+    typedef typename rng::rng_default::int_type int_type;
     for (i = rangeSize - 1; i > 0; --i)
     {
       tlSwap(a_first[i], 
-             a_first[g_defaultRNG.GetRandomInteger(static_cast<int_type>(i) + 1)]);
+        a_first[rng::g_defaultRNG.GetRandomInteger
+                (static_cast<int_type>(i) + 1)]);
     }
   }
 
@@ -1361,8 +1362,8 @@ namespace tloc { namespace core {
                    sort_quicksort_randompivot)
     {
       const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
-      const tl_ptrdiff randomPiv = g_defaultRNG.GetRandomInteger(0, 
-                                                  (rng_default::int_type)size);
+      const tl_ptrdiff randomPiv = 
+        rng::g_defaultRNG.GetRandomInteger(0, (rng::rng_default::int_type)size);
 
       T_InputIterator randItr = a_first;
       tloc::core::advance(randItr, randomPiv);

@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace rng {
 
   // The basis of this class has been taken from a forum post of gamedev.net
   // The class had to be `adjusted` to fit with our interface but the actual
@@ -58,6 +58,6 @@ namespace tloc { namespace core {
     Params          m_params;
   };
 
-};};
+};};};
 
 #endif

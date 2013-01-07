@@ -7,7 +7,7 @@
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #include <Box2D/Dynamics/b2World.h>
 
@@ -32,7 +32,7 @@ namespace tloc { namespace physics { namespace box2d {
 
   protected:
     World(gravity a_gravity);
-    
+
   public:
     TLOC_DECL_AND_DEF_GETTERS_DIRECT(world_type, GetWorld, m_world);
 

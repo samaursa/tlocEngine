@@ -13,8 +13,8 @@
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {

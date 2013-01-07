@@ -8,8 +8,8 @@
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/matrix/tlocMatrix2.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocMatrix2.h>
 #include <tlocMath/types/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>

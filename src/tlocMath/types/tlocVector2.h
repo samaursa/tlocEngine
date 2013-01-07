@@ -6,7 +6,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/vector/tlocVector.h>
+#include <tlocMath/types/tlocVector.h>
 
 namespace tloc { namespace math {
 

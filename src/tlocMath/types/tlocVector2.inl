@@ -9,7 +9,7 @@
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/tlocMath.inl>
-#include <tlocMath/vector/tlocVector.inl>
+#include <tlocMath/types/tlocVector.inl>
 
 namespace tloc { namespace math {
 

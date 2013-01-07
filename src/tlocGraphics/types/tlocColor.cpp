@@ -5,7 +5,7 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocTuple.inl>
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace tloc { namespace graphics { namespace types {
 

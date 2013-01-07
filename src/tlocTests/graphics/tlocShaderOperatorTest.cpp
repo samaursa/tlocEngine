@@ -8,12 +8,12 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/types/tlocColor.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector3.inl>
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/vector/tlocVector4.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector3.inl>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.inl>
 
 namespace TestingShaderOperator
 {

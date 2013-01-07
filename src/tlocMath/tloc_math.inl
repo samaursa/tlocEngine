@@ -9,8 +9,6 @@
 
 #include <tlocMath/component_system/tloc_component_system.inl>
 #include <tlocMath/types/tloc_types.inl>
-#include <tlocMath/matrix/tloc_matrix.inl>
 #include <tlocMath/utilities/tloc_utilities.inl>
-#include <tlocMath/vector/tloc_vector.inl>
 
 #endif

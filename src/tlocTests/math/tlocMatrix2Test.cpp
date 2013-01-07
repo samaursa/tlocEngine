@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix2.inl>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix2.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
 
 namespace TestingMatrix2
 {

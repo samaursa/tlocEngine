@@ -5,9 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/matrix/tlocMatrix.inl>
-#include <tlocMath/matrix/tlocMatrix2.inl>
-#include <tlocMath/matrix/tlocMatrix3.inl>
-#include <tlocMath/matrix/tlocMatrix4.inl>
+#include <tlocMath/types/tlocMatrix.inl>
+#include <tlocMath/types/tlocMatrix2.inl>
+#include <tlocMath/types/tlocMatrix3.inl>
+#include <tlocMath/types/tlocMatrix4.inl>
 
 #endif

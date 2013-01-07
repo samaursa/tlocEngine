@@ -8,7 +8,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocAngle.h>
 
 namespace tloc { namespace math { namespace types {

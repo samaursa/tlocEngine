@@ -3,7 +3,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {

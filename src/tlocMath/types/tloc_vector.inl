@@ -5,9 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/vector/tlocVector.inl>
-#include <tlocMath/vector/tlocVector2.inl>
-#include <tlocMath/vector/tlocVector3.inl>
-#include <tlocMath/vector/tlocVector4.inl>
+#include <tlocMath/types/tlocVector.inl>
+#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector3.inl>
+#include <tlocMath/types/tlocVector4.inl>
 
 #endif

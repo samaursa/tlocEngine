@@ -2,13 +2,13 @@
 
 #define TLOC_MATRIX_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/matrix/tlocMatrix.h>
-#include <tlocMath/matrix/tlocMatrix.inl>
+#include <tlocMath/types/tlocMatrix.h>
+#include <tlocMath/types/tlocMatrix.inl>
 
 #undef TLOC_MATRIX_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector3.inl>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector3.inl>
 
 namespace TestingMatrix
 {

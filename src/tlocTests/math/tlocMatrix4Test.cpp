@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/matrix/tlocMatrix4.h>
-#include <tlocMath/matrix/tlocMatrix4.inl>
+#include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/types/tlocMatrix4.inl>
 
 namespace TestingMatrix4
 {

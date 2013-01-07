@@ -2,7 +2,7 @@
 
 #include <tlocCore/data_structures/tlocTuple.inl>
 
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl>
 
 namespace tloc { namespace math { namespace types {
 

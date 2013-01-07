@@ -6,7 +6,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #include <Box2D/Dynamics/b2Body.h>
 

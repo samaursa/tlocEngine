@@ -3,8 +3,8 @@
 #define TLOC_MATRIX_3_H
 
 #include <tlocCore/tlocBase.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix.h>
 
 namespace tloc { namespace math {
 

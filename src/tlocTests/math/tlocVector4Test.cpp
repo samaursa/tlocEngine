@@ -2,8 +2,8 @@
 
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace TestingVector4f
 {

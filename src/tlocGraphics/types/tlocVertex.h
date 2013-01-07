@@ -2,8 +2,8 @@
 #define TLOC_VERTEX_H
 
 #include <tlocCore/types/tlocConditionalType.h>
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
 #include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace types {

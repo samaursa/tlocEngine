@@ -4,7 +4,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/data_structures/tlocTable.h>
-#include <tlocMath/vector/tlocVector.h>
+#include <tlocMath/types/tlocVector.h>
 
 //////////////////////////////////////////////////////////////////////////
 /* NOTES

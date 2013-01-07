@@ -2,7 +2,7 @@
 
 #include <tlocCore/error/tlocError.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
 

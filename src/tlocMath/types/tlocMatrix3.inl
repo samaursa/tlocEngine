@@ -6,8 +6,8 @@
 #endif
 
 #include "tlocMatrix3.h"
-#include <tlocMath/vector/tlocVector3.inl>
-#include <tlocMath/matrix/tlocMatrix.inl>
+#include <tlocMath/types/tlocVector3.inl>
+#include <tlocMath/types/tlocMatrix.inl>
 
 namespace tloc { namespace math {
 

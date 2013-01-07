@@ -4,8 +4,8 @@
 
 #include <tlocCore/tlocBase.h>
 
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/matrix/tlocMatrix.h>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix.h>
 
 namespace tloc { namespace math {
 

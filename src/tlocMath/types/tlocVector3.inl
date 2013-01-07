@@ -8,7 +8,7 @@
 #include "tlocVector3.h"
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocMath/tlocMath.inl>
-#include <tlocMath/vector/tlocVector.inl>
+#include <tlocMath/types/tlocVector.inl>
 
 namespace tloc { namespace math {
 

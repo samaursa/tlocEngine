@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 #include <tlocGraphics/types/tlocColor.h>
 
 namespace TestingColor

@@ -1,23 +1,15 @@
-#ifndef TLOC_FUNCTIONAL_H 
-#define TLOC_FUNCTIONAL_H 
+#ifndef TLOC_FUNCTIONAL_H
+#define TLOC_FUNCTIONAL_H
 
-#include "tlocBase.h"
-#include "tlocTypes.h"
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core {
 
-  //////////////////////////////////////////////////////////////////////////
-  // This struct is used to diagnose template types
-
-  template <typename T>
-  struct TemplateDiagnose;
-
-  template <typename T>
-  struct DiagnoseTemplate;
 
   //////////////////////////////////////////////////////////////////////////
   // Constness - these functions can be used to write the non-const version
-  // of a function by calling the const version of the function to avoid 
+  // of a function by calling the const version of the function to avoid
   // code duplication
 
   template <typename T>
@@ -30,7 +22,7 @@ namespace tloc { namespace core {
   // Base classes
 
   template <typename T_Arg, typename T_Result>
-  struct unary_function 
+  struct unary_function
   {
     typedef T_Arg     argument_type;
     typedef T_Result  result_type;
@@ -43,6 +35,21 @@ namespace tloc { namespace core {
     typedef T_Arg2    second_argument_type;
     typedef T_Result  result_type;
   };
+
+  struct unary_function_type  {};
+  struct binary_function_type {};
+
+  // These macros are preferred over inheriting from unary/binary base classes
+#define DECL_UNARY_FUNC(T_Arg , T_Result)\
+  typedef unary_function_type function_type;\
+  typedef T_Arg               argument_type;\
+  typedef T_Result            result_type;
+
+#define DECL_BINARY_FUNC(T_Arg1, T_Arg2, T_Result)\
+  typedef unary_function_type function_type;\
+  typedef T_Arg1              first_argument_type;\
+  typedef T_Arg2              second_argument_type;\
+  typedef T_Result            result_type;
 
   //////////////////////////////////////////////////////////////////////////
   // Arithmetic operations
@@ -87,6 +94,28 @@ namespace tloc { namespace core {
   // Comparisor operations
 
   template <typename T>
+  struct equal_to_stored : unary_function<T, bool>
+  {
+    equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+
+    void operator= (const equal_to_stored& a_other)
+    { m_toCompareWith = a_other.m_toCompareWith; }
+
+    bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
+  struct not_equal_to_stored : unary_function<T, bool>
+  {
+    not_equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+    bool operator()(const T& a_x) const { return m_toCompareWith != a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
   struct equal_to : binary_function<T, T, bool>
   {
     bool operator()(const T& a_x, const T& a_y) const { return a_x == a_y; }
@@ -95,31 +124,31 @@ namespace tloc { namespace core {
   template <typename T>
   struct not_equal_to : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T != T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x != a_y; }
   };
 
   template <typename T>
   struct greater : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T > T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x > a_y; }
   };
 
   template <typename T>
   struct less : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T < T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x < a_y; }
   };
 
   template <typename T>
   struct greater_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T >= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x >= a_y; }
   };
 
   template <typename T>
   struct less_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T <= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x <= a_y; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -128,19 +157,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct logical_and : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T && T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x && a_y; }
   };
 
   template <typename T>
   struct logical_or: binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T || T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x || a_y; }
   };
 
   template <typename T>
   struct logical_not: unary_function<T, bool>
   {
-    bool operator()(const T& a_x) const { return !T; }
+    bool operator()(const T& a_x) const { return !a_x; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -148,8 +177,8 @@ namespace tloc { namespace core {
 
   template <typename T> struct hash
   {
-    tl_size operator()(T p) const 
-    { 
+    tl_size operator()(T p) const
+    {
       TLOC_STATIC_ASSERT(false, Unable_to_generate_a_hash_for_this_type);
     }
   };
@@ -218,24 +247,28 @@ namespace tloc { namespace core {
   // Use self/first/second
 
   template <typename T>
-  struct use_self : public unary_function<const T, const T>
+  struct use_self
   {
+    DECL_UNARY_FUNC(T, T);
+
     const T& operator()(const T& a) const { return a; }
   };
 
   template <typename T_Pair>
-  struct use_first : 
-    public unary_function<T_Pair, const typename T_Pair::first_type>
+  struct use_first
   {
-    typename unary_function::result_type& operator()(const T_Pair& a) const
+    DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
+
+    result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };
 
   template <typename T_Pair>
-  struct use_second : 
-    public unary_function<T_Pair, const typename T_Pair::first_type>
+  struct use_second
   {
-    typename unary_function::result_type& operator()(const T_Pair& a) const
+    DECL_UNARY_FUNC(T_Pair, const typename T_Pair::second_type);
+
+    result_type& operator()(const T_Pair& a) const
     { return a.second; }
   };
 

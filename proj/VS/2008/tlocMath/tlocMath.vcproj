@@ -11,6 +11,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -20,6 +23,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,13 +44,72 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -62,7 +125,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -85,6 +147,382 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_StdAlloc|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_StdAlloc|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_DebugInfo|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -108,15 +546,11 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE"
-				ExceptionHandling="0"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -129,7 +563,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -148,11 +581,77 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_StdAlloc|Win32"
+			Name="Release_DebugInfo|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc_DebugInfo|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -171,17 +670,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
-				MinimalRebuild="true"
-				ExceptionHandling="0"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -194,7 +690,70 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_StdAlloc_DebugInfo|x64"
+			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -217,95 +776,295 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Matrix"
+			Name="_misc"
+			>
+			<Filter
+				Name="math"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\tlocMath.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\tlocMathExplicitMacros.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="utilities"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.h"
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix.inl"
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tloc_utilities.inl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix2.inl"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocMatrix3.inl"
+				RelativePath="..\..\..\..\src\tlocMath\utilities\tlocPythagoras.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Vector"
+			Name="component_system"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.h"
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector.inl"
+				RelativePath="..\..\..\..\src\tlocMath\component_system\tloc_component_system.inl"
+				>
+			</File>
+			<Filter
+				Name="components"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocComponentType.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocTransform.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\component_system\tlocTransform.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="types"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.cpp"
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.h"
+				RelativePath="..\..\..\..\src\tlocMath\types\tloc_types.inl"
 				>
 			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector2.inl"
+			<Filter
+				Name="circle"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.cpp"
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocCircle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocCircle.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rectangle"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.h"
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocRectangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocRectangle.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="angle"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocMath\tlocVector3.inl"
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocAngle.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocAngle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocAngle.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocAngleExplicitMacros.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="vector"
 				>
-			</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_vector.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_vector.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_vector.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector2.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector2.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector2.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector3.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector3.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector4.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector4.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVector4.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocVectorExplicitMacros.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="matrix"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_matrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_matrix.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tloc_matrix.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix2.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix2.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix2.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix3.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix3.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix4.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix4.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrix4.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocMath\types\tlocMatrixExplicitMacros.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocMath\tlocMath.cpp"
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\src\tlocMath\tlocMath.h"
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.h"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\src\tlocMath\tlocMath.inl"
+			RelativePath="..\..\..\..\src\tlocMath\tloc_math.inl"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocMath\tlocDepVersionCheck.cpp"
 			>
 		</File>
 	</Files>

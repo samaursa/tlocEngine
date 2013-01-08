@@ -19,7 +19,7 @@
 
 namespace tloc {
 
-  namespace core_types = core::types;
+  namespace core_t = core::types;
 
 };
 

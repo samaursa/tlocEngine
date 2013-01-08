@@ -9,7 +9,7 @@
 
 namespace tloc {
 
-  namespace core_error = core::error;
+  namespace core_err = core::error;
 
 };
 

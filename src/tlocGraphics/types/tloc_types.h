@@ -13,7 +13,7 @@
 
 namespace tloc {
 
-  namespace gfx_types = graphics::types;
+  namespace gfx_t = graphics::types;
 
 };
 

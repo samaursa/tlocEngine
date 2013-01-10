@@ -6,7 +6,7 @@
 // Platform dependent includes
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# include <tlocInput/HIDs/tlocMouseImplWin.h>
+# include <tlocInput/hid/tlocMouseImplWin.h>
 #else
 # error "WIP"
 #endif

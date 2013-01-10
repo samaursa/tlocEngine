@@ -8,7 +8,7 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocInput/tlocInput.h>
-#include <tlocInput/HIDs/tlocKeyboardImpl.h>
+#include <tlocInput/hid/tlocKeyboardImpl.h>
 
 namespace tloc { namespace input {
 
@@ -38,10 +38,10 @@ namespace tloc { namespace input {
   struct KeyboardCallbackGroupT:
     public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type  
+    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type
       base_type;
     using base_type::m_observers;
-    
+
     virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {
@@ -115,8 +115,8 @@ namespace tloc { namespace input {
     impl_type*  m_impl;
   };
 
-  typedef Keyboard<InputPolicy::Buffered>   KeyboardBuff;
-  typedef Keyboard<InputPolicy::Immediate> KeyboardUnBuff;
+  typedef Keyboard<InputPolicy::Buffered>   KeyboardB;
+  typedef Keyboard<InputPolicy::Immediate>  KeyboardI;
 
 };};
 

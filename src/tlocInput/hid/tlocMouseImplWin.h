@@ -1,13 +1,13 @@
-#ifndef TLOC_KEYBOARD_IMPL_WIN_H
-#define TLOC_KEYBOARD_IMPL_WIN_H
+#ifndef TLOC_MOUSE_IMPL_WIN_H
+#define TLOC_MOUSE_IMPL_WIN_H
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocKeyboard.h>
-#include <tlocInput/HIDs/tlocKeyboardImpl.h>
+#include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocMouseImpl.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -17,39 +17,38 @@
 namespace tloc { namespace input {
 
   typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
-    windows_keyboard_param_type;
+    windows_mouse_param_type;
 
 };};
 
 namespace tloc { namespace input { namespace priv {
 
-  template <typename T_ParentKeyboard>
-  class KeyboardImpl
-    : public KeyboardImplBase<T_ParentKeyboard, windows_keyboard_param_type>
+  template <typename T_ParentMouse>
+  class MouseImpl
+    : public MouseImplBase<T_ParentMouse, windows_mouse_param_type>
   {
   public:
-    typedef windows_keyboard_param_type            keyboard_param_type;
-    typedef T_ParentKeyboard                       parent_type;
-    typedef KeyboardImpl<parent_type>              this_type;
-    typedef KeyboardImplBase
-      <parent_type, keyboard_param_type>           base_type;
+    typedef windows_mouse_param_type            mouse_param_type;
+    typedef T_ParentMouse                       parent_type;
+    typedef MouseImpl<parent_type>              this_type;
+    typedef MouseImplBase
+      <parent_type, mouse_param_type>           base_type;
 
-    typedef typename parent_type::platform_type       platform_type;
-    typedef typename parent_type::policy_type         policy_type;
-    typedef typename base_type::keycode_type          keycode_type;
+    typedef typename parent_type::platform_type    platform_type;
+    typedef typename parent_type::policy_type      policy_type;
+    typedef typename base_type::button_code_type   button_code_type;
 
-    KeyboardImpl(parent_type* a_parent,
-                 const keyboard_param_type& a_params);
-    ~KeyboardImpl();
+    MouseImpl(parent_type* a_parent, const mouse_param_type& a_params);
+    ~MouseImpl();
 
     ///-------------------------------------------------------------------------
-    /// Query if 'a_key' is key down.
+    /// Query if 'a_button' is down.
     ///
-    /// @param  a_key The key.
+    /// @param  a_button The button.
     ///
-    /// @return true if key is down, false if not.
+    /// @return true if button is down, false if not.
     ///-------------------------------------------------------------------------
-    bool IsKeyDown(keycode_type a_key) const;
+    bool IsButtonDown(button_code_type a_button) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
@@ -70,13 +69,12 @@ namespace tloc { namespace input { namespace priv {
   private:
 
     IDirectInput8*        m_directInput;
-    IDirectInputDevice8*  m_keyboard;
+    IDirectInputDevice8*  m_mouse;
+    DIMOUSESTATE2         m_mouseBuffer;
     HWND                  m_windowPtr;
 
-    bool                   m_buffer[KeyboardEvent::Count];
-
-    static const size_type s_bufferSize = 256;
-    uchar8                  m_rawBuffer[s_bufferSize];
+    MouseEvent              m_currentState;
+    static const size_type  s_bufferSize = sizeof(DIMOUSESTATE2);
   };
 
 };};};

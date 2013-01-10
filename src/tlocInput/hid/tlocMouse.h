@@ -8,8 +8,8 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocMouse.h>
-#include <tlocInput/HIDs/tlocMouseImpl.h>
+#include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocMouseImpl.h>
 
 namespace tloc { namespace input {
 
@@ -41,10 +41,10 @@ namespace tloc { namespace input {
   struct MouseCallbackGroupT:
     public core::CallbackGroupTArray<T, MouseCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, MouseCallbacks>::type 
+    typedef typename core::CallbackGroupTArray<T, MouseCallbacks>::type
       base_type;
     using base_type::m_observers;
-    
+
     virtual bool OnButtonPress(const tl_size a_caller,
                                const MouseEvent& a_event)
     {
@@ -137,6 +137,9 @@ namespace tloc { namespace input {
     typedef priv::MouseImpl<this_type> impl_type;
     impl_type*  m_impl;
   };
+
+  typedef Mouse<InputPolicy::Buffered>   MouseB;
+  typedef Mouse<InputPolicy::Immediate>  MouseI;
 
 };};
 

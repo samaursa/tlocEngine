@@ -6,9 +6,9 @@
 // Platform dependent includes
 
 #if defined(TLOC_OS_WIN)
-# include <tlocInput/HIDs/tlocKeyboardImplWin.h>
+# include <tlocInput/hid/tlocKeyboardImplWin.h>
 #elif defined (TLOC_OS_IPHONE)
-# include <tlocInput/HIDs/tlocKeyboardImplIphone.h>
+# include <tlocInput/hid/tlocKeyboardImplIphone.h>
 #else
 # error "WIP"
 #endif

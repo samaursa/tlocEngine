@@ -8,8 +8,8 @@
 #define protected public
 #include <tlocInput/tlocInput.h>
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocKeyboard.h>
-#include <tlocInput/HIDs/tlocMouse.h>
+#include <tlocInput/hid/tlocKeyboard.h>
+#include <tlocInput/hid/tlocMouse.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -52,7 +52,7 @@ namespace TestingInput
     T_Keyboard*   m_caller;
     u32           m_keypresses;
     u32           m_keyreleases;
-  }; TLOC_DEF_TYPE(sampleInputKeyboard<Keyboard<> >);
+  }; TLOC_DEF_TYPE(sampleInputKeyboard<KeyboardB>);
 
   template <typename T_Mouse>
   struct sampleInputMouse
@@ -95,7 +95,7 @@ namespace TestingInput
     u32         m_buttonPresses;
     u32         m_buttonReleases;
     u32         m_movementEvents;
-  }; TLOC_DEF_TYPE(sampleInputMouse<Mouse<> >);
+  }; TLOC_DEF_TYPE(sampleInputMouse<MouseB>);
 
 
   LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -168,13 +168,13 @@ namespace TestingInput
   void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
   {
     core::time::Timer_T<> countDown;
-    Keyboard<>* kb = a_im->GetHID<Keyboard<> >(hid::keyboard);
+    KeyboardB* kb = a_im->GetHID<KeyboardB>(hid::keyboard);
 
     CHECK(kb != NULL);
 
     if (kb)
     {
-      sampleInputKeyboard<Keyboard<> > callback(kb);
+      sampleInputKeyboard<KeyboardB> callback(kb);
       kb->Register(&callback);
 
       while ( countDown.ElapsedMilliSeconds() < 1000 &&
@@ -216,13 +216,13 @@ namespace TestingInput
                        WORD a_buttonUp, WORD a_extraData)
   {
     core::time::Timer_T<> countDown;
-    Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
+    MouseB* mouse = a_im->GetHID<MouseB>(hid::mouse);
 
     CHECK(mouse != NULL);
 
     if (mouse)
     {
-      sampleInputMouse<Mouse<> > callback(mouse);
+      sampleInputMouse<MouseB> callback(mouse);
       mouse->Register(&callback);
 
       while ( countDown.ElapsedMilliSeconds() < 1000 &&
@@ -249,13 +249,13 @@ namespace TestingInput
                      tl_int a_x, tl_int a_y, WORD a_data)
   {
     core::time::Timer_T<> countDown;
-    Mouse<>* mouse = a_im->GetHID<Mouse<> >(hid::mouse);
+    MouseB* mouse = a_im->GetHID<MouseB>(hid::mouse);
 
     CHECK(mouse != NULL);
 
     if (mouse)
     {
-      sampleInputMouse<Mouse<> > callback(mouse);
+      sampleInputMouse<MouseB> callback(mouse);
       mouse->Register(&callback);
 
       SendMousePress(a_axis, a_data,
@@ -297,9 +297,9 @@ namespace TestingInput
 
     InputParameterList<HWND> params;
     params.m_param1 = wnd;
-    InputManager<> inputMgr(params);
+    InputManagerB inputMgr(params);
 
-    Keyboard<>* kb = inputMgr.CreateHID<Keyboard<> >(hid::keyboard);
+    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>(hid::keyboard);
     CHECK(kb != NULL);
 
     if (kb)
@@ -423,7 +423,7 @@ namespace TestingInput
       TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
     }
 
-    Mouse<>* mouse = inputMgr.CreateHID<Mouse<> >(hid::mouse);
+    MouseB* mouse = inputMgr.CreateHID<MouseB>(hid::mouse);
     CHECK(mouse != NULL);
 
     if (mouse)

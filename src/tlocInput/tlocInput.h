@@ -5,6 +5,7 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include "tlocInputImpl.h"
 #include "tlocInputTypes.h"
@@ -109,6 +110,9 @@ namespace tloc { namespace input {
 
   typedef InputManager<InputPolicy::Buffered>     InputManagerB;
   typedef InputManager<InputPolicy::Immediate>    InputManagerI;
+
+  typedef core::smart_ptr::SharedPtr<InputManagerB> input_mgr_b_ptr;
+  typedef core::smart_ptr::SharedPtr<InputManagerI> input_mgr_i_ptr;
 
 };};
 

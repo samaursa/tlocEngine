@@ -1,10 +1,12 @@
 #include "tlocInput.h"
 #include "tlocInputTypes.h"
 
-#include <tlocInput/HIDs/tlocKeyboard.h>
-#include <tlocInput/HIDs/tlocMouse.h>
-#include <tlocInput/HIDs/tlocJoystick.h>
-#include <tlocInput/HIDs/tlocTouchSurface.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+
+#include <tlocInput/hid/tlocKeyboard.h>
+#include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocJoystick.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes
@@ -86,6 +88,9 @@ namespace tloc { namespace input {
   template class InputManager<InputPolicy::Buffered>;
   template class InputManager<InputPolicy::Immediate>;
 
+  template class core::smart_ptr::SharedPtr<InputManagerB>;
+  template class core::smart_ptr::SharedPtr<InputManagerI>;
+
   //------------------------------------------------------------------------
   // Force instantiate the constructor for each platform
 #if defined(TLOC_OS_WIN)
@@ -116,7 +121,7 @@ namespace tloc { namespace input {
 #elif defined(TLOC_OS_IPHONE)
   INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
-  
+
   INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Immediate>);
 #endif

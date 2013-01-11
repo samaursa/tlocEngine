@@ -1,6 +1,7 @@
 #include "tlocMouse.h"
 
 #include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -35,14 +36,12 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
   {
-    m_impl = new impl_type(this, a_paramList);
+    m_impl.reset(new impl_type(this, a_paramList));
   }
 
   template <MOUSE_TEMP>
   Mouse<MOUSE_PARAMS>::~Mouse()
-  {
-    delete m_impl;
-  }
+  { }
 
   template <MOUSE_TEMP>
   bool Mouse<MOUSE_PARAMS>::IsButtonDown(button_code_type a_button)

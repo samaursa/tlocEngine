@@ -6,6 +6,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocMouse.h>
@@ -108,7 +109,8 @@ namespace tloc { namespace input {
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Mouse:
     public core::DispatcherBaseArray <MouseCallbacks, MouseCallbackGroupT>::type,
-    public core::NonCopyable
+    public core::NonCopyable,
+    public hid::Mouse
   {
   public:
     typedef T_Platform                      platform_type;
@@ -134,8 +136,10 @@ namespace tloc { namespace input {
 
   private:
 
-    typedef priv::MouseImpl<this_type> impl_type;
-    impl_type*  m_impl;
+    typedef priv::MouseImpl<this_type>               impl_type;
+    typedef core::smart_ptr::UniquePtr<impl_type>    impl_ptr_type;
+
+    impl_ptr_type  m_impl;
   };
 
   typedef Mouse<InputPolicy::Buffered>   MouseB;

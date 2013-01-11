@@ -6,6 +6,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInput.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
@@ -76,7 +77,8 @@ namespace tloc { namespace input {
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Keyboard :
     public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
-    public core::NonCopyable
+    public core::NonCopyable,
+    public hid::Keyboard
   {
   public:
     typedef T_Platform                      platform_type;
@@ -111,8 +113,10 @@ namespace tloc { namespace input {
 
   private:
 
-    typedef priv::KeyboardImpl<this_type> impl_type;
-    impl_type*  m_impl;
+    typedef priv::KeyboardImpl<this_type>               impl_type;
+    typedef core::smart_ptr::UniquePtr<impl_type>       impl_ptr_type;
+
+    impl_ptr_type m_impl;
   };
 
   typedef Keyboard<InputPolicy::Buffered>   KeyboardB;

@@ -1,6 +1,7 @@
 #include "tlocKeyboard.h"
 
 #include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -26,14 +27,12 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   Keyboard<KEYBOARD_PARAMS>::Keyboard(const T_ParamList& a_paramList)
   {
-    m_impl = new impl_type(this, a_paramList);
+    m_impl.reset(new impl_type(this, a_paramList));
   }
 
   template <KEYBOARD_TEMP>
   Keyboard<KEYBOARD_PARAMS>::~Keyboard()
-  {
-    delete m_impl;
-  }
+  { }
 
   template <KEYBOARD_TEMP>
   bool Keyboard<KEYBOARD_PARAMS>::IsKeyDown(keycode_type a_key) const

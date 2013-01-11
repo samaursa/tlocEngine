@@ -4,8 +4,6 @@
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/time/tlocTime.h>
 
-#define private public
-#define protected public
 #include <tlocInput/tlocInput.h>
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
@@ -168,7 +166,7 @@ namespace TestingInput
   void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
   {
     core::time::Timer_T<> countDown;
-    KeyboardB* kb = a_im->GetHID<KeyboardB>(hid::keyboard);
+    KeyboardB* kb = a_im->GetHID<KeyboardB>();
 
     CHECK(kb != NULL);
 
@@ -216,7 +214,7 @@ namespace TestingInput
                        WORD a_buttonUp, WORD a_extraData)
   {
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>(hid::mouse);
+    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
@@ -249,7 +247,7 @@ namespace TestingInput
                      tl_int a_x, tl_int a_y, WORD a_data)
   {
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>(hid::mouse);
+    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
@@ -299,7 +297,7 @@ namespace TestingInput
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
 
-    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>(hid::keyboard);
+    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>();
     CHECK(kb != NULL);
 
     if (kb)
@@ -423,7 +421,7 @@ namespace TestingInput
       TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
     }
 
-    MouseB* mouse = inputMgr.CreateHID<MouseB>(hid::mouse);
+    MouseB* mouse = inputMgr.CreateHID<MouseB>();
     CHECK(mouse != NULL);
 
     if (mouse)

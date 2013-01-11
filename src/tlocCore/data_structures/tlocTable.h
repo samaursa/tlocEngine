@@ -7,7 +7,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <memory.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
   // Column major ordering (because OpenGL uses it. Switching back and forth
   // is not a problem as long as we are consistent)
   //
@@ -52,7 +52,7 @@ namespace tloc { namespace core {
     template <typename T_ArrayType>
     TL_FI Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
 
-    TL_FI Table(const core::Variadic<value_type, k_TableSize>& a_vars,
+    TL_FI Table(const Variadic<value_type, k_TableSize>& a_vars,
                 table_order a_tableOrder);
 
     //------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace tloc { namespace core {
 
     TL_FI void Set(const value_type& aValue);
 
-    TL_FI void Set(const core::Variadic<value_type, k_TableSize>& a_vars,
+    TL_FI void Set(const Variadic<value_type, k_TableSize>& a_vars,
                    table_order a_tableOrder);
 
     template <typename T_ArrayType>
@@ -100,6 +100,6 @@ namespace tloc { namespace core {
     TL_FI bool operator != (const Table& aTable);
   };
 
-};};
+};};};
 
 #endif

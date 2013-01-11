@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_LIST(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Different policies that List can handle
@@ -402,6 +402,6 @@ namespace tloc { namespace core {
       T_DedicatedSize> type;
   };
 
-};};
+};};};
 
 #endif

@@ -15,7 +15,7 @@
 # define TLOC_ASSERT_STACK_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, tl_size T_Capacity>
   class ArrayFixed
@@ -34,7 +34,7 @@ namespace tloc { namespace core {
     typedef tl_size                                       size_type;
     typedef tl_ptrdiff                                    difference_type;
 
-    typedef Tuple<value_type, T_Capacity>                 container_type;
+    typedef data_structs::Tuple<value_type, T_Capacity>   container_type;
 
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
@@ -205,6 +205,6 @@ namespace tloc { namespace core {
 
   };
 
-};};
+};};};
 
 #endif

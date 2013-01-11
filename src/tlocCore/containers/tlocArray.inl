@@ -9,7 +9,7 @@
 #include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/memory/tlocMemory.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -819,6 +819,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
-};};
+};};};
 
 #endif

@@ -28,7 +28,8 @@ namespace tloc { namespace core { namespace component_system {
     template <size_type T_VarSize>
     EntityProcessingSystem(event_manager* a_eventMgr,
                            entity_manager* a_entityMgr,
-                           const Variadic<component_type, T_VarSize>& a_typeFlags);
+                           const data_structs::Variadic
+                              <component_type, T_VarSize>& a_typeFlags);
 
     virtual ~EntityProcessingSystem();
 
@@ -68,7 +69,7 @@ namespace tloc { namespace core { namespace component_system {
     template <tl_size T_VarSize>
     EntityProcessingSystem::EntityProcessingSystem
       (event_manager* a_eventMgr, entity_manager* a_entityMgr,
-       const Variadic<component_type, T_VarSize>& a_typeFlags)
+       const data_structs::Variadic<component_type, T_VarSize>& a_typeFlags)
        : EntitySystemBase(a_eventMgr, a_entityMgr, a_typeFlags)
     {
     }

@@ -11,7 +11,7 @@
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocHashmap.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Policy = Array_Ordered>
   struct tl_array
@@ -56,6 +56,6 @@ namespace tloc { namespace core {
   typedef tl_array<tl_float>::type  tl_array_float;
   typedef tl_array<tl_size>::type   tl_array_size;
 
-};};
+};};};
 
 #endif

@@ -5,7 +5,7 @@
 namespace TestingTransform
 {
   using namespace tloc;
-  using namespace math;
+  using namespace math::types;
 
 #define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approx(x)) ); \
                                CHECK((vec[1]) == (Approx(y)) ); \
@@ -33,7 +33,7 @@ namespace TestingTransform
 
   TEST_CASE("math/component_system/Transform/", "")
   {
-    typedef component_system::Transformf32  tf32;
+    typedef math::component_system::Transformf32  tf32;
     tf32 t;
     tf32::position_type pos(1, 2, 5);
     t.SetPosition(pos);

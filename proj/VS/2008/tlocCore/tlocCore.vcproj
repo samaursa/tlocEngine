@@ -819,6 +819,18 @@
 			Name="containers"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\containers\tloc_containers.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\containers\tloc_containers.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\containers\tloc_containers.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainers.h"
 				>
 			</File>
@@ -950,34 +962,22 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="buffers"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocCharBuffer.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocCore\containers\tlocProtectedBuffer.inl"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="data_structures"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tloc_data_structures.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tloc_data_structures.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\data_structures\tloc_data_structures.inl"
+				>
+			</File>
 			<Filter
 				Name="variadic"
 				>
@@ -1034,10 +1034,46 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="buffers"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocCharBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocCharBuffer.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocCore\data_structures\tlocProtectedBuffer.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="types"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tloc_types.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tloc_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\types\tloc_types.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\types\tlocBasicTypes.h"
 				>
@@ -1143,6 +1179,18 @@
 			Name="time"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tloc_time.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tloc_time.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\time\tloc_time.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\time\tlocTime.cpp"
 				>
 			</File>
@@ -1158,6 +1206,18 @@
 		<Filter
 			Name="_misc"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocFunctional.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
+				>
+			</File>
 			<Filter
 				Name="algorithms"
 				>
@@ -1184,29 +1244,41 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="RNGs"
+			Name="rng"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.cpp"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRandom.h"
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\rng\tloc_rng.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\rng\tlocRandom.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\rng\tlocRandom.h"
 				>
 			</File>
 			<Filter
 				Name="generators"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.cpp"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.h"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocCore\RNGs\tlocRngWell512.inl"
+					RelativePath="..\..\..\..\src\tlocCore\rng\tlocRngWell512.inl"
 					>
 				</File>
 			</Filter>
@@ -1214,6 +1286,18 @@
 		<Filter
 			Name="base_classes"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tloc_base_classes.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tloc_base_classes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\base_classes\tloc_base_classes.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\base_classes\tlocNonCopyable.h"
 				>
@@ -1250,6 +1334,18 @@
 		<Filter
 			Name="memory"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\memory\tloc_memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\memory\tloc_memory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\memory\tloc_memory.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\memory\tlocLinkMe.cpp"
 				>
@@ -1315,6 +1411,18 @@
 			Name="platform"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\platform\tloc_platform.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\platform\tloc_platform.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\platform\tloc_platform.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\platform\tlocPlatform.cpp"
 				>
 			</File>
@@ -1331,6 +1439,18 @@
 			Name="iterators"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\iterators\tloc_iterators.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\iterators\tloc_iterators.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\iterators\tloc_iterators.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\iterators\tlocIterator.h"
 				>
 			</File>
@@ -1342,6 +1462,18 @@
 		<Filter
 			Name="utilities"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tloc_utilities.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tloc_utilities.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\utilities\tloc_utilities.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\utilities\tlocCheckpoints.cpp"
 				>
@@ -1395,6 +1527,18 @@
 			Name="string"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tloc_string.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tloc_string.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\string\tloc_string.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\string\tlocString.cpp"
 				>
 			</File>
@@ -1414,6 +1558,18 @@
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\component_system\tloc_component_system.inl"
+				>
+			</File>
 			<Filter
 				Name="components"
 				>
@@ -1559,6 +1715,18 @@
 			Name="io"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tloc_io.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tloc_io.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\io\tloc_io.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\io\tlocFileIO.cpp"
 				>
 			</File>
@@ -1579,6 +1747,18 @@
 			Name="error"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tloc_error.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tloc_error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\error\tloc_error.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocCore\error\tlocError.cpp"
 				>
 			</File>
@@ -1594,10 +1774,34 @@
 		<Filter
 			Name="parsers"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\parsers\tloc_parsers.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\parsers\tloc_parsers.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\parsers\tloc_parsers.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="configs"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tloc_configs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tloc_configs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\configs\tloc_configs.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\configs\tlocBuildConfig.cpp"
 				>
@@ -1610,6 +1814,18 @@
 		<Filter
 			Name="smart_ptr"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tloc_smart_ptr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tloc_smart_ptr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tloc_smart_ptr.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\smart_ptr\tlocSharedPtr.h"
 				>
@@ -1644,19 +1860,19 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocBase.h"
+			RelativePath="..\..\..\..\src\tlocCore\tloc_core.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tloc_core.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tloc_core.inl"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocDepVersionCheck.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocFunctional.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
 			>
 		</File>
 	</Files>

@@ -6,20 +6,20 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tloccontainers.inl>
 
-#include <tlocGraphics/data_types/tlocColor.h>
-#include <tlocGraphics/data_types/tlocDimension.h>
+#include <tlocGraphics/types/tlocColor.h>
+#include <tlocGraphics/types/tlocDimension.h>
 
 namespace tloc { namespace graphics { namespace media {
 
   class Image
   {
   public:
-    typedef tl_size                             size_type;
-    typedef types::Color                        color_type;
-    typedef core::tl_array<color_type>::type    pixel_container_type;
-    typedef core::error::Error                  error_type;
-    typedef Image                               this_type;
-    typedef types::Dimension2u                  dimension_type;
+    typedef tl_size                                       size_type;
+    typedef types::Color                                  color_type;
+    typedef core::containers::tl_array<color_type>::type  pixel_container_type;
+    typedef core::error::Error                            error_type;
+    typedef Image                                         this_type;
+    typedef types::Dimension2u                            dimension_type;
 
   public:
     Image();

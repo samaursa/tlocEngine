@@ -5,6 +5,8 @@
 
 namespace tloc { namespace core { namespace io {
 
+  using string::String;
+
   //------------------------------------------------------------------------
   // Policy details
 

@@ -10,7 +10,8 @@
 
 namespace TestingTuple
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::data_structs;
 
 #define CHECK_TUP(tup,x,y,z,w)   CHECK(tup[0] == x); \
   CHECK(tup[1] == y); \
@@ -19,7 +20,7 @@ namespace TestingTuple
 
   TEST_CASE("Core/DataStructures/Tuple", "Testing the Tuple<T, size> class")
   {
-    core::Tuple<tl_int, 4> p(0);
+    Tuple<tl_int, 4> p(0);
     CHECK_TUP(p, 0, 0, 0, 0);
 
     p[0] = 0; p[1] = 1; p[2] = 2; p[3] = 3;
@@ -42,7 +43,7 @@ namespace TestingTuple
     // Check Size
     CHECK(p.GetSize() == 4);
 
-    core::Tuple<tl_int, 4> q(8);
+    Tuple<tl_int, 4> q(8);
     p.Swap(q);
 
     CHECK_TUP(p, 8, 8, 8, 8);
@@ -55,7 +56,7 @@ namespace TestingTuple
     // Check Size
     CHECK(q.GetSize() == 4);
 
-    core::Tuple<tl_int, 4> r(numberSet);
+    Tuple<tl_int, 4> r(numberSet);
     CHECK_TUP(r, 1, 2, 3, 4);
 
     r.Set(0);
@@ -66,7 +67,7 @@ namespace TestingTuple
     // Check Size
     CHECK(r.GetSize() == 4);
 
-    core::Tuple<tl_int, 4> s(r);
+    Tuple<tl_int, 4> s(r);
     CHECK_TUP(s, 1, 2, 3, 4);
 
     s.Set(0);
@@ -81,7 +82,7 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
     "Test the Tuple ctor with varadic")
   {
-    core::Tuple<tl_int, 4> p(core::Variadic4i(1, 2, 3, 4));
+    Tuple<tl_int, 4> p(Variadic4i(1, 2, 3, 4));
 
     CHECK(p.GetSize() == 4);
     CHECK(p[0] == 1);
@@ -93,7 +94,7 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/Operators",
     "Testing the operator functions")
   {
-    core::Tuple<s32, 4> p(0), q(1);
+    Tuple<s32, 4> p(0), q(1);
     CHECK( (p == q) == false);
     CHECK( (p != q) == true);
 
@@ -105,15 +106,15 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/ConvertFrom",
     "Conversion from different sized tuples")
   {
-    core::Tuple<tl_int, 3> a3(0);
-    core::Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
-    core::Tuple<tl_int, 5> a5(2);
+    Tuple<tl_int, 3> a3(0);
+    Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
+    Tuple<tl_int, 5> a5(2);
 
-    a4_same.ConvertFrom(a3, core::p_tuple::overflow_same() );
+    a4_same.ConvertFrom(a3, p_tuple::overflow_same() );
     CHECK_TUP(a4_same, 0, 0, 0, 10);
-    a4_one.ConvertFrom(a3, core::p_tuple::overflow_one() );
+    a4_one.ConvertFrom(a3, p_tuple::overflow_one() );
     CHECK_TUP(a4_one, 0, 0, 0, 1);
-    a4_one.ConvertFrom(a3, core::p_tuple::overflow_zero() );
+    a4_one.ConvertFrom(a3, p_tuple::overflow_zero() );
     CHECK_TUP(a4_one, 0, 0, 0, 0);
 
     a4_same.ConvertFrom(a5);
@@ -125,18 +126,18 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/ConvertTo",
     "Conversion from different sized tuples")
   {
-    core::Tuple<tl_int, 3> a3(0);
-    core::Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
-    core::Tuple<tl_int, 5> a5(2);
+    Tuple<tl_int, 3> a3(0);
+    Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
+    Tuple<tl_int, 5> a5(2);
 
-    a4_one = a3.ConvertTo<core::Tuple<int, 4>, core::p_tuple::overflow_one>();
+    a4_one = a3.ConvertTo<Tuple<int, 4>, p_tuple::overflow_one>();
     CHECK_TUP(a4_one, 0, 0, 0, 1);
-    a4_one = a3.ConvertTo<core::Tuple<int, 4>, core::p_tuple::overflow_zero>();
+    a4_one = a3.ConvertTo<Tuple<int, 4>, p_tuple::overflow_zero>();
     CHECK_TUP(a4_one, 0, 0, 0, 0);
 
-    a4_same = a5.ConvertTo<core::Tuple<int, 4> >();
+    a4_same = a5.ConvertTo<Tuple<int, 4> >();
     CHECK_TUP(a4_same, 2, 2, 2, 2);
-    a4_same = a3.ConvertTo<core::Tuple<int, 4> >(); // default overflow policy is overflow_one
+    a4_same = a3.ConvertTo<Tuple<int, 4> >(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
   }
 };

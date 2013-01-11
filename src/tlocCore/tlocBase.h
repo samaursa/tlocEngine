@@ -20,8 +20,6 @@
 #include <3rdParty/loki/static_check.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
-#define USING_TLOC  using namespace tloc
-
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
 

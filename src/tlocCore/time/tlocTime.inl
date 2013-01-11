@@ -12,7 +12,7 @@
 # import <mach/mach_time.h>
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace time {
 
   //////////////////////////////////////////////////////////////////////////
   // Macros
@@ -272,4 +272,4 @@ namespace tloc { namespace core {
 
 #endif 
 
-};};
+};};};

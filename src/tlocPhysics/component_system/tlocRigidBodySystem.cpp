@@ -13,6 +13,8 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // Free Functions
 
@@ -81,7 +83,7 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigidBody))
+    , Variadic<component_type, 1>(components::k_rigidBody))
     , m_world(a_world)
   {
   }

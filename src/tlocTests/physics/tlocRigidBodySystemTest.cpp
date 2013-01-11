@@ -8,8 +8,8 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>

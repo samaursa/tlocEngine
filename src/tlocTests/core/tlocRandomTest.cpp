@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingRandom
 {
@@ -14,19 +14,19 @@ namespace TestingRandom
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      tl_float randomNumber = g_defaultRNG.GetRandomFloat();
+      tl_float randomNumber = rng::g_defaultRNG.GetRandomFloat();
       CHECK( (randomNumber >= 0 && randomNumber < 1.0f) == true);
     }
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      tl_float randomNumber = g_defaultRNG.GetRandomFloat(1.0f, 50.0f);
+      tl_float randomNumber = rng::g_defaultRNG.GetRandomFloat(1.0f, 50.0f);
       CHECK( (randomNumber >= 1.0f && randomNumber <= 50.0f) == true);
     }
 
     for (u32 i = 0; i < numberOfTests; ++i)
     {
-      tl_int randomNumber = g_defaultRNG.GetRandomInteger(1, 100);
+      tl_int randomNumber = rng::g_defaultRNG.GetRandomInteger(1, 100);
       CHECK( (randomNumber >= 1 && randomNumber <= 100) == true);
     }
   }

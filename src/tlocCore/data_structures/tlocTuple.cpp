@@ -28,7 +28,7 @@
 
 #else
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
 #include "tlocTupleExplicitMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f32, 2);
@@ -57,6 +57,6 @@ namespace tloc { namespace core {
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 3);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 4);
 
-};};
+};};};
 
 #endif

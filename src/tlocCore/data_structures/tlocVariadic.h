@@ -4,7 +4,7 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -54,7 +54,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 3> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T);
 
@@ -70,7 +70,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 4> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T);
 
@@ -86,7 +86,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 5> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T);
 
@@ -102,7 +102,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 6> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T, T);
 
@@ -118,7 +118,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 7> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T, T, T);
 
@@ -134,7 +134,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 8> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T, T, T, T);
 
@@ -150,7 +150,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 9> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T, T, T, T, T);
 
@@ -166,7 +166,7 @@ namespace tloc { namespace core {
   public:
     typedef Tuple<T, 10> base_type;
     using base_type::operator[];
-    
+
   public:
     Variadic(T, T, T, T, T, T, T, T, T, T);
 
@@ -283,6 +283,6 @@ TLOC_DECLARE_VARIADIC_TYPES(char32, w);
 
 #undef TLOC_DECLARE_VARIADIC_TYPES
 
-};};
+};};};
 
 #endif

@@ -5,10 +5,10 @@
 
 namespace TestingTable
 {
-  USING_TLOC;
-  using tloc::core::Table;
+  using namespace tloc;
+  using namespace tloc::core::data_structs;
 
-  typedef tloc::core::Tuple<tl_int, 3> tuple_int_type;
+  typedef Tuple<tl_int, 3> tuple_int_type;
 
   struct Table3Fixture
   {
@@ -123,11 +123,11 @@ namespace TestingTable
     tl_int rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     // ROW_MAJOR means that the above array has vectors in a row major order
     // i.e. 9,8,7 is a row vector, 6,5,4 is a row vector and so on
-    a.Set(rawArray, tloc::core::Table<tl_int, 3, 3>::k_RowMajor);
+    a.Set(rawArray, Table<tl_int, 3, 3>::k_RowMajor);
     CHECK_TABLE(a, 9, 6, 3, 8, 5, 2, 7, 4, 1);
 
     a.Set(0);
-    a.Set(rawArray, tloc::core::Table<tl_int, 3, 3>::k_ColMajor);
+    a.Set(rawArray, Table<tl_int, 3, 3>::k_ColMajor);
     CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
   }
 

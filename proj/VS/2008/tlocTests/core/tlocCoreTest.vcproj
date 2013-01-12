@@ -614,6 +614,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -764,6 +765,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>

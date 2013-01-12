@@ -1,6 +1,8 @@
 #ifndef TLOC_KEYBOARD_IMPL_WIN_H
 #define TLOC_KEYBOARD_IMPL_WIN_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>

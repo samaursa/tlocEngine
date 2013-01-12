@@ -1,6 +1,8 @@
 #ifndef TLOC_KEYBOARD_H
 #define TLOC_KEYBOARD_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -78,7 +80,7 @@ namespace tloc { namespace input {
   class Keyboard :
     public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
     public core::NonCopyable,
-    public hid::Keyboard
+    public p_hid::Keyboard
   {
   public:
     typedef T_Platform                      platform_type;

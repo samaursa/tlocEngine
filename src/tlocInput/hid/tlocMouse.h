@@ -1,6 +1,8 @@
 #ifndef TLOC_MOUSE_H
 #define TLOC_MOUSE_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -110,7 +112,7 @@ namespace tloc { namespace input {
   class Mouse:
     public core::DispatcherBaseArray <MouseCallbacks, MouseCallbackGroupT>::type,
     public core::NonCopyable,
-    public hid::Mouse
+    public p_hid::Mouse
   {
   public:
     typedef T_Platform                      platform_type;

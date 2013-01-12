@@ -14,8 +14,6 @@
 
 #if defined(TLOC_OS_WIN)
 # include "tlocInputImplWin.h"
-//# include "tlocKeyboardImplWin.h"
-//# include "tlocMouseImplWin.h"
 #elif defined(TLOC_OS_IPHONE)
 # include "tlocInputImplIphone.h"
 #else
@@ -60,7 +58,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   void InputManager<INPUT_MANAGER_PARAM>::Update()
   {
-    for (u32 i = 0; i < hid::Count::m_index; ++i)
+    for (u32 i = 0; i < p_hid::Count::m_index; ++i)
     {
       DoUpdate(i);
     }

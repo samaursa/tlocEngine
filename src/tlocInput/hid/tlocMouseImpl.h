@@ -1,6 +1,8 @@
 #ifndef TLOC_MOUSE_IMPL_H
 #define TLOC_MOUSE_IMPL_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
 
@@ -52,7 +54,7 @@ namespace tloc { namespace input { namespace priv {
 
   template <class T_ParentMouse, class T_ParamList>
   class MouseImplBase : public core::ImplBase<T_ParentMouse>
-                      , public hid::Mouse
+                      , public p_hid::Mouse
   {
   public:
     typedef core::ImplBase<T_ParentMouse>                 base_type;

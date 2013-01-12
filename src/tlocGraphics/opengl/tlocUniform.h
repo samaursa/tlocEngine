@@ -1,14 +1,14 @@
 #ifndef _TLOC_GRAPHICS_GL_UNIFORM_H_
 #define _TLOC_GRAPHICS_GL_UNIFORM_H_
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 
@@ -56,8 +56,8 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckNonArrayTypes() const
     {
-      using namespace core;
-      using namespace math;
+      using namespace core::data_structs;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -74,8 +74,9 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckArrayTypes() const
     {
-      using namespace core;
-      using namespace math;
+      using namespace core::data_structs;
+      using namespace core::containers;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <Array<T>,

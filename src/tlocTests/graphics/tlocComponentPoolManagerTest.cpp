@@ -4,11 +4,12 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocCore/memory/tlocMemoryPool.inl>
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.h>
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace TestingComponentPoolManager
 {

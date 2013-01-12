@@ -29,8 +29,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::component_system::EntityManager       entity_manager;
     typedef core::component_system::Entity              entity_type;
 
-    typedef tl_array_fixed
-      <component_type, max_component_types>::type component_type_array;
+    typedef containers::tl_array_fixed
+      <component_type, max_component_types>::type       component_type_array;
 
   public:
 
@@ -55,7 +55,8 @@ namespace tloc { namespace core { namespace component_system {
 
     template <tl_size T_VarSize>
     EntitySystemBase(event_manager* a_eventMgr, entity_manager* a_entityMgr,
-                     const Variadic<component_type, T_VarSize>& a_typeFlags);
+                     const data_structs::
+                           Variadic<component_type, T_VarSize>& a_typeFlags);
 
     ~EntitySystemBase();
 
@@ -68,7 +69,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
     virtual error_type DoInitialize(entity_manager* a_mgr,
-                                    const entity_array& a_entities) = 0;
+                                    const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -85,7 +86,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
     virtual error_type DoShutdown(entity_manager* a_mgr,
-                                  const entity_array& a_entities) = 0;
+                                  const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -111,7 +112,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
     virtual void DoProcessActiveEntities(entity_manager* a_mgr,
-                                         const entity_array& a_entities) = 0;
+                                         const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
@@ -127,12 +128,12 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_array, DoGetActiveEntities,
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                           m_activeEntities);
 
   protected:
     component_type_array  m_typeFlags;
-    entity_array          m_activeEntities;
+    entity_ptr_array      m_activeEntities;
 
     EventManager*     m_eventMgr;
     EntityManager*    m_entityMgr;
@@ -145,7 +146,8 @@ namespace tloc { namespace core { namespace component_system {
   template <tl_size T_VarSize>
   EntitySystemBase::
     EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
-                     const Variadic<component_type, T_VarSize>& a_typeFlags)
+                     const data_structs::
+                           Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
   {

@@ -787,6 +787,18 @@
 			Name="box2d"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocPhysicsManager.cpp"
 				>
 			</File>
@@ -838,30 +850,22 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="shape"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocCircleShape.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocCircleShape.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocShape.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocShape.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.inl"
+				>
+			</File>
 			<Filter
 				Name="systems"
 				>
@@ -931,10 +935,34 @@
 			Name="error"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocPhysics\error\tlocErrorTypes.h"
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.inl"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocPhysics\tlocDepVersionCheck.cpp"
 			>

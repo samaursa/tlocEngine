@@ -16,15 +16,22 @@ namespace tloc { namespace input {
 
   namespace hid
   {
-    enum Type
-    {
-      keyboard = 0,
-      mouse,
-      joystick,
-      touch_surface,
+    struct HIDType      {};
 
-      count
-    };
+    struct Keyboard     : public HIDType { static const int m_index = 0; };
+    struct Mouse        : public HIDType { static const int m_index = 1; };
+    struct Joystick     : public HIDType { static const int m_index = 2; };
+    struct TouchSurface : public HIDType { static const int m_index = 3; };
+
+    struct Count                         { static const int m_index = 4; };
+
+    template <typename T_InputObject>
+    void IsInputTypeSupported()
+    {
+      TLOC_STATIC_ASSERT(
+        (Loki::Conversion<T_InputObject, hid::HIDType>::exists),
+        Object_must_be_HID_type);
+    }
   }
 
   namespace parameter_options
@@ -93,7 +100,7 @@ namespace tloc { namespace input {
     struct Type<p_type::Axis, T_PolicyType, T_ValueType>
     {
     public:
-      
+
       typedef Type<p_type::Axis, T_PolicyType, T_ValueType>   this_type;
 
       typedef T_PolicyType                                    policy_type;
@@ -149,12 +156,12 @@ namespace tloc { namespace input {
     public:
       typedef
         Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>  this_type;
-      
+
       typedef
         Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>  base_type;
 
       typedef typename base_type::value_type                    value_type;
-      
+
       typedef p_axis::AbsoluteOnly                              policy_type;
 
       typedef typename base_type::rel_and_abs                   rel_and_abs;

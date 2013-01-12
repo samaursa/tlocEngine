@@ -781,6 +781,18 @@
 			Name="window"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.cpp"
 				>
 			</File>
@@ -1009,6 +1021,18 @@
 			Name="opengl"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.cpp"
 				>
 			</File>
@@ -1125,6 +1149,18 @@
 			Name="component_system"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrefabMaterial.h"
 				>
 			</File>
@@ -1138,6 +1174,14 @@
 				<Filter
 					Name="mesh"
 					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.h"
+						>
+					</File>
 					<File
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.cpp"
 						>
@@ -1192,6 +1236,14 @@
 				Name="systems"
 				>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
 					>
 				</File>
@@ -1218,33 +1270,33 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="data_types"
+			Name="types"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocDimension.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tlocDimension.h"
 				>
 			</File>
 			<Filter
 				Name="color"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="rectangle"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.h"
 					>
 				</File>
 			</Filter>
@@ -1252,7 +1304,7 @@
 				Name="vertex"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocVertex.h"
 					>
 				</File>
 			</Filter>
@@ -1260,11 +1312,11 @@
 				Name="aspect_ratio"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.h"
 					>
 				</File>
 			</Filter>
@@ -1272,11 +1324,11 @@
 				Name="fov"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.h"
 					>
 				</File>
 			</Filter>
@@ -1284,6 +1336,18 @@
 		<Filter
 			Name="media"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.inl"
+				>
+			</File>
 			<Filter
 				Name="images"
 				>
@@ -1309,6 +1373,18 @@
 			Name="renderer"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.cpp"
 				>
 			</File>
@@ -1320,6 +1396,18 @@
 		<Filter
 			Name="view_projection"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.cpp"
 				>
@@ -1337,12 +1425,40 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="error"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
+				>
+			</File>
+		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.inl"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>
 		</File>
 	</Files>

@@ -14,6 +14,7 @@ namespace TestingFileIO
 {
   using namespace tloc;
   using namespace tloc::core;
+  using string::String;
 
   void GetPathToCreateFiles(char* a_path);
 

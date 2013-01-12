@@ -1,9 +1,9 @@
 #include "tlocTransform.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
@@ -11,6 +11,8 @@ namespace tloc { namespace math { namespace component_system {
 #define TRANSFORM_TEMPS   typename T_Real
 #define TRANSFORM_PARAMS  T_Real
 #define TRANSFORM_TYPE    typename Transform_T<TRANSFORM_PARAMS>
+
+  using types::Vector4;
 
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::Transform_T()

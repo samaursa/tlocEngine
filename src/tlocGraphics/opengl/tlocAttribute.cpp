@@ -1,6 +1,6 @@
 #include "tlocAttribute.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace tloc { namespace graphics { namespace gl {
 

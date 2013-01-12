@@ -10,11 +10,14 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     typedef events::value_type                    event_type;
-    typedef tl_doubly_list<EventListener*>::type  listeners_list;
-    typedef tl_hash_map<event_type,
-                        listeners_list>::type     listener_map;
+    typedef containers::
+      tl_doubly_list <EventListener*>::type       listeners_list;
+    typedef containers::
+      tl_hash_map<event_type,
+                  listeners_list>::type           listener_map;
     typedef listener_map::value_type              map_value_type;
-    typedef tl_array<const EventBase*>::type      event_list;
+    typedef containers::
+      tl_array<const EventBase*>::type            event_list;
 
   public:
 

@@ -1,7 +1,7 @@
 #include "tlocTime.h"
 #include "tlocTime.inl"
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace time {
 
   template class Timer_T<>;
   template class Timer_T<f128>;
@@ -11,4 +11,4 @@ namespace tloc { namespace core {
   template class Timer_T<f32, u32, p_timer_t::Adjust>;
   template class Timer_T<f32, u32, p_timer_t::NoAdjust>;
 
-};};
+};};};

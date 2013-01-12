@@ -11,6 +11,7 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       mesh = core::component_system::components_group::graphics,
       quad, // specialized mesh
+      fan,
       material,
       projection,
 

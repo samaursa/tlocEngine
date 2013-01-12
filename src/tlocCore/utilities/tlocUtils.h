@@ -49,6 +49,7 @@ namespace tloc { namespace core { namespace utils {
   /// and setters. The problem ofcourse is that we cannot break into macros. This
   /// is why only declarations are also provided which can be defined immediately
   /// or later by the developer to allow breaking into the getter/setter.
+  ///------------------------------------------------------------------------
 
   //------------------------------------------------------------------------
   // Getters

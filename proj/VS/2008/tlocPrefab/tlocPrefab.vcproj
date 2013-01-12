@@ -397,16 +397,52 @@
 		<Filter
 			Name="core"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\core\tloc_core.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\core\tloc_core.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\core\tloc_core.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="graphics"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tloc_graphics.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tloc_graphics.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tloc_graphics.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocCamera.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocCamera.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocFan.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocFan.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\graphics\tlocQuad.cpp"
 				>
 			</File>
 			<File
@@ -417,14 +453,50 @@
 		<Filter
 			Name="input"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\input\tloc_input.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\input\tloc_input.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\input\tloc_input.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="math"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\math\tloc_math.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\math\tloc_math.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\math\tloc_math.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="physics"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\physics\tloc_physics.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\physics\tloc_physics.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPrefab\physics\tloc_physics.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocPrefab\physics\tlocRigidBody.cpp"
 				>
@@ -436,6 +508,18 @@
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocPrefab\placeholder.txt"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPrefab\tloc_prefab.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPrefab\tloc_prefab.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPrefab\tloc_prefab.inl"
 			>
 		</File>
 	</Files>

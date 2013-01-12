@@ -3,7 +3,7 @@
 
 namespace TestingGraphicsModes
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace graphics;
 
   TEST_CASE("Graphics/GraphicsModes/General", "")

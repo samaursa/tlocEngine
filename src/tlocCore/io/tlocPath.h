@@ -9,12 +9,15 @@ namespace tloc { namespace core { namespace io {
   class Path
   {
   public:
+    typedef string::String        string_type;
+
+  public:
     Path(const char* a_path);
 
-    void GetFileName(String& a_out) const;
-    void GetFileNameWithoutExtension(String& a_out) const;
-    void GetExtension(String& a_out) const;
-    void GetPathWithoutFileName(String& a_out) const;
+    void GetFileName(string_type& a_out) const;
+    void GetFileNameWithoutExtension(string_type& a_out) const;
+    void GetExtension(string_type& a_out) const;
+    void GetPathWithoutFileName(string_type& a_out) const;
 
     ///-------------------------------------------------------------------------
     /// @brief Queries if the file in the path exists.
@@ -41,7 +44,7 @@ namespace tloc { namespace core { namespace io {
   private:
     void DoFixPath();
 
-    String m_path;
+    string_type m_path;
   };
 
 };};};

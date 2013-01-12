@@ -13,6 +13,8 @@
 
 namespace tloc { namespace physics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // Free Functions
 
@@ -81,7 +83,7 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodySystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigidBody))
+    , Variadic<component_type, 1>(components::k_rigidBody))
     , m_world(a_world)
   {
   }
@@ -167,7 +169,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef rb_type::rigid_body_internal_type       rb_internal_type;
 
-    typedef rigid_body_component::rigid_body_def_type
+    typedef rigid_body_component::rigid_body_def_sptr::value_type
                                                     rb_def_type;
 
     typedef rb_def_type::rigid_body_def_internal_type
@@ -177,7 +179,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     rb_type& currRB = currRBComponent.GetRigidBody();
 
-    const rb_def_type currRBDef = currRBComponent.GetRigidBodyDef();
+    const rb_def_type currRBDef = *(currRBComponent.GetRigidBodyDef());
     const rb_def_internal_type& currRBDefInternal =
       currRBDef.DoGetRigidBodyDef();
 

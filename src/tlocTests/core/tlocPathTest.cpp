@@ -16,7 +16,8 @@
 namespace TestingIOPath
 {
   using namespace tloc;
-  using namespace tloc::core;
+  using namespace core;
+  using namespace string;
 
   void GetPathToCreateFiles(char* a_path);
 
@@ -80,7 +81,7 @@ namespace TestingIOPath
     {
       const char* fileName = "./testExists.txt";
       char path[1024];
-      
+
       strcpy(path, pathToCreateFiles);
       strcat(path, fileName);
 

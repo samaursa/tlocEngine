@@ -10,7 +10,9 @@ namespace
 {
   using namespace tloc;
 
-  typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
+  typedef core::containers::
+          Array<graphics::GraphicsMode<> >          graphics_modes_array;
+
   graphics_modes_array g_SupportedModes;
 
   struct CompareModes

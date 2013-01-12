@@ -16,7 +16,7 @@ namespace tloc { namespace core { namespace utils {
   {
   public:
     typedef GroupID<T>                          this_type;
-    typedef ObjectCtorCounter<T>              base_type;
+    typedef ObjectCtorCounter<T>                base_type;
     typedef typename base_type::size_type       size_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(size_type, GetUniqueGroupID, m_groupId);

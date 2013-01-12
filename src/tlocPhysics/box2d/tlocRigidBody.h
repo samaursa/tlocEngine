@@ -8,9 +8,9 @@
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocAngle.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
@@ -44,9 +44,9 @@ namespace tloc { namespace physics { namespace box2d {
     typedef core::error::Error    error_type;
 
     typedef tl_float              float_type;
-    typedef math::Vec2f           vec_type;
-    typedef math::Mat2f           matrix_type;
-    typedef math::Radian          angle_type;
+    typedef math::types::Vec2f    vec_type;
+    typedef math::types::Mat2f    matrix_type;
+    typedef math::types::Radian   angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
 
@@ -66,7 +66,7 @@ namespace tloc { namespace physics { namespace box2d {
     void GetTransform(vec_type& a_position, matrix_type& a_orientation) const;
     void GetTransform(vec_type& a_position, angle_type& a_angle) const;
 
-    void GetPosition(math::Vec2f& a_position) const;
+    void GetPosition(vec_type& a_position) const;
     void GetOrientation(matrix_type& a_orientation) const;
     angle_type GetAngle() const;
 

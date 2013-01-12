@@ -18,14 +18,14 @@ namespace tloc { namespace core {
   struct CallbackGroupTArray
   {
     DECL_TYPEDEF_HELPER(CallbackGroupTArray);
-    typedef CallbackGroupT<T_CallbackMethods, Array<T*> > type;
+    typedef CallbackGroupT<T_CallbackMethods, containers::Array<T*> > type;
   };
 
   template <typename T, typename T_CallbackMethods>
   struct CallbackGroupTList
   {
     DECL_TYPEDEF_HELPER(CallbackGroupTList);
-    typedef CallbackGroupT<T_CallbackMethods, List<T*> > type;
+    typedef CallbackGroupT<T_CallbackMethods, containers::List<T*> > type;
   };
 
   //------------------------------------------------------------------------
@@ -35,7 +35,8 @@ namespace tloc { namespace core {
   struct DispatcherBaseArray
   {
     DECL_TYPEDEF_HELPER(DispatcherBaseArray);
-    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, ArrayOrderedTemp> type;
+    typedef DispatcherBase<T_Callbacks, T_CallbackGroupT,
+                           containers::ArrayOrderedTemp> type;
   };
 
   //template <typename T_Callbacks, template <typename T> class T_CallbackGroupT>

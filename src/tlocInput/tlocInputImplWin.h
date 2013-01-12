@@ -27,11 +27,11 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool          m_available;
-    GUID          m_productGuid;
-    GUID          m_deviceGuid;
-    core::String  m_deviceName;
-    void*         m_devicePtr;
+    bool                  m_available;
+    GUID                  m_productGuid;
+    GUID                  m_deviceGuid;
+    core::string::String  m_deviceName;
+    void*                 m_devicePtr;
   };
 
   template <typename T_ParentInputManager>
@@ -69,8 +69,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(input_type a_inputType,
-                              parameter_options::Type a_params);
+    T_InputObject*  CreateHID(parameter_options::Type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.
@@ -82,13 +81,12 @@ namespace tloc { namespace input { namespace priv {
     ///-------------------------------------------------------------------------
     /// Returns an HID with the given type at the given index
     ///
-    /// @param  a_inputType Type of the input.
     /// @param  a_index     Zero-based index of a.
     ///
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(input_type a_inputType, size_type a_index);
+    T_InputObject* GetHID(size_type a_index);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.
@@ -112,7 +110,9 @@ namespace tloc { namespace input { namespace priv {
 
     IDirectInput8*                m_directInput;
 
-    typedef core::Array<core::Array<InputDeviceInfo> >  win_HID_array;
+    typedef core::containers::Array<InputDeviceInfo>    input_dinfo_array;
+    typedef core::containers::Array<input_dinfo_array>  win_HID_array;
+
     win_HID_array m_winHIDs;
 
   };

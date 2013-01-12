@@ -7,7 +7,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Container>
   class ForwardListT
@@ -171,6 +171,6 @@ namespace tloc { namespace core {
     typedef ForwardListT<T, Array<T> > type;
   };
 
-};};
+};};};
 
 #endif

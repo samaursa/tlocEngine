@@ -11,6 +11,8 @@
 
 namespace tloc { namespace core { namespace io {
 
+  using string::String;
+
   namespace
   {
     const char* g_pathSlash = "/";

@@ -9,7 +9,7 @@
 #include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/memory/tlocMemory.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -401,9 +401,10 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_AND_NOT_EQUAL_END(a_position);
 
-    copy(a_position + 1, m_end, a_position);
-    m_end->~value_type();
+    if ( (a_position + 1) < m_end) 
+    { copy(a_position + 1, m_end, a_position); }
     --m_end;
+    m_end->~value_type();
 
     return a_position;
   }
@@ -818,6 +819,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
-};};
+};};};
 
 #endif

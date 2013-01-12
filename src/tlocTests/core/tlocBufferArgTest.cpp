@@ -9,6 +9,7 @@ namespace TestingBufferPtr
 {
   using namespace tloc;
   using namespace core;
+  using namespace string;
 
   TEST_CASE("Core/Memory/BufferPtr", "")
   {

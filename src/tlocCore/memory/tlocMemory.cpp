@@ -11,10 +11,10 @@ namespace tloc { namespace core {
   {
     bool IsValidHeapPointer(const void * a_userData)
     {
+      TLOC_UNUSED(a_userData);
 #if defined(TLOC_USING_STD_ALLOC) && defined(TLOC_OS_WIN)
       return _CrtIsValidHeapPointer(a_userData) == 0 ? false : true;
 #else
-      TLOC_UNUSED(a_userData);
       return true;
 #endif
     }

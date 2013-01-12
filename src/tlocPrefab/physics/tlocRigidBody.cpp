@@ -12,12 +12,17 @@
 
 namespace tloc { namespace prefab { namespace physics {
 
-  core::component_system::Entity*
-    CreateRigidBody(const tloc::physics::box2d::RigidBodyDef& a_rbDef,
-                    core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr)
+  using namespace core::containers;
+  using namespace core::component_system;
+  using tloc::physics::box2d::rigid_body_def_sptr;
+  using tloc::physics::box2d::RigidBodyShapeDef;
+
+  Entity*
+    CreateRigidBody
+    (rigid_body_def_sptr a_rbDef,
+     EntityManager& a_mgr,
+     ComponentPoolManager& a_poolMgr)
   {
-    using namespace core::component_system;
     using namespace math::component_system;
     using namespace math::component_system::components;
 
@@ -46,12 +51,12 @@ namespace tloc { namespace prefab { namespace physics {
     return ent;
   }
 
-  void AddRigidBody(const tloc::physics::box2d::RigidBodyDef a_rbDef,
-                    core::component_system::Entity* a_ent,
-                    core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr)
+  void AddRigidBody
+    (rigid_body_def_sptr a_rbDef,
+     Entity* a_ent,
+     EntityManager& a_mgr,
+     ComponentPoolManager& a_poolMgr)
   {
-    using namespace core::component_system;
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
 
@@ -75,12 +80,11 @@ namespace tloc { namespace prefab { namespace physics {
     a_mgr.InsertComponent(a_ent, &*(itrRb->GetElement()) );
   }
 
-  void AddRigidBodyShape(const tloc::physics::box2d::RigidBodyShapeDef a_rbShape,
-                         core::component_system::Entity* a_ent,
-                         core::component_system::EntityManager& a_mgr,
-                         core::component_system::ComponentPoolManager& a_poolMgr)
+  void AddRigidBodyShape(RigidBodyShapeDef a_rbShape,
+                         Entity* a_ent,
+                         EntityManager& a_mgr,
+                         ComponentPoolManager& a_poolMgr)
   {
-    using namespace core::component_system;
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
 
@@ -105,13 +109,13 @@ namespace tloc { namespace prefab { namespace physics {
   }
 
   void AddRigidBodyShape
-    (const core::
-    tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type& a_rbShapes,
-    core::component_system::Entity* a_ent,
-    core::component_system::EntityManager& a_mgr,
-    core::component_system::ComponentPoolManager& a_poolMgr)
+    (const core::containers::
+    tl_array<const RigidBodyShapeDef>::type& a_rbShapes,
+    Entity* a_ent,
+    EntityManager& a_mgr,
+    ComponentPoolManager& a_poolMgr)
   {
-    typedef core::tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type
+    typedef tl_array<const RigidBodyShapeDef>::type
       rb_shape_ptr_array;
 
     typedef rb_shape_ptr_array::const_iterator  rb_const_iterator;
@@ -126,11 +130,10 @@ namespace tloc { namespace prefab { namespace physics {
   }
 
   void AddRigidBodyListener(tloc::physics::RigidBodyListener* a_listener,
-                            core::component_system::Entity* a_ent,
-                            core::component_system::EntityManager& a_mgr,
-                            core::component_system::ComponentPoolManager& a_poolMgr)
+                            Entity* a_ent,
+                            EntityManager& a_mgr,
+                            ComponentPoolManager& a_poolMgr)
   {
-    using namespace core::component_system;
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
 

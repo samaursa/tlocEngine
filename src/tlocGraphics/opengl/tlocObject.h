@@ -121,7 +121,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef ObjectBase                  base_type;
     typedef base_type::object_handle    object_handle;
-    typedef core::String                string_type;
+    typedef core::string::String        string_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);
 

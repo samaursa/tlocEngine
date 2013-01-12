@@ -4,9 +4,9 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
 
+#include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/data_types/tlocRectangle.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
@@ -16,6 +16,8 @@
 
 
 namespace tloc { namespace graphics { namespace component_system {
+
+  using namespace core::data_structs;
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
@@ -28,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
   QuadRenderSystem::QuadRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 core::Variadic<component_type, 1>(components::quad))
+                 Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
     m_quadList.resize(4); // number of vertexes a quad has
@@ -145,36 +147,42 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Prepare the Quad
 
-      typedef types::Rectf32    rect_type;
+      typedef math::types::Rectf32    rect_type;
+      using math::types::Mat4f32;
+      using math::types::Vec4f32;
 
-      const f32 halfSize = q.GetSize() * 0.5f;
+      const rect_type& rect = q.GetRectangleRef();
 
-      rect_type   rect(rect_type::half_width(halfSize * 1.0f),
-                       rect_type::half_height(halfSize * 1.0f));
-
-      m_quadList[0] = vec3_type(rect.GetCoord<rect_type::right>(),
-                                rect.GetCoord<rect_type::top>(), 0);
-      m_quadList[1] = vec3_type(rect.GetCoord<rect_type::left>(),
-                                rect.GetCoord<rect_type::top>(), 0);
-      m_quadList[2] = vec3_type(rect.GetCoord<rect_type::right>(),
-                                rect.GetCoord<rect_type::bottom>(), 0);
-      m_quadList[3] = vec3_type(rect.GetCoord<rect_type::left>(),
-                                rect.GetCoord<rect_type::bottom>(), 0);
+      m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
+                                rect.GetValue<rect_type::top>(), 0);
+      m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
+                                rect.GetValue<rect_type::top>(), 0);
+      m_quadList[2] = vec3_type(rect.GetValue<rect_type::right>(),
+                                rect.GetValue<rect_type::bottom>(), 0);
+      m_quadList[3] = vec3_type(rect.GetValue<rect_type::left>(),
+                                rect.GetValue<rect_type::bottom>(), 0);
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
+      const Mat4f32& tMatrix = pos.GetTransformation();
+
+      Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        m_quadList[i] += pos.GetPosition();
+        qPos = m_quadList[i].ConvertTo<Vec4f32>();
+        qPos = tMatrix * qPos;
+
+        m_quadList[i].ConvertFrom(qPos);
       }
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
+
 
       //------------------------------------------------------------------------
       // Enable the shader
@@ -183,7 +191,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr || m_shaderPtr.get() != sp.get() )
+      if ( !m_shaderPtr && m_shaderPtr.get() != sp.get() )
       {
         sp->Enable();
         m_shaderPtr = sp;
@@ -215,7 +223,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Post_ProcessActiveEntities()
   {
-    m_shaderPtr = shader_prog_ptr();
+    m_shaderPtr->Disable();
+    m_shaderPtr.reset();
   }
 
 };};};

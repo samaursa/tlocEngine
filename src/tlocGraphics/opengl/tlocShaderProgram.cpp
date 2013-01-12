@@ -2,7 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocCore/utilities/tlocType.h>
 
@@ -12,6 +12,9 @@
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics { namespace gl {
+
+  using namespace core::data_structs;
+  using namespace core::string;
 
   namespace
   {
@@ -55,7 +58,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_UNUSED(uniformMaxLength);
 
       a_infoOut.resize(numOfUniforms);
-      core::String fixedName;
+      String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
         ShaderVariableInfo& currInfo = a_infoOut[i];
@@ -154,7 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <ShaderProgram::size_type T_Size>
   ShaderProgram::error_type
     ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
+    (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -178,7 +181,7 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      core::String errorString;
+      String errorString;
       gl::Error().GetErrorAsString(errorString);
 
       // TODO: Write shader log
@@ -305,19 +308,19 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit initialization
 
   // Supporting up to 4 shader attachments
-  template class core::Variadic<Shader_I*, 1>;
-  template class core::Variadic<Shader_I*, 2>;
-  template class core::Variadic<Shader_I*, 3>;
-  template class core::Variadic<Shader_I*, 4>;
+  template class Variadic<Shader_I*, 1>;
+  template class Variadic<Shader_I*, 2>;
+  template class Variadic<Shader_I*, 3>;
+  template class Variadic<Shader_I*, 4>;
 
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 1>);
+    (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 2>);
+    (Variadic<Shader_I*, 2>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 3>);
+    (Variadic<Shader_I*, 3>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 4>);
+    (Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;

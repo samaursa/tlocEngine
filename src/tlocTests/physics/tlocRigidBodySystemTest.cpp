@@ -8,11 +8,12 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
-#include <tlocPhysics/box2d/tlocCircleShape.h>
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
@@ -36,13 +37,15 @@ namespace TestingRigidBodySystem
     typedef core::component_system::EntityManager entity_manager;
     typedef core::component_system::Entity        entity_type;
 
+    typedef math::types::Rectf                rect_shape_type;
+    typedef math::types::Circlef              circle_shape_type;
     typedef math::component_system::Transform transform_type;
 
-    typedef box2d::PhysicsManager     physics_manager;
-    typedef box2d::ContactEvent       contact_event_type;
-    typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
-    typedef box2d::CircleShape        circle_shape_type;
-    typedef box2d::RigidBodyDef       rigid_body_def_type;
+    typedef box2d::PhysicsManager       physics_manager;
+    typedef box2d::ContactEvent         contact_event_type;
+    typedef box2d::RigidBodyShapeDef    rigid_body_shape_def_type;
+    typedef box2d::RigidBodyDef         rigid_body_def_type;
+    typedef box2d::rigid_body_def_sptr  rigid_body_def_sptr;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
@@ -60,44 +63,52 @@ namespace TestingRigidBodySystem
   {
   public:
 
-    WorldContactCallback() : m_numEvents(0) {}
+    WorldContactCallback()
+      : m_numContactBegin(0)
+      , m_numContactEnd(0)
+    {}
 
     bool OnContactBegin(const rb_sys_fixture::contact_event_type& a_event)
     {
-      ++m_numEvents;
+      ++m_numContactBegin;
       TLOC_UNUSED(a_event);
       return false;
     }
 
     bool OnContactEnd(const rb_sys_fixture::contact_event_type& a_event)
     {
-      ++m_numEvents;
+      ++m_numContactEnd;
       TLOC_UNUSED(a_event);
       return false;
     }
 
-      tl_size m_numEvents;
+    tl_size m_numContactBegin;
+    tl_size m_numContactEnd;
   };
 
   class ComponentContactCallback : public  physics::RigidBodyListener
   {
   public:
 
-    ComponentContactCallback() : m_numEvents(0) {}
+    ComponentContactCallback()
+      : m_numContactBegin(0)
+      , m_numContactEnd(0)
+    {}
 
     void OnContactBegin(const entity_type* a_ent)
     {
-      ++m_numEvents;
+      ++m_numContactBegin;
       TLOC_UNUSED(a_ent);
     }
 
     void OnContactEnd(const entity_type* a_ent)
     {
-      ++m_numEvents;
+      ++m_numContactEnd;
       TLOC_UNUSED(a_ent);
     }
 
-    tl_size m_numEvents;
+    tl_size m_numContactBegin;
+    tl_size m_numContactEnd;
   };
 
 };
@@ -107,88 +118,110 @@ TLOC_DEF_TYPE(TestingRigidBodySystem::WorldContactCallback);
 namespace TestingRigidBodySystem
 {
 
-  TEST_CASE("Physics/component_system/RigidBodySystem/General", "")
+  TEST_CASE_METHOD(rb_sys_fixture,
+                   "Physics/component_system/RigidBodySystem/General", "")
   {
     const float gravityY = -1000.0f;
 
     // Initialize essential systems
-    rb_sys_fixture::physics_manager physicsMgr;
-    rb_sys_fixture::physics_manager::vec_type gravity(0.0f, gravityY);
+    physics_manager physicsMgr;
+    physics_manager::vec_type gravity(0.0f, gravityY);
 
-    physicsMgr.Initialize(rb_sys_fixture::physics_manager::gravity(gravity));
+    physicsMgr.Initialize(physics_manager::gravity(gravity));
 
     WorldContactCallback myWorldContactCallback;
     physicsMgr.Register(&myWorldContactCallback);
 
-    rb_sys_fixture::event_manager evntMgr;
-    rb_sys_fixture::entity_manager entityMgr(&evntMgr);
+    event_manager evntMgr;
+    entity_manager entityMgr(&evntMgr);
 
-    rb_sys_fixture::rigid_body_system
-      rigidBodySys(&evntMgr, &entityMgr, &physicsMgr.GetWorld());
+    rigid_body_system rigidBodySys(&evntMgr, &entityMgr, &physicsMgr.GetWorld());
 
-    rb_sys_fixture::rigid_body_listener_system
+    rigid_body_listener_system
       rigidBodyListenerSys(&evntMgr, &entityMgr, &physicsMgr);
 
-    // Create a static rigid body entity
-    rb_sys_fixture::entity_type* rbStaticEntity = entityMgr.CreateEntity();
+    //------------------------------------------------------------------------
+    // Create a static rigid body entity (Box)
+    entity_type* rbStaticRectEntity = entityMgr.CreateEntity();
 
-    rb_sys_fixture::transform_type transformComponent1;
+    transform_type transformComponent;
 
-    rb_sys_fixture::rigid_body_def_type rbDef1;
-    rb_sys_fixture::rigid_body_component rbStaticComponent(rbDef1);
+    rigid_body_def_sptr rbDef(new rigid_body_def_type);
+    rigid_body_component rbStaticRectComponent(rbDef);
 
-    rb_sys_fixture::circle_shape_type circleShape;
+    rect_shape_type rectShape(rect_shape_type::width(20.0f),
+                              rect_shape_type::height(2.0f) );
+
+    rigid_body_shape_def_type rbRectShape(rectShape);
+    rigid_body_shape_component rbShapeComponent(rbRectShape);
+
+    entityMgr.InsertComponent(rbStaticRectEntity, &transformComponent);
+    entityMgr.InsertComponent(rbStaticRectEntity, &rbStaticRectComponent);
+    entityMgr.InsertComponent(rbStaticRectEntity, &rbShapeComponent);
+
+    //------------------------------------------------------------------------
+    // Create a static rigid body entity (Circle)
+    entity_type* rbStaticCircleEntity = entityMgr.CreateEntity();
+
+    transform_type transformComponent1;
+
+    const float circleStartPosition = 3.0f;
+
+    rigid_body_def_sptr rbDef1(new rigid_body_def_type);
+    rbDef1->SetPosition(vec_type(-2.0f, circleStartPosition));
+    rigid_body_component rbStaticComponent(rbDef1);
+
+    circle_shape_type circleShape;
     circleShape.SetRadius(1.0f);
 
-    rb_sys_fixture::rigid_body_shape_def_type rbCircleShape(circleShape);
-    rb_sys_fixture::rigid_body_shape_component rbShapeComponent1(rbCircleShape);
+    rigid_body_shape_def_type rbCircleShape(circleShape);
+    rigid_body_shape_component rbShapeComponent1(rbCircleShape);
 
-    entityMgr.InsertComponent(rbStaticEntity, &transformComponent1);
-    entityMgr.InsertComponent(rbStaticEntity, &rbStaticComponent);
-    entityMgr.InsertComponent(rbStaticEntity, &rbShapeComponent1);
+    entityMgr.InsertComponent(rbStaticCircleEntity, &transformComponent1);
+    entityMgr.InsertComponent(rbStaticCircleEntity, &rbStaticComponent);
+    entityMgr.InsertComponent(rbStaticCircleEntity, &rbShapeComponent1);
 
-    // Create a dynamic rigid body
-    rb_sys_fixture::entity_type* rbDynamicEntity = entityMgr.CreateEntity();
+    //------------------------------------------------------------------------
+    // Create a dynamic rigid body (Circle)
+    entity_type* rbDynamicCircleEntity = entityMgr.CreateEntity();
 
-    rb_sys_fixture::transform_type transformComponent2;
+    transform_type transformComponent2;
 
-    const float rbDynamicStartPositionY = 3.0f;
+    rigid_body_def_sptr rbDef2(new rigid_body_def_type);
+    rbDef2->SetType<box2d::p_rigid_body::DynamicBody>();
+    rbDef2->SetPosition(vec_type(2.0f, circleStartPosition));
 
-    rb_sys_fixture::rigid_body_def_type rbDef2;
-    rbDef2.SetType<box2d::p_rigid_body::DynamicBody>();
-    rbDef2.SetPosition(rb_sys_fixture::vec_type(0.0f, rbDynamicStartPositionY));
+    rigid_body_component rbDynamicComponent(rbDef2);
 
-    rb_sys_fixture::rigid_body_component rbDynamicComponent(rbDef2);
-
-    rb_sys_fixture::rigid_body_shape_component rbShapeComponent2(rbCircleShape);
+    rigid_body_shape_component rbShapeComponent2(rbCircleShape);
 
     ComponentContactCallback myComponentContactCallback;
-    rb_sys_fixture::rigid_body_listener_component
-      rbListenerComponent(&myComponentContactCallback);
+    rigid_body_listener_component rbListenerComponent(&myComponentContactCallback);
 
-    entityMgr.InsertComponent(rbDynamicEntity, &transformComponent2);
-    entityMgr.InsertComponent(rbDynamicEntity, &rbDynamicComponent);
-    entityMgr.InsertComponent(rbDynamicEntity, &rbShapeComponent2);
-    entityMgr.InsertComponent(rbDynamicEntity, &rbListenerComponent);
+    entityMgr.InsertComponent(rbDynamicCircleEntity, &transformComponent2);
+    entityMgr.InsertComponent(rbDynamicCircleEntity, &rbDynamicComponent);
+    entityMgr.InsertComponent(rbDynamicCircleEntity, &rbShapeComponent2);
+    entityMgr.InsertComponent(rbDynamicCircleEntity, &rbListenerComponent);
 
+    //------------------------------------------------------------------------
     CHECK(rigidBodySys.Initialize() == ErrorSuccess());
     CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess());
 
     // Update everything once so everything is in the right position
     rigidBodySys.ProcessActiveEntities();
 
-    rb_sys_fixture::vec_type position;
+    vec_type position;
     rbDynamicComponent.GetRigidBody().GetPosition(position);
     CHECK(position[1] == Approx(3.0f));
 
-    CHECK(myWorldContactCallback.m_numEvents == 0);
-    CHECK(myComponentContactCallback.m_numEvents == 0);
+    CHECK(myWorldContactCallback.m_numContactBegin == 0);
+    CHECK(myComponentContactCallback.m_numContactBegin == 0);
 
     // Note: The "tolerance" of 0.25f is only valid within the first 4
     // iterations on the Box2D platform. Adjust if necessary.
     const tl_float tolerance = 0.25f;
 
-    rb_sys_fixture::vec_type previousPosition;
+    vec_type previousPosition;
     const tl_float timeStep = 0.01f;
     const tl_size maxIterations = 4;
 
@@ -205,13 +238,13 @@ namespace TestingRigidBodySystem
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
 
-      if((previousPosition != position) == false)
+      if((position[1] < previousPosition[1]) == false)
       { deltaPTest = false; break; }
 
       // +1 since we've already told the physics manager to move "ahead" one step.
       tl_float time = timeStep * (i + 1);
       tl_float calculatedPositionY =
-        rbDynamicStartPositionY + 0.5f * gravityY * time * time;
+        circleStartPosition + 0.5f * gravityY * time * time;
 
       if(Mathf::Approx(calculatedPositionY, position[1], tolerance) == false)
       { actualPTest = false; break; }
@@ -220,12 +253,10 @@ namespace TestingRigidBodySystem
     CHECK(actualPTest);
 
     // Ball has hit the floor, But has not registered the hit yet
-    CHECK(myWorldContactCallback.m_numEvents == 0);
-    CHECK(myComponentContactCallback.m_numEvents == 0);
-
+    CHECK(myWorldContactCallback.m_numContactBegin == 0);
+    CHECK(myComponentContactCallback.m_numContactBegin == 0);
 
     // Update one more time. The ball should have hit the floor and "stopped"
-    // thus having the same position
     {
       physicsMgr.Update(timeStep);
       rigidBodySys.ProcessActiveEntities();
@@ -233,11 +264,11 @@ namespace TestingRigidBodySystem
 
       previousPosition = position;
       rbDynamicComponent.GetRigidBody().GetPosition(position);
-      CHECK((position == previousPosition));
+      CHECK(position[1] >= previousPosition[1]);
     }
 
-    CHECK(myWorldContactCallback.m_numEvents == 1);
-    CHECK(myComponentContactCallback.m_numEvents == 1);
+    CHECK(myWorldContactCallback.m_numContactBegin == 1);
+    CHECK(myComponentContactCallback.m_numContactBegin == 1);
 
     CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess());
     CHECK(rigidBodySys.Shutdown() == ErrorSuccess());

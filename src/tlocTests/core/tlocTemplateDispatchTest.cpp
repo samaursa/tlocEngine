@@ -16,7 +16,7 @@ TLOC_DEF_TYPE(ns::pipes);
 
 namespace TestingTemplateDispatch
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
 
   struct bullets

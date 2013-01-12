@@ -13,6 +13,8 @@ TLOC_DEF_TYPE(tloc::physics::component_system::RigidBodyListenerSystem);
 
 namespace tloc { namespace physics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // Free functions and definitions
 
@@ -98,7 +100,7 @@ namespace tloc { namespace physics { namespace component_system {
                             entity_manager* a_entityMgr,
                             physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::k_rigidBodyListener))
+    , Variadic<component_type, 1>(components::k_rigidBodyListener))
     , m_physicsMgr(a_physicsMgr)
   {
   }

@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Different policies that Array can handle
@@ -340,6 +340,6 @@ namespace tloc { namespace core {
   {
   };
 
-};};
+};};};
 
 #endif

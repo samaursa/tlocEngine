@@ -1,13 +1,13 @@
 #include "tlocShaderOperator.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
@@ -17,11 +17,14 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::math;
+  using namespace math::types;
+  using namespace core::containers;
+  using namespace core::data_structs;
 
   namespace
   {
-    typedef core::tl_array<ShaderVariableInfo>::type   glsl_var_info_cont_type;
+    typedef core::containers::
+      tl_array<ShaderVariableInfo>::type   glsl_var_info_cont_type;
 
     //------------------------------------------------------------------------
     // Cacher
@@ -984,9 +987,9 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // explicit instantiation
 
-  template class tloc::core::smart_ptr::SharedPtr<ShaderOperator>;
-  template class tloc::core::Array<UniformPtr>;
-  template class tloc::core::Array<AttributePtr>;
+  template class core::smart_ptr::SharedPtr<ShaderOperator>;
+  template class Array<UniformPtr>;
+  template class Array<AttributePtr>;
 
 
 };};};

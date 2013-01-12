@@ -75,7 +75,7 @@ namespace tloc { namespace graphics {
   public:
 
     typedef T_Platform                                   platform_type;
-    typedef Window_T<platform_type>                        this_type;
+    typedef Window_T<platform_type>                      this_type;
     typedef GraphicsMode<T_Platform>                     graphics_mode;
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
@@ -236,7 +236,7 @@ namespace tloc { namespace graphics {
 
     typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
-    core::Queue<WindowEvent>                m_events;
+    core::containers::Queue<WindowEvent>    m_events;
   };
 
   //////////////////////////////////////////////////////////////////////////

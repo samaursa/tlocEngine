@@ -4,14 +4,15 @@
 
 namespace TestingColor
 {
+  using namespace tloc;
   using namespace tloc::graphics::component_system;
 
   TEST_CASE("Graphics/component_system/Quad", "")
   {
-    Quad q(Quad::size(2.0f));
-    CHECK(q.GetSize() == Approx(2.0f));
+    using math::types::Rectf32;
 
-    q.SetSize(Quad::size(1.0f));
-    CHECK(q.GetSize() == Approx(1.0f));
+    Rectf32 r(Rectf32::width(1.0f), Rectf32::height(2.0f));
+    Quad q(r);
+    CHECK(q.GetRectangleRef() == r);
   }
 };

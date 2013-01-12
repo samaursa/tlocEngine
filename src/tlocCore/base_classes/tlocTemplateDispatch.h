@@ -136,7 +136,7 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
+        if ( string::StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           currCallback->Register(a_observer);
@@ -180,7 +180,7 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
+        if ( string::StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->UnRegister(a_observer);
@@ -206,7 +206,8 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), tl_type_to_string<T>().value() ) == 0)
+        if ( string::StrCmp( (*itr)->GetType(),
+             tl_type_to_string<T>().value() ) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->GetNumRegistered();

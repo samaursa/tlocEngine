@@ -422,6 +422,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -678,6 +679,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>

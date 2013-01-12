@@ -36,6 +36,19 @@ namespace tloc { namespace prefab { namespace physics {
                             core::component_system::EntityManager& a_mgr,
                             core::component_system::ComponentPoolManager);
 
+  template <typename T_Shape>
+  void AddRigidBodyShape(const T_Shape a_shape, 
+                         tl_float a_density,
+                         core::component_system::Entity* a_ent,
+                         core::component_system::EntityManager& a_mgr,
+                         core::component_system::ComponentPoolManager& a_poolMgr)
+  {
+    tloc::physics::box2d::RigidBodyShapeDef rbShape(a_shape);
+    rbShape.SetDensity(a_density);
+
+    AddRigidBodyShape(rbShape, a_ent, a_mgr, a_poolMgr);
+  }
+
 };};};
 
 #endif

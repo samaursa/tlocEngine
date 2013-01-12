@@ -23,7 +23,7 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentMouse>
   class MouseImpl
@@ -79,6 +79,6 @@ namespace tloc { namespace input { namespace priv {
     static const size_type  s_bufferSize = sizeof(DIMOUSESTATE2);
   };
 
-};};};
+};};};};
 
 #endif

@@ -14,7 +14,7 @@
 #include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class Mouse;
 
@@ -147,6 +147,6 @@ namespace tloc { namespace input {
   typedef Mouse<InputPolicy::Buffered>   MouseB;
   typedef Mouse<InputPolicy::Immediate>  MouseI;
 
-};};
+};};};
 
 #endif

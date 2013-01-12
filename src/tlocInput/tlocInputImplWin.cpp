@@ -52,7 +52,7 @@ namespace tloc { namespace input { namespace priv {
             }
           case p_hid::Mouse::m_index:
             {
-              delete static_cast<Mouse<policy_type>* >
+              delete static_cast<hid::Mouse<policy_type>* >
                 (m_winHIDs[hidIndex][hidNum].m_devicePtr);
               break;
             }
@@ -194,7 +194,7 @@ namespace tloc { namespace input { namespace priv {
       }
     case mouse_type::m_index:
       {
-        typedef Mouse<policy_type> mouse_type;
+        typedef hid::Mouse<policy_type> mouse_type;
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
@@ -345,7 +345,7 @@ namespace tloc { namespace input { namespace priv {
   InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
   INSTANTIATE_HID(Keyboard);
-  INSTANTIATE_HID(Mouse);
+  INSTANTIATE_HID(hid::Mouse);
 
 
 };};};

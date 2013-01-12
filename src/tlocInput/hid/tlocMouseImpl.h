@@ -41,7 +41,7 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// Mouse implementation that must be specialized for each platform
@@ -81,6 +81,6 @@ namespace tloc { namespace input { namespace priv {
     param_list_type       m_params;
   };
 
-};};};
+};};};};
 
 #endif

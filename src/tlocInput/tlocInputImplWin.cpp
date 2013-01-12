@@ -51,20 +51,22 @@ namespace tloc { namespace input { namespace priv {
       m_directInput = NULL;
     }
 
-    for (size_type i = 0; i < hid::Count::m_index; ++i)
+    for (size_type hidIndex = 0; hidIndex < hid::Count::m_index; ++hidIndex)
     {
-      for (size_type hidNum = 0; hidNum < m_winHIDs[i].size(); ++hidNum)
+      for (size_type hidNum = 0; hidNum < m_winHIDs[hidIndex].size(); ++hidNum)
       {
-        switch(i)
+        switch(hidIndex)
         {
           case hid::Keyboard::m_index:
             {
-              delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum].m_devicePtr;
+              delete static_cast<Keyboard<policy_type>* >
+                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
               break;
             }
           case hid::Mouse::m_index:
             {
-              delete (Mouse<policy_type>*)m_winHIDs[i][hidNum].m_devicePtr;
+              delete static_cast<Mouse<policy_type>* >
+                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
               break;
             }
           case hid::Joystick::m_index:
@@ -303,6 +305,7 @@ namespace tloc { namespace input { namespace priv {
     info.m_deviceGuid  = lpddi->guidInstance;
     info.m_deviceName  = lpddi->tszInstanceName;
     info.m_available   = false;
+    info.m_devicePtr   = nullptr;
 
     if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)
     {

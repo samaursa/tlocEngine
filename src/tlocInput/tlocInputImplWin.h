@@ -8,9 +8,9 @@
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/string/tlocString.h>
 
-#include "tlocInput.h"
-#include "tlocInputImpl.h"
-#include "tlocInputTypes.h"
+#include <tlocInput/tlocInputManager.h>
+#include <tlocInput/tlocInputImpl.h>
+#include <tlocInput/tlocInputTypes.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

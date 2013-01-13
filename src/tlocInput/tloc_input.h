@@ -3,7 +3,7 @@
 
 #include <tlocInput/tlocInputBase.h>
 
-#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/tlocInputTypes.h>
 
 #include <tlocInput/hid/tloc_hid.h>

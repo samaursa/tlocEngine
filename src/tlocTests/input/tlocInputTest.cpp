@@ -4,7 +4,7 @@
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/time/tlocTime.h>
 
-#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>

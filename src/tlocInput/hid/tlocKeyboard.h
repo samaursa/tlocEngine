@@ -10,7 +10,7 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
-#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
 namespace tloc { namespace input { namespace hid {

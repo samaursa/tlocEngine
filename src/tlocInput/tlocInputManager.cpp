@@ -1,4 +1,4 @@
-#include "tlocInput.h"
+#include "tlocInputManager.h"
 #include "tlocInputTypes.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>

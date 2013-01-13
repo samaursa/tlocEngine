@@ -1,5 +1,6 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/time/tlocTime.h>
@@ -298,7 +299,7 @@ namespace TestingInput
 
     HWND wnd = CreateWin32Window();
 
-    InputParameterList<HWND> params;
+    ParamList<HWND> params;
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
 

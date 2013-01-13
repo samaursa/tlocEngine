@@ -1,14 +1,17 @@
 #ifndef TLOC_INPUT_WIN_H
 #define TLOC_INPUT_WIN_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/string/tlocString.h>
 
-#include "tlocInput.h"
-#include "tlocInputImpl.h"
-#include "tlocInputTypes.h"
+#include <tlocInput/tlocInputManager.h>
+#include <tlocInput/tlocInputImpl.h>
+#include <tlocInput/tlocInputTypes.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -18,7 +21,7 @@
 
 namespace tloc { namespace input {
 
-  typedef InputParameterList<HWND> input_param_type;
+  typedef ParamList<HWND> input_param_type;
 
 };};
 

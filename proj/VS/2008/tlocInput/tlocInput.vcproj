@@ -781,15 +781,15 @@
 			Name="_misc"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocInputImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.h"
 				>
 			</File>
 			<File
@@ -923,6 +923,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocInput\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocInput\tlocInputBase.h"
 			>
 		</File>
 	</Files>

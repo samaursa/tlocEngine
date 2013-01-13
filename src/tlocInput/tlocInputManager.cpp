@@ -1,4 +1,4 @@
-#include "tlocInput.h"
+#include "tlocInputManager.h"
 #include "tlocInputTypes.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
@@ -14,8 +14,6 @@
 
 #if defined(TLOC_OS_WIN)
 # include "tlocInputImplWin.h"
-//# include "tlocKeyboardImplWin.h"
-//# include "tlocMouseImplWin.h"
 #elif defined(TLOC_OS_IPHONE)
 # include "tlocInputImplIphone.h"
 #else
@@ -60,7 +58,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   void InputManager<INPUT_MANAGER_PARAM>::Update()
   {
-    for (u32 i = 0; i < hid::Count::m_index; ++i)
+    for (u32 i = 0; i < p_hid::Count::m_index; ++i)
     {
       DoUpdate(i);
     }
@@ -112,11 +110,11 @@ namespace tloc { namespace input {
   <_HID_<_type_::policy_type> >(_type_::size_type);\
 
 #if defined(TLOC_OS_WIN)
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
-  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Mouse, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Immediate>);
 #elif defined(TLOC_OS_IPHONE)
   INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);

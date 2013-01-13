@@ -1,10 +1,11 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/time/tlocTime.h>
 
-#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
@@ -18,6 +19,7 @@ namespace TestingInput
 {
   using namespace tloc;
   using namespace input;
+  using namespace input_hid;
 
   template <typename T_Keyboard>
   struct sampleInputKeyboard
@@ -93,7 +95,7 @@ namespace TestingInput
     u32         m_buttonPresses;
     u32         m_buttonReleases;
     u32         m_movementEvents;
-  }; TLOC_DEF_TYPE(sampleInputMouse<MouseB>);
+  }; TLOC_DEF_TYPE(sampleInputMouse<hid::MouseB>);
 
 
   LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -213,6 +215,8 @@ namespace TestingInput
   void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_buttonDown,
                        WORD a_buttonUp, WORD a_extraData)
   {
+    using hid::MouseB;
+
     core::time::Timer_T<> countDown;
     MouseB* mouse = a_im->GetHID<MouseB>();
 
@@ -246,6 +250,8 @@ namespace TestingInput
   MouseEvent TestMouseMove(InputManager<>* a_im, HWND a_wnd, WORD a_axis,
                      tl_int a_x, tl_int a_y, WORD a_data)
   {
+    using hid::MouseB;
+
     core::time::Timer_T<> countDown;
     MouseB* mouse = a_im->GetHID<MouseB>();
 
@@ -293,7 +299,7 @@ namespace TestingInput
 
     HWND wnd = CreateWin32Window();
 
-    InputParameterList<HWND> params;
+    ParamList<HWND> params;
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
 
@@ -420,6 +426,8 @@ namespace TestingInput
       TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP);
       TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
     }
+
+    using hid::MouseB;
 
     MouseB* mouse = inputMgr.CreateHID<MouseB>();
     CHECK(mouse != NULL);

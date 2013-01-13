@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_H
 #define TLOC_INPUT_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/platform/tlocPlatform.h>
@@ -13,25 +15,6 @@
 #include "tlocInputTypes.h"
 
 namespace tloc { namespace input {
-
-  // TODO: Create parameter list header file in core with lists up to 50
-  ///-------------------------------------------------------------------------
-  /// Platform independent list of parameters.
-  ///
-  /// Incorrect parameter types will result in linking errors.
-  ///-------------------------------------------------------------------------
-  template <typename T1,
-            typename T2 = TLOC_DUMMY_PARAM,
-            typename T3 = TLOC_DUMMY_PARAM,
-            typename T4 = TLOC_DUMMY_PARAM>
-  struct InputParameterList
-  {
-    T1  m_param1;
-    T2  m_param2;
-    T3  m_param3;
-    T4  m_param4;
-  };
-
 
   ///-------------------------------------------------------------------------
   /// Manager for all inputs. You can create as many of them as you want. A
@@ -72,7 +55,7 @@ namespace tloc { namespace input {
     T_InputObject*  CreateHID
       (parameter_options::Type a_params = parameter_options::TL_DEFAULT)
     {
-      hid::IsInputTypeSupported<T_InputObject>();
+      p_hid::IsInputTypeSupported<T_InputObject>();
       return DoCreateHID<T_InputObject>(a_params);
     }
 
@@ -84,7 +67,7 @@ namespace tloc { namespace input {
     template <typename T_InputObject>
     void Update()
     {
-      hid::IsInputTypeSupported<T_InputObject>();
+      p_hid::IsInputTypeSupported<T_InputObject>();
       DoUpdate(T_InputObject::k_index);
     }
 
@@ -104,7 +87,7 @@ namespace tloc { namespace input {
     template <typename T_InputObject>
     T_InputObject* GetHID(size_type a_index = 0)
     {
-      hid::IsInputTypeSupported<T_InputObject>();
+      p_hid::IsInputTypeSupported<T_InputObject>();
       return DoGetHID<T_InputObject>(a_index);
     }
 
@@ -118,7 +101,7 @@ namespace tloc { namespace input {
     template <typename T_InputObject>
     size_type GetTotalHID()
     {
-      hid::IsInputTypeSupported<T_InputObject>();
+      p_hid::IsInputTypeSupported<T_InputObject>();
       return DoGetTotalHID<T_InputObject>();
     }
 

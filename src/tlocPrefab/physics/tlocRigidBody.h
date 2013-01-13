@@ -10,31 +10,44 @@
 namespace tloc { namespace prefab { namespace physics {
 
   core::component_system::Entity*
-    CreateRigidBody(tloc::physics::box2d::rigid_body_def_sptr a_rbDef,
-                    core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr);
+    CreateRigidBody(core::component_system::EntityManager& a_mgr,
+                    core::component_system::ComponentPoolManager& a_poolMgr,
+                    tloc::physics::box2d::rigid_body_def_sptr a_rbDef);
 
-  void AddRigidBody(tloc::physics::box2d::rigid_body_def_sptr a_rbDef,
-                    core::component_system::Entity* a_ent,
+  void AddRigidBody(core::component_system::Entity* a_ent,
                     core::component_system::EntityManager& a_mgr,
-                    core::component_system::ComponentPoolManager& a_poolMgr);
+                    core::component_system::ComponentPoolManager& a_poolMgr,
+                    tloc::physics::box2d::rigid_body_def_sptr a_rbDef);
 
-  void AddRigidBodyShape(const tloc::physics::box2d::RigidBodyShapeDef a_rbShape,
-                         core::component_system::Entity* a_ent,
+  void AddRigidBodyShape(core::component_system::Entity* a_ent,
                          core::component_system::EntityManager& a_mgr,
-                         core::component_system::ComponentPoolManager& a_poolMgr);
+                         core::component_system::ComponentPoolManager& a_poolMgr,
+                         const tloc::physics::box2d::RigidBodyShapeDef a_rbShape);
 
   void AddRigidBodyShape
-    (const core::containers::
-    tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type& a_rbShapes,
-    core::component_system::Entity* a_ent,
-    core::component_system::EntityManager& a_mgr,
-    core::component_system::ComponentPoolManager& a_poolMgr);
+    (core::component_system::Entity* a_ent,
+     core::component_system::EntityManager& a_mgr,
+     core::component_system::ComponentPoolManager& a_poolMgr,
+     const core::containers::
+     tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type& a_rbShapes);
 
-  void AddRigidBodyListener(tloc::physics::RigidBodyListener* a_listener,
-                            core::component_system::Entity* a_ent,
+  void AddRigidBodyListener(core::component_system::Entity* a_ent,
                             core::component_system::EntityManager& a_mgr,
-                            core::component_system::ComponentPoolManager);
+                            core::component_system::ComponentPoolManager,
+                            tloc::physics::RigidBodyListener* a_listener);
+
+  template <typename T_Shape>
+  void AddRigidBodyShape(core::component_system::Entity* a_ent,
+                         core::component_system::EntityManager& a_mgr,
+                         core::component_system::ComponentPoolManager& a_poolMgr,
+                         const T_Shape a_shape, 
+                         tl_float a_density)
+  {
+    tloc::physics::box2d::RigidBodyShapeDef rbShape(a_shape);
+    rbShape.SetDensity(a_density);
+
+    AddRigidBodyShape(a_ent, a_mgr, a_poolMgr, rbShape);
+  }
 
 };};};
 

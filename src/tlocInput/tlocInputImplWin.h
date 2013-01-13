@@ -5,6 +5,7 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/string/tlocString.h>
 
@@ -20,7 +21,7 @@
 
 namespace tloc { namespace input {
 
-  typedef InputParameterList<HWND> input_param_type;
+  typedef ParamList<HWND> input_param_type;
 
 };};
 

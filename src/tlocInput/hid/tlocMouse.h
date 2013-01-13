@@ -11,7 +11,6 @@
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
 namespace tloc { namespace input { namespace hid {
@@ -86,22 +85,6 @@ namespace tloc { namespace input { namespace hid {
       }
       return false;
     }
-  };
-
-  ///-------------------------------------------------------------------------
-  /// Platform independent list of parameters. Passing incorrect parameters
-  /// will result in compile errors.
-  ///-------------------------------------------------------------------------
-  template <class T1,
-            class T2 = TLOC_DUMMY_PARAM(),
-            class T3 = TLOC_DUMMY_PARAM(),
-            class T4 = TLOC_DUMMY_PARAM()>
-  struct MouseParamList
-  {
-    T1 m_param1;
-    T2 m_param2;
-    T3 m_param3;
-    T4 m_param4;
   };
 
   ///-------------------------------------------------------------------------

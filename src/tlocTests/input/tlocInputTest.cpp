@@ -18,6 +18,7 @@ namespace TestingInput
 {
   using namespace tloc;
   using namespace input;
+  using namespace input_hid;
 
   template <typename T_Keyboard>
   struct sampleInputKeyboard

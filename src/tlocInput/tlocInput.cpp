@@ -110,8 +110,8 @@ namespace tloc { namespace input {
   <_HID_<_type_::policy_type> >(_type_::size_type);\
 
 #if defined(TLOC_OS_WIN)
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Immediate>);

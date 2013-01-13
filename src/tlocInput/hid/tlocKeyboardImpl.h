@@ -8,7 +8,7 @@
 
 #include <tlocInput/tlocInputTypes.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   ///-------------------------------------------------------------------------
   /// A keyboard event that is sent as the argument when a keyboard event
@@ -61,9 +61,9 @@ namespace tloc { namespace input {
     KeyCode   m_keyCode;
   };
 
-};};
+};};};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// Keyboard implementation that must be specialized for each platform
@@ -111,6 +111,6 @@ namespace tloc { namespace input { namespace priv {
     index_type            m_modifier;
   };
 
-};};};
+};};};};
 
 #endif

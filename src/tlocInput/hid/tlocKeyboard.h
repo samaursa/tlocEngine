@@ -13,7 +13,7 @@
 #include <tlocInput/tlocInput.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class Keyboard;
 
@@ -78,7 +78,8 @@ namespace tloc { namespace input {
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Keyboard :
-    public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
+    public core::DispatcherBaseArray <KeyboardCallbacks,
+                                      KeyboardCallbackGroupT>::type,
     public core::NonCopyable,
     public p_hid::Keyboard
   {
@@ -124,6 +125,6 @@ namespace tloc { namespace input {
   typedef Keyboard<InputPolicy::Buffered>   KeyboardB;
   typedef Keyboard<InputPolicy::Immediate>  KeyboardI;
 
-};};
+};};};
 
 #endif

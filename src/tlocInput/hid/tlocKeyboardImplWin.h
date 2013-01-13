@@ -23,7 +23,10 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+//////////////////////////////////////////////////////////////////////////
+// KeyboardImpl
+
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentKeyboard>
   class KeyboardImpl
@@ -81,6 +84,6 @@ namespace tloc { namespace input { namespace priv {
     uchar8                  m_rawBuffer[s_bufferSize];
   };
 
-};};};
+};};};};
 
 #endif

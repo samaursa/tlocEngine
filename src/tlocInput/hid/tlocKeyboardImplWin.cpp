@@ -1,6 +1,6 @@
 #include "tlocKeyboardImplWin.h"
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
 #define KEYBOARD_IMPL_TEMP    typename T_ParentKeyboard
 #define KEYBOARD_IMPL_PARAMS  T_ParentKeyboard
@@ -351,4 +351,4 @@ namespace tloc { namespace input { namespace priv {
     }
   }
 
-};};};
+};};};};

@@ -8,7 +8,7 @@
 
 #include <tlocInput/tlocInputTypes.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   ///-------------------------------------------------------------------------
   /// A mouse event that is sent as the argument when a mouse event
@@ -39,7 +39,7 @@ namespace tloc { namespace input {
     Component::AxisRelAbs m_X, m_Y, m_Z;
   };
 
-};};
+};};};
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 

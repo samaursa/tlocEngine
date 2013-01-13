@@ -46,7 +46,7 @@ namespace tloc { namespace input { namespace priv {
         {
           case p_hid::Keyboard::m_index:
             {
-              delete static_cast<Keyboard<policy_type>* >
+              delete static_cast<hid::Keyboard<policy_type>* >
                 (m_winHIDs[hidIndex][hidNum].m_devicePtr);
               break;
             }
@@ -179,7 +179,7 @@ namespace tloc { namespace input { namespace priv {
     {
     case keyboard_type::m_index:
       {
-        typedef Keyboard<policy_type> keyboard_type;
+        typedef hid::Keyboard<policy_type> keyboard_type;
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
@@ -344,7 +344,7 @@ namespace tloc { namespace input { namespace priv {
   template _HID_<i_imm>* \
   InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
-  INSTANTIATE_HID(Keyboard);
+  INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::Mouse);
 
 

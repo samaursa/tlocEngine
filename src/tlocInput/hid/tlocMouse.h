@@ -1,6 +1,8 @@
 #ifndef TLOC_MOUSE_H
 #define TLOC_MOUSE_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -9,10 +11,9 @@
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class Mouse;
 
@@ -87,22 +88,6 @@ namespace tloc { namespace input {
   };
 
   ///-------------------------------------------------------------------------
-  /// Platform independent list of parameters. Passing incorrect parameters
-  /// will result in compile errors.
-  ///-------------------------------------------------------------------------
-  template <class T1,
-            class T2 = TLOC_DUMMY_PARAM(),
-            class T3 = TLOC_DUMMY_PARAM(),
-            class T4 = TLOC_DUMMY_PARAM()>
-  struct MouseParamList
-  {
-    T1 m_param1;
-    T2 m_param2;
-    T3 m_param3;
-    T4 m_param4;
-  };
-
-  ///-------------------------------------------------------------------------
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
@@ -110,7 +95,7 @@ namespace tloc { namespace input {
   class Mouse:
     public core::DispatcherBaseArray <MouseCallbacks, MouseCallbackGroupT>::type,
     public core::NonCopyable,
-    public hid::Mouse
+    public p_hid::Mouse
   {
   public:
     typedef T_Platform                      platform_type;
@@ -145,6 +130,6 @@ namespace tloc { namespace input {
   typedef Mouse<InputPolicy::Buffered>   MouseB;
   typedef Mouse<InputPolicy::Immediate>  MouseI;
 
-};};
+};};};
 
 #endif

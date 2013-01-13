@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_IMPL_H
 #define TLOC_INPUT_IMPL_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
 

@@ -12,7 +12,7 @@
 # error "WIP"
 #endif
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
 #define MOUSE_TEMP   typename T_Policy, typename T_Platform
 #define MOUSE_PARAMS T_Policy, T_Platform
@@ -91,4 +91,4 @@ namespace tloc { namespace input {
     m_impl->Update();
   }
 
-};};
+};};};

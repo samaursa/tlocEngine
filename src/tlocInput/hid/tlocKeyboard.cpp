@@ -14,7 +14,7 @@
 # error "WIP"
 #endif
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
 #define KEYBOARD_TEMP   typename T_Policy, typename T_Platform
 #define KEYBOARD_PARAMS T_Policy, T_Platform
@@ -94,4 +94,4 @@ namespace tloc { namespace input {
 # error TODO
 #endif
 
-};};
+};};};

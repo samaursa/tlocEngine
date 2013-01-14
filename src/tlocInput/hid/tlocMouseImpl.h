@@ -53,11 +53,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <class T_ParentMouse> class MouseImpl;
 
   template <class T_ParentMouse, class T_ParamList>
-  class MouseImplBase : public core::ImplBase<T_ParentMouse>
+  class MouseImplBase : public core::base_classes::ImplBase<T_ParentMouse>
                       , public p_hid::Mouse
   {
   public:
-    typedef core::ImplBase<T_ParentMouse>                 base_type;
+    typedef core::base_classes::ImplBase<T_ParentMouse>   base_type;
     typedef typename base_type::parent_type               parent_type;
 
     typedef T_ParamList                                   param_list_type;

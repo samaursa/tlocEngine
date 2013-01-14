@@ -39,12 +39,15 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct KeyboardCallbackGroupT:
-    public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
+    public core::base_classes::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, KeyboardCallbacks>::type     base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {
@@ -77,11 +80,11 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Keyboard :
-    public core::DispatcherBaseArray <KeyboardCallbacks,
-                                      KeyboardCallbackGroupT>::type,
-    public core::NonCopyable,
-    public p_hid::Keyboard
+  class Keyboard
+    : public core::base_classes::DispatcherBaseArray
+      <KeyboardCallbacks, KeyboardCallbackGroupT>::type
+    , public core::NonCopyable
+    , public p_hid::Keyboard
   {
   public:
     typedef T_Platform                      platform_type;

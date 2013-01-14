@@ -4,7 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
   ///-------------------------------------------------------------------------
   /// Base class for platform independent implementations of a type.
@@ -34,10 +34,13 @@ namespace tloc { namespace core {
     parent_type*       GetParent()       { return m_parent; }
 
   protected:
+    ~ImplBase() {}
+
+  protected:
 
     parent_type*      m_parent;
   };
 
-};};
+};};};
 
 #endif

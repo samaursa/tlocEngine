@@ -34,13 +34,17 @@ namespace tloc { namespace input {
   };
 
   template <typename T>
-  struct TouchSurfaceCallbackGroupT:
-    public core::CallbackGroupTArray<T, TouchSurfaceCallbacks>::type
+  struct TouchSurfaceCallbackGroupT
+    : public core::base_classes::CallbackGroupTArray
+             <T, TouchSurfaceCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, TouchSurfaceCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, TouchSurfaceCallbacks>::type     base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual bool OnTouchPress(const tl_size a_caller,
                               const TouchSurfaceEvent& a_event)
     {
@@ -95,10 +99,10 @@ namespace tloc { namespace input {
 
   template <typename T_Policy = InputPolicy::Buffered,
     typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class TouchSurface:
-    public core::DispatcherBaseArray<TouchSurfaceCallbacks,
-                                     TouchSurfaceCallbackGroupT>::type,
-    public core::NonCopyable
+  class TouchSurface
+    : public core::base_classes::DispatcherBaseArray
+             <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type
+    , public core::NonCopyable
   {
   public:
     typedef T_Platform                                    platform_type;

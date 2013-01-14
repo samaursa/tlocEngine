@@ -41,12 +41,15 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct MouseCallbackGroupT:
-    public core::CallbackGroupTArray<T, MouseCallbacks>::type
+    public core::base_classes::CallbackGroupTArray<T, MouseCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, MouseCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, MouseCallbacks>::type      base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual bool OnButtonPress(const tl_size a_caller,
                                const MouseEvent& a_event)
     {
@@ -92,10 +95,11 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Mouse:
-    public core::DispatcherBaseArray <MouseCallbacks, MouseCallbackGroupT>::type,
-    public core::NonCopyable,
-    public p_hid::Mouse
+  class Mouse
+    : public core::base_classes::DispatcherBaseArray
+             <MouseCallbacks, MouseCallbackGroupT>::type
+    , public core::NonCopyable
+    , public p_hid::Mouse
   {
   public:
     typedef T_Platform                      platform_type;

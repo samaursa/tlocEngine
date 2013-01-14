@@ -75,11 +75,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <class T_ParentKeyboard> class KeyboardImpl;
 
   template <class T_ParentKeyboard, class T_ParamList>
-  class KeyboardImplBase : public core::ImplBase<T_ParentKeyboard>
+  class KeyboardImplBase
+    : public core::base_classes::ImplBase<T_ParentKeyboard>
   {
   public:
-    typedef core::ImplBase<T_ParentKeyboard>              base_type;
-    typedef typename base_type::parent_type               parent_type;
+    typedef core::base_classes::ImplBase<T_ParentKeyboard>  base_type;
+    typedef typename base_type::parent_type                 parent_type;
 
     typedef T_ParamList                                   param_list_type;
     typedef typename parent_type::platform_type           platform_type;

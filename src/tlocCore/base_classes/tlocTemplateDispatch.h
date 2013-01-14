@@ -6,7 +6,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
   /// Use this class as a base class for callback classes that use the zero
   /// virtual overhead observer callback pattern. The inherited callback classes
@@ -223,6 +223,6 @@ namespace tloc { namespace core {
   };
 
 
-};};
+};};};
 
 #endif

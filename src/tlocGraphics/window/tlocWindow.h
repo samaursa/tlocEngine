@@ -44,13 +44,16 @@ namespace tloc { namespace graphics {
   };
 
   template <typename T>
-  struct WindowCallbackGroupT :
-    public core::CallbackGroupTArray<T, WindowCallbacks>::type
+  struct WindowCallbackGroupT
+    : public core::base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, WindowCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, WindowCallbacks>::type         base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual void OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -68,9 +71,10 @@ namespace tloc { namespace graphics {
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Window_T :
-    public core::DispatcherBaseArray <WindowCallbacks, WindowCallbackGroupT>::type,
-    public core::NonCopyable
+  class Window_T
+    : public core::base_classes::DispatcherBaseArray
+             <WindowCallbacks, WindowCallbackGroupT>::type
+    , public core::NonCopyable
   {
   public:
 

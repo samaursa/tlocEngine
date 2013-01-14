@@ -1874,6 +1874,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocCoreBase.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocCore\tlocDepVersionCheck.cpp"
 			>
 		</File>

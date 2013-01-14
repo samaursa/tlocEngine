@@ -9,7 +9,7 @@
 
 #include "tlocTemplateDispatch.h"
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
   //------------------------------------------------------------------------
   // Helpers for the base group
@@ -46,6 +46,6 @@ namespace tloc { namespace core {
   //  typedef DispatcherBase<T_Callbacks, T_CallbackGroupT, List> type;
   //};
 
-};};
+};};};
 
 #endif

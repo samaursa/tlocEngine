@@ -3,7 +3,7 @@
 
 #include <tlocCore/string/tlocString.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   struct WindowSettings
   {
@@ -36,6 +36,6 @@ namespace tloc { namespace graphics {
     u32           m_antiAlias;
   };
 
-};};
+};};};
 
 #endif

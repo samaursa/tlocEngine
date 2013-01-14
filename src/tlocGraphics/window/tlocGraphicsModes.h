@@ -6,7 +6,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   //////////////////////////////////////////////////////////////////////////
   /// This class was written (initially - modifications may follow) by
@@ -63,6 +63,6 @@ namespace tloc { namespace graphics {
 
   };
 
-};};
+};};};
 
 #endif

@@ -63,8 +63,10 @@ namespace TestingShaderOperator
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Uniforms", "")
   {
-    typedef Window::graphics_mode       graphics_mode;
     using namespace math::types;
+    using namespace graphics::win;
+
+    typedef Window::graphics_mode       graphics_mode;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -243,8 +245,9 @@ namespace TestingShaderOperator
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
   {
-    typedef Window::graphics_mode       graphics_mode;
+    using namespace graphics::win;
     using namespace math::types;
+    typedef Window::graphics_mode       graphics_mode;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -419,8 +422,9 @@ namespace TestingShaderOperator
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/ConstantAttributes", "")
   {
-    typedef Window::graphics_mode       graphics_mode;
     using namespace math::types;
+    using namespace graphics::win;
+    typedef Window::graphics_mode       graphics_mode;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
@@ -568,8 +572,9 @@ namespace TestingShaderOperator
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/AttributesArrays", "")
   {
-    typedef Window::graphics_mode       graphics_mode;
     using namespace math::types;
+    using namespace graphics::win;
+    typedef Window::graphics_mode       graphics_mode;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),

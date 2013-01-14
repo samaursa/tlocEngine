@@ -3,7 +3,7 @@
 #include "glext.h"
 #include "wglext.h"
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
   using namespace core::string;
 
@@ -584,4 +584,4 @@ namespace tloc { namespace graphics { namespace priv {
     }
   }
 
-};};};
+};};};};

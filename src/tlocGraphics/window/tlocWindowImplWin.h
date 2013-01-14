@@ -21,7 +21,7 @@
 #include "Windows.h"
 #include <gl/GL.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
   template <>
   class WindowImpl<Window_T<> >
@@ -183,6 +183,6 @@ namespace tloc { namespace graphics { namespace priv {
 
   };
 
-};};};
+};};};};
 
 #endif

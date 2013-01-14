@@ -17,7 +17,7 @@
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   struct WindowEvent
   {
@@ -279,6 +279,6 @@ namespace tloc { namespace graphics {
 
   typedef Window_T<>    Window;
 
-};};
+};};};
 
 #endif

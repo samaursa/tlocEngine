@@ -8,6 +8,6 @@ namespace TestingGraphicsModes
 
   TEST_CASE("Graphics/GraphicsModes/General", "")
   {
-    GraphicsMode<> a(GraphicsMode<>::Properties(0, 0));
+    win::GraphicsMode<> a(win::GraphicsMode<>::Properties(0, 0));
   }
 };

@@ -12,9 +12,9 @@
 namespace tloc {
 
   // TODO: Remove this temporary when we have the 'window' namespace
-  namespace graphics { namespace window { }; };
+  namespace graphics { namespace win { }; };
 
-  namespace gfx_win = graphics::window;
+  namespace gfx_win = graphics::win;
 
 };
 

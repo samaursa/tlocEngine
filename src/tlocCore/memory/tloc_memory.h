@@ -1,5 +1,5 @@
-#ifndef _TLOC_INCLUDE_ALL_MEMORY_H_
-#define _TLOC_INCLUDE_ALL_MEMORY_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_MEMORY_H_
+#define _TLOC_CORE_INCLUDE_ALL_MEMORY_H_
 
 #include <tlocCore/memory/tlocAllocators.h>
 

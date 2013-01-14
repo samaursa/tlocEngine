@@ -1,5 +1,5 @@
-#ifndef _TLOC_INCLUDE_ALL_DATA_STRUCTURES_H_
-#define _TLOC_INCLUDE_ALL_DATA_STRUCTURES_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_DATA_STRUCTURES_H_
+#define _TLOC_CORE_INCLUDE_ALL_DATA_STRUCTURES_H_
 
 #include <tlocCore/data_structures/tlocCharBuffer.h>
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>

@@ -1,5 +1,5 @@
-#ifndef _TLOC_INCLUDE_ALL_TYPES_H_
-#define _TLOC_INCLUDE_ALL_TYPES_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_TYPES_H_
+#define _TLOC_CORE_INCLUDE_ALL_TYPES_H_
 
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocTypes.h>

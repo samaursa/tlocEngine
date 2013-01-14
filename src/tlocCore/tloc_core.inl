@@ -1,7 +1,7 @@
-#ifndef _TLOC_INCLUDE_ALL_CORE_INL_
-#define _TLOC_INCLUDE_ALL_CORE_INL_
+#ifndef _TLOC_CORE_INCLUDE_ALL_INL_
+#define _TLOC_CORE_INCLUDE_ALL_INL_
 
-#ifndef _TLOC_INCLUDE_ALL_CORE_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_H_
 #error "Must include header before including the inline file"
 #endif
 

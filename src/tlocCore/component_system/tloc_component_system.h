@@ -1,5 +1,5 @@
-#ifndef _TLOC_INCLUDE_ALL_COMPONENT_SYSTEM_H_
-#define _TLOC_INCLUDE_ALL_COMPONENT_SYSTEM_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_COMPONENT_SYSTEM_H_
+#define _TLOC_CORE_INCLUDE_ALL_COMPONENT_SYSTEM_H_
 
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>

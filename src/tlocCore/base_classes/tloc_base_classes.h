@@ -1,5 +1,5 @@
-#ifndef _TLOC_INCLUDE_ALL_BASE_CLASSES_H_
-#define _TLOC_INCLUDE_ALL_BASE_CLASSES_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_BASE_CLASSES_H_
+#define _TLOC_CORE_INCLUDE_ALL_BASE_CLASSES_H_
 
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/base_classes/tlocNonNewable.h>

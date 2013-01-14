@@ -1,13 +1,15 @@
 #ifndef TLOC_MOUSE_IMPL_WIN_H
 #define TLOC_MOUSE_IMPL_WIN_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocMouse.h>
-#include <tlocInput/HIDs/tlocMouseImpl.h>
+#include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocMouseImpl.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -21,7 +23,7 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentMouse>
   class MouseImpl
@@ -77,6 +79,6 @@ namespace tloc { namespace input { namespace priv {
     static const size_type  s_bufferSize = sizeof(DIMOUSESTATE2);
   };
 
-};};};
+};};};};
 
 #endif

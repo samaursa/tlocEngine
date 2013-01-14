@@ -17,7 +17,7 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
+#include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
 namespace tloc { namespace input {
 

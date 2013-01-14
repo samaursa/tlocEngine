@@ -1,16 +1,19 @@
 #ifndef TLOC_KEYBOARD_H
 #define TLOC_KEYBOARD_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
-#include <tlocInput/tlocInput.h>
-#include <tlocInput/HIDs/tlocKeyboardImpl.h>
+#include <tlocInput/tlocInputManager.h>
+#include <tlocInput/hid/tlocKeyboardImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class Keyboard;
 
@@ -38,10 +41,10 @@ namespace tloc { namespace input {
   struct KeyboardCallbackGroupT:
     public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type  
+    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type
       base_type;
     using base_type::m_observers;
-    
+
     virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {
@@ -75,8 +78,10 @@ namespace tloc { namespace input {
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
   class Keyboard :
-    public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
-    public core::NonCopyable
+    public core::DispatcherBaseArray <KeyboardCallbacks,
+                                      KeyboardCallbackGroupT>::type,
+    public core::NonCopyable,
+    public p_hid::Keyboard
   {
   public:
     typedef T_Platform                      platform_type;
@@ -111,13 +116,15 @@ namespace tloc { namespace input {
 
   private:
 
-    typedef priv::KeyboardImpl<this_type> impl_type;
-    impl_type*  m_impl;
+    typedef priv::KeyboardImpl<this_type>               impl_type;
+    typedef core::smart_ptr::UniquePtr<impl_type>       impl_ptr_type;
+
+    impl_ptr_type m_impl;
   };
 
-  typedef Keyboard<InputPolicy::Buffered>   KeyboardBuff;
-  typedef Keyboard<InputPolicy::Immediate> KeyboardUnBuff;
+  typedef Keyboard<InputPolicy::Buffered>   KeyboardB;
+  typedef Keyboard<InputPolicy::Immediate>  KeyboardI;
 
-};};
+};};};
 
 #endif

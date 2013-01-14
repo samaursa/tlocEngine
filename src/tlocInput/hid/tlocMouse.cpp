@@ -1,17 +1,18 @@
 #include "tlocMouse.h"
 
 #include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# include <tlocInput/HIDs/tlocMouseImplWin.h>
+# include <tlocInput/hid/tlocMouseImplWin.h>
 #else
 # error "WIP"
 #endif
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
 #define MOUSE_TEMP   typename T_Policy, typename T_Platform
 #define MOUSE_PARAMS T_Policy, T_Platform
@@ -35,14 +36,12 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
   {
-    m_impl = new impl_type(this, a_paramList);
+    m_impl.reset(new impl_type(this, a_paramList));
   }
 
   template <MOUSE_TEMP>
   Mouse<MOUSE_PARAMS>::~Mouse()
-  {
-    delete m_impl;
-  }
+  { }
 
   template <MOUSE_TEMP>
   bool Mouse<MOUSE_PARAMS>::IsButtonDown(button_code_type a_button)
@@ -92,4 +91,4 @@ namespace tloc { namespace input {
     m_impl->Update();
   }
 
-};};
+};};};

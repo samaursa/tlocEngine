@@ -1,6 +1,6 @@
 #include "tlocMouseImplWin.h"
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
 #define MOUSE_IMPL_TEMP    typename T_ParentMouse
 #define MOUSE_IMPL_PARAMS  T_ParentMouse
@@ -28,8 +28,8 @@ namespace tloc { namespace input { namespace priv {
   //------------------------------------------------------------------------
   // MouseImpl
 
-  template MouseImpl< Mouse<InputPolicy::Buffered> >;
-  template MouseImpl< Mouse<InputPolicy::Immediate> >;
+  template MouseImpl< hid::Mouse<InputPolicy::Buffered> >;
+  template MouseImpl< hid::Mouse<InputPolicy::Immediate> >;
 
   template <MOUSE_IMPL_TEMP>
   MouseImpl<MOUSE_IMPL_PARAMS>::
@@ -297,4 +297,4 @@ namespace tloc { namespace input { namespace priv {
       m_currentState.m_buttonCode = MouseEvent::button8;
   }
 
-};};};
+};};};};

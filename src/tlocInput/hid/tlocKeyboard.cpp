@@ -1,19 +1,20 @@
 #include "tlocKeyboard.h"
 
 #include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
 
 #if defined(TLOC_OS_WIN)
-# include <tlocInput/HIDs/tlocKeyboardImplWin.h>
+# include <tlocInput/hid/tlocKeyboardImplWin.h>
 #elif defined (TLOC_OS_IPHONE)
-# include <tlocInput/HIDs/tlocKeyboardImplIphone.h>
+# include <tlocInput/hid/tlocKeyboardImplIphone.h>
 #else
 # error "WIP"
 #endif
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
 #define KEYBOARD_TEMP   typename T_Policy, typename T_Platform
 #define KEYBOARD_PARAMS T_Policy, T_Platform
@@ -26,14 +27,12 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   Keyboard<KEYBOARD_PARAMS>::Keyboard(const T_ParamList& a_paramList)
   {
-    m_impl = new impl_type(this, a_paramList);
+    m_impl.reset(new impl_type(this, a_paramList));
   }
 
   template <KEYBOARD_TEMP>
   Keyboard<KEYBOARD_PARAMS>::~Keyboard()
-  {
-    delete m_impl;
-  }
+  { }
 
   template <KEYBOARD_TEMP>
   bool Keyboard<KEYBOARD_PARAMS>::IsKeyDown(keycode_type a_key) const
@@ -95,4 +94,4 @@ namespace tloc { namespace input {
 # error TODO
 #endif
 
-};};
+};};};

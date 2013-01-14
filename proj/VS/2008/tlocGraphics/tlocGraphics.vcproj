@@ -1463,6 +1463,10 @@
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>
 		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsBase.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

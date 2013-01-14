@@ -1,6 +1,8 @@
 #ifndef TLOC_GRAPHICS_ERROR_TYPES_H
 #define TLOC_GRAPHICS_ERROR_TYPES_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/error/tlocErrorTypes.h>
 

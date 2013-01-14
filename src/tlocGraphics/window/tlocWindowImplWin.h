@@ -1,7 +1,8 @@
 #ifndef TLOC_WINDOW_IMPL_WIN_H
 #define TLOC_WINDOW_IMPL_WIN_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 
@@ -21,7 +22,7 @@
 #include "Windows.h"
 #include <gl/GL.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
   template <>
   class WindowImpl<Window_T<> >
@@ -183,6 +184,6 @@ namespace tloc { namespace graphics { namespace priv {
 
   };
 
-};};};
+};};};};
 
 #endif

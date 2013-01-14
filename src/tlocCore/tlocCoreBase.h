@@ -33,7 +33,7 @@ namespace tloc {
   //////////////////////////////////////////////////////////////////////////
   // Namespace aliases here
 
-  namespace core_base_classes = core::base_classes;
+  namespace core_bclass       = core::base_classes;
   namespace core_cs           = core::component_system;
   namespace core_cfg          = core::configs;
   namespace core_conts        = core::containers;
@@ -41,8 +41,8 @@ namespace tloc {
   namespace core_err          = core::error;
   namespace core_io           = core::io;
   namespace core_mem          = core::memory;
-  namespace core_parsers      = core::parsers;
-  namespace core_platform     = core::platform;
+  namespace core_parse        = core::parsers;
+  namespace core_plat         = core::platform;
   namespace core_rng          = core::rng;
   namespace core_sptr         = core::smart_ptr;
   namespace core_str          = core::string;

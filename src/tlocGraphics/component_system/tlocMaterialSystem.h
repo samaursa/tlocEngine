@@ -2,6 +2,8 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_MATERIAL_SYSTEM_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_MATERIAL_SYSTEM_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>

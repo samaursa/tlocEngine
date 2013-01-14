@@ -1,6 +1,8 @@
 #ifndef TLOC_IMAGE_H
 #define TLOC_IMAGE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>

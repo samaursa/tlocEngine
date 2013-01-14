@@ -17,6 +17,8 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -28,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
   FanRenderSystem::FanRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 core::Variadic<component_type, 1>(components::fan))
+                 Variadic<component_type, 1>(components::fan))
      , m_sharedCam(nullptr)
   {
     m_vertList.reserve(30);
@@ -161,7 +163,7 @@ namespace tloc { namespace graphics { namespace component_system {
       // Push the center vertex
       {
         Vec4f32 newCoord = circ.GetPosition().
-          ConvertTo<Vec4f32, core::p_tuple::overflow_zero>();
+          ConvertTo<Vec4f32, p_tuple::overflow_zero>();
         newCoord[3] = 1;
         newCoord = tMatrix * newCoord;
         m_vertList.push_back(newCoord.ConvertTo<Vec3f32>());
@@ -170,7 +172,7 @@ namespace tloc { namespace graphics { namespace component_system {
       for (int i = 0; i <= numSides; ++i)
       {
         Vec4f32 newCoord = (circ.GetCoord(Degree32(angleInterval * i))
-          .ConvertTo<Vec4f32, core::p_tuple::overflow_zero>());
+          .ConvertTo<Vec4f32, p_tuple::overflow_zero>());
         newCoord[3] = 1;
         newCoord = tMatrix * newCoord;
 

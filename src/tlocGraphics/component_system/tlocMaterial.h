@@ -1,6 +1,8 @@
 #ifndef TLOC_MATERIAL_H
 #define TLOC_MATERIAL_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -15,11 +17,13 @@ namespace tloc { namespace graphics { namespace component_system {
   class Material : public core::component_system::Component_T<Material>
   {
   public:
-    typedef core::component_system::Component_T<Material>  base_type;
-    typedef gl::ShaderProgramPtr                           shader_prog_ptr;
+    typedef core::component_system::Component_T<Material>   base_type;
+    typedef gl::ShaderProgramPtr                            shader_prog_ptr;
 
-    typedef gl::ShaderOperatorPtr                          shader_op_ptr;
-    typedef core::tl_array<shader_op_ptr>::type            shader_op_cont;
+    typedef gl::ShaderOperatorPtr                           shader_op_ptr;
+    typedef core::containers::tl_array<shader_op_ptr>::type shader_op_cont;
+
+    typedef core::string::String                            string_type;
 
   public:
     Material();
@@ -29,13 +33,13 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECLARE_OPERATORS(Material);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core::String, GetVertexSource, m_vertexProgram);
+      (string_type, GetVertexSource, m_vertexProgram);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core::String, GetFragmentSource, m_fragmentProgram);
+      (string_type, GetFragmentSource, m_fragmentProgram);
 
-    TLOC_DECL_AND_DEF_SETTER(core::String, SetVertexSource,
+    TLOC_DECL_AND_DEF_SETTER(string_type, SetVertexSource,
                              m_vertexProgram);
-    TLOC_DECL_AND_DEF_SETTER(core::String, SetFragmentSource,
+    TLOC_DECL_AND_DEF_SETTER(string_type, SetFragmentSource,
                              m_fragmentProgram);
 
     TLOC_DECL_AND_DEF_GETTER_DIRECT(shader_prog_ptr, GetShaderProgRef,
@@ -49,12 +53,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_DIRECT(shader_op_cont,  DoGetShaderOpContainerRef,
                                     m_shaderOperators);
   private:
-    core::String            m_vertexProgram;
-    core::String            m_fragmentProgram;
+    string_type            m_vertexProgram;
+    string_type            m_fragmentProgram;
 
-    shader_op_ptr           m_masterShaderOperator;
-    shader_prog_ptr         m_shaderProgram;
-    shader_op_cont          m_shaderOperators;
+    shader_op_ptr          m_masterShaderOperator;
+    shader_prog_ptr        m_shaderProgram;
+    shader_op_cont         m_shaderOperators;
   };
 
 };};};

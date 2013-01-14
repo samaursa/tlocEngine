@@ -62,7 +62,8 @@ namespace tloc { namespace math { namespace types {
     // Fill the matrix with values in a certain matrix order
     TL_FI Matrix3(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    TL_FI Matrix3(const core::Variadic<value_type, k_MatrixSize>& a_vars,
+    TL_FI Matrix3(const core::data_structs::Variadic
+                    <value_type, k_MatrixSize>& a_vars,
                   matrix_order a_order);
 
 

@@ -8,12 +8,13 @@
 namespace TestingVector4f
 {
   using namespace tloc;
+  using namespace core::data_structs;
   using namespace math::types;
 
   struct Vector4fFixture
   {
     Vector4fFixture()
-      : b(core::Variadic4f(5, 6, 7, 8))
+      : b(Variadic4f(5, 6, 7, 8))
     {
       a[0] = 1; a[1] = 2; a[2] = 3; a[3] = 4;
     }
@@ -71,7 +72,7 @@ namespace TestingVector4f
     CHECK_VEC4F(c, 0.0f, 0.0f, 0.0, -1.0f); //-V550
 
     // Convert from Tuple to Vec
-    c = Vec4f(core::Tuple<tl_float, 4>(1.0f));
+    c = Vec4f(Tuple<tl_float, 4>(1.0f));
     CHECK_VEC4F(c, 1.0f, 1.0f, 1.0f, 1.0f);
   }
 
@@ -130,7 +131,7 @@ namespace TestingVector4f
     //////////////////////////////////////////////////////////////////////////
     // Vec3 to Vec4 conversion
     Vec3f vec2dim(1);
-    c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
+    c.ConvertFrom(vec2dim, p_tuple::overflow_zero() );
     CHECK_VEC4F(c, 1.0f, 1.0f, 1.0f, 0.0f);
   }
 }

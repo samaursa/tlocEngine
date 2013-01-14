@@ -8,7 +8,8 @@
 
 namespace TestingMatrix
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::data_structs;
   using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -101,7 +102,7 @@ namespace TestingMatrix
     c.Identity();
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
-    Matrix<tl_float, 3> i(core::Variadic9f(rawArray),
+    Matrix<tl_float, 3> i(Variadic9f(rawArray),
                           Matrix<tl_float, 3>::k_ColMajor);
     CHECK_MATRIX3F(i, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }

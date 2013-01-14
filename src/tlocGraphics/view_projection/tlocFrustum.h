@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
 #define _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocMath/types/tlocRectangle.h>
@@ -40,7 +42,8 @@ namespace tloc { namespace graphics { namespace view_proj {
 
   public:
     typedef tl_float                                    real_type;
-    typedef core::Tuple<real_type, Planes::k_count>     cont_type;
+    typedef core::data_structs::Tuple
+      <real_type, Planes::k_count>                      cont_type;
     typedef math::types::Rectangle<real_type>           rect_type;
     typedef tl_size                                     size_type;
     typedef math::types::Radian                         angle_type;
@@ -81,7 +84,7 @@ namespace tloc { namespace graphics { namespace view_proj {
                                           GetProjectionMatrix, m_projMatrix);
 
   private:
-    typedef core::Variadic<real_type, Planes::k_count> plane_args;
+    typedef core::data_structs::Variadic<real_type, Planes::k_count> plane_args;
 
     void DoDefinePlanes(const plane_args& a_vars);
     void DoBuildFrustumFromPlanes();

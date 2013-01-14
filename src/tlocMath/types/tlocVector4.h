@@ -26,7 +26,7 @@ namespace tloc { namespace math { namespace types {
     Vector4(const this_type& a_other);
     Vector4(value_type a_x, value_type a_y, value_type a_z, value_type a_w);
 
-    Vector4(const core::Variadic<T, 4>& a_vars);
+    Vector4(const core::data_structs::Variadic<T, 4>& a_vars);
     explicit Vector4(const_reference a_value);
 
     static const Vector4  ZERO;

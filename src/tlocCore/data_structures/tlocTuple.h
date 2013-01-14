@@ -1,11 +1,11 @@
 #ifndef TLOC_TUPLE_H
 #define TLOC_TUPLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <memory.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   // Tuple policies
   namespace p_tuple
@@ -173,6 +173,6 @@ namespace tloc { namespace core {
   typedef Tuple<bool,     3>    Tuple3b;
   typedef Tuple<bool,     4>    Tuple4b;
 
-};};
+};};};
 
 #endif

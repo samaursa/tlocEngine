@@ -11,12 +11,13 @@
 namespace TestingVector3f
 {
   using namespace tloc;
+  using namespace core::data_structs;
   using namespace math::types;
 
   struct Vector3fFixture
   {
     Vector3fFixture()
-      : b(core::Variadic3f(5, 6, 7))
+      : b(Variadic3f(5, 6, 7))
     {
       a[0] = 1; a[1] = 2; a[2] = 3;
     }
@@ -72,7 +73,7 @@ namespace TestingVector3f
     CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f); //-V550
 
     // Convert from Tuple to Vec
-    c = Vec3f(core::Tuple<tl_float, 3>(1.0f));
+    c = Vec3f(Tuple<tl_float, 3>(1.0f));
     CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
   }
 
@@ -205,7 +206,7 @@ namespace TestingVector3f
     //////////////////////////////////////////////////////////////////////////
     // Vec2 to Vec3 conversion
     Vec2f vec2dim(0);
-    c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
+    c.ConvertFrom(vec2dim, p_tuple::overflow_zero() );
     CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
   }
 

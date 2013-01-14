@@ -42,7 +42,8 @@ namespace TestingShaderComponent
 
 
   using namespace tloc;
-  using namespace tloc::core;
+  using namespace core;
+  using namespace string;
   using namespace graphics;
 
   String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );
@@ -50,7 +51,11 @@ namespace TestingShaderComponent
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode         graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
@@ -77,7 +82,11 @@ namespace TestingShaderComponent
 
   TEST_CASE("Graphics/ShaderComponent/FromFile", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
                WindowSettings("Atom & Eve"));

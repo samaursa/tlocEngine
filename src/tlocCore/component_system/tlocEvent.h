@@ -1,6 +1,8 @@
 #ifndef TLOC_COMPONENT_SYSTEM_EVENT_H
 #define TLOC_COMPONENT_SYSTEM_EVENT_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core { namespace component_system {

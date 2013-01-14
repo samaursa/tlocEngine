@@ -8,7 +8,8 @@
 
 namespace TestingMatrix2
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::data_structs;
   using namespace math;
   using math::types::Mat2f;
   using math::types::Vec2f;
@@ -86,11 +87,11 @@ namespace TestingMatrix2
     Mat2f n(v1, v2, Mat2f::k_ColMajor);
     CHECK_MATRIX2F(n, 1, 2, 3, 4);
 
-    Mat2f o(core::Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
+    Mat2f o(Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
     CHECK_MATRIX2F(o, 1, 2, 3, 4);
 
     // Convert from Table to Matrix
-    c = Mat2f(core::Table<tl_float, 2, 2>(10.0f));
+    c = Mat2f(Table<tl_float, 2, 2>(10.0f));
     CHECK_MATRIX2F(c, 10.0f, 10.0f, 10.0f, 10.0f);
   }
 

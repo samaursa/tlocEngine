@@ -1,6 +1,8 @@
 #ifndef TLOC_GRAPHICS_TYPES_COLOR_H
 #define TLOC_GRAPHICS_TYPES_COLOR_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -33,10 +35,10 @@ namespace tloc { namespace graphics { namespace types {
       channel_count
     }; typedef tl_size              channel_type;
 
-    typedef u8                      value_type;
-    typedef core::Tuple<u8, 4>      container_type;
-    typedef u32                     int_type;
-    typedef tl_float                real_type;
+    typedef u8                                value_type;
+    typedef core::data_structs::Tuple<u8, 4>  container_type;
+    typedef u32                               int_type;
+    typedef tl_float                          real_type;
 
   public:
     Color();

@@ -1,7 +1,7 @@
 #ifndef TLOC_QUEUE_H
 #define TLOC_QUEUE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/containers/tlocList.h>
 
@@ -28,7 +28,7 @@
 # define TLOC_ASSERT_QUEUE(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Container = List<T> >
   class Queue
@@ -88,7 +88,7 @@ namespace tloc { namespace core {
     T_Container             m_container;
   };
 
-};};
+};};};
 
 
 #endif

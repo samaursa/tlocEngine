@@ -1,7 +1,7 @@
-#ifndef _TLOC_INCLUDE_ALL_CORE_INL_
-#define _TLOC_INCLUDE_ALL_CORE_INL_
+#ifndef _TLOC_CORE_INCLUDE_ALL_INL_
+#define _TLOC_CORE_INCLUDE_ALL_INL_
 
-#ifndef _TLOC_INCLUDE_ALL_CORE_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_H_
 #error "Must include header before including the inline file"
 #endif
 
@@ -17,7 +17,7 @@
 #include <tlocCore/iterators/tloc_iterators.inl>
 #include <tlocCore/memory/tloc_memory.inl>
 #include <tlocCore/platform/tloc_platform.inl>
-#include <tlocCore/RNGs/tloc_RNGs.inl>
+#include <tlocCore/rng/tloc_rng.inl>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl>
 #include <tlocCore/string/tloc_string.inl>
 #include <tlocCore/time/tloc_time.inl>

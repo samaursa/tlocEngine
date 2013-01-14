@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_DEFAULT_SHADERS_H_
 #define _TLOC_GRAPHICS_GL_DEFAULT_SHADERS_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/string/tlocString.h>
 
 #include <tlocGraphics/component_system/tlocMaterial.h>

@@ -25,13 +25,13 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
-  class Matrix : public core::Table<T, T_Size, T_Size>
+  class Matrix : public core::data_structs::Table<T, T_Size, T_Size>
   {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix<T, T_Size>                     this_type;
-    typedef core::Table<T, T_Size, T_Size>        base_type;
+    typedef Matrix<T, T_Size>                             this_type;
+    typedef core::data_structs::Table<T, T_Size, T_Size>  base_type;
 
     typedef typename base_type::table_order       table_order;
     typedef table_order                           matrix_order;
@@ -70,7 +70,8 @@ namespace tloc { namespace math { namespace types {
     // Fill the matrix with values in a certain matrix order
     TL_FI Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    TL_FI Matrix(const core::Variadic<T, k_MatrixSize>& a_vars, matrix_order a_order);
+    TL_FI Matrix(const core::data_structs::Variadic<T, k_MatrixSize>& a_vars,
+                 matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Modifiers

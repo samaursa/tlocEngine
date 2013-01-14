@@ -2,7 +2,7 @@
 #ifndef TLOC_BASIC_TYPES_H
 #define TLOC_BASIC_TYPES_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <wctype.h>
 #include <limits.h>
 #include <stddef.h> // Needed for OSX built-in types

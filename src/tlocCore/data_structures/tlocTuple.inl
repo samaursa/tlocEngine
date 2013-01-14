@@ -11,7 +11,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/types/tlocTypeTraits.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   //////////////////////////////////////////////////////////////////////////
   // Tuple<N>
@@ -382,6 +382,6 @@ namespace tloc { namespace core {
     { m_values[i] = aTuple[i]; }
   }
 
-};};
+};};};
 
 #endif

@@ -17,11 +17,14 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::math::types;
+  using namespace math::types;
+  using namespace core::containers;
+  using namespace core::data_structs;
 
   namespace
   {
-    typedef core::tl_array<ShaderVariableInfo>::type   glsl_var_info_cont_type;
+    typedef core::containers::
+      tl_array<ShaderVariableInfo>::type   glsl_var_info_cont_type;
 
     //------------------------------------------------------------------------
     // Cacher
@@ -984,9 +987,9 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // explicit instantiation
 
-  template class tloc::core::smart_ptr::SharedPtr<ShaderOperator>;
-  template class tloc::core::Array<UniformPtr>;
-  template class tloc::core::Array<AttributePtr>;
+  template class core::smart_ptr::SharedPtr<ShaderOperator>;
+  template class Array<UniformPtr>;
+  template class Array<AttributePtr>;
 
 
 };};};

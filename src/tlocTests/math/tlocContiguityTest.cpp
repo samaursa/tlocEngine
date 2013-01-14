@@ -15,6 +15,7 @@ namespace TestingContiguity
 {
   using namespace tloc;
   using namespace tloc::core;
+  using namespace tloc::core::containers;
   using namespace tloc::math;
   using namespace tloc::math::types;
 

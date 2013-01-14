@@ -2,8 +2,9 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_ELLIPSE_RENDER_SYSTEM_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_ELLIPSE_RENDER_SYSTEM_H_
 
-#include <tlocCore/types/tlocStrongType.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -34,7 +35,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_value_type;
 
     typedef math::types::Vec3f32                              vec3_type;
-    typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
+    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
     typedef math::types::Mat4f32                              matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;

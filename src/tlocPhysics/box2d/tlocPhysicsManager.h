@@ -48,13 +48,13 @@ namespace tloc { namespace physics { namespace box2d {
 
   template <typename T>
   struct ContactCallbackGroupT :
-    public core::CallbackGroupTArray<T, ContactCallbacks>::type
+    public core::base_classes::CallbackGroupTArray<T, ContactCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, ContactCallbacks>::type
-      base_type;
-    typedef typename base_type::size_type size_type;
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, ContactCallbacks>::type        base_type;
 
-    using base_type::m_observers;
+    typedef typename base_type::size_type                   size_type;
+    using            base_type::m_observers;
 
     virtual bool
       OnContactBegin(const ContactEvent& a_event)
@@ -88,12 +88,13 @@ namespace tloc { namespace physics { namespace box2d {
   /// the physics world. Currently supports one world. Dispatches world contact
   /// events to callback classes registered to it.
   ///-------------------------------------------------------------------------
-  class PhysicsManager :
-    public core::DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
+  class PhysicsManager
+    : public core::base_classes::
+      DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
   {
   public:
     typedef PhysicsManager                              this_type;
-    typedef core::DispatcherBaseArray
+    typedef core::base_classes::DispatcherBaseArray
       <ContactCallbacks, ContactCallbackGroupT>::type   base_type;
 
     typedef base_type::size_type  size_type;

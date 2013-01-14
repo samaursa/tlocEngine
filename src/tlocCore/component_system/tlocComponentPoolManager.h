@@ -1,6 +1,8 @@
 #ifndef _TLOC_CORE_COMPONENT_SYSTEM_COMPONENT_POOL_MANAGER_H_
 #define _TLOC_CORE_COMPONENT_SYSTEM_COMPONENT_POOL_MANAGER_H_
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/utilities/tlocType.h>
@@ -15,8 +17,8 @@ namespace tloc { namespace core { namespace component_system {
   class ComponentPool_I
   {
   public:
-    typedef ComponentPool_I                   this_type;
-    typedef core::tl_array<this_type*>::type  cont_type;
+    typedef ComponentPool_I                         this_type;
+    typedef containers::tl_array<this_type*>::type  cont_type;
 
   public:
     friend class ComponentPoolManager;
@@ -95,7 +97,8 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef ComponentPool_I                             component_pool_type;
     typedef tl_size                                     size_type;
-    typedef core::tl_array<component_pool_type*>::type  cont_type;
+    typedef containers::tl_array
+      <component_pool_type*>::type                      cont_type;
 
     typedef cont_type::iterator                         iterator;
     typedef cont_type::const_iterator                   const_iterator;

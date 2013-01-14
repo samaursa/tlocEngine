@@ -1,8 +1,8 @@
 #ifndef TLOC_PLATFORM_H
 #define TLOC_PLATFORM_H
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
-#include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
 

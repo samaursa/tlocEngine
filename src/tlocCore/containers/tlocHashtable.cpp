@@ -4,7 +4,7 @@
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocList.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Globals
@@ -154,4 +154,4 @@ namespace tloc { namespace core {
 #undef CEILING_NEG
 #undef CEILING
 
-};};
+};};};

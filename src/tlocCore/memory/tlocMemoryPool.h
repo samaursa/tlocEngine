@@ -107,9 +107,10 @@ namespace tloc { namespace core { namespace memory {
       >::Result                                         wrapper_type;
 
     // Select the proper array
-    typedef typename tl_array<wrapper_type,
-                              Array_Unordered>::type    d_array_type;
-    typedef typename tl_array_fixed
+    typedef typename
+      containers::tl_array<wrapper_type,
+               containers::Array_Unordered>::type       d_array_type;
+    typedef typename containers::tl_array_fixed
       <wrapper_type, pool_size_type::value>::type       s_array_type;
 
     typedef typename

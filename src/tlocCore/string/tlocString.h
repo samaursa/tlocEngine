@@ -1,7 +1,7 @@
 #ifndef TLOC_STRING_H
 #define TLOC_STRING_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -23,7 +23,7 @@
 # define TLOC_ASSERT_STRING_WARN(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace string {
   //------------------------------------------------------------------------
   // Ctor Helpers
 
@@ -405,6 +405,6 @@ namespace tloc { namespace core {
   typedef StringBase<char8>   String;
   typedef StringBase<char32>  StringW;
 
-};};
+};};};
 
 #endif

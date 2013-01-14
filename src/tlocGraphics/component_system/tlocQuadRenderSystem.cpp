@@ -17,6 +17,8 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -28,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
   QuadRenderSystem::QuadRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 core::Variadic<component_type, 1>(components::quad))
+                 Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
     m_quadList.resize(4); // number of vertexes a quad has

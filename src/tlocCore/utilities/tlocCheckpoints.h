@@ -1,7 +1,7 @@
 #ifndef TLOC_CHECKPOINTS_H
 #define TLOC_CHECKPOINTS_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/containers/tlocContainers.h>
 
@@ -17,9 +17,9 @@ namespace tloc { namespace core { namespace utils {
   class Checkpoints
   {
   public:
-    typedef bool                            value_type;
-    typedef tl_array<value_type>::type      flags_type;
-    typedef tl_size                         size_type;
+    typedef bool                                      value_type;
+    typedef containers::tl_array <value_type>::type   flags_type;
+    typedef tl_size                                   size_type;
 
     Checkpoints(tl_uint a_numberOfCheckpoints);
 

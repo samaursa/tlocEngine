@@ -224,6 +224,6 @@ const char8* GetErrorString(GLenum a_errorCode)
   //------------------------------------------------------------------------
   // Explicit Instantiation
 
-  template void Error::GetErrorAsString(core::String&);
+  template void Error::GetErrorAsString(core::string::String&);
 
 };};};

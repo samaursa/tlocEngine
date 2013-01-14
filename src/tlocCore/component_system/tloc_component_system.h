@@ -1,5 +1,7 @@
-#ifndef _TLOC_INCLUDE_ALL_COMPONENT_SYSTEM_H_
-#define _TLOC_INCLUDE_ALL_COMPONENT_SYSTEM_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_COMPONENT_SYSTEM_H_
+#define _TLOC_CORE_INCLUDE_ALL_COMPONENT_SYSTEM_H_
+
+#include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
@@ -16,14 +18,5 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
-
-//////////////////////////////////////////////////////////////////////////
-// namespace alias
-
-namespace tloc {
-
-  namespace core_cs = core::component_system;
-
-};
 
 #endif

@@ -8,7 +8,7 @@
 #include "tlocTable.h"
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
   //////////////////////////////////////////////////////////////////////////
   // Table<N, N>
 
@@ -66,7 +66,7 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI Table<TABLE_PARAMS>::
-    Table (const core::Variadic<value_type, k_TableSize>& a_vars, 
+    Table (const Variadic<value_type, k_TableSize>& a_vars, 
            table_order a_tableOrder)
   { Set(a_vars, a_tableOrder); }
 
@@ -204,7 +204,7 @@ namespace tloc { namespace core {
 
   template <TABLE_TEMPS>
   TL_FI void Table<TABLE_PARAMS>
-    ::Set(const core::Variadic<value_type, k_TableSize>& a_vars, 
+    ::Set(const Variadic<value_type, k_TableSize>& a_vars, 
           table_order a_tableOrder)
   {
     if (a_tableOrder == k_ColMajor)
@@ -283,6 +283,7 @@ namespace tloc { namespace core {
   {
     return !operator==(aTable);
   }
-};};
+
+};};};
 
 #endif

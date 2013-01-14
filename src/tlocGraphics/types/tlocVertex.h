@@ -2,8 +2,8 @@
 #define TLOC_VERTEX_H
 
 #include <tlocCore/types/tlocConditionalType.h>
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
 #include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace types {
@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace types {
     class TexCoord
     {
     public:
-      typedef math::Vec2f32           value_type;
+      typedef math::types::Vec2f32           value_type;
 
     public:
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetTexCoord, m_value);
@@ -69,11 +69,11 @@ namespace tloc { namespace graphics { namespace types {
     //------------------------------------------------------------------------
     // Typedefs
 
-    typedef VertexPos<math::Vec2f32>    VertexPos2f;
-    typedef VertexPos<math::Vec3f32>    VertexPos3f;
+    typedef VertexPos<math::types::Vec2f32>    VertexPos2f;
+    typedef VertexPos<math::types::Vec3f32>    VertexPos3f;
 
-    typedef VertexNorm<math::Vec2f32>   VertexNorm2f;
-    typedef VertexNorm<math::Vec3f32>   VertexNorm3f;
+    typedef VertexNorm<math::types::Vec2f32>   VertexNorm2f;
+    typedef VertexNorm<math::types::Vec3f32>   VertexNorm3f;
   };
 
   template <class T_Attrib1>

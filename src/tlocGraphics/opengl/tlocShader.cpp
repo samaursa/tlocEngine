@@ -10,6 +10,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  using namespace core::string;
+
   namespace detail
   {
     Shader_I::object_handle
@@ -67,7 +69,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     // Load the shader
-    s32 strLen = (s32)core::StrLen(a_shaderSource);
+    s32 strLen = (s32)StrLen(a_shaderSource);
     glShaderSource(handle, 1, &a_shaderSource, &strLen);
 
     // TODO: Log proper OpenGL errors

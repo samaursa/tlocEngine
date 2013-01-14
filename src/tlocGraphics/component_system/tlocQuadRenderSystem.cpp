@@ -4,7 +4,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
 
-#include <tlocMath/data_types/tlocRectangle.h>
+#include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -17,6 +17,8 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  using namespace core::data_structs;
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -28,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
   QuadRenderSystem::QuadRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 core::Variadic<component_type, 1>(components::quad))
+                 Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
     m_quadList.resize(4); // number of vertexes a quad has
@@ -146,6 +148,8 @@ namespace tloc { namespace graphics { namespace component_system {
       // Prepare the Quad
 
       typedef math::types::Rectf32    rect_type;
+      using math::types::Mat4f32;
+      using math::types::Vec4f32;
 
       const rect_type& rect = q.GetRectangleRef();
 
@@ -163,12 +167,12 @@ namespace tloc { namespace graphics { namespace component_system {
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
-      const math::Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation();
 
-      math::Vec4f32 qPos;
+      Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        qPos = m_quadList[i].ConvertTo<math::Vec4f32>();
+        qPos = m_quadList[i].ConvertTo<Vec4f32>();
         qPos = tMatrix * qPos;
 
         m_quadList[i].ConvertFrom(qPos);

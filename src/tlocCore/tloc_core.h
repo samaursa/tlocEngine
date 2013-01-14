@@ -1,8 +1,9 @@
-#ifndef _TLOC_INCLUDE_ALL_CORE_H_
-#define _TLOC_INCLUDE_ALL_CORE_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_H_
+#define _TLOC_CORE_INCLUDE_ALL_H_
 
 // _misc
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocNoOpt.h>
 #include <tlocCore/tlocPair.h>
@@ -18,7 +19,7 @@
 #include <tlocCore/iterators/tloc_iterators.h>
 #include <tlocCore/memory/tloc_memory.h>
 #include <tlocCore/platform/tloc_platform.h>
-#include <tlocCore/RNGs/tloc_RNGs.h>
+#include <tlocCore/rng/tloc_rng.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/string/tloc_string.h>
 #include <tlocCore/time/tloc_time.h>

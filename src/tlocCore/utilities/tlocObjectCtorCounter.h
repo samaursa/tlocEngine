@@ -1,6 +1,8 @@
 #ifndef TLOC_OBJECT_CTOR_COUNTER_H
 #define TLOC_OBJECT_CTOR_COUNTER_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/utilities/tlocUtils.h>
 

@@ -13,6 +13,7 @@ namespace TestingUniquePtr
 {
   using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   struct UniqueStruct
   {

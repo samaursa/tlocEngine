@@ -10,7 +10,7 @@
 
 namespace TestingWindow
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace graphics;
 
   struct sampleObject

@@ -7,7 +7,7 @@
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/opengl/tlocError.h>
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace TestingShaderProgram
 {

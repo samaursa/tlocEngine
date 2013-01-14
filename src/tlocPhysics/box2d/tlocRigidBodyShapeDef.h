@@ -8,8 +8,8 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 
 #include <Box2D/Dynamics/b2Fixture.h>
 

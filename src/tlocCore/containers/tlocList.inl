@@ -8,7 +8,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/iterators/tlocIterator.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -1362,6 +1362,6 @@ namespace tloc { namespace core {
     return (list_size&)m_sizeAndNode;
   }
 
-};};
+};};};
 
 #endif

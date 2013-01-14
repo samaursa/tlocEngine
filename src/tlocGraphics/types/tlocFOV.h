@@ -1,7 +1,7 @@
 #ifndef _TLOC_GRAPHICS_TYPES_FOV_H_
 #define _TLOC_GRAPHICS_TYPES_FOV_H_
 
-#include <tlocMath/angle/tlocAngle.h>
+#include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
 #include <tlocGraphics/types/tlocAspectRatio.h>
 
@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef tl_float                                      value_type;
-    typedef math::Radian                                  angle_type;
+    typedef math::types::Radian                           angle_type;
     typedef math::utils::Pythagoras                       right_tri_type;
     typedef types::AspectRatio                            ar_type;
 

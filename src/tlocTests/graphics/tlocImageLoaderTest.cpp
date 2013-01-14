@@ -8,6 +8,7 @@
 namespace TestingImageLoader
 {
   using namespace tloc;
+  using namespace core::string;
   using namespace tloc::graphics;
 
   typedef graphics::types::Color  color_type;
@@ -15,8 +16,8 @@ namespace TestingImageLoader
   extern color_type png_test_1[10][10];
   extern color_type png_test_2[10][10];
 
-  core::String g_png_test_1_path(GetAssetPath() + core::String("/images/png_test_1.png"));
-  core::String g_png_test_2_path(GetAssetPath() + core::String("/images/png_test_2.png"));
+  String g_png_test_1_path(GetAssetPath() + String("/images/png_test_1.png"));
+  String g_png_test_2_path(GetAssetPath() + String("/images/png_test_2.png"));
 
   TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {

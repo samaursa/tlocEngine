@@ -8,10 +8,12 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  using namespace core::data_structs;
+
   MeshRenderSystem::MeshRenderSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::mesh))
+    , Variadic<component_type, 1>(components::mesh))
   {
   }
 

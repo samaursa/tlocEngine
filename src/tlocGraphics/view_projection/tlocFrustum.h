@@ -3,9 +3,9 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/angle/tlocAngle.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocAngle.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/types/tlocAspectRatio.h>
 #include <tlocGraphics/types/tlocFOV.h>
@@ -40,13 +40,14 @@ namespace tloc { namespace graphics { namespace view_proj {
 
   public:
     typedef tl_float                                    real_type;
-    typedef core::Tuple<real_type, Planes::k_count>     cont_type;
+    typedef core::data_structs::Tuple
+      <real_type, Planes::k_count>                      cont_type;
     typedef math::types::Rectangle<real_type>           rect_type;
     typedef tl_size                                     size_type;
-    typedef math::Radian                                angle_type;
+    typedef math::types::Radian                         angle_type;
     typedef types::FOV                                  fov_type;
     typedef types::AspectRatio                          ar_type;
-    typedef math::Matrix4<real_type>                    matrix_type;
+    typedef math::types::Matrix4<real_type>             matrix_type;
 
   public:
     struct Params
@@ -81,7 +82,7 @@ namespace tloc { namespace graphics { namespace view_proj {
                                           GetProjectionMatrix, m_projMatrix);
 
   private:
-    typedef core::Variadic<real_type, Planes::k_count> plane_args;
+    typedef core::data_structs::Variadic<real_type, Planes::k_count> plane_args;
 
     void DoDefinePlanes(const plane_args& a_vars);
     void DoBuildFrustumFromPlanes();

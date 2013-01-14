@@ -15,6 +15,7 @@ namespace TestingSharedPtr
 {
   using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   using tloc::core::smart_ptr::SharedPtr;
 

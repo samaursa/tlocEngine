@@ -1,12 +1,13 @@
 #ifndef TLOC_TEMPLATE_DISPATCH_H
 #define TLOC_TEMPLATE_DISPATCH_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
   /// Use this class as a base class for callback classes that use the zero
   /// virtual overhead observer callback pattern. The inherited callback classes
@@ -136,7 +137,7 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
+        if ( string::StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           currCallback->Register(a_observer);
@@ -180,7 +181,7 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), type_string) == 0)
+        if ( string::StrCmp( (*itr)->GetType(), type_string) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->UnRegister(a_observer);
@@ -206,7 +207,8 @@ namespace tloc { namespace core {
            itrEnd = m_allObservers.end();
            itr != itrEnd; ++itr)
       {
-        if ( StrCmp( (*itr)->GetType(), tl_type_to_string<T>().value() ) == 0)
+        if ( string::StrCmp( (*itr)->GetType(),
+             tl_type_to_string<T>().value() ) == 0)
         {
           callback_type* currCallback = static_cast<callback_type*>(*itr);
           return currCallback->GetNumRegistered();
@@ -222,6 +224,6 @@ namespace tloc { namespace core {
   };
 
 
-};};
+};};};
 
 #endif

@@ -17,13 +17,13 @@ namespace tloc { namespace graphics { namespace types {
     };
   };
 
-  typedef core::Variadic2i    Dimension2i;
-  typedef core::Variadic2u    Dimension2u;
-  typedef core::Variadic2f    Dimension2f;
+  typedef core::data_structs::Variadic2i    Dimension2i;
+  typedef core::data_structs::Variadic2u    Dimension2u;
+  typedef core::data_structs::Variadic2f    Dimension2f;
 
-  typedef core::Variadic3i    Dimension3i;
-  typedef core::Variadic3u    Dimension3u;
-  typedef core::Variadic3f    Dimension3f;
+  typedef core::data_structs::Variadic3i    Dimension3i;
+  typedef core::data_structs::Variadic3u    Dimension3u;
+  typedef core::data_structs::Variadic3f    Dimension3f;
 
 };};};
 

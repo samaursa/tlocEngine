@@ -17,6 +17,7 @@ namespace TestingEventManager
 {
   using namespace tloc;
   using namespace core;
+  using namespace core::containers;
   using namespace component_system;
 
   class EventTracker : public EventListener

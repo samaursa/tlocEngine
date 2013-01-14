@@ -1,7 +1,7 @@
 #include "tlocList.h"
 #include "tlocList.inl"
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template class List<s32>;
   template class List<f32>;
@@ -12,4 +12,4 @@ namespace tloc { namespace core {
   template class List<s64, ListNode<s64, singly_linked_tag> >;
   template class List<f64, ListNode<f64, singly_linked_tag> >;
 
-};};
+};};};

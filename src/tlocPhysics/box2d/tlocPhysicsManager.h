@@ -11,7 +11,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 
 namespace tloc { namespace physics { namespace box2d { namespace priv {
 
@@ -20,7 +20,7 @@ namespace tloc { namespace physics { namespace box2d { namespace priv {
 };};};};
 
 namespace tloc { namespace physics { namespace box2d {
-  
+
   class World;
 
   ///-------------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace tloc { namespace physics { namespace box2d {
   struct ContactEvent
   {
     typedef core::component_system::Entity entity_type;
-    
+
     ContactEvent
       (const entity_type* a_entityA = NULL, const entity_type* a_entityB = NULL)
       : m_entityA(a_entityA), m_entityB(a_entityB) {}
@@ -48,15 +48,15 @@ namespace tloc { namespace physics { namespace box2d {
 
   template <typename T>
   struct ContactCallbackGroupT :
-    public core::CallbackGroupTArray<T, ContactCallbacks>::type
+    public core::base_classes::CallbackGroupTArray<T, ContactCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, ContactCallbacks>::type
-      base_type;
-    typedef typename base_type::size_type size_type;
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, ContactCallbacks>::type        base_type;
 
-    using base_type::m_observers;
+    typedef typename base_type::size_type                   size_type;
+    using            base_type::m_observers;
 
-    virtual bool 
+    virtual bool
       OnContactBegin(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
@@ -69,7 +69,7 @@ namespace tloc { namespace physics { namespace box2d {
       return false;
     }
 
-    virtual bool 
+    virtual bool
       OnContactEnd(const ContactEvent& a_event)
     {
       for (size_type i = 0; i < m_observers.size(); ++i)
@@ -88,17 +88,18 @@ namespace tloc { namespace physics { namespace box2d {
   /// the physics world. Currently supports one world. Dispatches world contact
   /// events to callback classes registered to it.
   ///-------------------------------------------------------------------------
-  class PhysicsManager : 
-    public core::DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
+  class PhysicsManager
+    : public core::base_classes::
+      DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
   {
   public:
     typedef PhysicsManager                              this_type;
-    typedef core::DispatcherBaseArray
+    typedef core::base_classes::DispatcherBaseArray
       <ContactCallbacks, ContactCallbackGroupT>::type   base_type;
 
     typedef base_type::size_type  size_type;
     typedef s32                   int_type;
-    typedef math::Vec2f           vec_type;
+    typedef math::types::Vec2f    vec_type;
     typedef core::error::Error    error_type;
     typedef World                 world_type;
     typedef ContactEvent          contact_event_type;
@@ -112,8 +113,8 @@ namespace tloc { namespace physics { namespace box2d {
   public:
     PhysicsManager();
 
-    error_type Initialize(gravity a_gravity, 
-                          velocity_iterations a_vel = velocity_iterations(8), 
+    error_type Initialize(gravity a_gravity,
+                          velocity_iterations a_vel = velocity_iterations(8),
                           position_iterations a_pos = position_iterations(3));
 
     error_type Shutdown();
@@ -123,14 +124,14 @@ namespace tloc { namespace physics { namespace box2d {
     world_type&       GetWorld();
     const world_type& GetWorld() const;
 
-    TLOC_DECL_AND_DEF_GETTER(int_type, GetVelocityIterations, 
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetVelocityIterations,
                              m_velocityIterations);
-    TLOC_DECL_AND_DEF_GETTER(int_type, GetPositionIterations, 
+    TLOC_DECL_AND_DEF_GETTER(int_type, GetPositionIterations,
                              m_positionIterations);
 
-    TLOC_DECL_AND_DEF_SETTER(int_type, SetVelocityIterations, 
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetVelocityIterations,
                              m_velocityIterations);
-    TLOC_DECL_AND_DEF_SETTER(int_type, SetPositionIterations, 
+    TLOC_DECL_AND_DEF_SETTER(int_type, SetPositionIterations,
                              m_positionIterations);
 
   public:

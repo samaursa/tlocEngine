@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 #include <tlocGraphics/types/tlocColor.h>
 
 namespace TestingColor
@@ -104,7 +104,7 @@ namespace TestingColor
     Color c(25, 35, 45, 55);
     CHECK_COLOR_4(c, 25, 35, 45, 55);
 
-    math::Vec4f cVec;
+    math::types::Vec4f cVec;
 
     c.GetAs<p_color::format::RGBA>(cVec);
     CHECK_COLOR_4(c, 25, 35, 45, 55);

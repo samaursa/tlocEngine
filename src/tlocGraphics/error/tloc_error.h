@@ -5,7 +5,7 @@
 
 namespace tloc {
 
-  namespace gfx_error = graphics::error;
+  namespace gfx_err = graphics::error;
 
 };
 

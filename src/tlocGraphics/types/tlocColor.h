@@ -33,10 +33,10 @@ namespace tloc { namespace graphics { namespace types {
       channel_count
     }; typedef tl_size              channel_type;
 
-    typedef u8                      value_type;
-    typedef core::Tuple<u8, 4>      container_type;
-    typedef u32                     int_type;
-    typedef tl_float                real_type;
+    typedef u8                                value_type;
+    typedef core::data_structs::Tuple<u8, 4>  container_type;
+    typedef u32                               int_type;
+    typedef tl_float                          real_type;
 
   public:
     Color();
@@ -62,11 +62,14 @@ namespace tloc { namespace graphics { namespace types {
     void     GetAs(T_VectorType& a_vec)
     {
       using namespace p_color::format;
+      using tloc::math::types::Vec4f32;
+      using tloc::math::types::Vec4f64;
+
       type_traits::AssertTypeIsSupported
         <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
       type_traits::AssertTypeIsSupported
-        <T_VectorType, tloc::math::Vec4f32, tloc::math::Vec4f64>();
+        <T_VectorType, Vec4f32, Vec4f64>();
 
       DoGetAs<T_ColorFormat>(a_vec);
     }

@@ -1,7 +1,8 @@
 #ifndef TLOC_PLATFORM_IMPL_BASE_H
 #define TLOC_PLATFORM_IMPL_BASE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace base_classes {

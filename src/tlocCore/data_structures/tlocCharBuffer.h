@@ -1,6 +1,7 @@
 #ifndef TLOC_CHAR_BUFFER_H
 #define TLOC_CHAR_BUFFER_H
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
 namespace tloc { namespace core { namespace data_structs {

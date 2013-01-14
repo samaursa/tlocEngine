@@ -2,7 +2,8 @@
 #define _TLOC_CORE_INCLUDE_ALL_H_
 
 // _misc
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocNoOpt.h>
 #include <tlocCore/tlocPair.h>

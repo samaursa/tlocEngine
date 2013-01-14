@@ -1,6 +1,8 @@
 #ifndef TLOC_FILE_IO_H
 #define TLOC_FILE_IO_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <cstdio>
 
 #include <tlocCore/error/tlocError.h>

@@ -1,7 +1,7 @@
 #ifndef _TLOC_CORE_SMART_PTR_H_
 #define _TLOC_CORE_SMART_PTR_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core { namespace smart_ptr {

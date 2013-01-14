@@ -1,7 +1,7 @@
 #ifndef TLOC_CONDITIONAL_TYPE_H
 #define TLOC_CONDITIONAL_TYPE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core {

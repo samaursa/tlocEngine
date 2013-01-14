@@ -1,7 +1,7 @@
 #ifndef TLOC_BUILD_CONFIG_H
 #define TLOC_BUILD_CONFIG_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 
 namespace tloc { namespace core { namespace configs {

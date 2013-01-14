@@ -1,7 +1,7 @@
 #ifndef TLOC_PROTECTED_BUFFER_H
 #define TLOC_PROTECTED_BUFFER_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace data_structs {

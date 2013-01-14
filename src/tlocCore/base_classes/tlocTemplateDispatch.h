@@ -1,7 +1,8 @@
 #ifndef TLOC_TEMPLATE_DISPATCH_H
 #define TLOC_TEMPLATE_DISPATCH_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl>

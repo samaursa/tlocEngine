@@ -1,7 +1,7 @@
 #ifndef TLOC_QUEUE_H
 #define TLOC_QUEUE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/containers/tlocList.h>
 

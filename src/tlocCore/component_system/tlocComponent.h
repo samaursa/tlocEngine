@@ -1,6 +1,8 @@
 #ifndef TLOC_COMPONENT_H
 #define TLOC_COMPONENT_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>

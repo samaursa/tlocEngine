@@ -1,7 +1,7 @@
 #ifndef TLOC_CHECKPOINTS_H
 #define TLOC_CHECKPOINTS_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/containers/tlocContainers.h>
 

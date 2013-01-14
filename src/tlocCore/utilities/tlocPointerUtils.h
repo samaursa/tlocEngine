@@ -1,7 +1,7 @@
 #ifndef TLOC_POINTER_UTILS_H
 #define TLOC_POINTER_UTILS_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace utils {

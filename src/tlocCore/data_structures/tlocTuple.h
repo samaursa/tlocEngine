@@ -1,7 +1,7 @@
 #ifndef TLOC_TUPLE_H
 #define TLOC_TUPLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <memory.h>
 

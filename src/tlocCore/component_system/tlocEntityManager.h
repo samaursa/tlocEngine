@@ -1,8 +1,9 @@
 #ifndef TLOC_ENTITY_MANAGER_H
 #define TLOC_ENTITY_MANAGER_H
 
-#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEventManager.h>

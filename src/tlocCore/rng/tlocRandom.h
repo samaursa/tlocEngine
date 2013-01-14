@@ -1,7 +1,7 @@
 #ifndef TLOC_RANDOM_H
 #define TLOC_RANDOM_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
 #include <tlocCore/rng/tlocRngWell512.h>

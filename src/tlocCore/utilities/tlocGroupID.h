@@ -1,6 +1,8 @@
 #ifndef TLOC_GROUP_ID_H
 #define TLOC_GROUP_ID_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/utilities/tlocObjectCtorCounter.h>
 

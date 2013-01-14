@@ -1,6 +1,8 @@
 #ifndef TLOC_EVENT_MANAGER_H
 #define TLOC_EVENT_MANAGER_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/containers/tlocContainers.h>
 

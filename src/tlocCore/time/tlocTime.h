@@ -1,7 +1,7 @@
 #ifndef TLOC_TIME_H
 #define TLOC_TIME_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/platform/tlocPlatform.h>
 

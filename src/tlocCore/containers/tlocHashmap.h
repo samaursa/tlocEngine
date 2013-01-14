@@ -1,14 +1,14 @@
 #ifndef TLOC_HASH_MAP_H
 #define TLOC_HASH_MAP_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/iterators/tlocIterator.h>
-#include "tlocHashtable.h"
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocHashtable.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array

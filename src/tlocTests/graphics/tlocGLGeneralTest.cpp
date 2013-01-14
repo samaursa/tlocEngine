@@ -13,6 +13,7 @@ namespace TestingGLGeneral
   TEST_CASE("Graphics/gl/Get", "")
   {
     using namespace graphics::win;
+    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       g_mode;
     Window win;

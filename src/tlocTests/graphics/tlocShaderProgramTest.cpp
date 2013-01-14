@@ -71,6 +71,8 @@ namespace TestingShaderProgram
   TEST_CASE("Graphics/ShaderProgram/HardCoded", "")
   {
     using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef win::Window::graphics_mode         graphics_mode;
 
     Window window;
@@ -102,6 +104,7 @@ namespace TestingShaderProgram
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
   {
     using namespace graphics::win;
+    using gfx_rend::Renderer;
     typedef Window::graphics_mode         graphics_mode;
 
     Window win;

@@ -65,6 +65,7 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
+    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -247,6 +248,8 @@ namespace TestingShaderOperator
   {
     using namespace graphics::win;
     using namespace math::types;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
 
     Window win;
@@ -424,6 +427,8 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
 
     Window win;
@@ -574,6 +579,8 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
 
     Window win;

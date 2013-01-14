@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_INCLUDE_ALL_H_
 #define _TLOC_GRAPHICS_INCLUDE_ALL_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocGraphics/component_system/tloc_component_system.h>
 #include <tlocGraphics/error/tloc_error.h>
 #include <tlocGraphics/media/tloc_media.h>

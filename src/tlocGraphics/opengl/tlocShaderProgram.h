@@ -1,6 +1,8 @@
 #ifndef TLOC_SHADER_PROGRAM_H
 #define TLOC_SHADER_PROGRAM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>

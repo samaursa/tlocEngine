@@ -1,6 +1,8 @@
 #ifndef TLOC_IMAGE_LOADER_H
 #define TLOC_IMAGE_LOADER_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/io/tlocPath.h>
 

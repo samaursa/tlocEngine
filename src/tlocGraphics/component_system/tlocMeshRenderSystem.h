@@ -2,6 +2,8 @@
 #ifndef TLOC_MESH_RENDER_SYSTEM_H
 #define TLOC_MESH_RENDER_SYSTEM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>

@@ -1,7 +1,8 @@
 #ifndef TLOC_WINDOW_H
 #define TLOC_WINDOW_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>

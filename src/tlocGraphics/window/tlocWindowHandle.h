@@ -1,6 +1,8 @@
 #ifndef TLOC_WINDOW_HANDLE_H
 #define TLOC_WINDOW_HANDLE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/platform/tlocPlatform.h>
 
 #if defined(TLOC_OS_WIN)

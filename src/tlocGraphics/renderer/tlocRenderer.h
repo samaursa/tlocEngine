@@ -1,7 +1,8 @@
 #ifndef TLOC_GRAPHICS_RENDERER_H
 #define TLOC_GRAPHICS_RENDERER_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/error/tlocError.h>
@@ -9,7 +10,7 @@
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace renderer {
 
   template <typename T_Derived>
   class RendererBase : core::utils::ObjectCounter<RendererBase<T_Derived> >
@@ -96,6 +97,6 @@ namespace tloc { namespace graphics {
 
   typedef Renderer_T<>    Renderer;
 
-};};
+};};};
 
 #endif

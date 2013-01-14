@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
 #define _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocMath/types/tlocRectangle.h>

@@ -19,7 +19,7 @@ namespace tloc {
     namespace renderer         {};
     namespace types            {};
     namespace view_proj        {};
-    namespace win           {};
+    namespace win              {};
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -28,9 +28,9 @@ namespace tloc {
   namespace gfx          = graphics;
   namespace gfx_cs       = graphics::component_system;
   namespace gfx_err      = graphics::error;
-  namespace gfx_media    = graphics::media;
+  namespace gfx_med      = graphics::media;
   namespace gfx_gl       = graphics::gl;
-  namespace gfx_renderer = graphics::renderer;
+  namespace gfx_rend     = graphics::renderer;
   namespace gfx_t        = graphics::types;
   namespace gfx_vp       = graphics::view_proj;
   namespace gfx_win      = graphics::win;

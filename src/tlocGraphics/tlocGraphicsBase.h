@@ -3,7 +3,7 @@
 
 #include <tlocCore/tlocBase.h>
 
-// All major namespaces that core uses should go here
+// All major namespaces that graphics uses should go here
 
 namespace tloc {
 

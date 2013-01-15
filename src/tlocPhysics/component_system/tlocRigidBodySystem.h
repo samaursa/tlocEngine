@@ -2,7 +2,8 @@
 #ifndef _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
 #define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_SYSTEM_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEntity.h>
 

@@ -1,6 +1,8 @@
 #ifndef _TLOC_PHYSICS_INCLUDE_ALL_BOX_2D_H_
 #define _TLOC_PHYSICS_INCLUDE_ALL_BOX_2D_H_
 
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocPhysics/box2d/tlocRigidBody.h>
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>

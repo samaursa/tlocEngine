@@ -1,6 +1,8 @@
 #ifndef _TLOC_INCLUDE_ALL_GRAPHICS_COMPONENT_SYSTEM_H_
 #define _TLOC_INCLUDE_ALL_GRAPHICS_COMPONENT_SYSTEM_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 #include <tlocGraphics/component_system/tlocFan.h>
@@ -18,11 +20,5 @@
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
-
-namespace tloc {
-
-  namespace gfx_cs = graphics::component_system;
-
-};
 
 #endif

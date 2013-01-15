@@ -1,6 +1,8 @@
 #ifndef TLOC_ENTITY_PROCESSING_SYSTEM_H
 #define TLOC_ENTITY_PROCESSING_SYSTEM_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocEntitySystemBase.h>
 

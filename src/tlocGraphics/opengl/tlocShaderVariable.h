@@ -1,9 +1,9 @@
 #ifndef _TLOC_GRAPHICS_GL_SHADER_VARIABLE_H_
 #define _TLOC_GRAPHICS_GL_SHADER_VARIABLE_H_
 
-#include <tlocCore/tlocBase.h>
-#include <tlocCore/string/tlocString.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/string/tlocString.h>
 #include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocAny.inl>
 #include <tlocCore/types/tlocTypeTraits.h>

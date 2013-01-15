@@ -1,7 +1,7 @@
 #ifndef _TLOC_CORE_UTILS_TYPE_H_
 #define _TLOC_CORE_UTILS_TYPE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 
 namespace tloc { namespace core { namespace utils {
 

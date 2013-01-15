@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_TYPES_ASPECT_RATIO_H_
 #define _TLOC_GRAPHICS_TYPES_ASPECT_RATIO_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocStrongType.h>
 

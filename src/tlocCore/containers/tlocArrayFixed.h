@@ -1,7 +1,7 @@
 #ifndef TLOC_STACK_ARRAY_H
 #define TLOC_STACK_ARRAY_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>

@@ -1,7 +1,7 @@
 #ifndef TLOC_CORE_MEMORY_BUFFER_ARG_H
 #define TLOC_CORE_MEMORY_BUFFER_ARG_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 
 namespace tloc { namespace core { namespace memory {

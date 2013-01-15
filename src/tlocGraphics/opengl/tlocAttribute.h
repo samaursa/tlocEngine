@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
 #define _TLOC_GRAPHICS_GL_ATTRIBUTE_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocMath/types/tlocVector2.h>

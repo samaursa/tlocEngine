@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -14,7 +16,7 @@ namespace tloc { namespace input {
     struct Immediate{};
   };
 
-  namespace hid
+  namespace p_hid
   {
     struct HIDType      {};
 
@@ -29,7 +31,7 @@ namespace tloc { namespace input {
     void IsInputTypeSupported()
     {
       TLOC_STATIC_ASSERT(
-        (Loki::Conversion<T_InputObject, hid::HIDType>::exists),
+        (Loki::Conversion<T_InputObject, p_hid::HIDType>::exists),
         Object_must_be_HID_type);
     }
   }

@@ -1,12 +1,14 @@
 #ifndef TLOC_KEYBOARD_IMPL_H
 #define TLOC_KEYBOARD_IMPL_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
 
 #include <tlocInput/tlocInputTypes.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   ///-------------------------------------------------------------------------
   /// A keyboard event that is sent as the argument when a keyboard event
@@ -59,9 +61,9 @@ namespace tloc { namespace input {
     KeyCode   m_keyCode;
   };
 
-};};
+};};};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// Keyboard implementation that must be specialized for each platform
@@ -73,11 +75,12 @@ namespace tloc { namespace input { namespace priv {
   template <class T_ParentKeyboard> class KeyboardImpl;
 
   template <class T_ParentKeyboard, class T_ParamList>
-  class KeyboardImplBase : public core::ImplBase<T_ParentKeyboard>
+  class KeyboardImplBase
+    : public core::base_classes::ImplBase<T_ParentKeyboard>
   {
   public:
-    typedef core::ImplBase<T_ParentKeyboard>              base_type;
-    typedef typename base_type::parent_type               parent_type;
+    typedef core::base_classes::ImplBase<T_ParentKeyboard>  base_type;
+    typedef typename base_type::parent_type                 parent_type;
 
     typedef T_ParamList                                   param_list_type;
     typedef typename parent_type::platform_type           platform_type;
@@ -109,6 +112,6 @@ namespace tloc { namespace input { namespace priv {
     index_type            m_modifier;
   };
 
-};};};
+};};};};
 
 #endif

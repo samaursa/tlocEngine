@@ -1,6 +1,7 @@
 #ifndef TLOC_FORWARD_LIST_H
 #define TLOC_FORWARD_LIST_H
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/iterators/tlocIterator.h>

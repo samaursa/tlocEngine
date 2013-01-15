@@ -1,7 +1,8 @@
 #ifndef TLOC_GL_OBJECT_H
 #define TLOC_GL_OBJECT_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>

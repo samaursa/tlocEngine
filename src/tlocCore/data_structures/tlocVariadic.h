@@ -2,6 +2,7 @@
 #ifndef TLOC_VARIADIC_H
 #define TLOC_VARIADIC_H
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 
 namespace tloc { namespace core { namespace data_structs {

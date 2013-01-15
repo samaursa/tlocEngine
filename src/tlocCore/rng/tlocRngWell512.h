@@ -1,7 +1,7 @@
 #ifndef TLOC_RNG_WELL_512_H
 #define TLOC_RNG_WELL_512_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core { namespace rng {

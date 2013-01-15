@@ -1,6 +1,8 @@
 #ifndef TLOC_CORE_IO_PATH_H
 #define TLOC_CORE_IO_PATH_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/utilities/tlocUtils.h>
 

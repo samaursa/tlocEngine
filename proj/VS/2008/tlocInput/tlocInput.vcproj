@@ -422,6 +422,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -676,6 +677,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -779,15 +781,15 @@
 			Name="_misc"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocInputImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.h"
 				>
 			</File>
 			<File
@@ -921,6 +923,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocInput\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocInput\tlocInputBase.h"
 			>
 		</File>
 	</Files>

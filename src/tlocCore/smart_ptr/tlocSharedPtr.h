@@ -1,6 +1,8 @@
 #ifndef _TLOC_CORE_SMART_PTR_SHARED_PTR_H_
 #define _TLOC_CORE_SMART_PTR_SHARED_PTR_H_
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 namespace tloc { namespace core { namespace smart_ptr {

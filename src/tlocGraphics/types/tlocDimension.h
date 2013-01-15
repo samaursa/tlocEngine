@@ -1,6 +1,8 @@
 #ifndef TLOC_GRAPHICS_TYPES_DIMENSION_H
 #define TLOC_GRAPHICS_TYPES_DIMENSION_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 namespace tloc { namespace graphics { namespace types {

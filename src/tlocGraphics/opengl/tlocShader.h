@@ -1,7 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_SHADER_H_
 #define _TLOC_GRAPHICS_GL_SHADER_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>

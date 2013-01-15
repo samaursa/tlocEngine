@@ -1,6 +1,8 @@
 #ifndef TLOC_WINDOW_HANDLE_H
 #define TLOC_WINDOW_HANDLE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/platform/tlocPlatform.h>
 
 #if defined(TLOC_OS_WIN)
@@ -10,7 +12,7 @@
 # import <UIKit/UIKit.h>
 #endif
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   template <typename T_Platform> struct WindowHandle;
 
@@ -48,6 +50,6 @@ namespace tloc { namespace graphics {
 
 #endif
 
-};};
+};};};
 
 #endif

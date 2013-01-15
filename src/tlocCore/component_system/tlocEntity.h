@@ -1,6 +1,8 @@
 #ifndef TLOC_ENTITY_H
 #define TLOC_ENTITY_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocCore/containers/tlocContainers.h>

@@ -557,6 +557,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -684,6 +685,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -1869,6 +1871,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocCore\tloc_core.inl"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocCore\tlocCoreBase.h"
 			>
 		</File>
 		<File

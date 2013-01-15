@@ -5,6 +5,7 @@
 // for them. The idea is that the containers can be swapped out across the
 // complete engine at any point in time without re-writing code
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
 #include <tlocCore/containers/tlocStack.h>

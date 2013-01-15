@@ -12,6 +12,7 @@ namespace TestingWindow
 {
   using namespace tloc;
   using namespace graphics;
+  using namespace graphics::win;
 
   struct sampleObject
   {

@@ -1,6 +1,8 @@
 #ifndef _TLOC_CORE_COMPONENT_SYSTEM_COMPONENT_POOL_MANAGER_H_
 #define _TLOC_CORE_COMPONENT_SYSTEM_COMPONENT_POOL_MANAGER_H_
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/utilities/tlocType.h>

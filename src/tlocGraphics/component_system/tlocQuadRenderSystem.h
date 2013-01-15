@@ -2,8 +2,9 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_RENDER_SYSTEM_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_RENDER_SYSTEM_H_
 
-#include <tlocCore/types/tlocStrongType.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>

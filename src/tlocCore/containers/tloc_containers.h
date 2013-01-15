@@ -1,5 +1,7 @@
-#ifndef _TLOC_INCLUDE_ALL_CONTAINERS_H_
-#define _TLOC_INCLUDE_ALL_CONTAINERS_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_CONTAINERS_H_
+#define _TLOC_CORE_INCLUDE_ALL_CONTAINERS_H_
+
+#include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
@@ -16,11 +18,5 @@
 #include <tlocCore/containers/tlocStack.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-
-namespace tloc {
-
-  namespace core_conts = core::containers;
-
-};
 
 #endif

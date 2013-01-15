@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_CIRCLE_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_CIRCLE_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>

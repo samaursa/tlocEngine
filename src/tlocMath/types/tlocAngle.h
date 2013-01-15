@@ -1,7 +1,8 @@
 #ifndef _TLOC_MATH_ANGLE_H_
 #define _TLOC_MATH_ANGLE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace math { namespace types {

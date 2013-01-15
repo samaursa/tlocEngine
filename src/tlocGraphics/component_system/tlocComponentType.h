@@ -1,6 +1,8 @@
 #ifndef TLOC_GFX_COMPONENT_TYPE_H
 #define TLOC_GFX_COMPONENT_TYPE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {

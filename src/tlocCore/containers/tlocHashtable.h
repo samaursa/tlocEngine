@@ -1,7 +1,7 @@
 #ifndef TLOC_HASH_TABLE_H
 #define TLOC_HASH_TABLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>

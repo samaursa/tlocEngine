@@ -1,6 +1,8 @@
 #ifndef TLOC_VERTEX_H
 #define TLOC_VERTEX_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocConditionalType.h>
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>

@@ -1,7 +1,7 @@
 #ifndef TLOC_TABLE_H
 #define TLOC_TABLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocTuple.h>

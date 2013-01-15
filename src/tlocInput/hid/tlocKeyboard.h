@@ -1,6 +1,8 @@
 #ifndef TLOC_KEYBOARD_H
 #define TLOC_KEYBOARD_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -8,10 +10,10 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
-#include <tlocInput/tlocInput.h>
+#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class Keyboard;
 
@@ -37,12 +39,15 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct KeyboardCallbackGroupT:
-    public core::CallbackGroupTArray<T, KeyboardCallbacks >::type
+    public core::base_classes::CallbackGroupTArray<T, KeyboardCallbacks >::type
   {
-    typedef typename core::CallbackGroupTArray<T, KeyboardCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, KeyboardCallbacks>::type     base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual bool OnKeyPress(const tl_size a_caller,
                             const KeyboardEvent& a_event)
     {
@@ -75,10 +80,11 @@ namespace tloc { namespace input {
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Keyboard :
-    public core::DispatcherBaseArray <KeyboardCallbacks, KeyboardCallbackGroupT>::type,
-    public core::NonCopyable,
-    public hid::Keyboard
+  class Keyboard
+    : public core::base_classes::DispatcherBaseArray
+      <KeyboardCallbacks, KeyboardCallbackGroupT>::type
+    , public core::NonCopyable
+    , public p_hid::Keyboard
   {
   public:
     typedef T_Platform                      platform_type;
@@ -122,6 +128,6 @@ namespace tloc { namespace input {
   typedef Keyboard<InputPolicy::Buffered>   KeyboardB;
   typedef Keyboard<InputPolicy::Immediate>  KeyboardI;
 
-};};
+};};};
 
 #endif

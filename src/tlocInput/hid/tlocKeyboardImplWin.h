@@ -1,6 +1,8 @@
 #ifndef TLOC_KEYBOARD_IMPL_WIN_H
 #define TLOC_KEYBOARD_IMPL_WIN_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
@@ -21,7 +23,10 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+//////////////////////////////////////////////////////////////////////////
+// KeyboardImpl
+
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentKeyboard>
   class KeyboardImpl
@@ -79,6 +84,6 @@ namespace tloc { namespace input { namespace priv {
     uchar8                  m_rawBuffer[s_bufferSize];
   };
 
-};};};
+};};};};
 
 #endif

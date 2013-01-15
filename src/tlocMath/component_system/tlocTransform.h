@@ -1,6 +1,8 @@
 #ifndef _TLOC_CORE_COMPONENT_SYSTEM_TRANSFORM_H_
 #define _TLOC_CORE_COMPONENT_SYSTEM_TRANSFORM_H_
 
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>

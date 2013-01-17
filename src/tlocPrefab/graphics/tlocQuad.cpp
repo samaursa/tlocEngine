@@ -6,25 +6,25 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  using core::component_system::Entity;
-  using core::component_system::EntityManager;
-  using core::component_system::ComponentPoolManager;
+  using core_cs::Entity;
+  using core_cs::EntityManager;
+  using core_cs::ComponentPoolManager;
 
   using tloc::graphics::component_system::Quad;
   using tloc::graphics::component_system::QuadPtr;
 
-  using math::types::Rectangle;
-  using math::component_system::Transform;
-  using math::component_system::TransformPtr;
+  using math_t::Rectangle;
+  using math_cs::Transform;
+  using math_cs::TransformPtr;
 
   template <typename T_Real>
-  core::component_system::Entity*
-    CreateQuad(core::component_system::EntityManager& a_mgr,
-               core::component_system::ComponentPoolManager& a_poolMgr,
-               math::types::Rectangle<T_Real> a_rect)
+  core_cs::Entity*
+    CreateQuad(core_cs::EntityManager& a_mgr,
+               core_cs::ComponentPoolManager& a_poolMgr,
+               math_t::Rectangle<T_Real> a_rect)
   {
     using namespace tloc::graphics::component_system::components;
-    using namespace tloc::math::component_system::components;
+    using namespace tloc::math_cs::components;
 
     typedef ComponentPoolManager    pool_mgr;
     typedef pool_mgr::iterator      comp_pool_ptr;
@@ -51,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
-    typedef tloc::math::component_system::TransformPool  t_pool;
+    typedef tloc::math_cs::TransformPool  t_pool;
 
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 

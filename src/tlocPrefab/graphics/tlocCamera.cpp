@@ -8,15 +8,15 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
-  core::component_system::Entity*
-    CreateCamera(core::component_system::EntityManager& a_mgr,
-                 core::component_system::ComponentPoolManager& a_poolMgr)
+  core_cs::Entity*
+    CreateCamera(core_cs::EntityManager& a_mgr,
+                 core_cs::ComponentPoolManager& a_poolMgr)
   {
-    using math::component_system::components::transform;
+    using math_cs::components::transform;
     using tloc::graphics::component_system::components::projection;
 
-    using namespace core::component_system;
-    using namespace math::component_system;
+    using namespace core_cs;
+    using namespace math_cs;
     using namespace tloc::graphics::component_system;
 
     typedef ComponentPoolManager    pool_mgr;
@@ -30,7 +30,7 @@ namespace tloc { namespace prefab { namespace graphics {
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
-    typedef tloc::math::component_system::TransformPool  t_pool;
+    typedef tloc::math_cs::TransformPool  t_pool;
 
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 

@@ -1,7 +1,8 @@
 #ifndef TLOC_MATH_H
 #define TLOC_MATH_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 
 namespace tloc {

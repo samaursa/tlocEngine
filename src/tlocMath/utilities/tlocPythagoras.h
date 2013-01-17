@@ -1,7 +1,8 @@
 #ifndef _TLOC_MATH_UTILS_PYTHAGORAS_H_
 #define _TLOC_MATH_UTILS_PYTHAGORAS_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>

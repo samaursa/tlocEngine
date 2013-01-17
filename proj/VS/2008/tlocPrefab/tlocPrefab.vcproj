@@ -507,10 +507,6 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\..\..\..\src\tlocPrefab\placeholder.txt"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\..\src\tlocPrefab\tloc_prefab.cpp"
 			>
 		</File>
@@ -520,6 +516,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocPrefab\tloc_prefab.inl"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPrefab\tlocPrefabBase.h"
 			>
 		</File>
 	</Files>

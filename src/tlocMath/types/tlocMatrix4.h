@@ -2,7 +2,7 @@
 #ifndef TLOC_MATH_MATRIX_4_H
 #define TLOC_MATH_MATRIX_4_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
 
 #include <tlocMath/types/tlocVector4.h>
 #include <tlocMath/types/tlocMatrix.h>

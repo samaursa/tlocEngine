@@ -2,7 +2,8 @@
 #ifndef _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_H_
 #define _TLOC_PHYSICS_BOX2D_PHYSICS_MANAGER_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>

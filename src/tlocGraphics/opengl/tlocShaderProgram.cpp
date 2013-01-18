@@ -246,7 +246,10 @@ namespace tloc { namespace graphics { namespace gl {
   bool ShaderProgram::
     IsEnabled() const
   {
-    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    // NOTE: OpenGL defines program name to be u32 but glGetIntegeriv returns
+    //       s32, thus the cast.
+    if (gl::Get<gl::p_get::CurrentProgram>() ==
+        core::utils::CastNumber<GLint, object_handle>(GetHandle()) )
     { return true; }
 
     return false;

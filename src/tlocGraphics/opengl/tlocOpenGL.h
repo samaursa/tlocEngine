@@ -45,17 +45,15 @@ namespace tloc { namespace graphics { namespace gl {
       extern void DoGet(GLdouble*& a_out, const GLint a_paramName);
     };
 
-    struct CurrentProgram
-    {
-      typedef GLint value_type;
-      static const GLint s_glParamName;
-    };
+    typedef GLint value_type;
+
+    struct CurrentProgram { static const value_type s_glParamName; };
   };
 
   template <typename T_GlPName>
-  typename T_GlPName::value_type Get()
+  p_get::value_type Get()
   {
-    typedef typename T_GlPName::value_type  ret_type;
+    typedef p_get::value_type  ret_type;
 
     ret_type toRet;
     p_get::priv::DoGet(toRet, T_GlPName::s_glParamName);

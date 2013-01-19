@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     using tloc::core::less;
     using tloc::type_traits::common_type;
 
-    return less<common_type<T*, U*>::type>()( a.get(), b.get() );
+    return less<typename common_type<T*, U*>::type>()( a.get(), b.get() );
   }
 
   template <class T, class U>

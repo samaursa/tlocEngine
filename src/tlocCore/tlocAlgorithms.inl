@@ -1572,7 +1572,7 @@ namespace tloc { namespace core {
       if (a_first != a_last)
       {
         const tl_ptrdiff size = tloc::core::distance(a_first, a_last);
-        typedef Array<T_ValueType> T_Container;
+        typedef containers::Array<T_ValueType> T_Container;
         T_Container unsortedArray(size);
 
         tloc::core::copy(a_first, a_last, unsortedArray.begin());

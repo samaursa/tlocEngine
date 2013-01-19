@@ -6,6 +6,7 @@
 #endif
 
 #include "tlocAny.h"
+#include <tlocCore/types/tlocTypeTraits.h>
 
 #ifndef TLOC_DISABLE_ASSERT_ANY
 # define TLOC_ASSERT_ANY(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)

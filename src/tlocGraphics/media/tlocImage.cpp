@@ -61,6 +61,6 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // Explicitly instantiate the container
 
-  template class core::Array<types::Color>;
+  template class core::containers::Array<types::Color>;
 
 };};};

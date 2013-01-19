@@ -2,13 +2,34 @@
 #ifndef TLOC_BASIC_TYPES_H
 #define TLOC_BASIC_TYPES_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <wctype.h>
 #include <limits.h>
 #include <stddef.h> // Needed for OSX built-in types
 
 namespace tloc
 {
+  //////////////////////////////////////////////////////////////////////////
+  // C++11 NULL define (this will be removed when compiling as C++11)
+
+  // Copied from http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/nullptr#Solution_and_Sample_Code
+  const // It is a const object...
+  class nullptr_t
+  {
+  public:
+    template<class T>
+    inline operator T*() const // convertible to any type of null non-member pointer...
+    { return 0; }
+
+    template<class C, class T>
+    inline operator T C::*() const   // or any type of null member pointer...
+    { return 0; }
+
+  private:
+    void operator&() const;  // Can't take address of nullptr
+
+  } nullptr = {};
+
   //////////////////////////////////////////////////////////////////////////
   // Windows Types
 
@@ -53,6 +74,9 @@ namespace tloc
 
   typedef char              char8;
   typedef wchar_t           char32;
+
+  // typedef short          short; // cannot typedef this for obvious reasons
+  typedef unsigned short    ushort;
 
   typedef TLOC_INT8_TYPE    s8;
   typedef TLOC_INT16_TYPE   s16;

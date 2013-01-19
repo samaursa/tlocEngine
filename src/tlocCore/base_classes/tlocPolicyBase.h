@@ -1,6 +1,8 @@
 #ifndef TLOC_POLICY_BASE
 #define TLOC_POLICY_BASE
 
+#include <tlocCore/tlocCoreBase.h>
+
 namespace tloc { namespace core { namespace policies {
 
   template <typename T_Derived>

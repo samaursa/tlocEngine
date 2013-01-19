@@ -3,7 +3,9 @@
 #include "glext.h"
 #include "wglext.h"
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
+
+  using namespace core::string;
 
 #define WINDOW_IMPL_WIN_PARAMS Window_T<>
 #define WINDOW_IMPL_WIN_TYPE WindowImpl<WINDOW_IMPL_WIN_PARAMS>
@@ -150,7 +152,7 @@ namespace tloc { namespace graphics { namespace priv {
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
     tl_int retIndex =
-      core::CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
+      CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
       (s32)top, (s32)width, (s32)height, NULL, NULL,
@@ -282,6 +284,11 @@ namespace tloc { namespace graphics { namespace priv {
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)
   {
     ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
+  }
+
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetTitle(const char* a_title)
+  {
+    SetWindowText(m_handle, a_title);
   }
 
   bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::IsCreated() const
@@ -577,4 +584,4 @@ namespace tloc { namespace graphics { namespace priv {
     }
   }
 
-};};};
+};};};};

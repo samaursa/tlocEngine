@@ -65,6 +65,6 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
-  template BufferArg::BufferArg(const String& a_string);
+  template BufferArg::BufferArg(const string::String& a_string);
 
 };};};

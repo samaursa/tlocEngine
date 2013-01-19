@@ -20,8 +20,6 @@
 #include <3rdParty/loki/static_check.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
-#define USING_TLOC  using namespace tloc
-
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
 
@@ -324,9 +322,9 @@
 #   endif
 
 #else
-#define TLOC_ASSERT(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
-#define TLOC_ASSERTW(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
-#define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED( (_Expression) )
+#define TLOC_ASSERT(_Expression, _Msg)
+#define TLOC_ASSERTW(_Expression, _Msg)
+#define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
 
 // Other common asserts
@@ -366,7 +364,7 @@
 // e.g. out of bounds access. These asserts are in areas that can be potentially
 // performance sensitive (e.g. vector/matrix accessors).
 
-#ifdef TLOC_ENABLE_ASSERT_LOW_LEVEL
+#ifndef TLOC_DISABLE_ASSERT_LOW_LEVEL
 # define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
 #else
 # define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)

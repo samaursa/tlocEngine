@@ -1,40 +1,40 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_H_
 
-#include <tlocGraphics/component_system/tlocPrimitive.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
-#include <tlocGraphics/data_types/tlocVertex.h>
-#include <tlocGraphics/data_types/tlocRectangle.h>
+#include <tlocGraphics/component_system/tlocComponentType.h>
+
+#include <tlocMath/types/tlocRectangle.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Quad : public IPrimitive
+  class Quad : public tloc::core::component_system::Component_T<Quad>
   {
   public:
-    typedef Quad                   this_type;
-    typedef IPrimitive             base_type;
-    typedef types::Rectf32         rect_type;
-
-    // Order chosen based on winding order and n,s,e,w = north, south...
-    typedef base_type::vert_type                     vert_type;
-    typedef core::types::StrongType_T<vert_type, 0>  vert_se;
-    typedef core::types::StrongType_T<vert_type, 1>  vert_ne;
-    typedef core::types::StrongType_T<vert_type, 2>  vert_nw;
-    typedef core::types::StrongType_T<vert_type, 3>  vert_sw;
-
-    template <typename T_VertexPos>
-    vert_type const & GetVertex() const
-    { return GetVertexes()[T_VertexPos::k_index]; }
+    typedef Quad                                this_type;
+    typedef Component_T<this_type>              base_type;
+    typedef f32                                 real_type;
+    typedef math::types::Rectangle<real_type>   rect_type;
 
   public:
     Quad();
     Quad(const rect_type& a_rect);
 
-    void Set(const rect_type& a_rect);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(rect_type, GetRectangleRef, m_rect);
+    TLOC_DECL_AND_DEF_SETTER(rect_type, SetRectangle, m_rect);
+
+  private:
+    rect_type m_rect;
   };
+
+  typedef core::smart_ptr::SharedPtr<Quad>    QuadPtr;
+  typedef core::component_system::
+    ComponentPool_TI<QuadPtr>                 QuadPool;
 
 };};};
 

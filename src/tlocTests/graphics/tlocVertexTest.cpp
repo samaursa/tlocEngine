@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/data_types/tlocVertex.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 namespace TestingGraphicsVertex
 {

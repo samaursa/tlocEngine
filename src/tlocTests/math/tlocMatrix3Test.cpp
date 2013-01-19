@@ -1,13 +1,15 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix3.inl>
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix3.inl>
+#include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingMatrix3
 {
-  USING_TLOC;
-  using namespace math;
+  using namespace tloc;
+  using namespace core::data_structs;
+  using namespace core::rng;
+  using namespace math::types;
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
   CHECK((mat[0]) == (Approx(x1)) ); CHECK((mat[1]) == (Approx(y1)) ); \
@@ -66,8 +68,13 @@ namespace TestingMatrix3
     Mat3f n(values, Mat3f::k_ColMajor);
     CHECK_MATRIX3F(n, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    Mat3f o(core::Variadic9f(values), Mat3f::k_ColMajor);
+    Mat3f o(Variadic9f(values), Mat3f::k_ColMajor);
     CHECK_MATRIX3F(o, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    // Convert from Table to Matrix
+    c = Mat3f(Table<tl_float, 3, 3>(10.0f));
+    CHECK_MATRIX3F(c, 10.0f, 10.0f, 10.0f, 10.0f,
+                   10.0f, 10.0f, 10.0f, 10.0f, 10.0f);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Math/Mul",
@@ -170,9 +177,9 @@ namespace TestingMatrix3
     {
       a.Set(values, Mat3f::k_RowMajor);
       a.Orthonormalize();
-      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      Vec3f vecRot(g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
       CHECK(vecLength == Approx(vecRes.Length()) );
@@ -180,9 +187,9 @@ namespace TestingMatrix3
     {
       a.Set(values, Mat3f::k_RowMajor);
       a.FastOrthonormalize();
-      Vec3f vecRot(core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat(),
-                   core::g_defaultRNG.GetRandomFloat()), vecRes;
+      Vec3f vecRot(g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat(),
+                   g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
       CHECK( Mathf::Approx(vecLength, vecRes.Length(), prec) == true);

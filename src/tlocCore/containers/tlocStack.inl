@@ -7,7 +7,7 @@
 
 #include <tlocCore/containers/tlocList.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -96,6 +96,6 @@ namespace tloc { namespace core {
     m_container.pop_back();
   }
 
-};};
+};};};
 
 #endif

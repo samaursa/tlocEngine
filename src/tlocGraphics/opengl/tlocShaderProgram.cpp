@@ -1,18 +1,10 @@
 #include "tlocShaderProgram.h"
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/data_structures/tlocVariadic.inl>
-
-#include <tlocCore/containers/tlocProtectedBuffer.h>
-#include <tlocCore/containers/tlocProtectedBuffer.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocCore/utilities/tlocType.h>
-
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -21,10 +13,14 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::math;
+  using namespace core::data_structs;
+  using namespace core::string;
 
   namespace
   {
+    typedef ShaderProgram::glsl_var_info_cont_type   glsl_var_info_cont_type;
+    typedef ShaderProgram::size_type                 size_type;
+
     //------------------------------------------------------------------------
     // Variables
 
@@ -35,29 +31,16 @@ namespace tloc { namespace graphics { namespace gl {
 
     enum flags
     {
-      shader_attached = 0,
-      shader_linked,
-      shader_enabled,
-      count
+      k_shaderAttached = 0,
+      k_shaderLinked,
+      k_shaderEnabled,
+      k_uniformInfoLoaded,
+      k_attributeInfoLoaded,
+      k_count
     };
 
     //------------------------------------------------------------------------
-    // Structs
-
-    struct glslVarInfo
-    {
-      typedef core::ProtectedBuffer<char8, g_buffSize>  buff_type;
-
-      GLsizei     m_nameLength;
-      GLint       m_arraySize;
-      GLint       m_location;
-      GLenum      m_type;
-      buff_type   m_name;
-    };
-    typedef core::tl_array<glslVarInfo>::type     glsl_var_info_cont_type;
-
-    //------------------------------------------------------------------------
-    // Functions
+    // Shader variables info
 
     //````````````````````````````````````````````````````````````````````````
     // Uniforms
@@ -65,8 +48,6 @@ namespace tloc { namespace graphics { namespace gl {
     void DoGetUniformInfo(const ShaderProgram& a_shaderProgram,
                           glsl_var_info_cont_type& a_infoOut)
     {
-      typedef ShaderProgram::size_type  size_type;
-
       const size_type uniformMaxLength =
         a_shaderProgram.Get<p_shader_program::ActiveUniformMaxLength>();
       const size_type numOfUniforms =
@@ -74,14 +55,24 @@ namespace tloc { namespace graphics { namespace gl {
 
       TLOC_ASSERT(uniformMaxLength < g_buffSize,
                   "Uniform name length larger than buffer!");
+      TLOC_UNUSED(uniformMaxLength);
 
       a_infoOut.resize(numOfUniforms);
+      String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
-        glslVarInfo& currInfo = a_infoOut[i];
+        ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
                            &currInfo.m_type, currInfo.m_name.Get());
+
+        // remove [0] from the names which appears on some cards
+        fixedName = currInfo.m_name.Get();
+        fixedName = fixedName.substr(0, fixedName.find('['));
+        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
+        currInfo.m_name.Get()[fixedName.length()] = '\0';
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -93,207 +84,12 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
-    void DoSetUniform(const glslVarInfo& a_info, const Uniform& a_uniform)
-    {
-      using namespace core;
-
-      bool isArray = a_uniform.IsArray();
-
-      switch(a_info.m_type)
-      {
-      case GL_FLOAT:
-        {
-          if (isArray == false)
-          {
-            const f32& f = a_uniform.GetValueAs<f32>();
-            glUniform1f(a_info.m_location, f);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform1fv(a_info.m_location, arraySize, faraw);
-          }
-          break;
-        }
-      case GL_FLOAT_VEC2:
-        {
-          if (isArray == false)
-          {
-            const Vec2f32& v = a_uniform.GetValueAs<Vec2f32>();
-            glUniform2f(a_info.m_location, v[0], v[1]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform2fv(a_info.m_location, arraySize, faraw);
-          }
-        }
-      case GL_FLOAT_VEC3:
-        {
-          if (isArray == false)
-          {
-            const Vec3f32& v = a_uniform.GetValueAs<Vec3f32>();
-            glUniform3f(a_info.m_location, v[0], v[1], v[2]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform3fv(a_info.m_location, arraySize, faraw);
-          }
-          break;
-        }
-      case GL_FLOAT_VEC4:
-        {
-          if (isArray == false)
-          {
-            const Vec4f32& v = a_uniform.GetValueAs<Vec4f32>();
-            glUniform4f(a_info.m_location, v[0], v[1], v[2], v[3]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform4fv(a_info.m_location, arraySize, faraw);
-          }
-          break;
-        }
-      case GL_INT:
-        {
-          if (isArray == false)
-          {
-            const s32& i = a_uniform.GetValueAs<s32>();
-            glUniform1i(a_info.m_location, i);
-            break;
-          }
-          else
-          {
-            typedef s32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform1iv(a_info.m_location, arraySize, faraw);
-          }
-        }
-      case GL_INT_VEC2:
-        {
-          if (isArray == false)
-          {
-            const Tuple2s32& t = a_uniform.GetValueAs<Tuple2s32>();
-            glUniform2i(a_info.m_location, t[0], t[1]);
-          }
-          else
-          {
-            typedef s32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform2iv(a_info.m_location, arraySize, faraw);
-          }
-
-          break;
-        }
-      case GL_INT_VEC3:
-        {
-          if (isArray == false)
-          {
-            const Tuple3s32& t = a_uniform.GetValueAs<Tuple3s32>();
-            glUniform3i(a_info.m_location, t[0], t[1], t[2]);
-          }
-          else
-          {
-            typedef s32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform3iv(a_info.m_location, arraySize, faraw);
-          }
-
-          break;
-        }
-
-      case GL_INT_VEC4:
-        {
-          if (isArray == false)
-          {
-            const Tuple4s32& t = a_uniform.GetValueAs<Tuple4s32>();
-            glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
-          }
-          else
-          {
-            typedef s32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_uniform.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform4iv(a_info.m_location, arraySize, faraw);
-          }
-
-          break;
-        }
-      case GL_FLOAT_MAT2:
-        {
-          const Mat2f32& m = a_uniform.GetValueAs<Mat2f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat2f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix2fv(a_info.m_location, GL_FALSE,
-            Mat2f32::k_TableSize, m);
-          break;
-        }
-      case GL_FLOAT_MAT3:
-        {
-          const Mat3f32& m = a_uniform.GetValueAs<Mat3f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix3fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
-          break;
-        }
-      case GL_FLOAT_MAT4:
-        {
-          const Mat4f32& m = a_uniform.GetValueAs<Mat4f32>();
-          TLOC_ASSERT(a_info.m_arraySize == Mat3f32::k_TableSize,
-            "Mismatched uniform array size!");
-          glUniformMatrix4fv(a_info.m_location, GL_FALSE,
-            Mat3f32::k_TableSize, m);
-          break;
-        }
-      }
-    }
-
     //````````````````````````````````````````````````````````````````````````
     // Attributes
 
     void DoGetAttributeInfo(const ShaderProgram& a_shaderProgram,
                             glsl_var_info_cont_type& a_infoOut)
     {
-      typedef ShaderProgram::size_type  size_type;
-
       const size_type attributeMaxLength =
         a_shaderProgram.Get<p_shader_program::ActiveAttributeMaxLength>();
       const size_type numOfAttributes =
@@ -301,14 +97,17 @@ namespace tloc { namespace graphics { namespace gl {
 
       TLOC_ASSERT(attributeMaxLength < g_buffSize,
                   "Attribute name length larger than buffer!");
+      TLOC_UNUSED(attributeMaxLength);
 
       a_infoOut.resize(numOfAttributes);
       for (u32 i = 0; i < numOfAttributes; ++i)
       {
-        glslVarInfo& currInfo = a_infoOut[i];
+        ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
                           &currInfo.m_nameLength, &currInfo.m_arraySize,
                           &currInfo.m_type, currInfo.m_name.Get());
+
+        TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
 
       glsl_var_info_cont_type::iterator itr, itrEnd;
@@ -320,89 +119,6 @@ namespace tloc { namespace graphics { namespace gl {
       }
 
     }
-
-    void DoSetAttribute(const glslVarInfo& a_info, const Attribute& a_attribute)
-    {
-      using namespace core;
-
-      bool isArray = a_attribute.IsArray();
-
-      switch(a_info.m_type)
-      {
-      case GL_FLOAT:
-        {
-          if (isArray == false)
-          {
-            const f32& f = a_attribute.GetValueAs<f32>();
-            glVertexAttrib1f(a_info.m_location, f);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_attribute.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            glVertexAttrib1fv(a_info.m_location, faraw);
-          }
-          break;
-        }
-      case GL_FLOAT_VEC2:
-        {
-          if (isArray == false)
-          {
-            const Vec2f32& v = a_attribute.GetValueAs<Vec2f32>();
-            glVertexAttrib2f(a_info.m_location, v[0], v[1]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_attribute.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            glVertexAttrib2fv(a_info.m_location, faraw);
-          }
-        }
-      case GL_FLOAT_VEC3:
-        {
-          if (isArray == false)
-          {
-            const Vec3f32& v = a_attribute.GetValueAs<Vec3f32>();
-            glVertexAttrib3f(a_info.m_location, v[0], v[1], v[2]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_attribute.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            glVertexAttrib3fv(a_info.m_location, faraw);
-          }
-          break;
-        }
-      case GL_FLOAT_VEC4:
-        {
-          if (isArray == false)
-          {
-            const Vec4f32& v = a_attribute.GetValueAs<Vec4f32>();
-            glVertexAttrib4f(a_info.m_location, v[0], v[1], v[2], v[3]);
-          }
-          else
-          {
-            typedef f32               num_type;
-            typedef Array<num_type>   array_type;
-
-            array_type const & fa = a_attribute.GetValueAs<array_type>();
-            num_type const * faraw = reinterpret_cast<num_type const*>(&(fa[0]));
-            glVertexAttrib4fv(a_info.m_location, faraw);
-          }
-          break;
-        }
-      }
-    }
-
 
   };
 
@@ -424,7 +140,7 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Shader Program
 
-  ShaderProgram::ShaderProgram() : m_flags(count)
+  ShaderProgram::ShaderProgram() : m_flags(k_count)
   {
     SetHandle(glCreateProgram());
     TLOC_ASSERT(gl::Error().Succeeded(), "Could not create shader program");
@@ -441,7 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <ShaderProgram::size_type T_Size>
   ShaderProgram::error_type
     ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
+    (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -449,13 +165,13 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");
     }
 
-    m_flags.Mark(shader_attached);
-    return true;
+    m_flags.Mark(k_shaderAttached);
+    return ErrorSuccess();
   }
 
   ShaderProgram::error_type ShaderProgram::Link()
   {
-    TLOC_ASSERT(m_flags[shader_attached],
+    TLOC_ASSERT(m_flags[k_shaderAttached],
       "No shaders attached - did you forget to call AttachShaders()?");
 
     object_handle handle = GetHandle();
@@ -465,103 +181,54 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      core::String errorString;
+      String errorString;
       gl::Error().GetErrorAsString(errorString);
 
       // TODO: Write shader log
       return error::error_shader_program_link;
     }
 
-    m_flags.Mark(shader_linked);
+    m_flags.Mark(k_shaderLinked);
     return ErrorSuccess();
   }
 
-  ShaderProgram::error_type ShaderProgram::LoadAllUniforms()
+  bool ShaderProgram::IsLinked() const
   {
-    TLOC_ASSERT(m_flags[shader_linked],
-                "Shader not linked - did you forget to call Link()?");
-
-    glsl_var_info_cont_type uniCont;
-    DoGetUniformInfo(*this, uniCont);
-
-    uniform_cont_type::iterator itr, itrEnd;
-    for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-         itr != itrEnd; ++itr)
-    {
-      glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
-      for (itrInfo = uniCont.begin(), itrInfoEnd = uniCont.end();
-           itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if (itr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if (itr->GetType() == itrInfo->m_type && itrInfo->m_location != -1)
-          {
-            DoSetUniform(*itrInfo, *itr);
-
-            // Check with OpenGL
-            if (gl::Error().Failed())
-            { return error::error_shader_uniform_not_attached; }
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched uniform type!");
-            return ErrorFailure();
-          }
-        }
-      }
-    }
-
-    return ErrorSuccess();
+    return m_flags[k_shaderLinked];
   }
 
-  ShaderProgram::error_type ShaderProgram::LoadAllAttributes()
+  void ShaderProgram::LoadUniformInfo()
   {
-    TLOC_ASSERT(m_flags[shader_linked],
-      "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
 
-    glsl_var_info_cont_type attrCont;
-    DoGetAttributeInfo(*this, attrCont);
-
-    attribute_cont_type::iterator itr, itrEnd;
-    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    {
-      glsl_var_info_cont_type::iterator itrInfo, itrInfoEnd;
-      for (itrInfo = attrCont.begin(), itrInfoEnd = attrCont.end();
-           itrInfo != itrInfoEnd; ++itrInfo)
-      {
-        if (itr->GetName().compare(itrInfo->m_name.Get()) == 0)
-        {
-          if (itr->GetType() == itrInfo->m_type && itrInfo->m_location != -1)
-          {
-            DoSetAttribute(*itrInfo, *itr);
-
-            // Check with OpenGL
-            if (gl::Error().Failed())
-            { return error::error_shader_attribute_not_attached; }
-          }
-          else
-          {
-            // TODO: Convert this assertion to a log
-            TLOC_ASSERT(false, "Mismatched attribute type!");
-            return ErrorFailure();
-          }
-        }
-      }
-    }
-
-    return ErrorSuccess();
+    if (m_flags.ReturnAndMark(k_uniformInfoLoaded) == false)
+    { DoGetUniformInfo(*this, m_uniformInfo); }
   }
 
-  void ShaderProgram::AddUniform(const Uniform& a_uniform)
+  void ShaderProgram::LoadAttributeInfo()
   {
-    m_uniforms.push_back(a_uniform);
+    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
+                "Shader not linked! - Did you forget to call Link()?");
+
+    if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
+    { DoGetAttributeInfo(*this, m_attributeInfo); }
   }
 
-  void ShaderProgram::AddAttribute(const Attribute& a_attribute)
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetUniformInfoRef() const
   {
-    m_attributes.push_back(a_attribute);
+    TLOC_ASSERT(m_flags.IsMarked(k_uniformInfoLoaded),
+          "Uniforms not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_uniformInfo;
+  }
+
+  const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
+    GetAttributeInfoRef() const
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_attributeInfoLoaded),
+          "Attributes not loaded! - Did you forget to call LoadUniformInfo()?");
+    return m_attributeInfo;
   }
 
   ShaderProgram::error_type
@@ -574,6 +241,15 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     return ErrorSuccess();
+  }
+
+  bool ShaderProgram::
+    IsEnabled() const
+  {
+    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    { return true; }
+
+    return false;
   }
 
   ShaderProgram::error_type
@@ -592,12 +268,38 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Private methods
 
+  namespace
+  {
+    template <typename T_ProgramIvParam>
+    struct DoGetOperation
+    {
+      void operator()(ShaderProgram::object_handle)
+      { /* intentionally empty */ }
+    };
+
+    template <>
+    struct DoGetOperation<p_shader_program::ValidateStatus>
+    {
+      void operator()(ShaderProgram::object_handle a_shaderHandle)
+      {
+        // This is required BEFORE a call to
+        // glGetProgramiv(#, GL_VALIDATE_STATUS, ...) is called.
+        glValidateProgram(a_shaderHandle);
+      }
+    };
+  }
+
   template <typename T_ProgramIvParam>
   ShaderProgram::gl_result_type
     ShaderProgram::DoGet() const
   {
     GLint result;
     object_handle handle = GetHandle();
+
+    // Perform any operation that may be required before the following call
+    // 'means' anything
+    DoGetOperation<T_ProgramIvParam>()(handle);
+
     glGetProgramiv(handle, T_ProgramIvParam::s_glStatusName, &result);
     return (gl_result_type)result;
   }
@@ -606,19 +308,19 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit initialization
 
   // Supporting up to 4 shader attachments
-  template class core::Variadic<Shader_I*, 1>;
-  template class core::Variadic<Shader_I*, 2>;
-  template class core::Variadic<Shader_I*, 3>;
-  template class core::Variadic<Shader_I*, 4>;
+  template class Variadic<Shader_I*, 1>;
+  template class Variadic<Shader_I*, 2>;
+  template class Variadic<Shader_I*, 3>;
+  template class Variadic<Shader_I*, 4>;
 
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 1>);
+    (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 2>);
+    (Variadic<Shader_I*, 2>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 3>);
+    (Variadic<Shader_I*, 3>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 4>);
+    (Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;
@@ -638,5 +340,9 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::DoGet<p_shader_program::ActiveUniforms>() const;
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::ActiveUniformMaxLength>() const;
+
+  // SmartPtr
+
+  template class tloc::core::smart_ptr::SharedPtr<ShaderProgram>;
 
 };};};

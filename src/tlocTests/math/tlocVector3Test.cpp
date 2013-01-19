@@ -2,8 +2,8 @@
 
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
@@ -11,12 +11,13 @@
 namespace TestingVector3f
 {
   using namespace tloc;
-  using namespace math;
+  using namespace core::data_structs;
+  using namespace math::types;
 
   struct Vector3fFixture
   {
     Vector3fFixture()
-      : b(core::Variadic3f(5, 6, 7))
+      : b(Variadic3f(5, 6, 7))
     {
       a[0] = 1; a[1] = 2; a[2] = 3;
     }
@@ -71,6 +72,9 @@ namespace TestingVector3f
     c = Vec3f::NEG_UNIT_Z;
     CHECK_VEC3F(c, 0.0f, 0.0f, -1.0f); //-V550
 
+    // Convert from Tuple to Vec
+    c = Vec3f(Tuple<tl_float, 3>(1.0f));
+    CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator",
@@ -201,8 +205,8 @@ namespace TestingVector3f
 
     //////////////////////////////////////////////////////////////////////////
     // Vec2 to Vec3 conversion
-    math::Vec2f vec2dim(0);
-    c.ConvertFrom(vec2dim, core::p_tuple::overflow_zero() );
+    Vec2f vec2dim(0);
+    c.ConvertFrom(vec2dim, p_tuple::overflow_zero() );
     CHECK_VEC3F(c, 0.0f, 0.0f, 0.0f);
   }
 

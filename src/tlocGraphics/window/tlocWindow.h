@@ -1,7 +1,8 @@
 #ifndef TLOC_WINDOW_H
 #define TLOC_WINDOW_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
@@ -17,7 +18,7 @@
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   struct WindowEvent
   {
@@ -44,13 +45,16 @@ namespace tloc { namespace graphics {
   };
 
   template <typename T>
-  struct WindowCallbackGroupT :
-    public core::CallbackGroupTArray<T, WindowCallbacks>::type
+  struct WindowCallbackGroupT
+    : public core::base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename core::CallbackGroupTArray<T, WindowCallbacks>::type
-      base_type;
+  public:
+    typedef typename core::base_classes::
+      CallbackGroupTArray<T, WindowCallbacks>::type         base_type;
+
     using base_type::m_observers;
 
+  public:
     virtual void OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
@@ -68,14 +72,15 @@ namespace tloc { namespace graphics {
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
-  class Window_T :
-    public core::DispatcherBaseArray <WindowCallbacks, WindowCallbackGroupT>::type,
-    public core::NonCopyable
+  class Window_T
+    : public core::base_classes::DispatcherBaseArray
+             <WindowCallbacks, WindowCallbackGroupT>::type
+    , public core::NonCopyable
   {
   public:
 
     typedef T_Platform                                   platform_type;
-    typedef Window_T<platform_type>                        this_type;
+    typedef Window_T<platform_type>                      this_type;
     typedef GraphicsMode<T_Platform>                     graphics_mode;
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
@@ -212,6 +217,13 @@ namespace tloc { namespace graphics {
     void SetVisibility(bool a_visible);
 
     ///-------------------------------------------------------------------------
+    /// @brief Sets the window title. May not work on all platforms.
+    ///
+    /// @param  a_title The title of the window.
+    ///-------------------------------------------------------------------------
+    void SetTitle(const char* a_title);
+
+    ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();
@@ -229,7 +241,7 @@ namespace tloc { namespace graphics {
 
     typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
-    core::Queue<WindowEvent>                m_events;
+    core::containers::Queue<WindowEvent>    m_events;
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -268,6 +280,6 @@ namespace tloc { namespace graphics {
 
   typedef Window_T<>    Window;
 
-};};
+};};};
 
 #endif

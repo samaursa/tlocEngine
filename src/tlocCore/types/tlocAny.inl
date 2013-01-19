@@ -7,6 +7,12 @@
 
 #include "tlocAny.h"
 
+#ifndef TLOC_DISABLE_ASSERT_ANY
+# define TLOC_ASSERT_ANY(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
+#else
+# define TLOC_ASSERT_ANY(_Expression, _Msg)
+#endif
+
 namespace tloc { namespace core { namespace types {
 
   namespace p_any
@@ -167,7 +173,10 @@ namespace tloc { namespace core { namespace types {
   template <typename T>
   T& Any::Cast()
   {
-    assert(m_policy == p_any::GetPolicy<T>());
+    // Can't do this check - static variable address is not shared across 
+    // multple binaries (i.e. lib and exe)
+    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(), 
+    //                "Type T does not match the original type");
     T* ret = reinterpret_cast<T*>(m_policy->GetValue(&m_object));
     return *ret;
   }
@@ -175,7 +184,10 @@ namespace tloc { namespace core { namespace types {
   template <typename T>
   T const & Any::Cast() const
   {
-    assert(m_policy == p_any::GetPolicy<T>());
+    // Can't do this check - static variable address is not shared across 
+    // multple binaries (i.e. lib and exe)
+    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(), 
+    //                "Type T does not match the original type");
     T const * ret = reinterpret_cast<T const*>(m_policy->GetValue(&m_object));
     return *ret;
   }

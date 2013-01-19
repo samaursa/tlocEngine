@@ -42,7 +42,8 @@ namespace TestingShaderComponent
 
 
   using namespace tloc;
-  using namespace tloc::core;
+  using namespace core;
+  using namespace string;
   using namespace graphics;
 
   String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );
@@ -50,7 +51,11 @@ namespace TestingShaderComponent
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode         graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
@@ -66,18 +71,22 @@ namespace TestingShaderComponent
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
     CHECK(vShader.Load(vShaderStr) == ErrorSuccess());
-    CHECK(vShader.CompileShader() == ErrorSuccess());
+    CHECK(vShader.Compile() == ErrorSuccess());
 
     gl::FragmentShader fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
     CHECK(fShader.Load(fShaderStr) == ErrorSuccess());
-    CHECK(fShader.CompileShader() == ErrorSuccess());
+    CHECK(fShader.Compile() == ErrorSuccess());
   }
 
   TEST_CASE("Graphics/ShaderComponent/FromFile", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
                WindowSettings("Atom & Eve"));
@@ -100,11 +109,11 @@ namespace TestingShaderComponent
     gl::VertexShader vShader;
 
     CHECK(vShader.Load(vsCode.c_str()) == ErrorSuccess());
-    CHECK(vShader.CompileShader() == ErrorSuccess());
+    CHECK(vShader.Compile() == ErrorSuccess());
 
     gl::FragmentShader fShader;
 
     CHECK(fShader.Load(fsCode.c_str()) == ErrorSuccess());
-    CHECK(fShader.CompileShader() == ErrorSuccess());
+    CHECK(fShader.Compile() == ErrorSuccess());
   }
 };

@@ -37,11 +37,15 @@ namespace TestingStrongType
     typedef types::StrongType_T<tl_float, 1> type_2;
     typedef types::StrongType_T<tl_float, 2> type_3;
     typedef types::StrongType_T<tl_float, 3> type_4;
+    typedef types::StrongType_T<tl_float, 4> type_5;
 
     type_1 t1(1.0f);
     type_2 t2(1.0f);
     type_3 t3(2.0f);
     type_4 t4(3.0f);
+
+    tl_float myFloat = 5.0f;
+    type_5 t5(myFloat);
 
     CHECK( (Loki::IsSameType<type_1, type_2>::value) == 0);
     CHECK( (Loki::IsSameType<type_1, type_1>::value) == 1);
@@ -49,6 +53,7 @@ namespace TestingStrongType
     CHECK( AddFloats(t1, t2) == Approx(2.0f));
     CHECK( AddFloats(t2, t3) == Approx(3.0f));
     CHECK( AddFloats(t3, t4) == Approx(5.0f));
+    CHECK( AddFloats(t5, t1) == Approx(6.0f));
   }
 
   TEST_CASE("core/types/StrongType_T/Complex", "")

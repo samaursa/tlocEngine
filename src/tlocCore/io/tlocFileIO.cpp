@@ -5,6 +5,8 @@
 
 namespace tloc { namespace core { namespace io {
 
+  using string::String;
+
   //------------------------------------------------------------------------
   // Policy details
 
@@ -68,23 +70,23 @@ namespace tloc { namespace core { namespace io {
 
 #define FILE_IO_TEMP    typename T_AccessPolicy, typename T_FileFormat
 #define FILE_IO_PARAMS  T_AccessPolicy, T_FileFormat
-#define FILE_IO_TYPE    typename FileIO<FILE_IO_PARAMS>
+#define FILE_IO_TYPE    typename FileIO_T<FILE_IO_PARAMS>
 
   template <FILE_IO_TEMP>
-  FileIO<FILE_IO_PARAMS>::FileIO(const Path& a_path)
-    : m_fileName(a_path)
+  FileIO_T<FILE_IO_PARAMS>::FileIO_T(const Path& a_path)
+    : m_fileName(a_path), m_file(nullptr)
   {
     TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
   }
 
   template <FILE_IO_TEMP>
-  FileIO<FILE_IO_PARAMS>::~FileIO()
+  FileIO_T<FILE_IO_PARAMS>::~FileIO_T()
   {
     DoClose();
   }
 
   template <FILE_IO_TEMP>
-  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Open()
+  FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Open()
   {
     if (m_fileName.HasFilename() == false)
     { return common_error_types::error_path_incorrect; }
@@ -100,13 +102,19 @@ namespace tloc { namespace core { namespace io {
   }
 
   template <FILE_IO_TEMP>
-  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Close()
+  bool FileIO_T<FILE_IO_PARAMS>::IsOpen()
+  {
+    return m_file != nullptr;
+  }
+
+  template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Close()
   {
     return DoClose();
   }
 
   template <FILE_IO_TEMP>
-  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::Delete()
+  FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Delete()
   {
     if (::remove(m_fileName.GetPath()) == 0)
     { return tloc::ErrorSuccess(); }
@@ -116,7 +124,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO<FILE_IO_PARAMS>::GetContents(String& a_out) const
+    FileIO_T<FILE_IO_PARAMS>::GetContents(String& a_out) const
   {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");
     fseek(m_file, 0, SEEK_END);
@@ -139,7 +147,7 @@ namespace tloc { namespace core { namespace io {
   }
 
   template <FILE_IO_TEMP>
-  FILE_IO_TYPE::error_type FileIO<FILE_IO_PARAMS>::DoClose()
+  FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::DoClose()
   {
     if (m_file)
     {
@@ -149,24 +157,25 @@ namespace tloc { namespace core { namespace io {
       }
     }
 
+    m_file = nullptr;
     return ErrorSuccess();
   }
 
   //------------------------------------------------------------------------
   // Force Instantiate
 
-  template class FileIO<p_file_io::Read, p_file_io::Ascii>;
-  template class FileIO<p_file_io::Append, p_file_io::Ascii>;
-  template class FileIO<p_file_io::Write, p_file_io::Ascii>;
-  template class FileIO<p_file_io::Read_And_Write, p_file_io::Ascii>;
-  template class FileIO<p_file_io::Read_And_Write_Empty, p_file_io::Ascii>;
-  template class FileIO<p_file_io::Read_And_Append, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Read, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Append, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Write, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Read_And_Write, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Read_And_Write_Empty, p_file_io::Ascii>;
+  template class FileIO_T<p_file_io::Read_And_Append, p_file_io::Ascii>;
 
-  template class FileIO<p_file_io::Read, p_file_io::Binary>;
-  template class FileIO<p_file_io::Append, p_file_io::Binary>;
-  template class FileIO<p_file_io::Write, p_file_io::Binary>;
-  template class FileIO<p_file_io::Read_And_Write, p_file_io::Binary>;
-  template class FileIO<p_file_io::Read_And_Write_Empty, p_file_io::Binary>;
-  template class FileIO<p_file_io::Read_And_Append, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Read, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Append, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Write, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Read_And_Write, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Read_And_Write_Empty, p_file_io::Binary>;
+  template class FileIO_T<p_file_io::Read_And_Append, p_file_io::Binary>;
 
 };};};

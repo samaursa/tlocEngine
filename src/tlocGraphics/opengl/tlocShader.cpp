@@ -10,6 +10,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  using namespace core::string;
+
   namespace detail
   {
     Shader_I::object_handle
@@ -37,8 +39,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
     shader_loaded = 0,
     shader_compiled,
-    shader_attached,
-    shader_linked,
+    k_shaderAttached,
+    k_shaderLinked,
     count
   };
 
@@ -67,7 +69,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     // Load the shader
-    s32 strLen = (s32)core::StrLen(a_shaderSource);
+    s32 strLen = (s32)StrLen(a_shaderSource);
     glShaderSource(handle, 1, &a_shaderSource, &strLen);
 
     // TODO: Log proper OpenGL errors
@@ -78,7 +80,7 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess();
   }
 
-  Shader_I::error_type Shader_I::CompileShader()
+  Shader_I::error_type Shader_I::Compile()
   {
     TLOC_ASSERT(m_flags[shader_loaded],
       "No shader loaded - did you forget to call LoadShader()?");
@@ -93,6 +95,8 @@ namespace tloc { namespace graphics { namespace gl {
       s32     logLen;
       char    logBuffer[1000];
       glGetShaderInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
+
+      DoSetError(logBuffer);
 
       // TODO: Write shader log
       return error::error_shader_compile;

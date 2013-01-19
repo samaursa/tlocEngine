@@ -1,7 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_SHADER_H_
 #define _TLOC_GRAPHICS_GL_SHADER_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -21,20 +22,20 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Base class for shaders
 
-  class Shader_I : public Object_T<Shader_I>
+  class Shader_I : public Object_T<Shader_I, p_object::WithError>
   {
   public:
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef Object_T<Shader_I>                base_type;
-    typedef base_type::object_handle        object_handle;
-    typedef base_type::error_type           error_type;
+    typedef Object_T<Shader_I>                      base_type;
+    typedef base_type::object_handle                object_handle;
+    typedef base_type::error_type                   error_type;
 
-    typedef core::tl_array<bool>::type  flag_type;
+    typedef core::containers::tl_array<bool>::type  flag_type;
 
   public:
-    error_type CompileShader();
+    error_type Compile();
 
   protected:
     Shader_I();

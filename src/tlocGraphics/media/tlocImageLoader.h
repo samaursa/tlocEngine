@@ -1,6 +1,8 @@
 #ifndef TLOC_IMAGE_LOADER_H
 #define TLOC_IMAGE_LOADER_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/io/tlocPath.h>
 
@@ -9,7 +11,7 @@
 namespace tloc { namespace graphics { namespace media {
 
   template <typename T_DerivedClass>
-  class ImageLoader
+  class ImageLoader_TI
   {
   public:
     typedef T_DerivedClass        derived_type;
@@ -33,10 +35,10 @@ namespace tloc { namespace graphics { namespace media {
     Image m_image;
   };
 
-  class ImageLoaderPng : public ImageLoader<ImageLoaderPng>
+  class ImageLoaderPng : public ImageLoader_TI<ImageLoaderPng>
   {
   public:
-    typedef ImageLoader<ImageLoaderPng>   base_type;
+    typedef ImageLoader_TI<ImageLoaderPng>   base_type;
     friend base_type;
     using base_type::error_type;
     using base_type::path_type;

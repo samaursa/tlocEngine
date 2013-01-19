@@ -6,102 +6,120 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 namespace tloc { namespace graphics { namespace component_system {
+
+  using namespace core::data_structs;
+
+  //////////////////////////////////////////////////////////////////////////
+  // typedefs
+
+  typedef MaterialSystem::error_type    error_type;
+
+  //////////////////////////////////////////////////////////////////////////
+  // MaterialSystem
 
   MaterialSystem::MaterialSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::material))
+    , Variadic<component_type, 1>(components::material))
   { }
 
-  MaterialSystem::error_type MaterialSystem::Initialize()
-  {
-    return ErrorSuccess();
-  }
-
-  MaterialSystem::error_type MaterialSystem::Shutdown()
-  { return ErrorSuccess(); }
-
-  bool MaterialSystem::CheckProcessing()
-  {
-    return m_dirty;
-  }
-
-  void MaterialSystem::ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
-  {
-    TLOC_UNUSED_2(a_mgr, a_ent);
-  }
-
-  void MaterialSystem::Pre_OnEvent(const event_type& a_event)
+  error_type MaterialSystem::InitializeEntity(entity_manager*,
+                                              entity_type* a_ent)
   {
     using namespace core::component_system;
 
     typedef graphics::component_system::Material        mat_type;
-    typedef mat_type::shader_prog_type                  shader_prog_type;
+    typedef mat_type::shader_prog_ptr                   shader_prog_ptr;
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
-    event_value_type type = a_event.GetType();
+    const entity_type* ent = a_ent;
 
-    switch(type)
+    ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
+
+    // Material should have vertex and fragment shader data, for now we will
+    // assume that both exist
+    mat_type& currMat = mat[0];
+
+    gl::VertexShader          vShader;
+    gl::FragmentShader        fShader;
+    gl::Shader_I::error_type  result;
+
+    shader_prog_ptr sp = currMat.GetShaderProgRef();
+
+    if (sp->IsLinked())
+    { return ErrorSuccess(); }
+
+    vShader.Load(currMat.GetVertexSource().c_str() );
+    result = vShader.Compile();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
+
+    result = fShader.Load(currMat.GetFragmentSource().c_str());
+    result = fShader.Compile();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
+
+    result = sp->AttachShaders
+      (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
+
+    sp->Enable();
+    result = sp->Link();
+    sp->LoadUniformInfo();
+    sp->LoadAttributeInfo();
+    sp->Disable();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
+
+    //------------------------------------------------------------------------
+    // Add user attributes and uniforms
+
+    typedef mat_type::shader_op_ptr          shader_op_ptr;
+
+    // Add user's attributes and uniforms
+    if ( ( &*currMat.GetMasterShaderOperator()) != nullptr)
     {
-    case entity_events::insert_component:
+      shader_op_ptr so_user = shader_op_ptr(new shader_op_ptr::value_type());
+
       {
-        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        const entity_type* ent = entEvent.GetEntity();
+        gl::ShaderOperator::uniform_iterator itr, itrEnd;
+        itr = currMat.GetMasterShaderOperator()->begin_uniform();
+        itrEnd = currMat.GetMasterShaderOperator()->end_uniform();
 
-        ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
-
-        // Material should have vertex and fragment shader data, for now we will
-        // assume that both exist
-        mat_type& currMat = *(mat[0]);
-
-        gl::VertexShader vShader;
-        gl::FragmentShader fShader;
-        gl::Shader_I::error_type result;
-
-        vShader.Load(currMat.GetVertexSource().c_str() );
-        result = vShader.CompileShader();
-        TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
-
-        result = fShader.Load(currMat.GetFragmentSource().c_str());
-        result = fShader.CompileShader();
-        TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
-
-        shader_prog_type sp = currMat.GetShaderProg();
-        result = sp.AttachShaders
-          (shader_prog_type::two_shader_components(&vShader, &fShader) );
-        TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
-
-        result = sp.Link();
-        TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
-
-        break;
+        for (; itr != itrEnd; ++itr)
+        {
+          so_user->AddUniform(itr->first);
+        }
       }
-    case entity_events::remove_component:
+
       {
-        //using namespace core::component_system;
-        //typedef graphics::component_system::Material mat_type;
+        gl::ShaderOperator::attribute_iterator itr, itrEnd;
+        itr = currMat.GetMasterShaderOperator()->begin_attribute();
+        itrEnd = currMat.GetMasterShaderOperator()->end_attribute();
 
-        //const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        //const entity_type* ent = entEvent.GetEntity();
-
-        //ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
-        //for (tl_size i = 0; i < mat.size(); ++i)
-        //{
-        //  for (cont_type::iterator itr = m_allShaders.begin(),
-        //       cont_type::iterator itrEnd = m_allShaders.end();
-        //       itr != itrEnd; ++itr)
-        //  {
-        //    if (
-        //  }
-        //}
+        for (; itr != itrEnd; ++itr)
+        {
+          so_user->AddAttribute(itr->first);
+        }
       }
+
+      sp->Enable();
+      so_user->PrepareAllUniforms(*sp);
+      so_user->PrepareAllAttributes(*sp);
+      sp->Disable();
+
+      currMat.DoGetShaderOpContainerRef().push_back(so_user);
     }
+
+    return ErrorSuccess();
   }
 
-  void MaterialSystem::Post_OnEvent(const event_type& a_event)
-  { TLOC_UNUSED(a_event); }
+  error_type
+    MaterialSystem::ShutdownEntity(entity_manager*, entity_type*)
+  { return ErrorSuccess(); }
+
+  void MaterialSystem::ProcessEntity(entity_manager*, entity_type* )
+  { }
 
 };};};

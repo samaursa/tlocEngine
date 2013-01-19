@@ -1,14 +1,17 @@
 #ifndef TLOC_SHADER_PROGRAM_H
 #define TLOC_SHADER_PROGRAM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
+#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/containers/tlocContainers.h>
+
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
-#include <tlocGraphics/opengl/tlocUniform.h>
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocShaderVariableInfo.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -32,32 +35,39 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
     // Supported number of shader components
-    typedef core::Variadic<Shader_I*, 1>     one_shader_component;
-    typedef core::Variadic<Shader_I*, 2>     two_shader_components;
-    typedef core::Variadic<Shader_I*, 3>     three_shader_components;
-    typedef core::Variadic<Shader_I*, 4>     four_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 1>  one_shader_component;
+    typedef core::data_structs::Variadic<Shader_I*, 2>  two_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 3>  three_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 4>  four_shader_components;
 
-    typedef Object_T<ShaderProgram>     base_type;
-    typedef base_type::object_handle    object_handle;
-    typedef base_type::error_type       error_type;
+    typedef Object_T<ShaderProgram>         base_type;
+    typedef base_type::object_handle        object_handle;
+    typedef base_type::error_type           error_type;
 
-    typedef core::Array<Uniform>        uniform_cont_type;
-    typedef core::Array<Attribute>      attribute_cont_type;
+    typedef tl_size                         size_type;
+    typedef s32                             gl_result_type;
 
-    typedef tl_size                     size_type;
-    typedef s32                         gl_result_type;
+    typedef ShaderVariableInfo              glsl_var_info_type;
+    typedef core::containers::tl_array
+            <ShaderVariableInfo>::type      glsl_var_info_cont_type;
 
   public:
     ShaderProgram();
     ~ShaderProgram();
 
     template <size_type T_Size>
-    error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
+    error_type AttachShaders(core::data_structs::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
+    bool       IsLinked() const;
 
-    error_type LoadAllUniforms();
-    error_type LoadAllAttributes();
+    void LoadUniformInfo();
+    void LoadAttributeInfo();
+
+    TLOC_DECL_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetUniformInfoRef);
+    TLOC_DECL_GETTER_CONST_DIRECT
+      (glsl_var_info_cont_type, GetAttributeInfoRef);
 
     template <typename T_ProgramIvParam>
     gl_result_type Get() const
@@ -76,10 +86,8 @@ namespace tloc { namespace graphics { namespace gl {
       return DoGet<T_ProgramIvParam>();
     }
 
-    void AddUniform(const Uniform& a_uniform);
-    void AddAttribute(const Attribute& a_attribute);
-
     error_type Enable() const;
+    bool       IsEnabled() const;
     error_type Disable() const;
 
   private:
@@ -87,10 +95,15 @@ namespace tloc { namespace graphics { namespace gl {
     gl_result_type DoGet() const;
 
   private:
-    uniform_cont_type           m_uniforms;
-    attribute_cont_type         m_attributes;
-    core::utils::Checkpoints    m_flags;
+    core::utils::Checkpoints         m_flags;
+    glsl_var_info_cont_type          m_attributeInfo;
+    glsl_var_info_cont_type          m_uniformInfo;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef tloc::core::smart_ptr::SharedPtr<ShaderProgram>     ShaderProgramPtr;
 
 };};};
 

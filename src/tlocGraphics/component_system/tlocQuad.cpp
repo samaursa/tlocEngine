@@ -1,40 +1,24 @@
 #include "tlocQuad.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+
 namespace tloc { namespace graphics { namespace component_system {
 
-  Quad::Quad() : IPrimitive(component_system::components::quad)
+  Quad::Quad()
+    : base_type(component_system::components::quad)
+    , m_rect(rect_type::width(1.0f), rect_type::height(1.0f))
   { }
 
   Quad::Quad(const rect_type& a_rect)
-    : IPrimitive(component_system::components::quad)
-  {
-    Set(a_rect);
-  }
+    : base_type(component_system::components::quad)
+    , m_rect(a_rect)
+  { }
 
-  void Quad::Set(const rect_type& a_rect)
-  {
-    typedef base_type::cont_type::value_type::attrib_1_type::value_type vec_type;
+  // SmartPtr
+  template core::smart_ptr::SharedPtr<Quad>;
 
-    base_type::cont_type& verts = DoGetVertexes();
-    verts.resize(4);
-
-    vec_type vertSE(a_rect.GetCoord<rect_type::right>(),
-                    a_rect.GetCoord<rect_type::bottom>(),
-                    0);
-    vec_type vertNE(a_rect.GetCoord<rect_type::right>(),
-                    a_rect.GetCoord<rect_type::top>(),
-                    0);
-    vec_type vertNW(a_rect.GetCoord<rect_type::left>(),
-                    a_rect.GetCoord<rect_type::top>(),
-                    0);
-    vec_type vertSW(a_rect.GetCoord<rect_type::left>(),
-                    a_rect.GetCoord<rect_type::bottom>(),
-                    0);
-
-    verts[vert_se::k_index].SetPosition(vertSE);
-    verts[vert_ne::k_index].SetPosition(vertNE);
-    verts[vert_nw::k_index].SetPosition(vertNW);
-    verts[vert_sw::k_index].SetPosition(vertSW);
-  }
+  // Pool
+  template core::component_system::ComponentPool_TI<QuadPtr>;
 
 };};};

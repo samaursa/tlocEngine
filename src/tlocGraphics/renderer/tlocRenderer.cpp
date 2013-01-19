@@ -1,7 +1,7 @@
 #include "tlocRenderer.h"
 #include <tlocCore/platform/tlocPlatform.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace renderer {
 
   //------------------------------------------------------------------------
   // Template Macros
@@ -57,14 +57,14 @@ namespace tloc { namespace graphics {
     return common_error_types::error_success;
   }
 
-};};
+};};};
 
 //------------------------------------------------------------------------
 // Renderer - Windows Implementation
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include <tlocGraphics/opengl/tlocOpenGLExt.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace renderer {
 
 #define RENDERER_WIN_TEMP
 #define RENDERER_WIN_PARAMS core::Platform_win
@@ -86,12 +86,12 @@ namespace tloc { namespace graphics {
     return common_error_types::error_already_initialized;
   }
 
-};};
+};};};
 #endif
 
 //------------------------------------------------------------------------
 // Explicitly Instantiate Renderer
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace renderer {
   template class RendererBase<Renderer_T<> >;
-};};
+};};};

@@ -1,6 +1,8 @@
 #ifndef TLOC_COMPONENT_MAPPER_H
 #define TLOC_COMPONENT_MAPPER_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocEntity.h>
 
 namespace tloc { namespace core { namespace component_system {
@@ -19,9 +21,9 @@ namespace tloc { namespace core { namespace component_system {
 
     size_type size() const { return m_compList.size(); }
 
-    T* operator[](tl_int a_index)
+    T& operator[](tl_int a_index)
     {
-      return static_cast<T*>(m_compList[a_index]);
+      return *(static_cast<T*>(m_compList[a_index]));
     }
 
   private:

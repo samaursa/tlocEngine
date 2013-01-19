@@ -1,7 +1,7 @@
 #ifndef TLOC_LIST_H
 #define TLOC_LIST_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_LIST(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Different policies that List can handle
@@ -402,6 +402,6 @@ namespace tloc { namespace core {
       T_DedicatedSize> type;
   };
 
-};};
+};};};
 
 #endif

@@ -2,6 +2,8 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_MATERIAL_SYSTEM_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_MATERIAL_SYSTEM_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
@@ -28,16 +30,10 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     MaterialSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
 
-    virtual error_type Initialize();
-    virtual error_type Shutdown();
-    virtual bool CheckProcessing();
+    virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent);
+
     virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
-
-    virtual void Pre_OnEvent(const event_type& a_event);
-    virtual void Post_OnEvent(const event_type& a_event);
-
-  private:
-    bool m_dirty;
   };
 
 };};};

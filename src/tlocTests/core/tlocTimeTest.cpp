@@ -13,19 +13,20 @@
 
 namespace TestingTime
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::time;
 
   struct TimeFixture
   {
     // Timer<f64, u64, true>
-    Timer<> timerOne, timerTwo, timerThree;
+    Timer_T<> timerOne, timerTwo, timerThree;
 
-    typedef Timer<f64, u64, true>   accurate_adjust_timer;
-    typedef Timer<f64, u64, false>  accurate_no_adjust_timer;
+    typedef Timer_T<f64, u64, p_timer_t::Adjust>    accurate_adjust_timer;
+    typedef Timer_T<f64, u64, p_timer_t::NoAdjust>  accurate_no_adjust_timer;
 
-    typedef Timer<f32, u32, true>   no_accurate_adjust_timer;
-    typedef Timer<f32, u32, false>  no_accurate_no_adjust_timer;
+    typedef Timer_T<f32, u32, p_timer_t::Adjust>    no_accurate_adjust_timer;
+    typedef Timer_T<f32, u32, p_timer_t::NoAdjust>  no_accurate_no_adjust_timer;
   };
 
 #if defined(TLOC_OS_WIN)
@@ -109,12 +110,12 @@ namespace TestingTime
   template <typename T_UInt>
   void TimeTestSleepCTimeS(T_UInt durationS)
   {
-    T_UInt startTime = (T_UInt)time(NULL);
+    T_UInt startTime = (T_UInt)::time(NULL);
     T_UInt currentTime = startTime;
 
     while (currentTime - startTime < durationS)
     {
-      currentTime = (T_UInt)time(NULL);
+      currentTime = (T_UInt)::time(NULL);
     }
   }
 

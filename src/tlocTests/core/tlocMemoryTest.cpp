@@ -5,7 +5,7 @@
 
 namespace TestingMemory
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace tloc::core;
 
 #define FILL_ARRAY_BY_INDEX(arrayName, nFrom, nTo) \

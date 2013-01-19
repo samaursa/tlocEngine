@@ -15,7 +15,7 @@
 
 #include "tlocCore/tlocFunctional.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   //////////////////////////////////////////////////////////////////////////
   //  Window.
@@ -175,6 +175,13 @@ namespace tloc { namespace graphics {
   }
 
   template <WINDOW_TEMP>
+  void Window_T<WINDOW_PARAMS>::SetTitle(const char* a_title)
+  {
+    VALIDATE_WINDOW();
+    m_impl->SetTitle(a_title);
+  }
+
+  template <WINDOW_TEMP>
   void Window_T<WINDOW_PARAMS>::SwapBuffers()
   {
     VALIDATE_WINDOW();
@@ -232,4 +239,4 @@ namespace tloc { namespace graphics {
     }
   };
 
-};};
+};};};

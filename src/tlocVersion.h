@@ -12,7 +12,7 @@
 // so the local-file will then have: x_x_6_12346
 // (please see end-of-file for rationalle behind this)
 
-#ifndef TLOC_VERSION_0_0_4536_1358480908
+#ifndef TLOC_VERSION_0_0_4546_1358703319
 #  error "You are building against an incorrect/older version of the library. The correct version is the macro above."
 #endif
 

@@ -181,8 +181,11 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      String errorString;
-      gl::Error().GetErrorAsString(errorString);
+      s32 logLen;
+      char logBuffer[1000];
+      glGetProgramInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
+
+      DoSetError(logBuffer);
 
       // TODO: Write shader log
       return error::error_shader_program_link;

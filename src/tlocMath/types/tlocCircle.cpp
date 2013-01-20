@@ -25,8 +25,8 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_CIRCLE_TEMP>
   Circle<TLOC_CIRCLE_PARAMS>::
     Circle(radius a_r, position a_p)
-    : m_radius((radius::const_sel_return_type)a_r)
-    , m_position((position::const_sel_return_type)a_p)
+    : m_radius(a_r)
+    , m_position(a_p)
   {
   }
 
@@ -35,8 +35,8 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_CIRCLE_TEMP>
   Circle<TLOC_CIRCLE_PARAMS>::
     Circle(diameter a_d, position a_p)
-    : m_radius( ((diameter::const_sel_return_type)a_d) * (value_type)0.5 )
-    , m_position((position::const_sel_return_type)a_p)
+    : m_radius(a_d * (value_type)0.5)
+    , m_position(a_p)
   {
   }
 

@@ -38,9 +38,9 @@ namespace TestingContiguity
     value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
     bool testPassed = true;
 
-    const tl_size numElements = typename T_Type::k_size;
+    const tl_size numElements = T_Type::k_size;
 
-    for (cont_type::size_type i = 0, size = v.size(); i != size; ++i)
+    for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
       for (tl_size j = 0; j < numElements; ++j)
       {
@@ -80,9 +80,9 @@ namespace TestingContiguity
     value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
     bool testPassed = true;
 
-    const tl_size numElements = typename T_Type::k_MatrixSize;
+    const tl_size numElements = T_Type::k_MatrixSize;
 
-    for (cont_type::size_type i = 0, size = v.size(); i != size; ++i)
+    for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
       for (tl_size j = 0; j < numElements; ++j)
       {

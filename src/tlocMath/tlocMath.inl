@@ -7,6 +7,8 @@
 
 #include "tlocMath.h"
 #include <cmath>
+#include <math.h>
+#include <cstdlib>
 #include <tlocCore/types/tlocTypes.inl>
 
 namespace tloc {
@@ -15,28 +17,28 @@ namespace tloc {
     template <typename T>
     T GetAbs(T a_value)
     {
-      return abs(a_value);
+      return std::abs(a_value);
     }
 
     s64 GetAbs(s64 a_value)
     {
-      return (s64)abs((s32)a_value);
+      return (s64)std::abs((s32)a_value);
     }
 
     template <typename T>
     T GetSqrt(T a_value)
     {
-      return sqrt(a_value);
+      return std::sqrt(a_value);
     }
 
     s32 GetSqrt(s32 a_value)
     {
-      return (s32)sqrt((tl_float)a_value);
+      return (s32)std::sqrt((tl_float)a_value);
     }
 
     s64 GetSqrt(s64 a_value)
     {
-      return (s64)sqrt((tl_float)a_value);
+      return (s64)std::sqrt((tl_float)a_value);
     }
   }
 
@@ -46,13 +48,13 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::Ceil(T aValue)
   {
-    return ceil(aValue);
+    return std::ceil(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::Floor(T aValue)
   {
-    return floor(aValue);
+    return std::floor(aValue);
   }
 
   template <typename T>
@@ -64,55 +66,55 @@ namespace tloc {
   template <typename T>
   TL_FI T Math<T>::FAbs(T aValue)
   {
-    return fabs(aValue);
+    return std::fabs(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::Tan(T aValue)
   {
-    return tan(aValue);
+    return std::tan(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::ATan(T aValue)
   {
-    return atan(aValue);
+    return std::atan(aValue);
   }
 
   template <typename T>
   TL_FI T Math<T>::ATan2(T aValue1, T aValue2)
   {
-    return atan2(aValue1, aValue2);
+    return std::atan2(aValue1, aValue2);
   }
 
   template <typename T>
   TL_FI T Math<T>::Log( T aLog )
   {
-    return log(aLog);
+    return std::log(aLog);
   }
 
   template <typename T>
   TL_FI T Math<T>::Sin( T aValInRad )
   {
-    return sin(aValInRad);
+    return std::sin(aValInRad);
   }
 
   template <typename T>
   TL_FI T Math<T>::ASin( T aValInRad )
   {
-    return asin(aValInRad);
+    return std::asin(aValInRad);
   }
 
   template <typename T>
   TL_FI T Math<T>::Cos( T aValInRad )
   {
-    return cos(aValInRad);
+    return std::cos(aValInRad);
   }
 
   template <typename T>
   TL_FI T Math<T>::ACos( T aValInRad )
   {
-    return acos(aValInRad);
+    return std::acos(aValInRad);
   }
 
   template <typename T>

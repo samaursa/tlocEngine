@@ -77,16 +77,15 @@ namespace tloc { namespace math { namespace component_system {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template Transform_T<f32>;
-  template Transform_T<f64>;
+  template class Transform_T<f32>;
+  template class Transform_T<f64>;
 
   // SmartPtr
-  template core::smart_ptr::SharedPtr<Transform_T<f32> >;
-  template core::smart_ptr::SharedPtr<Transform_T<f64> >;
+  template class core::smart_ptr::SharedPtr<Transform_T<f32> >;
+  template class core::smart_ptr::SharedPtr<Transform_T<f64> >;
 
   // Pool
-  template core::component_system::ComponentPool_TI<TransformPtr>;
-  template core::component_system::ComponentPool_TI<TransformPtr32>;
-  template core::component_system::ComponentPool_TI<TransformPtr64>;
+  template class core::component_system::ComponentPool_TI<TransformPtr32>;
+  template class core::component_system::ComponentPool_TI<TransformPtr64>;
 
 };};};

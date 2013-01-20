@@ -213,7 +213,7 @@
 		97AF915A16AA7CF800DB6C90 /* tloc_component_system.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_component_system.inl; path = ../../../../src/tlocCore/component_system/tloc_component_system.inl; sourceTree = "<group>"; };
 		97AF915D16AA7D2900DB6C90 /* tlocComponentPoolManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocComponentPoolManager.cpp; path = ../../../../src/tlocCore/component_system/tlocComponentPoolManager.cpp; sourceTree = "<group>"; };
 		97AF915E16AA7D2900DB6C90 /* tlocComponentPoolManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocComponentPoolManager.h; path = ../../../../src/tlocCore/component_system/tlocComponentPoolManager.h; sourceTree = "<group>"; };
-		97AF915F16AA7D2900DB6C90 /* tlocComponentPoolManager.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocComponentPoolManager.inl; path = ../../../../src/tlocCore/component_system/tlocComponentPoolManager.inl; sourceTree = "<group>"; };
+		97AF915F16AA7D2900DB6C90 /* tlocComponentPoolManager.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocComponentPoolManager.inl; path = ../../../../src/tlocCore/component_system/tlocComponentPoolManager.inl; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		97AF916216AA7EEA00DB6C90 /* tloc_configs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_configs.cpp; path = ../../../../src/tlocCore/configs/tloc_configs.cpp; sourceTree = "<group>"; };
 		97AF916316AA7EEA00DB6C90 /* tloc_configs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_configs.h; path = ../../../../src/tlocCore/configs/tloc_configs.h; sourceTree = "<group>"; };
 		97AF916416AA7EEA00DB6C90 /* tloc_configs.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_configs.inl; path = ../../../../src/tlocCore/configs/tloc_configs.inl; sourceTree = "<group>"; };
@@ -1384,7 +1384,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
@@ -1395,7 +1394,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
 		};

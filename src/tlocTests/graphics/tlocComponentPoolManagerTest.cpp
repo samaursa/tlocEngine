@@ -68,11 +68,12 @@ namespace TestingComponentPoolManager
       pool_type* intCompPool =
         (*compPool)->GetAs<T_PoolType>();
 
-      pool_type::iterator itr = intCompPool->GetNext();
+      typename pool_type::iterator itr = intCompPool->GetNext();
 
       {
         smart_ptr_value_type& myPtr = itr->GetElement();
-        myPtr = smart_ptr_value_type(new smart_ptr_value_type::value_type);
+        myPtr =
+          smart_ptr_value_type(new typename smart_ptr_value_type::value_type);
         myPtr->m_value = 0;
       }
 
@@ -82,7 +83,8 @@ namespace TestingComponentPoolManager
       {
         itr = intCompPool->GetNext();
         smart_ptr_value_type& myPtr = itr->GetElement();
-        myPtr = smart_ptr_value_type(new smart_ptr_value_type::value_type);
+        myPtr =
+          smart_ptr_value_type(new typename smart_ptr_value_type::value_type);
         myPtr->m_value = i;
       }
     }
@@ -92,8 +94,8 @@ namespace TestingComponentPoolManager
 
       pool_type* intCompPool = (*compPool)->GetAs<pool_type>();
 
-      pool_type::iterator itr = intCompPool->begin();
-      pool_type::iterator itrEnd = intCompPool->end();
+      typename pool_type::iterator itr = intCompPool->begin();
+      typename pool_type::iterator itrEnd = intCompPool->end();
 
       REQUIRE(distance(itr, itrEnd) == elementsToPool);
 

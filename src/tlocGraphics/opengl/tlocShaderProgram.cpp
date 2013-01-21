@@ -243,6 +243,7 @@ namespace tloc { namespace graphics { namespace gl {
       return error::error_shader_program_enable;
     }
 
+    ResetTextureUnits();
     return ErrorSuccess();
   }
 

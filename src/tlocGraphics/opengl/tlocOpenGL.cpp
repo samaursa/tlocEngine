@@ -69,7 +69,8 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (g_currentTextureUnit < g_maxTextureUnits)
       {
-        glActiveTexture(++g_currentTextureUnit);
+        ++g_maxTextureUnits;
+        glActiveTexture(g_currentTextureUnit);
         return ErrorSuccess();
       }
       else

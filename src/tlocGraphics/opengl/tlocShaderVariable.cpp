@@ -89,6 +89,8 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple3b>, GL_BOOL_VEC3);
   TLOC_DECL_TL_TO_GL(Array<Tuple4b>, GL_BOOL_VEC4);
 
+  TLOC_DECL_TL_TO_GL(texture_object_sptr, GL_SAMPLER_2D);
+
 #undef TLOC_DECL_TL_TO_GL
 
   //------------------------------------------------------------------------
@@ -200,6 +202,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(texture_object_sptr, Uniform);
 
   //````````````````````````````````````````````````````````````````````````
   // Attribute

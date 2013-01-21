@@ -114,7 +114,9 @@ namespace tloc { namespace graphics { namespace gl {
               itr->second = index;
               DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
 
-              TLOC_ASSERT(gl::Error().Succeeded(),
+              core_str::String errStr;
+              gl::Error err; err.GetErrorAsString(errStr);
+              TLOC_ASSERT(err.Succeeded(),
                 "glUniform*/glAttribute* failed in DoSet()");
               break;
             }
@@ -503,6 +505,13 @@ namespace tloc { namespace graphics { namespace gl {
           const Mat4f32& m = a_uniform.GetValueAs<Mat4f32>();
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
           glUniformMatrix4fv(a_info.m_location, 1, GL_FALSE, faraw);
+          break;
+        }
+      case GL_SAMPLER_2D:
+        {
+          texture_object_sptr m = a_uniform.GetValueAs<texture_object_sptr>();
+          glBindTexture(GL_TEXTURE_2D, m->GetHandle());
+          glUniform1i(a_info.m_location, GetActiveTextureUnit());
           break;
         }
       default:
@@ -1084,6 +1093,12 @@ namespace tloc { namespace graphics { namespace gl {
          itr != itrEnd; ++itr)
     {
       UniformPtr uniformPtr = itr->first;
+
+      if (uniformPtr->GetType() == GL_SAMPLER_2D)
+      {
+        if (ActivateNextAvailableTextureUnit() != ErrorSuccess())
+        { TLOC_ASSERT(false, "Could not activate texture unit"); }
+      }
 
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }

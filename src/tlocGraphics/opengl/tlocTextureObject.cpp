@@ -66,9 +66,8 @@ namespace tloc { namespace graphics { namespace gl {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
     Bind<p_texture_object::target::Tex2D>();
-    glTexImage2D(m_texType, 0, GL_RGBA8, a_image.GetWidth(), a_image.GetHeight(),
-      0, GL_RGBA, GL_UNSIGNED_BYTE,
-      reinterpret_cast<const void*>(&*a_image.GetPixels().begin()) );
+    glTexImage2D(m_texType, 0, GL_RGBA, a_image.GetWidth(), a_image.GetHeight(),
+      0, GL_RGBA, GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
 
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, GL_CLAMP);

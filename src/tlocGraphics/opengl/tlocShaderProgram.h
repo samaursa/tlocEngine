@@ -98,6 +98,9 @@ namespace tloc { namespace graphics { namespace gl {
     core::utils::Checkpoints         m_flags;
     glsl_var_info_cont_type          m_attributeInfo;
     glsl_var_info_cont_type          m_uniformInfo;
+
+    s32                              m_currTextureUnit;
+
   };
 
   //------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 #include "tlocShaderVariable.h"
 
 #include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
@@ -17,6 +18,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   using namespace tloc::core::data_structs;
   using namespace tloc::core::containers;
+  using namespace tloc::core::smart_ptr;
   using namespace tloc::math::types;
 
   //------------------------------------------------------------------------
@@ -87,6 +89,8 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple3b>, GL_BOOL_VEC3);
   TLOC_DECL_TL_TO_GL(Array<Tuple4b>, GL_BOOL_VEC4);
 
+  TLOC_DECL_TL_TO_GL(texture_object_sptr, GL_SAMPLER_2D);
+
 #undef TLOC_DECL_TL_TO_GL
 
   //------------------------------------------------------------------------
@@ -98,6 +102,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
+    : m_isArray(false)
+    , m_sharedArray(false)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -112,7 +118,6 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
-    m_isArray = false;
     m_value.Assign(a_value);
     return *(static_cast<derived_type*>(this));
   }
@@ -143,6 +148,21 @@ namespace tloc { namespace graphics { namespace gl {
     m_isArray = true;
     m_value.Assign(Array<T>());
     m_value.Cast<Array<T> >().swap(a_array);
+    return *(static_cast<derived_type*>(this));
+  }
+
+  template <SHADER_VARIABLE_TEMP>
+  template <typename T>
+  SHADER_VARIABLE_TYPE::derived_type&
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    DoSetValueAs(SharedPtr<Array<T> > a_array)
+  {
+    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
+      "Cannot change uniform TYPE after construction");
+    m_type = tlToGl<T>::k_glType;
+    m_isArray = true;
+    m_sharedArray = true;
+    m_value.Assign(SharedPtr<Array<T> >());
     return *(static_cast<derived_type*>(this));
   }
 
@@ -182,22 +202,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<f32>,       Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec2f32>,   Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec3f32>,   Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec4f32>,   Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<s32>,       Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple2s32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple3s32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple4s32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<u32>,       Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple2u32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple3u32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple4u32>, Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<bool>,      Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple2b>,   Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple3b>,   Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Tuple4b>,   Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(texture_object_sptr, Uniform);
 
   //````````````````````````````````````````````````````````````````````````
   // Attribute
@@ -215,14 +220,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2u32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3u32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4u32,             Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<s8>,             Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<u8>,             Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<short>,          Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<ushort>,         Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<f32>,            Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec2f32>,        Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec3f32>,        Attribute);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Array<Vec4f32>,        Attribute);
+
 #undef TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS
 
 };};};

@@ -14,6 +14,9 @@
   \
   template ShaderVariable_TI<_derType_>::derived_type& \
   ShaderVariable_TI<_derType_>::DoSetValueAs(Array<_type_>&,\
-                                             p_shader_variable_ti::SwapArray)
+                                             p_shader_variable_ti::SwapArray);\
+  \
+  template ShaderVariable_TI<_derType_>::derived_type& \
+  ShaderVariable_TI<_derType_>::DoSetValueAs(SharedPtr<Array<_type_> >)
 
 #endif

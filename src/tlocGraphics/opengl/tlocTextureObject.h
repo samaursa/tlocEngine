@@ -2,6 +2,8 @@
 #define _TLOC_GRAPHICS_GL_TEXTURE_OBJECT_H_
 
 #include <tlocCore/tloc_core.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/media/tlocImage.h>
 
@@ -47,7 +49,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     template <typename T_Target>
     error_type  Bind();
-    error_type  Load(const image_type& a_image);
+    error_type  Initialize(const image_type& a_image);
 
     error_type  Activate(s32 a_texUnit);
 
@@ -80,6 +82,11 @@ namespace tloc { namespace graphics { namespace gl {
       Tex2D, TexCubeMap>();
     return DoBind(T_Target::s_glParamName);
   }
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core::smart_ptr::SharedPtr<TextureObject>   texture_object_sptr;
 
 };};};
 

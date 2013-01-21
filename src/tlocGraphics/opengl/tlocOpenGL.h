@@ -5,6 +5,9 @@
 
 #include <tlocCore/types/tlocTypes.h>
 
+#include <tlocCore/error/tlocError.h>
+#include <tlocGraphics/error/tlocErrorTypes.h>
+
 // Taken from SFML (we will trust the paths they chose for diff. platforms
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
@@ -45,15 +48,23 @@ namespace tloc { namespace graphics { namespace gl {
       extern void DoGet(GLdouble*& a_out, const GLint a_paramName);
     };
 
-    typedef GLint value_type;
-
-    struct CurrentProgram { static const value_type s_glParamName; };
+    struct CurrentProgram
+    {
+      typedef GLint value_type;
+      static const value_type s_glParamName;
+    };
+    struct MaxCombinedTextureImageUnits
+    {
+      typedef GLint value_type;
+      static const value_type s_glParamName;
+    };
   };
 
   template <typename T_GlPName>
-  p_get::value_type Get()
+  typename T_GlPName::value_type
+    Get()
   {
-    typedef p_get::value_type  ret_type;
+    typedef T_GlPName::value_type  ret_type;
 
     ret_type toRet;
     p_get::priv::DoGet(toRet, T_GlPName::s_glParamName);
@@ -61,6 +72,10 @@ namespace tloc { namespace graphics { namespace gl {
     return toRet;
   }
 
+  GLint                GetActiveTextureUnit();
+  core_err::Error      ActivateNextAvailableTextureUnit();
+  void                 ActivateTextureUnit(GLint a_texUnit);
+  void                 ResetTextureUnits();
 
 };};};
 

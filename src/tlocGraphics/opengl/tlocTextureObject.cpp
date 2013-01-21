@@ -1,5 +1,7 @@
 #include "tlocTextureObject.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
@@ -59,13 +61,15 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   error_type TextureObject::
-    Load(const image_type& a_image)
+    Initialize(const image_type& a_image)
   {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
     Bind<p_texture_object::target::Tex2D>();
     glTexImage2D(m_texType, 0, GL_RGBA8, a_image.GetWidth(), a_image.GetHeight(),
-      0, GL_RGBA, GL_UNSIGNED_BYTE, a_image.GetPixels().begin());
+      0, GL_RGBA, GL_UNSIGNED_BYTE,
+      reinterpret_cast<const void*>(&*a_image.GetPixels().begin()) );
+
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -73,5 +77,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     return ErrorSuccess();
   }
+
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template core::smart_ptr::SharedPtr<TextureObject>;
 
 };};};

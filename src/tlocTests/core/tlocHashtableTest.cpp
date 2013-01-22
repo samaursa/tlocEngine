@@ -18,8 +18,9 @@
 
 namespace TestingHashtable
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {
@@ -542,5 +543,47 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/buckets", "")
   {
+  }
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with void", "")
+  {
+    using core::containers::Hashtable;
+
+    typedef HashtableElement<void*>             void_elem_type;
+    typedef DoublyList<void_elem_type>::type    bucket_type;
+    typedef DoublyList<bucket_type>::type       bucket_holder_type;
+
+    typedef HashtableFixture::HT
+      <
+        bucket_holder_type, void*, false, false
+      >::type doubly_nohash_nounique;
+
+    typedef Hashtable<doubly_nohash_nounique> ht_type;
+    typedef ht_type::iterator                 ht_itr_type;
+
+    ht_type voidTable;
+
+    void* int1 = new int(1);
+    void* int2 = new int(2);
+    void* int3 = new int(3);
+    void* int4 = new int(4);
+
+    voidTable.insert(int1);
+    voidTable.insert(int2);
+
+    CHECK(voidTable.find(int3) == voidTable.end());
+    CHECK(voidTable.find(int4) == voidTable.end());
+    CHECK(voidTable.find(int1) != voidTable.end());
+    CHECK(voidTable.find(int2) != voidTable.end());
+
+    {
+      ht_itr_type itr = voidTable.find(int1);
+      CHECK( *itr == int1);
+    }
+
+    {
+      ht_itr_type itr = voidTable.find(int2);
+      CHECK( *itr == int2);
+    }
   }
 };

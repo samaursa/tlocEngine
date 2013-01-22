@@ -12,7 +12,7 @@
 
 #include <tlocCore/types/tlocTypeTraits.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // HashMap
@@ -64,7 +64,7 @@ namespace tloc { namespace core {
     }
   }
 
-};};
+};};};
 
 
 #endif

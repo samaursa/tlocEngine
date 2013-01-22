@@ -1,5 +1,7 @@
-#ifndef TLOC_ERROR_H
-#define TLOC_ERROR_H
+#ifndef _TLOC_CORE_ERROR_H_
+#define _TLOC_CORE_ERROR_H_
+
+#include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/error/tlocErrorTypes.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -12,6 +14,7 @@ namespace tloc { namespace core { namespace error {
     typedef Error                 this_type;
     typedef error_code_type       code_type;
 
+    Error();
     Error(code_type a_errorType);
 
     bool Succeeded() const;

@@ -1,7 +1,7 @@
 #ifndef TLOC_PAIR_H
 #define TLOC_PAIR_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 
 #ifdef _MSC_VER
 #pragma warning(push)

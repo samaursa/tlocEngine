@@ -1,25 +1,30 @@
 #include "tlocTestCommon.h"
 
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix2.inl>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix2.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
 
 namespace TestingMatrix2
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::data_structs;
   using namespace math;
+  using math::types::Mat2f;
+  using math::types::Vec2f;
+  using math::types::Mat2f32;
+  using math::types::Mat2f64;
 
   struct Matrix2Fixture
   {
     Matrix2Fixture()
     {
-      tloc::math::Vec2f row1;
-      tloc::math::Vec2f row2;
+      Vec2f row1;
+      Vec2f row2;
 
-      tloc::math::Vec2f col1;
-      tloc::math::Vec2f col2;
+      Vec2f col1;
+      Vec2f col2;
 
       row1[0] = 1; row1[1] = 2;
       row2[0] = 4; row2[1] = 5;
@@ -34,7 +39,7 @@ namespace TestingMatrix2
       b.SetCol(1, col2);
     }
 
-    tloc::math::Mat2f a, b, c, d, e;
+    Mat2f a, b, c, d, e;
   };
 
 #define CHECK_MATRIX2F(mat,x1,y1,x2,y2) \
@@ -43,6 +48,13 @@ namespace TestingMatrix2
 
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
                              CHECK((vec[1]) == (Approx(y)) );
+
+  TEST_CASE("Math/Matrix2/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Mat2f) == (sizeof(tl_float) * 4));
+    REQUIRE(sizeof(Mat2f32) == (sizeof(f32) * 4));
+    REQUIRE(sizeof(Mat2f64) == (sizeof(f64) * 4));
+  }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",
     "Test general/basic functionality")
@@ -75,8 +87,12 @@ namespace TestingMatrix2
     Mat2f n(v1, v2, Mat2f::k_ColMajor);
     CHECK_MATRIX2F(n, 1, 2, 3, 4);
 
-    Mat2f o(core::Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
+    Mat2f o(Variadic4f(1, 2, 3, 4), Mat2f::k_ColMajor);
     CHECK_MATRIX2F(o, 1, 2, 3, 4);
+
+    // Convert from Table to Matrix
+    c = Mat2f(Table<tl_float, 2, 2>(10.0f));
+    CHECK_MATRIX2F(c, 10.0f, 10.0f, 10.0f, 10.0f);
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",

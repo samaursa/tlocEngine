@@ -39,7 +39,8 @@ namespace TestingTlocMath
   {
     f32 a = 1.0f, b = 1.0f;
     CHECK(Mathf::Approx(a, b));
-    a = 1.000001f;
+    a = 1.23456789f;
+    b = 1.23456789f;
     CHECK(Mathf::Approx(a, b));
   }
 

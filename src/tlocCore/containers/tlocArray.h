@@ -1,7 +1,7 @@
 #ifndef TLOC_ARRAY_H
 #define TLOC_ARRAY_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_ARRAY(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Different policies that Array can handle
@@ -340,6 +340,6 @@ namespace tloc { namespace core {
   {
   };
 
-};};
+};};};
 
 #endif

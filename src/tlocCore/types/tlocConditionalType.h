@@ -1,7 +1,7 @@
 #ifndef TLOC_CONDITIONAL_TYPE_H
 #define TLOC_CONDITIONAL_TYPE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core {
@@ -77,6 +77,7 @@ namespace tloc { namespace core {
     TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   Get() const;
+    TL_FI void       Set(const T&);
     TL_FI T          Value() const;
 
     TL_FI bool       IsValid() const;
@@ -140,6 +141,7 @@ namespace tloc { namespace core {
     TL_FI bool       operator> (const T& aOther) const;
 
     TL_FI const T&   Get() const;
+    TL_FI void       Set(const T& a_value);
     TL_FI T          Value() const;
 
     TL_FI bool       IsValid() const;

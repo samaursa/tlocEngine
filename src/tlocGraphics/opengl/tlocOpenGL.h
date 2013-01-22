@@ -1,7 +1,8 @@
 #ifndef TLOC_OPENGL_H
 #define TLOC_OPENGL_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 
 // Taken from SFML (we will trust the paths they chose for diff. platforms
@@ -30,10 +31,38 @@
 
 #endif
 
-
 namespace tloc { namespace graphics { namespace gl {
 
-  // Intentionally empty
+  namespace p_get
+  {
+    namespace priv
+    {
+      extern void DoGet(GLint&     a_out, const GLint a_paramName);
+      extern void DoGet(GLint*&    a_out, const GLint a_paramName);
+      extern void DoGet(GLfloat&   a_out, const GLint a_paramName);
+      extern void DoGet(GLfloat*&  a_out, const GLint a_paramName);
+      extern void DoGet(GLdouble&  a_out, const GLint a_paramName);
+      extern void DoGet(GLdouble*& a_out, const GLint a_paramName);
+    };
+
+    struct CurrentProgram
+    {
+      typedef GLint value_type;
+      static const GLint s_glParamName;
+    };
+  };
+
+  template <typename T_GlPName>
+  typename T_GlPName::value_type Get()
+  {
+    typedef typename T_GlPName::value_type  ret_type;
+
+    ret_type toRet;
+    p_get::priv::DoGet(toRet, T_GlPName::s_glParamName);
+
+    return toRet;
+  }
+
 
 };};};
 

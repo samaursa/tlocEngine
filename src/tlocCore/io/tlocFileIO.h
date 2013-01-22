@@ -1,6 +1,8 @@
 #ifndef TLOC_FILE_IO_H
 #define TLOC_FILE_IO_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <cstdio>
 
 #include <tlocCore/error/tlocError.h>
@@ -24,20 +26,25 @@ namespace tloc { namespace core { namespace io {
   };
 
   template <typename T_AccessPolicy, typename T_FileFormat>
-  class FileIO
+  class FileIO_T
   {
+  public:
+    typedef string::String                  string_type;
+
   public:
     typedef T_AccessPolicy                  access_policy_type;
     typedef T_FileFormat                    file_format_type;
     typedef error::Error                    error_type;
 
-    FileIO(const Path& a_path);
-    ~FileIO();
+    FileIO_T(const Path& a_path);
+    ~FileIO_T();
 
     error_type      Open();
     error_type      Close();
     error_type      Delete();
-    error_type      GetContents(String& a_out) const;
+    error_type      GetContents(string_type& a_out) const;
+
+    bool            IsOpen();
 
   private:
 
@@ -50,30 +57,30 @@ namespace tloc { namespace core { namespace io {
   //------------------------------------------------------------------------
   // All typedefs for our FileIO template class
 
-  typedef FileIO<p_file_io::Read,
+  typedef FileIO_T<p_file_io::Read,
                  p_file_io::Ascii>                  FileIO_ReadA;
-  typedef FileIO<p_file_io::Append,
+  typedef FileIO_T<p_file_io::Append,
                  p_file_io::Ascii>                  FileIO_AppendA;
-  typedef FileIO<p_file_io::Write,
+  typedef FileIO_T<p_file_io::Write,
                  p_file_io::Ascii>                  FileIO_WriteA;
-  typedef FileIO<p_file_io::Read_And_Write,
+  typedef FileIO_T<p_file_io::Read_And_Write,
                  p_file_io::Ascii>                  FileIO_ReadAndWriteA;
-  typedef FileIO<p_file_io::Read_And_Write_Empty,
+  typedef FileIO_T<p_file_io::Read_And_Write_Empty,
                  p_file_io::Ascii>                  FileIO_ReadAndWriteEmptyA;
-  typedef FileIO<p_file_io::Read_And_Append,
+  typedef FileIO_T<p_file_io::Read_And_Append,
                  p_file_io::Ascii>                  FileIO_ReadAndAppendA;
 
-  typedef FileIO<p_file_io::Read,
+  typedef FileIO_T<p_file_io::Read,
                  p_file_io::Binary>                  FileIO_ReadB;
-  typedef FileIO<p_file_io::Append,
+  typedef FileIO_T<p_file_io::Append,
                  p_file_io::Binary>                  FileIO_AppendB;
-  typedef FileIO<p_file_io::Write,
+  typedef FileIO_T<p_file_io::Write,
                  p_file_io::Binary>                  FileIO_WriteB;
-  typedef FileIO<p_file_io::Read_And_Write,
+  typedef FileIO_T<p_file_io::Read_And_Write,
                  p_file_io::Binary>                  FileIO_ReadAndWriteB;
-  typedef FileIO<p_file_io::Read_And_Write_Empty,
+  typedef FileIO_T<p_file_io::Read_And_Write_Empty,
                  p_file_io::Binary>                  FileIO_ReadAndWriteEmptyB;
-  typedef FileIO<p_file_io::Read_And_Append,
+  typedef FileIO_T<p_file_io::Read_And_Append,
                  p_file_io::Binary>                  FileIO_ReadAndAppendB;
 
 };};};

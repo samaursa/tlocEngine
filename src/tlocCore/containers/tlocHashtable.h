@@ -1,7 +1,7 @@
 #ifndef TLOC_HASH_TABLE_H
 #define TLOC_HASH_TABLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>
@@ -23,7 +23,7 @@
 /// hash_table. The container will be optimized for games only and may not be
 /// appropriate for application use
 ///-------------------------------------------------------------------------
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   namespace hash_detail
   {
@@ -743,6 +743,6 @@ namespace tloc { namespace core {
     rehash_policy_type m_rehashPolicy;
   };
 
-};};
+};};};
 
 #endif

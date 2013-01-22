@@ -1,7 +1,7 @@
 #include "tlocVariadic.h"
 #include "tlocVariadic.inl"
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
 #include "tlocVariadicTypedefMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(char8);
@@ -13,4 +13,5 @@ namespace tloc { namespace core {
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f32);
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f64);
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f128);
-};};
+
+};};};

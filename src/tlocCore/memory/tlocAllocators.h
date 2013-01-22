@@ -1,15 +1,7 @@
-//
-//  tlocAllocators.h
-//  tlocCore
-//
-//  Created by Skopworks Inc on 12-06-16.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #ifndef TLOC_ALLOCATOR_H
 #define TLOC_ALLOCATOR_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 
 #include <memory.h>
 #include <new>

@@ -16,7 +16,7 @@ TLOC_DEF_TYPE(ns::pipes);
 
 namespace TestingTemplateDispatch
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
 
   struct bullets
@@ -49,9 +49,11 @@ namespace TestingTemplateDispatch
   };
 
   template <typename T>
-  struct WindowCallbackGroupT : public CallbackGroupTArray<T, WindowCallbacks>::type
+  struct WindowCallbackGroupT
+    : public base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename CallbackGroupTArray<T, WindowCallbacks>::type base_type;
+    typedef typename base_classes::
+      CallbackGroupTArray<T, WindowCallbacks>::type       base_type;
     using base_type::m_observers;
 
     virtual void C1()
@@ -79,8 +81,9 @@ namespace TestingTemplateDispatch
     }
   };
 
-  struct Window : public DispatcherBaseArray<WindowCallbacks,
-                                             WindowCallbackGroupT>::type
+  struct Window
+    : public base_classes::DispatcherBaseArray
+             <WindowCallbacks, WindowCallbackGroupT>::type
   {
     void CallC1()
     {

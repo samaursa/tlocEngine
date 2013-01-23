@@ -33,9 +33,6 @@ namespace tloc { namespace graphics { namespace component_system {
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
-    m_quadList.resize(4); // number of vertexes a quad has
-    m_texList.resize(4); // number of vertexes a quad has
-
     m_vData = gl::AttributePtr(new gl::Attribute());
     m_vData->SetName("a_vPos");
     m_tData = gl::AttributePtr(new gl::Attribute());
@@ -156,6 +153,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const rect_type& rect = q.GetRectangleRef();
 
+      m_quadList.resize(4); // number of vertexes a quad has
+      m_texList.resize(4); // number of vertexes a quad has
+
       m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
                                 rect.GetValue<rect_type::top>(), 0);
       m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
@@ -186,8 +186,10 @@ namespace tloc { namespace graphics { namespace component_system {
         m_quadList[i].ConvertFrom(qPos);
       }
 
-      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::CopyArray() );
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::CopyArray() );
+      const tl_size numVertices = m_quadList.size();
+
+      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::SwapArray() );
+      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::SwapArray() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
@@ -224,7 +226,7 @@ namespace tloc { namespace graphics { namespace component_system {
       so_quad->PrepareAllAttributes(*m_shaderPtr);
       so_quad->EnableAllAttributes(*m_shaderPtr);
 
-      glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+      glDrawArrays(GL_TRIANGLE_STRIP, 0, numVertices);
 
       //sp->Disable();
     }

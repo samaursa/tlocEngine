@@ -196,10 +196,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform2fv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform2fv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -222,10 +225,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform3fv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform3fv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -248,10 +254,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform4fv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform4fv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -274,9 +283,12 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_Type const * faraw = reinterpret_cast<data_Type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform1iv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_Type const * faraw = reinterpret_cast<data_Type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform1iv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -299,10 +311,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform2iv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform2iv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -325,10 +340,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform3iv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform3iv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -352,10 +370,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform4iv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform4iv(a_info.m_location, arraySize, faraw);
+            }
           }
 
           break;
@@ -379,9 +400,12 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform1uiv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform1uiv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -404,10 +428,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform2uiv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform2uiv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -430,10 +457,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform3uiv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform3uiv(a_info.m_location, arraySize, faraw);
+            }
           }
           break;
         }
@@ -457,10 +487,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_uniform.GetValueAsShared<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
-            data_type::value_type const * faraw =
-              reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
-            glUniform4uiv(a_info.m_location, arraySize, faraw);
+            if (fa.size() > 0)
+            {
+              data_type::value_type const * faraw =
+                reinterpret_cast<data_type::value_type const*>(&(fa[0]));
+              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              glUniform4uiv(a_info.m_location, arraySize, faraw);
+            }
           }
 
           break;
@@ -551,10 +584,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -567,8 +603,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttrib1fv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttrib1fv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -590,10 +629,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -606,8 +648,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttrib2fv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttrib2fv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -629,10 +674,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -645,8 +693,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttrib3fv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttrib3fv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -668,10 +719,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -684,8 +738,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttrib4fv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttrib4fv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -707,10 +764,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -723,8 +783,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI1iv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI1iv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -746,10 +809,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -762,8 +828,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI2iv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI2iv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -785,10 +854,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -801,8 +873,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI3iv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI3iv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -824,10 +899,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -840,8 +918,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI4iv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI4iv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -863,10 +944,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -879,8 +963,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI1uiv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI1uiv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -902,10 +989,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -918,8 +1008,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI2uiv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI2uiv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -941,10 +1034,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -957,8 +1053,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI3uiv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI3uiv(a_info.m_location, faraw);
+            }
           }
           break;
         }
@@ -980,10 +1079,13 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribPointer
-              (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-            glEnableVertexAttribArray(a_info.m_location);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribPointer
+                (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
+              glEnableVertexAttribArray(a_info.m_location);
+            }
           }
           else
           {
@@ -996,8 +1098,11 @@ namespace tloc { namespace graphics { namespace gl {
               ? *a_attribute.GetValueAsShared<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
-            data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            glVertexAttribI4uiv(a_info.m_location, faraw);
+            if (fa.size() > 0)
+            {
+              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
+              glVertexAttribI4uiv(a_info.m_location, faraw);
+            }
           }
           break;
         }

@@ -609,6 +609,7 @@ namespace tloc { namespace graphics { namespace gl {
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
             glVertexAttrib2fv(a_info.m_location, faraw);
           }
+          break;
         }
       case GL_FLOAT_VEC3:
         {
@@ -764,6 +765,7 @@ namespace tloc { namespace graphics { namespace gl {
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
             glVertexAttribI2iv(a_info.m_location, faraw);
           }
+          break;
         }
       case GL_INT_VEC3:
         {
@@ -919,6 +921,7 @@ namespace tloc { namespace graphics { namespace gl {
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
             glVertexAttribI2uiv(a_info.m_location, faraw);
           }
+          break;
         }
       case GL_UNSIGNED_INT_VEC3:
         {

@@ -37,6 +37,8 @@ namespace tloc { namespace math { namespace types {
     Rectangle(left a_l, right a_r, top a_t, bottom a_b);
     Rectangle(const this_type& a_other);
 
+    this_type& operator= (const this_type& a_other);
+
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 

@@ -16,7 +16,7 @@ namespace TestingCircle
   {
     // Default constructor
     circle_type c;
-    CHECK( c.GetRadius() == (value_type)0 );
+    CHECK( c.GetRadius() == Approx(0.0f) );
     CHECK( ( c.GetPosition() == point_type(0, 0) ) );
 
     CHECK(c.IsValid() == false);
@@ -24,14 +24,14 @@ namespace TestingCircle
     // constructor with radius and position
     c = circle_type(circle_type::radius((value_type)1),
                     circle_type::position( point_type(1,1) ) );
-    CHECK( c.GetRadius() == (value_type)1 );
+    CHECK( c.GetRadius() == Approx(1.0f) );
     CHECK( ( c.GetPosition() == point_type(1, 1) ) );
 
     CHECK(c.IsValid() == true);
 
     // constructor with diameter
     c = circle_type(circle_type::diameter( (value_type)1) );
-    CHECK(c.GetRadius() == (value_type)0.5);
+    CHECK(c.GetRadius() == Approx(0.5) );
     CHECK( ( c.GetPosition() == point_type(0, 0) ) );
 
     CHECK(c.IsValid() == true);
@@ -39,10 +39,24 @@ namespace TestingCircle
     // constructor with diameter and position
     c = circle_type(circle_type::diameter( (value_type)4 ),
                     circle_type::position( point_type(2, 2) ) );
-    CHECK( c.GetRadius() == (value_type)2 );
+    CHECK( c.GetRadius() == Approx(2.0f) );
     CHECK( (c.GetPosition() == point_type(2, 2) ) );
 
     CHECK(c.IsValid() == true);
+
+    // copy ctor
+    circle_type d(c);
+    CHECK(d.IsValid() == true);
+    CHECK( d.GetRadius() == Approx(2.0f) );
+    CHECK( (d.GetPosition() == point_type(2, 2) ) );
+
+    // assignment operator
+    circle_type f( circle_type::radius(0.2f),
+                   circle_type::position(point_type(1,1)) );
+    d = f;
+    CHECK(d.IsValid());
+    CHECK(d.GetRadius() == Approx(0.2f));
+    CHECK(d.GetPosition() == point_type(1, 1));
   }
 
   TEST_CASE("Math/types/Circle/Radius", "")

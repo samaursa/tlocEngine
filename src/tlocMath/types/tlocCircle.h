@@ -30,6 +30,9 @@ namespace tloc { namespace math { namespace types {
   public:
     Circle(radius a_r = radius(0), position a_p = position(point_type(0)));
     Circle(diameter a_d, position a_p = position(point_type(0)));
+    Circle(const this_type& a_other);
+
+    this_type& operator=(const this_type& a_other);
 
     bool operator ==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);

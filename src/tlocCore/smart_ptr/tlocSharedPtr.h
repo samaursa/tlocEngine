@@ -37,7 +37,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template
     <
       typename T,
-      typename T_NullCopyPolicy = p_shared_ptr::null_copy::Disallow
+      typename T_NullCopyPolicy = p_shared_ptr::null_copy::Allow
     >
   class SharedPtr
     : public SmartPtr

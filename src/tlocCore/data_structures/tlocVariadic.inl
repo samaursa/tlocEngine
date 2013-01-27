@@ -7,7 +7,7 @@
 
 #include <tlocCore/data_structures/tlocTuple.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   Variadic<T, 1>::Variadic(T a_1)
@@ -496,6 +496,6 @@ namespace tloc { namespace core {
     operator[](15)   = a_array[15];
   }
 
-};};
+};};};
 
 #endif

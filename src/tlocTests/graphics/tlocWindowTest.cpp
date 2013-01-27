@@ -10,8 +10,9 @@
 
 namespace TestingWindow
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace graphics;
+  using namespace graphics::win;
 
   struct sampleObject
   {
@@ -47,9 +48,9 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/General", "")
   {
-    typedef Window<>::graphics_mode graphics_mode;
+    typedef Window::graphics_mode graphics_mode;
 
-    Window<> win;
+    Window win;
     CHECK(win.IsValid() == false);
     CHECK(win.IsCreated() == false);
     win.Create();
@@ -59,7 +60,7 @@ namespace TestingWindow
     sampleObject callbacks;
     CHECK(callbacks.m_windowEventCount == 0);
     {
-      Window<> win2;
+      Window win2;
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
       win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
@@ -78,9 +79,9 @@ namespace TestingWindow
 
   TEST_CASE("./Graphics/Window/Fullscreen", "")
   {
-    typedef Window<>::graphics_mode graphics_mode;
+    typedef Window::graphics_mode graphics_mode;
 
-    Window<> win3;
+    Window win3;
     CHECK(win3.IsValid() == false);
     CHECK(win3.IsCreated() == false);
     win3.Create(graphics_mode(graphics_mode::Properties(1920, 1080)),
@@ -91,8 +92,8 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/Callbacks", "")
   {
-    typedef Window<>::graphics_mode graphics_mode;
-    Window<> win;
+    typedef Window::graphics_mode graphics_mode;
+    Window win;
     CHECK(win.IsValid() == false);
     CHECK(win.IsCreated() == false);
     win.Create();
@@ -113,9 +114,9 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/General", "")
   {
-    typedef Window<>::graphics_mode graphics_mode;
+    typedef Window::graphics_mode graphics_mode;
     {
-      Window<> win1;
+      Window win1;
       CHECK(win1.IsValid() == false);
       CHECK(win1.IsCreated() == false);
       win1.Create(graphics_mode(graphics_mode::Properties(200, 200)),
@@ -126,7 +127,7 @@ namespace TestingWindow
     }
 
     {
-      Window<> win2;
+      Window win2;
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
       win2.Create(graphics_mode(graphics_mode::Properties(300, 300)),
@@ -139,8 +140,8 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/Callbacks", "")
   {
-    typedef Window<>::graphics_mode graphics_mode;
-    Window<> win;
+    typedef Window::graphics_mode graphics_mode;
+    Window win;
     CHECK(win.IsValid() == false);
     CHECK(win.IsCreated() == false);
     win.Create(graphics_mode(graphics_mode::Properties(200, 200)),

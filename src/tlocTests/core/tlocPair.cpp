@@ -6,7 +6,7 @@
 
 namespace TestingPair
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
 
   struct PairFixture

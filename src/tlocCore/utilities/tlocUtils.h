@@ -1,7 +1,7 @@
 #ifndef TLOC_UTILS_H
 #define TLOC_UTILS_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace utils {
@@ -49,6 +49,7 @@ namespace tloc { namespace core { namespace utils {
   /// and setters. The problem ofcourse is that we cannot break into macros. This
   /// is why only declarations are also provided which can be defined immediately
   /// or later by the developer to allow breaking into the getter/setter.
+  ///------------------------------------------------------------------------
 
   //------------------------------------------------------------------------
   // Getters

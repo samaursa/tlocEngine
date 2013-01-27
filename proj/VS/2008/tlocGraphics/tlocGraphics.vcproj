@@ -23,6 +23,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -43,17 +44,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -66,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -89,6 +83,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -110,14 +105,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
 				WarningLevel="4"
 				WarnAsError="true"
 				DebugInformationFormat="3"
@@ -133,7 +125,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -156,6 +147,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -177,18 +169,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -201,7 +188,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -224,6 +210,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -246,18 +233,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -270,7 +252,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -293,6 +274,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -313,17 +295,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -336,7 +312,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -359,6 +334,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -380,17 +356,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -403,7 +373,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -426,6 +395,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -450,16 +420,11 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -495,6 +460,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -520,16 +486,10 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -565,6 +525,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -586,18 +547,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -610,7 +566,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -633,6 +588,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -655,18 +611,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -679,7 +630,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -702,6 +652,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -726,16 +677,11 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -748,7 +694,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -771,6 +716,7 @@
 			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			InheritedPropertySheets="..\tlocEngine.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -796,16 +742,10 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;;&quot;$(TLOC_DEP_PATH)\src\&quot;"
-				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS"
-				ExceptionHandling="0"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\Graphics\GLEW\&quot;;&quot;$(TLOC_PATH)\src\3rdParty\Graphics\glext\&quot;"
+				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC;GLEW_STATIC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				RuntimeTypeInfo="false"
-				ProgramDataBaseFileName="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).pdb"
-				WarningLevel="4"
-				WarnAsError="true"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -818,7 +758,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(TLOC_PATH)\lib\VS2008\$(ConfigurationName)\$(PlatformName)\$(ProjectName)\$(ProjectName)_$(ConfigurationName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -843,6 +782,18 @@
 		<Filter
 			Name="window"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\window\tloc_window.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\window\tlocWindow.cpp"
 				>
@@ -916,6 +867,10 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glew.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\3rdParty\Graphics\GLEW\glewinfo.c"
 					>
 				</File>
 				<File
@@ -1068,11 +1023,27 @@
 			Name="opengl"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tloc_opengl.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocObject.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocOpenGL.cpp"
 				>
 			</File>
 			<File
@@ -1099,6 +1070,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderOperator.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderOperator.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.cpp"
 					>
 				</File>
@@ -1106,6 +1085,54 @@
 					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderProgram.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableInfo.cpp"
+					>
+				</File>
+				<Filter
+					Name="variables"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariable.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableExplicitMacros.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocShaderVariableInfo.h"
+						>
+					</File>
+					<Filter
+						Name="attribute"
+						>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocAttribute.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocAttribute.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="uniform"
+						>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocUniform.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="error"
@@ -1119,10 +1146,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="textures"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocTextureObject.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocTextureObject.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tloc_component_system.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrefabMaterial.h"
+				>
+			</File>
 			<Filter
 				Name="components"
 				>
@@ -1134,11 +1189,35 @@
 					Name="mesh"
 					>
 					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFan.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMesh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocPrimitive.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuad.h"
 						>
 					</File>
 				</Filter>
@@ -1154,10 +1233,38 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="projection"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocProjectionComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocProjectionComponent.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="systems"
 				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocFanRenderSystem.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMaterialSystem.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.cpp"
 					>
@@ -1166,36 +1273,44 @@
 					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocMeshRenderSystem.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuadRenderSystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\component_system\tlocQuadRenderSystem.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
-			Name="data_types"
+			Name="types"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocDimension.h"
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tloc_types.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\types\tlocDimension.h"
 				>
 			</File>
 			<Filter
 				Name="color"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocColor.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="rectangle"
-				>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocRectangle.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocColor.h"
 					>
 				</File>
 			</Filter>
@@ -1203,7 +1318,7 @@
 				Name="vertex"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocVertex.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocVertex.h"
 					>
 				</File>
 			</Filter>
@@ -1211,11 +1326,11 @@
 				Name="aspect_ratio"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocAspectRatio.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocAspectRatio.h"
 					>
 				</File>
 			</Filter>
@@ -1223,11 +1338,11 @@
 				Name="fov"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.cpp"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocGraphics\data_types\tlocFOV.h"
+					RelativePath="..\..\..\..\src\tlocGraphics\types\tlocFOV.h"
 					>
 				</File>
 			</Filter>
@@ -1235,6 +1350,18 @@
 		<Filter
 			Name="media"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\media\tloc_media.inl"
+				>
+			</File>
 			<Filter
 				Name="images"
 				>
@@ -1260,6 +1387,18 @@
 			Name="renderer"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tloc_renderer.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\renderer\tlocRenderer.cpp"
 				>
 			</File>
@@ -1272,6 +1411,26 @@
 			Name="view_projection"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tloc_view_projection.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocCamera.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocGraphics\view_projection\tlocFrustum.cpp"
 				>
 			</File>
@@ -1280,12 +1439,44 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="error"
+			>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tloc_error.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tloc_graphics.inl"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\src\tlocGraphics\error\tlocErrorTypes.h"
+			RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsBase.h"
 			>
 		</File>
 	</Files>

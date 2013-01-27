@@ -9,17 +9,19 @@
 namespace
 {
   using namespace tloc;
+  using namespace graphics::win;
 
-  typedef core::Array<graphics::GraphicsMode<> > graphics_modes_array;
+  typedef core::containers::Array<GraphicsMode<> >      graphics_modes_array;
+
   graphics_modes_array g_SupportedModes;
 
   struct CompareModes
   {
-    bool operator() (const graphics::GraphicsMode<>& a_first,
-      const graphics::GraphicsMode<>& a_second)
+    bool operator() (const GraphicsMode<>& a_first,
+                     const GraphicsMode<>& a_second)
     {
-      graphics::GraphicsMode<>::Properties p1 = a_first.GetProperties();
-      graphics::GraphicsMode<>::Properties p2 = a_second.GetProperties();
+      GraphicsMode<>::Properties p1 = a_first.GetProperties();
+      GraphicsMode<>::Properties p2 = a_second.GetProperties();
 
       if (p1.m_bitsPerPixel > p2.m_bitsPerPixel) { return true; }
       else if (p1.m_bitsPerPixel < p2.m_bitsPerPixel) { return false; }

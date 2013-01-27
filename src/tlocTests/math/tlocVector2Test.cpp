@@ -2,34 +2,41 @@
 
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.inl>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
 namespace TestingVector2f
 {
-  USING_TLOC;
+  using namespace tloc;
+  using namespace core::data_structs;
+  using namespace math::types;
 
   struct Vector2fFixture
   {
     Vector2fFixture()
-      : b(core::Variadic2f(5, 6))
+      : b(Variadic2f(5, 6))
     {
       a[0] = 1; a[1] = 2;
     }
 
-    tloc::math::Vec2f a, b, c, d, e;
+    Vec2f a, b, c, d, e;
   };
 
 #define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
                              CHECK((vec[1]) == (Approx(y)) );
 
+  TEST_CASE("Math/Vector2/Size", "Size my be as below")
+  {
+    REQUIRE(sizeof(Vec2f) == (sizeof(tl_float) * 2));
+    REQUIRE(sizeof(Vec2f32) == (sizeof(f32) * 2));
+    REQUIRE(sizeof(Vec2f64) == (sizeof(f64) * 2));
+  }
+
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/General",
     "Vector tests without math operations")
   {
-    REQUIRE(sizeof(tloc::math::Vec2f) == (sizeof(tl_float) * 2));
-
     CHECK_VEC2F(a, 1, 2);
     CHECK_VEC2F(b, 5, 6);
 
@@ -46,18 +53,22 @@ namespace TestingVector2f
     CHECK_VEC2F(a, 1.0f, 2.0f);
     CHECK_VEC2F(b, 5.0f, 6.0f);
 
-    c = tloc::math::Vec2f::ZERO;
+    c = Vec2f::ZERO;
     CHECK_VEC2F(c, 0.0f, 0.0f);
-    c = tloc::math::Vec2f::ONE;
+    c = Vec2f::ONE;
     CHECK_VEC2F(c, 1.0f, 1.0f);
-    c = tloc::math::Vec2f::UNIT_X;
+    c = Vec2f::UNIT_X;
     CHECK_VEC2F(c, 1.0f, 0.0f);
-    c = tloc::math::Vec2f::UNIT_Y;
+    c = Vec2f::UNIT_Y;
     CHECK_VEC2F(c, 0.0f, 1.0f);
-    c = tloc::math::Vec2f::NEG_UNIT_X;
+    c = Vec2f::NEG_UNIT_X;
     CHECK_VEC2F(c, -1.0f, 0.0f);
-    c = tloc::math::Vec2f::NEG_UNIT_Y;
+    c = Vec2f::NEG_UNIT_Y;
     CHECK_VEC2F(c, 0.0f, -1.0f);
+
+    // Convert from Tuple to Vec
+    c = Vec2f(Tuple<tl_float, 2>(1.0f));
+    CHECK_VEC2F(c, 1.0f, 1.0f);
   }
 
   TEST_CASE_METHOD(Vector2fFixture, "Math/Vector2f/[]Operator",

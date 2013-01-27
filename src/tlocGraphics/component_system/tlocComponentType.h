@@ -1,6 +1,8 @@
 #ifndef TLOC_GFX_COMPONENT_TYPE_H
 #define TLOC_GFX_COMPONENT_TYPE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -10,7 +12,10 @@ namespace tloc { namespace graphics { namespace component_system {
     enum type
     {
       mesh = core::component_system::components_group::graphics,
+      quad, // specialized mesh
+      fan,
       material,
+      projection,
 
       count
     }; typedef tl_int value_type;

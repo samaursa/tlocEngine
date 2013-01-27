@@ -1,7 +1,8 @@
 #ifndef TLOC_ALGORITHMS_H
 #define TLOC_ALGORITHMS_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>

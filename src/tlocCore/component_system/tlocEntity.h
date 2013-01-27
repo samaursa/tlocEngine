@@ -1,29 +1,34 @@
 #ifndef TLOC_ENTITY_H
 #define TLOC_ENTITY_H
 
+#include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EntityWorld;
   class EntityManager;
-  class Component;
 
   class Entity
   {
   public:
     friend class EntityManager;
 
-    typedef components::value_type          component_type;
-    typedef tl_array<Component*>::type      component_list;
-    typedef tl_array<component_list>::type  component_list_list;
+    typedef components::value_type                      component_type;
+    typedef core::component_system::
+                  component_ptr_array                   component_list;
+    typedef containers::tl_array<component_list>::type  component_list_list;
     typedef tl_uint                         entity_id;
     typedef tl_size                         size_type;
 
     Entity(entity_id  a_id);
 
-    bool                        HasComponent(component_type a_type);
+    bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
     entity_id                   GetID() const;
@@ -35,7 +40,7 @@ namespace tloc { namespace core { namespace component_system {
     void                  SetID(entity_id a_id);
     void                  SetIndex(size_type a_index);
 
-    component_list&       GetComponents(component_type a_type);
+    component_list&       DoGetComponents(component_type a_type);
     void                  InsertComponent(Component* a_type);
 
     component_list_list&        GetComponentsList();
@@ -47,9 +52,11 @@ namespace tloc { namespace core { namespace component_system {
     component_list_list m_allComponents;
   };
 
-  typedef tl_array<Entity*>::type                              entity_array;
-  typedef tl_array<Entity*, core::Array_Unordered>::type       entity_array_o;
+  typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
+  typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;
 
+  typedef containers::tl_array<Entity*>::type                entity_ptr_array;
+  typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;
 };};};
 
 #endif

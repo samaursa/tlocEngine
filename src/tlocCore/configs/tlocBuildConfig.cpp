@@ -1,8 +1,6 @@
 #include "tlocBuildConfig.h"
 
-namespace tloc { namespace core {
-
-  template class BuildConfig<>;
+namespace tloc { namespace core { namespace configs {
 
   //////////////////////////////////////////////////////////////////////////
   // PlatformInfo
@@ -67,4 +65,9 @@ namespace tloc { namespace core {
     return m_buildTypes[release_debug_info];
   }
 
-};};
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template class BuildConfig<>;
+
+};};};

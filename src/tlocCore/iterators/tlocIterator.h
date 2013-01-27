@@ -1,7 +1,7 @@
 #ifndef TLOC_ITERATOR_H
 #define TLOC_ITERATOR_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 

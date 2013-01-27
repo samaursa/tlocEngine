@@ -9,6 +9,7 @@ SET WORKSPACE_PATH=%TLOC_PATH%
 SET testConfig=%1%
 SET testAuto=%2%
 
+
 :START
 SET ColorTesting=COLOR 9f
 SET ColorTestFailed=COLOR 4f
@@ -38,22 +39,53 @@ SET ERRORLEVEL=0
 
 :: -------------
 :: Start testing
+SET CORE_TESTS=tlocCoreTest
+SET GRAPHICS_TESTS=tlocGraphicsTest
+SET INPUT_TESTS=tlocInputTest
+SET MATH_TESTS=tlocMathTest
+SET PHYSICS_TESTS=tlocPhysicsTest
 
-SET TEST_PATH=..\bin\VS2008\%testConfig%\Win32\tlocTesting\tlocTesting.exe
-
-:: Make sure binaries have been compiled
-IF NOT EXIST %TEST_PATH% (
-  ECHO "Error: Could not find the binary file. Did you compile the selected configuration?"
-  GOTO:EXIT_ERROR
-)
-
-CALL %TEST_PATH%
+SET CURR_TESTS=%CORE_TESTS%
+CALL:RUN_A_TEST
+SET CURR_TESTS=%GRAPHICS_TESTS%
+CALL:RUN_A_TEST
+SET CURR_TESTS=%INPUT_TESTS%
+CALL:RUN_A_TEST
+SET CURR_TESTS=%MATH_TESTS%
+CALL:RUN_A_TEST
+SET CURR_TESTS=%PHYSICS_TESTS%
+CALL:RUN_A_TEST
 
 IF NOT %ERRORLEVEL%==0 (
-  GOTO:EXIT_ERROR
+  GOTO EXIT_ERROR
+) ELSE (
+  GOTO EXIT_GOOD
 )
 
-GOTO:EXIT_GOOD
+:RUN_A_TEST
+
+SET CURR_DIR=%CD%
+SET TEST_DIR=..\bin\VS2008\%testConfig%\Win32\%CURR_TESTS%\
+SET TEST_FILE=%CURR_TESTS%.exe
+
+:: Make sure binaries have been compiled
+IF NOT EXIST %TEST_DIR%%TEST_FILE% (
+  ECHO "Error: Could not find the binary file at %TEST_PATH%. Did you compile the selected configuration?"
+  %ColorTestFailed%
+  GOTO:EOF
+)
+
+cd %TEST_DIR%
+CALL %TEST_FILE%
+cd %CURR_DIR%
+
+IF NOT %ERRORLEVEL%==0 (
+  %ColorTestFailed%
+) ELSE (
+  %ColorTestPassed%
+)
+
+GOTO:EOF
 
 :: ----------------
 :: EXIT THE PROGRAM

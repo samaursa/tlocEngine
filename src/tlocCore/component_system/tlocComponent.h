@@ -1,11 +1,18 @@
 #ifndef TLOC_COMPONENT_H
 #define TLOC_COMPONENT_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/utilities/tlocGroupID.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 namespace tloc { namespace core { namespace component_system {
+
+  //////////////////////////////////////////////////////////////////////////
+  // Component
 
   class Component : private utils::ObjectCounter<Component>
   {
@@ -29,16 +36,27 @@ namespace tloc { namespace core { namespace component_system {
     component_type m_type;
   };
 
+  //------------------------------------------------------------------------
+  // typedefs
+  typedef smart_ptr::SharedPtr<Component>       component_sptr;
+  typedef smart_ptr::SharedPtr<const Component> component_const_sptr;
+
+  typedef containers::tl_array<Component*>::type      component_ptr_array;
+  typedef containers::tl_array<component_sptr>::type  component_sptr_array;
+
+  //////////////////////////////////////////////////////////////////////////
+  // Component_T<>
+
   template <typename T_Component>
-  class ComponentT : private utils::GroupID<T_Component>,
-                     public Component
+  class Component_T : private utils::GroupID<T_Component>,
+                      public Component
   {
   public:
 
     typedef Component                             base_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    ComponentT(component_type a_type) : Component(a_type) {}
+    Component_T(component_type a_type) : Component(a_type) {}
 
     using group_id_base_type::GetUniqueGroupID;
   };

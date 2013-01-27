@@ -6,7 +6,7 @@
 
 namespace TestingObjectCounter
 {
-  USING_TLOC;
+  using namespace tloc;
 
   struct obj : public core::utils::ObjectCounter<obj>
   {
@@ -17,7 +17,7 @@ namespace TestingObjectCounter
     CHECK(obj::GetCurrentObjectCount() == 0);
 
     {
-      core::Array<obj> objects;
+      core::containers::Array<obj> objects;
       CHECK(obj::GetCurrentObjectCount() == 0);
 
       const s32 count = 100;

@@ -9,8 +9,9 @@
 
 namespace TestingArray
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {
@@ -425,6 +426,12 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
+    ints.resize(0); // should not crash or do anything
+    CHECK(ints.size() == 0);
+    ints.resize(2); // should not crash
+    CHECK(ints.size() == 2);
+    ints.clear();
+
     u32 firstElement = 0;
     u32 arraySize = 10;
     FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);

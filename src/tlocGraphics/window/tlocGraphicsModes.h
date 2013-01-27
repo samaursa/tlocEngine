@@ -1,12 +1,13 @@
 #ifndef TLOC_GRAPHICS_MODES_H
 #define TLOC_GRAPHICS_MODES_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   //////////////////////////////////////////////////////////////////////////
   /// This class was written (initially - modifications may follow) by
@@ -63,6 +64,6 @@ namespace tloc { namespace graphics {
 
   };
 
-};};
+};};};
 
 #endif

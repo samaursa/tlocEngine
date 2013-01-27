@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_IMPL_H
 #define TLOC_INPUT_IMPL_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
 
@@ -16,12 +18,13 @@ namespace tloc { namespace input { namespace priv {
   template <class T_ParentInputManager> class InputManagerImpl;
 
   template <class T_ParentInputManager, class T_ParamList>
-  class InputManagerImplBase: public core::ImplBase<T_ParentInputManager>
+  class InputManagerImplBase
+    : public core::base_classes::ImplBase<T_ParentInputManager>
   {
   public:
-    typedef core::ImplBase<T_ParentInputManager>          base_type;
-    typedef typename base_type::parent_type               parent_type;
-    typedef typename base_type::platform_type             platform_type;
+    typedef core::base_classes::ImplBase<T_ParentInputManager>  base_type;
+    typedef typename base_type::parent_type                     parent_type;
+    typedef typename base_type::platform_type                   platform_type;
 
     typedef T_ParamList                                   param_list_type;
     typedef u32                                           index_type;

@@ -1,7 +1,8 @@
-#ifndef TLOC_GL_SHADER_COMPONENT_H
-#define TLOC_GL_SHADER_COMPONENT_H
+#ifndef _TLOC_GRAPHICS_GL_SHADER_H_
+#define _TLOC_GRAPHICS_GL_SHADER_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -18,24 +19,65 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
-  class ShaderComponent : public Object
+  //////////////////////////////////////////////////////////////////////////
+  // Base class for shaders
+
+  class Shader_I : public Object_T<Shader_I, p_object::WithError>
   {
   public:
-    typedef Object                        base_type;
-    using base_type::object_handle;
+    template <typename T> friend class ObjectRefCounted;
 
-    typedef core::tl_array<bool>::type  flag_type;
+  public:
+    typedef Object_T<Shader_I, p_object::WithError> base_type;
+    typedef base_type::object_handle                object_handle;
+    typedef base_type::error_type                   error_type;
 
-    ShaderComponent();
-    ~ShaderComponent();
+  public:
+    error_type Compile();
+
+  protected:
+    Shader_I();
+    ~Shader_I();
 
     template <typename T_ShaderType>
-    bool LoadShader(const char* a_shaderSource, T_ShaderType a_type);
-    bool CompileShader();
+    error_type DoLoad(const char* a_shaderSource);
 
   private:
-
     core::utils::Checkpoints    m_flags;
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Fragment shader
+
+  class FragmentShader : public Shader_I
+  {
+  public:
+    typedef Shader_I                            base_type;
+    typedef base_type::object_handle            object_handle;
+    typedef base_type::error_type               error_type;
+
+  public:
+    FragmentShader();
+    ~FragmentShader();
+
+    error_type  Load(const char* a_shaderSource);
+  };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Vertex Shader
+
+  class VertexShader : public Shader_I
+  {
+  public:
+    typedef Shader_I                            base_type;
+    typedef base_type::object_handle            object_handle;
+    typedef base_type::error_type               error_type;
+
+  public:
+    VertexShader();
+    ~VertexShader();
+
+    error_type Load(const char* a_shaderSource);
   };
 
 

@@ -56,6 +56,11 @@ namespace tloc { namespace input {
       (parameter_options::Type a_params = parameter_options::TL_DEFAULT)
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
+
+      type_traits::AssertTypeIsSupported
+        <typename T_InputObject::policy_type,
+         policy_type>();
+
       return DoCreateHID<T_InputObject>(a_params);
     }
 

@@ -165,38 +165,73 @@ namespace TestingInput
     SendInput(1, inp, sizeof(INPUT));
   }
 
-  void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key,
+  template <typename T_InputManagerType, typename T_KeyboardType>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb,
+    HWND a_wnd, WORD a_key, hid::KeyboardEvent::key_code_type a_ourKey,
+    input::InputPolicy::Buffered)
+  {
+    core::time::Timer countDown;
+
+    sampleInputKeyboard<KeyboardB> callback(kb);
+    kb->Register(&callback);
+
+    while ( countDown.ElapsedMilliSeconds() < 1000 &&
+      (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonPress(a_key);
+      SendButtonRelease(a_key);
+      a_im->Update();
+    }
+
+    kb->UnRegister(&callback);
+
+    CHECK(callback.m_keypresses > 0);
+    CHECK(callback.m_keyreleases > 0);
+    CHECK(callback.m_event.m_keyCode == a_ourKey);
+
+    CHECK(kb->IsKeyDown(a_ourKey));
+
+    if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
+    {
+      WARN(a_key);
+    }
+  }
+
+  template <typename T_InputManagerType, typename T_KeyboardType>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb, HWND a_wnd, WORD a_key,
+    hid::KeyboardEvent::key_code_type a_ourKey, input::InputPolicy::Immediate)
+  {
+    core::time::Timer countDown;
+
+    // This is in the while loop just so that can we can 'capture' the keystroke
+    while(countDown.ElapsedMilliSeconds() < 1000)
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonPress(a_key);
+      a_im->Update();
+
+      if (kb->IsKeyDown(a_ourKey))
+      {
+        break;
+      }
+    }
+    CHECK(kb->IsKeyDown(a_ourKey));
+  }
+
+  template <typename T_InputManagerType>
+  void TestKeyboardButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_key,
                           hid::KeyboardEvent::key_code_type a_ourKey)
   {
-    core::time::Timer_T<> countDown;
-    KeyboardB* kb = a_im->GetHID<KeyboardB>();
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Keyboard<policy_type>* kb = a_im->GetHID<Keyboard<policy_type> >();
 
     CHECK(kb != NULL);
 
     if (kb)
     {
-      sampleInputKeyboard<KeyboardB> callback(kb);
-      kb->Register(&callback);
-
-      while ( countDown.ElapsedMilliSeconds() < 1000 &&
-        (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
-      {
-        UpdateWin32Window(a_wnd);
-        SendButtonPress(a_key);
-        SendButtonRelease(a_key);
-        a_im->Update();
-      }
-
-      kb->UnRegister(&callback);
-
-      CHECK(callback.m_keypresses > 0);
-      CHECK(callback.m_keyreleases > 0);
-      CHECK(callback.m_event.m_keyCode == a_ourKey);
-      CHECK(kb->IsKeyDown(a_ourKey));
-      if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
-      {
-        WARN(a_key);
-      }
+      TestKeyboardType(a_im, kb, a_wnd, a_key, a_ourKey, policy_type());
     }
   }
 
@@ -296,6 +331,131 @@ namespace TestingInput
     void*                 m_devicePtr;
   };
 
+  template <typename T_InputManagerType>
+  void TestKeyboard(T_InputManagerType& inputMgr, HWND wnd)
+  {
+    typedef input_hid::KeyboardEvent  ke;
+
+    TestKeyboardButton(&inputMgr, wnd, DIK_ESCAPE, ke::escape);
+    TestKeyboardButton(&inputMgr, wnd, DIK_1, ke::n1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_2, ke::n2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_3, ke::n3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_4, ke::n4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_5, ke::n5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_6, ke::n6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_7, ke::n7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_8, ke::n8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_9, ke::n9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_0, ke::n0);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MINUS, ke::minus_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_EQUALS, ke::equals);
+    TestKeyboardButton(&inputMgr, wnd, DIK_BACK, ke::backspace);
+    TestKeyboardButton(&inputMgr, wnd, DIK_TAB, ke::tab);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Q, ke::q);
+    TestKeyboardButton(&inputMgr, wnd, DIK_W, ke::w);
+    TestKeyboardButton(&inputMgr, wnd, DIK_E, ke::e);
+    TestKeyboardButton(&inputMgr, wnd, DIK_R, ke::r);
+    TestKeyboardButton(&inputMgr, wnd, DIK_T, ke::t);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Y, ke::y);
+    TestKeyboardButton(&inputMgr, wnd, DIK_U, ke::u);
+    TestKeyboardButton(&inputMgr, wnd, DIK_I, ke::i);
+    TestKeyboardButton(&inputMgr, wnd, DIK_O, ke::o);
+    TestKeyboardButton(&inputMgr, wnd, DIK_P, ke::p);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LBRACKET, ke::left_bracket);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RBRACKET, ke::right_bracket);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RETURN, ke::enter_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LCONTROL, ke::left_control);
+    TestKeyboardButton(&inputMgr, wnd, DIK_A, ke::a);
+    TestKeyboardButton(&inputMgr, wnd, DIK_S, ke::s);
+    TestKeyboardButton(&inputMgr, wnd, DIK_D, ke::d);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F, ke::f);
+    TestKeyboardButton(&inputMgr, wnd, DIK_G, ke::g);
+    TestKeyboardButton(&inputMgr, wnd, DIK_H, ke::h);
+    TestKeyboardButton(&inputMgr, wnd, DIK_J, ke::j);
+    TestKeyboardButton(&inputMgr, wnd, DIK_K, ke::k);
+    TestKeyboardButton(&inputMgr, wnd, DIK_L, ke::l);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SEMICOLON, ke::semicolon);
+    TestKeyboardButton(&inputMgr, wnd, DIK_APOSTROPHE, ke::apostrophe);
+    TestKeyboardButton(&inputMgr, wnd, DIK_GRAVE, ke::grave);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LSHIFT, ke::left_shift);
+    TestKeyboardButton(&inputMgr, wnd, DIK_BACKSLASH, ke::backslash);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Z, ke::z);
+    TestKeyboardButton(&inputMgr, wnd, DIK_X, ke::x);
+    TestKeyboardButton(&inputMgr, wnd, DIK_C, ke::c);
+    TestKeyboardButton(&inputMgr, wnd, DIK_V, ke::v);
+    TestKeyboardButton(&inputMgr, wnd, DIK_B, ke::b);
+    TestKeyboardButton(&inputMgr, wnd, DIK_N, ke::n);
+    TestKeyboardButton(&inputMgr, wnd, DIK_M, ke::m);
+    TestKeyboardButton(&inputMgr, wnd, DIK_COMMA, ke::comma);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PERIOD, ke::period_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SLASH, ke::slash);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RSHIFT, ke::right_shift);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MULTIPLY, ke::multiply_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LMENU, ke::left_alt);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SPACE, ke::space);
+    TestKeyboardButton(&inputMgr, wnd, DIK_CAPITAL, ke::capital);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F1, ke::f1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F2, ke::f2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F3, ke::f3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F4, ke::f4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F5, ke::f5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F6, ke::f6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F7, ke::f7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F8, ke::f8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F9, ke::f9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F10, ke::f10);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMLOCK, ke::numlock);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SCROLL, ke::scroll_lock);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD7, ke::num7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD8, ke::num8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD9, ke::num9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SUBTRACT, ke::minus_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD4, ke::num4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD5, ke::num5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD6, ke::num6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_ADD, ke::add_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD1, ke::num1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD2, ke::num2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD3, ke::num3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD0, ke::num0);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DECIMAL, ke::period_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F11, ke::f11);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F12, ke::f12);
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F13); // Not on most KBs
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F14); // Not on most KBs
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F15); // Not on most KBs
+    TestKeyboardButton(&inputMgr, wnd, DIK_PREVTRACK, ke::prev_track);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NEXTTRACK, ke::next_track);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPADENTER, ke::enter_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RCONTROL, ke::right_control);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MUTE, ke::mute);
+    TestKeyboardButton(&inputMgr, wnd, DIK_CALCULATOR, ke::calculator);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PLAYPAUSE, ke::play_pause);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MEDIASTOP, ke::media_stop);
+    TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEDOWN, ke::volume_down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEUP, ke::volume_up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_WEBHOME, ke::web_home);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DIVIDE, ke::divide_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SYSRQ, ke::sysrq);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RMENU, ke::right_alt);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PAUSE, ke::pause);
+    TestKeyboardButton(&inputMgr, wnd, DIK_HOME, ke::home);
+    TestKeyboardButton(&inputMgr, wnd, DIK_UP, ke::up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PRIOR, ke::page_up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LEFT, ke::left);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RIGHT, ke::right);
+    TestKeyboardButton(&inputMgr, wnd, DIK_END, ke::end);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DOWN, ke::down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NEXT, ke::page_down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_INSERT, ke::insert);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DELETE, ke::delete_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LWIN, ke::left_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RWIN, ke::right_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_POWER, ke::power_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP, ke::sleep_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_WAKE, ke::wake_sys);
+  }
+
   TEST_CASE("Input/InputManager/General", "")
   {
     core::time::Timer_T<> countDown;
@@ -305,132 +465,21 @@ namespace TestingInput
     ParamList<HWND> params;
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
+    InputManagerI inputMgrImm(params);
 
     KeyboardB* kb = inputMgr.CreateHID<KeyboardB>();
     CHECK(kb != NULL);
 
+    KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>();
+    CHECK(kbImm != NULL);
+
     if (kb)
     {
-      typedef input_hid::KeyboardEvent  ke;
-
-      TestKeyboardButton(&inputMgr, wnd, DIK_ESCAPE, ke::escape);
-      TestKeyboardButton(&inputMgr, wnd, DIK_1, ke::n1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_2, ke::n2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_3, ke::n3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_4, ke::n4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_5, ke::n5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_6, ke::n6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_7, ke::n7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_8, ke::n8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_9, ke::n9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_0, ke::n0);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MINUS, ke::minus_main);
-      TestKeyboardButton(&inputMgr, wnd, DIK_EQUALS, ke::equals);
-      TestKeyboardButton(&inputMgr, wnd, DIK_BACK, ke::backspace);
-      TestKeyboardButton(&inputMgr, wnd, DIK_TAB, ke::tab);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Q, ke::q);
-      TestKeyboardButton(&inputMgr, wnd, DIK_W, ke::w);
-      TestKeyboardButton(&inputMgr, wnd, DIK_E, ke::e);
-      TestKeyboardButton(&inputMgr, wnd, DIK_R, ke::r);
-      TestKeyboardButton(&inputMgr, wnd, DIK_T, ke::t);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Y, ke::y);
-      TestKeyboardButton(&inputMgr, wnd, DIK_U, ke::u);
-      TestKeyboardButton(&inputMgr, wnd, DIK_I, ke::i);
-      TestKeyboardButton(&inputMgr, wnd, DIK_O, ke::o);
-      TestKeyboardButton(&inputMgr, wnd, DIK_P, ke::p);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LBRACKET, ke::left_bracket);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RBRACKET, ke::right_bracket);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RETURN, ke::enter_main);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LCONTROL, ke::left_control);
-      TestKeyboardButton(&inputMgr, wnd, DIK_A, ke::a);
-      TestKeyboardButton(&inputMgr, wnd, DIK_S, ke::s);
-      TestKeyboardButton(&inputMgr, wnd, DIK_D, ke::d);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F, ke::f);
-      TestKeyboardButton(&inputMgr, wnd, DIK_G, ke::g);
-      TestKeyboardButton(&inputMgr, wnd, DIK_H, ke::h);
-      TestKeyboardButton(&inputMgr, wnd, DIK_J, ke::j);
-      TestKeyboardButton(&inputMgr, wnd, DIK_K, ke::k);
-      TestKeyboardButton(&inputMgr, wnd, DIK_L, ke::l);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SEMICOLON, ke::semicolon);
-      TestKeyboardButton(&inputMgr, wnd, DIK_APOSTROPHE, ke::apostrophe);
-      TestKeyboardButton(&inputMgr, wnd, DIK_GRAVE, ke::grave);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LSHIFT, ke::left_shift);
-      TestKeyboardButton(&inputMgr, wnd, DIK_BACKSLASH, ke::backslash);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Z, ke::z);
-      TestKeyboardButton(&inputMgr, wnd, DIK_X, ke::x);
-      TestKeyboardButton(&inputMgr, wnd, DIK_C, ke::c);
-      TestKeyboardButton(&inputMgr, wnd, DIK_V, ke::v);
-      TestKeyboardButton(&inputMgr, wnd, DIK_B, ke::b);
-      TestKeyboardButton(&inputMgr, wnd, DIK_N, ke::n);
-      TestKeyboardButton(&inputMgr, wnd, DIK_M, ke::m);
-      TestKeyboardButton(&inputMgr, wnd, DIK_COMMA, ke::comma);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PERIOD, ke::period_main);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SLASH, ke::slash);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RSHIFT, ke::right_shift);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MULTIPLY, ke::multiply_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LMENU, ke::left_alt);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SPACE, ke::space);
-      TestKeyboardButton(&inputMgr, wnd, DIK_CAPITAL, ke::capital);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F1, ke::f1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F2, ke::f2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F3, ke::f3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F4, ke::f4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F5, ke::f5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F6, ke::f6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F7, ke::f7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F8, ke::f8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F9, ke::f9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F10, ke::f10);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMLOCK, ke::numlock);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SCROLL, ke::scroll_lock);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD7, ke::num7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD8, ke::num8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD9, ke::num9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SUBTRACT, ke::minus_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD4, ke::num4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD5, ke::num5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD6, ke::num6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_ADD, ke::add_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD1, ke::num1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD2, ke::num2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD3, ke::num3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD0, ke::num0);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DECIMAL, ke::period_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F11, ke::f11);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F12, ke::f12);
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F13); // Not on most KBs
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F14); // Not on most KBs
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F15); // Not on most KBs
-      TestKeyboardButton(&inputMgr, wnd, DIK_PREVTRACK, ke::prev_track);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NEXTTRACK, ke::next_track);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPADENTER, ke::enter_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RCONTROL, ke::right_control);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MUTE, ke::mute);
-      TestKeyboardButton(&inputMgr, wnd, DIK_CALCULATOR, ke::calculator);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PLAYPAUSE, ke::play_pause);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MEDIASTOP, ke::media_stop);
-      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEDOWN, ke::volume_down);
-      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEUP, ke::volume_up);
-      TestKeyboardButton(&inputMgr, wnd, DIK_WEBHOME, ke::web_home);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DIVIDE, ke::divide_keypad);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SYSRQ, ke::sysrq);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RMENU, ke::right_alt);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PAUSE, ke::pause);
-      TestKeyboardButton(&inputMgr, wnd, DIK_HOME, ke::home);
-      TestKeyboardButton(&inputMgr, wnd, DIK_UP, ke::up);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PRIOR, ke::page_up);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LEFT, ke::left);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RIGHT, ke::right);
-      TestKeyboardButton(&inputMgr, wnd, DIK_END, ke::end);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DOWN, ke::down);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NEXT, ke::page_down);
-      TestKeyboardButton(&inputMgr, wnd, DIK_INSERT, ke::insert);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DELETE, ke::delete_main);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LWIN, ke::left_sys);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RWIN, ke::right_sys);
-      TestKeyboardButton(&inputMgr, wnd, DIK_POWER, ke::power_sys);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP, ke::sleep_sys);
-      TestKeyboardButton(&inputMgr, wnd, DIK_WAKE, ke::wake_sys);
+      TestKeyboard(inputMgr, wnd);
+    }
+    if (kbImm)
+    {
+      TestKeyboard(inputMgrImm, wnd);
     }
 
     using hid::MouseB;

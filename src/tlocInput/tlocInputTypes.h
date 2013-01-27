@@ -193,12 +193,12 @@ namespace tloc { namespace input {
     };
 
     typedef Type<p_type::Button>     Button;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, s64>         AxisRel;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, s64>         AxisAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, s64>  AxisRelAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, f64>         AxisRelf;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, f64>         AxisAbsf;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, f64>  AxisRelAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
   }

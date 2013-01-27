@@ -44,10 +44,10 @@ namespace tloc { namespace input { namespace hid {
       divide_keypad, slash_keypad,
       sysrq, right_alt, pause, home,
       up, page_up, left, right, end, down, page_down, insert, delete_main,
-      left_sys, right_sys, sys_power, power_sys, sleep_sys, wake_sys,
+      left_sys, right_sys, power_sys, sleep_sys, wake_sys,
 
       Count,
-    };  typedef u32 key_code_type;
+    };  typedef s32 key_code_type;
 
     enum Modifier
     {

@@ -78,10 +78,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     IDirectInputDevice8*  m_keyboard;
     HWND                  m_windowPtr;
 
-    bool                   m_buffer[KeyboardEvent::Count];
+    bool                  m_buffer[KeyboardEvent::Count];
 
-    static const size_type s_bufferSize = 256;
-    uchar8                  m_rawBuffer[s_bufferSize];
+    static const DWORD    s_bufferSize = 256;
+    uchar8                m_rawBuffer[s_bufferSize];
   };
 
 };};};};

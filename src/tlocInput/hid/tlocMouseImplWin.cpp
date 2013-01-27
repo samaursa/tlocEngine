@@ -58,7 +58,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   bool MouseImpl<MOUSE_IMPL_PARAMS>::IsButtonDown(button_code_type a_mouse) const
   {
-    return (m_currentState.m_buttonCode & a_mouse) == 1;
+    return (m_currentState.m_buttonCode & a_mouse) == a_mouse;
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -148,7 +148,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_X.m_rel() = 0;
     m_currentState.m_Y.m_rel() = 0;
     m_currentState.m_Z.m_rel() = 0;
-    m_currentState.m_buttonCode = MouseEvent::none;
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::mouse_buffer_size];
     DWORD entries = buffer_size::mouse_buffer_size;
@@ -186,14 +185,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     for (tl_size i = 0; i < entries; ++i)
     {
       // Grab the key code that was pressed/released
-      m_currentState.m_buttonCode |= TranslateKeyCode(diBuff[i].dwOfs);
+      MouseEvent::ButtonCode code = TranslateKeyCode(diBuff[i].dwOfs);
+
+      m_currentState.m_buttonCode |= code;
 
       if (m_currentState.m_buttonCode != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-          m_parent->SendOnButtonPress(m_currentState);
+        { m_parent->SendOnButtonPress(m_currentState); }
         else
+        {
           m_parent->SendOnButtonRelease(m_currentState);
+          m_currentState.m_buttonCode ^= code;
+        }
       }
       else
       {

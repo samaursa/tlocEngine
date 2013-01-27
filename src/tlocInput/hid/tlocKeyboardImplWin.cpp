@@ -41,7 +41,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     case DIK_LBRACKET:    return KeyboardEvent::left_bracket;
     case DIK_RBRACKET:    return KeyboardEvent::right_bracket;
     case DIK_RETURN:      return KeyboardEvent::enter_main;
-    case DIK_LCONTROL:    return KeyboardEvent::left_bracket;
+    case DIK_LCONTROL:    return KeyboardEvent::left_control;
     case DIK_A:           return KeyboardEvent::a;
     case DIK_S:           return KeyboardEvent::s;
     case DIK_D:           return KeyboardEvent::d;
@@ -123,7 +123,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     case DIK_RIGHT:       return KeyboardEvent::right;
     case DIK_END:         return KeyboardEvent::end;
     case DIK_DOWN:        return KeyboardEvent::down;
-    case DIK_NEXT:        return KeyboardEvent::next_track;
+    case DIK_NEXT:        return KeyboardEvent::page_down;
     case DIK_INSERT:      return KeyboardEvent::insert;
     case DIK_DELETE:      return KeyboardEvent::delete_main;
     case DIK_LWIN:        return KeyboardEvent::left_sys;
@@ -182,12 +182,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (FAILED(m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL)))
     {
       // LOG: Keyboard failed to initialize
+      TLOC_ASSERT(false, "Keyboard failed to initialize!");
       return;
     }
 
     if ( FAILED(m_keyboard->SetDataFormat(&c_dfDIKeyboard)) )
     {
       // LOG: Keyboard format error
+      TLOC_ASSERT(false, "Keyboard format error!");
       return;
     }
 
@@ -289,7 +291,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       // Grab the key code that was pressed/released
       KeyboardEvent::KeyCode kc = TranslateKeyCode(diBuff[i].dwOfs);
-      m_buffer[kc] = true;
 
       if (diBuff[i].dwData & 0x80)
       {
@@ -307,6 +308,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         }
 
         m_parent->SendOnKeyPress( KeyboardEvent(kc) );
+        m_buffer[kc] = true;
+
       }
       else
       {
@@ -324,6 +327,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         }
 
         m_parent->SendOnKeyRelease( KeyboardEvent(kc) );
+        m_buffer[kc] = false;
+
       }
     }
   }
@@ -342,11 +347,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
     }
 
-    for (size_type i = 0; i < s_bufferSize; ++i)
+    for (DWORD i = 0; i < s_bufferSize; ++i)
     {
       if ( (m_rawBuffer[i] & 0x80) != 0)
       {
-        m_buffer[TranslateKeyCode(m_buffer[i])] = true;
+        m_buffer[TranslateKeyCode(i)] = true;
       }
     }
   }

@@ -76,7 +76,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     HWND                  m_windowPtr;
 
     MouseEvent              m_currentState;
-    static const size_type  s_bufferSize = sizeof(DIMOUSESTATE2);
+    static const size_type  s_bufferSize = MouseEvent::count;
   };
 
 };};};};

@@ -79,12 +79,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
     {
       // LOG: Mouse failed to initialize
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
     if ( FAILED(m_mouse->SetDataFormat(&c_dfDIMouse2)) )
     {
       // LOG: Mouse format error
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
@@ -260,14 +262,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     HRESULT hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
 
-    if (hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
+    while(hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
     {
       hRes = m_mouse->Acquire();
       if (hRes != DIERR_OTHERAPPHASPRIO)
       {
-        m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
+        hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
       }
     }
+
+    if (hRes != DI_OK)
+    { return; }
 
     m_currentState.m_X.m_rel() = m_mouseBuffer.lX;
     m_currentState.m_Y.m_rel() = m_mouseBuffer.lY;

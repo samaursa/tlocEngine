@@ -145,8 +145,8 @@ namespace tloc { namespace input { namespace priv {
           }
           else
           {
-            // LOG: Could not create a keyboard (either one is already created
-            //      or we do not have any keyboards attached)
+            // LOG: Could not create a mouse (either one is already created
+            //      or we do not have any mice attached)
           }
         }
         break;

@@ -54,7 +54,7 @@ namespace tloc { namespace input { namespace hid {
       Shift = 1 << 0,
       Ctrl  = 1 << 1,
       Alt   = 1 << 2,
-    };
+    }; typedef s32 modifier_type;
 
     KeyboardEvent(KeyCode a_code = none) : m_keyCode(a_code) {}
 
@@ -109,7 +109,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           pressed_count};
 
     param_list_type       m_params;
-    index_type            m_modifier;
+    modifier_type         m_modifier;
   };
 
 };};};};

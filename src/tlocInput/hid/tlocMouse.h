@@ -27,11 +27,11 @@ namespace tloc { namespace input { namespace hid {
   struct MouseCallbacks
   {
     virtual bool OnButtonPress(const tl_size a_caller,
-                               const MouseEvent& a_event) = 0;
+                               const MouseEvent& a_event) const = 0;
     virtual bool OnButtonRelease(const tl_size a_caller,
-                                 const MouseEvent& a_event) = 0;
+                                 const MouseEvent& a_event) const = 0;
     virtual bool OnMouseMove(const tl_size a_caller,
-                             const MouseEvent& a_event) = 0;
+                             const MouseEvent& a_event) const = 0;
   };
 
   ///-------------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace tloc { namespace input { namespace hid {
 
   public:
     virtual bool OnButtonPress(const tl_size a_caller,
-                               const MouseEvent& a_event)
+                               const MouseEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -64,7 +64,7 @@ namespace tloc { namespace input { namespace hid {
     }
 
     virtual bool OnButtonRelease(const tl_size a_caller,
-                                 const MouseEvent& a_event)
+                                 const MouseEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -77,7 +77,7 @@ namespace tloc { namespace input { namespace hid {
     }
 
     virtual bool OnMouseMove(const tl_size a_caller,
-                             const MouseEvent& a_event)
+                             const MouseEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -112,11 +112,12 @@ namespace tloc { namespace input { namespace hid {
     Mouse(const T_ParamList& a_paramList);
     ~Mouse();
 
-    bool IsButtonDown(button_code_type a_button);
+    bool        IsButtonDown(button_code_type a_button) const;
+    MouseEvent  GetState() const;
 
-    void SendOnButtonPress(const MouseEvent& a_event);
-    void SendOnButtonRelease(const MouseEvent& a_event);
-    void SendOnMouseMove(const MouseEvent& a_event);
+    void SendOnButtonPress(const MouseEvent& a_event) const;
+    void SendOnButtonRelease(const MouseEvent& a_event) const;
+    void SendOnMouseMove(const MouseEvent& a_event) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update

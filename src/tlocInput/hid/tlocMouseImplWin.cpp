@@ -62,6 +62,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <MOUSE_IMPL_TEMP>
+  MouseEvent MouseImpl<MOUSE_IMPL_PARAMS>::GetState() const
+  {
+    return m_currentState;
+  }
+
+  template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::Update()
   {
     DoUpdate(policy_type());

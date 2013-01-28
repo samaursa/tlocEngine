@@ -50,7 +50,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     ///
     /// @return true if button is down, false if not.
     ///-------------------------------------------------------------------------
-    bool IsButtonDown(button_code_type a_button) const;
+    bool        IsButtonDown(button_code_type a_button) const;
+    MouseEvent  GetState() const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update

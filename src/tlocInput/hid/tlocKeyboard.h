@@ -27,9 +27,9 @@ namespace tloc { namespace input { namespace hid {
   struct KeyboardCallbacks
   {
     virtual bool OnKeyPress(const tl_size a_caller,
-                            const KeyboardEvent& a_event) = 0;
+                            const KeyboardEvent& a_event) const = 0;
     virtual bool OnKeyRelease(const tl_size a_caller,
-                              const KeyboardEvent& a_event) = 0;
+                              const KeyboardEvent& a_event) const = 0;
   };
 
   ///-------------------------------------------------------------------------
@@ -49,7 +49,7 @@ namespace tloc { namespace input { namespace hid {
 
   public:
     virtual bool OnKeyPress(const tl_size a_caller,
-                            const KeyboardEvent& a_event)
+                            const KeyboardEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -62,7 +62,7 @@ namespace tloc { namespace input { namespace hid {
     }
 
     virtual bool OnKeyRelease(const tl_size a_caller,
-                              const KeyboardEvent& a_event)
+                              const KeyboardEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -90,7 +90,7 @@ namespace tloc { namespace input { namespace hid {
     typedef T_Platform                      platform_type;
     typedef T_Policy                        policy_type;
     typedef KeyboardEvent::key_code_type    keycode_type;
-    typedef KeyboardEvent::Modifier         modifier_type;
+    typedef KeyboardEvent::modifier_type    modifier_type;
 
     typedef Keyboard<policy_type, platform_type>  this_type;
 
@@ -106,11 +106,10 @@ namespace tloc { namespace input { namespace hid {
     /// @return true if key is down, false if not.
     ///-------------------------------------------------------------------------
     bool IsKeyDown(keycode_type a_key) const;
-
     bool IsModifierDown(modifier_type a_mod) const;
 
-    void SendOnKeyPress(const KeyboardEvent& a_event);
-    void SendOnKeyRelease(const KeyboardEvent& a_event);
+    void SendOnKeyPress(const KeyboardEvent& a_event) const;
+    void SendOnKeyRelease(const KeyboardEvent& a_event) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update

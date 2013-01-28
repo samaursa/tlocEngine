@@ -171,6 +171,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <KEYBOARD_IMPL_TEMP>
+  bool KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
+    IsModifierDown(modifier_type a_modifier) const
+  {
+    return (m_modifier & a_modifier) == a_modifier;
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::Update()
   {
     DoUpdate(policy_type());

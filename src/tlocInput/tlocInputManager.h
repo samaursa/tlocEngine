@@ -57,6 +57,7 @@ namespace tloc { namespace input {
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
 
+      // Static assert: You are likely mixing immediate and buffered policies
       type_traits::AssertTypeIsSupported
         <typename T_InputObject::policy_type,
          policy_type>();

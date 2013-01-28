@@ -178,6 +178,9 @@ namespace TestingInput
     while ( countDown.ElapsedMilliSeconds() < 1000 &&
       (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
     {
+      // For some reason, the keyboard 'key down' is not registered unless
+      // we send both a press and a release. Mouse does not exhibit the same
+      // behavior
       UpdateWin32Window(a_wnd);
       SendButtonPress(a_key);
       SendButtonRelease(a_key);
@@ -190,12 +193,8 @@ namespace TestingInput
     CHECK(callback.m_keyreleases > 0);
     CHECK(callback.m_event.m_keyCode == a_ourKey);
 
+    SCOPED_INFO("The keyboard key: " << a_key << " vs our key: " << a_ourKey);
     CHECK(kb->IsKeyDown(a_ourKey));
-
-    if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
-    {
-      WARN(a_key);
-    }
   }
 
   template <typename T_InputManagerType, typename T_KeyboardType>
@@ -250,13 +249,12 @@ namespace TestingInput
     SendInput(1, &inp, sizeof(INPUT));
   }
 
-  void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_buttonDown,
-                       WORD a_buttonUp, WORD a_extraData)
+  template <typename T_InputManagerType, typename T_MouseType>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
+    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
+    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Buffered)
   {
-    using hid::MouseB;
-
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
@@ -270,6 +268,13 @@ namespace TestingInput
       {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonDown, a_extraData);
+        a_im->Update();
+
+        SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+          << a_ourButton);
+        CHECK(mouse->IsButtonDown(a_ourButton));
+
+        UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonUp, a_extraData);
         a_im->Update();
       }
@@ -278,42 +283,131 @@ namespace TestingInput
 
       CHECK(callback.m_buttonPresses > 0);
       CHECK(callback.m_buttonReleases > 0);
-      if (callback.m_buttonPresses == 0 || callback.m_buttonReleases == 0)
-      {
-        WARN(a_buttonDown);
-      }
     }
   }
 
-  MouseEvent TestMouseMove(InputManager<>* a_im, HWND a_wnd, WORD a_axis,
-                     tl_int a_x, tl_int a_y, WORD a_data)
+  template <typename T_InputManagerType, typename T_MouseType>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
+    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
+    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Immediate)
   {
-    using hid::MouseB;
-
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
     if (mouse)
     {
-      sampleInputMouse<MouseB> callback(mouse);
-      mouse->Register(&callback);
-
-      SendMousePress(a_axis, a_data,
-                     static_cast<LONG>(a_x), static_cast<LONG>(a_y));
-
-      while (countDown.ElapsedMilliSeconds() < 1000 &&
-             callback.m_movementEvents == 0)
+      while ( countDown.ElapsedMilliSeconds() < 1000)
       {
         UpdateWin32Window(a_wnd);
+        SendMousePress(a_buttonDown, a_extraData);
         a_im->Update();
+
+        if(mouse->IsButtonDown(a_ourButton))
+        {
+          break;
+        }
       }
 
-      mouse->UnRegister(&callback);
-      CHECK(callback.m_movementEvents > 0);
+      SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+        << a_ourButton);
+      CHECK(mouse->IsButtonDown(a_ourButton));
 
-      return callback.m_event;
+      while ( countDown.ElapsedMilliSeconds() < 1000 )
+      {
+        UpdateWin32Window(a_wnd);
+        SendMousePress(a_buttonUp, a_extraData);
+        a_im->Update();
+
+        if(mouse->IsButtonDown(a_ourButton) == false)
+        {
+          break;
+        }
+      }
+
+      SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+        << a_ourButton);
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
+    }
+  }
+
+  template <typename T_InputManagerType>
+  void TestMouseButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_buttonDown,
+                       WORD a_buttonUp, WORD a_extraData,
+                       hid::MouseEvent::button_code_type a_ourButton)
+  {
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+
+    CHECK(mouse != NULL);
+
+    if (mouse)
+    {
+      TestMouseType(a_im, mouse, a_wnd, a_buttonDown, a_buttonUp, a_extraData,
+                    a_ourButton, policy_type());
+    }
+  }
+
+  template <typename T_InputManagerType, typename T_MouseType>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+    HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
+    input::InputPolicy::Buffered)
+  {
+    core::time::Timer countDown;
+
+    sampleInputMouse<MouseB> callback(a_mouse);
+    a_mouse->Register(&callback);
+
+    SendMousePress(a_axis, a_data,
+      static_cast<LONG>(a_x), static_cast<LONG>(a_y));
+
+    while (countDown.ElapsedMilliSeconds() < 1000 &&
+           callback.m_movementEvents == 0)
+    {
+      UpdateWin32Window(a_wnd);
+      a_im->Update();
+    }
+
+    a_mouse->UnRegister(&callback);
+    CHECK(callback.m_movementEvents > 0);
+
+    return callback.m_event;
+  }
+
+  template <typename T_InputManagerType, typename T_MouseType>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+    HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
+    input::InputPolicy::Immediate)
+  {
+    core::time::Timer countDown;
+
+    SendMousePress(a_axis, a_data,
+      static_cast<LONG>(a_x), static_cast<LONG>(a_y));
+
+    for (int i = 0; i < 2; ++i)
+    {
+      UpdateWin32Window(a_wnd);
+      a_im->Update();
+    }
+
+    return a_im->GetState();
+  }
+
+  template <typename T_InputManagerType>
+  MouseEvent TestMouseMove(T_InputManagerType* a_im, HWND a_wnd, WORD a_axis,
+                           tl_int a_x, tl_int a_y, WORD a_data)
+  {
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+
+    CHECK(mouse != NULL);
+
+    if (mouse)
+    {
+      return TestMouseState(a_im, mouse, a_wnd, a_axis, a_x, a_y, a_data,
+                            policy_type());
     }
 
     return MouseEvent(MouseEvent::none);
@@ -456,6 +550,27 @@ namespace TestingInput
     TestKeyboardButton(&inputMgr, wnd, DIK_WAKE, ke::wake_sys);
   }
 
+  template <typename T_InputManagerType>
+  void TestMouse(T_InputManagerType& inputMgr, HWND wnd)
+  {
+    typedef input_hid::MouseEvent me;
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
+      MOUSEEVENTF_LEFTUP, NULL, me::left);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
+      MOUSEEVENTF_RIGHTUP, NULL, me::right);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
+      MOUSEEVENTF_MIDDLEUP, NULL, me::middle);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+      MOUSEEVENTF_XUP, XBUTTON1, me::button4);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+      MOUSEEVENTF_XUP, XBUTTON2, me::button5);
+  }
+
   TEST_CASE("Input/InputManager/General", "")
   {
     core::time::Timer_T<> countDown;
@@ -487,18 +602,12 @@ namespace TestingInput
     MouseB* mouse = inputMgr.CreateHID<MouseB>();
     CHECK(mouse != NULL);
 
+    MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>();
+    CHECK(mouseImm != NULL);
+
     if (mouse)
     {
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
-                                      MOUSEEVENTF_LEFTUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
-                                      MOUSEEVENTF_RIGHTUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
-                                      MOUSEEVENTF_MIDDLEUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
-                                      MOUSEEVENTF_XUP, XBUTTON1);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
-                                      MOUSEEVENTF_XUP, XBUTTON2);
+      TestMouse(inputMgr, wnd);
 
       MouseEvent evt;
 
@@ -526,17 +635,25 @@ namespace TestingInput
       CHECK(evt.m_X.m_abs().Get() == 10);
       CHECK(evt.m_Y.m_abs().Get() == 10);
 
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 0);
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -5, -5, 1);
+      CHECK(evt.m_X.m_rel() == -5);
+      CHECK(evt.m_Y.m_rel() == -5);
       CHECK(evt.m_Z.m_rel() == 1);
       CHECK(evt.m_Z.m_abs() == 1);
+      CHECK(evt.m_X.m_abs().Get() == 5);
+      CHECK(evt.m_Y.m_abs().Get() == 5);
 
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 0);
+      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
+      CHECK(evt.m_X.m_rel() == -10);
+      CHECK(evt.m_Y.m_rel() == -20);
       CHECK(evt.m_Z.m_rel() == 1);
       CHECK(evt.m_Z.m_abs() == 2);
+      CHECK(evt.m_X.m_abs().Get() == -5);
+      CHECK(evt.m_Y.m_abs().Get() == -15);
+    }
+    if (mouseImm)
+    {
+      //TestMouse(inputMgrImm, wnd);
     }
   }
 };

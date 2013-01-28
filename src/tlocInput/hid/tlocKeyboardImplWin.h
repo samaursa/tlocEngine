@@ -55,9 +55,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     /// @return true if key is down, false if not.
     ///-------------------------------------------------------------------------
     bool IsKeyDown(keycode_type a_key) const;
+    bool IsModifierDown(modifier_type a_key) const;
 
     ///-------------------------------------------------------------------------
-    /// Buffer any keys that were pressed between this and the last update
+    /// Process any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
 

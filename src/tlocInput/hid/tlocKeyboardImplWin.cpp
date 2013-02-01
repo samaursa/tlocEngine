@@ -1,4 +1,6 @@
 #include "tlocKeyboardImplWin.h"
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocAlgorithms.inl>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
@@ -181,6 +183,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::Update()
   {
     DoUpdate(policy_type());
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
+  void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::Reset()
+  {
+    core::fill_n(m_buffer, KeyboardEvent::Count, false);
   }
 
   template <KEYBOARD_IMPL_TEMP>

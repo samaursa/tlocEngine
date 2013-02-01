@@ -221,6 +221,9 @@ namespace TestingInput
       }
     }
     CHECK(kb->IsKeyDown(a_ourKey));
+
+    kb->Reset();
+    CHECK_FALSE(kb->IsKeyDown(a_ourKey));
   }
 
   template <typename T_InputManagerType>
@@ -325,6 +328,9 @@ namespace TestingInput
       SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
         << a_ourButton);
       CHECK(mouse->IsButtonDown(a_ourButton));
+
+      mouse->Reset();
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
     }
   }
 

@@ -97,4 +97,10 @@ namespace tloc { namespace input { namespace hid {
     m_impl->Update();
   }
 
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::Reset()
+  {
+    m_impl->Reset();
+  }
+
 };};};

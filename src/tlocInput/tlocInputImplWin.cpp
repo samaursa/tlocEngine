@@ -218,6 +218,57 @@ namespace tloc { namespace input { namespace priv {
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
+  void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Reset(input_type a_inputType)
+  {
+    ASSERT_INPUT_TYPE(a_inputType);
+
+    typedef p_hid::Keyboard   keyboard_type;
+    typedef p_hid::Mouse      mouse_type;
+    typedef p_hid::Joystick   joystick_type;
+
+    switch(a_inputType)
+    {
+    case keyboard_type::m_index:
+      {
+        typedef hid::Keyboard<policy_type> keyboard_type;
+
+        for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
+        {
+          if (m_winHIDs[keyboard_type::m_index][i].m_available)
+          {
+            keyboard_type* kb = static_cast<keyboard_type*>
+              (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
+            kb->Reset();
+          }
+        }
+        break;
+      }
+    case mouse_type::m_index:
+      {
+        typedef hid::Mouse<policy_type> mouse_type;
+
+        for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
+        {
+          if (m_winHIDs[mouse_type::m_index][i].m_available)
+          {
+            mouse_type* mse = static_cast<mouse_type*>
+              (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
+            mse->Reset();
+          }
+        }
+        break;
+      }
+    case joystick_type::m_index:
+      {
+        break;
+      }
+    default:
+      {
+      }
+    }
+  }
+
+  template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     GetHID(size_type a_index)

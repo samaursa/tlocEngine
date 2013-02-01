@@ -82,6 +82,14 @@ namespace tloc { namespace input {
     ///-------------------------------------------------------------------------
     void Update();
 
+    template <typename T_InputObject>
+    void Reset()
+    {
+      p_hid::IsInputTypeSupported<T_InputObject>();
+    }
+
+    void Reset();
+
     ///-------------------------------------------------------------------------
     /// Returns an HID with the given type at the given index
     ///
@@ -113,6 +121,7 @@ namespace tloc { namespace input {
 
   private:
     void      DoUpdate(input_type a_inputType);
+    void      DoReset(input_type a_inputType);
     size_type DoGetTotalHID(input_type a_inputType);
 
     template <typename T_InputObject>

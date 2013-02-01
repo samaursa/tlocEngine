@@ -222,7 +222,7 @@ namespace TestingInput
     }
     CHECK(kb->IsKeyDown(a_ourKey));
 
-    kb->Reset();
+    a_im->Reset();
     CHECK_FALSE(kb->IsKeyDown(a_ourKey));
   }
 
@@ -329,7 +329,7 @@ namespace TestingInput
         << a_ourButton);
       CHECK(mouse->IsButtonDown(a_ourButton));
 
-      mouse->Reset();
+      a_im->Reset();
       CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
     }
   }

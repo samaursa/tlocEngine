@@ -78,6 +78,12 @@ namespace tloc { namespace input { namespace hid {
     m_impl->Update();
   }
 
+  template <KEYBOARD_TEMP>
+  void Keyboard<KEYBOARD_PARAMS>::Reset()
+  {
+    m_impl->Reset();
+  }
+
   //------------------------------------------------------------------------
   // Forward Instantiations
 

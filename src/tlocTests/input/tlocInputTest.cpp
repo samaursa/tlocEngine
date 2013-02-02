@@ -175,26 +175,31 @@ namespace TestingInput
     sampleInputKeyboard<KeyboardB> callback(kb);
     kb->Register(&callback);
 
-    while ( countDown.ElapsedMilliSeconds() < 1000 &&
-      (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
+    while ( countDown.ElapsedMilliSeconds() < 1000 && callback.m_keypresses < 1 )
     {
-      // For some reason, the keyboard 'key down' is not registered unless
-      // we send both a press and a release. Mouse does not exhibit the same
-      // behavior
       UpdateWin32Window(a_wnd);
       SendButtonPress(a_key);
-      SendButtonRelease(a_key);
       a_im->Update();
     }
 
-    kb->UnRegister(&callback);
-
     CHECK(callback.m_keypresses > 0);
-    CHECK(callback.m_keyreleases > 0);
     CHECK(callback.m_event.m_keyCode == a_ourKey);
 
     SCOPED_INFO("The keyboard key: " << a_key << " vs our key: " << a_ourKey);
     CHECK(kb->IsKeyDown(a_ourKey));
+
+    countDown.Reset();
+    while ( countDown.ElapsedMilliSeconds() < 1000 && callback.m_keyreleases < 1)
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonRelease(a_key);
+      a_im->Update();
+    }
+
+    CHECK(callback.m_keyreleases > 0);
+    CHECK_FALSE(kb->IsKeyDown(a_ourKey));
+
+    kb->UnRegister(&callback);
   }
 
   template <typename T_InputManagerType, typename T_KeyboardType>
@@ -216,6 +221,9 @@ namespace TestingInput
       }
     }
     CHECK(kb->IsKeyDown(a_ourKey));
+
+    a_im->Reset();
+    CHECK_FALSE(kb->IsKeyDown(a_ourKey));
   }
 
   template <typename T_InputManagerType>
@@ -263,21 +271,29 @@ namespace TestingInput
       sampleInputMouse<MouseB> callback(mouse);
       mouse->Register(&callback);
 
-      while ( countDown.ElapsedMilliSeconds() < 1000 &&
-        (callback.m_buttonPresses < 1 || callback.m_buttonReleases < 1) )
+      while (countDown.ElapsedMilliSeconds() < 1000 &&
+             callback.m_buttonPresses < 1)
       {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonDown, a_extraData);
         a_im->Update();
+      }
 
-        SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
-          << a_ourButton);
-        CHECK(mouse->IsButtonDown(a_ourButton));
+      SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+        << a_ourButton);
+      CHECK(mouse->IsButtonDown(a_ourButton));
+      CHECK(a_ourButton == callback.m_event.m_buttonCode);
 
+      countDown.Reset();
+      while (countDown.ElapsedMilliSeconds() < 1000 &&
+             callback.m_buttonReleases < 1)
+      {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonUp, a_extraData);
         a_im->Update();
       }
+
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
 
       mouse->UnRegister(&callback);
 
@@ -312,6 +328,9 @@ namespace TestingInput
       SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
         << a_ourButton);
       CHECK(mouse->IsButtonDown(a_ourButton));
+
+      a_im->Reset();
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
     }
   }
 

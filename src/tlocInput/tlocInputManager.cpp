@@ -65,6 +65,21 @@ namespace tloc { namespace input {
   }
 
   template <INPUT_MANAGER_TEMP>
+  void InputManager<INPUT_MANAGER_PARAM>::DoReset(input_type a_inputType)
+  {
+    m_impl->Reset(a_inputType);
+  }
+
+  template <INPUT_MANAGER_TEMP>
+  void InputManager<INPUT_MANAGER_PARAM>::Reset()
+  {
+    for (tl_size i = 0; i < p_hid::Count::m_index; ++i)
+    {
+      DoReset(i);
+    }
+  }
+
+  template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
     DoGetHID(size_type a_index)

@@ -77,14 +77,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void MouseImpl<MOUSE_IMPL_PARAMS>::Reset()
   {
     m_currentState.m_buttonCode = 0;
-
-    m_currentState.m_X.m_rel() = 0;
-    m_currentState.m_Y.m_rel() = 0;
-    m_currentState.m_Z.m_rel() = 0;
-
-    m_currentState.m_X.m_abs() = 0;
-    m_currentState.m_Y.m_abs() = 0;
-    m_currentState.m_Z.m_abs() = 0;
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -288,9 +280,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (hRes != DI_OK)
     { return; }
 
-    m_currentState.m_X.m_rel() += m_mouseBuffer.lX;
-    m_currentState.m_Y.m_rel() += m_mouseBuffer.lY;
-    m_currentState.m_Z.m_rel() += m_mouseBuffer.lZ;
+    m_currentState.m_X.m_rel() = m_mouseBuffer.lX;
+    m_currentState.m_Y.m_rel() = m_mouseBuffer.lY;
+    m_currentState.m_Z.m_rel() = m_mouseBuffer.lZ;
 
     // Going with OIS's suggestion here
     if (m_params.m_param3 == parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)

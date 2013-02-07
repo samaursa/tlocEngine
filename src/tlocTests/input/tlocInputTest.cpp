@@ -64,19 +64,27 @@ namespace TestingInput
       , m_buttonReleases(0)
       , m_movementEvents(0) {}
 
-    bool OnButtonPress(const tl_size a_caller, const MouseEvent& a_event)
+    bool
+      OnButtonPress(const tl_size a_caller,
+                    const MouseEvent& a_event,
+                    const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
+      m_buttonCode = a_buttonCode;
       m_buttonPresses++;
 
       return false;
     }
 
-    bool OnButtonRelease(const tl_size a_caller, const MouseEvent& a_event)
+    bool
+      OnButtonRelease(const tl_size a_caller,
+                      const MouseEvent& a_event,
+                      const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
+      m_buttonCode = a_buttonCode;
       m_buttonReleases++;
 
       return false;
@@ -90,7 +98,9 @@ namespace TestingInput
       return false;
     }
 
-    MouseEvent  m_event;
+    MouseEvent                    m_event;
+    MouseEvent::button_code_type  m_buttonCode;
+
     T_Mouse*    m_caller;
     u32         m_buttonPresses;
     u32         m_buttonReleases;
@@ -283,6 +293,7 @@ namespace TestingInput
         << a_ourButton);
       CHECK(mouse->IsButtonDown(a_ourButton));
       CHECK(a_ourButton == callback.m_event.m_buttonCode);
+      CHECK(a_ourButton == callback.m_buttonCode);
 
       countDown.Reset();
       while (countDown.ElapsedMilliSeconds() < 1000 &&

@@ -206,11 +206,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-        { m_parent->SendOnButtonPress(m_currentState); }
+        { m_parent->SendOnButtonPress(m_currentState, code); }
         else
         {
           m_currentState.m_buttonCode ^= code;
-          m_parent->SendOnButtonRelease(m_currentState);
+          m_parent->SendOnButtonRelease(m_currentState, code);
         }
       }
       else

@@ -76,7 +76,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::Reset()
   {
-    m_currentState.m_buttonCode = 0;
+    DoReset(policy_type());
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -316,6 +316,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode = MouseEvent::button7;
     else if(m_mouseBuffer.rgbButtons[7] & 0x80)
       m_currentState.m_buttonCode = MouseEvent::button8;
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Buffered)
+  {
+    // LOG: Reset() should not be called in buffered mode
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Immediate)
+  {
+    m_currentState.m_buttonCode = 0;
   }
 
 };};};};

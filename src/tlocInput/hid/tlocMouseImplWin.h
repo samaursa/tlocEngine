@@ -70,6 +70,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     void        DoUpdate(InputPolicy::Buffered);
     void        DoUpdate(InputPolicy::Immediate);
 
+    void        DoReset(InputPolicy::Buffered);
+    void        DoReset(InputPolicy::Immediate);
+
   private:
 
     IDirectInput8*        m_directInput;

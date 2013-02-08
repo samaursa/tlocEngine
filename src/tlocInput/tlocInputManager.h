@@ -74,7 +74,7 @@ namespace tloc { namespace input {
     void Update()
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
-      DoUpdate(T_InputObject::k_index);
+      DoUpdate(T_InputObject::m_index);
     }
 
     ///-------------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace tloc { namespace input {
     size_type GetTotalHID()
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
-      return DoGetTotalHID<T_InputObject>();
+      return DoGetTotalHID(T_InputObject::m_index);
     }
 
   private:

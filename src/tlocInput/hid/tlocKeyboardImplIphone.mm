@@ -1,6 +1,6 @@
 #include "tlocKeyboardImplIphone.h"
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
 #define KEYBOARD_IMPL_TEMP    typename T_ParentKeyboard
 #define KEYBOARD_IMPL_PARAMS  T_ParentKeyboard
@@ -71,4 +71,4 @@ namespace tloc { namespace input { namespace priv {
   template class KeyboardImpl< Keyboard<InputPolicy::Buffered> >;
   template class KeyboardImpl< Keyboard<InputPolicy::Immediate> >;
 
-};};};
+};};};};

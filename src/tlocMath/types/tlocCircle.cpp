@@ -27,17 +27,36 @@ namespace tloc { namespace math { namespace types {
     Circle(radius a_r, position a_p)
     : m_radius(a_r)
     , m_position(a_p)
-  {
-  }
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
   Circle<TLOC_CIRCLE_PARAMS>::
     Circle(diameter a_d, position a_p)
-    : m_radius(a_d * (value_type)0.5)
+    : m_radius(a_d * 0.5f)
     , m_position(a_p)
+  { }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  Circle<TLOC_CIRCLE_PARAMS>::
+    Circle(const this_type& a_other)
+    : m_radius(a_other.m_radius)
+    , m_position(a_other.m_position)
+  { }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  TLOC_CIRCLE_TYPE::this_type&
+    Circle<TLOC_CIRCLE_PARAMS>::
+    operator=(const this_type& a_other)
   {
+    m_radius = a_other.m_radius;
+    m_position = a_other.m_position;
+    return *this;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

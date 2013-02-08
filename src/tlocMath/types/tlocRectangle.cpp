@@ -98,6 +98,15 @@ namespace tloc { namespace math { namespace types {
   { }
 
   template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::this_type&
+    Rectangle<TLOC_RECTANGLE_PARAMS>::operator= (const this_type& a_other)
+  {
+    m_extents = a_other.m_extents;
+    m_position = a_other.m_position;
+    return *this;
+  }
+
+  template <TLOC_RECTANGLE_TEMP>
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::
     operator ==(const this_type& a_other) const
   {

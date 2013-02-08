@@ -28,11 +28,9 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef Object_T<Shader_I>                      base_type;
+    typedef Object_T<Shader_I, p_object::WithError> base_type;
     typedef base_type::object_handle                object_handle;
     typedef base_type::error_type                   error_type;
-
-    typedef core::containers::tl_array<bool>::type  flag_type;
 
   public:
     error_type Compile();

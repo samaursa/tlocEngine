@@ -58,7 +58,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   bool MouseImpl<MOUSE_IMPL_PARAMS>::IsButtonDown(button_code_type a_mouse) const
   {
-    return (m_currentState.m_buttonCode & a_mouse) == 1;
+    return (m_currentState.m_buttonCode & a_mouse) == a_mouse;
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  MouseEvent MouseImpl<MOUSE_IMPL_PARAMS>::GetState() const
+  {
+    return m_currentState;
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -68,17 +74,25 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::Reset()
+  {
+    DoReset(policy_type());
+  }
+
+  template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoInitialize()
   {
     if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
     {
       // LOG: Mouse failed to initialize
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
     if ( FAILED(m_mouse->SetDataFormat(&c_dfDIMouse2)) )
     {
       // LOG: Mouse format error
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
@@ -148,7 +162,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_X.m_rel() = 0;
     m_currentState.m_Y.m_rel() = 0;
     m_currentState.m_Z.m_rel() = 0;
-    m_currentState.m_buttonCode = MouseEvent::none;
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::mouse_buffer_size];
     DWORD entries = buffer_size::mouse_buffer_size;
@@ -186,14 +199,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     for (tl_size i = 0; i < entries; ++i)
     {
       // Grab the key code that was pressed/released
-      m_currentState.m_buttonCode |= TranslateKeyCode(diBuff[i].dwOfs);
+      MouseEvent::ButtonCode code = TranslateKeyCode(diBuff[i].dwOfs);
 
-      if (m_currentState.m_buttonCode != MouseEvent::none)
+      m_currentState.m_buttonCode |= code;
+
+      if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-          m_parent->SendOnButtonPress(m_currentState);
+        { m_parent->SendOnButtonPress(m_currentState, code); }
         else
-          m_parent->SendOnButtonRelease(m_currentState);
+        {
+          m_currentState.m_buttonCode ^= code;
+          m_parent->SendOnButtonRelease(m_currentState, code);
+        }
       }
       else
       {
@@ -250,14 +268,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     HRESULT hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
 
-    if (hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
+    while(hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
     {
       hRes = m_mouse->Acquire();
       if (hRes != DIERR_OTHERAPPHASPRIO)
       {
-        m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
+        hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
       }
     }
+
+    if (hRes != DI_OK)
+    { return; }
 
     m_currentState.m_X.m_rel() = m_mouseBuffer.lX;
     m_currentState.m_Y.m_rel() = m_mouseBuffer.lY;
@@ -295,6 +316,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode = MouseEvent::button7;
     else if(m_mouseBuffer.rgbButtons[7] & 0x80)
       m_currentState.m_buttonCode = MouseEvent::button8;
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Buffered)
+  {
+    // LOG: Reset() should not be called in buffered mode
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Immediate)
+  {
+    m_currentState.m_buttonCode = 0;
   }
 
 };};};};

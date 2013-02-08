@@ -44,17 +44,17 @@ namespace tloc { namespace input { namespace hid {
       divide_keypad, slash_keypad,
       sysrq, right_alt, pause, home,
       up, page_up, left, right, end, down, page_down, insert, delete_main,
-      left_sys, right_sys, sys_power, power_sys, sleep_sys, wake_sys,
+      left_sys, right_sys, power_sys, sleep_sys, wake_sys,
 
       Count,
-    };  typedef u32 key_code_type;
+    };  typedef s32 key_code_type;
 
     enum Modifier
     {
       Shift = 1 << 0,
       Ctrl  = 1 << 1,
       Alt   = 1 << 2,
-    };
+    }; typedef s32 modifier_type;
 
     KeyboardEvent(KeyCode a_code = none) : m_keyCode(a_code) {}
 
@@ -109,7 +109,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           pressed_count};
 
     param_list_type       m_params;
-    index_type            m_modifier;
+    modifier_type         m_modifier;
   };
 
 };};};};

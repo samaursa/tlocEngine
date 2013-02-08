@@ -6,8 +6,8 @@
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocKeyboard.h>
-#include <tlocInput/HIDs/tlocKeyboardImpl.h>
+#include <tlocInput/hid/tlocKeyboard.h>
+#include <tlocInput/hid/tlocKeyboardImpl.h>
 
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 
@@ -18,7 +18,7 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentKeyboard>
   class KeyboardImpl
@@ -73,6 +73,6 @@ namespace tloc { namespace input { namespace priv {
     uchar8                  m_rawBuffer[s_bufferSize];
   };
 
-};};};
+};};};};
 
 #endif

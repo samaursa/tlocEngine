@@ -116,11 +116,11 @@ namespace tloc { namespace input {
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Immediate>);
 #elif defined(TLOC_OS_IPHONE)
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
-  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
 #endif
 
 };};

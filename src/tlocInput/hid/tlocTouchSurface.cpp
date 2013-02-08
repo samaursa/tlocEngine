@@ -12,12 +12,12 @@
 // Platform dependent includes
 
 #if defined(TLOC_OS_IPHONE)
-# include <tlocInput/HIDs/tlocTouchSurfaceImplIphone.h>
+# include <tlocInput/hid/tlocTouchSurfaceImplIphone.h>
 #else
 # error "WIP"
 #endif
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
   
 #define TOUCH_SURFACE_TEMP    typename T_Policy, typename T_Platform
 #define TOUCH_SURFACE_PARAMS  T_Policy, T_Platform
@@ -129,4 +129,4 @@ namespace tloc { namespace input {
 # error TODO
 #endif
 
-};};
+};};};

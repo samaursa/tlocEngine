@@ -43,10 +43,10 @@ namespace tloc { namespace core { namespace containers {
     typedef ListNode<T, singly_linked_tag>  this_type;
 
     typedef T                               value_type;
-    typedef T*                              pointer_type;
-    typedef const T*                        const_pointer_type;
-    typedef T&                              reference_type;
-    typedef const T&                        const_reference_type;
+    typedef T*                              pointer;
+    typedef const T*                        const_pointer;
+    typedef T&                              reference;
+    typedef const T&                        const_reference;
     typedef tl_ptrdiff                      difference_type;
 
     typedef singly_linked_tag               iterator_category;
@@ -66,8 +66,8 @@ namespace tloc { namespace core { namespace containers {
     TL_FI        const this_type*     getNext() const;
     TL_FI        this_type*           getPrev();
     TL_FI        const this_type*     getPrev() const;
-    TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const;
+    TL_FI        reference       getValue();
+    TL_FI        const_reference getValue() const;
   private:
 
     this_type*    m_next;
@@ -82,10 +82,10 @@ namespace tloc { namespace core { namespace containers {
     typedef ListNode<T, doubly_linked_tag>  this_type;
 
     typedef T                               value_type;
-    typedef T*                              pointer_type;
-    typedef const T*                        const_pointer_type;
-    typedef T&                              reference_type;
-    typedef const T&                        const_reference_type;
+    typedef T*                              pointer;
+    typedef const T*                        const_pointer;
+    typedef T&                              reference;
+    typedef const T&                        const_reference;
     typedef tl_ptrdiff                      difference_type;
 
     typedef doubly_linked_tag               iterator_category;
@@ -105,8 +105,8 @@ namespace tloc { namespace core { namespace containers {
     TL_FI        const this_type*     getNext() const;
     TL_FI        this_type*           getPrev();
     TL_FI        const this_type*     getPrev() const;
-    TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const;
+    TL_FI        reference            getValue();
+    TL_FI        const_reference      getValue() const;
 
   private:
 

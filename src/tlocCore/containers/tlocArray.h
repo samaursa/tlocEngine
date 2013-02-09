@@ -99,15 +99,17 @@ namespace tloc { namespace core { namespace containers {
     TL_I iterator         end();
     TL_I const_iterator   end() const;
 
+    TL_I reverse_iterator       rbegin();
+    TL_I const_reverse_iterator rbegin() const;
+
+    TL_I reverse_iterator       rend();
+    TL_I const_reverse_iterator rend() const;
+
     //------------------------------------------------------------------------
     // Capacity
 
     TL_I size_type        size() const;
     TL_I size_type        capacity() const;
-    // Checks if size is exactly 0, returns true if so. This is for performance,
-    // since one should already not be able to underflow the array.
-    // To not underflow the array, one must use TLOC_ASSERT_ARRAY_NOT_EMPTY()
-    // this assert checks for negative size.
     TL_I bool             empty() const;
     TL_I bool             full() const;
 
@@ -116,9 +118,7 @@ namespace tloc { namespace core { namespace containers {
 
     TL_I void             pop_back();
     TL_I void             pop_back(reference a_out);
-    // Function assumes that order does not matter
     TL_I iterator         erase(iterator a_position);
-    // Ordering of elements is preserved
     TL_I iterator         erase(iterator a_rangeBegin, iterator a_rangeEnd);
     TL_I void             clear();
 
@@ -142,12 +142,12 @@ namespace tloc { namespace core { namespace containers {
     TL_I void             DoDestroyValues(pointer a_rangeBegin,
                                           pointer a_rangeEnd);
 
-    // Copies the incoming value to the end pointer and increments the end pointer.
-    // NOTE: function performs no safety checks
+    // Copies the incoming value to the end pointer and increments the end
+    // pointer. NOTE: function performs no safety checks.
     TL_I void             DoAddToEnd(const_reference a_valueToCopy);
 
-    // Increases the storage capacity by reallocation. This function automatically
-    // resizes the array according to the formula:
+    // Increases the storage capacity by reallocation. This function
+    // automatically resizes the array according to the formula:
     //        newCapacity = m_capacity ? capacity() * 2 : sm_defaultCapacity;
     // and adjusts the iterators. If successful, old iterators are considered
     // invalid.

@@ -1220,6 +1220,18 @@
 				RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.inl"
+				>
+			</File>
 			<Filter
 				Name="algorithms"
 				>

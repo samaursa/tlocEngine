@@ -2,7 +2,8 @@
 #ifndef TLOC_MATRIX_3_H
 #define TLOC_MATRIX_3_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix.h>
 

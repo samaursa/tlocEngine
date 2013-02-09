@@ -29,9 +29,12 @@ namespace tloc { namespace input { namespace hid {
       button8 = 1 << 7,
 
       count = core::utils::EnumCounter<button8, true>::result,
-    };  typedef u32 button_code_type;
+    };  typedef s32 button_code_type;
 
-    MouseEvent(ButtonCode a_code = none) : m_buttonCode(a_code) {}
+    MouseEvent(ButtonCode a_code = none)
+      : m_buttonCode(a_code)
+      , m_X(0, 0) , m_Y(0, 0) , m_Z(0, 0)
+    { }
 
     button_code_type  m_buttonCode;
 

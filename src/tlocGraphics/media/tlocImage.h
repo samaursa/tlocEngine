@@ -1,10 +1,13 @@
 #ifndef TLOC_IMAGE_H
 #define TLOC_IMAGE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tloccontainers.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/types/tlocDimension.h>
@@ -47,6 +50,11 @@ namespace tloc { namespace graphics { namespace media {
     dimension_type          m_dim;
     pixel_container_type    m_pixels;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core::smart_ptr::SharedPtr<Image> image_sptr;
 
 };};};
 

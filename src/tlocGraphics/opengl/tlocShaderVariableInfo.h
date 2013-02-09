@@ -1,6 +1,8 @@
 #ifndef _TLOC_GRAPHICS_GL_SHADER_VARIABLE_INFO_H_
 #define _TLOC_GRAPHICS_GL_SHADER_VARIABLE_INFO_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>
 

@@ -2,7 +2,8 @@
 #ifndef _TLOC_PHYSICS_BOX2D_RIGID_BODY_H_
 #define _TLOC_PHYSICS_BOX2D_RIGID_BODY_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>

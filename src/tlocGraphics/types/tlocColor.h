@@ -1,6 +1,8 @@
 #ifndef TLOC_GRAPHICS_TYPES_COLOR_H
 #define TLOC_GRAPHICS_TYPES_COLOR_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>

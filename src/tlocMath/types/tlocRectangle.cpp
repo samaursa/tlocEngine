@@ -21,8 +21,8 @@ namespace tloc { namespace math { namespace types {
       typedef Rectangle<T_Real>               rect_type;
       typedef typename rect_type::point_type  point_type;
 
-      return point_type(a_rect.GetValue<typename rect_type::left>(),
-                        a_rect.GetValue<typename rect_type::top>());
+      return point_type(a_rect.template GetValue<typename rect_type::left>(),
+                        a_rect.template GetValue<typename rect_type::top>());
     }
 
     template <typename T_Real>
@@ -34,8 +34,8 @@ namespace tloc { namespace math { namespace types {
       typedef Rectangle<T_Real>               rect_type;
       typedef typename rect_type::point_type  point_type;
 
-      return point_type(a_rect.GetValue<typename rect_type::right>(),
-                        a_rect.GetValue<typename rect_type::top>());
+      return point_type(a_rect.template GetValue<typename rect_type::right>(),
+                        a_rect.template GetValue<typename rect_type::top>());
     }
 
     template <typename T_Real>
@@ -47,8 +47,8 @@ namespace tloc { namespace math { namespace types {
       typedef Rectangle<T_Real>               rect_type;
       typedef typename rect_type::point_type  point_type;
 
-      return point_type(a_rect.GetValue<typename rect_type::left>(),
-                        a_rect.GetValue<typename rect_type::bottom>());
+      return point_type(a_rect.template GetValue<typename rect_type::left>(),
+                        a_rect.template GetValue<typename rect_type::bottom>());
     }
 
     template <typename T_Real>
@@ -60,8 +60,8 @@ namespace tloc { namespace math { namespace types {
       typedef Rectangle<T_Real>               rect_type;
       typedef typename rect_type::point_type  point_type;
 
-      return point_type(a_rect.GetValue<typename rect_type::right>(),
-                        a_rect.GetValue<typename rect_type::bottom>());
+      return point_type(a_rect.template GetValue<typename rect_type::right>(),
+                        a_rect.template GetValue<typename rect_type::bottom>());
     }
   };
 
@@ -96,6 +96,15 @@ namespace tloc { namespace math { namespace types {
     : m_extents(a_other.m_extents)
     , m_position(a_other.m_position)
   { }
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::this_type&
+    Rectangle<TLOC_RECTANGLE_PARAMS>::operator= (const this_type& a_other)
+  {
+    m_extents = a_other.m_extents;
+    m_position = a_other.m_position;
+    return *this;
+  }
 
   template <TLOC_RECTANGLE_TEMP>
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::

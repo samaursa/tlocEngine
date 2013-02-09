@@ -2,6 +2,7 @@
 #define _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
 
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/tlocFunctional.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -81,7 +82,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     using tloc::core::less;
     using tloc::type_traits::common_type;
 
-    return less<common_type<T*, U*>::type>()( a.get(), b.get() );
+    return less<typename common_type<T*, U*>::type>()( a.get(), b.get() );
   }
 
   template <class T, class U>

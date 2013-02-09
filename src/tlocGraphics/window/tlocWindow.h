@@ -1,7 +1,8 @@
 #ifndef TLOC_WINDOW_H
 #define TLOC_WINDOW_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
@@ -17,7 +18,7 @@
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   struct WindowEvent
   {
@@ -279,6 +280,6 @@ namespace tloc { namespace graphics {
 
   typedef Window_T<>    Window;
 
-};};
+};};};
 
 #endif

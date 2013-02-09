@@ -121,6 +121,14 @@ namespace TestingRectangle
     center[0] = 0;
     center[1] = 0;
     CHECK((r.GetPosition() == center));
+
+    // assignemnt operator
+    Rectf s = Rectf(Rectf::width(5), Rectf::height(10));
+    s.SetPosition(Rectf::point_type(5, 9));
+    r = s;
+    CHECK(r.GetWidth() == Approx(5));
+    CHECK(r.GetHeight() == Approx(10));
+    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
   }
 
   TEST_CASE("Graphics/types/Rectangle/GetCoord", "")

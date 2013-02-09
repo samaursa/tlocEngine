@@ -51,7 +51,11 @@ namespace TestingShaderComponent
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode         graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
@@ -78,7 +82,11 @@ namespace TestingShaderComponent
 
   TEST_CASE("Graphics/ShaderComponent/FromFile", "")
   {
+    using namespace graphics::win;
+    using gfx_rend::Renderer;
+
     typedef Window::graphics_mode       graphics_mode;
+
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
                WindowSettings("Atom & Eve"));

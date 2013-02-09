@@ -2,7 +2,8 @@
 #ifndef TLOC_VECTOR_N_H
 #define TLOC_VECTOR_N_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>

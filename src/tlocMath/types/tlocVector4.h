@@ -2,7 +2,8 @@
 #ifndef TLOC_MATH_VECTOR_4_H
 #define TLOC_MATH_VECTOR_4_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocMath/types/tlocVector.h>

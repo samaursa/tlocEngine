@@ -2,8 +2,6 @@
 
 namespace tloc { namespace core { namespace configs {
 
-  template class BuildConfig<>;
-
   //////////////////////////////////////////////////////////////////////////
   // PlatformInfo
 
@@ -66,5 +64,10 @@ namespace tloc { namespace core { namespace configs {
   {
     return m_buildTypes[release_debug_info];
   }
+
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template class BuildConfig<>;
 
 };};};

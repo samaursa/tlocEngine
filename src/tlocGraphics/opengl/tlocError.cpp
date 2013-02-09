@@ -207,7 +207,7 @@ const char8* GetErrorString(GLenum a_errorCode)
     return !Succeeded();
   }
 
-  GLenum Error::GetError()
+  Error::value_type Error::GetError()
   {
     m_lastError = glGetError();
     return m_lastError;

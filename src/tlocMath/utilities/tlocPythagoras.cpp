@@ -2,6 +2,7 @@
 
 #include <tlocCore/data_structures/tlocTuple.inl>
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocMath.inl>
 #include <cmath>
 
 namespace tloc { namespace math { namespace utils {

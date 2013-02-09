@@ -44,17 +44,26 @@ namespace tloc { namespace input { namespace hid {
   { }
 
   template <MOUSE_TEMP>
-  bool Mouse<MOUSE_PARAMS>::IsButtonDown(button_code_type a_button)
+  bool Mouse<MOUSE_PARAMS>::IsButtonDown(button_code_type a_button) const
   {
     return m_impl->IsButtonDown(a_button);
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnButtonPress(const MouseEvent& a_event)
+  MouseEvent Mouse<MOUSE_PARAMS>::GetState() const
+  {
+    return m_impl->GetState();
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::
+    SendOnButtonPress(const MouseEvent& a_event,
+                      button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonPress( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnButtonPress( (tl_size)this, a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -62,11 +71,14 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnButtonRelease(const MouseEvent& a_event)
+  void Mouse<MOUSE_PARAMS>::
+    SendOnButtonRelease(const MouseEvent& a_event,
+                        button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonRelease( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnButtonRelease( (tl_size)this, a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -74,11 +86,13 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnMouseMove(const MouseEvent& a_event)
+  void Mouse<MOUSE_PARAMS>::
+    SendOnMouseMove(const MouseEvent& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnMouseMove( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnMouseMove( (tl_size)this, a_event) == true)
       {
         break;
       }
@@ -89,6 +103,12 @@ namespace tloc { namespace input { namespace hid {
   void Mouse<MOUSE_PARAMS>::Update()
   {
     m_impl->Update();
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::Reset()
+  {
+    m_impl->Reset();
   }
 
 };};};

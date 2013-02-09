@@ -64,19 +64,27 @@ namespace TestingInput
       , m_buttonReleases(0)
       , m_movementEvents(0) {}
 
-    bool OnButtonPress(const tl_size a_caller, const MouseEvent& a_event)
+    bool
+      OnButtonPress(const tl_size a_caller,
+                    const MouseEvent& a_event,
+                    const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
+      m_buttonCode = a_buttonCode;
       m_buttonPresses++;
 
       return false;
     }
 
-    bool OnButtonRelease(const tl_size a_caller, const MouseEvent& a_event)
+    bool
+      OnButtonRelease(const tl_size a_caller,
+                      const MouseEvent& a_event,
+                      const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
+      m_buttonCode = a_buttonCode;
       m_buttonReleases++;
 
       return false;
@@ -90,7 +98,9 @@ namespace TestingInput
       return false;
     }
 
-    MouseEvent  m_event;
+    MouseEvent                    m_event;
+    MouseEvent::button_code_type  m_buttonCode;
+
     T_Mouse*    m_caller;
     u32         m_buttonPresses;
     u32         m_buttonReleases;
@@ -165,35 +175,80 @@ namespace TestingInput
     SendInput(1, inp, sizeof(INPUT));
   }
 
-  void TestKeyboardButton(InputManager<>* a_im, HWND a_wnd, WORD a_key)
+  template <typename T_InputManagerType, typename T_KeyboardType>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb,
+    HWND a_wnd, WORD a_key, hid::KeyboardEvent::key_code_type a_ourKey,
+    input::InputPolicy::Buffered)
   {
-    core::time::Timer_T<> countDown;
-    KeyboardB* kb = a_im->GetHID<KeyboardB>();
+    core::time::Timer countDown;
+
+    sampleInputKeyboard<KeyboardB> callback(kb);
+    kb->Register(&callback);
+
+    while ( countDown.ElapsedMilliSeconds() < 1000 && callback.m_keypresses < 1 )
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonPress(a_key);
+      a_im->Update();
+    }
+
+    CHECK(callback.m_keypresses > 0);
+    CHECK(callback.m_event.m_keyCode == a_ourKey);
+
+    SCOPED_INFO("The keyboard key: " << a_key << " vs our key: " << a_ourKey);
+    CHECK(kb->IsKeyDown(a_ourKey));
+
+    countDown.Reset();
+    while ( countDown.ElapsedMilliSeconds() < 1000 && callback.m_keyreleases < 1)
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonRelease(a_key);
+      a_im->Update();
+    }
+
+    CHECK(callback.m_keyreleases > 0);
+    CHECK_FALSE(kb->IsKeyDown(a_ourKey));
+
+    kb->UnRegister(&callback);
+  }
+
+  template <typename T_InputManagerType, typename T_KeyboardType>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb, HWND a_wnd, WORD a_key,
+    hid::KeyboardEvent::key_code_type a_ourKey, input::InputPolicy::Immediate)
+  {
+    core::time::Timer countDown;
+
+    // This is in the while loop just so that can we can 'capture' the keystroke
+    while(countDown.ElapsedMilliSeconds() < 1000)
+    {
+      UpdateWin32Window(a_wnd);
+      SendButtonPress(a_key);
+      a_im->Update();
+
+      if (kb->IsKeyDown(a_ourKey))
+      {
+        break;
+      }
+    }
+    CHECK(kb->IsKeyDown(a_ourKey));
+
+    a_im->Reset();
+    CHECK_FALSE(kb->IsKeyDown(a_ourKey));
+  }
+
+  template <typename T_InputManagerType>
+  void TestKeyboardButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_key,
+                          hid::KeyboardEvent::key_code_type a_ourKey)
+  {
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Keyboard<policy_type>* kb = a_im->GetHID<Keyboard<policy_type> >();
 
     CHECK(kb != NULL);
 
     if (kb)
     {
-      sampleInputKeyboard<KeyboardB> callback(kb);
-      kb->Register(&callback);
-
-      while ( countDown.ElapsedMilliSeconds() < 1000 &&
-        (callback.m_keypresses < 1 || callback.m_keyreleases < 1) )
-      {
-        UpdateWin32Window(a_wnd);
-        SendButtonPress(a_key);
-        SendButtonRelease(a_key);
-        a_im->Update();
-      }
-
-      kb->UnRegister(&callback);
-
-      CHECK(callback.m_keypresses > 0);
-      CHECK(callback.m_keyreleases > 0);
-      if (callback.m_keypresses == 0 || callback.m_keyreleases == 0)
-      {
-        WARN(a_key);
-      }
+      TestKeyboardType(a_im, kb, a_wnd, a_key, a_ourKey, policy_type());
     }
   }
 
@@ -212,13 +267,12 @@ namespace TestingInput
     SendInput(1, &inp, sizeof(INPUT));
   }
 
-  void TestMouseButton(InputManager<>* a_im, HWND a_wnd, WORD a_buttonDown,
-                       WORD a_buttonUp, WORD a_extraData)
+  template <typename T_InputManagerType, typename T_MouseType>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
+    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
+    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Buffered)
   {
-    using hid::MouseB;
-
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
@@ -227,55 +281,144 @@ namespace TestingInput
       sampleInputMouse<MouseB> callback(mouse);
       mouse->Register(&callback);
 
-      while ( countDown.ElapsedMilliSeconds() < 1000 &&
-        (callback.m_buttonPresses < 1 || callback.m_buttonReleases < 1) )
+      while (countDown.ElapsedMilliSeconds() < 1000 &&
+             callback.m_buttonPresses < 1)
       {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonDown, a_extraData);
+        a_im->Update();
+      }
+
+      SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+        << a_ourButton);
+      CHECK(mouse->IsButtonDown(a_ourButton));
+      CHECK(a_ourButton == callback.m_event.m_buttonCode);
+      CHECK(a_ourButton == callback.m_buttonCode);
+
+      countDown.Reset();
+      while (countDown.ElapsedMilliSeconds() < 1000 &&
+             callback.m_buttonReleases < 1)
+      {
+        UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonUp, a_extraData);
         a_im->Update();
       }
+
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
 
       mouse->UnRegister(&callback);
 
       CHECK(callback.m_buttonPresses > 0);
       CHECK(callback.m_buttonReleases > 0);
-      if (callback.m_buttonPresses == 0 || callback.m_buttonReleases == 0)
-      {
-        WARN(a_buttonDown);
-      }
     }
   }
 
-  MouseEvent TestMouseMove(InputManager<>* a_im, HWND a_wnd, WORD a_axis,
-                     tl_int a_x, tl_int a_y, WORD a_data)
+  template <typename T_InputManagerType, typename T_MouseType>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
+    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
+    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Immediate)
   {
-    using hid::MouseB;
-
     core::time::Timer_T<> countDown;
-    MouseB* mouse = a_im->GetHID<MouseB>();
 
     CHECK(mouse != NULL);
 
     if (mouse)
     {
-      sampleInputMouse<MouseB> callback(mouse);
-      mouse->Register(&callback);
-
-      SendMousePress(a_axis, a_data,
-                     static_cast<LONG>(a_x), static_cast<LONG>(a_y));
-
-      while (countDown.ElapsedMilliSeconds() < 1000 &&
-             callback.m_movementEvents == 0)
+      while ( countDown.ElapsedMilliSeconds() < 1000)
       {
         UpdateWin32Window(a_wnd);
+        SendMousePress(a_buttonDown, a_extraData);
+        UpdateWin32Window(a_wnd);
+        SendMousePress(a_buttonUp, a_extraData);
         a_im->Update();
+
+        if(mouse->IsButtonDown(a_ourButton))
+        { break; }
       }
 
-      mouse->UnRegister(&callback);
-      CHECK(callback.m_movementEvents > 0);
+      SCOPED_INFO("The mouse button: " << a_buttonDown << " vs our button: "
+        << a_ourButton);
+      CHECK(mouse->IsButtonDown(a_ourButton));
 
-      return callback.m_event;
+      a_im->Reset();
+      CHECK_FALSE(mouse->IsButtonDown(a_ourButton));
+    }
+  }
+
+  template <typename T_InputManagerType>
+  void TestMouseButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_buttonDown,
+                       WORD a_buttonUp, WORD a_extraData,
+                       hid::MouseEvent::button_code_type a_ourButton)
+  {
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+
+    CHECK(mouse != NULL);
+
+    if (mouse)
+    {
+      TestMouseType(a_im, mouse, a_wnd, a_buttonDown, a_buttonUp, a_extraData,
+                    a_ourButton, policy_type());
+    }
+  }
+
+  template <typename T_InputManagerType, typename T_MouseType>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+    HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
+    input::InputPolicy::Buffered)
+  {
+    core::time::Timer countDown;
+
+    sampleInputMouse<MouseB> callback(a_mouse);
+    a_mouse->Register(&callback);
+
+    SendMousePress(a_axis, a_data,
+      static_cast<LONG>(a_x), static_cast<LONG>(a_y));
+
+    while (countDown.ElapsedMilliSeconds() < 1000 &&
+           callback.m_movementEvents == 0)
+    {
+      UpdateWin32Window(a_wnd);
+      a_im->Update();
+    }
+
+    a_mouse->UnRegister(&callback);
+    CHECK(callback.m_movementEvents > 0);
+
+    return callback.m_event;
+  }
+
+  template <typename T_InputManagerType, typename T_MouseType>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+    HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
+    input::InputPolicy::Immediate)
+  {
+    core::time::Timer countDown;
+
+    SendMousePress(a_axis, a_data,
+      static_cast<LONG>(a_x), static_cast<LONG>(a_y));
+
+    UpdateWin32Window(a_wnd);
+    a_im->Update();
+
+    return a_mouse->GetState();
+  }
+
+  template <typename T_InputManagerType>
+  MouseEvent TestMouseMove(T_InputManagerType* a_im, HWND a_wnd, WORD a_axis,
+                           tl_int a_x, tl_int a_y, WORD a_data)
+  {
+    typedef typename T_InputManagerType::policy_type  policy_type;
+
+    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+
+    CHECK(mouse != NULL);
+
+    if (mouse)
+    {
+      return TestMouseState(a_im, mouse, a_wnd, a_axis, a_x, a_y, a_data,
+                            policy_type());
     }
 
     return MouseEvent(MouseEvent::none);
@@ -293,6 +436,197 @@ namespace TestingInput
     void*                 m_devicePtr;
   };
 
+  template <typename T_InputManagerType>
+  void TestKeyboard(T_InputManagerType& inputMgr, HWND wnd)
+  {
+    typedef input_hid::KeyboardEvent  ke;
+
+    TestKeyboardButton(&inputMgr, wnd, DIK_ESCAPE, ke::escape);
+    TestKeyboardButton(&inputMgr, wnd, DIK_1, ke::n1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_2, ke::n2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_3, ke::n3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_4, ke::n4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_5, ke::n5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_6, ke::n6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_7, ke::n7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_8, ke::n8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_9, ke::n9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_0, ke::n0);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MINUS, ke::minus_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_EQUALS, ke::equals);
+    TestKeyboardButton(&inputMgr, wnd, DIK_BACK, ke::backspace);
+    TestKeyboardButton(&inputMgr, wnd, DIK_TAB, ke::tab);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Q, ke::q);
+    TestKeyboardButton(&inputMgr, wnd, DIK_W, ke::w);
+    TestKeyboardButton(&inputMgr, wnd, DIK_E, ke::e);
+    TestKeyboardButton(&inputMgr, wnd, DIK_R, ke::r);
+    TestKeyboardButton(&inputMgr, wnd, DIK_T, ke::t);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Y, ke::y);
+    TestKeyboardButton(&inputMgr, wnd, DIK_U, ke::u);
+    TestKeyboardButton(&inputMgr, wnd, DIK_I, ke::i);
+    TestKeyboardButton(&inputMgr, wnd, DIK_O, ke::o);
+    TestKeyboardButton(&inputMgr, wnd, DIK_P, ke::p);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LBRACKET, ke::left_bracket);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RBRACKET, ke::right_bracket);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RETURN, ke::enter_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LCONTROL, ke::left_control);
+    TestKeyboardButton(&inputMgr, wnd, DIK_A, ke::a);
+    TestKeyboardButton(&inputMgr, wnd, DIK_S, ke::s);
+    TestKeyboardButton(&inputMgr, wnd, DIK_D, ke::d);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F, ke::f);
+    TestKeyboardButton(&inputMgr, wnd, DIK_G, ke::g);
+    TestKeyboardButton(&inputMgr, wnd, DIK_H, ke::h);
+    TestKeyboardButton(&inputMgr, wnd, DIK_J, ke::j);
+    TestKeyboardButton(&inputMgr, wnd, DIK_K, ke::k);
+    TestKeyboardButton(&inputMgr, wnd, DIK_L, ke::l);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SEMICOLON, ke::semicolon);
+    TestKeyboardButton(&inputMgr, wnd, DIK_APOSTROPHE, ke::apostrophe);
+    TestKeyboardButton(&inputMgr, wnd, DIK_GRAVE, ke::grave);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LSHIFT, ke::left_shift);
+    TestKeyboardButton(&inputMgr, wnd, DIK_BACKSLASH, ke::backslash);
+    TestKeyboardButton(&inputMgr, wnd, DIK_Z, ke::z);
+    TestKeyboardButton(&inputMgr, wnd, DIK_X, ke::x);
+    TestKeyboardButton(&inputMgr, wnd, DIK_C, ke::c);
+    TestKeyboardButton(&inputMgr, wnd, DIK_V, ke::v);
+    TestKeyboardButton(&inputMgr, wnd, DIK_B, ke::b);
+    TestKeyboardButton(&inputMgr, wnd, DIK_N, ke::n);
+    TestKeyboardButton(&inputMgr, wnd, DIK_M, ke::m);
+    TestKeyboardButton(&inputMgr, wnd, DIK_COMMA, ke::comma);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PERIOD, ke::period_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SLASH, ke::slash);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RSHIFT, ke::right_shift);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MULTIPLY, ke::multiply_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LMENU, ke::left_alt);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SPACE, ke::space);
+    TestKeyboardButton(&inputMgr, wnd, DIK_CAPITAL, ke::capital);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F1, ke::f1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F2, ke::f2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F3, ke::f3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F4, ke::f4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F5, ke::f5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F6, ke::f6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F7, ke::f7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F8, ke::f8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F9, ke::f9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F10, ke::f10);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMLOCK, ke::numlock);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SCROLL, ke::scroll_lock);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD7, ke::num7);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD8, ke::num8);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD9, ke::num9);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SUBTRACT, ke::minus_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD4, ke::num4);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD5, ke::num5);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD6, ke::num6);
+    TestKeyboardButton(&inputMgr, wnd, DIK_ADD, ke::add_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD1, ke::num1);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD2, ke::num2);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD3, ke::num3);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD0, ke::num0);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DECIMAL, ke::period_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F11, ke::f11);
+    TestKeyboardButton(&inputMgr, wnd, DIK_F12, ke::f12);
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F13); // Not on most KBs
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F14); // Not on most KBs
+    //TestKeyboardButton(&inputMgr, wnd, DIK_F15); // Not on most KBs
+    TestKeyboardButton(&inputMgr, wnd, DIK_PREVTRACK, ke::prev_track);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NEXTTRACK, ke::next_track);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NUMPADENTER, ke::enter_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RCONTROL, ke::right_control);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MUTE, ke::mute);
+    TestKeyboardButton(&inputMgr, wnd, DIK_CALCULATOR, ke::calculator);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PLAYPAUSE, ke::play_pause);
+    TestKeyboardButton(&inputMgr, wnd, DIK_MEDIASTOP, ke::media_stop);
+    TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEDOWN, ke::volume_down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEUP, ke::volume_up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_WEBHOME, ke::web_home);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DIVIDE, ke::divide_keypad);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SYSRQ, ke::sysrq);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RMENU, ke::right_alt);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PAUSE, ke::pause);
+    TestKeyboardButton(&inputMgr, wnd, DIK_HOME, ke::home);
+    TestKeyboardButton(&inputMgr, wnd, DIK_UP, ke::up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_PRIOR, ke::page_up);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LEFT, ke::left);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RIGHT, ke::right);
+    TestKeyboardButton(&inputMgr, wnd, DIK_END, ke::end);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DOWN, ke::down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_NEXT, ke::page_down);
+    TestKeyboardButton(&inputMgr, wnd, DIK_INSERT, ke::insert);
+    TestKeyboardButton(&inputMgr, wnd, DIK_DELETE, ke::delete_main);
+    TestKeyboardButton(&inputMgr, wnd, DIK_LWIN, ke::left_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_RWIN, ke::right_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_POWER, ke::power_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP, ke::sleep_sys);
+    TestKeyboardButton(&inputMgr, wnd, DIK_WAKE, ke::wake_sys);
+  }
+
+  template <typename T_InputManagerType>
+  void TestMouse(T_InputManagerType& inputMgr, HWND wnd)
+  {
+    typedef input_hid::MouseEvent me;
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
+      MOUSEEVENTF_LEFTUP, NULL, me::left);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
+      MOUSEEVENTF_RIGHTUP, NULL, me::right);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
+      MOUSEEVENTF_MIDDLEUP, NULL, me::middle);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+      MOUSEEVENTF_XUP, XBUTTON1, me::button4);
+
+    TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
+      MOUSEEVENTF_XUP, XBUTTON2, me::button5);
+
+    MouseEvent evt;
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
+    CHECK(evt.m_X.m_rel() == 5);
+    CHECK(evt.m_Y.m_rel() == 0);
+    CHECK(evt.m_X.m_abs().Get() == 5);
+    CHECK(evt.m_Y.m_abs().Get() == 0);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
+    CHECK(evt.m_X.m_rel() == 5);
+    CHECK(evt.m_Y.m_rel() == 0);
+    CHECK(evt.m_X.m_abs().Get() == 10);
+    CHECK(evt.m_Y.m_abs().Get() == 0);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
+    CHECK(evt.m_X.m_rel() == 0);
+    CHECK(evt.m_Y.m_rel() == 5);
+    CHECK(evt.m_X.m_abs().Get() == 10);
+    CHECK(evt.m_Y.m_abs().Get() == 5);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
+    CHECK(evt.m_X.m_rel() == 0);
+    CHECK(evt.m_Y.m_rel() == 5);
+    CHECK(evt.m_X.m_abs().Get() == 10);
+    CHECK(evt.m_Y.m_abs().Get() == 10);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -5, -5, 1);
+    CHECK(evt.m_X.m_rel() == -5);
+    CHECK(evt.m_Y.m_rel() == -5);
+    CHECK(evt.m_Z.m_rel() == 1);
+    CHECK(evt.m_Z.m_abs() == 1);
+    CHECK(evt.m_X.m_abs().Get() == 5);
+    CHECK(evt.m_Y.m_abs().Get() == 5);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
+    CHECK(evt.m_X.m_rel() == -10);
+    CHECK(evt.m_Y.m_rel() == -20);
+    CHECK(evt.m_Z.m_rel() == 1);
+    CHECK(evt.m_Z.m_abs() == 2);
+    CHECK(evt.m_X.m_abs().Get() == -5);
+    CHECK(evt.m_Y.m_abs().Get() == -15);
+
+    // Reset the positions
+    TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 15, 0);
+  }
+
   TEST_CASE("Input/InputManager/General", "")
   {
     core::time::Timer_T<> countDown;
@@ -302,129 +636,21 @@ namespace TestingInput
     ParamList<HWND> params;
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
+    InputManagerI inputMgrImm(params);
 
     KeyboardB* kb = inputMgr.CreateHID<KeyboardB>();
     CHECK(kb != NULL);
 
+    KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>();
+    CHECK(kbImm != NULL);
+
     if (kb)
     {
-      TestKeyboardButton(&inputMgr, wnd, DIK_ESCAPE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_0);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MINUS);
-      TestKeyboardButton(&inputMgr, wnd, DIK_EQUALS);
-      TestKeyboardButton(&inputMgr, wnd, DIK_BACK);
-      TestKeyboardButton(&inputMgr, wnd, DIK_TAB);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Q);
-      TestKeyboardButton(&inputMgr, wnd, DIK_W);
-      TestKeyboardButton(&inputMgr, wnd, DIK_E);
-      TestKeyboardButton(&inputMgr, wnd, DIK_R);
-      TestKeyboardButton(&inputMgr, wnd, DIK_T);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Y);
-      TestKeyboardButton(&inputMgr, wnd, DIK_U);
-      TestKeyboardButton(&inputMgr, wnd, DIK_I);
-      TestKeyboardButton(&inputMgr, wnd, DIK_O);
-      TestKeyboardButton(&inputMgr, wnd, DIK_P);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LBRACKET);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RBRACKET);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RETURN);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LCONTROL);
-      TestKeyboardButton(&inputMgr, wnd, DIK_A);
-      TestKeyboardButton(&inputMgr, wnd, DIK_S);
-      TestKeyboardButton(&inputMgr, wnd, DIK_D);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F);
-      TestKeyboardButton(&inputMgr, wnd, DIK_G);
-      TestKeyboardButton(&inputMgr, wnd, DIK_H);
-      TestKeyboardButton(&inputMgr, wnd, DIK_J);
-      TestKeyboardButton(&inputMgr, wnd, DIK_K);
-      TestKeyboardButton(&inputMgr, wnd, DIK_L);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SEMICOLON);
-      TestKeyboardButton(&inputMgr, wnd, DIK_APOSTROPHE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_GRAVE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LSHIFT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_BACKSLASH);
-      TestKeyboardButton(&inputMgr, wnd, DIK_Z);
-      TestKeyboardButton(&inputMgr, wnd, DIK_X);
-      TestKeyboardButton(&inputMgr, wnd, DIK_C);
-      TestKeyboardButton(&inputMgr, wnd, DIK_V);
-      TestKeyboardButton(&inputMgr, wnd, DIK_B);
-      TestKeyboardButton(&inputMgr, wnd, DIK_N);
-      TestKeyboardButton(&inputMgr, wnd, DIK_M);
-      TestKeyboardButton(&inputMgr, wnd, DIK_COMMA);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PERIOD);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SLASH);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RSHIFT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MULTIPLY);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LMENU);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SPACE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_CAPITAL);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F10);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMLOCK);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SCROLL);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD7);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD8);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD9);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SUBTRACT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD4);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD5);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD6);
-      TestKeyboardButton(&inputMgr, wnd, DIK_ADD);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD1);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD2);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD3);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPAD0);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DECIMAL);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F11);
-      TestKeyboardButton(&inputMgr, wnd, DIK_F12);
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F13); // Not on most KBs
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F14); // Not on most KBs
-      //TestKeyboardButton(&inputMgr, wnd, DIK_F15); // Not on most KBs
-      TestKeyboardButton(&inputMgr, wnd, DIK_NEXTTRACK);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NUMPADENTER);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RCONTROL);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MUTE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_CALCULATOR);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PLAYPAUSE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_MEDIASTOP);
-      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEDOWN);
-      TestKeyboardButton(&inputMgr, wnd, DIK_VOLUMEUP);
-      TestKeyboardButton(&inputMgr, wnd, DIK_WEBHOME);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DIVIDE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SYSRQ);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RMENU);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PAUSE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_HOME);
-      TestKeyboardButton(&inputMgr, wnd, DIK_UP);
-      TestKeyboardButton(&inputMgr, wnd, DIK_PRIOR);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LEFT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RIGHT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_END);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DOWN);
-      TestKeyboardButton(&inputMgr, wnd, DIK_NEXT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_INSERT);
-      TestKeyboardButton(&inputMgr, wnd, DIK_DELETE);
-      TestKeyboardButton(&inputMgr, wnd, DIK_LWIN);
-      TestKeyboardButton(&inputMgr, wnd, DIK_RWIN);
-      TestKeyboardButton(&inputMgr, wnd, DIK_POWER);
-      TestKeyboardButton(&inputMgr, wnd, DIK_SLEEP);
-      TestKeyboardButton(&inputMgr, wnd, DIK_WAKE);
+      TestKeyboard(inputMgr, wnd);
+    }
+    if (kbImm)
+    {
+      TestKeyboard(inputMgrImm, wnd);
     }
 
     using hid::MouseB;
@@ -432,56 +658,17 @@ namespace TestingInput
     MouseB* mouse = inputMgr.CreateHID<MouseB>();
     CHECK(mouse != NULL);
 
+    MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>();
+    CHECK(mouseImm != NULL);
+
     if (mouse)
     {
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
-                                      MOUSEEVENTF_LEFTUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
-                                      MOUSEEVENTF_RIGHTUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
-                                      MOUSEEVENTF_MIDDLEUP, NULL);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
-                                      MOUSEEVENTF_XUP, XBUTTON1);
-      TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
-                                      MOUSEEVENTF_XUP, XBUTTON2);
-
-      MouseEvent evt;
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
-      CHECK(evt.m_X.m_rel() == 5);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_X.m_abs().Get() == 5);
-      CHECK(evt.m_Y.m_abs().Get() == 0);
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
-      CHECK(evt.m_X.m_rel() == 5);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_X.m_abs().Get() == 10);
-      CHECK(evt.m_Y.m_abs().Get() == 0);
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
-      CHECK(evt.m_X.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 5);
-      CHECK(evt.m_X.m_abs().Get() == 10);
-      CHECK(evt.m_Y.m_abs().Get() == 5);
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
-      CHECK(evt.m_X.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 5);
-      CHECK(evt.m_X.m_abs().Get() == 10);
-      CHECK(evt.m_Y.m_abs().Get() == 10);
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Z.m_rel() == 1);
-      CHECK(evt.m_Z.m_abs() == 1);
-
-      evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Y.m_rel() == 0);
-      CHECK(evt.m_Z.m_rel() == 1);
-      CHECK(evt.m_Z.m_abs() == 2);
+      TestMouse(inputMgr, wnd);
+    }
+    if (mouseImm)
+    {
+      // Intentioanlly commented out - test is very fragile
+      //TestMouse(inputMgrImm, wnd);
     }
   }
 };

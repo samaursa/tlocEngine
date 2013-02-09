@@ -1,7 +1,8 @@
 #ifndef TLOC_GL_OBJECT_H
 #define TLOC_GL_OBJECT_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
@@ -19,7 +20,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef s32 object_handle; // s32 because GLint is s32
+    typedef u32 object_handle; // GLuint is u32
 
     bool IsValid();
 
@@ -121,6 +122,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef ObjectBase                  base_type;
     typedef base_type::object_handle    object_handle;
+    typedef core::error::Error          error_type;
     typedef core::string::String        string_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);

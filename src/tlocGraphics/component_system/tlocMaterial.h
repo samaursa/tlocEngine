@@ -1,6 +1,8 @@
 #ifndef TLOC_MATERIAL_H
 #define TLOC_MATERIAL_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/opengl/tlocObject.h>

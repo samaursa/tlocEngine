@@ -6,22 +6,22 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  using core::component_system::Entity;
-  using core::component_system::EntityManager;
-  using core::component_system::ComponentPoolManager;
+  using core_cs::Entity;
+  using core_cs::EntityManager;
+  using core_cs::ComponentPoolManager;
 
-  using math::types::Circle;
+  using math_t::Circle;
 
   template <typename T_Real>
-  core::component_system::Entity*
-    CreateFan(core::component_system::EntityManager& a_mgr,
-              core::component_system::ComponentPoolManager& a_poolMgr,
-              math::types::Circle<T_Real> a_circle,
+  core_cs::Entity*
+    CreateFan(core_cs::EntityManager& a_mgr,
+              core_cs::ComponentPoolManager& a_poolMgr,
+              math_t::Circle<T_Real> a_circle,
               tl_size a_numSides)
   {
-    using namespace core::component_system;
-    using namespace math::component_system;
-    using namespace math::component_system::components;
+    using namespace core_cs;
+    using namespace math_cs;
+    using namespace math_cs::components;
     using namespace tloc::graphics::component_system;
     using namespace tloc::graphics::component_system::components;
 
@@ -50,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
-    typedef tloc::math::component_system::TransformPool  t_pool;
+    typedef tloc::math_cs::TransformPool  t_pool;
 
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 

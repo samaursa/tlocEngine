@@ -48,8 +48,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(const UniquePtr<T_Other>& a_other)
-    : base_type(nullptr)
-    , m_rawPtr( static_cast<pointer>(a_other.release()) )
+    : m_rawPtr( static_cast<pointer>(a_other.release()) )
   { }
 
   template <UNIQUE_PTR_TEMPS>

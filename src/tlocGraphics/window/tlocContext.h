@@ -1,16 +1,17 @@
 #ifndef TLOC_CONTEXT_H
 #define TLOC_CONTEXT_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   template <class T_ParentWindow> class WindowImpl;
 
-};};
+};};};
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// This class is taken from SFML. We don't know about threading issues with
@@ -54,6 +55,6 @@ namespace tloc { namespace graphics { namespace priv {
     static Context& GetGlobal();
   };
 
-};};};
+};};};};
 
 #endif

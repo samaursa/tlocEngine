@@ -1146,6 +1146,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="textures"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocTextureObject.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocGraphics\opengl\tlocTextureObject.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="component_system"
@@ -1461,6 +1473,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\..\src\tlocGraphics\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocGraphics\tlocGraphicsBase.h"
 			>
 		</File>
 	</Files>

@@ -1,6 +1,8 @@
 #ifndef TLOC_WINDOW_IMPL_H
 #define TLOC_WINDOW_IMPL_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/platform/tlocPlatform.h>
@@ -8,7 +10,7 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// Window implementation that must be specialized for each platform
@@ -48,6 +50,6 @@ namespace tloc { namespace graphics { namespace priv {
     parent_window_type*         m_parentWindow;
   };
 
-};};};
+};};};};
 
 #endif

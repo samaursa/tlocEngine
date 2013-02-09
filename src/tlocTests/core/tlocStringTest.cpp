@@ -29,8 +29,8 @@ namespace TestingStrings
     const char8* someDiffString2 = "This is a test string";
 
     CHECK(StrCmp(someStr, someOtherStr) == 0);
-    CHECK(StrCmp(someStr, someDiffString) == -1);
-    CHECK(StrCmp(someStr, someDiffString2) == 1);
+    CHECK(StrCmp(someStr, someDiffString) < 0);
+    CHECK(StrCmp(someStr, someDiffString2) > 0);
 
   }
 

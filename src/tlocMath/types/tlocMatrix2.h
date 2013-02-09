@@ -2,6 +2,8 @@
 #ifndef TLOC_MATRIX_2_H
 #define TLOC_MATRIX_2_H
 
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocMatrix.h>

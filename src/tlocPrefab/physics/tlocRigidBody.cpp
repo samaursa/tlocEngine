@@ -12,8 +12,8 @@
 
 namespace tloc { namespace prefab { namespace physics {
 
-  using namespace core::containers;
-  using namespace core::component_system;
+  using namespace core_conts;
+  using namespace core_cs;
   using tloc::physics::box2d::rigid_body_def_sptr;
   using tloc::physics::box2d::RigidBodyShapeDef;
 
@@ -23,8 +23,8 @@ namespace tloc { namespace prefab { namespace physics {
      ComponentPoolManager& a_poolMgr,
      rigid_body_def_sptr a_rbDef)
   {
-    using namespace math::component_system;
-    using namespace math::component_system::components;
+    using namespace math_cs;
+    using namespace math_cs::components;
 
     typedef ComponentPoolManager  pool_mgr;
     typedef pool_mgr::iterator    comp_pool_ptr;
@@ -112,7 +112,7 @@ namespace tloc { namespace prefab { namespace physics {
     (Entity* a_ent,
      EntityManager& a_mgr,
      ComponentPoolManager& a_poolMgr,
-     const core::containers::
+     const core_conts::
      tl_array<const RigidBodyShapeDef>::type& a_rbShapes)
   {
     typedef tl_array<const RigidBodyShapeDef>::type

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/error/tlocError.h>

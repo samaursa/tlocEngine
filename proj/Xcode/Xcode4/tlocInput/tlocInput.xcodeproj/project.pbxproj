@@ -8,45 +8,49 @@
 
 /* Begin PBXBuildFile section */
 		9736627F15B0F68D009F67B2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9736627E15B0F68D009F67B2 /* Foundation.framework */; };
+		97AF942816AF9F6700DB6C90 /* tlocInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF942616AF9F6700DB6C90 /* tlocInputManager.cpp */; };
+		97AF942916AF9F6700DB6C90 /* tlocInputManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF942716AF9F6700DB6C90 /* tlocInputManager.h */; };
+		97AF942D16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF942B16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h */; };
+		97AF942E16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97AF942C16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.mm */; };
+		97AF943216AF9FDF00DB6C90 /* tlocKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF942F16AF9FDF00DB6C90 /* tlocKeyboard.cpp */; };
+		97AF943316AF9FDF00DB6C90 /* tlocKeyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943016AF9FDF00DB6C90 /* tlocKeyboard.h */; };
+		97AF943416AF9FDF00DB6C90 /* tlocKeyboardImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943116AF9FDF00DB6C90 /* tlocKeyboardImpl.h */; };
+		97AF943716AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943516AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.h */; };
+		97AF943816AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97AF943616AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.mm */; };
+		97AF943E16AFA3C000DB6C90 /* tlocTouchSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF943916AFA3C000DB6C90 /* tlocTouchSurface.cpp */; };
+		97AF943F16AFA3C000DB6C90 /* tlocTouchSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943A16AFA3C000DB6C90 /* tlocTouchSurface.h */; };
+		97AF944016AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF943B16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp */; };
+		97AF944116AFA3C000DB6C90 /* tlocTouchSurfaceDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943C16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.h */; };
+		97AF944216AFA3C000DB6C90 /* tlocTouchSurfaceImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF943D16AFA3C000DB6C90 /* tlocTouchSurfaceImpl.h */; };
 		97C87D2315DE4DBA00FE0A6C /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D2215DE4DBA00FE0A6C /* tlocDepVersionCheck.cpp */; };
-		97C87D2815DE4DE700FE0A6C /* tlocInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D2415DE4DE700FE0A6C /* tlocInput.cpp */; };
-		97C87D2915DE4DE700FE0A6C /* tlocInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D2515DE4DE700FE0A6C /* tlocInput.h */; };
 		97C87D2A15DE4DE700FE0A6C /* tlocInputImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D2615DE4DE700FE0A6C /* tlocInputImpl.h */; };
 		97C87D2B15DE4DE700FE0A6C /* tlocInputTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D2715DE4DE700FE0A6C /* tlocInputTypes.h */; };
 		97C87D3315DE4E0700FE0A6C /* tlocInputImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D3115DE4E0700FE0A6C /* tlocInputImplIphone.mm */; };
 		97C87D3415DE4E0700FE0A6C /* tlocInputImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D3215DE4E0700FE0A6C /* tlocInputImplIphone.h */; };
-		97CB402C15FA06E600C7E06D /* tlocTouchSurfaceDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97CB402B15FA06E600C7E06D /* tlocTouchSurfaceDevice.cpp */; };
-		97E183E515E9102400E247B8 /* tlocKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E183E215E9102400E247B8 /* tlocKeyboard.cpp */; };
-		97E183E615E9102400E247B8 /* tlocKeyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 97E183E315E9102400E247B8 /* tlocKeyboard.h */; };
-		97E183E715E9102400E247B8 /* tlocKeyboardImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97E183E415E9102400E247B8 /* tlocKeyboardImpl.h */; };
-		97E183EB15E9110300E247B8 /* tlocKeyboardImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97E183E915E9110300E247B8 /* tlocKeyboardImplIphone.mm */; };
-		97E183EC15E9110300E247B8 /* tlocKeyboardImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97E183EA15E9110300E247B8 /* tlocKeyboardImplIphone.h */; };
-		97E183F315E9203300E247B8 /* tlocTouchSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E183F215E9203300E247B8 /* tlocTouchSurface.cpp */; };
-		97FA364415F0BFFC0003881A /* tlocTouchSurfaceImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97FA364315F0BFFC0003881A /* tlocTouchSurfaceImplIphone.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9736627B15B0F68D009F67B2 /* tlocInput_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocInput_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9736627E15B0F68D009F67B2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97AF942616AF9F6700DB6C90 /* tlocInputManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocInputManager.cpp; path = ../../../../src/tlocInput/tlocInputManager.cpp; sourceTree = "<group>"; };
+		97AF942716AF9F6700DB6C90 /* tlocInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputManager.h; path = ../../../../src/tlocInput/tlocInputManager.h; sourceTree = "<group>"; };
+		97AF942B16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboardImplIphone.h; path = ../../../../src/tlocInput/hid/tlocKeyboardImplIphone.h; sourceTree = "<group>"; };
+		97AF942C16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocKeyboardImplIphone.mm; path = ../../../../src/tlocInput/hid/tlocKeyboardImplIphone.mm; sourceTree = "<group>"; };
+		97AF942F16AF9FDF00DB6C90 /* tlocKeyboard.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocKeyboard.cpp; path = ../../../../src/tlocInput/hid/tlocKeyboard.cpp; sourceTree = "<group>"; };
+		97AF943016AF9FDF00DB6C90 /* tlocKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboard.h; path = ../../../../src/tlocInput/hid/tlocKeyboard.h; sourceTree = "<group>"; };
+		97AF943116AF9FDF00DB6C90 /* tlocKeyboardImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboardImpl.h; path = ../../../../src/tlocInput/hid/tlocKeyboardImpl.h; sourceTree = "<group>"; };
+		97AF943516AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceImplIphone.h; path = ../../../../src/tlocInput/hid/tlocTouchSurfaceImplIphone.h; sourceTree = "<group>"; };
+		97AF943616AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocTouchSurfaceImplIphone.mm; path = ../../../../src/tlocInput/hid/tlocTouchSurfaceImplIphone.mm; sourceTree = "<group>"; };
+		97AF943916AFA3C000DB6C90 /* tlocTouchSurface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocTouchSurface.cpp; path = ../../../../src/tlocInput/hid/tlocTouchSurface.cpp; sourceTree = "<group>"; };
+		97AF943A16AFA3C000DB6C90 /* tlocTouchSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurface.h; path = ../../../../src/tlocInput/hid/tlocTouchSurface.h; sourceTree = "<group>"; };
+		97AF943B16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTouchSurfaceDevice.cpp; path = ../../../../src/tlocInput/hid/tlocTouchSurfaceDevice.cpp; sourceTree = "<group>"; };
+		97AF943C16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceDevice.h; path = ../../../../src/tlocInput/hid/tlocTouchSurfaceDevice.h; sourceTree = "<group>"; };
+		97AF943D16AFA3C000DB6C90 /* tlocTouchSurfaceImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceImpl.h; path = ../../../../src/tlocInput/hid/tlocTouchSurfaceImpl.h; sourceTree = "<group>"; };
 		97C87D2215DE4DBA00FE0A6C /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocInput/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
-		97C87D2415DE4DE700FE0A6C /* tlocInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocInput.cpp; path = ../../../../src/tlocInput/tlocInput.cpp; sourceTree = "<group>"; };
-		97C87D2515DE4DE700FE0A6C /* tlocInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInput.h; path = ../../../../src/tlocInput/tlocInput.h; sourceTree = "<group>"; };
 		97C87D2615DE4DE700FE0A6C /* tlocInputImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputImpl.h; path = ../../../../src/tlocInput/tlocInputImpl.h; sourceTree = "<group>"; };
 		97C87D2715DE4DE700FE0A6C /* tlocInputTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputTypes.h; path = ../../../../src/tlocInput/tlocInputTypes.h; sourceTree = "<group>"; };
 		97C87D3115DE4E0700FE0A6C /* tlocInputImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocInputImplIphone.mm; path = ../../../../src/tlocInput/tlocInputImplIphone.mm; sourceTree = "<group>"; };
 		97C87D3215DE4E0700FE0A6C /* tlocInputImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputImplIphone.h; path = ../../../../src/tlocInput/tlocInputImplIphone.h; sourceTree = "<group>"; };
-		97CB402915FA06C400C7E06D /* tlocTouchSurfaceDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceDevice.h; path = ../../../../src/tlocInput/HIDs/tlocTouchSurfaceDevice.h; sourceTree = "<group>"; };
-		97CB402B15FA06E600C7E06D /* tlocTouchSurfaceDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTouchSurfaceDevice.cpp; path = ../../../../src/tlocInput/HIDs/tlocTouchSurfaceDevice.cpp; sourceTree = "<group>"; };
-		97E183E215E9102400E247B8 /* tlocKeyboard.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocKeyboard.cpp; path = ../../../../src/tlocInput/HIDs/tlocKeyboard.cpp; sourceTree = "<group>"; };
-		97E183E315E9102400E247B8 /* tlocKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboard.h; path = ../../../../src/tlocInput/HIDs/tlocKeyboard.h; sourceTree = "<group>"; };
-		97E183E415E9102400E247B8 /* tlocKeyboardImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboardImpl.h; path = ../../../../src/tlocInput/HIDs/tlocKeyboardImpl.h; sourceTree = "<group>"; };
-		97E183E915E9110300E247B8 /* tlocKeyboardImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocKeyboardImplIphone.mm; path = ../../../../src/tlocInput/HIDs/tlocKeyboardImplIphone.mm; sourceTree = "<group>"; };
-		97E183EA15E9110300E247B8 /* tlocKeyboardImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboardImplIphone.h; path = ../../../../src/tlocInput/HIDs/tlocKeyboardImplIphone.h; sourceTree = "<group>"; };
-		97E183F115E9200600E247B8 /* tlocTouchSurface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurface.h; path = ../../../../src/tlocInput/HIDs/tlocTouchSurface.h; sourceTree = "<group>"; };
-		97E183F215E9203300E247B8 /* tlocTouchSurface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocTouchSurface.cpp; path = ../../../../src/tlocInput/HIDs/tlocTouchSurface.cpp; sourceTree = "<group>"; };
-		97E183F415E9228E00E247B8 /* tlocTouchSurfaceImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceImpl.h; path = ../../../../src/tlocInput/HIDs/tlocTouchSurfaceImpl.h; sourceTree = "<group>"; };
-		97FA364215F095E00003881A /* tlocTouchSurfaceImplIphone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tlocTouchSurfaceImplIphone.h; path = ../../../../src/tlocInput/HIDs/tlocTouchSurfaceImplIphone.h; sourceTree = "<group>"; };
-		97FA364315F0BFFC0003881A /* tlocTouchSurfaceImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocTouchSurfaceImplIphone.mm; path = ../../../../src/tlocInput/HIDs/tlocTouchSurfaceImplIphone.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,9 +104,9 @@
 			isa = PBXGroup;
 			children = (
 				97C87D2C15DE4DEA00FE0A6C /* Iphone */,
-				97C87D2515DE4DE700FE0A6C /* tlocInput.h */,
-				97C87D2415DE4DE700FE0A6C /* tlocInput.cpp */,
 				97C87D2615DE4DE700FE0A6C /* tlocInputImpl.h */,
+				97AF942616AF9F6700DB6C90 /* tlocInputManager.cpp */,
+				97AF942716AF9F6700DB6C90 /* tlocInputManager.h */,
 				97C87D2715DE4DE700FE0A6C /* tlocInputTypes.h */,
 			);
 			name = _misc;
@@ -130,11 +134,11 @@
 			isa = PBXGroup;
 			children = (
 				97C87D3E15DE4FBD00FE0A6C /* Iphone */,
-				97CB402915FA06C400C7E06D /* tlocTouchSurfaceDevice.h */,
-				97CB402B15FA06E600C7E06D /* tlocTouchSurfaceDevice.cpp */,
-				97E183F115E9200600E247B8 /* tlocTouchSurface.h */,
-				97E183F215E9203300E247B8 /* tlocTouchSurface.cpp */,
-				97E183F415E9228E00E247B8 /* tlocTouchSurfaceImpl.h */,
+				97AF943916AFA3C000DB6C90 /* tlocTouchSurface.cpp */,
+				97AF943A16AFA3C000DB6C90 /* tlocTouchSurface.h */,
+				97AF943B16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp */,
+				97AF943C16AFA3C000DB6C90 /* tlocTouchSurfaceDevice.h */,
+				97AF943D16AFA3C000DB6C90 /* tlocTouchSurfaceImpl.h */,
 			);
 			name = "touch surface";
 			sourceTree = "<group>";
@@ -143,9 +147,9 @@
 			isa = PBXGroup;
 			children = (
 				97C87D3D15DE4FB500FE0A6C /* Iphone */,
-				97E183E315E9102400E247B8 /* tlocKeyboard.h */,
-				97E183E215E9102400E247B8 /* tlocKeyboard.cpp */,
-				97E183E415E9102400E247B8 /* tlocKeyboardImpl.h */,
+				97AF942F16AF9FDF00DB6C90 /* tlocKeyboard.cpp */,
+				97AF943016AF9FDF00DB6C90 /* tlocKeyboard.h */,
+				97AF943116AF9FDF00DB6C90 /* tlocKeyboardImpl.h */,
 			);
 			name = keyboard;
 			sourceTree = "<group>";
@@ -153,8 +157,8 @@
 		97C87D3D15DE4FB500FE0A6C /* Iphone */ = {
 			isa = PBXGroup;
 			children = (
-				97E183EA15E9110300E247B8 /* tlocKeyboardImplIphone.h */,
-				97E183E915E9110300E247B8 /* tlocKeyboardImplIphone.mm */,
+				97AF942B16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h */,
+				97AF942C16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.mm */,
 			);
 			name = Iphone;
 			sourceTree = "<group>";
@@ -162,8 +166,8 @@
 		97C87D3E15DE4FBD00FE0A6C /* Iphone */ = {
 			isa = PBXGroup;
 			children = (
-				97FA364215F095E00003881A /* tlocTouchSurfaceImplIphone.h */,
-				97FA364315F0BFFC0003881A /* tlocTouchSurfaceImplIphone.mm */,
+				97AF943516AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.h */,
+				97AF943616AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.mm */,
 			);
 			name = Iphone;
 			sourceTree = "<group>";
@@ -175,13 +179,17 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97C87D2915DE4DE700FE0A6C /* tlocInput.h in Headers */,
 				97C87D2A15DE4DE700FE0A6C /* tlocInputImpl.h in Headers */,
 				97C87D2B15DE4DE700FE0A6C /* tlocInputTypes.h in Headers */,
 				97C87D3415DE4E0700FE0A6C /* tlocInputImplIphone.h in Headers */,
-				97E183E615E9102400E247B8 /* tlocKeyboard.h in Headers */,
-				97E183E715E9102400E247B8 /* tlocKeyboardImpl.h in Headers */,
-				97E183EC15E9110300E247B8 /* tlocKeyboardImplIphone.h in Headers */,
+				97AF942916AF9F6700DB6C90 /* tlocInputManager.h in Headers */,
+				97AF942D16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h in Headers */,
+				97AF943316AF9FDF00DB6C90 /* tlocKeyboard.h in Headers */,
+				97AF943416AF9FDF00DB6C90 /* tlocKeyboardImpl.h in Headers */,
+				97AF943716AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.h in Headers */,
+				97AF943F16AFA3C000DB6C90 /* tlocTouchSurface.h in Headers */,
+				97AF944116AFA3C000DB6C90 /* tlocTouchSurfaceDevice.h in Headers */,
+				97AF944216AFA3C000DB6C90 /* tlocTouchSurfaceImpl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,13 +244,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C87D2315DE4DBA00FE0A6C /* tlocDepVersionCheck.cpp in Sources */,
-				97C87D2815DE4DE700FE0A6C /* tlocInput.cpp in Sources */,
 				97C87D3315DE4E0700FE0A6C /* tlocInputImplIphone.mm in Sources */,
-				97E183E515E9102400E247B8 /* tlocKeyboard.cpp in Sources */,
-				97E183EB15E9110300E247B8 /* tlocKeyboardImplIphone.mm in Sources */,
-				97E183F315E9203300E247B8 /* tlocTouchSurface.cpp in Sources */,
-				97FA364415F0BFFC0003881A /* tlocTouchSurfaceImplIphone.mm in Sources */,
-				97CB402C15FA06E600C7E06D /* tlocTouchSurfaceDevice.cpp in Sources */,
+				97AF942816AF9F6700DB6C90 /* tlocInputManager.cpp in Sources */,
+				97AF942E16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.mm in Sources */,
+				97AF943216AF9FDF00DB6C90 /* tlocKeyboard.cpp in Sources */,
+				97AF943816AFA38200DB6C90 /* tlocTouchSurfaceImplIphone.mm in Sources */,
+				97AF943E16AFA3C000DB6C90 /* tlocTouchSurface.cpp in Sources */,
+				97AF944016AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

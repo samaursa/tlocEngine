@@ -187,8 +187,8 @@ namespace TestingUniquePtr
 
       bool testsPassed = true;
       tl_int counter = 0;
-      for (shared_array_type::iterator itr = sa.begin(), itrEnd = sa.end();
-           itr != itrEnd; ++itr)
+      for (typename shared_array_type::iterator itr = sa.begin(),
+           itrEnd = sa.end(); itr != itrEnd; ++itr)
       {
         if ( (*itr)->m_value != counter)
         { testsPassed = false; break; }

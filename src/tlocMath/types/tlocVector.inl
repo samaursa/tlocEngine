@@ -106,7 +106,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   TL_FI void Vector<VECTOR_PARAMS>::Neg(const this_type& a_vector)
   {
-    operator=(a_vector);
+    base_type::operator=(a_vector);
     Neg();
   }
 
@@ -203,7 +203,7 @@ namespace tloc { namespace math { namespace types {
   TL_FI void Vector<VECTOR_PARAMS>::Div(const this_type& a_vector1,
                                         const this_type& a_vector2)
   {
-    operator=(a_vector1);
+    base_type::operator=(a_vector1);
     Div(a_vector2);
   }
 

@@ -1,7 +1,8 @@
 #ifndef _TLOC_MATH_TYPES_RECTANGLE_H_
 #define _TLOC_MATH_TYPES_RECTANGLE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
+
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -35,6 +36,8 @@ namespace tloc { namespace math { namespace types {
               position a_pos = position(point_type(0)) );
     Rectangle(left a_l, right a_r, top a_t, bottom a_b);
     Rectangle(const this_type& a_other);
+
+    this_type& operator= (const this_type& a_other);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);

@@ -65,6 +65,21 @@ namespace tloc { namespace input {
   }
 
   template <INPUT_MANAGER_TEMP>
+  void InputManager<INPUT_MANAGER_PARAM>::DoReset(input_type a_inputType)
+  {
+    m_impl->Reset(a_inputType);
+  }
+
+  template <INPUT_MANAGER_TEMP>
+  void InputManager<INPUT_MANAGER_PARAM>::Reset()
+  {
+    for (tl_size i = 0; i < p_hid::Count::m_index; ++i)
+    {
+      DoReset(i);
+    }
+  }
+
+  template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
     DoGetHID(size_type a_index)
@@ -116,11 +131,11 @@ namespace tloc { namespace input {
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Immediate>);
 #elif defined(TLOC_OS_IPHONE)
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(Keyboard, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
-  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(TouchSurface, InputManager<InputPolicy::Immediate>);
+  INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
 #endif
 
 };};

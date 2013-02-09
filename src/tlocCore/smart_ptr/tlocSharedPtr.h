@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/tlocFunctional.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -36,7 +37,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template
     <
       typename T,
-      typename T_NullCopyPolicy = p_shared_ptr::null_copy::Disallow
+      typename T_NullCopyPolicy = p_shared_ptr::null_copy::Allow
     >
   class SharedPtr
     : public SmartPtr
@@ -140,7 +141,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     using tloc::core::less;
     using tloc::type_traits::common_type;
 
-    return less<common_type<T*, U*>::type>()( a.get(), b.get() );
+    return less<typename common_type<T*, U*>::type>()( a.get(), b.get() );
   }
 
   template <class T, class U>

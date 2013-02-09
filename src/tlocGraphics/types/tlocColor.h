@@ -7,6 +7,8 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
+#include <tlocMath/types/tlocVector4.h>
+
 namespace tloc { namespace graphics { namespace types {
 
   namespace p_color

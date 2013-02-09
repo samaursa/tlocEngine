@@ -11,14 +11,15 @@
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/window/tlocWindowImpl.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
       template <>
-      class WindowImpl<Window<> >;
-};};};
+      class WindowImpl<Window_T<> >;
+};};};};
 
 namespace ogl_view_controller
 {
-  typedef tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> > win_impl_type;
+  typedef tloc::graphics::win::priv::WindowImpl<tloc::graphics::win::Window_T<> >
+    win_impl_type;
 };
 
 @interface OpenGLViewController : UIViewController

@@ -26,6 +26,7 @@ namespace tloc { namespace graphics { namespace gl {
         glGetFloatv(a_paramName, a_out);
       }
 
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
       void DoGet(GLdouble&	a_out, const GLint a_paramName)
       {
         glGetDoublev(a_paramName, &a_out);
@@ -35,6 +36,7 @@ namespace tloc { namespace graphics { namespace gl {
       {
         glGetDoublev(a_paramName, a_out);
       }
+#endif
     };
 
     const GLint CurrentProgram::s_glParamName

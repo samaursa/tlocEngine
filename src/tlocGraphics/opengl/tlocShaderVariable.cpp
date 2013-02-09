@@ -50,10 +50,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   TLOC_DECL_TL_TO_GL(u32, GL_UNSIGNED_INT);
 
-  TLOC_DECL_TL_TO_GL(Tuple2u32, GL_UNSIGNED_INT_VEC2);
-  TLOC_DECL_TL_TO_GL(Tuple3u32, GL_UNSIGNED_INT_VEC3);
-  TLOC_DECL_TL_TO_GL(Tuple4u32, GL_UNSIGNED_INT_VEC4);
-
   TLOC_DECL_TL_TO_GL(bool, GL_BOOL);
 
   TLOC_DECL_TL_TO_GL(Tuple2b, GL_BOOL_VEC2);
@@ -80,9 +76,6 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple4s32>, GL_INT_VEC4);
 
   TLOC_DECL_TL_TO_GL(Array<u32>,       GL_UNSIGNED_INT);
-  TLOC_DECL_TL_TO_GL(Array<Tuple2u32>, GL_UNSIGNED_INT_VEC2);
-  TLOC_DECL_TL_TO_GL(Array<Tuple3u32>, GL_UNSIGNED_INT_VEC3);
-  TLOC_DECL_TL_TO_GL(Array<Tuple4u32>, GL_UNSIGNED_INT_VEC4);
 
   TLOC_DECL_TL_TO_GL(Array<bool>,    GL_BOOL);
   TLOC_DECL_TL_TO_GL(Array<Tuple2b>, GL_BOOL_VEC2);
@@ -90,6 +83,16 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple4b>, GL_BOOL_VEC4);
 
   TLOC_DECL_TL_TO_GL(texture_object_sptr, GL_SAMPLER_2D);
+
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
+  TLOC_DECL_TL_TO_GL(Tuple2u32, GL_UNSIGNED_INT_VEC2);
+  TLOC_DECL_TL_TO_GL(Tuple3u32, GL_UNSIGNED_INT_VEC3);
+  TLOC_DECL_TL_TO_GL(Tuple4u32, GL_UNSIGNED_INT_VEC4);
+
+  TLOC_DECL_TL_TO_GL(Array<Tuple2u32>, GL_UNSIGNED_INT_VEC2);
+  TLOC_DECL_TL_TO_GL(Array<Tuple3u32>, GL_UNSIGNED_INT_VEC3);
+  TLOC_DECL_TL_TO_GL(Array<Tuple4u32>, GL_UNSIGNED_INT_VEC4);
+#endif
 
 #undef TLOC_DECL_TL_TO_GL
 
@@ -192,9 +195,6 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,        Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,        Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(u32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2u32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3u32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4u32,        Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,             Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,          Uniform);
@@ -203,6 +203,12 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(texture_object_sptr, Uniform);
+
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2u32,        Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3u32,        Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4u32,        Uniform);
+#endif
 
   //````````````````````````````````````````````````````````````````````````
   // Attribute
@@ -217,9 +223,12 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(u32,                   Attribute);
+  
+#if defined (TLOC_OS_WIN)
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2u32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3u32,             Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4u32,             Attribute);
+#endif
 
 #undef TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS
 

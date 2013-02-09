@@ -5,6 +5,10 @@
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
+#include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/containers/tlocArray.h>
+
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
@@ -56,7 +60,8 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckTypeCompatibility() const
     {
-      using namespace core;
+      using namespace core::containers;
+      using namespace core::data_structs;
       using namespace math::types;
 
       type_traits::AssertTypeIsSupported

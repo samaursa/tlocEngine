@@ -8,7 +8,7 @@
 #include <tlocCore/containers/tlocList.inl>
 #include <tlocCore/containers/tlocArray.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
@@ -317,7 +317,7 @@ namespace tloc { namespace core {
     m_container.sort(aComp);
   }
 
-};};
+};};};
 
 
 #endif

@@ -1,7 +1,8 @@
 #ifndef TLOC_OPEN_GL_EXT_H
 #define TLOC_OPEN_GL_EXT_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/error/tlocErrorTypes.h>

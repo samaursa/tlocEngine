@@ -1,7 +1,7 @@
 #include "tlocInputImplIphone.h"
 
-#include <tlocInput/HIDs/tlocKeyboardImplIphone.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceImplIphone.h>
+#include <tlocInput/hid/tlocKeyboardImplIphone.h>
+#include <tlocInput/hid/tlocTouchSurfaceImplIphone.h>
 
 namespace tloc { namespace input { namespace priv {
 
@@ -9,7 +9,7 @@ namespace tloc { namespace input { namespace priv {
 #define INPUT_MANAGER_IMPL_PARAM  T_ParentInputManager
 #define INPUT_MANAGER_IMPL_TYPE   typename InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>
 
-#define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < hid::count,\
+#define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < p_hid::Count::m_index,\
   "Unsupported input type passed!")
 
   //------------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace tloc { namespace input { namespace priv {
                      param_type a_params)
                      : base_type(a_parent, a_params)
   {
-    for (size_type i = 0; i < hid::count; ++i)
+    for (size_type i = 0; i < p_hid::Count::m_index; ++i)
     {
       m_iphoneHIDs[i].m_available = false;
       m_iphoneHIDs[i].m_devicePtr = NULL;
@@ -31,20 +31,20 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::~InputManagerImpl()
   {
-    for (size_type i = 0; i < hid::count; ++i)
+    for (size_type i = 0; i < p_hid::Count::m_index; ++i)
     {
       if (m_iphoneHIDs[i].m_available)
       {
         switch (i)
         {
-          case hid::keyboard:
+          case p_hid::Keyboard::m_index:
           {
             break;
           }
-          case hid::touch_surface:
+          case p_hid::TouchSurface::m_index:
           {
             delete
-              static_cast<TouchSurface<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
+              static_cast<hid::TouchSurface<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
             break;
           }
 
@@ -69,28 +69,28 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
-    CreateHID(input_type a_inputType, parameter_options::Type a_params)
+    CreateHID(parameter_options::Type a_params)
   {
-    ASSERT_INPUT_TYPE(a_inputType);
+    ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
     T_InputObject* newInput = NULL;
 
-    switch (a_inputType)
+    switch (T_InputObject::m_index)
     {
-      case hid::keyboard:
+      case p_hid::Keyboard::m_index:
       {
         break;
       }
-      case hid::touch_surface:
+      case p_hid::TouchSurface::m_index:
       {
         iphone_touch_surface_param_type params;
         params.m_param1 = DoGetOpenGLViewHandle();
 
-        if (m_iphoneHIDs[hid::touch_surface].m_available == false)
+        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available == false)
         {
           newInput = new T_InputObject(params);
-          m_iphoneHIDs[hid::touch_surface].m_available = true;
-          m_iphoneHIDs[hid::touch_surface].m_devicePtr = newInput;
+          m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available = true;
+          m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr = newInput;
         }
         break;
       }
@@ -111,18 +111,18 @@ namespace tloc { namespace input { namespace priv {
 
     switch (a_inputType)
     {
-      case hid::keyboard:
+      case p_hid::Keyboard::m_index:
       {
         break;
       }
-      case hid::touch_surface:
+      case p_hid::TouchSurface::m_index:
       {
-        typedef TouchSurface<policy_type> touch_surface_type;
+        typedef hid::TouchSurface<policy_type> touch_surface_type;
 
-        if (m_iphoneHIDs[hid::touch_surface].m_available)
+        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
         {
-          touch_surface_type* ts =
-            static_cast<touch_surface_type*>(m_iphoneHIDs[hid::touch_surface].m_devicePtr);
+          touch_surface_type* ts = static_cast<touch_surface_type*>
+              (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
 
           ts->Update();
         }
@@ -136,18 +136,50 @@ namespace tloc { namespace input { namespace priv {
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
-  template <typename T_InputObject>
-  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
-    GetHID(input_type a_inputType, size_type a_index)
+  void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Reset(input_type a_inputType)
   {
     ASSERT_INPUT_TYPE(a_inputType);
+
+    switch (a_inputType)
+    {
+      case p_hid::Keyboard::m_index:
+      {
+        break;
+      }
+      case p_hid::TouchSurface::m_index:
+      {
+        typedef hid::TouchSurface<policy_type> touch_surface_type;
+
+        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
+        {
+          touch_surface_type* ts = static_cast<touch_surface_type*>
+            (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
+
+          ts->Reset();
+        }
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+  }
+
+  template <INPUT_MANAGER_IMPL_TEMP>
+  template <typename T_InputObject>
+  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+    GetHID(size_type a_index)
+  {
+    ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
     // Make sure the user has the correct policy type, if not, tell them
     TLOC_STATIC_ASSERT
       ( (Loki::IsSameType<typename T_InputObject::policy_type, policy_type>::value),
        Requested_return_type_has_incorrect_policy_type);
 
-    return static_cast<T_InputObject*>(m_iphoneHIDs[a_inputType].m_devicePtr);
+    return static_cast<T_InputObject*>
+      (m_iphoneHIDs[T_InputObject::m_index].m_devicePtr);
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -157,14 +189,14 @@ namespace tloc { namespace input { namespace priv {
     ASSERT_INPUT_TYPE(a_inputType);
 
     switch (a_inputType) {
-      case hid::keyboard:
+      case p_hid::Keyboard::m_index:
       {
-        return (size_type)m_iphoneHIDs[hid::keyboard].m_available;
+        return (size_type)m_iphoneHIDs[p_hid::Keyboard::m_index].m_available;
         break;
       }
-      case hid::touch_surface:
+      case p_hid::TouchSurface::m_index:
       {
-        return (size_type)m_iphoneHIDs[hid::touch_surface].m_available;
+        return (size_type)m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available;
         break;
       }
 
@@ -196,18 +228,31 @@ namespace tloc { namespace input { namespace priv {
 
   //------------------------------------------------------------------------
   // Explicit Instantiations
+
+  typedef InputPolicy::Buffered   i_buff;
+  typedef InputPolicy::Immediate  i_imm;
+
+  typedef InputManager<i_buff>    i_mgr_buff;
+  typedef InputManager<i_imm>     i_mgr_imm;
   
   template class InputManagerImpl<InputManager<InputPolicy::Buffered> >;
   template class InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
 #define INSTANTIATE_HID(_HID_) \
-  template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::CreateHID<_HID_<InputPolicy::Buffered> >(input_type, parameter_options::Type);\
-  template _HID_<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> > ::CreateHID<_HID_<InputPolicy::Immediate> >(input_type, parameter_options::Type);\
+  template _HID_<i_buff>*  \
+  InputManagerImpl<i_mgr_buff >::CreateHID<_HID_<i_buff> >\
+  (parameter_options::Type);\
   \
-  template _HID_<InputPolicy::Buffered>*  InputManagerImpl<InputManager<InputPolicy::Buffered> >  ::GetHID<_HID_<InputPolicy::Buffered> >(input_type, tl_size);\
-  template _HID_<InputPolicy::Immediate>* InputManagerImpl<InputManager<InputPolicy::Immediate> > ::GetHID<_HID_<InputPolicy::Immediate> >(input_type, tl_size)
+  template _HID_<i_imm>*  \
+  InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
+  (parameter_options::Type);\
+  \
+  template _HID_<i_buff>*  \
+  InputManagerImpl<i_mgr_buff >::GetHID<_HID_<i_buff> >(tl_size);\
+  template _HID_<i_imm>*  \
+  InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
-  INSTANTIATE_HID(Keyboard);
-  INSTANTIATE_HID(TouchSurface);
+  INSTANTIATE_HID(hid::Keyboard);
+  INSTANTIATE_HID(hid::TouchSurface);
 
 };};};

@@ -8,7 +8,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/iterators/tlocIterator.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -1085,7 +1085,7 @@ namespace tloc { namespace core {
   {
     node_type* node = m_node().getNext();
 
-    while (node->getNext() != &m_node())
+    while (node != &m_node())
     {
       node_type* tempNode = node;
       node = node->getNext();
@@ -1362,6 +1362,6 @@ namespace tloc { namespace core {
     return (list_size&)m_sizeAndNode;
   }
 
-};};
+};};};
 
 #endif

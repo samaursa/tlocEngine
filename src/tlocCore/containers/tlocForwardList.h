@@ -1,13 +1,14 @@
 #ifndef TLOC_FORWARD_LIST_H
 #define TLOC_FORWARD_LIST_H
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/iterators/tlocIterator.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Container>
   class ForwardListT
@@ -171,6 +172,6 @@ namespace tloc { namespace core {
     typedef ForwardListT<T, Array<T> > type;
   };
 
-};};
+};};};
 
 #endif

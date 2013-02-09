@@ -13,30 +13,43 @@
 
 namespace TestingList
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
-  class SomeClass
+#define DECLARE_TYPEDEFS(_type_, _name_)\
+  typedef List<_type_, ListNode<_type_, doubly_linked_tag>, List_Dynamic(), true>  _name_ ## ListWithSize;\
+  typedef List<_type_, ListNode<_type_, doubly_linked_tag>, List_Dynamic(), false> _name_ ## ListWithoutSize;\
+  typedef List<_type_, ListNode<_type_, singly_linked_tag>, List_Dynamic(), true>  _name_ ## SinglyListWithSize;\
+  typedef List<_type_, ListNode<_type_, singly_linked_tag>, List_Dynamic(), false> _name_ ## SinglyListWithoutSize
+
+  struct CountedClass
   {
-  public:
-    int dummy;
+    CountedClass()
+    { m_ctorCount++; }
+
+    CountedClass(const CountedClass&)
+    { m_ctorCount++; }
+
+    ~CountedClass()
+    { m_dtorCount++; }
+
+    static tl_int m_ctorCount;
+    static tl_int m_dtorCount;
   };
+
+  tl_int CountedClass::m_ctorCount;
+  tl_int CountedClass::m_dtorCount;
 
   struct ListFixture
   {
-    typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListWithSize;
-    typedef List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListWithoutSize;
-    typedef List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), true> intSinglyListWithSize;
-    typedef List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), false> intSinglyListWithoutSize;
-
-    typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), true> uintListWithSize;
-    typedef List<s32, ListNode<u32, doubly_linked_tag>, List_Dynamic(), false> uintListWithoutSize;
-
-    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), true> intListSize;
-    List<s32, ListNode<s32, doubly_linked_tag>, List_Dynamic(), false> intListNoSize;
-    List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), true> intSinglyListSize;
-    List<s32, ListNode<s32, singly_linked_tag>, List_Dynamic(), false> intSinglyListNoSize;
-    List<SomeClass> classList;
+    ListFixture()
+    {
+      CountedClass::m_ctorCount = 0;
+      CountedClass::m_dtorCount = 0;
+    }
+    DECLARE_TYPEDEFS(s32, int);
+    DECLARE_TYPEDEFS(CountedClass, myClass);
   };
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Sizes", "")
@@ -63,13 +76,13 @@ namespace TestingList
     s32 myints[] = {16,2,77,29};
     T_ListType fifth (myints, myints + sizeof(myints) / sizeof(s32) );
 
-    typename T_ListType::iterator itr = fifth.begin(); 
+    typename T_ListType::iterator itr = fifth.begin();
 
     CHECK(*itr++ == 16);
     CHECK(*itr++ == 2);
     CHECK(*itr++ == 77);
     CHECK(*itr++ == 29);
-    
+
     CHECK(itr == fifth.end());
   }
 
@@ -79,6 +92,44 @@ namespace TestingList
     testCtors<intListWithoutSize>();
     testCtors<intSinglyListWithSize>();
     testCtors<intSinglyListWithoutSize>();
+  }
+
+  template <typename T_ListType>
+  void testDtors()
+  {
+    CountedClass::m_ctorCount = 0;
+    CountedClass::m_dtorCount = 0;
+    {
+      T_ListType first;
+      CHECK(CountedClass::m_ctorCount == 1); // +1 due to the sentry node
+    }
+    CHECK(CountedClass::m_dtorCount == 1);
+
+    CountedClass::m_ctorCount = 0;
+    CountedClass::m_dtorCount = 0;
+    {
+      CountedClass c;
+      T_ListType second(3, c);
+      CHECK(CountedClass::m_ctorCount == 5); // +1 due to the sentry node
+    }
+    CHECK(CountedClass::m_dtorCount == 5);
+
+    CountedClass::m_ctorCount = 0;
+    CountedClass::m_dtorCount = 0;
+    {
+      CountedClass c;
+      T_ListType third(5, c);
+      CHECK(CountedClass::m_ctorCount == 7); // +1 due to the sentry node
+    }
+    CHECK(CountedClass::m_dtorCount == 7);
+  }
+
+  TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Dtors", "")
+  {
+    testDtors<myClassListWithSize>();
+    testDtors<myClassListWithoutSize>();
+    testDtors<myClassSinglyListWithSize>();
+    testDtors<myClassSinglyListWithoutSize>();
   }
 
   template <typename T_ListType>
@@ -1152,7 +1203,7 @@ namespace TestingList
   template <typename T_LinkedTag, bool T_DedicatedSize>
   void testIterator()
   {
-    typedef core::List<testItr, ListNode<testItr, T_LinkedTag>,
+    typedef List<testItr, ListNode<testItr, T_LinkedTag>,
                        List_Dynamic(), T_DedicatedSize>           list_type;
     list_type myList;
     typename list_type::iterator itr;

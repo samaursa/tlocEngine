@@ -1,30 +1,16 @@
-#ifndef TLOC_MESH_H
-#define TLOC_MESH_H
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_MESH_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_MESH_H_
 
-#include <tlocCore/component_system/tlocComponent.h>
-#include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocGraphics/data_types/tlocVertex.h>
-#include <tlocCore/containers/tlocContainers.h>
+#include <tlocGraphics/component_system/tlocPrimitive.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Mesh : public core::component_system::Component
+  class Mesh : public IPrimitive
   {
   public:
-    typedef core::component_system::Component base_type;
-
-    typedef types::Vertex<true, true, true>     vertex_type;
-    typedef core::tl_array<vertex_type>::type   container_type;
-    typedef container_type::iterator            iterator;
-    typedef container_type::const_iterator      const_iterator;
-
     Mesh();
-
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT(container_type, GetVertexes, m_vertexes);
-
-  private:
-    container_type  m_vertexes;
   };
 
 };};};

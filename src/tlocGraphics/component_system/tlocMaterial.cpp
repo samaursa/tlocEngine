@@ -2,7 +2,9 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  Material::Material() : base_type(component_system::components::material)
+  Material::Material()
+    : base_type(component_system::components::material)
+    , m_shaderProgram(new shader_prog_ptr::value_type())
   {
   }
 
@@ -15,5 +17,10 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     return GetUniqueGroupID() < a_other.GetUniqueGroupID();
   }
+
+  //------------------------------------------------------------------------
+  // Explicit Instantiation
+
+  template class core::containers::Array<Material::shader_op_ptr>;
 
 };};};

@@ -1,12 +1,15 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/memory/tlocBufferArg.h>
+
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
 
 namespace TestingBufferPtr
 {
   using namespace tloc;
   using namespace core;
+  using namespace string;
 
   TEST_CASE("Core/Memory/BufferPtr", "")
   {

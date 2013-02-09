@@ -5,9 +5,13 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/utilities/tlocTemplateUtils.h>
+#include "tlocTuple.h"
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/types/tlocTypeTraits.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   //////////////////////////////////////////////////////////////////////////
   // Tuple<N>
@@ -25,106 +29,163 @@ namespace tloc { namespace core {
   // Constructors
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple()
-  {
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple()
+  { /* Intentionally empty */ }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const this_type& aTuple)
-  {
-    Set(aTuple);
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const this_type& aTuple)
+  { Set(aTuple); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  template <typename T_TupleType>
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const Tuple<T_TupleType, T_Size>& aTuple)
+  { Set(aTuple); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_ArrayType (&aArray)[T_Size])
-  {
-    Set(aArray);
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T_ArrayType (&aArray)[T_Size])
+  { Set(aArray); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <template <class, class> class T_Variadic>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T_Variadic<T, tl_size>& a_vars)
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T_Variadic<T, tl_size>& a_vars)
   {
     TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
       Size_mismatch_between_variadic_and_tuple);
     operator=(static_cast<Tuple<T, T_Size> >(a_vars));
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::Tuple(const T& aValue)
-  {
-    Set(aValue);
-  }
+  TL_FI Tuple<TUPLE_PARAMS>::
+    Tuple(const T& aValue)
+  { Set(aValue); }
 
   //------------------------------------------------------------------------
   // Accessors
 
   template <TUPLE_TEMP>
-  TL_FI T& Tuple<TUPLE_PARAMS>::operator [](tl_int aIndex)
+  TL_FI T& Tuple<TUPLE_PARAMS>::
+    operator [](tl_int aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI const T& Tuple<TUPLE_PARAMS>::operator [](tl_int aIndex) const
+  TL_FI const T& Tuple<TUPLE_PARAMS>::
+    operator [](tl_int aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI T& Tuple<TUPLE_PARAMS>::Get(tl_size aIndex)
+  TL_FI T& Tuple<TUPLE_PARAMS>::
+    Get(tl_size aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI const T& Tuple<TUPLE_PARAMS>::Get(tl_size aIndex) const
+  TL_FI const T& Tuple<TUPLE_PARAMS>::
+    Get(tl_size aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
-
     return m_values[aIndex];
   }
 
-  template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::operator T*()
-  {
-    return m_values;
-  }
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI Tuple<TUPLE_PARAMS>::operator const T*() const
-  {
-    return m_values;
-  }
+  TL_FI TUPLE_TYPE::value_type* Tuple<TUPLE_PARAMS>::
+    data()
+  { return m_values; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI tl_size Tuple<TUPLE_PARAMS>::GetSize() const
+  TL_FI TUPLE_TYPE::value_type const * Tuple<TUPLE_PARAMS>::
+    data() const
+  { return m_values; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  TL_FI tl_size Tuple<TUPLE_PARAMS>::
+    GetSize() const
+  { return k_TupleSize; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherTuple>
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+    ConvertTo() const
   {
-    return k_TupleSize;
+    T_OtherTuple toRet;
+    toRet.ConvertFrom(*this);
+    return toRet;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherTuple, typename T_Policy>
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+    ConvertTo() const
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy,
+        p_tuple::overflow_one,
+        p_tuple::overflow_zero
+      >();
+
+    T_OtherTuple toRet;
+    toRet.ConvertFrom(*this, T_Policy());
+    return toRet;
   }
 
   //------------------------------------------------------------------------
   // Modifiers
 
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::Set(T aValue)
+  void Tuple<TUPLE_PARAMS>::
+    Set(T aValue)
   {
     ITERATE_TUPLE
-    {
-      m_values[i] = aValue;
-    }
+    { m_values[i] = aValue; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_TupleType>
-  void Tuple<TUPLE_PARAMS>::Set(const Tuple<T_TupleType, T_Size>& aTuple)
+  void Tuple<TUPLE_PARAMS>::
+    Set(const Tuple<T_TupleType, T_Size>& aTuple)
   {
     // We go through the trouble of identifying the type for the sole reason of
     // letting the compiler generate type mismatch warnings
@@ -136,9 +197,12 @@ namespace tloc { namespace core {
     DoSet(aTuple, is_same_type());
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  void Tuple<TUPLE_PARAMS>::Set(const T_ArrayType (&aArray)[T_Size])
+  void Tuple<TUPLE_PARAMS>::
+    Set(const T_ArrayType (&aArray)[T_Size])
   {
     // We go through the trouble of identifying the type for the sole reason of
     // letting the compiler generate type mismatch warnings
@@ -150,67 +214,49 @@ namespace tloc { namespace core {
     DoSet(aArray, is_same_type());
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::Swap(this_type& aVector)
+  void Tuple<TUPLE_PARAMS>::
+    Swap(this_type& aVector)
   {
     ITERATE_TUPLE
-    {
-      tlSwap(m_values[(tl_int)i], aVector[(tl_int)i]);
-    }
+    { tlSwap(m_values[(tl_int)i], aVector[(tl_int)i]); }
   }
 
-  template <TUPLE_TEMP>
-  template <tl_size T_TupleSize>
-  TL_FI void Tuple<TUPLE_PARAMS>::
-    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other)
-  {
-    DoConvertFrom<T_TupleSize, p_tuple::overflow_one>
-      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
-  }
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
+  template <typename T_OtherTuple, typename T_Policy>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
-                T_Policy)
-  {
-    DoConvertFrom<T_TupleSize, T_Policy>
-      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
-  }
-
-  template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
-  TL_FI void Tuple<TUPLE_PARAMS>::
-    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+    DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_bigger)
   {
     for (size_type i = 0; i < k_TupleSize; ++i)
-    {
-      m_values[i] = a_other[i];
-    }
+    { m_values[i] = a_other[i]; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  template <tl_size T_TupleSize, typename T_Policy>
+  template <typename T_OtherTuple, typename T_Policy>
   TL_FI void Tuple<TUPLE_PARAMS>::
-    DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other, 
+    DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_smaller)
   {
-    for (size_type i = 0; i < T_TupleSize; ++i)
-    {
-      m_values[i] = a_other[i];
-    }
+    for (size_type i = 0; i < T_OtherTuple::k_TupleSize; ++i)
+    { m_values[i] = a_other[i]; }
 
-    DoFillRemaining<T_TupleSize>(T_Policy());
+    DoFillRemaining<T_OtherTuple::k_TupleSize>(T_Policy());
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
   TL_FI void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_same)
-  {
-    // Intentionally empty
-  }
+  { /* Intentionally empty */ }
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
@@ -218,10 +264,10 @@ namespace tloc { namespace core {
     DoFillRemaining(p_tuple::overflow_one)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
-    {
-      m_values[i] = 1;
-    }
+    { m_values[i] = 1; }
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
@@ -229,92 +275,113 @@ namespace tloc { namespace core {
     DoFillRemaining(p_tuple::overflow_zero)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
-    {
-      m_values[i] = 0;
-    }
+    { m_values[i] = 0; }
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherValueType, tl_size T_TupleSize>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other)
+  {
+    DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, p_tuple::overflow_one>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TUPLE_TEMP>
+  template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
+  TL_FI void Tuple<TUPLE_PARAMS>::
+    ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
+                T_Policy)
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy,
+        p_tuple::overflow_one,
+        p_tuple::overflow_same,
+        p_tuple::overflow_zero
+      >();
+
+    DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, T_Policy>
+      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+  }
 
   //------------------------------------------------------------------------
   // Operators
 
   template <TUPLE_TEMP>
-  template <typename T_TupleType>
-  TL_FI Tuple<TUPLE_PARAMS>& 
-    Tuple<TUPLE_PARAMS>::operator=(const Tuple<T_TupleType, T_Size>& aTuple)
+  Tuple<TUPLE_PARAMS>& Tuple<TUPLE_PARAMS>::
+    operator =(const Tuple& a_other)
   {
-    Set(aTuple);
+    Set(a_other);
     return *this;
   }
 
-  template <TUPLE_TEMP>
-  template <typename T_ArrayType>
-  TL_FI Tuple<TUPLE_PARAMS>& 
-    Tuple<TUPLE_PARAMS>::operator=( const T_ArrayType (&aArray)[T_Size])
-  {
-    Set(aArray);
-    return *this;
-  }
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator==( const this_type& aTuple ) const
+  TL_FI bool Tuple<TUPLE_PARAMS>::
+    operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
-    {
-      if (m_values[(tl_int)i] != aTuple[(tl_int)i]) { return false; }
-    }
+    { if (m_values[(tl_int)i] != aTuple[(tl_int)i]) { return false; } }
 
     return true;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::operator!=( const this_type& aTuple ) const
-  {
-    return !operator==(aTuple);
-  }
+  TL_FI bool Tuple<TUPLE_PARAMS>::
+    operator!=( const this_type& aTuple ) const
+  { return !operator==(aTuple); }
 
   //------------------------------------------------------------------------
   // Details
 
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::DoSet(const T (&aArray)[T_Size], type_true)
-  {
-    memcpy(m_values, aArray, sizeof(T) * T_Size);
-  }
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const T (&aArray)[T_Size], type_true)
+  { memcpy(m_values, aArray, sizeof(T) * T_Size); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
-  void Tuple<TUPLE_PARAMS>::DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
   {
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
       Array_type_must_be_the_same_size_as_the_tuple_type);
 
     ITERATE_TUPLE
-    {
-      m_values[i] = aArray[i];
-    }
+    { m_values[i] = aArray[i]; }
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TUPLE_TEMP>
-  void Tuple<TUPLE_PARAMS>::DoSet(const this_type& aTuple, type_true)
-  {
-    memcpy(m_values, aTuple, sizeof(T) * T_Size);
-  }
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const this_type& aTuple, type_true)
+  { memcpy(m_values, aTuple.data(), sizeof(T) * T_Size); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
   template <typename T_TupleType>
-  void Tuple<TUPLE_PARAMS>::DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
+  void Tuple<TUPLE_PARAMS>::
+    DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
   {
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
       Tuple_type_must_be_the_same_size_as_this_tuple_type);
 
     ITERATE_TUPLE
-    {
-      m_values[i] = aTuple[i];
-    }
+    { m_values[i] = aTuple[i]; }
   }
 
-
-};};
+};};};
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef TLOC_GROUP_ID_H
 #define TLOC_GROUP_ID_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/utilities/tlocObjectCtorCounter.h>
 
@@ -16,7 +18,7 @@ namespace tloc { namespace core { namespace utils {
   {
   public:
     typedef GroupID<T>                          this_type;
-    typedef ObjectCtorCounter<T>              base_type;
+    typedef ObjectCtorCounter<T>                base_type;
     typedef typename base_type::size_type       size_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(size_type, GetUniqueGroupID, m_groupId);

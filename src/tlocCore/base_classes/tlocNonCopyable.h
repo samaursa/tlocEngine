@@ -1,7 +1,7 @@
 #ifndef TLOC_NON_COPYABLE
 #define TLOC_NON_COPYABLE
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 
 namespace tloc { namespace core {
 

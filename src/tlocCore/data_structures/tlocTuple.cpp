@@ -1,4 +1,5 @@
 #include "tlocTuple.h"
+#include "tlocTuple.inl"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -27,20 +28,34 @@
 
 #else
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
-  template class Tuple<tl_float, 2>;
-  template class Tuple<tl_int, 2>;
-  template class Tuple<tl_uint, 2>;
+#include "tlocTupleExplicitMacros.h"
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f32, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f64, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s32, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s64, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u32, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u64, 2);
 
-  template class Tuple<tl_float, 3>;
-  template class Tuple<tl_int, 3>;
-  template class Tuple<tl_uint, 3>;
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f32, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f64, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s32, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s64, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u32, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u64, 3);
 
-  template class Tuple<tl_float, 4>;
-  template class Tuple<tl_int, 4>;
-  template class Tuple<tl_uint, 4>;
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f32, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f64, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s32, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s64, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u32, 4);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u64, 4);
 
-};};
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 4);
+
+};};};
 
 #endif

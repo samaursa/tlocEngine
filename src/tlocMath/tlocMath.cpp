@@ -1,6 +1,8 @@
 #include "tlocMath.h"
 #include "tlocMath.inl"
 
+#include <limits>
+
 namespace tloc
 {
 
@@ -66,7 +68,8 @@ namespace tloc
   //------------------------------------------------------------------------
   // Explicitly template instantiation
 
-  template class Math<f32>;
-  template class Math<f64>;
-  template class Math<f128>;
+#include "tlocMathExplicitMacros.h"
+  TLOC_EXPLICITLY_INSTANTIATE_MATH(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_MATH(f64);
+  TLOC_EXPLICITLY_INSTANTIATE_MATH(f128);
 }

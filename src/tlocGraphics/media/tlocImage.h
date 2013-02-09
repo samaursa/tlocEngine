@@ -1,25 +1,28 @@
 #ifndef TLOC_IMAGE_H
 #define TLOC_IMAGE_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tloccontainers.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocGraphics/data_types/tlocColor.h>
-#include <tlocGraphics/data_types/tlocDimension.h>
+#include <tlocGraphics/types/tlocColor.h>
+#include <tlocGraphics/types/tlocDimension.h>
 
 namespace tloc { namespace graphics { namespace media {
 
   class Image
   {
   public:
-    typedef tl_size                             size_type;
-    typedef types::Color                        color_type;
-    typedef core::tl_array<color_type>::type    pixel_container_type;
-    typedef core::error::Error                  error_type;
-    typedef Image                               this_type;
-    typedef types::Dimension2u                  dimension_type;
+    typedef tl_size                                       size_type;
+    typedef types::Color                                  color_type;
+    typedef core::containers::tl_array<color_type>::type  pixel_container_type;
+    typedef core::error::Error                            error_type;
+    typedef Image                                         this_type;
+    typedef types::Dimension2u                            dimension_type;
 
   public:
     Image();
@@ -47,6 +50,11 @@ namespace tloc { namespace graphics { namespace media {
     dimension_type          m_dim;
     pixel_container_type    m_pixels;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core::smart_ptr::SharedPtr<Image> image_sptr;
 
 };};};
 

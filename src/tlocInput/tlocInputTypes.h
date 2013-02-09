@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -14,17 +16,24 @@ namespace tloc { namespace input {
     struct Immediate{};
   };
 
-  namespace hid
+  namespace p_hid
   {
-    enum Type
-    {
-      keyboard = 0,
-      mouse,
-      joystick,
-      touch_surface,
+    struct HIDType      {};
 
-      count
-    };
+    struct Keyboard     : public HIDType { static const int m_index = 0; };
+    struct Mouse        : public HIDType { static const int m_index = 1; };
+    struct Joystick     : public HIDType { static const int m_index = 2; };
+    struct TouchSurface : public HIDType { static const int m_index = 3; };
+
+    struct Count                         { static const int m_index = 4; };
+
+    template <typename T_InputObject>
+    void IsInputTypeSupported()
+    {
+      TLOC_STATIC_ASSERT(
+        (Loki::Conversion<T_InputObject, p_hid::HIDType>::exists),
+        Object_must_be_HID_type);
+    }
   }
 
   namespace parameter_options
@@ -61,7 +70,7 @@ namespace tloc { namespace input {
   {
     // In OIS these are enums, we go a different route, although the idea of
     // components is taken from OIS
-    namespace Policy
+    namespace p_type
     {
       struct Button {};
       struct Axis {};
@@ -69,28 +78,44 @@ namespace tloc { namespace input {
       struct Vector3 {};
     };
 
+    namespace p_axis
+    {
+      struct RelativeOnly{};
+      struct AbsoluteOnly{};
+      struct RelativeAndAbsolute{};
+    };
+
     // Base component type
-    template <typename T_ComponentType, bool T_AbsOnly = false,
+    template <typename T_ComponentType,
+              typename T_PolicyType = p_axis::RelativeAndAbsolute,
               typename T_ValueType = void> struct Type;
 
     template<>
-    struct Type<Policy::Button>
+    struct Type<p_type::Button>
     {
       Type(bool a_pressed = false) : m_pressed(a_pressed) {}
 
       bool m_pressed;
     };
 
-    template<bool T_RelOnly, typename T_ValueType>
-    struct Type<Policy::Axis, T_RelOnly, T_ValueType>
+    template <typename T_PolicyType, typename T_ValueType>
+    struct Type<p_type::Axis, T_PolicyType, T_ValueType>
     {
-      typedef Type<Policy::Axis, T_RelOnly, T_ValueType>      this_type;
+    public:
 
-      typedef Loki::Select<T_RelOnly, type_true, type_false>  abs_only_type;
+      typedef Type<p_type::Axis, T_PolicyType, T_ValueType>   this_type;
+
+      typedef T_PolicyType                                    policy_type;
       typedef T_ValueType                                     value_type;
+
+      typedef typename
+        Loki::Int2Type<Loki::IsSameType<policy_type,
+        p_axis::RelativeAndAbsolute>::value>                  policy_result_type;
+
       // Relative and absolute types
-      typedef core::ConditionalTypePackage<value_type, value_type, T_RelOnly>
+      typedef core::ConditionalTypePackage<value_type, value_type, policy_result_type::value>
                                                               rel_and_abs;
+      typedef value_type                                      rel_type;
       typedef typename rel_and_abs::cond_type                 abs_type;
 
       Type(value_type a_abs = 0, value_type a_rel = 0)
@@ -112,24 +137,68 @@ namespace tloc { namespace input {
         return *this;
       }
 
-      TL_FI value_type&       m_rel()
+      TL_FI rel_type&       m_rel()
       { return m_absoluteAndRelative.m_var; }
-      TL_FI const value_type& m_rel() const
+      TL_FI const rel_type& m_rel() const
       { return m_absoluteAndRelative.m_var; }
-      TL_FI abs_type&    m_abs()
+      TL_FI abs_type&       m_abs()
       { return (abs_type&)m_absoluteAndRelative; }
       TL_FI const abs_type& m_abs() const
       { return (abs_type&)m_absoluteAndRelative; }
 
-    private:
+    protected:
       rel_and_abs m_absoluteAndRelative;
     };
 
-    typedef Type<Policy::Button>     Button;
-    typedef Type<Policy::Axis, false, s64>     AxisRel;
-    typedef Type<Policy::Axis, true, s64>      AxisRelAbs;
-    typedef Type<Policy::Axis, false, f64>     AxisRelf;
-    typedef Type<Policy::Axis, true, f64>      AxisRelAbsf;
+
+    template <typename T_ValueType>
+    struct Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>
+      : public Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>
+    {
+    public:
+      typedef
+        Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>  this_type;
+
+      typedef
+        Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>  base_type;
+
+      typedef typename base_type::value_type                    value_type;
+
+      typedef p_axis::AbsoluteOnly                              policy_type;
+
+      typedef typename base_type::rel_and_abs                   rel_and_abs;
+      typedef typename base_type::abs_type                      rel_type;
+      typedef typename base_type::rel_type                      abs_type;
+
+      using base_type::m_absoluteAndRelative;
+
+      Type(value_type a_abs = 0, value_type a_rel = 0)
+        : base_type(a_abs, a_rel)
+      {
+        m_abs() = a_abs; m_rel() = a_rel;
+      }
+
+      Type(const this_type& a_other)
+        : base_type(a_other)
+      { }
+
+      TL_FI rel_type&       m_rel()
+      { return (rel_type&)m_absoluteAndRelative; }
+      TL_FI const rel_type& m_rel() const
+      { return (rel_type&)m_absoluteAndRelative; }
+      TL_FI abs_type&       m_abs()
+      { return m_absoluteAndRelative.m_var; }
+      TL_FI const abs_type& m_abs() const
+      { return m_absoluteAndRelative.m_var; }
+    };
+
+    typedef Type<p_type::Button>     Button;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
   }

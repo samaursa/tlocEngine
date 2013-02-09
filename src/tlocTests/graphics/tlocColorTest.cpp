@@ -1,11 +1,19 @@
 #include "tlocTestCommon.h"
 
-#define private public
-#include <tlocGraphics/data_types/tlocColor.h>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocGraphics/types/tlocColor.h>
 
 namespace TestingColor
 {
+  using namespace tloc;
   using namespace tloc::graphics::types;
+
+#define CHECK_COLOR_4(_tuple4_, _r_, _g_, _b_, _a_)\
+    CHECK(_tuple4_.Get()[0] == _r_);\
+    CHECK(_tuple4_.Get()[1] == _g_);\
+    CHECK(_tuple4_.Get()[2] == _b_);\
+    CHECK(_tuple4_.Get()[3] == _a_)
+
 
   TEST_CASE("Graphics/types/Color", "")
   {
@@ -89,6 +97,52 @@ namespace TestingColor
     f = e;
     CHECK(f == e);
     CHECK(e == f);
+  }
 
+  TEST_CASE("Graphics/types/Color/Get and GetAs", "")
+  {
+    Color c(25, 35, 45, 55);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+
+    math::types::Vec4f cVec;
+
+    c.GetAs<p_color::format::RGBA>(cVec);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+    CHECK(cVec[0] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[1] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[2] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[3] == Approx(0.21568627450980392156862745098039));
+
+    c.GetAs<p_color::format::ABGR>(cVec);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+    CHECK(cVec[0] == Approx(0.21568627450980392156862745098039));
+    CHECK(cVec[1] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[2] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[3] == Approx(0.09803921568627450980392156862745f));
+
+    c.GetAs<p_color::format::ARGB>(cVec);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+    CHECK(cVec[0] == Approx(0.21568627450980392156862745098039));
+    CHECK(cVec[1] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[2] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[3] == Approx(0.17647058823529411764705882352941));
+
+    c.GetAs<p_color::format::BGRA>(cVec);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+    CHECK(cVec[0] == Approx(0.17647058823529411764705882352941));
+    CHECK(cVec[1] == Approx(0.13725490196078431372549019607843));
+    CHECK(cVec[2] == Approx(0.09803921568627450980392156862745f));
+    CHECK(cVec[3] == Approx(0.21568627450980392156862745098039));
+  }
+
+  TEST_CASE("Graphics/types/Color/SetAs", "")
+  {
+    Color c(25, 35, 45, 55);
+    CHECK_COLOR_4(c, 25, 35, 45, 55);
+
+    c.SetAs(0, 0, 1, 255);
+    CHECK_COLOR_4(c, 0, 0, 1, 255);
+    c.SetAs(0.5f, 0.5f, 0.5f, 0.5f);
+    CHECK_COLOR_4(c, 127, 127, 127, 127);
   }
 };

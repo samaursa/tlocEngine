@@ -50,6 +50,8 @@ namespace tloc { namespace core {
       {
         m_range = a_other.m_range;
         m_index = a_other.m_index;
+
+        return *this;
       }
 
       value_type operator*() const
@@ -70,9 +72,9 @@ namespace tloc { namespace core {
 
       TLOC_DECLARE_OPERATORS(iterator);
 
-      this_type operator+ (difference_type a_distance) const
+      this_type operator+ (difference_type a_index) const
       {
-        return this_type(m_range, m_index + a_distance);
+        return this_type(m_range, m_index + a_index);
       }
 
       this_type& operator++ ()
@@ -88,15 +90,15 @@ namespace tloc { namespace core {
         return temp;
       }
 
-      this_type& operator+= (difference_type a_distance)
+      this_type& operator+= (difference_type a_index)
       {
-        m_index += a_distance;
+        *this = this_type(m_range, m_index + a_index);
         return *this;
       }
 
-      this_type operator- (difference_type a_distance)
+      this_type operator- (difference_type a_index)
       {
-        return this_type (m_range, m_index - a_distance);
+        return this_type (m_range, m_index - a_index);
       }
 
       this_type& operator-- ()
@@ -112,15 +114,15 @@ namespace tloc { namespace core {
         return temp;
       }
 
-      this_type operator-= (difference_type a_distance)
+      this_type operator-= (difference_type a_index)
       {
-        m_index -= a_distance;
+        *this = this_type(m_range, m_index - a_index);
         return *this;
       }
 
-      value_type operator[] (difference_type a_distance) const
+      value_type operator[] (difference_type a_index) const
       {
-        return m_range[m_index + a_distance];
+        return m_range[m_index + a_index];
       }
 
     private:
@@ -139,7 +141,7 @@ namespace tloc { namespace core {
 
       typedef T_IntegerType                         value_type;
       typedef Range_T<value_type>                   range_type;
-      typedef typename range_type::iterator         this_type;
+      typedef typename range_type::reverse_iterator this_type;
 
       typedef typename base_type::difference_type   difference_type;
       typedef typename base_type::pointer           pointer;
@@ -164,6 +166,7 @@ namespace tloc { namespace core {
       {
         m_range = a_other.m_range;
         m_index = a_other.m_index;
+        return *this;
       }
 
       value_type operator*() const
@@ -179,14 +182,15 @@ namespace tloc { namespace core {
 
       bool operator< (const iterator& a_other) const
       {
+        TLOC_ASSERT_LOW_LEVEL(m_range == a_other.m_range, "Mismatched ranges!");
         return m_index < a_other.m_index;
       }
 
       TLOC_DECLARE_OPERATORS(iterator);
 
-      this_type operator+ (difference_type a_distance) const
+      this_type operator+ (difference_type a_index) const
       {
-        return this_type(m_range, m_index + a_distance);
+        return this_type(m_range, m_index + a_index);
       }
 
       this_type& operator++ ()
@@ -202,15 +206,15 @@ namespace tloc { namespace core {
         return temp;
       }
 
-      this_type& operator+= (difference_type a_distance)
+      this_type& operator+= (difference_type a_index)
       {
-        m_index += a_distance;
+        *this = this_type(m_range, m_index + a_index);
         return *this;
       }
 
-      this_type operator- (difference_type a_distance)
+      this_type operator- (difference_type a_index)
       {
-        return this_type (m_range, m_index - a_distance);
+        return this_type (m_range, m_index - a_index);
       }
 
       this_type& operator-- ()
@@ -226,15 +230,15 @@ namespace tloc { namespace core {
         return temp;
       }
 
-      this_type operator-= (difference_type a_distance)
+      this_type operator-= (difference_type a_index)
       {
-        m_index -= a_distance;
+        *this = this_type(m_range, m_index - a_index);
         return *this;
       }
 
-      value_type operator[] (difference_type a_distance) const
+      value_type operator[] (difference_type a_index) const
       {
-        reverse_iterator temp(m_range, m_index + a_distance);
+        reverse_iterator temp(m_range, m_index + a_index);
         return *temp;
       }
 
@@ -261,34 +265,34 @@ namespace tloc { namespace core {
 
     Range_T()
       : m_begin(0)
-      , m_end(0)
-      , m_stepSize(0)
+      , m_elementCount(0)
+      , m_stepSize(1)
     { }
 
     Range_T(value_type a_begin, value_type a_end,
             step_size a_stepSize = step_size(1))
       : m_begin(a_begin)
-      , m_end(a_end)
       , m_stepSize(a_stepSize)
     {
-      TLOC_ASSERT_LOW_LEVEL(m_end >= m_begin, "Invalid range!");
+      m_elementCount = (a_end - a_begin) / a_stepSize;
+      if ( (a_end - a_begin) % a_stepSize != 0)
+      { m_elementCount++; }
+
+      TLOC_ASSERT_LOW_LEVEL(a_end >= a_begin, "Invalid range!");
       TLOC_ASSERT_LOW_LEVEL(m_stepSize > 0, "Invalid step size!");
     }
 
     Range_T(const this_type& a_other)
       : m_begin(a_other.m_begin)
-      , m_end(a_other.m_end)
+      , m_elementCount(a_other.m_elementCount)
       , m_stepSize(a_other.m_stepSize)
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_end >= m_begin, "Invalid range!");
-      TLOC_ASSERT_LOW_LEVEL(m_stepSize > 0, "Invalid step size!");
-    }
+    { }
 
     this_type& operator=(const this_type& a_other)
     {
-      m_begin    = a_other.m_begin;
-      m_end      = a_other.m_end;
-      m_stepSize = a_other.m_stepSize;
+      m_begin         = a_other.m_begin;
+      m_elementCount  = a_other.m_elementCount;
+      m_stepSize      = a_other.m_stepSize;
 
       return *this;
     }
@@ -296,7 +300,7 @@ namespace tloc { namespace core {
     bool operator== (const this_type& a_other) const
     {
       return m_begin == a_other.m_begin &&
-             m_end == a_other.m_end &&
+             m_elementCount == a_other.m_elementCount &&
              m_stepSize == a_other.m_stepSize;
     }
 
@@ -304,8 +308,7 @@ namespace tloc { namespace core {
 
     value_type at(size_type a_index) const
     {
-      TLOC_ASSERT_LOW_LEVEL(m_begin + (m_stepSize * a_index) < m_end,
-        "Index out of bounds!");
+      TLOC_ASSERT_LOW_LEVEL (a_index < size(), "Index out of bounds!");
       return m_begin + (m_stepSize * a_index);
     }
 
@@ -316,7 +319,7 @@ namespace tloc { namespace core {
 
     value_type front() const
     {
-      return m_begin();
+      return m_begin;
     }
 
     value_type back() const
@@ -346,7 +349,7 @@ namespace tloc { namespace core {
 
     size_type size() const
     {
-      return (m_end - m_begin) / m_stepSize;
+      return m_elementCount;
     }
 
     size_type capacity() const
@@ -359,14 +362,9 @@ namespace tloc { namespace core {
       return size() == 0;
     }
 
-    bool full() const
-    {
-      return size() == 0;
-    }
-
   private:
     value_type m_begin;
-    value_type m_end;
+    value_type m_elementCount;
     value_type m_stepSize;
   };
 

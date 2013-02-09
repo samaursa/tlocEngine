@@ -46,6 +46,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <KEYBOARD_IMPL_TEMP>
+  void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::Reset()
+  {
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::DoInitialize()
   {
   }

@@ -183,7 +183,7 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat2");
       uniform->SetValueAs(Mat2f32(1, 0,
-                                        0, 1));
+                                  0, 1));
 
       so->AddUniform(uniform);
     }
@@ -191,8 +191,8 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat3");
       uniform->SetValueAs(Mat3f32(1, 0, 0,
-                                        0, 1, 0,
-                                        0, 0, 1));
+                                  0, 1, 0,
+                                  0, 0, 1));
 
       so->AddUniform(uniform);
     }
@@ -200,9 +200,9 @@ namespace TestingShaderOperator
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat4");
       uniform->SetValueAs(Mat4f32(1, 0, 0, 0,
-                                        0, 1, 0, 0,
-                                        0, 0, 1, 0,
-                                        0, 0, 0, 1));
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1));
 
       so->AddUniform(uniform);
     }

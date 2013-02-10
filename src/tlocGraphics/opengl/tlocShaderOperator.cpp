@@ -109,7 +109,7 @@ namespace tloc { namespace graphics { namespace gl {
               : a_uniform.GetValueAs<array_type>();
 
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-            GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+            GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
             glUniform1fv(a_info.m_location, arraySize, faraw);
           }
           break;
@@ -138,7 +138,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform2fv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -167,7 +167,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform3fv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -196,7 +196,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform4fv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -224,7 +224,7 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_Type const * faraw = reinterpret_cast<data_Type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform1iv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -253,7 +253,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform2iv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -282,7 +282,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform3iv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -312,7 +312,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform4iv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -342,7 +342,7 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform1uiv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -371,7 +371,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform2uiv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -400,7 +400,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform3uiv(a_info.m_location, arraySize, faraw);
             }
           }
@@ -430,7 +430,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               data_type::value_type const * faraw =
                 reinterpret_cast<data_type::value_type const*>(&(fa[0]));
-              GLint arraySize = core::utils::CastTo32<u32>(fa.size() );
+              GLint arraySize = core::utils::CastNumber<u32>(fa.size() );
               glUniform4uiv(a_info.m_location, arraySize, faraw);
             }
           }

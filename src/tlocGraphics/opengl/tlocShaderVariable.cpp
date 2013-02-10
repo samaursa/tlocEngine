@@ -103,7 +103,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
     : m_isArray(false)
-    , m_sharedArray(false)
+    , m_isShared(false)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -119,6 +119,20 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_value.Assign(a_value);
+    return *(static_cast<derived_type*>(this));
+  }
+
+  template <SHADER_VARIABLE_TEMP>
+  template <typename T>
+  SHADER_VARIABLE_TYPE::derived_type&
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    DoSetValueAs(SharedPtr<T> a_value)
+  {
+    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
+      "Cannot change uniform TYPE after construction");
+    m_type = tlToGl<T>::k_glType;
+    m_value.Assign(a_value);
+    m_isShared = true;
     return *(static_cast<derived_type*>(this));
   }
 
@@ -161,8 +175,8 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_isArray = true;
-    m_sharedArray = true;
-    m_value.Assign(SharedPtr<Array<T> >());
+    m_isShared = true;
+    m_value.Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }
 

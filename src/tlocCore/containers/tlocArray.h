@@ -93,71 +93,71 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_I iterator         begin();
-    TL_I const_iterator   begin() const;
+    iterator         begin();
+    const_iterator   begin() const;
 
-    TL_I iterator         end();
-    TL_I const_iterator   end() const;
+    iterator         end();
+    const_iterator   end() const;
+
+    reverse_iterator       rbegin();
+    const_reverse_iterator rbegin() const;
+
+    reverse_iterator       rend();
+    const_reverse_iterator rend() const;
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I size_type        size() const;
-    TL_I size_type        capacity() const;
-    // Checks if size is exactly 0, returns true if so. This is for performance,
-    // since one should already not be able to underflow the array.
-    // To not underflow the array, one must use TLOC_ASSERT_ARRAY_NOT_EMPTY()
-    // this assert checks for negative size.
-    TL_I bool             empty() const;
-    TL_I bool             full() const;
+    size_type        size() const;
+    size_type        capacity() const;
+    bool             empty() const;
+    bool             full() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void             pop_back();
-    TL_I void             pop_back(reference a_out);
-    // Function assumes that order does not matter
-    TL_I iterator         erase(iterator a_position);
-    // Ordering of elements is preserved
-    TL_I iterator         erase(iterator a_rangeBegin, iterator a_rangeEnd);
-    TL_I void             clear();
+    void             pop_back();
+    void             pop_back(reference a_out);
+    iterator         erase(iterator a_position);
+    iterator         erase(iterator a_rangeBegin, iterator a_rangeEnd);
+    void             clear();
 
   protected:
     //------------------------------------------------------------------------
     // Internal Functions
 
-    TL_FI ArrayBase();
-    TL_FI ArrayBase(size_type a_size);
+    ArrayBase();
+    ArrayBase(size_type a_size);
 
-    TL_FI ~ArrayBase();
+    ~ArrayBase();
 
     //------------------------------------------------------------------------
     // Functions that call memory allocators directly
 
-    TL_I pointer          DoAllocate(const size_type& a_size);
-    TL_I pointer          DoReAllocate(const size_type& a_size);
-    TL_I void             DoFree(pointer a_ptr);
+    pointer          DoAllocate(const size_type& a_size);
+    pointer          DoReAllocate(const size_type& a_size);
+    void             DoFree(pointer a_ptr);
 
     // Destroys a range of values only
-    TL_I void             DoDestroyValues(pointer a_rangeBegin,
+    void             DoDestroyValues(pointer a_rangeBegin,
                                           pointer a_rangeEnd);
 
-    // Copies the incoming value to the end pointer and increments the end pointer.
-    // NOTE: function performs no safety checks
-    TL_I void             DoAddToEnd(const_reference a_valueToCopy);
+    // Copies the incoming value to the end pointer and increments the end
+    // pointer. NOTE: function performs no safety checks.
+    void             DoAddToEnd(const_reference a_valueToCopy);
 
-    // Increases the storage capacity by reallocation. This function automatically
-    // resizes the array according to the formula:
+    // Increases the storage capacity by reallocation. This function
+    // automatically resizes the array according to the formula:
     //        newCapacity = m_capacity ? capacity() * 2 : sm_defaultCapacity;
     // and adjusts the iterators. If successful, old iterators are considered
     // invalid.
-    TL_I void             DoReAllocate();
+    void             DoReAllocate();
 
     //------------------------------------------------------------------------
     // erase() helpers
 
-    TL_I iterator         DoErase(iterator a_position, Array_Ordered);
-    TL_I iterator         DoErase(iterator a_position, Array_Unordered);
+    iterator         DoErase(iterator a_position, Array_Ordered);
+    iterator         DoErase(iterator a_position, Array_Unordered);
 
     //------------------------------------------------------------------------
     // Variables
@@ -214,42 +214,42 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // Constructors
 
-    TL_FI Array();
-    TL_FI Array( const this_type& a_toCopy);
-    TL_FI explicit Array(size_type a_numElemsToInsert,
+    Array();
+    Array( const this_type& a_toCopy);
+    explicit Array(size_type a_numElemsToInsert,
                          const_reference a_valueToCopy);
-    TL_FI explicit Array(size_type a_count);
+    explicit Array(size_type a_count);
     template <typename T_InputIterator>
-    TL_FI Array(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd);
+    Array(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd);
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_I void             resize(size_type a_newSize );
-    TL_I void             resize(size_type a_newSize, const_reference a_value );
-    TL_I void             reserve(size_type a_newCapacity);
-    TL_I void             shrink(size_type a_newCapacity);
-    TL_I void             shrink_to_fit();
+    void             resize(size_type a_newSize );
+    void             resize(size_type a_newSize, const_reference a_value );
+    void             reserve(size_type a_newCapacity);
+    void             shrink(size_type a_newCapacity);
+    void             shrink_to_fit();
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void             assign(size_type a_repetitionNum,
+    void             assign(size_type a_repetitionNum,
                                  const_reference a_elemToCopy);
     template <typename T_InputIterator>
-    TL_I void             assign(T_InputIterator a_rangeBegin,
+    void             assign(T_InputIterator a_rangeBegin,
                                  T_InputIterator a_rangeEnd);
-    TL_I void             push_back(const_reference a_valueToCopy);
-    TL_I iterator         insert(iterator a_position,
+    void             push_back(const_reference a_valueToCopy);
+    iterator         insert(iterator a_position,
                                  const_reference a_valueToCopy);
-    TL_I void             insert(iterator a_position,
+    void             insert(iterator a_position,
                                  size_type a_numElemsToInsert,
                                  const_reference aValueToCopy);
     template <typename T_InputIterator>
-    TL_I void             insert(iterator a_position,
+    void             insert(iterator a_position,
                                  T_InputIterator a_rangeBegin,
                                  T_InputIterator a_rangeEnd);
-    TL_I void             swap(this_type& a_vec);
+    void             swap(this_type& a_vec);
   protected:
     //------------------------------------------------------------------------
     // Internal functions
@@ -262,12 +262,12 @@ namespace tloc { namespace core { namespace containers {
 
     // This is the assign() selector, which is invoked with type-traits
     template <typename T_Number>
-    TL_I void             DoAssign(T_Number a_repetitionNum,
+    void             DoAssign(T_Number a_repetitionNum,
                                    T_Number a_elemToCopy, is_arith_t);
 
     // This is the assign() selector, which is invoked with type-traits
     template <typename T_InputIterator>
-    TL_I void             DoAssign(T_InputIterator a_rangeBegin,
+    void             DoAssign(T_InputIterator a_rangeBegin,
                                    T_InputIterator a_rangeEnd, is_not_arith_t);
 
     //------------------------------------------------------------------------
@@ -276,12 +276,12 @@ namespace tloc { namespace core { namespace containers {
     // Inserts the value in the specified position by moving all the elements
     // range starting from aPosition by one element and increasing the capacity
     // if required
-    TL_I void             DoInsertValue(iterator a_position,
+    void             DoInsertValue(iterator a_position,
                                         const_reference a_value);
 
     // Inserts the range of values in the specified position by moving all
     // the elements from position to end and increasing the capacity if required
-    TL_I void             DoInsertValues(iterator a_position,
+    void             DoInsertValues(iterator a_position,
                                          size_type a_numElemsToInsert,
                                          const_reference a_value);
 
@@ -290,17 +290,17 @@ namespace tloc { namespace core { namespace containers {
 
     // This is the insert selector, which is invoked with type-traits
     template <typename T_Number>
-    TL_I void             DoInsert(iterator a_position, T_Number a_n,
+    void             DoInsert(iterator a_position, T_Number a_n,
                                    T_Number a_value, is_integral_t);
 
     // This is the insert selector, which is invoked with type-traits
     template <typename T_InputIterator>
-    TL_I void             DoInsert(iterator a_position, T_InputIterator a_first,
+    void             DoInsert(iterator a_position, T_InputIterator a_first,
                                    T_InputIterator a_last, is_not_integral_t);
 
     // Helper function for DoInsert
     template <typename T_InputIterator>
-    TL_I void             DoInsertByIterator(iterator a_position,
+    void             DoInsertByIterator(iterator a_position,
                                              T_InputIterator a_first,
                                              T_InputIterator a_last);
   };

@@ -56,32 +56,27 @@ namespace tloc { namespace core { namespace containers {
     explicit Queue(const T_Container& aCont);
 
     //------------------------------------------------------------------------
-    // General
-
-    TL_I const T_Container& _Get_container() const;
-
-    //------------------------------------------------------------------------
     // Capacity
 
-    TL_I size_type          size() const;
-    TL_I bool               empty() const;
+    size_type          size() const;
+    bool               empty() const;
 
     //------------------------------------------------------------------------
     // Element Access
 
-    TL_I reference          front();
-    TL_I const_reference    front() const;
+    reference          front();
+    const_reference    front() const;
 
-    TL_I reference          back();
-    TL_I const_reference    back() const;
+    reference          back();
+    const_reference    back() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void               push(const value_type& aVal);
-    TL_I void               pop();
+    void               push(const value_type& aVal);
+    void               pop();
 
-  protected:
+  private:
     //------------------------------------------------------------------------
     // Variables
 

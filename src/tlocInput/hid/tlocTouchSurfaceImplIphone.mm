@@ -11,7 +11,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tloccore/tlocAlgorithms.inl>
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
   
 #define TOUCH_SURFACE_IMPL_TEMP     typename T_ParentTouchSurface
 #define TOUCH_SURFACE_IMPL_PARAMS   T_ParentTouchSurface
@@ -160,4 +160,4 @@ namespace tloc { namespace input { namespace priv {
   template class TouchSurfaceImpl< TouchSurface<InputPolicy::Buffered> >;
   template class TouchSurfaceImpl< TouchSurface<InputPolicy::Immediate> >;
   
-};};}
+};};};};

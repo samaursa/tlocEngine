@@ -1,6 +1,6 @@
 #include "tlocTouchSurfaceDevice.h"
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   //////////////////////////////////////////////////////////////////////////
   // TouchSurfaceDeviceBase
@@ -251,4 +251,4 @@ namespace tloc { namespace input { namespace priv {
     DoClear();
   }
 
-};};};
+};};};};

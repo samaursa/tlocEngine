@@ -6,9 +6,9 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
-#include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
+#include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
   
   class TouchSurfaceBufferedElement
   {
@@ -44,12 +44,12 @@ namespace tloc { namespace input { namespace priv {
   {
     static const tl_size sm_maxTouches = 11;
   public:
-    typedef core::tl_array_fixed
+    typedef core_conts::tl_array_fixed
       <TouchSurfaceEvent, sm_maxTouches>::type      container_type;
 
     typedef TouchSurfaceBufferedElement             buffered_elem_type;
 
-    typedef core::tl_array_fixed
+    typedef core_conts::tl_array_fixed
       <buffered_elem_type,
       buffer_size::touch_surface_buffer_size>::type buffer_container_type;
 
@@ -148,6 +148,6 @@ namespace tloc { namespace input { namespace priv {
     
   };
   
-};};};
+};};};};
 
 #endif

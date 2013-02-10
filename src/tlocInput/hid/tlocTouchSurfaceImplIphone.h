@@ -14,8 +14,8 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocTouchSurface.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
+#include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
 #import "tlocGraphics/window/tlocOpenGLViewIphone.h"
 
@@ -25,7 +25,7 @@ namespace tloc { namespace input {
   
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
   
   template <typename T_ParentTouchSurface>
   class TouchSurfaceImpl 
@@ -90,6 +90,6 @@ namespace tloc { namespace input { namespace priv {
     touch_device_type m_touchDevice;
   };
   
-};};};
+};};};};
 
 #endif

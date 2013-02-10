@@ -37,15 +37,6 @@ namespace tloc { namespace core { namespace containers {
   }
 
   //------------------------------------------------------------------------
-  // General
-
-  template <QUEUE_TYPES>
-  TL_I const T_Container& Queue<QUEUE_PARAMS>::_Get_container() const
-  {
-    return m_container;
-  }
-
-  //------------------------------------------------------------------------
   // Capacity
 
   template <QUEUE_TYPES>

@@ -1,6 +1,9 @@
 #include "tlocFrustum.h"
 #include <tlocCore/data_structures/tlocTuple.inl>
 
+#include <tlocMath/tloc_math.h>
+#include <tlocMath/tloc_math.inl>
+
 namespace tloc { namespace graphics { namespace view_proj {
 
   //------------------------------------------------------------------------

@@ -17,12 +17,11 @@
 
 namespace TestingShaderOperator
 {
+
+#if defined (TLOC_OS_WIN)
+
   const char* vShaderStr =
-    "#ifdef GL_ES                                                      \n"
-    "#  version 100                                                    \n"
-    "#else                                                             \n"
     "#  version 140                                                    \n"
-    "#endif                                                            \n"
     "                                                                  \n"
     "  uniform float  u_float;                                         \n"
     "  uniform vec2   u_vec2;                                          \n"
@@ -47,6 +46,43 @@ namespace TestingShaderOperator
     "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
     "  gl_Position.a = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
+
+#elif defined (TLOC_OS_IPHONE)
+
+  const char* vShaderStr =
+    "#  version 100                                                       \n"
+    "                                                                     \n"
+    "  uniform float  u_float;                                            \n"
+    "  uniform vec2   u_vec2;                                             \n"
+    "  uniform vec3   u_vec3;                                             \n"
+    "  uniform vec4   u_vec4;                                             \n"
+    "  uniform int    u_int;                                              \n"
+    "  uniform ivec2  u_ivec2;                                            \n"
+    "  uniform ivec3  u_ivec3;                                            \n"
+    "  uniform ivec4  u_ivec4;                                            \n"
+    "  uniform mat2   u_mat2;                                             \n"
+    "  uniform mat3   u_mat3;                                             \n"
+    "  uniform mat4   u_mat4;                                             \n"
+    "                                                                     \n"
+    "void main(void)                                                      \n"
+    "{                                                                    \n"
+    "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;          \n"
+    "  gl_Position.y = float(u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x);  \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;           \n"
+    "}\n";
+
+#endif
+
+  const char* fShaderStr =
+#if defined (TLOC_OS_WIN)
+    "#  version 140                                                    \n"
+#elif defined (TLOC_OS_IPHONE)
+    "#  version 100                                                    \n"
+#endif
+    "void main(void)                                                   \n\
+    {                                                                  \n\
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);                           \n\
+    }";
 
   using namespace tloc;
   using namespace graphics;
@@ -80,8 +116,12 @@ namespace TestingShaderOperator
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
     REQUIRE(vShader.Compile() == ErrorSuccess());
 
+    gl::FragmentShader  fShader;
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.Compile() == ErrorSuccess());
+
     gl::ShaderProgram sp;
-    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     REQUIRE(sp.Link() == ErrorSuccess());
     CHECK(gl::Error().Succeeded());
 
@@ -151,6 +191,7 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
+#if defined (TLOC_OS_WIN)
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uint");
@@ -179,6 +220,7 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
+#endif
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_mat2");
@@ -214,12 +256,10 @@ namespace TestingShaderOperator
     sp.Disable();
   }
 
+#if defined (TLOC_OS_WIN)
+
   const char* vShaderStr2 =
-    "#ifdef GL_ES                                                      \n"
-    "#  version 100                                                    \n"
-    "#else                                                             \n"
-    "#  version 140                                                    \n"
-    "#endif                                                            \n"
+    "#version 140                                                      \n"                                                     \n"
     "                                                                  \n"
     "  uniform float u_float[2];                                       \n"
     "  uniform vec2  u_vec2[2];                                        \n"
@@ -244,6 +284,30 @@ namespace TestingShaderOperator
     "                  u_uivec4[0].x;                                  \n"
     "}\n";
 
+#elif defined (TLOC_OS_IPHONE)
+
+  const char* vShaderStr2 =
+    "#version 100                                                      \n"  
+    "                                                                  \n"
+    "  uniform float u_float[2];                                       \n"
+    "  uniform vec2  u_vec2[2];                                        \n"
+    "  uniform vec3  u_vec3[2];                                        \n"
+    "  uniform vec4  u_vec4[2];                                        \n"
+    "  uniform int   u_int[2];                                         \n"
+    "  uniform ivec2 u_ivec2[2];                                       \n"
+    "  uniform ivec3 u_ivec3[2];                                       \n"
+    "  uniform ivec4 u_ivec4[2];                                       \n"
+    "                                                                  \n"
+    "void main(void)                                                   \n"
+    "{                                                                 \n"
+    "  gl_Position.x = u_float[0] * u_vec2[0].x * u_vec3[0].x *        \n"
+    "                  u_vec4[0].x;                                    \n"
+    "  gl_Position.y = float(u_int[0] * u_ivec2[0].x * u_ivec3[0].x  * \n"
+    "                  u_ivec4[0].x);                                  \n"
+    "}\n";
+
+#endif
+
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/UniformArrays", "")
   {
     using namespace graphics::win;
@@ -263,8 +327,12 @@ namespace TestingShaderOperator
     REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess());
     REQUIRE(vShader.Compile() == ErrorSuccess());
 
+    gl::FragmentShader  fShader;
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.Compile() == ErrorSuccess());
+
     gl::ShaderProgram sp;
-    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     REQUIRE(sp.Link() == ErrorSuccess());
     CHECK(gl::Error().Succeeded());
 
@@ -350,7 +418,7 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
-
+#if defined (TLOC_OS_WIN)
     {
       uniform_ptr_type    uniform(new gl::Uniform());
       uniform->SetName("u_uint");
@@ -387,6 +455,7 @@ namespace TestingShaderOperator
 
       so->AddUniform(uniform);
     }
+#endif
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
@@ -395,12 +464,10 @@ namespace TestingShaderOperator
     sp.Disable();
   }
 
+#if defined (TLOC_OS_WIN)
+
   const char* vShaderStr3 =
-    "#ifdef GL_ES                                                      \n"
-    "#  version 100                                                    \n"
-    "#else                                                             \n"
     "#  version 140                                                    \n"
-    "#endif                                                            \n"
     "                                                                  \n"
     "  attribute float u_float;                                        \n"
     "  attribute vec2  u_vec2;                                         \n"
@@ -423,6 +490,24 @@ namespace TestingShaderOperator
     "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
+#elif defined (TLOC_OS_IPHONE)
+
+  const char* vShaderStr3 =
+  "#  version 100                                                    \n"
+  "                                                                  \n"
+  "  attribute float u_float;                                        \n"
+  "  attribute vec2  u_vec2;                                         \n"
+  "  attribute vec3  u_vec3;                                         \n"
+  "  attribute vec4  u_vec4;                                         \n"
+  "                                                                  \n"
+  "void main(void)                                                   \n"
+  "{                                                                 \n"
+  "  gl_Position   = u_vec4;                                         \n"
+  "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+  "}\n";
+
+#endif
+
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/ConstantAttributes", "")
   {
     using namespace math::types;
@@ -442,8 +527,12 @@ namespace TestingShaderOperator
     REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess());
     REQUIRE(vShader.Compile() == ErrorSuccess());
 
+    gl::FragmentShader  fShader;
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.Compile() == ErrorSuccess());
+
     gl::ShaderProgram sp;
-    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     REQUIRE(sp.Link() == ErrorSuccess());
     CHECK(gl::Error().Succeeded());
 
@@ -483,6 +572,7 @@ namespace TestingShaderOperator
 
       so->AddAttribute(attribute);
     }
+#if defined (TLOC_OS_WIN)
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_int");
@@ -511,6 +601,7 @@ namespace TestingShaderOperator
 
       so->AddAttribute(attribute);
     }
+
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_uint");
@@ -539,6 +630,7 @@ namespace TestingShaderOperator
 
       so->AddAttribute(attribute);
     }
+#endif
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
@@ -547,12 +639,10 @@ namespace TestingShaderOperator
     sp.Disable();
   }
 
+#if defined (TLOC_OS_WIN)
+
   const char* vShaderStr4 =
-    "#ifdef GL_ES                                                      \n"
-    "#  version 100                                                    \n"
-    "#else                                                             \n"
     "#  version 140                                                    \n"
-    "#endif                                                            \n"
     "                                                                  \n"
     "  attribute float u_float;                                        \n"
     "  attribute vec2  u_vec2;                                         \n"
@@ -575,6 +665,24 @@ namespace TestingShaderOperator
     "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
+#elif defined (TLOC_OS_IPHONE)
+
+  const char* vShaderStr4 =
+  "#  version 100                                                    \n"
+  "                                                                  \n"
+  "  attribute float u_float;                                        \n"
+  "  attribute vec2  u_vec2;                                         \n"
+  "  attribute vec3  u_vec3;                                         \n"
+  "  attribute vec4  u_vec4;                                         \n"
+  "                                                                  \n"
+  "void main(void)                                                   \n"
+  "{                                                                 \n"
+  "  gl_Position   = u_vec4;                                         \n"
+  "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+  "}\n";
+
+#endif
+
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/AttributesArrays", "")
   {
     using namespace math::types;
@@ -594,8 +702,12 @@ namespace TestingShaderOperator
     REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess());
     REQUIRE(vShader.Compile() == ErrorSuccess());
 
+    gl::FragmentShader  fShader;
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
+    REQUIRE(fShader.Compile() == ErrorSuccess());
+
     gl::ShaderProgram sp;
-    sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
+    sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
     REQUIRE(sp.Link() == ErrorSuccess());
     CHECK(gl::Error().Succeeded());
 
@@ -643,6 +755,7 @@ namespace TestingShaderOperator
 
       so->AddAttribute(attribute);
     }
+#if defined (TLOC_OS_WIN)
     {
       attribute_ptr_type attribute(new gl::Attribute());
       attribute->SetName("u_int");
@@ -716,6 +829,7 @@ namespace TestingShaderOperator
 
       so->AddAttribute(attribute);
     }
+#endif
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());

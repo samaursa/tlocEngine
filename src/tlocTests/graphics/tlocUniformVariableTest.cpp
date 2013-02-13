@@ -83,6 +83,7 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Tuple4s32>()[3] == 4);
     }
 
+#if defined (TLOC_OS_WIN)
     {
       gl::Uniform u;
       u.SetValueAs(u32(1));
@@ -112,6 +113,7 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Tuple4u32>()[2] == 3);
       CHECK(u.GetValueAs<Tuple4u32>()[3] == 4);
     }
+#endif
 
     {
       gl::Uniform u;
@@ -245,6 +247,8 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Array<Tuple4s32> >()[0][3] == 4);
     }
 
+#if defined (TLOC_OS_WIN)
+
     {
       gl::Uniform u;
       Array<u32> array(1, u32(1));
@@ -278,6 +282,8 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Array<Tuple4u32> >()[0][2] == 3);
       CHECK(u.GetValueAs<Array<Tuple4u32> >()[0][3] == 4);
     }
+
+#endif
 
     {// Shared
       core::smart_ptr::SharedPtr<Array<f32> >  sp( new Array<f32>(1, f32(1.0f)) );

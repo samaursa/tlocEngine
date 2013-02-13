@@ -13,6 +13,8 @@
 		976B93B716C6DDE0009C12A1 /* tlocGLGeneralTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93B416C6DDE0009C12A1 /* tlocGLGeneralTest.cpp */; };
 		976B93B816C6DDE0009C12A1 /* tlocShaderOperatorTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93B516C6DDE0009C12A1 /* tlocShaderOperatorTest.cpp */; };
 		976B93B916C6DDE0009C12A1 /* tlocVertexTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93B616C6DDE0009C12A1 /* tlocVertexTest.cpp */; };
+		976B93C316CBC436009C12A1 /* tlocAttributeVariableTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93C116CBC436009C12A1 /* tlocAttributeVariableTest.cpp */; };
+		976B93C416CBC436009C12A1 /* tlocUniformVariableTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93C216CBC436009C12A1 /* tlocUniformVariableTest.cpp */; };
 		9780B37A1621E2B3008A1DB5 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 9780B3791621E2B3008A1DB5 /* assets */; };
 		97812E6415A3CCDE00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6315A3CCDE00F3C248 /* OpenGLES.framework */; };
 		97C87A0E15DCE69500FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */; };
@@ -37,6 +39,8 @@
 		976B93B416C6DDE0009C12A1 /* tlocGLGeneralTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocGLGeneralTest.cpp; path = ../../../../src/tlocTests/graphics/tlocGLGeneralTest.cpp; sourceTree = "<group>"; };
 		976B93B516C6DDE0009C12A1 /* tlocShaderOperatorTest.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocShaderOperatorTest.cpp; path = ../../../../src/tlocTests/graphics/tlocShaderOperatorTest.cpp; sourceTree = "<group>"; };
 		976B93B616C6DDE0009C12A1 /* tlocVertexTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocVertexTest.cpp; path = ../../../../src/tlocTests/graphics/tlocVertexTest.cpp; sourceTree = "<group>"; };
+		976B93C116CBC436009C12A1 /* tlocAttributeVariableTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAttributeVariableTest.cpp; path = ../../../../src/tlocTests/graphics/tlocAttributeVariableTest.cpp; sourceTree = "<group>"; };
+		976B93C216CBC436009C12A1 /* tlocUniformVariableTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocUniformVariableTest.cpp; path = ../../../../src/tlocTests/graphics/tlocUniformVariableTest.cpp; sourceTree = "<group>"; };
 		9780B3791621E2B3008A1DB5 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../../assets; sourceTree = "<group>"; };
 		97812E6315A3CCDE00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		97C87A0D15DCE69500FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -173,6 +177,8 @@
 		97DDC90D161F9CED0011DDFD /* opengl */ = {
 			isa = PBXGroup;
 			children = (
+				976B93C116CBC436009C12A1 /* tlocAttributeVariableTest.cpp */,
+				976B93C216CBC436009C12A1 /* tlocUniformVariableTest.cpp */,
 				976B93B416C6DDE0009C12A1 /* tlocGLGeneralTest.cpp */,
 				97DDC914161F9E160011DDFD /* tlocGLObjectTest.cpp */,
 				97DDC915161F9E160011DDFD /* tlocShaderComponentTest.cpp */,
@@ -267,6 +273,8 @@
 				976B93B716C6DDE0009C12A1 /* tlocGLGeneralTest.cpp in Sources */,
 				976B93B816C6DDE0009C12A1 /* tlocShaderOperatorTest.cpp in Sources */,
 				976B93B916C6DDE0009C12A1 /* tlocVertexTest.cpp in Sources */,
+				976B93C316CBC436009C12A1 /* tlocAttributeVariableTest.cpp in Sources */,
+				976B93C416CBC436009C12A1 /* tlocUniformVariableTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

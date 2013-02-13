@@ -146,7 +146,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<T_Derived>::
     SetValueAs(core::smart_ptr::SharedPtr<T> a_value)
   {
-    static_cast<derived_type*>(this)->DoCheckNonArrayTypes<T>();
+    static_cast<derived_type*>(this)->template DoCheckNonArrayTypes<T>();
     return DoSetValueAs(a_value);
   }
 

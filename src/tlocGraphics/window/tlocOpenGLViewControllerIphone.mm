@@ -51,7 +51,7 @@
   
   CGRect frame;
   if (self->windowImpl->GetWindowSettings().m_style& 
-      tloc::graphics::WindowSettings::style_titlebar) 
+      tloc::graphics::win::WindowSettings::style_titlebar)
   {
     frame = [uiscreen applicationFrame];
   }
@@ -67,7 +67,7 @@
   [view UpdateRenderBufferDimensions];
   
   self->windowImpl->GetParentWindowHandle()
-    ->SendEvent(tloc::graphics::WindowEvent::resized);
+    ->SendEvent(tloc::graphics::win::WindowEvent::resized);
 }
 
 @end

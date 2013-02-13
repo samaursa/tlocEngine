@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace gl {
     derived_type&
       SetValueAs(core::containers::Array<T>& a_array, T_Technique)
     {
-      static_cast<derived_type*>(this)->DoCheckArrayTypes<T>();
+      static_cast<derived_type*>(this)->template DoCheckArrayTypes<T>();
       return DoSetValueAs(a_array, T_Technique());
     }
 
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace gl {
       SetValueAs(core::smart_ptr::SharedPtr<core::containers::Array<T> >
                  a_array, p_shader_variable_ti::Shared)
     {
-      static_cast<derived_type*>(this)->DoCheckArrayTypes<T>();
+      static_cast<derived_type*>(this)->template DoCheckArrayTypes<T>();
       return DoSetValueAs(a_array);
     }
 
@@ -107,7 +107,7 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderVariable_TI<T_Derived>::
     GetValueAs(T& a_out) const
   {
-    static_cast<derived_type*>(this)->DoCheckTypeCompatibility<T>();
+    static_cast<derived_type*>(this)->template DoCheckTypeCompatibility<T>();
     a_out = m_value.Cast<T>();
   }
 
@@ -116,7 +116,7 @@ namespace tloc { namespace graphics { namespace gl {
   const T& ShaderVariable_TI<T_Derived>::
     GetValueAs() const
   {
-    static_cast<derived_type const*>(this)->DoCheckTypeCompatibility<T>();
+    static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<T>();
   }
 
@@ -128,7 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     using core::smart_ptr::SharedPtr;
 
-    static_cast<derived_type const*>(this)->DoCheckTypeCompatibility<T>();
+    static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<SharedPtr<T> >();
   }
 
@@ -138,7 +138,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<T_Derived>::
     SetValueAs(const T& a_value)
   {
-    static_cast<derived_type*>(this)->DoCheckNonArrayTypes<T>();
+    static_cast<derived_type*>(this)->template DoCheckNonArrayTypes<T>();
     return DoSetValueAs(a_value);
   }
 

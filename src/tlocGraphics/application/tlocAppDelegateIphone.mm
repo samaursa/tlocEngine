@@ -52,11 +52,11 @@ int main(int argc, char** argv)
   // and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down 
   // OpenGL ES frame rates. Games should use this method to pause the game.
-  tloc::graphics::Window<>* currentActiveWindow;
-  currentActiveWindow = tloc::graphics::GetCurrentActiveWindow();
+  tloc::graphics::win::Window_T<>* currentActiveWindow;
+  currentActiveWindow = tloc::graphics::win::GetCurrentActiveWindow();
   if (currentActiveWindow != NULL) 
   {
-    currentActiveWindow->SendEvent(tloc::graphics::WindowEvent::lost_focus);
+    currentActiveWindow->SendEvent(tloc::graphics::win::WindowEvent::lost_focus);
   }
   
 }
@@ -64,13 +64,13 @@ int main(int argc, char** argv)
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
   // Restart any tasks that were paused (or not yet started) while the 
-  // application was inactive. If the application was previously in the 
+  // application was inactive. If the application was previously in the
   // background, optionally refresh the user interface.
-  tloc::graphics::Window<>* currentActiveWindow;
-  currentActiveWindow = tloc::graphics::GetCurrentActiveWindow();
+  tloc::graphics::win::Window_T<>* currentActiveWindow;
+  currentActiveWindow = tloc::graphics::win::GetCurrentActiveWindow();
   if (currentActiveWindow != NULL) 
   {
-    currentActiveWindow->SendEvent(tloc::graphics::WindowEvent::gained_focus);
+    currentActiveWindow->SendEvent(tloc::graphics::win::WindowEvent::gained_focus);
   }
 }
 

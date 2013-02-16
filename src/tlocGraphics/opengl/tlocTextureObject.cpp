@@ -105,6 +105,6 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template core::smart_ptr::SharedPtr<TextureObject>;
+  template class core::smart_ptr::SharedPtr<TextureObject>;
 
 };};};

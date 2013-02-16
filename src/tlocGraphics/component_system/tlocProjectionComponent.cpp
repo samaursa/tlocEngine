@@ -51,9 +51,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // Explicit Instantiations
 
   // SmartPtr
-  template core::smart_ptr::SharedPtr<Projection>;
+  template class core::smart_ptr::SharedPtr<Projection>;
 
   // Pool
-  template core::component_system::ComponentPool_TI<ProjectionPtr>;
+  template class core::component_system::ComponentPool_TI<ProjectionPtr>;
 
 };};};

@@ -1,6 +1,7 @@
 #include "tlocFOV.h"
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocMath.inl>
 
 namespace tloc { namespace graphics { namespace types {
 

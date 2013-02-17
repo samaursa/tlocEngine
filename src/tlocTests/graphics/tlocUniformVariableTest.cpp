@@ -61,14 +61,14 @@ namespace TestingGraphicsVertex
 
     {
       gl::Uniform u;
-      u.SetValueAs( Tuple2s32(Variadic2i(1, 2)) );
+      u.SetValueAs( Tuple2s32(Variadic2s(1, 2)) );
       CHECK(u.GetValueAs<Tuple2s32>()[0] == 1);
       CHECK(u.GetValueAs<Tuple2s32>()[1] == 2);
     }
 
     {
       gl::Uniform u;
-      u.SetValueAs( Tuple3s32(Variadic3i(1, 2, 3)) );
+      u.SetValueAs( Tuple3s32(Variadic3s(1, 2, 3)) );
       CHECK(u.GetValueAs<Tuple3s32>()[0] == 1);
       CHECK(u.GetValueAs<Tuple3s32>()[1] == 2);
       CHECK(u.GetValueAs<Tuple3s32>()[2] == 3);
@@ -76,13 +76,14 @@ namespace TestingGraphicsVertex
 
     {
       gl::Uniform u;
-      u.SetValueAs( Tuple4s32(Variadic4i(1, 2, 3, 4)) );
+      u.SetValueAs( Tuple4s32(Variadic4s(1, 2, 3, 4)) );
       CHECK(u.GetValueAs<Tuple4s32>()[0] == 1);
       CHECK(u.GetValueAs<Tuple4s32>()[1] == 2);
       CHECK(u.GetValueAs<Tuple4s32>()[2] == 3);
       CHECK(u.GetValueAs<Tuple4s32>()[3] == 4);
     }
 
+#if defined (TLOC_OS_WIN)
     {
       gl::Uniform u;
       u.SetValueAs(u32(1));
@@ -112,6 +113,7 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Tuple4u32>()[2] == 3);
       CHECK(u.GetValueAs<Tuple4u32>()[3] == 4);
     }
+#endif
 
     {
       gl::Uniform u;
@@ -220,7 +222,7 @@ namespace TestingGraphicsVertex
 
     {
       gl::Uniform u;
-      Array<Tuple2s32> array(1, Tuple2s32(Variadic2i(1, 2)) );
+      Array<Tuple2s32> array(1, Tuple2s32(Variadic2s(1, 2)) );
       u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(u.GetValueAs<Array<Tuple2s32> >()[0][0] == 1);
       CHECK(u.GetValueAs<Array<Tuple2s32> >()[0][1] == 2);
@@ -228,7 +230,7 @@ namespace TestingGraphicsVertex
 
     {
       gl::Uniform u;
-      Array<Tuple3s32> array(1, Tuple3s32(Variadic3i(1, 2, 3)) );
+      Array<Tuple3s32> array(1, Tuple3s32(Variadic3s(1, 2, 3)) );
       u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(u.GetValueAs<Array<Tuple3s32> >()[0][0] == 1);
       CHECK(u.GetValueAs<Array<Tuple3s32> >()[0][1] == 2);
@@ -237,13 +239,15 @@ namespace TestingGraphicsVertex
 
     {
       gl::Uniform u;
-      Array<Tuple4s32> array(1, Tuple4s32(Variadic4i(1, 2, 3, 4)) );
+      Array<Tuple4s32> array(1, Tuple4s32(Variadic4s(1, 2, 3, 4)) );
       u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(u.GetValueAs<Array<Tuple4s32> >()[0][0] == 1);
       CHECK(u.GetValueAs<Array<Tuple4s32> >()[0][1] == 2);
       CHECK(u.GetValueAs<Array<Tuple4s32> >()[0][2] == 3);
       CHECK(u.GetValueAs<Array<Tuple4s32> >()[0][3] == 4);
     }
+
+#if defined (TLOC_OS_WIN)
 
     {
       gl::Uniform u;
@@ -278,6 +282,8 @@ namespace TestingGraphicsVertex
       CHECK(u.GetValueAs<Array<Tuple4u32> >()[0][2] == 3);
       CHECK(u.GetValueAs<Array<Tuple4u32> >()[0][3] == 4);
     }
+
+#endif
 
     {// Shared
       core::smart_ptr::SharedPtr<Array<f32> >  sp( new Array<f32>(1, f32(1.0f)) );

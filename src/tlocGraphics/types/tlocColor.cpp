@@ -5,8 +5,6 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocTuple.inl>
 
-#include <tlocMath/types/tlocVector4.h>
-
 namespace tloc { namespace graphics { namespace types {
 
   namespace
@@ -183,10 +181,10 @@ namespace tloc { namespace graphics { namespace types {
   void Color::SetAs(T_ValueType a_R, T_ValueType a_G,
                     T_ValueType a_B, T_ValueType a_A)
   {
-    typedef Loki::Select <
-                          Loki::TypeTraits<T_ValueType>::isFloat,
-                          real_type_true, byte_type_true
-                         >::Result  selected_type;
+    typedef typename Loki::Select <
+                                   Loki::TypeTraits<T_ValueType>::isFloat,
+                                   real_type_true, byte_type_true
+                                  >::Result  selected_type;
 
     priv::DoSetAs(a_R, a_G, a_B, a_A, m_rgba, selected_type() );
   }
@@ -300,12 +298,10 @@ namespace tloc { namespace graphics { namespace types {
   template int_color_type Color::DoGetAs<p_color::format::BGRA>();
 
   template Color::Color(u8, u8, u8, u8);
-  template Color::Color(uchar8, uchar8, uchar8, uchar8);
   template Color::Color(f32, f32, f32, f32);
   template Color::Color(f64, f64, f64, f64);
 
   template void Color::SetAs(u8, u8, u8, u8);
-  template void Color::SetAs(uchar8, uchar8, uchar8, uchar8);
   template void Color::SetAs(f32, f32, f32, f32);
   template void Color::SetAs(f64, f64, f64, f64);
 
@@ -315,7 +311,6 @@ namespace tloc { namespace graphics { namespace types {
   template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&);\
   template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&)
 
-  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);
 

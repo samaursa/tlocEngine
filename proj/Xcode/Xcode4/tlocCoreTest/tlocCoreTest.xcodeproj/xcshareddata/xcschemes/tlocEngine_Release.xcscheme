@@ -70,6 +70,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97CC1D1516CCEC2D003C6740"
+               BuildableName = "tlocPrefab_Release.a"
+               BlueprintName = "tlocPrefab"
+               ReferencedContainer = "container:../tlocPrefab/tlocPrefab.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "97CC77011580A6D900764CF3"
                BuildableName = "tlocCoreTest.app"
                BlueprintName = "tlocCoreTest"

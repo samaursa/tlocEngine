@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::data_structs;
       using namespace math::types;
 
-      type_traits::AssertTypeIsSupported
+      tloc::type_traits::AssertTypeIsSupported
         <T,
          f32,
          Vec2f32, Vec3f32, Vec4f32,

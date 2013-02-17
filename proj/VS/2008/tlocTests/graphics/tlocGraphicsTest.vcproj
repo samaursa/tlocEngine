@@ -915,6 +915,10 @@
 				Name="opengl"
 				>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocAttributeVariableTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocGLGeneralTest.cpp"
 					>
 				</File>
@@ -932,6 +936,10 @@
 				</File>
 				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderProgramTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocUniformVariableTest.cpp"
 					>
 				</File>
 				<File

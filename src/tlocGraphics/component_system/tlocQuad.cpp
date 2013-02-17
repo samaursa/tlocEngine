@@ -16,9 +16,9 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
   // SmartPtr
-  template core::smart_ptr::SharedPtr<Quad>;
+  template class core::smart_ptr::SharedPtr<Quad>;
 
   // Pool
-  template core::component_system::ComponentPool_TI<QuadPtr>;
+  template class core::component_system::ComponentPool_TI<QuadPtr>;
 
 };};};

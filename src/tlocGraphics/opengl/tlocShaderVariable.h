@@ -115,6 +115,8 @@ namespace tloc { namespace graphics { namespace gl {
   const T& ShaderVariable_TI<T_Derived>::
     GetValueAs() const
   {
+    TLOC_ASSERT(!m_isShared, "Variable is shared - use GetValueAsShared<>()");
+
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<T>();
   }
@@ -126,6 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
     GetValueAsShared() const
   {
     using core::smart_ptr::SharedPtr;
+    TLOC_ASSERT(m_isShared, "Variable is NOT shared - use GetValueAs<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<SharedPtr<T> >();

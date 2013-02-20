@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::data_structs;
       using namespace math::types;
 
-      type_traits::AssertTypeIsSupported
+      tloc::type_traits::AssertTypeIsSupported
         <T,
          f32,
          Vec2f32, Vec3f32, Vec4f32,
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace gl {
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
-         texture_object_sptr,
+         TextureObject,
          Array<f32>,
          Array<Vec2f32>,
          Array<Vec3f32>,
@@ -77,7 +77,7 @@ namespace tloc { namespace graphics { namespace gl {
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
-         texture_object_sptr
+         TextureObject
         >();
     }
 
@@ -88,7 +88,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::containers;
       using namespace math::types;
 
-      type_traits::AssertTypeIsSupported
+      tloc::type_traits::AssertTypeIsSupported
         <Array<T>,
          Array<f32>,
          Array<Vec2f32>,

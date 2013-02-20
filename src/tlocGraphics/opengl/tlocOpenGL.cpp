@@ -1,5 +1,11 @@
 #include "tlocOpenGL.h"
 
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl>
+
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl>
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_get
@@ -50,11 +56,25 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace
   {
-    GLint g_maxTextureUnits = -1;
-    GLint g_currentTextureUnit = 0;
+    typedef core_conts::tl_array<GLint>::type   gl_int_array;
+
+    typedef core_conts::tl_array<GLint>::type   gl_int_array;
+
+    GLint         g_maxTextureUnits = -1;
+    GLint         g_currentTextureUnit = 0;
+    gl_int_array  g_availableTextureUnits;
 
     void DoSetMaxTextureUnits()
-    { g_maxTextureUnits = Get<p_get::MaxCombinedTextureImageUnits>(); }
+    {
+      g_maxTextureUnits = Get<p_get::MaxCombinedTextureImageUnits>();
+
+      // Prepare our array
+      g_availableTextureUnits.reserve(g_maxTextureUnits);
+      for (int i = 0; i < g_maxTextureUnits; ++i)
+      {
+        g_availableTextureUnits.push_back(GL_TEXTURE0 + i);
+      }
+    }
   }
 
   GLint
@@ -71,8 +91,8 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (g_currentTextureUnit < g_maxTextureUnits)
       {
-        ++g_maxTextureUnits;
-        glActiveTexture(g_currentTextureUnit);
+        ++g_currentTextureUnit;
+        glActiveTexture( g_availableTextureUnits[g_currentTextureUnit] );
         return ErrorSuccess();
       }
       else

@@ -844,6 +844,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainersReadme.txt"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainerTraits.h"
+				>
+			</File>
 			<Filter
 				Name="array"
 				>

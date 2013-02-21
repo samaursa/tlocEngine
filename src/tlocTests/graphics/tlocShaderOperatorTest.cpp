@@ -259,7 +259,7 @@ namespace TestingShaderOperator
 #if defined (TLOC_OS_WIN)
 
   const char* vShaderStr2 =
-    "#version 140                                                      \n"                                                     \n"
+    "#version 140                                                      \n"
     "                                                                  \n"
     "  uniform float u_float[2];                                       \n"
     "  uniform vec2  u_vec2[2];                                        \n"

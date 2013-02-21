@@ -82,7 +82,7 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
     "Test the Tuple ctor with varadic")
   {
-    Tuple<tl_int, 4> p(Variadic4i(1, 2, 3, 4));
+    Tuple<tl_int, 4> p(Variadic4s(1, 2, 3, 4));
 
     CHECK(p.GetSize() == 4);
     CHECK(p[0] == 1);

@@ -8,7 +8,7 @@
 #include <tlocCore/types/tlocAny.inl>
 #include <tlocCore/types/tlocTypeTraits.h>
 
-#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainerTraits.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -36,9 +36,6 @@ namespace tloc { namespace graphics { namespace gl {
     typedef p_shader_variable_ti::SwapArray  swap_array_policy;
 
   public:
-    ShaderVariable_TI();
-    ~ShaderVariable_TI();
-
     template <typename T>
     void GetValueAs(T& a_out) const;
 
@@ -70,12 +67,16 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(bool, IsShared, m_isShared);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
 
+  protected:
+    ShaderVariable_TI();
+    ~ShaderVariable_TI();
+
   private:
     template <typename T>
     derived_type& DoSetValueAs(const T& a_value);
 
     template <typename T>
-    derived_type& DoSetValueAs(const core::smart_ptr::SharedPtr<T> a_value);
+    derived_type& DoSetValueAs(core::smart_ptr::SharedPtr<T> a_value);
 
     template <typename T>
     derived_type& DoSetValueAs(const core::containers::Array<T>& a_array,
@@ -114,6 +115,8 @@ namespace tloc { namespace graphics { namespace gl {
   const T& ShaderVariable_TI<T_Derived>::
     GetValueAs() const
   {
+    TLOC_ASSERT(!m_isShared, "Variable is shared - use GetValueAsShared<>()");
+
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<T>();
   }
@@ -125,6 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
     GetValueAsShared() const
   {
     using core::smart_ptr::SharedPtr;
+    TLOC_ASSERT(m_isShared, "Variable is NOT shared - use GetValueAs<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return m_value.Cast<SharedPtr<T> >();
@@ -136,6 +140,10 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<T_Derived>::
     SetValueAs(const T& a_value)
   {
+    TLOC_STATIC_ASSERT
+      ( (core_conts::type_traits::IsContainer<T>::value == false),
+         Containers_require_technique_policy  );
+
     static_cast<derived_type*>(this)->template DoCheckNonArrayTypes<T>();
     return DoSetValueAs(a_value);
   }
@@ -146,7 +154,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<T_Derived>::
     SetValueAs(core::smart_ptr::SharedPtr<T> a_value)
   {
-    static_cast<derived_type*>(this)->DoCheckNonArrayTypes<T>();
+    static_cast<derived_type*>(this)->template DoCheckNonArrayTypes<T>();
     return DoSetValueAs(a_value);
   }
 

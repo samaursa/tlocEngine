@@ -1,6 +1,9 @@
 #include "tlocFileIO.h"
 
 #include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl>
+
 #include <stdio.h>
 
 namespace tloc { namespace core { namespace io {

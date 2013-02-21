@@ -45,6 +45,7 @@ namespace TestingAttributeVariable
       CHECK( a.GetValueAs<Vec4f32>()[3] == Approx(3.0f));
     }
 
+#if defined (TLOC_OS_WIN)
     {
       gl::Attribute a;
       a.SetValueAs(s32(1));
@@ -104,6 +105,7 @@ namespace TestingAttributeVariable
       CHECK(a.GetValueAs<Tuple4u32>()[2] == 3);
       CHECK(a.GetValueAs<Tuple4u32>()[3] == 4);
     }
+#endif
 
     {// Shared
       core::smart_ptr::SharedPtr<f32>  sp( new f32(1.0f) );
@@ -153,6 +155,7 @@ namespace TestingAttributeVariable
       CHECK( a.GetValueAs<Array<Vec4f32> >()[0][3] == Approx(3.0f));
     }
 
+#if defined (TLOC_OS_WIN)
     {
       gl::Attribute a;
       Array<s32> array(1, s32(1));
@@ -220,6 +223,7 @@ namespace TestingAttributeVariable
       CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][2] == 3);
       CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][3] == 4);
     }
+#endif
 
     {// Shared
       core::smart_ptr::SharedPtr<Array<f32> >  sp( new Array<f32>(1, f32(1.0f)) );

@@ -14,6 +14,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97F4D4D916D6A33A00A882E8"
+               BuildableName = "tlocVersion"
+               BlueprintName = "tlocVersion"
+               ReferencedContainer = "container:../tlocVersion/tlocVersion.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97F4D4F216D6B9F700A882E8"
+               BuildableName = "tlocVersionTool"
+               BlueprintName = "tlocVersionTool"
+               ReferencedContainer = "container:../tlocVersionTool/tlocVersionTool.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "978481A1157DA6A20007F526"
                BuildableName = "tlocCore_Release.a"
                BlueprintName = "tlocCore"

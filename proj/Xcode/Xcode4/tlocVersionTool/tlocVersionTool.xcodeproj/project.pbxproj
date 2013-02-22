@@ -1,0 +1,120 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		97F4D4F216D6B9F700A882E8 /* tlocVersionTool */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 97F4D4F316D6B9F700A882E8 /* Build configuration list for PBXAggregateTarget "tlocVersionTool" */;
+			buildPhases = (
+				97F4D4F616D6BA2100A882E8 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = tlocVersionTool;
+			productName = tlocVersionTool;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXGroup section */
+		97F4D4EB16D6B99900A882E8 = {
+			isa = PBXGroup;
+			children = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		97F4D4EC16D6B99900A882E8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 97F4D4EF16D6B99900A882E8 /* Build configuration list for PBXProject "tlocVersionTool" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97F4D4EB16D6B99900A882E8;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97F4D4F216D6B9F700A882E8 /* tlocVersionTool */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		97F4D4F616D6BA2100A882E8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = $TLOC_PATH/bin/Xcode4/$CONFIGURATION/$EFFECTIVE_PLATFORM_NAME/tlocVersion/tlocVersion;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		97F4D4F016D6B99900A882E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		97F4D4F116D6B99900A882E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		97F4D4F416D6B9F700A882E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		97F4D4F516D6B9F700A882E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97F4D4EF16D6B99900A882E8 /* Build configuration list for PBXProject "tlocVersionTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97F4D4F016D6B99900A882E8 /* Debug */,
+				97F4D4F116D6B99900A882E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97F4D4F316D6B9F700A882E8 /* Build configuration list for PBXAggregateTarget "tlocVersionTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97F4D4F416D6B9F700A882E8 /* Debug */,
+				97F4D4F516D6B9F700A882E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97F4D4EC16D6B99900A882E8 /* Project object */;
+}

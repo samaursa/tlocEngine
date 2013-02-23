@@ -63,7 +63,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = $TLOC_PATH/bin/Xcode4/$CONFIGURATION/$EFFECTIVE_PLATFORM_NAME/tlocVersion/tlocVersion;
+			shellScript = $TLOC_PATH/bin/Xcode4/$CONFIGURATION/$PLATFORM_NAME/tlocVersion/tlocVersion;
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -38,12 +38,14 @@ namespace ogl_view_controller
 ///-------------------------------------------------------------------------
 /// Callback function that is called if device is rotated. Returns a bool
 /// stating whether the view should rotate to the device orientation.
-///
-/// @param  a_toInterfaceOrientation  The orientation the interface may
-///                                   be rotated to.
 ///-------------------------------------------------------------------------
-- (BOOL)shouldAutorotateToInterfaceOrientation:
-    (UIInterfaceOrientation)a_toInterfaceOrientation;
+- (BOOL)shouldAutorotate;
+
+///-------------------------------------------------------------------------
+/// Returns an integer that dictates which orientations the view controller
+/// supports
+///-------------------------------------------------------------------------
+- (NSUInteger)supportedInterfaceOrientations;
 
 ///-------------------------------------------------------------------------
 /// Callback function that is called if a view is being loaded. This

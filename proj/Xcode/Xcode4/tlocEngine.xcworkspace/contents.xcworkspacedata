@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:tlocVersion/tlocVersion.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocVersionTool/tlocVersionTool.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:tlocCore/tlocCore.xcodeproj">
    </FileRef>
    <FileRef

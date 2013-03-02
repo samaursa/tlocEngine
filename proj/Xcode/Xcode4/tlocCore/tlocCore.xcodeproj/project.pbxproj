@@ -174,6 +174,7 @@
 		97C87CCA15DE48B500FE0A6C /* tlocFunctional.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC615DE48B400FE0A6C /* tlocFunctional.h */; };
 		97C87CCB15DE48B500FE0A6C /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CC715DE48B400FE0A6C /* tlocDepVersionCheck.cpp */; };
 		97C87CCC15DE48B500FE0A6C /* tlocNoOpt.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CC815DE48B500FE0A6C /* tlocNoOpt.h */; };
+		97F4D4CE16D5B80A00A882E8 /* tlocContainerTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F4D4CD16D5B80A00A882E8 /* tlocContainerTraits.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -403,6 +404,7 @@
 		97C87CC615DE48B400FE0A6C /* tlocFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFunctional.h; path = ../../../../src/tlocCore/tlocFunctional.h; sourceTree = "<group>"; };
 		97C87CC715DE48B400FE0A6C /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocCore/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
 		97C87CC815DE48B500FE0A6C /* tlocNoOpt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocNoOpt.h; path = ../../../../src/tlocCore/tlocNoOpt.h; sourceTree = "<group>"; };
+		97F4D4CD16D5B80A00A882E8 /* tlocContainerTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocContainerTraits.h; path = ../../../../src/tlocCore/containers/tlocContainerTraits.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -773,6 +775,7 @@
 				97C87C3C15DE459C00FE0A6C /* tlocContainers.h */,
 				97C87C3D15DE459C00FE0A6C /* tlocContainers.inl */,
 				97C87C3E15DE459C00FE0A6C /* tlocContainersReadme.txt */,
+				97F4D4CD16D5B80A00A882E8 /* tlocContainerTraits.h */,
 			);
 			name = containers;
 			sourceTree = "<group>";
@@ -1199,6 +1202,7 @@
 				97AF91E616AA837200DB6C90 /* tloc_core.h in Headers */,
 				97AF91E716AA837200DB6C90 /* tlocCoreBase.h in Headers */,
 				976B93BE16CBB8C8009C12A1 /* tlocRange.h in Headers */,
+				97F4D4CE16D5B80A00A882E8 /* tlocContainerTraits.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1326,8 +1330,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1351,7 +1355,6 @@
 					"-fno-exceptions",
 					"-fno-rtti",
 				);
-				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_PATH)/src/3rdParty/ $(TLOC_DEP_PATH)/src/";
 			};
@@ -1362,8 +1365,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -1380,7 +1383,6 @@
 					"-fno-exceptions",
 					"-fno-rtti",
 				);
-				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_PATH)/src/3rdParty/ $(TLOC_DEP_PATH)/src/";
 				VALIDATE_PRODUCT = YES;

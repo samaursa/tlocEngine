@@ -102,7 +102,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     TLOC_ASSERT(m_view && m_viewController && m_handle, "CreateWindow failed.");
     
     [m_viewController setView:m_view];
-    
+
+    [m_handle setRootViewController:m_viewController];
     [m_handle addSubview:m_view];
     [m_handle makeKeyAndVisible];
     

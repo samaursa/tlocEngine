@@ -1,18 +1,10 @@
 #include "tlocTestCommon.h"
 
-// TODO - remove the following after a merge with Neil's changeset
-#include <tlocCore/tloc_core.h>
-#include <tlocMath/tloc_math.h>
-using namespace tloc::core_ds;
-using namespace tloc::core_conts;
-using namespace tloc::math_t;
-
 #include <tlocGraphics/opengl/tlocUniform.h>
-#include <tlocGraphics/opengl/tlocAttribute.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
-namespace TestingGraphicsVertex
+namespace TestingUniformVariable
 {
   using namespace tloc;
   using namespace tloc::graphics;

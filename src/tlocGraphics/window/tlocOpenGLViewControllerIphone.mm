@@ -27,12 +27,16 @@
   return self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:
-    (UIInterfaceOrientation)toInterfaceOrientation
+- (BOOL)shouldAutorotate
 {
-  // TODO: based on window settings, allow or disallow the view to change 
-  // orientation
   return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+  // TODO: based on window settings, allow or disallow the view to change
+  // orientation
+  return UIInterfaceOrientationMaskAll;
 }
 
 - (void)loadView

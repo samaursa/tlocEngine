@@ -297,7 +297,12 @@ namespace tloc { namespace graphics { namespace types {
   template int_color_type Color::DoGetAs<p_color::format::ARGB>();
   template int_color_type Color::DoGetAs<p_color::format::BGRA>();
 
+  // The reason for template ctors is to avoid declaring the constructors for
+  // all of the following types. s32 and s64 are there to facilitate casting
+  // from an r-value constant.
   template Color::Color(u8, u8, u8, u8);
+  template Color::Color(s32, s32, s32, s32);
+  template Color::Color(s64, s64, s64, s64);
   template Color::Color(f32, f32, f32, f32);
   template Color::Color(f64, f64, f64, f64);
 

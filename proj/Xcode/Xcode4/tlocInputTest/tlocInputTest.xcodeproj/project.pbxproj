@@ -260,12 +260,6 @@
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = tlocInputTest;
 				WRAPPER_EXTENSION = app;
 			};
@@ -280,12 +274,6 @@
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
 				);
 				PRODUCT_NAME = tlocInputTest;
 				WRAPPER_EXTENSION = app;

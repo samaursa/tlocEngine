@@ -1,12 +1,6 @@
-//
-//  tlocTouchSurface.cpp
-//  tlocInput
-//
-//  Created by Skopworks Inc on 12-08-25.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #include "tlocTouchSurface.h"
+
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -35,9 +29,7 @@ namespace tloc { namespace input { namespace hid {
   
   template <TOUCH_SURFACE_TEMP>
   TouchSurface<TOUCH_SURFACE_PARAMS>::~TouchSurface()
-  {
-    delete m_impl;
-  }
+  { }
 
   template <TOUCH_SURFACE_TEMP>
   const TOUCH_SURFACE_TYPE::touch_container_type&

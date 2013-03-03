@@ -37,15 +37,6 @@ namespace tloc { namespace core { namespace containers {
   }
 
   //------------------------------------------------------------------------
-  // General
-
-  template <STACK_TYPES>
-  TL_I const T_Container& Stack<STACK_PARAMS>::_Get_container() const
-  {
-    return m_container;
-  }
-
-  //------------------------------------------------------------------------
   // Capacity
 
   template <STACK_TYPES>

@@ -63,8 +63,8 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // Constructors
 
-    TL_FI explicit HashMap();
-    TL_FI explicit HashMap(size_type aBucketCount,
+    explicit HashMap();
+    explicit HashMap(size_type aBucketCount,
                            const T_HashFunc& aHashFunction = T_HashFunc(),
                            const T_KeyEqual& aKeyEqual = T_KeyEqual());
     // TODO: Implement an iterator copy constructor
@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // Operations
 
-    TL_FI mapped_type& operator[](const key_type& aKey);
+    mapped_type& operator[](const key_type& aKey);
   };
 
 };};};

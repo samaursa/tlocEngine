@@ -136,6 +136,37 @@ namespace tloc { namespace input { namespace priv {
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
+  void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Reset(input_type a_inputType)
+  {
+    ASSERT_INPUT_TYPE(a_inputType);
+
+    switch (a_inputType)
+    {
+      case p_hid::Keyboard::m_index:
+      {
+        break;
+      }
+      case p_hid::TouchSurface::m_index:
+      {
+        typedef hid::TouchSurface<policy_type> touch_surface_type;
+
+        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
+        {
+          touch_surface_type* ts = static_cast<touch_surface_type*>
+            (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
+
+          ts->Reset();
+        }
+        break;
+      }
+      default:
+      {
+        break;
+      }
+    }
+  }
+
+  template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     GetHID(size_type a_index)

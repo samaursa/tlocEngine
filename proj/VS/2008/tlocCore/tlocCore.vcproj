@@ -844,6 +844,10 @@
 				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainersReadme.txt"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\containers\tlocContainerTraits.h"
+				>
+			</File>
 			<Filter
 				Name="array"
 				>
@@ -1218,6 +1222,18 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocNoOpt.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocRange.inl"
 				>
 			</File>
 			<Filter

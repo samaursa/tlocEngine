@@ -196,14 +196,14 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_NODE_TYPES>
-  typename ListNode<SINGLY_LIST_NODE_PARAMS>::reference_type
+  typename ListNode<SINGLY_LIST_NODE_PARAMS>::reference
     ListNode<SINGLY_LIST_NODE_PARAMS>::getValue()
   {
     return m_value;
   }
 
   template <LIST_NODE_TYPES>
-  typename ListNode<SINGLY_LIST_NODE_PARAMS>::const_reference_type
+  typename ListNode<SINGLY_LIST_NODE_PARAMS>::const_reference
     ListNode<SINGLY_LIST_NODE_PARAMS>::getValue() const
   {
     return m_value;
@@ -356,14 +356,14 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_NODE_TYPES>
-  typename ListNode<DOUBLY_LIST_NODE_PARAMS>::reference_type
+  typename ListNode<DOUBLY_LIST_NODE_PARAMS>::reference
     ListNode<DOUBLY_LIST_NODE_PARAMS>::getValue()
   {
     return m_value;
   }
 
   template <LIST_NODE_TYPES>
-  typename ListNode<DOUBLY_LIST_NODE_PARAMS>::const_reference_type
+  typename ListNode<DOUBLY_LIST_NODE_PARAMS>::const_reference
     ListNode<DOUBLY_LIST_NODE_PARAMS>::getValue() const
   {
     return m_value;

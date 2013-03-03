@@ -75,6 +75,8 @@ namespace tloc { namespace input { namespace priv {
     ///-------------------------------------------------------------------------
     void Update(input_type a_inputType);
 
+    void Reset(input_type a_inputType);
+
     ///-------------------------------------------------------------------------
     /// Returns an HID with the given type at the given index
     ///

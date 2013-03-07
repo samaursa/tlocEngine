@@ -8,6 +8,8 @@
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include <tlocInput/hid/tlocMouseImplWin.h>
+#elif defined (TLOC_OS_IPHONE)
+# include <tlocInput/hid/tlocMouseImplIphone.h>
 #else
 # error "WIP"
 #endif
@@ -18,13 +20,16 @@ namespace tloc { namespace input { namespace hid {
 #define MOUSE_PARAMS T_Policy, T_Platform
 #define MOUSE_TYPE   typename Mouse<MOUSE_PARAMS>
 
-  template Mouse<InputPolicy::Buffered>;
-  template Mouse<InputPolicy::Immediate>;
+  template class Mouse<InputPolicy::Buffered>;
+  template class Mouse<InputPolicy::Immediate>;
 
   // Force instantiate the constructor for each platform
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
   template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
   template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
 #else
 # error TODO
 #endif

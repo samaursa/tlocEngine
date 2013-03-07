@@ -14,6 +14,11 @@
 		9743B21916E88B8A00D1BFFF /* tlocJoystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B21616E88B8A00D1BFFF /* tlocJoystick.cpp */; };
 		9743B21A16E88B8A00D1BFFF /* tlocJoystick.h in Headers */ = {isa = PBXBuildFile; fileRef = 9743B21716E88B8A00D1BFFF /* tlocJoystick.h */; };
 		9743B21B16E88B8A00D1BFFF /* tlocJoystickImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 9743B21816E88B8A00D1BFFF /* tlocJoystickImpl.h */; };
+		9743B22116E9450A00D1BFFF /* tloc_hid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B21E16E9450A00D1BFFF /* tloc_hid.cpp */; };
+		9743B22216E9450A00D1BFFF /* tloc_hid.h in Headers */ = {isa = PBXBuildFile; fileRef = 9743B21F16E9450A00D1BFFF /* tloc_hid.h */; };
+		9743B22716E9453900D1BFFF /* tloc_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B22316E9453900D1BFFF /* tloc_input.cpp */; };
+		9743B22816E9453900D1BFFF /* tloc_input.h in Headers */ = {isa = PBXBuildFile; fileRef = 9743B22416E9453900D1BFFF /* tloc_input.h */; };
+		9743B22916E9453900D1BFFF /* tlocInputBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9743B22616E9453900D1BFFF /* tlocInputBase.h */; };
 		97AF942816AF9F6700DB6C90 /* tlocInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF942616AF9F6700DB6C90 /* tlocInputManager.cpp */; };
 		97AF942916AF9F6700DB6C90 /* tlocInputManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF942716AF9F6700DB6C90 /* tlocInputManager.h */; };
 		97AF942D16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF942B16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h */; };
@@ -46,6 +51,13 @@
 		9743B21716E88B8A00D1BFFF /* tlocJoystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocJoystick.h; path = ../../../../src/tlocInput/hid/tlocJoystick.h; sourceTree = "<group>"; };
 		9743B21816E88B8A00D1BFFF /* tlocJoystickImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocJoystickImpl.h; path = ../../../../src/tlocInput/hid/tlocJoystickImpl.h; sourceTree = "<group>"; };
 		9743B21D16E88BD200D1BFFF /* tlocJoystickIphone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tlocJoystickIphone.h; path = ../../../../src/tlocInput/hid/tlocJoystickIphone.h; sourceTree = "<group>"; };
+		9743B21E16E9450A00D1BFFF /* tloc_hid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_hid.cpp; path = ../../../../src/tlocInput/hid/tloc_hid.cpp; sourceTree = "<group>"; };
+		9743B21F16E9450A00D1BFFF /* tloc_hid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_hid.h; path = ../../../../src/tlocInput/hid/tloc_hid.h; sourceTree = "<group>"; };
+		9743B22016E9450A00D1BFFF /* tloc_hid.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_hid.inl; path = ../../../../src/tlocInput/hid/tloc_hid.inl; sourceTree = "<group>"; };
+		9743B22316E9453900D1BFFF /* tloc_input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_input.cpp; path = ../../../../src/tlocInput/tloc_input.cpp; sourceTree = "<group>"; };
+		9743B22416E9453900D1BFFF /* tloc_input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_input.h; path = ../../../../src/tlocInput/tloc_input.h; sourceTree = "<group>"; };
+		9743B22516E9453900D1BFFF /* tloc_input.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_input.inl; path = ../../../../src/tlocInput/tloc_input.inl; sourceTree = "<group>"; };
+		9743B22616E9453900D1BFFF /* tlocInputBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputBase.h; path = ../../../../src/tlocInput/tlocInputBase.h; sourceTree = "<group>"; };
 		97AF942616AF9F6700DB6C90 /* tlocInputManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tlocInputManager.cpp; path = ../../../../src/tlocInput/tlocInputManager.cpp; sourceTree = "<group>"; };
 		97AF942716AF9F6700DB6C90 /* tlocInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocInputManager.h; path = ../../../../src/tlocInput/tlocInputManager.h; sourceTree = "<group>"; };
 		97AF942B16AF9FBA00DB6C90 /* tlocKeyboardImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocKeyboardImplIphone.h; path = ../../../../src/tlocInput/hid/tlocKeyboardImplIphone.h; sourceTree = "<group>"; };
@@ -146,8 +158,12 @@
 			isa = PBXGroup;
 			children = (
 				97C87D2015DE4D8500FE0A6C /* _misc */,
-				97C87D2115DE4D9500FE0A6C /* HIDs */,
+				97C87D2115DE4D9500FE0A6C /* hid */,
+				9743B22316E9453900D1BFFF /* tloc_input.cpp */,
+				9743B22416E9453900D1BFFF /* tloc_input.h */,
+				9743B22516E9453900D1BFFF /* tloc_input.inl */,
 				97C87D2215DE4DBA00FE0A6C /* tlocDepVersionCheck.cpp */,
+				9743B22616E9453900D1BFFF /* tlocInputBase.h */,
 			);
 			name = tlocInput;
 			sourceTree = "<group>";
@@ -164,15 +180,18 @@
 			name = _misc;
 			sourceTree = "<group>";
 		};
-		97C87D2115DE4D9500FE0A6C /* HIDs */ = {
+		97C87D2115DE4D9500FE0A6C /* hid */ = {
 			isa = PBXGroup;
 			children = (
 				9743B20C16E3B54E00D1BFFF /* joystick */,
 				97C87D3615DE4F9200FE0A6C /* keyboard */,
 				9743B20D16E3B57500D1BFFF /* mouse */,
 				97C87D3515DE4EBA00FE0A6C /* touch surface */,
+				9743B21E16E9450A00D1BFFF /* tloc_hid.cpp */,
+				9743B21F16E9450A00D1BFFF /* tloc_hid.h */,
+				9743B22016E9450A00D1BFFF /* tloc_hid.inl */,
 			);
-			name = HIDs;
+			name = hid;
 			sourceTree = "<group>";
 		};
 		97C87D2C15DE4DEA00FE0A6C /* Iphone */ = {
@@ -248,6 +267,9 @@
 				9743B21316E3B5B800D1BFFF /* tlocMouseImpl.h in Headers */,
 				9743B21A16E88B8A00D1BFFF /* tlocJoystick.h in Headers */,
 				9743B21B16E88B8A00D1BFFF /* tlocJoystickImpl.h in Headers */,
+				9743B22216E9450A00D1BFFF /* tloc_hid.h in Headers */,
+				9743B22816E9453900D1BFFF /* tloc_input.h in Headers */,
+				9743B22916E9453900D1BFFF /* tlocInputBase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +333,8 @@
 				97AF944016AFA3C000DB6C90 /* tlocTouchSurfaceDevice.cpp in Sources */,
 				9743B21116E3B5B800D1BFFF /* tlocMouse.cpp in Sources */,
 				9743B21916E88B8A00D1BFFF /* tlocJoystick.cpp in Sources */,
+				9743B22116E9450A00D1BFFF /* tloc_hid.cpp in Sources */,
+				9743B22716E9453900D1BFFF /* tloc_input.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

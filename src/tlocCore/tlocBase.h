@@ -17,7 +17,7 @@
 // Avoid including extra headers here
 
 #include <assert.h>
-#include <3rdParty/loki/static_check.h>
+#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -339,7 +339,7 @@
 # if defined(__GNUC__) || defined (__clang__)
 #   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
 # else
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
 # endif
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
@@ -349,6 +349,7 @@
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
+
 # define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
   TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
 # define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
@@ -357,6 +358,15 @@
   TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
 # define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
   TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
+
+# define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isFloat, Type_must_be_a_FLOAT);
+# define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isArith, Type_must_be_an_ARITHMETIC);
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
 
 //------------------------------------------------------------------------
 // Low level assertions

@@ -224,6 +224,7 @@
 				OTHER_LDFLAGS = (
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocPhysics/tlocPhysics_$(CONFIGURATION).a\"",
 					"\"$(TLOC_DEP_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/Box2D/Box2D_$(CONFIGURATION).a\"",
 				);
 				PRODUCT_NAME = tlocPhysicsTest;
@@ -266,6 +267,7 @@
 				OTHER_LDFLAGS = (
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
 					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocPhysics/tlocPhysics_$(CONFIGURATION).a\"",
 					"\"$(TLOC_DEP_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/Box2D/Box2D_$(CONFIGURATION).a\"",
 				);
 				PRODUCT_NAME = tlocPhysicsTest;
@@ -309,6 +311,7 @@
 				9743B2F116EB379600D1BFFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

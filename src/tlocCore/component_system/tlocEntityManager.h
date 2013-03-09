@@ -52,8 +52,8 @@ namespace tloc { namespace core { namespace component_system {
 
   private:
 
-    void DoUpdateComponents();
-    void DoUpdateEntities();
+    void DoUpdateAndCleanComponents();
+    void DoUpdateAndCleanEntities();
 
     bool DoRemoveComponent(Entity* a_entity, Component* a_component);
 

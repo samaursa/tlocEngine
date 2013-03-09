@@ -73,6 +73,8 @@ namespace TestingEntityManager
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
   {
+    const tl_uint entityCount = 100;
+
     EntityTracker   entTrack;
     EventManager    evtMgr;
     evtMgr.AddGlobalListener(&entTrack);
@@ -89,14 +91,14 @@ namespace TestingEntityManager
     bool stressTestPassed = true;
     EntityManager::entity_cont myList;
 
-    for (tl_uint i = 0; i < 100; ++i)
+    for (tl_uint i = 0; i < entityCount; ++i)
     {
       newEnt = eMgr.CreateEntity();
       myList.push_back(newEnt);
       if (newEnt == NULL) { stressTestPassed = false; break; }
     }
     CHECK(eMgr.GetUnusedEntities() == 0);
-    CHECK(entTrack.m_entEventCounter == 100);
+    CHECK(entTrack.m_entEventCounter == entityCount);
     CHECK(stressTestPassed);
 
     for (EntityManager::entity_cont::iterator itr = myList.begin(),
@@ -106,7 +108,7 @@ namespace TestingEntityManager
     }
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
-    CHECK(eMgr.GetUnusedEntities() == 100);
+    CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
 
     newEnt = eMgr.CreateEntity();
     CHECK(entTrack.m_entEventCounter == 1);
@@ -129,6 +131,6 @@ namespace TestingEntityManager
     eMgr.DestroyEntity(newEnt);
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
-    CHECK(eMgr.GetUnusedEntities() == 100);
+    CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
   }
 };

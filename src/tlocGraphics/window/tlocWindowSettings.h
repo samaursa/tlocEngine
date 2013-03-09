@@ -1,12 +1,18 @@
 #ifndef TLOC_WINDOW_SETTINGS_H
 #define TLOC_WINDOW_SETTINGS_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/string/tlocString.h>
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   struct WindowSettings
   {
+  public:
+    typedef core::string::String      string_type;
+
+  public:
     enum { style_none       = 0,
            style_titlebar   = 1 << 0,
            style_resize     = 1 << 1,
@@ -14,7 +20,7 @@ namespace tloc { namespace graphics {
            style_fullscreen = 1 << 3}; typedef u32 style_type;
 
     WindowSettings
-      (core::String a_title,
+      (string_type a_title,
        style_type a_style = style_titlebar | style_resize | style_close,
        u32 a_depthBits = 24, u32 a_stencilBits = 8,
        u32 a_antiAlias = 0)
@@ -24,7 +30,7 @@ namespace tloc { namespace graphics {
        , m_stencilBits(a_stencilBits)
        , m_antiAlias(a_antiAlias) {}
 
-    core::String  m_title;
+    string_type   m_title;
     style_type    m_style;
 
     u32           m_depthBits;
@@ -32,6 +38,6 @@ namespace tloc { namespace graphics {
     u32           m_antiAlias;
   };
 
-};};
+};};};
 
 #endif

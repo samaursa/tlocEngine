@@ -1,13 +1,13 @@
 #ifndef TLOC_TABLE_H
 #define TLOC_TABLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <memory.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
   // Column major ordering (because OpenGL uses it. Switching back and forth
   // is not a problem as long as we are consistent)
   //
@@ -43,6 +43,8 @@ namespace tloc { namespace core {
     typedef Tuple<value_type, k_Cols>                   tuple_col_type;
 
     TL_FI Table();
+    template <typename T_RealType>
+    TL_FI Table(const Table<T_RealType, k_Rows, k_Cols>& aTable);
     TL_FI Table(const this_type& aTable);
 
     TL_FI explicit Table(const value_type& aValue);
@@ -50,7 +52,7 @@ namespace tloc { namespace core {
     template <typename T_ArrayType>
     TL_FI Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
 
-    TL_FI Table(const core::Variadic<value_type, k_TableSize>& a_vars,
+    TL_FI Table(const Variadic<value_type, k_TableSize>& a_vars,
                 table_order a_tableOrder);
 
     //------------------------------------------------------------------------
@@ -67,16 +69,19 @@ namespace tloc { namespace core {
     TL_FI void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
     TL_FI void GetCol(size_type aCol, tuple_row_type& aColOut) const;
 
+    TL_FI value_type& operator[] (tl_int aIndex);
+    TL_FI const value_type& operator[] (tl_int aIndex) const;
+
     // Direct array access. Generally not recommended but useful for memcpy
-    TL_FI operator T* ();
-    TL_FI operator const T* () const;
+    TL_FI T*        data();
+    TL_FI T const*  data() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
     TL_FI void Set(const value_type& aValue);
 
-    TL_FI void Set(const core::Variadic<value_type, k_TableSize>& a_vars,
+    TL_FI void Set(const Variadic<value_type, k_TableSize>& a_vars,
                    table_order a_tableOrder);
 
     template <typename T_ArrayType>
@@ -90,15 +95,11 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI this_type& operator = (const this_type& aTable);
+    TL_FI Table& operator= (const Table& aTable);
     TL_FI bool operator == (const Table& aTable);
     TL_FI bool operator != (const Table& aTable);
   };
 
-};};
-
-#ifdef TLOC_FULL_SOURCE
-#include "tlocTable.inl"
-#endif
+};};};
 
 #endif

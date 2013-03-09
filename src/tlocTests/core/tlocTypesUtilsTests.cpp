@@ -45,6 +45,12 @@ namespace TestingTypeUtils
     CHECK( (utils::CastNumber<u32, u32>(60) == 60) );
     CHECK( (utils::CastNumber<s32, s32>(60) == 60) );
 
+    CHECK( (utils::CastNumber<f32, f32>(60.0) == Approx(60.0f)) );
+    CHECK( (utils::CastNumber<f32, f64>(60.0) == Approx(60.0f)) );
+
+    CHECK( (utils::CastNumber<f64, f32>(60.0f) == Approx(60.0)) );
+    CHECK( (utils::CastNumber<f64, f32>(60.0f) == Approx(60.0)) );
+
 #ifdef CAUSE_PRECISION_FAILURES
     CHECK( (utils::CastNumber<u32, s8>(-100) != 100) );
     CHECK( (utils::CastNumber<u8, u32>(400) != 100) );

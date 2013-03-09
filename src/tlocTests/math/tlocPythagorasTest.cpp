@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocMath.inl>
 #include <tlocMath/utilities/tlocPythagoras.h>
 
 namespace TestingPythagoras
@@ -11,6 +12,8 @@ namespace TestingPythagoras
   TEST_CASE("Math/Pythagoras/Ctors", "")
   {
     typedef utils::Pythagoras pyth;
+    using math::types::Degree;
+    using math::types::Radian;
 
     //------------------------------------------------------------------------
     // Triangle side tests
@@ -64,16 +67,16 @@ namespace TestingPythagoras
 
     {
       tl_float angle = Mathf::ATan(1.5f / 2.0f);
-      pyth p(math::Degree( math::Radian(angle) ), pyth::base(2.0));
+      pyth p(Degree(Radian(angle) ), pyth::base(2.0));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
       CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
-      CHECK(p.GetAngle().GetAs<math::Degree>() == Approx(36.8698f));
+      CHECK(p.GetAngle().GetAs<Degree>() == Approx(36.8698f));
       CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       tl_float angle = Mathf::ASin(1.5f / 2.5f);
-      pyth p(math::Degree( math::Radian(angle) ), pyth::opposite(1.5));
+      pyth p(Degree(Radian(angle) ), pyth::opposite(1.5));
       CHECK(p.GetSide<pyth::base>() == Approx(2.0));
       CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
       CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
@@ -81,7 +84,7 @@ namespace TestingPythagoras
 
     {
       tl_float angle = Mathf::ACos(2.0f / 2.5f);
-      pyth p(math::Degree( math::Radian(angle) ), pyth::base(2.0));
+      pyth p(Degree(Radian(angle) ), pyth::base(2.0));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
       CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
       CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
@@ -89,7 +92,7 @@ namespace TestingPythagoras
 
     {
       tl_float angle = Mathf::ACos(2.0f / 2.5f);
-      pyth p(math::Degree( math::Radian(angle) ), pyth::hypotenuse(2.5));
+      pyth p(Degree(Radian(angle) ), pyth::hypotenuse(2.5));
       CHECK(p.GetSide<pyth::base>() == Approx(2.0));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
       CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
@@ -97,7 +100,7 @@ namespace TestingPythagoras
 
     {
       tl_float angle = Mathf::ACos(2.0f / 2.5f);
-      pyth p(math::Radian( angle ), pyth::hypotenuse(2.5));
+      pyth p(Radian( angle ), pyth::hypotenuse(2.5));
       CHECK(p.GetSide<pyth::base>() == Approx(2.0));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
       CHECK(Mathf::Approx(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );

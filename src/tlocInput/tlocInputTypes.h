@@ -1,6 +1,8 @@
 #ifndef TLOC_INPUT_TYPES_H
 #define TLOC_INPUT_TYPES_H
 
+#include <tlocInput/tlocInputBase.h>
+
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -14,17 +16,24 @@ namespace tloc { namespace input {
     struct Immediate{};
   };
 
-  namespace hid
+  namespace p_hid
   {
-    enum Type
-    {
-      keyboard = 0,
-      mouse,
-      joystick,
-      touch_surface,
+    struct HIDType      {};
 
-      count
-    };
+    struct Keyboard     : public HIDType { static const int m_index = 0; };
+    struct Mouse        : public HIDType { static const int m_index = 1; };
+    struct Joystick     : public HIDType { static const int m_index = 2; };
+    struct TouchSurface : public HIDType { static const int m_index = 3; };
+
+    struct Count                         { static const int m_index = 4; };
+
+    template <typename T_InputObject>
+    void IsInputTypeSupported()
+    {
+      TLOC_STATIC_ASSERT(
+        (Loki::Conversion<T_InputObject, p_hid::HIDType>::exists),
+        Object_must_be_HID_type);
+    }
   }
 
   namespace parameter_options
@@ -93,7 +102,7 @@ namespace tloc { namespace input {
     struct Type<p_type::Axis, T_PolicyType, T_ValueType>
     {
     public:
-      
+
       typedef Type<p_type::Axis, T_PolicyType, T_ValueType>   this_type;
 
       typedef T_PolicyType                                    policy_type;
@@ -149,12 +158,12 @@ namespace tloc { namespace input {
     public:
       typedef
         Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>  this_type;
-      
+
       typedef
         Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>  base_type;
 
       typedef typename base_type::value_type                    value_type;
-      
+
       typedef p_axis::AbsoluteOnly                              policy_type;
 
       typedef typename base_type::rel_and_abs                   rel_and_abs;
@@ -184,12 +193,12 @@ namespace tloc { namespace input {
     };
 
     typedef Type<p_type::Button>     Button;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, s64>         AxisRel;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, s64>         AxisAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, s64>  AxisRelAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, f64>         AxisRelf;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, f64>         AxisAbsf;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, f64>  AxisRelAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
   }

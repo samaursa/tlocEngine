@@ -15,6 +15,7 @@ namespace TestingSharedPtr
 {
   using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   using tloc::core::smart_ptr::SharedPtr;
 
@@ -217,8 +218,8 @@ namespace TestingSharedPtr
 
       bool testsPassed = true;
       tl_int counter = 0;
-      for (shared_array_type::iterator itr = sa.begin(), itrEnd = sa.end();
-           itr != itrEnd; ++itr)
+      for (typename shared_array_type::iterator itr = sa.begin(),
+           itrEnd = sa.end(); itr != itrEnd; ++itr)
       {
         shared_ptr_type localPtr = *itr;
         if ( (*localPtr).m_value != counter)

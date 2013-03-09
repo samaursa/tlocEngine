@@ -2,7 +2,7 @@
 #ifndef TLOC_BASIC_TYPES_H
 #define TLOC_BASIC_TYPES_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <wctype.h>
 #include <limits.h>
 #include <stddef.h> // Needed for OSX built-in types
@@ -92,6 +92,8 @@ namespace tloc
   typedef TLOC_U_INT32_TYPE  u32;
   typedef TLOC_U_INT64_TYPE  u64;
 
+  typedef long                 tl_long;
+  typedef unsigned long        tl_ulong;
   typedef TLOC_SIZE_TYPE       tl_size;
   typedef TLOC_U_INT_PTR_TYPE  tl_uintptr; // Guaranteed to hold a native pointer
   typedef TLOC_PTR_DIFF_TYPE   tl_ptrdiff;

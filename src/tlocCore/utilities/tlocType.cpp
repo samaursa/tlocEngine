@@ -128,28 +128,27 @@ namespace tloc { namespace core { namespace utils {
   template f32 CastTo32(f32);
   template f32 CastTo32(f64);
 
-  template s8  CastNumber(s8);
-  template s8  CastNumber(u8);
-  template s8  CastNumber(s32);
-  template s8  CastNumber(u32);
-  template s8  CastNumber(s64);
-  template s8  CastNumber(u64);
+#define INSTANTIATE_CAST_NUMBER(_type_)\
+  template _type_  CastNumber(s8);\
+  template _type_  CastNumber(u8);\
+  template _type_  CastNumber(s32);\
+  template _type_  CastNumber(u32);\
+  template _type_  CastNumber(s64);\
+  template _type_  CastNumber(u64);\
+  template _type_  CastNumber(f32);\
+  template _type_  CastNumber(f64);\
+  template _type_  CastNumber(tl_long);\
+  template _type_  CastNumber(tl_ulong)
 
-  template u8  CastNumber(s8);
-  template u8  CastNumber(u8);
-  template u8  CastNumber(s32);
-  template u8  CastNumber(u32);
-  template u8  CastNumber(s64);
-  template u8  CastNumber(u64);
-
-  template s32 CastNumber(s8);
-  template s32 CastNumber(u8);
-  template s32 CastNumber(u32);
-  template s32 CastNumber(s32);
-
-  template u32 CastNumber(s8);
-  template u32 CastNumber(u8);
-  template u32 CastNumber(s32);
-  template u32 CastNumber(u32);
+  INSTANTIATE_CAST_NUMBER(s8);
+  INSTANTIATE_CAST_NUMBER(u8);
+  INSTANTIATE_CAST_NUMBER(s32);
+  INSTANTIATE_CAST_NUMBER(s64);
+  INSTANTIATE_CAST_NUMBER(u32);
+  INSTANTIATE_CAST_NUMBER(u64);
+  INSTANTIATE_CAST_NUMBER(f32);
+  INSTANTIATE_CAST_NUMBER(f64);
+  INSTANTIATE_CAST_NUMBER(tl_long);
+  INSTANTIATE_CAST_NUMBER(tl_ulong);
 
 };};};

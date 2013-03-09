@@ -1,6 +1,8 @@
 #ifndef TLOC_SHADER_PROGRAM_H
 #define TLOC_SHADER_PROGRAM_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -26,34 +28,35 @@ namespace tloc { namespace graphics { namespace gl {
     struct ActiveUniformMaxLength  { static const tl_int s_glStatusName; };
   };
 
-  class ShaderProgram : public Object_T<ShaderProgram>
+  class ShaderProgram : public Object_T<ShaderProgram, p_object::WithError>
   {
   public:
     template <typename T> friend class ObjectRefCounted;
 
   public:
     // Supported number of shader components
-    typedef core::Variadic<Shader_I*, 1>     one_shader_component;
-    typedef core::Variadic<Shader_I*, 2>     two_shader_components;
-    typedef core::Variadic<Shader_I*, 3>     three_shader_components;
-    typedef core::Variadic<Shader_I*, 4>     four_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 1>  one_shader_component;
+    typedef core::data_structs::Variadic<Shader_I*, 2>  two_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 3>  three_shader_components;
+    typedef core::data_structs::Variadic<Shader_I*, 4>  four_shader_components;
 
-    typedef Object_T<ShaderProgram>     base_type;
-    typedef base_type::object_handle    object_handle;
-    typedef base_type::error_type       error_type;
+    typedef Object_T<ShaderProgram, p_object::WithError>  base_type;
+    typedef base_type::object_handle                      object_handle;
+    typedef base_type::error_type                         error_type;
 
-    typedef tl_size                     size_type;
-    typedef s32                         gl_result_type;
+    typedef tl_size                         size_type;
+    typedef s32                             gl_result_type;
 
-    typedef ShaderVariableInfo                        glsl_var_info_type;
-    typedef core::tl_array<ShaderVariableInfo>::type  glsl_var_info_cont_type;
+    typedef ShaderVariableInfo              glsl_var_info_type;
+    typedef core::containers::tl_array
+            <ShaderVariableInfo>::type      glsl_var_info_cont_type;
 
   public:
     ShaderProgram();
     ~ShaderProgram();
 
     template <size_type T_Size>
-    error_type AttachShaders(core::Variadic<Shader_I*, T_Size>
+    error_type AttachShaders(core::data_structs::Variadic<Shader_I*, T_Size>
                              a_shaderComponents);
     error_type Link();
     bool       IsLinked() const;
@@ -95,6 +98,9 @@ namespace tloc { namespace graphics { namespace gl {
     core::utils::Checkpoints         m_flags;
     glsl_var_info_cont_type          m_attributeInfo;
     glsl_var_info_cont_type          m_uniformInfo;
+
+    s32                              m_currTextureUnit;
+
   };
 
   //------------------------------------------------------------------------

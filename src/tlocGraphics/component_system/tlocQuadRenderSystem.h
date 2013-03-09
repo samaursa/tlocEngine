@@ -2,8 +2,9 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_RENDER_SYSTEM_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_RENDER_SYSTEM_H_
 
-#include <tlocCore/types/tlocStrongType.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -13,8 +14,8 @@
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -32,9 +33,11 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef math::Vec3f32                                     vec3_type;
-    typedef core::tl_array<vec3_type>::type                   vec3_cont_type;
-    typedef math::Mat4f32                                     matrix_type;
+    typedef math::types::Vec3f32                              vec3_type;
+    typedef math::types::Vec2f32                              vec2_type;
+    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
+    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
+    typedef math::types::Mat4f32                              matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 
@@ -62,7 +65,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // Cache
     vec3_cont_type      m_quadList;
+    vec2_cont_type      m_texList;
     gl::AttributePtr    m_vData;
+    gl::AttributePtr    m_tData;
   };
 
 };};};

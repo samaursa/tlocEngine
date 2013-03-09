@@ -1,11 +1,11 @@
 #ifndef TLOC_TIME_H
 #define TLOC_TIME_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace time {
 
   namespace p_timer_t
   {
@@ -73,10 +73,11 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Typedefs
 
-  typedef Timer_T<>             Timer;
-  typedef Timer_T<f32, u32>     Timer32;
-  typedef Timer_T<f64, u64>     Timer64;
+  typedef Timer_T<>                   Timer;
+  typedef Timer_T<tl_float, tl_uint>  Timerf;
+  typedef Timer_T<f32, u32>           Timer32;
+  typedef Timer_T<f64, u64>           Timer64;
 
-};};
+};};};
 
 #endif

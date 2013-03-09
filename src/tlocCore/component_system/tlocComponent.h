@@ -1,6 +1,8 @@
 #ifndef TLOC_COMPONENT_H
 #define TLOC_COMPONENT_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
@@ -39,8 +41,8 @@ namespace tloc { namespace core { namespace component_system {
   typedef smart_ptr::SharedPtr<Component>       component_sptr;
   typedef smart_ptr::SharedPtr<const Component> component_const_sptr;
 
-  typedef tl_array<Component*>::type            component_ptr_array;
-  typedef tl_array<component_sptr>::type        component_sptr_array;
+  typedef containers::tl_array<Component*>::type      component_ptr_array;
+  typedef containers::tl_array<component_sptr>::type  component_sptr_array;
 
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>

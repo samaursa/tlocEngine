@@ -1,5 +1,3 @@
-#include "tlocCore/tlocNoOpt.h"
-
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocBase.h>
@@ -18,8 +16,9 @@
 
 namespace TestingHashtable
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {
@@ -546,7 +545,7 @@ namespace TestingHashtable
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with void", "")
   {
-    using core::Hashtable;
+    using core::containers::Hashtable;
 
     typedef HashtableElement<void*>             void_elem_type;
     typedef DoublyList<void_elem_type>::type    bucket_type;

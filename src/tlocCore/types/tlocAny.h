@@ -1,6 +1,7 @@
 #ifndef _TLOC_CORE_TYPES_ANY_H_
 #define _TLOC_CORE_TYPES_ANY_H_
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 
 namespace tloc { namespace core { namespace types {
@@ -68,6 +69,8 @@ namespace tloc { namespace core { namespace types {
       {
         typedef T                         value_type;
         typedef Policy_IT<value_type>     base_type;
+
+        using base_type::CastSource;
 
         virtual void Delete(void** a_unknownType);
         virtual void Copy(void const* a_source, void** a_dest);

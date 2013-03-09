@@ -14,11 +14,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     frustum_param_type GetDefaultFrustumParams()
     {
+      using math::types::Degree;
+
       typedef frustum_type::fov_type  fov_type;
       typedef fov_type::ar_type       ar_type;
 
       ar_type   ar(ar_type::width(800), ar_type::height(600));
-      fov_type  fov(math::Degree(70.0f), ar, types::p_FOV::vertical());
+      fov_type  fov(Degree(70.0f), ar, types::p_FOV::vertical());
 
       frustum_param_type params(fov);
       params.SetNear(1.0f);
@@ -49,9 +51,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // Explicit Instantiations
 
   // SmartPtr
-  template core::smart_ptr::SharedPtr<Projection>;
+  template class core::smart_ptr::SharedPtr<Projection>;
 
   // Pool
-  template core::component_system::ComponentPool_TI<ProjectionPtr>;
+  template class core::component_system::ComponentPool_TI<ProjectionPtr>;
 
 };};};

@@ -1,6 +1,8 @@
 #ifndef TLOC_ENTITY_EVENT_H
 #define TLOC_ENTITY_EVENT_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocEvent.h>

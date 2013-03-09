@@ -2,11 +2,12 @@
 #ifndef _TLOC_PHYSICS_BOX2D_RIGID_BODY_DEF_H_
 #define _TLOC_PHYSICS_BOX2D_RIGID_BODY_DEF_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/vector/tlocVector2.h>
+#include <tlocMath/types/tlocVector2.h>
 
 #include <Box2D/Dynamics/b2Body.h>
 
@@ -42,7 +43,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef b2BodyDef     rigid_body_def_internal_type;
 
     typedef p_rigid_body::value_type  rigid_body_type_type;
-    typedef math::Vec2f               vec_type;
+    typedef math::types::Vec2f        vec_type;
     typedef tl_float                  float_type;
 
   public:

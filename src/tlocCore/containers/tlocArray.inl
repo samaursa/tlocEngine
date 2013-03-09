@@ -9,7 +9,7 @@
 #include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/memory/tlocMemory.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -248,6 +248,34 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     ArrayBase<ARRAY_BASE_PARAMS>::end() const
   {
     return m_end;
+  }
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator 
+    ArrayBase<ARRAY_BASE_PARAMS>::rbegin()
+  {
+    return reverse_iterator(end());
+  }
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator 
+    ArrayBase<ARRAY_BASE_PARAMS>::rbegin() const
+  {
+    return const_reverse_iterator(end());
+  }
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator 
+    ArrayBase<ARRAY_BASE_PARAMS>::rend()
+  {
+    return reverse_iterator(begin());
+  }
+
+  template <ARRAY_BASE_TYPES>
+  TL_I typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator 
+    ArrayBase<ARRAY_BASE_PARAMS>::rend() const
+  {
+    return const_reverse_iterator(begin());
   }
 
   //------------------------------------------------------------------------
@@ -819,6 +847,6 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
-};};
+};};};
 
 #endif

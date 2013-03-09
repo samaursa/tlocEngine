@@ -35,7 +35,7 @@
   template <>\
   const _type_ Math<_type_>::m_sinTable[64]   = {0};\
   \
-  template Math<_type_>
+  template class Math<_type_>
 
 
 #endif

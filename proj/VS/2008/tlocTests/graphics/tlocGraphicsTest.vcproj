@@ -622,6 +622,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -774,6 +775,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)/include/WinSDK/&quot;;&quot;$(WIN32_SDK_DIR)/include/&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -913,6 +915,10 @@
 				Name="opengl"
 				>
 				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocAttributeVariableTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocGLGeneralTest.cpp"
 					>
 				</File>
@@ -930,6 +936,10 @@
 				</File>
 				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\graphics\tlocShaderProgramTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocUniformVariableTest.cpp"
 					>
 				</File>
 				<File

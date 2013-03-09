@@ -2,6 +2,8 @@
 #ifndef _TLOC_PHYSICS_ERROR_TYPES_H_
 #define _TLOC_PHYSICS_ERROR_TYPES_H_
 
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/error/tlocErrorTypes.h>
 

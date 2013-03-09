@@ -47,6 +47,9 @@ namespace tloc { namespace core { namespace memory {
   /// @T_Capacity specifies the size of memory pool which cannot be changed
   ///             at runtime. If you want the pool to dynamically increase in
   ///             size, then set T_Capacity to 0
+  ///
+  /// @note this memory pool MUST NOT be explicitly instantiated because
+  /// some methods will not compile due to different policy types
   ///-------------------------------------------------------------------------
   template <class T,
             tl_uint T_Capacity = 0,
@@ -107,9 +110,10 @@ namespace tloc { namespace core { namespace memory {
       >::Result                                         wrapper_type;
 
     // Select the proper array
-    typedef typename tl_array<wrapper_type,
-                              Array_Unordered>::type    d_array_type;
-    typedef typename tl_array_fixed
+    typedef typename
+      containers::tl_array<wrapper_type,
+               containers::Array_Unordered>::type       d_array_type;
+    typedef typename containers::tl_array_fixed
       <wrapper_type, pool_size_type::value>::type       s_array_type;
 
     typedef typename
@@ -254,5 +258,13 @@ namespace tloc { namespace core { namespace memory {
   };
 
 };};};
+
+///-------------------------------------------------------------------------
+/// @note this memory pool MUST NOT be explicitly instantiated because
+/// some methods will not compile due to different policy types - Hence one
+/// of the rare few classes where the inline file is being inclued in the
+/// header
+///-------------------------------------------------------------------------
+#include "tlocMemoryPool.inl"
 
 #endif

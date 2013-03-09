@@ -1,16 +1,23 @@
 #ifndef _TLOC_GRAPHICS_GL_UNIFORM_H_
 #define _TLOC_GRAPHICS_GL_UNIFORM_H_
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector4.h>
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/containers/tlocArray.h>
+
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
+#include <tlocGraphics/opengl/tlocTextureObject.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -26,10 +33,11 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckTypeCompatibility() const
     {
-      using namespace core;
-      using namespace math;
+      using namespace core::containers;
+      using namespace core::data_structs;
+      using namespace math::types;
 
-      type_traits::AssertTypeIsSupported
+      tloc::type_traits::AssertTypeIsSupported
         <T,
          f32,
          Vec2f32, Vec3f32, Vec4f32,
@@ -38,6 +46,7 @@ namespace tloc { namespace graphics { namespace gl {
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
+         TextureObject,
          Array<f32>,
          Array<Vec2f32>,
          Array<Vec3f32>,
@@ -56,8 +65,8 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     void DoCheckNonArrayTypes() const
     {
-      using namespace core;
-      using namespace math;
+      using namespace core::data_structs;
+      using namespace math::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -67,17 +76,19 @@ namespace tloc { namespace graphics { namespace gl {
          Tuple2s32, Tuple3s32, Tuple4s32,
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
-         Mat2f32, Mat3f32, Mat4f32
+         Mat2f32, Mat3f32, Mat4f32,
+         TextureObject
         >();
     }
 
     template <typename T>
     void DoCheckArrayTypes() const
     {
-      using namespace core;
-      using namespace math;
+      using namespace core::data_structs;
+      using namespace core::containers;
+      using namespace math::types;
 
-      type_traits::AssertTypeIsSupported
+      tloc::type_traits::AssertTypeIsSupported
         <Array<T>,
          Array<f32>,
          Array<Vec2f32>,

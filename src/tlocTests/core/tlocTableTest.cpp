@@ -5,8 +5,10 @@
 
 namespace TestingTable
 {
-  USING_TLOC;
-  typedef tloc::core::Tuple<tl_int, 3> tuple_int_type;
+  using namespace tloc;
+  using namespace tloc::core::data_structs;
+
+  typedef Tuple<tl_int, 3> tuple_int_type;
 
   struct Table3Fixture
   {
@@ -37,7 +39,7 @@ namespace TestingTable
       b.SetCol(2, col3);
     }
 
-    tloc::core::Table<tl_int, 3, 3> a, b, c, d;
+    Table<tl_int, 3, 3> a, b, c, d;
   };
 
 #define CHECK_TABLE(tab,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -53,6 +55,9 @@ namespace TestingTable
   {
     CHECK_TABLE(a, 1, 4, 7, 2, 5, 8, 3, 6, 9);
     CHECK_TABLE(b, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+    Table<tl_uint, 3, 3> ut(a);
+    CHECK_TABLE(ut, 1, 4, 7, 2, 5, 8, 3, 6, 9);
   }
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Accessors",
@@ -86,7 +91,9 @@ namespace TestingTable
     CHECK(tup[0] == 1); CHECK(tup[1] == 4); CHECK(tup[2] == 7);
 
     // Col-major ordering
-    CHECK( *(a + 0) == 1); CHECK( *(a + 1) == 4); CHECK( *(a + 2) == 7);
+    CHECK( *(a.data() + 0) == 1);
+    CHECK( *(a.data() + 1) == 4);
+    CHECK( *(a.data() + 2) == 7);
   }
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Modifiers",
@@ -116,19 +123,24 @@ namespace TestingTable
     tl_int rawArray[9] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     // ROW_MAJOR means that the above array has vectors in a row major order
     // i.e. 9,8,7 is a row vector, 6,5,4 is a row vector and so on
-    a.Set(rawArray, tloc::core::Table<tl_int, 3, 3>::k_RowMajor);
+    a.Set(rawArray, Table<tl_int, 3, 3>::k_RowMajor);
     CHECK_TABLE(a, 9, 6, 3, 8, 5, 2, 7, 4, 1);
 
     a.Set(0);
-    a.Set(rawArray, tloc::core::Table<tl_int, 3, 3>::k_ColMajor);
+    a.Set(rawArray, Table<tl_int, 3, 3>::k_ColMajor);
     CHECK_TABLE(a, 9, 8, 7, 6, 5, 4, 3, 2, 1);
   }
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/Operators",
     "Test all operator functions")
   {
-    a = c;
+    c = a;
     CHECK( (a == c) == true);
     CHECK( (a != c) == false);
+
+    c = a;
+    CHECK(c[0] == 1); CHECK(c[1] == 4); CHECK(c[2] == 7);
+    CHECK(c[3] == 2); CHECK(c[4] == 5); CHECK(c[5] == 8);
+    CHECK(c[6] == 3); CHECK(c[7] == 6); CHECK(c[8] == 9);
   }
 };

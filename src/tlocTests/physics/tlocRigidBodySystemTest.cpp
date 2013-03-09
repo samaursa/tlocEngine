@@ -8,8 +8,8 @@
 #include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
@@ -149,8 +149,8 @@ namespace TestingRigidBodySystem
     rigid_body_def_sptr rbDef(new rigid_body_def_type);
     rigid_body_component rbStaticRectComponent(rbDef);
 
-    rect_shape_type rectShape(rect_shape_type::half_width(10.0f),
-                              rect_shape_type::half_height(1.0f) );
+    rect_shape_type rectShape(rect_shape_type::width(20.0f),
+                              rect_shape_type::height(2.0f) );
 
     rigid_body_shape_def_type rbRectShape(rectShape);
     rigid_body_shape_component rbShapeComponent(rbRectShape);

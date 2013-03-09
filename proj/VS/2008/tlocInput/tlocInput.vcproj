@@ -422,6 +422,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -676,6 +677,7 @@
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(WIN32_SDK_DIR)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -779,15 +781,15 @@
 			Name="_misc"
 			>
 			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\tlocInput\tlocInput.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\tlocInput\tlocInputImpl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\tlocInputManager.h"
 				>
 			</File>
 			<File
@@ -808,32 +810,44 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="HIDs"
+			Name="hid"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\hid\tloc_hid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\hid\tloc_hid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocInput\hid\tloc_hid.inl"
+				>
+			</File>
 			<Filter
 				Name="keyboard"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboard.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocKeyboard.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboard.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocKeyboard.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImpl.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocKeyboardImpl.h"
 					>
 				</File>
 				<Filter
 					Name="win"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImplWin.cpp"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocKeyboardImplWin.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocKeyboardImplWin.h"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocKeyboardImplWin.h"
 						>
 					</File>
 				</Filter>
@@ -842,26 +856,26 @@
 				Name="mouse"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouse.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocMouse.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouse.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocMouse.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImpl.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocMouseImpl.h"
 					>
 				</File>
 				<Filter
 					Name="win"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImplWin.cpp"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocMouseImplWin.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocMouseImplWin.h"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocMouseImplWin.h"
 						>
 					</File>
 				</Filter>
@@ -870,33 +884,73 @@
 				Name="joystick"
 				>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystick.cpp"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocJoystick.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystick.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocJoystick.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImpl.h"
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocJoystickImpl.h"
 					>
 				</File>
 				<Filter
 					Name="Win"
 					>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImplWin.cpp"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocJoystickImplWin.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\src\tlocInput\HIDs\tlocJoystickImplWin.h"
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocJoystickImplWin.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="touch_surface"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurface.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurface.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurfaceImpl.h"
+					>
+				</File>
+				<Filter
+					Name="win"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurfaceImplWin.h"
 						>
 					</File>
 				</Filter>
 			</Filter>
 		</Filter>
 		<File
+			RelativePath="..\..\..\..\src\tlocInput\tloc_input.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocInput\tloc_input.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocInput\tloc_input.inl"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocInput\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocInput\tlocInputBase.h"
 			>
 		</File>
 	</Files>

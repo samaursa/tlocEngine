@@ -1,7 +1,7 @@
 #ifndef _TLOC_CORE_BASE_CLASSES_NON_NEWABLE_H_
 #define _TLOC_CORE_BASE_CLASSES_NON_NEWABLE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 
 namespace tloc { namespace core { namespace base_classes {

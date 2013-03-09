@@ -1,6 +1,6 @@
 #include "tlocWorld.h"
 
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl>
 
 namespace tloc { namespace physics { namespace box2d {
 

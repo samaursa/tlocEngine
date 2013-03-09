@@ -1,38 +1,35 @@
 #ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_H_
 #define _TLOC_GRAPHICS_COMPONENT_SYSTEM_QUAD_H_
 
-#include <tlocCore/component_system/tlocComponent.h>
+#include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
-#include <tlocGraphics/data_types/tlocVertex.h>
-#include <tlocMath/data_types/tlocRectangle.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
+
+#include <tlocMath/types/tlocRectangle.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
   class Quad : public tloc::core::component_system::Component_T<Quad>
   {
   public:
-    typedef Quad                      this_type;
-    typedef Component_T<this_type>    base_type;
-    typedef f32                       real_type;
-
-    // If 1.0f, the Quad has a width/height of 1.0f
-    typedef core::types::StrongType_T<real_type, 0>  size;
+    typedef Quad                                this_type;
+    typedef Component_T<this_type>              base_type;
+    typedef f32                                 real_type;
+    typedef math::types::Rectangle<real_type>   rect_type;
 
   public:
     Quad();
-    Quad(size a_scale);
-    void SetSize(size a_scale);
+    Quad(const rect_type& a_rect);
 
-    TLOC_DECL_AND_DEF_GETTER(real_type, GetSize, m_size);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(rect_type, GetRectangleRef, m_rect);
+    TLOC_DECL_AND_DEF_SETTER(rect_type, SetRectangle, m_rect);
 
   private:
-    real_type         m_size;
+    rect_type m_rect;
   };
 
   typedef core::smart_ptr::SharedPtr<Quad>    QuadPtr;

@@ -14,7 +14,7 @@
 
 #include <cstdlib>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace string {
   //////////////////////////////////////////////////////////////////////////
   // Macros 
 
@@ -1712,6 +1712,6 @@ namespace tloc { namespace core {
     return !(a == b);
   }
 
-};};
+};};};
 
 #endif

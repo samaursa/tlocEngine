@@ -2,9 +2,9 @@
 
 #import <UIKit/UIKit.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
 
-#define WINDOW_IMPL_IPHONE_PARAMS Window<>
+#define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
 #define WINDOW_IMPL_IPHONE_TYPE WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>
 
   //////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,8 @@ namespace tloc { namespace graphics { namespace priv {
     TLOC_ASSERT(m_view && m_viewController && m_handle, "CreateWindow failed.");
     
     [m_viewController setView:m_view];
-    
+
+    [m_handle setRootViewController:m_viewController];
     [m_handle addSubview:m_view];
     [m_handle makeKeyAndVisible];
     
@@ -190,6 +191,12 @@ namespace tloc { namespace graphics { namespace priv {
     [m_view setHidden:!a_visible];
   }
 
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char* a_title)
+  {
+    NSString *title = [[NSString alloc] initWithUTF8String:a_title];
+    [m_view setTitle:title];
+  }
+
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const
   {
     return m_handle && m_view && m_viewController;
@@ -221,4 +228,4 @@ namespace tloc { namespace graphics { namespace priv {
     return m_view;
   }
 
-};};};
+};};};};

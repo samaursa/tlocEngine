@@ -27,12 +27,16 @@
   return self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:
-    (UIInterfaceOrientation)toInterfaceOrientation
+- (BOOL)shouldAutorotate
 {
-  // TODO: based on window settings, allow or disallow the view to change 
-  // orientation
   return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+  // TODO: based on window settings, allow or disallow the view to change
+  // orientation
+  return UIInterfaceOrientationMaskAll;
 }
 
 - (void)loadView
@@ -51,7 +55,7 @@
   
   CGRect frame;
   if (self->windowImpl->GetWindowSettings().m_style& 
-      tloc::graphics::WindowSettings::style_titlebar) 
+      tloc::graphics::win::WindowSettings::style_titlebar)
   {
     frame = [uiscreen applicationFrame];
   }
@@ -67,7 +71,7 @@
   [view UpdateRenderBufferDimensions];
   
   self->windowImpl->GetParentWindowHandle()
-    ->SendEvent(tloc::graphics::WindowEvent::resized);
+    ->SendEvent(tloc::graphics::win::WindowEvent::resized);
 }
 
 @end

@@ -2,6 +2,7 @@
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/component_system/tlocEntity.inl>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -9,6 +10,8 @@
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 namespace tloc { namespace graphics { namespace component_system {
+
+  using namespace core::data_structs;
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
@@ -21,7 +24,7 @@ namespace tloc { namespace graphics { namespace component_system {
   MaterialSystem::MaterialSystem
     (event_manager* a_eventMgr, entity_manager* a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
-    , core::Variadic<component_type, 1>(components::material))
+    , Variadic<component_type, 1>(components::material))
   { }
 
   error_type MaterialSystem::InitializeEntity(entity_manager*,
@@ -65,10 +68,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     sp->Enable();
     result = sp->Link();
+    TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
     sp->LoadUniformInfo();
     sp->LoadAttributeInfo();
     sp->Disable();
-    TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
 
     //------------------------------------------------------------------------
     // Add user attributes and uniforms
@@ -76,7 +79,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef mat_type::shader_op_ptr          shader_op_ptr;
 
     // Add user's attributes and uniforms
-    if ( ( &*currMat.GetMasterShaderOperator()) != nullptr)
+    if ( currMat.GetMasterShaderOperator() )
     {
       shader_op_ptr so_user = shader_op_ptr(new shader_op_ptr::value_type());
 

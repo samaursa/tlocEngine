@@ -9,7 +9,7 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
     class PointerMap
     {
     public:
-      typedef core::HashMap<void*, void*>   map_type;
+      typedef containers::HashMap<void*, void*>   map_type;
 
     public:
       static bool Exists(void* a_pointer)

@@ -1,7 +1,7 @@
 #ifndef TLOC_LIST_H
 #define TLOC_LIST_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -17,7 +17,7 @@
 # define TLOC_ASSERT_LIST(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Different policies that List can handle
@@ -43,31 +43,32 @@ namespace tloc { namespace core {
     typedef ListNode<T, singly_linked_tag>  this_type;
 
     typedef T                               value_type;
-    typedef T*                              pointer_type;
-    typedef const T*                        const_pointer_type;
-    typedef T&                              reference_type;
-    typedef const T&                        const_reference_type;
+    typedef T*                              pointer;
+    typedef const T*                        const_pointer;
+    typedef T&                              reference;
+    typedef const T&                        const_reference;
     typedef tl_ptrdiff                      difference_type;
 
     typedef singly_linked_tag               iterator_category;
 
-    TL_FI ListNode();
-    TL_FI ListNode(const this_type& aOther);
+    ListNode();
+    ListNode(const this_type& aOther);
 
-    TL_FI        void       init();
-    TL_STATIC_FI void       swap(this_type& a, this_type& b);
-    TL_STATIC_FI void       swap_after(this_type& a, this_type& b);
-    TL_FI        void       insert_after(this_type* aNext);
-    TL_FI        void       remove_after();
-    TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
-    TL_FI        void       reverse();
+    void        init();
+    static void swap(this_type& a, this_type& b);
+    static void swap_after(this_type& a, this_type& b);
+    void        insert_after(this_type* aNext);
+    void        remove_after();
+    void        splice_after(this_type* aFirst, this_type* aLast);
+    void        reverse();
 
-    TL_FI        this_type*           getNext();
-    TL_FI        const this_type*     getNext() const;
-    TL_FI        this_type*           getPrev();
-    TL_FI        const this_type*     getPrev() const;
-    TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const;
+    this_type*           getNext();
+    const this_type*     getNext() const;
+    this_type*           getPrev();
+    const this_type*     getPrev() const;
+    reference            getValue();
+    const_reference      getValue() const;
+
   private:
 
     this_type*    m_next;
@@ -82,31 +83,31 @@ namespace tloc { namespace core {
     typedef ListNode<T, doubly_linked_tag>  this_type;
 
     typedef T                               value_type;
-    typedef T*                              pointer_type;
-    typedef const T*                        const_pointer_type;
-    typedef T&                              reference_type;
-    typedef const T&                        const_reference_type;
+    typedef T*                              pointer;
+    typedef const T*                        const_pointer;
+    typedef T&                              reference;
+    typedef const T&                        const_reference;
     typedef tl_ptrdiff                      difference_type;
 
     typedef doubly_linked_tag               iterator_category;
 
-    TL_FI ListNode();
-    TL_FI ListNode(const this_type& aOther);
+    ListNode();
+    ListNode(const this_type& aOther);
 
-    TL_FI        void       init();
-    TL_STATIC_FI void       swap(this_type& a, this_type& b);
-    TL_STATIC_FI void       swap_after(this_type& a, this_type& b);
-    TL_FI        void       insert_after(this_type* aNext);
-    TL_FI        void       remove_after();
-    TL_FI        void       splice_after(this_type* aFirst, this_type* aLast);
-    TL_FI        void       reverse();
+    void        init();
+    static void swap(this_type& a, this_type& b);
+    static void swap_after(this_type& a, this_type& b);
+    void        insert_after(this_type* aNext);
+    void        remove_after();
+    void        splice_after(this_type* aFirst, this_type* aLast);
+    void        reverse();
 
-    TL_FI        this_type*           getNext();
-    TL_FI        const this_type*     getNext() const;
-    TL_FI        this_type*           getPrev();
-    TL_FI        const this_type*     getPrev() const;
-    TL_FI        reference_type       getValue();
-    TL_FI        const_reference_type getValue() const;
+    this_type*           getNext();
+    const this_type*     getNext() const;
+    this_type*           getPrev();
+    const this_type*     getPrev() const;
+    reference            getValue();
+    const_reference      getValue() const;
 
   private:
 
@@ -181,139 +182,139 @@ namespace tloc { namespace core {
     typedef typename size_and_node::cond_type           list_size;
 
   public:
-    TL_FI List();
-    TL_FI explicit List(size_type aNumTimes, const T& aValue = T());
+    List();
+    explicit List(size_type aNumTimes, const T& aValue = T());
 
     template <typename T_InputItr>
-    TL_FI List(T_InputItr aFirst, T_InputItr aLast);
-    TL_FI List(const this_type& aOther);
+    List(T_InputItr aFirst, T_InputItr aLast);
+    List(const this_type& aOther);
 
-    TL_FI ~List();
+    ~List();
 
     this_type& operator= (const this_type& aOther);
 
     //------------------------------------------------------------------------
     // Iterator access
 
-    TL_FI iterator        begin();
-    TL_FI const_iterator  begin() const;
-    TL_FI const_iterator  cbegin() const;
-    TL_FI iterator        end();
-    TL_FI const_iterator  end() const;
-    TL_FI const_iterator  cend() const;
+    iterator        begin();
+    const_iterator  begin() const;
+    const_iterator  cbegin() const;
+    iterator        end();
+    const_iterator  end() const;
+    const_iterator  cend() const;
 
-    TL_FI reverse_iterator        rbegin();
-    TL_FI const_reverse_iterator  rbegin() const;
-    TL_FI reverse_iterator        rend();
-    TL_FI const_reverse_iterator  rend() const;
+    reverse_iterator        rbegin();
+    const_reverse_iterator  rbegin() const;
+    reverse_iterator        rend();
+    const_reverse_iterator  rend() const;
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_FI size_type   size() const;
-    TL_FI bool        empty() const;
-    TL_FI size_type   max_size() const;
-    TL_FI void        resize(size_type aNumElements,
+    size_type   size() const;
+    bool        empty() const;
+    size_type   max_size() const;
+    void        resize(size_type aNumElements,
                              const value_type& aValue = value_type());
 
     //------------------------------------------------------------------------
     // Element Access
 
-    TL_FI reference       front();
-    TL_FI const_reference front() const;
+    reference       front();
+    const_reference front() const;
 
-    TL_FI reference       back();
-    TL_FI const_reference back() const;
+    reference       back();
+    const_reference back() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_FI void        assign(size_type aNumTimes, const T& aValueCopy);
+    void        assign(size_type aNumTimes, const T& aValueCopy);
 
     template <class T_InputItr>
-    TL_FI void        assign(T_InputItr aRangeBegin, T_InputItr aRangeEnd);
+    void        assign(T_InputItr aRangeBegin, T_InputItr aRangeEnd);
 
-    TL_FI void        push_front(const value_type& aVal);
-    TL_FI reference   push_front();
-    TL_FI pointer     push_front_uninitialized();
+    void        push_front(const value_type& aVal);
+    reference   push_front();
+    pointer     push_front_uninitialized();
 
-    TL_FI void        pop_front();
+    void        pop_front();
 
-    TL_FI void        push_back(const value_type& aVal);
-    TL_FI reference   push_back();
-    TL_FI pointer     push_back_uninitialized();
+    void        push_back(const value_type& aVal);
+    reference   push_back();
+    pointer     push_back_uninitialized();
 
-    TL_FI void        pop_back();
+    void        pop_back();
 
-    TL_FI iterator    insert(iterator aPos);
-    TL_FI iterator    insert(iterator aPos, const value_type& aValue);
-    TL_FI void        insert(iterator aPos, size_type aNumOfValues,
+    iterator    insert(iterator aPos);
+    iterator    insert(iterator aPos, const value_type& aValue);
+    void        insert(iterator aPos, size_type aNumOfValues,
                              const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void        insert(iterator aPos, T_Iterator aFirst,
+    void        insert(iterator aPos, T_Iterator aFirst,
                              T_Iterator aLast);
 
-    TL_FI iterator    insert_after(iterator aPos);
-    TL_FI iterator    insert_after(iterator aPos, const value_type& aValue);
-    TL_FI void        insert_after(iterator aPos, size_type aNumOfValues,
+    iterator    insert_after(iterator aPos);
+    iterator    insert_after(iterator aPos, const value_type& aValue);
+    void        insert_after(iterator aPos, size_type aNumOfValues,
                                    const value_type& aValue);
     template <typename T_Iterator>
-    TL_FI void        insert_after(iterator aPos, T_Iterator aFirst,
+    void        insert_after(iterator aPos, T_Iterator aFirst,
                                    T_Iterator aLast);
 
-    TL_FI iterator    erase(iterator aPos);
-    TL_FI iterator    erase(iterator aFirst, iterator aLast);
+    iterator    erase(iterator aPos);
+    iterator    erase(iterator aFirst, iterator aLast);
 
-    TL_FI reverse_iterator erase(reverse_iterator aPos);
-    TL_FI reverse_iterator erase(reverse_iterator aFirst,
+    reverse_iterator erase(reverse_iterator aPos);
+    reverse_iterator erase(reverse_iterator aFirst,
                                  reverse_iterator aLast);
 
-    TL_FI iterator    erase_after(iterator aPos);
-    TL_FI iterator    erase_after(iterator aFirst, iterator aLast);
+    iterator    erase_after(iterator aPos);
+    iterator    erase_after(iterator aFirst, iterator aLast);
 
-    TL_FI reverse_iterator erase_after(reverse_iterator aPos);
-    TL_FI reverse_iterator erase_after(reverse_iterator aFirst,
+    reverse_iterator erase_after(reverse_iterator aPos);
+    reverse_iterator erase_after(reverse_iterator aFirst,
                                        reverse_iterator aLast);
 
-    TL_FI void        swap(this_type& aOther);
+    void        swap(this_type& aOther);
 
-    TL_FI void        clear();
+    void        clear();
 
     //------------------------------------------------------------------------
     // Operations
 
-    TL_FI void        splice(iterator aPos, this_type& aFrom);
-    TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOther);
-    TL_FI void        splice(iterator aPos, this_type& aFrom, iterator aOtherBegin,
+    void        splice(iterator aPos, this_type& aFrom);
+    void        splice(iterator aPos, this_type& aFrom, iterator aOther);
+    void        splice(iterator aPos, this_type& aFrom, iterator aOtherBegin,
                              iterator aOtherEnd);
 
-    TL_FI void        splice_after(iterator aPos, this_type& aFrom);
-    TL_FI void        splice_after(iterator aPos, this_type& aFrom,
+    void        splice_after(iterator aPos, this_type& aFrom);
+    void        splice_after(iterator aPos, this_type& aFrom,
                                    iterator aOther);
-    TL_FI void        splice_after(iterator aPos, this_type& aFrom,
+    void        splice_after(iterator aPos, this_type& aFrom,
                                    iterator aOtherBegin, iterator aOtherEnd);
 
-    TL_FI void        remove(const T& aValueToCompare);
+    void        remove(const T& aValueToCompare);
 
     template <typename T_Pred>
-    TL_FI void        remove_if(T_Pred aFunctionToCompare);
+    void        remove_if(T_Pred aFunctionToCompare);
 
-    TL_FI void        unique();
+    void        unique();
 
     template <typename T_Pred>
-    TL_FI void        unique(T_Pred aBinaryPred);
+    void        unique(T_Pred aBinaryPred);
 
-    TL_FI void        merge(this_type& aOther);
-
-    template <typename T_Compare>
-    TL_FI void        merge(this_type& aOther, T_Compare aComp);
-
-    TL_FI void        sort();
+    void        merge(this_type& aOther);
 
     template <typename T_Compare>
-    TL_FI void        sort(T_Compare aComp);
+    void        merge(this_type& aOther, T_Compare aComp);
 
-    TL_FI void        reverse();
+    void        sort();
+
+    template <typename T_Compare>
+    void        sort(T_Compare aComp);
+
+    void        reverse();
 
   protected:
     typedef ConditionalType<size_type, true>  size_stored;
@@ -322,63 +323,63 @@ namespace tloc { namespace core {
     typedef type_true       is_arith;
     typedef type_false      is_not_arith;
 
-    TL_FI void DoInit();
-    TL_FI void DoClear();
+    void DoInit();
+    void DoClear();
 
-    TL_FI node_type* DoAllocateNode();
-    TL_FI void       DoFreeNode(node_type* aNode);
+    node_type* DoAllocateNode();
+    void       DoFreeNode(node_type* aNode);
 
-    TL_FI node_type* DoCreateNode();
-    TL_FI node_type* DoCreateNode(const T& aValueCopy);
+    node_type* DoCreateNode();
+    node_type* DoCreateNode(const T& aValueCopy);
 
     template <typename T_Integer>
-    TL_FI void       DoAssign(T_Integer aNumTimes, const T_Integer& aValueCopy,
+    void       DoAssign(T_Integer aNumTimes, const T_Integer& aValueCopy,
                               is_arith);
 
     template <typename T_InputItr>
-    TL_FI void       DoAssign(T_InputItr aRangeBegin, T_InputItr aRangeEnd,
+    void       DoAssign(T_InputItr aRangeBegin, T_InputItr aRangeEnd,
                               is_not_arith);
 
-    TL_FI void       DoAssignValues(size_type aNumTimes, const value_type& aValue);
+    void       DoAssignValues(size_type aNumTimes, const value_type& aValue);
 
     template <typename T_Integer>
-    TL_FI void       DoInsertAfter(node_type* aPos, T_Integer aNumTimes,
+    void       DoInsertAfter(node_type* aPos, T_Integer aNumTimes,
                                    T_Integer aValueCopy, is_arith);
 
     template <typename T_InputIterator>
-    TL_FI void       DoInsertAfter(node_type* aPos, T_InputIterator aFirst,
+    void       DoInsertAfter(node_type* aPos, T_InputIterator aFirst,
                                    T_InputIterator aLast, is_not_arith);
 
-    TL_FI void       DoInsertValueAfter(node_type* aNode, const T& aValueCopy);
-    TL_FI void       DoInsertValuesAfter(node_type* aNode,
+    void       DoInsertValueAfter(node_type* aNode, const T& aValueCopy);
+    void       DoInsertValuesAfter(node_type* aNode,
                                          tl_size numElements,
                                          const T& aValueCopy);
 
-    TL_FI void       DoEraseAfter(node_type* aNode);
+    void       DoEraseAfter(node_type* aNode);
 
-    TL_FI size_type  DoGetSize(size_stored) const;
-    TL_FI size_type  DoGetSize(size_not_stored) const;
+    size_type  DoGetSize(size_stored) const;
+    size_type  DoGetSize(size_not_stored) const;
 
-    TL_FI void       DoResize(size_type aNumElements, const value_type& aValue,
+    void       DoResize(size_type aNumElements, const value_type& aValue,
                               size_stored);
-    TL_FI void       DoResize(size_type aNumElements, const value_type& aValue,
+    void       DoResize(size_type aNumElements, const value_type& aValue,
                               size_not_stored);
 
     // This function performs the actual splice for a range. It selects the
     // most optimized splicing operation depending on whether the size is stored
     // or not
-    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom,
+    void       DoSpliceAfter(iterator aPos, this_type& aFrom,
                                    iterator aBegin, iterator aEnd, size_stored);
-    TL_FI void       DoSpliceAfter(iterator aPos, this_type& aFrom,
+    void       DoSpliceAfter(iterator aPos, this_type& aFrom,
                                    iterator aBegin, iterator aEnd,
                                    size_not_stored);
 
   protected:
 
-    TL_FI node_type&          m_node();
-    TL_FI const node_type&    m_node() const;
-    TL_FI list_size&          m_size();
-    TL_FI const list_size&    m_size() const;
+    node_type&          m_node();
+    const node_type&    m_node() const;
+    list_size&          m_size();
+    const list_size&    m_size() const;
     size_and_node             m_sizeAndNode;
   };
 
@@ -402,6 +403,6 @@ namespace tloc { namespace core {
       T_DedicatedSize> type;
   };
 
-};};
+};};};
 
 #endif

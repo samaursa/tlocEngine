@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -108,7 +108,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -176,7 +176,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;NDEBUG"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -240,7 +240,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;NDEBUG"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -300,7 +300,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -363,7 +363,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=""
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG;TLOC_USING_STD_ALLOC;DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -428,7 +428,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;NDEBUG"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -492,7 +492,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE;TLOC_USING_STD_ALLOC;NDEBUG"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -555,8 +555,9 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -619,7 +620,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -682,8 +683,9 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
+				MinimalRebuild="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 			/>
@@ -746,7 +748,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_PATH)\src\3rdParty\&quot;;&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE_DEBUGINFO;TLOC_USING_STD_ALLOC"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -786,6 +788,18 @@
 		<Filter
 			Name="box2d"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tloc_box2d.inl"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocPhysics\box2d\tlocPhysicsManager.cpp"
 				>
@@ -842,6 +856,18 @@
 		<Filter
 			Name="component_system"
 			>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\component_system\tloc_component_system.inl"
+				>
+			</File>
 			<Filter
 				Name="systems"
 				>
@@ -911,12 +937,40 @@
 			Name="error"
 			>
 			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocPhysics\error\tloc_error.inl"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\tlocPhysics\error\tlocErrorTypes.h"
 				>
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tloc_physics.inl"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\..\src\tlocPhysics\tlocDepVersionCheck.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\..\src\tlocPhysics\tlocPhysicsBase.h"
 			>
 		</File>
 	</Files>

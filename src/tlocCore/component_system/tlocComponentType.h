@@ -1,7 +1,7 @@
 #ifndef TLOC_COMPONENT_TYPE_H
 #define TLOC_COMPONENT_TYPE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
 
 namespace tloc { namespace core { namespace component_system {

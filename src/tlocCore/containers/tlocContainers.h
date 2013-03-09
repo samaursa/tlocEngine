@@ -5,13 +5,14 @@
 // for them. The idea is that the containers can be swapped out across the
 // complete engine at any point in time without re-writing code
 
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
 #include <tlocCore/containers/tlocStack.h>
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocHashmap.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Policy = Array_Ordered>
   struct tl_array
@@ -56,6 +57,6 @@ namespace tloc { namespace core {
   typedef tl_array<tl_float>::type  tl_array_float;
   typedef tl_array<tl_size>::type   tl_array_size;
 
-};};
+};};};
 
 #endif

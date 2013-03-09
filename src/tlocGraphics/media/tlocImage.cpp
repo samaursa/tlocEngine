@@ -1,6 +1,7 @@
 #include "tlocImage.h"
 
 #include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -61,6 +62,8 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // Explicitly instantiate the container
 
-  template class core::Array<types::Color>;
+  template class core::containers::Array<types::Color>;
+
+  template class core::smart_ptr::SharedPtr<Image>;
 
 };};};

@@ -1,6 +1,6 @@
 #include "tlocPhysicsManager.h"
 
-#include <tlocMath/vector/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
 
@@ -35,6 +35,9 @@ namespace tloc { namespace physics { namespace box2d {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    // @note: Decided against passing the rigid body shape components (that is
+    // the fixture) in event due to the processing involved in finding the
+    // shape components.
     ContactEvent
       DoCreateContactEvent(fixture_type* a_fixtureA, fixture_type* a_fixtureB)
     {

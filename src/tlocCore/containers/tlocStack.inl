@@ -7,7 +7,7 @@
 
 #include <tlocCore/containers/tlocList.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   //////////////////////////////////////////////////////////////////////////
   // Assertion macros
@@ -34,15 +34,6 @@ namespace tloc { namespace core {
   Stack<STACK_PARAMS>::Stack(const T_Container& aCont)
     : m_container(aCont)
   {
-  }
-
-  //------------------------------------------------------------------------
-  // General
-
-  template <STACK_TYPES>
-  TL_I const T_Container& Stack<STACK_PARAMS>::_Get_container() const
-  {
-    return m_container;
   }
 
   //------------------------------------------------------------------------
@@ -96,6 +87,6 @@ namespace tloc { namespace core {
     m_container.pop_back();
   }
 
-};};
+};};};
 
 #endif

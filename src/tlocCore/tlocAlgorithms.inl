@@ -12,7 +12,7 @@
 #include <tlocCore/iterators/tlocIterator.inl>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/RNGs/tlocRandom.h>
+#include <tlocCore/rng/tlocRandom.h>
 #include <tlocCore/tlocFunctional.h>
 
 namespace tloc { namespace core {
@@ -536,11 +536,12 @@ namespace tloc { namespace core {
       rangeSize, i;
     rangeSize = a_last - a_first;
 
-    typedef typename rng_default::int_type int_type;
+    typedef typename rng::rng_default::int_type int_type;
     for (i = rangeSize - 1; i > 0; --i)
     {
       tlSwap(a_first[i], 
-             a_first[g_defaultRNG.GetRandomInteger(static_cast<int_type>(i) + 1)]);
+        a_first[rng::g_defaultRNG.GetRandomInteger
+                (static_cast<int_type>(i) + 1)]);
     }
   }
 
@@ -1361,8 +1362,8 @@ namespace tloc { namespace core {
                    sort_quicksort_randompivot)
     {
       const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
-      const tl_ptrdiff randomPiv = g_defaultRNG.GetRandomInteger(0, 
-                                                  (rng_default::int_type)size);
+      const tl_ptrdiff randomPiv = 
+        rng::g_defaultRNG.GetRandomInteger(0, (rng::rng_default::int_type)size);
 
       T_InputIterator randItr = a_first;
       tloc::core::advance(randItr, randomPiv);
@@ -1571,7 +1572,7 @@ namespace tloc { namespace core {
       if (a_first != a_last)
       {
         const tl_ptrdiff size = tloc::core::distance(a_first, a_last);
-        typedef Array<T_ValueType> T_Container;
+        typedef containers::Array<T_ValueType> T_Container;
         T_Container unsortedArray(size);
 
         tloc::core::copy(a_first, a_last, unsortedArray.begin());

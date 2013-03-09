@@ -15,7 +15,7 @@
 
 #include "tlocCore/tlocFunctional.h"
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
   //////////////////////////////////////////////////////////////////////////
   //  Window.
@@ -239,4 +239,4 @@ namespace tloc { namespace graphics {
     }
   };
 
-};};
+};};};

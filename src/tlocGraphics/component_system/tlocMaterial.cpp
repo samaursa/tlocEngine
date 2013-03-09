@@ -21,6 +21,6 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // Explicit Instantiation
 
-  template class core::Array<Material::shader_op_ptr>;
+  template class core::containers::Array<Material::shader_op_ptr>;
 
 };};};

@@ -11,8 +11,9 @@
 
 namespace TestingStack
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {
@@ -104,60 +105,6 @@ namespace TestingStack
   {
     testPop<int_list_stack>();
     testPop<int_array_stack>();
-  }
-
-  template <typename T_StackType>
-  void testGetContainer()
-  {
-    T_StackType myStack;
-    FILL_INT_STACK_BY_AMOUNT(myStack, 4);
-
-    typename T_StackType::container_type myContainer
-      = myStack._Get_container();
-    typename T_StackType::container_type::iterator itr
-      = myContainer.begin();
-
-    CHECK(*itr++ == 0);
-    CHECK(*itr++ == 1);
-    CHECK(*itr++ == 2);
-    CHECK(*itr++ == 3);
-  }
-
-  /*template <>
-  void testGetContainer<StackFixture::int_list_stack>()
-  {
-    StackFixture::int_list_stack myStack;
-    FILL_INT_STACK_BY_AMOUNT(myStack, 4);
-
-    List<s32> myList = myStack._Get_container();
-
-    List<s32>::iterator itr = myList.begin();
-
-    CHECK(*itr++ == 0);
-    CHECK(*itr++ == 1);
-    CHECK(*itr++ == 2);
-    CHECK(*itr++ == 3);
-  }
-
-  template <>
-  void testGetContainer<StackFixture::int_array_stack>()
-  {
-    StackFixture::int_array_stack myStack;
-    FILL_INT_STACK_BY_AMOUNT(myStack, 4);
-
-    Array<s32> myArray = myStack._Get_container();
-
-    CHECK(myArray[0] == 0);
-    CHECK(myArray[1] == 1);
-    CHECK(myArray[2] == 2);
-    CHECK(myArray[3] == 3);
-  }*/
-
-  TEST_CASE_METHOD(StackFixture, "Core/Containers/Stack/GetContainer",
-    "Test grabbing container from stack and container contents")
-  {
-    testGetContainer<int_list_stack>();
-    testGetContainer<int_array_stack>();
   }
 
 #undef FILL_INT_STACK_BY_AMOUNT

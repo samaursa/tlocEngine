@@ -6,12 +6,14 @@
 
 namespace tloc { namespace graphics { namespace media {
 
+  using core::string::String;
+
   namespace
   {
     typedef ImageLoaderPng::error_type      error_type;
     typedef ImageLoaderPng::path_type       path_type;
 
-    error_type DoLoadFromFile(const path_type& a_path, core::String& a_out)
+    error_type DoLoadFromFile(const path_type& a_path, String& a_out)
     {
       core::io::FileIO_ReadB imgFile(a_path);
 
@@ -51,7 +53,7 @@ namespace tloc { namespace graphics { namespace media {
 
   ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
   {
-    core::String fileCont;
+    String fileCont;
 
     error_type res = DoLoadFromFile(a_path, fileCont);
 

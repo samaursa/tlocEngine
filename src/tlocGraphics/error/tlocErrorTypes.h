@@ -1,6 +1,8 @@
 #ifndef TLOC_GRAPHICS_ERROR_TYPES_H
 #define TLOC_GRAPHICS_ERROR_TYPES_H
 
+#include <tlocGraphics/tlocGraphicsBase.h>
+
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/error/tlocErrorTypes.h>
 
@@ -21,6 +23,10 @@ namespace tloc { namespace graphics { namespace error {
     error_shader_uniform_invalid_type,
     error_shader_uniform_not_attached,
     error_shader_attribute_not_attached,
+
+    error_invalid_texture_unit,
+    error_no_texture_units_available,
+    error_texture_unit_limit_reached
   };
 
 };};};

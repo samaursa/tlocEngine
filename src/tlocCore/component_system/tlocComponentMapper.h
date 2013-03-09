@@ -1,6 +1,8 @@
 #ifndef TLOC_COMPONENT_MAPPER_H
 #define TLOC_COMPONENT_MAPPER_H
 
+#include <tlocCore/tlocCoreBase.h>
+
 #include <tlocCore/component_system/tlocEntity.h>
 
 namespace tloc { namespace core { namespace component_system {

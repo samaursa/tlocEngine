@@ -9,8 +9,9 @@
 
 namespace TestingArray
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
   class SomeClass
   {
@@ -239,17 +240,36 @@ namespace TestingArray
   {
     FILL_INT_ARRAY_BY_PUSH(ints, 0, 100);
 
-    Array<s32>::iterator itr = ints.begin();
-    Array<s32>::iterator itrEnd = ints.end();
-
-    s32 count = 0;
-    while (itr != itrEnd)
     {
-      CHECK(count++ == *itr);
-      ++itr;
+      Array<s32>::iterator itr = ints.begin();
+      Array<s32>::iterator itrEnd = ints.end();
+
+      s32 count = 0;
+      while (itr != itrEnd)
+      {
+        CHECK(count == *itr);
+        ++count;
+        ++itr;
+      }
     }
 
     CHECK(ints.size() == 100);
+
+    {
+      Array<s32>::reverse_iterator  rItr    = ints.rbegin();
+      Array<s32>::reverse_iterator  rItrEnd = ints.rend();
+
+      s32 count = 100;
+      while (rItr != rItrEnd)
+      {
+        --count;
+        CHECK(count == *rItr);
+        ++rItr;
+      }
+    }
+
+    CHECK(ints.size() == 100);
+
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Erase",

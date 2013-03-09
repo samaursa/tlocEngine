@@ -2,7 +2,8 @@
 #ifndef _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_LISTENER_SYSTEM_H_
 #define _TLOC_PHYSICS_COMPONENT_SYSTEM_RIGID_BODY_LISTENER_SYSTEM_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/containers/tlocArray.h>
 
@@ -21,14 +22,14 @@ namespace tloc { namespace physics { namespace component_system {
   /// and a RigidBodyListener, the listener that is tied with the
   /// RigidBodyListener will be called if a contact event occurs.
   ///-------------------------------------------------------------------------
-  class RigidBodyListenerSystem : 
+  class RigidBodyListenerSystem :
     public core::component_system::EntityProcessingSystem
   {
   public:
     typedef core::component_system::EntityProcessingSystem base_type;
     typedef base_type::component_type   component_type;
     typedef base_type::error_type       error_type;
-    
+
     typedef base_type::event_manager    event_manager;
     typedef base_type::entity_manager   entity_manager;
     typedef base_type::entity_type      entity_type;
@@ -37,11 +38,12 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef box2d::ContactEvent             contact_event_type;
     typedef box2d::PhysicsManager           physics_manager;
-    typedef core::Array<contact_event_type> contact_event_list;
-    typedef core::Array<contact_event_list> contact_event_list_list;
+
+    typedef core::containers::Array<contact_event_type> contact_event_list;
+    typedef core::containers::Array<contact_event_list> contact_event_list_list;
 
   public:
-    RigidBodyListenerSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr, 
+    RigidBodyListenerSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr,
                             physics_manager* a_physicsMgr);
 
     virtual error_type Pre_Initialize();

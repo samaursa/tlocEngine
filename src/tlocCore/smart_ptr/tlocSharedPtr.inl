@@ -44,7 +44,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
-    CheckNullBeforeCopy(m_rawPtr);
+    null_copy_policy_type::CheckNullBeforeCopy(m_rawPtr);
     // Mainly for containers
     DoAddRef();
   }

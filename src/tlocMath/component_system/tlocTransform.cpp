@@ -3,7 +3,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector4.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
@@ -11,6 +11,8 @@ namespace tloc { namespace math { namespace component_system {
 #define TRANSFORM_TEMPS   typename T_Real
 #define TRANSFORM_PARAMS  T_Real
 #define TRANSFORM_TYPE    typename Transform_T<TRANSFORM_PARAMS>
+
+  using types::Vector4;
 
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::Transform_T()
@@ -75,16 +77,15 @@ namespace tloc { namespace math { namespace component_system {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template Transform_T<f32>;
-  template Transform_T<f64>;
+  template class Transform_T<f32>;
+  template class Transform_T<f64>;
 
   // SmartPtr
-  template core::smart_ptr::SharedPtr<Transform_T<f32> >;
-  template core::smart_ptr::SharedPtr<Transform_T<f64> >;
+  template class core::smart_ptr::SharedPtr<Transform_T<f32> >;
+  template class core::smart_ptr::SharedPtr<Transform_T<f64> >;
 
   // Pool
-  template core::component_system::ComponentPool_TI<TransformPtr>;
-  template core::component_system::ComponentPool_TI<TransformPtr32>;
-  template core::component_system::ComponentPool_TI<TransformPtr64>;
+  template class core::component_system::ComponentPool_TI<TransformPtr32>;
+  template class core::component_system::ComponentPool_TI<TransformPtr64>;
 
 };};};

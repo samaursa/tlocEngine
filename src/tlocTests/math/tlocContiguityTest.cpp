@@ -3,19 +3,21 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
-#include <tlocMath/vector/tlocVector2.h>
-#include <tlocMath/vector/tlocVector3.h>
-#include <tlocMath/vector/tlocVector4.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
 
-#include <tlocMath/matrix/tlocMatrix2.h>
-#include <tlocMath/matrix/tlocMatrix3.h>
-#include <tlocMath/matrix/tlocMatrix4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 namespace TestingContiguity
 {
   using namespace tloc;
   using namespace tloc::core;
+  using namespace tloc::core::containers;
   using namespace tloc::math;
+  using namespace tloc::math::types;
 
   // The purpose of these tests is to test that certain classes are laid out
   // contiguously in memory without any padding. This is very important for
@@ -36,9 +38,9 @@ namespace TestingContiguity
     value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
     bool testPassed = true;
 
-    const tl_size numElements = typename T_Type::k_size;
+    const tl_size numElements = T_Type::k_size;
 
-    for (cont_type::size_type i = 0, size = v.size(); i != size; ++i)
+    for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
       for (tl_size j = 0; j < numElements; ++j)
       {
@@ -78,9 +80,9 @@ namespace TestingContiguity
     value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
     bool testPassed = true;
 
-    const tl_size numElements = typename T_Type::k_MatrixSize;
+    const tl_size numElements = T_Type::k_MatrixSize;
 
-    for (cont_type::size_type i = 0, size = v.size(); i != size; ++i)
+    for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
       for (tl_size j = 0; j < numElements; ++j)
       {

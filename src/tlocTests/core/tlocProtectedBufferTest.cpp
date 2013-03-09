@@ -1,12 +1,13 @@
 #include "tlocTestCommon.h"
 
 #define private public
-#include <tlocCore/containers/tlocCharBuffer.h>
-#include <tlocCore/containers/tlocCharBuffer.inl>
+#include <tlocCore/data_structures/tlocCharBuffer.h>
+#include <tlocCore/data_structures/tlocCharBuffer.inl>
 
 namespace ProtectedBufferTest
 {
   using namespace tloc::core;
+  using namespace tloc::core::data_structs;
 
   template <typename T_BuildConfig>
   struct CheckBufferStatusForInvalidBuffer
@@ -18,7 +19,7 @@ namespace ProtectedBufferTest
   };
 
   template <>
-  struct CheckBufferStatusForInvalidBuffer<p_build_config::Release>
+  struct CheckBufferStatusForInvalidBuffer<configs::p_build_config::Release>
   {
     void operator()(bool)
     {
@@ -27,8 +28,8 @@ namespace ProtectedBufferTest
 
   TEST_CASE("Core/containers/ProtectedBuffers", "")
   {
-    typedef CharBuffer<5>                     char5;
-    typedef BuildConfig<>::build_config_type  build_config_type;
+    typedef CharBuffer<5>                              char5;
+    typedef configs::BuildConfig<>::build_config_type  build_config_type;
 
     {
       const char* word = "1234";
@@ -46,7 +47,8 @@ namespace ProtectedBufferTest
 
       bool isBufferValid = p.DoIsBufferValid(build_config_type());
 
-      CheckBufferStatusForInvalidBuffer<BuildConfig<>::build_config_type>()(isBufferValid);
+      CheckBufferStatusForInvalidBuffer
+        <configs::BuildConfig<>::build_config_type>()(isBufferValid);
       //CHECK(isBufferValid == false);
 
       p.DoInit(build_config_type()); // To avoid the assertion in the destructor

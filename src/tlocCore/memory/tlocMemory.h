@@ -1,7 +1,7 @@
 #ifndef TLOC_MEMORY_H
 #define TLOC_MEMORY_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 

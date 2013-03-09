@@ -2,14 +2,15 @@
 #ifndef _TLOC_PHYSICS_BOX2D_RIGID_BODY_SHAPE_H_
 #define _TLOC_PHYSICS_BOX2D_RIGID_BODY_SHAPE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocPhysics/tlocPhysicsBase.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
-#include <tlocMath/data_types/tlocRectangle.h>
-#include <tlocMath/data_types/tlocCircle.h>
+#include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 
 #include <Box2D/Dynamics/b2Fixture.h>
 
@@ -46,7 +47,7 @@ namespace tloc { namespace physics { namespace box2d {
 
       SetFriction(0.2f);
       SetRestitution(0.0f);
-      SetDensity(0.0f);
+      SetDensity(1.0f);
       SetSensor(false);
     }
 

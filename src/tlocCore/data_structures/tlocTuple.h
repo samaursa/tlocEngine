@@ -1,11 +1,11 @@
 #ifndef TLOC_TUPLE_H
 #define TLOC_TUPLE_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <memory.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace data_structs {
 
   // Tuple policies
   namespace p_tuple
@@ -21,14 +21,21 @@ namespace tloc { namespace core {
   class Tuple
   {
   public:
+    enum { k_TupleSize = T_Size};
+    T m_values[k_TupleSize];
 
+  public:
     typedef T                                           value_type;
     typedef tl_size                                     size_type;
     typedef Tuple<value_type, T_Size>                   this_type;
 
+  public:
     // Empty default constructor
     TL_FI Tuple();
     TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
+
+    template <typename T_TupleType>
+    TL_FI Tuple(const Tuple<T_TupleType, T_Size>& aTuple);
 
     template <typename T_ArrayType>
     TL_FI Tuple(const T_ArrayType (&aArray)[T_Size]);
@@ -53,8 +60,8 @@ namespace tloc { namespace core {
     TL_FI const value_type& Get(size_type aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
-    TL_FI operator T* ();
-    TL_FI operator const T* () const;
+    TL_FI T*        data();
+    TL_FI T const*  data() const;
 
     // Access the size of the tuple
     TL_FI size_type GetSize() const;
@@ -78,29 +85,30 @@ namespace tloc { namespace core {
 
     // Converts between different sized tuples. The default overflow policy
     // applied here is p_tuple::overflow_one
-    template <tl_size T_TupleSize>
-    TL_FI void ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other);
+    template <typename T_OtherValueType, tl_size T_TupleSize>
+    TL_FI void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other);
 
     // Converts between different sized tuples.
-    template <tl_size T_TupleSize, typename T_Policy>
-    TL_FI void ConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+    template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
+    TL_FI void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
                            T_Policy a_conversionPolicy);
+
+    // Converts between different sized tuples. The default overflow policy
+    // applied here is p_tuple::overflow_one. T_OtherTuple should be derived
+    // from this_type
+    template <typename T_OtherTuple>
+    TL_FI T_OtherTuple ConvertTo() const;
+
+    // Converts between different sized tuples. See previous.
+    template <typename T_OtherTuple, typename T_Policy>
+    TL_FI T_OtherTuple ConvertTo() const;
 
     //------------------------------------------------------------------------
     // Operators
 
-    template <typename T_TupleType>
-    TL_FI Tuple<T, T_Size>& operator= (const Tuple<T_TupleType, T_Size>& aTuple);
-    template <typename T_ArrayType>
-    TL_FI Tuple<T, T_Size>& operator= (const T_ArrayType (&aArray)[T_Size]);
-
+    TL_FI Tuple& operator=(const Tuple& a_other);
     TL_FI bool operator == (const this_type& aTuple) const;
     TL_FI bool operator != (const this_type& aTuple) const;
-
-  protected:
-
-    enum { k_TupleSize = T_Size};
-    T m_values[k_TupleSize];
 
   private:
 
@@ -115,11 +123,12 @@ namespace tloc { namespace core {
     typedef type_true     incoming_bigger;
     typedef type_false    incoming_smaller;
 
-    template <tl_size T_TupleSize, typename T_Policy>
-    TL_FI void DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+    template <typename T_OtherTuple, typename T_Policy>
+    TL_FI void DoConvertFrom(const T_OtherTuple& a_other,
                              incoming_bigger);
-    template <tl_size T_TupleSize, typename T_Policy>
-    TL_FI void DoConvertFrom(const Tuple<value_type, T_TupleSize>& a_other,
+
+    template <typename T_OtherTuple, typename T_Policy>
+    TL_FI void DoConvertFrom(const T_OtherTuple& a_other,
                              incoming_smaller);
 
     template <tl_size T_TupleSize>
@@ -164,11 +173,6 @@ namespace tloc { namespace core {
   typedef Tuple<bool,     3>    Tuple3b;
   typedef Tuple<bool,     4>    Tuple4b;
 
-};};
-
-#ifdef TLOC_FULL_SOURCE
-#include <tlocCore/data_structures/tlocTuple.inl>
-#endif
-
+};};};
 
 #endif

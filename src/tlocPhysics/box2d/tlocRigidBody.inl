@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/vector/tlocVector2.inl>
-#include <tlocMath/matrix/tlocMatrix2.inl>
+#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocMatrix2.inl>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/box2d/tlocWorld.h>
@@ -99,7 +99,7 @@ namespace tloc { namespace physics { namespace box2d {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   TL_I void RigidBody::
-    GetPosition(math::Vec2f& a_position) const
+    GetPosition(vec_type& a_position) const
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 

@@ -13,6 +13,9 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  using namespace core::data_structs;
+  using namespace core::string;
+
   namespace
   {
     typedef ShaderProgram::glsl_var_info_cont_type   glsl_var_info_cont_type;
@@ -55,7 +58,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_UNUSED(uniformMaxLength);
 
       a_infoOut.resize(numOfUniforms);
-      core::String fixedName;
+      String fixedName;
       for (u32 i = 0; i < numOfUniforms; ++i)
       {
         ShaderVariableInfo& currInfo = a_infoOut[i];
@@ -154,7 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <ShaderProgram::size_type T_Size>
   ShaderProgram::error_type
     ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, T_Size> a_shaderComponents)
+    (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
     for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
     {
@@ -178,8 +181,11 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      core::String errorString;
-      gl::Error().GetErrorAsString(errorString);
+      s32 logLen;
+      char logBuffer[1000];
+      glGetProgramInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
+
+      DoSetError(logBuffer);
 
       // TODO: Write shader log
       return error::error_shader_program_link;
@@ -237,13 +243,17 @@ namespace tloc { namespace graphics { namespace gl {
       return error::error_shader_program_enable;
     }
 
+    ResetTextureUnits();
     return ErrorSuccess();
   }
 
   bool ShaderProgram::
     IsEnabled() const
   {
-    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    // NOTE: OpenGL defines program name to be u32 but glGetIntegeriv returns
+    //       s32, thus the cast.
+    if (gl::Get<gl::p_get::CurrentProgram>() ==
+        core::utils::CastNumber<GLint, object_handle>(GetHandle()) )
     { return true; }
 
     return false;
@@ -305,19 +315,19 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit initialization
 
   // Supporting up to 4 shader attachments
-  template class core::Variadic<Shader_I*, 1>;
-  template class core::Variadic<Shader_I*, 2>;
-  template class core::Variadic<Shader_I*, 3>;
-  template class core::Variadic<Shader_I*, 4>;
+  template class Variadic<Shader_I*, 1>;
+  template class Variadic<Shader_I*, 2>;
+  template class Variadic<Shader_I*, 3>;
+  template class Variadic<Shader_I*, 4>;
 
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 1>);
+    (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 2>);
+    (Variadic<Shader_I*, 2>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 3>);
+    (Variadic<Shader_I*, 3>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
-    (core::Variadic<Shader_I*, 4>);
+    (Variadic<Shader_I*, 4>);
 
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::DeleteStatus>() const;

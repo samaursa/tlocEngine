@@ -1,14 +1,14 @@
 #ifndef TLOC_HASH_MAP_H
 #define TLOC_HASH_MAP_H
 
-#include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/iterators/tlocIterator.h>
-#include "tlocHashtable.h"
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocHashtable.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Array
@@ -19,7 +19,7 @@
 # define TLOC_ASSERT_HASH_MAP(_Expression, _Msg)
 #endif
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace containers {
 
   template <typename T_Key, typename T_ValueType,
             typename T_HashFunc = hash<T_Key>,
@@ -42,7 +42,7 @@ namespace tloc { namespace core {
     typedef Hashtable<
                        HashtablePolicy<T_Key,
                        use_first<typename T_BucketType::value_type::value_type::value_type >,
-                       T_HashFunc, hash_to_range_mod, tloc::core::range_hash_default,
+                       T_HashFunc, hash_to_range_mod, tloc::core::containers::range_hash_default,
                        T_KeyEqual, prime_rehash_policy, T_BucketType,
                        T_CacheHashCode, true> >                     base_type;
     typedef HashMap<T_Key, T_ValueType, T_HashFunc, T_KeyEqual,
@@ -63,8 +63,8 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Constructors
 
-    TL_FI explicit HashMap();
-    TL_FI explicit HashMap(size_type aBucketCount,
+    explicit HashMap();
+    explicit HashMap(size_type aBucketCount,
                            const T_HashFunc& aHashFunction = T_HashFunc(),
                            const T_KeyEqual& aKeyEqual = T_KeyEqual());
     // TODO: Implement an iterator copy constructor
@@ -81,9 +81,9 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Operations
 
-    TL_FI mapped_type& operator[](const key_type& aKey);
+    mapped_type& operator[](const key_type& aKey);
   };
 
-};};
+};};};
 
 #endif

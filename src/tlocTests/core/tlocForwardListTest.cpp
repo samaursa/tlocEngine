@@ -6,8 +6,9 @@
 
 namespace TestingForwardList
 {
-  USING_TLOC;
+  using namespace tloc;
   using namespace core;
+  using namespace core::containers;
 
 #define CHECK_CONTENTS_OF_FORWARD_LIST_MATCHES_VALUE(forwardListBegin, \
                                                      forwardListEnd, \
@@ -823,7 +824,7 @@ namespace TestingForwardList
     T_ForwardListType myForwardList(myInts, myInts+7);
 
     myForwardList.sort();
-    
+
     typename T_ForwardListType::iterator itr;
 
     CHECK(*itr == 7); ++itr;

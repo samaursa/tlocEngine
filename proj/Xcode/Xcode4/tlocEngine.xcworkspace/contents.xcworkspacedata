@@ -20,6 +20,9 @@
       location = "group:tlocInput/tlocInput.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:tlocPhysics/tlocPhysics.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:tlocPrefab/tlocPrefab.xcodeproj">
    </FileRef>
    <FileRef
@@ -33,5 +36,8 @@
    </FileRef>
    <FileRef
       location = "group:tlocInputTest/tlocInputTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocPhysicsTest/tlocPhysicsTest.xcodeproj">
    </FileRef>
 </Workspace>

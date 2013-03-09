@@ -101,7 +101,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     return m_bufferTouches;
   }
-  
+
   void TouchSurfaceDeviceBuffered::
     SendOnTouchBegin(touch_handle_type a_touchHandle,
                      tl_float a_x, tl_float a_y)
@@ -194,7 +194,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     TouchSurfaceDeviceImmediate::GetBufferedTouches() const
   {
     // Function is never called.
-    TLOC_STATIC_ASSERT(false, "This function is only a stub and should never be called!");
+    TLOC_ASSERT(false, "This function is only a stub and should never be called!");
     return buffer_container_type();
   }
 
@@ -219,6 +219,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void TouchSurfaceDeviceImmediate::
     SendOnTouchEnd(touch_handle_type a_touchHandle, tl_float a_x, tl_float a_y)
   {
+    TLOC_UNUSED_3(a_touchHandle, a_x, a_y);
     // Does nothing in immediate mode
   }
 
@@ -243,6 +244,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void TouchSurfaceDeviceImmediate::
     SendOnTouchCancel(touch_handle_type a_touchHandle, tl_float a_x, tl_float a_y)
   {
+    TLOC_UNUSED_3(a_touchHandle, a_x, a_y);
     // Does nothing in immediate mode
   }
 

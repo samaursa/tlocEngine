@@ -64,6 +64,6 @@ namespace tloc { namespace graphics { namespace media {
 
   template class core::containers::Array<types::Color>;
 
-  template core::smart_ptr::SharedPtr<Image>;
+  template class core::smart_ptr::SharedPtr<Image>;
 
 };};};

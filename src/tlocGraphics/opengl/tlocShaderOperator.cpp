@@ -530,8 +530,11 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_SAMPLER_2D:
         {
-          texture_object_sptr m = a_uniform.GetValueAs<texture_object_sptr>();
-          glBindTexture(GL_TEXTURE_2D, m->GetHandle());
+          const TextureObject& m =
+            isShared
+            ? *a_uniform.GetValueAsShared<TextureObject>()
+            : a_uniform.GetValueAs<TextureObject>();
+          glBindTexture(GL_TEXTURE_2D, m.GetHandle());
           glUniform1i(a_info.m_location, GetActiveTextureUnit());
           break;
         }

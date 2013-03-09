@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 
   if (!firstTime)
   {
-    if (error = ReadVersionH(version))
+    if ((error = ReadVersionH(version)))
     {
       return error;
     }
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
   //------------------------------------------------------------------------
   // Write tlocVersion.h
 
-  if (error = WriteVersionH(version))
+  if ((error = WriteVersionH(version)))
   {
     return error;
   }

@@ -283,8 +283,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -309,8 +309,8 @@
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
 				);
 				PRELINK_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -327,8 +327,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -347,8 +347,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
 				);
 				PRELINK_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -364,12 +364,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocMathTest-Info.plist";
-				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
-				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
@@ -385,12 +379,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocMathTest-Info.plist";
-				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
-				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",

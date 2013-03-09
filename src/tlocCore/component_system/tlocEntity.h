@@ -59,4 +59,11 @@ namespace tloc { namespace core { namespace component_system {
   typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;
 };};};
 
+///-------------------------------------------------------------------------
+/// @note one of the few one of the few inline files we include in the
+/// header because of linker issues (because it is not a template) ;)
+/// http://www.parashift.com/c++-faq/inline-member-fns.html
+///-------------------------------------------------------------------------
+#include <tlocCore/component_system/tlocEntity.inl>
+
 #endif

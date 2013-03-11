@@ -2,11 +2,12 @@
 #define _TLOC_MATH_UTILS_PYTHAGORAS_H_
 
 #include <tlocMath/tlocMathBase.h>
+#include <tlocMath/types/tlocAngle.h>
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocMath/types/tlocAngle.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace math { namespace utils {
 
@@ -50,10 +51,50 @@ namespace tloc { namespace math { namespace utils {
     { return m_sides[T_Side::k_index]; }
 
   private:
+    template <typename T_TriSide1, typename T_TriSide2>
+    void DoConstruct(T_TriSide1 a_side1, T_TriSide2 a_side2);
 
+    template <typename T_TriSide>
+    void DoConstruct(angle_type a_angle, T_TriSide a_side);
+
+  private:
     cont_type m_sides;
-
   };
+
+  //------------------------------------------------------------------------
+  // Template definitions
+
+  template <typename T>
+  template <typename T_TriSide1, typename T_TriSide2>
+  Pythagoras_T<T>::
+    Pythagoras_T(T_TriSide1 a_side1, T_TriSide2 a_side2)
+  {
+    typedef math_t::Degree_T<T> deg;
+    typedef math_t::Radian_T<T> rad;
+
+    // We need deg and rad in there for the first argument because this ctor
+    // is compiled anyway and it will error out before selecting the other ctor
+    type_traits::AssertTypeIsSupported
+      <T_TriSide1, base, opposite, hypotenuse, deg, rad>();
+    type_traits::AssertTypeIsSupported
+      <T_TriSide2, base, opposite, hypotenuse>();
+    TLOC_STATIC_ASSERT
+      ( (Loki::IsSameType<T_TriSide1, T_TriSide2>::value == false),
+        Two_sides_cannot_be_the_same);
+
+    DoConstruct(a_side1, a_side2);
+  }
+
+  template <typename T>
+  template <typename T_TriSide>
+  Pythagoras_T<T>::
+    Pythagoras_T(angle_type a_angle, T_TriSide a_side)
+  {
+    type_traits::AssertTypeIsSupported
+      <T_TriSide, base, opposite, hypotenuse>();
+
+    DoConstruct(a_angle, a_side);
+  }
 
   //------------------------------------------------------------------------
   // Common typedefs

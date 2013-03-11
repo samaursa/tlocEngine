@@ -60,109 +60,106 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    TL_FI Matrix();
+    Matrix();
 
     // Copy constructor
-    TL_FI Matrix(const this_type& aMatrix);
+    Matrix(const this_type& aMatrix);
 
     // Copy constructor
-    TL_FI Matrix(const base_type& aMatrix);
+    Matrix(const base_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    TL_FI explicit Matrix(const_reference aValue);
+    explicit Matrix(const_reference aValue);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    TL_FI Matrix(const core::data_structs::Variadic<T, k_MatrixSize>& a_vars,
-                 matrix_order a_order);
+    Matrix(const core::data_structs::Variadic<T, k_MatrixSize>& a_vars,
+           matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Modifiers
 
     // Modifies this matrix by setting all values to 0
-    TL_FI void Zero();
+    void Zero();
 
     // Modifes this matrix by making it an identity matrix
-    TL_FI void Identity();
+    void Identity();
 
     // Modifies this matrix to be a diagonal matrix
-    TL_FI void MakeDiagonal(const value_type values[T_Size]);
+    void MakeDiagonal(const value_type values[T_Size]);
 
     //------------------------------------------------------------------------
     // Math operations
 
     // Modifies this matrix by adding the incoming matrix
-    TL_FI this_type& Add(const this_type& aMatrix);
+    this_type& Add(const this_type& aMatrix);
 
     // Modifies this matrix by adding the incoming matrices and storing the
     // result in this matrix
-    TL_FI void Add(const this_type& aMatrix1,
-                   const this_type& aMatrix2);
+    void Add(const this_type& aMatrix1, const this_type& aMatrix2);
 
     // Modifies this matrix by subtracting the incoming matrix
-    TL_FI this_type& Sub(const this_type& aMatrix);
+    this_type& Sub(const this_type& aMatrix);
 
     // Modifies this matrix by subtracting the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Sub(const this_type& aMatrix1,
-                   const this_type& aMatrix2);
+    void Sub(const this_type& aMatrix1, const this_type& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming matrix and storing
     // the result in this matrix
-    TL_FI this_type& Mul(const this_type& aMatrix);
+    this_type& Mul(const this_type& aMatrix);
 
     // Modifies this matrix by multiplying the incoming matrices and storing
     // the result in this matrix
-    TL_FI void Mul(const this_type& aMatrix1,
-                   const this_type& aMatrix2);
+    void Mul(const this_type& aMatrix1, const this_type& aMatrix2);
 
     // Modifies this matrix by multiplying the incoming real number
-    TL_FI this_type& Mul(const_reference aReal);
+    this_type& Mul(const_reference aReal);
 
     // Multiplies the incoming inVector with this matrix and stores it in
     // the outVector. Since we are assuming column major matrices, the
     // result is: vOut = M * vIn
-    TL_FI void Mul(const Vector<value_type, T_Size>& aVectorIn,
-                   Vector<value_type, T_Size>& aVectorOut) const;
+    void Mul(const Vector<value_type, T_Size>& aVectorIn,
+             Vector<value_type, T_Size>& aVectorOut) const;
 
     // Modifies this matrix by dividing the incoming real number
-    TL_FI this_type& Div(const_reference aReal);
+    this_type& Div(const_reference aReal);
 
     // Modifies this matrix by transposing the matrix
-    TL_FI this_type& Transpose();
+    this_type& Transpose();
 
     // Modifies this matrix by transposing the incoming matrix and storing
     // the result in this matrix
-    TL_FI void Transpose(const this_type& aMatrix);
+    void Transpose(const this_type& aMatrix);
 
     //------------------------------------------------------------------------
     // Accessors
 
     // Stores the diagonal of this Matrix in aVector
-    TL_FI void GetDiagonal(Vector<value_type, T_Size>& aVector);
+    void GetDiagonal(Vector<value_type, T_Size>& aVector);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI this_type   operator+ (const this_type& a_matrix) const;
-    TL_FI this_type   operator- (const this_type& a_matrix) const;
-    TL_FI this_type   operator* (const this_type& a_matrix) const;
-    TL_FI this_type   operator* (const_reference a_value) const;
-    TL_FI this_type   operator/ (const_reference a_value) const;
+    this_type   operator+ (const this_type& a_matrix) const;
+    this_type   operator- (const this_type& a_matrix) const;
+    this_type   operator* (const this_type& a_matrix) const;
+    this_type   operator* (const_reference a_value) const;
+    this_type   operator/ (const_reference a_value) const;
 
-    TL_FI Vector<value_type, T_Size>
+    Vector<value_type, T_Size>
       operator* (const Vector<value_type, T_Size>& a_vector) const;
 
-    TL_FI this_type&   operator+= (const this_type& a_matrix);
-    TL_FI this_type&   operator-= (const this_type& a_matrix);
-    TL_FI this_type&   operator*= (const this_type& a_matrix);
-    TL_FI this_type&   operator*= (const_reference a_value);
-    TL_FI this_type&   operator/= (const_reference a_value);
+    this_type&   operator+= (const this_type& a_matrix);
+    this_type&   operator-= (const this_type& a_matrix);
+    this_type&   operator*= (const this_type& a_matrix);
+    this_type&   operator*= (const_reference a_value);
+    this_type&   operator/= (const_reference a_value);
 
-    //TL_FI this_type& operator=(const this_type& a_other);
-    TL_FI bool operator== (const this_type& aMatrix);
-    TL_FI bool operator!= (const this_type& aMatrix);
+    //this_type& operator=(const this_type& a_other);
+    bool operator== (const this_type& aMatrix);
+    bool operator!= (const this_type& aMatrix);
 
     //------------------------------------------------------------------------
     // Special Matrices
@@ -185,9 +182,13 @@ namespace tloc { namespace math { namespace types {
   const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY =
     Matrix<T, T_Size>::this_type::DoGetIdentity();
 
+  //------------------------------------------------------------------------
+  // Template definitions
+
   template <typename T, tl_size T_Size>
   typename Matrix<T, T_Size>::this_type
-    Matrix<T, T_Size>::DoGetIdentity()
+    Matrix<T, T_Size>::
+    DoGetIdentity()
   {
     this_type temp;
     temp.Identity();

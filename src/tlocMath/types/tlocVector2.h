@@ -33,13 +33,13 @@ namespace tloc { namespace math { namespace types {
 
     //------------------------------------------------------------------------
     // Constructors
-    TL_FI Vector2();
-    TL_FI Vector2(const_reference aX, const_reference aY);
-    TL_FI Vector2(const this_type& aVector);
-    TL_FI Vector2(const base_type& aVector);
-    TL_FI Vector2(const core::data_structs::Variadic<value_type, 2>& a_vars);
+    Vector2();
+    Vector2(const_reference aX, const_reference aY);
+    Vector2(const this_type& aVector);
+    Vector2(const base_type& aVector);
+    Vector2(const core::data_structs::Variadic<value_type, 2>& a_vars);
 
-    TL_FI explicit Vector2(const_reference aValue);
+    explicit Vector2(const_reference aValue);
 
     static const Vector2 ZERO;
     static const Vector2 UNIT_X;

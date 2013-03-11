@@ -34,21 +34,21 @@ namespace tloc { namespace math { namespace types {
 
     //------------------------------------------------------------------------
     // Constructors
-    TL_FI Vector3();
-    TL_FI Vector3(const_reference aX, const_reference aY, const_reference aZ);
-    TL_FI Vector3(const this_type& aVector);
-    TL_FI Vector3(const base_type& aVector);
-    TL_FI Vector3(const core::data_structs::Variadic<value_type, 3>& a_vars);
+    Vector3();
+    Vector3(const_reference aX, const_reference aY, const_reference aZ);
+    Vector3(const this_type& aVector);
+    Vector3(const base_type& aVector);
+    Vector3(const core::data_structs::Variadic<value_type, 3>& a_vars);
 
-    TL_FI explicit Vector3(const_reference aValue);
+    explicit Vector3(const_reference aValue);
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    TL_FI this_type& Cross(const this_type& aVector);
+    this_type& Cross(const this_type& aVector);
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    TL_FI void Cross(const this_type& aVector1,
+    void Cross(const this_type& aVector1,
                      const this_type& aVector2);
 
     static const Vector3 ZERO;

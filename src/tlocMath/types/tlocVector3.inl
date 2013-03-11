@@ -25,33 +25,37 @@ namespace tloc { namespace math { namespace types {
   // Constructors
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3()
+  Vector3<VECTOR_3_PARAMS>::
+    Vector3()
   { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const_reference aValue)
+  Vector3<VECTOR_3_PARAMS>::
+    Vector3(const_reference aValue)
     : base_type(aValue)
   { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::
+  Vector3<VECTOR_3_PARAMS>::
     Vector3(const_reference aX, const_reference aY, const_reference aZ) 
     : base_type(core::data_structs::Variadic<value_type, 3>(aX, aY, aZ) )
   { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const this_type& aVector)
+  Vector3<VECTOR_3_PARAMS>::
+    Vector3(const this_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3(const base_type& aVector)
+  Vector3<VECTOR_3_PARAMS>::
+    Vector3(const base_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_3_TYPES>
-  TL_FI Vector3<VECTOR_3_PARAMS>::Vector3
-    (const core::data_structs::Variadic<value_type,3> &a_vars)
+  Vector3<VECTOR_3_PARAMS>::
+    Vector3(const core::data_structs::Variadic<value_type,3> &a_vars)
     : base_type(a_vars)
   { }
 
@@ -59,8 +63,9 @@ namespace tloc { namespace math { namespace types {
   // Math operations
 
   template <VECTOR_3_TYPES>
-  TL_FI typename Vector3<VECTOR_3_PARAMS>::this_type& 
-    Vector3<VECTOR_3_PARAMS>::Cross(const this_type& aVector)
+  typename Vector3<VECTOR_3_PARAMS>::this_type& 
+    Vector3<VECTOR_3_PARAMS>::
+    Cross(const this_type& aVector)
   {
     /*
     y * rkVector.z - z * rkVector.y,
@@ -78,8 +83,8 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_3_TYPES>
-  TL_FI void Vector3<VECTOR_3_PARAMS>::Cross(const this_type& aVector1,
-                                            const this_type& aVector2)
+  void Vector3<VECTOR_3_PARAMS>::
+    Cross(const this_type& aVector1, const this_type& aVector2)
   {
     *this = aVector1;
     Cross(aVector2);

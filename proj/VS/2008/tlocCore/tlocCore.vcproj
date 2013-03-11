@@ -789,7 +789,7 @@
 			Name="3rd_party"
 			>
 			<Filter
-				Name="Memory"
+				Name="memory"
 				>
 				<Filter
 					Name="DlMalloc"
@@ -811,10 +811,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="RNGs"
-				>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1234,6 +1230,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\tlocCore\tlocRange.inl"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\tlocCore\tlocStaticAssert.h"
 				>
 			</File>
 			<Filter

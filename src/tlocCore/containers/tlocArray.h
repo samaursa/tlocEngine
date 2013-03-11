@@ -24,8 +24,6 @@ namespace tloc { namespace core { namespace containers {
 
   struct Array_Unordered  {};
   struct Array_Ordered    {};
-  struct Array_Fixed      {};
-  struct Array_Dynamic    {};
 
   //////////////////////////////////////////////////////////////////////////
   // Array class

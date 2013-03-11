@@ -4,9 +4,6 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
 
-  EntityProcessingSystem::~EntityProcessingSystem()
-  { }
-
   //````````````````````````````````````````````````````````````````````````
   // Initialization
 

@@ -60,7 +60,7 @@ namespace tloc { namespace core { namespace component_system {
                      const data_structs::
                            Variadic<component_type, T_VarSize>& a_typeFlags);
 
-    ~EntitySystemBase();
+    virtual ~EntitySystemBase();
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called

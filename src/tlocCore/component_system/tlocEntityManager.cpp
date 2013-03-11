@@ -28,14 +28,14 @@ namespace tloc { namespace core { namespace component_system {
 
     if (m_removedEntities.size() > 0)
     {
-      e->m_index = m_removedEntities.back();
+      e->SetIndex(m_removedEntities.back());
       m_removedEntities.pop_back();
 
-      m_entities[e->m_index] = e;
+      m_entities[e->GetIndex()] = e;
     }
     else
     {
-      e->m_index = m_entities.size();
+      e->SetIndex(m_entities.size());
       m_entities.push_back(e);
     }
 
@@ -50,8 +50,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
 
-    m_entities[a_entity->m_index] = NULL;
-    m_removedEntities.push_back(a_entity->m_index);
+    m_entities[a_entity->GetIndex()] = NULL;
     m_entitiesToRemove.push_back(a_entity);
 
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
@@ -129,7 +128,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    DoUpdateComponents()
+    DoUpdateAndCleanComponents()
   {
     typedef ent_comp_pair_cont::iterator ent_comp_pair_itr;
     ent_comp_pair_itr itr = m_compToRemove.begin();
@@ -144,7 +143,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    DoUpdateEntities()
+    DoUpdateAndCleanEntities()
   {
     delete_ptrs(m_entitiesToRemove.begin(), m_entitiesToRemove.end());
     m_entitiesToRemove.clear();
@@ -175,12 +174,14 @@ namespace tloc { namespace core { namespace component_system {
           }
         }
       }
+
+      m_removedEntities.push_back( (*itr)->GetIndex());
     }
 
     // Update the components (which involves removing them)
-    DoUpdateComponents();
-    // Update the entities (which involved removing them)
-    DoUpdateEntities();
+    DoUpdateAndCleanComponents();
+    // Update the entities (which involves removing them)
+    DoUpdateAndCleanEntities();
   }
 
   EntityManager::component_cont* EntityManager::

@@ -1,11 +1,12 @@
 #include "tlocEntityManager.h"
 
 #include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace tloc { namespace core { namespace component_system {
 
   EntityManager::
-    EntityManager(EventManager *a_eventManager)
+    EntityManager(event_manager_sptr a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
     m_componentsAndEntities.resize(components_group::count);
@@ -202,5 +203,11 @@ namespace tloc { namespace core { namespace component_system {
 
     return NULL;
   }
+
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template class core_sptr::SharedPtr<EntityManager>;
+  template class core_sptr::SharedPtr<const EntityManager>;
 
 };};};

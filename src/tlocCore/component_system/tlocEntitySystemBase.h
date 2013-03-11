@@ -122,13 +122,13 @@ namespace tloc { namespace core { namespace component_system {
     virtual void Post_ProcessActiveEntities() = 0;
 
     ///-------------------------------------------------------------------------
-    /// @brief Called by EventManager (we are/should-be a registered listener)
+    /// @brief Called by EventManager (we are/should-be a registered listener).
     ///
     /// @param  a_event The event.
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    bool OnEvent(const event_type& a_event);
+    virtual bool OnEvent(const event_type& a_event);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                           m_activeEntities);

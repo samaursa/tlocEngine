@@ -76,10 +76,10 @@ namespace TestingEntityManager
     const tl_uint entityCount = 100;
 
     EntityTracker   entTrack;
-    EventManager    evtMgr;
-    evtMgr.AddGlobalListener(&entTrack);
+    event_manager_sptr evtMgr(new EventManager());
+    evtMgr->AddGlobalListener(&entTrack);
 
-    EntityManager   eMgr(&evtMgr);
+    EntityManager   eMgr(evtMgr);
 
     Entity* newEnt = eMgr.CreateEntity();
     CHECK(newEnt != NULL);

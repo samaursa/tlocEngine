@@ -33,7 +33,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef Entity::component_list                component_cont;
     typedef Entity::entity_id                     entity_id_type;
 
-    EntityManager(EventManager* a_eventManager);
+  public:
+    EntityManager(event_manager_sptr a_eventManager);
     virtual ~EntityManager();
 
     entity_ptr_type   CreateEntity();
@@ -62,12 +63,18 @@ namespace tloc { namespace core { namespace component_system {
     entity_cont             m_entities;
     entity_id_cont          m_removedEntities;
     component_entity_cont   m_componentsAndEntities;
-    EventManager*           m_eventMgr;
+    event_manager_sptr      m_eventMgr;
     entity_id_type          m_nextId;
 
     ent_comp_pair_cont      m_compToRemove;
     entity_cont             m_entitiesToRemove;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef smart_ptr::SharedPtr<EntityManager>        entity_manager_sptr;
+  typedef smart_ptr::SharedPtr<const EntityManager>  entity_manager_const_sptr;
 
 };};};
 

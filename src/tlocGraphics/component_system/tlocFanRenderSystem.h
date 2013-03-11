@@ -35,13 +35,16 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_value_type;
 
     typedef math::types::Vec3f32                              vec3_type;
+    typedef math::types::Vec2f32                              vec2_type;
     typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
+    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef math::types::Mat4f32                              matrix_type;
 
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 
   public:
-    FanRenderSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
+    FanRenderSystem(event_manager_sptr a_eventMgr,
+                    entity_manager_sptr a_entityMgr);
 
     void AttachCamera(const entity_type* a_cameraEntity);
 
@@ -61,8 +64,10 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type         m_vpMatrix;
 
     vec3_cont_type          m_vertList;
+    vec2_cont_type          m_texList;
     gl::ShaderOperatorPtr   m_projectionOperator;
     gl::AttributePtr        m_vData;
+    gl::AttributePtr        m_tData;
   };
 
 };};};

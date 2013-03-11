@@ -11,14 +11,15 @@
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/window/tlocWindowImpl.h>
 
-namespace tloc { namespace graphics { namespace priv {
+namespace tloc { namespace graphics { namespace win { namespace priv {
       template <>
-      class WindowImpl<Window<> >;
-};};};
+      class WindowImpl<Window_T<> >;
+};};};};
 
 namespace ogl_view_controller
 {
-  typedef tloc::graphics::priv::WindowImpl<tloc::graphics::Window<> > win_impl_type;
+  typedef tloc::graphics::win::priv::WindowImpl<tloc::graphics::win::Window_T<> >
+    win_impl_type;
 };
 
 @interface OpenGLViewController : UIViewController
@@ -37,12 +38,14 @@ namespace ogl_view_controller
 ///-------------------------------------------------------------------------
 /// Callback function that is called if device is rotated. Returns a bool
 /// stating whether the view should rotate to the device orientation.
-///
-/// @param  a_toInterfaceOrientation  The orientation the interface may
-///                                   be rotated to.
 ///-------------------------------------------------------------------------
-- (BOOL)shouldAutorotateToInterfaceOrientation:
-    (UIInterfaceOrientation)a_toInterfaceOrientation;
+- (BOOL)shouldAutorotate;
+
+///-------------------------------------------------------------------------
+/// Returns an integer that dictates which orientations the view controller
+/// supports
+///-------------------------------------------------------------------------
+- (NSUInteger)supportedInterfaceOrientations;
 
 ///-------------------------------------------------------------------------
 /// Callback function that is called if a view is being loaded. This

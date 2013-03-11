@@ -40,7 +40,7 @@ namespace tloc { namespace physics { namespace component_system {
 
   public:
     RigidBodySystem
-      (event_manager* a_eventMgr, entity_manager* a_entityMgr,
+      (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr,
        world_type* a_world);
 
     virtual error_type InitializeEntity(entity_manager* a_mgr,

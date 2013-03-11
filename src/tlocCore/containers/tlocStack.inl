@@ -37,26 +37,17 @@ namespace tloc { namespace core { namespace containers {
   }
 
   //------------------------------------------------------------------------
-  // General
-
-  template <STACK_TYPES>
-  TL_I const T_Container& Stack<STACK_PARAMS>::_Get_container() const
-  {
-    return m_container;
-  }
-
-  //------------------------------------------------------------------------
   // Capacity
 
   template <STACK_TYPES>
-  TL_I typename Stack<STACK_PARAMS>::size_type 
+  typename Stack<STACK_PARAMS>::size_type 
     Stack<STACK_PARAMS>::size() const
   {
     return m_container.size();
   }
 
   template <STACK_TYPES>
-  TL_I bool Stack<STACK_PARAMS>::empty() const
+  bool Stack<STACK_PARAMS>::empty() const
   {
     return m_container.empty();
   }
@@ -65,7 +56,7 @@ namespace tloc { namespace core { namespace containers {
   // Element Access
 
   template <STACK_TYPES>
-  TL_I typename Stack<STACK_PARAMS>::reference
+  typename Stack<STACK_PARAMS>::reference
     Stack<STACK_PARAMS>::top()
   {
     TLOC_ASSERT_STACK_NOT_EMPTY();
@@ -73,7 +64,7 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <STACK_TYPES>
-  TL_I typename Stack<STACK_PARAMS>::const_reference
+  typename Stack<STACK_PARAMS>::const_reference
     Stack<STACK_PARAMS>::top() const
   {
     TLOC_ASSERT_STACK_NOT_EMPTY();
@@ -84,13 +75,13 @@ namespace tloc { namespace core { namespace containers {
   // Modifiers
 
   template <STACK_TYPES>
-  TL_I void Stack<STACK_PARAMS>::push(const value_type& aVal)
+  void Stack<STACK_PARAMS>::push(const value_type& aVal)
   {
     m_container.push_back(aVal);
   }
 
   template <STACK_TYPES>
-  TL_I void Stack<STACK_PARAMS>::pop()
+  void Stack<STACK_PARAMS>::pop()
   {
     TLOC_ASSERT_STACK_NOT_EMPTY();
     m_container.pop_back();

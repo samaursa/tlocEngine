@@ -35,13 +35,16 @@ namespace tloc { namespace core { namespace component_system {
     size_type                   GetIndex() const;
     const component_list_list&  GetComponentsList() const;
 
+    TLOC_DECL_AND_DEF_SETTER(bool, SetActive, m_active);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsActive, m_active);
+
   protected:
 
-    void                  SetID(entity_id a_id);
-    void                  SetIndex(size_type a_index);
+    void                        SetID(entity_id a_id);
+    void                        SetIndex(size_type a_index);
 
-    component_list&       DoGetComponents(component_type a_type);
-    void                  InsertComponent(Component* a_type);
+    component_list&             DoGetComponents(component_type a_type);
+    void                        InsertComponent(Component* a_type);
 
     component_list_list&        GetComponentsList();
 
@@ -49,6 +52,7 @@ namespace tloc { namespace core { namespace component_system {
 
     entity_id           m_id;
     size_type           m_index;
+    bool                m_active;
     component_list_list m_allComponents;
   };
 

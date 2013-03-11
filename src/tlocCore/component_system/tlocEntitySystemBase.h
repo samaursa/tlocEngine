@@ -25,11 +25,13 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                               size_type;
     typedef core::error::Error                    error_type;
 
-    typedef core::component_system::EventManager        event_manager;
-    typedef core::component_system::EventBase           event_type;
-    typedef EventBase::event_type                       event_value_type;
-    typedef core::component_system::EntityManager       entity_manager;
-    typedef core::component_system::Entity              entity_type;
+    typedef core_cs::EntityManager                entity_manager;
+    typedef core_cs::EventManager                 event_manager;
+    typedef core_cs::event_manager_sptr           event_manager_sptr;
+    typedef core_cs::EventBase                    event_type;
+    typedef core_cs::entity_manager_sptr          entity_manager_sptr;
+    typedef core_cs::Entity                       entity_type;
+    typedef EventBase::event_type                 event_value_type;
 
     typedef containers::tl_array_fixed
       <component_type, max_component_types>::type       component_type_array;
@@ -56,11 +58,12 @@ namespace tloc { namespace core { namespace component_system {
   protected:
 
     template <tl_size T_VarSize>
-    EntitySystemBase(event_manager* a_eventMgr, entity_manager* a_entityMgr,
+    EntitySystemBase(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr,
                      const data_structs::
-                           Variadic<component_type, T_VarSize>& a_typeFlags);
+                      Variadic<component_type, T_VarSize>& a_typeFlags);
 
-    ~EntitySystemBase();
+    virtual ~EntitySystemBase();
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called
@@ -122,13 +125,13 @@ namespace tloc { namespace core { namespace component_system {
     virtual void Post_ProcessActiveEntities() = 0;
 
     ///-------------------------------------------------------------------------
-    /// @brief Called by EventManager (we are/should-be a registered listener)
+    /// @brief Called by EventManager (we are/should-be a registered listener).
     ///
     /// @param  a_event The event.
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    bool OnEvent(const event_type& a_event);
+    virtual bool OnEvent(const event_type& a_event);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                           m_activeEntities);
@@ -137,8 +140,8 @@ namespace tloc { namespace core { namespace component_system {
     component_type_array  m_typeFlags;
     entity_ptr_array      m_activeEntities;
 
-    EventManager*     m_eventMgr;
-    EntityManager*    m_entityMgr;
+    event_manager_sptr    m_eventMgr;
+    entity_manager_sptr   m_entityMgr;
 
   };
 
@@ -147,9 +150,10 @@ namespace tloc { namespace core { namespace component_system {
 
   template <tl_size T_VarSize>
   EntitySystemBase::
-    EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
+    EntitySystemBase(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr,
                      const data_structs::
-                           Variadic<component_type, T_VarSize>& a_typeFlags)
+                      Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
   {

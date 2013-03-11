@@ -28,7 +28,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_value_type;
 
   public:
-    MaterialSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
+    MaterialSystem(event_manager_sptr a_eventMgr,
+                   entity_manager_sptr a_entityMgr);
 
     virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent);
     virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent);

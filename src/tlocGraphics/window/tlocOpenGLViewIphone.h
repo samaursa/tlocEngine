@@ -1,5 +1,5 @@
 #include <tlocCore/tlocBase.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
+#include <tlocInput/hid/tlocTouchSurfaceDevice.h>
 
 #import <UIKit/UIKit.h>
 
@@ -43,13 +43,13 @@
 - (void)UpdateRenderBufferDimensions;
 
 - (void)RegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (void)RegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (bool)UnRegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (bool)UnRegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 
 ///-------------------------------------------------------------------------
 /// Callback function that will be called once, immediately after the user 

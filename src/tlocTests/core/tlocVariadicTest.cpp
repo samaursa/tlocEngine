@@ -27,22 +27,22 @@ namespace TestingVariadic
 
   TEST_CASE("Core/DataStructures/Variadic", "Construction")
   {
-    Variadic1i  a(1);
-    Variadic2i  b(1, 2);
-    Variadic3i  c(1, 2, 3);
-    Variadic4i  d(1, 2, 3, 4);
-    Variadic5i  e(1, 2, 3, 4, 5);
-    Variadic6i  f(1, 2, 3, 4, 5, 6);
-    Variadic7i  g(1, 2, 3, 4, 5, 6, 7);
-    Variadic8i  h(1, 2, 3, 4, 5, 6, 7, 8);
-    Variadic9i  i(1, 2, 3, 4, 5, 6, 7, 8, 9);
-    Variadic10i j(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    Variadic11i k(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-    Variadic12i l(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-    Variadic13i m(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
-    Variadic14i n(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-    Variadic15i o(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    Variadic16i p(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    Variadic1s  a(1);
+    Variadic2s  b(1, 2);
+    Variadic3s  c(1, 2, 3);
+    Variadic4s  d(1, 2, 3, 4);
+    Variadic5s  e(1, 2, 3, 4, 5);
+    Variadic6s  f(1, 2, 3, 4, 5, 6);
+    Variadic7s  g(1, 2, 3, 4, 5, 6, 7);
+    Variadic8s  h(1, 2, 3, 4, 5, 6, 7, 8);
+    Variadic9s  i(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    Variadic10s j(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    Variadic11s k(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    Variadic12s l(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    Variadic13s m(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
+    Variadic14s n(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+    Variadic15s o(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    Variadic16s p(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
     CheckVariadic(a);
     CheckVariadic(b);
@@ -81,22 +81,22 @@ namespace TestingVariadic
     tl_int array15[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     tl_int array16[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
-    Variadic1i  a(array1);
-    Variadic2i  b(array2);
-    Variadic3i  c(array3);
-    Variadic4i  d(array4);
-    Variadic5i  e(array5);
-    Variadic6i  f(array6);
-    Variadic7i  g(array7);
-    Variadic8i  h(array8);
-    Variadic9i  i(array9);
-    Variadic10i j(array10);
-    Variadic11i k(array11);
-    Variadic12i l(array12);
-    Variadic13i m(array13);
-    Variadic14i n(array14);
-    Variadic15i o(array15);
-    Variadic16i p(array16);
+    Variadic1s  a(array1);
+    Variadic2s  b(array2);
+    Variadic3s  c(array3);
+    Variadic4s  d(array4);
+    Variadic5s  e(array5);
+    Variadic6s  f(array6);
+    Variadic7s  g(array7);
+    Variadic8s  h(array8);
+    Variadic9s  i(array9);
+    Variadic10s j(array10);
+    Variadic11s k(array11);
+    Variadic12s l(array12);
+    Variadic13s m(array13);
+    Variadic14s n(array14);
+    Variadic15s o(array15);
+    Variadic16s p(array16);
 
     CheckVariadic(a);
     CheckVariadic(b);

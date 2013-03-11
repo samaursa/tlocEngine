@@ -43,7 +43,8 @@ namespace tloc { namespace physics { namespace component_system {
     typedef core::containers::Array<contact_event_list> contact_event_list_list;
 
   public:
-    RigidBodyListenerSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr,
+    RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
+                            entity_manager_sptr a_entityMgr,
                             physics_manager* a_physicsMgr);
 
     virtual error_type Pre_Initialize();

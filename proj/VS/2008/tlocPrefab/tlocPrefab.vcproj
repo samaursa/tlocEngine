@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -172,7 +172,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -236,7 +236,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_RELEASE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -295,7 +295,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -356,7 +356,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\Box2D\&quot;"
+				AdditionalIncludeDirectories="&quot;$(TLOC_DEP_PATH)\include\&quot;"
 				PreprocessorDefinitions="TLOC_DEBUG; TLOC_USING_STD_ALLOC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

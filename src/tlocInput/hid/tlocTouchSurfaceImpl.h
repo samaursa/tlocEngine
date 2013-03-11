@@ -37,7 +37,7 @@ namespace tloc { namespace input {
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <class T_ParentTouchSurface> class TouchSurfaceImpl;
 
@@ -82,6 +82,6 @@ namespace tloc { namespace input { namespace priv {
     touch_container_type  m_currentTouches;
   };
 
-};};};
+};};};};
 
 #endif

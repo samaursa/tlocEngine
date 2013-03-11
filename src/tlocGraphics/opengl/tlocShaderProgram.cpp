@@ -181,8 +181,11 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      String errorString;
-      gl::Error().GetErrorAsString(errorString);
+      s32 logLen;
+      char logBuffer[1000];
+      glGetProgramInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
+
+      DoSetError(logBuffer);
 
       // TODO: Write shader log
       return error::error_shader_program_link;
@@ -240,13 +243,17 @@ namespace tloc { namespace graphics { namespace gl {
       return error::error_shader_program_enable;
     }
 
+    ResetTextureUnits();
     return ErrorSuccess();
   }
 
   bool ShaderProgram::
     IsEnabled() const
   {
-    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    // NOTE: OpenGL defines program name to be u32 but glGetIntegeriv returns
+    //       s32, thus the cast.
+    if (gl::Get<gl::p_get::CurrentProgram>() ==
+        core::utils::CastNumber<GLint, object_handle>(GetHandle()) )
     { return true; }
 
     return false;

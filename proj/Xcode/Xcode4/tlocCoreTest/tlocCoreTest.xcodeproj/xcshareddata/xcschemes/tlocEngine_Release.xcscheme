@@ -3,9 +3,37 @@
    LastUpgradeVersion = "0450"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97F4D4D916D6A33A00A882E8"
+               BuildableName = "tlocVersion"
+               BlueprintName = "tlocVersion"
+               ReferencedContainer = "container:../tlocVersion/tlocVersion.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97F4D4F216D6B9F700A882E8"
+               BuildableName = "tlocVersionTool"
+               BlueprintName = "tlocVersionTool"
+               ReferencedContainer = "container:../tlocVersionTool/tlocVersionTool.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
@@ -60,6 +88,20 @@
                BuildableName = "tlocInput_Release.a"
                BlueprintName = "tlocInput"
                ReferencedContainer = "container:../tlocInput/tlocInput.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "97CC1D1516CCEC2D003C6740"
+               BuildableName = "tlocPrefab_Release.a"
+               BlueprintName = "tlocPrefab"
+               ReferencedContainer = "container:../tlocPrefab/tlocPrefab.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

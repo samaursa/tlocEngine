@@ -4,9 +4,6 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
 
-  EntityProcessingSystem::~EntityProcessingSystem()
-  { }
-
   //````````````````````````````````````````````````````````````````````````
   // Initialization
 
@@ -43,7 +40,8 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      ProcessEntity(a_mgr, *itr);
+      if ( (*itr)->IsActive())
+      { ProcessEntity(a_mgr, *itr); }
     }
   }
 

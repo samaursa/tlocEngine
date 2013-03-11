@@ -56,29 +56,24 @@ namespace tloc { namespace core { namespace containers {
     explicit Stack(const T_Container& aCont);
 
     //------------------------------------------------------------------------
-    // General
-
-    TL_I const T_Container& _Get_container() const;
-
-    //------------------------------------------------------------------------
     // Capacity
 
-    TL_I size_type          size() const;
-    TL_I bool               empty() const;
+    size_type          size() const;
+    bool               empty() const;
 
     //------------------------------------------------------------------------
     // Element Access
 
-    TL_I reference          top();
-    TL_I const_reference    top() const;
+    reference          top();
+    const_reference    top() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_I void               push(const value_type& aVal);
-    TL_I void               pop();
+    void               push(const value_type& aVal);
+    void               pop();
 
-	protected:
+	private:
     //------------------------------------------------------------------------
     // Variables
 

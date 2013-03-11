@@ -47,7 +47,8 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <KEYBOARD_TEMP>
-  void Keyboard<KEYBOARD_PARAMS>::SendOnKeyPress(const KeyboardEvent& a_event)
+  void Keyboard<KEYBOARD_PARAMS>::
+    SendOnKeyPress(const KeyboardEvent& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
@@ -59,7 +60,8 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <KEYBOARD_TEMP>
-  void Keyboard<KEYBOARD_PARAMS>::SendOnKeyRelease(const KeyboardEvent& a_event)
+  void Keyboard<KEYBOARD_PARAMS>::
+    SendOnKeyRelease(const KeyboardEvent& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
@@ -74,6 +76,12 @@ namespace tloc { namespace input { namespace hid {
   void Keyboard<KEYBOARD_PARAMS>::Update()
   {
     m_impl->Update();
+  }
+
+  template <KEYBOARD_TEMP>
+  void Keyboard<KEYBOARD_PARAMS>::Reset()
+  {
+    m_impl->Reset();
   }
 
   //------------------------------------------------------------------------

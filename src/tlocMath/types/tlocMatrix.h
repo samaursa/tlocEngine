@@ -29,6 +29,9 @@ namespace tloc { namespace math { namespace types {
   class Matrix : public core::data_structs::Table<T, T_Size, T_Size>
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Matrix<T, T_Size>                             this_type;

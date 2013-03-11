@@ -39,6 +39,9 @@ namespace tloc { namespace math { namespace types {
   class Vector : public core::data_structs::Tuple<T, T_Size>
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     enum { k_size = T_Size };
 
   public:

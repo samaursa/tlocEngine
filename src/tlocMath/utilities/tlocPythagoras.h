@@ -14,6 +14,9 @@ namespace tloc { namespace math { namespace utils {
   class Pythagoras_T
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     typedef T                                         value_type;
     typedef math::types::Degree_T<value_type>         angle_type;
     typedef Pythagoras_T<value_type>                  this_type;

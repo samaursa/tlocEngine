@@ -11,11 +11,15 @@ namespace tloc { namespace math { namespace types {
   class Angle_T
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     typedef T           value_type;
 
     typedef T_Derived   derived_type;
     typedef Angle_T     this_type;
 
+  public:
     Angle_T(value_type a_angle = 0);
 
     template <typename T_AngleType>

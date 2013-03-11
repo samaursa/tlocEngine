@@ -2,6 +2,7 @@
 
 #include <tlocCore/component_system/tlocEvent.inl>
 #include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -128,5 +129,11 @@ namespace tloc { namespace core { namespace component_system {
     // Clear the event list
     m_events.clear();
   }
+
+  //------------------------------------------------------------------------
+  // Explicit instantiations
+
+  template class core_sptr::SharedPtr<EventManager>;
+  template class core_sptr::SharedPtr<const EventManager>;
 
 };};};

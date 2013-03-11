@@ -135,7 +135,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Assignment
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
     ArrayFixed<STACK_ARRAY_PARAMS>::operator= (const this_type& a_toCopy)
   {
     return DoOperatorEqual(a_toCopy);
@@ -143,7 +143,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <tl_size T_OtherCapacity>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
     ArrayFixed<STACK_ARRAY_PARAMS>::
     operator= (const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy)
   {
@@ -155,7 +155,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Element access
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
     ArrayFixed<STACK_ARRAY_PARAMS>::at(size_type a_index)
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
@@ -163,7 +163,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
     ArrayFixed<STACK_ARRAY_PARAMS>::at(size_type a_index) const
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
@@ -171,7 +171,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
     ArrayFixed<STACK_ARRAY_PARAMS>::operator[] (size_type a_index)
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
@@ -179,7 +179,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
     ArrayFixed<STACK_ARRAY_PARAMS>::operator[] (size_type a_index) const
   {
     TLOC_ASSERT_STACK_ARRAY_INDEX(a_index);
@@ -187,7 +187,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
     ArrayFixed<STACK_ARRAY_PARAMS>::front()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -195,7 +195,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
     ArrayFixed<STACK_ARRAY_PARAMS>::front() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -203,7 +203,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::reference
     ArrayFixed<STACK_ARRAY_PARAMS>::back()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -211,7 +211,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_reference
     ArrayFixed<STACK_ARRAY_PARAMS>::back() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -219,7 +219,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::pointer
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::pointer
     ArrayFixed<STACK_ARRAY_PARAMS>::data()
   {
     return m_begin.data();
@@ -229,28 +229,28 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Iterator access
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::begin()
   {
     return m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::begin() const
   {
     return m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::end()
   {
     return m_end;
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::const_iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::const_iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::end() const
   {
     return m_end;
@@ -260,39 +260,39 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Capacity
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
     ArrayFixed<STACK_ARRAY_PARAMS>::size() const
   {
     return (m_end - m_begin.data());
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
     ArrayFixed<STACK_ARRAY_PARAMS>::capacity() const
   {
     return m_begin.GetSize();
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I bool ArrayFixed<STACK_ARRAY_PARAMS>::empty() const
+  bool ArrayFixed<STACK_ARRAY_PARAMS>::empty() const
   {
     return size() == 0;
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I bool ArrayFixed<STACK_ARRAY_PARAMS>::full() const
+  bool ArrayFixed<STACK_ARRAY_PARAMS>::full() const
   {
     return (size() == capacity());
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::resize(size_type a_newSize)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::resize(size_type a_newSize)
   {
     DoResize(a_newSize, value_type());
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::resize(size_type a_newSize, 
+  void ArrayFixed<STACK_ARRAY_PARAMS>::resize(size_type a_newSize, 
                                                    value_type& a_value)
   {
     DoResize(a_newSize, a_value);
@@ -302,7 +302,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // Modifiers
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::assign(size_type a_repetitionNum,
+  void ArrayFixed<STACK_ARRAY_PARAMS>::assign(size_type a_repetitionNum,
                                                    const value_type & a_elemToCopy)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_repetitionNum);
@@ -315,7 +315,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::assign(T_InputIterator a_rangeBegin, 
+  void ArrayFixed<STACK_ARRAY_PARAMS>::assign(T_InputIterator a_rangeBegin, 
                                                    T_InputIterator a_rangeEnd)
   {
     typedef Loki::TypeTraits<T_InputIterator> inputUnknown;
@@ -328,7 +328,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void 
+  void 
     ArrayFixed<STACK_ARRAY_PARAMS>::push_back(const value_type& a_valueToCopy)
   {
     TLOC_ASSERT_ARRAY_NOT_FULL();
@@ -336,14 +336,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::pop_back()
+  void ArrayFixed<STACK_ARRAY_PARAMS>::pop_back()
   {
     TLOC_ASSERT_STACK_ARRAY_NOT_EMPTY();
     --m_end;
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::pop_back(value_type& a_out)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::pop_back(value_type& a_out)
   {
     TLOC_ASSERT_STACK_ARRAY_NOT_EMPTY();
     a_out = *(m_end - 1);
@@ -351,7 +351,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::insert(iterator a_position, 
                                            const value_type& a_valueToCopy)
   {
@@ -373,7 +373,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void 
+  void 
     ArrayFixed<STACK_ARRAY_PARAMS>::insert(iterator a_position, 
                                            size_type a_numElemsToInsert, 
                                            const value_type& a_valueToCopy)
@@ -395,7 +395,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
-  TL_I void 
+  void 
     ArrayFixed<STACK_ARRAY_PARAMS>::insert(iterator a_position, 
                                            T_InputIterator a_rangeBegin, 
                                            T_InputIterator a_rangeEnd)
@@ -409,7 +409,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::erase(iterator a_position)
   {
     TLOC_ASSERT_STACK_ARRAY_NOT_EMPTY();
@@ -422,7 +422,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::iterator
     ArrayFixed<STACK_ARRAY_PARAMS>::erase(iterator a_rangeBegin, 
                                           iterator a_rangeEnd)
   {
@@ -436,14 +436,14 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::clear()
+  void ArrayFixed<STACK_ARRAY_PARAMS>::clear()
   {
     m_end = m_begin.data();
   }
 
   template <STACK_ARRAY_TYPES>
   template <tl_size T_OtherCapacity>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>
+  void ArrayFixed<STACK_ARRAY_PARAMS>
     ::swap (ArrayFixed<value_type, T_OtherCapacity>& a_vec)
   {
     ArrayFixed<value_type, T_Capacity> temp(*this);
@@ -456,7 +456,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <tl_size T_OtherCapacity>
-  TL_I typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
+  typename ArrayFixed<STACK_ARRAY_PARAMS>::this_type& 
     ArrayFixed<STACK_ARRAY_PARAMS>::
     DoOperatorEqual(const ArrayFixed<value_type, T_OtherCapacity>& a_toCopy)
   {
@@ -472,7 +472,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // resize() Helper
 
   template <STACK_ARRAY_TYPES>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::DoResize(size_type a_newSize, 
+  void ArrayFixed<STACK_ARRAY_PARAMS>::DoResize(size_type a_newSize, 
                                                      const value_type& a_value)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_newSize);
@@ -493,7 +493,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <typename T_Number>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
+  void ArrayFixed<STACK_ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
     T_Number a_elemToCopy, 
     is_arith_t)
   {
@@ -503,7 +503,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
+  void ArrayFixed<STACK_ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
     T_InputIterator a_rangeEnd, 
     is_not_arith_t)
   {
@@ -522,8 +522,8 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // push_back() Helpers
 
   template <STACK_ARRAY_TYPES>
-  TL_I void 
-    ArrayFixed<STACK_ARRAY_PARAMS>::DoAddToEnd(const value_type& a_valueToCopy)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoAddToEnd(const value_type& a_valueToCopy)
   {
     TLOC_ASSERT_STACK_ARRAY_NOT_FULL();
 
@@ -535,9 +535,8 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   // insert() Helpers
 
   template <STACK_ARRAY_TYPES>
-  TL_I void 
-    ArrayFixed<STACK_ARRAY_PARAMS>::DoInsertValue(value_type* a_position, 
-                                                  const value_type& a_value)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoInsertValue(value_type* a_position, const value_type& a_value)
   {
     TLOC_ASSERT_STACK_ARRAY_NOT_FULL();
     TLOC_ASSERT_STACK_ARRAY_POSITION_END_INCLUSIVE(a_position);
@@ -559,10 +558,9 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   }
 
   template <STACK_ARRAY_TYPES>
-  TL_I void 
-    ArrayFixed<STACK_ARRAY_PARAMS>::DoInsertValues(value_type* a_position, 
-                                                   size_type a_numElemsToInsert, 
-                                                   const value_type& a_value)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoInsertValues(value_type* a_position, size_type a_numElemsToInsert, 
+                   const value_type& a_value)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(size() + a_numElemsToInsert);
     TLOC_ASSERT_STACK_ARRAY_POSITION_END_INCLUSIVE(a_position);
@@ -586,30 +584,26 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   template <typename T_Number>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::DoInsert(iterator a_position, 
-                                                     T_Number a_n, 
-                                                     T_Number a_value, 
-                                                     is_integral_t)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoInsert(iterator a_position, T_Number a_n, T_Number a_value, is_integral_t)
   {
     insert(a_position, static_cast<size_type>(a_n), static_cast<value_type>(a_value));
   }
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
-  TL_I void ArrayFixed<STACK_ARRAY_PARAMS>::DoInsert(iterator a_position, 
-                                                     T_InputIterator a_first, 
-                                                     T_InputIterator a_last, 
-                                                     is_not_integral_t)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoInsert(iterator a_position, T_InputIterator a_first, 
+             T_InputIterator a_last, is_not_integral_t)
   {
     DoInsertByIterator(a_position, a_first, a_last);
   }
 
   template <STACK_ARRAY_TYPES>
   template <typename T_InputIterator>
-  TL_I void 
-    ArrayFixed<STACK_ARRAY_PARAMS>::DoInsertByIterator(iterator a_position, 
-                                                       T_InputIterator a_first, 
-                                                       T_InputIterator a_last)
+  void ArrayFixed<STACK_ARRAY_PARAMS>::
+    DoInsertByIterator(iterator a_position, T_InputIterator a_first, 
+                       T_InputIterator a_last)
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(size() + tloc::core::distance(a_first, a_last));
     TLOC_ASSERT_STACK_ARRAY_RANGE(a_first, a_last);

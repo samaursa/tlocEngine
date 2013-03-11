@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // QuadRenderSystem
 
   QuadRenderSystem::QuadRenderSystem
-    (event_manager* a_eventMgr, entity_manager* a_entityMgr)
+    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)

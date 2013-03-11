@@ -42,7 +42,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::ShaderProgramPtr                              shader_prog_ptr;
 
   public:
-    QuadRenderSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
+    QuadRenderSystem(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr);
 
     void AttachCamera(const entity_type* a_cameraEntity);
 

@@ -80,8 +80,9 @@ namespace tloc { namespace physics { namespace component_system {
   // RigidBodySystem
 
   RigidBodySystem::
-    RigidBodySystem
-    (event_manager* a_eventMgr, entity_manager* a_entityMgr, world_type* a_world)
+    RigidBodySystem (event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr,
+                     world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr
     , Variadic<component_type, 1>(components::k_rigidBody))
     , m_world(a_world)

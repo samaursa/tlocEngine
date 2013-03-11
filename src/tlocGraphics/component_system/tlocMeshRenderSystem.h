@@ -26,7 +26,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_value_type;
 
   public:
-    MeshRenderSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr);
+    MeshRenderSystem(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr);
 
     virtual error_type Initialize();
     virtual error_type Shutdown();

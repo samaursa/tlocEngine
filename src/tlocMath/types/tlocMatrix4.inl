@@ -21,23 +21,26 @@ namespace tloc { namespace math { namespace types {
 #define MATRIX_4_PARAMS T
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4()
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4()
     : base_type() {}
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const this_type& aMatrix)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(const this_type& aMatrix)
     : base_type(aMatrix) {}
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const base_type& aMatrix)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(const base_type& aMatrix)
     : base_type(aMatrix) {}
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>
-    ::Matrix4(value_type m00, value_type m01, value_type m02, value_type m03, 
-              value_type m10, value_type m11, value_type m12, value_type m13, 
-              value_type m20, value_type m21, value_type m22, value_type m23, 
-              value_type m30, value_type m31, value_type m32, value_type m33)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(value_type m00, value_type m01, value_type m02, value_type m03, 
+            value_type m10, value_type m11, value_type m12, value_type m13, 
+            value_type m20, value_type m21, value_type m22, value_type m23, 
+            value_type m30, value_type m31, value_type m32, value_type m33)
   {
     m_values[0] = m00; m_values[4] = m01; m_values[8] = m02; m_values[12] = m03;
     m_values[1] = m10; m_values[5] = m11; m_values[9] = m12; m_values[13] = m13;
@@ -46,26 +49,26 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(value_type m00, 
-                                          value_type m11, 
-                                          value_type m22,
-                                          value_type m33)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(value_type m00, value_type m11, value_type m22, value_type m33) 
   {
     value_type diag[4] = {m00, m11, m22, m33};
     MakeDiagonal(diag);
   }
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const_reference aValue)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(const_reference aValue)
     : base_type(aValue) 
   { }
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const Vector<value_type, 4>& aVec1,
-                                          const Vector<value_type, 4>& aVec2,
-                                          const Vector<value_type, 4>& aVec3,
-                                          const Vector<value_type, 4>& aVec4,
-                                          typename base_type::matrix_order aOrder)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(const Vector<value_type, 4>& aVec1, 
+            const Vector<value_type, 4>& aVec2, 
+            const Vector<value_type, 4>& aVec3, 
+            const Vector<value_type, 4>& aVec4, 
+            typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
     {
@@ -94,15 +97,16 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4(const value_type (&values)[k_MatrixSize], 
-                                          typename base_type::matrix_order aOrder)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4(const value_type (&values)[k_MatrixSize], 
+            typename base_type::matrix_order aOrder)
     : base_type(values, aOrder) 
   { }
 
   template <MATRIX_4_TYPES>
-  TL_FI Matrix4<MATRIX_4_PARAMS>::Matrix4
-    (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars, 
-     matrix_order a_order)
+  Matrix4<MATRIX_4_PARAMS>::
+    Matrix4 (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars, 
+             matrix_order a_order)
     : base_type(a_vars, a_order)
   { }
 

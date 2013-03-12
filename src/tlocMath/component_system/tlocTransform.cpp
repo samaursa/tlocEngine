@@ -15,7 +15,8 @@ namespace tloc { namespace math { namespace component_system {
   using types::Vector4;
 
   template <TRANSFORM_TEMPS>
-  Transform_T<TRANSFORM_PARAMS>::Transform_T()
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T()
     : base_type(components::transform)
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
@@ -25,7 +26,8 @@ namespace tloc { namespace math { namespace component_system {
 
   template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::position_type
-    Transform_T<TRANSFORM_PARAMS>::GetPosition() const
+    Transform_T<TRANSFORM_PARAMS>::
+    GetPosition() const
   {
     position_type       pos3;
     Vector4<real_type>  pos4;
@@ -38,7 +40,8 @@ namespace tloc { namespace math { namespace component_system {
 
   template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::orientation_type
-    Transform_T<TRANSFORM_PARAMS>::GetOrientation() const
+    Transform_T<TRANSFORM_PARAMS>::
+    GetOrientation() const
   {
     orientation_type
       ori3(m_transformation[0], m_transformation[4], m_transformation[8],

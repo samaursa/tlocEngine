@@ -18,6 +18,9 @@ namespace tloc { namespace math { namespace types {
   class Circle
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     typedef T                           value_type;
     typedef Circle<value_type>          this_type;
     typedef Vector2<value_type>         point_type;

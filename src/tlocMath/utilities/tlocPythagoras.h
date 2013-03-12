@@ -46,9 +46,8 @@ namespace tloc { namespace math { namespace utils {
     angle_type GetAngle() const;
     angle_type GetAngleOpposite() const;
 
-    template <typename T_Side>
-    value_type GetSide()
-    { return m_sides[T_Side::k_index]; }
+    template <typename T_TriSide>
+    value_type GetSide();
 
   private:
     template <typename T_TriSide1, typename T_TriSide2>
@@ -95,6 +94,19 @@ namespace tloc { namespace math { namespace utils {
 
     DoConstruct(a_angle, a_side);
   }
+
+  template <typename T>
+  template <typename T_TriSide>
+  typename Pythagoras_T<T>::value_type
+    Pythagoras_T<T>::
+    GetSide()
+  {
+    type_traits::AssertTypeIsSupported
+      <T_TriSide, base, opposite, hypotenuse>();
+
+    return m_sides[T_TriSide::k_index];
+  }
+
 
   //------------------------------------------------------------------------
   // Common typedefs

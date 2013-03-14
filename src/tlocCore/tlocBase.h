@@ -284,52 +284,35 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
+#define S(x) #x
+#define S_(x) S(x)
+#define S__LINE__ S_(__LINE__)
+
 //````````````````````````````````````````````````````````````````````````
 // Run-time
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
-// Supported assert macros
-#if defined (__GNUC__) || defined(__clang__)
-// TODO: Fix the assert macros for mac
-
-# define _CRT_WIDE(_Msg)
-# define TLOC_ASSERT_MESSAGE(msg) assert(false)
-# define TLOC_ASSERT_MESSAGEW(msg) assert(false)
-# define TLOC_ASSERT(_Expression, _Msg) assert(_Expression)
-# define TLOC_ASSERTW(_Expression, _Msg) assert(_Expression)
-
-#else
-
-# define TLOC_ASSERT_MESSAGE(msg)\
-  (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
-# define TLOC_ASSERT_MESSAGEW(msg)\
-  (msg L" (" _CRT_WIDE(__FUNCTION__) L")")
-# define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-# define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-
-#endif
+# define TLOC_ASSERT(_Expression, _Msg) \
+  assert(_Expression && _Msg)
 
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
 // it will work properly with these asserts disabled
 #   ifndef TLOC_DISABLE_ASSERT_WARNINGS
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " _CRT_WIDE(_Msg))
+#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
 #   else
 #     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
 #   endif
 
 #else
 #define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERTW(_Expression, _Msg)
 #define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
 
 // Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ _CRT_WIDE(" cannot be NULL"))
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ _CRT_WIDE(" should be NULL"))
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ " cannot be NULL")
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ " should be NULL")
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time

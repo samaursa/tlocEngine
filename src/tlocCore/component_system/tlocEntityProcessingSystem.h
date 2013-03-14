@@ -35,31 +35,31 @@ namespace tloc { namespace core { namespace component_system {
 
   protected: // Initialization
     virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(entity_manager* a_mgr,
-                                        entity_type* a_ent) = 0;
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
+                                        const entity_type* a_ent) = 0;
     virtual error_type Post_Initialize();
 
   protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(entity_manager* a_mgr,
-                               entity_type* a_ent) = 0;
+    virtual void ProcessEntity(const entity_manager* a_mgr,
+                               const entity_type* a_ent) = 0;
     virtual void Post_ProcessActiveEntities();
 
   protected: // Shutdown
     virtual error_type Pre_Shutdown();
-    virtual error_type ShutdownEntity(entity_manager* a_mgr,
-                                      entity_type* a_ent) = 0;
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
+                                      const entity_type* a_ent) = 0;
     virtual error_type Post_Shutdown();
 
   private:
-    virtual void DoProcessActiveEntities (entity_manager* a_mgr,
+    virtual void DoProcessActiveEntities (const entity_manager* a_mgr,
                                           const entity_ptr_array& a_entities);
 
-    virtual error_type DoInitialize(entity_manager* a_mgr,
+    virtual error_type DoInitialize(const entity_manager* a_mgr,
                                     const entity_ptr_array& a_entities);
 
-    virtual error_type DoShutdown(entity_manager* a_mgr,
+    virtual error_type DoShutdown(const entity_manager* a_mgr,
                                   const entity_ptr_array& a_entities);
   };
 

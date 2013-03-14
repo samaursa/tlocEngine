@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace string {
 
 # define TLOC_ASSERT_STRING_RANGE(_RangeBegin, _RangeEnd) \
   TLOC_ASSERT(_RangeBegin <= _RangeEnd, \
-  # _RangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# _RangeEnd) L"!")
+  #_RangeBegin " must be smaller than " #_RangeEnd)
 
 #define STRING_BASE_TYPES typename T
 #define STRING_BASE_PARAMS T
@@ -348,7 +348,7 @@ namespace tloc { namespace core { namespace string {
   {
     TLOC_ASSERT_STRING(newSize < m_MaxSize, "Reserve request is too large!");
     TLOC_ASSERT_STRING_WARN(newSize > capacity(), "Reserve request is smaller "
-      L"than the current capacity. Call resize() for shrinking.");
+      "than the current capacity. Call resize() for shrinking.");
 
     if (newSize > capacity()) // Exclude /0
     {
@@ -1447,7 +1447,7 @@ namespace tloc { namespace core { namespace string {
   {
     TLOC_ASSERT_STRING(aSize > capacity(),
       "This function can only increase the storage capacity! (passed size is "
-      L"smaller than the current capacity)");
+      "smaller than the current capacity)");
 
     const tl_size prevSize = size();
     const tl_size newCap   = aSize;

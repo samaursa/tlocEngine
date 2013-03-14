@@ -92,7 +92,8 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodySystem::error_type RigidBodySystem::
-    InitializeEntity(entity_manager* a_mgr, entity_type* a_ent)
+    InitializeEntity(const entity_manager* a_mgr, 
+                     const entity_type* a_ent)
   {
     error_type result = DoInitializeRigidBodyComponent(a_ent);
 
@@ -109,7 +110,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodySystem::error_type RigidBodySystem::
-    ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent )
+    ShutdownEntity(const entity_manager* a_mgr, const entity_type* a_ent )
   {
     error_type result = DoShutdownRigidBodyComponent(a_ent);
 
@@ -120,7 +121,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodySystem::
-    ProcessEntity(entity_manager* a_mgr, entity_type* a_ent)
+    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
@@ -161,7 +162,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodySystem::error_type RigidBodySystem::
-    DoInitializeRigidBodyComponent(entity_type* a_ent)
+    DoInitializeRigidBodyComponent(const entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 
@@ -200,7 +201,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodySystem::error_type RigidBodySystem::
-    DoShutdownRigidBodyComponent(entity_type* a_ent)
+    DoShutdownRigidBodyComponent(const entity_type* a_ent)
   {
     using namespace tloc::core::component_system;
 

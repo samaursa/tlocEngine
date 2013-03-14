@@ -61,6 +61,11 @@ namespace tloc { namespace physics { namespace box2d {
     m_internalShape = shape_internal_type_sptr(circle);
   }
 
+  void RigidBodyShapeDef::DoSetParent(const entity_type* a_parent)
+  {
+    m_fixtureDef.userData = const_cast<entity_type*>(a_parent);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 

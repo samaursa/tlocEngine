@@ -125,7 +125,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
   {
-    TLOC_UNUSED(a_ent);
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Quad      quad_type;

@@ -50,11 +50,14 @@ namespace tloc { namespace physics { namespace component_system {
     virtual error_type Pre_Initialize();
     virtual error_type Post_Shutdown();
 
-    virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent);
-    virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual error_type InitializeEntity(const entity_manager* a_mgr, 
+                                        const entity_type* a_ent);
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr, 
+                                      const entity_type* a_ent);
 
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual void ProcessEntity(const entity_manager* a_mgr, 
+                               const entity_type* a_ent);
 
   public:
     bool OnContactBegin(const contact_event_type& a_event);

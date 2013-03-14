@@ -1244,7 +1244,7 @@ namespace tloc { namespace core {
     {
       TLOC_ASSERT_ALGORITHMS(a_destRangeEnd < a_rangeBegin || a_destRangeEnd > a_rangeEnd,
         "Output past-the-end iterator is within the begin/end range (data "
-        L"over-writing)! - Try Copy");
+        "over-writing)! - Try Copy");
       TLOC_ASSERT_ALGORITHMS(a_rangeBegin <= a_rangeEnd,
         "a_rangeBegin > a_rangeEnd (infinite loop)");
 

@@ -195,7 +195,7 @@ namespace tloc { namespace core { namespace data_structs {
     ::Set(const T_ArrayType (&values)[k_TableSize], table_order aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
-      L"Undefined behavior.");
+      "Undefined behavior.");
 
     Set(Variadic<value_type, k_TableSize>(values), aTableOrder);
   }

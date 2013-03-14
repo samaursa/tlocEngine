@@ -126,7 +126,7 @@ namespace tloc { namespace core { namespace containers {
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::Increment()
   {
     TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL!"
-      L" (did you try incrementing an iterator that is not initialized?)");
+      " (did you try incrementing an iterator that is not initialized?)");
     TLOC_ASSERT_HASH_TABLE(m_currNode != m_dummyNode,
       "Cannot increment end() iterator! (OR m_currNode wrongly assigned)");
 
@@ -155,7 +155,7 @@ namespace tloc { namespace core { namespace containers {
   TL_FI void HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::IncrementBucket()
   {
     TLOC_ASSERT_HASH_TABLE(m_bucketContainer, "Bucket container cannot be NULL!"
-      L" (did you try incrementing an iterator that is not initialized?)");
+      " (did you try incrementing an iterator that is not initialized?)");
 
     local_iterator bucketEnd = m_bucketContainer->end();
 

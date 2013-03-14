@@ -73,7 +73,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoInitialize(entity_manager* a_mgr,
+    virtual error_type DoInitialize(const entity_manager* a_mgr,
                                     const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -90,7 +90,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoShutdown(entity_manager* a_mgr,
+    virtual error_type DoShutdown(const entity_manager* a_mgr,
                                   const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
-    virtual void DoProcessActiveEntities(entity_manager* a_mgr,
+    virtual void DoProcessActiveEntities(const entity_manager* a_mgr,
                                          const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -131,12 +131,12 @@ namespace tloc { namespace core { namespace component_system {
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    virtual bool OnEvent(const event_type& a_event);
+    bool OnEvent(const event_type& a_event);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                           m_activeEntities);
 
-  protected:
+  private:
     component_type_array  m_typeFlags;
     entity_ptr_array      m_activeEntities;
 

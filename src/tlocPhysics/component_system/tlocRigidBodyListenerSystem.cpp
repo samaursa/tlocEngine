@@ -128,8 +128,8 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    InitializeEntity(entity_manager* a_mgr,
-                     entity_type* a_ent)
+    InitializeEntity(const entity_manager* ,
+                     const entity_type* a_ent)
   {
     const entity_type* ent = a_ent;
 
@@ -146,15 +146,14 @@ namespace tloc { namespace physics { namespace component_system {
       return error::error_rigid_body_not_attached;
     }
 
-    TLOC_UNUSED(a_mgr);
     return ErrorSuccess();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    ShutdownEntity(entity_manager* a_mgr,
-                   entity_type* a_ent)
+    ShutdownEntity(const entity_manager* a_mgr,
+                   const entity_type* a_ent)
   {
     TLOC_UNUSED_2(a_mgr, a_ent);
     return ErrorSuccess();
@@ -194,11 +193,8 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    ProcessEntity(entity_manager* a_mgr,
-                  entity_type* a_ent)
-  {
-    TLOC_UNUSED_2(a_mgr, a_ent);
-  }
+    ProcessEntity(const entity_manager* , const entity_type* )
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

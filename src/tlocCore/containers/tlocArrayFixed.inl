@@ -16,7 +16,7 @@ namespace tloc { namespace core{ namespace containers {
   // Assertion macros
 
 #define TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_index) \
-#a_index _CRT_WIDE(" is out of range!")
+#a_index " is out of range!"
 
 #define TLOC_ASSERT_STACK_ARRAY_INDEX(a_index) \
   TLOC_ASSERT_STACK_ARRAY(a_index < size() , "Index out of bounds")
@@ -45,7 +45,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE(a_rangeBegin, a_rangeEnd) \
   TLOC_ASSERT_STACK_ARRAY(a_rangeBegin <= a_rangeEnd, \
-# a_rangeBegin _CRT_WIDE(" must be smaller than ") _CRT_WIDE(# a_rangeEnd) L"!")
+#a_rangeBegin " must be smaller than " #a_rangeEnd)
 
 #define TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN_END(a_rangeBegin, a_rangeEnd) \
   TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN(a_rangeBegin); \

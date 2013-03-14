@@ -48,13 +48,14 @@ namespace tloc { namespace graphics { namespace component_system {
     void AttachCamera(const entity_type* a_cameraEntity);
 
     virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(entity_manager* a_mgr,
-                                        entity_type* a_ent);
-    virtual error_type ShutdownEntity(entity_manager* a_mgr,
-                                      entity_type* a_ent);
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
+                                        const entity_type* a_ent);
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
+                                      const entity_type* a_ent);
 
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual void ProcessEntity(const entity_manager* a_mgr, 
+                               const entity_type* a_ent);
     virtual void Post_ProcessActiveEntities();
 
   private:

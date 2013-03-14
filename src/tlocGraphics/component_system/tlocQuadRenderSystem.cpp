@@ -75,14 +75,15 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess();
   }
 
-  error_type QuadRenderSystem::InitializeEntity(entity_manager*,
-    entity_type* a_ent)
+  error_type QuadRenderSystem::InitializeEntity(const entity_manager*, 
+                                                const entity_type* a_ent)
   {
     TLOC_UNUSED(a_ent);
     return ErrorSuccess();
   }
 
-  error_type QuadRenderSystem::ShutdownEntity(entity_manager*, entity_type*)
+  error_type QuadRenderSystem::ShutdownEntity(const entity_manager*, 
+                                              const entity_type*)
   { return ErrorSuccess(); }
 
   void QuadRenderSystem::Pre_ProcessActiveEntities()
@@ -123,7 +124,8 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator->AddUniform(vpMat);
   }
 
-  void QuadRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
+  void QuadRenderSystem::ProcessEntity(const entity_manager*, 
+                                       const entity_type* a_ent)
   {
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;

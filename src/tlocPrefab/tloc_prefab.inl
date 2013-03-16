@@ -9,9 +9,6 @@
 #include <tlocPrefab/graphics/tloc_graphics.inl>
 #include <tlocPrefab/input/tloc_input.inl>
 #include <tlocPrefab/math/tloc_math.inl>
-
-#if !defined (TLOC_OS_IPHONE) //TODO: Temp - Remove when Iphone port has tlocPhysics
-# include <tlocPrefab/physics/tloc_physics.inl>
-#endif
+#include <tlocPrefab/physics/tloc_physics.inl>
 
 #endif

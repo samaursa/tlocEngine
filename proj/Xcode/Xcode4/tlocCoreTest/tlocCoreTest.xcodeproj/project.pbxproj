@@ -438,7 +438,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -469,7 +468,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -483,12 +481,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocCoreTest-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = tlocCoreTest;
 				WRAPPER_EXTENSION = app;
 			};
@@ -498,12 +490,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocCoreTest-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = tlocCoreTest;
 				WRAPPER_EXTENSION = app;
 			};

@@ -63,35 +63,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // TODO: Change this to the actual screen that we want our window to be on
     // for now only supports main device
     UIScreen* currentScreen = [UIScreen mainScreen];
-    
-    if (a_style& WindowSettings::style_titlebar) 
-    {
-      [UIApplication sharedApplication].statusBarHidden = NO;
-      m_handle = [[UIWindow alloc] initWithFrame:[currentScreen applicationFrame]];
-    }
-    else 
-    {
-      [UIApplication sharedApplication].statusBarHidden = YES;
-      m_handle = [[UIWindow alloc] initWithFrame:[currentScreen bounds]];
-    }
-    
+
+    [UIApplication sharedApplication].statusBarHidden =
+      !(a_style & WindowSettings::style_titlebar);
+
+    // The window must take the screens bounds. This is since our view
+    // automatically adjusts its size even when there is a title bar present.
+    m_handle = [[UIWindow alloc] initWithFrame:[currentScreen bounds]];
+
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
-    CGRect viewFrame;
-    if (a_style& WindowSettings::style_fullscreen) 
-    {
-      viewFrame = m_handle.bounds;
-    }
-    else 
-    {
-      size_type width = modeProps.m_width;
-      size_type height = modeProps.m_height;
-      size_type left = (m_handle.bounds.size.width - width) / 2;
-      size_type top = (m_handle.bounds.size.height - height) / 2;
-      
-      viewFrame = CGRectMake(left, top, width, height);
-    }
-    
+    CGRect viewFrame = m_handle.bounds;
+
     m_view = [[OpenGLView alloc] initWithFrame:viewFrame retainBacking:NO 
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
                                   bitsPerDepth:a_settings.m_depthBits 
@@ -104,7 +87,6 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     [m_viewController setView:m_view];
 
     [m_handle setRootViewController:m_viewController];
-    [m_handle addSubview:m_view];
     [m_handle makeKeyAndVisible];
     
     ++g_currWindowCount;

@@ -220,7 +220,7 @@
 		97CC76F91580A6D800764CF3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 97CC76FC1580A6D800764CF3 /* Build configuration list for PBXProject "tlocMathTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -282,9 +282,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -307,10 +311,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
 				);
 				PRELINK_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -326,9 +329,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/$(PROJECT_NAME)";
-				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -344,11 +351,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "SupportingFiles/tlocTesting-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
 				);
 				PRELINK_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -364,18 +370,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocMathTest-Info.plist";
-				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = tlocMathTest;
 				WRAPPER_EXTENSION = app;
 			};
@@ -385,18 +379,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "SupportingFiles/tlocMathTest-Info.plist";
-				INFOPLIST_PREPROCESSOR_DEFINITIONS = (
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocGraphics/tlocGraphics_$(CONFIGURATION).a\"",
-					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(EFFECTIVE_PLATFORM_NAME)/tlocInput/tlocInput_$(CONFIGURATION).a\"",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/tlocEngine-fhbvdvpfcqeklhdvrpkbuejjflqt/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphoneos\"",
-					"\"$(SRCROOT)/../../../../bin/Xcode4/tlocEngine/Build/Products/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = tlocMathTest;
 				WRAPPER_EXTENSION = app;
 			};

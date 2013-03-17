@@ -8,7 +8,14 @@
 
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/window/tlocWindowImpl.h>
-#include <tlocGraphics/window/tlocWindowImplWin.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
+
+# if defined (TLOC_OS_WIN)
+#   include <tlocGraphics/window/tlocWindowImplWin.h>
+# elif defined (TLOC_OS_IPHONE)
+#   include <tlocGraphics/window/tlocWindowImplIphone.h>
+# else
+#   error "WIP"
+# endif
 
 #endif

@@ -17,7 +17,7 @@
 // Avoid including extra headers here
 
 #include <assert.h>
-#include <3rdParty/loki/static_check.h>
+#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -284,52 +284,35 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
+#define S(x) #x
+#define S_(x) S(x)
+#define S__LINE__ S_(__LINE__)
+
 //````````````````````````````````````````````````````````````````````````
 // Run-time
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
-// Supported assert macros
-#if defined (__GNUC__) || defined(__clang__)
-// TODO: Fix the assert macros for mac
-
-# define _CRT_WIDE(_Msg)
-# define TLOC_ASSERT_MESSAGE(msg) assert(false)
-# define TLOC_ASSERT_MESSAGEW(msg) assert(false)
-# define TLOC_ASSERT(_Expression, _Msg) assert(_Expression)
-# define TLOC_ASSERTW(_Expression, _Msg) assert(_Expression)
-
-#else
-
-# define TLOC_ASSERT_MESSAGE(msg)\
-  (_CRT_WIDE(msg) L" (" _CRT_WIDE(__FUNCTION__) L")")
-# define TLOC_ASSERT_MESSAGEW(msg)\
-  (msg L" (" _CRT_WIDE(__FUNCTION__) L")")
-# define TLOC_ASSERT(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(TLOC_ASSERT_MESSAGE(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-# define TLOC_ASSERTW(_Expression, _Msg) (void)( (!!(_Expression)) || \
-  (_wassert(TLOC_ASSERT_MESSAGEW(_Msg), _CRT_WIDE(__FILE__), __LINE__), 0) )
-
-#endif
+# define TLOC_ASSERT(_Expression, _Msg) \
+  assert(_Expression && _Msg)
 
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
 // it will work properly with these asserts disabled
 #   ifndef TLOC_DISABLE_ASSERT_WARNINGS
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " _CRT_WIDE(_Msg))
+#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
 #   else
 #     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
 #   endif
 
 #else
 #define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERTW(_Expression, _Msg)
 #define TLOC_ASSERT_WARN(_Expression, _Msg)
 #endif
 
 // Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ _CRT_WIDE(" cannot be NULL"))
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ _CRT_WIDE(" should be NULL"))
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ " cannot be NULL")
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ " should be NULL")
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time
@@ -339,7 +322,7 @@
 # if defined(__GNUC__) || defined (__clang__)
 #   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
 # else
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) LOKI_STATIC_CHECK(_Expression, _Msg##_xxxxxxxxxxxxx_)
+#   define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
 # endif
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
@@ -349,6 +332,7 @@
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
+
 # define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
   TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
 # define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
@@ -357,6 +341,15 @@
   TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
 # define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
   TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
+
+# define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isFloat, Type_must_be_a_FLOAT);
+# define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isArith, Type_must_be_an_ARITHMETIC);
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
 
 //------------------------------------------------------------------------
 // Low level assertions

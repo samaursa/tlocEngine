@@ -1,4 +1,6 @@
 #include "tlocKeyboardImplWin.h"
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocAlgorithms.inl>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
@@ -184,6 +186,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <KEYBOARD_IMPL_TEMP>
+  void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::Reset()
+  {
+    DoReset(policy_type());
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::DoInitialize()
   {
     if (FAILED(m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL)))
@@ -361,6 +369,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         m_buffer[TranslateKeyCode(i)] = true;
       }
     }
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
+  void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
+    DoReset(InputPolicy::Buffered)
+  {
+    // LOG: Reset() should not be called in buffered mode
+  }
+
+  template <KEYBOARD_IMPL_TEMP>
+  void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
+    DoReset(InputPolicy::Immediate)
+  {
+    core::fill_n(m_buffer, KeyboardEvent::Count, false);
   }
 
 };};};};

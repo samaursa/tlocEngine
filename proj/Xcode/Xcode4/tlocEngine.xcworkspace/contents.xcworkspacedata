@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:tlocVersion/tlocVersion.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocVersionTool/tlocVersionTool.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:tlocCore/tlocCore.xcodeproj">
    </FileRef>
    <FileRef
@@ -14,6 +20,12 @@
       location = "group:tlocInput/tlocInput.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:tlocPhysics/tlocPhysics.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocPrefab/tlocPrefab.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:tlocCoreTest/tlocCoreTest.xcodeproj">
    </FileRef>
    <FileRef
@@ -24,5 +36,8 @@
    </FileRef>
    <FileRef
       location = "group:tlocInputTest/tlocInputTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:tlocPhysicsTest/tlocPhysicsTest.xcodeproj">
    </FileRef>
 </Workspace>

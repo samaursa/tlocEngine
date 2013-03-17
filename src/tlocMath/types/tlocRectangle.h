@@ -16,6 +16,9 @@ namespace tloc { namespace math { namespace types {
   class Rectangle
   {
   public:
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
     typedef tl_size                                 size_type;
     typedef T                                       real_type;
     typedef Rectangle<real_type>                    this_type;

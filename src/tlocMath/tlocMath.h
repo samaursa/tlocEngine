@@ -49,12 +49,12 @@ namespace tloc {
     //------------------------------------------------------------------------
     // Fast Specialized functions
 
-    static T FastInvSqrt(T aValue);
-    static u32 FastPowOfTwo(const u32& aPower);
+    static T    FastInvSqrt(T aValue);
+    static u32  FastPowOfTwo(const u32& aPower);
 
     // returns 1 for positive floats, -1 for negative floats, 0 for 0.0f
     // taken from http://www.musicdsp.org/showone.php?id=249
-    static s32 FastSignInt(const f32& aRealIn);
+    static s32  FastSignInt(const f32& aRealIn);
 
     //------------------------------------------------------------------------
     // Simple Interpolations
@@ -62,8 +62,9 @@ namespace tloc {
     // Simple linear interpolation between two values.
     // The equation is:
     //        returnedValue = aBias * aValue1 + (1 - aBias) * aValue2;
-    static T Lerp(T aValue1, T aValue2, T aBias = (T)0.5);
+    static T    Lerp(T aValue1, T aValue2, T aBias = (T)0.5);
 
+  public:
     static const T EPSILON;
     static const T ZERO_TOLERANCE;
     static const T MAX_REAL;

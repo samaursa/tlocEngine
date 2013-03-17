@@ -1,0 +1,317 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9743B2D616EB379600D1BFFF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9743B2D516EB379600D1BFFF /* UIKit.framework */; };
+		9743B2D816EB379600D1BFFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9743B2D716EB379600D1BFFF /* Foundation.framework */; };
+		9743B2DA16EB379600D1BFFF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9743B2D916EB379600D1BFFF /* CoreGraphics.framework */; };
+		9743B2F816EB383700D1BFFF /* tlocPhysicsManagerTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B2F316EB383700D1BFFF /* tlocPhysicsManagerTest.cpp */; };
+		9743B2F916EB383700D1BFFF /* tlocRigidBodySystemTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B2F416EB383700D1BFFF /* tlocRigidBodySystemTest.cpp */; };
+		9743B2FA16EB383700D1BFFF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B2F516EB383700D1BFFF /* main.cpp */; };
+		9743B2FB16EB383700D1BFFF /* tlocTestCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9743B2F616EB383700D1BFFF /* tlocTestCommon.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9743B2D216EB379600D1BFFF /* tlocPhysicsTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tlocPhysicsTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9743B2D516EB379600D1BFFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9743B2D716EB379600D1BFFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9743B2D916EB379600D1BFFF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9743B2F316EB383700D1BFFF /* tlocPhysicsManagerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPhysicsManagerTest.cpp; path = ../../../../src/tlocTests/physics/tlocPhysicsManagerTest.cpp; sourceTree = "<group>"; };
+		9743B2F416EB383700D1BFFF /* tlocRigidBodySystemTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRigidBodySystemTest.cpp; path = ../../../../src/tlocTests/physics/tlocRigidBodySystemTest.cpp; sourceTree = "<group>"; };
+		9743B2F516EB383700D1BFFF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../src/tlocTests/physics/main.cpp; sourceTree = "<group>"; };
+		9743B2F616EB383700D1BFFF /* tlocTestCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTestCommon.cpp; path = ../../../../src/tlocTests/physics/tlocTestCommon.cpp; sourceTree = "<group>"; };
+		9743B2F716EB383700D1BFFF /* tlocTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTestCommon.h; path = ../../../../src/tlocTests/physics/tlocTestCommon.h; sourceTree = "<group>"; };
+		9743B30016EB39EE00D1BFFF /* tlocPhysicsTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "tlocPhysicsTest-Info.plist"; path = "SupportingFiles/tlocPhysicsTest-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9743B2CF16EB379600D1BFFF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9743B2D616EB379600D1BFFF /* UIKit.framework in Frameworks */,
+				9743B2D816EB379600D1BFFF /* Foundation.framework in Frameworks */,
+				9743B2DA16EB379600D1BFFF /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9743B2C916EB379600D1BFFF = {
+			isa = PBXGroup;
+			children = (
+				9743B2FF16EB39B100D1BFFF /* tlocPhysicsTest */,
+				9743B2D416EB379600D1BFFF /* Frameworks */,
+				9743B2D316EB379600D1BFFF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9743B2D316EB379600D1BFFF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2D216EB379600D1BFFF /* tlocPhysicsTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9743B2D416EB379600D1BFFF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2D516EB379600D1BFFF /* UIKit.framework */,
+				9743B2D716EB379600D1BFFF /* Foundation.framework */,
+				9743B2D916EB379600D1BFFF /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9743B2F216EB380400D1BFFF /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2FC16EB383A00D1BFFF /* box2D */,
+				9743B2FD16EB384300D1BFFF /* component_system */,
+			);
+			name = Physics;
+			sourceTree = "<group>";
+		};
+		9743B2FC16EB383A00D1BFFF /* box2D */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2F316EB383700D1BFFF /* tlocPhysicsManagerTest.cpp */,
+			);
+			name = box2D;
+			sourceTree = "<group>";
+		};
+		9743B2FD16EB384300D1BFFF /* component_system */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2F416EB383700D1BFFF /* tlocRigidBodySystemTest.cpp */,
+			);
+			name = component_system;
+			sourceTree = "<group>";
+		};
+		9743B2FE16EB398200D1BFFF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9743B30016EB39EE00D1BFFF /* tlocPhysicsTest-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9743B2FF16EB39B100D1BFFF /* tlocPhysicsTest */ = {
+			isa = PBXGroup;
+			children = (
+				9743B2F216EB380400D1BFFF /* Physics */,
+				9743B2F516EB383700D1BFFF /* main.cpp */,
+				9743B2F616EB383700D1BFFF /* tlocTestCommon.cpp */,
+				9743B2F716EB383700D1BFFF /* tlocTestCommon.h */,
+				9743B2FE16EB398200D1BFFF /* Supporting Files */,
+			);
+			name = tlocPhysicsTest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9743B2D116EB379600D1BFFF /* tlocPhysicsTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9743B2EF16EB379600D1BFFF /* Build configuration list for PBXNativeTarget "tlocPhysicsTest" */;
+			buildPhases = (
+				9743B2CE16EB379600D1BFFF /* Sources */,
+				9743B2CF16EB379600D1BFFF /* Frameworks */,
+				9743B2D016EB379600D1BFFF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocPhysicsTest;
+			productName = tlocPhysicsTest;
+			productReference = 9743B2D216EB379600D1BFFF /* tlocPhysicsTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9743B2CA16EB379600D1BFFF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "SkopWorks Inc";
+			};
+			buildConfigurationList = 9743B2CD16EB379600D1BFFF /* Build configuration list for PBXProject "tlocPhysicsTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9743B2C916EB379600D1BFFF;
+			productRefGroup = 9743B2D316EB379600D1BFFF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9743B2D116EB379600D1BFFF /* tlocPhysicsTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9743B2D016EB379600D1BFFF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9743B2CE16EB379600D1BFFF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9743B2F816EB383700D1BFFF /* tlocPhysicsManagerTest.cpp in Sources */,
+				9743B2F916EB383700D1BFFF /* tlocRigidBodySystemTest.cpp in Sources */,
+				9743B2FA16EB383700D1BFFF /* main.cpp in Sources */,
+				9743B2FB16EB383700D1BFFF /* tlocTestCommon.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9743B2ED16EB379600D1BFFF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					TLOC_DEBUG,
+					TLOC_ENABLE_CPPUNWIND,
+					TLOC_ENABLE_CPPRTTI,
+					TLOC_USING_STL,
+					TLOC_ENABLE_ASSERT_LOW_LEVEL,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SupportingFiles/tlocPhysicsTest-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocPhysics/tlocPhysics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_DEP_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/Box2D/Box2D_$(CONFIGURATION).a\"",
+				);
+				PRODUCT_NAME = tlocPhysicsTest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_DEP_PATH)/include $(TLOC_DEP_PATH)/include/CATCH/include $(TLOC_DEP_PATH)/include/CATCH/single_include $(TLOC_PATH)/src/";
+			};
+			name = Debug;
+		};
+		9743B2EE16EB379600D1BFFF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/bin/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TLOC_RELEASE,
+					TLOC_ENABLE_CPPUNWIND,
+					TLOC_ENABLE_CPPRTTI,
+					TLOC_USING_STL,
+					TLOC_ENABLE_ASSERT_LOW_LEVEL,
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SupportingFiles/tlocPhysicsTest-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "";
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocCore/tlocCore_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocMath/tlocMath_$(CONFIGURATION).a\"",
+					"\"$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/tlocPhysics/tlocPhysics_$(CONFIGURATION).a\"",
+					"\"$(TLOC_DEP_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/Box2D/Box2D_$(CONFIGURATION).a\"",
+				);
+				PRODUCT_NAME = tlocPhysicsTest;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_DEP_PATH)/include $(TLOC_DEP_PATH)/include/CATCH/include $(TLOC_DEP_PATH)/include/CATCH/single_include $(TLOC_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9743B2F016EB379600D1BFFF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9743B2F116EB379600D1BFFF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9743B2CD16EB379600D1BFFF /* Build configuration list for PBXProject "tlocPhysicsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9743B2ED16EB379600D1BFFF /* Debug */,
+				9743B2EE16EB379600D1BFFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9743B2EF16EB379600D1BFFF /* Build configuration list for PBXNativeTarget "tlocPhysicsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9743B2F016EB379600D1BFFF /* Debug */,
+				9743B2F116EB379600D1BFFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9743B2CA16EB379600D1BFFF /* Project object */;
+}

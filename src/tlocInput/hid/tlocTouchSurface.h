@@ -15,11 +15,12 @@
 #include <tloccore/containers/tlocContainers.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
-namespace tloc { namespace input {
+namespace tloc { namespace input { namespace hid {
 
   template <typename T_Policy, typename T_Platform> class TouchSurface;
 
@@ -103,6 +104,7 @@ namespace tloc { namespace input {
     : public core::base_classes::DispatcherBaseArray
              <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type
     , public core::NonCopyable
+  , public p_hid::TouchSurface
   {
   public:
     typedef T_Platform                                    platform_type;
@@ -131,10 +133,12 @@ namespace tloc { namespace input {
   private:
 
     typedef priv::TouchSurfaceImpl<this_type> impl_type;
+    typedef core::smart_ptr::UniquePtr<impl_type> impl_ptr_type;
+    
     impl_type*  m_impl;
   };
 
-};};
+};};};
 
 
 

@@ -43,17 +43,21 @@ namespace tloc { namespace physics { namespace component_system {
     typedef core::containers::Array<contact_event_list> contact_event_list_list;
 
   public:
-    RigidBodyListenerSystem(event_manager* a_eventMgr, entity_manager* a_entityMgr,
+    RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
+                            entity_manager_sptr a_entityMgr,
                             physics_manager* a_physicsMgr);
 
     virtual error_type Pre_Initialize();
     virtual error_type Post_Shutdown();
 
-    virtual error_type InitializeEntity(entity_manager* a_mgr, entity_type* a_ent);
-    virtual error_type ShutdownEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual error_type InitializeEntity(const entity_manager* a_mgr, 
+                                        const entity_type* a_ent);
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr, 
+                                      const entity_type* a_ent);
 
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual void ProcessEntity(const entity_manager* a_mgr, 
+                               const entity_type* a_ent);
 
   public:
     bool OnContactBegin(const contact_event_type& a_event);

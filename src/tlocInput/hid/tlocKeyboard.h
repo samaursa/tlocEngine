@@ -115,6 +115,7 @@ namespace tloc { namespace input { namespace hid {
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
+    void Reset();
 
   private:
 

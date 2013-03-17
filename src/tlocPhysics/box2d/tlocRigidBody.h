@@ -138,19 +138,20 @@ namespace tloc { namespace physics { namespace box2d {
     void SetFixedRotation(bool a_flag);
 
   protected:
-    typedef core::component_system::Entity  entity_type ;
+    typedef core::component_system::Entity  entity_type;
 
+  protected:
     RigidBody();
 
     error_type DoInitialize(rigid_body_internal_type* a_rigidBody,
-                            entity_type* a_parent);
+                            const entity_type* a_parent);
     error_type DoShutdown();
 
   protected:
     rigid_body_internal_type* DoGetInternalRigidBody();
 
-    entity_type* DoGetParent();
-    void DoSetParent(entity_type* a_parent);
+    const entity_type* DoGetParent();
+    void DoSetParent(const entity_type* a_parent);
     void DoSetParentNull();
 
   private:

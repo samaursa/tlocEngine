@@ -908,6 +908,30 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="touch_surface"
+				>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurface.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurface.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurfaceImpl.h"
+					>
+				</File>
+				<Filter
+					Name="win"
+					>
+					<File
+						RelativePath="..\..\..\..\src\tlocInput\hid\tlocTouchSurfaceImplWin.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\..\..\..\src\tlocInput\tloc_input.cpp"

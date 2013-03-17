@@ -23,33 +23,38 @@ namespace tloc { namespace math { namespace types {
 #define VECTOR_2_PARAMS T
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2()
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2()
     : base_type()
   { }
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const_reference aValue)
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2(const_reference aValue)
     : base_type(aValue)
   { }
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const_reference aX, const_reference aY)
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2(const_reference aX, const_reference aY)
     : base_type(core::data_structs::Variadic<value_type, 2>(aX, aY))
   { }
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const this_type& aVector)
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2(const this_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2(const base_type& aVector)
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2(const base_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_2_TYPES>
-  TL_FI Vector2<VECTOR_2_PARAMS>::Vector2
-    (const core::data_structs::Variadic<value_type, 2>& a_vars)
+  Vector2<VECTOR_2_PARAMS>::
+    Vector2(const core::data_structs::Variadic<value_type, 2>& a_vars)
     : base_type(a_vars)
   { }
 

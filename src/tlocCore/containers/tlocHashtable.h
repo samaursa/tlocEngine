@@ -119,13 +119,13 @@ namespace tloc { namespace core { namespace containers {
       typename bucket_array_type::iterator>::Result           local_iterator;
 
   public:
-    TL_FI HashtableItrBase();
-    TL_FI HashtableItrBase(bucket_array_type_ptr a_bucketContainer);
-    TL_FI HashtableItrBase(bucket_array_type_ptr a_bucketContainer,
+    HashtableItrBase();
+    HashtableItrBase(bucket_array_type_ptr a_bucketContainer);
+    HashtableItrBase(bucket_array_type_ptr a_bucketContainer,
       const local_iterator& a_currBucket, const bucket_iterator& a_currNode);
 
-    TL_FI void IncrementBucket();
-    TL_FI void Increment();
+    void IncrementBucket();
+    void Increment();
 
     this_type& operator=(const this_type& a_other);
     bool       operator==(const this_type& a_other);
@@ -486,61 +486,61 @@ namespace tloc { namespace core { namespace containers {
     ///-------------------------------------------------------------------------
     /// Default constructor.
     ///-------------------------------------------------------------------------
-    TL_FI Hashtable();
+    Hashtable();
 
     ///-------------------------------------------------------------------------
     /// Construct a Hashtable with at least a_bucketCount buckets.
     ///
     /// @param  a_bucketCount Number of buckets.
     ///-------------------------------------------------------------------------
-    TL_FI Hashtable(size_type a_bucketCount);
+    Hashtable(size_type a_bucketCount);
 
     ///-------------------------------------------------------------------------
     /// Copy constructor.
     ///
     /// @param  a_other The other hashtable.
     ///-------------------------------------------------------------------------
-    TL_FI Hashtable(const this_type& a_other);
+    Hashtable(const this_type& a_other);
 
     ///-------------------------------------------------------------------------
     /// Destructor.
     ///-------------------------------------------------------------------------
-    TL_FI ~Hashtable();
+    ~Hashtable();
 
     this_type&  operator=(const this_type& a_other);
 
     //------------------------------------------------------------------------
     // Iterator Access
 
-    TL_FI iterator        begin();
-    TL_FI const_iterator  begin() const;
+    iterator        begin();
+    const_iterator  begin() const;
 
-    TL_FI iterator        end();
-    TL_FI const_iterator  end() const;
+    iterator        end();
+    const_iterator  end() const;
 
-    TL_FI bucket_iterator			  begin(size_type a_bucketNumber);
-    TL_FI const_bucket_iterator begin(size_type a_bucketNumber) const;
-    TL_FI bucket_iterator			  end(size_type a_bucketNumber);
-    TL_FI const_bucket_iterator end(size_type a_bucketNumber) const;
+    bucket_iterator			  begin(size_type a_bucketNumber);
+    const_bucket_iterator begin(size_type a_bucketNumber) const;
+    bucket_iterator			  end(size_type a_bucketNumber);
+    const_bucket_iterator end(size_type a_bucketNumber) const;
 
     //------------------------------------------------------------------------
     // Capacity
 
-    TL_FI size_type       size() const;
-    TL_FI size_type       bucket_count() const;
-    TL_FI size_type       bucket_size(size_type a_bucketNumber) const;
+    size_type       size() const;
+    size_type       bucket_count() const;
+    size_type       bucket_size(size_type a_bucketNumber) const;
 
     //------------------------------------------------------------------------
     // Hashing queries
 
-    TL_FI f32									load_factor() const;
+    f32									load_factor() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the current rehash policy.
     ///
     /// @return rehash_policy_type The current rehash policy.
     ///-------------------------------------------------------------------------
-    TL_FI const rehash_policy_type&	get_rehash_policy() const;
+    const rehash_policy_type&	get_rehash_policy() const;
 
     ///-------------------------------------------------------------------------
     /// Sets a rehash policy. This function is added just for the sake of
@@ -549,7 +549,7 @@ namespace tloc { namespace core { namespace containers {
     ///
     /// @param  rehash_policy_type The new rehash policy.
     ///-------------------------------------------------------------------------
-    TL_FI void								set_rehash_policy(const rehash_policy_type&
+    void								set_rehash_policy(const rehash_policy_type&
                                             a_rehashPolicy);
 
     ///-------------------------------------------------------------------------
@@ -558,7 +558,7 @@ namespace tloc { namespace core { namespace containers {
     ///
     /// @return The maximum load factor.
     ///-------------------------------------------------------------------------
-    TL_FI f32                 get_max_load_factor() const;
+    f32                 get_max_load_factor() const;
 
     ///-------------------------------------------------------------------------
     /// Sets a maximum load factor. This funtion calls the overloads that take
@@ -566,7 +566,7 @@ namespace tloc { namespace core { namespace containers {
     ///
     /// @param  a_maxLoadFactor The maximum load factor.
     ///-------------------------------------------------------------------------
-    TL_FI void                set_max_load_factor(f32 a_maxLoadFactor);
+    void                set_max_load_factor(f32 a_maxLoadFactor);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -598,8 +598,8 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // Operations
 
-    TL_FI iterator        find(const key_type& a_key);
-    TL_FI const_iterator  find(const key_type& a_key) const;
+    iterator        find(const key_type& a_key);
+    const_iterator  find(const key_type& a_key) const;
 
     ///-------------------------------------------------------------------------
     /// Non-standard function that is present in EASTL as well. Use this when
@@ -613,18 +613,18 @@ namespace tloc { namespace core { namespace containers {
     /// iterator or const_iterator to the found object or end() if not
     /// found.
     ///-------------------------------------------------------------------------
-    TL_FI iterator        find_by_hash(tl_uint a_hashCode);
-    TL_FI const_iterator  find_by_hash(tl_uint a_hashCode) const;
+    iterator        find_by_hash(tl_uint a_hashCode);
+    const_iterator  find_by_hash(tl_uint a_hashCode) const;
 
-    TL_FI size_type       count(const key_type& a_key) const;
+    size_type       count(const key_type& a_key) const;
 
-    TL_FI Pair<iterator, iterator>             equal_range(const key_type& a_key);
-    TL_FI Pair<const_iterator, const_iterator> equal_range
+    Pair<iterator, iterator>             equal_range(const key_type& a_key);
+    Pair<const_iterator, const_iterator> equal_range
                                                   (const key_type& a_key) const;
 
   protected:
 
-    TL_FI void            DoAllocateBuckets(size_type a_numBuckets);
+    void            DoAllocateBuckets(size_type a_numBuckets);
 
     //--------------------------------------------------------------------------
     // Find Helpers
@@ -645,9 +645,9 @@ namespace tloc { namespace core { namespace containers {
     /// Iterator to element, within the bucket. End of bucket is
     /// returned if not found.
     ///-------------------------------------------------------------------------
-    TL_FI bucket_iterator DoFindNode(local_iterator& a_itr, const key_type& a_key,
+    bucket_iterator DoFindNode(local_iterator& a_itr, const key_type& a_key,
                                      hash_code_type a_hashCode) const;
-    TL_FI bucket_iterator DoFindNode(local_iterator& a_itr,
+    bucket_iterator DoFindNode(local_iterator& a_itr,
                                      hash_code_type a_hashCode) const;
 
     //------------------------------------------------------------------------
@@ -657,9 +657,9 @@ namespace tloc { namespace core { namespace containers {
     typedef type_true  keys_are_unique;
     typedef type_false keys_are_not_unique;
 
-    TL_FI Pair<iterator, bool>  DoInsertValue(const value_type& a_value,
+    Pair<iterator, bool>  DoInsertValue(const value_type& a_value,
                                               keys_are_unique);
-    TL_FI iterator              DoInsertValue(const value_type& a_value,
+    iterator              DoInsertValue(const value_type& a_value,
                                               keys_are_not_unique);
 
     ///-------------------------------------------------------------------------
@@ -673,10 +673,10 @@ namespace tloc { namespace core { namespace containers {
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
     template <TLOC_DUMMY_TYPE>
-    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
+    bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, forward_iterator_tag);
     template <TLOC_DUMMY_TYPE>
-    TL_FI bucket_iterator DoPushSelect (local_iterator& a_itr,
+    bucket_iterator DoPushSelect (local_iterator& a_itr,
       const element_type& a_elem, bidirectional_iterator_tag);
 
     ///-------------------------------------------------------------------------
@@ -690,46 +690,46 @@ namespace tloc { namespace core { namespace containers {
     /// @return Iterator to the inserted element
     ///-------------------------------------------------------------------------
     template <TLOC_DUMMY_TYPE>
-    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
+    bucket_iterator DoInsertSelect (local_iterator& a_itr,
       bucket_iterator a_currNode, const element_type& a_elem,
       forward_iterator_tag);
     template <TLOC_DUMMY_TYPE>
-    TL_FI bucket_iterator DoInsertSelect (local_iterator& a_itr,
+    bucket_iterator DoInsertSelect (local_iterator& a_itr,
       bucket_iterator a_currNode, const element_type& a_elem,
       bidirectional_iterator_tag);
 
     //------------------------------------------------------------------------
     // Erase helpers
 
-    TL_FI iterator DoErase(iterator a_position, forward_iterator_tag);
-    TL_FI iterator DoErase(iterator a_position, bidirectional_iterator_tag);
+    iterator DoErase(iterator a_position, forward_iterator_tag);
+    iterator DoErase(iterator a_position, bidirectional_iterator_tag);
 
-    TL_FI size_type DoErase(const key_type& a_key, keys_are_unique);
-    TL_FI size_type DoErase(const key_type& a_key, keys_are_not_unique);
+    size_type DoErase(const key_type& a_key, keys_are_unique);
+    size_type DoErase(const key_type& a_key, keys_are_not_unique);
 
     //------------------------------------------------------------------------
     // Count helpers
 
-    TL_FI size_type DoCount(const key_type& a_key, keys_are_unique) const;
-    TL_FI size_type DoCount(const key_type& a_key, keys_are_not_unique) const;
+    size_type DoCount(const key_type& a_key, keys_are_unique) const;
+    size_type DoCount(const key_type& a_key, keys_are_not_unique) const;
 
     //------------------------------------------------------------------------
     // Rehashing
 
-    TL_FI void DoRehash(size_type a_bucketCount);
+    void DoRehash(size_type a_bucketCount);
 
     //------------------------------------------------------------------------
     // Load factor overloads and sanity checks
 
     template <typename T>
-    TL_FI f32               DoGetMaxLoadFactor(T) const
+    f32               DoGetMaxLoadFactor(T) const
     { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
     template <typename T>
-    TL_FI void              DoSetMaxLoadFactor(f32, T)
+    void              DoSetMaxLoadFactor(f32, T)
     { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
 
-    TL_FI f32               DoGetMaxLoadFactor(prime_rehash_policy) const;
-    TL_FI void              DoSetMaxLoadFactor(f32 a_maxLoadFactor,
+    f32               DoGetMaxLoadFactor(prime_rehash_policy) const;
+    void              DoSetMaxLoadFactor(f32 a_maxLoadFactor,
                                                prime_rehash_policy);
 
   protected:

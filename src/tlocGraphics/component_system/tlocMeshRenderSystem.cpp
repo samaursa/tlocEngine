@@ -11,7 +11,7 @@ namespace tloc { namespace graphics { namespace component_system {
   using namespace core::data_structs;
 
   MeshRenderSystem::MeshRenderSystem
-    (event_manager* a_eventMgr, entity_manager* a_entityMgr)
+    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
     , Variadic<component_type, 1>(components::mesh))
   {

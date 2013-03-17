@@ -912,6 +912,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\src\tlocTests\core\tlocRangeTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocUtilsTest.cpp"
 				>
 			</File>
@@ -944,6 +948,10 @@
 				</File>
 				<File
 					RelativePath="$(TLOC_PATH)\src\tlocTests\core\tlocArrayTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\core\tlocContainerTraitsTest.cpp"
 					>
 				</File>
 				<File

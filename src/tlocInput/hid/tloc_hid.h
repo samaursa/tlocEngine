@@ -6,5 +6,6 @@
 #include <tlocInput/hid/tlocJoystick.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 #endif

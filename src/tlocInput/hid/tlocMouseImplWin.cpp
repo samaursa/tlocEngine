@@ -74,6 +74,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::Reset()
+  {
+    DoReset(policy_type());
+  }
+
+  template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoInitialize()
   {
     if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
@@ -197,14 +203,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
       m_currentState.m_buttonCode |= code;
 
-      if (m_currentState.m_buttonCode != MouseEvent::none)
+      if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-        { m_parent->SendOnButtonPress(m_currentState); }
+        { m_parent->SendOnButtonPress(m_currentState, code); }
         else
         {
-          m_parent->SendOnButtonRelease(m_currentState);
           m_currentState.m_buttonCode ^= code;
+          m_parent->SendOnButtonRelease(m_currentState, code);
         }
       }
       else
@@ -310,6 +316,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode = MouseEvent::button7;
     else if(m_mouseBuffer.rgbButtons[7] & 0x80)
       m_currentState.m_buttonCode = MouseEvent::button8;
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Buffered)
+  {
+    // LOG: Reset() should not be called in buffered mode
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Immediate)
+  {
+    m_currentState.m_buttonCode = 0;
   }
 
 };};};};

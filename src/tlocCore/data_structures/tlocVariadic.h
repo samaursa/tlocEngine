@@ -276,7 +276,7 @@ namespace tloc { namespace core { namespace data_structs {
 
 #include "tlocVariadicTypedefMacros.h"
 
-TLOC_DECLARE_VARIADIC_TYPES(tl_int, i);
+TLOC_DECLARE_VARIADIC_TYPES(tl_int, s);
 TLOC_DECLARE_VARIADIC_TYPES(tl_uint, u);
 TLOC_DECLARE_VARIADIC_TYPES(tl_float, f);
 TLOC_DECLARE_VARIADIC_TYPES(char8, c);

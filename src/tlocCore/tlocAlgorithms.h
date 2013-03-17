@@ -458,13 +458,13 @@ namespace tloc { namespace core {
   // Min / Max
 
   template <typename T_Value>
-  TL_I const T_Value& tlMin(const T_Value& a, const T_Value& b);
+  const T_Value& tlMin(const T_Value& a, const T_Value& b);
 
   template <typename T>
-  TL_I T const & tlMax(T const & a, T const & b);
+  T const & tlMax(T const & a, T const & b);
 
   template <typename T>
-  TL_I const T tlClamp(const T& a, const T& a_minValue, const T& a_maxValue);
+  const T tlClamp(const T& a, const T& a_minValue, const T& a_maxValue);
 
   //------------------------------------------------------------------------
   // Modifying sequence operations
@@ -475,7 +475,7 @@ namespace tloc { namespace core {
   // ^                     ^
   // a_rangeBegin           a_rangeEnd (copy 5,4,6,7,2,3,8,4,5,6,7 inclusive)
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator copy(T_InputIterator a_rangeBegin,
+  T_OutputIterator copy(T_InputIterator a_rangeBegin,
                              T_InputIterator a_rangeEnd,
                              T_OutputIterator a_destRangeBegin);
 
@@ -494,7 +494,7 @@ namespace tloc { namespace core {
   //                 ^
   //                 aDestRangeEnd (past-the-end, which is 8)
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator copy_backward(T_InputIterator a_rangeBegin,
+  T_OutputIterator copy_backward(T_InputIterator a_rangeBegin,
                                       T_InputIterator a_rangeEnd,
                                       T_OutputIterator aDestRangeEnd);
 
@@ -506,18 +506,18 @@ namespace tloc { namespace core {
   void fill_all(T_Container& a_toFill, T const & a_value);
 
   template <typename T_InputIterator, typename T>
-  TL_I void fill(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+  void fill(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                  T const & a_value);
 
   template <typename T_Container, typename T_Count, typename T>
   void fill_n_all(T_Container& a_toFill, T_Count a_count, T const & a_value);
 
   template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-  TL_I void fill_n(T_OutputIterator a_first, T_Count a_count,
+  void fill_n(T_OutputIterator a_first, T_Count a_count,
                    const T_ValueType& a_value);
 
   template <typename T>
-  TL_I void tlSwap(T& a, T& b);
+  void tlSwap(T& a, T& b);
 
   template <typename T_Container, typename T>
   typename T_Container::iterator
@@ -565,22 +565,22 @@ namespace tloc { namespace core {
     // Copy() helpers
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator DoCopy(T_InputIterator  a_rangeBegin,
+    T_OutputIterator DoCopy(T_InputIterator  a_rangeBegin,
                                  T_InputIterator  a_rangeEnd,
                                  T_OutputIterator a_destRangeBegin, IsNotArith);
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator DoCopy(T_InputIterator	a_rangeBegin,
+    T_OutputIterator DoCopy(T_InputIterator	a_rangeBegin,
                                  T_InputIterator  a_rangeEnd,
                                  T_OutputIterator a_destRangeBegin, IsArith);
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
+    void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
                                    T_InputIterator a_rangeEnd,
                                    T_OutputIterator a_destRangeEnd, IsRawItr);
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
+    void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
                                    T_InputIterator a_rangeEnd,
                                    T_OutputIterator a_destRangeEnd, IsComplexItr);
 
@@ -588,30 +588,30 @@ namespace tloc { namespace core {
     // Fill helpers
 
     template <typename T_InputIterator, typename T>
-    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+    void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                       T const & a_value, IsNotChar );
 
     template <typename T_InputIterator, typename T>
-    TL_I void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+    void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                       T const & a_value, IsChar );
 
     //------------------------------------------------------------------------
     // fill_n helpers
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
+    void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, IsNotChar);
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
+    void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, IsChar);
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
+    void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, random_access_iterator_tag);
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoFill_n(T_OutputIterator a_first, T_Count a_count,
+    void DoFill_n(T_OutputIterator a_first, T_Count a_count,
                      const T_ValueType& a_value, input_iterator_tag);
 
     //------------------------------------------------------------------------

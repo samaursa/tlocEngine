@@ -8,6 +8,8 @@
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include <tlocInput/hid/tlocMouseImplWin.h>
+#elif defined (TLOC_OS_IPHONE)
+# include <tlocInput/hid/tlocMouseImplIphone.h>
 #else
 # error "WIP"
 #endif
@@ -18,13 +20,16 @@ namespace tloc { namespace input { namespace hid {
 #define MOUSE_PARAMS T_Policy, T_Platform
 #define MOUSE_TYPE   typename Mouse<MOUSE_PARAMS>
 
-  template Mouse<InputPolicy::Buffered>;
-  template Mouse<InputPolicy::Immediate>;
+  template class Mouse<InputPolicy::Buffered>;
+  template class Mouse<InputPolicy::Immediate>;
 
   // Force instantiate the constructor for each platform
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
   template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
   template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
 #else
 # error TODO
 #endif
@@ -56,11 +61,14 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnButtonPress(const MouseEvent& a_event) const
+  void Mouse<MOUSE_PARAMS>::
+    SendOnButtonPress(const MouseEvent& a_event,
+                      button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonPress( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnButtonPress( (tl_size)this, a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -68,11 +76,14 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnButtonRelease(const MouseEvent& a_event) const
+  void Mouse<MOUSE_PARAMS>::
+    SendOnButtonRelease(const MouseEvent& a_event,
+                        button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonRelease( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnButtonRelease( (tl_size)this, a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -80,11 +91,13 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
-  void Mouse<MOUSE_PARAMS>::SendOnMouseMove(const MouseEvent& a_event) const
+  void Mouse<MOUSE_PARAMS>::
+    SendOnMouseMove(const MouseEvent& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnMouseMove( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnMouseMove( (tl_size)this, a_event) == true)
       {
         break;
       }
@@ -95,6 +108,12 @@ namespace tloc { namespace input { namespace hid {
   void Mouse<MOUSE_PARAMS>::Update()
   {
     m_impl->Update();
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::Reset()
+  {
+    m_impl->Reset();
   }
 
 };};};

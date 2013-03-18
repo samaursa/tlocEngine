@@ -132,13 +132,15 @@ namespace tloc { namespace input { namespace hid {
     ~Mouse();
 
     bool        IsButtonDown(button_code_type a_button) const;
-    MouseEvent  GetState() const;
+    event_type  GetState() const;
 
-    void SendOnButtonPress(const MouseEvent& a_event, 
+    void SendOnButtonPress(const MouseEvent& a_event,
                            button_code_type a_buttonCode) const;
-    void SendOnButtonRelease(const MouseEvent& a_event, 
+    void SendOnButtonRelease(const MouseEvent& a_event,
                              button_code_type a_buttonCode) const;
     void SendOnMouseMove(const MouseEvent& a_event) const;
+
+    void Clamp(event_type& a_event) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
@@ -158,7 +160,7 @@ namespace tloc { namespace input { namespace hid {
   private:
     typedef priv::MouseImpl<this_type>               impl_type;
     typedef core::smart_ptr::UniquePtr<impl_type>    impl_ptr_type;
-    
+
   private:
 
     impl_ptr_type  m_impl;

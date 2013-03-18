@@ -4,6 +4,7 @@
 #include <tlocInput/tlocInputBase.h>
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/tlocRange.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
@@ -115,12 +116,17 @@ namespace tloc { namespace input { namespace hid {
     , public p_hid::Mouse
   {
   public:
-    typedef T_Platform                      platform_type;
-    typedef T_Policy                        policy_type;
-    typedef MouseEvent::button_code_type    button_code_type;
+    typedef T_Platform                                  platform_type;
+    typedef T_Policy                                    policy_type;
+    typedef MouseEvent                                  event_type;
+    typedef event_type::axis_type::abs_type::value_type abs_value_type;
+    typedef core::Range_T<abs_value_type>               abs_range_type;
+    typedef event_type::axis_type::rel_type             rel_value_type;
+    typedef event_type::button_code_type                button_code_type;
 
-    typedef Mouse<policy_type, platform_type>  this_type;
+    typedef Mouse<policy_type, platform_type>           this_type;
 
+  public:
     template <typename T_ParamList>
     Mouse(const T_ParamList& a_paramList);
     ~Mouse();
@@ -140,12 +146,25 @@ namespace tloc { namespace input { namespace hid {
     void Update();
     void Reset();
 
-  private:
+    TLOC_DECL_AND_DEF_GETTER(bool, GetClamped, m_clamped);
+    TLOC_DECL_AND_DEF_SETTER(bool, SetClamped, m_clamped);
 
+    TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampX, m_clampX);
+    TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampY, m_clampY);
+
+    TLOC_DECL_SETTER(abs_range_type, SetClampX);
+    TLOC_DECL_SETTER(abs_range_type, SetClampY);
+
+  private:
     typedef priv::MouseImpl<this_type>               impl_type;
     typedef core::smart_ptr::UniquePtr<impl_type>    impl_ptr_type;
+    
+  private:
 
     impl_ptr_type  m_impl;
+    abs_range_type m_clampX;
+    abs_range_type m_clampY;
+    bool           m_clamped;
   };
 
   typedef Mouse<InputPolicy::Buffered>   MouseB;

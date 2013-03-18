@@ -324,7 +324,8 @@ namespace tloc { namespace core {
 
     value_type back() const
     {
-      return operator[](size() - 1);
+      size_type currSize = size();
+      return currSize ? operator[](currSize - 1) : 0;
     }
 
     const_iterator begin() const

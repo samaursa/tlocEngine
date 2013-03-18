@@ -32,6 +32,10 @@ namespace TestingRange
     CHECK(r.front() == 0);
     CHECK(r.back() == 9);
 
+    r = Range(0, 0);
+    CHECK(r.front() == 0);
+    CHECK(r.back() == 0);
+
     r = Range(5, 10);
     CHECK(r.front() == 5);
     CHECK(r.back() == 9);

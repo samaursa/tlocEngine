@@ -1184,6 +1184,19 @@ namespace tloc { namespace core {
     }
   }
 
+  template <typename T, typename T2>
+  T Clamp(T a_value, T2 a_low, T2 a_high)
+  {
+    return Clamp(a_value, a_low, a_high, core::less<T>());
+  }
+
+  template <typename T, typename T2, typename T_BinaryPred>
+  T Clamp(T a_value, T2 a_low, T2 a_high, T_BinaryPred a_pred)
+  {
+    return a_pred(a_high, a_value) ? a_high : 
+           a_pred(a_value, a_low) ? a_low : a_value;
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Internal use only
 

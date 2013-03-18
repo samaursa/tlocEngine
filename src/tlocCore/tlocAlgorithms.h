@@ -540,6 +540,12 @@ namespace tloc { namespace core {
   template <typename T_ForwardItr>
   void delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last);
 
+  template <typename T, typename T2>
+  T Clamp(T a_value, T2 a_low, T2 a_high);
+
+  template <typename T, typename T2, typename T_BinaryPred>
+  T Clamp(T a_value, T2 a_low, T2 a_high, T_BinaryPred a_pred);
+
   namespace detail
   {
     typedef	type_false IsComplexItr;

@@ -1138,4 +1138,13 @@ namespace TestingAlgorithms
     delete_ptrs(myList.begin(), myList.end());
     CHECK(CountDestruction::m_dtorCount == numElements * 2);
   }
+
+  TEST_CASE("Core/Algorithms/Clamp", "")
+  {
+    tl_int i = 10;
+    CHECK(Clamp(i, 0, 20) == 10);
+    CHECK(Clamp(i, 15, 20) == 15);
+    CHECK(Clamp(i, 5, 8) == 8);
+    CHECK(Clamp(i, -5, 0) == 0);
+  }
 };

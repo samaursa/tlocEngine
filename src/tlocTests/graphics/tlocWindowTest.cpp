@@ -67,6 +67,8 @@ namespace TestingWindow
         WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
+      CHECK(win2.GetWidth() == 200);
+      CHECK(win2.GetHeight() == 200);
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);
@@ -75,6 +77,18 @@ namespace TestingWindow
                                               // 2 events were raised
     CHECK(callbacks.m_counts[WindowEvent::lost_focus] == 1);
     CHECK(callbacks.m_counts[WindowEvent::destroy] == 1);
+
+    { // Bug-fix test - Client is incorrect size with default window styles
+      Window win2;
+      CHECK(win2.IsValid() == false);
+      CHECK(win2.IsCreated() == false);
+      win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
+        WindowSettings("Test"));
+      CHECK(win2.IsValid() == true);
+      CHECK(win2.IsCreated() == true);
+      CHECK(win2.GetWidth() == 200);
+      CHECK(win2.GetHeight() == 200);
+    }
   }
 
   TEST_CASE("./Graphics/Window/Fullscreen", "")

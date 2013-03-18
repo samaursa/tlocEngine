@@ -111,7 +111,8 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
     void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                window_style_type a_style = WindowSettings::style_resize |
+                window_style_type a_style = WindowSettings::style_titlebar | 
+                                            WindowSettings::style_resize |
                                             WindowSettings::style_close);
 
     ///-------------------------------------------------------------------------

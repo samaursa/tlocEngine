@@ -562,9 +562,9 @@ namespace tloc { namespace core {
     typedef typename rng::rng_default::int_type int_type;
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], 
-        a_first[rng::g_defaultRNG.GetRandomInteger
-                (static_cast<int_type>(i) + 1)]);
+      swap(a_first[i], 
+        a_first[rng::g_defaultRNG.GetRandomInteger 
+        (static_cast<int_type>(i) + 1)]);
     }
   }
 
@@ -580,7 +580,7 @@ namespace tloc { namespace core {
 
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
+      swap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
     }
   }
 
@@ -1178,7 +1178,7 @@ namespace tloc { namespace core {
 
   template <typename T>
   void 
-    tlSwap(T& a, T& b)
+    swap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }
@@ -1449,7 +1449,7 @@ namespace tloc { namespace core {
       T_InputIterator randItr = a_first;
       tloc::core::advance(randItr, randomPiv);
 
-      tlSwap(*a_first, *randItr);
+      core::swap(*a_first, *randItr);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
@@ -1463,7 +1463,7 @@ namespace tloc { namespace core {
       T_InputIterator midItr = a_first;
       tloc::core::advance(midItr, halfSize);
 
-      tlSwap(*a_first, *midItr);
+      core::swap(*a_first, *midItr);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
@@ -1477,7 +1477,7 @@ namespace tloc { namespace core {
       T_InputIterator rightPivot = a_last;
       --rightPivot;
 
-      tlSwap(*a_first, *rightPivot);
+      core::swap(*a_first, *rightPivot);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
@@ -1804,7 +1804,7 @@ namespace tloc { namespace core {
       {
         if (*aLeftFirst > *aRightFirst)
         {
-          tlSwap(*aLeftFirst, *aRightFirst);
+          core::swap(*aLeftFirst, *aRightFirst);
           DoSortFirstElementWithItrType(aRightFirst, a_last, pointer_type());
         }
       }
@@ -1879,7 +1879,7 @@ namespace tloc { namespace core {
         {
           if (*currentItr > *currentItrPlusOne)
           {
-            tlSwap(*currentItr, *currentItrPlusOne);
+            core::swap(*currentItr, *currentItrPlusOne);
             swapped = true;
           }
         }

@@ -582,7 +582,7 @@ namespace tloc { namespace core {
 
   template <typename T>
   void
-    tlSwap(T& a, T& b);
+    swap(T& a, T& b);
 
   template <typename T_Container, typename T>
   typename T_Container::iterator

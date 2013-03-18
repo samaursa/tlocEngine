@@ -59,7 +59,7 @@ namespace TestingAlgorithms
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")
   {
     u32 i = 10, j = 15;
-    tlSwap(i, j);
+    core::swap(i, j);
     CHECK(i == 15);
     CHECK(j == 10);
   }

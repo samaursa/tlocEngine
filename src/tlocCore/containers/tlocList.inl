@@ -802,11 +802,11 @@ namespace tloc { namespace core { namespace containers {
     // We swap the pointers rather than the node that the pointer is pointing 
     // to. This is a much faster O(1) operation on a singly linked list whereas
     // a node swap is an O(n) operation
-    tlSwap(m_sizeAndNode.m_var, aOther.m_sizeAndNode.m_var);
-    tlSwap(m_size(), aOther.m_size());
+    core::swap(m_sizeAndNode.m_var, aOther.m_sizeAndNode.m_var);
+    core::swap(m_size(), aOther.m_size());
 
     //node_type::swap(m_node(), aOther.m_node());
-    //tlSwap(m_size(), aOther.m_size());
+    //core::swap(m_size(), aOther.m_size());
   }
 
   template <LIST_TEMP_TYPES>

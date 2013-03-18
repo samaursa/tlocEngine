@@ -438,9 +438,9 @@ namespace tloc { namespace core { namespace string {
   {
     TLOC_ASSERT_STRING_WARN(this != &aX, "Swap called on self (redundant).");
 
-    tlSwap(aX.m_begin, m_begin);
-    tlSwap(aX.m_end, m_end);
-    tlSwap(aX.m_capacity, m_capacity);
+    core::swap(aX.m_begin, m_begin);
+    core::swap(aX.m_end, m_end);
+    core::swap(aX.m_capacity, m_capacity);
   }
 
   //````````````````````````````````````````````````````````````````````````

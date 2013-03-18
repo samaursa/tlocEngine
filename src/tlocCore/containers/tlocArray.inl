@@ -668,9 +668,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   void Array<ARRAY_PARAMS>::swap(this_type& a_vec)
   {
-    tlSwap(m_begin, a_vec.m_begin);
-    tlSwap(m_end, a_vec.m_end);
-    tlSwap(m_capacity, a_vec.m_capacity);
+    core::swap(m_begin, a_vec.m_begin);
+    core::swap(m_end, a_vec.m_end);
+    core::swap(m_capacity, a_vec.m_capacity);
   }
 
   //------------------------------------------------------------------------

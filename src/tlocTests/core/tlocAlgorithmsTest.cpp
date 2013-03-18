@@ -56,28 +56,21 @@ namespace TestingAlgorithms
     CHECK(maximum == j);
   }
 
-  TEST_CASE("Core/Algorithms/tlClamp", "Test the tlClamp() function")
-  {
-    tl_uint i = 10;
-    tl_uint clampedI = tlClamp<tl_uint>(i, 0, 10);
-    CHECK(clampedI == 10u);
-
-    clampedI = tlClamp<tl_uint>(i, 0, 5);
-    CHECK(clampedI == 5);
-
-    clampedI = tlClamp<tl_uint>(i, 4, 5);
-    CHECK(clampedI == 5);
-
-    clampedI = tlClamp<tl_uint>(i, 12, 15);
-    CHECK(clampedI == 12);
-  }
-
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")
   {
     u32 i = 10, j = 15;
-    tlSwap(i, j);
+    core::swap(i, j);
     CHECK(i == 15);
     CHECK(j == 10);
+  }
+
+  TEST_CASE("Core/Algorithms/Clamp", "")
+  {
+    tl_int i = 10;
+    CHECK(Clamp(i, 0, 20) == 10);
+    CHECK(Clamp(i, 15, 20) == 15);
+    CHECK(Clamp(i, 5, 8) == 8);
+    CHECK(Clamp(i, -5, 0) == 0);
   }
 
   TEST_CASE("Core/Algorithms/Fill", "Test the fill() functions")

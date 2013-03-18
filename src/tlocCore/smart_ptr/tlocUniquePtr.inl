@@ -94,7 +94,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   void UniquePtr<UNIQUE_PTR_PARAMS>::
     swap(this_type& a_other)
   {
-    tlSwap(a_other.m_rawPtr, m_rawPtr);
+    core::swap(a_other.m_rawPtr, m_rawPtr);
   }
 
   template <UNIQUE_PTR_TEMPS>

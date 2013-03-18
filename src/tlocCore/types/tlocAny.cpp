@@ -39,8 +39,8 @@ namespace tloc { namespace core { namespace types {
   Any::this_type&
     Any::Swap( this_type& a_other )
   {
-    tlSwap(m_policy, a_other.m_policy);
-    tlSwap(m_object, a_other.m_object);
+    core::swap(m_policy, a_other.m_policy);
+    core::swap(m_object, a_other.m_object);
     return *this;
   }
 

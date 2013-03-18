@@ -107,6 +107,22 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::
+    Clamp(event_type& a_event) const
+  {
+    // TODO: Replace with Clamp<>() method when available
+    a_event.m_X.m_abs() =
+      core::Clamp(a_event.m_X.m_abs(),
+                  GetClampX().front(),
+                  GetClampX().back());
+
+    a_event.m_Y.m_abs() =
+      core::Clamp(a_event.m_Y.m_abs(),
+                  GetClampY().front(),
+                  GetClampY().back());
+  }
+
+  template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::Update()
   {
     m_impl->Update();
@@ -122,16 +138,12 @@ namespace tloc { namespace input { namespace hid {
   void Mouse<MOUSE_PARAMS>::SetClampX(const abs_range_type& a_range)
   {
     m_clampX = a_range;
-    if (m_impl)
-    { m_impl->Update(); }
   }
 
   template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::SetClampY(const abs_range_type& a_range)
   {
     m_clampY = a_range;
-    if (m_impl)
-    { m_impl->Update(); }
   }
 
 };};};

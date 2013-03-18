@@ -1060,16 +1060,19 @@ namespace tloc { namespace core {
     return a < b ? b : a;
   }
 
-  template <typename T>
-  const T 
-    tlClamp(const T& a, const T& a_minValue, const T& a_maxValue)
+  template <typename T, typename T2>
+  T 
+    Clamp(T a_value, T2 a_low, T2 a_high)
   {
-    if (a < a_minValue) 
-    { return a_minValue; }
-    else if (a > a_maxValue)
-    { return a_maxValue; }
-    else
-    { return a; }
+    return Clamp(a_value, a_low, a_high, core::less<T>());
+  }
+
+  template <typename T, typename T2, typename T_BinaryPred>
+  T 
+    Clamp(T a_value, T2 a_low, T2 a_high, T_BinaryPred a_pred)
+  {
+    return a_pred(a_high, a_value) ? a_high : 
+           a_pred(a_value, a_low) ? a_low : a_value;
   }
 
   //------------------------------------------------------------------------
@@ -1245,21 +1248,6 @@ namespace tloc { namespace core {
     {
       delete *a_first;
     }
-  }
-
-  template <typename T, typename T2>
-  T 
-    Clamp(T a_value, T2 a_low, T2 a_high)
-  {
-    return Clamp(a_value, a_low, a_high, core::less<T>());
-  }
-
-  template <typename T, typename T2, typename T_BinaryPred>
-  T 
-    Clamp(T a_value, T2 a_low, T2 a_high, T_BinaryPred a_pred)
-  {
-    return a_pred(a_high, a_value) ? a_high : 
-           a_pred(a_value, a_low) ? a_low : a_value;
   }
 
   //////////////////////////////////////////////////////////////////////////

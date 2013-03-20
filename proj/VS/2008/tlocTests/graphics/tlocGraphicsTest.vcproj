@@ -978,6 +978,18 @@
 			<Filter
 				Name="component_system"
 				>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocFanRenderSystemTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocMaterialSystemTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\..\src\tlocTests\graphics\tlocQuadRenderSystemTest.cpp"
+					>
+				</File>
 				<Filter
 					Name="components"
 					>

@@ -59,6 +59,12 @@ namespace tloc { namespace graphics { namespace component_system {
                                const entity_type* a_ent);
     virtual void Post_ProcessActiveEntities();
 
+    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
+
+    virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
   private:
     shader_prog_ptr     m_shaderPtr;
     const entity_type*  m_sharedCam;

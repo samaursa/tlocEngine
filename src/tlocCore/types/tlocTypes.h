@@ -5,6 +5,7 @@
 // 2LoC engine types
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocConditionalType.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 //------------------------------------------------------------------------
 // Global functions, no namespace
@@ -21,12 +22,12 @@
 
 // We do not allow unregistered types to be queried. If the compiler sent you
 // here, trace back to the type that originated the error and register it.
-template <typename>
+template <typename T>
 struct tl_type_to_string
 {
   static const char* value()
   {
-    TLOC_STATIC_ASSERT(false, Using_an_unregistered_type_Call_TLOC_DEF_TYPE_to_register_the_type);
+    TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value), Using_an_unregistered_type_Call_TLOC_DEF_TYPE_to_register_the_type);
   }
 };
 

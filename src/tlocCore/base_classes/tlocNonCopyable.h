@@ -3,6 +3,9 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
+
 namespace tloc { namespace core {
 
   class NonCopyable
@@ -13,13 +16,15 @@ namespace tloc { namespace core {
     template <typename T>
     NonCopyable(const T& a_Other)
     {
-      TLOC_STATIC_ASSERT(false, Copy_constructor_disabled_for_this_class_by_design);
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Copy_constructor_disabled_for_this_class_by_design);
     }
 
     template <typename T>
     NonCopyable& operator=(const T& a_Other)
     {
-      TLOC_STATIC_ASSERT(false, Assignment_operator_disabled_for_this_class_by_design);
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Assignment_operator_disabled_for_this_class_by_design);
     }
 
   private:

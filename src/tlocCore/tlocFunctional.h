@@ -4,6 +4,8 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 namespace tloc { namespace core {
 
@@ -180,7 +182,8 @@ namespace tloc { namespace core {
   {
     tl_size operator()(T p) const
     {
-      TLOC_STATIC_ASSERT(false, Unable_to_generate_a_hash_for_this_type);
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Unable_to_generate_a_hash_for_this_type);
     }
   };
 

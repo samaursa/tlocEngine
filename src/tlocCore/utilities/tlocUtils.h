@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 namespace tloc { namespace core { namespace utils {
 
@@ -12,16 +13,6 @@ namespace tloc { namespace core { namespace utils {
 #define TL_NESTED_FUNC_BEGIN(funcName) struct funcName ## _nestedFunctionClass { static
 #define TL_NESTED_FUNC_END() }
 #define TL_NESTED_CALL(funcName) funcName ##  _nestedFunctionClass:: funcName
-
-  ///-----------------------------------------------------------------------------
-  /// Used to prevent a struct or class from being initialized by declaring a
-  /// constructor with a static assert.
-  ///
-  /// @param  helper_name Name of the helper.
-  ///-----------------------------------------------------------------------------
-#define DECL_TYPEDEF_HELPER(helper_name) helper_name() { \
-  TLOC_STATIC_ASSERT(false, \
-  Cannot_instantiate_typedef_helper_USE_typedef_type_declared_in_helper); }
 
   ///-------------------------------------------------------------------------
   /// Used to avoid code duplication for operators. Requires definition of
@@ -128,6 +119,24 @@ namespace tloc { namespace core { namespace utils {
   struct EnumToIndex<1, true>
   {
     enum { result = 1 };
+  };
+
+  ///-----------------------------------------------------------------------------
+  /// Used to prevent a struct or class from being initialized by declaring a
+  /// constructor with a static assert. Must be inherited from.
+  ///
+  /// \tparam  T A type that cannot be evaluated until compilation.
+  ///-----------------------------------------------------------------------------
+
+  template <typename T>
+  struct TypedefHelperBase
+  {
+    TypedefHelperBase()
+    {
+      TLOC_STATIC_ASSERT
+       ((Loki::IsSameType<T,DummyStruct>::value),
+        Cannot_instantiate_typedef_helper_USE_typedef_type_declared_in_helper);
+    }
   };
 
 };};};

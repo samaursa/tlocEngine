@@ -319,11 +319,7 @@
 
 // TODO: solve static assert problems on LLVM
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# if defined(__GNUC__) || defined (__clang__)
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
-# else
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
-# endif
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif

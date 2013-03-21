@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     // This function was meant to create a dummy context, in order to create
     // a true context. This is not needed on iOS.
-    TLOC_STATIC_ASSERT(false, "Function not implemented and needed on iOS");
+    TLOC_ASSERT(false, "Function not implemented and needed on iOS" );
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::
@@ -147,13 +147,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
   {
     // There does not appear to be a way to change vertical sync on the iOS
-    TLOC_STATIC_ASSERT(false, "Cannot currently change vertical sync on iOS");
+    TLOC_ASSERT(false, "Cannot currently change vertical sync on iOS");
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool a_enable)
   {
     // There is no concept of a mouse on the iOS
-    TLOC_STATIC_ASSERT(false, "Function not implemented and needed on iOS");
+    TLOC_ASSERT(false, "Function not implemented and needed on iOS");
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)

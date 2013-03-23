@@ -16,6 +16,17 @@ namespace tloc { namespace core {
   class Range_T
   {
   public:
+    typedef Range_T<T_IntegerType>  this_type;
+    typedef T_IntegerType           value_type;
+    typedef tl_size                 size_type;
+    typedef value_type*             pointer;
+    typedef value_type const *      const_pointer;
+    typedef value_type&             reference;
+    typedef value_type const &      const_reference;
+
+    typedef types::StrongType_T<value_type, 0> step_size;
+
+  public:
     class iterator
       : public core::iterator<bidirectional_iterator_tag, T_IntegerType>
     {
@@ -23,7 +34,7 @@ namespace tloc { namespace core {
       typedef core::iterator
         <bidirectional_iterator_tag, T_IntegerType> base_type;
 
-      typedef Range_T<value_type>                   range_type;
+      typedef Range_T<T_IntegerType>                range_type;
       typedef typename range_type::value_type       value_type;
       typedef typename range_type::size_type        size_type;
       typedef typename range_type::iterator         this_type;
@@ -70,7 +81,7 @@ namespace tloc { namespace core {
       typedef core::iterator
         <bidirectional_iterator_tag, T_IntegerType> base_type;
 
-      typedef Range_T<value_type>                   range_type;
+      typedef Range_T<T_IntegerType>                range_type;
       typedef typename range_type::value_type       value_type;
       typedef typename range_type::size_type        size_type;
       typedef typename range_type::reverse_iterator this_type;
@@ -109,18 +120,8 @@ namespace tloc { namespace core {
     };
 
   public:
-    typedef Range_T<T_IntegerType>  this_type;
-    typedef T_IntegerType           value_type;
-    typedef tl_size                 size_type;
-    typedef value_type*             pointer;
-    typedef value_type const *      const_pointer;
-    typedef value_type&             reference;
-    typedef value_type const &      const_reference;
-
     typedef iterator                const_iterator;
     typedef reverse_iterator        const_reverse_iterator;
-
-    typedef types::StrongType_T<value_type, 0> step_size;
 
   public:
 

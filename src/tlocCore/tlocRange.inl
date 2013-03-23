@@ -28,7 +28,7 @@ namespace tloc { namespace core {
 
   template <RANGE_T_TEMP>
   Range_T<RANGE_T_PARAMS>::iterator::
-    iterator(const range_type& a_range, size_type a_index = 0)
+    iterator(const range_type& a_range, size_type a_index)
     : m_range(a_range)
     , m_index(a_index)
   { }
@@ -171,7 +171,7 @@ namespace tloc { namespace core {
 
   template <RANGE_T_TEMP>
   Range_T<RANGE_T_PARAMS>::reverse_iterator::
-    reverse_iterator(const range_type& a_range, size_type a_index = 0)
+    reverse_iterator(const range_type& a_range, size_type a_index)
     : m_range(a_range)
     , m_index(a_index)
   { }

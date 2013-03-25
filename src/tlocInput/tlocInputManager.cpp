@@ -73,7 +73,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   void InputManager<INPUT_MANAGER_PARAM>::Reset()
   {
-    for (tl_size i = 0; i < p_hid::Count::m_index; ++i)
+    for (input_type i = 0; i < p_hid::Count::m_index; ++i)
     {
       DoReset(i);
     }

@@ -78,11 +78,11 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess();
   }
 
-  error_type FanRenderSystem::InitializeEntity(const entity_manager*,  
+  error_type FanRenderSystem::InitializeEntity(const entity_manager*,
                                                const entity_type* )
   { return ErrorSuccess(); }
 
-  error_type FanRenderSystem::ShutdownEntity(const entity_manager*, 
+  error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
                                              const entity_type*)
   { return ErrorSuccess(); }
 
@@ -124,7 +124,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator->AddUniform(vpMat);
   }
 
-  void FanRenderSystem::ProcessEntity(const entity_manager*,  
+  void FanRenderSystem::ProcessEntity(const entity_manager*,
                                       const entity_type* a_ent)
   {
     using namespace core::component_system;
@@ -238,7 +238,8 @@ namespace tloc { namespace graphics { namespace component_system {
       so_fan->PrepareAllAttributes(*m_shaderPtr);
       so_fan->EnableAllAttributes(*m_shaderPtr);
 
-      glDrawArrays(GL_TRIANGLE_FAN, 0, numVertices);
+      glDrawArrays(GL_TRIANGLE_FAN, 0,
+                   core_utils::CastNumber<GLsizei, tl_size>(numVertices));
 
       //sp->Disable();
     }

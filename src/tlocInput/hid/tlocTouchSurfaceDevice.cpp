@@ -194,8 +194,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     TouchSurfaceDeviceImmediate::GetBufferedTouches() const
   {
     // Function is never called.
+    static buffer_container_type s_emptyBufferContainer;
     TLOC_ASSERT(false, "This function is only a stub and should never be called!");
-    return buffer_container_type();
+    return s_emptyBufferContainer;
   }
 
   void TouchSurfaceDeviceImmediate::

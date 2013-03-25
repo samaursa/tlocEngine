@@ -17,7 +17,7 @@
 #include <Windows.h>
 #include <InitGuid.h> // Required to circumvent linking errors for dxguid.lib
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
-#include <dinput.h>
+#include <WinSDK/dinput.h>
 
 namespace tloc { namespace input {
 

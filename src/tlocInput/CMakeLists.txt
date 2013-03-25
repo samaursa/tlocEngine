@@ -80,8 +80,5 @@ add_library(tlocInput STATIC
   ${TLOC_INPUT_HID}
   )
 
-# Add to the list of all libraries
-list(APPEND tlocAllLibraries tlocInput)
-
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})

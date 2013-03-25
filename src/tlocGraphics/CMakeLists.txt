@@ -6,6 +6,36 @@ set(TLOC_GRAPHICS
   tloc_graphics.inl 
   )
 
+set(3RD_PARTY_PATH ${TLOC_PATH}/src/3rdParty/Graphics/)
+set(TLOC_GRAPHICS_3RD_PARTY_COMPRESSION
+  ${3RD_PARTY_PATH}/miniz/miniz.c
+  )
+
+if(WIN32)
+  set(TLOC_GRAPHICS_3RD_PARTY_GLEW
+    ${3RD_PARTY_PATH}/GLEW/GLEW.C
+    ${3RD_PARTY_PATH}/GLEW/GLEW.H
+    ${3RD_PARTY_PATH}/GLEW/glewinfo.c
+    ${3RD_PARTY_PATH}/GLEW/GLXEW.H
+    ${3RD_PARTY_PATH}/GLEW/wglew.h
+    )
+  set(TLOC_GRAPHICS_3RD_PARTY_GLEXT
+    ${3RD_PARTY_PATH}/glext/glext.h
+    ${3RD_PARTY_PATH}/glext/glxext.h
+    ${3RD_PARTY_PATH}/glext/wglext.h
+    )
+else()
+  set(TLOC_GRAPHICS_3RD_PARTY_GLEW
+    )
+  set(TLOC_GRAPHICS_3RD_PARTY_GLEXT
+    )
+endif()
+
+set(TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG
+    ${3RD_PARTY_PATH}/lodepng/lodepng.h
+    ${3RD_PARTY_PATH}/lodepng/lodepng.c
+    )
+
 set(TLOC_GRAPHICS_APPLICATION 
   )
 
@@ -187,10 +217,11 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_TYPES}
   ${TLOC_GRAPHICS_VIEW_PROJECTION}
   ${TLOC_GRAPHICS_WINDOW}
+  ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION}
+  ${TLOC_GRAPHICS_3RD_PARTY_GLEW}
+  ${TLOC_GRAPHICS_3RD_PARTY_GLEXT}
+  ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
   )
-
-# Add to the list of all libraries
-list(APPEND tlocAllLibraries tlocGraphics)
 
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
@@ -202,4 +233,9 @@ source_group(renderer         FILES ${TLOC_GRAPHICS_RENDERER})
 source_group(types            FILES ${TLOC_GRAPHICS_TYPES})
 source_group(view_projection  FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
 source_group(window           FILES ${TLOC_GRAPHICS_WINDOW})
+
+source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})
+source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
+source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
+source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
 

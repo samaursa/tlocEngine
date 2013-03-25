@@ -284,9 +284,6 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_UTILITIES}
 )
 
-# Add tlocCore to the list of all libraries
-list(APPEND tlocAllLibraries "tlocCore")
-
 # Filters to organize the source files
 source_group(base_classes FILES ${TLOC_ENGINE_CORE_BASE_CLASSES})
 source_group(component_system FILES ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM})

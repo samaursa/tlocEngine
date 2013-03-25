@@ -1,6 +1,7 @@
 # Remove MINSIZEREL
 set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE )
 
+add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 # Common preprocessors
 if(CMAKE_CXX_FLAGS_DEBUG)
   add_definitions(-DTLOC_DEBUG)
@@ -50,7 +51,7 @@ set(tlocAllLibraries
   )
 
 foreach(lib ${tlocAllLibraries})
-add_subdirectory(${lib})
+  add_subdirectory(${lib})
 endforeach()
 
 # Add the tests directory which contains all test projects
@@ -85,3 +86,8 @@ set_target_properties(tlocVersion tlocVersionTool
   )
 
 endif()
+
+# Generate tlocAssetPath.h file
+FILE(WRITE ${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h "
+#define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+")

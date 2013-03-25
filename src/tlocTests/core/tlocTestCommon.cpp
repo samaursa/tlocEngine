@@ -1,3 +1,5 @@
 #include "tlocTestCommon.h"
 
-const char* g_resourcePath = "../../../../../assets/";
+#include "tlocAssetsPath.h"
+
+const char* g_resourcePath = TLOC_ASSETS_PATH;

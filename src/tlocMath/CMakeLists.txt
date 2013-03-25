@@ -83,9 +83,6 @@ add_library(tlocMath STATIC
   ${TLOC_MATH_UTILITIES}
   )
 
-# Add to the list of all libraries
-list(APPEND tlocAllLibraries tlocMath)
-
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
 source_group(types            FILES ${TLOC_MATH_TYPES})

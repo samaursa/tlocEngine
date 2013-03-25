@@ -59,9 +59,6 @@ add_library(tlocPrefab STATIC
   ${TLOC_PREFAB_PHYSICS}
   )
 
-# Add to the list of all libraries
-list(APPEND tlocAllLibraries tlocPrefab)
-
 # Filters to organize the source files
 source_group(core             FILES ${TLOC_PREFAB_CORE})
 source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})

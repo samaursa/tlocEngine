@@ -64,9 +64,6 @@ add_library(tlocPhysics STATIC
   ${TLOC_PHYSICS_ERROR}
   )
 
-# Add to the list of all libraries
-list(APPEND tlocAllLibraries tlocPhysics)
-
 # Filters to organize the source files
 source_group(box2d            FILES ${TLOC_PHYSICS_BOX2D})
 source_group(component_system FILES ${TLOC_PHYSICS_COMPONENT_SYSTEM})

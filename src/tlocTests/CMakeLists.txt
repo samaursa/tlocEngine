@@ -13,14 +13,6 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
 endif()
 
-#set(tlocAllTests
-#  core
-#  graphics
-#  input
-#  math
-#  physics
-#  )
-
 set(tlocAllTests
   tlocTestsCore
   tlocTestsGraphics
@@ -43,7 +35,7 @@ add_subdirectory(core)
 add_subdirectory(graphics)
 add_subdirectory(input)
 add_subdirectory(math)
-#add_subdirectory(physics)
+add_subdirectory(physics)
 
 if(MSVC)
   foreach(testProj ${tlocAllTests})

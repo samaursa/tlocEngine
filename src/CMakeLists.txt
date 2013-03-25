@@ -39,14 +39,14 @@ include_directories(
   ${TLOC_PATH}/src/
   )
 
-# All libraries add their name to this variable
+# All libraries/projects add their name to this variable
 set(tlocAllLibraries 
   tlocCore 
   tlocGraphics 
   tlocInput 
   tlocMath 
   tlocPhysics 
-  tlocPrefab 
+  tlocPrefab
   )
 
 foreach(lib ${tlocAllLibraries})
@@ -56,18 +56,32 @@ endforeach()
 # Add the tests directory which contains all test projects
 add_subdirectory(tlocTests)
 
-# Add the common linker properties to all libraries
+# Add the version tool
+add_subdirectory(tlocVersion)
+
 # this is so far required only by MSVC
 if(MSVC)
   foreach(lib ${tlocAllLibraries})
     if(TARGET ${lib})
+      # Add the common linker properties to all libraries
       set_target_properties(${lib}
         PROPERTIES
         STATIC_LIBRARY_FLAGS_RELEASE "/LTCG"
         STATIC_LIBRARY_FLAGS_RELWITHDEBINFO "/LTCG"
         )
+      set_target_properties(${lib} 
+        PROPERTIES
+        FOLDER tlocEngine
+        )
     else()
       message("Library ${lib} was not generated successfully.")
     endif()
   endforeach()
+
+#The version tools must be added to the engine folder as well
+set_target_properties(tlocVersion tlocVersionTool
+  PROPERTIES
+  FOLDER tlocEngine/Versioning
+  )
+
 endif()

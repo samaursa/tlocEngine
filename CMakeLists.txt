@@ -14,3 +14,6 @@ add_subdirectory(src)
 
 set(TLOC_PATH ${CMAKE_SOURCE_DIR} CACHE FILEPATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_DEP_PATH "EDITME!" CACHE FILEPATH "The tloc dependency repository path goes here. Make sure that you have run CMake on the repository.")
+
+# Solution folders for MSVC
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)

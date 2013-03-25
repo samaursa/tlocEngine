@@ -26,6 +26,12 @@ add_executable(tlocTestsGraphics
   ${TLOC_TESTS_GRAPHICS}
   )
 
+add_dependencies(tlocTestsGraphics
+  tlocCore
+  tlocGraphics
+  tlocMath
+  )
+
 target_link_libraries(tlocTestsGraphics
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocGraphics.lib

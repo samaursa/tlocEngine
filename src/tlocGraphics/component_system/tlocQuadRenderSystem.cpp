@@ -75,14 +75,14 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess();
   }
 
-  error_type QuadRenderSystem::InitializeEntity(const entity_manager*, 
+  error_type QuadRenderSystem::InitializeEntity(const entity_manager*,
                                                 const entity_type* a_ent)
   {
     TLOC_UNUSED(a_ent);
     return ErrorSuccess();
   }
 
-  error_type QuadRenderSystem::ShutdownEntity(const entity_manager*, 
+  error_type QuadRenderSystem::ShutdownEntity(const entity_manager*,
                                               const entity_type*)
   { return ErrorSuccess(); }
 
@@ -124,7 +124,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator->AddUniform(vpMat);
   }
 
-  void QuadRenderSystem::ProcessEntity(const entity_manager*, 
+  void QuadRenderSystem::ProcessEntity(const entity_manager*,
                                        const entity_type* a_ent)
   {
     using namespace core::component_system;
@@ -227,7 +227,8 @@ namespace tloc { namespace graphics { namespace component_system {
       so_quad->PrepareAllAttributes(*m_shaderPtr);
       so_quad->EnableAllAttributes(*m_shaderPtr);
 
-      glDrawArrays(GL_TRIANGLE_STRIP, 0, numVertices);
+      glDrawArrays(GL_TRIANGLE_STRIP, 0,
+                   core_utils::CastNumber<GLsizei, tl_size>(numVertices));
 
       //sp->Disable();
     }

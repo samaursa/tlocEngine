@@ -25,6 +25,11 @@ add_executable(tlocTestsMath
   ${TLOC_TESTS_MATH}
   )
 
+add_dependencies(tlocTestsMath
+  tlocCore
+  tlocMath
+  )
+
 target_link_libraries(tlocTestsMath
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocMath.lib

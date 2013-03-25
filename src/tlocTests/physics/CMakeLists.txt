@@ -16,6 +16,12 @@ add_executable(tlocTestsPhysics
   ${TLOC_TESTS_PHYSICS}
   )
 
+add_dependencies(tlocTestsPhysics
+  tlocCore
+  tlocMath
+  tlocPhysics
+  )
+
 target_link_libraries(tlocTestsPhysics
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocMath.lib

@@ -11,6 +11,11 @@ add_executable(tlocTestsInput
   ${TLOC_TESTS_INPUT}
   )
 
+add_dependencies(tlocTestsInput
+  tlocCore
+  tlocInput
+  )
+
 target_link_libraries(tlocTestsInput
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
   ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocInput.lib
@@ -18,7 +23,7 @@ target_link_libraries(tlocTestsInput
 
 # Find dinput.lib and add it as a link target
 if(WIN32)
-  if(${ARCH_DIR} EQUAL "x32")
+  if(${ARCH_DIR} MATCHES "x86")
     find_library(DIRECT_INPUT_LIB
       NAMES dinput8.lib
       PATHS ${TLOC_DEP_PATH}/src/WinSDK/Win32/lib

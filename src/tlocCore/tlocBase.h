@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include <tlocCore/tlocStaticAssert.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -323,6 +324,9 @@
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
+
+# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
+  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
 
 # define TLOC_STATIC_ASSERT_WIP() \
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)

@@ -15,8 +15,12 @@ namespace tloc { namespace core { namespace component_system {
     {
       create_entity   = events::entity_events_begin,
       destroy_entity,
+      disable_entity,
+      enable_entity,
       insert_component,
       remove_component,
+      disable_component,
+      enable_component,
     }; typedef tl_int value_type;
   };
 

@@ -124,6 +124,12 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     virtual void Post_ProcessActiveEntities() = 0;
 
+    virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
+
+    virtual void OnComponentDisable(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentEnable(const EntityComponentEvent& a_event) = 0;
+
     ///-------------------------------------------------------------------------
     /// @brief Called by EventManager (we are/should-be a registered listener).
     ///

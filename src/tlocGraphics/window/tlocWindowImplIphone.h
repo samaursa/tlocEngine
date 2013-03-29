@@ -33,17 +33,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef GraphicsMode<platform_type>             graphics_mode;
     typedef base_type::parent_window_type           parent_window_type;
 
-//    typedef UIWindowType                            window_handle_type;
-//    typedef WindowSettings::style_type              window_style_type;
-//    typedef tl_size                                 size_type;
-//    typedef OpenGLView*                             view_handle_type;
-//    typedef OpenGLViewController*                   view_controller_handle_type;
-
-    typedef core_t::Any                             window_handle_type;
+    // Note: We are using tlocAny to replace Objective-C types in this case
+    // since any source file (cpp) that included this header would have to be
+    // treated as an Objective-C++ file.
+    typedef core_t::Any /*(UIWindow*) */            window_handle_type;
     typedef WindowSettings::style_type              window_style_type;
     typedef tl_size                                 size_type;
-    typedef core_t::Any                             view_handle_type;
-    typedef core_t::Any                             view_controller_handle_type;
+    typedef core_t::Any /*(OpenGLView*) */          view_handle_type;
+    typedef core_t::Any /*(OpenGLViewController*) */view_controller_handle_type;
 
   public:
 

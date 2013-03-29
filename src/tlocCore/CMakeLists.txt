@@ -224,6 +224,7 @@ set(TLOC_ENGINE_CORE_TYPES
     types/tlocAny.inl
     types/tlocAny.cpp
     types/tlocBasicTypes.h
+    types/tlocBasicTypes.cpp
     types/tlocConditionalType.h
     types/tlocConditionalType.inl
     types/tlocConditionalType.cpp

@@ -28,7 +28,7 @@ namespace tloc
   private:
     void operator&() const;  // Can't take address of nullptr
 
-  } nullptr = {};
+  };
 
   //////////////////////////////////////////////////////////////////////////
   // Windows Types
@@ -148,5 +148,9 @@ namespace tloc
 #define TL_ULLONG_MAX             ULLONG_MAX
 
 };
+
+#ifdef TLOC_CXX03
+  extern tloc::nullptr_t nullptr;
+#endif
 
 #endif

@@ -265,7 +265,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_bigger)
   {
@@ -277,7 +277,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_smaller)
   {
@@ -291,13 +291,13 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_same)
   { /* Intentionally empty */ }
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_one)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
@@ -308,7 +308,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <tl_size T_TupleSize>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_zero)
   {
     for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
@@ -319,7 +319,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherValueType, tl_size T_TupleSize>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other)
   {
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, p_tuple::overflow_one>
@@ -330,7 +330,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
-  TL_FI void Tuple<TUPLE_PARAMS>::
+  void Tuple<TUPLE_PARAMS>::
     ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
                 T_Policy)
   {
@@ -360,7 +360,7 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::
+  bool Tuple<TUPLE_PARAMS>::
     operator==( const this_type& aTuple ) const
   {
     ITERATE_TUPLE
@@ -372,7 +372,7 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TUPLE_TEMP>
-  TL_FI bool Tuple<TUPLE_PARAMS>::
+  bool Tuple<TUPLE_PARAMS>::
     operator!=( const this_type& aTuple ) const
   { return !operator==(aTuple); }
 

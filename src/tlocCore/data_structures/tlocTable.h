@@ -41,17 +41,17 @@ namespace tloc { namespace core { namespace data_structs {
     typedef Tuple<value_type, k_Rows>                   tuple_row_type;
     typedef Tuple<value_type, k_Cols>                   tuple_col_type;
 
-    TL_FI Table();
+    Table();
     template <typename T_RealType>
-    TL_FI Table(const Table<T_RealType, k_Rows, k_Cols>& aTable);
-    TL_FI Table(const this_type& aTable);
+    Table(const Table<T_RealType, k_Rows, k_Cols>& aTable);
+    Table(const this_type& aTable);
 
-    TL_FI explicit Table(const value_type& aValue);
+    explicit Table(const value_type& aValue);
 
     template <typename T_ArrayType>
-    TL_FI Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
+    Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
 
-    TL_FI Table(const Variadic<value_type, k_TableSize>& a_vars,
+    Table(const Variadic<value_type, k_TableSize>& a_vars,
                 table_order a_tableOrder);
 
     //------------------------------------------------------------------------
@@ -59,47 +59,47 @@ namespace tloc { namespace core { namespace data_structs {
 
     // Access range is that of an integer, approx. 2.1 billion rows & cols.
     // If size is more than that, use the get function instead
-    TL_FI value_type& operator() (tl_int aRow, tl_int aCol);
-    TL_FI const value_type& operator() (tl_int aRow, tl_int aCol) const;
+    value_type& operator() (tl_int aRow, tl_int aCol);
+    const value_type& operator() (tl_int aRow, tl_int aCol) const;
 
-    TL_FI value_type& Get(size_type aRow, size_type aCol);
-    TL_FI const value_type& Get(size_type aRow, size_type aCol) const;
+    value_type& Get(size_type aRow, size_type aCol);
+    const value_type& Get(size_type aRow, size_type aCol) const;
 
-    TL_FI void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
-    TL_FI void GetCol(size_type aCol, tuple_row_type& aColOut) const;
+    void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
+    void GetCol(size_type aCol, tuple_row_type& aColOut) const;
 
-    TL_FI value_type& operator[] (tl_int aIndex);
-    TL_FI const value_type& operator[] (tl_int aIndex) const;
+    value_type& operator[] (tl_int aIndex);
+    const value_type& operator[] (tl_int aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
-    TL_FI T*        data();
-    TL_FI T const*  data() const;
+    T*        data();
+    T const*  data() const;
 
     template <typename T_TableType>
-    TL_FI T_TableType Cast() const;
+    T_TableType Cast() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
-    TL_FI void Set(const value_type& aValue);
+    void Set(const value_type& aValue);
 
-    TL_FI void Set(const Variadic<value_type, k_TableSize>& a_vars,
+    void Set(const Variadic<value_type, k_TableSize>& a_vars,
                    table_order a_tableOrder);
 
     template <typename T_ArrayType>
-    TL_FI void Set(const T_ArrayType(&values)[k_TableSize],
+    void Set(const T_ArrayType(&values)[k_TableSize],
                    table_order aTableOrder);
 
-    TL_FI void Set(size_type aRow, size_type aCol, const T& aValue);
-    TL_FI void SetRow(size_type aRow, const tuple_col_type& aRowIn);
-    TL_FI void SetCol(size_type aCol, const tuple_row_type& aColIn);
+    void Set(size_type aRow, size_type aCol, const T& aValue);
+    void SetRow(size_type aRow, const tuple_col_type& aRowIn);
+    void SetCol(size_type aCol, const tuple_row_type& aColIn);
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI Table& operator= (const Table& aTable);
-    TL_FI bool operator == (const Table& aTable);
-    TL_FI bool operator != (const Table& aTable);
+    Table& operator= (const Table& aTable);
+    bool operator == (const Table& aTable);
+    bool operator != (const Table& aTable);
 
   protected:
     T m_values[k_TableSize];

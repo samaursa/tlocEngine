@@ -5,6 +5,8 @@
 
 #include <tlocCore/platform/tlocPlatform.h>
 
+#include <tlocCore/types/tlocAny.h>
+
 #if defined(TLOC_OS_WIN)
 # define WIN32_LEAN_AND_MEAN
 # include <Windows.h>
@@ -37,7 +39,7 @@ namespace tloc { namespace graphics { namespace win {
   template<>
   struct WindowHandle<core::Platform_iphone>
   {
-    typedef UIWindow*     type;
+    typedef core_t::Any     type;
   };
 
 #elif defined (TLOC_OS_LINUX)

@@ -57,6 +57,12 @@ namespace TestingAnyType
   TEST_CASE("core/types/Any", "")
   {
     {
+      types::Any a;
+      a = 10.0f;
+      CHECK_FALSE(a.IsEmpty());
+      CHECK(a.Cast<float>() == Approx(10.0f));
+    }
+    {
       types::Any  a;
 
       CHECK(a.IsEmpty());

@@ -2,6 +2,7 @@
 #define TLOC_WINDOW_IMPL_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 
@@ -14,10 +15,6 @@
 #include "tlocWindowImpl.h"
 
 #include <OpenGLES/ES2/gl.h>
-
-#import <UIKit/UIKit.h>
-#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
-#import <tlocGraphics/window/tlocOpenGLViewControllerIphone.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
   
@@ -36,11 +33,17 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef GraphicsMode<platform_type>             graphics_mode;
     typedef base_type::parent_window_type           parent_window_type;
 
-    typedef UIWindow*                               window_handle_type;
+//    typedef UIWindowType                            window_handle_type;
+//    typedef WindowSettings::style_type              window_style_type;
+//    typedef tl_size                                 size_type;
+//    typedef OpenGLView*                             view_handle_type;
+//    typedef OpenGLViewController*                   view_controller_handle_type;
+
+    typedef core_t::Any                             window_handle_type;
     typedef WindowSettings::style_type              window_style_type;
     typedef tl_size                                 size_type;
-    typedef OpenGLView*                             view_handle_type;
-    typedef OpenGLViewController*                   view_controller_handle_type;
+    typedef core_t::Any                             view_handle_type;
+    typedef core_t::Any                             view_controller_handle_type;
 
   public:
 

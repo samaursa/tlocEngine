@@ -10,6 +10,7 @@
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/tlocAlgorithms.inl>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocType.h>
 
 namespace tloc { namespace core { namespace data_structs {
 
@@ -169,6 +170,54 @@ namespace tloc { namespace core { namespace data_structs {
     return toRet;
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  namespace {
+    typedef type_true       typesAreSame;
+    typedef type_false      typesAreDifferent;
+
+    template <typename T_OtherType, typename T_ValueType, 
+              tl_size T_Size>
+    const Tuple<T_OtherType, T_Size>&
+      DoCast(const Tuple<T_ValueType, T_Size>& a_tuple, typesAreSame)
+    {
+      return a_tuple;
+    }
+
+    template <typename T_OtherType, typename T_ValueType, 
+              tl_size T_Size>
+    Tuple<T_OtherType, T_Size>
+      DoCast(const Tuple<T_ValueType, T_Size>& a_tuple, typesAreDifferent)
+    {
+      Tuple<T_OtherType, T_Size> temp;
+      for(tl_int i = 0; i < T_Size; ++i)
+      {
+        temp[i] = core_utils::
+          CastNumber<T_OtherType, T_ValueType>(a_tuple[i]);
+      }
+
+      return temp;
+    }
+  }
+
+
+  template <TUPLE_TEMP>
+  template <typename T_TupleType>
+  T_TupleType
+    Tuple<TUPLE_PARAMS>::
+    Cast() const
+  {
+    typedef typename T_TupleType::value_type                other_value_type;
+    typedef Loki::IsSameType<value_type, other_value_type>  type_result;
+    typedef Loki::Int2Type<type_result::value>              types_same_or_not;
+
+    TLOC_STATIC_ASSERT((T_TupleType::k_TupleSize == k_TupleSize), 
+                        Tuple_sizes_must_be_same);
+
+    return DoCast<other_value_type, value_type, T_Size>
+      (*this, types_same_or_not());
+  }
+
   //------------------------------------------------------------------------
   // Modifiers
 
@@ -187,13 +236,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     Set(const Tuple<T_TupleType, T_Size>& aTuple)
   {
-    // We go through the trouble of identifying the type for the sole reason of
-    // letting the compiler generate type mismatch warnings
-
-    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
-      Array_type_must_be_the_same_size_as_the_tuple_type);
     typedef typename Loki::Int2Type< Loki::IsSameType<T, T_TupleType>::value > is_same_type;
-
     DoSet(aTuple, is_same_type());
   }
 
@@ -204,13 +247,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     Set(const T_ArrayType (&aArray)[T_Size])
   {
-    // We go through the trouble of identifying the type for the sole reason of
-    // letting the compiler generate type mismatch warnings
-
-    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
-      Array_type_must_be_the_same_size_as_the_tuple_type);
     typedef typename Loki::Int2Type< Loki::IsSameType<T, T_ArrayType>::value > is_same_type;
-
     DoSet(aArray, is_same_type());
   }
 
@@ -375,9 +412,6 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
   {
-    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_TupleType), 
-      Tuple_type_must_be_the_same_size_as_this_tuple_type);
-
     ITERATE_TUPLE
     { m_values[i] = aTuple[i]; }
   }

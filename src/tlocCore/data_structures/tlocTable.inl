@@ -176,6 +176,54 @@ namespace tloc { namespace core { namespace data_structs {
     data() const
   { return m_values; }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  namespace 
+  {
+    typedef type_true       typesAreSame;
+    typedef type_false      typesAreDifferent;
+
+    template <typename T_OtherType, typename T_ValueType, 
+              tl_size T_Rows, tl_size T_Cols>
+    const Table<T_OtherType, T_Rows, T_Cols>&
+      DoCast(const Table<T_ValueType, T_Rows, T_Cols>& a_table, typesAreSame)
+    {
+      return a_table;
+    }
+
+    template <typename T_OtherType, typename T_ValueType, 
+              tl_size T_Rows, tl_size T_Cols>
+    Table<T_OtherType, T_Rows, T_Cols>
+      DoCast(const Table<T_ValueType, T_Rows, T_Cols>& a_table, typesAreDifferent)
+    {
+      Table<T_OtherType, T_Rows, T_Cols> temp;
+      for(tl_int i = 0; i < T_Rows * T_Cols; ++i)
+      {
+        temp[i] = core_utils::
+          CastNumber<T_OtherType, T_ValueType>(a_table[i]);
+      }
+
+      return temp;
+    }
+  }
+
+  template <TABLE_TEMPS>
+  template <typename T_TableType>
+  T_TableType Table<TABLE_PARAMS>::
+    Cast() const
+  {
+    typedef typename T_TableType::value_type                other_value_type;
+    typedef Loki::IsSameType<value_type, other_value_type>  type_result;
+    typedef Loki::Int2Type<type_result::value>              types_same_or_not;
+
+    TLOC_STATIC_ASSERT((T_TableType::k_Rows == k_Rows && 
+                        T_TableType::k_Cols == k_Cols), 
+                        Rows_and_cols_must_be_same);
+
+    return DoCast<other_value_type, value_type, T_Rows, T_Cols>
+      (*this, types_same_or_not());
+  }
+
   //------------------------------------------------------------------------
   // Modifiers
 

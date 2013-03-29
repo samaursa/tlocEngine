@@ -66,9 +66,9 @@ namespace TestingEntityManager
       }
     }
 
-    tl_int m_entEventCounter;
-    tl_int m_compEventCounter;
-    tl_int m_totalEvents;
+    tl_uint m_entEventCounter;
+    tl_int  m_compEventCounter;
+    tl_int  m_totalEvents;
   };
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")

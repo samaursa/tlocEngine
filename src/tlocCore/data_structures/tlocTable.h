@@ -18,10 +18,9 @@ namespace tloc { namespace core { namespace data_structs {
   template <typename T, tl_size T_Rows, tl_size T_Cols>
   class Table
   {
-  protected:
+  public:
     enum { k_Rows = T_Rows, k_Cols = T_Cols };
     enum { k_TableSize = k_Rows * k_Cols };
-    T m_values[k_TableSize];
 
   public:
     //------------------------------------------------------------------------
@@ -76,6 +75,9 @@ namespace tloc { namespace core { namespace data_structs {
     TL_FI T*        data();
     TL_FI T const*  data() const;
 
+    template <typename T_TableType>
+    TL_FI T_TableType Cast() const;
+
     //------------------------------------------------------------------------
     // Modifiers
 
@@ -98,6 +100,10 @@ namespace tloc { namespace core { namespace data_structs {
     TL_FI Table& operator= (const Table& aTable);
     TL_FI bool operator == (const Table& aTable);
     TL_FI bool operator != (const Table& aTable);
+
+  protected:
+    T m_values[k_TableSize];
+
   };
 
 };};};

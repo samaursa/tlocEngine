@@ -103,6 +103,9 @@ namespace tloc { namespace core { namespace data_structs {
     template <typename T_OtherTuple, typename T_Policy>
     TL_FI T_OtherTuple ConvertTo() const;
 
+    template <typename T_TupleType>
+    TL_FI T_TupleType Cast() const;
+
     //------------------------------------------------------------------------
     // Operators
 

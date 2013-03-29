@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		97BADEC316EBDAC400D7B14A /* tloc_physics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97BADEBE16EBDAC400D7B14A /* tloc_physics.cpp */; };
+		97BADEC416EBDAC400D7B14A /* tlocRigidBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97BADEC116EBDAC400D7B14A /* tlocRigidBody.cpp */; };
 		97CC1D1A16CCEC2D003C6740 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CC1D1916CCEC2D003C6740 /* Foundation.framework */; };
 		97CC1D6E16CD14CA003C6740 /* tloc_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97CC1D6C16CD14CA003C6740 /* tloc_core.cpp */; };
 		97CC1D7216CD14D6003C6740 /* tloc_math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97CC1D7016CD14D6003C6740 /* tloc_math.cpp */; };
@@ -31,6 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		97BADEBE16EBDAC400D7B14A /* tloc_physics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_physics.cpp; path = ../../../../src/tlocPrefab/physics/tloc_physics.cpp; sourceTree = "<group>"; };
+		97BADEBF16EBDAC400D7B14A /* tloc_physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_physics.h; path = ../../../../src/tlocPrefab/physics/tloc_physics.h; sourceTree = "<group>"; };
+		97BADEC016EBDAC400D7B14A /* tloc_physics.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_physics.inl; path = ../../../../src/tlocPrefab/physics/tloc_physics.inl; sourceTree = "<group>"; };
+		97BADEC116EBDAC400D7B14A /* tlocRigidBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRigidBody.cpp; path = ../../../../src/tlocPrefab/physics/tlocRigidBody.cpp; sourceTree = "<group>"; };
+		97BADEC216EBDAC400D7B14A /* tlocRigidBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocRigidBody.h; path = ../../../../src/tlocPrefab/physics/tlocRigidBody.h; sourceTree = "<group>"; };
 		97CC1D1616CCEC2D003C6740 /* tlocPrefab_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocPrefab_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CC1D1916CCEC2D003C6740 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		97CC1D6B16CD14CA003C6740 /* tloc_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_core.h; path = ../../../../src/tlocPrefab/core/tloc_core.h; sourceTree = "<group>"; };
@@ -69,6 +76,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97BADEBD16EBDA8500D7B14A /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				97BADEBE16EBDAC400D7B14A /* tloc_physics.cpp */,
+				97BADEBF16EBDAC400D7B14A /* tloc_physics.h */,
+				97BADEC016EBDAC400D7B14A /* tloc_physics.inl */,
+				97BADEC116EBDAC400D7B14A /* tlocRigidBody.cpp */,
+				97BADEC216EBDAC400D7B14A /* tlocRigidBody.h */,
+			);
+			name = physics;
+			sourceTree = "<group>";
+		};
 		97CC1D0D16CCEC2D003C6740 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +120,7 @@
 				97CC1D6916CD14AB003C6740 /* math */,
 				97CC1D6816CD14A6003C6740 /* graphics */,
 				97CC1D6716CD1493003C6740 /* input */,
+				97BADEBD16EBDA8500D7B14A /* physics */,
 				97CC1D8416CD150E003C6740 /* tloc_prefab.h */,
 				97CC1D8516CD150E003C6740 /* tloc_prefab.inl */,
 				97CC1D8716CD150E003C6740 /* tloc_prefab.cpp */,
@@ -214,6 +234,8 @@
 				97CC1D7F16CD14E9003C6740 /* tloc_graphics.cpp in Sources */,
 				97CC1D8316CD14F8003C6740 /* tloc_input.cpp in Sources */,
 				97CC1D8816CD150E003C6740 /* tloc_prefab.cpp in Sources */,
+				97BADEC316EBDAC400D7B14A /* tloc_physics.cpp in Sources */,
+				97BADEC416EBDAC400D7B14A /* tlocRigidBody.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,14 +270,13 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-fno-exceptions",
 					"-fno-rtti",
 				);
 				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/ $(TLOC_DEP_PATH)/include";
 			};
 			name = Debug;
 		};
@@ -280,13 +301,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = (
 					"-fno-exceptions",
 					"-fno-rtti",
 				);
 				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/ $(TLOC_DEP_PATH)/include";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

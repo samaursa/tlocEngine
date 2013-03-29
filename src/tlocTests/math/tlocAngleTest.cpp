@@ -3,6 +3,8 @@
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/types/tlocAngle.h>
 
+#include <tlocCore/string/tlocString.h>
+
 namespace TestingAngle
 {
   using namespace tloc;

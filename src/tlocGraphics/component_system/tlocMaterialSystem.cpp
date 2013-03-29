@@ -22,13 +22,13 @@ namespace tloc { namespace graphics { namespace component_system {
   // MaterialSystem
 
   MaterialSystem::MaterialSystem
-    (event_manager* a_eventMgr, entity_manager* a_entityMgr)
+    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr
     , Variadic<component_type, 1>(components::material))
   { }
 
-  error_type MaterialSystem::InitializeEntity(entity_manager*,
-                                              entity_type* a_ent)
+  error_type MaterialSystem::InitializeEntity(const entity_manager*,
+                                              const entity_type* a_ent)
   {
     using namespace core::component_system;
 
@@ -37,9 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
-    const entity_type* ent = a_ent;
-
-    ComponentMapper<mat_type> mat = ent->GetComponents(components::material);
+    ComponentMapper<mat_type> mat = a_ent->GetComponents(components::material);
 
     // Material should have vertex and fragment shader data, for now we will
     // assume that both exist
@@ -117,10 +115,11 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   error_type
-    MaterialSystem::ShutdownEntity(entity_manager*, entity_type*)
+    MaterialSystem::ShutdownEntity(const entity_manager*, const entity_type*)
   { return ErrorSuccess(); }
 
-  void MaterialSystem::ProcessEntity(entity_manager*, entity_type* )
+  void MaterialSystem::ProcessEntity(const entity_manager*, 
+                                     const entity_type* )
   { }
 
 };};};

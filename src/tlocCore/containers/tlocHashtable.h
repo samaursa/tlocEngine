@@ -723,10 +723,17 @@ namespace tloc { namespace core { namespace containers {
 
     template <typename T>
     f32               DoGetMaxLoadFactor(T) const
-    { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
+    {
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Rehash_policy_type_not_supported);
+    }
+
     template <typename T>
     void              DoSetMaxLoadFactor(f32, T)
-    { TLOC_STATIC_ASSERT(false, Rehash_policy_type_not_supported); }
+    {
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Rehash_policy_type_not_supported);
+    }
 
     f32               DoGetMaxLoadFactor(prime_rehash_policy) const;
     void              DoSetMaxLoadFactor(f32 a_maxLoadFactor,

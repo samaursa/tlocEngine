@@ -102,7 +102,13 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_ptr    An existing window handle
     /// @param  a_params Window settings
     ///-------------------------------------------------------------------------
-    void Create(window_handle_type a_ptr, const WindowSettings& a_settings);
+    template <typename T_WindowHandleType>
+    void Create(T_WindowHandleType a_ptr, const WindowSettings& a_settings)
+    {
+      typedef Loki::IsSameType<T_WindowHandleType, window_handle_type>
+        win_handle_type;
+      DoCreate(a_ptr, a_settings, Loki::Int2Type<win_handle_type::value>() );
+    }
 
     ///-------------------------------------------------------------------------
     /// Creates the actual window with the specified properties
@@ -234,6 +240,15 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_event The WindowEvent
     ///-------------------------------------------------------------------------
     void SendEvent(const WindowEvent& a_event);
+
+  private:
+    typedef tloc::type_true   IsWindowHandle;
+    typedef tloc::type_false  IsNotWindowHandle;
+
+    void DoCreate(window_handle_type a_ptr, const WindowSettings& a_settings,
+                  IsWindowHandle);
+    void DoCreate(const graphics_mode& a_mode, const WindowSettings& a_settings,
+                  IsNotWindowHandle);
 
   protected:
 

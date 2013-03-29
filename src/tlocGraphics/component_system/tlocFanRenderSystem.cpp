@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // QuadRenderSystem
 
   FanRenderSystem::FanRenderSystem
-    (event_manager* a_eventMgr, entity_manager* a_entityMgr)
+    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::fan))
      , m_sharedCam(nullptr)
@@ -78,10 +78,12 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess();
   }
 
-  error_type FanRenderSystem::InitializeEntity(entity_manager*, entity_type* )
+  error_type FanRenderSystem::InitializeEntity(const entity_manager*,  
+                                               const entity_type* )
   { return ErrorSuccess(); }
 
-  error_type FanRenderSystem::ShutdownEntity(entity_manager*, entity_type*)
+  error_type FanRenderSystem::ShutdownEntity(const entity_manager*, 
+                                             const entity_type*)
   { return ErrorSuccess(); }
 
   void FanRenderSystem::Pre_ProcessActiveEntities()
@@ -122,7 +124,8 @@ namespace tloc { namespace graphics { namespace component_system {
     m_projectionOperator->AddUniform(vpMat);
   }
 
-  void FanRenderSystem::ProcessEntity(entity_manager*, entity_type* a_ent)
+  void FanRenderSystem::ProcessEntity(const entity_manager*,  
+                                      const entity_type* a_ent)
   {
     using namespace core::component_system;
     using math::types::Degree32;
@@ -243,8 +246,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void FanRenderSystem::Post_ProcessActiveEntities()
   {
-    m_shaderPtr->Disable();
-    m_shaderPtr.reset();
+    // No materials/entities may have been loaded initially
+    // (m_shaderPtr would have remained NULL)
+    if (m_shaderPtr)
+    {
+      m_shaderPtr->Disable();
+      m_shaderPtr.reset();
+    }
   }
 
 };};};

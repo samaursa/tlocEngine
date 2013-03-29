@@ -26,9 +26,9 @@ namespace TestingInput
   {
     sampleInputKeyboard(T_Keyboard* a_caller)
       : m_event(KeyboardEvent::none),
-        m_caller(a_caller),
-        m_keypresses(0),
-        m_keyreleases(0) {}
+      m_caller(a_caller),
+      m_keypresses(0),
+      m_keyreleases(0) {}
 
     bool OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
     {
@@ -66,8 +66,8 @@ namespace TestingInput
 
     bool
       OnButtonPress(const tl_size a_caller,
-                    const MouseEvent& a_event,
-                    const MouseEvent::button_code_type a_buttonCode)
+      const MouseEvent& a_event,
+      const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
@@ -79,8 +79,8 @@ namespace TestingInput
 
     bool
       OnButtonRelease(const tl_size a_caller,
-                      const MouseEvent& a_event,
-                      const MouseEvent::button_code_type a_buttonCode)
+      const MouseEvent& a_event,
+      const MouseEvent::button_code_type a_buttonCode)
     {
       CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
       m_event = a_event;
@@ -238,7 +238,7 @@ namespace TestingInput
 
   template <typename T_InputManagerType>
   void TestKeyboardButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_key,
-                          hid::KeyboardEvent::key_code_type a_ourKey)
+    hid::KeyboardEvent::key_code_type a_ourKey)
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
@@ -256,7 +256,7 @@ namespace TestingInput
   // Mouse specific
 
   static void SendMousePress(WORD input_code_set, WORD mouse_data,
-                             LONG coordX = 0, LONG coordY = 0)
+    LONG coordX = 0, LONG coordY = 0)
   {
     INPUT inp = {0};
     inp.type = INPUT_MOUSE;
@@ -282,7 +282,7 @@ namespace TestingInput
       mouse->Register(&callback);
 
       while (countDown.ElapsedMilliSeconds() < 1000 &&
-             callback.m_buttonPresses < 1)
+        callback.m_buttonPresses < 1)
       {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonDown, a_extraData);
@@ -297,7 +297,7 @@ namespace TestingInput
 
       countDown.Reset();
       while (countDown.ElapsedMilliSeconds() < 1000 &&
-             callback.m_buttonReleases < 1)
+        callback.m_buttonReleases < 1)
       {
         UpdateWin32Window(a_wnd);
         SendMousePress(a_buttonUp, a_extraData);
@@ -347,8 +347,8 @@ namespace TestingInput
 
   template <typename T_InputManagerType>
   void TestMouseButton(T_InputManagerType* a_im, HWND a_wnd, WORD a_buttonDown,
-                       WORD a_buttonUp, WORD a_extraData,
-                       hid::MouseEvent::button_code_type a_ourButton)
+    WORD a_buttonUp, WORD a_extraData,
+    hid::MouseEvent::button_code_type a_ourButton)
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
@@ -359,7 +359,7 @@ namespace TestingInput
     if (mouse)
     {
       TestMouseType(a_im, mouse, a_wnd, a_buttonDown, a_buttonUp, a_extraData,
-                    a_ourButton, policy_type());
+        a_ourButton, policy_type());
     }
   }
 
@@ -377,7 +377,7 @@ namespace TestingInput
       static_cast<LONG>(a_x), static_cast<LONG>(a_y));
 
     while (countDown.ElapsedMilliSeconds() < 1000 &&
-           callback.m_movementEvents == 0)
+      callback.m_movementEvents == 0)
     {
       UpdateWin32Window(a_wnd);
       a_im->Update();
@@ -407,7 +407,7 @@ namespace TestingInput
 
   template <typename T_InputManagerType>
   MouseEvent TestMouseMove(T_InputManagerType* a_im, HWND a_wnd, WORD a_axis,
-                           tl_int a_x, tl_int a_y, WORD a_data)
+    tl_int a_x, tl_int a_y, WORD a_data)
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
@@ -418,7 +418,7 @@ namespace TestingInput
     if (mouse)
     {
       return TestMouseState(a_im, mouse, a_wnd, a_axis, a_x, a_y, a_data,
-                            policy_type());
+        policy_type());
     }
 
     return MouseEvent(MouseEvent::none);
@@ -583,6 +583,10 @@ namespace TestingInput
 
     MouseEvent evt;
 
+    typedef Mouse<typename T_InputManagerType::policy_type> mouse_type;
+    mouse_type* mouse = inputMgr.GetHID<MouseB>(0);
+    mouse->SetClamped(false);
+
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
     CHECK(evt.m_X.m_rel() == 5);
     CHECK(evt.m_Y.m_rel() == 0);
@@ -623,8 +627,31 @@ namespace TestingInput
     CHECK(evt.m_X.m_abs().Get() == -5);
     CHECK(evt.m_Y.m_abs().Get() == -15);
 
-    // Reset the positions
-    TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 15, 0);
+    mouse->SetClamped(true);
+    mouse->SetClampX(MouseB::abs_range_type(0, 1000));
+    mouse->SetClampY(MouseB::abs_range_type(100, 500));
+
+    CHECK(mouse->GetClampX().front() == 0);
+    CHECK(mouse->GetClampX().back() == 999);
+    CHECK(mouse->GetClampY().front() == 100);
+    CHECK(mouse->GetClampY().back() == 499);
+
+    mouse->SetClampX(MouseB::abs_range_type(0, 0));
+    mouse->SetClampY(MouseB::abs_range_type(0, 0));
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
+
+    CHECK(evt.m_X.m_abs().Get() == 0);
+    CHECK(evt.m_Y.m_abs().Get() == 0);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
+    CHECK(evt.m_X.m_abs().Get() == 0);
+    CHECK(evt.m_Y.m_abs().Get() == 0);
+
+    mouse->SetClamped(false);
+
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
+    CHECK(evt.m_X.m_abs().Get() == -10);
+    CHECK(evt.m_Y.m_abs().Get() == -20);
   }
 
   TEST_CASE("Input/InputManager/General", "")
@@ -655,11 +682,18 @@ namespace TestingInput
 
     using hid::MouseB;
 
+    MouseB::abs_range_type rangeX(-1000, 1000);
+    MouseB::abs_range_type rangeY(-1000, 1000);
+
     MouseB* mouse = inputMgr.CreateHID<MouseB>();
     CHECK(mouse != NULL);
+    mouse->SetClampX(rangeX);
+    mouse->SetClampY(rangeY);
 
     MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>();
     CHECK(mouseImm != NULL);
+    mouseImm->SetClampX(rangeX);
+    mouseImm->SetClampY(rangeY);
 
     if (mouse)
     {

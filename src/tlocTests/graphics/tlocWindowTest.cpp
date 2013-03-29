@@ -123,7 +123,7 @@ namespace TestingWindow
                   WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
-      CHECK(win1.GetWindowHandle() != NULL);
+      CHECK(win1.GetWindowHandle().Cast<void*>() != NULL);
     }
 
     {
@@ -134,7 +134,7 @@ namespace TestingWindow
                   WindowSettings("Testing"), WindowSettings::style_fullscreen);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK(win2.GetWindowHandle() != NULL);
+      CHECK(win2.GetWindowHandle().Cast<void*>() != NULL);
     }
   }
 

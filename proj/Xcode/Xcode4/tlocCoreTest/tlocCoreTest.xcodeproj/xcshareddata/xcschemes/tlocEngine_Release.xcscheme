@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0450"
+   LastUpgradeVersion = "0460"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -98,6 +98,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9743B25216EB20AF00D1BFFF"
+               BuildableName = "tlocPhysics_Release.a"
+               BlueprintName = "tlocPhysics"
+               ReferencedContainer = "container:../tlocPhysics/tlocPhysics.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "97CC1D1516CCEC2D003C6740"
                BuildableName = "tlocPrefab_Release.a"
                BlueprintName = "tlocPrefab"
@@ -158,6 +172,20 @@
                BuildableName = "tlocInputTest.app"
                BlueprintName = "tlocInputTest"
                ReferencedContainer = "container:../tlocInputTest/tlocInputTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9743B2D116EB379600D1BFFF"
+               BuildableName = "tlocPhysicsTest.app"
+               BlueprintName = "tlocPhysicsTest"
+               ReferencedContainer = "container:../tlocPhysicsTest/tlocPhysicsTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

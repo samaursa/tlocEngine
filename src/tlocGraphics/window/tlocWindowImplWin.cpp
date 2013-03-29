@@ -12,10 +12,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
 #define VERIFY_DEVICE_CONTEXT() \
     TLOC_ASSERT(m_deviceContext, "No device context available -- did you call "\
-      L"Create()?");
+       "Create()?");
 #define VERIFY_OPENGL_CONTEXT() \
     TLOC_ASSERT(m_OpenGLContext, "No OpenGL context available -- did you call "\
-      L"Create()? -- If yes, it may not have succeeded");
+       "Create()? -- If yes, it may not have succeeded");
 
   //////////////////////////////////////////////////////////////////////////
   // Global variables
@@ -494,7 +494,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
       bestFormat = ChoosePixelFormat(m_deviceContext, &pixelDesc);
       TLOC_ASSERT(bestFormat, "Failed to find a suitable pixel format for the "
-        L"device context -- cannot create OpenGL context");
+        "device context -- cannot create OpenGL context");
     }
 
     PIXELFORMATDESCRIPTOR pixFormat;

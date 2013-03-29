@@ -493,7 +493,7 @@ namespace tloc { namespace physics { namespace box2d {
 
   TL_I RigidBody::error_type RigidBody::
     DoInitialize(rigid_body_internal_type* a_rigidBody,
-                 entity_type* a_parent)
+                 const entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_NOT_INITIALIZED();
     TLOC_ASSERT_NOT_NULL(a_rigidBody);
@@ -529,21 +529,24 @@ namespace tloc { namespace physics { namespace box2d {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TL_I RigidBody::entity_type* RigidBody::
+  TL_I const RigidBody::entity_type* RigidBody::
     DoGetParent()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    return static_cast<entity_type*>(m_rigidBody->GetUserData());
+    return static_cast<const entity_type*>(m_rigidBody->GetUserData());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   TL_I void RigidBody::
-    DoSetParent(entity_type* a_parent)
+    DoSetParent(const entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
     TLOC_ASSERT(a_parent != NULL, "Use DoSetParentNull instead!");
-    m_rigidBody->SetUserData(a_parent);
+    // const_cast is necessary to turn the pointer into a void*, the method
+    // DoGetParent ensures that we respect the constness and pass it back
+    // as a const ptr
+    m_rigidBody->SetUserData( const_cast<entity_type*>(a_parent) );
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

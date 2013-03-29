@@ -113,8 +113,9 @@ namespace tloc { namespace input {
         p_axis::RelativeAndAbsolute>::value>                  policy_result_type;
 
       // Relative and absolute types
-      typedef core::ConditionalTypePackage<value_type, value_type, policy_result_type::value>
-                                                              rel_and_abs;
+      typedef core::ConditionalTypePackage
+              <value_type, value_type, 
+               policy_result_type::value>                     rel_and_abs;
       typedef value_type                                      rel_type;
       typedef typename rel_and_abs::cond_type                 abs_type;
 
@@ -167,8 +168,8 @@ namespace tloc { namespace input {
       typedef p_axis::AbsoluteOnly                              policy_type;
 
       typedef typename base_type::rel_and_abs                   rel_and_abs;
-      typedef typename base_type::abs_type                      rel_type;
-      typedef typename base_type::rel_type                      abs_type;
+      typedef typename base_type::abs_type::value_type          abs_type;
+      typedef typename base_type::rel_type                      rel_type;
 
       using base_type::m_absoluteAndRelative;
 

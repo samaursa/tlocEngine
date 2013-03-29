@@ -11,21 +11,18 @@ namespace tloc { namespace math { namespace types {
   class Angle_T
   {
   public:
-    typedef T           value_type;
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
 
-    typedef T_Derived   derived_type;
-    typedef Angle_T     this_type;
+  public:
+    typedef T                                     value_type;
+    typedef T_Derived                             derived_type;
+    typedef Angle_T<value_type, derived_type>     this_type;
 
+  public:
     Angle_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
-    Angle_T(T_AngleType a_angle)
-    {
-      typedef Loki::TypeTraits<T_AngleType>                 unknown_type;
-      typedef Loki::Int2Type<unknown_type::isFundamental>   resolved_angle_type;
-
-      DoSetAngleCtor(a_angle, resolved_angle_type() );
-    }
+    Angle_T(T_AngleType a_angle);
 
     this_type&    operator=(value_type a_angle);
     this_type&    operator=(const this_type& a_other);
@@ -102,8 +99,7 @@ namespace tloc { namespace math { namespace types {
     Radian_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
-    Radian_T(T_AngleType a_angle) : base_type(a_angle)
-    { }
+    Radian_T(T_AngleType a_angle);
 
     template <typename T_AngleType>
     this_type&    operator=(const T_AngleType& a_angle);
@@ -158,8 +154,7 @@ namespace tloc { namespace math { namespace types {
     Degree_T(value_type a_angle = 0);
 
     template <typename T_AngleType>
-    Degree_T(T_AngleType a_angle) : base_type(a_angle)
-    { }
+    Degree_T(T_AngleType a_angle);
 
     template <typename T_AngleType>
     this_type&    operator=(const T_AngleType& a_angle);
@@ -175,6 +170,55 @@ namespace tloc { namespace math { namespace types {
     value_type DoGetAs(T_AngleType) const;
     value_type DoGetAs(this_type) const;
   };
+
+  //////////////////////////////////////////////////////////////////////////
+  // Template definitions
+
+  template <typename T, class T_Derived>
+  template <typename T_AngleType>
+  Angle_T<T, T_Derived>::
+    Angle_T(T_AngleType a_angle)
+  {
+    typedef Loki::TypeTraits<T_AngleType>                 unknown_type;
+    typedef Loki::Int2Type<unknown_type::isFundamental>   resolved_angle_type;
+
+    TLOC_STATIC_ASSERT(
+      ( Loki::Conversion<T_AngleType, this_type>::exists2Way ||
+        Loki::TypeTraits<T_AngleType>::isFloat),
+        T_AngleType_must_be_derived_from_Angle_T);
+
+    DoSetAngleCtor(a_angle, resolved_angle_type() );
+  }
+
+  //------------------------------------------------------------------------
+  // Radian
+
+  template <typename T>
+  template <typename T_AngleType>
+  Radian_T<T>::
+    Radian_T(T_AngleType a_angle)
+    : base_type(a_angle)
+  {
+    TLOC_STATIC_ASSERT(
+      ( Loki::Conversion<T_AngleType, base_type>::exists2Way ||
+        Loki::TypeTraits<T_AngleType>::isFloat),
+        T_AngleType_must_be_derived_from_Angle_T);
+  }
+
+  //------------------------------------------------------------------------
+  // Degree
+
+  template <typename T>
+  template <typename T_AngleType>
+  Degree_T<T>::
+    Degree_T(T_AngleType a_angle)
+    : base_type(a_angle)
+  {
+    TLOC_STATIC_ASSERT(
+      ( Loki::Conversion<T_AngleType, base_type>::exists2Way ||
+        Loki::TypeTraits<T_AngleType>::isFloat),
+        T_AngleType_must_be_derived_from_Angle_T);
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Typedefs

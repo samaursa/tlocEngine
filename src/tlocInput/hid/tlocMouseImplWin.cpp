@@ -134,6 +134,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       // LOG: Unable to acquire Win32 mouse
       return;
     }
+
+    // Set the limits
+    RECT rect;
+    GetClientRect(m_windowPtr, &rect);
+    parent_type::abs_value_type width  = rect.right - rect.left;
+    parent_type::abs_value_type height = rect.bottom - rect.top;
+    m_parent->SetClampX(parent_type::abs_range_type(0, width));
+    m_parent->SetClampY(parent_type::abs_range_type(0, height));
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -259,6 +267,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
+      // Clamp the values
+      if (m_parent->GetClamped())
+      { m_parent->Clamp(m_currentState); }
+
       m_parent->SendOnMouseMove(m_currentState);
     }
   }
@@ -322,7 +334,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void MouseImpl<MOUSE_IMPL_PARAMS>::
     DoReset(InputPolicy::Buffered)
   {
-    // LOG: Reset() should not be called in buffered mode
+    /* Intentionally empty */
   }
 
   template <MOUSE_IMPL_TEMP>

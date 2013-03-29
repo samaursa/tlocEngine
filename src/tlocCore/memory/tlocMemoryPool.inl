@@ -91,7 +91,7 @@ namespace tloc { namespace core { namespace memory {
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::DoSwap(wrapper_type& a_rhs)
   {
-    tlSwap(m_element, a_rhs.m_element);
+    core::swap(m_element, a_rhs.m_element);
     // The indexes are permanent, we don't swap those
   }
 
@@ -187,8 +187,8 @@ namespace tloc { namespace core { namespace memory {
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
     wrapper_type& toSwap = this->operator[]( DoGetIndex(*a_retElem, policy_allocation_type()) );
-    tlSwap(toSwap, m_allElements[lastUsedElem]);
-    tlSwap(DoGetIndex(toSwap, policy_allocation_type()), 
+    core::swap(toSwap, m_allElements[lastUsedElem]);
+    core::swap(DoGetIndex(toSwap, policy_allocation_type()), 
            DoGetIndex(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
   }

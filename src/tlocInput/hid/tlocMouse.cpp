@@ -2,6 +2,7 @@
 
 #include <tlocCore/types/tlocTypes.inl>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/tlocRange.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -40,6 +41,7 @@ namespace tloc { namespace input { namespace hid {
   template <MOUSE_TEMP>
   template <typename T_ParamList>
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
+    : m_clamped(true)
   {
     m_impl.reset(new impl_type(this, a_paramList));
   }
@@ -105,6 +107,22 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::
+    Clamp(event_type& a_event) const
+  {
+    // TODO: Replace with Clamp<>() method when available
+    a_event.m_X.m_abs() =
+      core::Clamp(a_event.m_X.m_abs(),
+                  GetClampX().front(),
+                  GetClampX().back());
+
+    a_event.m_Y.m_abs() =
+      core::Clamp(a_event.m_Y.m_abs(),
+                  GetClampY().front(),
+                  GetClampY().back());
+  }
+
+  template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::Update()
   {
     m_impl->Update();
@@ -114,6 +132,18 @@ namespace tloc { namespace input { namespace hid {
   void Mouse<MOUSE_PARAMS>::Reset()
   {
     m_impl->Reset();
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::SetClampX(const abs_range_type& a_range)
+  {
+    m_clampX = a_range;
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::SetClampY(const abs_range_type& a_range)
+  {
+    m_clampY = a_range;
   }
 
 };};};

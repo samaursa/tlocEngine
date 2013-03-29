@@ -146,7 +146,8 @@ namespace tloc { namespace core { namespace types {
     template <typename T>
     this_type& operator= (const T& a_other)
     {
-      return Assign(a_other);
+      Assign(a_other);
+      return *this;
     }
 
     this_type& Swap(this_type& a_other);
@@ -168,5 +169,7 @@ namespace tloc { namespace core { namespace types {
   };
 
 };};};
+
+#include "tlocAny.inl"
 
 #endif

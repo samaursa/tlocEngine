@@ -146,8 +146,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   void SharedPtr<SHARED_PTR_PARAMS>::
     swap(this_type& a_other)
   {
-    tlSwap(a_other.m_rawPtr, m_rawPtr);
-    tlSwap(a_other.m_refCount, m_refCount);
+    core::swap(a_other.m_rawPtr, m_rawPtr);
+    core::swap(a_other.m_refCount, m_refCount);
   }
 
   template <SHARED_PTR_TEMPS>

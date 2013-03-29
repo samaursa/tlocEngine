@@ -139,16 +139,17 @@ namespace tloc { namespace math { namespace utils {
 
   template <PYTHAGORAS_TEMP>
   template <typename T_TriSide1, typename T_TriSide2>
-  Pythagoras_T<PYTHAGORAS_PARAMS>::
-    Pythagoras_T(T_TriSide1 a_side1, T_TriSide2 a_side2)
+  void
+    Pythagoras_T<PYTHAGORAS_PARAMS>::
+    DoConstruct(T_TriSide1 a_side1, T_TriSide2 a_side2)
   {
     DoSet<this_type>(a_side1, a_side2, m_sides);
   }
 
   template <PYTHAGORAS_TEMP>
   template <typename T_TriSide>
-  Pythagoras_T<PYTHAGORAS_PARAMS>::
-    Pythagoras_T(angle_type a_angle, T_TriSide a_side)
+  void Pythagoras_T<PYTHAGORAS_PARAMS>::
+    DoConstruct(angle_type a_angle, T_TriSide a_side)
   {
     DoSet<this_type>(a_angle, a_side, m_sides);
   }
@@ -161,7 +162,8 @@ namespace tloc { namespace math { namespace utils {
 
   template <PYTHAGORAS_TEMP>
   PYTHAGORAS_TYPE::angle_type
-    Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngle() const
+    Pythagoras_T<PYTHAGORAS_PARAMS>::
+    GetAngle() const
   {
     return Radian_T<value_type>
       ( Math<value_type>::ACos(m_sides[base::k_index] /
@@ -170,7 +172,8 @@ namespace tloc { namespace math { namespace utils {
 
   template <PYTHAGORAS_TEMP>
   PYTHAGORAS_TYPE::angle_type
-    Pythagoras_T<PYTHAGORAS_PARAMS>::GetAngleOpposite() const
+    Pythagoras_T<PYTHAGORAS_PARAMS>::
+    GetAngleOpposite() const
   {
     return 90 - GetAngle().template GetAs<angle_type>();
   }
@@ -181,20 +184,20 @@ namespace tloc { namespace math { namespace utils {
 #define TLOC_INSTANTIATE_PYTHAGORAS(_type_)\
   template class Pythagoras_T<_type_>;\
   \
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::base, Pythagoras_T<_type_>::opposite);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::opposite , Pythagoras_T<_type_>::base);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::base, Pythagoras_T<_type_>::hypotenuse);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::hypotenuse, Pythagoras_T<_type_>::base);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::opposite, Pythagoras_T<_type_>::hypotenuse);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Pythagoras_T<_type_>::hypotenuse, Pythagoras_T<_type_>::opposite);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::base, Pythagoras_T<_type_>::opposite);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::opposite , Pythagoras_T<_type_>::base);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::base, Pythagoras_T<_type_>::hypotenuse);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::hypotenuse, Pythagoras_T<_type_>::base);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::opposite, Pythagoras_T<_type_>::hypotenuse);\
+  template void Pythagoras_T<_type_>::DoConstruct(Pythagoras_T<_type_>::hypotenuse, Pythagoras_T<_type_>::opposite);\
   \
-  template Pythagoras_T<_type_>::Pythagoras_T(Degree_T<_type_>, Pythagoras_T<_type_>::base);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Degree_T<_type_>, Pythagoras_T<_type_>::opposite);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Degree_T<_type_>, Pythagoras_T<_type_>::hypotenuse);\
+  template void Pythagoras_T<_type_>::DoConstruct(Degree_T<_type_>, Pythagoras_T<_type_>::base);\
+  template void Pythagoras_T<_type_>::DoConstruct(Degree_T<_type_>, Pythagoras_T<_type_>::opposite);\
+  template void Pythagoras_T<_type_>::DoConstruct(Degree_T<_type_>, Pythagoras_T<_type_>::hypotenuse);\
   \
-  template Pythagoras_T<_type_>::Pythagoras_T(Radian_T<_type_>, Pythagoras_T<_type_>::base);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Radian_T<_type_>, Pythagoras_T<_type_>::opposite);\
-  template Pythagoras_T<_type_>::Pythagoras_T(Radian_T<_type_>, Pythagoras_T<_type_>::hypotenuse)
+  template void Pythagoras_T<_type_>::DoConstruct(Radian_T<_type_>, Pythagoras_T<_type_>::base);\
+  template void Pythagoras_T<_type_>::DoConstruct(Radian_T<_type_>, Pythagoras_T<_type_>::opposite);\
+  template void Pythagoras_T<_type_>::DoConstruct(Radian_T<_type_>, Pythagoras_T<_type_>::hypotenuse)
 
   TLOC_INSTANTIATE_PYTHAGORAS(f32);
   TLOC_INSTANTIATE_PYTHAGORAS(f64);

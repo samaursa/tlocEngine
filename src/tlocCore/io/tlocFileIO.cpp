@@ -130,9 +130,14 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::GetContents(String& a_out) const
   {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");
-    fseek(m_file, 0, SEEK_END);
 
-    tl_size fileSize = ftell(m_file);
+    if (fseek(m_file, 0, SEEK_END) != 0)
+    { return ErrorFailure(); }
+
+    tl_int fileSize = ftell(m_file);
+    if (fileSize < 0)
+    { return ErrorFailure(); }
+
     rewind(m_file);
 
     const tl_size fileSizeInclNull = fileSize + 1;

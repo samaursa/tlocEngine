@@ -35,39 +35,39 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    TL_FI Matrix4();
+    Matrix4();
 
     // Generate a matrix by inputs in row-major order
-    TL_FI Matrix4(value_type m00, value_type m01, value_type m02, value_type m03,
-                  value_type m10, value_type m11, value_type m12, value_type m13,
-                  value_type m20, value_type m21, value_type m22, value_type m23,
-                  value_type m30, value_type m31, value_type m32, value_type m33);
+    Matrix4(value_type m00, value_type m01, value_type m02, value_type m03,
+            value_type m10, value_type m11, value_type m12, value_type m13,
+            value_type m20, value_type m21, value_type m22, value_type m23,
+            value_type m30, value_type m31, value_type m32, value_type m33);
 
     // Generate a diagonal matrix
-    TL_FI Matrix4(value_type m00, value_type m11, value_type m22, value_type m33);
+    Matrix4(value_type m00, value_type m11, value_type m22, value_type m33);
 
     // Copy constructor
-    TL_FI Matrix4(const this_type& aMatrix);
+    Matrix4(const this_type& aMatrix);
 
     // Copy constructor
-    TL_FI Matrix4(const base_type& aMatrix);
+    Matrix4(const base_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    TL_FI explicit Matrix4(const_reference aValue);
+    explicit Matrix4(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    TL_FI Matrix4(const Vector<value_type, 4>& aVec1,
-                  const Vector<value_type, 4>& aVec2,
-                  const Vector<value_type, 4>& aVec3,
-                  const Vector<value_type, 4>& aVec4,
-                  typename base_type::matrix_order aOrder);
+    Matrix4(const Vector<value_type, 4>& aVec1,
+            const Vector<value_type, 4>& aVec2,
+            const Vector<value_type, 4>& aVec3,
+            const Vector<value_type, 4>& aVec4,
+            typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    TL_FI Matrix4(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix4(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    TL_FI Matrix4(const core::data_structs::Variadic
-                    <value_type, k_MatrixSize>& a_vars,
-                  matrix_order a_order);
+    Matrix4(const core::data_structs::
+            Variadic<value_type, k_MatrixSize>& a_vars,
+            matrix_order a_order);
   };
 
   typedef Matrix4<f32>  Mat4f32;

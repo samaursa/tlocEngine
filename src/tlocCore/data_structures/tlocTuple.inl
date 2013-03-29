@@ -221,7 +221,7 @@ namespace tloc { namespace core { namespace data_structs {
     Swap(this_type& aVector)
   {
     ITERATE_TUPLE
-    { tlSwap(m_values[(tl_int)i], aVector[(tl_int)i]); }
+    { core::swap(m_values[(tl_int)i], aVector[(tl_int)i]); }
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -11,9 +11,10 @@ namespace tloc { namespace core {
 
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  TL_I T_OutputIterator uninitialized_copy(T_InputIterator aRangeBegin, 
-                                           T_InputIterator aRangeEnd, 
-                                           T_OutputIterator aDestRangeBegin)
+  T_OutputIterator 
+    uninitialized_copy(T_InputIterator aRangeBegin, 
+                       T_InputIterator aRangeEnd, 
+                       T_OutputIterator aDestRangeBegin)
   {
     typedef typename Loki::TypeTraits<T_OutputIterator> unknown_type;
     typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -23,9 +24,10 @@ namespace tloc { namespace core {
   }
 
   template <typename T_InputIterator, typename T_Count, typename T_ValueType>
-  TL_I void uninitialized_fill_n(T_InputIterator a_first, 
-                                 T_Count a_count, 
-                                 const T_ValueType& a_value)
+  void 
+    uninitialized_fill_n(T_InputIterator a_first, 
+                         T_Count a_count, 
+                         const T_ValueType& a_value)
   {
     typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
     typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -37,7 +39,7 @@ namespace tloc { namespace core {
   namespace detail {
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator 
+    T_OutputIterator 
       DoUninitializedCopyWithItrType(T_InputIterator a_rangeBegin, 
                                      T_InputIterator a_rangeEnd, 
                                      T_OutputIterator a_destRangeBegin, 
@@ -51,7 +53,7 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    TL_I T_OutputIterator 
+    T_OutputIterator 
       DoUninitializedCopyWithItrType(T_InputIterator a_rangeBegin, 
                                      T_InputIterator a_rangeEnd, 
                                      T_OutputIterator a_destRangeBegin, 
@@ -66,7 +68,7 @@ namespace tloc { namespace core {
 
     template <typename T_InputIterator, typename T_OutputIterator, 
               typename T_ValueType>
-    TL_I T_OutputIterator 
+    T_OutputIterator 
       DoUninitializedCopyWithValueType(T_InputIterator a_rangeBegin, 
                                        T_InputIterator a_rangeEnd, 
                                        T_OutputIterator a_destRangeBegin, 
@@ -88,22 +90,24 @@ namespace tloc { namespace core {
 
     template <typename T_InputIterator, typename T_OutputIterator, 
               typename T_ValueType>
-    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
-                                               T_InputIterator aRangeEnd,
-                                               T_OutputIterator aDestRangeBegin,
-                                               T_ValueType,
-                                               HasTrivalAssign)
+    T_OutputIterator 
+      DoUninitializedCopy (T_InputIterator aRangeBegin, 
+                           T_InputIterator aRangeEnd, 
+                           T_OutputIterator aDestRangeBegin, 
+                           T_ValueType, 
+                           HasTrivalAssign)
     {
       return tloc::core::copy(aRangeBegin, aRangeEnd, aDestRangeBegin);
     }
 
     template <typename T_InputIterator, typename T_OutputIterator, 
               typename T_ValueType>
-    TL_I T_OutputIterator DoUninitializedCopy (T_InputIterator aRangeBegin,
-                                               T_InputIterator aRangeEnd,
-                                               T_OutputIterator aDestRangeBegin,
-                                               T_ValueType,
-                                               HasComplexAssign)
+    T_OutputIterator 
+      DoUninitializedCopy (T_InputIterator aRangeBegin, 
+                           T_InputIterator aRangeEnd, 
+                           T_OutputIterator aDestRangeBegin, 
+                           T_ValueType, 
+                           HasComplexAssign)
     {
       T_OutputIterator currentDestination(aDestRangeBegin);
 
@@ -116,20 +120,22 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoUninitializedFillNWithItrType(T_InputIterator a_first, 
-                                              T_Count a_count, 
-                                              const T_ValueType& a_value, 
-                                              IsRawItr)
+    void 
+      DoUninitializedFillNWithItrType(T_InputIterator a_first, 
+                                      T_Count a_count, 
+                                      const T_ValueType& a_value, 
+                                      IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoUninitializedFillNWithValueType(a_first, a_count, a_value, value_type());
     }
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType>
-    TL_I void DoUninitializedFillNWithItrType(T_InputIterator a_first, 
-                                              T_Count a_count, 
-                                              const T_ValueType& a_value, 
-                                              IsComplexItr)
+    void 
+      DoUninitializedFillNWithItrType(T_InputIterator a_first, 
+                                      T_Count a_count, 
+                                      const T_ValueType& a_value, 
+                                      IsComplexItr)
     {
       typedef typename T_InputIterator::value_type value_type;
       DoUninitializedFillNWithValueType(a_first, a_count, a_value, value_type());
@@ -137,11 +143,12 @@ namespace tloc { namespace core {
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType,
               typename T_ValueTypeInputIterator>
-    TL_I void DoUninitializedFillNWithValueType(T_InputIterator a_first, 
-                                                T_Count a_count, 
-                                                const T_ValueType& 
-                                                a_value, 
-                                                T_ValueTypeInputIterator)
+    void 
+      DoUninitializedFillNWithValueType(T_InputIterator a_first, 
+                                        T_Count a_count, 
+                                        const T_ValueType& 
+                                        a_value, 
+                                        T_ValueTypeInputIterator)
     {
       //TODO: Add proper checks for POD types.
       typedef typename Loki::TypeTraits<T_ValueTypeInputIterator> value_type_traits;
@@ -156,22 +163,24 @@ namespace tloc { namespace core {
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType,
               typename T_ValueTypeInputIterator>
-    TL_I void DoUninitializedFillN(T_InputIterator a_first, 
-                                   T_Count a_count, 
-                                   const T_ValueType& a_value,
-                                   T_ValueTypeInputIterator,
-                                   HasTrivalAssign)
+    void 
+      DoUninitializedFillN(T_InputIterator a_first, 
+                           T_Count a_count, 
+                           const T_ValueType& a_value, 
+                           T_ValueTypeInputIterator, 
+                           HasTrivalAssign)
     {
       tloc::core::fill_n(a_first, a_count, a_value);
     }
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType,
               typename T_ValueTypeInputIterator>
-    TL_I void DoUninitializedFillN(T_InputIterator a_first, 
-                                   T_Count a_count, 
-                                   const T_ValueType& a_value,
-                                   T_ValueTypeInputIterator,
-                                   HasComplexAssign)
+    void 
+      DoUninitializedFillN(T_InputIterator a_first, 
+                           T_Count a_count, 
+                           const T_ValueType& a_value, 
+                           T_ValueTypeInputIterator, 
+                           HasComplexAssign)
     {
       T_InputIterator currentDestination(a_first);
 
@@ -180,8 +189,6 @@ namespace tloc { namespace core {
         new(&*currentDestination) T_ValueTypeInputIterator(a_value); 
       }
     }
-
-
   }
 
 };};

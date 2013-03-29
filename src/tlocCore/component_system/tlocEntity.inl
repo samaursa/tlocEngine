@@ -1,11 +1,6 @@
 #ifndef TLOC_ENTITY_INL 
 #define TLOC_ENTITY_INL 
 
-#ifndef TLOC_ENTITY_H 
-#error "Must include header before including the inline file"
-#endif
-
-#include "tlocEntity.h"
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/containers/tlocContainers.inl>
 
@@ -14,6 +9,7 @@ namespace tloc { namespace core { namespace component_system {
   TL_I Entity::Entity(entity_id a_id)
     : m_id(a_id)
     , m_index(size_type() - 1)
+    , m_active(true)
   {
     m_allComponents.resize(components_group::count);
   }

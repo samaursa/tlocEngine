@@ -72,6 +72,7 @@ namespace tloc { namespace core { namespace component_system {
             entity_ptr_array::iterator entItr = core::find_all(m_activeEntities, ent);
             if (entItr == m_activeEntities.end())
             {
+              OnComponentInsert(entEvent);
               m_activeEntities.push_back(ent);
             }
           }
@@ -80,10 +81,31 @@ namespace tloc { namespace core { namespace component_system {
             entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
             if (itr != m_activeEntities.end())
             {
+              OnComponentRemove(entEvent);
               m_activeEntities.erase(itr);
             }
           }
         }
+        break;
+      }
+    case entity_events::disable_component:
+    case entity_events::enable_component:
+      {
+        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        Component* comp = entEvent.GetComponent();
+
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        {
+          if (comp->GetType() == *itr)
+          {
+            if (type == entity_events::disable_component)
+            { OnComponentDisable(entEvent); }
+            else
+            { OnComponentEnable(entEvent); }
+          }
+        }
+        break;
       }
     }
 

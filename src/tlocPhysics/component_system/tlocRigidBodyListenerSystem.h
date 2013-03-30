@@ -59,6 +59,12 @@ namespace tloc { namespace physics { namespace component_system {
     virtual void ProcessEntity(const entity_manager* a_mgr, 
                                const entity_type* a_ent);
 
+    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
+
+    virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
   public:
     bool OnContactBegin(const contact_event_type& a_event);
     bool OnContactEnd(const contact_event_type& a_event);

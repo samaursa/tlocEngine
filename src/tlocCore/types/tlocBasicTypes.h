@@ -10,27 +10,6 @@
 namespace tloc
 {
   //////////////////////////////////////////////////////////////////////////
-  // C++11 NULL define (this will be removed when compiling as C++11)
-
-  // Copied from http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/nullptr#Solution_and_Sample_Code
-  const // It is a const object...
-  class nullptr_t
-  {
-  public:
-    template<class T>
-    inline operator T*() const // convertible to any type of null non-member pointer...
-    { return 0; }
-
-    template<class C, class T>
-    inline operator T C::*() const   // or any type of null member pointer...
-    { return 0; }
-
-  private:
-    void operator&() const;  // Can't take address of nullptr
-
-  };
-
-  //////////////////////////////////////////////////////////////////////////
   // Windows Types
 
 #if defined(WIN32) || defined(_WIN32) || defined (_WIN64)
@@ -148,9 +127,5 @@ namespace tloc
 #define TL_ULLONG_MAX             ULLONG_MAX
 
 };
-
-#ifdef TLOC_CXX03
-  extern tloc::nullptr_t nullptr;
-#endif
 
 #endif

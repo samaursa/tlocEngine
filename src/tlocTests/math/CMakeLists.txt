@@ -31,8 +31,8 @@ add_dependencies(tlocTestsMath
   )
 
 target_link_libraries(tlocTestsMath
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocMath.lib
+  tlocCore
+  tlocMath
   )
 
 # Filters to organize the source files

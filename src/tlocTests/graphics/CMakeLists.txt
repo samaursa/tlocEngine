@@ -33,9 +33,9 @@ add_dependencies(tlocTestsGraphics
   )
 
 target_link_libraries(tlocTestsGraphics
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocGraphics.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocMath.lib
+  tlocCore
+  tlocGraphics
+  tlocMath
   )
 
 if(MSVC)

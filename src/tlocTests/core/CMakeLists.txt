@@ -53,8 +53,8 @@ add_dependencies(tlocTestsCore
   tlocCore
   )
 
-target_link_libraries(tlocTestsCore
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
+target_link_libraries(tlocTestsCore 
+  tlocCore
   )
 
 # Filters to organize the source files

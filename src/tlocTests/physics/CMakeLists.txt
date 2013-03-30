@@ -23,10 +23,10 @@ add_dependencies(tlocTestsPhysics
   )
 
 target_link_libraries(tlocTestsPhysics
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocMath.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocPhysics.lib
-  ${TLOC_DEP_PATH}/lib/${ARCH_DIR}/${CMAKE_CFG_INTDIR}/Box2D.lib
+  tlocCore
+  tlocMath
+  tlocPhysics
+  Box2D
   )
 
 # Filters to organize the source files

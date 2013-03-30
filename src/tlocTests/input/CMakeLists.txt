@@ -17,8 +17,8 @@ add_dependencies(tlocTestsInput
   )
 
 target_link_libraries(tlocTestsInput
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocInput.lib
+  tlocCore
+  tlocInput
   )
 
 # Find dinput.lib and add it as a link target

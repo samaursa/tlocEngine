@@ -9,6 +9,8 @@ namespace TestingTable
   using namespace tloc::core::data_structs;
 
   typedef Tuple<tl_int, 3> tuple_int_type;
+  typedef Tuple<s32, 3> tuple_int_type_32;
+  typedef Tuple<s64, 3> tuple_int_type_64;
 
   struct Table3Fixture
   {
@@ -149,9 +151,9 @@ namespace TestingTable
   {
     Table<s32, 3, 3> table32;
 
-    tuple_int_type row1;
-    tuple_int_type row2;
-    tuple_int_type row3;
+    tuple_int_type_32 row1;
+    tuple_int_type_32 row2;
+    tuple_int_type_32 row3;
 
     row1[0] = 11; row1[1] = 21; row1[2] = 31;
     row2[0] = 41; row2[1] = 51; row2[2] = 61;

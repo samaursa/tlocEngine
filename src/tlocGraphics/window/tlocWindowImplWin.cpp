@@ -3,6 +3,8 @@
 #include "glext.h"
 #include "wglext.h"
 
+#include <tlocCore/utilities/tlocType.h>
+
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
   using namespace core::string;
@@ -119,8 +121,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     HDC screenDC     = GetDC(NULL);
     tl_int left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
     tl_int top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
-    tl_int width  = modeProps.m_width;
-    tl_int height = modeProps.m_height;
+    tl_size width  = modeProps.m_width;
+    tl_size height = modeProps.m_height;
     // LOG: Window resolution greater than screen's resolution
     ReleaseDC(NULL, screenDC);
 
@@ -143,7 +145,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
     if (fullScreen == false)
     {
-      RECT rect = {0, 0, width, height};
+      RECT rect = {0, 0, 
+                   core_utils::CastNumber<LONG, tl_size>(width), 
+                   core_utils::CastNumber<LONG, tl_size>(height)};
       AdjustWindowRect(&rect, win32Style, false);
       width = rect.right - rect.left;
       height = rect.bottom - rect.top;

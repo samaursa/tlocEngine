@@ -104,14 +104,15 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         ComponentMapper<graphics::component_system::Projection> projMatList =
           m_sharedCam->GetComponents(graphics::component_system::components::projection);
-        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix();
+        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().
+          Cast<matrix_type>();
       }
 
       if (m_sharedCam->HasComponent(transform))
       {
         ComponentMapper<math::component_system::Transform> viewMatList =
           m_sharedCam->GetComponents(math::component_system::components::transform);
-        viewMat = viewMatList[0].GetTransformation();
+        viewMat = viewMatList[0].GetTransformation().Cast<matrix_type>();
       }
     }
 
@@ -176,7 +177,7 @@ namespace tloc { namespace graphics { namespace component_system {
       math::component_system::Transform& pos = posList[0];
 
       // Change the position of the quad
-      const Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation().Cast<Mat4f32>();
 
       Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)

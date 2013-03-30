@@ -65,14 +65,18 @@ namespace tloc { namespace math { namespace types {
 
     // Empty default constructor
     Vector();
-    Vector(const base_type& a_vector);
+
+    template <typename T_Real>
+    Vector(const core_ds::Tuple<T_Real, T_Size>& a_vector)
+      : base_type(a_vector)
+    { }
 
     template <typename T_ArrayType>
     Vector(const T_ArrayType (&aArray)[T_Size]);
 
     Vector(const core::data_structs::Variadic<T, T_Size>& a_vars);
 
-    explicit Vector(const_reference a_value);
+    explicit Vector(value_type a_value);
 
     //------------------------------------------------------------------------
     // Modifiers

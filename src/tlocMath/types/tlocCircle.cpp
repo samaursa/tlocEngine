@@ -41,15 +41,6 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  Circle<TLOC_CIRCLE_PARAMS>::
-    Circle(const this_type& a_other)
-    : m_radius(a_other.m_radius)
-    , m_position(a_other.m_position)
-  { }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_CIRCLE_TEMP>
   TLOC_CIRCLE_TYPE::this_type&
     Circle<TLOC_CIRCLE_PARAMS>::
     operator=(const this_type& a_other)

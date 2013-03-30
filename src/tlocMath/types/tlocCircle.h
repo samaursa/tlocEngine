@@ -33,7 +33,9 @@ namespace tloc { namespace math { namespace types {
   public:
     Circle(radius a_r = radius(0), position a_p = position(point_type(0)));
     Circle(diameter a_d, position a_p = position(point_type(0)));
-    Circle(const this_type& a_other);
+
+    template <typename T_Real>
+    Circle(const Circle<T_Real>& a_other);
 
     this_type& operator=(const this_type& a_other);
 
@@ -59,6 +61,17 @@ namespace tloc { namespace math { namespace types {
     value_type m_radius;
     point_type m_position;
   };
+
+  //------------------------------------------------------------------------
+  // Template definitions
+
+  template <typename T>
+  template <typename T_Real>
+  Circle<T>::
+    Circle(const Circle<T_Real>& a_other)
+    : m_radius(a_other.GetRadius())
+    , m_position(a_other.GetPosition())
+  { }
 
   //////////////////////////////////////////////////////////////////////////
   // Typedefs

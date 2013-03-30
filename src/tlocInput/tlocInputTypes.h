@@ -168,8 +168,11 @@ namespace tloc { namespace input {
       typedef p_axis::AbsoluteOnly                              policy_type;
 
       typedef typename base_type::rel_and_abs                   rel_and_abs;
-      typedef typename base_type::abs_type::value_type          abs_type;
-      typedef typename base_type::rel_type                      rel_type;
+
+      // Note: These are intentionally switched, as base_type::abs_type does not
+      // "exist" due to the conditional type.
+      typedef typename base_type::rel_type                      abs_type;
+      typedef typename base_type::abs_type                      rel_type;
 
       using base_type::m_absoluteAndRelative;
 

@@ -3,6 +3,8 @@
 #include "glext.h"
 #include "wglext.h"
 
+#include <tlocCore/utilities/tlocType.h>
+
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
   using namespace core::string;
@@ -117,15 +119,15 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // Center the window to the screen regardless of the given size
     HDC screenDC     = GetDC(NULL);
-    size_type left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
-    size_type top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
-    size_type width  = modeProps.m_width;
-    size_type height = modeProps.m_height;
+    tl_int left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
+    tl_int top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+    tl_size width  = modeProps.m_width;
+    tl_size height = modeProps.m_height;
     // LOG: Window resolution greater than screen's resolution
     ReleaseDC(NULL, screenDC);
 
     DWORD win32Style = WS_VISIBLE;
-    if (win32Style == WindowSettings::style_none)
+    if (a_style == WindowSettings::style_none)
     {
       win32Style |= WS_POPUP;
     }
@@ -143,7 +145,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
     if (fullScreen == false)
     {
-      RECT rect = {0, 0, (LONG)width, (LONG)height};
+      RECT rect = {0, 0, 
+                   core_utils::CastNumber<LONG, tl_size>(width), 
+                   core_utils::CastNumber<LONG, tl_size>(height)};
       AdjustWindowRect(&rect, win32Style, false);
       width = rect.right - rect.left;
       height = rect.bottom - rect.top;
@@ -158,7 +162,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       (s32)top, (s32)width, (s32)height, NULL, NULL,
       GetModuleHandle(NULL), this);
 
-    if (fullScreen) { DoSwitchToFullscreen(a_mode); }
+    if (fullScreen) 
+    { DoSwitchToFullscreen(a_mode); }
 
     // LOG: Grab log from GetLastError
     TLOC_ASSERT(m_handle, "CreateWindowW failed.");

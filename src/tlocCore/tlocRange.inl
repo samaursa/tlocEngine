@@ -361,7 +361,8 @@ namespace tloc { namespace core {
     at(size_type a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL (a_index < size(), "Index out of bounds!");
-    return m_begin + (m_stepSize * a_index);
+    return m_begin + (m_stepSize * 
+            core_utils::CastNumber<value_type, size_type>(a_index));
   }
 
   template <RANGE_T_TEMP>

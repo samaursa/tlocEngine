@@ -73,7 +73,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   void InputManager<INPUT_MANAGER_PARAM>::Reset()
   {
-    for (tl_size i = 0; i < p_hid::Count::m_index; ++i)
+    for (input_type i = 0; i < p_hid::Count::m_index; ++i)
     {
       DoReset(i);
     }
@@ -124,18 +124,13 @@ namespace tloc { namespace input {
   template _HID_<_type_::policy_type>* _type_::DoGetHID\
   <_HID_<_type_::policy_type> >(_type_::size_type);\
 
-#if defined(TLOC_OS_WIN)
   INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Mouse, InputManager<InputPolicy::Immediate>);
-#elif defined(TLOC_OS_IPHONE)
-  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
-  INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);
 
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
-#endif
 
 };};

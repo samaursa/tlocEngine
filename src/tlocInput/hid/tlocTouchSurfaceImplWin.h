@@ -5,6 +5,7 @@
 
 #include <tlocCore/types/tlocTemplateParams.h>
 
+#include <tlocInput/hid/tlocTouchSurface.h>
 #include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
 namespace tloc { namespace input {

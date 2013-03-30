@@ -2,12 +2,13 @@
 #include <tlocCore/platform/tlocPlatform.h>
 
 #include <cstring>
+#include "tlocAssetsPath.h"
 
 #if defined(TLOC_OS_WIN)
 
 const char* GetAssetPath()
 {
-  static const char* assetPath = "../../../../../assets/";
+  static const char* assetPath = TLOC_ASSETS_PATH;
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

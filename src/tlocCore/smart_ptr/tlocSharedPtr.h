@@ -159,51 +159,51 @@ namespace tloc { namespace core { namespace smart_ptr {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <class T>
-  bool operator ==(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator ==(const SharedPtr<T>& a, nullptr_t)
   { return !a; }
 
   template <class T>
-  bool operator ==(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator ==(nullptr_t, const SharedPtr<T>& b)
   { return !b; }
 
   template <class T>
-  bool operator !=(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator !=(const SharedPtr<T>& a, nullptr_t)
   { return (bool)a; }
 
   template <class T>
-  bool operator !=(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator !=(nullptr_t, const SharedPtr<T>& b)
   { return (bool)b; }
 
   template <class T>
-  bool operator <(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator <(const SharedPtr<T>& a, nullptr_t)
   { return tloc::core::less<T*>()(a.get(), nullptr ); }
 
   template <class T>
-  bool operator <(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator <(nullptr_t, const SharedPtr<T>& b)
   { return tloc::core::less<T*>()(nullptr, b.get()); }
 
   template <class T>
-  bool operator <=(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator <=(const SharedPtr<T>& a, nullptr_t)
   { return !(nullptr < a); }
 
   template <class T>
-  bool operator <=(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator <=(nullptr_t, const SharedPtr<T>& b)
   { return !(b < nullptr); }
 
   template <class T>
-  bool operator >(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator >(const SharedPtr<T>& a, nullptr_t)
   { return nullptr <= a; }
 
   template <class T>
-  bool operator >(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator >(nullptr_t, const SharedPtr<T>& b)
   { return !(b < nullptr); }
 
   template <class T>
-  bool operator >=(const SharedPtr<T>& a, tloc::nullptr_t)
+  bool operator >=(const SharedPtr<T>& a, nullptr_t)
   { return !(a < nullptr); }
 
   template <class T>
-  bool operator >=(tloc::nullptr_t, const SharedPtr<T>& b)
+  bool operator >=(nullptr_t, const SharedPtr<T>& b)
   { return !(nullptr < b); }
 
 };};};

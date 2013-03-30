@@ -2,6 +2,12 @@
 set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE )
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+
+# For compilers that are C++03, add the following definition
+if (MSVC90 OR MSVC80 OR MSVC71 OR MSVC70 OR MSVC60)
+  add_definitions(-DTLOC_CXX03)
+endif()
+
 # Common preprocessors
 if(CMAKE_CXX_FLAGS_DEBUG)
   add_definitions(-DTLOC_DEBUG)
@@ -26,6 +32,8 @@ if(MSVC)
 
   #turn off exceptions for all configurations
   string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+  string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 
 # lib/exe path for all configurations

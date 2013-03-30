@@ -50,11 +50,20 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
-  void Window_T<WINDOW_PARAMS>::Create(window_handle_type a_ptr,
-                                     const WindowSettings& a_settings)
+  void Window_T<WINDOW_PARAMS>::
+    DoCreate(window_handle_type a_ptr, const WindowSettings& a_settings,
+             IsWindowHandle)
   {
     DoCreateImpl();
     m_impl->Create(a_ptr, a_settings);
+  }
+
+  template <WINDOW_TEMP>
+  void Window_T<WINDOW_PARAMS>::
+  DoCreate(const graphics_mode& a_mode, const WindowSettings& a_settings,
+          IsNotWindowHandle)
+  {
+    Create(a_mode, a_settings);
   }
 
   template <WINDOW_TEMP>

@@ -5,11 +5,11 @@
 
 #include <tlocCore/platform/tlocPlatform.h>
 
+#include <tlocCore/types/tlocAny.h>
+
 #if defined(TLOC_OS_WIN)
 # define WIN32_LEAN_AND_MEAN
 # include <Windows.h>
-#elif defined(TLOC_OS_IPHONE)
-# import <UIKit/UIKit.h>
 #endif
 
 namespace tloc { namespace graphics { namespace win {
@@ -34,10 +34,13 @@ namespace tloc { namespace graphics { namespace win {
 
 #elif defined (TLOC_OS_IPHONE)
 
+  // Note: We are using tlocAny to replace Objective-C types in this case
+  // since any source file (cpp) that included this header would have to be
+  // treated as an Objective-C++ file.
   template<>
   struct WindowHandle<core::Platform_iphone>
   {
-    typedef UIWindow*     type;
+    typedef core_t::Any /* (UIWindow*) */   type;
   };
 
 #elif defined (TLOC_OS_LINUX)

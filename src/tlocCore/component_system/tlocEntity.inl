@@ -9,6 +9,7 @@ namespace tloc { namespace core { namespace component_system {
   TL_I Entity::Entity(entity_id a_id)
     : m_id(a_id)
     , m_index(size_type() - 1)
+    , m_active(true)
   {
     m_allComponents.resize(components_group::count);
   }

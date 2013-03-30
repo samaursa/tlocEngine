@@ -1,7 +1,12 @@
 #include "tlocInputImplIphone.h"
 
+#include <tlocCore/types/tlocAny.inl>
+
 #include <tlocInput/hid/tlocKeyboardImplIphone.h>
 #include <tlocInput/hid/tlocTouchSurfaceImplIphone.h>
+
+#import <UIKit/UIkit.h>
+#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 
 namespace tloc { namespace input { namespace priv {
 
@@ -58,7 +63,7 @@ namespace tloc { namespace input { namespace priv {
   INPUT_MANAGER_IMPL_TYPE::size_type
     InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Initialize()
   {
-    if (GetWindowHandle() == NULL)
+    if (GetWindowHandle().template Cast<UIWindow*>() == NULL)
     {
       // LOG: the passed window pointer is not valid
       return 1;
@@ -84,7 +89,7 @@ namespace tloc { namespace input { namespace priv {
       case p_hid::TouchSurface::m_index:
       {
         iphone_touch_surface_param_type params;
-        params.m_param1 = DoGetOpenGLViewHandle();
+        params.m_param1 = DoGetOpenGLViewHandle().template Cast<OpenGLView*>();
 
         if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available == false)
         {
@@ -213,17 +218,22 @@ namespace tloc { namespace input { namespace priv {
   // Platform specific methods
   
   template <INPUT_MANAGER_IMPL_TEMP>
-  UIWindow* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::GetWindowHandle()
+  INPUT_MANAGER_IMPL_TYPE::window_handle_type
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::GetWindowHandle()
   {
     return m_params.m_param1;
   }
   
   template <INPUT_MANAGER_IMPL_TEMP>
-  OpenGLView* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::DoGetOpenGLViewHandle()
+  INPUT_MANAGER_IMPL_TYPE::view_handle_type
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::DoGetOpenGLViewHandle()
   {
-    TLOC_ASSERT([[GetWindowHandle() subviews] count] != 0,
+    UIWindow* window = GetWindowHandle().template Cast<UIWindow*>();
+
+    TLOC_ASSERT([[window subviews] count] != 0,
                 "Window has no views attached");
-    return static_cast<OpenGLView*>([[GetWindowHandle() subviews] lastObject]);
+
+    return view_handle_type([[window subviews] lastObject]);
   }
 
   //------------------------------------------------------------------------

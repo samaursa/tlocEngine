@@ -236,8 +236,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Post_ProcessActiveEntities()
   {
-    m_shaderPtr->Disable();
-    m_shaderPtr.reset();
+    // No materials/entities may have been loaded initially
+    // (m_shaderPtr would have remained NULL)
+    if (m_shaderPtr)
+    {
+      m_shaderPtr->Disable();
+      m_shaderPtr.reset();
+    }
   }
 
 };};};

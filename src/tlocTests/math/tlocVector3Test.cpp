@@ -16,6 +16,8 @@ namespace TestingVector3f
 
   struct Vector3fFixture
   {
+    typedef Vec3f::value_type     real_type;
+
     Vector3fFixture()
       : b(Variadic3f(5, 6, 7))
     {
@@ -310,19 +312,20 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks",
     "Tests == and != comparisons as well as checks")
   {
-    CHECK((a != b) == true);
+    CHECK((a != b));
     a = b;
-    CHECK((a == b) == true);
-    a[0] = 0.0000001f; b[0] = 0.0000002f;
-    CHECK((a == b) == true);
+    CHECK((a == b));
+    a[0] = 0.0000001f; b[0] = 0.0000001f;
+    CHECK((a == b)); // NOTE: on 32-bit systems above numbers are less than
+                     // epsilon and will always return true.
     a[0] = 0.000002f; b[0] = 0.000005f;
-    CHECK((a != b) == true);
+    CHECK((a != b));
 
     a.Zero();
-    CHECK(a.IsZero() == true);
-    CHECK(a.IsValid() == true);
+    CHECK(a.IsZero());
+    CHECK(a.IsValid());
     a[2] = sqrt(-2.0f);
-    CHECK(a.IsValid() == false);
+    CHECK_FALSE(a.IsValid());
   }
 
 }

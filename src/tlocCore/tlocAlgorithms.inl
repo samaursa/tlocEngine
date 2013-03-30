@@ -33,13 +33,15 @@ namespace tloc { namespace core {
   // Non-modifying sequence operations
 
   template <typename T_Container, typename T_Function>
-  T_Function for_each_all(T_Container a_container, T_Function a_func)
+  T_Function 
+    for_each_all(T_Container a_container, T_Function a_func)
   {
     return for_each(a_container.begin(), a_container.end(), a_func);
   }
 
   template <typename T_InputIterator, typename T_Function>
-  T_Function for_each( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+  T_Function 
+    for_each( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
                        T_Function aFunc )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
@@ -70,8 +72,9 @@ namespace tloc { namespace core {
   }
 
   template <typename T_InputIterator, typename T>
-  T_InputIterator find( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                        T const & a_value )
+  T_InputIterator 
+    find( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+          T const & a_value )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -85,15 +88,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_Predicate>
-  typename T_Container::iterator find_if(T_Container a_container, 
-                                         const T_Predicate& a_pred)
+  typename T_Container::iterator 
+    find_if(T_Container a_container, const T_Predicate& a_pred)
   {
     return find_if(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_InputIterator, typename T_Predicate>
-  T_InputIterator find_if( T_InputIterator a_rangeBegin,
-                           T_InputIterator a_rangeEnd, T_Predicate a_pred )
+  T_InputIterator 
+    find_if( T_InputIterator a_rangeBegin, 
+             T_InputIterator a_rangeEnd, T_Predicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -125,10 +129,11 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 find_end( T_ForwardIterator1 a_rangeToSearchBegin,
-                               T_ForwardIterator1 a_rangeToSearchEnd,
-                               T_ForwardIterator2 a_rangeToFindBegin,
-                               T_ForwardIterator2 a_rangeToFindEnd )
+  T_ForwardIterator1 
+    find_end( T_ForwardIterator1 a_rangeToSearchBegin, 
+              T_ForwardIterator1 a_rangeToSearchEnd, 
+              T_ForwardIterator2 a_rangeToFindBegin, 
+              T_ForwardIterator2 a_rangeToFindEnd )
   {
     return find_end(a_rangeToSearchBegin, a_rangeToSearchEnd, a_rangeToFindBegin, 
       a_rangeToFindEnd, equal_to<typename iterator_traits<T_ForwardIterator1>::value_type>());
@@ -136,11 +141,12 @@ namespace tloc { namespace core {
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
     typename T_BinaryPredicate>
-  T_ForwardIterator1 find_end( T_ForwardIterator1 a_rangeToSearchBegin,
-                               T_ForwardIterator1 a_rangeToSearchEnd,
-                               T_ForwardIterator2 a_rangeToFindBegin,
-                               T_ForwardIterator2 a_rangeToFindEnd,
-                               T_BinaryPredicate a_pred )
+  T_ForwardIterator1 
+    find_end( T_ForwardIterator1 a_rangeToSearchBegin, 
+              T_ForwardIterator1 a_rangeToSearchEnd, 
+              T_ForwardIterator2 a_rangeToFindBegin, 
+              T_ForwardIterator2 a_rangeToFindEnd, 
+              T_BinaryPredicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
@@ -201,10 +207,11 @@ namespace tloc { namespace core {
  }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 find_first_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                    T_ForwardIterator1 a_rangeToSearchEnd,
-                                    T_ForwardIterator2 a_rangeToFindBegin,
-                                    T_ForwardIterator2 a_rangeToFindEnd )
+  T_ForwardIterator1 
+    find_first_of( T_ForwardIterator1 a_rangeToSearchBegin,
+                   T_ForwardIterator1 a_rangeToSearchEnd, 
+                   T_ForwardIterator2 a_rangeToFindBegin, 
+                   T_ForwardIterator2 a_rangeToFindEnd )
   {
     return find_first_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
       a_rangeToFindBegin, a_rangeToFindEnd, 
@@ -213,11 +220,12 @@ namespace tloc { namespace core {
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-  T_ForwardIterator1 find_first_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                    T_ForwardIterator1 a_rangeToSearchEnd,
-                                    T_ForwardIterator2 a_rangeToFindBegin,
-                                    T_ForwardIterator2 a_rangeToFindEnd,
-                                    T_BinaryPredicate a_pred )
+  T_ForwardIterator1 
+    find_first_of( T_ForwardIterator1 a_rangeToSearchBegin, 
+                   T_ForwardIterator1 a_rangeToSearchEnd, 
+                   T_ForwardIterator2 a_rangeToFindBegin, 
+                   T_ForwardIterator2 a_rangeToFindEnd, 
+                   T_BinaryPredicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
@@ -265,10 +273,11 @@ namespace tloc { namespace core {
  }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 find_first_not_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                        T_ForwardIterator1 a_rangeToSearchEnd,
-                                        T_ForwardIterator2 a_rangeToFindBegin,
-                                        T_ForwardIterator2 a_rangeToFindEnd )
+  T_ForwardIterator1 
+    find_first_not_of( T_ForwardIterator1 a_rangeToSearchBegin, 
+                       T_ForwardIterator1 a_rangeToSearchEnd, 
+                       T_ForwardIterator2 a_rangeToFindBegin, 
+                       T_ForwardIterator2 a_rangeToFindEnd )
   {
     return find_first_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
       a_rangeToFindBegin, a_rangeToFindEnd, 
@@ -277,11 +286,12 @@ namespace tloc { namespace core {
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-  T_ForwardIterator1 find_first_not_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                        T_ForwardIterator1 a_rangeToSearchEnd,
-                                        T_ForwardIterator2 a_rangeToFindBegin,
-                                        T_ForwardIterator2 a_rangeToFindEnd,
-                                        T_BinaryPredicate a_pred )
+  T_ForwardIterator1 
+    find_first_not_of( T_ForwardIterator1 a_rangeToSearchBegin, 
+                       T_ForwardIterator1 a_rangeToSearchEnd, 
+                       T_ForwardIterator2 a_rangeToFindBegin, 
+                       T_ForwardIterator2 a_rangeToFindEnd, 
+                       T_BinaryPredicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
@@ -333,10 +343,11 @@ namespace tloc { namespace core {
  }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 find_last_not_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                       T_ForwardIterator1 a_rangeToSearchEnd,
-                                       T_ForwardIterator2 a_rangeToFindBegin,
-                                       T_ForwardIterator2 a_rangeToFindEnd )
+  T_ForwardIterator1 
+    find_last_not_of( T_ForwardIterator1 a_rangeToSearchBegin, 
+                      T_ForwardIterator1 a_rangeToSearchEnd, 
+                      T_ForwardIterator2 a_rangeToFindBegin, 
+                      T_ForwardIterator2 a_rangeToFindEnd )
   {
      return find_last_not_of(a_rangeToSearchBegin, a_rangeToSearchEnd, 
       a_rangeToFindBegin, a_rangeToFindEnd, 
@@ -344,12 +355,13 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
-    typename T_BinaryPredicate>
-    T_ForwardIterator1 find_last_not_of( T_ForwardIterator1 a_rangeToSearchBegin,
-                                         T_ForwardIterator1 a_rangeToSearchEnd,
-                                         T_ForwardIterator2 a_rangeToFindBegin,
-                                         T_ForwardIterator2 a_rangeToFindEnd,
-                                         T_BinaryPredicate a_pred )
+            typename T_BinaryPredicate>
+  T_ForwardIterator1 
+    find_last_not_of( T_ForwardIterator1 a_rangeToSearchBegin, 
+                      T_ForwardIterator1 a_rangeToSearchEnd, 
+                      T_ForwardIterator2 a_rangeToFindBegin, 
+                      T_ForwardIterator2 a_rangeToFindEnd, 
+                      T_BinaryPredicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
@@ -383,14 +395,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  tl_size count_all(T_Container a_container, T const & a_value)
+  tl_size 
+    count_all(T_Container a_container, T const & a_value)
   {
     return count(a_container.begin(), a_container.end(), a_value);
   }
 
   template <typename T_InputIterator, typename T>
-  tl_size count( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                 T const & a_value )
+  tl_size 
+    count( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+           T const & a_value )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -406,14 +420,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_Predicate>
-  tl_size count_if_all(T_Container a_container, T_Predicate a_pred)
+  tl_size 
+    count_if_all(T_Container a_container, T_Predicate a_pred)
   {
     return count_if(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_InputIterator, typename T_Predicate>
-  tl_size count_if( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                    T_Predicate a_pred )
+  tl_size 
+    count_if( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+              T_Predicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -475,14 +491,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container1, typename T_InputItr>
-  bool equal_all(T_Container1& a_toSearch, T_InputItr a_toCompare)
+  bool 
+    equal_all(T_Container1& a_toSearch, T_InputItr a_toCompare)
   {
     return equal(a_toSearch.begin(), a_toSearch.end(), a_toCompare);
   }
 
   template <typename T_Container, typename T_InputItr, typename T_BinaryPred>
-  bool equal_all(T_Container& a_toSearch, T_InputItr a_toCompare,
-                 T_BinaryPred a_pred)
+  bool 
+    equal_all(T_Container& a_toSearch, T_InputItr a_toCompare, 
+              T_BinaryPred a_pred)
   {
     typedef typename T_Container::value_type cont_value_type;
     return equal(a_toSearch.begin(), a_toSearch.end(), a_toCompare,
@@ -490,8 +508,9 @@ namespace tloc { namespace core {
   }
 
   template <typename T_InputIterator1, typename T_InputIterator2>
-  bool equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
-              T_InputIterator2 a_rangeToCompare )
+  bool 
+    equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd, 
+           T_InputIterator2 a_rangeToCompare )
   {
     return equal(a_rangeBegin, a_rangeEnd, a_rangeToCompare, 
       equal_to<typename iterator_traits<T_InputIterator1>::value_type>());
@@ -499,8 +518,9 @@ namespace tloc { namespace core {
 
   template <typename T_InputIterator1, typename T_InputIterator2,
             typename T_BinaryPred>
-  bool equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
-              T_InputIterator2 a_rangeToCompare, T_BinaryPred a_pred )
+  bool 
+  equal( T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd, 
+         T_InputIterator2 a_rangeToCompare, T_BinaryPred a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -516,21 +536,24 @@ namespace tloc { namespace core {
   }
 
   template <typename T_RandomAccessContainer>
-  void random_shuffle_all(T_RandomAccessContainer& a_toShuffle)
+  void 
+    random_shuffle_all(T_RandomAccessContainer& a_toShuffle)
   {
     random_shuffle(a_toShuffle.begin(), a_toShuffle.end());
   }
 
   template <typename T_RandomAccessContainer, typename T_RandomNumberGenerator>
-  void random_shuffle_all(T_RandomAccessContainer& a_toShuffle,
-                          T_RandomNumberGenerator a_rnd)
+  void 
+    random_shuffle_all(T_RandomAccessContainer& a_toShuffle,
+                       T_RandomNumberGenerator a_rnd)
   {
     random_shuffle(a_toShuffle.begin(), a_toShuffle.end(), a_rnd);
   }
 
   template <typename T_RandomAccessIterator>
-  void random_shuffle(T_RandomAccessIterator a_first, 
-                      T_RandomAccessIterator a_last)
+  void 
+    random_shuffle(T_RandomAccessIterator a_first, 
+                   T_RandomAccessIterator a_last)
   {
     typename iterator_traits<T_RandomAccessIterator>::difference_type 
       rangeSize, i;
@@ -539,16 +562,17 @@ namespace tloc { namespace core {
     typedef typename rng::rng_default::int_type int_type;
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], 
-        a_first[rng::g_defaultRNG.GetRandomInteger
-                (static_cast<int_type>(i) + 1)]);
+      swap(a_first[i], 
+        a_first[rng::g_defaultRNG.GetRandomInteger 
+        (static_cast<int_type>(i) + 1)]);
     }
   }
 
   template <typename T_RandomAccessIterator, class T_RandomNumberGenerator>
-  void random_shuffle(T_RandomAccessIterator a_first, 
-                      T_RandomAccessIterator a_last,
-                      T_RandomNumberGenerator a_rng)
+  void 
+    random_shuffle(T_RandomAccessIterator a_first, 
+                   T_RandomAccessIterator a_last, 
+                   T_RandomNumberGenerator a_rng)
   {
     typename iterator_traits<T_RandomAccessIterator>::difference_type 
       rangeSize, i;
@@ -556,7 +580,7 @@ namespace tloc { namespace core {
 
     for (i = rangeSize - 1; i > 0; --i)
     {
-      tlSwap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
+      swap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
     }
   }
 
@@ -579,10 +603,11 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
-  T_ForwardIterator1 search( T_ForwardIterator1 a_rangeToSearchBegin,
-                             T_ForwardIterator1 a_rangeToSearchEnd,
-                             T_ForwardIterator2 a_rangeToFindBegin,
-                             T_ForwardIterator2 a_rangeToFindEnd )
+  T_ForwardIterator1 
+    search( T_ForwardIterator1 a_rangeToSearchBegin, 
+            T_ForwardIterator1 a_rangeToSearchEnd, 
+            T_ForwardIterator2 a_rangeToFindBegin, 
+            T_ForwardIterator2 a_rangeToFindEnd )
   {
     typedef typename 
       iterator_traits<T_ForwardIterator1>::value_type itr_value_type;
@@ -592,11 +617,12 @@ namespace tloc { namespace core {
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2,
             typename T_BinaryPredicate>
-    T_ForwardIterator1 search( T_ForwardIterator1 a_rangeToSearchBegin,
-                               T_ForwardIterator1 a_rangeToSearchEnd,
-                               T_ForwardIterator2 a_rangeToFindBegin,
-                               T_ForwardIterator2 a_rangeToFindEnd,
-                               T_BinaryPredicate a_pred )
+  T_ForwardIterator1 
+    search( T_ForwardIterator1 a_rangeToSearchBegin, 
+    T_ForwardIterator1 a_rangeToSearchEnd, 
+    T_ForwardIterator2 a_rangeToFindBegin, 
+    T_ForwardIterator2 a_rangeToFindEnd, 
+    T_BinaryPredicate a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToFindBegin, a_rangeToFindEnd);
@@ -651,9 +677,10 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardIterator, typename T_Size, typename T>
-  T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
-                              T_ForwardIterator a_rangeToSearchEnd,
-                              T_Size a_count, T const & a_value )
+  T_ForwardIterator 
+    search_n( T_ForwardIterator a_rangeToSearchBegin, 
+              T_ForwardIterator a_rangeToSearchEnd, 
+              T_Size a_count, T const & a_value )
   {
     typedef typename 
       iterator_traits<T_ForwardIterator>::value_type itr_value_type;
@@ -663,10 +690,11 @@ namespace tloc { namespace core {
 
   template <typename T_ForwardIterator, typename T_Size, typename T,
             typename T_BinaryPred>
-    T_ForwardIterator search_n( T_ForwardIterator a_rangeToSearchBegin,
-                                T_ForwardIterator a_rangeToSearchEnd,
-                                T_Size a_count, T const & a_value,
-                                T_BinaryPred a_pred )
+  T_ForwardIterator 
+    search_n( T_ForwardIterator a_rangeToSearchBegin, 
+              T_ForwardIterator a_rangeToSearchEnd, 
+              T_Size a_count, T const & a_value, 
+              T_BinaryPred a_pred )
   {
     TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeToSearchBegin, a_rangeToSearchEnd);
 
@@ -719,7 +747,8 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardItr, typename T>
-  T_ForwardItr remove(T_ForwardItr a_begin, T_ForwardItr a_end, T const & a_value)
+  T_ForwardItr 
+    remove(T_ForwardItr a_begin, T_ForwardItr a_end, T const & a_value)
   {
     // See NOTES_ITERATOR_VALUE_TYPE_TYPEDEF @ eof
     typedef typename iterator_traits<T_ForwardItr>::value_type itr_value_type;
@@ -728,7 +757,8 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardItr, typename T_Pred>
-  T_ForwardItr remove_if(T_ForwardItr a_begin, T_ForwardItr a_end, T_Pred a_pred)
+  T_ForwardItr 
+    remove_if(T_ForwardItr a_begin, T_ForwardItr a_end, T_Pred a_pred)
   {
     T_ForwardItr result = a_begin;
     for (; a_begin != a_end; ++a_begin)
@@ -744,22 +774,23 @@ namespace tloc { namespace core {
 
 
   template <typename T_Container1, typename T_OutputItr, typename T>
-  T_OutputItr remove_copy_all(T_Container1& a_in, T_OutputItr a_out,
-                              T const & a_value)
+  T_OutputItr 
+    remove_copy_all(T_Container1& a_in, T_OutputItr a_out, T const & a_value)
   {
     remove_copy(a_in.begin(), a_in.end(), a_out, a_value);
   }
 
   template <typename T_Container1, typename T_OutputItr, typename T_UnaryPred>
-  T_OutputItr remove_copy_if_all(T_Container1& a_in, T_OutputItr a_out,
-                                 T_UnaryPred a_pred)
+  T_OutputItr 
+    remove_copy_if_all(T_Container1& a_in, T_OutputItr a_out, T_UnaryPred a_pred)
   {
     remove_copy_if(a_in.begin(), a_in.end(), a_out, a_pred);
   }
 
   template <typename T_InputItr, typename T_OutputItr, typename T>
-  T_OutputItr remove_copy(T_InputItr a_begin, T_InputItr a_end,
-                          T_OutputItr a_output, T const & a_value)
+  T_OutputItr 
+    remove_copy(T_InputItr a_begin, T_InputItr a_end, 
+                T_OutputItr a_output, T const & a_value)
   {
     // See NOTES_ITERATOR_VALUE_TYPE_TYPEDEF @ eof
     typedef typename iterator_traits<T_InputItr>::value_type itr_value_type;
@@ -769,8 +800,9 @@ namespace tloc { namespace core {
   }
 
   template <typename T_InputItr, typename T_OutputItr, typename T_Pred>
-  T_OutputItr remove_copy_if(T_InputItr a_begin, T_InputItr a_end,
-                             T_OutputItr a_output, T_Pred a_pred)
+  T_OutputItr 
+    remove_copy_if(T_InputItr a_begin, T_InputItr a_end, 
+                   T_OutputItr a_output, T_Pred a_pred)
   {
     for (; a_begin != a_end; ++a_begin)
     {
@@ -785,20 +817,23 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T>
-  void replace_all(T_Container& a_in, T const & a_oldValue, T const & a_newValue)
+  void 
+    replace_all(T_Container& a_in, T const & a_oldValue, T const & a_newValue)
   {
     replace(a_in.begin(), a_in.end(), a_oldValue, a_newValue);
   }
 
   template <typename T_Container, typename T_Pred, typename T>
-  void replace_if_all(T_Container& a_in, T_Pred a_pred, T const & a_newValue)
+  void 
+    replace_if_all(T_Container& a_in, T_Pred a_pred, T const & a_newValue)
   {
     replace_if(a_in.begin(), a_in.end(), a_pred, a_newValue);
   }
 
   template <typename T_ForwardItr, typename T>
-  void replace(T_ForwardItr a_begin, T_ForwardItr a_end,
-                       T const & a_oldValue, T const & a_newValue)
+  void 
+    replace(T_ForwardItr a_begin, T_ForwardItr a_end, 
+            T const & a_oldValue, T const & a_newValue)
   {
     typedef typename
       iterator_traits<T_ForwardItr>::value_type itr_value_type;
@@ -807,8 +842,9 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardItr, typename T_Pred, typename T>
-  void replace_if(T_ForwardItr a_begin, T_ForwardItr a_end,
-                          T_Pred a_pred, T const & a_newValue)
+  void 
+    replace_if(T_ForwardItr a_begin, T_ForwardItr a_end, 
+               T_Pred a_pred, T const & a_newValue)
   {
     for (; a_begin != a_end; ++a_begin)
     {
@@ -819,24 +855,27 @@ namespace tloc { namespace core {
 
 
   template <typename T_Container1, typename T_OutputItr, typename T>
-  T_OutputItr replace_copy_all(T_Container1& a_in, T_OutputItr a_out,
-                               T const & a_oldValue, T const & a_newValue)
+  T_OutputItr 
+    replace_copy_all(T_Container1& a_in, T_OutputItr a_out, 
+                     T const & a_oldValue, T const & a_newValue)
   {
     return replace_copy(a_in.begin(), a_in.end(), a_out, a_oldValue, a_newValue);
   }
 
   template <typename T_Container1, typename T_OutputItr, typename T_UnaryPred,
             typename T>
-  T_OutputItr replace_copy_if_all(T_Container1& a_in, T_OutputItr a_out,
-                                  T_UnaryPred a_pred, T const & a_newValue)
+  T_OutputItr 
+    replace_copy_if_all(T_Container1& a_in, T_OutputItr a_out, 
+                        T_UnaryPred a_pred, T const & a_newValue)
   {
     replace_copy_if(a_in.begin(), a_in.end(), a_out, a_pred, a_newValue); 
   }
 
   template <typename T_InputItr, typename T_OutputItr, typename T>
-  T_OutputItr replace_copy(T_InputItr a_begin, T_InputItr a_end,
-                           T_OutputItr a_output, T const & a_oldValue, 
-                           T const & a_newValue)
+  T_OutputItr 
+    replace_copy(T_InputItr a_begin, T_InputItr a_end, 
+                 T_OutputItr a_output, T const & a_oldValue, 
+                 T const & a_newValue)
   {
     typedef typename 
       iterator_traits<T_InputItr>::value_type itr_value_type;
@@ -847,9 +886,10 @@ namespace tloc { namespace core {
 
   template <typename T_InputItr, typename T_OutputItr, typename T_Pred,
             typename T>
-  T_OutputItr replace_copy_if(T_InputItr a_begin, T_InputItr a_end,
-                              T_OutputItr a_output, T_Pred a_pred,
-                              T const & a_newValue)
+  T_OutputItr 
+    replace_copy_if(T_InputItr a_begin, T_InputItr a_end, 
+                    T_OutputItr a_output, T_Pred a_pred, 
+                    T const & a_newValue)
   {
     for (; a_begin != a_end; ++a_begin, ++a_output)
     {
@@ -863,15 +903,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardItr>
-  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end)
+  T_ForwardItr 
+    unique(T_ForwardItr a_first, T_ForwardItr a_end)
   {
     unique(a_first, a_end, 
            equal_to<typename iterator_traits<T_ForwardItr>::value_type>());
   }
 
   template <typename T_ForwardItr, typename T_BinaryPred>
-  T_ForwardItr unique(T_ForwardItr a_first, T_ForwardItr a_end,
-                      T_BinaryPred)
+  T_ForwardItr 
+    unique(T_ForwardItr a_first, T_ForwardItr a_end, T_BinaryPred)
   {
     T_ForwardItr prevItr = a_first++;
 
@@ -888,20 +929,23 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container>
-  typename T_Container::iterator unique_all(T_Container& a_inOut)
+  typename T_Container::iterator 
+    unique_all(T_Container& a_inOut)
   {
     return unique(a_inOut.being(), a_inOut.end());
   }
 
   template <typename T_Container1, typename T_Container2>
-  void unique_copy_all(T_Container1& a_in, T_Container2& a_out)
+  void 
+    unique_copy_all(T_Container1& a_in, T_Container2& a_out)
   {
     typedef typename T_Container1::value_type value_type;
     unique_copy_all(a_in, a_out, equal_to<value_type>());
   }
 
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
-  void unique_copy_all(T_Container1& a_in, T_Container2& a_out, 
+  void 
+    unique_copy_all(T_Container1& a_in, T_Container2& a_out, 
                        T_BinaryPred)
   {
     typedef typename T_Container1::const_iterator     itr_type_1;
@@ -928,8 +972,9 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container1, typename T_Container2, typename T_Container3>
-  void unique_copy_only_all(T_Container1& a_in, T_Container2& a_out, 
-                            T_Container3& a_dupList)
+  void 
+    unique_copy_only_all(T_Container1& a_in, T_Container2& a_out, 
+                         T_Container3& a_dupList)
   {
     typedef typename T_Container1::value_type value_type;
     unique_copy_only_all(a_in, a_out, a_dupList, 
@@ -938,8 +983,9 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2, typename T_Container3,
             typename T_BinaryPred>
-  void unique_copy_only_all(T_Container1& a_in, T_Container2& a_out, 
-                            T_Container3& a_dupList, T_BinaryPred)
+  void 
+    unique_copy_only_all(T_Container1& a_in, T_Container2& a_out, 
+                         T_Container3& a_dupList, T_BinaryPred)
   {
     typedef TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1) itr_type_1;
     typedef typename T_Container1::value_type         value_type_1;
@@ -983,14 +1029,16 @@ namespace tloc { namespace core {
   // Sorting
 
   template <typename T_InputIterator>
-  void sort(T_InputIterator a_first, T_InputIterator a_last)
+  void 
+    sort(T_InputIterator a_first, T_InputIterator a_last)
   {
     detail::DoSort(a_first, a_last, sort_quicksort_randompivot());
   }  
 
   template <typename T_InputIterator, typename T_SortAlgorithm>
-  void sort(T_InputIterator a_first, T_InputIterator a_last, 
-            T_SortAlgorithm aSortAlg)
+  void 
+    sort(T_InputIterator a_first, T_InputIterator a_last, 
+         T_SortAlgorithm aSortAlg)
   {
     detail::DoSort(a_first, a_last, aSortAlg); 
   }
@@ -999,34 +1047,41 @@ namespace tloc { namespace core {
   // Min / Max
 
   template <typename T>
-  T const & tlMin(T const & a, T const & b)
+  T const& 
+    tlMin(T const & a, T const & b)
   {
     return a < b ? a : b;
   }
 
   template <typename T>
-  T const & tlMax(T const & a, T const & b)
+  T const& 
+    tlMax(T const & a, T const & b)
   {
     return a < b ? b : a;
   }
 
-  template <typename T>
-  const T tlClamp(const T& a, const T& a_minValue, const T& a_maxValue)
+  template <typename T, typename T2>
+  T 
+    Clamp(T a_value, T2 a_low, T2 a_high)
   {
-    if (a < a_minValue) 
-    { return a_minValue; }
-    else if (a > a_maxValue)
-    { return a_maxValue; }
-    else
-    { return a; }
+    return Clamp(a_value, a_low, a_high, core::less<T>());
+  }
+
+  template <typename T, typename T2, typename T_BinaryPred>
+  T 
+    Clamp(T a_value, T2 a_low, T2 a_high, T_BinaryPred a_pred)
+  {
+    return a_pred(a_high, a_value) ? a_high : 
+           a_pred(a_value, a_low) ? a_low : a_value;
   }
 
   //------------------------------------------------------------------------
   // Modifying sequence operations
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  T_OutputIterator copy(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                             T_OutputIterator aDestRangeBegin)
+  T_OutputIterator 
+    copy(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+         T_OutputIterator aDestRangeBegin)
   {
     // We assume that the inputs are pointers. We can then find out whether they
     // are integral pointers or complex
@@ -1040,16 +1095,18 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_OutputIterator>
-  T_OutputIterator copy_all(T_Container& a_toCopy,
-                            T_OutputIterator a_destRangeBegin)
+  T_OutputIterator 
+    copy_all(T_Container& a_toCopy, 
+             T_OutputIterator a_destRangeBegin)
   {
     return copy(a_toCopy.begin(), a_toCopy.end(), a_destRangeBegin);
   }
 
   template <typename T_InputIterator, typename T_OutputIterator>
-  T_OutputIterator copy_backward(T_InputIterator a_rangeBegin,
-                                      T_InputIterator a_rangeEnd,
-                                      T_OutputIterator aDestRangeEnd)
+  T_OutputIterator 
+    copy_backward(T_InputIterator a_rangeBegin, 
+                  T_InputIterator a_rangeEnd, 
+                  T_OutputIterator aDestRangeEnd)
   {
     typedef typename Loki::Int2Type<Loki::TypeTraits<T_InputIterator>::isPointer> input_type;
     typedef typename Loki::Int2Type<Loki::TypeTraits<T_OutputIterator>::isPointer> output_type;
@@ -1069,21 +1126,24 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_OutputIterator>
-  T_OutputIterator copy_backward_all(T_Container& a_toCopy,
-                                     T_OutputIterator a_destRangeBegin)
+  T_OutputIterator 
+    copy_backward_all(T_Container& a_toCopy, 
+                      T_OutputIterator a_destRangeBegin)
   {
     return copy_backward_all(a_toCopy.begin(), a_toCopy.end(), a_destRangeBegin);
   }
 
   template <typename T_Container, typename T>
-  void fill_all(T_Container& a_toFill, T const & a_value)
+  void 
+    fill_all(T_Container& a_toFill, T const & a_value)
   {
     fill(a_toFill.begin(), a_toFill.end(), a_value);
   }
 
   template <typename T_InputIterator, typename T>
-  void fill(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                 T const & a_value)
+  void 
+    fill(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+         T const & a_value)
   {
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
@@ -1096,14 +1156,16 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Container, typename T_Count, typename T>
-  void fill_n_all(T_Container& a_toFill, T_Count a_count, T const & a_value)
+  void 
+    fill_n_all(T_Container& a_toFill, T_Count a_count, T const & a_value)
   {
     fill_n(a_toFill.begin(), a_toFill.end(), a_count, a_value);
   }
 
   template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-  void fill_n(T_OutputIterator a_first, T_Count a_count, 
-                   const T_ValueType& a_value)
+  void 
+    fill_n(T_OutputIterator a_first, T_Count a_count, 
+           const T_ValueType& a_value)
   {
     // We assume that the inputs are pointers. If they point to data that is a
     // single byte (a char) then use memset
@@ -1115,7 +1177,8 @@ namespace tloc { namespace core {
   }
 
   template <typename T>
-  void tlSwap(T& a, T& b)
+  void 
+    swap(T& a, T& b)
   {
     T c(a); a = b; b = c;
   }
@@ -1136,15 +1199,17 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardIterator, typename T>
-  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
-    T_ForwardIterator a_last, T const & a_value)
+  T_ForwardIterator 
+    lower_bound(T_ForwardIterator a_first, 
+                T_ForwardIterator a_last, T const & a_value)
   {
     return lower_bound(a_first, a_last, a_value, less<T>());
   }
 
   template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
-  T_ForwardIterator lower_bound(T_ForwardIterator a_first, 
-    T_ForwardIterator a_last, T const & a_value, T_BinaryPred a_comp)
+  T_ForwardIterator 
+    lower_bound(T_ForwardIterator a_first, T_ForwardIterator a_last, 
+                T const& a_value, T_BinaryPred a_comp)
   {
     T_ForwardIterator itr;
     typename iterator_traits<T_ForwardIterator>::difference_type count, step;
@@ -1172,7 +1237,8 @@ namespace tloc { namespace core {
   }
 
   template <typename T_ForwardItr>
-  void delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last)
+  void 
+    delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last)
   {
     typedef typename iterator_traits<T_ForwardItr>::pointer pointer_type;
     TLOC_STATIC_ASSERT(Loki::TypeTraits<pointer_type>::isPointer, 
@@ -1193,7 +1259,8 @@ namespace tloc { namespace core {
     // Range verification for raw iterators
 
     template <typename T_Iterator>
-    void DoVerifyRange(T_Iterator a_begin, T_Iterator a_end, IsRawItr)
+    void 
+      DoVerifyRange(T_Iterator a_begin, T_Iterator a_end, IsRawItr)
     {
       TLOC_UNUSED_2(a_begin, a_end);
       TLOC_ASSERT_ALGORITHMS( a_begin <= a_end, 
@@ -1201,7 +1268,8 @@ namespace tloc { namespace core {
     }
 
     template <typename T_Iterator>
-    void DoVerifyRange(T_Iterator, T_Iterator, IsComplexItr)
+    void 
+      DoVerifyRange(T_Iterator, T_Iterator, IsComplexItr)
     {
       // Do nothing, since we cannot verify non-pointer iterators in a fast way 
     }
@@ -1210,9 +1278,10 @@ namespace tloc { namespace core {
     // Copy() helpers
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    T_OutputIterator DoCopy(T_InputIterator a_rangeBegin, 
-                                 T_InputIterator a_rangeEnd, 
-                                 T_OutputIterator aDestRangeBegin, IsNotArith)
+    T_OutputIterator 
+      DoCopy(T_InputIterator a_rangeBegin, 
+             T_InputIterator a_rangeEnd, 
+             T_OutputIterator aDestRangeBegin, IsNotArith)
     {
       while (a_rangeBegin != a_rangeEnd)
       {
@@ -1223,9 +1292,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    T_OutputIterator DoCopy(T_InputIterator a_rangeBegin, 
-                                 T_InputIterator a_rangeEnd, 
-                                 T_OutputIterator aDestRangeBegin, IsArith)
+    T_OutputIterator 
+      DoCopy(T_InputIterator a_rangeBegin, 
+             T_InputIterator a_rangeEnd, 
+             T_OutputIterator aDestRangeBegin, IsArith)
     {
       // We need the size of what the pointer is pointing to, not the pointer
       // itself
@@ -1238,9 +1308,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    void DoCopyBackwardChecks(T_InputIterator a_rangeBegin,
-                                   T_InputIterator a_rangeEnd,
-                                   T_OutputIterator a_destRangeEnd, IsRawItr)
+    void 
+      DoCopyBackwardChecks(T_InputIterator a_rangeBegin, 
+                           T_InputIterator a_rangeEnd, 
+                           T_OutputIterator a_destRangeEnd, IsRawItr)
     {
       TLOC_ASSERT_ALGORITHMS(a_destRangeEnd < a_rangeBegin || a_destRangeEnd > a_rangeEnd,
         "Output past-the-end iterator is within the begin/end range (data "
@@ -1252,9 +1323,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
-    void DoCopyBackwardChecks(T_InputIterator,
-                                   T_InputIterator,
-                                   T_OutputIterator, IsComplexItr)
+    void 
+      DoCopyBackwardChecks(T_InputIterator, 
+                           T_InputIterator, 
+                           T_OutputIterator, IsComplexItr)
     {
       // Do nothing, since we cannot verify non-pointer iterators in a fast way 
     }
@@ -1263,8 +1335,9 @@ namespace tloc { namespace core {
     // Fill helpers
 
     template <typename T_InputIterator, typename T>
-    void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                      T const & a_value, IsNotChar )
+    void 
+      DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+              T const & a_value, IsNotChar )
     {
       while (a_rangeBegin != a_rangeEnd)
       {
@@ -1274,15 +1347,17 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T>
-    void DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
-                      T const & a_value, IsChar )
+    void 
+      DoFill( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+              T const & a_value, IsChar )
     {
       memset(a_rangeBegin, a_value, sizeof(T) * (a_rangeEnd - a_rangeBegin));
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
-                     const T_ValueType& a_value, IsNotChar)
+    void 
+      DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+               const T_ValueType& a_value, IsNotChar)
     {
       typedef typename iterator_traits<T_OutputIterator>::iterator_category 
         iterator_category;
@@ -1293,15 +1368,17 @@ namespace tloc { namespace core {
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
-                     const T_ValueType& a_value, IsChar)
+    void 
+      DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+               const T_ValueType& a_value, IsChar)
     {
       memset(a_first, a_value, (tl_size)a_count);
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
-                     const T_ValueType& a_value, random_access_iterator_tag)
+    void 
+      DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+               const T_ValueType& a_value, random_access_iterator_tag)
     {
       // Grabbing a range by adding to a_first and using fill is faster than
       // using two variables in a for loop. This is only possible if the output
@@ -1310,8 +1387,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_OutputIterator, typename T_Count, typename T_ValueType>
-    void DoFill_n(T_OutputIterator a_first, T_Count a_count, 
-                     const T_ValueType& a_value, input_iterator_tag)
+    void 
+      DoFill_n(T_OutputIterator a_first, T_Count a_count, 
+               const T_ValueType& a_value, input_iterator_tag)
     {
       for (/* */; a_count > 0; --a_count, ++a_first)
       {
@@ -1320,9 +1398,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator DoFind( T_InputIterator a_rangeBegin,
-                            T_InputIterator a_rangeEnd,
-                            T const & a_value, IsNotChar )
+    T_InputIterator 
+      DoFind( T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd, 
+              T const & a_value, IsNotChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -1336,9 +1414,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T>
-    T_InputIterator DoFind( T_InputIterator a_rangeBegin,
-                            T_InputIterator a_rangeEnd,
-                            T const & a_value, IsChar )
+    T_InputIterator 
+      DoFind( T_InputIterator a_rangeBegin, 
+              T_InputIterator a_rangeEnd, 
+              T const & a_value, IsChar )
     {
       TLOC_ASSERT_ALGORITHMS_VERIFY_RANGE(a_rangeBegin, a_rangeEnd);
 
@@ -1352,14 +1431,16 @@ namespace tloc { namespace core {
     // Sort helpers
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
-                   sort_quicksort_autoselect)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_quicksort_autoselect)
     {
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
-                   sort_quicksort_randompivot)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_quicksort_randompivot)
     {
       const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
       const tl_ptrdiff randomPiv = 
@@ -1368,39 +1449,42 @@ namespace tloc { namespace core {
       T_InputIterator randItr = a_first;
       tloc::core::advance(randItr, randomPiv);
 
-      tlSwap(*a_first, *randItr);
+      core::swap(*a_first, *randItr);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
-                   sort_quicksort_middlepivot)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_quicksort_middlepivot)
     {
       const tl_ptrdiff halfSize = tloc::core::distance(a_first, a_last) / 2;
 
       T_InputIterator midItr = a_first;
       tloc::core::advance(midItr, halfSize);
 
-      tlSwap(*a_first, *midItr);
+      core::swap(*a_first, *midItr);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
-                   sort_quicksort_rightpivot)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_quicksort_rightpivot)
     {
       // Swap the rightpivot with the left most element. We can then call
       // quicksort_leftpivot
       T_InputIterator rightPivot = a_last;
       --rightPivot;
 
-      tlSwap(*a_first, *rightPivot);
+      core::swap(*a_first, *rightPivot);
       DoSort(a_first, a_last, sort_quicksort_leftpivot() );
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
-                   sort_quicksort_leftpivot)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_quicksort_leftpivot)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -1409,16 +1493,18 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last, 
-                              IsRawItr)
+    void 
+      DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last, 
+                           IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoQuicksort(a_first, a_last, value_type()); 
     }
 
     template <typename T_InputIterator>
-    void DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last, 
-                              IsComplexItr)
+    void 
+      DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last, 
+                           IsComplexItr)
     {
       // It is assumed, since the inputer iterator is complex, it has a typedef
       // for value_type. If there is a COMPILE ERROR here then the complex
@@ -1427,7 +1513,8 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_ValueType>
-    void DoQuicksort(T_InputIterator a_first, T_InputIterator a_last, T_ValueType)
+    void 
+      DoQuicksort(T_InputIterator a_first, T_InputIterator a_last, T_ValueType)
     {
       if (a_first == a_last) { return; }
 
@@ -1476,8 +1563,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last,
-      sort_insertionsort)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_insertionsort)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -1486,25 +1574,28 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
-      IsRawItr)
+    void 
+      DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
+                                 IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
       DoInsertionsortWithValueType(a_first,a_last, value_type());
     }
 
     template <typename T_InputIterator>
-    void DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
-      IsComplexItr)
+    void 
+      DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
+                                 IsComplexItr)
     {
       DoInsertionsortWithValueType(a_first, a_last, 
                                    typename T_InputIterator::value_type());
     }
 
     template <typename T_InputIterator, typename T_ValueType>
-    void DoInsertionsortWithValueType(T_InputIterator a_first, 
-                                      T_InputIterator a_last,
-                                      T_ValueType)
+    void 
+      DoInsertionsortWithValueType(T_InputIterator a_first, 
+                                   T_InputIterator a_last, 
+                                   T_ValueType)
     {
       if (a_first != a_last)
       {
@@ -1539,7 +1630,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, sort_mergesort)
+    void 
+      DoSort(T_InputIterator a_first, 
+             T_InputIterator a_last, 
+             sort_mergesort)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -1548,8 +1642,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                     IsComplexItr)
+    void 
+      DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
+                             IsComplexItr)
     {
       DoMergesortWithValueType(a_first, 
                                a_last, 
@@ -1557,8 +1652,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                     IsRawItr)
+    void 
+      DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last, 
+                             IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
@@ -1566,8 +1662,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_ValueType>
-    void DoMergesortWithValueType(T_InputIterator a_first, T_InputIterator a_last,
-                     T_ValueType)
+    void 
+      DoMergesortWithValueType(T_InputIterator a_first, T_InputIterator a_last, 
+                               T_ValueType)
     {
       if (a_first != a_last)
       {
@@ -1586,7 +1683,8 @@ namespace tloc { namespace core {
     }
 
     template <typename T_Container>
-    T_Container DoMergesort(T_Container& aUnsorted)
+    T_Container 
+      DoMergesort(T_Container& aUnsorted)
     {
       const tl_size size = aUnsorted.size();
       if ((size - 1) != 0)
@@ -1619,8 +1717,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_Container>
-    T_Container DoMerge(const T_Container& aLeftFirst,
-                        const T_Container& aRightFirst)
+    T_Container 
+      DoMerge(const T_Container& aLeftFirst, 
+              const T_Container& aRightFirst)
     {
       const typename T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
       T_Container mergedContainer(size);
@@ -1665,8 +1764,9 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last,
-                sort_merge_insertionsort)
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+             sort_merge_insertionsort)
     {
       if (a_first != a_last)
       {
@@ -1675,7 +1775,8 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last)
+    void 
+      DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last)
     {
       const tl_ptrdiff size = tloc::core::distance(a_first, a_last);
       if ((size - 1) != 0)
@@ -1691,9 +1792,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoMergeInsertion(T_InputIterator aLeftFirst,
-                          T_InputIterator aRightFirst,
-                          T_InputIterator a_last)
+    void 
+      DoMergeInsertion(T_InputIterator aLeftFirst, 
+                       T_InputIterator aRightFirst, 
+                       T_InputIterator a_last)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
@@ -1702,16 +1804,17 @@ namespace tloc { namespace core {
       {
         if (*aLeftFirst > *aRightFirst)
         {
-          tlSwap(*aLeftFirst, *aRightFirst);
+          core::swap(*aLeftFirst, *aRightFirst);
           DoSortFirstElementWithItrType(aRightFirst, a_last, pointer_type());
         }
       }
     }
 
     template <typename T_InputIterator>
-    void DoSortFirstElementWithItrType(T_InputIterator a_first, 
-                                       T_InputIterator a_last,
-                                       IsComplexItr)
+    void 
+      DoSortFirstElementWithItrType(T_InputIterator a_first, 
+                                    T_InputIterator a_last, 
+                                    IsComplexItr)
     {
       DoSortFirstElementWithValueType(a_first, 
                                       a_last, 
@@ -1719,9 +1822,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoSortFirstElementWithItrType(T_InputIterator a_first, 
-                                       T_InputIterator a_last,
-                                       IsRawItr)
+    void 
+      DoSortFirstElementWithItrType(T_InputIterator a_first, 
+                                    T_InputIterator a_last, 
+                                    IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
@@ -1729,9 +1833,10 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator, typename T_ValueType>
-    void DoSortFirstElementWithValueType(T_InputIterator a_first, 
-                                         T_InputIterator a_last,
-                                         T_ValueType)
+    void 
+      DoSortFirstElementWithValueType(T_InputIterator a_first, 
+                                      T_InputIterator a_last, 
+                                      T_ValueType)
     {
       T_ValueType valueToBeSorted = *a_first;
 
@@ -1750,7 +1855,8 @@ namespace tloc { namespace core {
     }
 
     template <typename T_InputIterator>
-    void DoSort(T_InputIterator a_first, T_InputIterator a_last, 
+    void 
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, 
                 sort_bubblesort)
     {
       T_InputIterator endOfUnsortedItr;
@@ -1773,7 +1879,7 @@ namespace tloc { namespace core {
         {
           if (*currentItr > *currentItrPlusOne)
           {
-            tlSwap(*currentItr, *currentItrPlusOne);
+            core::swap(*currentItr, *currentItrPlusOne);
             swapped = true;
           }
         }

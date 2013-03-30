@@ -17,7 +17,9 @@
 // Avoid including extra headers here
 
 #include <assert.h>
+#include <tlocCore/types/tlocNullptr.h>
 #include <tlocCore/tlocStaticAssert.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -311,22 +313,21 @@
 #endif
 
 // Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ " cannot be NULL")
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ " should be NULL")
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time
 
 // TODO: solve static assert problems on LLVM
 #ifndef TLOC_DISABLE_STATIC_ASSERT
-# if defined(__GNUC__) || defined (__clang__)
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg);
-# else
-#   define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
-# endif
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
+
+# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
+  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
 
 # define TLOC_STATIC_ASSERT_WIP() \
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)

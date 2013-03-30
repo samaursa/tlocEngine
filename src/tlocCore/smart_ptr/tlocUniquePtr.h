@@ -100,51 +100,51 @@ namespace tloc { namespace core { namespace smart_ptr {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <class T>
-  bool operator ==(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator ==(const UniquePtr<T>& a, nullptr_t)
   { return !a; }
 
   template <class T>
-  bool operator ==(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator ==(nullptr_t, const UniquePtr<T>& b)
   { return !b; }
 
   template <class T>
-  bool operator !=(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator !=(const UniquePtr<T>& a, nullptr_t)
   { return (bool)a; }
 
   template <class T>
-  bool operator !=(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator !=(nullptr_t, const UniquePtr<T>& b)
   { return (bool)b; }
 
   template <class T>
-  bool operator <(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator <(const UniquePtr<T>& a, nullptr_t)
   { return tloc::core::less<T*>()(a.get(), nullptr ); }
 
   template <class T>
-  bool operator <(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator <(nullptr_t, const UniquePtr<T>& b)
   { return tloc::core::less<T*>()(nullptr, b.get()); }
 
   template <class T>
-  bool operator <=(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator <=(const UniquePtr<T>& a, nullptr_t)
   { return !(nullptr < a); }
 
   template <class T>
-  bool operator <=(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator <=(nullptr_t, const UniquePtr<T>& b)
   { return !(b < nullptr); }
 
   template <class T>
-  bool operator >(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator >(const UniquePtr<T>& a, nullptr_t)
   { return nullptr <= a; }
 
   template <class T>
-  bool operator >(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator >(nullptr_t, const UniquePtr<T>& b)
   { return !(b < nullptr); }
 
   template <class T>
-  bool operator >=(const UniquePtr<T>& a, tloc::nullptr_t)
+  bool operator >=(const UniquePtr<T>& a, nullptr_t)
   { return !(a < nullptr); }
 
   template <class T>
-  bool operator >=(tloc::nullptr_t, const UniquePtr<T>& b)
+  bool operator >=(nullptr_t, const UniquePtr<T>& b)
   { return !(nullptr < b); }
 
 };};};

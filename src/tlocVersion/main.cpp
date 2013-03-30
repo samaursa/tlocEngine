@@ -4,10 +4,11 @@
 #include <time.h>
 #include <vector>
 
+#include "tlocVersionFilePath.h"
+
 using namespace std;
 
 #define PROJECT_NAME "TLOC"
-#define VERSION_FILE_NAME "../../../../src/tlocVersion.h"
 
 #define RETURN_SUCCESS return 0
 #define RETURN_ERROR return -1
@@ -60,7 +61,7 @@ int main(int argc, char* argv[])
   inFile.close();
 
   int error;
-  
+
   //------------------------------------------------------------------------
   // Read and Parse tlocVerion.h
 
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
       return error;
     }
   }
-  
+
   //------------------------------------------------------------------------
   // Write tlocVersion.h
 

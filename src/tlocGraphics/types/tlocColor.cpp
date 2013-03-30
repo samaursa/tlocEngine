@@ -150,10 +150,10 @@ namespace tloc { namespace graphics { namespace types {
 
         real_type clamped[4] =
         {
-          core::tlClamp<real_type>(a_R, 0, 1),
-          core::tlClamp<real_type>(a_G, 0, 1),
-          core::tlClamp<real_type>(a_B, 0, 1),
-          core::tlClamp<real_type>(a_A, 0, 1),
+          core::Clamp<real_type>(a_R, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_G, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_B, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_A, 0.0f, 1.0f),
         };
 
         a_out[0] = static_cast<value_type>(g_maxValue * clamped[0]);

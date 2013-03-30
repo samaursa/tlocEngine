@@ -143,4 +143,34 @@ namespace TestingTable
     CHECK(c[3] == 2); CHECK(c[4] == 5); CHECK(c[5] == 8);
     CHECK(c[6] == 3); CHECK(c[7] == 6); CHECK(c[8] == 9);
   }
+
+  TEST_CASE("Core/DataStructures/Table/Implicit conversion",
+    "Conversion from different tables types")
+  {
+    Table<s32, 3, 3> table32;
+
+    tuple_int_type row1;
+    tuple_int_type row2;
+    tuple_int_type row3;
+
+    row1[0] = 11; row1[1] = 21; row1[2] = 31;
+    row2[0] = 41; row2[1] = 51; row2[2] = 61;
+    row3[0] = 71; row3[1] = 81; row3[2] = 91;
+
+    table32.SetRow(0, row1);
+    table32.SetRow(1, row2);
+    table32.SetRow(2, row3);
+
+    Table<s64, 3, 3> table64(table32);
+
+    CHECK_TABLE(table64, 11, 41, 71, 21, 51, 81, 31, 61, 91);
+
+    table32 = table64.Cast<Table<s32, 3, 3> >();
+
+    CHECK_TABLE(table32, 11, 41, 71, 21, 51, 81, 31, 61, 91);
+
+    table32 = table32.Cast<Table<s32, 3, 3> >();
+
+    CHECK_TABLE(table32, 11, 41, 71, 21, 51, 81, 31, 61, 91);
+  }
 };

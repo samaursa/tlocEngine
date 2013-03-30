@@ -158,17 +158,15 @@ namespace tloc { namespace core { namespace containers {
   // Default types for easy instantiation
 
   template <typename T>
-  struct ForwardList
+  struct ForwardList : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(ForwardList);
     typedef ForwardListT
       <T, List<T, ListNode<T, singly_linked_tag>, List_Dynamic(), false> > type;
   };
 
   template <typename T>
-  struct ArrayForwardList
+  struct ArrayForwardList : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(ArrayForwardList);
     typedef ForwardListT<T, Array<T> > type;
   };
 

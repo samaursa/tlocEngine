@@ -266,24 +266,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         m_currentState.m_Y.m_abs() += m_currentState.m_Y.m_rel();
       }
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
-    }
 
-    // Clamp the values
-    if (m_parent->GetClamped())
-    {
-      // TODO: Replace with Clamp<>() method when available
-#define TEMP_CLAMP(_val_, _low_, _high_)\
-  _val_ = _val_ < _low_ ? _low_ : _high_ < _val_ ? _high_ : _val_
-
-      TEMP_CLAMP(m_currentState.m_X.m_abs(), m_parent->GetClampX().front(),
-        m_parent->GetClampX().back());
-      TEMP_CLAMP(m_currentState.m_Y.m_abs(), m_parent->GetClampY().front(),
-        m_parent->GetClampY().back());
-#undef TEMP_CLAMP
-      // TODO: Replace with Clamp<>() method when available
-    }
+      // Clamp the values
+      if (m_parent->GetClamped())
+      { m_parent->Clamp(m_currentState); }
 
       m_parent->SendOnMouseMove(m_currentState);
+    }
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -324,21 +313,21 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
     if(m_mouseBuffer.rgbButtons[0] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::left;
-    else if(m_mouseBuffer.rgbButtons[1] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::right;
-    else if(m_mouseBuffer.rgbButtons[2] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::middle;
-    else if(m_mouseBuffer.rgbButtons[3] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button4;
-    else if(m_mouseBuffer.rgbButtons[4] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button5;
-    else if(m_mouseBuffer.rgbButtons[5] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button6;
-    else if(m_mouseBuffer.rgbButtons[6] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button7;
-    else if(m_mouseBuffer.rgbButtons[7] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button8;
+      m_currentState.m_buttonCode |= MouseEvent::left;
+    if(m_mouseBuffer.rgbButtons[1] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::right;
+    if(m_mouseBuffer.rgbButtons[2] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::middle;
+    if(m_mouseBuffer.rgbButtons[3] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button4;
+    if(m_mouseBuffer.rgbButtons[4] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button5;
+    if(m_mouseBuffer.rgbButtons[5] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button6;
+    if(m_mouseBuffer.rgbButtons[6] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button7;
+    if(m_mouseBuffer.rgbButtons[7] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button8;
   }
 
   template <MOUSE_IMPL_TEMP>

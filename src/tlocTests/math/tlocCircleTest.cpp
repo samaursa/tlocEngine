@@ -57,6 +57,10 @@ namespace TestingCircle
     CHECK(d.IsValid());
     CHECK(d.GetRadius() == Approx(0.2f));
     CHECK(d.GetPosition() == point_type(1, 1));
+
+    // different types
+    Circlef32 circ;
+    Circlef64 circ64(circ);
   }
 
   TEST_CASE("Math/types/Circle/Radius", "")

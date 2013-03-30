@@ -13,7 +13,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
-#include <dinput.h>
+#include <WinSDK/dinput.h>
 
 namespace TestingInput
 {
@@ -638,6 +638,7 @@ namespace TestingInput
 
     mouse->SetClampX(MouseB::abs_range_type(0, 0));
     mouse->SetClampY(MouseB::abs_range_type(0, 0));
+    evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
 
     CHECK(evt.m_X.m_abs().Get() == 0);
     CHECK(evt.m_Y.m_abs().Get() == 0);

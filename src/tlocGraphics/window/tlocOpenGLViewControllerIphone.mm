@@ -7,6 +7,7 @@
 //
 
 #import "tlocOpenGLViewControllerIphone.h"
+#import "tlocOpenGLViewIphone.h"
 #include <tlocGraphics/window/tlocWindowImplIphone.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@
   // TODO: instead of grabbing the bounds of the main screen, make it grab
   // grab from the screen it's on. Only use dimensions that the window
   // already has.
-  UIWindow* uiwindow = self->windowImpl->GetWindowHandle();
+  UIWindow* uiwindow = self->windowImpl->GetWindowHandle().Cast<UIWindow*>();
   UIScreen* uiscreen = [uiwindow screen];
   
   CGRect frame;
@@ -66,7 +67,7 @@
   
   [uiwindow setFrame:frame];
   
-  OpenGLView* view = self->windowImpl->GetOpenGLViewHandle();
+  OpenGLView* view = self->windowImpl->GetOpenGLViewHandle().Cast<OpenGLView*>();
   [view setFrame:uiwindow.bounds];
   [view UpdateRenderBufferDimensions];
   

@@ -38,7 +38,9 @@ namespace tloc { namespace math { namespace types {
     Rectangle(width a_w, height a_h,
               position a_pos = position(point_type(0)) );
     Rectangle(left a_l, right a_r, top a_t, bottom a_b);
-    Rectangle(const this_type& a_other);
+
+    template <typename T_Real>
+    Rectangle(const Rectangle<T_Real>& a_other);
 
     this_type& operator= (const this_type& a_other);
 
@@ -65,6 +67,8 @@ namespace tloc { namespace math { namespace types {
     void        Offset(const point_type& a_offsetBy);
     point_type  GetPosition() const;
 
+    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+
     ///-------------------------------------------------------------------------
     /// @brief
     /// If rectangle's left &gt;= right || top &lt;= bottom, rectangle is
@@ -85,12 +89,20 @@ namespace tloc { namespace math { namespace types {
     point_type  DoGetCoord() const;
 
   private:
-    point_type    m_extents;
+    point_type    m_dimensions;
     point_type    m_position;
   };
 
   //------------------------------------------------------------------------
   // Template definitions
+
+  template <typename T>
+  template <typename T_Real>
+  Rectangle<T>::
+    Rectangle(const Rectangle<T_Real>& a_other)
+    : m_dimensions(a_other.GetDimensions())
+    , m_position(a_other.GetPosition())
+  { }
 
   template <typename T>
   template <typename T_Side>

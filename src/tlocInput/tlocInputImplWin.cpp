@@ -6,12 +6,98 @@
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>
+#include <tlocInput/hid/tlocTouchSurfaceImplWin.h>
 
 namespace tloc { namespace input { namespace priv {
 
 #define INPUT_MANAGER_IMPL_TEMP   typename T_ParentInputManager
 #define INPUT_MANAGER_IMPL_PARAM  T_ParentInputManager
 #define INPUT_MANAGER_IMPL_TYPE   typename InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>
+
+  //------------------------------------------------------------------------
+  // Free functions and definitions
+
+  namespace {
+
+    template <typename T_InputObject, tl_int T_Index>
+    struct DoCreateHID
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+        IDirectInput8* a_directInput,
+        input_param_type a_inputManagerParams)
+      {
+        // LOG: Unsupported input type selected
+        TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
+        TLOC_STATIC_ASSERT_FALSE(T_InputObject, Unsupported_input_type_selected);
+        return NULL;
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Keyboard::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+        IDirectInput8* a_directInput,
+        input_param_type a_inputManagerParams)
+      {
+        TLOC_UNUSED(a_params);
+        windows_keyboard_param_type params;
+        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param2 = a_directInput;
+        params.m_param3 = a_params;
+
+        T_InputObject* newInput = new T_InputObject(params);
+
+        return newInput;
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Mouse::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+        IDirectInput8* a_directInput,
+        input_param_type a_inputManagerParams)
+      {
+        TLOC_UNUSED(a_params);
+        windows_mouse_param_type params;
+        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param2 = a_directInput;
+        params.m_param3 = a_params;
+
+        T_InputObject* newInput = new T_InputObject(params);
+
+        return newInput;
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+        IDirectInput8* a_directInput,
+        input_param_type a_inputManagerParams)
+      {
+        TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
+        TLOC_ASSERT_WIP()
+          return NULL;
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::TouchSurface::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+        IDirectInput8* a_directInput,
+        input_param_type a_inputManagerParams)
+      {
+        TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
+        win_touch_surface_param_type params;
+        return new T_InputObject(params);
+      }
+    };
+
+  };
 
 #define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < p_hid::Count::m_index,\
   "Unsupported input type passed!")
@@ -61,6 +147,12 @@ namespace tloc { namespace input { namespace priv {
               //delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum];
               break;
             }
+          case p_hid::TouchSurface::m_index:
+            {
+              delete static_cast<hid::TouchSurface<policy_type>* >
+                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
+              break;
+            }
         }
       }
     }
@@ -103,63 +195,20 @@ namespace tloc { namespace input { namespace priv {
 
     T_InputObject* newInput = NULL;
 
-    switch(T_InputObject::m_index)
+    for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
-    case p_hid::Keyboard::m_index:
+      if (m_winHIDs[T_InputObject::m_index][i].m_available == false)
       {
-        windows_keyboard_param_type params;
-        params.m_param1 = m_params.m_param1;
-        params.m_param2 = m_directInput;
-        params.m_param3 = a_params;
+        newInput =
+          DoCreateHID<T_InputObject, T_InputObject::m_index>().Create(a_params, m_directInput, m_params);
 
-        for (size_type i = 0; i < m_winHIDs[p_hid::Keyboard::m_index].size(); ++i)
-        {
-          if (m_winHIDs[p_hid::Keyboard::m_index][i].m_available == false)
-          {
-            newInput = new T_InputObject(params);
-            m_winHIDs[p_hid::Keyboard::m_index][i].m_available = true;
-            m_winHIDs[p_hid::Keyboard::m_index][i].m_devicePtr = newInput;
-          }
-          else
-          {
-            // LOG: Could not create a keyboard (either one is already created
-            //      or we do not have any keyboards attached)
-          }
-        }
-        break;
+        m_winHIDs[T_InputObject::m_index][i].m_available = true;
+        m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;
       }
-    case p_hid::Mouse::m_index:
+      else
       {
-        windows_keyboard_param_type params;
-        params.m_param1 = m_params.m_param1;
-        params.m_param2 = m_directInput;
-        params.m_param3 = a_params;
-
-        for (size_type i = 0; i < m_winHIDs[p_hid::Mouse::m_index].size(); ++i)
-        {
-          if (m_winHIDs[p_hid::Mouse::m_index][i].m_available == false)
-          {
-            newInput = new T_InputObject(params);
-            m_winHIDs[p_hid::Mouse::m_index][i].m_available = true;
-            m_winHIDs[p_hid::Mouse::m_index][i].m_devicePtr = newInput;
-          }
-          else
-          {
-            // LOG: Could not create a mouse (either one is already created
-            //      or we do not have any mice attached)
-          }
-        }
-        break;
-      }
-    case p_hid::Joystick::m_index:
-      {
-        // LOG: No joystick support yet
-        break;
-      }
-    default:
-      {
-        // LOG: Unsupported input type selected
-        return NULL;
+        // LOG: Could not create a keyboard (either one is already created
+        //      or we do not have any keyboards attached)
       }
     }
 
@@ -171,9 +220,10 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(a_inputType);
 
-    typedef p_hid::Keyboard     keyboard_type;
-    typedef p_hid::Mouse        mouse_type;
-    typedef p_hid::Joystick     joystick_type;
+    typedef p_hid::Keyboard       keyboard_type;
+    typedef p_hid::Mouse          mouse_type;
+    typedef p_hid::Joystick       joystick_type;
+    typedef p_hid::TouchSurface   touch_surface_type;
 
     switch(a_inputType)
     {
@@ -211,6 +261,10 @@ namespace tloc { namespace input { namespace priv {
       {
         break;
       }
+    case touch_surface_type::m_index:
+      {
+        break;
+      }
     default:
       {
       }
@@ -222,9 +276,10 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(a_inputType);
 
-    typedef p_hid::Keyboard   keyboard_type;
-    typedef p_hid::Mouse      mouse_type;
-    typedef p_hid::Joystick   joystick_type;
+    typedef p_hid::Keyboard       keyboard_type;
+    typedef p_hid::Mouse          mouse_type;
+    typedef p_hid::Joystick       joystick_type;
+    typedef p_hid::TouchSurface   touch_surface_type;
 
     switch(a_inputType)
     {
@@ -259,6 +314,10 @@ namespace tloc { namespace input { namespace priv {
         break;
       }
     case joystick_type::m_index:
+      {
+        break;
+      }
+    case touch_surface_type::m_index:
       {
         break;
       }
@@ -307,6 +366,11 @@ namespace tloc { namespace input { namespace priv {
     case p_hid::Joystick::m_index:
       {
         return m_winHIDs[p_hid::Joystick::m_index].size();
+        break;
+      }
+    case p_hid::TouchSurface::m_index:
+      {
+        return m_winHIDs[p_hid::TouchSurface::m_index].size();
         break;
       }
     default:
@@ -397,6 +461,7 @@ namespace tloc { namespace input { namespace priv {
 
   INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::Mouse);
+  INSTANTIATE_HID(hid::TouchSurface);
 
 
 };};};

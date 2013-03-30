@@ -95,6 +95,7 @@
 		97AF91E516AA837200DB6C90 /* tloc_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97AF91E116AA837100DB6C90 /* tloc_core.cpp */; };
 		97AF91E616AA837200DB6C90 /* tloc_core.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF91E216AA837100DB6C90 /* tloc_core.h */; };
 		97AF91E716AA837200DB6C90 /* tlocCoreBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AF91E416AA837200DB6C90 /* tlocCoreBase.h */; };
+		97BADF0116F468FA00D7B14A /* tlocStaticAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 97BADF0016F468FA00D7B14A /* tlocStaticAssert.h */; };
 		97C87BE815DE3F9600FE0A6C /* malloc.c.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BE715DE3F9600FE0A6C /* malloc.c.h */; };
 		97C87BEB15DE3FA000FE0A6C /* nedmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 97C87BE915DE3FA000FE0A6C /* nedmalloc.c */; };
 		97C87BEC15DE3FA000FE0A6C /* nedmalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87BEA15DE3FA000FE0A6C /* nedmalloc.h */; };
@@ -296,6 +297,7 @@
 		97AF91E216AA837100DB6C90 /* tloc_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_core.h; path = ../../../../src/tlocCore/tloc_core.h; sourceTree = "<group>"; };
 		97AF91E316AA837200DB6C90 /* tloc_core.inl */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = tloc_core.inl; path = ../../../../src/tlocCore/tloc_core.inl; sourceTree = "<group>"; };
 		97AF91E416AA837200DB6C90 /* tlocCoreBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocCoreBase.h; path = ../../../../src/tlocCore/tlocCoreBase.h; sourceTree = "<group>"; };
+		97BADF0016F468FA00D7B14A /* tlocStaticAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocStaticAssert.h; path = ../../../../src/tlocCore/tlocStaticAssert.h; sourceTree = "<group>"; };
 		97C87BE715DE3F9600FE0A6C /* malloc.c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = malloc.c.h; path = ../../../../src/3rdParty/nedmalloc/malloc.c.h; sourceTree = "<group>"; };
 		97C87BE915DE3FA000FE0A6C /* nedmalloc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = nedmalloc.c; path = ../../../../src/3rdParty/nedmalloc/nedmalloc.c; sourceTree = "<group>"; };
 		97C87BEA15DE3FA000FE0A6C /* nedmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; name = nedmalloc.h; path = ../../../../src/3rdParty/nedmalloc/nedmalloc.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -710,6 +712,7 @@
 				976B93BA16CBB8C8009C12A1 /* tlocRange.cpp */,
 				976B93BB16CBB8C8009C12A1 /* tlocRange.h */,
 				976B93BC16CBB8C8009C12A1 /* tlocRange.inl */,
+				97BADF0016F468FA00D7B14A /* tlocStaticAssert.h */,
 			);
 			name = _misc;
 			sourceTree = "<group>";
@@ -1203,6 +1206,7 @@
 				97AF91E716AA837200DB6C90 /* tlocCoreBase.h in Headers */,
 				976B93BE16CBB8C8009C12A1 /* tlocRange.h in Headers */,
 				97F4D4CE16D5B80A00A882E8 /* tlocContainerTraits.h in Headers */,
+				97BADF0116F468FA00D7B14A /* tlocStaticAssert.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

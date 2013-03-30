@@ -307,16 +307,14 @@ namespace tloc { namespace core { namespace containers {
   // default types for easy instantiation
 
   template <typename T>
-  struct ArrayOrdered
+  struct ArrayOrdered : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(ArrayOrdered);
     typedef Array<T, Array_Ordered> type;
   };
 
   template <typename T>
-  struct ArrayUnordered
+  struct ArrayUnordered : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(ArrayUnordered);
     typedef Array<T, Array_Unordered> type;
   };
 

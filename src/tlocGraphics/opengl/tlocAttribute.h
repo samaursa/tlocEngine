@@ -6,8 +6,10 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -43,7 +45,7 @@ namespace tloc { namespace graphics { namespace gl {
                              T_Technique)
     {
       // Constant = GLSL's view of a constant attribute
-      TLOC_STATIC_ASSERT(false,
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
         Constant_attribute_arrays_are_illegal_use_SetVertexArray_instead);
     }
 

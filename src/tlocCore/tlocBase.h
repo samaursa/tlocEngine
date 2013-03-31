@@ -157,7 +157,7 @@
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
 # if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
-#   error "Exception handling must be disabled for this project."
+#   error "RTTI must be disabled for this project."
 # endif
 #endif
 

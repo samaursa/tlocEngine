@@ -7,6 +7,11 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 if (MSVC90 OR MSVC80 OR MSVC71 OR MSVC70 OR MSVC60)
   add_definitions(-DTLOC_CXX03)
 endif()
+#if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+if (APPLE)
+  add_definitions(-DTLOC_CXX03)
+endif()
+
 
 # Common preprocessors
 if(CMAKE_CXX_FLAGS_DEBUG)
@@ -34,6 +39,10 @@ if(MSVC)
   string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+endif()
+if(APPLE)
+  set(CMAKE_CXX_FLAGS_DEBUG "-fno-exceptions -fno-rtti")
+  set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
 endif()
 
 # lib/exe path for all configurations

@@ -77,7 +77,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FileIO_T<FILE_IO_PARAMS>::FileIO_T(const Path& a_path)
-    : m_fileName(a_path), m_file(nullptr)
+    : m_file(nullptr), m_fileName(a_path)
   {
     TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
   }

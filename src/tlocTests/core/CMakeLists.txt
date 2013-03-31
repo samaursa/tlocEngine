@@ -45,7 +45,14 @@ set(TLOC_TESTS_CORE
 #-------------------------------------------
 # Project setup
 
+if(APPLE)
+  set(TLOC_BUNDLE_TYPE MACOSX_BUNDLE)
+else()
+  set(TLOC_BUNDLE_TYPE "")
+endif()
+
 add_executable(tlocTestsCore
+  ${TLOC_BUNDLE_TYPE}
   ${TLOC_TESTS_CORE}
   )
 
@@ -56,5 +63,15 @@ add_dependencies(tlocTestsCore
 target_link_libraries(tlocTestsCore 
   tlocCore
   )
+
+if(APPLE)
+  #set(EXECUTABLE_NAME tlocTestsCore)
+  #set(PRODUCT_NAME    tlocTestsCore)
+  set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
+  set(PRODUCT_NAME    "\${PRODUCT_NAME}")
+  set(BUNDLE_NAME     tlocTestsCore)
+  set_target_properties(tlocTestsCore PROPERTIES 
+			MACOSX_BUNDLE_INFO_PLIST ${TLOC_PATH}/platform/iOS/tlocEngine.plist)
+endif()
 
 # Filters to organize the source files

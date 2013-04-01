@@ -485,9 +485,7 @@ namespace tloc { namespace physics { namespace box2d {
     RigidBody()
     : m_flags(k_count)
     , m_rigidBody(NULL)
-  {
-    m_flags;
-  }
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

@@ -1,25 +1,43 @@
 set(TLOC_TESTS_INPUT
   main.cpp
-  tlocInputTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   )
+
+if(WIN32)
+  set(TLOC_TESTS_INPUT
+    ${TLOC_TESTS_INPUT}
+    tlocInputTest.cpp
+    )
+endif()
+
 #-------------------------------------------
 # Project setup
 
-add_executable(tlocTestsInput
+set(TLOC_CURRENT_EXEC_NAME tlocTestsInput)
+
+add_executable(${TLOC_CURRENT_EXEC_NAME}
+  ${TLOC_BUNDLE_TYPE}
   ${TLOC_TESTS_INPUT}
   )
 
-add_dependencies(tlocTestsInput
+add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   tlocInput
   )
 
-target_link_libraries(tlocTestsInput
+target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   tlocInput
   )
+
+if(APPLE)
+  set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
+  set(PRODUCT_NAME    "\${PRODUCT_NAME}")
+  set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
+    set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
+			MACOSX_BUNDLE_INFO_PLIST ${TLOC_PATH}/platform/iOS/tlocEngine.plist)
+endif()
 
 # Find dinput.lib and add it as a link target
 if(WIN32)

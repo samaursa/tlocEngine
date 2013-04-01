@@ -44,7 +44,6 @@ namespace tloc { namespace prefab { namespace graphics {
     itrQuad->GetElement() = QuadPtr(new Quad(a_rect) );
 
     // Create the transform component (and the transform pool if necessary)
-    cpool;
 
     if (a_poolMgr.Exists(transform) == false)
     { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }

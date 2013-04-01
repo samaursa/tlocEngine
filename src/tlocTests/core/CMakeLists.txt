@@ -5,6 +5,7 @@ set(TLOC_TESTS_CORE
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
   tlocBufferArgTest.cpp
+  tlocComponentPoolManagerTest.cpp
   tlocContainerTraitsTest.cpp
   tlocEntityManagerTest.cpp
   tlocEntityTest.cpp
@@ -45,32 +46,26 @@ set(TLOC_TESTS_CORE
 #-------------------------------------------
 # Project setup
 
-if(APPLE)
-  set(TLOC_BUNDLE_TYPE MACOSX_BUNDLE)
-else()
-  set(TLOC_BUNDLE_TYPE "")
-endif()
+set(TLOC_CURRENT_EXEC_NAME tlocTestsCore)
 
-add_executable(tlocTestsCore
+add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_BUNDLE_TYPE}
   ${TLOC_TESTS_CORE}
   )
 
-add_dependencies(tlocTestsCore
+add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   )
 
-target_link_libraries(tlocTestsCore 
+target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   )
 
 if(APPLE)
-  #set(EXECUTABLE_NAME tlocTestsCore)
-  #set(PRODUCT_NAME    tlocTestsCore)
   set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
   set(PRODUCT_NAME    "\${PRODUCT_NAME}")
-  set(BUNDLE_NAME     tlocTestsCore)
-  set_target_properties(tlocTestsCore PROPERTIES 
+  set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
+    set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
 			MACOSX_BUNDLE_INFO_PLIST ${TLOC_PATH}/platform/iOS/tlocEngine.plist)
 endif()
 

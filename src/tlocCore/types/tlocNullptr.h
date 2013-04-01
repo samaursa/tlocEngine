@@ -8,7 +8,6 @@
     // Copied from http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/nullptr#Solution_and_Sample_Code
     // Note that this class should NOT be in tloc namespace to facilitate easy
     // transition to C++11
-    const // It is a const object...
     class nullptr_t
     {
     public:

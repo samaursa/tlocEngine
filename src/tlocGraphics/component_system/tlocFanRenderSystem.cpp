@@ -65,14 +65,10 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_sharedCam)
     {
       if (m_sharedCam->HasComponent(transform))
-      {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-      }
+      { }
 
       if (m_sharedCam->HasComponent(projection))
-      {
-      }
+      { }
     }
 
     return ErrorSuccess();

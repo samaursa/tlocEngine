@@ -1,4 +1,4 @@
-# Remove MINSIZEREL
+# Remove MINSIZERE
 set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE )
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -12,6 +12,12 @@ if (APPLE)
   add_definitions(-DTLOC_CXX03)
 endif()
 
+# iOS requires bundle type to be specified in order for an executable to show up as an application
+if(APPLE)
+  set(TLOC_BUNDLE_TYPE MACOSX_BUNDLE)
+else()
+  set(TLOC_BUNDLE_TYPE "")
+endif()
 
 # Common preprocessors
 if(CMAKE_CXX_FLAGS_DEBUG)
@@ -41,7 +47,9 @@ if(MSVC)
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 if(APPLE)
-  set(CMAKE_CXX_FLAGS_DEBUG "-fno-exceptions -fno-rtti")
+  set(CMAKE_CXX_FLAGS_DEBUG "-fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELEASE "-fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
 endif()
 
@@ -74,8 +82,10 @@ endforeach()
 # Add the tests directory which contains all test projects
 add_subdirectory(tlocTests)
 
-# Add the version tool
-add_subdirectory(tlocVersion)
+# Add the version tool - currently DISABLED for APPLE due to iOS builds
+if(NOT APPLE)
+  add_subdirectory(tlocVersion)
+endif()
 
 # this is so far required only by MSVC
 if(MSVC)

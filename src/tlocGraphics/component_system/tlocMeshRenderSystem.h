@@ -31,7 +31,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual error_type Initialize();
     virtual error_type Shutdown();
-    virtual void ProcessEntity(entity_manager* a_mgr, entity_type* a_ent);
+    virtual void ProcessEntity(const entity_manager* a_mgr,
+                               const entity_type* a_ent);
 
     virtual void Pre_OnEvent(const event_type& a_event);
     virtual void Post_OnEvent(const event_type& a_event);

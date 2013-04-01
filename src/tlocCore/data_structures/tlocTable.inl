@@ -6,6 +6,7 @@
 #endif
 
 #include "tlocTable.h"
+#include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocVariadic.inl>
 
 namespace tloc { namespace core { namespace data_structs {

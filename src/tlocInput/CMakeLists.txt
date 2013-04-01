@@ -43,6 +43,7 @@ if(APPLE)
 
   set(TLOC_INPUT_HID
     ${TLOC_INPUT_HID}
+    hid/tlocJoystickIphone.h 
     hid/tlocTouchSurfaceImplIphone.h 
     hid/tlocTouchSurfaceImplIphone.mm 
     hid/tlocMouseImplIphone.h 
@@ -68,7 +69,6 @@ if(WIN32)
     hid/tlocKeyboardImplWin.h 
     hid/tlocJoystickImplWin.cpp 
     hid/tlocJoystickImplWin.h 
-    hid/tlocJoystickIphone.h 
     )
 endif()
 

@@ -14,6 +14,10 @@ include_directories(
   ${TLOC_DEP_PATH}/include/Box2D/
   )
 
+link_directories(
+  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  )
+
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_BUNDLE_TYPE}
   ${TLOC_TESTS_PHYSICS}
@@ -24,10 +28,6 @@ add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocMath
   tlocPhysics
   )
-
-message("${CMAKGE_BUILD_TYPE}")
-set(BUILD_TYPE ${CMAKE_BUILD_TYPE})
-include(${TLOC_DEP_BUILD_PATH}/cmake_install.cmake)
 
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocCore

@@ -181,4 +181,6 @@ namespace tloc { namespace core { namespace data_structs {
 
 };};};
 
+#include "tlocTuple.inl"
+
 #endif

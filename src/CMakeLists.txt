@@ -54,7 +54,6 @@ elseif(APPLE)
 endif()
 
 # lib/exe path for all configurations
-message("${TARGET_SONAME}")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib/${ARCH_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${ARCH_DIR})
 

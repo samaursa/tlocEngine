@@ -3,7 +3,8 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL F
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
-if(NOT TLOC_COMPILER_C11)
+# Define TLOC_CXX03 if C++11 is NOT supported (force XCode to C++03 for now)
+if(NOT TLOC_COMPILER_C11 OR TLOC_COMPILER_XCODE)
   add_definitions(-DTLOC_CXX03)
 endif()
 
@@ -24,7 +25,7 @@ set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
 set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 
-if(MSVC)
+if(TLOC_COMPILER_MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG           "/Od /Gm /RTC1 /MTd /GR- /W4 /WX /c /Zi /TP")
   set(CMAKE_CXX_FLAGS_RELEASE         "/O2 /Ob2 /Oi /Ot /GL /MT /Gy /GR- /W4 /WX /c /Zi /TP")
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2 /Ob2 /Oi /Ot /Gm /MT /Gy /GR- /W4 /WX /c /Zi /TP")
@@ -33,11 +34,13 @@ if(MSVC)
   string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-elseif(APPLE)
+elseif(TLOC_COMPILER_XCODE)
   set(CMAKE_CXX_FLAGS_DEBUG "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_CXX_FLAGS_RELEASE "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
+else()
+  message("Configuration not applied because compiler is unsupported (or not detected properly)")
 endif()
 
 # common includes
@@ -60,9 +63,6 @@ set(tlocAllLibraries
 foreach(lib ${tlocAllLibraries})
   add_subdirectory(${lib})
 endforeach()
-
-# Export all the targets
-export(TARGETS ${tlocAllLibraries} FILE "${PROJECT_BINARY_DIR}/tlocEngineTargets.cmake")
 
 # Add the tests directory which contains all test projects
 add_subdirectory(tlocTests)

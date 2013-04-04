@@ -13,6 +13,7 @@ if (APPLE)
 endif()
 
 # iOS requires bundle type to be specified in order for an executable to show up as an application
+# for Windows we can set Win32 if we DO NOT want a console
 if(APPLE)
   set(TLOC_BUNDLE_TYPE MACOSX_BUNDLE)
 else()
@@ -45,8 +46,7 @@ if(MSVC)
   string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-endif()
-if(APPLE)
+elseif(APPLE)
   set(CMAKE_CXX_FLAGS_DEBUG "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_CXX_FLAGS_RELEASE "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-exceptions -fno-rtti -Wno-unused-function")
@@ -78,6 +78,9 @@ set(tlocAllLibraries
 foreach(lib ${tlocAllLibraries})
   add_subdirectory(${lib})
 endforeach()
+
+# Export all the targets
+export(TARGETS ${tlocAllLibraries} FILE "${PROJECT_BINARY_DIR}/tlocEngineTargets.cmake")
 
 # Add the tests directory which contains all test projects
 add_subdirectory(tlocTests)

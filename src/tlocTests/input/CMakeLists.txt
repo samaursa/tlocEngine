@@ -44,12 +44,12 @@ if(WIN32)
   if(${ARCH_DIR} MATCHES "x86")
     find_library(DIRECT_INPUT_LIB
       NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/Win32/lib
+      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
       )
   else()
     find_library(DIRECT_INPUT_LIB
       NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/x64/lib
+      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
       )
   endif()
 

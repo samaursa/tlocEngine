@@ -47,8 +47,6 @@ include_directories(
   ${TLOC_DEP_PATH}/include/CATCH/
   )
 
-link_directories(${TLOC_DEP_PATH}/lib/${ARCH_DIR}/) 
-
 add_subdirectory(core)
 add_subdirectory(graphics)
 add_subdirectory(input)

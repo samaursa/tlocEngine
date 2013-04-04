@@ -49,7 +49,7 @@ set(TLOC_TESTS_CORE
 set(TLOC_CURRENT_EXEC_NAME tlocTestsCore)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
-  ${TLOC_BUNDLE_TYPE}
+  ${TLOC_APP_TYPE}
   ${TLOC_TESTS_CORE}
   )
 

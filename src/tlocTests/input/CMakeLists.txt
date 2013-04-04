@@ -17,7 +17,7 @@ endif()
 set(TLOC_CURRENT_EXEC_NAME tlocTestsInput)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
-  ${TLOC_BUNDLE_TYPE}
+  ${TLOC_APP_TYPE}
   ${TLOC_TESTS_INPUT}
   )
 

@@ -3,31 +3,18 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL F
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
-# For compilers that are C++03, add the following definition
-if (MSVC90 OR MSVC80 OR MSVC71 OR MSVC70 OR MSVC60)
+if(NOT TLOC_COMPILER_C11)
   add_definitions(-DTLOC_CXX03)
-endif()
-#if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-if (APPLE)
-  add_definitions(-DTLOC_CXX03)
-endif()
-
-# iOS requires bundle type to be specified in order for an executable to show up as an application
-# for Windows we can set Win32 if we DO NOT want a console
-if(APPLE)
-  set(TLOC_BUNDLE_TYPE MACOSX_BUNDLE)
-else()
-  set(TLOC_BUNDLE_TYPE "")
 endif()
 
 # Common preprocessors
-if(CMAKE_CXX_FLAGS_DEBUG)
+if(TLOC_CONFIG_DEBUG)
   add_definitions(-DTLOC_DEBUG)
   add_definitions(-DDEBUG)
-elseif(CMAKE_CXX_FLAGS_RELEASE)
+elseif(TLOC_CONFIG_RELEASE)
   add_definitions(-DTLOC_RELEASE)
   add_definitions(-DNDEBUG)
-elseif(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+elseif(TLOC_CONFIG_RELWITHDEBINFO)
   add_definitions(-DTLOC_RELEASE_DEBUGINFO)
 endif()
 
@@ -52,10 +39,6 @@ elseif(APPLE)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-exceptions -fno-rtti -Wno-unused-function")
   set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
 endif()
-
-# lib/exe path for all configurations
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib/${ARCH_DIR})
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${ARCH_DIR})
 
 # common includes
 include_directories(
@@ -85,12 +68,12 @@ export(TARGETS ${tlocAllLibraries} FILE "${PROJECT_BINARY_DIR}/tlocEngineTargets
 add_subdirectory(tlocTests)
 
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
-if(NOT APPLE)
+if(NOT TLOC_PLATFORM_IOS)
   add_subdirectory(tlocVersion)
 endif()
 
 # this is so far required only by MSVC
-if(MSVC)
+if(TLOC_COMPILER_MSVC)
   foreach(lib ${tlocAllLibraries})
     if(TARGET ${lib})
       # Add the common linker properties to all libraries

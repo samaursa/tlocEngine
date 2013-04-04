@@ -24,7 +24,7 @@ set(TLOC_TESTS_MATH
 set(TLOC_CURRENT_EXEC_NAME tlocTestsMath)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
-  ${TLOC_BUNDLE_TYPE}
+  ${TLOC_APP_TYPE}
   ${TLOC_TESTS_MATH}
   )
 

@@ -1,23 +1,18 @@
-#ifndef TLOC_FUNCTIONAL_H 
-#define TLOC_FUNCTIONAL_H 
+#ifndef TLOC_FUNCTIONAL_H
+#define TLOC_FUNCTIONAL_H
 
-#include "tlocBase.h"
-#include "tlocTypes.h"
+#include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 
 namespace tloc { namespace core {
 
-  //////////////////////////////////////////////////////////////////////////
-  // This struct is used to diagnose template types
-
-  template <typename T>
-  struct TemplateDiagnose;
-
-  template <typename T>
-  struct DiagnoseTemplate;
 
   //////////////////////////////////////////////////////////////////////////
   // Constness - these functions can be used to write the non-const version
-  // of a function by calling the const version of the function to avoid 
+  // of a function by calling the const version of the function to avoid
   // code duplication
 
   template <typename T>
@@ -30,7 +25,7 @@ namespace tloc { namespace core {
   // Base classes
 
   template <typename T_Arg, typename T_Result>
-  struct unary_function 
+  struct unary_function
   {
     typedef T_Arg     argument_type;
     typedef T_Result  result_type;
@@ -102,6 +97,28 @@ namespace tloc { namespace core {
   // Comparisor operations
 
   template <typename T>
+  struct equal_to_stored : unary_function<T, bool>
+  {
+    equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+
+    void operator= (const equal_to_stored& a_other)
+    { m_toCompareWith = a_other.m_toCompareWith; }
+
+    bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
+  struct not_equal_to_stored : unary_function<T, bool>
+  {
+    not_equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+    bool operator()(const T& a_x) const { return m_toCompareWith != a_x; }
+
+    const T m_toCompareWith;
+  };
+
+  template <typename T>
   struct equal_to : binary_function<T, T, bool>
   {
     bool operator()(const T& a_x, const T& a_y) const { return a_x == a_y; }
@@ -110,31 +127,31 @@ namespace tloc { namespace core {
   template <typename T>
   struct not_equal_to : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T != T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x != a_y; }
   };
 
   template <typename T>
   struct greater : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T > T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x > a_y; }
   };
 
   template <typename T>
   struct less : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T < T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x < a_y; }
   };
 
   template <typename T>
   struct greater_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T >= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x >= a_y; }
   };
 
   template <typename T>
   struct less_equal : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T <= T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x <= a_y; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -143,19 +160,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct logical_and : binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T && T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x && a_y; }
   };
 
   template <typename T>
   struct logical_or: binary_function<T, T, bool>
   {
-    bool operator()(const T& a_x, const T& a_y) const { return T || T; }
+    bool operator()(const T& a_x, const T& a_y) const { return a_x || a_y; }
   };
 
   template <typename T>
   struct logical_not: unary_function<T, bool>
   {
-    bool operator()(const T& a_x) const { return !T; }
+    bool operator()(const T& a_x) const { return !a_x; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -163,9 +180,10 @@ namespace tloc { namespace core {
 
   template <typename T> struct hash
   {
-    tl_size operator()(T p) const 
-    { 
-      TLOC_STATIC_ASSERT(false, Unable_to_generate_a_hash_for_this_type);
+    tl_size operator()(T p) const
+    {
+      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+                         Unable_to_generate_a_hash_for_this_type);
     }
   };
 
@@ -244,8 +262,8 @@ namespace tloc { namespace core {
   struct use_first
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::first_type);
-    
-    typename result_type& operator()(const T_Pair& a) const
+
+    result_type& operator()(const T_Pair& a) const
     { return a.first; }
   };
 
@@ -254,7 +272,7 @@ namespace tloc { namespace core {
   {
     DECL_UNARY_FUNC(T_Pair, const typename T_Pair::second_type);
 
-    typename result_type& operator()(const T_Pair& a) const
+    result_type& operator()(const T_Pair& a) const
     { return a.second; }
   };
 

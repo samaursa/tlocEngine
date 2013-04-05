@@ -42,9 +42,6 @@ namespace tloc { namespace prefab { namespace graphics {
     fan_pool::iterator itr = fanPool->GetNext();
     itr->GetElement() = FanPtr(new Fan(a_circle, Fan::sides(a_numSides) ) );
 
-    // Create the transform component (and the transform pool if necessary)
-    cpool;
-
     if (a_poolMgr.Exists(transform) == false)
     { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
     else

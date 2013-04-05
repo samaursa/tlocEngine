@@ -222,8 +222,9 @@ namespace tloc { namespace core { namespace data_structs {
                         T_TableType::k_Cols == k_Cols), 
                         Rows_and_cols_must_be_same);
 
-    return DoCast<other_value_type, value_type, T_Rows, T_Cols>
-      (*this, types_same_or_not());
+    return static_cast<T_TableType>
+      ( DoCast<other_value_type, value_type, T_Rows, T_Cols>
+        (*this, types_same_or_not()) );
   }
 
   //------------------------------------------------------------------------

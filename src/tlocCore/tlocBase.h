@@ -295,8 +295,15 @@
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
-# define TLOC_ASSERT(_Expression, _Msg) \
+// Sometimes VS gives the warning C4127: conditional expression is constant. To
+// circumvent that, TLOC_ASSERT for VS is slightly different.
+#if defined(_MSC_VER)
+  #define TLOC_ASSERT(_Expression, _Msg) \
+  assert( (_Msg, _Expression) )
+#else
+  #define TLOC_ASSERT(_Expression, _Msg) \
   assert(_Expression && _Msg)
+#endif
 
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees

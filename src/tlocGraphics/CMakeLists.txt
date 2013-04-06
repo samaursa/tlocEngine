@@ -26,7 +26,7 @@ if(WIN32)
     )
 else()
   set(TLOC_GRAPHICS_3RD_PARTY_GLEW
-    )
+  )
   set(TLOC_GRAPHICS_3RD_PARTY_GLEXT
     )
 endif()
@@ -93,8 +93,6 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
-  opengl/tlocOpenGLExt.cpp 
-  opengl/tlocOpenGLExt.h 
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 
@@ -115,6 +113,14 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tloc_opengl.h 
   opengl/tloc_opengl.inl
   )
+
+if(WIN32)
+  set(TLOC_GRAPHICS_OPENGL
+    ${TLOC_GRAPHICS_OPENGL} 
+    opengl/tlocOpenGLExt.cpp 
+    opengl/tlocOpenGLExt.h 
+    )
+endif()
 
 set(TLOC_GRAPHICS_RENDERER 
   renderer/tlocRenderer.cpp 

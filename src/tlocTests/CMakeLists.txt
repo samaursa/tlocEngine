@@ -7,11 +7,29 @@ set(CMAKE_CXX_FLAGS_DEBUG_OLD           ${CMAKE_CXX_FLAGS_DEBUG})
 set(CMAKE_CXX_FLAGS_RELEASE_OLD         ${CMAKE_CXX_FLAGS_RELEASE})
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_OLD  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 
-if(MSVC)
+set(CMAKE_CXX_FLAGS_DEBUG          ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT})
+set(CMAKE_CXX_FLAGS_RELEASE        ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT})
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT})
+
+if(TLOC_COMPILER_MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG           "/Od /Gm  /EHsc /RTC1 /MTd /GR /W4 /WX /c /Zi /TP")
   set(CMAKE_CXX_FLAGS_RELEASE         "/O2 /Ob2 /Oi /Ot /GL /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
+elseif(TLOC_COMPILER_XCODE)
+  set(CMAKE_CXX_FLAGS "-x objective-c++")
+  set(CMAKE_CXX_FLAGS_DEBUG "-fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELEASE "-fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-rtti -Wno-unused-function")
+else()
+  message("Configuration not applied because compiler is unsupported (or not detected properly)")
 endif()
+
+SET(CMAKE_CXX_FLAGS_DEFAULT                 ${CMAKE_CXX_FLAGS})
+set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
+set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+
+
 
 set(tlocAllTests
   tlocTestsCore
@@ -37,7 +55,7 @@ add_subdirectory(input)
 add_subdirectory(math)
 add_subdirectory(physics)
 
-if(MSVC)
+if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})
     if(TARGET ${testProj})
       set_target_properties(${testProj}
@@ -49,9 +67,3 @@ if(MSVC)
     endif()
   endforeach()
 endif()
-
-#restore settings
-set(CMAKE_CXX_FLAGS                 ${CMAKE_CXX_FLAGS_DEFAULT_OLD})
-set(CMAKE_CXX_FLAGS_DEBUG           ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT_OLD})
-set(CMAKE_CXX_FLAGS_RELEASE         ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT_OLD})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT_OLD})

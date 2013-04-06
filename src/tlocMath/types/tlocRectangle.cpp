@@ -73,36 +73,29 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>::
     Rectangle()
-    : m_extents(0.0f, 0.0f)
+    : m_dimensions(0.0f, 0.0f)
     , m_position(0, 0)
   { }
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>::
     Rectangle(width a_w, height a_h, position a_pos)
-    : m_extents(a_w, a_h)
+    : m_dimensions(a_w, a_h)
     , m_position(a_pos)
   { }
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle<TLOC_RECTANGLE_PARAMS>::
     Rectangle(left a_l, right a_r, top a_t, bottom a_b)
-    : m_extents( (a_r - a_l), (a_t - a_b) )
+    : m_dimensions( (a_r - a_l), (a_t - a_b) )
     , m_position( (a_l + a_r) * 0.5f, (a_t + a_b) * 0.5f )
-  { }
-
-  template <TLOC_RECTANGLE_TEMP>
-  Rectangle<TLOC_RECTANGLE_PARAMS>::
-    Rectangle(const this_type& a_other)
-    : m_extents(a_other.m_extents)
-    , m_position(a_other.m_position)
   { }
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::this_type&
     Rectangle<TLOC_RECTANGLE_PARAMS>::operator= (const this_type& a_other)
   {
-    m_extents = a_other.m_extents;
+    m_dimensions = a_other.m_dimensions;
     m_position = a_other.m_position;
     return *this;
   }
@@ -111,30 +104,30 @@ namespace tloc { namespace math { namespace types {
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::
     operator ==(const this_type& a_other) const
   {
-    return m_extents == a_other.m_extents && m_position == a_other.m_position;
+    return m_dimensions == a_other.m_dimensions && m_position == a_other.m_position;
   }
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::real_type
     Rectangle<TLOC_RECTANGLE_PARAMS>::
     GetWidth() const
-  { return m_extents[width::k_index]; }
+  { return m_dimensions[width::k_index]; }
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::real_type
     Rectangle<TLOC_RECTANGLE_PARAMS>::
     GetHeight() const
-  { return m_extents[height::k_index]; }
+  { return m_dimensions[height::k_index]; }
 
   template <TLOC_RECTANGLE_TEMP>
   void Rectangle<TLOC_RECTANGLE_PARAMS>::
     SetWidth(real_type a_value)
-  { m_extents[width::k_index] = a_value; }
+  { m_dimensions[width::k_index] = a_value; }
 
   template <TLOC_RECTANGLE_TEMP>
   void Rectangle<TLOC_RECTANGLE_PARAMS>::
     SetHeight(real_type a_value)
-  { m_extents[height::k_index] = a_value; }
+  { m_dimensions[height::k_index] = a_value; }
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::point_type Rectangle<TLOC_RECTANGLE_PARAMS>::
@@ -190,8 +183,8 @@ namespace tloc { namespace math { namespace types {
   bool Rectangle<TLOC_RECTANGLE_PARAMS>::
     IsValid() const
   {
-    return m_extents[width::k_index] > 0 &&
-           m_extents[height::k_index] > 0;
+    return m_dimensions[width::k_index] > 0 &&
+           m_dimensions[height::k_index] > 0;
   }
 
   template <TLOC_RECTANGLE_TEMP>
@@ -232,13 +225,13 @@ namespace tloc { namespace math { namespace types {
     switch (a_index)
     {
     case left::k_index:
-      return -(m_extents[width::k_index] * half) + m_position[0];
+      return -(m_dimensions[width::k_index] * half) + m_position[0];
     case right::k_index:
-      return (m_extents[width::k_index] * half) + m_position[0];
+      return (m_dimensions[width::k_index] * half) + m_position[0];
     case top::k_index:
-      return (m_extents[height::k_index] * half) + m_position[1];
+      return (m_dimensions[height::k_index] * half) + m_position[1];
     case bottom::k_index:
-      return -(m_extents[height::k_index] * half) + m_position[1];
+      return -(m_dimensions[height::k_index] * half) + m_position[1];
     default:
       return 0;
     }

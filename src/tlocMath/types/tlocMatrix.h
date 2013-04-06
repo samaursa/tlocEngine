@@ -63,13 +63,13 @@ namespace tloc { namespace math { namespace types {
     Matrix();
 
     // Copy constructor
-    Matrix(const this_type& aMatrix);
-
-    // Copy constructor
-    Matrix(const base_type& aMatrix);
+    template <typename T_Real>
+    Matrix(const core_ds::Table<T_Real, T_Size, T_Size>& aMatrix)
+      : base_type(aMatrix)
+    { }
 
     // Modifies this matrix by filling it with the incoming value
-    explicit Matrix(const_reference aValue);
+    explicit Matrix(value_type aValue);
 
     // Fill the matrix with values in a certain matrix order
     Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);

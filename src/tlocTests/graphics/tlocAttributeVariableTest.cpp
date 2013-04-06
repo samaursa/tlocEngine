@@ -54,14 +54,14 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple2s32(Variadic2s(1, 2)) );
+      a.SetValueAs( Tuple2s32(Variadic2s32(1, 2)) );
       CHECK(a.GetValueAs<Tuple2s32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple2s32>()[1] == 2);
     }
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple3s32(Variadic3s(1, 2, 3)) );
+      a.SetValueAs( Tuple3s32(Variadic3s32(1, 2, 3)) );
       CHECK(a.GetValueAs<Tuple3s32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple3s32>()[1] == 2);
       CHECK(a.GetValueAs<Tuple3s32>()[2] == 3);
@@ -69,7 +69,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple4s32(Variadic4s(1, 2, 3, 4)) );
+      a.SetValueAs( Tuple4s32(Variadic4s32(1, 2, 3, 4)) );
       CHECK(a.GetValueAs<Tuple4s32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple4s32>()[1] == 2);
       CHECK(a.GetValueAs<Tuple4s32>()[2] == 3);
@@ -84,14 +84,14 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple2u32(Variadic2u(1, 2)) );
+      a.SetValueAs( Tuple2u32(Variadic2u32(1, 2)) );
       CHECK(a.GetValueAs<Tuple2u32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple2u32>()[1] == 2);
     }
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple3u32(Variadic3u(1, 2, 3)) );
+      a.SetValueAs( Tuple3u32(Variadic3u32(1, 2, 3)) );
       CHECK(a.GetValueAs<Tuple3u32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple3u32>()[1] == 2);
       CHECK(a.GetValueAs<Tuple3u32>()[2] == 3);
@@ -99,7 +99,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      a.SetValueAs( Tuple4u32(Variadic4u(1, 2, 3, 4)) );
+      a.SetValueAs( Tuple4u32(Variadic4u32(1, 2, 3, 4)) );
       CHECK(a.GetValueAs<Tuple4u32>()[0] == 1);
       CHECK(a.GetValueAs<Tuple4u32>()[1] == 2);
       CHECK(a.GetValueAs<Tuple4u32>()[2] == 3);
@@ -165,7 +165,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple2s32> array(1, Tuple2s32(Variadic2s(1, 2)) );
+      Array<Tuple2s32> array(1, Tuple2s32(Variadic2s32(1, 2)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple2s32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple2s32> >()[0][1] == 2);
@@ -173,7 +173,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple3s32> array(1, Tuple3s32(Variadic3s(1, 2, 3)) );
+      Array<Tuple3s32> array(1, Tuple3s32(Variadic3s32(1, 2, 3)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple3s32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple3s32> >()[0][1] == 2);
@@ -182,7 +182,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple4s32> array(1, Tuple4s32(Variadic4s(1, 2, 3, 4)) );
+      Array<Tuple4s32> array(1, Tuple4s32(Variadic4s32(1, 2, 3, 4)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][1] == 2);
@@ -199,7 +199,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple2u32> array(1, Tuple2u32(Variadic2u(1, 2)) );
+      Array<Tuple2u32> array(1, Tuple2u32(Variadic2u32(1, 2)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple2u32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple2u32> >()[0][1] == 2);
@@ -207,7 +207,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple3u32> array(1, Tuple3u32(Variadic3u(1, 2, 3)) );
+      Array<Tuple3u32> array(1, Tuple3u32(Variadic3u32(1, 2, 3)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple3u32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple3u32> >()[0][1] == 2);
@@ -216,7 +216,7 @@ namespace TestingAttributeVariable
 
     {
       gl::Attribute a;
-      Array<Tuple4u32> array(1, Tuple4u32(Variadic4u(1, 2, 3, 4)) );
+      Array<Tuple4u32> array(1, Tuple4u32(Variadic4u32(1, 2, 3, 4)) );
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][0] == 1);
       CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][1] == 2);

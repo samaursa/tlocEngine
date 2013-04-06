@@ -4,16 +4,18 @@ project(tlocEngine)
 
 set(TLOC_ENGINE_VERSION 0.1)
 
-if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set(ARCH_DIR "x64")
-else()
-  set(ARCH_DIR "x86")
-endif()
+# Common configuration file that sets up platform and compiler specific details
+include(tlocCommon.cmake)
 
+#------------------------------------------------------------------------------
+# Subdirectories
+
+message("")
 add_subdirectory(src)
 
-set(TLOC_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
-set(TLOC_DEP_PATH "FIXME!" CACHE PATH "The tloc dependency repository path goes here. Make sure that you have run CMake on the repository.")
+#------------------------------------------------------------------------------
+# CACHE Variables
 
-# Solution folders for MSVC
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(TLOC_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
+set(TLOC_DEP_PATH "FIXME!" CACHE PATH "The tloc dependency REPOSITORY path goes here. Make sure that you have run CMake on the repository.")
+set(TLOC_DEP_BUILD_PATH "FIXME!" CACHE PATH "The tloc dependency BUILD path goes here. Make sure that you have run CMake on the repository.")

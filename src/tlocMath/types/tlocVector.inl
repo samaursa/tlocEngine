@@ -64,12 +64,7 @@ namespace tloc { namespace math { namespace types {
   { }
 
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const base_type& a_vector)
-    : base_type(a_vector)
-  { }
-
-  template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const_reference a_value) 
+  TL_FI Vector<VECTOR_PARAMS>::Vector(value_type a_value) 
     : base_type(a_value)
   { }
 

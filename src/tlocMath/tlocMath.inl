@@ -20,7 +20,7 @@ namespace tloc {
       return std::abs(a_value);
     }
 
-    s64 GetAbs(s64 a_value)
+    TL_I s64 GetAbs(s64 a_value)
     {
       return (s64)std::abs((s32)a_value);
     }
@@ -31,12 +31,12 @@ namespace tloc {
       return std::sqrt(a_value);
     }
 
-    s32 GetSqrt(s32 a_value)
+    TL_I s32 GetSqrt(s32 a_value)
     {
       return (s32)std::sqrt((tl_float)a_value);
     }
 
-    s64 GetSqrt(s64 a_value)
+    TL_I s64 GetSqrt(s64 a_value)
     {
       return (s64)std::sqrt((tl_float)a_value);
     }

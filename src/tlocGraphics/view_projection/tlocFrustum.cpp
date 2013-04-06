@@ -38,9 +38,10 @@ namespace tloc { namespace graphics { namespace view_proj {
   // Frustum
 
   Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
-    : m_projMatrix(0)
-    , m_params(types::FOV(math::types::Degree(90.0f), ar_type(),
+    : m_params(types::FOV(math::types::Degree(90.0f),
+                          ar_type(),
                           types::p_FOV::horizontal()) )
+    , m_projMatrix(0)
   {
     using namespace types;
     using namespace math::utils;
@@ -65,8 +66,9 @@ namespace tloc { namespace graphics { namespace view_proj {
   }
 
   Frustum::Frustum(const Params& a_params)
-    : m_projMatrix(0)
-    , m_params(a_params)
+    : m_params(a_params)
+    , m_projMatrix(0)
+
   {
     using namespace math::utils;
     using math::types::Degree;

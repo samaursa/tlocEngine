@@ -35,17 +35,17 @@ namespace TestingRigidBodySystem
 
     typedef core::component_system::event_manager_sptr  event_manager_sptr;
     typedef core::component_system::entity_manager_sptr entity_manager_sptr;
-    typedef core::component_system::Entity        entity_type;
+    typedef core::component_system::Entity              entity_type;
 
-    typedef math::types::Rectf                rect_shape_type;
-    typedef math::types::Circlef              circle_shape_type;
-    typedef math::component_system::Transform transform_type;
+    typedef math::types::Rectf32                        rect_shape_type;
+    typedef math::types::Circlef32                      circle_shape_type;
+    typedef math::component_system::Transform           transform_type;
 
-    typedef box2d::PhysicsManager       physics_manager;
-    typedef box2d::ContactEvent         contact_event_type;
-    typedef box2d::RigidBodyShapeDef    rigid_body_shape_def_type;
-    typedef box2d::RigidBodyDef         rigid_body_def_type;
-    typedef box2d::rigid_body_def_sptr  rigid_body_def_sptr;
+    typedef box2d::PhysicsManager               physics_manager;
+    typedef box2d::ContactEvent                 contact_event_type;
+    typedef box2d::RigidBodyShapeDef            rigid_body_shape_def_type;
+    typedef box2d::RigidBodyDef                 rigid_body_def_type;
+    typedef box2d::rigid_body_def_sptr          rigid_body_def_sptr;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;

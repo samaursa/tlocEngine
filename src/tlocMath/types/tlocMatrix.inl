@@ -37,19 +37,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_TYPES>
   Matrix<MATRIX_PARAMS>::
-    Matrix(const this_type& aMatrix)
-    : base_type(aMatrix)
-  { }
-
-  template <MATRIX_TYPES>
-  Matrix<MATRIX_PARAMS>::
-    Matrix(const base_type& aMatrix)
-    : base_type(aMatrix)
-  { }
-
-  template <MATRIX_TYPES>
-  Matrix<MATRIX_PARAMS>::
-    Matrix(const_reference aValue)
+    Matrix(value_type aValue)
     : base_type(aValue) 
   { }
 

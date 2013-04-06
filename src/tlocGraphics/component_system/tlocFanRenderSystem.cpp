@@ -65,14 +65,10 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_sharedCam)
     {
       if (m_sharedCam->HasComponent(transform))
-      {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-      }
+      { }
 
       if (m_sharedCam->HasComponent(projection))
-      {
-      }
+      { }
     }
 
     return ErrorSuccess();
@@ -104,14 +100,14 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         ComponentMapper<graphics::component_system::Projection> projMatList =
           m_sharedCam->GetComponents(graphics::component_system::components::projection);
-        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix();
+        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 
       if (m_sharedCam->HasComponent(transform))
       {
         ComponentMapper<math::component_system::Transform> viewMatList =
           m_sharedCam->GetComponents(math::component_system::components::transform);
-        viewMat = viewMatList[0].GetTransformation();
+        viewMat = viewMatList[0].GetTransformation().Cast<matrix_type>();
       }
     }
 
@@ -158,13 +154,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const circle_type& circ = f.GetEllipseRef();
 
-      const tl_int    numSides = f.GetNumSides();
-      const tl_float  angleInterval = 360.0f/numSides;
+      const size_type numSides = f.GetNumSides();
+      const f32 angleInterval = 360.0f/numSides;
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
       math::component_system::Transform& pos = posList[0];
-      const Mat4f32& tMatrix = pos.GetTransformation();
+      const Mat4f32& tMatrix = pos.GetTransformation().Cast<Mat4f32>();
 
       // Push the center vertex
       {
@@ -175,7 +171,7 @@ namespace tloc { namespace graphics { namespace component_system {
         m_vertList.push_back(coord4f.ConvertTo<Vec3f32>());
       }
 
-      for (int i = 0; i <= numSides; ++i)
+      for (f32 i = 0; i <= numSides; ++i)
       {
         Vec2f32 newCoord = circ.GetCoord(Degree32(angleInterval * i));
         Vec4f32 coord4f =
@@ -191,7 +187,7 @@ namespace tloc { namespace graphics { namespace component_system {
       circle_type circForTex;
       circForTex.SetRadius(0.5f);
       m_texList.push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
-      for (int i = 0; i <= numSides; ++i)
+      for (f32 i = 0; i <= numSides; ++i)
       {
         Vec2f32 newTexCoord = circForTex.GetCoord(Degree32(angleInterval * i));
         newTexCoord += Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0

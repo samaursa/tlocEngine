@@ -15,7 +15,8 @@ namespace tloc
             class T8  = TLOC_DUMMY_PARAM,
             class T9  = TLOC_DUMMY_PARAM,
             class T10 = TLOC_DUMMY_PARAM,
-            class T11 = TLOC_DUMMY_PARAM> struct ParamList;
+            class T11 = TLOC_DUMMY_PARAM>
+  struct ParamList;
 
   template <class T1>
   struct ParamList<T1>

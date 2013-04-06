@@ -1,8 +1,10 @@
 #include "tlocInputImplWin.h"
 
+#include <tlocCore/types/tlocTypeTraits.h>
+
+#include <tlocCore/types/tlocAny.inl>
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/string/tlocString.inl>
-#include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>
@@ -42,7 +44,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED(a_params);
         windows_keyboard_param_type params;
-        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
         params.m_param3 = a_params;
 
@@ -61,7 +63,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED(a_params);
         windows_mouse_param_type params;
-        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
         params.m_param3 = a_params;
 
@@ -165,7 +167,7 @@ namespace tloc { namespace input { namespace priv {
     HINSTANCE hInst = NULL;
     HRESULT hr;
 
-    if (IsWindow(m_params.m_param1) == 0)
+    if (IsWindow(m_params.m_param1.Cast<HWND>()) == 0)
     {
       // LOG: The passed window pointer is not valid
       return 1;
@@ -387,7 +389,7 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   HWND InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::GetWindowHandle()
   {
-    return m_params.m_param1;
+    return m_params.m_param1.Cast<HWND>();
   }
 
   //------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 
 #include <tlocCore/types/tlocTemplateParams.h>
 
+#include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
 namespace tloc { namespace input {

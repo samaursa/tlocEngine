@@ -5,6 +5,8 @@
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/time/tlocTime.h>
 
+#include <tlocCore/types/tlocAny.h>
+
 #include <tlocInput/tlocInputManager.h>
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
@@ -660,7 +662,7 @@ namespace TestingInput
 
     HWND wnd = CreateWin32Window();
 
-    ParamList<HWND> params;
+    ParamList<core_t::Any> params;
     params.m_param1 = wnd;
     InputManagerB inputMgr(params);
     InputManagerI inputMgrImm(params);

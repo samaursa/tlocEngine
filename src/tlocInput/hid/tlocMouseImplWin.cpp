@@ -328,6 +328,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode |= MouseEvent::button7;
     if(m_mouseBuffer.rgbButtons[7] & 0x80)
       m_currentState.m_buttonCode |= MouseEvent::button8;
+
+    // Clamp the values
+    if (m_parent->GetClamped())
+    { m_parent->Clamp(m_currentState); }
   }
 
   template <MOUSE_IMPL_TEMP>

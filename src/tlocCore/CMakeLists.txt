@@ -152,7 +152,6 @@ set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.inl
     memory/tloc_memory.cpp
     memory/tlocAllocators.h
-    memory/tlocAllocators.inl
     memory/tlocAllocators.cpp
     memory/tlocBufferArg.h
     memory/tlocBufferArg.cpp

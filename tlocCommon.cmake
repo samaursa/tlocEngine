@@ -50,17 +50,6 @@ else()
   set(TLOC_COMPILER_UNSUPPORTED 1)
 endif()
 
-# Configurations
-if(CMAKE_CXX_FLAGS_DEBUG)
-  set(TLOC_CONFIG_DEBUG 1)
-elseif(CMAKE_CXX_FLAGS_RELEASE)
-  set(TLOC_CONFIG_RELEASE 1)
-elseif(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-  set(TLOC_CONFIG_RELWITHDEBINFO 1)
-else()
-  message("CONFIGURATION: Unsupported configuration specified!")
-endif()
-
 #------------------------------------------------------------------------------
 # Application type
 

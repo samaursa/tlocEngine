@@ -1,0 +1,954 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9701FF70160E67C800F48A65 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF6F160E67C800F48A65 /* miniz.c */; };
+		9701FF73160E67F000F48A65 /* lodepng.c in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF71160E67F000F48A65 /* lodepng.c */; };
+		9701FF74160E67F000F48A65 /* lodepng.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF72160E67F000F48A65 /* lodepng.h */; };
+		9701FF7B160E685100F48A65 /* tlocMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF79160E685100F48A65 /* tlocMaterial.cpp */; };
+		9701FF7C160E685100F48A65 /* tlocMaterial.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF7A160E685100F48A65 /* tlocMaterial.h */; };
+		9701FF7F160E686200F48A65 /* tlocMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF7D160E686200F48A65 /* tlocMesh.cpp */; };
+		9701FF80160E686200F48A65 /* tlocMesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF7E160E686200F48A65 /* tlocMesh.h */; };
+		9701FF83160E688200F48A65 /* tlocMeshRenderSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF81160E688200F48A65 /* tlocMeshRenderSystem.cpp */; };
+		9701FF84160E688200F48A65 /* tlocMeshRenderSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF82160E688200F48A65 /* tlocMeshRenderSystem.h */; };
+		9701FF86160E689100F48A65 /* tlocComponentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF85160E689100F48A65 /* tlocComponentType.h */; };
+		9701FF9A160E693200F48A65 /* tlocImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF96160E693200F48A65 /* tlocImage.cpp */; };
+		9701FF9B160E693200F48A65 /* tlocImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF97160E693200F48A65 /* tlocImage.h */; };
+		9701FF9C160E693200F48A65 /* tlocImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FF98160E693200F48A65 /* tlocImageLoader.cpp */; };
+		9701FF9D160E693200F48A65 /* tlocImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FF99160E693200F48A65 /* tlocImageLoader.h */; };
+		9701FFA2160E697C00F48A65 /* tlocError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFA0160E697C00F48A65 /* tlocError.cpp */; };
+		9701FFA3160E697C00F48A65 /* tlocError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFA1160E697C00F48A65 /* tlocError.h */; };
+		9701FFAA160E699A00F48A65 /* tlocShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */; };
+		9701FFAB160E699A00F48A65 /* tlocShaderProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */; };
+		9701FFAE160E69E300F48A65 /* tlocObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9701FFAC160E69E300F48A65 /* tlocObject.cpp */; };
+		9701FFAF160E69E300F48A65 /* tlocObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFAD160E69E300F48A65 /* tlocObject.h */; };
+		9701FFB1160E6A2200F48A65 /* tlocErrorTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 9701FFB0160E6A2200F48A65 /* tlocErrorTypes.h */; };
+		9734BB5916263795003956FE /* tlocShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9734BB5716263795003956FE /* tlocShader.cpp */; };
+		9734BB5A16263795003956FE /* tlocShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9734BB5816263795003956FE /* tlocShader.h */; };
+		976B933016C63E1F009C12A1 /* tloc_component_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B932D16C63E1F009C12A1 /* tloc_component_system.cpp */; };
+		976B933116C63E1F009C12A1 /* tloc_component_system.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B932E16C63E1F009C12A1 /* tloc_component_system.h */; };
+		976B933316C63E3B009C12A1 /* tlocPrefabMaterial.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B933216C63E3B009C12A1 /* tlocPrefabMaterial.h */; };
+		976B933A16C63EAE009C12A1 /* tlocFan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B933416C63EAE009C12A1 /* tlocFan.cpp */; };
+		976B933B16C63EAE009C12A1 /* tlocFan.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B933516C63EAE009C12A1 /* tlocFan.h */; };
+		976B933C16C63EAE009C12A1 /* tlocPrimitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B933616C63EAE009C12A1 /* tlocPrimitive.cpp */; };
+		976B933D16C63EAE009C12A1 /* tlocPrimitive.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B933716C63EAE009C12A1 /* tlocPrimitive.h */; };
+		976B933E16C63EAE009C12A1 /* tlocQuad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B933816C63EAE009C12A1 /* tlocQuad.cpp */; };
+		976B933F16C63EAE009C12A1 /* tlocQuad.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B933916C63EAE009C12A1 /* tlocQuad.h */; };
+		976B934316C63EDC009C12A1 /* tlocProjectionComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B934116C63EDC009C12A1 /* tlocProjectionComponent.cpp */; };
+		976B934416C63EDC009C12A1 /* tlocProjectionComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B934216C63EDC009C12A1 /* tlocProjectionComponent.h */; };
+		976B934B16C63F03009C12A1 /* tlocFanRenderSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B934516C63F03009C12A1 /* tlocFanRenderSystem.cpp */; };
+		976B934C16C63F03009C12A1 /* tlocFanRenderSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B934616C63F03009C12A1 /* tlocFanRenderSystem.h */; };
+		976B934D16C63F03009C12A1 /* tlocMaterialSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B934716C63F03009C12A1 /* tlocMaterialSystem.cpp */; };
+		976B934E16C63F03009C12A1 /* tlocMaterialSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B934816C63F03009C12A1 /* tlocMaterialSystem.h */; };
+		976B934F16C63F03009C12A1 /* tlocQuadRenderSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B934916C63F03009C12A1 /* tlocQuadRenderSystem.cpp */; };
+		976B935016C63F03009C12A1 /* tlocQuadRenderSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B934A16C63F03009C12A1 /* tlocQuadRenderSystem.h */; };
+		976B935516C643FF009C12A1 /* tloc_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B935216C643FF009C12A1 /* tloc_error.cpp */; };
+		976B935616C643FF009C12A1 /* tloc_error.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B935316C643FF009C12A1 /* tloc_error.h */; };
+		976B935A16C64420009C12A1 /* tloc_media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B935716C64420009C12A1 /* tloc_media.cpp */; };
+		976B935B16C64420009C12A1 /* tloc_media.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B935816C64420009C12A1 /* tloc_media.h */; };
+		976B936116C646C0009C12A1 /* tlocShaderOperator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B935E16C646C0009C12A1 /* tlocShaderOperator.cpp */; };
+		976B936216C646C0009C12A1 /* tlocShaderOperator.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B935F16C646C0009C12A1 /* tlocShaderOperator.h */; };
+		976B936316C646C0009C12A1 /* tlocShaderVariableInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B936016C646C0009C12A1 /* tlocShaderVariableInfo.cpp */; };
+		976B936A16C64704009C12A1 /* tlocAttribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B936616C64704009C12A1 /* tlocAttribute.cpp */; };
+		976B936B16C64704009C12A1 /* tlocAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B936716C64704009C12A1 /* tlocAttribute.h */; };
+		976B936C16C64704009C12A1 /* tlocUniform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B936816C64704009C12A1 /* tlocUniform.cpp */; };
+		976B936D16C64704009C12A1 /* tlocUniform.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B936916C64704009C12A1 /* tlocUniform.h */; };
+		976B937216C64754009C12A1 /* tlocShaderVariable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B936E16C64754009C12A1 /* tlocShaderVariable.cpp */; };
+		976B937316C64754009C12A1 /* tlocShaderVariable.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B936F16C64754009C12A1 /* tlocShaderVariable.h */; };
+		976B937416C64754009C12A1 /* tlocShaderVariableExplicitMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B937016C64754009C12A1 /* tlocShaderVariableExplicitMacros.h */; };
+		976B937516C64754009C12A1 /* tlocShaderVariableInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B937116C64754009C12A1 /* tlocShaderVariableInfo.h */; };
+		976B937816C6478C009C12A1 /* tlocTextureObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B937616C6478C009C12A1 /* tlocTextureObject.cpp */; };
+		976B937916C6478C009C12A1 /* tlocTextureObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B937716C6478C009C12A1 /* tlocTextureObject.h */; };
+		976B937E16C64C66009C12A1 /* tloc_opengl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B937A16C64C66009C12A1 /* tloc_opengl.cpp */; };
+		976B937F16C64C66009C12A1 /* tloc_opengl.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B937B16C64C66009C12A1 /* tloc_opengl.h */; };
+		976B938016C64C66009C12A1 /* tlocOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B937D16C64C66009C12A1 /* tlocOpenGL.cpp */; };
+		976B938416C64D38009C12A1 /* tloc_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B938116C64D38009C12A1 /* tloc_renderer.cpp */; };
+		976B938516C64D38009C12A1 /* tloc_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938216C64D38009C12A1 /* tloc_renderer.h */; };
+		976B939116C65070009C12A1 /* tloc_types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B938616C65070009C12A1 /* tloc_types.cpp */; };
+		976B939216C65070009C12A1 /* tloc_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938716C65070009C12A1 /* tloc_types.h */; };
+		976B939316C65070009C12A1 /* tlocAspectRatio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B938916C65070009C12A1 /* tlocAspectRatio.cpp */; };
+		976B939416C65070009C12A1 /* tlocAspectRatio.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938A16C65070009C12A1 /* tlocAspectRatio.h */; };
+		976B939516C65070009C12A1 /* tlocColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B938B16C65070009C12A1 /* tlocColor.cpp */; };
+		976B939616C65070009C12A1 /* tlocColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938C16C65070009C12A1 /* tlocColor.h */; };
+		976B939716C65070009C12A1 /* tlocDimension.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938D16C65070009C12A1 /* tlocDimension.h */; };
+		976B939816C65070009C12A1 /* tlocFOV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B938E16C65070009C12A1 /* tlocFOV.cpp */; };
+		976B939916C65070009C12A1 /* tlocFOV.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B938F16C65070009C12A1 /* tlocFOV.h */; };
+		976B939A16C65070009C12A1 /* tlocVertex.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B939016C65070009C12A1 /* tlocVertex.h */; };
+		976B93A016C650BE009C12A1 /* tloc_view_projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B939B16C650BE009C12A1 /* tloc_view_projection.cpp */; };
+		976B93A116C650BE009C12A1 /* tloc_view_projection.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B939C16C650BE009C12A1 /* tloc_view_projection.h */; };
+		976B93A216C650BE009C12A1 /* tlocCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B939E16C650BE009C12A1 /* tlocCamera.cpp */; };
+		976B93A316C650BE009C12A1 /* tlocCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B939F16C650BE009C12A1 /* tlocCamera.h */; };
+		976B93A716C651AD009C12A1 /* tloc_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93A416C651AD009C12A1 /* tloc_window.cpp */; };
+		976B93A816C651AD009C12A1 /* tloc_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B93A516C651AD009C12A1 /* tloc_window.h */; };
+		976B93AD16C655ED009C12A1 /* tloc_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 976B93A916C655ED009C12A1 /* tloc_graphics.cpp */; };
+		976B93AE16C655ED009C12A1 /* tloc_graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B93AA16C655ED009C12A1 /* tloc_graphics.h */; };
+		976B93AF16C655ED009C12A1 /* tlocGraphicsBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 976B93AC16C655ED009C12A1 /* tlocGraphicsBase.h */; };
+		97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E0815A2A61B00F3C248 /* Foundation.framework */; };
+		97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97812E6015A3CCBB00F3C248 /* OpenGLES.framework */; };
+		9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */; };
+		97C87A1015DCE6C400FE0A6C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */; };
+		97C87D0115DE4BC700FE0A6C /* tlocWindowHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */; };
+		97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */; };
+		97C87D0315DE4BC700FE0A6C /* tlocWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */; };
+		97C87D0415DE4BC700FE0A6C /* tlocWindowImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */; };
+		97C87D0515DE4BC700FE0A6C /* tlocWindowSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */; };
+		97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */; };
+		97C87D0D15DE4BF700FE0A6C /* tlocOpenGLViewIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */; };
+		97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */; };
+		97C87D0F15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */; };
+		97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */; };
+		97C87D1115DE4BF700FE0A6C /* tlocWindowImplIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */; };
+		97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */; };
+		97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */; };
+		97C87D1A15DE4C3300FE0A6C /* tlocContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1715DE4C3300FE0A6C /* tlocContext.h */; };
+		97C87D1B15DE4C3300FE0A6C /* tlocGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */; };
+		97C87D1D15DE4C4200FE0A6C /* tlocOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */; };
+		97C87D1F15DE4CA100FE0A6C /* tlocGraphicsModes.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */; };
+		97C87D9B15DE58BA00FE0A6C /* tlocAppDelegateIphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */; };
+		97C87D9C15DE58BA00FE0A6C /* tlocAppDelegateIphone.h in Headers */ = {isa = PBXBuildFile; fileRef = 97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */; };
+		97F90696161DA98D00BD8A39 /* tlocRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90694161DA98D00BD8A39 /* tlocRenderer.cpp */; };
+		97F90697161DA98D00BD8A39 /* tlocRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90695161DA98D00BD8A39 /* tlocRenderer.h */; };
+		97F9069A161DA9A600BD8A39 /* tlocFrustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F90698161DA9A600BD8A39 /* tlocFrustum.cpp */; };
+		97F9069B161DA9A600BD8A39 /* tlocFrustum.h in Headers */ = {isa = PBXBuildFile; fileRef = 97F90699161DA9A600BD8A39 /* tlocFrustum.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9701FF6F160E67C800F48A65 /* miniz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = miniz.c; path = ../../../../src/3rdParty/Graphics/miniz/miniz.c; sourceTree = "<group>"; };
+		9701FF71160E67F000F48A65 /* lodepng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lodepng.c; path = ../../../../src/3rdParty/Graphics/lodepng/lodepng.c; sourceTree = "<group>"; };
+		9701FF72160E67F000F48A65 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng.h; path = ../../../../src/3rdParty/Graphics/lodepng/lodepng.h; sourceTree = "<group>"; };
+		9701FF79160E685100F48A65 /* tlocMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMaterial.cpp; path = ../../../../src/tlocGraphics/component_system/tlocMaterial.cpp; sourceTree = "<group>"; };
+		9701FF7A160E685100F48A65 /* tlocMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMaterial.h; path = ../../../../src/tlocGraphics/component_system/tlocMaterial.h; sourceTree = "<group>"; };
+		9701FF7D160E686200F48A65 /* tlocMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMesh.cpp; path = ../../../../src/tlocGraphics/component_system/tlocMesh.cpp; sourceTree = "<group>"; };
+		9701FF7E160E686200F48A65 /* tlocMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMesh.h; path = ../../../../src/tlocGraphics/component_system/tlocMesh.h; sourceTree = "<group>"; };
+		9701FF81160E688200F48A65 /* tlocMeshRenderSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMeshRenderSystem.cpp; path = ../../../../src/tlocGraphics/component_system/tlocMeshRenderSystem.cpp; sourceTree = "<group>"; };
+		9701FF82160E688200F48A65 /* tlocMeshRenderSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMeshRenderSystem.h; path = ../../../../src/tlocGraphics/component_system/tlocMeshRenderSystem.h; sourceTree = "<group>"; };
+		9701FF85160E689100F48A65 /* tlocComponentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocComponentType.h; path = ../../../../src/tlocGraphics/component_system/tlocComponentType.h; sourceTree = "<group>"; };
+		9701FF96160E693200F48A65 /* tlocImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocImage.cpp; path = ../../../../src/tlocGraphics/media/tlocImage.cpp; sourceTree = "<group>"; };
+		9701FF97160E693200F48A65 /* tlocImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocImage.h; path = ../../../../src/tlocGraphics/media/tlocImage.h; sourceTree = "<group>"; };
+		9701FF98160E693200F48A65 /* tlocImageLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocImageLoader.cpp; path = ../../../../src/tlocGraphics/media/tlocImageLoader.cpp; sourceTree = "<group>"; };
+		9701FF99160E693200F48A65 /* tlocImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocImageLoader.h; path = ../../../../src/tlocGraphics/media/tlocImageLoader.h; sourceTree = "<group>"; };
+		9701FFA0160E697C00F48A65 /* tlocError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocError.cpp; path = ../../../../src/tlocGraphics/opengl/tlocError.cpp; sourceTree = "<group>"; };
+		9701FFA1160E697C00F48A65 /* tlocError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocError.h; path = ../../../../src/tlocGraphics/opengl/tlocError.h; sourceTree = "<group>"; };
+		9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderProgram.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderProgram.cpp; sourceTree = "<group>"; };
+		9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderProgram.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderProgram.h; sourceTree = "<group>"; };
+		9701FFAC160E69E300F48A65 /* tlocObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocObject.cpp; path = ../../../../src/tlocGraphics/opengl/tlocObject.cpp; sourceTree = "<group>"; };
+		9701FFAD160E69E300F48A65 /* tlocObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocObject.h; path = ../../../../src/tlocGraphics/opengl/tlocObject.h; sourceTree = "<group>"; };
+		9701FFB0160E6A2200F48A65 /* tlocErrorTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocErrorTypes.h; path = ../../../../src/tlocGraphics/error/tlocErrorTypes.h; sourceTree = "<group>"; };
+		9734BB5716263795003956FE /* tlocShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShader.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShader.cpp; sourceTree = "<group>"; };
+		9734BB5816263795003956FE /* tlocShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShader.h; path = ../../../../src/tlocGraphics/opengl/tlocShader.h; sourceTree = "<group>"; };
+		976B932D16C63E1F009C12A1 /* tloc_component_system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_component_system.cpp; path = ../../../../src/tlocGraphics/component_system/tloc_component_system.cpp; sourceTree = "<group>"; };
+		976B932E16C63E1F009C12A1 /* tloc_component_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_component_system.h; path = ../../../../src/tlocGraphics/component_system/tloc_component_system.h; sourceTree = "<group>"; };
+		976B932F16C63E1F009C12A1 /* tloc_component_system.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_component_system.inl; path = ../../../../src/tlocGraphics/component_system/tloc_component_system.inl; sourceTree = "<group>"; };
+		976B933216C63E3B009C12A1 /* tlocPrefabMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPrefabMaterial.h; path = ../../../../src/tlocGraphics/component_system/tlocPrefabMaterial.h; sourceTree = "<group>"; };
+		976B933416C63EAE009C12A1 /* tlocFan.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFan.cpp; path = ../../../../src/tlocGraphics/component_system/tlocFan.cpp; sourceTree = "<group>"; };
+		976B933516C63EAE009C12A1 /* tlocFan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFan.h; path = ../../../../src/tlocGraphics/component_system/tlocFan.h; sourceTree = "<group>"; };
+		976B933616C63EAE009C12A1 /* tlocPrimitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocPrimitive.cpp; path = ../../../../src/tlocGraphics/component_system/tlocPrimitive.cpp; sourceTree = "<group>"; };
+		976B933716C63EAE009C12A1 /* tlocPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocPrimitive.h; path = ../../../../src/tlocGraphics/component_system/tlocPrimitive.h; sourceTree = "<group>"; };
+		976B933816C63EAE009C12A1 /* tlocQuad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocQuad.cpp; path = ../../../../src/tlocGraphics/component_system/tlocQuad.cpp; sourceTree = "<group>"; };
+		976B933916C63EAE009C12A1 /* tlocQuad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocQuad.h; path = ../../../../src/tlocGraphics/component_system/tlocQuad.h; sourceTree = "<group>"; };
+		976B934116C63EDC009C12A1 /* tlocProjectionComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocProjectionComponent.cpp; path = ../../../../src/tlocGraphics/component_system/tlocProjectionComponent.cpp; sourceTree = "<group>"; };
+		976B934216C63EDC009C12A1 /* tlocProjectionComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocProjectionComponent.h; path = ../../../../src/tlocGraphics/component_system/tlocProjectionComponent.h; sourceTree = "<group>"; };
+		976B934516C63F03009C12A1 /* tlocFanRenderSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFanRenderSystem.cpp; path = ../../../../src/tlocGraphics/component_system/tlocFanRenderSystem.cpp; sourceTree = "<group>"; };
+		976B934616C63F03009C12A1 /* tlocFanRenderSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFanRenderSystem.h; path = ../../../../src/tlocGraphics/component_system/tlocFanRenderSystem.h; sourceTree = "<group>"; };
+		976B934716C63F03009C12A1 /* tlocMaterialSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocMaterialSystem.cpp; path = ../../../../src/tlocGraphics/component_system/tlocMaterialSystem.cpp; sourceTree = "<group>"; };
+		976B934816C63F03009C12A1 /* tlocMaterialSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocMaterialSystem.h; path = ../../../../src/tlocGraphics/component_system/tlocMaterialSystem.h; sourceTree = "<group>"; };
+		976B934916C63F03009C12A1 /* tlocQuadRenderSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocQuadRenderSystem.cpp; path = ../../../../src/tlocGraphics/component_system/tlocQuadRenderSystem.cpp; sourceTree = "<group>"; };
+		976B934A16C63F03009C12A1 /* tlocQuadRenderSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocQuadRenderSystem.h; path = ../../../../src/tlocGraphics/component_system/tlocQuadRenderSystem.h; sourceTree = "<group>"; };
+		976B935216C643FF009C12A1 /* tloc_error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_error.cpp; path = ../../../../src/tlocGraphics/error/tloc_error.cpp; sourceTree = "<group>"; };
+		976B935316C643FF009C12A1 /* tloc_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_error.h; path = ../../../../src/tlocGraphics/error/tloc_error.h; sourceTree = "<group>"; };
+		976B935416C643FF009C12A1 /* tloc_error.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_error.inl; path = ../../../../src/tlocGraphics/error/tloc_error.inl; sourceTree = "<group>"; };
+		976B935716C64420009C12A1 /* tloc_media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_media.cpp; path = ../../../../src/tlocGraphics/media/tloc_media.cpp; sourceTree = "<group>"; };
+		976B935816C64420009C12A1 /* tloc_media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_media.h; path = ../../../../src/tlocGraphics/media/tloc_media.h; sourceTree = "<group>"; };
+		976B935916C64420009C12A1 /* tloc_media.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_media.inl; path = ../../../../src/tlocGraphics/media/tloc_media.inl; sourceTree = "<group>"; };
+		976B935E16C646C0009C12A1 /* tlocShaderOperator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderOperator.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderOperator.cpp; sourceTree = "<group>"; };
+		976B935F16C646C0009C12A1 /* tlocShaderOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderOperator.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderOperator.h; sourceTree = "<group>"; };
+		976B936016C646C0009C12A1 /* tlocShaderVariableInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderVariableInfo.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderVariableInfo.cpp; sourceTree = "<group>"; };
+		976B936616C64704009C12A1 /* tlocAttribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAttribute.cpp; path = ../../../../src/tlocGraphics/opengl/tlocAttribute.cpp; sourceTree = "<group>"; };
+		976B936716C64704009C12A1 /* tlocAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAttribute.h; path = ../../../../src/tlocGraphics/opengl/tlocAttribute.h; sourceTree = "<group>"; };
+		976B936816C64704009C12A1 /* tlocUniform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocUniform.cpp; path = ../../../../src/tlocGraphics/opengl/tlocUniform.cpp; sourceTree = "<group>"; };
+		976B936916C64704009C12A1 /* tlocUniform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocUniform.h; path = ../../../../src/tlocGraphics/opengl/tlocUniform.h; sourceTree = "<group>"; };
+		976B936E16C64754009C12A1 /* tlocShaderVariable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocShaderVariable.cpp; path = ../../../../src/tlocGraphics/opengl/tlocShaderVariable.cpp; sourceTree = "<group>"; };
+		976B936F16C64754009C12A1 /* tlocShaderVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderVariable.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderVariable.h; sourceTree = "<group>"; };
+		976B937016C64754009C12A1 /* tlocShaderVariableExplicitMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderVariableExplicitMacros.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderVariableExplicitMacros.h; sourceTree = "<group>"; };
+		976B937116C64754009C12A1 /* tlocShaderVariableInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocShaderVariableInfo.h; path = ../../../../src/tlocGraphics/opengl/tlocShaderVariableInfo.h; sourceTree = "<group>"; };
+		976B937616C6478C009C12A1 /* tlocTextureObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocTextureObject.cpp; path = ../../../../src/tlocGraphics/opengl/tlocTextureObject.cpp; sourceTree = "<group>"; };
+		976B937716C6478C009C12A1 /* tlocTextureObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocTextureObject.h; path = ../../../../src/tlocGraphics/opengl/tlocTextureObject.h; sourceTree = "<group>"; };
+		976B937A16C64C66009C12A1 /* tloc_opengl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_opengl.cpp; path = ../../../../src/tlocGraphics/opengl/tloc_opengl.cpp; sourceTree = "<group>"; };
+		976B937B16C64C66009C12A1 /* tloc_opengl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_opengl.h; path = ../../../../src/tlocGraphics/opengl/tloc_opengl.h; sourceTree = "<group>"; };
+		976B937C16C64C66009C12A1 /* tloc_opengl.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_opengl.inl; path = ../../../../src/tlocGraphics/opengl/tloc_opengl.inl; sourceTree = "<group>"; };
+		976B937D16C64C66009C12A1 /* tlocOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocOpenGL.cpp; path = ../../../../src/tlocGraphics/opengl/tlocOpenGL.cpp; sourceTree = "<group>"; };
+		976B938116C64D38009C12A1 /* tloc_renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_renderer.cpp; path = ../../../../src/tlocGraphics/renderer/tloc_renderer.cpp; sourceTree = "<group>"; };
+		976B938216C64D38009C12A1 /* tloc_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_renderer.h; path = ../../../../src/tlocGraphics/renderer/tloc_renderer.h; sourceTree = "<group>"; };
+		976B938316C64D38009C12A1 /* tloc_renderer.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_renderer.inl; path = ../../../../src/tlocGraphics/renderer/tloc_renderer.inl; sourceTree = "<group>"; };
+		976B938616C65070009C12A1 /* tloc_types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_types.cpp; path = ../../../../src/tlocGraphics/types/tloc_types.cpp; sourceTree = "<group>"; };
+		976B938716C65070009C12A1 /* tloc_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_types.h; path = ../../../../src/tlocGraphics/types/tloc_types.h; sourceTree = "<group>"; };
+		976B938816C65070009C12A1 /* tloc_types.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_types.inl; path = ../../../../src/tlocGraphics/types/tloc_types.inl; sourceTree = "<group>"; };
+		976B938916C65070009C12A1 /* tlocAspectRatio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocAspectRatio.cpp; path = ../../../../src/tlocGraphics/types/tlocAspectRatio.cpp; sourceTree = "<group>"; };
+		976B938A16C65070009C12A1 /* tlocAspectRatio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAspectRatio.h; path = ../../../../src/tlocGraphics/types/tlocAspectRatio.h; sourceTree = "<group>"; };
+		976B938B16C65070009C12A1 /* tlocColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocColor.cpp; path = ../../../../src/tlocGraphics/types/tlocColor.cpp; sourceTree = "<group>"; };
+		976B938C16C65070009C12A1 /* tlocColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocColor.h; path = ../../../../src/tlocGraphics/types/tlocColor.h; sourceTree = "<group>"; };
+		976B938D16C65070009C12A1 /* tlocDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocDimension.h; path = ../../../../src/tlocGraphics/types/tlocDimension.h; sourceTree = "<group>"; };
+		976B938E16C65070009C12A1 /* tlocFOV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFOV.cpp; path = ../../../../src/tlocGraphics/types/tlocFOV.cpp; sourceTree = "<group>"; };
+		976B938F16C65070009C12A1 /* tlocFOV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFOV.h; path = ../../../../src/tlocGraphics/types/tlocFOV.h; sourceTree = "<group>"; };
+		976B939016C65070009C12A1 /* tlocVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocVertex.h; path = ../../../../src/tlocGraphics/types/tlocVertex.h; sourceTree = "<group>"; };
+		976B939B16C650BE009C12A1 /* tloc_view_projection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_view_projection.cpp; path = ../../../../src/tlocGraphics/view_projection/tloc_view_projection.cpp; sourceTree = "<group>"; };
+		976B939C16C650BE009C12A1 /* tloc_view_projection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_view_projection.h; path = ../../../../src/tlocGraphics/view_projection/tloc_view_projection.h; sourceTree = "<group>"; };
+		976B939D16C650BE009C12A1 /* tloc_view_projection.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_view_projection.inl; path = ../../../../src/tlocGraphics/view_projection/tloc_view_projection.inl; sourceTree = "<group>"; };
+		976B939E16C650BE009C12A1 /* tlocCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocCamera.cpp; path = ../../../../src/tlocGraphics/view_projection/tlocCamera.cpp; sourceTree = "<group>"; };
+		976B939F16C650BE009C12A1 /* tlocCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocCamera.h; path = ../../../../src/tlocGraphics/view_projection/tlocCamera.h; sourceTree = "<group>"; };
+		976B93A416C651AD009C12A1 /* tloc_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_window.cpp; path = ../../../../src/tlocGraphics/window/tloc_window.cpp; sourceTree = "<group>"; };
+		976B93A516C651AD009C12A1 /* tloc_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_window.h; path = ../../../../src/tlocGraphics/window/tloc_window.h; sourceTree = "<group>"; };
+		976B93A616C651AD009C12A1 /* tloc_window.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_window.inl; path = ../../../../src/tlocGraphics/window/tloc_window.inl; sourceTree = "<group>"; };
+		976B93A916C655ED009C12A1 /* tloc_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tloc_graphics.cpp; path = ../../../../src/tlocGraphics/tloc_graphics.cpp; sourceTree = "<group>"; };
+		976B93AA16C655ED009C12A1 /* tloc_graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tloc_graphics.h; path = ../../../../src/tlocGraphics/tloc_graphics.h; sourceTree = "<group>"; };
+		976B93AB16C655ED009C12A1 /* tloc_graphics.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tloc_graphics.inl; path = ../../../../src/tlocGraphics/tloc_graphics.inl; sourceTree = "<group>"; };
+		976B93AC16C655ED009C12A1 /* tlocGraphicsBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocGraphicsBase.h; path = ../../../../src/tlocGraphics/tlocGraphicsBase.h; sourceTree = "<group>"; };
+		97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = tlocGraphics_Debug.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97812E0815A2A61B00F3C248 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		97812E6015A3CCBB00F3C248 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocDepVersionCheck.cpp; path = ../../../../src/tlocGraphics/tlocDepVersionCheck.cpp; sourceTree = "<group>"; };
+		97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowHandle.h; path = ../../../../src/tlocGraphics/window/tlocWindowHandle.h; sourceTree = "<group>"; };
+		97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocWindow.cpp; path = ../../../../src/tlocGraphics/window/tlocWindow.cpp; sourceTree = "<group>"; };
+		97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tlocWindow.inl; path = ../../../../src/tlocGraphics/window/tlocWindow.inl; sourceTree = "<group>"; };
+		97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindow.h; path = ../../../../src/tlocGraphics/window/tlocWindow.h; sourceTree = "<group>"; };
+		97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowImpl.h; path = ../../../../src/tlocGraphics/window/tlocWindowImpl.h; sourceTree = "<group>"; };
+		97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowSettings.h; path = ../../../../src/tlocGraphics/window/tlocWindowSettings.h; sourceTree = "<group>"; };
+		97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocWindowImplIphone.mm; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.mm; sourceTree = "<group>"; };
+		97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.h; sourceTree = "<group>"; };
+		97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocOpenGLViewIphone.mm; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewIphone.mm; sourceTree = "<group>"; };
+		97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGLViewControllerIphone.h; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.h; sourceTree = "<group>"; };
+		97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocOpenGLViewControllerIphone.mm; path = ../../../../src/tlocGraphics/window/tlocOpenGLViewControllerIphone.mm; sourceTree = "<group>"; };
+		97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocWindowImplIphone.h; path = ../../../../src/tlocGraphics/window/tlocWindowImplIphone.h; sourceTree = "<group>"; };
+		97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocGraphicsModes.cpp; path = ../../../../src/tlocGraphics/window/tlocGraphicsModes.cpp; sourceTree = "<group>"; };
+		97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocContext.cpp; path = ../../../../src/tlocGraphics/window/tlocContext.cpp; sourceTree = "<group>"; };
+		97C87D1715DE4C3300FE0A6C /* tlocContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocContext.h; path = ../../../../src/tlocGraphics/window/tlocContext.h; sourceTree = "<group>"; };
+		97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocGraphicsContext.h; path = ../../../../src/tlocGraphics/window/tlocGraphicsContext.h; sourceTree = "<group>"; };
+		97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocOpenGL.h; path = ../../../../src/tlocGraphics/opengl/tlocOpenGL.h; sourceTree = "<group>"; };
+		97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocGraphicsModes.h; path = ../../../../src/tlocGraphics/window/tlocGraphicsModes.h; sourceTree = "<group>"; };
+		97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = tlocAppDelegateIphone.mm; path = ../../../../src/tlocGraphics/application/tlocAppDelegateIphone.mm; sourceTree = "<group>"; };
+		97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocAppDelegateIphone.h; path = ../../../../src/tlocGraphics/application/tlocAppDelegateIphone.h; sourceTree = "<group>"; };
+		97F90694161DA98D00BD8A39 /* tlocRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocRenderer.cpp; path = ../../../../src/tlocGraphics/renderer/tlocRenderer.cpp; sourceTree = "<group>"; };
+		97F90695161DA98D00BD8A39 /* tlocRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocRenderer.h; path = ../../../../src/tlocGraphics/renderer/tlocRenderer.h; sourceTree = "<group>"; };
+		97F90698161DA9A600BD8A39 /* tlocFrustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tlocFrustum.cpp; path = ../../../../src/tlocGraphics/view_projection/tlocFrustum.cpp; sourceTree = "<group>"; };
+		97F90699161DA9A600BD8A39 /* tlocFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlocFrustum.h; path = ../../../../src/tlocGraphics/view_projection/tlocFrustum.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97812E0215A2A61B00F3C248 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87A1015DCE6C400FE0A6C /* QuartzCore.framework in Frameworks */,
+				97812E6115A3CCBB00F3C248 /* OpenGLES.framework in Frameworks */,
+				97812E0915A2A61B00F3C248 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9701FF67160E672F00F48A65 /* media */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF94160E691300F48A65 /* images */,
+				976B935716C64420009C12A1 /* tloc_media.cpp */,
+				976B935816C64420009C12A1 /* tloc_media.h */,
+				976B935916C64420009C12A1 /* tloc_media.inl */,
+			);
+			name = media;
+			sourceTree = "<group>";
+		};
+		9701FF69160E673C00F48A65 /* types */ = {
+			isa = PBXGroup;
+			children = (
+				9734BB201625814A003956FE /* aspect_ratio */,
+				9701FF89160E68C500F48A65 /* color */,
+				9734BB2216258151003956FE /* fov */,
+				9701FF87160E68B900F48A65 /* vertex */,
+				976B938616C65070009C12A1 /* tloc_types.cpp */,
+				976B938716C65070009C12A1 /* tloc_types.h */,
+				976B938816C65070009C12A1 /* tloc_types.inl */,
+				976B938D16C65070009C12A1 /* tlocDimension.h */,
+			);
+			name = types;
+			sourceTree = "<group>";
+		};
+		9701FF6A160E674200F48A65 /* component_system */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF76160E682D00F48A65 /* components */,
+				9701FF75160E682500F48A65 /* systems */,
+				976B932D16C63E1F009C12A1 /* tloc_component_system.cpp */,
+				976B932E16C63E1F009C12A1 /* tloc_component_system.h */,
+				976B932F16C63E1F009C12A1 /* tloc_component_system.inl */,
+				976B933216C63E3B009C12A1 /* tlocPrefabMaterial.h */,
+			);
+			name = component_system;
+			sourceTree = "<group>";
+		};
+		9701FF6B160E674D00F48A65 /* 3rd_party */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF6D160E677A00F48A65 /* compression */,
+				9701FF6C160E677200F48A65 /* images */,
+			);
+			name = 3rd_party;
+			sourceTree = "<group>";
+		};
+		9701FF6C160E677200F48A65 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF6E160E678C00F48A65 /* lodepng */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+		9701FF6D160E677A00F48A65 /* compression */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF6F160E67C800F48A65 /* miniz.c */,
+			);
+			name = compression;
+			sourceTree = "<group>";
+		};
+		9701FF6E160E678C00F48A65 /* lodepng */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF71160E67F000F48A65 /* lodepng.c */,
+				9701FF72160E67F000F48A65 /* lodepng.h */,
+			);
+			name = lodepng;
+			sourceTree = "<group>";
+		};
+		9701FF75160E682500F48A65 /* systems */ = {
+			isa = PBXGroup;
+			children = (
+				976B934516C63F03009C12A1 /* tlocFanRenderSystem.cpp */,
+				976B934616C63F03009C12A1 /* tlocFanRenderSystem.h */,
+				976B934716C63F03009C12A1 /* tlocMaterialSystem.cpp */,
+				976B934816C63F03009C12A1 /* tlocMaterialSystem.h */,
+				9701FF81160E688200F48A65 /* tlocMeshRenderSystem.cpp */,
+				9701FF82160E688200F48A65 /* tlocMeshRenderSystem.h */,
+				976B934916C63F03009C12A1 /* tlocQuadRenderSystem.cpp */,
+				976B934A16C63F03009C12A1 /* tlocQuadRenderSystem.h */,
+			);
+			name = systems;
+			sourceTree = "<group>";
+		};
+		9701FF76160E682D00F48A65 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF78160E683A00F48A65 /* material */,
+				9701FF77160E683300F48A65 /* mesh */,
+				976B934016C63EBE009C12A1 /* projection */,
+				9701FF85160E689100F48A65 /* tlocComponentType.h */,
+			);
+			name = components;
+			sourceTree = "<group>";
+		};
+		9701FF77160E683300F48A65 /* mesh */ = {
+			isa = PBXGroup;
+			children = (
+				976B933416C63EAE009C12A1 /* tlocFan.cpp */,
+				976B933516C63EAE009C12A1 /* tlocFan.h */,
+				9701FF7D160E686200F48A65 /* tlocMesh.cpp */,
+				9701FF7E160E686200F48A65 /* tlocMesh.h */,
+				976B933616C63EAE009C12A1 /* tlocPrimitive.cpp */,
+				976B933716C63EAE009C12A1 /* tlocPrimitive.h */,
+				976B933816C63EAE009C12A1 /* tlocQuad.cpp */,
+				976B933916C63EAE009C12A1 /* tlocQuad.h */,
+			);
+			name = mesh;
+			sourceTree = "<group>";
+		};
+		9701FF78160E683A00F48A65 /* material */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF79160E685100F48A65 /* tlocMaterial.cpp */,
+				9701FF7A160E685100F48A65 /* tlocMaterial.h */,
+			);
+			name = material;
+			sourceTree = "<group>";
+		};
+		9701FF87160E68B900F48A65 /* vertex */ = {
+			isa = PBXGroup;
+			children = (
+				976B939016C65070009C12A1 /* tlocVertex.h */,
+			);
+			name = vertex;
+			sourceTree = "<group>";
+		};
+		9701FF89160E68C500F48A65 /* color */ = {
+			isa = PBXGroup;
+			children = (
+				976B938B16C65070009C12A1 /* tlocColor.cpp */,
+				976B938C16C65070009C12A1 /* tlocColor.h */,
+			);
+			name = color;
+			sourceTree = "<group>";
+		};
+		9701FF94160E691300F48A65 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF96160E693200F48A65 /* tlocImage.cpp */,
+				9701FF97160E693200F48A65 /* tlocImage.h */,
+				9701FF98160E693200F48A65 /* tlocImageLoader.cpp */,
+				9701FF99160E693200F48A65 /* tlocImageLoader.h */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+		9701FF9E160E695900F48A65 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				976B935D16C6468F009C12A1 /* variables */,
+				9734BB5716263795003956FE /* tlocShader.cpp */,
+				9734BB5816263795003956FE /* tlocShader.h */,
+				976B935E16C646C0009C12A1 /* tlocShaderOperator.cpp */,
+				976B935F16C646C0009C12A1 /* tlocShaderOperator.h */,
+				9701FFA6160E699A00F48A65 /* tlocShaderProgram.cpp */,
+				9701FFA7160E699A00F48A65 /* tlocShaderProgram.h */,
+				976B936016C646C0009C12A1 /* tlocShaderVariableInfo.cpp */,
+			);
+			name = shaders;
+			sourceTree = "<group>";
+		};
+		9701FF9F160E695F00F48A65 /* error */ = {
+			isa = PBXGroup;
+			children = (
+				9701FFA1160E697C00F48A65 /* tlocError.h */,
+				9701FFA0160E697C00F48A65 /* tlocError.cpp */,
+			);
+			name = error;
+			sourceTree = "<group>";
+		};
+		9734BB201625814A003956FE /* aspect_ratio */ = {
+			isa = PBXGroup;
+			children = (
+				976B938916C65070009C12A1 /* tlocAspectRatio.cpp */,
+				976B938A16C65070009C12A1 /* tlocAspectRatio.h */,
+			);
+			name = aspect_ratio;
+			sourceTree = "<group>";
+		};
+		9734BB2216258151003956FE /* fov */ = {
+			isa = PBXGroup;
+			children = (
+				976B938E16C65070009C12A1 /* tlocFOV.cpp */,
+				976B938F16C65070009C12A1 /* tlocFOV.h */,
+			);
+			name = fov;
+			sourceTree = "<group>";
+		};
+		976B934016C63EBE009C12A1 /* projection */ = {
+			isa = PBXGroup;
+			children = (
+				976B934116C63EDC009C12A1 /* tlocProjectionComponent.cpp */,
+				976B934216C63EDC009C12A1 /* tlocProjectionComponent.h */,
+			);
+			name = projection;
+			sourceTree = "<group>";
+		};
+		976B935116C643D8009C12A1 /* error */ = {
+			isa = PBXGroup;
+			children = (
+				976B935216C643FF009C12A1 /* tloc_error.cpp */,
+				976B935316C643FF009C12A1 /* tloc_error.h */,
+				976B935416C643FF009C12A1 /* tloc_error.inl */,
+				9701FFB0160E6A2200F48A65 /* tlocErrorTypes.h */,
+			);
+			name = error;
+			sourceTree = "<group>";
+		};
+		976B935C16C64675009C12A1 /* textures */ = {
+			isa = PBXGroup;
+			children = (
+				976B937616C6478C009C12A1 /* tlocTextureObject.cpp */,
+				976B937716C6478C009C12A1 /* tlocTextureObject.h */,
+			);
+			name = textures;
+			sourceTree = "<group>";
+		};
+		976B935D16C6468F009C12A1 /* variables */ = {
+			isa = PBXGroup;
+			children = (
+				976B936416C646DD009C12A1 /* attribute */,
+				976B936516C646E3009C12A1 /* uniform */,
+				976B936E16C64754009C12A1 /* tlocShaderVariable.cpp */,
+				976B936F16C64754009C12A1 /* tlocShaderVariable.h */,
+				976B937016C64754009C12A1 /* tlocShaderVariableExplicitMacros.h */,
+				976B937116C64754009C12A1 /* tlocShaderVariableInfo.h */,
+			);
+			name = variables;
+			sourceTree = "<group>";
+		};
+		976B936416C646DD009C12A1 /* attribute */ = {
+			isa = PBXGroup;
+			children = (
+				976B936616C64704009C12A1 /* tlocAttribute.cpp */,
+				976B936716C64704009C12A1 /* tlocAttribute.h */,
+			);
+			name = attribute;
+			sourceTree = "<group>";
+		};
+		976B936516C646E3009C12A1 /* uniform */ = {
+			isa = PBXGroup;
+			children = (
+				976B936816C64704009C12A1 /* tlocUniform.cpp */,
+				976B936916C64704009C12A1 /* tlocUniform.h */,
+			);
+			name = uniform;
+			sourceTree = "<group>";
+		};
+		97812DFA15A2A61B00F3C248 = {
+			isa = PBXGroup;
+			children = (
+				97C87BE115DE3DAE00FE0A6C /* tlocGraphics */,
+				97812E0715A2A61B00F3C248 /* Frameworks */,
+				97812E0615A2A61B00F3C248 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97812E0615A2A61B00F3C248 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97812E0715A2A61B00F3C248 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97C87A0F15DCE6C400FE0A6C /* QuartzCore.framework */,
+				97812E6015A3CCBB00F3C248 /* OpenGLES.framework */,
+				97812E0815A2A61B00F3C248 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97C87BE115DE3DAE00FE0A6C /* tlocGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF6B160E674D00F48A65 /* 3rd_party */,
+				97C87D9715DE584500FE0A6C /* application */,
+				9701FF6A160E674200F48A65 /* component_system */,
+				976B935116C643D8009C12A1 /* error */,
+				9701FF67160E672F00F48A65 /* media */,
+				97C87CF715DE4B4B00FE0A6C /* opengl */,
+				97F90692161DA93600BD8A39 /* renderer */,
+				9701FF69160E673C00F48A65 /* types */,
+				97F90693161DA94100BD8A39 /* view_projection */,
+				97C87CF615DE4B4500FE0A6C /* window */,
+				976B93A916C655ED009C12A1 /* tloc_graphics.cpp */,
+				976B93AA16C655ED009C12A1 /* tloc_graphics.h */,
+				976B93AB16C655ED009C12A1 /* tloc_graphics.inl */,
+				9784EA1C15F717BE006614C3 /* tlocDepVersionCheck.cpp */,
+				976B93AC16C655ED009C12A1 /* tlocGraphicsBase.h */,
+			);
+			name = tlocGraphics;
+			sourceTree = "<group>";
+		};
+		97C87CF615DE4B4500FE0A6C /* window */ = {
+			isa = PBXGroup;
+			children = (
+				97C87CF915DE4B5800FE0A6C /* Context */,
+				97C87CF815DE4B5100FE0A6C /* Graphics Mode */,
+				97C87CFA15DE4B7C00FE0A6C /* Iphone */,
+				976B93A416C651AD009C12A1 /* tloc_window.cpp */,
+				976B93A516C651AD009C12A1 /* tloc_window.h */,
+				976B93A616C651AD009C12A1 /* tloc_window.inl */,
+				97C87CFB15DE4BC700FE0A6C /* tlocWindowHandle.h */,
+				97C87CFC15DE4BC700FE0A6C /* tlocWindow.cpp */,
+				97C87CFD15DE4BC700FE0A6C /* tlocWindow.inl */,
+				97C87CFE15DE4BC700FE0A6C /* tlocWindow.h */,
+				97C87CFF15DE4BC700FE0A6C /* tlocWindowImpl.h */,
+				97C87D0015DE4BC700FE0A6C /* tlocWindowSettings.h */,
+			);
+			name = window;
+			sourceTree = "<group>";
+		};
+		97C87CF715DE4B4B00FE0A6C /* opengl */ = {
+			isa = PBXGroup;
+			children = (
+				9701FF9F160E695F00F48A65 /* error */,
+				9701FF9E160E695900F48A65 /* shaders */,
+				976B935C16C64675009C12A1 /* textures */,
+				9701FFAC160E69E300F48A65 /* tlocObject.cpp */,
+				9701FFAD160E69E300F48A65 /* tlocObject.h */,
+				97C87D1C15DE4C4200FE0A6C /* tlocOpenGL.h */,
+				976B937A16C64C66009C12A1 /* tloc_opengl.cpp */,
+				976B937B16C64C66009C12A1 /* tloc_opengl.h */,
+				976B937C16C64C66009C12A1 /* tloc_opengl.inl */,
+				976B937D16C64C66009C12A1 /* tlocOpenGL.cpp */,
+			);
+			name = opengl;
+			sourceTree = "<group>";
+		};
+		97C87CF815DE4B5100FE0A6C /* Graphics Mode */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D1E15DE4CA100FE0A6C /* tlocGraphicsModes.h */,
+				97C87D1215DE4C2000FE0A6C /* tlocGraphicsModes.cpp */,
+			);
+			name = "Graphics Mode";
+			sourceTree = "<group>";
+		};
+		97C87CF915DE4B5800FE0A6C /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D1615DE4C3300FE0A6C /* tlocContext.cpp */,
+				97C87D1715DE4C3300FE0A6C /* tlocContext.h */,
+				97C87D1815DE4C3300FE0A6C /* tlocGraphicsContext.h */,
+			);
+			name = Context;
+			sourceTree = "<group>";
+		};
+		97C87CFA15DE4B7C00FE0A6C /* Iphone */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D0715DE4BF700FE0A6C /* tlocOpenGLViewIphone.h */,
+				97C87D0815DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm */,
+				97C87D0915DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h */,
+				97C87D0A15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm */,
+				97C87D0B15DE4BF700FE0A6C /* tlocWindowImplIphone.h */,
+				97C87D0615DE4BF700FE0A6C /* tlocWindowImplIphone.mm */,
+			);
+			name = Iphone;
+			sourceTree = "<group>";
+		};
+		97C87D9715DE584500FE0A6C /* application */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D9815DE589D00FE0A6C /* Iphone */,
+			);
+			name = application;
+			sourceTree = "<group>";
+		};
+		97C87D9815DE589D00FE0A6C /* Iphone */ = {
+			isa = PBXGroup;
+			children = (
+				97C87D9915DE58BA00FE0A6C /* tlocAppDelegateIphone.mm */,
+				97C87D9A15DE58BA00FE0A6C /* tlocAppDelegateIphone.h */,
+			);
+			name = Iphone;
+			sourceTree = "<group>";
+		};
+		97F90692161DA93600BD8A39 /* renderer */ = {
+			isa = PBXGroup;
+			children = (
+				976B938116C64D38009C12A1 /* tloc_renderer.cpp */,
+				976B938216C64D38009C12A1 /* tloc_renderer.h */,
+				976B938316C64D38009C12A1 /* tloc_renderer.inl */,
+				97F90694161DA98D00BD8A39 /* tlocRenderer.cpp */,
+				97F90695161DA98D00BD8A39 /* tlocRenderer.h */,
+			);
+			name = renderer;
+			sourceTree = "<group>";
+		};
+		97F90693161DA94100BD8A39 /* view_projection */ = {
+			isa = PBXGroup;
+			children = (
+				976B939B16C650BE009C12A1 /* tloc_view_projection.cpp */,
+				976B939C16C650BE009C12A1 /* tloc_view_projection.h */,
+				976B939D16C650BE009C12A1 /* tloc_view_projection.inl */,
+				976B939E16C650BE009C12A1 /* tlocCamera.cpp */,
+				976B939F16C650BE009C12A1 /* tlocCamera.h */,
+				97F90698161DA9A600BD8A39 /* tlocFrustum.cpp */,
+				97F90699161DA9A600BD8A39 /* tlocFrustum.h */,
+			);
+			name = view_projection;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		97812E0315A2A61B00F3C248 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87D0115DE4BC700FE0A6C /* tlocWindowHandle.h in Headers */,
+				97C87D0315DE4BC700FE0A6C /* tlocWindow.h in Headers */,
+				97C87D0415DE4BC700FE0A6C /* tlocWindowImpl.h in Headers */,
+				97C87D0515DE4BC700FE0A6C /* tlocWindowSettings.h in Headers */,
+				97C87D0D15DE4BF700FE0A6C /* tlocOpenGLViewIphone.h in Headers */,
+				97C87D0F15DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.h in Headers */,
+				97C87D1115DE4BF700FE0A6C /* tlocWindowImplIphone.h in Headers */,
+				97C87D1A15DE4C3300FE0A6C /* tlocContext.h in Headers */,
+				97C87D1B15DE4C3300FE0A6C /* tlocGraphicsContext.h in Headers */,
+				97C87D1D15DE4C4200FE0A6C /* tlocOpenGL.h in Headers */,
+				97C87D1F15DE4CA100FE0A6C /* tlocGraphicsModes.h in Headers */,
+				97C87D9C15DE58BA00FE0A6C /* tlocAppDelegateIphone.h in Headers */,
+				9701FF74160E67F000F48A65 /* lodepng.h in Headers */,
+				9701FF7C160E685100F48A65 /* tlocMaterial.h in Headers */,
+				9701FF80160E686200F48A65 /* tlocMesh.h in Headers */,
+				9701FF84160E688200F48A65 /* tlocMeshRenderSystem.h in Headers */,
+				9701FF86160E689100F48A65 /* tlocComponentType.h in Headers */,
+				9701FF9B160E693200F48A65 /* tlocImage.h in Headers */,
+				9701FF9D160E693200F48A65 /* tlocImageLoader.h in Headers */,
+				9701FFA3160E697C00F48A65 /* tlocError.h in Headers */,
+				9701FFAB160E699A00F48A65 /* tlocShaderProgram.h in Headers */,
+				9701FFAF160E69E300F48A65 /* tlocObject.h in Headers */,
+				9701FFB1160E6A2200F48A65 /* tlocErrorTypes.h in Headers */,
+				97F90697161DA98D00BD8A39 /* tlocRenderer.h in Headers */,
+				97F9069B161DA9A600BD8A39 /* tlocFrustum.h in Headers */,
+				9734BB5A16263795003956FE /* tlocShader.h in Headers */,
+				976B933116C63E1F009C12A1 /* tloc_component_system.h in Headers */,
+				976B933316C63E3B009C12A1 /* tlocPrefabMaterial.h in Headers */,
+				976B933B16C63EAE009C12A1 /* tlocFan.h in Headers */,
+				976B933D16C63EAE009C12A1 /* tlocPrimitive.h in Headers */,
+				976B933F16C63EAE009C12A1 /* tlocQuad.h in Headers */,
+				976B934416C63EDC009C12A1 /* tlocProjectionComponent.h in Headers */,
+				976B934C16C63F03009C12A1 /* tlocFanRenderSystem.h in Headers */,
+				976B934E16C63F03009C12A1 /* tlocMaterialSystem.h in Headers */,
+				976B935016C63F03009C12A1 /* tlocQuadRenderSystem.h in Headers */,
+				976B935616C643FF009C12A1 /* tloc_error.h in Headers */,
+				976B935B16C64420009C12A1 /* tloc_media.h in Headers */,
+				976B936216C646C0009C12A1 /* tlocShaderOperator.h in Headers */,
+				976B936B16C64704009C12A1 /* tlocAttribute.h in Headers */,
+				976B936D16C64704009C12A1 /* tlocUniform.h in Headers */,
+				976B937316C64754009C12A1 /* tlocShaderVariable.h in Headers */,
+				976B937416C64754009C12A1 /* tlocShaderVariableExplicitMacros.h in Headers */,
+				976B937516C64754009C12A1 /* tlocShaderVariableInfo.h in Headers */,
+				976B937916C6478C009C12A1 /* tlocTextureObject.h in Headers */,
+				976B937F16C64C66009C12A1 /* tloc_opengl.h in Headers */,
+				976B938516C64D38009C12A1 /* tloc_renderer.h in Headers */,
+				976B939216C65070009C12A1 /* tloc_types.h in Headers */,
+				976B939416C65070009C12A1 /* tlocAspectRatio.h in Headers */,
+				976B939616C65070009C12A1 /* tlocColor.h in Headers */,
+				976B939716C65070009C12A1 /* tlocDimension.h in Headers */,
+				976B939916C65070009C12A1 /* tlocFOV.h in Headers */,
+				976B939A16C65070009C12A1 /* tlocVertex.h in Headers */,
+				976B93A116C650BE009C12A1 /* tloc_view_projection.h in Headers */,
+				976B93A316C650BE009C12A1 /* tlocCamera.h in Headers */,
+				976B93A816C651AD009C12A1 /* tloc_window.h in Headers */,
+				976B93AE16C655ED009C12A1 /* tloc_graphics.h in Headers */,
+				976B93AF16C655ED009C12A1 /* tlocGraphicsBase.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		97812E0415A2A61B00F3C248 /* tlocGraphics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97812E1215A2A61B00F3C248 /* Build configuration list for PBXNativeTarget "tlocGraphics" */;
+			buildPhases = (
+				97812E0115A2A61B00F3C248 /* Sources */,
+				97812E0215A2A61B00F3C248 /* Frameworks */,
+				97812E0315A2A61B00F3C248 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tlocGraphics;
+			productName = tlocGraphics;
+			productReference = 97812E0515A2A61B00F3C248 /* tlocGraphics_Debug.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97812DFC15A2A61B00F3C248 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 97812DFF15A2A61B00F3C248 /* Build configuration list for PBXProject "tlocGraphics" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 97812DFA15A2A61B00F3C248;
+			productRefGroup = 97812E0615A2A61B00F3C248 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97812E0415A2A61B00F3C248 /* tlocGraphics */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97812E0115A2A61B00F3C248 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97C87D0215DE4BC700FE0A6C /* tlocWindow.cpp in Sources */,
+				97C87D0C15DE4BF700FE0A6C /* tlocWindowImplIphone.mm in Sources */,
+				97C87D0E15DE4BF700FE0A6C /* tlocOpenGLViewIphone.mm in Sources */,
+				97C87D1015DE4BF700FE0A6C /* tlocOpenGLViewControllerIphone.mm in Sources */,
+				97C87D1415DE4C2000FE0A6C /* tlocGraphicsModes.cpp in Sources */,
+				97C87D1915DE4C3300FE0A6C /* tlocContext.cpp in Sources */,
+				97C87D9B15DE58BA00FE0A6C /* tlocAppDelegateIphone.mm in Sources */,
+				9784EA1D15F717BE006614C3 /* tlocDepVersionCheck.cpp in Sources */,
+				9701FF70160E67C800F48A65 /* miniz.c in Sources */,
+				9701FF73160E67F000F48A65 /* lodepng.c in Sources */,
+				9701FF7B160E685100F48A65 /* tlocMaterial.cpp in Sources */,
+				9701FF7F160E686200F48A65 /* tlocMesh.cpp in Sources */,
+				9701FF83160E688200F48A65 /* tlocMeshRenderSystem.cpp in Sources */,
+				9701FF9A160E693200F48A65 /* tlocImage.cpp in Sources */,
+				9701FF9C160E693200F48A65 /* tlocImageLoader.cpp in Sources */,
+				9701FFA2160E697C00F48A65 /* tlocError.cpp in Sources */,
+				9701FFAA160E699A00F48A65 /* tlocShaderProgram.cpp in Sources */,
+				9701FFAE160E69E300F48A65 /* tlocObject.cpp in Sources */,
+				97F90696161DA98D00BD8A39 /* tlocRenderer.cpp in Sources */,
+				97F9069A161DA9A600BD8A39 /* tlocFrustum.cpp in Sources */,
+				9734BB5916263795003956FE /* tlocShader.cpp in Sources */,
+				976B933016C63E1F009C12A1 /* tloc_component_system.cpp in Sources */,
+				976B933A16C63EAE009C12A1 /* tlocFan.cpp in Sources */,
+				976B933C16C63EAE009C12A1 /* tlocPrimitive.cpp in Sources */,
+				976B933E16C63EAE009C12A1 /* tlocQuad.cpp in Sources */,
+				976B934316C63EDC009C12A1 /* tlocProjectionComponent.cpp in Sources */,
+				976B934B16C63F03009C12A1 /* tlocFanRenderSystem.cpp in Sources */,
+				976B934D16C63F03009C12A1 /* tlocMaterialSystem.cpp in Sources */,
+				976B934F16C63F03009C12A1 /* tlocQuadRenderSystem.cpp in Sources */,
+				976B935516C643FF009C12A1 /* tloc_error.cpp in Sources */,
+				976B935A16C64420009C12A1 /* tloc_media.cpp in Sources */,
+				976B936116C646C0009C12A1 /* tlocShaderOperator.cpp in Sources */,
+				976B936316C646C0009C12A1 /* tlocShaderVariableInfo.cpp in Sources */,
+				976B936A16C64704009C12A1 /* tlocAttribute.cpp in Sources */,
+				976B936C16C64704009C12A1 /* tlocUniform.cpp in Sources */,
+				976B937216C64754009C12A1 /* tlocShaderVariable.cpp in Sources */,
+				976B937816C6478C009C12A1 /* tlocTextureObject.cpp in Sources */,
+				976B937E16C64C66009C12A1 /* tloc_opengl.cpp in Sources */,
+				976B938016C64C66009C12A1 /* tlocOpenGL.cpp in Sources */,
+				976B938416C64D38009C12A1 /* tloc_renderer.cpp in Sources */,
+				976B939116C65070009C12A1 /* tloc_types.cpp in Sources */,
+				976B939316C65070009C12A1 /* tlocAspectRatio.cpp in Sources */,
+				976B939516C65070009C12A1 /* tlocColor.cpp in Sources */,
+				976B939816C65070009C12A1 /* tlocFOV.cpp in Sources */,
+				976B93A016C650BE009C12A1 /* tloc_view_projection.cpp in Sources */,
+				976B93A216C650BE009C12A1 /* tlocCamera.cpp in Sources */,
+				976B93A716C651AD009C12A1 /* tloc_window.cpp in Sources */,
+				976B93AD16C655ED009C12A1 /* tloc_graphics.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		97812E1015A2A61B00F3C248 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+			};
+			name = Debug;
+		};
+		97812E1115A2A61B00F3C248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_BUILD_DIR = "$(TLOC_PATH)/lib/Xcode4/$(CONFIGURATION)/$(PLATFORM_NAME)/$(PROJECT_NAME)";
+				CONFIGURATION_TEMP_DIR = "$(CONFIGURATION)/$(PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = TLOC_RELEASE;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = (
+					"-fno-exceptions",
+					"-fno-rtti",
+				);
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(TLOC_PATH)/src/ $(TLOC_DEP_PATH)/src/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97812E1315A2A61B00F3C248 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocGraphics.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		97812E1415A2A61B00F3C248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/tlocGraphics.dst;
+				EXECUTABLE_PREFIX = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(PROJECT_NAME)_$(CONFIGURATION)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97812DFF15A2A61B00F3C248 /* Build configuration list for PBXProject "tlocGraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97812E1015A2A61B00F3C248 /* Debug */,
+				97812E1115A2A61B00F3C248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97812E1215A2A61B00F3C248 /* Build configuration list for PBXNativeTarget "tlocGraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97812E1315A2A61B00F3C248 /* Debug */,
+				97812E1415A2A61B00F3C248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97812DFC15A2A61B00F3C248 /* Project object */;
+}

@@ -32,7 +32,7 @@ namespace tloc { namespace graphics { namespace win {
 
 
   template <WINDOW_TEMP>
-  Window_T<WINDOW_PARAMS>::Window_T() : m_impl(NULL)
+  Window_T<WINDOW_PARAMS>::Window_T() : m_impl(nullptr)
   {
   }
 
@@ -82,13 +82,13 @@ namespace tloc { namespace graphics { namespace win {
     VALIDATE_WINDOW();
 
     delete m_impl;
-    m_impl = NULL;
+    m_impl = nullptr;
   }
 
   template <WINDOW_TEMP>
   bool Window_T<WINDOW_PARAMS>::IsValid() const
   {
-    return m_impl != NULL;
+    return m_impl != nullptr;
   }
 
   template <WINDOW_TEMP>
@@ -243,7 +243,7 @@ namespace tloc { namespace graphics { namespace win {
     {
       if (a_window == g_currentActiveWindow)
       {
-        g_currentActiveWindow = NULL;
+        g_currentActiveWindow = nullptr;
       }
     }
   };

@@ -43,7 +43,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     const touch_type* GetTouch(touch_handle_type a_touch) const
     {
       TLOC_UNUSED(a_touch);
-      return NULL;
+      return nullptr;
     }
 
     bool IsTouchDown(touch_handle_type a_touch) const

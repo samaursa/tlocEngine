@@ -3,6 +3,7 @@
 #include <tlocCore/types/tlocAny.inl>
 
 #include <tlocInput/hid/tlocKeyboardImplIphone.h>
+#include <tlocInput/hid/tlocMouseImplIphone.h>
 #include <tlocInput/hid/tlocTouchSurfaceImplIphone.h>
 
 #import <UIKit/UIkit.h>
@@ -17,6 +18,90 @@ namespace tloc { namespace input { namespace priv {
 #define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < p_hid::Count::m_index,\
   "Unsupported input type passed!")
 
+  namespace {
+
+    template <typename T_InputObject, tl_int T_Index>
+    struct DoCreateHID
+    {
+      T_InputObject* Create(parameter_options::Type,
+                            input_param_type)
+      {
+        TLOC_STATIC_ASSERT_FALSE(T_InputObject,
+                                 Unsupported_input_type_selected);
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Keyboard::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type,
+                            input_param_type)
+      {
+        iphone_keyboard_param_type params;
+        return new T_InputObject(params);
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Mouse::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type,
+                            input_param_type)
+      {
+        iphone_mouse_param_type params;
+        return new T_InputObject(params);
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type,
+                            input_param_type)
+      {
+        TLOC_ASSERT_WIP();
+        return nullptr;
+      }
+    };
+
+    template <typename T_InputObject>
+    struct DoCreateHID<T_InputObject, p_hid::TouchSurface::m_index>
+    {
+      T_InputObject* Create(parameter_options::Type a_params,
+                            input_param_type a_inputManagerParams)
+      {
+        UIWindow* window = a_inputManagerParams.m_param1.template Cast<UIWindow*>();
+
+        TLOC_ASSERT([[window subviews] count] != 0,
+                    "Window has no views attached");
+
+        core_t::Any viewHandle([[window subviews] lastObject]);
+
+        iphone_touch_surface_param_type params;
+        params.m_param1 = viewHandle.template Cast<OpenGLView*>();
+
+        T_InputObject* newInput = new T_InputObject(params);
+        return newInput;
+      }
+    };
+
+
+//    template <typename T_InputManagerImplType>
+//    typename T_InputManagerImplType::view_handle_type
+//      DoGetOpenGLViewHandle
+//      (typename T_InputManagerImplType::window_handle_type* a_windowHandle)
+//    {
+//
+//      
+//      UIWindow* window = a_windowHandle.template Cast<UIWindow*>();
+//
+//      TLOC_ASSERT([[window subviews] count] != 0,
+//                  "Window has no views attached");
+//
+//      return view_handle_type([[window subviews] lastObject]);
+//    }  }
+  }
+
   //------------------------------------------------------------------------
   // InputManagerImpl
 
@@ -29,7 +114,7 @@ namespace tloc { namespace input { namespace priv {
     for (size_type i = 0; i < p_hid::Count::m_index; ++i)
     {
       m_iphoneHIDs[i].m_available = false;
-      m_iphoneHIDs[i].m_devicePtr = NULL;
+      m_iphoneHIDs[i].m_devicePtr = nullptr;
     }
   }
 
@@ -63,7 +148,7 @@ namespace tloc { namespace input { namespace priv {
   INPUT_MANAGER_IMPL_TYPE::size_type
     InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Initialize()
   {
-    if (GetWindowHandle().template Cast<UIWindow*>() == NULL)
+    if (GetWindowHandle().template Cast<UIWindow*>() == nullptr)
     {
       // LOG: the passed window pointer is not valid
       return 1;
@@ -78,32 +163,21 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
-    T_InputObject* newInput = NULL;
+    T_InputObject* newInput = nullptr;
 
-    switch (T_InputObject::m_index)
+    if(m_iphoneHIDs[T_InputObject::m_index].m_available == false)
     {
-      case p_hid::Keyboard::m_index:
-      {
-        break;
-      }
-      case p_hid::TouchSurface::m_index:
-      {
-        iphone_touch_surface_param_type params;
-        params.m_param1 = DoGetOpenGLViewHandle().template Cast<OpenGLView*>();
+      newInput =
+        DoCreateHID<T_InputObject, T_InputObject::m_index>().
+        Create(a_params, m_params);
 
-        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available == false)
-        {
-          newInput = new T_InputObject(params);
-          m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available = true;
-          m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr = newInput;
-        }
-        break;
-      }
-      default:
-      {
-        return NULL;
-        break;
-      }
+      m_iphoneHIDs[T_InputObject::m_index].m_available = true;
+      m_iphoneHIDs[T_InputObject::m_index].m_devicePtr = newInput;
+    }
+    else
+    {
+      // LOG: Could not create the specified HID because we do not have a
+      //      'slot' for the HID on iOS
     }
 
     return newInput;
@@ -264,5 +338,5 @@ namespace tloc { namespace input { namespace priv {
 
   INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::TouchSurface);
-
+  INSTANTIATE_HID(hid::Mouse);
 };};};

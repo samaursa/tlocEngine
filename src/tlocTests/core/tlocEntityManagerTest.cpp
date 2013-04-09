@@ -95,7 +95,7 @@ namespace TestingEntityManager
     {
       newEnt = eMgr.CreateEntity();
       myList.push_back(newEnt);
-      if (newEnt == NULL) { stressTestPassed = false; break; }
+      if (newEnt == nullptr) { stressTestPassed = false; break; }
     }
     CHECK(eMgr.GetUnusedEntities() == 0);
     CHECK(entTrack.m_entEventCounter == entityCount);

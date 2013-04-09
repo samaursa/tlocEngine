@@ -47,11 +47,11 @@ namespace TestingShaderComponent
   using namespace graphics;
 
 #if defined (TLOC_OS_WIN)
-  String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader.glsl") );
-  String g_fShaderPath(GetAssetPath() + String("/shaders/simple_fragment_shader.glsl") );
+  String g_vShaderPath(GetAssetsPath() + String("/shaders/simple_vertex_shader.glsl") );
+  String g_fShaderPath(GetAssetsPath() + String("/shaders/simple_fragment_shader.glsl") );
 #elif defined (TLOC_OS_IPHONE)
-  String g_vShaderPath(GetAssetPath() + String("/shaders/simple_vertex_shader_gl_es_2_0.glsl") );
-  String g_fShaderPath(GetAssetPath() + String("/shaders/simple_fragment_shader_gl_es_2_0.glsl") );
+  String g_vShaderPath(GetAssetsPath() + String("/shaders/simple_vertex_shader_gl_es_2_0.glsl") );
+  String g_fShaderPath(GetAssetsPath() + String("/shaders/simple_fragment_shader_gl_es_2_0.glsl") );
 #endif
 
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
@@ -61,7 +61,7 @@ namespace TestingShaderComponent
 
     typedef Window::graphics_mode         graphics_mode;
 
-    Window win;	
+    Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 

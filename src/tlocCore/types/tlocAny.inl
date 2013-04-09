@@ -102,7 +102,7 @@ namespace tloc { namespace core { namespace types {
       {
         value_type** x = reinterpret_cast<value_type**>(a_unknownType);
         delete *x;
-        *x = NULL;
+        *x = nullptr;
       }
 
       template <COMPLEX_TYPE_TEMP>
@@ -158,7 +158,7 @@ namespace tloc { namespace core { namespace types {
 
   template <typename T>
   Any::Any(const T& a_other)
-    : m_policy(p_any::GetPolicy<p_any::detail::Empty>()), m_object(NULL)
+    : m_policy(p_any::GetPolicy<p_any::detail::Empty>()), m_object(nullptr)
   {
     Assign(a_other);
   }

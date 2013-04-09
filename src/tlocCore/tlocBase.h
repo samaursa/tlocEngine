@@ -22,6 +22,8 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
 
+#include <3rdParty/loki/TypeTraits.h>
+
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
 
@@ -70,6 +72,15 @@
 //#define TLOC_TEMPLATE_TYPES_SIZE_15
 //#define TLOC_TEMPLATE_TYPES_SIZE_20
 #endif
+
+//////////////////////////////////////////////////////////////////////////
+// NULL
+// We disallow the use of NULL but some APIs require 0 as an input argument
+// which can be easily overlooked. Passing NULL in those cases is preferred.
+// We provide TLOC_NULL which should be used instead of NULL. This is to show
+// that the use of NULL was deliberate and that nullptr could not be used.
+
+#define TLOC_NULL NULL
 
 //////////////////////////////////////////////////////////////////////////
 // Platform specific
@@ -351,13 +362,13 @@
   TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
 
 # define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isFloat, Type_must_be_a_FLOAT);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT);
 # define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isArith, Type_must_be_an_ARITHMETIC);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC);
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
 
 //------------------------------------------------------------------------
 // Low level assertions

@@ -146,7 +146,7 @@ int WriteVersionH(vector<time_t>& a_version)
   }
 
   // The current time in milliseconds
-  a_version[date_time] = time(NULL);
+  a_version[date_time] = time(0);
 
   outFile << "#ifndef " << PROJECT_NAME << "_VERSION_H" << "\n";
   outFile << "#define " << PROJECT_NAME << "_VERSION_H" << "\n\n";

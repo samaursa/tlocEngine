@@ -63,7 +63,7 @@ namespace tloc { namespace core { namespace component_system {
 
     iterator itr = m_pools.begin();
     advance(itr, a_number);
-    if (*itr == NULL)
+    if (*itr == nullptr )
     { return false; }
 
     return true;

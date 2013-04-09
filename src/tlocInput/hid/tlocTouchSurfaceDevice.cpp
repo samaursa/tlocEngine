@@ -27,7 +27,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
     else
     {
-      return NULL;
+      return nullptr;
     }
   }
 

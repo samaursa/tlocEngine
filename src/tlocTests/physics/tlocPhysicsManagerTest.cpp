@@ -27,7 +27,7 @@ namespace TestingPhysicsManager
                                    pm_type::position_iterations(2));
 
     CHECK(result == ErrorSuccess());
-    CHECK(&physicsMgr.GetWorld() != NULL);
+    CHECK( (&physicsMgr.GetWorld() != nullptr) );
 
     physicsMgr.Update(1.0f/60.0f);
   }

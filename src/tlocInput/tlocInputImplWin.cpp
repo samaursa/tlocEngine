@@ -12,6 +12,8 @@
 
 namespace tloc { namespace input { namespace priv {
 
+  //------------------------------------------------------------------------
+
 #define INPUT_MANAGER_IMPL_TEMP   typename T_ParentInputManager
 #define INPUT_MANAGER_IMPL_PARAM  T_ParentInputManager
 #define INPUT_MANAGER_IMPL_TYPE   typename InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>
@@ -31,7 +33,7 @@ namespace tloc { namespace input { namespace priv {
         // LOG: Unsupported input type selected
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         TLOC_STATIC_ASSERT_FALSE(T_InputObject, Unsupported_input_type_selected);
-        return NULL;
+        return nullptr;
       }
     };
 
@@ -82,7 +84,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         TLOC_ASSERT_WIP()
-          return NULL;
+          return nullptr;
       }
     };
 
@@ -112,7 +114,7 @@ namespace tloc { namespace input { namespace priv {
     InputManagerImpl(parent_type* a_parent,
                      param_type a_params)
                      : InputManagerImplBase(a_parent, a_params)
-                     , m_directInput(NULL)
+                     , m_directInput(TLOC_NULL)
   {
     m_winHIDs.resize(p_hid::Count::m_index);
   }
@@ -123,7 +125,7 @@ namespace tloc { namespace input { namespace priv {
     if (m_directInput)
     {
       m_directInput->Release();
-      m_directInput = NULL;
+      m_directInput = TLOC_NULL;
     }
 
     for (size_type hidIndex = 0; hidIndex < p_hid::Count::m_index; ++hidIndex)
@@ -164,7 +166,7 @@ namespace tloc { namespace input { namespace priv {
   INPUT_MANAGER_IMPL_TYPE::size_type
     InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Initialize()
   {
-    HINSTANCE hInst = NULL;
+    HINSTANCE hInst = TLOC_NULL;
     HRESULT hr;
 
     if (IsWindow(m_params.m_param1.Cast<HWND>()) == 0)
@@ -173,11 +175,11 @@ namespace tloc { namespace input { namespace priv {
       return 1;
     }
 
-    hInst = GetModuleHandle(NULL);
+    hInst = GetModuleHandle(TLOC_NULL);
 
     // Create the input device
     hr = DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8,
-                            (VOID**)&m_directInput, NULL);
+                            (VOID**)&m_directInput, TLOC_NULL);
     if (FAILED(hr))
     {
       // LOG: Unable to initialize direct input
@@ -195,7 +197,7 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
-    T_InputObject* newInput = NULL;
+    T_InputObject* newInput = nullptr;
 
     for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
@@ -398,7 +400,7 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::DoEnumerateDevices()
   {
-    m_directInput->EnumDevices(NULL, &this_type::DoEnumerateCallback, this,
+    m_directInput->EnumDevices(TLOC_NULL, &this_type::DoEnumerateCallback, this,
                                DIEDFL_ATTACHEDONLY);
   }
 

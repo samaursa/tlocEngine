@@ -11,6 +11,7 @@
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -706,5 +707,13 @@ namespace TestingInput
       // Intentioanlly commented out - test is very fragile
       //TestMouse(inputMgrImm, wnd);
     }
+
+    //------------------------------------------------------------------------
+    // Dummy inputs
+
+    TouchSurfaceB* ts = inputMgr.CreateHID<TouchSurfaceB>();
+    CHECK( (ts != nullptr) );
+    TouchSurfaceI* tsImm = inputMgrImm.CreateHID<TouchSurfaceI>();
+    CHECK( (tsImm != nullptr) );
   }
 };

@@ -91,7 +91,41 @@ set_target_properties(tlocVersion tlocVersionTool
 
 endif()
 
+# -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
-FILE(WRITE ${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h "
+FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
+#pragma once
+
+#ifndef _ASSETS_PATH_H_
+#define _ASSETS_PATH_H_
+
+#include <cstring>
+
+#if defined (__APPLE__) && defined (__OBJC__)
+# import <Foundation/Foundation.h>
+#endif
+
 #define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+
+#if defined(TLOC_OS_WIN)
+
+inline const char* GetAssetsPath()
+{
+  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+  return assetPath;
+}
+#elif defined(TLOC_OS_IPHONE)
+inline const char* GetAssetsPath()
+{
+  static char assetPath[1024];
+  strcpy(assetPath, [[[NSBundle mainBundle] resourcePath]
+                     cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+  strcat(assetPath, \"/assets/\");
+
+  return assetPath;
+}
+#endif
+
+#endif // _ASSETS_PATH_H_
+
 ")

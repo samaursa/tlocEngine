@@ -123,20 +123,20 @@ namespace TestingInput
     wcex.lpfnWndProc    = WndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
-    wcex.hInstance      = GetModuleHandle(NULL);
-    wcex.hIcon          = NULL;
+    wcex.hInstance      = GetModuleHandle(TLOC_NULL);
+    wcex.hIcon          = TLOC_NULL;
     wcex.hCursor        = 0;
     wcex.hbrBackground  = 0;
-    wcex.lpszMenuName   = NULL;
+    wcex.lpszMenuName   = TLOC_NULL;
     wcex.lpszClassName  = L"tloc_testing_input";
 
-    if (!RegisterClassW(&wcex)) { return NULL; }
+    if (!RegisterClassW(&wcex)) { return TLOC_NULL; }
 
     HWND wnd = CreateWindowW(wcex.lpszClassName, L"Testing Input",
-      WS_POPUP | WS_DISABLED, 0, 0, 10, 10, NULL, NULL, GetModuleHandle(NULL),
-      NULL);
+      WS_POPUP | WS_DISABLED, 0, 0, 10, 10, TLOC_NULL, TLOC_NULL,
+      GetModuleHandle(TLOC_NULL), TLOC_NULL);
 
-    if (!wnd) { return NULL; }
+    if (!wnd) { return TLOC_NULL; }
 
     ShowWindow(wnd, SW_SHOW);
     UpdateWindow(wnd);
@@ -146,7 +146,7 @@ namespace TestingInput
   void UpdateWin32Window(HWND a_wnd)
   {
     MSG msg;
-    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    while (PeekMessage(&msg, TLOC_NULL, 0, 0, PM_REMOVE))
     {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
@@ -246,7 +246,7 @@ namespace TestingInput
 
     Keyboard<policy_type>* kb = a_im->GetHID<Keyboard<policy_type> >();
 
-    CHECK(kb != NULL);
+    CHECK( (kb != nullptr) );
 
     if (kb)
     {
@@ -276,7 +276,7 @@ namespace TestingInput
   {
     core::time::Timer_T<> countDown;
 
-    CHECK(mouse != NULL);
+    CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
@@ -322,7 +322,7 @@ namespace TestingInput
   {
     core::time::Timer_T<> countDown;
 
-    CHECK(mouse != NULL);
+    CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
@@ -356,7 +356,7 @@ namespace TestingInput
 
     Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
 
-    CHECK(mouse != NULL);
+    CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
@@ -415,7 +415,7 @@ namespace TestingInput
 
     Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
 
-    CHECK(mouse != NULL);
+    CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
@@ -569,13 +569,13 @@ namespace TestingInput
     typedef input_hid::MouseEvent me;
 
     TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_LEFTDOWN,
-      MOUSEEVENTF_LEFTUP, NULL, me::left);
+      MOUSEEVENTF_LEFTUP, TLOC_NULL, me::left);
 
     TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_RIGHTDOWN,
-      MOUSEEVENTF_RIGHTUP, NULL, me::right);
+      MOUSEEVENTF_RIGHTUP, TLOC_NULL, me::right);
 
     TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_MIDDLEDOWN,
-      MOUSEEVENTF_MIDDLEUP, NULL, me::middle);
+      MOUSEEVENTF_MIDDLEUP, TLOC_NULL, me::middle);
 
     TestMouseButton(&inputMgr, wnd, MOUSEEVENTF_XDOWN,
       MOUSEEVENTF_XUP, XBUTTON1, me::button4);
@@ -668,10 +668,10 @@ namespace TestingInput
     InputManagerI inputMgrImm(params);
 
     KeyboardB* kb = inputMgr.CreateHID<KeyboardB>();
-    CHECK(kb != NULL);
+    CHECK( (kb != nullptr) );
 
     KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>();
-    CHECK(kbImm != NULL);
+    CHECK( (kbImm != nullptr) );
 
     if (kb)
     {
@@ -688,12 +688,12 @@ namespace TestingInput
     MouseB::abs_range_type rangeY(-1000, 1000);
 
     MouseB* mouse = inputMgr.CreateHID<MouseB>();
-    CHECK(mouse != NULL);
+    CHECK( (mouse != nullptr) );
     mouse->SetClampX(rangeX);
     mouse->SetClampY(rangeY);
 
     MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>();
-    CHECK(mouseImm != NULL);
+    CHECK( (mouseImm != nullptr) );
     mouseImm->SetClampX(rangeX);
     mouseImm->SetClampY(rangeY);
 

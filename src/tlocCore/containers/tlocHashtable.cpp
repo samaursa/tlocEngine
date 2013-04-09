@@ -13,7 +13,7 @@ namespace tloc { namespace core { namespace containers {
   {
     //------------------------------------------------------------------------
     // Empty bucket array
-    void* g_emptyBucketArray[2] = { NULL, (void*)uintptr_t(~0) }; //-V566
+    void* g_emptyBucketArray[2] = { nullptr, (void*)uintptr_t(~0) }; //-V566
 
     //------------------------------------------------------------------------
     // Array of prime numbers as per the C++ standard (copied from EASTL)

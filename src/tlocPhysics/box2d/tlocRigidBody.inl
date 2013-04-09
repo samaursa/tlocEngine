@@ -67,7 +67,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     fixture_interal_type* fixture = m_rigidBody->CreateFixture(&fixtureDef);
 
-    if (fixture == NULL)
+    if (fixture == nullptr)
     {
       TLOC_ASSERT(false, "Box2D Fixture could not be allocated!");
       return error::error_rigid_body_shape_could_not_be_created;
@@ -484,7 +484,7 @@ namespace tloc { namespace physics { namespace box2d {
   TL_I RigidBody::
     RigidBody()
     : m_flags(k_count)
-    , m_rigidBody(NULL)
+    , m_rigidBody(nullptr)
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -511,7 +511,7 @@ namespace tloc { namespace physics { namespace box2d {
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
 
-    m_rigidBody = NULL;
+    m_rigidBody = nullptr;
 
     m_flags.Unmark(k_initialized);
     return ErrorSuccess();
@@ -540,7 +540,7 @@ namespace tloc { namespace physics { namespace box2d {
     DoSetParent(const entity_type* a_parent)
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    TLOC_ASSERT(a_parent != NULL, "Use DoSetParentNull instead!");
+    TLOC_ASSERT(a_parent != nullptr, "Use DoSetParentNull instead!");
     // const_cast is necessary to turn the pointer into a void*, the method
     // DoGetParent ensures that we respect the constness and pass it back
     // as a const ptr
@@ -553,7 +553,7 @@ namespace tloc { namespace physics { namespace box2d {
     DoSetParentNull()
   {
     TLOC_ASSERT_RIGID_BODY_INITIALIZED();
-    m_rigidBody->SetUserData(NULL);
+    m_rigidBody->SetUserData(nullptr);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

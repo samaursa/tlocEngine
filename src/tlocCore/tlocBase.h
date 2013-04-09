@@ -74,6 +74,15 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// NULL
+// We disallow the use of NULL but some APIs require 0 as an input argument
+// which can be easily overlooked. Passing NULL in those cases is preferred.
+// We provide TLOC_NULL which should be used instead of NULL. This is to show
+// that the use of NULL was deliberate and that nullptr could not be used.
+
+#define TLOC_NULL NULL
+
+//////////////////////////////////////////////////////////////////////////
 // Platform specific
 
 #if defined(TLOC_OS_WIN)

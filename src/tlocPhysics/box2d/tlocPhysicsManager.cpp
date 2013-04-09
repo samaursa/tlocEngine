@@ -101,8 +101,8 @@ namespace tloc { namespace physics { namespace box2d {
   PhysicsManager::
     PhysicsManager()
     : m_flags(count)
-    , m_world(NULL)
-    , m_contactListener(NULL)
+    , m_world(nullptr)
+    , m_contactListener(nullptr)
   {
   }
 

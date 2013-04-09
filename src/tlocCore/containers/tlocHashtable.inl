@@ -94,7 +94,7 @@ namespace tloc { namespace core { namespace containers {
   TL_FI HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>
     ::HashtableItrBase()
   {
-    m_bucketContainer = NULL;
+    m_bucketContainer = nullptr;
     m_currNode = m_dummyNode;
   }
 

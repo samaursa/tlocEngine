@@ -26,6 +26,8 @@ namespace tloc { namespace core { namespace error {
     bool Succeeded() const;
     bool Failed() const;
 
+    void operator=(const code_type& a_code);
+
     bool operator==(const this_type& a_other) const;
     bool operator==(const code_type& a_other) const;
 
@@ -58,16 +60,19 @@ namespace tloc { namespace core { namespace error {
     template <typename T_Derived> friend class Error_TI;
 
   public:
-    typedef Error_T<T_BuildConfig>       this_type;
-    typedef Error_TI<this_type>            base_type;
+    typedef Error_T<T_BuildConfig>        this_type;
+    typedef Error_TI<this_type>           base_type;
     typedef typename base_type::code_type code_type;
 
   public:
     Error_T(code_type a_errorType);
+    Error_T(const this_type& a_other);
     ~Error_T();
 
     using base_type::Succeeded;
     using base_type::Failed;
+
+    void operator=(const code_type& a_code);
 
     using base_type::operator ==;
     using base_type::operator !=;
@@ -103,11 +108,13 @@ namespace tloc { namespace core { namespace error {
 
   public:
     Error_T(code_type a_errorType);
+    Error_T(const this_type& a_other);
     ~Error_T();
 
     using base_type::Succeeded;
     using base_type::Failed;
 
+    using base_type::operator =;
     using base_type::operator ==;
     using base_type::operator !=;
 
@@ -128,10 +135,12 @@ namespace tloc { namespace core { namespace error {
 
 };};};
 
-namespace tloc
-{
-  extern core::error::Error ErrorSuccess;
-  extern core::error::Error ErrorFailure;
-};
+///////////////////////////////////////////////////////////////////////////
+// Macros for the basic error types
+
+#define ErrorSuccess \
+  tloc::core::error::Error(tloc::common_error_types::error_success)
+#define ErrorFailure \
+  tloc::core::error::Error(tloc::common_error_types::error_failure)
 
 #endif

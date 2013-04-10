@@ -13,8 +13,7 @@ namespace tloc { namespace core { namespace error {
   Error_TI<ERROR_I_PARAMS>::
     Error_TI(code_type a_errorType)
     : m_error(a_errorType)
-  {
-  }
+  { }
 
   template <ERROR_I_TEMP>
   bool Error_TI<ERROR_I_PARAMS>::
@@ -33,10 +32,18 @@ namespace tloc { namespace core { namespace error {
   }
 
   template <ERROR_I_TEMP>
+  void Error_TI<ERROR_I_PARAMS>::
+    operator =(const code_type& a_other)
+  {
+    m_error = a_other;
+  }
+
+  template <ERROR_I_TEMP>
   bool Error_TI<ERROR_I_PARAMS>::
     operator ==(const this_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoEqual();
+    static_cast<const derived_type*>(&a_other)->DoEqual();
     return operator==(a_other.m_error);
   }
 
@@ -53,6 +60,7 @@ namespace tloc { namespace core { namespace error {
     operator !=(const this_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoNotEqual();
+    static_cast<const derived_type*>(&a_other)->DoNotEqual();
     return operator!=(a_other.m_error);
   }
 
@@ -80,12 +88,29 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
+    Error_T(const this_type& a_other)
+    : base_type(a_other.GetErrorCode())
+    , m_errorCheckedByUser(false)
+  {
+    a_other.m_errorCheckedByUser = true;
+  }
+
+  template <ERROR_T_TEMP>
+  Error_T<ERROR_T_PARAMS>::
     ~Error_T()
   {
     if (GetErrorCode() == common_error_types::error_success)
     { m_errorCheckedByUser = true; }
 
     TLOC_ASSERT(m_errorCheckedByUser, "Ignored an error!");
+  }
+
+  template <ERROR_T_TEMP>
+  void Error_T<ERROR_T_PARAMS>::
+    operator =(const code_type& a_code)
+  {
+    base_type::operator=(a_code);
+    m_errorCheckedByUser = false;
   }
 
   template <ERROR_T_TEMP>
@@ -120,6 +145,11 @@ namespace tloc { namespace core { namespace error {
   { }
 
   Error_T<ERROR_T_RELEASE_PARAMS>::
+    Error_T(const this_type& a_other)
+    : base_type(a_other.GetErrorCode())
+  { }
+
+  Error_T<ERROR_T_RELEASE_PARAMS>::
     ~Error_T()
   { }
 
@@ -150,12 +180,3 @@ namespace tloc { namespace core { namespace error {
   template class Error_T<configs::p_build_config::Release_DebugInfo>;
 
 };};};
-
-namespace tloc
-{
-  //////////////////////////////////////////////////////////////////////////
-  // Success and Failure errors
-
-  core::error::Error ErrorSuccess(common_error_types::error_success);
-  core::error::Error ErrorFailure(common_error_types::error_failure);
-};

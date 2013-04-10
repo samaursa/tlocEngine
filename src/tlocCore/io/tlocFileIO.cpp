@@ -120,9 +120,9 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Delete()
   {
     if (::remove(m_fileName.GetPath()) == 0)
-    { return tloc::ErrorSuccess; }
+    { return ErrorSuccess; }
     else
-    { return tloc::ErrorFailure; }
+    { return ErrorFailure; }
   }
 
   template <FILE_IO_TEMP>

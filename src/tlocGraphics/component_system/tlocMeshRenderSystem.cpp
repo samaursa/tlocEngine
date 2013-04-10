@@ -18,10 +18,10 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   MeshRenderSystem::error_type MeshRenderSystem::Initialize()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   MeshRenderSystem::error_type MeshRenderSystem::Shutdown()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   void MeshRenderSystem::ProcessEntity(const entity_manager* a_mgr,
                                        const entity_type* a_ent)

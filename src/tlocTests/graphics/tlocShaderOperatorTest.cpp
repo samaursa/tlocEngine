@@ -113,16 +113,16 @@ namespace TestingShaderOperator
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
-    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader  fShader;
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    REQUIRE(sp.Link() == ErrorSuccess());
+    REQUIRE(sp.Link() == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
 
     // Cache the attributes and uniforms
@@ -251,7 +251,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
@@ -287,7 +287,7 @@ namespace TestingShaderOperator
 #elif defined (TLOC_OS_IPHONE)
 
   const char* vShaderStr2 =
-    "#version 100                                                      \n"  
+    "#version 100                                                      \n"
     "                                                                  \n"
     "  uniform float u_float[2];                                       \n"
     "  uniform vec2  u_vec2[2];                                        \n"
@@ -324,16 +324,16 @@ namespace TestingShaderOperator
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
-    REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader  fShader;
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    REQUIRE(sp.Link() == ErrorSuccess());
+    REQUIRE(sp.Link() == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
 
     // Cache the attributes and uniforms
@@ -459,7 +459,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess());
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
@@ -524,16 +524,16 @@ namespace TestingShaderOperator
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
-    REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader  fShader;
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    REQUIRE(sp.Link() == ErrorSuccess());
+    REQUIRE(sp.Link() == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
 
     // Cache the attributes and uniforms
@@ -634,7 +634,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess());
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
@@ -699,16 +699,16 @@ namespace TestingShaderOperator
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
-    REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader  fShader;
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    REQUIRE(sp.Link() == ErrorSuccess());
+    REQUIRE(sp.Link() == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
 
     // Cache the attributes and uniforms
@@ -833,7 +833,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess());
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }

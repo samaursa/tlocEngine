@@ -73,19 +73,19 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type QuadRenderSystem::InitializeEntity(const entity_manager*,
                                                 const entity_type* a_ent)
   {
     TLOC_UNUSED(a_ent);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type QuadRenderSystem::ShutdownEntity(const entity_manager*,
                                               const entity_type*)
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   void QuadRenderSystem::Pre_ProcessActiveEntities()
   {

@@ -71,16 +71,16 @@ namespace tloc { namespace graphics { namespace component_system {
       { }
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type FanRenderSystem::InitializeEntity(const entity_manager*,
                                                const entity_type* )
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
                                              const entity_type*)
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   void FanRenderSystem::Pre_ProcessActiveEntities()
   {

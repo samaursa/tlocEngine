@@ -35,7 +35,7 @@ namespace tloc { namespace graphics { namespace media {
 
     m_dim = a_dim;
 
-    return tloc::ErrorSuccess();
+    return tloc::ErrorSuccess;
   }
 
   Image::error_type
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace media {
     m_pixels.clear();
     m_pixels.resize(m_dim[width] * m_dim[height] , a_color);
 
-    return tloc::ErrorSuccess();
+    return tloc::ErrorSuccess;
   }
 
   void Image::SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)

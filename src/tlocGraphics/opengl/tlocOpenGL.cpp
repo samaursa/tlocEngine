@@ -93,7 +93,7 @@ namespace tloc { namespace graphics { namespace gl {
       {
         ++g_currentTextureUnit;
         glActiveTexture( g_availableTextureUnits[g_currentTextureUnit] );
-        return ErrorSuccess();
+        return ErrorSuccess;
       }
       else
       { return error::error_texture_unit_limit_reached; }

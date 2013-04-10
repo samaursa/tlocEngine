@@ -112,7 +112,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
     m_physicsMgr->Register(this);
     m_allContactEvents.resize(contact::k_count);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -122,7 +122,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
     m_physicsMgr->UnRegister(this);
     m_allContactEvents.clear();
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -146,7 +146,7 @@ namespace tloc { namespace physics { namespace component_system {
       return error::error_rigid_body_not_attached;
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -156,7 +156,7 @@ namespace tloc { namespace physics { namespace component_system {
                    const entity_type* a_ent)
   {
     TLOC_UNUSED_2(a_mgr, a_ent);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

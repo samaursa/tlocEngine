@@ -204,8 +204,8 @@ namespace TestingRigidBodySystem
     entityMgr->InsertComponent(rbDynamicCircleEntity, &rbListenerComponent);
 
     //------------------------------------------------------------------------
-    CHECK(rigidBodySys.Initialize() == ErrorSuccess());
-    CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess());
+    CHECK(rigidBodySys.Initialize() == ErrorSuccess);
+    CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess);
 
     // Update everything once so everything is in the right position
     rigidBodySys.ProcessActiveEntities();
@@ -270,8 +270,8 @@ namespace TestingRigidBodySystem
     CHECK(myWorldContactCallback.m_numContactBegin == 1);
     CHECK(myComponentContactCallback.m_numContactBegin == 1);
 
-    CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess());
-    CHECK(rigidBodySys.Shutdown() == ErrorSuccess());
-    CHECK(physicsMgr.Shutdown() == ErrorSuccess());
+    CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess);
+    CHECK(rigidBodySys.Shutdown() == ErrorSuccess);
+    CHECK(physicsMgr.Shutdown() == ErrorSuccess);
   }
 };

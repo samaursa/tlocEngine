@@ -8,7 +8,7 @@ namespace tloc { namespace core { namespace component_system {
   // Initialization
 
   error_type EntityProcessingSystem::Pre_Initialize()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type EntityProcessingSystem::
     DoInitialize(const EntityManager* a_mgr, const entity_ptr_array& a_entities)
@@ -19,11 +19,11 @@ namespace tloc { namespace core { namespace component_system {
       InitializeEntity(a_mgr, *itr);
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type EntityProcessingSystem::Post_Initialize()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   //````````````````````````````````````````````````````````````````````````
   // Processing
@@ -35,7 +35,7 @@ namespace tloc { namespace core { namespace component_system {
   { }
 
   void EntityProcessingSystem::
-    DoProcessActiveEntities(const EntityManager* a_mgr, 
+    DoProcessActiveEntities(const EntityManager* a_mgr,
                             const entity_ptr_array& a_entities)
   {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace component_system {
   // Shutdown
 
   error_type EntityProcessingSystem::Pre_Shutdown()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type EntityProcessingSystem::
     DoShutdown(const EntityManager* a_mgr, const entity_ptr_array& a_entities)
@@ -64,10 +64,10 @@ namespace tloc { namespace core { namespace component_system {
       ShutdownEntity(a_mgr, *itr);
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type EntityProcessingSystem::Post_Shutdown()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
 };};};

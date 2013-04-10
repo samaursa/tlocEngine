@@ -1155,7 +1155,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
     typedef typename svc::value_type::first_type  shader_var_ptr_type;
 
-    ShaderOperator::error_type retError = ErrorSuccess();
+    ShaderOperator::error_type retError = ErrorSuccess;
 
     svc_iterator itr, itrEnd;
     for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
@@ -1187,7 +1187,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             // TODO: Convert this assertion to a log
             TLOC_ASSERT(false, "Mismatched uniform/attribute type!");
-            retError = ErrorFailure();
+            retError = ErrorFailure;
             break;
           }
         }
@@ -1198,7 +1198,7 @@ namespace tloc { namespace graphics { namespace gl {
       if (itrInfo == itrInfoEnd)
       {
         TLOC_ASSERT(false, "Uniform/Attribute type not found in shader!");
-        retError = ErrorFailure();
+        retError = ErrorFailure;
       }
     }
 
@@ -1295,7 +1295,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (uniformPtr->GetType() == GL_SAMPLER_2D)
       {
-        if (ActivateNextAvailableTextureUnit() != ErrorSuccess())
+        if (ActivateNextAvailableTextureUnit() != ErrorSuccess)
         { TLOC_ASSERT(false, "Could not activate texture unit"); }
       }
 

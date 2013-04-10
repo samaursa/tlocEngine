@@ -137,7 +137,7 @@ namespace TestingWindow
                   WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
-      CHECK(win1.GetWindowHandle().Cast<void*>() != nullptr);
+      CHECK( (win1.GetWindowHandle().Cast<void*>() != nullptr) );
     }
 
     {
@@ -148,7 +148,7 @@ namespace TestingWindow
                   WindowSettings("Testing"), WindowSettings::style_fullscreen);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK(win2.GetWindowHandle().Cast<void*>() != nullptr);
+      CHECK( (win2.GetWindowHandle().Cast<void*>() != nullptr) );
     }
   }
 

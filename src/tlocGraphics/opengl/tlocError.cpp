@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace gl {
     { GLU_OUT_OF_MEMORY, "out of memory"},
     { GLU_INCOMPATIBLE_GL_VERSION, "incompatible gl version"},
     { GLU_INVALID_OPERATION, "invalid operation"},
-    { nullptr, nullptr} /* end of list indicator */
+    { TLOC_NULL, TLOC_NULL} /* end of list indicator */
   };
 
   //------------------------------------------------------------------------

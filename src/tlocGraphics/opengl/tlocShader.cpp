@@ -77,7 +77,7 @@ namespace tloc { namespace graphics { namespace gl {
     { return error::error_shader_source; }
 
     m_flags.Mark(shader_loaded);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   Shader_I::error_type Shader_I::Compile()
@@ -103,7 +103,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_flags.Mark(shader_compiled);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //////////////////////////////////////////////////////////////////////////

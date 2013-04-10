@@ -98,10 +98,10 @@ namespace tloc { namespace core { namespace io {
                             file_format_type());
     if (m_file)
     {
-      return ErrorSuccess();
+      return ErrorSuccess;
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
   template <FILE_IO_TEMP>
@@ -120,9 +120,9 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Delete()
   {
     if (::remove(m_fileName.GetPath()) == 0)
-    { return tloc::ErrorSuccess(); }
+    { return ErrorSuccess; }
     else
-    { return tloc::ErrorFailure(); }
+    { return ErrorFailure; }
   }
 
   template <FILE_IO_TEMP>
@@ -132,11 +132,11 @@ namespace tloc { namespace core { namespace io {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");
 
     if (fseek(m_file, 0, SEEK_END) != 0)
-    { return ErrorFailure(); }
+    { return ErrorFailure; }
 
     tl_int fileSize = ftell(m_file);
     if (fileSize < 0)
-    { return ErrorFailure(); }
+    { return ErrorFailure; }
 
     rewind(m_file);
 
@@ -144,14 +144,14 @@ namespace tloc { namespace core { namespace io {
     char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSizeInclNull);
 
     tl_size result = fread(buffer, 1, fileSizeInclNull, m_file);
-    if (result == 0) { return ErrorFailure(); }
+    if (result == 0) { return ErrorFailure; }
 
     buffer[result] = '\0';
     a_out.assign(buffer, buffer + result);
 
     TL_FREE(buffer);
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   template <FILE_IO_TEMP>
@@ -161,12 +161,12 @@ namespace tloc { namespace core { namespace io {
     {
       if (fclose(m_file) == EOF)
       {
-        return ErrorFailure();
+        return ErrorFailure;
       }
     }
 
     m_file = nullptr;
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //------------------------------------------------------------------------

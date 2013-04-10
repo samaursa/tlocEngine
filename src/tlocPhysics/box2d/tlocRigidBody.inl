@@ -73,7 +73,7 @@ namespace tloc { namespace physics { namespace box2d {
       return error::error_rigid_body_shape_could_not_be_created;
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -501,7 +501,7 @@ namespace tloc { namespace physics { namespace box2d {
     m_flags.Mark(k_initialized);
     DoSetParent(a_parent);
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -514,7 +514,7 @@ namespace tloc { namespace physics { namespace box2d {
     m_rigidBody = nullptr;
 
     m_flags.Unmark(k_initialized);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

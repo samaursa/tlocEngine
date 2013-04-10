@@ -75,14 +75,14 @@ namespace TestingShaderComponent
     gl::VertexShader vShader;
 
     typedef gl::p_shader_program::shader_type::Vertex vertex_shader_type;
-    CHECK(vShader.Load(vShaderStr) == ErrorSuccess());
-    CHECK(vShader.Compile() == ErrorSuccess());
+    CHECK(vShader.Load(vShaderStr) == ErrorSuccess);
+    CHECK(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader fShader;
 
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
-    CHECK(fShader.Load(fShaderStr) == ErrorSuccess());
-    CHECK(fShader.Compile() == ErrorSuccess());
+    CHECK(fShader.Load(fShaderStr) == ErrorSuccess);
+    CHECK(fShader.Compile() == ErrorSuccess);
   }
 
   TEST_CASE("Graphics/ShaderComponent/FromFile", "")
@@ -103,22 +103,22 @@ namespace TestingShaderComponent
     io::FileIO_ReadA vsFile( g_vShaderPath.c_str() );
     io::FileIO_ReadA fsFile( g_fShaderPath.c_str() );
 
-    REQUIRE(vsFile.Open() == ErrorSuccess());
-    REQUIRE(fsFile.Open() == ErrorSuccess());
+    REQUIRE(vsFile.Open() == ErrorSuccess);
+    REQUIRE(fsFile.Open() == ErrorSuccess);
 
     String vsCode, fsCode;
-    REQUIRE(vsFile.GetContents(vsCode) == ErrorSuccess());
-    REQUIRE(fsFile.GetContents(fsCode) == ErrorSuccess());
+    REQUIRE(vsFile.GetContents(vsCode) == ErrorSuccess);
+    REQUIRE(fsFile.GetContents(fsCode) == ErrorSuccess);
 
     // Start testing the shaders
     gl::VertexShader vShader;
 
-    CHECK(vShader.Load(vsCode.c_str()) == ErrorSuccess());
-    CHECK(vShader.Compile() == ErrorSuccess());
+    CHECK(vShader.Load(vsCode.c_str()) == ErrorSuccess);
+    CHECK(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader fShader;
 
-    CHECK(fShader.Load(fsCode.c_str()) == ErrorSuccess());
-    CHECK(fShader.Compile() == ErrorSuccess());
+    CHECK(fShader.Load(fsCode.c_str()) == ErrorSuccess);
+    CHECK(fShader.Compile() == ErrorSuccess);
   }
 };

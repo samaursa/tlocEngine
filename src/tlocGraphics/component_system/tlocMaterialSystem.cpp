@@ -45,28 +45,28 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gl::VertexShader          vShader;
     gl::FragmentShader        fShader;
-    gl::Shader_I::error_type  result;
+    gl::Shader_I::error_type  result = ErrorSuccess;
 
     shader_prog_ptr sp = currMat.GetShaderProgRef();
 
     if (sp->IsLinked())
-    { return ErrorSuccess(); }
+    { return ErrorSuccess; }
 
     vShader.Load(currMat.GetVertexSource().c_str() );
     result = vShader.Compile();
-    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile vertex shader");
+    TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
 
     result = fShader.Load(currMat.GetFragmentSource().c_str());
     result = fShader.Compile();
-    TLOC_ASSERT(result == ErrorSuccess(), "Could not compile fragment shader");
+    TLOC_ASSERT(result == ErrorSuccess, "Could not compile fragment shader");
 
     result = sp->AttachShaders
       (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
-    TLOC_ASSERT(result == ErrorSuccess(), "Could not attach shader programs");
+    TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
 
-    sp->Enable();
+    sp->Enable().Ignore();
     result = sp->Link();
-    TLOC_ASSERT(result == ErrorSuccess(), "Could not link shaders");
+    TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
     sp->LoadUniformInfo();
     sp->LoadAttributeInfo();
     sp->Disable();
@@ -111,14 +111,14 @@ namespace tloc { namespace graphics { namespace component_system {
       currMat.DoGetShaderOpContainerRef().push_back(so_user);
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type
     MaterialSystem::ShutdownEntity(const entity_manager*, const entity_type*)
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
-  void MaterialSystem::ProcessEntity(const entity_manager*, 
+  void MaterialSystem::ProcessEntity(const entity_manager*,
                                      const entity_type* )
   { }
 

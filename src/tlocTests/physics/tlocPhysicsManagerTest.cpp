@@ -20,13 +20,13 @@ namespace TestingPhysicsManager
     pm_type physicsMgr;
 
     typedef core::error::Error error_type;
-    error_type result;
+    error_type result = ErrorFailure;
 
     result = physicsMgr.Initialize(pm_type::gravity(Vec2f(0.0f,-10.0f)),
                                    pm_type::velocity_iterations(6),
                                    pm_type::position_iterations(2));
 
-    CHECK(result == ErrorSuccess());
+    CHECK(result == ErrorSuccess);
     CHECK( (&physicsMgr.GetWorld() != nullptr) );
 
     physicsMgr.Update(1.0f/60.0f);

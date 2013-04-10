@@ -166,7 +166,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_flags.Mark(k_shaderAttached);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   ShaderProgram::error_type ShaderProgram::Link()
@@ -192,7 +192,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_flags.Mark(k_shaderLinked);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   bool ShaderProgram::IsLinked() const
@@ -244,7 +244,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     ResetTextureUnits();
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   bool ShaderProgram::
@@ -269,7 +269,7 @@ namespace tloc { namespace graphics { namespace gl {
       return error::error_shader;
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //------------------------------------------------------------------------

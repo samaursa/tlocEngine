@@ -23,5 +23,12 @@ namespace TestingPair
       // err = common_error_types::error_failure;
     }
 
+    {
+      error::Error err(common_error_types::error_success);
+       err = common_error_types::error_failure;
+
+       // Will crash but unless we choose to ignore
+       err.Ignore();
+    }
   }
 }

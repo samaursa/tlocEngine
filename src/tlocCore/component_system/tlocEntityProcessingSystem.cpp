@@ -16,7 +16,7 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      InitializeEntity(a_mgr, *itr);
+      InitializeEntity(a_mgr, *itr).Ignore();
     }
 
     return ErrorSuccess;
@@ -61,7 +61,7 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      ShutdownEntity(a_mgr, *itr);
+      ShutdownEntity(a_mgr, *itr).Ignore();
     }
 
     return ErrorSuccess;

@@ -25,6 +25,7 @@ namespace tloc { namespace core { namespace error {
 
     bool Succeeded() const;
     bool Failed() const;
+    void Ignore() const;
 
     void operator=(const code_type& a_code);
 
@@ -84,6 +85,7 @@ namespace tloc { namespace core { namespace error {
     void DoFailed() const;
     void DoEqual() const;
     void DoNotEqual() const;
+    void DoIgnore() const;
 
   private:
     mutable bool m_errorCheckedByUser;
@@ -125,6 +127,7 @@ namespace tloc { namespace core { namespace error {
     void DoFailed() const;
     void DoEqual() const;
     void DoNotEqual() const;
+    void DoIgnore() const;
   };
 
   //////////////////////////////////////////////////////////////////////////

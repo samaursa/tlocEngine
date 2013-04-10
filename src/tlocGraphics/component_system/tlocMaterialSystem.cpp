@@ -45,7 +45,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gl::VertexShader          vShader;
     gl::FragmentShader        fShader;
-    gl::Shader_I::error_type  result = ErrorFailure;
+    gl::Shader_I::error_type  result = ErrorSuccess;
 
     shader_prog_ptr sp = currMat.GetShaderProgRef();
 
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace component_system {
       (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
     TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
 
-    sp->Enable();
+    sp->Enable().Ignore();
     result = sp->Link();
     TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
     sp->LoadUniformInfo();

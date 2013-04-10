@@ -5,41 +5,48 @@ namespace tloc { namespace core { namespace error {
   //////////////////////////////////////////////////////////////////////////
   // Error_I
 
-#define ERROR_I_TEMP    typename T_Derived
-#define ERROR_I_PARAMS  T_Derived
-#define ERROR_I_TYPE    typename Error_TI<ERROR_I_PARAMS>
+#define ERROR_TI_TEMP    typename T_Derived
+#define ERROR_TI_PARAMS  T_Derived
+#define ERROR_TI_TYPE    typename Error_TI<ERROR_TI_PARAMS>
 
-  template <ERROR_I_TEMP>
-  Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  Error_TI<ERROR_TI_PARAMS>::
     Error_TI(code_type a_errorType)
     : m_error(a_errorType)
   { }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     Succeeded() const
   {
     static_cast<const derived_type*>(this)->DoSucceeded();
     return m_error == common_error_types::error_success;
   }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     Failed() const
   {
     static_cast<const derived_type*>(this)->DoFailed();
     return !Succeeded();
   }
 
-  template <ERROR_I_TEMP>
-  void Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  void Error_TI<ERROR_TI_PARAMS>::
+    Ignore() const
+  {
+    static_cast<const derived_type*>(this)->DoIgnore();
+  }
+
+  template <ERROR_TI_TEMP>
+  void Error_TI<ERROR_TI_PARAMS>::
     operator =(const code_type& a_other)
   {
     m_error = a_other;
   }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     operator ==(const this_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoEqual();
@@ -47,16 +54,16 @@ namespace tloc { namespace core { namespace error {
     return operator==(a_other.m_error);
   }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     operator ==(const code_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoEqual();
     return m_error == a_other;
   }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     operator !=(const this_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoNotEqual();
@@ -64,8 +71,8 @@ namespace tloc { namespace core { namespace error {
     return operator!=(a_other.m_error);
   }
 
-  template <ERROR_I_TEMP>
-  bool Error_TI<ERROR_I_PARAMS>::
+  template <ERROR_TI_TEMP>
+  bool Error_TI<ERROR_TI_PARAMS>::
     operator !=(const code_type& a_other) const
   {
     static_cast<const derived_type*>(this)->DoNotEqual();
@@ -77,7 +84,7 @@ namespace tloc { namespace core { namespace error {
 
 #define ERROR_T_TEMP    typename T_BuildConfig
 #define ERROR_T_PARAMS  T_BuildConfig
-#define ERROR_T_TYPE    typename Error_T<ERROR_I_PARAMS>
+#define ERROR_T_TYPE    typename Error_T<ERROR_TI_PARAMS>
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
@@ -133,6 +140,11 @@ namespace tloc { namespace core { namespace error {
     DoNotEqual() const
   { m_errorCheckedByUser = true; }
 
+  template <ERROR_T_TEMP>
+  void Error_T<ERROR_T_PARAMS>::
+    DoIgnore() const
+  { m_errorCheckedByUser = true; }
+
   //////////////////////////////////////////////////////////////////////////
   // Error_T<>
 
@@ -167,6 +179,10 @@ namespace tloc { namespace core { namespace error {
 
   void Error_T<ERROR_T_RELEASE_PARAMS>::
     DoNotEqual() const
+  { }
+
+  void Error_T<ERROR_T_RELEASE_PARAMS>::
+    DoIgnore() const
   { }
 
   //////////////////////////////////////////////////////////////////////////

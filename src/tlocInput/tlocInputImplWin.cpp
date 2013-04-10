@@ -201,12 +201,12 @@ namespace tloc { namespace input { namespace priv {
 
     for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
-      if (m_winHIDs[T_InputObject::m_index][i].m_available == false)
+      if (m_winHIDs[T_InputObject::m_index][i].m_inUse == false)
       {
         newInput =
           DoCreateHID<T_InputObject, T_InputObject::m_index>().Create(a_params, m_directInput, m_params);
 
-        m_winHIDs[T_InputObject::m_index][i].m_available = true;
+        m_winHIDs[T_InputObject::m_index][i].m_inUse = true;
         m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;
       }
       else
@@ -237,7 +237,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[keyboard_type::m_index][i].m_available)
+          if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
             keyboard_type* kb = static_cast<keyboard_type*>
               (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
@@ -252,7 +252,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[mouse_type::m_index][i].m_available)
+          if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
             mouse_type* mse = static_cast<mouse_type*>
               (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
@@ -293,7 +293,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[keyboard_type::m_index][i].m_available)
+          if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
             keyboard_type* kb = static_cast<keyboard_type*>
               (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
@@ -308,7 +308,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[mouse_type::m_index][i].m_available)
+          if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
             mouse_type* mse = static_cast<mouse_type*>
               (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
@@ -402,6 +402,16 @@ namespace tloc { namespace input { namespace priv {
   {
     m_directInput->EnumDevices(TLOC_NULL, &this_type::DoEnumerateCallback, this,
                                DIEDFL_ATTACHEDONLY);
+
+    // Now add other devices that are dummies such as touch
+    InputDeviceInfo dummyInfo;
+    dummyInfo.m_productGuid = GUID();
+    dummyInfo.m_deviceGuid  = GUID();
+    dummyInfo.m_deviceName  = "DummyDevice";
+    dummyInfo.m_inUse       = false;
+    dummyInfo.m_devicePtr   = nullptr;
+
+    m_winHIDs[p_hid::TouchSurface::m_index].push_back(dummyInfo);
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -414,7 +424,7 @@ namespace tloc { namespace input { namespace priv {
     info.m_productGuid = lpddi->guidProduct;
     info.m_deviceGuid  = lpddi->guidInstance;
     info.m_deviceName  = lpddi->tszInstanceName;
-    info.m_available   = false;
+    info.m_inUse       = false;
     info.m_devicePtr   = nullptr;
 
     if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)

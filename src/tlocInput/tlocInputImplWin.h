@@ -31,7 +31,7 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool                  m_available;
+    bool                  m_inUse;
     GUID                  m_productGuid;
     GUID                  m_deviceGuid;
     core::string::String  m_deviceName;

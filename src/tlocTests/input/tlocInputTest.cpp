@@ -11,6 +11,7 @@
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -586,7 +587,7 @@ namespace TestingInput
     MouseEvent evt;
 
     typedef Mouse<typename T_InputManagerType::policy_type> mouse_type;
-    mouse_type* mouse = inputMgr.GetHID<MouseB>(0);
+    mouse_type* mouse = inputMgr.GetHID<mouse_type>(0);
     mouse->SetClamped(false);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
@@ -630,16 +631,16 @@ namespace TestingInput
     CHECK(evt.m_Y.m_abs().Get() == -15);
 
     mouse->SetClamped(true);
-    mouse->SetClampX(MouseB::abs_range_type(0, 1000));
-    mouse->SetClampY(MouseB::abs_range_type(100, 500));
+    mouse->SetClampX(mouse_type::abs_range_type(0, 1000));
+    mouse->SetClampY(mouse_type::abs_range_type(100, 500));
 
     CHECK(mouse->GetClampX().front() == 0);
     CHECK(mouse->GetClampX().back() == 999);
     CHECK(mouse->GetClampY().front() == 100);
     CHECK(mouse->GetClampY().back() == 499);
 
-    mouse->SetClampX(MouseB::abs_range_type(0, 0));
-    mouse->SetClampY(MouseB::abs_range_type(0, 0));
+    mouse->SetClampX(mouse_type::abs_range_type(0, 0));
+    mouse->SetClampY(mouse_type::abs_range_type(0, 0));
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
 
     CHECK(evt.m_X.m_abs().Get() == 0);
@@ -654,6 +655,20 @@ namespace TestingInput
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
     CHECK(evt.m_X.m_abs().Get() == -10);
     CHECK(evt.m_Y.m_abs().Get() == -20);
+  }
+
+  template <typename T_InputManagerType>
+  void TestTouchSurface(T_InputManagerType& inputMgr)
+  {
+    typedef TouchSurface<typename T_InputManagerType::policy_type> touch_type;
+    touch_type* ts = inputMgr.GetHID<touch_type>(0);
+
+    ts->Update(); // should not crash
+    ts->Reset();  // should not crash
+
+    CHECK(ts->GetCurrentTouches().size() == 0);
+    CHECK( (ts->GetTouch(0) == nullptr) );
+    CHECK_FALSE(ts->IsTouchDown(0));
   }
 
   TEST_CASE("Input/InputManager/General", "")
@@ -706,5 +721,16 @@ namespace TestingInput
       // Intentioanlly commented out - test is very fragile
       //TestMouse(inputMgrImm, wnd);
     }
+
+    //------------------------------------------------------------------------
+    // Dummy inputs
+
+    TouchSurfaceB* ts = inputMgr.CreateHID<TouchSurfaceB>();
+    CHECK( (ts != nullptr) );
+    TouchSurfaceI* tsImm = inputMgrImm.CreateHID<TouchSurfaceI>();
+    CHECK( (tsImm != nullptr) );
+
+    TestTouchSurface(inputMgr);
+    TestTouchSurface(inputMgrImm);
   }
 };

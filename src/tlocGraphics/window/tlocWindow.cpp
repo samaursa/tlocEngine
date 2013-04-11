@@ -115,6 +115,18 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
+  WINDOW_TYPE::aspect_ratio
+    Window_T<WINDOW_PARAMS>::
+    GetAspectRatio() const
+  {
+    typedef aspect_ratio::value_type f_type;
+    f_type width  = (f_type)GetWidth();
+    f_type height = (f_type)GetHeight();
+    return aspect_ratio(aspect_ratio::width(width),
+                        aspect_ratio::height(height) );
+  }
+
+  template <WINDOW_TEMP>
   bool Window_T<WINDOW_PARAMS>::GetEvent(WindowEvent& a_eventOut)
   {
     // If the stack is empty, then see if the window has more events for us

@@ -39,6 +39,8 @@ set(TLOC_MATH_TYPES
   types/tlocMatrix4.h 
   types/tlocMatrix4.inl 
   types/tlocMatrixExplicitMacros.h 
+  types/tlocRay.h
+  types/tlocRay.cpp
   types/tlocRectangle.cpp 
   types/tlocRectangle.h 
   types/tlocVector.cpp 

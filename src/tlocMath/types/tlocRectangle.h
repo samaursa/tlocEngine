@@ -3,7 +3,6 @@
 
 #include <tlocMath/tlocMathBase.h>
 
-#include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -15,7 +14,6 @@ namespace tloc { namespace math { namespace types {
   template <typename T>
   class Rectangle_T
   {
-  public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
 
   public:
@@ -36,7 +34,7 @@ namespace tloc { namespace math { namespace types {
   public:
     Rectangle_T();
     Rectangle_T(width a_w, height a_h,
-              position a_pos = position(point_type(0)) );
+                position a_pos = position(point_type(0)) );
     Rectangle_T(left a_l, right a_r, top a_t, bottom a_b);
 
     template <typename T_Real>

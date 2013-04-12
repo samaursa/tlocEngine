@@ -9,6 +9,7 @@ set(TLOC_TESTS_MATH
   tlocMatrix4Test.cpp
   tlocMatrixTest.cpp
   tlocPythagorasTest.cpp
+  tlocRayTest.cpp
   tlocRectangleTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h

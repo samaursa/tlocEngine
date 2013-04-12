@@ -13,7 +13,7 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
-  class Rectangle
+  class Rectangle_T
   {
   public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
@@ -21,7 +21,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef tl_size                                 size_type;
     typedef T                                       real_type;
-    typedef Rectangle<real_type>                    this_type;
+    typedef Rectangle_T<real_type>                  this_type;
     typedef Vector2<real_type>                      point_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
@@ -34,13 +34,13 @@ namespace tloc { namespace math { namespace types {
     typedef core::types::StrongType_T<point_type, 0>  position;
 
   public:
-    Rectangle();
-    Rectangle(width a_w, height a_h,
+    Rectangle_T();
+    Rectangle_T(width a_w, height a_h,
               position a_pos = position(point_type(0)) );
-    Rectangle(left a_l, right a_r, top a_t, bottom a_b);
+    Rectangle_T(left a_l, right a_r, top a_t, bottom a_b);
 
     template <typename T_Real>
-    Rectangle(const Rectangle<T_Real>& a_other);
+    Rectangle_T(const Rectangle_T<T_Real>& a_other);
 
     this_type& operator= (const this_type& a_other);
 
@@ -98,16 +98,16 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   template <typename T_Real>
-  Rectangle<T>::
-    Rectangle(const Rectangle<T_Real>& a_other)
+  Rectangle_T<T>::
+    Rectangle_T(const Rectangle_T<T_Real>& a_other)
     : m_dimensions(a_other.GetDimensions())
     , m_position(a_other.GetPosition())
   { }
 
   template <typename T>
   template <typename T_Side>
-  typename Rectangle<T>::real_type
-    Rectangle<T>::GetValue() const
+  typename Rectangle_T<T>::real_type
+    Rectangle_T<T>::GetValue() const
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
     return DoGetValue(T_Side::k_index);
@@ -115,8 +115,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   template <typename T_Side1, typename T_Side2>
-  typename Rectangle<T>::point_type
-    Rectangle<T>::GetCoord() const
+  typename Rectangle_T<T>::point_type
+    Rectangle_T<T>::GetCoord() const
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side1, top, bottom>();
     tloc::type_traits::AssertTypeIsSupported<T_Side2, left, right>();
@@ -126,9 +126,9 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Typedefs
 
-  typedef Rectangle<tl_float>   Rectf;
-  typedef Rectangle<f32>        Rectf32;
-  typedef Rectangle<f64>        Rectf64;
+  typedef Rectangle_T<tl_float>   Rectf;
+  typedef Rectangle_T<f32>        Rectf32;
+  typedef Rectangle_T<f64>        Rectf64;
 
 };};};
 

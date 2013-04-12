@@ -31,7 +31,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef RigidBodyShapeDef   this_type;
     typedef f32                 float_type;
 
-    typedef math::types::Rectangle<float_type>  rect_type;
+    typedef math::types::Rectangle_T<float_type>  rect_type;
     typedef math::types::Circle<float_type>     circle_type;
 
   public:

@@ -44,7 +44,7 @@ namespace tloc { namespace graphics { namespace view_proj {
     typedef tl_float                                    real_type;
     typedef core::data_structs::Tuple
       <real_type, Planes::k_count>                      cont_type;
-    typedef math::types::Rectangle<real_type>           rect_type;
+    typedef math::types::Rectangle_T<real_type>           rect_type;
     typedef tl_size                                     size_type;
     typedef math::types::Radian                         angle_type;
     typedef types::FOV                                  fov_type;

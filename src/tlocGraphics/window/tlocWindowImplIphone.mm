@@ -131,6 +131,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     return (size_type)m_view.Cast<OpenGLView*>().bounds.size.height;
   }
+  
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxWidth() const
+  {
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    return width;
+  }
+
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxHeight() const
+  {
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    return height;
+  }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)
   {

@@ -158,6 +158,24 @@ namespace tloc { namespace graphics { namespace win {
     size_type GetHeight() const;
 
     ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of producing.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
+
+    ///-------------------------------------------------------------------------
     /// @brief Gets the aspect ratio of this window.
     ///
     /// @return The aspect ratio.

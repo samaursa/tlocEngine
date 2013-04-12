@@ -69,6 +69,7 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == 200);
       CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);
@@ -88,6 +89,7 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == 200);
       CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
     }
   }
 

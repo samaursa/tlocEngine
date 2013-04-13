@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/view_projection/tlocFrustum.h>
+#include <tlocMath/projection/tlocFrustum.h>
 
 namespace TestingFrustum
 {
   using namespace tloc;
-  using namespace tloc::graphics;
+  using namespace tloc::math;
 
 #define CHECK_MATRIX4F(mat,x1,y1,z1,w1,x2,y2,z2,w2,x3,y3,z3,w3,x4,y4,z4,w4) \
   CHECK((mat[0]) == Approx(x1)); CHECK((mat[1]) == Approx(y1));\
@@ -22,16 +22,16 @@ namespace TestingFrustum
 
   TEST_CASE("graphics/view_projection/Frustum", "")
   {
-    using namespace tloc::graphics::types;
+    using namespace tloc::math::types;
     using math::types::Degree;
 
     AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
     FOV fov(Degree(60.0f), ar, p_FOV::vertical());
 
-    view_proj::Frustum::Params params(fov);
+    proj::Frustum::Params params(fov);
     params.SetFar(1000.0f).SetNear(5.0f);
 
-    view_proj::Frustum fr(params);
+    proj::Frustum fr(params);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();

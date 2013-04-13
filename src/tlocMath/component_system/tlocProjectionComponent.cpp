@@ -3,9 +3,9 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocMath/component_system/tlocComponentType.h>
 
-namespace tloc { namespace graphics { namespace component_system {
+namespace tloc { namespace math { namespace component_system {
 
   namespace
   {

@@ -1,16 +1,16 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocAngle.h>
-#include <tlocGraphics/types/tlocFOV.h>
+#include <tlocMath/types/tlocFOV.h>
 
 namespace TestingFOV
 {
   using namespace tloc;
-  using namespace tloc::graphics;
+  using namespace tloc::math;
 
   TEST_CASE("graphics/types/FOV", "")
   {
-    using namespace graphics::types;
+    using namespace math::types;
     using math::types::Degree;
 
     AspectRatio ar(AspectRatio::width(1920), AspectRatio::height(1080));

@@ -1,23 +1,23 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_PROJECTION_COMPONENT_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_PROJECTION_COMPONENT_H_
+#ifndef _TLOC_MATH_COMPONENT_SYSTEM_PROJECTION_COMPONENT_H_
+#define _TLOC_MATH_COMPONENT_SYSTEM_PROJECTION_COMPONENT_H_
 
-#include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
-#include <tlocGraphics/view_projection/tlocFrustum.h>
+#include <tlocMath/projection/tlocFrustum.h>
 
-namespace tloc { namespace graphics { namespace component_system {
+namespace tloc { namespace math { namespace component_system {
 
   class Projection : public core::component_system::Component_T<Projection>
   {
   public:
     typedef core::component_system::Component_T<Projection>     base_type;
 
-    typedef view_proj::Frustum            frustum_type;
-    typedef view_proj::Frustum::Params    frustum_param_type;
+    typedef proj::Frustum            frustum_type;
+    typedef proj::Frustum::Params    frustum_param_type;
 
   public:
     Projection();

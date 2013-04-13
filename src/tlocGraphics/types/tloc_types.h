@@ -3,14 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocGraphics/types/tlocAspectRatio.h>
-
 #include <tlocGraphics/types/tlocColor.h>
-
-#include <tlocGraphics/types/tlocFOV.h>
-
 #include <tlocGraphics/types/tlocVertex.h>
-
 #include <tlocGraphics/types/tlocDimension.h>
 
 #endif

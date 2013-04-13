@@ -3,9 +3,9 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
@@ -13,7 +13,7 @@ namespace tloc { namespace prefab { namespace graphics {
                  core_cs::ComponentPoolManager& a_poolMgr)
   {
     using math_cs::components::transform;
-    using tloc::graphics::component_system::components::projection;
+    using tloc::math_cs::components::projection;
 
     using namespace core_cs;
     using namespace math_cs;
@@ -43,7 +43,7 @@ namespace tloc { namespace prefab { namespace graphics {
     else
     { cpool = a_poolMgr.GetPool(projection); }
 
-    typedef tloc::graphics::component_system::ProjectionPool p_pool;
+    typedef tloc::math_cs::ProjectionPool p_pool;
 
     p_pool* pPool = (*cpool)->GetAs<p_pool>();
 

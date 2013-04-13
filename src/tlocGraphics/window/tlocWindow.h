@@ -14,7 +14,8 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 #include <tlocGraphics/window/tlocWindowHandle.h>
-#include <tlocGraphics/types/tlocAspectRatio.h>
+
+#include <tlocMath/types/tlocAspectRatio.h>
 
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
@@ -86,7 +87,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
-    typedef types::AspectRatio                           aspect_ratio;
+    typedef math_t::AspectRatio                          aspect_ratio;
 
   public:
 

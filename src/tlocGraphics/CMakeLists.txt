@@ -56,8 +56,6 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
-  component_system/tlocProjectionComponent.cpp 
-  component_system/tlocProjectionComponent.h 
   component_system/tlocQuad.cpp 
   component_system/tlocQuad.h 
   component_system/tlocQuadRenderSystem.cpp 
@@ -131,13 +129,9 @@ set(TLOC_GRAPHICS_RENDERER
   )
 
 set(TLOC_GRAPHICS_TYPES 
-  types/tlocAspectRatio.cpp 
-  types/tlocAspectRatio.h 
   types/tlocColor.cpp 
   types/tlocColor.h 
   types/tlocDimension.h 
-  types/tlocFOV.cpp 
-  types/tlocFOV.h 
   types/tlocVertex.h 
   types/tloc_types.cpp 
   types/tloc_types.h 
@@ -145,13 +139,8 @@ set(TLOC_GRAPHICS_TYPES
   )
 
 set(TLOC_GRAPHICS_VIEW_PROJECTION 
-  view_projection/tlocCamera.cpp 
-  view_projection/tlocCamera.h 
-  view_projection/tlocFrustum.cpp 
-  view_projection/tlocFrustum.h 
-  view_projection/tloc_view_projection.cpp 
-  view_projection/tloc_view_projection.h 
-  view_projection/tloc_view_projection.inl
+  
+  view/tlocCamera.h 
   )
 
 set(TLOC_GRAPHICS_WINDOW 
@@ -229,6 +218,11 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
   )
 
+add_dependencies(tlocGraphics
+  tlocCore
+  tlocMath
+  )
+
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
 source_group(component_system FILES ${TLOC_GRAPHICS_COMPONENT_SYSTEM})
@@ -237,7 +231,7 @@ source_group(media            FILES ${TLOC_GRAPHICS_MEDIA})
 source_group(opengl           FILES ${TLOC_GRAPHICS_OPENGL})
 source_group(renderer         FILES ${TLOC_GRAPHICS_RENDERER})
 source_group(types            FILES ${TLOC_GRAPHICS_TYPES})
-source_group(view_projection  FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
+source_group(view             FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
 source_group(window           FILES ${TLOC_GRAPHICS_WINDOW})
 
 source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})

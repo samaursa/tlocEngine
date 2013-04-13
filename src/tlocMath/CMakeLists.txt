@@ -12,6 +12,8 @@ set(TLOC_MATH
 
 set(TLOC_MATH_COMPONENT_SYSTEM 
   component_system/tlocComponentType.h 
+  component_system/tlocProjectionComponent.cpp 
+  component_system/tlocProjectionComponent.h 
   component_system/tlocTransform.cpp 
   component_system/tlocTransform.h 
   component_system/tloc_component_system.cpp 
@@ -24,8 +26,12 @@ set(TLOC_MATH_TYPES
   types/tlocAngle.h 
   types/tlocAngle.inl 
   types/tlocAngleExplicitMacros.h 
+  types/tlocAspectRatio.cpp 
+  types/tlocAspectRatio.h 
   types/tlocCircle.cpp 
-  types/tlocCircle.h 
+  types/tlocCircle.h
+  types/tlocFOV.h
+  types/tlocFOV.cpp
   types/tlocMatrix.cpp 
   types/tlocMatrix.h 
   types/tlocMatrix.inl 
@@ -75,6 +81,15 @@ set(TLOC_MATH_UTILITIES
   utilities/tloc_utilities.inl
   )
 
+set(TLOC_MATH_PROJECTION
+  projection/tloc_projection.h
+  projection/tloc_projection.inl
+  projection/tloc_projection.cpp
+  projection/tlocFrustum.h
+  projection/tlocFrustum.cpp
+  )
+
+
 #-------------------------------------------
 # Project setup
 
@@ -83,9 +98,15 @@ add_library(tlocMath STATIC
   ${TLOC_MATH_COMPONENT_SYSTEM}
   ${TLOC_MATH_TYPES}
   ${TLOC_MATH_UTILITIES}
+  ${TLOC_MATH_PROJECTION}
+  )
+
+add_dependencies(tlocMath
+  tlocCore
   )
 
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
 source_group(types            FILES ${TLOC_MATH_TYPES})
 source_group(utilities        FILES ${TLOC_MATH_UTILITIES})
+source_group(projection       FILES ${TLOC_MATH_PROJECTION})

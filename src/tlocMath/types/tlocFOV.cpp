@@ -3,7 +3,7 @@
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocMath.inl>
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
   template <typename T_AngleOrientation>
   FOV::FOV(angle_type a_angle, ar_type a_ratio, T_AngleOrientation)

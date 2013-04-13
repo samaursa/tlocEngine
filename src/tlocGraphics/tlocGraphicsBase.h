@@ -18,7 +18,6 @@ namespace tloc {
     namespace gl               {};
     namespace renderer         {};
     namespace types            {};
-    namespace view_proj        {};
     namespace win              {};
   };
 
@@ -32,7 +31,6 @@ namespace tloc {
   namespace gfx_gl       = graphics::gl;
   namespace gfx_rend     = graphics::renderer;
   namespace gfx_t        = graphics::types;
-  namespace gfx_vp       = graphics::view_proj;
   namespace gfx_win      = graphics::win;
 
 };

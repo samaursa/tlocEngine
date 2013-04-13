@@ -2,7 +2,7 @@
 
 #include <tlocMath/tlocMath.h>
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
   AspectRatio::AspectRatio(width a_width, height a_height)
     : m_ratio( a_width.m_value / a_height.m_value)

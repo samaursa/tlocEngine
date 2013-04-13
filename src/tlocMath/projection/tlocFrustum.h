@@ -1,7 +1,7 @@
-#ifndef _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
-#define _TLOC_GRAPHICS_VIEW_PROJECTION_FRUSTUM_H
+#ifndef _TLOC_MATH_VIEW_PROJECTION_FRUSTUM_H
+#define _TLOC_MATH_VIEW_PROJECTION_FRUSTUM_H
 
-#include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -9,10 +9,10 @@
 #include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/types/tlocMatrix4.h>
 
-#include <tlocGraphics/types/tlocAspectRatio.h>
-#include <tlocGraphics/types/tlocFOV.h>
+#include <tlocMath/types/tlocAspectRatio.h>
+#include <tlocMath/types/tlocFOV.h>
 
-namespace tloc { namespace graphics { namespace view_proj {
+namespace tloc { namespace math { namespace proj {
 
   namespace p_frustum
   {

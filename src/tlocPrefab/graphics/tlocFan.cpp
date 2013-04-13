@@ -12,11 +12,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Circle_T;
 
-  template <typename T_Real>
   core_cs::Entity*
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
-              math_t::Circle_T<T_Real> a_circle,
+              math_t::Circlef32 a_circle,
               tl_size a_numSides)
   {
     using namespace core_cs;
@@ -61,11 +60,5 @@ namespace tloc { namespace prefab { namespace graphics {
 
     return ent;
   }
-
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit Instantiations
-
-   template Entity* CreateFan<f32>(EntityManager&, ComponentPoolManager&,
-                                   math_t::Circlef32, tl_size);
 
 };};};

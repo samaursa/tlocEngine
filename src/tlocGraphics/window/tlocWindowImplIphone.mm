@@ -136,14 +136,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxWidth() const
   {
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    return width;
+    return static_cast<size_type>(width);
   }
 
   WINDOW_IMPL_IPHONE_TYPE::size_type
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxHeight() const
   {
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
-    return height;
+    return static_cast<size_type>(height);
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)
@@ -217,12 +217,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     [GetOpenGLView(m_view) setHidden:!a_visible];
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char* a_title)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
   {
-    OpenGLView* view = GetOpenGLView(m_view);
-
-    NSString *title = [[NSString alloc] initWithUTF8String:a_title];
-    [view setTitle:title];
+    // iOS platform has no title
   }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const

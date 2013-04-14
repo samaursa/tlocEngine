@@ -31,6 +31,8 @@ namespace TestingRange
 
   TEST_CASE("core/range/ctors", "")
   {
+    TestCtors<range_s8>();
+    TestCtors<range_u8>();
     TestCtors<Range>();
     TestCtors<Rangef>();
   }
@@ -75,6 +77,8 @@ namespace TestingRange
 
   TEST_CASE("core/range/accessors", "")
   {
+    TestAccessors<range_s8>();
+    TestAccessors<range_u8>();
     TestAccessors<Range>();
     TestAccessors<Rangef>();
   }
@@ -96,6 +100,8 @@ namespace TestingRange
 
   TEST_CASE("core/range/size", "")
   {
+    TestSize<range_s8>();
+    TestSize<range_u8>();
     TestSize<Range>();
     TestSize<Rangef>();
   }
@@ -106,14 +112,16 @@ namespace TestingRange
     typedef T_RangeType range_type;
 
     CHECK(range_type().empty());
-    range_type r(150, 200);
+    range_type r(77, 127);
     CHECK_FALSE(r.empty());
-    r = range_type(150, 150);
+    r = range_type(127, 127);
     CHECK(r.empty());
   }
 
   TEST_CASE("core/range/empty_full", "")
   {
+    TestEmptyFull<range_s8>();
+    TestEmptyFull<range_u8>();
     TestEmptyFull<Range>();
     TestEmptyFull<Rangef>();
   }
@@ -220,6 +228,8 @@ namespace TestingRange
 
   TEST_CASE("core/range/iterators", "")
   {
+    TestIterators<range_s8>();
+    TestIterators<range_u8>();
     TestIterators<Range>();
     TestIterators<Rangef>();
   }

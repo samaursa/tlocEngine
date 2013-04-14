@@ -130,7 +130,7 @@ namespace tloc {
       template <typename T>
       bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat)
       {
-        T toCompare = Abs(a_num1 - a_num2);
+        T toCompare = Abs<T>(a_num1 - a_num2);
         return (toCompare <= a_epsilon);
       }
 

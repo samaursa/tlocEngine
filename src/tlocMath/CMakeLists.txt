@@ -76,6 +76,8 @@ set(TLOC_MATH_TYPES
 set(TLOC_MATH_UTILITIES 
   utilities/tlocPythagoras.cpp 
   utilities/tlocPythagoras.h 
+  utilities/tlocScale.h
+  utilities/tlocScale.cpp
   utilities/tloc_utilities.cpp 
   utilities/tloc_utilities.h 
   utilities/tloc_utilities.inl

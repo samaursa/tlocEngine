@@ -16,8 +16,6 @@ namespace tloc { namespace core {
   class Range_T
   {
     TLOC_STATIC_ASSERT_IS_ARITH(T_IntegerType);
-    TLOC_STATIC_ASSERT_NOT_SUPPORTED(T_IntegerType, s8);
-    TLOC_STATIC_ASSERT_NOT_SUPPORTED(T_IntegerType, u8);
 
   public:
     typedef Range_T<T_IntegerType>  this_type;
@@ -166,6 +164,8 @@ namespace tloc { namespace core {
   typedef Range_T<tl_int>         Range;
   typedef Range_T<tl_float>       Rangef;
 
+  typedef Range_T<s8>             range_s8;
+  typedef Range_T<u8>             range_u8;
   typedef Range_T<s32>            range_s32;
   typedef Range_T<s64>            range_s64;
   typedef Range_T<u32>            range_u32;

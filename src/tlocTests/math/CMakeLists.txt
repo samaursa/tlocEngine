@@ -13,6 +13,7 @@ set(TLOC_TESTS_MATH
   tlocPythagorasTest.cpp
   tlocRayTest.cpp
   tlocRectangleTest.cpp
+  tlocScaleTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   tlocTransformTest.cpp

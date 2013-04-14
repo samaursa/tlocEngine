@@ -330,7 +330,7 @@ namespace tloc { namespace core {
   {
     m_elementCount = (a_end - a_begin) / a_stepSize;
 
-    value_type absDiff = math::Abs(a_end - a_begin);
+    value_type absDiff = math::Abs<value_type>(a_end - a_begin);
     value_type remainder = math::Remainder(absDiff, m_stepSize);
 
     if (math::Approx(remainder, (value_type)0) == false)

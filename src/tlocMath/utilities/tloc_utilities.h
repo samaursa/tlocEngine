@@ -4,6 +4,6 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocMath/utilities/tlocPythagoras.h>
-#include <tlocMath/utilities/tlocNormalizer.h>
+#include <tlocMath/utilities/tlocScale.h>
 
 #endif

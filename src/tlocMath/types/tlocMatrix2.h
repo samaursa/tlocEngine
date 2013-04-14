@@ -13,6 +13,8 @@ namespace tloc { namespace math { namespace types {
   template <typename T>
   class Matrix2 : public Matrix<T, 2>
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)

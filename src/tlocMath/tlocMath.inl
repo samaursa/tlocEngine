@@ -179,7 +179,7 @@ namespace tloc {
     Approx(T aValue1, T aValue2, T eps /* = T(1e-6) */)
   {
     T toCompare = Abs(aValue1 - aValue2);
-    return (toCompare < eps);
+    return (toCompare <= eps);
   }
 
   template <typename T>

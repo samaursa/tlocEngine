@@ -4,6 +4,7 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
+#include <limits>
 
 namespace tloc {
 
@@ -92,6 +93,8 @@ namespace tloc {
     static const T      m_sinTable[64];
   };
 
+
+
   //------------------------------------------------------------------------
   // Typedefs
   typedef Math<s32>   Mathi;
@@ -101,6 +104,88 @@ namespace tloc {
   typedef Math<f64>   Mathf64;
 
   typedef Math<tl_float>   Mathf;
+
+  namespace math {
+
+    namespace priv
+    {
+      typedef type_true   IsFloat;
+      typedef type_false  IsNotFloat;
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsFloat)
+      { return fmod(a_num1, a_num2); }
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsNotFloat)
+      { return a_num1 % a_num2; }
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat)
+      {
+        T toCompare = fabs(a_num1 - a_num2);
+        return (toCompare <= a_epsilon);
+      }
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat)
+      {
+        T toCompare = Abs(a_num1 - a_num2);
+        return (toCompare <= a_epsilon);
+      }
+
+      typedef type_true   IsUnsigned;
+      typedef type_false  IsSigned;
+
+      template <typename T>
+      T DoAbs(T a_value, IsSigned)
+      {
+        if (a_value < 0)
+        { return -a_value; }
+
+        return a_value;
+      }
+
+      template <typename T>
+      T DoAbs(T a_value, IsUnsigned)
+      { return a_value; }
+    };
+
+    template <typename T>
+    T Abs(T a_value)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isUnsignedInt> s_or_u;
+
+      return priv::DoAbs(a_value, s_or_u());
+    }
+
+    template <typename T>
+    T Remainder(T a_num1, T a_num2)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+
+      return priv::DoRemainder(a_num1, a_num2, float_or_not());
+    }
+
+    template <typename T>
+    T Epsilon()
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      return std::numeric_limits<T>::epsilon();
+    }
+
+    template <typename T>
+    bool Approx(T a_num1, T a_num2)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+
+      return priv::DoApprox(a_num1, a_num2, Epsilon<T>(), float_or_not());
+    }
+
+  };
 
 };
 

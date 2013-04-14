@@ -15,6 +15,10 @@ namespace tloc { namespace core {
   template <typename T_IntegerType>
   class Range_T
   {
+    TLOC_STATIC_ASSERT_IS_ARITH(T_IntegerType);
+    TLOC_STATIC_ASSERT_NOT_SUPPORTED(T_IntegerType, s8);
+    TLOC_STATIC_ASSERT_NOT_SUPPORTED(T_IntegerType, u8);
+
   public:
     typedef Range_T<T_IntegerType>  this_type;
     typedef T_IntegerType           value_type;
@@ -46,7 +50,7 @@ namespace tloc { namespace core {
 
     public:
       iterator();
-      iterator(const range_type& a_range, size_type a_index = 0);
+      iterator(const range_type& a_range, size_type a_index = (value_type)0);
       iterator(const this_type& a_other);
 
       this_type& operator= (const this_type& a_other);

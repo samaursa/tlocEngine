@@ -7,6 +7,8 @@
 
 #include <tlocCore/utilities/tlocType.h>
 
+#include <tlocMath/tlocMath.h>
+
 namespace tloc { namespace core {
 
 #define RANGE_T_TEMP    typename T_IntegerType
@@ -327,7 +329,11 @@ namespace tloc { namespace core {
     , m_stepSize(a_stepSize)
   {
     m_elementCount = (a_end - a_begin) / a_stepSize;
-    if ( (a_end - a_begin) % a_stepSize != 0)
+
+    value_type absDiff = math::Abs(a_end - a_begin);
+    value_type remainder = math::Remainder(absDiff, m_stepSize);
+
+    if (math::Approx(remainder, (value_type)0) == false)
     { m_elementCount++; }
 
     TLOC_ASSERT_LOW_LEVEL(a_end >= a_begin, "Invalid range!");

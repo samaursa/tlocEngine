@@ -114,7 +114,26 @@ namespace tloc {
 
       template <typename T>
       T DoRemainder(T a_num1, T a_num2, IsFloat)
-      { return fmod(a_num1, a_num2); }
+      {
+        // At least on MSVC fmod returns the wrong answer (e.g. 1.0 % 0.1 is
+        // equal to 0.0f, where as fmod returns 0.0999999)
+        //return fmod(a_num1, a_num2);
+
+        if (a_num2 > a_num1)
+        { return a_num1; }
+
+        tl_size multi = 1;
+        T num2Res = a_num2;
+        while (num2Res < a_num1 ||
+               Approx(num2Res, a_num1))
+        {
+          ++multi;
+          num2Res = a_num2 * multi;
+        }
+
+        num2Res = a_num2 * (multi - 1);
+        return a_num1 - num2Res;
+      }
 
       template <typename T>
       T DoRemainder(T a_num1, T a_num2, IsNotFloat)
@@ -161,12 +180,12 @@ namespace tloc {
     }
 
     template <typename T>
-    T Remainder(T a_num1, T a_num2)
+    T Remainder(T a_numerator, T a_denominator)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
       typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
 
-      return priv::DoRemainder(a_num1, a_num2, float_or_not());
+      return priv::DoRemainder(a_numerator, a_denominator, float_or_not());
     }
 
     template <typename T>

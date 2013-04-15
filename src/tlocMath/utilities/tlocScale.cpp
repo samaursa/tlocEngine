@@ -1,6 +1,7 @@
 #include "tlocScale.h"
 
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocMath/tlocMath.h>
 
 namespace tloc { namespace math { namespace utils {
 
@@ -23,16 +24,28 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleUp(small_value_type a_valueToScale) const
   {
-    range_small::size_type r1Size, r2Size;
-    r1Size = m_smallRange.size();
-    r2Size = m_largeRange.size();
+    TLOC_ASSERT( a_valueToScale >= m_smallRange.front() &&
+                 a_valueToScale <= m_smallRange.back(), "Value out of range!");
+
+    typedef range_small::size_type      range_size_type;
+
+    range_size_type r1Size, r2Size;
+    r1Size = (range_size_type)(m_smallRange.GetElementCount() *
+                               m_smallRange.GetStepSize());
+    r2Size = (range_size_type)(m_largeRange.GetElementCount() *
+                               m_largeRange.GetStepSize());
+
+    TLOC_ASSERT(Approx<range_size_type>(r1Size, 0) != true,
+      "Divide by zero!");
+
+    a_valueToScale -= m_smallRange.front();
 
     common_type valPerc = (common_type)a_valueToScale / (common_type)r1Size;
     common_type valConverted = (common_type)r2Size * valPerc;
     large_value_type finalVal =
       core_utils::CastNumber<large_value_type, common_type>(valConverted);
 
-    finalVal += *m_largeRange.begin();
+    finalVal += m_largeRange.front();
 
     return finalVal;
   }
@@ -42,18 +55,28 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleDown(large_value_type a_valueToScale) const
   {
-    range_small::size_type r1Size, r2Size;
-    r1Size = m_smallRange.size();
-    r2Size = m_largeRange.size();
+    TLOC_ASSERT( a_valueToScale >= m_largeRange.front() &&
+                 a_valueToScale <= m_largeRange.back(), "Value out of range!");
 
-    a_valueToScale -= *m_largeRange.begin();
+    typedef range_small::size_type      range_size_type;
+
+    range_size_type r1Size, r2Size;
+    r1Size = (range_size_type)(m_smallRange.GetElementCount() *
+                               m_smallRange.GetStepSize());
+    r2Size = (range_size_type)(m_largeRange.GetElementCount() *
+                               m_largeRange.GetStepSize());
+
+    TLOC_ASSERT(Approx<range_size_type>(r2Size, 0) != true,
+      "Divide by zero!");
+
+    a_valueToScale -= m_largeRange.front();
 
     common_type valPerc = (common_type)a_valueToScale / (common_type)r2Size;
     common_type valConverted = (common_type)r1Size * valPerc;
     small_value_type finalVal =
       core_utils::CastNumber<small_value_type, common_type>(valConverted);
 
-    finalVal += *m_smallRange.begin();
+    finalVal += m_smallRange.front();
 
     return finalVal;
   }

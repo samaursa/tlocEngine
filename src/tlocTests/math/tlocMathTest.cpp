@@ -98,6 +98,13 @@ namespace TestingTlocMath
     }
 
     {
+      tl_float num1 = 1.0f;
+      tl_float num2 = 0.1f;
+      tl_float rem = math::Remainder(num1, num2);
+      CHECK(rem == Approx(0.0f));
+    }
+
+    {
       tl_int num1 = 6;
       tl_int num2 = 2;
       tl_int rem = math::Remainder(num1, num2);

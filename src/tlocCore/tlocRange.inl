@@ -328,6 +328,9 @@ namespace tloc { namespace core {
     : m_begin(a_begin)
     , m_stepSize(a_stepSize)
   {
+    TLOC_ASSERT_LOW_LEVEL(a_end >= a_begin, "Invalid range!");
+    TLOC_ASSERT_LOW_LEVEL(m_stepSize > 0, "Invalid step size!");
+
     m_elementCount = (a_end - a_begin) / a_stepSize;
 
     value_type absDiff = math::Abs<value_type>(a_end - a_begin);
@@ -335,9 +338,6 @@ namespace tloc { namespace core {
 
     if (math::Approx(remainder, (value_type)0) == false)
     { m_elementCount++; }
-
-    TLOC_ASSERT_LOW_LEVEL(a_end >= a_begin, "Invalid range!");
-    TLOC_ASSERT_LOW_LEVEL(m_stepSize > 0, "Invalid step size!");
   }
 
   template <RANGE_T_TEMP>

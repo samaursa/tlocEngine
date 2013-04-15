@@ -96,6 +96,8 @@ namespace TestingRange
     CHECK(r.size() == 1);
     r = range_type(0, 10, range_type::step_size(11));
     CHECK(r.size() == 1);
+    r = range_type(5, 15);
+    CHECK(r.size() == 10);
   }
 
   TEST_CASE("core/range/size", "")
@@ -232,5 +234,17 @@ namespace TestingRange
     TestIterators<range_u8>();
     TestIterators<Range>();
     TestIterators<Rangef>();
+  }
+
+  TEST_CASE("core/range/GetRange()", "")
+  {
+    CHECK(GetRange0to1<f32>().front() == Approx(0.0f));
+    CHECK(GetRange0to1<f32>().back() == Approx(1.0f));
+
+    CHECK(GetRange0to128<s32>().front() == 0);
+    CHECK(GetRange0to128<s32>().back() == 127);
+
+    CHECK(GetRange0to256<s32>().front() == 0);
+    CHECK(GetRange0to256<s32>().back() == 255);
   }
 }

@@ -3,6 +3,9 @@
 
 namespace tloc { namespace core {
 
+  //------------------------------------------------------------------------
+  // explicit instantiations
+
   template class Range_T<s8>;
   template class Range_T<u8>;
   template class Range_T<s16>;

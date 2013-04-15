@@ -5,12 +5,15 @@
 
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
+
+#include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocMath/types/tlocAspectRatio.h>
 #include <tlocMath/types/tlocFOV.h>
+#include <tlocMath/types/tlocRay.h>
 
 namespace tloc { namespace math { namespace proj {
 
@@ -44,11 +47,12 @@ namespace tloc { namespace math { namespace proj {
     typedef tl_float                                    real_type;
     typedef core::data_structs::Tuple
       <real_type, Planes::k_count>                      cont_type;
-    typedef math::types::Rectangle_T<real_type>           rect_type;
+    typedef math::types::Rectangle_T<real_type>         rect_type;
     typedef tl_size                                     size_type;
     typedef math::types::Radian                         angle_type;
     typedef types::FOV                                  fov_type;
     typedef types::AspectRatio                          ar_type;
+    typedef types::Ray_T<real_type, 3>                  ray_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
 
   public:
@@ -59,6 +63,7 @@ namespace tloc { namespace math { namespace proj {
 
       Params&   SetNear(real_type a_near);
       Params&   SetFar(real_type a_far);
+
 
       TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
       TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
@@ -79,6 +84,8 @@ namespace tloc { namespace math { namespace proj {
     ~Frustum();
 
     void BuildFrustum();
+    ray_type GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
                                           GetProjectionMatrix, m_projMatrix);

@@ -94,6 +94,46 @@ namespace tloc { namespace math { namespace proj {
     DoBuildFrustumFromPlanes();
   }
 
+  Frustum::ray_type
+    Frustum::
+    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+  {
+    TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
+                a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
+                a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
+                "Vector not in Normalized Device Co-ordinates");
+
+    real_type pFar  = m_params.GetFar();
+    real_type pNear = m_params.GetNear();
+
+    using math_t::Vector3;
+    /* For details, see Saad's Master's thesis Appendix H */
+
+    // We need to go from NDC -> Clip -> Eye
+    // Note that w_clip (perspective divide) is -z_eye. How? When we multiply
+    // the xyz_eye vector with M_proj, we get xyzw_clip, where w = -z_eye due
+    // to the M_proj lower low being 0, 0, -1 (the z_eye), 0
+
+    // We need z_eye
+    const real_type z_eye
+      = - (2 * pFar * pNear) /
+          ( (a_xyzNDC[2] * (pNear * pFar) + (pFar + pNear)) );
+
+    // x_eye = -z_eye/P_00(x_NDC + P_20)
+    real_type x_eye = (-z_eye / m_projMatrix.Get(0, 0)) *
+                      (a_xyzNDC[0] + m_projMatrix.Get(2, 0));
+
+    // y_eye = -z_eye/P_11(x_NDC + P_21)
+    real_type y_eye = (-z_eye / m_projMatrix.Get(1, 1)) *
+                      (a_xyzNDC[1] + m_projMatrix.Get(2, 1));
+
+    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
+    Vector3<real_type> rayDir(0, 0, -1);
+
+    return ray_type(ray_type::origin(rayOrigin),
+                    ray_type::direction(rayDir));
+  }
+
   //------------------------------------------------------------------------
   // Helper functions
 

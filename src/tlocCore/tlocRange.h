@@ -170,6 +170,8 @@ namespace tloc { namespace core {
   typedef Range_T<s64>            range_s64;
   typedef Range_T<u32>            range_u32;
   typedef Range_T<u64>            range_u64;
+  typedef Range_T<f32>            range_f32;
+  typedef Range_T<f64>            range_f64;
 
 };};
 

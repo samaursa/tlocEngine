@@ -1,102 +1,69 @@
 #include "tlocScale.h"
 
+#include <tlocCore/utilities/tlocType.h>
+
 namespace tloc { namespace math { namespace utils {
 
-  namespace priv {
-
-    // If the user switched the types in the ctor (i.e. T_ValueType1 in Scale<>
-    // matches T_Type2 in ctor) then we need to select the appropriate function.
-    struct TypesSwitched {};
-    struct TypesNotSwitched {};
-
-    template <typename T_Type1, typename T_Type2>
-    void DoInitialize(const core::Range_T<T_Type1> a_range1,
-                      const core::Range_T<T_Type2> a_range2,
-                      core::Range_T<T_Type1>& a_rangeToSet1,
-                      core::Range_T<T_Type2>& a_rangeToSet2,
-                      TypesNotSwitched)
-    {
-      a_rangeToSet1 = a_range1;
-      a_rangeToSet2 = a_range2;
-    }
-
-    template <typename T_Type1, typename T_Type2>
-    void DoInitialize(const core::Range_T<T_Type1> a_range1,
-                      const core::Range_T<T_Type2> a_range2,
-                      core::Range_T<T_Type2>& a_rangeToSet1,
-                      core::Range_T<T_Type1>& a_rangeToSet2,
-                      TypesSwitched)
-    {
-      a_rangeToSet2 = a_range1;
-      a_rangeToSet1 = a_range2;
-    }
-
-    template <typename T_Type1, typename T_Type2>
-    void DoInitialize(const core::Range_T<T_Type1> a_range1,
-                      const core::Range_T<T_Type2> a_range2,
-                      core::Range_T<T_Type1>& a_rangeToSet1,
-                      core::Range_T<T_Type2>& a_rangeToSet2,
-                      TypesSwitched)
-    {
-      a_rangeToSet2 = a_range1;
-      a_rangeToSet1 = a_range2;
-    }
-
-  }
-
-#define SCALE_TEMPS   typename T_ValueType1, typename T_ValueType2
-#define SCALE_PARAMS  T_ValueType1, T_ValueType2
-#define SCALE_TYPE    template Scale<SCALE_PARAMS>
+#define SCALE_TEMPS   typename T_ValueFrom, typename T_ValueTo, typename T_CommonType
+#define SCALE_PARAMS  T_ValueFrom, T_ValueTo, T_CommonType
+#define SCALE_TYPE    typename Scale_T<SCALE_PARAMS>
 
   template <SCALE_TEMPS>
-  template <typename T_Type1, typename T_Type2>
-  void Scale<SCALE_PARAMS>::
-    DoInitialize(const core::Range_T<T_Type1> a_range1,
-                 const core::Range_T<T_Type2> a_range2)
+  Scale_T<SCALE_PARAMS>::
+    Scale_T(range_small a_smallRange, range_large a_largeRange)
+    : m_smallRange(a_smallRange)
+    , m_largeRange(a_largeRange)
   {
-    typedef Loki::Select<
-      Loki::IsSameType<T_Type1, value_type_1>::value,
-      priv::TypesNotSwitched, priv::TypesSwitched>::Result type_switched_or_not;
-
-    priv::DoInitialize<T_Type1, T_Type2>
-      (a_range1, a_range2, m_range1, m_range2, type_switched_or_not());
+    TLOC_ASSERT(m_smallRange.size() <= m_largeRange.size(),
+      "a_rangeFrom size must be smaller than a_rangeTo size");
   }
 
   template <SCALE_TEMPS>
-  bool Scale<SCALE_PARAMS>::
-    DoIsRange1Larger() const
+  SCALE_TYPE::large_value_type
+    Scale_T<SCALE_PARAMS>::
+    ScaleUp(small_value_type a_valueToScale) const
   {
-    return false;
+    range_small::size_type r1Size, r2Size;
+    r1Size = m_smallRange.size();
+    r2Size = m_largeRange.size();
+
+    common_type valPerc = (common_type)a_valueToScale / (common_type)r1Size;
+    common_type valConverted = (common_type)r2Size * valPerc;
+    large_value_type finalVal =
+      core_utils::CastNumber<large_value_type, common_type>(valConverted);
+
+    finalVal += *m_largeRange.begin();
+
+    return finalVal;
   }
 
   template <SCALE_TEMPS>
-  template <typename T>
-  T Scale<SCALE_PARAMS>::
-    ScaleUp(T a_valueToScale)
+  SCALE_TYPE::small_value_type
+    Scale_T<SCALE_PARAMS>::
+    ScaleDown(large_value_type a_valueToScale) const
   {
+    range_small::size_type r1Size, r2Size;
+    r1Size = m_smallRange.size();
+    r2Size = m_largeRange.size();
 
-  }
+    a_valueToScale -= *m_largeRange.begin();
 
-  template <SCALE_TEMPS>
-  template <typename T>
-  T Scale<SCALE_PARAMS>::
-    ScaleDown(T a_valueToScale)
-  {
+    common_type valPerc = (common_type)a_valueToScale / (common_type)r2Size;
+    common_type valConverted = (common_type)r1Size * valPerc;
+    small_value_type finalVal =
+      core_utils::CastNumber<small_value_type, common_type>(valConverted);
+
+    finalVal += *m_smallRange.begin();
+
+    return finalVal;
   }
 
   //------------------------------------------------------------------------
   // Explicit instantiation
 
 #define TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type1_, _type2_)\
-  template class Scale<_type1_, _type2_>;\
-  \
-  template void \
-  Scale<_type1_, _type2_>::DoInitialize(core::Range_T<_type1_>,\
-                                        core::Range_T<_type2_>);\
-  \
-  template void \
-  Scale<_type1_, _type2_>::DoInitialize(core::Range_T<_type2_>,\
-                                        core::Range_T<_type1_>)
+  template class Scale_T<_type1_, _type2_, f64>;\
+  template class Scale_T<_type1_, _type2_, f32>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, s8);\
@@ -111,5 +78,14 @@ namespace tloc { namespace math { namespace utils {
   TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, f64)
 
   TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s8);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s16);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s32);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s64);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(u8);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(u16);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(u32);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(u64);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(f64);
 
 };};};

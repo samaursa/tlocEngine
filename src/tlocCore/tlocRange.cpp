@@ -6,6 +6,7 @@ namespace tloc { namespace core {
   template class Range_T<s8>;
   template class Range_T<u8>;
   template class Range_T<s16>;
+  template class Range_T<u16>;
   template class Range_T<s32>;
   template class Range_T<s32>;
   template class Range_T<s64>;

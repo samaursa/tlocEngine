@@ -8,76 +8,148 @@
 
 namespace tloc { namespace math { namespace utils {
 
-  template <typename T_ValueType1, typename T_ValueType2>
-  class Scale
+  template <typename T_ValueFrom, typename T_ValueTo,
+            typename T_CommonType = f64>
+  class Scale_T
   {
-    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueType1);
-    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueType2);
+    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueFrom);
+    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueTo);
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_CommonType);
 
   public:
-    typedef T_ValueType1                                value_type_1;
-    typedef T_ValueType2                                value_type_2;
-    typedef Scale<value_type_1, value_type_2>           this_type;
+    typedef T_ValueFrom                                small_value_type;
+    typedef T_ValueTo                                  large_value_type;
+    typedef Scale_T<small_value_type, large_value_type>  this_type;
 
-    typedef core::Range_T<value_type_1>                 range_type_1;
-    typedef core::Range_T<value_type_2>                 range_type_2;
+    typedef core::Range_T<small_value_type>            range_small;
+    typedef core::Range_T<large_value_type>            range_large;
 
-    typedef tl_float                                    common_type;
+    typedef T_CommonType                               common_type;
 
   public:
-    template <typename T_Type1, typename T_Type2>
-    Scale(core::Range_T<T_Type1> a_range1,
-          core::Range_T<T_Type2> a_range2);
+    Scale_T(range_small a_smallRange, range_large a_largeRange);
 
-    //template <typename T>
-    //T Scale(T a_valueToScale);
-
-    template <typename T>
-    T ScaleUp(T a_valueToScale);
-
-    template <typename T>
-    T ScaleDown(T a_valueToScale);
+    large_value_type ScaleUp(small_value_type a_valueToScale) const;
+    small_value_type ScaleDown(large_value_type a_valueToScale) const;
 
   private:
-    template <typename T_Type1, typename T_Type2>
-    void DoInitialize(core::Range_T<T_Type1> a_range1,
-                      core::Range_T<T_Type2> a_range2);
-
-    bool DoIsRange1Larger() const;
-
-  private:
-    range_type_1 m_range1;
-    range_type_2 m_range2;
+    range_small  m_smallRange;
+    range_large  m_largeRange;
 
   };
 
   //------------------------------------------------------------------------
-  // template definitions
+  // typedefs
 
-  template <typename T_ValueType1, typename T_ValueType2>
-  template <typename T_Type1, typename T_Type2>
-  Scale<T_ValueType1, T_ValueType2>::
-    Scale(core::Range_T<T_Type1> a_range1, core::Range_T<T_Type2> a_range2)
-  {
-    type_traits::AssertTypeIsSupported<T_Type1, value_type_1, value_type_2>();
-    type_traits::AssertTypeIsSupported<T_Type2, value_type_1, value_type_2>();
+  typedef Scale_T<s8, s8>     scale_s8_s8;
+  typedef Scale_T<s8, s16>    scale_s8_s16;
+  typedef Scale_T<s8, s32>    scale_s8_s32;
+  typedef Scale_T<s8, s64>    scale_s8_s64;
+  typedef Scale_T<s8, u8>     scale_s8_u8;
+  typedef Scale_T<s8, u16>    scale_s8_u16;
+  typedef Scale_T<s8, u32>    scale_s8_u32;
+  typedef Scale_T<s8, u64>    scale_s8_u64;
+  typedef Scale_T<s8, f32>    scale_s8_f32;
+  typedef Scale_T<s8, f64>    scale_s8_f64;
 
-    TLOC_STATIC_ASSERT( (Loki::Select<
-      Loki::IsSameType<T_Type1, value_type_1>::value,
-      Loki::IsSameType<T_Type2, value_type_2>,
-      Loki::IsSameType<T_Type1, value_type_2> >::value),
-      Range_types_not_supported_according_to_Scale_declaration);
+  typedef Scale_T<s16, s8>    scale_s16_s8;
+  typedef Scale_T<s16, s16>   scale_s16_s16;
+  typedef Scale_T<s16, s32>   scale_s16_s32;
+  typedef Scale_T<s16, s64>   scale_s16_s64;
+  typedef Scale_T<s16, u8>    scale_s16_u8;
+  typedef Scale_T<s16, u16>   scale_s16_u16;
+  typedef Scale_T<s16, u32>   scale_s16_u32;
+  typedef Scale_T<s16, u64>   scale_s16_u64;
+  typedef Scale_T<s16, f32>   scale_s16_f32;
+  typedef Scale_T<s16, f64>   scale_s16_f64;
 
-    TLOC_STATIC_ASSERT( (Loki::Select<
-      Loki::IsSameType<T_Type2, value_type_2>::value,
-      Loki::IsSameType<T_Type1, value_type_1>,
-      Loki::IsSameType<T_Type2, value_type_1> >::value),
-      Range_types_not_supported_according_to_Scale_declaration);
+  typedef Scale_T<s32, s8>    scale_s32_s8;
+  typedef Scale_T<s32, s16>   scale_s32_s16;
+  typedef Scale_T<s32, s32>   scale_s32_s32;
+  typedef Scale_T<s32, s64>   scale_s32_s64;
+  typedef Scale_T<s32, u8>    scale_s32_u8;
+  typedef Scale_T<s32, u16>   scale_s32_u16;
+  typedef Scale_T<s32, u32>   scale_s32_u32;
+  typedef Scale_T<s32, u64>   scale_s32_u64;
+  typedef Scale_T<s32, f32>   scale_s32_f32;
+  typedef Scale_T<s32, f64>   scale_s32_f64;
 
-    DoInitialize(a_range1, a_range2);
-  }
+  typedef Scale_T<s64, s8>    scale_s64_s8;
+  typedef Scale_T<s64, s16>   scale_s64_s16;
+  typedef Scale_T<s64, s32>   scale_s64_s32;
+  typedef Scale_T<s64, s64>   scale_s64_s64;
+  typedef Scale_T<s64, u8>    scale_s64_u8;
+  typedef Scale_T<s64, u16>   scale_s64_u16;
+  typedef Scale_T<s64, u32>   scale_s64_u32;
+  typedef Scale_T<s64, u64>   scale_s64_u64;
+  typedef Scale_T<s64, f32>   scale_s64_f32;
+  typedef Scale_T<s64, f64>   scale_s64_f64;
 
+  typedef Scale_T<u8, s8>     scale_u8_s8;
+  typedef Scale_T<u8, s16>    scale_u8_s16;
+  typedef Scale_T<u8, s32>    scale_u8_s32;
+  typedef Scale_T<u8, s64>    scale_u8_s64;
+  typedef Scale_T<u8, u8>     scale_u8_u8;
+  typedef Scale_T<u8, u16>    scale_u8_u16;
+  typedef Scale_T<u8, u32>    scale_u8_u32;
+  typedef Scale_T<u8, u64>    scale_u8_u64;
+  typedef Scale_T<u8, f32>    scale_u8_f32;
+  typedef Scale_T<u8, f64>    scale_u8_f64;
 
+  typedef Scale_T<u16, s8>    scale_u16_s8;
+  typedef Scale_T<u16, s16>   scale_u16_s16;
+  typedef Scale_T<u16, s32>   scale_u16_s32;
+  typedef Scale_T<u16, s64>   scale_u16_s64;
+  typedef Scale_T<u16, u8>    scale_u16_u8;
+  typedef Scale_T<u16, u16>   scale_u16_u16;
+  typedef Scale_T<u16, u32>   scale_u16_u32;
+  typedef Scale_T<u16, u64>   scale_u16_u64;
+  typedef Scale_T<u16, f32>   scale_u16_f32;
+  typedef Scale_T<u16, f64>   scale_u16_f64;
+
+  typedef Scale_T<u32, s8>    scale_u32_s8;
+  typedef Scale_T<u32, s16>   scale_u32_s16;
+  typedef Scale_T<u32, s32>   scale_u32_s32;
+  typedef Scale_T<u32, s64>   scale_u32_s64;
+  typedef Scale_T<u32, u8>    scale_u32_u8;
+  typedef Scale_T<u32, u16>   scale_u32_u16;
+  typedef Scale_T<u32, u32>   scale_u32_u32;
+  typedef Scale_T<u32, u64>   scale_u32_u64;
+  typedef Scale_T<u32, f32>   scale_u32_f32;
+  typedef Scale_T<u32, f64>   scale_u32_f64;
+
+  typedef Scale_T<u64, s8>    scale_u64_s8;
+  typedef Scale_T<u64, s16>   scale_u64_s16;
+  typedef Scale_T<u64, s32>   scale_u64_s32;
+  typedef Scale_T<u64, s64>   scale_u64_s64;
+  typedef Scale_T<u64, u8>    scale_u64_u8;
+  typedef Scale_T<u64, u16>   scale_u64_u16;
+  typedef Scale_T<u64, u32>   scale_u64_u32;
+  typedef Scale_T<u64, u64>   scale_u64_u64;
+  typedef Scale_T<u64, f32>   scale_u64_f32;
+  typedef Scale_T<u64, f64>   scale_u64_f64;
+
+  typedef Scale_T<f32, s8>    scale_f32_s8;
+  typedef Scale_T<f32, s16>   scale_f32_s16;
+  typedef Scale_T<f32, s32>   scale_f32_s32;
+  typedef Scale_T<f32, s64>   scale_f32_s64;
+  typedef Scale_T<f32, u8>    scale_f32_u8;
+  typedef Scale_T<f32, u16>   scale_f32_u16;
+  typedef Scale_T<f32, u32>   scale_f32_u32;
+  typedef Scale_T<f32, u64>   scale_f32_u64;
+  typedef Scale_T<f32, f32>   scale_f32_f32;
+  typedef Scale_T<f32, f64>   scale_f32_f64;
+
+  typedef Scale_T<f64, s8>    scale_f64_s8;
+  typedef Scale_T<f64, s16>   scale_f64_s16;
+  typedef Scale_T<f64, s32>   scale_f64_s32;
+  typedef Scale_T<f64, s64>   scale_f64_s64;
+  typedef Scale_T<f64, u8>    scale_f64_u8;
+  typedef Scale_T<f64, u16>   scale_f64_u16;
+  typedef Scale_T<f64, u32>   scale_f64_u32;
+  typedef Scale_T<f64, u64>   scale_f64_u64;
+  typedef Scale_T<f64, f32>   scale_f64_f32;
+  typedef Scale_T<f64, f64>   scale_f64_f64;
 };};};
 
 #endif

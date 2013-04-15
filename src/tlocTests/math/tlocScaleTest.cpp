@@ -14,14 +14,14 @@ namespace TestingScale
     typedef math_utils::Scale_T<T, T_RealType> scale_other_to_float;
 
     {
-      scale_float_to_other s(core::GetRange0to1<T_RealType>(),
+      scale_float_to_other s(core::Range0to1<T_RealType>().Get(),
                              core::Range_T<T>(0, 100));
       CHECK(s.ScaleUp(0.5f) == 50);
       CHECK(s.ScaleDown(50) == Approx(0.5f));
     }
 
     {
-      scale_float_to_other s(core::GetRange0to1<T_RealType>(),
+      scale_float_to_other s(core::Range0to1<T_RealType>().Get(),
                              core::Range_T<T>(50, 100));
       CHECK(s.ScaleUp(0.5f) == 75);
       CHECK(s.ScaleDown(50) == Approx(0.0f));

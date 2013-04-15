@@ -238,13 +238,36 @@ namespace TestingRange
 
   TEST_CASE("core/range/GetRange()", "")
   {
-    CHECK(GetRange0to1<f32>().front() == Approx(0.0f));
-    CHECK(GetRange0to1<f32>().back() == Approx(1.0f));
+    CHECK(Range0to1<f32>().Get().front() == Approx(0.0f));
+    CHECK(Range0to1<f32>().Get().back() == Approx(0.9f));
 
-    CHECK(GetRange0to128<s32>().front() == 0);
-    CHECK(GetRange0to128<s32>().back() == 127);
+    CHECK( (Range0to1<f32, p_range::Inclusive>().Get().front()) == Approx(0.0f));
+    CHECK( (Range0to1<f32, p_range::Inclusive>().Get().back()) == Approx(1.0f));
 
-    CHECK(GetRange0to256<s32>().front() == 0);
-    CHECK(GetRange0to256<s32>().back() == 255);
+    CHECK(RangeNeg1to1<f32>().Get().front() == Approx(-1.0f));
+    CHECK(RangeNeg1to1<f32>().Get().back() == Approx(0.9f));
+
+    CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().front()) == Approx(-1.0f));
+    CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().back()) == Approx(1.0f));
+
+    CHECK(Range0to128<s32>().Get().front() == 0);
+    CHECK(Range0to128<s32>().Get().back() == 127);
+
+    CHECK( (Range0to128<s32, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to128<s32, p_range::Inclusive>().Get().back()) == 128);
+
+    CHECK(Range0to256<s32>().Get().front() == 0);
+    CHECK(Range0to256<s32>().Get().back() == 255);
+
+    CHECK( (Range0to256<s32, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to256<s32, p_range::Inclusive>().Get().back()) == 256);
+  }
+
+  TEST_CASE("core/range/NegativeRange", "")
+  {
+    range_s8 r(-5, 5);
+    CHECK(r.size() == 10);
+    CHECK(r.front() == -5);
+    CHECK(r.back() == 4);
   }
 }

@@ -82,7 +82,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // Possible reasons:
     // - Too high a resolution
     // - Incorrect window properties
-    TLOC_ASSERT(error != TLOC_NULL, "Error creating Window");
+    TLOC_ASSERT(error == 0, "Error creating Window");
 
     ShowWindow(m_handle, SW_HIDE);
 

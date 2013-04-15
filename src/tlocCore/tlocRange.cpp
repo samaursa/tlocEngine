@@ -3,19 +3,21 @@
 
 namespace tloc { namespace core {
 
+#define TLOC_EXPLICITLY_INSTANTIATE_RANGE(_type_)\
+  template class Range_T<_type_>
+
   //------------------------------------------------------------------------
   // explicit instantiations
 
-  template class Range_T<s8>;
-  template class Range_T<u8>;
-  template class Range_T<s16>;
-  template class Range_T<u16>;
-  template class Range_T<s32>;
-  template class Range_T<s32>;
-  template class Range_T<s64>;
-  template class Range_T<u32>;
-  template class Range_T<u64>;
-  template class Range_T<f32>;
-  template class Range_T<f64>;
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(s8);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(u8);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(s16);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(u16);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(s32);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(u32);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(s64);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(u64);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_RANGE(f64);
 
 };};

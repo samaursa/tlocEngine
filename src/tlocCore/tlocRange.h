@@ -182,24 +182,57 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // global definitions
 
-  template <typename T>
-  Range_T<T> GetRange0to1()
+  namespace p_range
   {
-    TLOC_STATIC_ASSERT_IS_FLOAT(T);
-    return Range_T<T>(0.0f, 1.0f, Range_T<T>::step_size(0.1f));
+    struct Inclusive { enum { k_value = 1 }; };
+    struct Exclusive { enum { k_value = 0 }; };
   }
 
-  template <typename T>
-  Range_T<T> GetRange0to128()
+  template <typename T, typename T_Inclusive = p_range::Exclusive>
+  struct Range0to1
   {
-    return Range_T<T>(0, 128);
-  }
+    Range_T<T>
+      Get()
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+      T endNum = T_Inclusive::k_value ? 1.05f : 1.0f;
+      return Range_T<T>(0.0f, endNum, Range_T<T>::step_size(0.1f));
+    }
+  };
 
-  template <typename T>
-  Range_T<T> GetRange0to256()
+  template <typename T, typename T_Inclusive = p_range::Exclusive>
+  struct RangeNeg1to1
   {
-    return Range_T<T>(0, 256);
-  }
+    Range_T<T>
+      Get()
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+      T endNum = T_Inclusive::k_value ? 1.05f : 1.0f;
+      return Range_T<T>(-1.0f, endNum, Range_T<T>::step_size(0.1f));
+    }
+  };
+
+  template <typename T, typename T_Inclusive = p_range::Exclusive>
+  struct Range0to128
+  {
+    Range_T<T>
+      Get()
+    {
+      T endNum = T_Inclusive::k_value ? 129 : 128;
+      return Range_T<T>(0, endNum);
+    }
+  };
+
+  template <typename T, typename T_Inclusive = p_range::Exclusive>
+  struct Range0to256
+  {
+    Range_T<T>
+      Get()
+    {
+      T endNum = T_Inclusive::k_value ? 257 : 256;
+      return Range_T<T>(0, endNum);
+    }
+  };
 
 };};
 

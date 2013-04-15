@@ -115,6 +115,20 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
+  WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::GetMaxWidth() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetMaxWidth();
+  }
+
+  template <WINDOW_TEMP>
+  WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::GetMaxHeight() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetMaxHeight();
+  }
+
+  template <WINDOW_TEMP>
   WINDOW_TYPE::aspect_ratio
     Window_T<WINDOW_PARAMS>::
     GetAspectRatio() const

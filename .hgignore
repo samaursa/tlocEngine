@@ -20,3 +20,12 @@ xcuserdata/**
 *.a
 *.app/**
 *.app.dSYM/**
+*.sln
+*.vcproj
+CMakeFiles/**
+build/**
+buildx64/**
+*.res
+*.swp
+tlocAssetsPath.h
+tlocVersionFilePath.h

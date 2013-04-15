@@ -4,7 +4,7 @@
 #include <tlocMath/tloc_math.h>
 #include <tlocMath/tloc_math.inl>
 
-namespace tloc { namespace graphics { namespace view_proj {
+namespace tloc { namespace math { namespace proj {
 
   //------------------------------------------------------------------------
   // Params

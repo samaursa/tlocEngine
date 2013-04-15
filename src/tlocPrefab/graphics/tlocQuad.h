@@ -11,11 +11,10 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  template <typename T_Real>
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
                core_cs::ComponentPoolManager& a_poolMgr,
-               math_t::Rectangle<T_Real> a_rect);
+               const math_t::Rectf32& a_rect);
 
 
 };};};

@@ -6,13 +6,13 @@
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -49,7 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(components::projection),
+    TLOC_ASSERT( m_sharedCam->HasComponent(math_cs::components::projection),
       "The passed entity does not have the projection component!");
   }
 
@@ -98,8 +98,8 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       if (m_sharedCam->HasComponent(projection))
       {
-        ComponentMapper<graphics::component_system::Projection> projMatList =
-          m_sharedCam->GetComponents(graphics::component_system::components::projection);
+        ComponentMapper<math_cs::Projection> projMatList =
+          m_sharedCam->GetComponents(math_cs::components::projection);
         m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 

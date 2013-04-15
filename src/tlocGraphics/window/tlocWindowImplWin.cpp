@@ -79,6 +79,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       GetModuleHandle(TLOC_NULL), TLOC_NULL);
 
     error = GetLastError();
+    // Possible reasons:
+    // - Too high a resolution
+    // - Incorrect window properties
+    TLOC_ASSERT(error != TLOC_NULL, "Error creating Window");
 
     ShowWindow(m_handle, SW_HIDE);
 
@@ -118,13 +122,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties modeProps = a_mode.GetProperties();
 
     // Center the window to the screen regardless of the given size
-    HDC screenDC     = GetDC(TLOC_NULL);
-    tl_int left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
-    tl_int top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
-    tl_size width  = modeProps.m_width;
-    tl_size height = modeProps.m_height;
+    HDC       screenDC = GetDC(TLOC_NULL);
+    tl_int    left		 = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
+    tl_int    top			 = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+    size_type width		 = modeProps.m_width;
+    size_type height	 = modeProps.m_height;
     // LOG: Window resolution greater than screen's resolution
     ReleaseDC(TLOC_NULL, screenDC);
+
+    // If width and height are bigger than screen, warn the user
+    // LOG: This should be a log warning
+    TLOC_ASSERT(width <= GetMaxWidth(), "Screen width not supported");
+    TLOC_ASSERT(height <= GetMaxHeight(), "Screen height not supported");
 
     DWORD win32Style = WS_VISIBLE;
     if (a_style == WindowSettings::style_none)
@@ -191,6 +200,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetHeight() const
   {
     return GetGraphicsMode().GetProperties().m_height;
+  }
+
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxWidth() const
+  {
+    size_type maxWidth  = GetSystemMetrics(SM_CXSCREEN);
+    return maxWidth;
+  }
+
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxHeight() const
+  {
+    size_type maxHeight = GetSystemMetrics(SM_CYSCREEN);
+    return maxHeight;
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetActive(bool a_active)

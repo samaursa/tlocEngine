@@ -1,13 +1,13 @@
-#ifndef _TLOC_GRAPHICS_TYPES_FOV_H_
-#define _TLOC_GRAPHICS_TYPES_FOV_H_
+#ifndef _TLOC_MATH_TYPES_FOV_H_
+#define _TLOC_MATH_TYPES_FOV_H_
 
-#include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocMath/tlocMathBase.h>
 
 #include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
-#include <tlocGraphics/types/tlocAspectRatio.h>
+#include <tlocMath/types/tlocAspectRatio.h>
 
-namespace tloc { namespace graphics { namespace types {
+namespace tloc { namespace math { namespace types {
 
   namespace p_FOV
   {

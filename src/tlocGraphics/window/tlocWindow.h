@@ -15,6 +15,8 @@
 #include <tlocGraphics/window/tlocWindowSettings.h>
 #include <tlocGraphics/window/tlocWindowHandle.h>
 
+#include <tlocMath/types/tlocAspectRatio.h>
+
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
 
@@ -85,6 +87,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
+    typedef math_t::AspectRatio                          aspect_ratio;
 
   public:
 
@@ -117,7 +120,7 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
     void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                window_style_type a_style = WindowSettings::style_titlebar | 
+                window_style_type a_style = WindowSettings::style_titlebar |
                                             WindowSettings::style_resize |
                                             WindowSettings::style_close);
 
@@ -154,6 +157,31 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of producing.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Gets the aspect ratio of this window.
+    ///
+    /// @return The aspect ratio.
+    ///-------------------------------------------------------------------------
+    aspect_ratio GetAspectRatio() const;
 
     ///-------------------------------------------------------------------------
     /// Gets an event on the stack, if stack is empty, then asks the window

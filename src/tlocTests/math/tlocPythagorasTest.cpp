@@ -7,11 +7,10 @@
 namespace TestingPythagoras
 {
   using namespace tloc;
-  using namespace math;
 
   TEST_CASE("Math/Pythagoras/Ctors", "")
   {
-    typedef utils::Pythagoras pyth;
+    typedef math::utils::Pythagoras pyth;
     using math::types::Degree;
     using math::types::Radian;
 

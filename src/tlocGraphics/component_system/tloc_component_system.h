@@ -10,8 +10,6 @@
 #include <tlocGraphics/component_system/tlocPrimitive.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
-
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>

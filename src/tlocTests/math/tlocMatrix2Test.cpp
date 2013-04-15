@@ -7,7 +7,6 @@ namespace TestingMatrix2
 {
   using namespace tloc;
   using namespace core::data_structs;
-  using namespace math;
   using math::types::Mat2f;
   using math::types::Vec2f;
   using math::types::Mat2f32;

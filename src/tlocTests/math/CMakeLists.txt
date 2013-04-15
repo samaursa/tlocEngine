@@ -3,13 +3,17 @@ set(TLOC_TESTS_MATH
   tlocAngleTest.cpp
   tlocCircleTest.cpp
   tlocContiguityTest.cpp
+  tlocFOVTest.cpp
+  tlocFrustumTest.cpp
   tlocMathTest.cpp
   tlocMatrix2Test.cpp
   tlocMatrix3Test.cpp
   tlocMatrix4Test.cpp
   tlocMatrixTest.cpp
   tlocPythagorasTest.cpp
+  tlocRayTest.cpp
   tlocRectangleTest.cpp
+  tlocScaleTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   tlocTransformTest.cpp

@@ -59,6 +59,15 @@ add_library(tlocPrefab STATIC
   ${TLOC_PREFAB_PHYSICS}
   )
 
+add_dependencies(tlocPrefab
+  tlocCore
+  tlocGraphics
+  tlocInput
+  tlocMath
+  tlocPhysics
+  tlocPrefab
+  )
+
 # Filters to organize the source files
 source_group(core             FILES ${TLOC_PREFAB_CORE})
 source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})

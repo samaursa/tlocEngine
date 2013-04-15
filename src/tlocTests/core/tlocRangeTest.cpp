@@ -10,83 +10,132 @@ namespace TestingRange
   // Tests are taken from https://bitbucket.org/AraK/range and modified where
   // appropriate
 
-  TEST_CASE("core/range/ctors", "")
+  template <typename T_RangeType>
+  void TestCtors()
   {
-    CHECK(Range().empty());
+    typedef T_RangeType range_type;
 
-    Range r;
-    r = Range(0, 10);
-    r = Range(10, 10);
-    r = Range(0, 0);
+    CHECK(range_type().empty());
 
-    r = Range(0, 10, Range::step_size(1));
-    r = Range(0, 0, Range::step_size(2));
+    range_type r;
+    r = range_type(0, 10);
+    r = range_type(10, 10);
+    r = range_type(0, 0);
 
-    Range r2(r);
+    r = range_type(0, 10, range_type::step_size(1));
+    r = range_type(0, 0, range_type::step_size(2));
+
+    range_type r2(r);
     CHECK(r2 == r);
   }
 
-  TEST_CASE("core/range/accessors", "")
+  TEST_CASE("core/range/ctors", "")
   {
-    Range r(0, 10);
+    TestCtors<range_s8>();
+    TestCtors<range_u8>();
+    TestCtors<Range>();
+    TestCtors<Rangef>();
+  }
+
+  template <typename T_RangeType>
+  void TestAccessors()
+  {
+    typedef T_RangeType range_type;
+
+    range_type r(0, 10);
     CHECK(r.front() == 0);
     CHECK(r.back() == 9);
 
-    r = Range(0, 0);
+    r = range_type(0, 0);
     CHECK(r.front() == 0);
     CHECK(r.back() == 0);
 
-    r = Range(5, 10);
+    r = range_type(5, 10);
     CHECK(r.front() == 5);
     CHECK(r.back() == 9);
 
-    r = Range(0, 10, Range::step_size(2));
+    r = range_type(0, 10, range_type::step_size(2));
     CHECK(r.front() == 0);
     CHECK(r.back() == 8);
 
-    r = Range(0, 10, Range::step_size(3));
+    r = range_type(0, 10, range_type::step_size(3));
     CHECK(r.front() == 0);
     CHECK(r.back() == 9);
 
-    r = Range(0, 10, Range::step_size(4));
+    r = range_type(0, 10, range_type::step_size(4));
     CHECK(r.front() == 0);
     CHECK(r.back() == 8);
 
-    r = Range(10, 50, Range::step_size(10));
+    r = range_type(10, 50, range_type::step_size(10));
     CHECK(r.front() == 10);
     CHECK(r.back() == 40);
 
-    r = Range(10, 51, Range::step_size(10));
+    r = range_type(10, 51, range_type::step_size(10));
     CHECK(r.front() == 10);
     CHECK(r.back() == 50);
   }
 
+  TEST_CASE("core/range/accessors", "")
+  {
+    TestAccessors<range_s8>();
+    TestAccessors<range_u8>();
+    TestAccessors<Range>();
+    TestAccessors<Rangef>();
+  }
+
+  template <typename T_RangeType>
+  void TestSize()
+  {
+    typedef T_RangeType range_type;
+
+    range_type r(0, 10);
+    CHECK(r.size() == 10);
+    r = range_type(0, 10, range_type::step_size(2));
+    CHECK(r.size() == 5);
+    r = range_type(0, 10, range_type::step_size(10));
+    CHECK(r.size() == 1);
+    r = range_type(0, 10, range_type::step_size(11));
+    CHECK(r.size() == 1);
+    r = range_type(5, 15);
+    CHECK(r.size() == 10);
+  }
+
   TEST_CASE("core/range/size", "")
   {
-    Range r(0, 10);
-    CHECK(r.size() == 10);
-    r = Range(0, 10, Range::step_size(2));
-    CHECK(r.size() == 5);
-    r = Range(0, 10, Range::step_size(10));
-    CHECK(r.size() == 1);
-    r = Range(0, 10, Range::step_size(11));
-    CHECK(r.size() == 1);
+    TestSize<range_s8>();
+    TestSize<range_u8>();
+    TestSize<Range>();
+    TestSize<Rangef>();
+  }
+
+  template <typename T_RangeType>
+  void TestEmptyFull()
+  {
+    typedef T_RangeType range_type;
+
+    CHECK(range_type().empty());
+    range_type r(77, 127);
+    CHECK_FALSE(r.empty());
+    r = range_type(127, 127);
+    CHECK(r.empty());
   }
 
   TEST_CASE("core/range/empty_full", "")
   {
-    CHECK(Range().empty());
-    Range r(150, 200);
-    CHECK_FALSE(r.empty());
-    r = Range(150, 150);
-    CHECK(r.empty());
+    TestEmptyFull<range_s8>();
+    TestEmptyFull<range_u8>();
+    TestEmptyFull<Range>();
+    TestEmptyFull<Rangef>();
   }
 
-  TEST_CASE("core/range/iterators", "")
+  template <typename T_RangeType>
+  void TestIterators()
   {
-    Range r(0, 10);
-    Range::iterator itr = r.begin();
-    Range::reverse_iterator rItr = r.rbegin();
+    typedef T_RangeType range_type;
+
+    range_type r(0, 10);
+    range_type::iterator itr = r.begin();
+    range_type::reverse_iterator rItr = r.rbegin();
 
     bool testPassed = true;
     for (tl_int i = 0; i < 10; ++i)
@@ -120,7 +169,7 @@ namespace TestingRange
     CHECK( *(rItr - 9) == 9);
     CHECK( *( (--rItr) + 1) == 0);
 
-    r = Range(0, 10, Range::step_size(2));
+    r = range_type(0, 10, range_type::step_size(2));
     itr = r.begin();
     testPassed = true;
     for (tl_int i = 0; i < 10; i = i+2)
@@ -130,7 +179,7 @@ namespace TestingRange
     }
     CHECK(testPassed);
 
-    r = Range(5, 6);
+    r = range_type(5, 6);
     itr = r.begin();
     testPassed = true;
     for (tl_int i = 5; i < 6; ++i)
@@ -140,7 +189,7 @@ namespace TestingRange
     }
     CHECK(testPassed);
 
-    r = Range(5, 6, Range::step_size(10));
+    r = range_type(5, 6, range_type::step_size(10));
     itr = r.begin();
     testPassed = true;
     for (tl_int i = 5; i < 6; i = i + 10)
@@ -150,9 +199,9 @@ namespace TestingRange
     }
     CHECK(testPassed);
 
-    r = Range(0, 50, Range::step_size(2));
+    r = range_type(0, 50, range_type::step_size(2));
     itr = r.begin();
-    Range::iterator itrEnd = r.end();
+    range_type::iterator itrEnd = r.end();
     tl_int count = 0;
     for (; itr < itrEnd; ++itr)
     {
@@ -177,5 +226,25 @@ namespace TestingRange
 
     CHECK( *(itr - 10) == 0);
     CHECK( *( (--itr) + 1) == 20);
+  }
+
+  TEST_CASE("core/range/iterators", "")
+  {
+    TestIterators<range_s8>();
+    TestIterators<range_u8>();
+    TestIterators<Range>();
+    TestIterators<Rangef>();
+  }
+
+  TEST_CASE("core/range/GetRange()", "")
+  {
+    CHECK(GetRange0to1<f32>().front() == Approx(0.0f));
+    CHECK(GetRange0to1<f32>().back() == Approx(1.0f));
+
+    CHECK(GetRange0to128<s32>().front() == 0);
+    CHECK(GetRange0to128<s32>().back() == 127);
+
+    CHECK(GetRange0to256<s32>().front() == 0);
+    CHECK(GetRange0to256<s32>().back() == 255);
   }
 }

@@ -2,8 +2,6 @@ set(TLOC_TESTS_GRAPHICS
   main.cpp
   tlocAttributeVariableTest.cpp
   tlocColorTest.cpp
-  tlocFOVTest.cpp
-  tlocFrustumTest.cpp
   tlocGLGeneralTest.cpp
   tlocGLObjectTest.cpp
   tlocGraphicsModesTest.cpp

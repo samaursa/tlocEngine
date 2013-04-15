@@ -369,6 +369,8 @@
   TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
   TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
+# define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
+  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported);
 
 //------------------------------------------------------------------------
 // Low level assertions

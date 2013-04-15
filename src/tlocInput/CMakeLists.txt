@@ -80,5 +80,11 @@ add_library(tlocInput STATIC
   ${TLOC_INPUT_HID}
   )
 
+add_dependencies(tlocInput
+  tlocCore
+  tlocGraphics
+  tlocMath
+  )
+
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})

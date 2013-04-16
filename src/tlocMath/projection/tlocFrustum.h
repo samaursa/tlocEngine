@@ -41,6 +41,54 @@ namespace tloc { namespace math { namespace proj {
     { enum { k_planeIndex = 6 }; };
   };
 
+  //------------------------------------------------------------------------
+  // FrustumBase
+
+  class FrustumBase
+  {
+  public:
+    typedef tl_float                                    real_type;
+    typedef math::types::Matrix4<real_type>             matrix_type;
+    typedef core::data_structs::Tuple
+      <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
+
+  public:
+
+    template <typename T_Plane>
+    real_type GetPlane() const;
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
+                                          GetProjectionMatrix, m_projMatrix);
+
+  protected:
+    typedef core::data_structs::Variadic<real_type,
+      p_frustum::PlaneCount::k_planeIndex> plane_args;
+
+  protected:
+    FrustumBase();
+    ~FrustumBase();
+
+    void DoDefinePlanes(const plane_args& a_vars);
+
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(matrix_type,
+                                    DoGetProjectionMatrix, m_projMatrix);
+  private:
+    cont_type                     m_planes;
+    matrix_type                   m_projMatrix;
+  };
+
+  //````````````````````````````````````````````````````````````````````````
+  // template definitions
+
+  template <typename T_Planes>
+  FrustumBase::real_type
+    FrustumBase::
+    GetPlane() const
+  { return m_planes[T_Planes::k_planeIndex]; }
+
+  //------------------------------------------------------------------------
+  //
+
   template <typename T_FrustumType>
   class Frustum_T
   {
@@ -54,7 +102,7 @@ namespace tloc { namespace math { namespace proj {
   // Frustum_T<Perspective>
 
   template <>
-  class Frustum_T<p_frustum::Perspective>
+  class Frustum_T<p_frustum::Perspective> : public FrustumBase
   {
   public:
     typedef p_frustum::Perspective                      projection_type;
@@ -65,11 +113,11 @@ namespace tloc { namespace math { namespace proj {
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
     typedef math::types::Rectangle_T<real_type>         rect_type;
     typedef tl_size                                     size_type;
-    typedef math::types::Radian                         angle_type;
-    typedef types::FOV                                  fov_type;
-    typedef types::AspectRatio                          ar_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
+
+    typedef types::FOV                                  fov_type;
+    typedef types::AspectRatio                          ar_type;
 
   public:
     struct Params
@@ -102,33 +150,11 @@ namespace tloc { namespace math { namespace proj {
     void      BuildFrustum();
     ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
 
-    template <typename T_Plane>
-    real_type GetPlane();
-
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
-                                          GetProjectionMatrix, m_projMatrix);
-
   private:
-    typedef core::data_structs::Variadic<real_type,
-      p_frustum::PlaneCount::k_planeIndex> plane_args;
-
-    void DoDefinePlanes(const plane_args& a_vars);
-    void DoBuildFrustumFromPlanes();
 
     Params                        m_params;
-    cont_type                     m_planes;
-    matrix_type                   m_projMatrix;
   };
-
-  //------------------------------------------------------------------------
-  // template definitions
-
-  template <typename T_Planes>
-  Frustum_T<p_frustum::Perspective>::real_type
-    Frustum_T<p_frustum::Perspective>::
-    GetPlane()
-  { return m_planes[T_Planes::k_planeIndex]; }
 
   //------------------------------------------------------------------------
   // typedefs

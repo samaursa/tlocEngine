@@ -7,6 +7,22 @@
 namespace tloc { namespace math { namespace proj {
 
   //////////////////////////////////////////////////////////////////////////
+  // FrustumBase
+
+  FrustumBase::FrustumBase()
+    : m_projMatrix(0)
+  { }
+
+  FrustumBase::~FrustumBase()
+  { }
+
+  void FrustumBase::
+    DoDefinePlanes(const plane_args& a_vars)
+  {
+    m_planes = a_vars;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
   // Frustum<Perspective>
 
 #define FRUSTUM_PERSP_PARAMS p_frustum::Perspective
@@ -54,7 +70,6 @@ namespace tloc { namespace math { namespace proj {
     : m_params(types::FOV(math::types::Degree(90.0f),
                ar_type(),
                types::p_FOV::horizontal()) )
-    , m_projMatrix(0)
   {
     using namespace types;
     using namespace math::utils;
@@ -81,8 +96,6 @@ namespace tloc { namespace math { namespace proj {
   Frustum_T<FRUSTUM_PERSP_PARAMS>::
     Frustum_T(const Params& a_params)
     : m_params(a_params)
-    , m_projMatrix(0)
-
   {
     using namespace math::utils;
     using math::types::Degree;
@@ -107,7 +120,28 @@ namespace tloc { namespace math { namespace proj {
   void Frustum_T<FRUSTUM_PERSP_PARAMS>::
     BuildFrustum()
   {
-    DoBuildFrustumFromPlanes();
+    using namespace p_frustum;
+
+    real_type pTop    = GetPlane<Top>();
+    real_type pBott   = GetPlane<Bottom>();
+    real_type pLeft   = GetPlane<Left>();
+    real_type pRight  = GetPlane<Right>();
+    real_type pNear   = GetPlane<Near>();
+    real_type pFar    = GetPlane<Far>();
+
+    real_type RminLReci = 1 / (pRight - pLeft);
+    real_type TminBReci = 1 / (pTop - pBott);
+    real_type FminNReci = 1 / (pFar - pNear);
+
+    matrix_type& projMatrix = DoGetProjectionMatrix();
+
+    projMatrix(0, 0) = 2 * pNear * RminLReci;
+    projMatrix(1, 1) = 2 * pNear * TminBReci;
+    projMatrix(0, 2) = (pRight + pLeft) * RminLReci;
+    projMatrix(1, 2) = (pTop + pBott) * TminBReci;
+    projMatrix(2, 2) = (-(pFar + pNear )) * FminNReci;
+    projMatrix(3, 2) = -1;
+    projMatrix(2, 3) = -2 * pFar * pNear * FminNReci;
   }
 
   FRUSTUM_PERSP_TYPE::ray_type
@@ -121,6 +155,8 @@ namespace tloc { namespace math { namespace proj {
 
     real_type pFar  = m_params.GetFar();
     real_type pNear = m_params.GetNear();
+
+    const matrix_type& projMatrix = GetProjectionMatrix();
 
     using math_t::Vector3;
     /* For details, see Saad's Master's thesis Appendix H */
@@ -136,52 +172,18 @@ namespace tloc { namespace math { namespace proj {
           ( (a_xyzNDC[2] * (pNear * pFar) + (pFar + pNear)) );
 
     // x_eye = -z_eye/P_00(x_NDC + P_20)
-    real_type x_eye = (-z_eye / m_projMatrix.Get(0, 0)) *
-                      (a_xyzNDC[0] + m_projMatrix.Get(2, 0));
+    real_type x_eye = (-z_eye / projMatrix.Get(0, 0)) *
+                      (a_xyzNDC[0] + projMatrix.Get(2, 0));
 
     // y_eye = -z_eye/P_11(x_NDC + P_21)
-    real_type y_eye = (-z_eye / m_projMatrix.Get(1, 1)) *
-                      (a_xyzNDC[1] + m_projMatrix.Get(2, 1));
+    real_type y_eye = (-z_eye / projMatrix.Get(1, 1)) *
+                      (a_xyzNDC[1] + projMatrix.Get(2, 1));
 
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
     Vector3<real_type> rayDir(0, 0, -1);
 
     return ray_type(ray_type::origin(rayOrigin),
                     ray_type::direction(rayDir));
-  }
-
-  //------------------------------------------------------------------------
-  // Helper functions
-
-  void Frustum_T<FRUSTUM_PERSP_PARAMS>::
-    DoDefinePlanes(const plane_args& a_vars)
-  {
-    m_planes = a_vars;
-  }
-
-  void Frustum_T<FRUSTUM_PERSP_PARAMS>::
-    DoBuildFrustumFromPlanes()
-  {
-    using namespace p_frustum;
-
-    real_type RminLReci = 1 / (m_planes[Right::k_planeIndex] -
-                               m_planes[Left::k_planeIndex]);
-    real_type TminBReci = 1 / (m_planes[Top::k_planeIndex] -
-                               m_planes[Bottom::k_planeIndex]);
-    real_type FminNReci = 1 / (m_planes[Far::k_planeIndex] -
-                               m_planes[Near::k_planeIndex]);
-
-    m_projMatrix(0, 0) = 2 * m_planes[Near::k_planeIndex] * RminLReci;
-    m_projMatrix(1, 1) = 2 * m_planes[Near::k_planeIndex] * TminBReci;
-    m_projMatrix(0, 2) = (m_planes[Right::k_planeIndex] +
-                          m_planes[Left::k_planeIndex]) * RminLReci;
-    m_projMatrix(1, 2) = (m_planes[Top::k_planeIndex] +
-                          m_planes[Bottom::k_planeIndex]) * TminBReci;
-    m_projMatrix(2, 2) = (-(m_planes[Far::k_planeIndex] +
-                            m_planes[Near::k_planeIndex])) * FminNReci;
-    m_projMatrix(3, 2) = -1;
-    m_projMatrix(2, 3) = -2 * m_planes[Far::k_planeIndex] *
-                              m_planes[Near::k_planeIndex] * FminNReci;
   }
 
   //------------------------------------------------------------------------

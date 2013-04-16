@@ -68,12 +68,6 @@ endif()
 if(TLOC_COMPILER_MSVC)
   foreach(lib ${tlocAllLibraries})
     if(TARGET ${lib})
-      # Add the common linker properties to all libraries
-      set_target_properties(${lib}
-        PROPERTIES
-        STATIC_LIBRARY_FLAGS_RELEASE "/LTCG"
-        STATIC_LIBRARY_FLAGS_RELWITHDEBINFO "/LTCG"
-        )
       set_target_properties(${lib} 
         PROPERTIES
         FOLDER tlocEngine

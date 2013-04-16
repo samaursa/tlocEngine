@@ -45,6 +45,12 @@ add_subdirectory(physics)
 if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})
     if(TARGET ${testProj})
+      # MSVC requires LTCG for Release
+      set_target_properties(${testProj}
+        PROPERTIES
+        LINK_FLAGS_RELEASE "/LTCG"
+        LINK_FLAGS_RELWITHDEBINFO "/LTCG"
+        )
       set_target_properties(${testProj}
         PROPERTIES
         FOLDER tlocTests

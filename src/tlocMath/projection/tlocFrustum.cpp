@@ -6,29 +6,41 @@
 
 namespace tloc { namespace math { namespace proj {
 
+  //////////////////////////////////////////////////////////////////////////
+  // Frustum<Perspective>
+
+#define FRUSTUM_PERSP_PARAMS p_frustum::Perspective
+#define FRUSTUM_PERSP_TYPE   Frustum_T<FRUSTUM_PERSP_PARAMS>
+
   //------------------------------------------------------------------------
   // Params
 
-  Frustum::Params::Params(const fov_type& a_fov)
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    Params::Params(const fov_type& a_fov)
     : m_fov(a_fov)
   {
     m_aspectRatio = m_fov.GetAspectRatio();
   }
 
-  Frustum::Params::Params(const Params& a_other)
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    Params::Params(const Params& a_other)
     : m_near(a_other.m_near)
     , m_far (a_other.m_far)
     , m_aspectRatio(a_other.m_aspectRatio)
     , m_fov(a_other.m_fov)
   { }
 
-  Frustum::Params& Frustum::Params::SetNear(real_type a_near)
+  FRUSTUM_PERSP_TYPE::Params&
+    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
+    SetNear(real_type a_near)
   {
     m_near = a_near;
     return *this;
   }
 
-  Frustum::Params& Frustum::Params::SetFar(real_type a_far)
+  FRUSTUM_PERSP_TYPE::Params&
+    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
+    SetFar(real_type a_far)
   {
     m_far = a_far;
     return *this;
@@ -37,10 +49,11 @@ namespace tloc { namespace math { namespace proj {
   //------------------------------------------------------------------------
   // Frustum
 
-  Frustum::Frustum(const rect_type& a_rect, real_type a_near, real_type a_far)
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far)
     : m_params(types::FOV(math::types::Degree(90.0f),
-                          ar_type(),
-                          types::p_FOV::horizontal()) )
+               ar_type(),
+               types::p_FOV::horizontal()) )
     , m_projMatrix(0)
   {
     using namespace types;
@@ -65,7 +78,8 @@ namespace tloc { namespace math { namespace proj {
     m_params.SetNear(a_near).SetFar(a_far);
   }
 
-  Frustum::Frustum(const Params& a_params)
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    Frustum_T(const Params& a_params)
     : m_params(a_params)
     , m_projMatrix(0)
 
@@ -86,16 +100,18 @@ namespace tloc { namespace math { namespace proj {
                   top, -top, -right, right) );
   }
 
-  Frustum::~Frustum()
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    ~Frustum_T()
   { }
 
-  void Frustum::BuildFrustum()
+  void Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    BuildFrustum()
   {
     DoBuildFrustumFromPlanes();
   }
 
-  Frustum::ray_type
-    Frustum::
+  FRUSTUM_PERSP_TYPE::ray_type
+    Frustum_T<FRUSTUM_PERSP_PARAMS>::
     GetRay(const types::Vector3<real_type>& a_xyzNDC) const
   {
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
@@ -137,12 +153,14 @@ namespace tloc { namespace math { namespace proj {
   //------------------------------------------------------------------------
   // Helper functions
 
-  void Frustum::DoDefinePlanes(const plane_args& a_vars)
+  void Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    DoDefinePlanes(const plane_args& a_vars)
   {
     m_planes = a_vars;
   }
 
-  void Frustum::DoBuildFrustumFromPlanes()
+  void Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    DoBuildFrustumFromPlanes()
   {
     typedef Planes  p;
 
@@ -171,6 +189,7 @@ namespace tloc { namespace math { namespace proj {
 
   using core::data_structs::Tuple;
 
-  template class Tuple<Frustum::real_type, Frustum::Planes::k_count>;
+  template class Tuple<Frustum_T<FRUSTUM_PERSP_PARAMS>::real_type,
+                       Frustum_T<FRUSTUM_PERSP_PARAMS>::Planes::k_count>;
 
 };};};

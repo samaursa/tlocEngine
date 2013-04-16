@@ -19,11 +19,24 @@ namespace tloc { namespace math { namespace proj {
 
   namespace p_frustum
   {
+    struct Perspective{};
+    struct Orthographic{};
+
     struct FOVy{};
     struct FOVx{};
   };
 
-  class Frustum
+  template <typename T_FrustumType>
+  class Frustum_T
+  {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_FrustumType, p_frustum::Perspective>::value ||
+       Loki::IsSameType<T_FrustumType, p_frustum::Orthographic>::value),
+       Invalid_frustum_type);
+  };
+
+  template <>
+  class Frustum_T<p_frustum::Perspective>
   {
   public:
     struct Planes
@@ -78,10 +91,10 @@ namespace tloc { namespace math { namespace proj {
     };
 
   public:
-    Frustum(const rect_type& a_rect, real_type a_near, real_type a_far);
-    Frustum(const Params& a_params);
+    Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far);
+    Frustum_T(const Params& a_params);
 
-    ~Frustum();
+    ~Frustum_T();
 
     void BuildFrustum();
     ray_type GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
@@ -100,6 +113,11 @@ namespace tloc { namespace math { namespace proj {
     cont_type                     m_planes;
     matrix_type                   m_projMatrix;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef Frustum_T<p_frustum::Perspective>   frustum_persp;
 
 };};};
 

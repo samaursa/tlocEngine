@@ -19,7 +19,7 @@ namespace TestingFrustum
   CHECK((mat[12]) == Approx(x4)); CHECK((mat[13]) == Approx(y4));\
   CHECK((mat[14]) == Approx(z4)); CHECK((mat[15]) == Approx(w4))
 
-  TEST_CASE("graphics/view_projection/Frustum", "")
+  TEST_CASE("graphics/view_projection/Frustum<Perspective>", "")
   {
     using namespace tloc::math::types;
     using math::types::Degree;
@@ -27,10 +27,10 @@ namespace TestingFrustum
     AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
     FOV fov(Degree(60.0f), ar, p_FOV::vertical());
 
-    math::proj::Frustum::Params params(fov);
+    math::proj::frustum_persp::Params params(fov);
     params.SetFar(1000.0f).SetNear(5.0f);
 
-    math::proj::Frustum fr(params);
+    math::proj::frustum_persp fr(params);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();

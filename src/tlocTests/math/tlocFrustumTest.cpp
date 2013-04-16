@@ -21,16 +21,19 @@ namespace TestingFrustum
 
   TEST_CASE("graphics/view_projection/Frustum<Perspective>", "")
   {
+    using math_proj::frustum_persp;
+    using namespace math_proj::p_frustum;
+
     using namespace tloc::math::types;
     using math::types::Degree;
 
     AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
     FOV fov(Degree(60.0f), ar, p_FOV::vertical());
 
-    math::proj::frustum_persp::Params params(fov);
+    frustum_persp::Params params(fov);
     params.SetFar(1000.0f).SetNear(5.0f);
 
-    math::proj::frustum_persp fr(params);
+    frustum_persp fr(params);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();
@@ -39,5 +42,15 @@ namespace TestingFrustum
                             0, 1.7320509, 0, 0,
                             0, 0, -1.0100503, -1,
                             0, 0, -10.050251, 0);
+
+    frustum_persp::real_type tan30 = 0.57735026918962576451f;
+
+    CHECK(fr.GetPlane<Near>()   == Approx(5.0f));
+    CHECK(fr.GetPlane<Far>()    == Approx(1000.0f));
+    CHECK(fr.GetPlane<Top>()    == Approx(tan30 * 5.0f));
+    CHECK(fr.GetPlane<Bottom>() == Approx(-tan30 * 5.0f));
+    CHECK(fr.GetPlane<Left>()   == Approx(-tan30 * 5.0f * 1024.0f / 768.0f));
+    CHECK(fr.GetPlane<Right>()  == Approx(tan30 * 5.0f * 1024.0f / 768.0f));
+
   }
 };

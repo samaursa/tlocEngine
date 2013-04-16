@@ -162,26 +162,26 @@ namespace tloc { namespace math { namespace proj {
   void Frustum_T<FRUSTUM_PERSP_PARAMS>::
     DoBuildFrustumFromPlanes()
   {
-    typedef Planes  p;
+    using namespace p_frustum;
 
-    real_type RminLReci = 1 / (m_planes[p::k_right] -
-                               m_planes[p::k_left]);
-    real_type TminBReci = 1 / (m_planes[p::k_top] -
-                               m_planes[p::k_bottom]);
-    real_type FminNReci = 1 / (m_planes[p::k_far] -
-                               m_planes[p::k_near]);
+    real_type RminLReci = 1 / (m_planes[Right::k_planeIndex] -
+                               m_planes[Left::k_planeIndex]);
+    real_type TminBReci = 1 / (m_planes[Top::k_planeIndex] -
+                               m_planes[Bottom::k_planeIndex]);
+    real_type FminNReci = 1 / (m_planes[Far::k_planeIndex] -
+                               m_planes[Near::k_planeIndex]);
 
-    m_projMatrix(0, 0) = 2 * m_planes[p::k_near] * RminLReci;
-    m_projMatrix(1, 1) = 2 * m_planes[p::k_near] * TminBReci;
-    m_projMatrix(0, 2) = (m_planes[p::k_right] +
-                          m_planes[p::k_left]) * RminLReci;
-    m_projMatrix(1, 2) = (m_planes[p::k_top] +
-                          m_planes[p::k_bottom]) * TminBReci;
-    m_projMatrix(2, 2) = (-(m_planes[Planes::k_far] +
-                            m_planes[p::k_near])) * FminNReci;
+    m_projMatrix(0, 0) = 2 * m_planes[Near::k_planeIndex] * RminLReci;
+    m_projMatrix(1, 1) = 2 * m_planes[Near::k_planeIndex] * TminBReci;
+    m_projMatrix(0, 2) = (m_planes[Right::k_planeIndex] +
+                          m_planes[Left::k_planeIndex]) * RminLReci;
+    m_projMatrix(1, 2) = (m_planes[Top::k_planeIndex] +
+                          m_planes[Bottom::k_planeIndex]) * TminBReci;
+    m_projMatrix(2, 2) = (-(m_planes[Far::k_planeIndex] +
+                            m_planes[Near::k_planeIndex])) * FminNReci;
     m_projMatrix(3, 2) = -1;
-    m_projMatrix(2, 3) = -2 * m_planes[Planes::k_far] *
-                              m_planes[Planes::k_near] * FminNReci;
+    m_projMatrix(2, 3) = -2 * m_planes[Far::k_planeIndex] *
+                              m_planes[Near::k_planeIndex] * FminNReci;
   }
 
   //------------------------------------------------------------------------
@@ -190,6 +190,6 @@ namespace tloc { namespace math { namespace proj {
   using core::data_structs::Tuple;
 
   template class Tuple<Frustum_T<FRUSTUM_PERSP_PARAMS>::real_type,
-                       Frustum_T<FRUSTUM_PERSP_PARAMS>::Planes::k_count>;
+                       p_frustum::PlaneCount::k_planeIndex>;
 
 };};};

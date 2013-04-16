@@ -131,8 +131,8 @@ namespace tloc { namespace math { namespace proj {
 
       TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
       TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
-      TLOC_DECL_AND_DEF_GETTER(ar_type, GetAspectRatio, m_aspectRatio);
-      TLOC_DECL_AND_DEF_GETTER(fov_type, GetFOV, m_fov);
+      TLOC_DECL_AND_DEF_GETTER(ar_type,   GetAspectRatio, m_aspectRatio);
+      TLOC_DECL_AND_DEF_GETTER(fov_type,  GetFOV, m_fov);
 
     private:
       real_type     m_near;
@@ -157,9 +157,36 @@ namespace tloc { namespace math { namespace proj {
   };
 
   //------------------------------------------------------------------------
+  // Frustum_T<Orthographic>
+
+  template <>
+  class Frustum_T<p_frustum::Orthographic> : public FrustumBase
+  {
+  public:
+    typedef p_frustum::Perspective                      projection_type;
+    typedef Frustum_T<projection_type>                  this_type;
+
+    typedef tl_float                                    real_type;
+    typedef core::data_structs::Tuple
+      <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
+    typedef math::types::Rectangle_T<real_type>         rect_type;
+    typedef tl_size                                     size_type;
+    typedef types::Ray_T<real_type, 3>                  ray_type;
+    typedef math::types::Matrix4<real_type>             matrix_type;
+
+  public:
+    Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far);
+    ~Frustum_T();
+
+    void      BuildFrustum();
+    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+  };
+
+  //------------------------------------------------------------------------
   // typedefs
 
   typedef Frustum_T<p_frustum::Perspective>   frustum_persp;
+  typedef Frustum_T<p_frustum::Orthographic>  frustum_ortho;
 
 };};};
 

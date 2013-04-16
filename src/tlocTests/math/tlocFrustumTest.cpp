@@ -53,4 +53,32 @@ namespace TestingFrustum
     CHECK(fr.GetPlane<Right>()  == Approx(tan30 * 5.0f * 1024.0f / 768.0f));
 
   }
+
+  TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")
+  {
+    using math_proj::frustum_ortho;
+    using namespace math_proj::p_frustum;
+
+    typedef frustum_ortho::rect_type rect_type;
+    rect_type rect(rect_type::left(-0.5f), rect_type::right(0.5f),
+                   rect_type::top(0.5f), rect_type::bottom(-0.5f));
+
+    frustum_ortho fr(rect, 1.0f, 10.0f);
+    fr.BuildFrustum();
+
+    math::types::Mat4f projMat = fr.GetProjectionMatrix();
+
+    CHECK_MATRIX4F(projMat, 2.00f, 0.00f,  0.00f       ,  0.00f,
+                            0.00f, 2.00f,  0.00f       ,  0.00f,
+                            0.00f, 0.00f, -2.0f  / 9.0f,  0.00f,
+                            0.00f, 0.00f, -11.0f / 9.0f,  1.00f);
+
+    CHECK(fr.GetPlane<Near>()   == Approx( 1.0f));
+    CHECK(fr.GetPlane<Far>()    == Approx( 10.0f));
+    CHECK(fr.GetPlane<Top>()    == Approx( 0.5f));
+    CHECK(fr.GetPlane<Bottom>() == Approx(-0.5f));
+    CHECK(fr.GetPlane<Left>()   == Approx(-0.5f));
+    CHECK(fr.GetPlane<Right>()  == Approx( 0.5f));
+
+  }
 };

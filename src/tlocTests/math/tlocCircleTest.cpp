@@ -138,6 +138,24 @@ namespace TestingCircle
       circle_type::position( point_type(0, 3 ) ) );
     CHECK(c.Intersects(c6) == false); // Does not intersect a smaller circle
                                       // outside itself
+
+    Ray2f ray( Ray2f::origin(Vec2f(0, 0)) );
+    circle_type c7(circle_type::radius( (value_type)1 ) );
+    CHECK(c7.Intersects(ray));
+
+    c7.SetPosition(Vec2f(2.0f, 0.0f));
+    CHECK_FALSE(c7.Intersects(ray));
+
+    c7.SetPosition(Vec2f(0.5f, 0.8f));
+    CHECK(c7.Intersects(ray));
+
+    ray = Ray2f(Ray2f::origin(Vec2f(0.5f, 0.8f)) );
+    CHECK(c7.Intersects(ray));
+    c7.SetPosition(Vec2f(-0.5f, 0.8f));
+    CHECK_FALSE(c7.Intersects(ray));
+    c7.SetPosition(Vec2f(0.5f, -0.8f));
+    CHECK_FALSE(c7.Intersects(ray));
+
   }
 
   TEST_CASE("Math/types/Circle/GetCoord", "")

@@ -27,7 +27,7 @@ namespace tloc { namespace math { namespace types {
 
   public:
     Ray_T();
-    Ray_T(origin a_origin, direction a_direction);
+    Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
     Ray_T(const this_type& a_other);
 
     ~Ray_T();

@@ -214,6 +214,24 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <TLOC_RECTANGLE_TEMP>
+  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    Intersects(const ray_type& a_ray) const
+  {
+    const point_type& rayOrigin = a_ray.GetOrigin();
+
+    // Since we are a 2D box, we assume our direction is +Z
+    if (rayOrigin[0] < GetValue<left>() ||
+        rayOrigin[0] > GetValue<right>()  ||
+        rayOrigin[1] < GetValue<bottom>() ||
+        rayOrigin[1] > GetValue<top>() )
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::real_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     DoGetValue(tl_int a_index) const
   {

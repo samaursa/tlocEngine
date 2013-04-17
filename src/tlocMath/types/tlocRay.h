@@ -32,8 +32,8 @@ namespace tloc { namespace math { namespace types {
 
     ~Ray_T();
 
-    TLOC_DECL_AND_DEF_GETTER(vector_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER(vector_type, GetDirection, m_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vector_type, GetOrigin, m_origin);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vector_type, GetDirection, m_direction);
 
   private:
     vector_type m_origin;

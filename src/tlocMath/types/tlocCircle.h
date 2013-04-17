@@ -11,6 +11,7 @@
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocAngle.h>
+#include <tlocMath/types/tlocRay.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -21,14 +22,15 @@ namespace tloc { namespace math { namespace types {
     TLOC_STATIC_ASSERT_IS_ARITH(T);
 
   public:
-    typedef T                           value_type;
-    typedef Circle_T<value_type>          this_type;
-    typedef Vector2<value_type>         point_type;
-    typedef tl_size                     size_type;
+    typedef T                                         value_type;
+    typedef Circle_T<value_type>                      this_type;
+    typedef Vector2<value_type>                       point_type;
+    typedef Ray_T<value_type, 2>                      ray_type;
+    typedef tl_size                                   size_type;
 
-    typedef core::types::StrongType_T<value_type, 0> radius;
-    typedef core::types::StrongType_T<value_type, 2> diameter;
-    typedef core::types::StrongType_T<point_type, 3> position;
+    typedef core::types::StrongType_T<value_type, 0>  radius;
+    typedef core::types::StrongType_T<value_type, 2>  diameter;
+    typedef core::types::StrongType_T<point_type, 3>  position;
 
   public:
     Circle_T(radius a_r = radius(0), position a_p = position(point_type(0)));
@@ -49,7 +51,9 @@ namespace tloc { namespace math { namespace types {
 
     bool        Contains(const point_type& a_xyPoint) const;
     bool        Contains(const this_type& a_other) const;
+
     bool        Intersects(const this_type& a_other) const;
+    bool        Intersects(const ray_type& a_ray) const;
 
     // The angle follows the ASTC rules when it comes to start/end points
     point_type  GetCoord(Radian_T<value_type> a_angle) const;

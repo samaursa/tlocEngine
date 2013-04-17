@@ -153,4 +153,24 @@ namespace TestingRectangle
     CHECK( (r.GetCoord_BottomLeft() == Vec2f(-0.5f, -1.0f)) );
     CHECK( (r.GetCoord_BottomRight() == Vec2f(0.5f, -1.0f)) );
   }
+
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection", "")
+  {
+    // NOTE: Rectangle origin is at its center
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+    Ray2f ray(Ray2f::origin(Vec2f(0, 0)),
+      Ray2f::direction(Vec2f(0, 0)));
+    CHECK(r.Intersects(ray));
+
+    r.SetPosition(Vec2f(3, 2));
+    CHECK_FALSE(r.Intersects(ray));
+
+    ray = Ray2f(Ray2f::origin(Vec2f(2.5, 1.0f)),
+      Ray2f::direction(Vec2f(0, 0)));
+    CHECK(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.1f, 2.0f));
+    CHECK_FALSE(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.0f, 3.0f));
+    CHECK_FALSE(r.Intersects(ray));
+  }
 };

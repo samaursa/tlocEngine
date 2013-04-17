@@ -20,10 +20,10 @@ namespace tloc { namespace math { namespace types {
 
   public:
     typedef Ray_T<T, T_Size>        this_type;
-    typedef Vector<T, T_Size>       vector_type;
+    typedef Vector<T, T_Size>       vec_type;
 
-    typedef core::types::StrongType_T<vector_type, 0>   origin;
-    typedef core::types::StrongType_T<vector_type, 1>   direction;
+    typedef core::types::StrongType_T<vec_type, 0>   origin;
+    typedef core::types::StrongType_T<vec_type, 1>   direction;
 
   public:
     Ray_T();
@@ -32,17 +32,20 @@ namespace tloc { namespace math { namespace types {
 
     ~Ray_T();
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vector_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vector_type, GetDirection, m_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetDirection, m_direction);
 
   private:
-    vector_type m_origin;
-    vector_type m_direction;
+    vec_type m_origin;
+    vec_type m_direction;
 
   };
 
   //------------------------------------------------------------------------
   // Typedefs
+
+  typedef Ray_T<tl_float, 2> Ray2f;
+  typedef Ray_T<tl_float, 3> Ray3f;
 
   typedef Ray_T<f32, 2>     Ray2f32;
   typedef Ray_T<f32, 3>     Ray3f32;

@@ -62,18 +62,21 @@ add_subdirectory(tlocTests)
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
 if(NOT TLOC_PLATFORM_IOS)
   add_subdirectory(tlocVersion)
+
+  # Make tlocVersion and tlocVersionTool as dependencies for all projects
+  foreach(lib ${tlocAllLibraries})
+    add_dependencies(${lib}
+      tlocVersion
+      tlocVersionTool
+      )
+  endforeach()
+
 endif()
 
 # this is so far required only by MSVC
 if(TLOC_COMPILER_MSVC)
   foreach(lib ${tlocAllLibraries})
     if(TARGET ${lib})
-      # Add the common linker properties to all libraries
-      set_target_properties(${lib}
-        PROPERTIES
-        STATIC_LIBRARY_FLAGS_RELEASE "/LTCG"
-        STATIC_LIBRARY_FLAGS_RELWITHDEBINFO "/LTCG"
-        )
       set_target_properties(${lib} 
         PROPERTIES
         FOLDER tlocEngine
@@ -86,7 +89,7 @@ if(TLOC_COMPILER_MSVC)
 #The version tools must be added to the engine folder as well
 set_target_properties(tlocVersion tlocVersionTool
   PROPERTIES
-  FOLDER tlocEngine/Versioning
+  FOLDER Versioning
   )
 
 endif()

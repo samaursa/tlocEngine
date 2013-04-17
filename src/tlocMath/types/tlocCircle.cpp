@@ -138,6 +138,16 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
+    Intersects(const ray_type& a_ray) const
+  {
+    this_type rayCircle(radius(0), position(a_ray.GetOrigin()) );
+    return Intersects(rayCircle);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
   TLOC_CIRCLE_TYPE::point_type  Circle_T<TLOC_CIRCLE_PARAMS>::
     GetCoord(Radian_T<value_type> a_angle) const
   {

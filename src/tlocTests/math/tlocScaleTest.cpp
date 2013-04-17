@@ -44,6 +44,20 @@ namespace TestingScale
       CHECK(s.ScaleUp(50) == Approx(70.0f));
       CHECK(s.ScaleUp(75) == Approx(95.0f));
     }
+
+    {
+      scale_float_to_other s
+        (core::RangeNeg1to1<T_RealType, core::p_range::Inclusive>().Get(),
+         core::Range_T<T>(0, 100));
+      CHECK(s.ScaleUp(-1.0f) == 0);
+      CHECK(s.ScaleUp(0.0f) == 50);
+      CHECK(s.ScaleUp(1.0f) == 100);
+
+      CHECK(s.ScaleDown(0) == Approx(-1.0f));
+      CHECK(s.ScaleDown(50) == Approx(0.0f));
+      CHECK(s.ScaleDown(99) == Approx(0.98f));
+    }
+
   }
 
   TEST_CASE("math/utilities/Scale", "")

@@ -16,14 +16,11 @@ namespace tloc { namespace math { namespace component_system {
   public:
     typedef core::component_system::Component_T<Projection>  base_type;
 
-    typedef proj::frustum_persp           frustum_type;
-    typedef frustum_type::Params          frustum_param_type;
+    typedef proj::Frustum                 frustum_type;
 
   public:
     Projection();
     explicit Projection(const frustum_type& a_frustum);
-
-    void SetFrustum(const frustum_param_type& a_params);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(frustum_type, GetFrustumRef, m_frustum);
     TLOC_DECL_AND_DEF_SETTER(frustum_type, SetFrustum, m_frustum);

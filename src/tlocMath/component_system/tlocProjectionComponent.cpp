@@ -9,10 +9,10 @@ namespace tloc { namespace math { namespace component_system {
 
   namespace
   {
-    typedef Projection::frustum_type          frustum_type;
-    typedef Projection::frustum_param_type    frustum_param_type;
+    typedef math_proj::frustum_persp          frustum_type;
+    typedef frustum_type::param_type          frustum_param_type;
 
-    frustum_param_type GetDefaultFrustumParams()
+    frustum_type GetDefaultFrustum()
     {
       using math::types::Degree;
 
@@ -26,26 +26,22 @@ namespace tloc { namespace math { namespace component_system {
       params.SetNear(1.0f);
       params.SetFar(100.0f);
 
-      return params;
+      frustum_type fr(params);
+      fr.BuildFrustum();
+
+      return fr;
     }
   };
 
   Projection::Projection()
     : base_type(components::projection)
-    , m_frustum(GetDefaultFrustumParams())
-  {
-    m_frustum.BuildFrustum();
-  }
+    , m_frustum(GetDefaultFrustum())
+  { }
 
   Projection::Projection(const frustum_type& a_frustum)
     : base_type(components::projection)
     , m_frustum(a_frustum)
   { }
-
-  void Projection::SetFrustum(const frustum_param_type& a_params)
-  {
-    m_frustum = frustum_type(a_params);
-  }
 
   //------------------------------------------------------------------------
   // Explicit Instantiations

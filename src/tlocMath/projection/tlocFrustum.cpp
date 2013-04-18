@@ -9,14 +9,19 @@ namespace tloc { namespace math { namespace proj {
   //////////////////////////////////////////////////////////////////////////
   // FrustumBase
 
-  FrustumBase::FrustumBase()
+  Frustum::Frustum()
     : m_projMatrix(0)
   { }
 
-  FrustumBase::~FrustumBase()
+  Frustum::Frustum(const this_type& a_other)
+    : m_planes(a_other.m_planes)
+    , m_projMatrix(m_projMatrix)
   { }
 
-  void FrustumBase::
+  Frustum::~Frustum()
+  { }
+
+  void Frustum::
     DoDefinePlanes(const plane_args& a_vars)
   {
     m_planes = a_vars;
@@ -27,7 +32,7 @@ namespace tloc { namespace math { namespace proj {
 
   using core::data_structs::Tuple;
 
-  template class Tuple<FrustumBase::real_type,
+  template class Tuple<Frustum::real_type,
                        p_frustum::PlaneCount::k_planeIndex>;
 
   //////////////////////////////////////////////////////////////////////////
@@ -205,7 +210,7 @@ namespace tloc { namespace math { namespace proj {
 
   Frustum_T<FRUSTUM_ORTHO_PARAMS>::
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far)
-    : FrustumBase()
+    : Frustum()
   {
     using namespace types;
     using namespace math::utils;

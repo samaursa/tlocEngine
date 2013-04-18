@@ -42,17 +42,20 @@ namespace tloc { namespace math { namespace proj {
   };
 
   //------------------------------------------------------------------------
-  // FrustumBase
+  // Frustum
 
-  class FrustumBase
+  class Frustum
   {
   public:
+    typedef Frustum                                     this_type;
     typedef tl_float                                    real_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
 
   public:
+    Frustum(const this_type& a_other);
+    ~Frustum();
 
     template <typename T_Plane>
     real_type GetPlane() const;
@@ -65,8 +68,7 @@ namespace tloc { namespace math { namespace proj {
       p_frustum::PlaneCount::k_planeIndex> plane_args;
 
   protected:
-    FrustumBase();
-    ~FrustumBase();
+    Frustum();
 
     void DoDefinePlanes(const plane_args& a_vars);
 
@@ -81,8 +83,8 @@ namespace tloc { namespace math { namespace proj {
   // template definitions
 
   template <typename T_Planes>
-  FrustumBase::real_type
-    FrustumBase::
+  Frustum::real_type
+    Frustum::
     GetPlane() const
   { return m_planes[T_Planes::k_planeIndex]; }
 
@@ -102,7 +104,7 @@ namespace tloc { namespace math { namespace proj {
   // Frustum_T<Perspective>
 
   template <>
-  class Frustum_T<p_frustum::Perspective> : public FrustumBase
+  class Frustum_T<p_frustum::Perspective> : public Frustum
   {
   public:
     typedef p_frustum::Perspective                      projection_type;
@@ -120,7 +122,7 @@ namespace tloc { namespace math { namespace proj {
     typedef types::AspectRatio                          ar_type;
 
   public:
-    struct Params
+    typedef struct Params
     {
       Params(const fov_type& a_fov);
       Params(const Params& a_other);
@@ -139,7 +141,7 @@ namespace tloc { namespace math { namespace proj {
       real_type     m_far;
       ar_type       m_aspectRatio;
       fov_type      m_fov;
-    };
+    } param_type;
 
   public:
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far);
@@ -160,7 +162,7 @@ namespace tloc { namespace math { namespace proj {
   // Frustum_T<Orthographic>
 
   template <>
-  class Frustum_T<p_frustum::Orthographic> : public FrustumBase
+  class Frustum_T<p_frustum::Orthographic> : public Frustum
   {
   public:
     typedef p_frustum::Perspective                      projection_type;

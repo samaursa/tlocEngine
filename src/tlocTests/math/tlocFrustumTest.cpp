@@ -52,6 +52,14 @@ namespace TestingFrustum
     CHECK(fr.GetPlane<Left>()   == Approx(-tan30 * 5.0f * 1024.0f / 768.0f));
     CHECK(fr.GetPlane<Right>()  == Approx(tan30 * 5.0f * 1024.0f / 768.0f));
 
+    math::proj::Frustum frBase(fr);
+
+    CHECK(frBase.GetPlane<Near>()   == Approx(5.0f));
+    CHECK(frBase.GetPlane<Far>()    == Approx(1000.0f));
+    CHECK(frBase.GetPlane<Top>()    == Approx(tan30 * 5.0f));
+    CHECK(frBase.GetPlane<Bottom>() == Approx(-tan30 * 5.0f));
+    CHECK(frBase.GetPlane<Left>()   == Approx(-tan30 * 5.0f * 1024.0f / 768.0f));
+    CHECK(frBase.GetPlane<Right>()  == Approx(tan30 * 5.0f * 1024.0f / 768.0f));
   }
 
   TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")
@@ -80,5 +88,13 @@ namespace TestingFrustum
     CHECK(fr.GetPlane<Left>()   == Approx(-0.5f));
     CHECK(fr.GetPlane<Right>()  == Approx( 0.5f));
 
+    math::proj::Frustum frBase(fr);
+
+    CHECK(frBase.GetPlane<Near>()   == Approx( 1.0f));
+    CHECK(frBase.GetPlane<Far>()    == Approx( 10.0f));
+    CHECK(frBase.GetPlane<Top>()    == Approx( 0.5f));
+    CHECK(frBase.GetPlane<Bottom>() == Approx(-0.5f));
+    CHECK(frBase.GetPlane<Left>()   == Approx(-0.5f));
+    CHECK(frBase.GetPlane<Right>()  == Approx( 0.5f));
   }
 };

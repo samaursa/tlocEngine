@@ -10,7 +10,9 @@
 namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateCamera(core_cs::EntityManager& a_mgr,
-                 core_cs::ComponentPoolManager& a_poolMgr)
+                 core_cs::ComponentPoolManager& a_poolMgr,
+                 const math_proj::Frustum& a_frustum,
+                 const math_t::Vec3f a_pos)
   {
     using math_cs::components::transform;
     using tloc::math_cs::components::projection;
@@ -35,7 +37,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->GetElement() = TransformPtr(new Transform(a_pos));
 
     // Get or create the projection pool
     if (a_poolMgr.Exists(projection) == false)
@@ -48,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
     p_pool* pPool = (*cpool)->GetAs<p_pool>();
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->GetElement() = ProjectionPtr(new Projection());
+    itrProjection->GetElement() = ProjectionPtr(new Projection(a_frustum));
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

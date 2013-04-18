@@ -10,12 +10,15 @@ namespace tloc { namespace math { namespace proj {
   // FrustumBase
 
   Frustum::Frustum()
-    : m_projMatrix(0)
+    : m_projMatrix(1, 0, 0, 0,
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   0, 0, 0, 1)
   { }
 
   Frustum::Frustum(const this_type& a_other)
     : m_planes(a_other.m_planes)
-    , m_projMatrix(m_projMatrix)
+    , m_projMatrix(a_other.m_projMatrix)
   { }
 
   Frustum::~Frustum()
@@ -77,6 +80,13 @@ namespace tloc { namespace math { namespace proj {
 
   //------------------------------------------------------------------------
   // Frustum
+
+  Frustum_T<FRUSTUM_PERSP_PARAMS>::
+    Frustum_T()
+    : m_params(types::FOV(math::types::Degree(90.0f),
+               ar_type(),
+               types::p_FOV::horizontal()) )
+  { }
 
   Frustum_T<FRUSTUM_PERSP_PARAMS>::
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far)
@@ -209,8 +219,11 @@ namespace tloc { namespace math { namespace proj {
   // Frustum
 
   Frustum_T<FRUSTUM_ORTHO_PARAMS>::
+    Frustum_T()
+  { }
+
+  Frustum_T<FRUSTUM_ORTHO_PARAMS>::
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far)
-    : Frustum()
   {
     using namespace types;
     using namespace math::utils;

@@ -25,6 +25,32 @@ namespace tloc { namespace math { namespace component_system {
   { }
 
   template <TRANSFORM_TEMPS>
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T(const position_type& a_position)
+    : base_type(components::transform)
+    , m_transformation(1, 0, 0, 0,
+                       0, 1, 0, 0,
+                       0, 0, 1, 0,
+                       0, 0, 0, 1)
+  {
+    SetPosition(a_position);
+  }
+
+  template <TRANSFORM_TEMPS>
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T(const position_type& a_position,
+                const orientation_type& a_orientation)
+    : base_type(components::transform)
+    , m_transformation(1, 0, 0, 0,
+                       0, 1, 0, 0,
+                       0, 0, 1, 0,
+                       0, 0, 0, 1)
+  {
+    SetPosition(a_position);
+    SetOrientation(a_orientation);
+  }
+
+  template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::position_type
     Transform_T<TRANSFORM_PARAMS>::
     GetPosition() const

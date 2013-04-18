@@ -144,6 +144,7 @@ namespace tloc { namespace math { namespace proj {
     } param_type;
 
   public:
+    Frustum_T();
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far);
     Frustum_T(const Params& a_params);
 
@@ -177,6 +178,7 @@ namespace tloc { namespace math { namespace proj {
     typedef math::types::Matrix4<real_type>             matrix_type;
 
   public:
+    Frustum_T();
     Frustum_T(const rect_type& a_rect, real_type a_near, real_type a_far);
     ~Frustum_T();
 

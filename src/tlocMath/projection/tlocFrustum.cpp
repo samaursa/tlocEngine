@@ -165,6 +165,7 @@ namespace tloc { namespace math { namespace proj {
     projMatrix(2, 2) = -(pFar   + pNear ) * FminNReci;
     projMatrix(3, 2) = -1;
     projMatrix(2, 3) = -2 * pFar * pNear  * FminNReci;
+    projMatrix(3, 3) = 0;
   }
 
   FRUSTUM_PERSP_TYPE::ray_type
@@ -196,11 +197,11 @@ namespace tloc { namespace math { namespace proj {
 
     // x_eye = -z_eye/P_00(x_NDC + P_20)
     real_type x_eye = (-z_eye / projMatrix.Get(0, 0)) *
-                      (a_xyzNDC[0] + projMatrix.Get(2, 0));
+                      (a_xyzNDC[0] + projMatrix.Get(0, 2));
 
     // y_eye = -z_eye/P_11(x_NDC + P_21)
     real_type y_eye = (-z_eye / projMatrix.Get(1, 1)) *
-                      (a_xyzNDC[1] + projMatrix.Get(2, 1));
+                      (a_xyzNDC[1] + projMatrix.Get(1, 2));
 
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
     Vector3<real_type> rayDir(0, 0, -1);

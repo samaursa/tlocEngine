@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/projection/tlocFrustum.h>
+#include <tlocMath/utilities/tlocScale.h>
 
 namespace TestingFrustum
 {
@@ -60,6 +61,34 @@ namespace TestingFrustum
     CHECK(frBase.GetPlane<Bottom>() == Approx(-tan30 * 5.0f));
     CHECK(frBase.GetPlane<Left>()   == Approx(-tan30 * 5.0f * 1024.0f / 768.0f));
     CHECK(frBase.GetPlane<Right>()  == Approx(tan30 * 5.0f * 1024.0f / 768.0f));
+  }
+
+  TEST_CASE("graphics/view_projection/Frustum<Perspective>/GetRay", "")
+  {
+    using math_proj::frustum_persp;
+    using namespace math_proj::p_frustum;
+
+    using namespace tloc::math::types;
+    using math::types::Degree;
+
+    AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
+    FOV fov(Degree(60.0f), ar, p_FOV::vertical());
+
+    frustum_persp::Params params(fov);
+    params.SetFar(1000.0f).SetNear(5.0f);
+
+    frustum_persp fr(params);
+    fr.BuildFrustum();
+
+    math_utils::scale_f32_f32::range_small smallR(-1.0f, 1.0f);
+    math_utils::scale_f32_f32::range_large largeR(0.0f, 1024.0f);
+    math_utils::scale_f32_f32 sc(smallR, largeR);
+
+    math_t::Vec3f32 xyz(sc.ScaleDown(0.0f), sc.ScaleDown(0.0f), 0.0f);
+
+    math_t::Ray3f ray = fr.GetRay(xyz);
+
+    int i = 0; TLOC_UNUSED(i);
   }
 
   TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")

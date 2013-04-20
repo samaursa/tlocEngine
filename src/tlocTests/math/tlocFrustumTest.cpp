@@ -81,14 +81,26 @@ namespace TestingFrustum
     fr.BuildFrustum();
 
     math_utils::scale_f32_f32::range_small smallR(-1.0f, 1.0f);
-    math_utils::scale_f32_f32::range_large largeR(0.0f, 1024.0f);
-    math_utils::scale_f32_f32 sc(smallR, largeR);
+    math_utils::scale_f32_f32::range_large largeRX(0.0f, 1024.0f);
+    math_utils::scale_f32_f32::range_large largeRY(0.0f, 768.0f);
+    math_utils::scale_f32_f32 scx(smallR, largeRX);
+    math_utils::scale_f32_f32 scy(smallR, largeRY);
 
-    math_t::Vec3f32 xyz(sc.ScaleDown(0.0f), sc.ScaleDown(0.0f), 0.0f);
+    math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
 
     math_t::Ray3f ray = fr.GetRay(xyz);
 
-    int i = 0; TLOC_UNUSED(i);
+    // at x,y,z=0,0,-1 the origin should be:
+    // x = tan(fov_horizontal/2)*base
+    // y = tan(fov_vertical/2)*base
+    // z = -5.0f (which is the near plane)
+
+    tl_float horFov = fov.Get<p_FOV::horizontal>().Get();
+    tl_float verFov = fov.Get<p_FOV::vertical>().Get();
+
+    CHECK(ray.GetOrigin()[0] == Approx( tan( horFov / 2.0f ) * -5.0f ) );
+    CHECK(ray.GetOrigin()[1] == Approx( tan( verFov / 2.0f ) * -5.0f ) );
+    CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
   }
 
   TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")

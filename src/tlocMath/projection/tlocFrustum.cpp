@@ -192,8 +192,8 @@ namespace tloc { namespace math { namespace proj {
 
     // We need z_eye
     const real_type z_eye
-      = - (2 * pFar * pNear) /
-          ( (a_xyzNDC[2] * (pNear * pFar) + (pFar + pNear)) );
+      = (2 * pFar * pNear) /
+          ( (a_xyzNDC[2] * (pFar - pNear) - (pFar + pNear)) );
 
     // x_eye = -z_eye/P_00(x_NDC + P_20)
     real_type x_eye = (-z_eye / projMatrix.Get(0, 0)) *
@@ -204,7 +204,8 @@ namespace tloc { namespace math { namespace proj {
                       (a_xyzNDC[1] + projMatrix.Get(1, 2));
 
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(0, 0, -1);
+    Vector3<real_type> rayDir(rayOrigin);
+    rayDir.Norm();
 
     return ray_type(ray_type::origin(rayOrigin),
                     ray_type::direction(rayDir));

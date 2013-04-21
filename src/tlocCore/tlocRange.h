@@ -188,6 +188,20 @@ namespace tloc { namespace core {
     struct Exclusive { enum { k_value = 0 }; };
   }
 
+  // TODO: This is a HACK! We need to incorporate p_range::Inclusive/Exclusive
+  // in range itself.
+  template <typename T, typename T_Inclusive = p_range::Exclusive>
+  struct MakeRangef
+  {
+    Range_T<T>
+      Get(T a_begin, T a_end)
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+      T endNum = T_Inclusive::k_value ? a_end + 0.05f : a_end;
+      return Range_T<T>(a_begin, endNum, Range_T<T>::step_size(0.1f));
+    }
+  };
+
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct Range0to1
   {

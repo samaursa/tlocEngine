@@ -80,27 +80,50 @@ namespace TestingFrustum
     frustum_persp fr(params);
     fr.BuildFrustum();
 
-    math_utils::scale_f32_f32::range_small smallR(-1.0f, 1.0f);
-    math_utils::scale_f32_f32::range_large largeRX(0.0f, 1024.0f);
-    math_utils::scale_f32_f32::range_large largeRY(0.0f, 768.0f);
+    math_utils::scale_f32_f32::range_small smallR =
+      core::MakeRangef<f32, core::p_range::Inclusive>().Get(-1.0f, 1.0f);
+    math_utils::scale_f32_f32::range_large largeRX =
+      core::MakeRangef<f32, core::p_range::Inclusive>().Get(0.0f, 1024.0f);
+    math_utils::scale_f32_f32::range_large largeRY =
+      core::MakeRangef<f32, core::p_range::Inclusive>().Get(0.0f, 768.0f);
     math_utils::scale_f32_f32 scx(smallR, largeRX);
     math_utils::scale_f32_f32 scy(smallR, largeRY);
 
-    math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
+    {
+      math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
 
-    math_t::Ray3f ray = fr.GetRay(xyz);
+      math_t::Ray3f ray = fr.GetRay(xyz);
 
-    // at x,y,z=0,0,-1 the origin should be:
-    // x = tan(fov_horizontal/2)*base
-    // y = tan(fov_vertical/2)*base
-    // z = -5.0f (which is the near plane)
+      // at x,y,z=0,0,-1 the origin should be:
+      // x = tan(fov_horizontal/2)*base
+      // y = tan(fov_vertical/2)*base
+      // z = -5.0f (which is the near plane)
 
-    tl_float horFov = fov.Get<p_FOV::horizontal>().Get();
-    tl_float verFov = fov.Get<p_FOV::vertical>().Get();
+      tl_float horFov = fov.Get<p_FOV::horizontal>().Get();
+      tl_float verFov = fov.Get<p_FOV::vertical>().Get();
 
-    CHECK(ray.GetOrigin()[0] == Approx( tan( horFov / 2.0f ) * -5.0f ) );
-    CHECK(ray.GetOrigin()[1] == Approx( tan( verFov / 2.0f ) * -5.0f ) );
-    CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
+      CHECK(ray.GetOrigin()[0] == Approx( tan( horFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[1] == Approx( tan( verFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
+    }
+
+    {
+      math_t::Vec3f32 xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
+
+      math_t::Ray3f ray = fr.GetRay(xyz);
+
+      // at x,y,z=0,0,-1 the origin should be:
+      // x = tan(fov_horizontal/2)*base
+      // y = tan(fov_vertical/2)*base
+      // z = -5.0f (which is the near plane)
+
+      tl_float horFov = fov.Get<p_FOV::horizontal>().Get();
+      tl_float verFov = fov.Get<p_FOV::vertical>().Get();
+
+      CHECK(ray.GetOrigin()[0] == Approx( -tan( horFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[1] == Approx( -tan( verFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
+    }
   }
 
   TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")
@@ -110,7 +133,7 @@ namespace TestingFrustum
 
     typedef frustum_ortho::rect_type rect_type;
     rect_type rect(rect_type::left(-0.5f), rect_type::right(0.5f),
-                   rect_type::top(0.5f), rect_type::bottom(-0.5f));
+      rect_type::top(0.5f), rect_type::bottom(-0.5f));
 
     frustum_ortho fr(rect, 1.0f, 10.0f);
     fr.BuildFrustum();
@@ -137,5 +160,68 @@ namespace TestingFrustum
     CHECK(frBase.GetPlane<Bottom>() == Approx(-0.5f));
     CHECK(frBase.GetPlane<Left>()   == Approx(-0.5f));
     CHECK(frBase.GetPlane<Right>()  == Approx( 0.5f));
+  }
+
+  TEST_CASE("graphics/view_projection/Frustum<Orthographic>/GetRay", "")
+  {
+    // NOTE: We made this test by comparing values to Unity which is why
+    // 'right' is 8/3 (or 2.666666666...). If these tests fail, we need to get
+    // better values from Unity.
+
+    using math_proj::frustum_ortho;
+    using namespace math_proj::p_frustum;
+
+    typedef frustum_ortho::rect_type rect_type;
+    // Unity Project is Orthographic and size is 1. Unity assumes size to be
+    // Top. Left and right are then scaled to match the aspect ratio of the
+    // screen (which is 1.33333... for 1024x768)
+    rect_type rect(rect_type::left(-4.0f/3.0f), rect_type::right(4.0f/3.0f),
+                   rect_type::top(1.0f), rect_type::bottom(-1.0f));
+
+    frustum_ortho fr(rect, 0.1f, 10.0f);
+    fr.BuildFrustum();
+
+    math::types::Mat4f projMat = fr.GetProjectionMatrix();
+
+    CHECK_MATRIX4F(projMat, 0.75f, 0.00f,  0.00f       ,  0.00f,
+      0.00f, 1.00f,  0.00f       ,  0.00f,
+      0.00f, 0.00f,  -0.20202f   ,  0.00f,
+      0.00f, 0.00f,  -1.02020f   ,  1.00f);
+
+    CHECK(fr.GetPlane<Near>()   == Approx( 0.1f));
+    CHECK(fr.GetPlane<Far>()    == Approx( 10.0f));
+    CHECK(fr.GetPlane<Top>()    == Approx(  1.0f));
+    CHECK(fr.GetPlane<Bottom>() == Approx( -1.0f));
+    CHECK(fr.GetPlane<Left>()   == Approx( -4.0f/3.0f));
+    CHECK(fr.GetPlane<Right>()  == Approx(  4.0f/3.0f));
+
+    using math_utils::scale_f32_f32;
+    typedef math_utils::scale_f32_f32::range_small range_small;
+    typedef math_utils::scale_f32_f32::range_large range_large;
+
+    range_small smallR(-1.0f, 1.05f, range_small::step_size(0.1f));
+    //math_utils::scale_f32_f32::range_large largeRX(0.0f, 1024.05f, math_utils::scale_f32_f32::range_large::step_size(0.1f));
+    range_large largeRX(0.0f, 1024.05f, range_large::step_size(0.1f));
+    range_large largeRY(0.0f, 768.05f, range_large::step_size(0.1f));
+    scale_f32_f32 scx(smallR, largeRX);
+    scale_f32_f32 scy(smallR, largeRY);
+
+    {
+      math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
+      math_t::Ray3f ray = fr.GetRay(xyz);
+
+      CHECK(ray.GetOrigin()[0] == Approx(-4.0f/3.0f));
+      CHECK(ray.GetOrigin()[1] == Approx(-1.0f));
+      CHECK(ray.GetOrigin()[2] == Approx(-0.1f));
+    }
+
+    {
+      math_t::Vec3f32 xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
+      math_t::Ray3f ray = fr.GetRay(xyz);
+
+      CHECK(ray.GetOrigin()[0] == Approx(4.0f/3.0f));
+      CHECK(ray.GetOrigin()[1] == Approx(1.0f));
+      CHECK(ray.GetOrigin()[2] == Approx(-0.1f));
+    }
   }
 };

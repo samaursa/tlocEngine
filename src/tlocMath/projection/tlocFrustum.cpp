@@ -299,10 +299,10 @@ namespace tloc { namespace math { namespace proj {
       = - ((pFar - pNear) * a_xyzNDC[2] + (pFar + pNear)) / 2;
 
     // x_eye = -z_eye/P_00(x_NDC + P_20)
-    real_type x_eye = (a_xyzNDC[0] - projMatrix.Get(3, 0)) /
+    real_type x_eye = (a_xyzNDC[0] - projMatrix.Get(0, 3)) /
                        projMatrix.Get(0, 0);
 
-    real_type y_eye = (a_xyzNDC[1] - projMatrix.Get(3, 1)) /
+    real_type y_eye = (a_xyzNDC[1] - projMatrix.Get(1, 3)) /
                        projMatrix.Get(1, 1);
 
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);

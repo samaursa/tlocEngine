@@ -10,6 +10,8 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
+#include <tlocPhysics/component_system/tlocComponentType.h>
+
 namespace tloc { namespace physics {
 
   ///-------------------------------------------------------------------------
@@ -38,11 +40,13 @@ namespace tloc { namespace physics { namespace component_system {
   /// RigidBodyListener callback class.
   ///-------------------------------------------------------------------------
   class RigidBodyListener :
-    public core::component_system::Component_T<RigidBodyListener>
+    public core::component_system::Component_T<RigidBodyListener,
+                                               components::k_rigidBodyListener>
   {
   public:
     typedef RigidBodyListener                                       this_type;
-    typedef core::component_system::Component_T<RigidBodyListener>  base_type;
+    typedef core::component_system::Component_T
+      <RigidBodyListener, components::k_rigidBodyListener>          base_type;
 
     typedef physics::RigidBodyListener  rigid_body_listener_type;
 

@@ -13,14 +13,15 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Fan : public tloc::core::component_system::Component_T<Fan>
+  class Fan
+    : public tloc::core::component_system::Component_T<Fan, components::fan>
   {
   public:
-    typedef Fan                                 this_type;
-    typedef Component_T<this_type>              base_type;
-    typedef tl_size                             size_type;
-    typedef f32                                 real_type;
-    typedef math::types::Circle_T<real_type>      ellipse_type;
+    typedef Fan                                     this_type;
+    typedef Component_T<this_type, components::fan> base_type;
+    typedef tl_size                                 size_type;
+    typedef f32                                     real_type;
+    typedef math::types::Circle_T<real_type>        ellipse_type;
 
     typedef core::types::StrongType_T<size_type, 0>   sides;
 

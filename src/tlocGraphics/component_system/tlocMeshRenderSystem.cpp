@@ -23,23 +23,9 @@ namespace tloc { namespace graphics { namespace component_system {
   MeshRenderSystem::error_type MeshRenderSystem::Shutdown()
   { return ErrorSuccess; }
 
-  void MeshRenderSystem::ProcessEntity(const entity_manager* a_mgr,
-                                       const entity_type* a_ent)
+  void MeshRenderSystem::ProcessEntity(const entity_manager* ,
+                                       const entity_type* )
   {
-    using namespace core::component_system;
-    typedef graphics::component_system::Mesh            mesh_type;
-
-    const entity_type* ent = a_ent;
-    ComponentMapper<mesh_type> mesh = ent->GetComponents(components::mesh);
-    TLOC_UNUSED(mesh);
-
-    if (a_ent->HasComponent(components::material))
-    {
-      // Prepare the material
-    }
-
-    // Render
-    TLOC_UNUSED(a_mgr);
   }
 
   void MeshRenderSystem::Pre_OnEvent(const event_type& a_event)

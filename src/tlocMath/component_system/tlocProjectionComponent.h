@@ -8,13 +8,17 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/projection/tlocFrustum.h>
+#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
-  class Projection : public core::component_system::Component_T<Projection>
+  class Projection
+    : public core::component_system::Component_T<Projection,
+                                                 components::projection>
   {
   public:
-    typedef core::component_system::Component_T<Projection>  base_type;
+    typedef core::component_system::Component_T
+      <Projection, components::projection>  base_type;
 
     typedef proj::Frustum                 frustum_type;
 

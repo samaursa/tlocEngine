@@ -47,12 +47,14 @@ namespace tloc { namespace core { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>
 
-  template <typename T_Component>
+  template <typename T_Component, tl_int T_ComponentType>
   class Component_T : private utils::GroupID<T_Component>,
                       public Component
   {
   public:
+    enum { k_component_type = T_ComponentType };
 
+  public:
     typedef Component                             base_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 

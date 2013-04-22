@@ -7,11 +7,11 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Mesh : public IPrimitive
-  {
-  public:
-    Mesh();
-  };
+  //class Mesh : public IPrimitive
+  //{
+  //public:
+  //  Mesh();
+  //};
 
 };};};
 

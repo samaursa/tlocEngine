@@ -4,7 +4,6 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocMath/types/tlocVector4.h>
-#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
@@ -17,7 +16,7 @@ namespace tloc { namespace math { namespace component_system {
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T()
-    : base_type(components::transform)
+    : base_type(k_component_type)
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,
@@ -27,7 +26,7 @@ namespace tloc { namespace math { namespace component_system {
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T(const position_type& a_position)
-    : base_type(components::transform)
+    : base_type(k_component_type)
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,
@@ -40,7 +39,7 @@ namespace tloc { namespace math { namespace component_system {
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T(const position_type& a_position,
                 const orientation_type& a_orientation)
-    : base_type(components::transform)
+    : base_type(k_component_type)
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,

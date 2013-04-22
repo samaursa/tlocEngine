@@ -14,10 +14,12 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Material : public core::component_system::Component_T<Material>
+  class Material
+    : public core::component_system::Component_T<Material, components::material>
   {
   public:
-    typedef core::component_system::Component_T<Material>   base_type;
+    typedef core::component_system::Component_T
+      <Material, components::material>                      base_type;
     typedef gl::ShaderProgramPtr                            shader_prog_ptr;
 
     typedef gl::ShaderOperatorPtr                           shader_op_ptr;

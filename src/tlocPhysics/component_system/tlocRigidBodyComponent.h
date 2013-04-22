@@ -12,6 +12,7 @@
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBody.h>
 #include <tlocPhysics/box2d/tlocRigidBody.inl>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -21,10 +22,13 @@ namespace tloc { namespace physics { namespace component_system {
   /// Note: The component is initialized during the RigidBodySystem
   /// initialization.
   ///-------------------------------------------------------------------------
-  class RigidBody : public core::component_system::Component_T<RigidBody>
+  class RigidBody
+    : public core::component_system::Component_T<RigidBody,
+                                                 components::k_rigidBody>
   {
   public:
-    typedef core::component_system::Component_T<RigidBody>  base_type;
+    typedef core::component_system::Component_T
+      <RigidBody, components::k_rigidBody>                  base_type;
     typedef box2d::rigid_body_def_sptr                      rigid_body_def_sptr;
     typedef box2d::RigidBody                                rigid_body_type;
 

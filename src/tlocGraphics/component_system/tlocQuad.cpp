@@ -6,12 +6,12 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   Quad::Quad()
-    : base_type(component_system::components::quad)
+    : base_type(k_component_type)
     , m_rect(rect_type::width(1.0f), rect_type::height(1.0f))
   { }
 
   Quad::Quad(const rect_type& a_rect)
-    : base_type(component_system::components::quad)
+    : base_type(k_component_type)
     , m_rect(a_rect)
   { }
 

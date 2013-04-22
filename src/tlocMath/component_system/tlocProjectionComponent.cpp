@@ -3,8 +3,6 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocMath/component_system/tlocComponentType.h>
-
 namespace tloc { namespace math { namespace component_system {
 
   namespace
@@ -34,7 +32,7 @@ namespace tloc { namespace math { namespace component_system {
   };
 
   Projection::Projection()
-    : base_type(components::projection)
+    : base_type(k_component_type)
     , m_frustum(GetDefaultFrustum())
   { }
 

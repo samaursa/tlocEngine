@@ -11,12 +11,14 @@
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
   template <typename T_Real>
   class Transform_T
-    : public core::component_system::Component_T<Transform_T<T_Real> >
+    : public core::component_system::Component_T<Transform_T<T_Real>,
+                                                 components::transform>
   {
   public:
     typedef T_Real                    real_type;
@@ -26,7 +28,8 @@ namespace tloc { namespace math { namespace component_system {
     typedef types::Vector3<real_type> position_type;
     typedef types::Matrix3<real_type> orientation_type;
 
-    typedef core::component_system::Component_T<this_type>    base_type;
+    typedef core::component_system::Component_T
+      <this_type, components::transform>    base_type;
 
   public:
     Transform_T();

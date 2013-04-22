@@ -24,13 +24,14 @@ namespace TestingComponentPoolManager
   };
 
   class IntComponent
-    : public core::component_system::Component_T<IntComponent>
+    : public core::component_system::Component_T<IntComponent, k_int>
   {
   public:
-    typedef core::component_system::Component_T<IntComponent>   base_type;
+    typedef core::component_system::Component_T
+      <IntComponent, k_int>                     base_type;
 
   public:
-    IntComponent() : base_type(k_int)
+    IntComponent() : base_type(k_component_type)
     { }
 
     tl_int m_value;
@@ -38,13 +39,14 @@ namespace TestingComponentPoolManager
   typedef core::smart_ptr::SharedPtr<IntComponent>   IntComponentPtr;
 
   class UIntComponent
-    : public core::component_system::Component_T<UIntComponent>
+    : public core::component_system::Component_T<UIntComponent, k_uint>
   {
   public:
-    typedef core::component_system::Component_T<UIntComponent>   base_type;
+    typedef core::component_system::Component_T
+      <UIntComponent, k_uint>                   base_type;
 
   public:
-    UIntComponent() : base_type(k_uint)
+    UIntComponent() : base_type(k_component_type)
     { }
 
     tl_uint m_value;

@@ -31,6 +31,9 @@ namespace tloc { namespace core { namespace component_system {
     bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
+    template <typename T_ComponentType>
+    T_ComponentType&            GetComponent(size_type a_index = 0) const;
+
     entity_id                   GetID() const;
     size_type                   GetIndex() const;
     const component_list_list&  GetComponentsList() const;
@@ -55,6 +58,21 @@ namespace tloc { namespace core { namespace component_system {
     bool                m_active;
     component_list_list m_allComponents;
   };
+
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_ComponentType>
+  T_ComponentType&
+    Entity::GetComponent(size_type a_index) const
+  {
+    ComponentMapper<T_ComponentType> temp =
+      GetComponents(T_ComponentType::k_component_type);
+    return temp[a_index];
+  }
+
+  //------------------------------------------------------------------------
+  // typedef
 
   typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
   typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;

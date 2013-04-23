@@ -186,16 +186,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_handle;
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool)
   {
-    // There does not appear to be a way to change vertical sync on the iOS
-    TLOC_ASSERT(false, "Cannot currently change vertical sync on iOS");
+    // LOG: iOS does not have vertical sync
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool)
   {
-    // There is no concept of a mouse on the iOS
-    TLOC_ASSERT(false, "Function not implemented and needed on iOS");
+    // LOG: SetMouseVisibility() does nothing on iOS
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)
@@ -219,7 +217,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
   {
-    // iOS platform has no title
+    // LOG: iOS platform has no title
   }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const

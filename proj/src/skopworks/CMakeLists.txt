@@ -28,6 +28,8 @@ if (${USER_CURRENT_PROJECT_TYPE} STREQUAL ${USER_PROJECT_TYPE_EXE})
   add_common_libraries(${USER_CURRENT_PROJECT_NAME})
   if (ASSETS_PATH)
     add_apple_plist(${USER_CURRENT_PROJECT_NAME} ${ASSETS_PATH})
+  else()
+    add_apple_plist(${USER_CURRENT_PROJECT_NAME} "")
   endif()
 
   # Link the user defined libraries with this project

@@ -26,7 +26,6 @@ set(TLOC_TESTS_CORE
   tlocProtectedBufferTest.cpp
   tlocQueueTest.cpp
   tlocRandomTest.cpp
-  tlocRangeTest.cpp
   tlocSharedPtrTest.cpp
   tlocStackTest.cpp
   tlocStringTest.cpp

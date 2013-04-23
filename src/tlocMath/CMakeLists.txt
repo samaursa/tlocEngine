@@ -8,6 +8,9 @@ set(TLOC_MATH
   tloc_math.cpp 
   tloc_math.h 
   tloc_math.inl
+  tlocRange.h
+  tlocRange.inl
+  tlocRange.cpp
   )
 
 set(TLOC_MATH_COMPONENT_SYSTEM 

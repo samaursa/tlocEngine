@@ -12,9 +12,6 @@ set(TLOC_ENGINE_CORE
     tlocNoOpt.h
     tlocPair.h
     tlocPair.inl
-    tlocRange.h
-    tlocRange.inl
-    tlocRange.cpp
     tlocStaticAssert.h
 )
 set(TLOC_ENGINE_CORE_BASE_CLASSES

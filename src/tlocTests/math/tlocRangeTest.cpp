@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/tlocRange.h>
+#include <tlocMath/tlocRange.h>
 
 namespace TestingRange
 {
   using namespace tloc;
-  using namespace core;
+  using namespace math;
 
   // Tests are taken from https://bitbucket.org/AraK/range and modified where
   // appropriate
@@ -29,7 +29,7 @@ namespace TestingRange
     CHECK(r2 == r);
   }
 
-  TEST_CASE("core/range/ctors", "")
+  TEST_CASE("math/range/ctors", "")
   {
     TestCtors<range_s8>();
     TestCtors<range_u8>();
@@ -75,7 +75,7 @@ namespace TestingRange
     CHECK(r.back() == 50);
   }
 
-  TEST_CASE("core/range/accessors", "")
+  TEST_CASE("math/range/accessors", "")
   {
     TestAccessors<range_s8>();
     TestAccessors<range_u8>();
@@ -100,7 +100,7 @@ namespace TestingRange
     CHECK(r.size() == 10);
   }
 
-  TEST_CASE("core/range/size", "")
+  TEST_CASE("math/range/size", "")
   {
     TestSize<range_s8>();
     TestSize<range_u8>();
@@ -120,7 +120,7 @@ namespace TestingRange
     CHECK(r.empty());
   }
 
-  TEST_CASE("core/range/empty_full", "")
+  TEST_CASE("math/range/empty_full", "")
   {
     TestEmptyFull<range_s8>();
     TestEmptyFull<range_u8>();
@@ -228,7 +228,7 @@ namespace TestingRange
     CHECK( *( (--itr) + 1) == 20);
   }
 
-  TEST_CASE("core/range/iterators", "")
+  TEST_CASE("math/range/iterators", "")
   {
     TestIterators<range_s8>();
     TestIterators<range_u8>();
@@ -236,7 +236,7 @@ namespace TestingRange
     TestIterators<Rangef>();
   }
 
-  TEST_CASE("core/range/GetRange()", "")
+  TEST_CASE("math/range/GetRange()", "")
   {
     CHECK(Range0to1<f32>().Get().front() == Approx(0.0f));
     CHECK(Range0to1<f32>().Get().back() == Approx(0.9f));
@@ -263,7 +263,7 @@ namespace TestingRange
     CHECK( (Range0to256<s32, p_range::Inclusive>().Get().back()) == 256);
   }
 
-  TEST_CASE("core/range/NegativeRange", "")
+  TEST_CASE("math/range/NegativeRange", "")
   {
     range_s8 r(-5, 5);
     CHECK(r.size() == 10);

@@ -17,6 +17,7 @@ namespace TestingPair
     {
       error::Error err(common_error_types::error_failure);
       err == ErrorFailure; // We checked the error
+      TLOC_UNUSED(err);
       // Should not crash on destruction
 
       // Should crash if uncommented

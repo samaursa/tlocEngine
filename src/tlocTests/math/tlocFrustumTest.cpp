@@ -81,11 +81,11 @@ namespace TestingFrustum
     fr.BuildFrustum();
 
     math_utils::scale_f32_f32::range_small smallR =
-      core::MakeRangef<f32, core::p_range::Inclusive>().Get(-1.0f, 1.0f);
+      math::MakeRangef<f32, math::p_range::Inclusive>().Get(-1.0f, 1.0f);
     math_utils::scale_f32_f32::range_large largeRX =
-      core::MakeRangef<f32, core::p_range::Inclusive>().Get(0.0f, 1024.0f);
+      math::MakeRangef<f32, math::p_range::Inclusive>().Get(0.0f, 1024.0f);
     math_utils::scale_f32_f32::range_large largeRY =
-      core::MakeRangef<f32, core::p_range::Inclusive>().Get(0.0f, 768.0f);
+      math::MakeRangef<f32, math::p_range::Inclusive>().Get(0.0f, 768.0f);
     math_utils::scale_f32_f32 scx(smallR, largeRX);
     math_utils::scale_f32_f32 scy(smallR, largeRY);
 

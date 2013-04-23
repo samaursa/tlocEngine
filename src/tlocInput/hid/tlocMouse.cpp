@@ -2,7 +2,7 @@
 
 #include <tlocCore/types/tlocTypes.inl>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl>
-#include <tlocCore/tlocRange.inl>
+#include <tlocMath/tlocRange.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes

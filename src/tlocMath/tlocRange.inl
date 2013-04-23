@@ -10,7 +10,7 @@
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocMath.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace math {
 
 #define RANGE_T_TEMP    typename T_IntegerType
 #define RANGE_T_PARAMS  T_IntegerType

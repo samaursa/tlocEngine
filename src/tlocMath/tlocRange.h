@@ -10,7 +10,7 @@
 // This class takes its design from https://bitbucket.org/AraK/range by Khaled
 // Alshaya.
 
-namespace tloc { namespace core {
+namespace tloc { namespace math {
 
   template <typename T_IntegerType>
   class Range_T
@@ -26,15 +26,15 @@ namespace tloc { namespace core {
     typedef value_type&             reference;
     typedef value_type const &      const_reference;
 
-    typedef types::StrongType_T<value_type, 0> step_size;
+    typedef core::types::StrongType_T<value_type, 0> step_size;
 
   public:
     class iterator
-      : public core::iterator<bidirectional_iterator_tag, T_IntegerType>
+      : public core::iterator<core::bidirectional_iterator_tag, T_IntegerType>
     {
     public:
       typedef core::iterator
-        <bidirectional_iterator_tag, T_IntegerType> base_type;
+        <core::bidirectional_iterator_tag, T_IntegerType> base_type;
 
       typedef Range_T<T_IntegerType>                range_type;
       typedef typename range_type::value_type       value_type;
@@ -77,11 +77,11 @@ namespace tloc { namespace core {
 
   public:
     class reverse_iterator
-      : public core::iterator<bidirectional_iterator_tag, T_IntegerType>
+      : public core::iterator<core::bidirectional_iterator_tag, T_IntegerType>
     {
     public:
       typedef core::iterator
-        <bidirectional_iterator_tag, T_IntegerType> base_type;
+        <core::bidirectional_iterator_tag, T_IntegerType> base_type;
 
       typedef Range_T<T_IntegerType>                range_type;
       typedef typename range_type::value_type       value_type;

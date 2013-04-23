@@ -2,8 +2,8 @@
 #define _TLOC_MATH_TYPES_NORMALIZER_H_
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/tlocRange.h>
 
+#include <tlocMath/tlocRange.h>
 #include <tlocMath/tlocMathBase.h>
 
 namespace tloc { namespace math { namespace utils {
@@ -21,8 +21,8 @@ namespace tloc { namespace math { namespace utils {
     typedef T_ValueTo                                  large_value_type;
     typedef Scale_T<small_value_type, large_value_type>  this_type;
 
-    typedef core::Range_T<small_value_type>            range_small;
-    typedef core::Range_T<large_value_type>            range_large;
+    typedef math::Range_T<small_value_type>            range_small;
+    typedef math::Range_T<large_value_type>            range_large;
 
     typedef T_CommonType                               common_type;
 

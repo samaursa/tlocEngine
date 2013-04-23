@@ -198,7 +198,8 @@ namespace tloc { namespace core {
     {
       TLOC_STATIC_ASSERT_IS_FLOAT(T);
       T endNum = T_Inclusive::k_value ? a_end + 0.05f : a_end;
-      return Range_T<T>(a_begin, endNum, Range_T<T>::step_size(0.1f));
+
+      return Range_T<T>(a_begin, endNum, typename Range_T<T>::step_size(0.1f));
     }
   };
 
@@ -210,7 +211,7 @@ namespace tloc { namespace core {
     {
       TLOC_STATIC_ASSERT_IS_FLOAT(T);
       T endNum = T_Inclusive::k_value ? 1.05f : 1.0f;
-      return Range_T<T>(0.0f, endNum, Range_T<T>::step_size(0.1f));
+      return Range_T<T>(0.0f, endNum, typename Range_T<T>::step_size(0.1f));
     }
   };
 
@@ -222,7 +223,7 @@ namespace tloc { namespace core {
     {
       TLOC_STATIC_ASSERT_IS_FLOAT(T);
       T endNum = T_Inclusive::k_value ? 1.05f : 1.0f;
-      return Range_T<T>(-1.0f, endNum, Range_T<T>::step_size(0.1f));
+      return Range_T<T>(-1.0f, endNum, typename Range_T<T>::step_size(0.1f));
     }
   };
 

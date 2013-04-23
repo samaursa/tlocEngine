@@ -5,6 +5,7 @@
 
 #include <tlocCore/types/tlocTypes.h>
 #include <limits>
+#include <cmath>
 
 namespace tloc {
 
@@ -113,96 +114,39 @@ namespace tloc {
       typedef type_false  IsNotFloat;
 
       template <typename T>
-      T DoRemainder(T a_num1, T a_num2, IsFloat)
-      {
-        // At least on MSVC fmod returns the wrong answer (e.g. 1.0 % 0.1 is
-        // equal to 0.0f, where as fmod returns 0.0999999)
-        //return fmod(a_num1, a_num2);
-
-        if (a_num2 > a_num1)
-        { return a_num1; }
-
-        tl_size multi = 1;
-        T num2Res = a_num2;
-        while (num2Res < a_num1 ||
-               Approx(num2Res, a_num1))
-        {
-          ++multi;
-          num2Res = a_num2 * multi;
-        }
-
-        num2Res = a_num2 * (multi - 1);
-        return a_num1 - num2Res;
-      }
+      T DoRemainder(T a_num1, T a_num2, IsFloat);
 
       template <typename T>
-      T DoRemainder(T a_num1, T a_num2, IsNotFloat)
-      { return a_num1 % a_num2; }
+      T DoRemainder(T a_num1, T a_num2, IsNotFloat);
 
       template <typename T>
-      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat)
-      {
-        T toCompare = fabs(a_num1 - a_num2);
-        return (toCompare <= a_epsilon);
-      }
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat);
 
       template <typename T>
-      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat)
-      {
-        T toCompare = Abs<T>(a_num1 - a_num2);
-        return (toCompare <= a_epsilon);
-      }
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat);
 
       typedef type_true   IsUnsigned;
       typedef type_false  IsSigned;
 
       template <typename T>
-      T DoAbs(T a_value, IsSigned)
-      {
-        if (a_value < 0)
-        { return -a_value; }
-
-        return a_value;
-      }
+      T DoAbs(T a_value, IsSigned);
 
       template <typename T>
-      T DoAbs(T a_value, IsUnsigned)
-      { return a_value; }
+      T DoAbs(T a_value, IsUnsigned);
+
     };
 
     template <typename T>
-    T Abs(T a_value)
-    {
-      TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isUnsignedInt> s_or_u;
-
-      return priv::DoAbs(a_value, s_or_u());
-    }
+    T Abs(T a_value);
 
     template <typename T>
-    T Remainder(T a_numerator, T a_denominator)
-    {
-      TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoRemainder(a_numerator, a_denominator, float_or_not());
-    }
+    T Remainder(T a_numerator, T a_denominator);
 
     template <typename T>
-    T Epsilon()
-    {
-      TLOC_STATIC_ASSERT_IS_ARITH(T);
-      return std::numeric_limits<T>::epsilon();
-    }
+    T Epsilon();
 
     template <typename T>
-    bool Approx(T a_num1, T a_num2)
-    {
-      TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoApprox(a_num1, a_num2, Epsilon<T>(), float_or_not());
-    }
+    bool Approx(T a_num1, T a_num2);
 
   };
 

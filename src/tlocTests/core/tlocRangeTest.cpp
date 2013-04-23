@@ -22,8 +22,8 @@ namespace TestingRange
     r = range_type(10, 10);
     r = range_type(0, 0);
 
-    r = range_type(0, 10, range_type::step_size(1));
-    r = range_type(0, 0, range_type::step_size(2));
+    r = range_type(0, 10, typename range_type::step_size(1));
+    r = range_type(0, 0, typename range_type::step_size(2));
 
     range_type r2(r);
     CHECK(r2 == r);
@@ -54,23 +54,23 @@ namespace TestingRange
     CHECK(r.front() == 5);
     CHECK(r.back() == 9);
 
-    r = range_type(0, 10, range_type::step_size(2));
+    r = range_type(0, 10, typename range_type::step_size(2));
     CHECK(r.front() == 0);
     CHECK(r.back() == 8);
 
-    r = range_type(0, 10, range_type::step_size(3));
+    r = range_type(0, 10, typename range_type::step_size(3));
     CHECK(r.front() == 0);
     CHECK(r.back() == 9);
 
-    r = range_type(0, 10, range_type::step_size(4));
+    r = range_type(0, 10, typename range_type::step_size(4));
     CHECK(r.front() == 0);
     CHECK(r.back() == 8);
 
-    r = range_type(10, 50, range_type::step_size(10));
+    r = range_type(10, 50, typename range_type::step_size(10));
     CHECK(r.front() == 10);
     CHECK(r.back() == 40);
 
-    r = range_type(10, 51, range_type::step_size(10));
+    r = range_type(10, 51, typename range_type::step_size(10));
     CHECK(r.front() == 10);
     CHECK(r.back() == 50);
   }
@@ -90,11 +90,11 @@ namespace TestingRange
 
     range_type r(0, 10);
     CHECK(r.size() == 10);
-    r = range_type(0, 10, range_type::step_size(2));
+    r = range_type(0, 10, typename range_type::step_size(2));
     CHECK(r.size() == 5);
-    r = range_type(0, 10, range_type::step_size(10));
+    r = range_type(0, 10, typename range_type::step_size(10));
     CHECK(r.size() == 1);
-    r = range_type(0, 10, range_type::step_size(11));
+    r = range_type(0, 10, typename range_type::step_size(11));
     CHECK(r.size() == 1);
     r = range_type(5, 15);
     CHECK(r.size() == 10);
@@ -134,8 +134,8 @@ namespace TestingRange
     typedef T_RangeType range_type;
 
     range_type r(0, 10);
-    range_type::iterator itr = r.begin();
-    range_type::reverse_iterator rItr = r.rbegin();
+    typename range_type::iterator itr = r.begin();
+    typename range_type::reverse_iterator rItr = r.rbegin();
 
     bool testPassed = true;
     for (tl_int i = 0; i < 10; ++i)
@@ -169,7 +169,7 @@ namespace TestingRange
     CHECK( *(rItr - 9) == 9);
     CHECK( *( (--rItr) + 1) == 0);
 
-    r = range_type(0, 10, range_type::step_size(2));
+    r = range_type(0, 10, typename range_type::step_size(2));
     itr = r.begin();
     testPassed = true;
     for (tl_int i = 0; i < 10; i = i+2)
@@ -189,7 +189,7 @@ namespace TestingRange
     }
     CHECK(testPassed);
 
-    r = range_type(5, 6, range_type::step_size(10));
+    r = range_type(5, 6, typename range_type::step_size(10));
     itr = r.begin();
     testPassed = true;
     for (tl_int i = 5; i < 6; i = i + 10)
@@ -199,9 +199,9 @@ namespace TestingRange
     }
     CHECK(testPassed);
 
-    r = range_type(0, 50, range_type::step_size(2));
+    r = range_type(0, 50, typename range_type::step_size(2));
     itr = r.begin();
-    range_type::iterator itrEnd = r.end();
+    typename range_type::iterator itrEnd = r.end();
     tl_int count = 0;
     for (; itr < itrEnd; ++itr)
     {

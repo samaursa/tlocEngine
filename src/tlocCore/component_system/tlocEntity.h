@@ -6,8 +6,9 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/component_system/tlocComponentMapper.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -66,8 +67,8 @@ namespace tloc { namespace core { namespace component_system {
   T_ComponentType&
     Entity::GetComponent(size_type a_index) const
   {
-    ComponentMapper<T_ComponentType> temp =
-      GetComponents(T_ComponentType::k_component_type);
+    typedef ComponentMapper<T_ComponentType> cmapper;
+    cmapper temp = GetComponents(T_ComponentType::k_component_type);
     return temp[a_index];
   }
 

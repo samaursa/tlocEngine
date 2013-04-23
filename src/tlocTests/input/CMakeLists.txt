@@ -24,11 +24,13 @@ add_executable(${TLOC_CURRENT_EXEC_NAME}
 add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   tlocInput
+  tlocMath
   )
 
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   tlocInput
+  tlocMath
   )
 
 if(APPLE)

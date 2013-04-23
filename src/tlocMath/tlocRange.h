@@ -1,5 +1,5 @@
-#ifndef _TLOC_CORE_RANGE_H_
-#define _TLOC_CORE_RANGE_H_
+#ifndef _TLOC_MATH_RANGE_H_
+#define _TLOC_MATH_RANGE_H_
 
 #include <tlocCore/tlocBase.h>
 

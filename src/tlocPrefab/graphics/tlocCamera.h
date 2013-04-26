@@ -15,7 +15,7 @@ namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateCamera(core_cs::EntityManager& a_mgr,
                  core_cs::ComponentPoolManager& a_poolMgr,
-                 const math_proj::Frustum& a_frustum,
+                 const math_proj::frustum_f32& a_frustum,
                  const math_t::Vec3f32 a_position);
 
 };};};

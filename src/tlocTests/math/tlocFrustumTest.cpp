@@ -22,7 +22,7 @@ namespace TestingFrustum
 
   TEST_CASE("graphics/view_projection/Frustum<Perspective>", "")
   {
-    using math_proj::frustum_persp;
+    using math_proj::FrustumPersp;
     using namespace math_proj::p_frustum;
 
     using namespace tloc::math::types;
@@ -31,10 +31,10 @@ namespace TestingFrustum
     AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
     FOV fov(Degree(60.0f), ar, p_FOV::vertical());
 
-    frustum_persp::Params params(fov);
+    FrustumPersp::Params params(fov);
     params.SetFar(1000.0f).SetNear(5.0f);
 
-    frustum_persp fr(params);
+    FrustumPersp fr(params);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();
@@ -44,7 +44,7 @@ namespace TestingFrustum
                             0, 0, -1.0100503, -1,
                             0, 0, -10.050251, 0);
 
-    frustum_persp::real_type tan30 = 0.57735026918962576451f;
+    FrustumPersp::real_type tan30 = 0.57735026918962576451f;
 
     CHECK(fr.GetPlane<Near>()   == Approx(5.0f));
     CHECK(fr.GetPlane<Far>()    == Approx(1000.0f));
@@ -65,7 +65,7 @@ namespace TestingFrustum
 
   TEST_CASE("graphics/view_projection/Frustum<Perspective>/GetRay", "")
   {
-    using math_proj::frustum_persp;
+    using math_proj::FrustumPersp;
     using namespace math_proj::p_frustum;
 
     using namespace tloc::math::types;
@@ -74,23 +74,23 @@ namespace TestingFrustum
     AspectRatio ar( AspectRatio::width(1024.0f), AspectRatio::height(768.0f) );
     FOV fov(Degree(60.0f), ar, p_FOV::vertical());
 
-    frustum_persp::Params params(fov);
+    FrustumPersp::Params params(fov);
     params.SetFar(1000.0f).SetNear(5.0f);
 
-    frustum_persp fr(params);
+    FrustumPersp fr(params);
     fr.BuildFrustum();
 
-    math_utils::scale_f32_f32::range_small smallR =
-      math::MakeRangef<f32, math::p_range::Inclusive>().Get(-1.0f, 1.0f);
-    math_utils::scale_f32_f32::range_large largeRX =
-      math::MakeRangef<f32, math::p_range::Inclusive>().Get(0.0f, 1024.0f);
-    math_utils::scale_f32_f32::range_large largeRY =
-      math::MakeRangef<f32, math::p_range::Inclusive>().Get(0.0f, 768.0f);
-    math_utils::scale_f32_f32 scx(smallR, largeRX);
-    math_utils::scale_f32_f32 scy(smallR, largeRY);
+    math_utils::scale_tl_float::range_small smallR =
+      math::MakeRangef<tl_float, math::p_range::Inclusive>().Get(-1.0f, 1.0f);
+    math_utils::scale_tl_float::range_large largeRX =
+      math::MakeRangef<tl_float, math::p_range::Inclusive>().Get(0.0f, 1024.0f);
+    math_utils::scale_tl_float::range_large largeRY =
+      math::MakeRangef<tl_float, math::p_range::Inclusive>().Get(0.0f, 768.0f);
+    math_utils::scale_tl_float scx(smallR, largeRX);
+    math_utils::scale_tl_float scy(smallR, largeRY);
 
     {
-      math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
+      math_t::Vec3f xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
 
       math_t::Ray3f ray = fr.GetRay(xyz);
 
@@ -108,7 +108,7 @@ namespace TestingFrustum
     }
 
     {
-      math_t::Vec3f32 xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
+      math_t::Vec3f xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
 
       math_t::Ray3f ray = fr.GetRay(xyz);
 
@@ -128,14 +128,14 @@ namespace TestingFrustum
 
   TEST_CASE("graphics/view_projection/Frustum<Orthographic>", "")
   {
-    using math_proj::frustum_ortho;
+    using math_proj::FrustumOrtho;
     using namespace math_proj::p_frustum;
 
-    typedef frustum_ortho::rect_type rect_type;
+    typedef FrustumOrtho::rect_type rect_type;
     rect_type rect(rect_type::left(-0.5f), rect_type::right(0.5f),
       rect_type::top(0.5f), rect_type::bottom(-0.5f));
 
-    frustum_ortho fr(rect, 1.0f, 10.0f);
+    FrustumOrtho fr(rect, 1.0f, 10.0f);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();
@@ -168,17 +168,17 @@ namespace TestingFrustum
     // 'right' is 8/3 (or 2.666666666...). If these tests fail, we need to get
     // better values from Unity.
 
-    using math_proj::frustum_ortho;
+    using math_proj::FrustumOrtho;
     using namespace math_proj::p_frustum;
 
-    typedef frustum_ortho::rect_type rect_type;
+    typedef FrustumOrtho::rect_type rect_type;
     // Unity Project is Orthographic and size is 1. Unity assumes size to be
     // Top. Left and right are then scaled to match the aspect ratio of the
     // screen (which is 1.33333... for 1024x768)
     rect_type rect(rect_type::left(-4.0f/3.0f), rect_type::right(4.0f/3.0f),
                    rect_type::top(1.0f), rect_type::bottom(-1.0f));
 
-    frustum_ortho fr(rect, 0.1f, 10.0f);
+    FrustumOrtho fr(rect, 0.1f, 10.0f);
     fr.BuildFrustum();
 
     math::types::Mat4f projMat = fr.GetProjectionMatrix();
@@ -207,7 +207,7 @@ namespace TestingFrustum
     scale_f32_f32 scy(smallR, largeRY);
 
     {
-      math_t::Vec3f32 xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
+      math_t::Vec3f xyz(scx.ScaleDown(0.0f), scy.ScaleDown(0.0f), -1.0f);
       math_t::Ray3f ray = fr.GetRay(xyz);
 
       CHECK(ray.GetOrigin()[0] == Approx(-4.0f/3.0f));
@@ -216,7 +216,7 @@ namespace TestingFrustum
     }
 
     {
-      math_t::Vec3f32 xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
+      math_t::Vec3f xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
       math_t::Ray3f ray = fr.GetRay(xyz);
 
       CHECK(ray.GetOrigin()[0] == Approx(4.0f/3.0f));

@@ -124,7 +124,7 @@ namespace tloc { namespace graphics { namespace component_system {
                                       const entity_type* a_ent)
   {
     using namespace core::component_system;
-    using math::types::Degree32;
+    using math_t::degree_f32;
 
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Fan       fan_type;
@@ -173,7 +173,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       for (f32 i = 0; i <= numSides; ++i)
       {
-        Vec2f32 newCoord = circ.GetCoord(Degree32(angleInterval * i));
+        Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
         Vec4f32 coord4f =
           newCoord.ConvertTo<Vec4f32, p_tuple::overflow_zero>();
 
@@ -189,7 +189,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_texList.push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
       for (f32 i = 0; i <= numSides; ++i)
       {
-        Vec2f32 newTexCoord = circForTex.GetCoord(Degree32(angleInterval * i));
+        Vec2f32 newTexCoord = circForTex.GetCoord(degree_f32(angleInterval * i));
         newTexCoord += Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
         m_texList.push_back(newTexCoord);
       }

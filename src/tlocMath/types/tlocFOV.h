@@ -15,21 +15,24 @@ namespace tloc { namespace math { namespace types {
     struct vertical{};
   };
 
-  class FOV
+  template <typename T_Real>
+  class FOV_T
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_Real);
+
   public:
-    typedef tl_float                                      value_type;
-    typedef math::types::Radian                           angle_type;
-    typedef math::utils::Pythagoras                       right_tri_type;
-    typedef types::AspectRatio                            ar_type;
+    typedef T_Real                                        value_type;
+    typedef math::types::Radian_T<value_type>             angle_type;
+    typedef math::utils::Pythagoras_T<value_type>         right_tri_type;
+    typedef types::AspectRatio_T<value_type>              ar_type;
 
   public:
     template <typename T_AngleOrientation>
-    FOV(angle_type a_angle, ar_type a_ratio, T_AngleOrientation);
+    FOV_T(angle_type a_angle, ar_type a_ratio, T_AngleOrientation);
 
     template <typename T_AngleOrientation>
-    FOV(const right_tri_type& a_rightTriangle, ar_type a_ratio,
-        T_AngleOrientation);
+    FOV_T(const right_tri_type& a_rightTriangle, ar_type a_ratio,
+          T_AngleOrientation);
 
     template <typename T_AngleOrientation>
     angle_type  Get() const;
@@ -48,8 +51,14 @@ namespace tloc { namespace math { namespace types {
     ar_type     m_aspectRatio;
     angle_type  m_FOVx;
     angle_type  m_FOVy;
-
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef FOV_T<tl_float> FOV;
+  typedef FOV_T<f32>      fov_f32;
+  typedef FOV_T<f32>      fov_f64;
 
 };};};
 

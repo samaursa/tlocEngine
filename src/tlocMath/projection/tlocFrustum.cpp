@@ -121,19 +121,20 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace types;
 
-    real_type top		 = a_rect.GetValue<rect_type::top>();
-    real_type bottom = a_rect.GetValue<rect_type::bottom>();
-    real_type left	 = a_rect.GetValue<rect_type::left>();
-    real_type right	 = a_rect.GetValue<rect_type::right>();
+    real_type top		 = a_rect.template GetValue<typename rect_type::top>();
+    real_type bottom = a_rect.template GetValue<typename rect_type::bottom>();
+    real_type left	 = a_rect.template GetValue<typename rect_type::left>();
+    real_type right	 = a_rect.template GetValue<typename rect_type::right>();
 
-    DoDefinePlanes
+    this->DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
 
-    ar_type::width width(Math<real_type>::Abs(right - left));
-    ar_type::height height(Math<real_type>::Abs(top - bottom));
+    typename ar_type::width width(Math<real_type>::Abs(right - left));
+    typename ar_type::height height(Math<real_type>::Abs(top - bottom));
 
     pyth_type pythHalfAngle =
-      pyth_type( pyth_type::base(a_near), pyth_type::opposite(right) );
+      pyth_type( typename pyth_type::base(a_near),
+                 typename pyth_type::opposite(right) );
     ar_type    ar(width, height);
 
     m_params = Params(fov_type(pythHalfAngle, ar, p_FOV::horizontal() ));
@@ -148,17 +149,17 @@ namespace tloc { namespace math { namespace proj {
     using namespace math::utils;
 
     degree_type halfFOV
-      (m_params.GetFOV().Get
-      <types::p_FOV::vertical>().GetAs<degree_type>() / 2.0f);
+      (m_params.GetFOV().template Get
+      <types::p_FOV::vertical>().template GetAs<degree_type>() / 2.0f);
 
     typedef Pythagoras_T<real_type>   pyth_type;
 
     pyth_type pyth =
-      pyth_type(halfFOV, pyth_type::base(m_params.GetNear()));
+      pyth_type(halfFOV, typename pyth_type::base(m_params.GetNear()));
 
-    real_type top = pyth.GetSide<pyth_type::opposite>();
+    real_type top = pyth.template GetSide<typename pyth_type::opposite>();
     real_type right = m_params.GetAspectRatio().Get() * top;
-    DoDefinePlanes
+    this->DoDefinePlanes
       (plane_args(m_params.GetNear(), m_params.GetFar(),
                   top, -top, -right, right) );
   }
@@ -174,18 +175,18 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = GetPlane<Top>();
-    real_type pBott   = GetPlane<Bottom>();
-    real_type pLeft   = GetPlane<Left>();
-    real_type pRight  = GetPlane<Right>();
-    real_type pNear   = GetPlane<Near>();
-    real_type pFar    = GetPlane<Far>();
+    real_type pTop    = this->template GetPlane<Top>();
+    real_type pBott   = this->template GetPlane<Bottom>();
+    real_type pLeft   = this->template GetPlane<Left>();
+    real_type pRight  = this->template GetPlane<Right>();
+    real_type pNear   = this->template GetPlane<Near>();
+    real_type pFar    = this->template GetPlane<Far>();
 
     real_type RminLReci = 1 / (pRight - pLeft);
     real_type TminBReci = 1 / (pTop - pBott);
     real_type FminNReci = 1 / (pFar - pNear);
 
-    matrix_type& projMatrix = DoGetProjectionMatrix();
+    matrix_type& projMatrix = this->DoGetProjectionMatrix();
 
     projMatrix(0, 0) = 2 * pNear * RminLReci;
     projMatrix(1, 1) = 2 * pNear * TminBReci;
@@ -210,7 +211,7 @@ namespace tloc { namespace math { namespace proj {
     real_type pFar  = m_params.GetFar();
     real_type pNear = m_params.GetNear();
 
-    const matrix_type& projMatrix = GetProjectionMatrix();
+    const matrix_type& projMatrix = this->GetProjectionMatrix();
 
     using math_t::Vector3;
     /* For details, see Saad's Master's thesis Appendix H */
@@ -237,8 +238,8 @@ namespace tloc { namespace math { namespace proj {
     Vector3<real_type> rayDir(rayOrigin);
     rayDir.Norm();
 
-    return ray_type(ray_type::origin(rayOrigin),
-                    ray_type::direction(rayDir));
+    return ray_type(typename ray_type::origin(rayOrigin),
+                    typename ray_type::direction(rayDir));
   }
 
   //------------------------------------------------------------------------
@@ -269,12 +270,12 @@ namespace tloc { namespace math { namespace proj {
     using namespace types;
     using namespace math::utils;
 
-    real_type top		 = a_rect.GetValue<rect_type::top>();
-    real_type bottom = a_rect.GetValue<rect_type::bottom>();
-    real_type left	 = a_rect.GetValue<rect_type::left>();
-    real_type right	 = a_rect.GetValue<rect_type::right>();
+    real_type top		 = a_rect.template GetValue<typename rect_type::top>();
+    real_type bottom = a_rect.template GetValue<typename rect_type::bottom>();
+    real_type left	 = a_rect.template GetValue<typename rect_type::left>();
+    real_type right	 = a_rect.template GetValue<typename rect_type::right>();
 
-    DoDefinePlanes
+    this->DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
   }
 
@@ -289,18 +290,18 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = GetPlane<Top>();
-    real_type pBott   = GetPlane<Bottom>();
-    real_type pLeft   = GetPlane<Left>();
-    real_type pRight  = GetPlane<Right>();
-    real_type pNear   = GetPlane<Near>();
-    real_type pFar    = GetPlane<Far>();
+    real_type pTop    = this->template GetPlane<Top>();
+    real_type pBott   = this->template GetPlane<Bottom>();
+    real_type pLeft   = this->template GetPlane<Left>();
+    real_type pRight  = this->template GetPlane<Right>();
+    real_type pNear   = this->template GetPlane<Near>();
+    real_type pFar    = this->template GetPlane<Far>();
 
     real_type RminLReci = 1 / (pRight - pLeft);
     real_type TminBReci = 1 / (pTop - pBott);
     real_type FminNReci = 1 / (pFar - pNear);
 
-    matrix_type& projMatrix = DoGetProjectionMatrix();
+    matrix_type& projMatrix = this->DoGetProjectionMatrix();
 
     projMatrix(0, 0) =  2 * RminLReci;
     projMatrix(1, 1) =  2 * TminBReci;
@@ -323,10 +324,10 @@ namespace tloc { namespace math { namespace proj {
                 a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
                 "Vector not in Normalized Device Co-ordinates");
 
-    real_type pFar  = GetPlane<p_frustum::Far>();
-    real_type pNear = GetPlane<p_frustum::Near>();
+    real_type pFar  = this->template GetPlane<p_frustum::Far>();
+    real_type pNear = this->template GetPlane<p_frustum::Near>();
 
-    const matrix_type& projMatrix = GetProjectionMatrix();
+    const matrix_type& projMatrix = this->GetProjectionMatrix();
 
     using math_t::Vector3;
     /* For details, see Saad's Master's thesis Appendix H */
@@ -350,8 +351,8 @@ namespace tloc { namespace math { namespace proj {
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
     Vector3<real_type> rayDir(0, 0, -1);
 
-    return ray_type(ray_type::origin(rayOrigin),
-                    ray_type::direction(rayDir));
+    return ray_type(typename ray_type::origin(rayOrigin),
+                    typename ray_type::direction(rayDir));
   }
 
   //------------------------------------------------------------------------

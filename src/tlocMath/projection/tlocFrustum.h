@@ -67,7 +67,7 @@ namespace tloc { namespace math { namespace proj {
                                           GetProjectionMatrix, m_projMatrix);
 
   protected:
-    typedef core::data_structs::Variadic<real_type,
+    typedef typename core::data_structs::Variadic<real_type,
       p_frustum::PlaneCount::k_planeIndex> plane_args;
 
   protected:
@@ -116,6 +116,7 @@ namespace tloc { namespace math { namespace proj {
   public:
     typedef Frustum_TI<T_Real>                          base_type;
     typedef typename base_type::real_type               real_type;
+    typedef typename base_type::plane_args              plane_args;
 
     typedef p_frustum::Perspective                      projection_type;
     typedef Frustum_T<T_Real, projection_type>          this_type;
@@ -181,6 +182,7 @@ namespace tloc { namespace math { namespace proj {
   public:
     typedef Frustum_TI<T_Real>                          base_type;
     typedef typename base_type::real_type               real_type;
+    typedef typename base_type::plane_args              plane_args;
 
     typedef p_frustum::Orthographic                     projection_type;
     typedef Frustum_T<T_Real, projection_type>          this_type;

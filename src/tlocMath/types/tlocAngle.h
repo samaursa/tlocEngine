@@ -191,7 +191,7 @@ namespace tloc { namespace math { namespace types {
     // nothing for Radian or Degree) to allow casting from f32 to f64. An
     // unfortunate side-effect is that f64 to f32 casts will be implicit but
     // hopefully no angle will be big enough
-    typedef Loki::Select<Loki::TypeTraits<T_AngleType>::isFloat,
+    typedef typename Loki::Select<Loki::TypeTraits<T_AngleType>::isFloat,
       value_type, T_AngleType>::Result  cast_to;
 
     DoSetAngleCtor(static_cast<cast_to>(a_angle), resolved_angle_type() );
@@ -203,7 +203,7 @@ namespace tloc { namespace math { namespace types {
     DoSetAngleCtor(T_AngleType a_angle, angle_type)
   {
     TLOC_STATIC_ASSERT(
-      (Loki::IsSameType<value_type, T_AngleType::value_type>::value),
+      (Loki::IsSameType<value_type, typename T_AngleType::value_type>::value),
       value_types_are_not_the_same);
 
     static_cast<derived_type*>(this)->DoSetAngle(a_angle);

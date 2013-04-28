@@ -2,8 +2,8 @@
 #define _TLOC_MATH_TYPES_NORMALIZER_H_
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/tlocRange.h>
 
+#include <tlocMath/tlocRange.h>
 #include <tlocMath/tlocMathBase.h>
 
 namespace tloc { namespace math { namespace utils {
@@ -21,8 +21,8 @@ namespace tloc { namespace math { namespace utils {
     typedef T_ValueTo                                  large_value_type;
     typedef Scale_T<small_value_type, large_value_type>  this_type;
 
-    typedef core::Range_T<small_value_type>            range_small;
-    typedef core::Range_T<large_value_type>            range_large;
+    typedef math::Range_T<small_value_type>            range_small;
+    typedef math::Range_T<large_value_type>            range_large;
 
     typedef T_CommonType                               common_type;
 
@@ -40,116 +40,43 @@ namespace tloc { namespace math { namespace utils {
 
   //------------------------------------------------------------------------
   // typedefs
+  //
+  // Notes: typedefs take the following form: scale_typeFrom_typeTo
+  //        e.g. scale_s8_s16
 
-  typedef Scale_T<s8, s8>     scale_s8_s8;
-  typedef Scale_T<s8, s16>    scale_s8_s16;
-  typedef Scale_T<s8, s32>    scale_s8_s32;
-  typedef Scale_T<s8, s64>    scale_s8_s64;
-  typedef Scale_T<s8, u8>     scale_s8_u8;
-  typedef Scale_T<s8, u16>    scale_s8_u16;
-  typedef Scale_T<s8, u32>    scale_s8_u32;
-  typedef Scale_T<s8, u64>    scale_s8_u64;
-  typedef Scale_T<s8, f32>    scale_s8_f32;
-  typedef Scale_T<s8, f64>    scale_s8_f64;
+#define TLOC_DECLARE_SCALE_TYPES(_type_)\
+  typedef Scale_T<_type_, s8>       scale_ ##_type_ ##_s8;\
+  typedef Scale_T<_type_, s16>      scale_ ##_type_ ##_s16;\
+  typedef Scale_T<_type_, s32>      scale_ ##_type_ ##_s32;\
+  typedef Scale_T<_type_, s64>      scale_ ##_type_ ##_s64;\
+  typedef Scale_T<_type_, u8>       scale_ ##_type_ ##_u8;\
+  typedef Scale_T<_type_, u16>      scale_ ##_type_ ##_u16;\
+  typedef Scale_T<_type_, u32>      scale_ ##_type_ ##_u32;\
+  typedef Scale_T<_type_, u64>      scale_ ##_type_ ##_u64;\
+  typedef Scale_T<_type_, f32>      scale_ ##_type_ ##_f32;\
+  typedef Scale_T<_type_, f64>      scale_ ##_type_ ##_f64;\
+  typedef Scale_T<_type_, tl_uint>  scale_ ##_type_ ##_tl_uint;\
+  typedef Scale_T<_type_, tl_int>   scale_ ##_type_ ##_tl_int;\
+  typedef Scale_T<_type_, tl_float> scale_ ##_type_ ##_tl_float
 
-  typedef Scale_T<s16, s8>    scale_s16_s8;
-  typedef Scale_T<s16, s16>   scale_s16_s16;
-  typedef Scale_T<s16, s32>   scale_s16_s32;
-  typedef Scale_T<s16, s64>   scale_s16_s64;
-  typedef Scale_T<s16, u8>    scale_s16_u8;
-  typedef Scale_T<s16, u16>   scale_s16_u16;
-  typedef Scale_T<s16, u32>   scale_s16_u32;
-  typedef Scale_T<s16, u64>   scale_s16_u64;
-  typedef Scale_T<s16, f32>   scale_s16_f32;
-  typedef Scale_T<s16, f64>   scale_s16_f64;
+  TLOC_DECLARE_SCALE_TYPES(s8);
+  TLOC_DECLARE_SCALE_TYPES(s16);
+  TLOC_DECLARE_SCALE_TYPES(s32);
+  TLOC_DECLARE_SCALE_TYPES(s64);
+  TLOC_DECLARE_SCALE_TYPES(u8);
+  TLOC_DECLARE_SCALE_TYPES(u16);
+  TLOC_DECLARE_SCALE_TYPES(u32);
+  TLOC_DECLARE_SCALE_TYPES(u64);
+  TLOC_DECLARE_SCALE_TYPES(f32);
+  TLOC_DECLARE_SCALE_TYPES(f64);
+  TLOC_DECLARE_SCALE_TYPES(tl_uint);
+  TLOC_DECLARE_SCALE_TYPES(tl_int);
+  TLOC_DECLARE_SCALE_TYPES(tl_float);
 
-  typedef Scale_T<s32, s8>    scale_s32_s8;
-  typedef Scale_T<s32, s16>   scale_s32_s16;
-  typedef Scale_T<s32, s32>   scale_s32_s32;
-  typedef Scale_T<s32, s64>   scale_s32_s64;
-  typedef Scale_T<s32, u8>    scale_s32_u8;
-  typedef Scale_T<s32, u16>   scale_s32_u16;
-  typedef Scale_T<s32, u32>   scale_s32_u32;
-  typedef Scale_T<s32, u64>   scale_s32_u64;
-  typedef Scale_T<s32, f32>   scale_s32_f32;
-  typedef Scale_T<s32, f64>   scale_s32_f64;
+  typedef scale_tl_uint_tl_uint     scale_tl_uint;
+  typedef scale_tl_int_tl_int       scale_tl_int;
+  typedef scale_tl_float_tl_float   scale_tl_float;
 
-  typedef Scale_T<s64, s8>    scale_s64_s8;
-  typedef Scale_T<s64, s16>   scale_s64_s16;
-  typedef Scale_T<s64, s32>   scale_s64_s32;
-  typedef Scale_T<s64, s64>   scale_s64_s64;
-  typedef Scale_T<s64, u8>    scale_s64_u8;
-  typedef Scale_T<s64, u16>   scale_s64_u16;
-  typedef Scale_T<s64, u32>   scale_s64_u32;
-  typedef Scale_T<s64, u64>   scale_s64_u64;
-  typedef Scale_T<s64, f32>   scale_s64_f32;
-  typedef Scale_T<s64, f64>   scale_s64_f64;
-
-  typedef Scale_T<u8, s8>     scale_u8_s8;
-  typedef Scale_T<u8, s16>    scale_u8_s16;
-  typedef Scale_T<u8, s32>    scale_u8_s32;
-  typedef Scale_T<u8, s64>    scale_u8_s64;
-  typedef Scale_T<u8, u8>     scale_u8_u8;
-  typedef Scale_T<u8, u16>    scale_u8_u16;
-  typedef Scale_T<u8, u32>    scale_u8_u32;
-  typedef Scale_T<u8, u64>    scale_u8_u64;
-  typedef Scale_T<u8, f32>    scale_u8_f32;
-  typedef Scale_T<u8, f64>    scale_u8_f64;
-
-  typedef Scale_T<u16, s8>    scale_u16_s8;
-  typedef Scale_T<u16, s16>   scale_u16_s16;
-  typedef Scale_T<u16, s32>   scale_u16_s32;
-  typedef Scale_T<u16, s64>   scale_u16_s64;
-  typedef Scale_T<u16, u8>    scale_u16_u8;
-  typedef Scale_T<u16, u16>   scale_u16_u16;
-  typedef Scale_T<u16, u32>   scale_u16_u32;
-  typedef Scale_T<u16, u64>   scale_u16_u64;
-  typedef Scale_T<u16, f32>   scale_u16_f32;
-  typedef Scale_T<u16, f64>   scale_u16_f64;
-
-  typedef Scale_T<u32, s8>    scale_u32_s8;
-  typedef Scale_T<u32, s16>   scale_u32_s16;
-  typedef Scale_T<u32, s32>   scale_u32_s32;
-  typedef Scale_T<u32, s64>   scale_u32_s64;
-  typedef Scale_T<u32, u8>    scale_u32_u8;
-  typedef Scale_T<u32, u16>   scale_u32_u16;
-  typedef Scale_T<u32, u32>   scale_u32_u32;
-  typedef Scale_T<u32, u64>   scale_u32_u64;
-  typedef Scale_T<u32, f32>   scale_u32_f32;
-  typedef Scale_T<u32, f64>   scale_u32_f64;
-
-  typedef Scale_T<u64, s8>    scale_u64_s8;
-  typedef Scale_T<u64, s16>   scale_u64_s16;
-  typedef Scale_T<u64, s32>   scale_u64_s32;
-  typedef Scale_T<u64, s64>   scale_u64_s64;
-  typedef Scale_T<u64, u8>    scale_u64_u8;
-  typedef Scale_T<u64, u16>   scale_u64_u16;
-  typedef Scale_T<u64, u32>   scale_u64_u32;
-  typedef Scale_T<u64, u64>   scale_u64_u64;
-  typedef Scale_T<u64, f32>   scale_u64_f32;
-  typedef Scale_T<u64, f64>   scale_u64_f64;
-
-  typedef Scale_T<f32, s8>    scale_f32_s8;
-  typedef Scale_T<f32, s16>   scale_f32_s16;
-  typedef Scale_T<f32, s32>   scale_f32_s32;
-  typedef Scale_T<f32, s64>   scale_f32_s64;
-  typedef Scale_T<f32, u8>    scale_f32_u8;
-  typedef Scale_T<f32, u16>   scale_f32_u16;
-  typedef Scale_T<f32, u32>   scale_f32_u32;
-  typedef Scale_T<f32, u64>   scale_f32_u64;
-  typedef Scale_T<f32, f32>   scale_f32_f32;
-  typedef Scale_T<f32, f64>   scale_f32_f64;
-
-  typedef Scale_T<f64, s8>    scale_f64_s8;
-  typedef Scale_T<f64, s16>   scale_f64_s16;
-  typedef Scale_T<f64, s32>   scale_f64_s32;
-  typedef Scale_T<f64, s64>   scale_f64_s64;
-  typedef Scale_T<f64, u8>    scale_f64_u8;
-  typedef Scale_T<f64, u16>   scale_f64_u16;
-  typedef Scale_T<f64, u32>   scale_f64_u32;
-  typedef Scale_T<f64, u64>   scale_f64_u64;
-  typedef Scale_T<f64, f32>   scale_f64_f32;
-  typedef Scale_T<f64, f64>   scale_f64_f64;
 };};};
 
 #endif

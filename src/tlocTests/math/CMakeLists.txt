@@ -11,6 +11,7 @@ set(TLOC_TESTS_MATH
   tlocMatrix4Test.cpp
   tlocMatrixTest.cpp
   tlocPythagorasTest.cpp
+  tlocRangeTest.cpp
   tlocRayTest.cpp
   tlocRectangleTest.cpp
   tlocScaleTest.cpp

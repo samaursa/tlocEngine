@@ -4,6 +4,7 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocRange.h>
 
 #include <tlocMath/component_system/tloc_component_system.h>
 #include <tlocMath/types/tloc_types.h>

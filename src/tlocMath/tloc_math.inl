@@ -6,6 +6,7 @@
 #endif
 
 #include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocRange.inl>
 
 #include <tlocMath/component_system/tloc_component_system.inl>
 #include <tlocMath/types/tloc_types.inl>

@@ -1,11 +1,17 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/error/tlocErrorTypes.h>
 
 namespace TestingPair
 {
   using namespace tloc;
   using namespace core;
+
+  error::Error ReturnError()
+  {
+    return common_error_types::error_already_initialized;
+  }
 
   TEST_CASE("Core/error/Error", "")
   {
@@ -30,6 +36,13 @@ namespace TestingPair
 
        // Will crash but unless we choose to ignore
        err.Ignore();
+    }
+
+    {
+      error::Error err = ErrorSuccess;
+      err = ReturnError();
+
+      err.Ignore();
     }
   }
 }

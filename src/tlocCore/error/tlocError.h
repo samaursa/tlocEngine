@@ -17,11 +17,9 @@ namespace tloc { namespace core { namespace error {
   class Error_TI
   {
   public:
-    typedef Error_TI               this_type;
+    typedef Error_TI              this_type;
     typedef T_Derived             derived_type;
     typedef error_code_type       code_type;
-
-    Error_TI(code_type a_errorType);
 
     bool Succeeded() const;
     bool Failed() const;
@@ -36,6 +34,10 @@ namespace tloc { namespace core { namespace error {
     bool operator!=(const code_type& a_other) const;
 
     TLOC_DECL_AND_DEF_GETTER(code_type, GetErrorCode, m_error);
+
+  protected:
+    Error_TI(const this_type& a_errorType);
+    Error_TI(code_type a_errorType);
 
   private:
     code_type m_error;
@@ -72,7 +74,9 @@ namespace tloc { namespace core { namespace error {
 
     using base_type::Succeeded;
     using base_type::Failed;
+    using base_type::Ignore;
 
+    void operator=(const this_type& a_other);
     void operator=(const code_type& a_code);
 
     using base_type::operator ==;

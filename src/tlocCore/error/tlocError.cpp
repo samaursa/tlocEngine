@@ -11,6 +11,14 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_TI_TEMP>
   Error_TI<ERROR_TI_PARAMS>::
+    Error_TI(const this_type& a_other)
+    : m_error(a_other.m_error)
+  {
+    a_other.Ignore();
+  }
+
+  template <ERROR_TI_TEMP>
+  Error_TI<ERROR_TI_PARAMS>::
     Error_TI(code_type a_errorType)
     : m_error(a_errorType)
   { }
@@ -99,7 +107,7 @@ namespace tloc { namespace core { namespace error {
     : base_type(a_other.GetErrorCode())
     , m_errorCheckedByUser(false)
   {
-    a_other.m_errorCheckedByUser = true;
+    a_other.Ignore();
   }
 
   template <ERROR_T_TEMP>
@@ -110,6 +118,14 @@ namespace tloc { namespace core { namespace error {
     { m_errorCheckedByUser = true; }
 
     TLOC_ASSERT(m_errorCheckedByUser, "Ignored an error!");
+  }
+
+  template <ERROR_T_TEMP>
+  void Error_T<ERROR_T_PARAMS>::
+    operator =(const this_type& a_other)
+  {
+    base_type::operator=(a_other.GetErrorCode() );
+    a_other.Ignore();
   }
 
   template <ERROR_T_TEMP>

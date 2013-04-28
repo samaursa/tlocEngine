@@ -44,7 +44,7 @@ namespace tloc { namespace core { namespace component_system {
     ~ComponentPool_TI()
   {
     DoAssertElementsNotInUse(begin(), end(), 
-                             configs::BuildConfig<>::GetBuildConfigType());
+                             configs::BuildConfig::GetBuildConfigType());
   }
 
   template <COMPONENT_POOL_TEMPS>

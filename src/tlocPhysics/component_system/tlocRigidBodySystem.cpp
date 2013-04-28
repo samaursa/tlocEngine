@@ -191,7 +191,7 @@ namespace tloc { namespace physics { namespace component_system {
     if (currRBInternal == nullptr)
     {
       TLOC_ASSERT(false, "Box2D RigidBody could not be allocated!");
-      return error::error_rigid_body_could_not_be_allocated;
+      return TLOC_ERROR(error::error_rigid_body_could_not_be_allocated);
     }
 
     currRB.DoInitialize(currRBInternal, a_ent);

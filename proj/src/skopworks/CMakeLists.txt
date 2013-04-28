@@ -33,9 +33,11 @@ if (${USER_CURRENT_PROJECT_TYPE} STREQUAL ${USER_PROJECT_TYPE_EXE})
   endif()
 
   # Link the user defined libraries with this project
-  target_link_libraries(${USER_CURRENT_PROJECT_NAME}
-    ${USER_EXECUTABLE_LINK_LIBRARIES}
-    )
+  if(USER_EXECUTABLE_LINK_LIBRARIES)
+    target_link_libraries(${USER_CURRENT_PROJECT_NAME}
+      ${USER_EXECUTABLE_LINK_LIBRARIES}
+      )
+  endif()
 
 elseif(${USER_CURRENT_PROJECT_NAME} STREQUAL ${USER_PROJECT_TYPE_LIB})
 
@@ -46,9 +48,11 @@ elseif(${USER_CURRENT_PROJECT_NAME} STREQUAL ${USER_PROJECT_TYPE_LIB})
 endif()
 
 # Add dependencies (if any)
-add_dependencies(${USER_CURRENT_PROJECT_NAME}
-  ${USER_PROJECT_DEPENDENCIES}
-  )
+if(USER_PROJECT_DEPENDENCIES)
+  add_dependencies(${USER_CURRENT_PROJECT_NAME}
+    ${USER_PROJECT_DEPENDENCIES}
+    )
+endif()
 
 #------------------------------------------------------------------------------
 include(tlocUserVarsPost.cmake)

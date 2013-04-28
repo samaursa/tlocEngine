@@ -6,8 +6,8 @@ set(TLOC_PROJECT_NAME "game" CACHE STRING "The name of your project goes here")
 
 set(internal_FIXME "FIXME!")
 
-set(TLOC_PATH ${internal_FIXME} CACHE PATH "The root folder of the engine repository.")
-set(TLOC_BUILD_PATH ${internal_FIXME} CACHE PATH "The build folder of the engine repository. Make sure the build architecture is the same.")
+set(TLOC_ENGINE_PATH ${internal_FIXME} CACHE PATH "The root folder of the engine repository.")
+set(TLOC_ENGINE_BUILD_PATH ${internal_FIXME} CACHE PATH "The build folder of the engine repository. Make sure the build architecture is the same.")
 set(TLOC_DEP_PATH ${internal_FIXME} CACHE PATH "The tloc dependency repository path goes here. Make sure the build architecture is the same")
 set(TLOC_DEP_BUILD_PATH ${internal_FIXME} CACHE PATH "The build folder of the dependency repository. Make sure the build architecture is the same")
 
@@ -16,8 +16,8 @@ set(USER_IOS_PLIST_PATH "" CACHE FILE "If you have your own custom plist, specif
 
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS
-  TLOC_PATH
-  TLOC_BUILD_PATH
+  TLOC_ENGINE_PATH
+  TLOC_ENGINE_BUILD_PATH
   TLOC_DEP_PATH
   TLOC_DEP_BUILD_PATH
   )

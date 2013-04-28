@@ -49,7 +49,7 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
     if(USER_IOS_PLIST_PATH)
       set(PLIST_PATH ${USER_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -140,23 +140,23 @@ endif()
 
 # common includes
 include_directories(
-    ${TLOC_PATH}/src/
-    ${TLOC_DEP_PATH}/include/
-    ${TLOC_DEP_PATH}/include/Box2D/
-    ${TLOC_DEP_PATH}/include/CATCH/
-    ${USER_PATH}/src/
+  ${TLOC_ENGINE_PATH}/src/
+  ${TLOC_DEP_PATH}/include/
+  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_PATH}/include/CATCH/
+  ${USER_PATH}/src/
 
-    ${CMAKE_SOURCE_DIR}/src/
-    )
+  ${CMAKE_SOURCE_DIR}/src/
+  )
 
 # common link directories
 link_directories(
-  ${TLOC_BUILD_PATH}/src/tlocCore/
-  ${TLOC_BUILD_PATH}/src/tlocGraphics/
-  ${TLOC_BUILD_PATH}/src/tlocMath/
-  ${TLOC_BUILD_PATH}/src/tlocInput/
-  ${TLOC_BUILD_PATH}/src/tlocPhysics/
-  ${TLOC_BUILD_PATH}/src/tlocPrefab/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocCore/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocGraphics/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocMath/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
 
   ${TLOC_DEP_BUILD_PATH}/src/Box2D/
   )

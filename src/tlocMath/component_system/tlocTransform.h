@@ -43,6 +43,8 @@ namespace tloc { namespace math { namespace component_system {
     void              SetPosition(const position_type& a_pos);
     void              SetOrientation(const orientation_type& a_ori);
 
+    this_type         Invert() const;
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (transform_type, GetTransformation, m_transformation);
 

@@ -29,6 +29,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Uniform                         this_type;
     typedef ShaderVariable_TI<this_type>    base_type;
 
+  public:
+    Uniform();
+    Uniform(const this_type& a_other);
+
+    this_type& operator=(const this_type& a_other);
+
   protected:
     template <typename T>
     void DoCheckTypeCompatibility() const

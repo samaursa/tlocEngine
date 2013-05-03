@@ -249,9 +249,16 @@ namespace TestingShaderOperator
       so->AddUniform(uniform);
     }
 
+    // Copy the operator
+    shader_op_ptr soCopy(so);
+    shader_op_ptr soCopy2;
+    soCopy2 = so;
+
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
@@ -631,10 +638,16 @@ namespace TestingShaderOperator
       so->AddAttribute(attribute);
     }
 #endif
+    // Copy the operator
+    shader_op_ptr soCopy(so);
+    shader_op_ptr soCopy2;
+    soCopy2 = so;
 
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess);
+    CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }

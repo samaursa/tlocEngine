@@ -105,17 +105,17 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  auto Transform_T<TRANSFORM_PARAMS>
-    ::Invert() const -> this_type
+  TRANSFORM_TYPE::this_type Transform_T<TRANSFORM_PARAMS>
+    ::Invert() const
   {
     // from: http://stackoverflow.com/a/2625420/368599
     //inv(A) = [ inv(M)   -inv(M) * b ]
     //         [   0            1     ]
 
-    auto rotMat = GetOrientation();
+    orientation_type rotMat = GetOrientation();
     rotMat.Inverse();
 
-    auto posV = GetPosition();
+    position_type posV = GetPosition();
     posV = (rotMat * -1) * posV;
 
     return this_type(position_type(posV), orientation_type(rotMat));

@@ -70,7 +70,7 @@ namespace TestingTransform
 
     // Position is 1, 2, 5 with the above +=
     tf32 tInv = t.Invert();
-    auto tInvTrans = tInv.GetTransformation();
+    Mat4f32 tInvTrans = tInv.GetTransformation();
     CHECK_MATRIX4F(tInvTrans,
       1.0f,  0.0f       ,  0.0f       , 0.0f,
       0.0f, -0.44807363f, -0.89399666f, 0.0f,

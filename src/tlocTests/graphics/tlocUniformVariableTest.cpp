@@ -9,6 +9,29 @@ namespace TestingUniformVariable
   using namespace tloc;
   using namespace tloc::graphics;
 
+  TEST_CASE("Graphics/gl/Uniform/copy", "")
+  {
+    using namespace tloc::core_ds;
+    using namespace tloc::core_conts;
+    using namespace tloc::math_t;
+
+    Vec2f32 v(0.0f, 1.0f);
+
+    gl::Uniform u;
+    u.SetValueAs(v);
+
+    {
+      gl::Uniform ucopy(u);
+      CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+    }
+
+    {
+      gl::Uniform ucopy;
+      ucopy = u;
+      CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+    }
+  }
+
   TEST_CASE("Graphics/gl/Uniform", "")
   {
     using namespace tloc::core_ds;

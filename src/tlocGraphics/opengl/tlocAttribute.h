@@ -31,8 +31,10 @@ namespace tloc { namespace graphics { namespace gl {
     typedef ShaderVariable_TI<this_type>  base_type;
 
   public:
-    Attribute() : m_isAttribArray(false)
-    { }
+    Attribute();
+    Attribute(const this_type& a_other);
+
+    this_type& operator=(const this_type& a_other);
 
     template <typename T>
     derived_type& SetValueAs(const T& a_value)

@@ -1208,7 +1208,8 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::
-    ShaderOperator() : m_flags(k_count)
+    ShaderOperator()
+    : m_flags(k_count)
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1249,7 +1250,7 @@ namespace tloc { namespace graphics { namespace gl {
     for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
         itr != itrEnd; ++itr)
     {
-      if (itr->first.get() == a_attribute.get())
+      if (itr->first == a_attribute)
       { break; }
     }
 
@@ -1301,6 +1302,10 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }
+      else
+      {
+        // LOG: Uniform cannot be set. Did you forget to call PrepareAllUniforms?
+      }
     }
   }
 
@@ -1327,6 +1332,10 @@ namespace tloc { namespace graphics { namespace gl {
       // If we already know which info to pick
       if (itr->second >= 0)
       { DoSet(attrCont[itr->second], *attribPtr); }
+      else
+      {
+        // LOG: Attribute cannot be set. Did you forget to call EnableAllAttributes?
+      }
     }
   }
 
@@ -1339,7 +1348,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
-                "Shader noet enabled - did you forget to call Enable()?");
+                "Shader not enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
@@ -1358,7 +1367,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
-                "Shader noet enabled - did you forget to call Enable()?");
+                "Shader not enabled - did you forget to call Enable()?");
 
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();

@@ -125,16 +125,16 @@ int TLOC_MAIN(int argc, char *argv[])
   gfx_gl::texture_object_sptr to(new gfx_gl::TextureObject());
   to->Initialize(png.GetImage());
 
-  gfx_gl::UniformPtr  u_to(new gfx_gl::Uniform());
+  gfx_gl::uniform_sptr  u_to(new gfx_gl::Uniform());
   u_to->SetName("s_texture").SetValueAs(to);
 
-  gfx_gl::ShaderOperatorPtr so =
-    gfx_gl::ShaderOperatorPtr(new gfx_gl::ShaderOperator());
+  gfx_gl::shader_operator_sptr so =
+    gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());
   so->AddUniform(u_to);
 
   // Finally, set this shader operator as the master operator (aka user operator)
   // in our material.
-  mat.SetMasterShaderOperator(so);
+  mat.AddShaderOperator(so);
 
   //------------------------------------------------------------------------
   // The prefab library has some prefabricated entities for us

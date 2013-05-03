@@ -63,6 +63,14 @@ namespace TestingComponentPoolManager
     typedef typename pool_type::value_type    smart_ptr_value_type;
 
     {
+      // BUGFIX: Component pool sanity check was faulty
+      ComponentPoolManager a_tempMgr;
+      ComponentPoolManager::iterator itr =
+        a_tempMgr.CreateNewPool<smart_ptr_value_type>(a_compType);
+      (*itr)->GetAs<T_PoolType>()->GetNext(); // do nothing with it
+    }
+
+    {
       ComponentPoolManager::iterator compPool =
         a_mgr.CreateNewPool<smart_ptr_value_type>(a_compType);
 
@@ -73,10 +81,9 @@ namespace TestingComponentPoolManager
       typename pool_type::iterator itr = intCompPool->GetNext();
 
       {
-        smart_ptr_value_type& myPtr = itr->GetElement();
-        myPtr =
-          smart_ptr_value_type(new typename smart_ptr_value_type::value_type);
-        myPtr->m_value = 0;
+        itr->SetElement(smart_ptr_value_type
+          (new typename smart_ptr_value_type::value_type) );
+        itr->GetElement()->m_value = 0;
       }
 
       CHECK(itr->GetElement().use_count() == 1);
@@ -84,10 +91,9 @@ namespace TestingComponentPoolManager
       for (tl_int i = 1; i < 10; ++i)
       {
         itr = intCompPool->GetNext();
-        smart_ptr_value_type& myPtr = itr->GetElement();
-        myPtr =
-          smart_ptr_value_type(new typename smart_ptr_value_type::value_type);
-        myPtr->m_value = i;
+        itr->SetElement(smart_ptr_value_type
+          (new typename smart_ptr_value_type::value_type) );
+        itr->GetElement()->m_value = i;
       }
     }
 
@@ -131,4 +137,5 @@ namespace TestingComponentPoolManager
     CHECK(mgr.size() == 2);
     CHECK(mgr.Exists(k_uint));
   }
+
 };

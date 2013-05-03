@@ -2,6 +2,9 @@
 
 namespace tloc { namespace core { namespace error {
 
+  const char* g_noFileName = "NO FILE NAME RECORDED";
+  tl_int      g_lineNumber = -1;
+
   //////////////////////////////////////////////////////////////////////////
   // Error_I
 
@@ -47,10 +50,17 @@ namespace tloc { namespace core { namespace error {
   }
 
   template <ERROR_TI_TEMP>
-  void Error_TI<ERROR_TI_PARAMS>::
-    operator =(const code_type& a_other)
+  tl_int Error_TI<ERROR_TI_PARAMS>::
+    GetLineNumber() const
   {
-    m_error = a_other;
+    return static_cast<const derived_type*>(this)->DoGetLineNumber();
+  }
+
+  template <ERROR_TI_TEMP>
+  const char* Error_TI<ERROR_TI_PARAMS>::
+    GetFileName() const
+  {
+    return static_cast<const derived_type*>(this)->DoGetFileName();
   }
 
   template <ERROR_TI_TEMP>
@@ -96,9 +106,11 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
-    Error_T(code_type a_errorType)
+    Error_T(code_type a_errorType, tl_int a_line, const char* a_file)
     : base_type(a_errorType)
     , m_errorCheckedByUser(false)
+    , m_line(a_line)
+    , m_file(a_file)
   { }
 
   template <ERROR_T_TEMP>
@@ -106,6 +118,8 @@ namespace tloc { namespace core { namespace error {
     Error_T(const this_type& a_other)
     : base_type(a_other.GetErrorCode())
     , m_errorCheckedByUser(false)
+    , m_line(a_other.m_line)
+    , m_file(a_other.m_file)
   {
     a_other.Ignore();
   }
@@ -124,15 +138,10 @@ namespace tloc { namespace core { namespace error {
   void Error_T<ERROR_T_PARAMS>::
     operator =(const this_type& a_other)
   {
-    base_type::operator=(a_other.GetErrorCode() );
+    DoSetErrorCode(a_other.GetErrorCode() );
+    m_line = a_other.m_line;
+    m_file = a_other.m_file;
     a_other.Ignore();
-  }
-
-  template <ERROR_T_TEMP>
-  void Error_T<ERROR_T_PARAMS>::
-    operator =(const code_type& a_code)
-  {
-    base_type::operator=(a_code);
     m_errorCheckedByUser = false;
   }
 
@@ -161,6 +170,16 @@ namespace tloc { namespace core { namespace error {
     DoIgnore() const
   { m_errorCheckedByUser = true; }
 
+  template <ERROR_T_TEMP>
+  tl_int Error_T<ERROR_T_PARAMS>::
+    DoGetLineNumber() const
+  { return m_line; }
+
+  template <ERROR_T_TEMP>
+  const char* Error_T<ERROR_T_PARAMS>::
+    DoGetFileName() const
+  { return m_file; }
+
   //////////////////////////////////////////////////////////////////////////
   // Error_T<>
 
@@ -168,7 +187,7 @@ namespace tloc { namespace core { namespace error {
 #define ERROR_T_RELEASE_PARAMS core_cfg::p_build_config::Release
 
   Error_T<ERROR_T_RELEASE_PARAMS>::
-    Error_T(code_type a_errorType)
+    Error_T(code_type a_errorType, tl_int, const char*)
     : base_type(a_errorType)
   { }
 
@@ -180,6 +199,13 @@ namespace tloc { namespace core { namespace error {
   Error_T<ERROR_T_RELEASE_PARAMS>::
     ~Error_T()
   { }
+
+  void Error_T<ERROR_T_RELEASE_PARAMS>::
+    operator =(const this_type& a_other)
+  {
+    DoSetErrorCode(a_other.GetErrorCode());
+  }
+
 
   void Error_T<ERROR_T_RELEASE_PARAMS>::
     DoSucceeded() const
@@ -200,6 +226,14 @@ namespace tloc { namespace core { namespace error {
   void Error_T<ERROR_T_RELEASE_PARAMS>::
     DoIgnore() const
   { }
+
+  tl_int Error_T<ERROR_T_RELEASE_PARAMS>::
+    DoGetLineNumber() const
+  { return g_lineNumber; }
+
+  const char* Error_T<ERROR_T_RELEASE_PARAMS>::
+    DoGetFileName() const
+  { return g_noFileName; }
 
   //////////////////////////////////////////////////////////////////////////
   // Explicit specializations

@@ -41,7 +41,7 @@ namespace tloc { namespace prefab { namespace physics {
     t_pool * tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->SetElement(TransformPtr(new Transform()) );
 
     Entity* ent = a_mgr.CreateEntity();
     a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
@@ -75,7 +75,7 @@ namespace tloc { namespace prefab { namespace physics {
     rb_pool* rbPool = (*cpool)->GetAs<rb_pool>();
 
     rb_pool::iterator itrRb = rbPool->GetNext();
-    itrRb->GetElement() = RigidBodyPtr(new RigidBody(a_rbDef));
+    itrRb->SetElement(RigidBodyPtr(new RigidBody(a_rbDef)) );
 
     a_mgr.InsertComponent(a_ent, &*(itrRb->GetElement()) );
   }
@@ -103,7 +103,7 @@ namespace tloc { namespace prefab { namespace physics {
     rb_shape_pool* rbShapePool = (*cpool)->GetAs<rb_shape_pool>();
 
     rb_shape_pool::iterator itrRbShape = rbShapePool->GetNext();
-    itrRbShape->GetElement() = RigidBodyShapePtr(new RigidBodyShape(a_rbShape));
+    itrRbShape->SetElement(RigidBodyShapePtr(new RigidBodyShape(a_rbShape)) );
 
     a_mgr.InsertComponent(a_ent, &*(itrRbShape->GetElement()) );
   }
@@ -152,8 +152,8 @@ namespace tloc { namespace prefab { namespace physics {
     rb_listener_pool* rbListenerPool = (*cpool)->GetAs<rb_listener_pool>();
 
     rb_listener_pool::iterator itrRbListener = rbListenerPool->GetNext();
-    itrRbListener->GetElement() =
-      RigidBodyListenerPtr(new RigidBodyListener(a_listener));
+    itrRbListener->SetElement
+      (RigidBodyListenerPtr(new RigidBodyListener(a_listener)) );
 
     a_mgr.InsertComponent(a_ent, &*(itrRbListener->GetElement()) );
   }

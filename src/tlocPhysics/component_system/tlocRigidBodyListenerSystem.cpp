@@ -143,7 +143,7 @@ namespace tloc { namespace physics { namespace component_system {
                   RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
-      return error::error_rigid_body_not_attached;
+      return TLOC_ERROR(error::error_rigid_body_not_attached);
     }
 
     return ErrorSuccess;

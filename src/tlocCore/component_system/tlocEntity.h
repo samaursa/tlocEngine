@@ -75,8 +75,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedef
 
-  typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
-  typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(Entity, entity);
 
   typedef containers::tl_array<Entity*>::type                entity_ptr_array;
   typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;

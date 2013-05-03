@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Open()
   {
     if (m_fileName.HasFilename() == false)
-    { return common_error_types::error_path_incorrect; }
+    { return TLOC_ERROR(common_error_types::error_path_incorrect); }
 
     m_file = detail::DoOpen(m_fileName.GetPath(), access_policy_type(),
                             file_format_type());

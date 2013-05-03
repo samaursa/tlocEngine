@@ -133,7 +133,6 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template class core_sptr::SharedPtr<EventManager>;
-  template class core_sptr::SharedPtr<const EventManager>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EventManager);
 
 };};};

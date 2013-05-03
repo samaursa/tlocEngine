@@ -188,7 +188,7 @@ namespace tloc { namespace graphics { namespace gl {
       DoSetError(logBuffer);
 
       // TODO: Write shader log
-      return error::error_shader_program_link;
+      return TLOC_ERROR(error::error_shader_program_link);
     }
 
     m_flags.Mark(k_shaderLinked);
@@ -240,7 +240,7 @@ namespace tloc { namespace graphics { namespace gl {
     glUseProgram(GetHandle());
     if (gl::Error().Failed())
     {
-      return error::error_shader_program_enable;
+      return TLOC_ERROR(error::error_shader_program_enable);
     }
 
     ResetTextureUnits();
@@ -266,7 +266,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (gl::Error().Failed())
     {
-      return error::error_shader;
+      return TLOC_ERROR(error::error_shader);
     }
 
     return ErrorSuccess;

@@ -80,10 +80,10 @@ namespace tloc { namespace graphics { namespace renderer {
       { return res; }
 
       m_flags.Mark(initialized);
-      return common_error_types::error_success;
+      return TLOC_ERROR(common_error_types::error_success);
     }
 
-    return common_error_types::error_already_initialized;
+    return TLOC_ERROR(common_error_types::error_already_initialized);
   }
 
 };};};

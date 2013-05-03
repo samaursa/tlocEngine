@@ -30,10 +30,10 @@ namespace tloc { namespace graphics { namespace component_system {
     Fan(const ellipse_type& a_ellipse, sides a_sides = sides(30) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(ellipse_type, GetEllipseRef, m_ellipse);
-    TLOC_DECL_AND_DEF_SETTER(ellipse_type, SetEllipse, m_ellipse);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(ellipse_type, SetEllipse, m_ellipse);
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSides, m_sides);
-    TLOC_DECL_AND_DEF_SETTER(size_type, SetNumSides, m_sides);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(size_type, SetNumSides, m_sides);
 
   private:
     ellipse_type m_ellipse;

@@ -52,6 +52,11 @@ namespace TestingMatrix2
     REQUIRE(sizeof(Mat2f64) == (sizeof(f64) * 4));
   }
 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",
     "Test general/basic functionality")
   {

@@ -104,6 +104,23 @@ namespace tloc { namespace math { namespace component_system {
     m_transformation[10] = a_ori[8];
   }
 
+  template <TRANSFORM_TEMPS>
+  auto Transform_T<TRANSFORM_PARAMS>
+    ::Invert() const -> this_type
+  {
+    // from: http://stackoverflow.com/a/2625420/368599
+    //inv(A) = [ inv(M)   -inv(M) * b ]
+    //         [   0            1     ]
+
+    auto rotMat = GetOrientation();
+    rotMat.Inverse();
+
+    auto posV = GetPosition();
+    posV = (rotMat * -1) * posV;
+
+    return this_type(position_type(posV), orientation_type(rotMat));
+  }
+
   //------------------------------------------------------------------------
   // Explicit instantiations
 

@@ -31,12 +31,12 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem(event_manager_sptr a_eventMgr,
                    entity_manager_sptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr, 
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr, 
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr, 
+    virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}

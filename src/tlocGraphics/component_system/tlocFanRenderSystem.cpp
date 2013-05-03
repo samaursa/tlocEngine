@@ -215,20 +215,19 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-        material_type::shader_op_cont::iterator itr, itrEnd;
-        material_type::shader_op_cont& cont = mat.DoGetShaderOpContainerRef();
-
-        for (itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
-        {
-          material_type::shader_op_ptr so = *itr;
-
-          so->EnableAllUniforms(*m_shaderPtr);
-          so->EnableAllAttributes(*m_shaderPtr);
-        }
-
         // Add the mvp
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
+      }
+
+      const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+
+      for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+      {
+        material_type::shader_op_ptr so = *itr;
+
+        so->EnableAllUniforms(*m_shaderPtr);
+        so->EnableAllAttributes(*m_shaderPtr);
       }
 
       so_fan->PrepareAllAttributes(*m_shaderPtr);

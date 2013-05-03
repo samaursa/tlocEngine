@@ -76,40 +76,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef mat_type::shader_op_ptr          shader_op_ptr;
 
-    // Add user's attributes and uniforms
-    if ( currMat.GetMasterShaderOperator() )
+    sp->Enable();
+    for (auto itr = currMat.GetShaderOperators().begin(),
+         itrEnd = currMat.GetShaderOperators().end();
+         itr != itrEnd; ++itr)
     {
-      shader_op_ptr so_user = shader_op_ptr(new shader_op_ptr::value_type());
-
-      {
-        gl::ShaderOperator::uniform_iterator itr, itrEnd;
-        itr = currMat.GetMasterShaderOperator()->begin_uniform();
-        itrEnd = currMat.GetMasterShaderOperator()->end_uniform();
-
-        for (; itr != itrEnd; ++itr)
-        {
-          so_user->AddUniform(itr->first);
-        }
-      }
-
-      {
-        gl::ShaderOperator::attribute_iterator itr, itrEnd;
-        itr = currMat.GetMasterShaderOperator()->begin_attribute();
-        itrEnd = currMat.GetMasterShaderOperator()->end_attribute();
-
-        for (; itr != itrEnd; ++itr)
-        {
-          so_user->AddAttribute(itr->first);
-        }
-      }
-
-      sp->Enable();
-      so_user->PrepareAllUniforms(*sp);
-      so_user->PrepareAllAttributes(*sp);
-      sp->Disable();
-
-      currMat.DoGetShaderOpContainerRef().push_back(so_user);
+      (*itr)->PrepareAllUniforms(*sp);
+      (*itr)->PrepareAllAttributes(*sp);
     }
+    sp->Disable();
 
     return ErrorSuccess;
   }

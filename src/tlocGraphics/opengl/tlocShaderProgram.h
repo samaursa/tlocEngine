@@ -106,7 +106,7 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<ShaderProgram>     ShaderProgramPtr;
+  TLOC_TYPEDEF_SHARED_PTR(ShaderProgram, shader_program);
 
 };};};
 

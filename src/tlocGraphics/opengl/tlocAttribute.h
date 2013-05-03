@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<Attribute>   AttributePtr;
+  TLOC_TYPEDEF_SHARED_PTR(Attribute, attribute);
 
 };};};
 

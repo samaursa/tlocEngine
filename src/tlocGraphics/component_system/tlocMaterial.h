@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -22,9 +23,9 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core::component_system::Component_T
       <Material, components::material>                      base_type;
-    typedef gl::ShaderProgramPtr                            shader_prog_ptr;
+    typedef gl::shader_program_sptr                         shader_prog_ptr;
 
-    typedef gl::ShaderOperatorPtr                           shader_op_ptr;
+    typedef gl::shader_operator_sptr                        shader_op_ptr;
     typedef core::containers::tl_array<shader_op_ptr>::type shader_op_cont;
 
     typedef shader_op_cont::iterator                  shader_op_cont_itr;
@@ -66,6 +67,13 @@ namespace tloc { namespace graphics { namespace component_system {
     shader_prog_ptr        m_shaderProgram;
     shader_op_cont         m_shaderOperators;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core::smart_ptr::SharedPtr<Material>    MaterialPtr;
+  typedef core::component_system::
+    ComponentPool_TI<MaterialPtr>                 MaterialPool;
 
 };};};
 

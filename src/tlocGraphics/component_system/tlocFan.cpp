@@ -18,9 +18,9 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Fan>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Fan);
 
   // Pool
-  template class core::component_system::ComponentPool_TI<FanPtr>;
+  template class core::component_system::ComponentPool_TI<fan_sptr>;
 
 };};};

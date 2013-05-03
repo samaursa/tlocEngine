@@ -119,7 +119,7 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<Uniform>   UniformPtr;
+  TLOC_TYPEDEF_SHARED_PTR(Uniform, uniform);
 
 };};};
 

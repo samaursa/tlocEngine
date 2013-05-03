@@ -11,11 +11,11 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::ComponentPoolManager;
 
   using tloc::graphics::component_system::Quad;
-  using tloc::graphics::component_system::QuadPtr;
+  using tloc::graphics::component_system::quad_sptr;
 
   using math_t::Rectangle_T;
   using math_cs::Transform;
-  using math_cs::TransformPtr;
+  using math_cs::transform_sptr;
 
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
@@ -31,7 +31,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // Create the quad (and the quad pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(quad) == false)
-    { cpool = a_poolMgr.CreateNewPool<QuadPtr>(quad); }
+    { cpool = a_poolMgr.CreateNewPool<quad_sptr>(quad); }
     else
     { cpool = a_poolMgr.GetPool(quad); }
 
@@ -40,12 +40,12 @@ namespace tloc { namespace prefab { namespace graphics {
     quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->SetElement(QuadPtr(new Quad(a_rect) ));
+    itrQuad->SetElement(quad_sptr(new Quad(a_rect) ));
 
     // Create the transform component (and the transform pool if necessary)
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
@@ -54,7 +54,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(TransformPtr(new Transform()) );
+    itrTransform->SetElement(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

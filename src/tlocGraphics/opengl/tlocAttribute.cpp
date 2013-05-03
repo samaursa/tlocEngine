@@ -26,6 +26,6 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   //
 
-  template class tloc::core::smart_ptr::SharedPtr<Attribute>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Attribute);
 
 };};};

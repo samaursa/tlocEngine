@@ -1,5 +1,6 @@
 #include "tlocFanRenderSystem.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
@@ -35,13 +36,13 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     m_vertList.reserve(30);
 
-    m_vData = gl::AttributePtr(new gl::Attribute());
+    m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
 
-    m_tData = gl::AttributePtr(new gl::Attribute());
+    m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
 
-    m_projectionOperator = gl::ShaderOperatorPtr(new gl::ShaderOperator());
+    m_projectionOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   void FanRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -113,7 +114,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix.Mul(viewMat);
 
-    gl::UniformPtr vpMat(new gl::Uniform());
+    gl::uniform_sptr vpMat(new gl::Uniform());
     vpMat->SetName("u_mvp").SetValueAs(m_vpMatrix);
 
     m_projectionOperator->RemoveAllUniforms();
@@ -235,8 +236,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
       glDrawArrays(GL_TRIANGLE_FAN, 0,
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));
-
-      //sp->Disable();
     }
   }
 
@@ -250,5 +249,10 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr.reset();
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  template class core_sptr::SharedPtr<FanRenderSystem>;
 
 };};};

@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
   public:
     typedef ShaderOperator          this_type;
-    typedef UniformPtr              uniform_ptr_type;
-    typedef AttributePtr            attribute_ptr_type;
+    typedef uniform_sptr            uniform_ptr_type;
+    typedef attribute_sptr          attribute_ptr_type;
     typedef core::error::Error      error_type;
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
@@ -87,7 +87,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   };
 
-  typedef tloc::core::smart_ptr::
-          SharedPtr<ShaderOperator>  ShaderOperatorPtr;
+  TLOC_TYPEDEF_SHARED_PTR(ShaderOperator, shader_operator);
 
 };};};

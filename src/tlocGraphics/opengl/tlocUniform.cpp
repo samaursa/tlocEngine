@@ -24,6 +24,6 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  template class tloc::core::smart_ptr::SharedPtr<Uniform>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Uniform);
 
 };};};

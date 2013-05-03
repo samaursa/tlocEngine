@@ -92,9 +92,9 @@ namespace TestingShaderOperator
 
   struct fixture
   {
-    typedef gl::UniformPtr          uniform_ptr_type;
-    typedef gl::AttributePtr        attribute_ptr_type;
-    typedef gl::ShaderOperatorPtr   shader_op_ptr;
+    typedef gl::uniform_sptr           uniform_ptr_type;
+    typedef gl::attribute_sptr         attribute_ptr_type;
+    typedef gl::shader_operator_sptr   shader_op_ptr;
   };
 
   TEST_CASE_METHOD(fixture, "Graphics/ShaderOperator/Uniforms", "")

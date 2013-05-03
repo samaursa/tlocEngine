@@ -350,6 +350,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   // SmartPtr
 
-  template class tloc::core::smart_ptr::SharedPtr<ShaderProgram>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);
 
 };};};

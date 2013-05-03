@@ -1,5 +1,8 @@
 #include "tlocMaterial.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+
 namespace tloc { namespace graphics { namespace component_system {
 
   Material::Material()
@@ -57,5 +60,11 @@ namespace tloc { namespace graphics { namespace component_system {
   // Explicit Instantiation
 
   template class core::containers::Array<Material::shader_op_ptr>;
+
+  // SmartPtr
+  template class core::smart_ptr::SharedPtr<Material>;
+
+  // Pool
+  template class core::component_system::ComponentPool_TI<MaterialPtr>;
 
 };};};

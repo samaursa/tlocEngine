@@ -5,6 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -39,7 +40,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef math::types::Mat4f32                              matrix_type;
 
-    typedef gl::ShaderProgramPtr                              shader_prog_ptr;
+    typedef gl::shader_program_sptr                           shader_prog_ptr;
 
   public:
     QuadRenderSystem(event_manager_sptr a_eventMgr,
@@ -69,14 +70,19 @@ namespace tloc { namespace graphics { namespace component_system {
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
 
-    gl::ShaderOperatorPtr   m_projectionOperator;
+    gl::shader_operator_sptr m_projectionOperator;
 
     // Cache
     vec3_cont_type      m_quadList;
     vec2_cont_type      m_texList;
-    gl::AttributePtr    m_vData;
-    gl::AttributePtr    m_tData;
+    gl::attribute_sptr  m_vData;
+    gl::attribute_sptr  m_tData;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core_sptr::SharedPtr<QuadRenderSystem>  quad_render_system_sptr;
 
 };};};
 

@@ -33,9 +33,13 @@ namespace tloc { namespace graphics { namespace component_system {
     rect_type m_rect;
   };
 
-  typedef core::smart_ptr::SharedPtr<Quad>    QuadPtr;
+  //------------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(Quad, quad);
+
   typedef core::component_system::
-    ComponentPool_TI<QuadPtr>                 QuadPool;
+    ComponentPool_TI<quad_sptr>                 QuadPool;
 
 };};};
 

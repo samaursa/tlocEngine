@@ -3,6 +3,7 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -33,12 +34,12 @@ namespace tloc { namespace graphics { namespace component_system {
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
   {
-    m_vData = gl::AttributePtr(new gl::Attribute());
+    m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
-    m_tData = gl::AttributePtr(new gl::Attribute());
+    m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
 
-    m_projectionOperator = gl::ShaderOperatorPtr(new gl::ShaderOperator());
+    m_projectionOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -119,7 +120,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix.Mul(viewMat);
 
-    gl::UniformPtr vpMat(new gl::Uniform());
+    gl::uniform_sptr vpMat(new gl::Uniform());
     vpMat->SetName("u_mvp").SetValueAs(m_vpMatrix);
 
     m_projectionOperator->RemoveAllUniforms();
@@ -243,5 +244,10 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr.reset();
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  template class core_sptr::SharedPtr<QuadRenderSystem>;
 
 };};};

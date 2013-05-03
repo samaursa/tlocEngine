@@ -1,5 +1,6 @@
 #include "tlocMaterialSystem.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl>
 #include <tlocCore/component_system/tlocEntity.inl>
@@ -96,5 +97,10 @@ namespace tloc { namespace graphics { namespace component_system {
   void MaterialSystem::ProcessEntity(const entity_manager*,
                                      const entity_type* )
   { }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  template class core_sptr::SharedPtr<MaterialSystem>;
 
 };};};

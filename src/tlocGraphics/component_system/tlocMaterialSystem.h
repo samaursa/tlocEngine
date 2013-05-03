@@ -5,6 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -45,6 +46,11 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core_sptr::SharedPtr<MaterialSystem>  material_system_sptr;
 
 };};};
 

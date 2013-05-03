@@ -40,9 +40,9 @@ namespace tloc { namespace graphics { namespace component_system {
     size_type    m_sides;
   };
 
-  typedef core::smart_ptr::SharedPtr<Fan>        FanPtr;
+  TLOC_TYPEDEF_SHARED_PTR(Fan, fan);
   typedef core::component_system::
-    ComponentPool_TI<FanPtr>                     FanPool;
+    ComponentPool_TI<fan_sptr>                     FanPool;
 
 };};};
 

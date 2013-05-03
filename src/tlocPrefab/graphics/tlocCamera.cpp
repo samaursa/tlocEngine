@@ -28,7 +28,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // Get or create the transform pool
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
@@ -37,11 +37,11 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(TransformPtr32(new Transformf32(a_pos)) );
+    itrTransform->SetElement(transform_f32_sptr(new Transformf32(a_pos)) );
 
     // Get or create the projection pool
     if (a_poolMgr.Exists(projection) == false)
-    { cpool = a_poolMgr.CreateNewPool<ProjectionPtr>(projection); }
+    { cpool = a_poolMgr.CreateNewPool<projection_sptr>(projection); }
     else
     { cpool = a_poolMgr.GetPool(projection); }
 
@@ -50,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
     p_pool* pPool = (*cpool)->GetAs<p_pool>();
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->SetElement(ProjectionPtr(new Projection(a_frustum)) );
+    itrProjection->SetElement(projection_sptr(new Projection(a_frustum)) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

@@ -1292,7 +1292,7 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
-      UniformPtr uniformPtr = itr->first;
+      uniform_sptr uniformPtr = itr->first;
 
       if (uniformPtr->GetType() == GL_SAMPLER_2D)
       {
@@ -1327,7 +1327,7 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     {
-      AttributePtr attribPtr = itr->first;
+      attribute_sptr attribPtr = itr->first;
 
       // If we already know which info to pick
       if (itr->second >= 0)
@@ -1406,9 +1406,9 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // explicit instantiation
 
-  template class core::smart_ptr::SharedPtr<ShaderOperator>;
-  template class Array<UniformPtr>;
-  template class Array<AttributePtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
+  template class Array<uniform_sptr>;
+  template class Array<uniform_sptr>;
 
 
 };};};

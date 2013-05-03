@@ -32,7 +32,7 @@ namespace tloc { namespace prefab { namespace physics {
     comp_pool_ptr cpool;
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
@@ -41,7 +41,7 @@ namespace tloc { namespace prefab { namespace physics {
     t_pool * tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(TransformPtr(new Transform()) );
+    itrTransform->SetElement(transform_sptr(new Transform()) );
 
     Entity* ent = a_mgr.CreateEntity();
     a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );

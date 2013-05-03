@@ -15,10 +15,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_rect(a_rect)
   { }
 
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Quad>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Quad);
 
   // Pool
-  template class core::component_system::ComponentPool_TI<QuadPtr>;
+  template class core::component_system::ComponentPool_TI<quad_sptr>;
 
 };};};

@@ -30,7 +30,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // Create the fan (and the fan pool if necessary)
     comp_pool_ptr cpool;
     if (a_poolMgr.Exists(fan) == false)
-    { cpool = a_poolMgr.CreateNewPool<FanPtr>(fan); }
+    { cpool = a_poolMgr.CreateNewPool<fan_sptr>(fan); }
     else
     { cpool = a_poolMgr.GetPool(fan); }
 
@@ -39,10 +39,10 @@ namespace tloc { namespace prefab { namespace graphics {
     fan_pool* fanPool = (*cpool)->GetAs<fan_pool>();
 
     fan_pool::iterator itr = fanPool->GetNext();
-    itr->SetElement(FanPtr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+    itr->SetElement(fan_sptr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
     else
     { cpool = a_poolMgr.GetPool(transform); }
 
@@ -51,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(TransformPtr(new Transform()) );
+    itrTransform->SetElement(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

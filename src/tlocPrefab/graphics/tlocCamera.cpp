@@ -37,7 +37,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr32(new Transformf32(a_pos));
+    itrTransform->SetElement(TransformPtr32(new Transformf32(a_pos)) );
 
     // Get or create the projection pool
     if (a_poolMgr.Exists(projection) == false)
@@ -50,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
     p_pool* pPool = (*cpool)->GetAs<p_pool>();
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->GetElement() = ProjectionPtr(new Projection(a_frustum));
+    itrProjection->SetElement(ProjectionPtr(new Projection(a_frustum)) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

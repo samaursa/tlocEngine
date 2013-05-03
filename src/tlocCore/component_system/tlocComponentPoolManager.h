@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/memory/tlocMemoryPool.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/utilities/tlocType.h>
 
@@ -139,6 +140,11 @@ namespace tloc { namespace core { namespace component_system {
   private:
     cont_type m_pools;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core_sptr::SharedPtr<ComponentPoolManager>  component_pool_manager_sptr;
 
 };};};
 

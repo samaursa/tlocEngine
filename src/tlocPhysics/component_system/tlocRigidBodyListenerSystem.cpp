@@ -2,6 +2,7 @@
 
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
@@ -213,5 +214,10 @@ namespace tloc { namespace physics { namespace component_system {
     m_allContactEvents[contact::k_end].push_back(a_event);
     return false;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);
 
 };};};

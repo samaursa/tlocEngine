@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Quad(const rect_type& a_rect);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(rect_type, GetRectangleRef, m_rect);
-    TLOC_DECL_AND_DEF_SETTER(rect_type, SetRectangle, m_rect);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(rect_type, SetRectangle, m_rect);
 
   private:
     rect_type m_rect;

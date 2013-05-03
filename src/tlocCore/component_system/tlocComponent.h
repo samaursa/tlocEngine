@@ -14,6 +14,11 @@ namespace tloc { namespace core { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Component
 
+  // This setter should be used in components or SetUpdateRequired() must be
+  // called manually
+#define TLOC_DECL_AND_DEF_COMPONENT_SETTER(_type_, _name_, _var_)\
+  TLOC_DECL_SETTER(_type_, _name_) { SetUpdateRequired(true); _var_ = a_in; }
+
   class Component : private utils::ObjectCounter<Component>
   {
   public:
@@ -21,19 +26,30 @@ namespace tloc { namespace core { namespace component_system {
     typedef utils::ObjectCounter<Component> counter_type;
     typedef counter_type::size_type         counter_size_type;
 
-    Component(component_type a_type) : m_type(a_type) {}
+    Component(component_type a_type)
+      : m_type(a_type)
+      , m_updateRequired(true)
+    { }
 
+    Component(const Component& a_other)
+      : m_type(a_other.m_type)
+      , m_updateRequired(true)
+    { }
 
     // TODO: Add Activate() Deactivate() functions
     // virtual void Activate() { }
     // virtual void Deactivate() { };
 
     TLOC_DECL_AND_DEF_GETTER(component_type, GetType, m_type);
+    TLOC_DECL_AND_DEF_GETTER(bool, GetUpdateRequired, m_updateRequired);
     TLOC_DECL_AND_DEF_GETTER(counter_size_type, GetTotalComponents,
                              counter_type::GetCurrentObjectCount());
 
+    TLOC_DECL_AND_DEF_SETTER(bool, SetUpdateRequired, m_updateRequired);
+
   protected:
     component_type m_type;
+    bool           m_updateRequired;
   };
 
   //------------------------------------------------------------------------

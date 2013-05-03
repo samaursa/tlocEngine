@@ -15,7 +15,7 @@ namespace tloc { namespace physics { namespace component_system{
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 
-  template class core::smart_ptr::SharedPtr<RigidBody>;
-  template class core::component_system::ComponentPool_TI<RigidBodyPtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
+  template class core::component_system::ComponentPool_TI<rigid_body_sptr>;
 
 };};};

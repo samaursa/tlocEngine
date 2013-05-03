@@ -4,6 +4,7 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/containers/tlocArray.h>
 
@@ -50,13 +51,13 @@ namespace tloc { namespace physics { namespace component_system {
     virtual error_type Pre_Initialize();
     virtual error_type Post_Shutdown();
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr, 
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr, 
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(const entity_manager* a_mgr, 
+    virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
@@ -73,6 +74,11 @@ namespace tloc { namespace physics { namespace component_system {
     physics_manager* m_physicsMgr;
     contact_event_list_list m_allContactEvents;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(RigidBodyListenerSystem, rigid_body_listener_system);
 
 };};};
 

@@ -124,5 +124,15 @@ namespace TestingAnyType
       CHECK_MATH_VEC3(a.Cast<MathVec>(), 4, 5, 6);
       CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
     }
+
+    {
+      // Bug fix
+      types::Any a, b;
+      a = MathVec(1, 2, 3);
+      b = a;
+
+      CHECK_MATH_VEC3(a.Cast<MathVec>(), 1, 2, 3);
+      CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
+    }
   }
 };

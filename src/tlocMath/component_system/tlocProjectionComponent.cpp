@@ -3,24 +3,22 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
-#include <tlocMath/component_system/tlocComponentType.h>
-
 namespace tloc { namespace math { namespace component_system {
 
   namespace
   {
-    typedef math_proj::frustum_persp          frustum_type;
+    typedef math_proj::frustum_persp_f32      frustum_type;
     typedef frustum_type::param_type          frustum_param_type;
 
     frustum_type GetDefaultFrustum()
     {
-      using math::types::Degree;
+      using math_t::degree_f32;
 
       typedef frustum_type::fov_type  fov_type;
       typedef fov_type::ar_type       ar_type;
 
       ar_type   ar(ar_type::width(800), ar_type::height(600));
-      fov_type  fov(Degree(70.0f), ar, types::p_FOV::vertical());
+      fov_type  fov(degree_f32(70.0f), ar, types::p_FOV::vertical());
 
       frustum_param_type params(fov);
       params.SetNear(1.0f);
@@ -34,7 +32,7 @@ namespace tloc { namespace math { namespace component_system {
   };
 
   Projection::Projection()
-    : base_type(components::projection)
+    : base_type(k_component_type)
     , m_frustum(GetDefaultFrustum())
   { }
 

@@ -17,17 +17,16 @@ namespace tloc { namespace core { namespace error {
   class Error_TI
   {
   public:
-    typedef Error_TI               this_type;
+    typedef Error_TI              this_type;
     typedef T_Derived             derived_type;
     typedef error_code_type       code_type;
-
-    Error_TI(code_type a_errorType);
 
     bool Succeeded() const;
     bool Failed() const;
     void Ignore() const;
 
-    void operator=(const code_type& a_code);
+    tl_int      GetLineNumber() const;
+    const char* GetFileName() const;
 
     bool operator==(const this_type& a_other) const;
     bool operator==(const code_type& a_other) const;
@@ -36,6 +35,15 @@ namespace tloc { namespace core { namespace error {
     bool operator!=(const code_type& a_other) const;
 
     TLOC_DECL_AND_DEF_GETTER(code_type, GetErrorCode, m_error);
+
+  protected:
+    Error_TI(const this_type& a_errorType);
+    Error_TI(code_type a_errorType);
+
+    TLOC_DECL_AND_DEF_SETTER(code_type, DoSetErrorCode, m_error);
+
+  private:
+    void operator =(const this_type& a_other);
 
   private:
     code_type m_error;
@@ -66,17 +74,21 @@ namespace tloc { namespace core { namespace error {
     typedef typename base_type::code_type code_type;
 
   public:
-    Error_T(code_type a_errorType);
+    Error_T(code_type a_errorType, tl_int a_line, const char* a_file);
     Error_T(const this_type& a_other);
     ~Error_T();
 
-    using base_type::Succeeded;
-    using base_type::Failed;
-
-    void operator=(const code_type& a_code);
+    void operator=(const this_type& a_other);
 
     using base_type::operator ==;
     using base_type::operator !=;
+
+    using base_type::Succeeded;
+    using base_type::Failed;
+    using base_type::Ignore;
+
+    using base_type::GetLineNumber;
+    using base_type::GetFileName;
 
     using base_type::GetErrorCode;
 
@@ -87,8 +99,15 @@ namespace tloc { namespace core { namespace error {
     void DoNotEqual() const;
     void DoIgnore() const;
 
+    tl_int      DoGetLineNumber() const;
+    const char* DoGetFileName() const;
+
+    using base_type::DoSetErrorCode;
+
   private:
-    mutable bool m_errorCheckedByUser;
+    mutable bool          m_errorCheckedByUser;
+    mutable tl_int        m_line;
+    mutable const char*   m_file;
 
   };
 
@@ -109,16 +128,21 @@ namespace tloc { namespace core { namespace error {
     typedef base_type::code_type              code_type;
 
   public:
-    Error_T(code_type a_errorType);
+    Error_T(code_type a_errorType, tl_int a_line, const char* a_file);
     Error_T(const this_type& a_other);
     ~Error_T();
 
-    using base_type::Succeeded;
-    using base_type::Failed;
+    void operator=(const this_type& a_other);
 
-    using base_type::operator =;
     using base_type::operator ==;
     using base_type::operator !=;
+
+    using base_type::Succeeded;
+    using base_type::Failed;
+    using base_type::Ignore;
+
+    using base_type::GetLineNumber;
+    using base_type::GetFileName;
 
     using base_type::GetErrorCode;
 
@@ -128,12 +152,17 @@ namespace tloc { namespace core { namespace error {
     void DoEqual() const;
     void DoNotEqual() const;
     void DoIgnore() const;
+
+    tl_int      DoGetLineNumber() const;
+    const char* DoGetFileName() const;
+
+    using base_type::DoSetErrorCode;
   };
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
-  typedef Error_T<configs::BuildConfig<>::build_config_type> Error;
+  typedef Error_T<configs::BuildConfig::build_config_type> Error;
 
 
 };};};
@@ -142,8 +171,11 @@ namespace tloc { namespace core { namespace error {
 // Macros for the basic error types
 
 #define ErrorSuccess \
-  tloc::core::error::Error(tloc::common_error_types::error_success)
+  tloc::core::error::Error(tloc::common_error_types::error_success, __LINE__, __FILE__)
 #define ErrorFailure \
-  tloc::core::error::Error(tloc::common_error_types::error_failure)
+  tloc::core::error::Error(tloc::common_error_types::error_failure, __LINE__, __FILE__)
+
+#define TLOC_ERROR(_errorCode_)\
+  tloc::core::error::Error(_errorCode_, __LINE__, __FILE__)
 
 #endif

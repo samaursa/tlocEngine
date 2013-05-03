@@ -24,7 +24,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     if ( (a_buffer == nullptr) || a_dim[0] == 0 || a_dim[1] == 0 ||
          (a_channels == 0) )
-    { return error_type(common_error_types::error_no_data); }
+    { return TLOC_ERROR(common_error_types::error_no_data); }
 
     // Check if a_size can accommodate a whole number of Color*
     TLOC_ASSERT( ((a_channels % sizeof(color_type)) == 0),
@@ -62,8 +62,8 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // Explicitly instantiate the container
 
-  template class core::containers::Array<types::Color>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
 
-  template class core::smart_ptr::SharedPtr<Image>;
+  template class core::containers::Array<types::Color>;
 
 };};};

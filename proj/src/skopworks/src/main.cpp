@@ -35,7 +35,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
   win.Register(&winCallback);
   win.Create( gfx_win::Window::graphics_mode::Properties(1024, 768),
-    gfx_win::WindowSettings("tlocTexturedFan") );
+    gfx_win::WindowSettings("2LoC Engine") );
 
   //------------------------------------------------------------------------
   // Initialize renderer
@@ -116,7 +116,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
   gfx_med::ImageLoaderPng png;
   core_io::Path path( (core_str::String(GetAssetsPath()) +
-    "/images/skopworks_logo.png").c_str() );
+    "/images/engine_logo.png").c_str() );
 
   if (png.Load(path) != ErrorSuccess)
   { TLOC_ASSERT(false, "Image did not load!"); }
@@ -139,8 +139,8 @@ int TLOC_MAIN(int argc, char *argv[])
   //------------------------------------------------------------------------
   // The prefab library has some prefabricated entities for us
 
-  math_t::Rectf rect(math_t::Rectf::width(1.0f),
-                     math_t::Rectf::height(win.GetAspectRatio().Get()) );
+  math_t::Rectf rect(math_t::Rectf::width(1.0f * 2.0f),
+                     math_t::Rectf::height(win.GetAspectRatio().Get() * 2.0f ) );
 
   core_cs::Entity* q = prefab_gfx::CreateQuad(*entityMgr.get(), cpoolMgr, rect);
   entityMgr->InsertComponent(q, &mat);

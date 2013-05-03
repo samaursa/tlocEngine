@@ -13,8 +13,8 @@ namespace TestingRay
     typedef math_t::Ray_T<T, T_Size>  ray_type;
 
     ray_type r;
-    ray_type r2(ray_type::origin(math_t::Vector<T, T_Size>(1)),
-                ray_type::direction(math_t::Vector<T, T_Size>(2)) );
+    ray_type r2(typename ray_type::origin(math_t::Vector<T, T_Size>(1)),
+                typename ray_type::direction(math_t::Vector<T, T_Size>(2)) );
 
     r = r2;
 

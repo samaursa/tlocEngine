@@ -1,7 +1,7 @@
 #include "tlocRange.h"
 #include "tlocRange.inl"
 
-namespace tloc { namespace core {
+namespace tloc { namespace math {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_RANGE(_type_)\
   template class Range_T<_type_>

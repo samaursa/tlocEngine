@@ -7,5 +7,9 @@ uniform sampler2D s_texture;
 
 void main()
 {
-	o_color = texture2D(s_texture, v_texCoord).rgb;
+  // NOTE: Tex co-ords flipped in 't'
+	o_color = texture2D(s_texture, 
+                      vec2(v_texCoord.s,
+                           1 - v_texCoord.t)
+                     ).rgb;
 }

@@ -2,6 +2,7 @@
 
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocMath.inl>
 
 namespace tloc { namespace math { namespace utils {
 
@@ -27,7 +28,7 @@ namespace tloc { namespace math { namespace utils {
     TLOC_ASSERT( a_valueToScale >= m_smallRange.front() &&
                  a_valueToScale <= m_smallRange.back(), "Value out of range!");
 
-    typedef range_small::size_type      range_size_type;
+    typedef typename range_small::size_type      range_size_type;
 
     range_size_type r1Size, r2Size;
     r1Size = (range_size_type)(m_smallRange.GetElementCount() *
@@ -58,7 +59,7 @@ namespace tloc { namespace math { namespace utils {
     TLOC_ASSERT( a_valueToScale >= m_largeRange.front() &&
                  a_valueToScale <= m_largeRange.back(), "Value out of range!");
 
-    typedef range_small::size_type      range_size_type;
+    typedef typename range_small::size_type      range_size_type;
 
     range_size_type r1Size, r2Size;
     r1Size = (range_size_type)(m_smallRange.GetElementCount() *

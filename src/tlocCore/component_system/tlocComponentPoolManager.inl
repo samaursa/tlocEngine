@@ -19,7 +19,9 @@ namespace tloc { namespace core { namespace component_system {
     {
       for (; a_begin != a_end; ++a_begin)
       {
-        TLOC_ASSERT(a_begin->GetElement().use_count() == 1,
+        // User count should be <= 1 (i.e. we are the only ones with a reference
+        // to the pointer
+        TLOC_ASSERT(a_begin->GetElement().use_count() <= 1,
                     "Element still in use!");
       }
     }
@@ -44,7 +46,7 @@ namespace tloc { namespace core { namespace component_system {
     ~ComponentPool_TI()
   {
     DoAssertElementsNotInUse(begin(), end(), 
-                             configs::BuildConfig<>::GetBuildConfigType());
+                             configs::BuildConfig::GetBuildConfigType());
   }
 
   template <COMPONENT_POOL_TEMPS>

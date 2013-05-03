@@ -53,7 +53,7 @@ set(TLOC_PHYSICS_ERROR
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_PATH}/src/3rdParty/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/
   ${TLOC_DEP_PATH}/include/Box2D/
 )
 

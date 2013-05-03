@@ -20,6 +20,7 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (Pre_Initialize() == ErrorSuccess)
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
@@ -33,6 +34,7 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (CheckProcessing())
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities();
       DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities);
       Post_ProcessActiveEntities();
@@ -43,6 +45,7 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (Pre_Shutdown() == ErrorSuccess)
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();

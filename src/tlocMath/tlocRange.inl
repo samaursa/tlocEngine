@@ -1,15 +1,16 @@
-#ifndef _TLOC_CORE_RANGE_INL_
-#define _TLOC_CORE_RANGE_INL_
+#ifndef _TLOC_MATH_RANGE_INL_
+#define _TLOC_MATH_RANGE_INL_
 
-#ifndef _TLOC_CORE_RANGE_H_
+#ifndef _TLOC_MATH_RANGE_H_
 #error "Must include header before including the inline file"
 #endif
 
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocMath/tlocMath.h>
+#include <tlocMath/tlocMath.inl>
 
-namespace tloc { namespace core {
+namespace tloc { namespace math {
 
 #define RANGE_T_TEMP    typename T_IntegerType
 #define RANGE_T_PARAMS  T_IntegerType

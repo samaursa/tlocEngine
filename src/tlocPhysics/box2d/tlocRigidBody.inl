@@ -70,7 +70,7 @@ namespace tloc { namespace physics { namespace box2d {
     if (fixture == nullptr)
     {
       TLOC_ASSERT(false, "Box2D Fixture could not be allocated!");
-      return error::error_rigid_body_shape_could_not_be_created;
+      return TLOC_ERROR(error::error_rigid_body_shape_could_not_be_created);
     }
 
     return ErrorSuccess;

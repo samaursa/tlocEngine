@@ -49,8 +49,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef smart_ptr::SharedPtr<EventManager>        event_manager_sptr;
-  typedef smart_ptr::SharedPtr<const EventManager>  event_manager_const_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(EventManager, event_manager);
 
 };};};
 

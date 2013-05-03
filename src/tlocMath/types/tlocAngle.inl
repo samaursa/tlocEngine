@@ -53,7 +53,8 @@ namespace tloc { namespace math { namespace types {
     Angle_T<ANGLE_PARAMS>::
     GetAs() const
   {
-    return static_cast<const derived_type*>(this)->DoGetAs(T_AngleType(0.0f));
+    return static_cast<const derived_type*>(this)->
+      DoGetAs(T_AngleType( (value_type)0.0f));
   }
 
   template <ANGLE_TEMP>
@@ -150,13 +151,13 @@ namespace tloc { namespace math { namespace types {
     m_angle = a_angle;
   }
 
-  template <ANGLE_TEMP>
-  template <typename T_AngleType>
-  void Angle_T<ANGLE_PARAMS>::
-    DoSetAngleCtor(T_AngleType a_angle, angle_type)
-  {
-    static_cast<derived_type*>(this)->DoSetAngle(a_angle);
-  }
+  //template <ANGLE_TEMP>
+  //template <typename T_AngleType>
+  //void Angle_T<ANGLE_PARAMS>::
+  //  DoSetAngleCtor(T_AngleType a_angle, angle_type)
+  //{
+  //  static_cast<derived_type*>(this)->DoSetAngle(a_angle);
+  //}
 
   //////////////////////////////////////////////////////////////////////////
   // Radian

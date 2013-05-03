@@ -6,13 +6,13 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   Fan::Fan()
-    : base_type(component_system::components::fan)
+    : base_type(k_component_type)
     , m_ellipse(ellipse_type::diameter(1.0f))
     , m_sides(sides(8))
   { }
 
   Fan::Fan(const ellipse_type& a_ellipse, sides a_sides)
-    : base_type(component_system::components::fan)
+    : base_type(k_component_type)
     , m_ellipse(a_ellipse)
     , m_sides(a_sides)
   { }

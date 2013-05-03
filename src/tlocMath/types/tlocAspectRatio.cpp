@@ -4,7 +4,13 @@
 
 namespace tloc { namespace math { namespace types {
 
-  AspectRatio::AspectRatio(width a_width, height a_height)
+#define ASPECT_RATIO_TEMPS  typename T_Real
+#define ASPECT_RATIO_PARAMS T_Real
+#define ASPECT_RATIO_TYPE   typename AspectRatio_T<ASPECT_RATIO_PARAMS>
+
+  template <ASPECT_RATIO_TEMPS>
+  AspectRatio_T<ASPECT_RATIO_PARAMS>::
+    AspectRatio_T(width a_width, height a_height)
     : m_ratio( a_width.m_value / a_height.m_value)
   {
     TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(a_height, 0.0f) == false,
@@ -13,21 +19,34 @@ namespace tloc { namespace math { namespace types {
                           "Aspect ratio cannot be zero!");
   }
 
-  AspectRatio::AspectRatio(const AspectRatio& a_other)
+  template <ASPECT_RATIO_TEMPS>
+  AspectRatio_T<ASPECT_RATIO_PARAMS>::
+    AspectRatio_T(const this_type& a_other)
     : m_ratio(a_other.m_ratio)
   {
     TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(m_ratio, 0.0f) == false,
                           "Aspect ratio cannot be zero!");
   }
 
-  void AspectRatio::operator= (const AspectRatio& a_other)
+  template <ASPECT_RATIO_TEMPS>
+  void AspectRatio_T<ASPECT_RATIO_PARAMS>::
+    operator= (const this_type& a_other)
   {
     m_ratio = a_other.m_ratio;
   }
 
-  AspectRatio::value_type AspectRatio::GetInv() const
+  template <ASPECT_RATIO_TEMPS>
+  ASPECT_RATIO_TYPE::value_type
+    AspectRatio_T<ASPECT_RATIO_PARAMS>::
+    GetInv() const
   {
     return 1 / Get();
   }
+
+  //------------------------------------------------------------------------
+  // explicit instantiations
+
+  template class AspectRatio_T<f32>;
+  template class AspectRatio_T<f64>;
 
 };};};

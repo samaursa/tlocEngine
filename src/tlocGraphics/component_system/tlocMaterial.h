@@ -14,10 +14,12 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Material : public core::component_system::Component_T<Material>
+  class Material
+    : public core::component_system::Component_T<Material, components::material>
   {
   public:
-    typedef core::component_system::Component_T<Material>   base_type;
+    typedef core::component_system::Component_T
+      <Material, components::material>                      base_type;
     typedef gl::ShaderProgramPtr                            shader_prog_ptr;
 
     typedef gl::ShaderOperatorPtr                           shader_op_ptr;
@@ -37,16 +39,16 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (string_type, GetFragmentSource, m_fragmentProgram);
 
-    TLOC_DECL_AND_DEF_SETTER(string_type, SetVertexSource,
-                             m_vertexProgram);
-    TLOC_DECL_AND_DEF_SETTER(string_type, SetFragmentSource,
-                             m_fragmentProgram);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(string_type, SetVertexSource,
+                                       m_vertexProgram);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(string_type, SetFragmentSource,
+                                       m_fragmentProgram);
 
     TLOC_DECL_AND_DEF_GETTER_DIRECT(shader_prog_ptr, GetShaderProgRef,
                                     m_shaderProgram);
 
-    TLOC_DECL_AND_DEF_SETTER(shader_op_ptr, SetMasterShaderOperator,
-                             m_masterShaderOperator);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(shader_op_ptr, SetMasterShaderOperator,
+                                       m_masterShaderOperator);
     TLOC_DECL_AND_DEF_GETTER(shader_op_ptr, GetMasterShaderOperator,
                              m_masterShaderOperator);
 

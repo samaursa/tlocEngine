@@ -39,8 +39,8 @@ namespace TestingPair
 
     {
       error::Error err = TLOC_ERROR(common_error_types::error_failure);
-      err == ErrorFailure; // We checked the error
-      TLOC_UNUSED(err);
+      bool result = err == ErrorFailure; // We checked the error
+      TLOC_UNUSED_2(err, result);
       // Should not crash on destruction
 
       // Should crash if uncommented

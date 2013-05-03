@@ -1408,7 +1408,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
   template class Array<uniform_sptr>;
-  template class Array<uniform_sptr>;
+  template class Array<attribute_sptr>;
 
 
 };};};

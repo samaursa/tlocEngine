@@ -73,8 +73,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef smart_ptr::SharedPtr<EntityManager>        entity_manager_sptr;
-  typedef smart_ptr::SharedPtr<const EntityManager>  entity_manager_const_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(EntityManager, entity_manager);
 
 };};};
 

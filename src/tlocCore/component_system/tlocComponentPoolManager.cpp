@@ -89,6 +89,6 @@ namespace tloc { namespace core { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 
-  template class core_sptr::SharedPtr<ComponentPoolManager>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPoolManager);
 
 };};};

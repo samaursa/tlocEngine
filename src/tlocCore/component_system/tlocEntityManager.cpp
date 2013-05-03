@@ -207,7 +207,6 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template class core_sptr::SharedPtr<EntityManager>;
-  template class core_sptr::SharedPtr<const EntityManager>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EntityManager);
 
 };};};

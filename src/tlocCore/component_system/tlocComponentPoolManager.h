@@ -144,7 +144,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core_sptr::SharedPtr<ComponentPoolManager>  component_pool_manager_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(ComponentPoolManager, component_pool_mgr);
 
 };};};
 

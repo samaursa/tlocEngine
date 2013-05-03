@@ -62,8 +62,8 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // Explicitly instantiate the container
 
-  template class core::containers::Array<types::Color>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
 
-  template class core::smart_ptr::SharedPtr<Image>;
+  template class core::containers::Array<types::Color>;
 
 };};};

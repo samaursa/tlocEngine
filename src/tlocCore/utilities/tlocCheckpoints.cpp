@@ -24,13 +24,13 @@ namespace tloc { namespace core { namespace utils {
   void Checkpoints::
     MarkAll()
   {
-    SetAllTo(false);
+    SetAllTo(true);
   }
 
   void Checkpoints::
     UnmarkAll()
   {
-    SetAllTo(true);
+    SetAllTo(false);
   }
 
   void Checkpoints::
@@ -62,7 +62,7 @@ namespace tloc { namespace core { namespace utils {
   void Checkpoints::
     Unmark(size_type a_index)
   {
-    m_flags[a_index] = true;
+    m_flags[a_index] = false;
   }
 
   void Checkpoints::

@@ -108,4 +108,6 @@ namespace tloc { namespace core { namespace data_structs {
 
 };};};
 
+#include "tlocTable.inl"
+
 #endif

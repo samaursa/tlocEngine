@@ -71,9 +71,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <ARRAY_BASE_TYPES>
   ArrayBase<ARRAY_BASE_PARAMS>::ArrayBase()
-    : m_begin(NULL)
-    , m_end(NULL)
-    , m_capacity(NULL)
+    : m_begin(nullptr)
+    , m_end(nullptr)
+    , m_capacity(nullptr)
   {
   }
 
@@ -81,7 +81,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   ArrayBase<ARRAY_BASE_PARAMS>::ArrayBase(size_type a_size)
   {
     m_begin = DoAllocate(a_size);
-    TLOC_ASSERT_CONTAINERS(m_begin != NULL || a_size == 0,
+    TLOC_ASSERT_CONTAINERS(m_begin != nullptr || a_size == 0,
                             "Could not allocate Array!");
     m_end = m_begin;
     m_capacity = m_begin + a_size;
@@ -363,7 +363,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
     ArrayBase<ARRAY_BASE_PARAMS>::DoAllocate(const size_type& a_size)
   {
-    return a_size ? (pointer)TL_MALLOC(a_size * sizeof(value_type)) : NULL;
+    return a_size ? (pointer)TL_MALLOC(a_size * sizeof(value_type)) : nullptr;
   }
 
   template <ARRAY_BASE_TYPES>
@@ -410,7 +410,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     // DoReallocate may malloc or realloc depending on the initial size
     ptr = DoReAllocate(newCap);
 
-    TLOC_ASSERT_ARRAY(ptr != NULL, "Could not allocate/re-allocate!");
+    TLOC_ASSERT_ARRAY(ptr != nullptr, "Could not allocate/re-allocate!");
 
     if (ptr)
     {
@@ -787,7 +787,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // DoReallocate may malloc or realloc depending on the initial size
       ptr = DoReAllocate(newCap);
 
-      TLOC_ASSERT_ARRAY(ptr != NULL, "Could not allocate/re-allocate!");
+      TLOC_ASSERT_ARRAY(ptr != nullptr, "Could not allocate/re-allocate!");
 
       if (ptr)
       {

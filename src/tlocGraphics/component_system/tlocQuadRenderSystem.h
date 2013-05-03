@@ -10,12 +10,12 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
-#include <tlocGraphics/view_projection/tlocFrustum.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/projection/tlocFrustum.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -54,7 +54,7 @@ namespace tloc { namespace graphics { namespace component_system {
                                       const entity_type* a_ent);
 
     virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(const entity_manager* a_mgr, 
+    virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent);
     virtual void Post_ProcessActiveEntities();
 

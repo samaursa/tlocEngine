@@ -92,13 +92,13 @@ namespace TestingMemoryPool
   template <typename T_Elem1, typename T_Elem2>
   void SetElement(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
   {
-    a->GetElement() = b;
+    a->SetElement(b);
   }
 
   template <typename T_Elem1, typename T_Elem2>
   void SetElement(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
   {
-    (*a)->GetElement() = b;
+    (*a)->SetElement(b);
   }
 
 

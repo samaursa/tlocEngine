@@ -6,13 +6,13 @@
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -49,7 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(components::projection),
+    TLOC_ASSERT( m_sharedCam->HasComponent(math_cs::components::projection),
       "The passed entity does not have the projection component!");
   }
 
@@ -65,26 +65,22 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_sharedCam)
     {
       if (m_sharedCam->HasComponent(transform))
-      {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-      }
+      { }
 
       if (m_sharedCam->HasComponent(projection))
-      {
-      }
+      { }
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type FanRenderSystem::InitializeEntity(const entity_manager*,
                                                const entity_type* )
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
                                              const entity_type*)
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   void FanRenderSystem::Pre_ProcessActiveEntities()
   {
@@ -102,8 +98,8 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       if (m_sharedCam->HasComponent(projection))
       {
-        ComponentMapper<graphics::component_system::Projection> projMatList =
-          m_sharedCam->GetComponents(graphics::component_system::components::projection);
+        ComponentMapper<math_cs::Projection> projMatList =
+          m_sharedCam->GetComponents(math_cs::components::projection);
         m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 
@@ -128,7 +124,7 @@ namespace tloc { namespace graphics { namespace component_system {
                                       const entity_type* a_ent)
   {
     using namespace core::component_system;
-    using math::types::Degree32;
+    using math_t::degree_f32;
 
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Fan       fan_type;
@@ -177,7 +173,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       for (f32 i = 0; i <= numSides; ++i)
       {
-        Vec2f32 newCoord = circ.GetCoord(Degree32(angleInterval * i));
+        Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
         Vec4f32 coord4f =
           newCoord.ConvertTo<Vec4f32, p_tuple::overflow_zero>();
 
@@ -193,7 +189,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_texList.push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
       for (f32 i = 0; i <= numSides; ++i)
       {
-        Vec2f32 newTexCoord = circForTex.GetCoord(Degree32(angleInterval * i));
+        Vec2f32 newTexCoord = circForTex.GetCoord(degree_f32(angleInterval * i));
         newTexCoord += Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
         m_texList.push_back(newTexCoord);
       }

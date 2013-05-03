@@ -7,7 +7,6 @@
 
 #include "tlocMath.h"
 #include <cmath>
-#include <math.h>
 #include <cstdlib>
 #include <tlocCore/types/tlocTypes.inl>
 
@@ -20,7 +19,7 @@ namespace tloc {
       return std::abs(a_value);
     }
 
-    s64 GetAbs(s64 a_value)
+    TL_I s64 GetAbs(s64 a_value)
     {
       return (s64)std::abs((s32)a_value);
     }
@@ -31,12 +30,12 @@ namespace tloc {
       return std::sqrt(a_value);
     }
 
-    s32 GetSqrt(s32 a_value)
+    TL_I s32 GetSqrt(s32 a_value)
     {
       return (s32)std::sqrt((tl_float)a_value);
     }
 
-    s64 GetSqrt(s64 a_value)
+    TL_I s64 GetSqrt(s64 a_value)
     {
       return (s64)std::sqrt((tl_float)a_value);
     }
@@ -179,7 +178,7 @@ namespace tloc {
     Approx(T aValue1, T aValue2, T eps /* = T(1e-6) */)
   {
     T toCompare = Abs(aValue1 - aValue2);
-    return (toCompare < eps);
+    return (toCompare <= eps);
   }
 
   template <typename T>
@@ -233,7 +232,106 @@ namespace tloc {
     return (aBias * aValue1) + ((1 - aBias) * aValue2);
   }
 
+  namespace math {
 
+    namespace priv {
+
+      typedef type_true   IsFloat;
+      typedef type_false  IsNotFloat;
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsFloat)
+      {
+        // At least on MSVC fmod returns the wrong answer (e.g. 1.0 % 0.1 is
+        // equal to 0.0f, where as fmod returns 0.0999999)
+        //return fmod(a_num1, a_num2);
+
+        if (a_num2 > a_num1)
+        { return a_num1; }
+
+        tl_size multi = 1;
+        T num2Res = a_num2;
+        while (num2Res < a_num1 ||
+               Approx(num2Res, a_num1))
+        {
+          ++multi;
+          num2Res = a_num2 * multi;
+        }
+
+        num2Res = a_num2 * (multi - 1);
+        return a_num1 - num2Res;
+      }
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsNotFloat)
+      { return a_num1 % a_num2; }
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat)
+      {
+        T toCompare = fabs(a_num1 - a_num2);
+        return (toCompare <= a_epsilon);
+      }
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat)
+      {
+        T toCompare = Abs<T>(a_num1 - a_num2);
+        return (toCompare <= a_epsilon);
+      }
+
+      typedef type_true   IsUnsigned;
+      typedef type_false  IsSigned;
+
+      template <typename T>
+      T DoAbs(T a_value, IsSigned)
+      {
+        if (a_value < 0)
+        { return -a_value; }
+
+        return a_value;
+      }
+
+      template <typename T>
+      T DoAbs(T a_value, IsUnsigned)
+      { return a_value; }
+    };
+
+    template <typename T>
+    T Abs(T a_value)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isUnsignedInt> s_or_u;
+
+      return priv::DoAbs(a_value, s_or_u());
+    }
+
+    template <typename T>
+    T Remainder(T a_numerator, T a_denominator)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+
+      return priv::DoRemainder(a_numerator, a_denominator, float_or_not());
+    }
+
+    template <typename T>
+    T Epsilon()
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      return std::numeric_limits<T>::epsilon();
+    }
+
+    template <typename T>
+    bool Approx(T a_num1, T a_num2)
+    {
+      TLOC_STATIC_ASSERT_IS_ARITH(T);
+      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+
+      return priv::DoApprox(a_num1, a_num2, Epsilon<T>(), float_or_not());
+    }
+
+  };
 
 };
 

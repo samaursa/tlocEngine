@@ -18,21 +18,23 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntitySystemBase::Initialize()
   {
-    if (Pre_Initialize() == ErrorSuccess())
+    if (Pre_Initialize() == ErrorSuccess)
     {
-      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess())
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
+      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
       }
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
   void EntitySystemBase::ProcessActiveEntities()
   {
     if (CheckProcessing())
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities();
       DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities);
       Post_ProcessActiveEntities();
@@ -41,15 +43,16 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntitySystemBase::Shutdown()
   {
-    if (Pre_Shutdown() == ErrorSuccess())
+    if (Pre_Shutdown() == ErrorSuccess)
     {
-      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess())
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
+      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();
       }
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
   bool EntitySystemBase::OnEvent(const EventBase& a_event)

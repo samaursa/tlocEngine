@@ -5,7 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocAny.h"
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #ifndef TLOC_DISABLE_ASSERT_ANY
@@ -102,7 +101,7 @@ namespace tloc { namespace core { namespace types {
       {
         value_type** x = reinterpret_cast<value_type**>(a_unknownType);
         delete *x;
-        *x = NULL;
+        *x = nullptr;
       }
 
       template <COMPLEX_TYPE_TEMP>
@@ -158,7 +157,7 @@ namespace tloc { namespace core { namespace types {
 
   template <typename T>
   Any::Any(const T& a_other)
-    : m_policy(p_any::GetPolicy<p_any::detail::Empty>()), m_object(NULL)
+    : m_policy(p_any::GetPolicy<p_any::detail::Empty>()), m_object(nullptr)
   {
     Assign(a_other);
   }
@@ -172,12 +171,21 @@ namespace tloc { namespace core { namespace types {
   }
 
   template <typename T>
+  Any::this_type& Any::
+    operator =(const T& a_other)
+  {
+    Assign(a_other);
+    return *this;
+  }
+
+  template <typename T>
   T& Any::Cast()
   {
     // Can't do this check - static variable address is not shared across 
     // multple binaries (i.e. lib and exe)
     //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(), 
     //                "Type T does not match the original type");
+    TLOC_ASSERT_LOW_LEVEL(m_object != nullptr, "Any not assigned a value!");
     T* ret = reinterpret_cast<T*>(m_policy->GetValue(&m_object));
     return *ret;
   }

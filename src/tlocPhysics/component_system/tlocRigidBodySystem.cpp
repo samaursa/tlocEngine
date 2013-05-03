@@ -57,7 +57,7 @@ namespace tloc { namespace physics { namespace component_system {
         a_ent->GetComponents(components::k_rigidBodyShape);
 
       size_type numComponents = rigidBodyShapeComponents.size();
-      error_type result;
+      error_type result = ErrorSuccess;
 
       for (size_type i = 0; i < numComponents; ++i)
       {
@@ -65,7 +65,7 @@ namespace tloc { namespace physics { namespace component_system {
 
         result = rb.CreateRigidBodyShape(rbShape);
 
-        if (result != ErrorSuccess())
+        if (result != ErrorSuccess)
         {
           break;
         }
@@ -92,12 +92,12 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodySystem::error_type RigidBodySystem::
-    InitializeEntity(const entity_manager* a_mgr, 
+    InitializeEntity(const entity_manager* a_mgr,
                      const entity_type* a_ent)
   {
     error_type result = DoInitializeRigidBodyComponent(a_ent);
 
-    if (result == ErrorSuccess())
+    if (result == ErrorSuccess)
     {
       result = InitializeRigidBodyShapeComponents(a_ent);
     }
@@ -188,14 +188,14 @@ namespace tloc { namespace physics { namespace component_system {
     rb_internal_type* currRBInternal =
       m_world->GetWorld().CreateBody(&currRBDefInternal);
 
-    if (currRBInternal == NULL)
+    if (currRBInternal == nullptr)
     {
       TLOC_ASSERT(false, "Box2D RigidBody could not be allocated!");
-      return error::error_rigid_body_could_not_be_allocated;
+      return TLOC_ERROR(error::error_rigid_body_could_not_be_allocated);
     }
 
     currRB.DoInitialize(currRBInternal, a_ent);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

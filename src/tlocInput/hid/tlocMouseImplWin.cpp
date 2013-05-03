@@ -2,6 +2,8 @@
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
+  //------------------------------------------------------------------------
+
 #define MOUSE_IMPL_TEMP    typename T_ParentMouse
 #define MOUSE_IMPL_PARAMS  T_ParentMouse
 #define MOUSE_IMPL_TYPE    typename MouseImpl<MOUSE_IMPL_PARAMS>
@@ -37,7 +39,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     const mouse_param_type& a_params)
     : MouseImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
-    , m_mouse(NULL)
+    , m_mouse(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
     , m_currentState(MouseEvent::none)
   {
@@ -51,7 +53,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_mouse->Unacquire();
       m_mouse->Release();
-      m_mouse = NULL;
+      m_mouse = TLOC_NULL;
     }
   }
 
@@ -82,7 +84,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoInitialize()
   {
-    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
+    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, TLOC_NULL)))
     {
       // LOG: Mouse failed to initialize
       TLOC_ASSERT(false, "Unable to initialize the mouse");
@@ -176,7 +178,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     HRESULT hRes;
 
     hRes = m_mouse->
-      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
     {
       // Try one more time
@@ -188,7 +190,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       else
       {
         hRes = m_mouse->
-          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
         if (hRes != DI_OK)
         {
           // we don't have the mouse, return
@@ -328,6 +330,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode |= MouseEvent::button7;
     if(m_mouseBuffer.rgbButtons[7] & 0x80)
       m_currentState.m_buttonCode |= MouseEvent::button8;
+
+    // Clamp the values
+    if (m_parent->GetClamped())
+    { m_parent->Clamp(m_currentState); }
   }
 
   template <MOUSE_IMPL_TEMP>

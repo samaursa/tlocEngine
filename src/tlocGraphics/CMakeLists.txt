@@ -6,7 +6,7 @@ set(TLOC_GRAPHICS
   tloc_graphics.inl 
   )
 
-set(3RD_PARTY_PATH ${TLOC_PATH}/src/3rdParty/Graphics/)
+set(3RD_PARTY_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/)
 set(TLOC_GRAPHICS_3RD_PARTY_COMPRESSION
   ${3RD_PARTY_PATH}/miniz/miniz.c
   )
@@ -26,7 +26,7 @@ if(WIN32)
     )
 else()
   set(TLOC_GRAPHICS_3RD_PARTY_GLEW
-    )
+  )
   set(TLOC_GRAPHICS_3RD_PARTY_GLEXT
     )
 endif()
@@ -56,8 +56,6 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
-  component_system/tlocProjectionComponent.cpp 
-  component_system/tlocProjectionComponent.h 
   component_system/tlocQuad.cpp 
   component_system/tlocQuad.h 
   component_system/tlocQuadRenderSystem.cpp 
@@ -93,8 +91,6 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
-  opengl/tlocOpenGLExt.cpp 
-  opengl/tlocOpenGLExt.h 
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 
@@ -116,6 +112,14 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tloc_opengl.inl
   )
 
+if(WIN32)
+  set(TLOC_GRAPHICS_OPENGL
+    ${TLOC_GRAPHICS_OPENGL} 
+    opengl/tlocOpenGLExt.cpp 
+    opengl/tlocOpenGLExt.h 
+    )
+endif()
+
 set(TLOC_GRAPHICS_RENDERER 
   renderer/tlocRenderer.cpp 
   renderer/tlocRenderer.h 
@@ -125,13 +129,9 @@ set(TLOC_GRAPHICS_RENDERER
   )
 
 set(TLOC_GRAPHICS_TYPES 
-  types/tlocAspectRatio.cpp 
-  types/tlocAspectRatio.h 
   types/tlocColor.cpp 
   types/tlocColor.h 
   types/tlocDimension.h 
-  types/tlocFOV.cpp 
-  types/tlocFOV.h 
   types/tlocVertex.h 
   types/tloc_types.cpp 
   types/tloc_types.h 
@@ -139,13 +139,8 @@ set(TLOC_GRAPHICS_TYPES
   )
 
 set(TLOC_GRAPHICS_VIEW_PROJECTION 
-  view_projection/tlocCamera.cpp 
-  view_projection/tlocCamera.h 
-  view_projection/tlocFrustum.cpp 
-  view_projection/tlocFrustum.h 
-  view_projection/tloc_view_projection.cpp 
-  view_projection/tloc_view_projection.h 
-  view_projection/tloc_view_projection.inl
+  
+  view/tlocCamera.h 
   )
 
 set(TLOC_GRAPHICS_WINDOW 
@@ -202,8 +197,8 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_PATH}/src/3rdParty/Graphics/GLEW/
-  ${TLOC_PATH}/src/3rdParty/Graphics/glext/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
 
 add_library(tlocGraphics STATIC
@@ -223,6 +218,11 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
   )
 
+add_dependencies(tlocGraphics
+  tlocCore
+  tlocMath
+  )
+
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
 source_group(component_system FILES ${TLOC_GRAPHICS_COMPONENT_SYSTEM})
@@ -231,7 +231,7 @@ source_group(media            FILES ${TLOC_GRAPHICS_MEDIA})
 source_group(opengl           FILES ${TLOC_GRAPHICS_OPENGL})
 source_group(renderer         FILES ${TLOC_GRAPHICS_RENDERER})
 source_group(types            FILES ${TLOC_GRAPHICS_TYPES})
-source_group(view_projection  FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
+source_group(view             FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
 source_group(window           FILES ${TLOC_GRAPHICS_WINDOW})
 
 source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})

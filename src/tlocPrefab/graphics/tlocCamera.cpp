@@ -3,17 +3,19 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateCamera(core_cs::EntityManager& a_mgr,
-                 core_cs::ComponentPoolManager& a_poolMgr)
+                 core_cs::ComponentPoolManager& a_poolMgr,
+                 const math_proj::frustum_f32& a_frustum,
+                 const math_t::Vec3f32 a_pos)
   {
     using math_cs::components::transform;
-    using tloc::graphics::component_system::components::projection;
+    using tloc::math_cs::components::projection;
 
     using namespace core_cs;
     using namespace math_cs;
@@ -35,7 +37,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->SetElement(TransformPtr32(new Transformf32(a_pos)) );
 
     // Get or create the projection pool
     if (a_poolMgr.Exists(projection) == false)
@@ -43,12 +45,12 @@ namespace tloc { namespace prefab { namespace graphics {
     else
     { cpool = a_poolMgr.GetPool(projection); }
 
-    typedef tloc::graphics::component_system::ProjectionPool p_pool;
+    typedef tloc::math_cs::ProjectionPool p_pool;
 
     p_pool* pPool = (*cpool)->GetAs<p_pool>();
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->GetElement() = ProjectionPtr(new Projection());
+    itrProjection->SetElement(ProjectionPtr(new Projection(a_frustum)) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();

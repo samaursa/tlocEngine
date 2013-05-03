@@ -4,7 +4,6 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.inl>
 
 #include <tlocMath/types/tlocVector4.h>
-#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
@@ -17,12 +16,38 @@ namespace tloc { namespace math { namespace component_system {
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T()
-    : base_type(components::transform)
+    : base_type(base_type::k_component_type)
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
   { }
+
+  template <TRANSFORM_TEMPS>
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T(const position_type& a_position)
+    : base_type(base_type::k_component_type)
+    , m_transformation(1, 0, 0, 0,
+                       0, 1, 0, 0,
+                       0, 0, 1, 0,
+                       0, 0, 0, 1)
+  {
+    SetPosition(a_position);
+  }
+
+  template <TRANSFORM_TEMPS>
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T(const position_type& a_position,
+                const orientation_type& a_orientation)
+    : base_type(base_type::k_component_type)
+    , m_transformation(1, 0, 0, 0,
+                       0, 1, 0, 0,
+                       0, 0, 1, 0,
+                       0, 0, 0, 1)
+  {
+    SetPosition(a_position);
+    SetOrientation(a_orientation);
+  }
 
   template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::position_type
@@ -55,6 +80,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetPosition(const position_type& a_pos)
   {
+    SetUpdateRequired(true);
     m_transformation[12] = a_pos[0];
     m_transformation[13] = a_pos[1];
     m_transformation[14] = a_pos[2];
@@ -64,6 +90,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetOrientation(const orientation_type& a_ori)
   {
+    SetUpdateRequired(true);
     m_transformation[0] = a_ori[0];
     m_transformation[1] = a_ori[1];
     m_transformation[2] = a_ori[2];
@@ -75,6 +102,23 @@ namespace tloc { namespace math { namespace component_system {
     m_transformation[8]	 = a_ori[6];
     m_transformation[9]	 = a_ori[7];
     m_transformation[10] = a_ori[8];
+  }
+
+  template <TRANSFORM_TEMPS>
+  auto Transform_T<TRANSFORM_PARAMS>
+    ::Invert() const -> this_type
+  {
+    // from: http://stackoverflow.com/a/2625420/368599
+    //inv(A) = [ inv(M)   -inv(M) * b ]
+    //         [   0            1     ]
+
+    auto rotMat = GetOrientation();
+    rotMat.Inverse();
+
+    auto posV = GetPosition();
+    posV = (rotMat * -1) * posV;
+
+    return this_type(position_type(posV), orientation_type(rotMat));
   }
 
   //------------------------------------------------------------------------

@@ -88,12 +88,14 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
-  class CompToTest : public core::component_system::Component_T<CompToTest>
+  class CompToTest
+    : public core::component_system::Component_T<CompToTest, components::listener>
   {
   public:
-    typedef core::component_system::Component_T<CompToTest>  base_type;
+    typedef core::component_system::Component_T
+      <CompToTest, components::listener>            base_type;
   public:
-    CompToTest() : base_type(components::listener)
+    CompToTest() : base_type(k_component_type)
     {}
   };
 

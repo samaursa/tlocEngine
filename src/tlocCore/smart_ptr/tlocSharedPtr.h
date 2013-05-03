@@ -47,15 +47,16 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef SmartPtr                base_type;
 
     typedef T                       value_type;
+    typedef T_NullCopyPolicy        null_copy_policy_type;
+
     typedef T*                      pointer;
     typedef T const *               const_pointer;
     typedef T&                      reference;
     typedef T const &               const_reference;
 
     typedef tl_int                  ref_count_type;
-    typedef SharedPtr<value_type>   this_type;
 
-    typedef T_NullCopyPolicy        null_copy_policy_type;
+    typedef SharedPtr<value_type, null_copy_policy_type>   this_type;
 
   public:
     SharedPtr();
@@ -207,5 +208,13 @@ namespace tloc { namespace core { namespace smart_ptr {
   { return !(nullptr < b); }
 
 };};};
+
+#define TLOC_TYPEDEF_SHARED_PTR(_type_, _typedef_)\
+  typedef tloc::core_sptr::SharedPtr<_type_>  _typedef_##_sptr;\
+  typedef tloc::core_sptr::SharedPtr<const _type_>  _typedef_##_const_sptr;\
+  typedef tloc::core_sptr::SharedPtr<_type_, \
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_sptr_nonullcopy;\
+  typedef tloc::core_sptr::SharedPtr<const _type_, \
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_const_sptr_nonullcopy
 
 #endif

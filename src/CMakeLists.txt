@@ -1,22 +1,11 @@
-# Remove MINSIZEREL
+# Remove MINSIZERE
 set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE )
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
-# For compilers that are C++03, add the following definition
-if (MSVC90 OR MSVC80 OR MSVC71 OR MSVC70 OR MSVC60)
+# Define TLOC_CXX03 if C++11 is NOT supported (force XCode to C++03 for now)
+if(NOT TLOC_COMPILER_C11 OR TLOC_COMPILER_XCODE)
   add_definitions(-DTLOC_CXX03)
-endif()
-
-# Common preprocessors
-if(CMAKE_CXX_FLAGS_DEBUG)
-  add_definitions(-DTLOC_DEBUG)
-  add_definitions(-DDEBUG)
-elseif(CMAKE_CXX_FLAGS_RELEASE)
-  add_definitions(-DTLOC_RELEASE)
-  add_definitions(-DNDEBUG)
-elseif(CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-  add_definitions(-DTLOC_RELEASE_DEBUGINFO)
 endif()
 
 # Backup the default flags
@@ -25,27 +14,32 @@ set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
 set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 
-if(MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG           "/Od /Gm /RTC1 /MTd /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELEASE         "/O2 /Ob2 /Oi /Ot /GL /MT /Gy /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2 /Ob2 /Oi /Ot /Gm /MT /Gy /GR- /W4 /WX /c /Zi /TP")
+if(TLOC_COMPILER_MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm /RTC1 /MTd /GR- /W4 /WX /c /Zi /TP")
+  set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /MT /Gy /GR- /W4 /WX /c /Zi /TP")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /MT /Gy /GR- /W4 /WX /c /Zi /TP")
 
   #turn off exceptions for all configurations
   string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-endif()
+elseif(TLOC_COMPILER_XCODE)
+  # Note that -gdwarf-2 generates debug symbols (dsym files in dwarf standard)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
 
-# lib/exe path for all configurations
-message("${TARGET_SONAME}")
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib/${ARCH_DIR})
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${ARCH_DIR})
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
+else()
+  message("Configuration not applied because compiler is unsupported (or not detected properly)")
+endif()
 
 # common includes
 include_directories(
   ${TLOC_DEP_PATH}/include/
   ${TLOC_DEP_PATH}/src/
-  ${TLOC_PATH}/src/
+  ${TLOC_ENGINE_PATH}/src/
   )
 
 # All libraries/projects add their name to this variable
@@ -65,19 +59,24 @@ endforeach()
 # Add the tests directory which contains all test projects
 add_subdirectory(tlocTests)
 
-# Add the version tool
-add_subdirectory(tlocVersion)
+# Add the version tool - currently DISABLED for APPLE due to iOS builds
+if(NOT TLOC_PLATFORM_IOS)
+  add_subdirectory(tlocVersion)
+
+  # Make tlocVersion and tlocVersionTool as dependencies for all projects
+  foreach(lib ${tlocAllLibraries})
+    add_dependencies(${lib}
+      tlocVersion
+      tlocVersionTool
+      )
+  endforeach()
+
+endif()
 
 # this is so far required only by MSVC
-if(MSVC)
+if(TLOC_COMPILER_MSVC)
   foreach(lib ${tlocAllLibraries})
     if(TARGET ${lib})
-      # Add the common linker properties to all libraries
-      set_target_properties(${lib}
-        PROPERTIES
-        STATIC_LIBRARY_FLAGS_RELEASE "/LTCG"
-        STATIC_LIBRARY_FLAGS_RELWITHDEBINFO "/LTCG"
-        )
       set_target_properties(${lib} 
         PROPERTIES
         FOLDER tlocEngine
@@ -90,12 +89,46 @@ if(MSVC)
 #The version tools must be added to the engine folder as well
 set_target_properties(tlocVersion tlocVersionTool
   PROPERTIES
-  FOLDER tlocEngine/Versioning
+  FOLDER Versioning
   )
 
 endif()
 
+# -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
-FILE(WRITE ${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h "
+FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
+#pragma once
+
+#ifndef _ASSETS_PATH_H_
+#define _ASSETS_PATH_H_
+
+#include <cstring>
+
+#if defined (__APPLE__) && defined (__OBJC__)
+# import <Foundation/Foundation.h>
+#endif
+
 #define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+
+#if defined(TLOC_OS_WIN)
+
+inline const char* GetAssetsPath()
+{
+  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+  return assetPath;
+}
+#elif defined(TLOC_OS_IPHONE)
+inline const char* GetAssetsPath()
+{
+  static char assetPath[1024];
+  strcpy(assetPath, [[[NSBundle mainBundle] resourcePath]
+                     cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+  strcat(assetPath, \"/assets/\");
+
+  return assetPath;
+}
+#endif
+
+#endif // _ASSETS_PATH_H_
+
 ")

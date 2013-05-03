@@ -4,6 +4,7 @@
 #include <tlocInput/tlocInputBase.h>
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/containers/tlocArray.h>
@@ -21,7 +22,7 @@
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND> input_param_type;
+  typedef ParamList<core_t::Any> input_param_type;
 
 };};
 
@@ -30,7 +31,7 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool                  m_available;
+    bool                  m_inUse;
     GUID                  m_productGuid;
     GUID                  m_deviceGuid;
     core::string::String  m_deviceName;

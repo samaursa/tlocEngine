@@ -53,7 +53,7 @@ set(TLOC_PHYSICS_ERROR
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_PATH}/src/3rdParty/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/
   ${TLOC_DEP_PATH}/include/Box2D/
 )
 
@@ -62,6 +62,11 @@ add_library(tlocPhysics STATIC
   ${TLOC_PHYSICS_BOX2D}
   ${TLOC_PHYSICS_COMPONENT_SYSTEM}
   ${TLOC_PHYSICS_ERROR}
+  )
+
+add_dependencies(tlocPhysics
+  tlocCore
+  tlocMath
   )
 
 # Filters to organize the source files

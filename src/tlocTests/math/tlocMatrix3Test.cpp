@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix3.h>
-#include <tlocMath/types/tlocMatrix3.inl>
 #include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingMatrix3
@@ -36,6 +35,11 @@ namespace TestingMatrix3
     REQUIRE(sizeof(Mat3f) == (sizeof(tl_float) * 9));
     REQUIRE(sizeof(Mat3f32) == (sizeof(f32) * 9));
     REQUIRE(sizeof(Mat3f64) == (sizeof(f64) * 9));
+  }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/operators", "")
+  {
+    c = a * b;
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",

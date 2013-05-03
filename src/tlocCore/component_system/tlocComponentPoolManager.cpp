@@ -1,6 +1,8 @@
 #include "tlocComponentPoolManager.h"
 #include "tlocComponentPoolManager.inl"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+
 namespace tloc { namespace core { namespace component_system {
 
   //////////////////////////////////////////////////////////////////////////
@@ -63,7 +65,7 @@ namespace tloc { namespace core { namespace component_system {
 
     iterator itr = m_pools.begin();
     advance(itr, a_number);
-    if (*itr == NULL)
+    if (*itr == nullptr )
     { return false; }
 
     return true;
@@ -83,5 +85,10 @@ namespace tloc { namespace core { namespace component_system {
     if (a_index >= m_pools.size())
     { m_pools.resize(a_index, nullptr); }
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // Explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPoolManager);
 
 };};};

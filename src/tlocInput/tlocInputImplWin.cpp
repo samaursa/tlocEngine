@@ -1,14 +1,18 @@
 #include "tlocInputImplWin.h"
 
+#include <tlocCore/types/tlocTypeTraits.h>
+
+#include <tlocCore/types/tlocAny.inl>
 #include <tlocCore/containers/tlocArray.inl>
 #include <tlocCore/string/tlocString.inl>
-#include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>
 #include <tlocInput/hid/tlocTouchSurfaceImplWin.h>
 
 namespace tloc { namespace input { namespace priv {
+
+  //------------------------------------------------------------------------
 
 #define INPUT_MANAGER_IMPL_TEMP   typename T_ParentInputManager
 #define INPUT_MANAGER_IMPL_PARAM  T_ParentInputManager
@@ -29,7 +33,7 @@ namespace tloc { namespace input { namespace priv {
         // LOG: Unsupported input type selected
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         TLOC_STATIC_ASSERT_FALSE(T_InputObject, Unsupported_input_type_selected);
-        return NULL;
+        return nullptr;
       }
     };
 
@@ -42,7 +46,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED(a_params);
         windows_keyboard_param_type params;
-        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
         params.m_param3 = a_params;
 
@@ -61,7 +65,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED(a_params);
         windows_mouse_param_type params;
-        params.m_param1 = a_inputManagerParams.m_param1;
+        params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
         params.m_param3 = a_params;
 
@@ -80,7 +84,7 @@ namespace tloc { namespace input { namespace priv {
       {
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         TLOC_ASSERT_WIP()
-          return NULL;
+          return nullptr;
       }
     };
 
@@ -110,7 +114,7 @@ namespace tloc { namespace input { namespace priv {
     InputManagerImpl(parent_type* a_parent,
                      param_type a_params)
                      : InputManagerImplBase(a_parent, a_params)
-                     , m_directInput(NULL)
+                     , m_directInput(TLOC_NULL)
   {
     m_winHIDs.resize(p_hid::Count::m_index);
   }
@@ -121,7 +125,7 @@ namespace tloc { namespace input { namespace priv {
     if (m_directInput)
     {
       m_directInput->Release();
-      m_directInput = NULL;
+      m_directInput = TLOC_NULL;
     }
 
     for (size_type hidIndex = 0; hidIndex < p_hid::Count::m_index; ++hidIndex)
@@ -162,20 +166,20 @@ namespace tloc { namespace input { namespace priv {
   INPUT_MANAGER_IMPL_TYPE::size_type
     InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::Initialize()
   {
-    HINSTANCE hInst = NULL;
+    HINSTANCE hInst = TLOC_NULL;
     HRESULT hr;
 
-    if (IsWindow(m_params.m_param1) == 0)
+    if (IsWindow(m_params.m_param1.Cast<HWND>()) == 0)
     {
       // LOG: The passed window pointer is not valid
       return 1;
     }
 
-    hInst = GetModuleHandle(NULL);
+    hInst = GetModuleHandle(TLOC_NULL);
 
     // Create the input device
     hr = DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8,
-                            (VOID**)&m_directInput, NULL);
+                            (VOID**)&m_directInput, TLOC_NULL);
     if (FAILED(hr))
     {
       // LOG: Unable to initialize direct input
@@ -193,16 +197,16 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
-    T_InputObject* newInput = NULL;
+    T_InputObject* newInput = nullptr;
 
     for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
-      if (m_winHIDs[T_InputObject::m_index][i].m_available == false)
+      if (m_winHIDs[T_InputObject::m_index][i].m_inUse == false)
       {
         newInput =
           DoCreateHID<T_InputObject, T_InputObject::m_index>().Create(a_params, m_directInput, m_params);
 
-        m_winHIDs[T_InputObject::m_index][i].m_available = true;
+        m_winHIDs[T_InputObject::m_index][i].m_inUse = true;
         m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;
       }
       else
@@ -233,7 +237,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[keyboard_type::m_index][i].m_available)
+          if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
             keyboard_type* kb = static_cast<keyboard_type*>
               (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
@@ -248,7 +252,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[mouse_type::m_index][i].m_available)
+          if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
             mouse_type* mse = static_cast<mouse_type*>
               (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
@@ -289,7 +293,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[keyboard_type::m_index][i].m_available)
+          if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
             keyboard_type* kb = static_cast<keyboard_type*>
               (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
@@ -304,7 +308,7 @@ namespace tloc { namespace input { namespace priv {
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
-          if (m_winHIDs[mouse_type::m_index][i].m_available)
+          if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
             mouse_type* mse = static_cast<mouse_type*>
               (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
@@ -387,7 +391,7 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   HWND InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::GetWindowHandle()
   {
-    return m_params.m_param1;
+    return m_params.m_param1.Cast<HWND>();
   }
 
   //------------------------------------------------------------------------
@@ -396,8 +400,18 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   void InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::DoEnumerateDevices()
   {
-    m_directInput->EnumDevices(NULL, &this_type::DoEnumerateCallback, this,
+    m_directInput->EnumDevices(TLOC_NULL, &this_type::DoEnumerateCallback, this,
                                DIEDFL_ATTACHEDONLY);
+
+    // Now add other devices that are dummies such as touch
+    InputDeviceInfo dummyInfo;
+    dummyInfo.m_productGuid = GUID();
+    dummyInfo.m_deviceGuid  = GUID();
+    dummyInfo.m_deviceName  = "DummyDevice";
+    dummyInfo.m_inUse       = false;
+    dummyInfo.m_devicePtr   = nullptr;
+
+    m_winHIDs[p_hid::TouchSurface::m_index].push_back(dummyInfo);
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -410,7 +424,7 @@ namespace tloc { namespace input { namespace priv {
     info.m_productGuid = lpddi->guidProduct;
     info.m_deviceGuid  = lpddi->guidInstance;
     info.m_deviceName  = lpddi->tszInstanceName;
-    info.m_available   = false;
+    info.m_inUse       = false;
     info.m_devicePtr   = nullptr;
 
     if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)

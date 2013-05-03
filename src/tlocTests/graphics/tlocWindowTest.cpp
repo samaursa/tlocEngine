@@ -69,6 +69,7 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == 200);
       CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);
@@ -88,6 +89,7 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == 200);
       CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
     }
   }
 
@@ -137,7 +139,7 @@ namespace TestingWindow
                   WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
-      CHECK(win1.GetWindowHandle().Cast<void*>() != NULL);
+      CHECK( (win1.GetWindowHandle().Cast<void*>() != nullptr) );
     }
 
     {
@@ -148,7 +150,7 @@ namespace TestingWindow
                   WindowSettings("Testing"), WindowSettings::style_fullscreen);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK(win2.GetWindowHandle().Cast<void*>() != NULL);
+      CHECK( (win2.GetWindowHandle().Cast<void*>() != nullptr) );
     }
   }
 

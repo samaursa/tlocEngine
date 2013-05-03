@@ -40,17 +40,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       : base_type(a_parent, a_params) {}
     ~TouchSurfaceImpl() {}
 
-    const touch_type* GetTouch(touch_handle_type a_touch) const
-    {
-      TLOC_UNUSED(a_touch);
-      return NULL;
-    }
+    const touch_type* GetTouch(touch_handle_type) const
+    { return nullptr; }
 
-    bool IsTouchDown(touch_handle_type a_touch) const
-    {
-      TLOC_UNUSED(a_touch);
-      return false;
-    }
+    bool IsTouchDown(touch_handle_type) const
+    { return false; }
 
     void Update() {}
     void Reset() {}

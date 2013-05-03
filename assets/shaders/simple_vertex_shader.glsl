@@ -1,8 +1,4 @@
-#ifdef GL_ES
-# version 100
-#else
-# version 140
-#endif
+#version 140
 
 attribute vec4 vVertex;
 attribute vec4 vColor;

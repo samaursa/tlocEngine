@@ -9,7 +9,6 @@
 #include <tlocGraphics/opengl/tloc_opengl.h>
 #include <tlocGraphics/renderer/tloc_renderer.h>
 #include <tlocGraphics/types/tloc_types.h>
-#include <tlocGraphics/view_projection/tloc_view_projection.h>
 #include <tlocGraphics/window/tloc_window.h>
 
 #endif

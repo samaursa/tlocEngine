@@ -1,16 +1,12 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix2.h>
-#include <tlocMath/types/tlocMatrix2.inl>
-
 #include <tlocMath/types/tlocVector2.h>
-#include <tlocMath/types/tlocVector2.inl>
 
 namespace TestingMatrix2
 {
   using namespace tloc;
   using namespace core::data_structs;
-  using namespace math;
   using math::types::Mat2f;
   using math::types::Vec2f;
   using math::types::Mat2f32;
@@ -54,6 +50,11 @@ namespace TestingMatrix2
     REQUIRE(sizeof(Mat2f) == (sizeof(tl_float) * 4));
     REQUIRE(sizeof(Mat2f32) == (sizeof(f32) * 4));
     REQUIRE(sizeof(Mat2f64) == (sizeof(f64) * 4));
+  }
+
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/operators", "")
+  {
+    c = a * b;
   }
 
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",

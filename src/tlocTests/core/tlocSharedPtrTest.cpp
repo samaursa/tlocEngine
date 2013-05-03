@@ -276,13 +276,13 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->GetElement() = my_comp_ptr(new MyComponent(0, 1, 2));
-      memPool.GetNext()->GetElement() = my_comp_ptr(new MyComponent(1, 2, 3));
+      memPool.GetNext()->SetElement(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      memPool.GetNext()->SetElement(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->GetElement() =
-          my_comp_ptr(new MyComponent(i, i + 1, i + 2));
+        memPool.GetNext()->SetElement(
+          my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
       CHECK(MyComponent::m_ctorCount == poolSize);

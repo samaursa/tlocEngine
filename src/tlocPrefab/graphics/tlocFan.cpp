@@ -10,13 +10,12 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
 
-  using math_t::Circle;
+  using math_t::Circle_T;
 
-  template <typename T_Real>
   core_cs::Entity*
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
-              math_t::Circle<T_Real> a_circle,
+              math_t::Circlef32 a_circle,
               tl_size a_numSides)
   {
     using namespace core_cs;
@@ -40,10 +39,7 @@ namespace tloc { namespace prefab { namespace graphics {
     fan_pool* fanPool = (*cpool)->GetAs<fan_pool>();
 
     fan_pool::iterator itr = fanPool->GetNext();
-    itr->GetElement() = FanPtr(new Fan(a_circle, Fan::sides(a_numSides) ) );
-
-    // Create the transform component (and the transform pool if necessary)
-    cpool;
+    itr->SetElement(FanPtr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
 
     if (a_poolMgr.Exists(transform) == false)
     { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
@@ -55,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->SetElement(TransformPtr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
@@ -64,11 +60,5 @@ namespace tloc { namespace prefab { namespace graphics {
 
     return ent;
   }
-
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit Instantiations
-
-   template Entity* CreateFan<f32>(EntityManager&, ComponentPoolManager&,
-                                   Circle<f32>, tl_size);
 
 };};};

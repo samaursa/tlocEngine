@@ -17,7 +17,7 @@
 #include <OpenGLES/ES2/gl.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
-  
+
   template <>
   class WindowImpl<Window_T<> >
     : public WindowImplBase<Window_T<> >
@@ -87,8 +87,26 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
 
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
+
     void ProcessEvents();
-    
+
     ///-------------------------------------------------------------------------
     /// Gets the window handle.
     ///
@@ -158,7 +176,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();
-    
+
     //------------------------------------------------------------------------
     // Implementation specific functions
 
@@ -168,14 +186,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The parent window handle
     ///-------------------------------------------------------------------------
     parent_window_type* GetParentWindowHandle();
-    
+
     ///-------------------------------------------------------------------------
     /// Gets the window handle
     ///
     /// @return The window handle
     ///-------------------------------------------------------------------------
     window_handle_type GetWindowHandle();
-    
+
     ///-------------------------------------------------------------------------
     /// Gets the OpenGLView handle
     ///
@@ -184,7 +202,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     view_handle_type GetOpenGLViewHandle();
 
   private:
-    
+
     window_handle_type m_handle;
     view_controller_handle_type m_viewController;
     view_handle_type m_view;

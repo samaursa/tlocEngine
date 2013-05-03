@@ -10,6 +10,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -17,10 +18,13 @@ namespace tloc { namespace physics { namespace component_system {
   /// @brief  RigidBodyShape component defines the "visible" physical structure
   /// of a RigidBody. Multiple RigidBodyShapes can be attached to one RigidBody.
   ///-------------------------------------------------------------------------
-  class RigidBodyShape : public core::component_system::Component_T<RigidBodyShape>
+  class RigidBodyShape
+    : public core::component_system::Component_T<RigidBodyShape,
+                                                 components::k_rigidBodyShape>
   {
   public:
-    typedef core::component_system::Component_T<RigidBodyShape> base_type;
+    typedef core::component_system::Component_T
+      <RigidBodyShape, components::k_rigidBodyShape> base_type;
 
     typedef RigidBodyShape            this_type;
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;

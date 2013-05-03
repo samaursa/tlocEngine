@@ -50,18 +50,18 @@ namespace tloc { namespace core { namespace string {
   template <STRING_BASE_TYPES>
   StringBase<STRING_BASE_PARAMS>::
     StringBase()
-    : m_begin(NULL)
-    , m_end(NULL)
-    , m_capacity(NULL)
+    : m_begin(nullptr)
+    , m_end(nullptr)
+    , m_capacity(nullptr)
   {
     DoAllocateSelf();
   }
 
   template <STRING_BASE_TYPES>
   StringBase<STRING_BASE_PARAMS>::StringBase(const this_type& aOther)
-    : m_begin(NULL)
-    , m_end(NULL)
-    , m_capacity(NULL)
+    : m_begin(nullptr)
+    , m_end(nullptr)
+    , m_capacity(nullptr)
   {
     RangeInitialize(aOther.begin(), aOther.end());
   }
@@ -69,9 +69,9 @@ namespace tloc { namespace core { namespace string {
   template <STRING_BASE_TYPES>
   StringBase<STRING_BASE_PARAMS>::
     StringBase(const this_type& aOther, size_type aPosition, size_type aN) 
-    : m_begin(NULL)
-    , m_end(NULL)
-    , m_capacity(NULL)
+    : m_begin(nullptr)
+    , m_end(nullptr)
+    , m_capacity(nullptr)
   {
     TLOC_ASSERT_STRING(aPosition <= aOther.length(), "aPosition is out out range!");
 
@@ -1454,7 +1454,7 @@ namespace tloc { namespace core { namespace string {
 
     T* ptr = DoReAllocate(aSize);
 
-    TLOC_ASSERT_STRING(ptr != NULL, "Could not allocate/re-allocate!");
+    TLOC_ASSERT_STRING(ptr != nullptr, "Could not allocate/re-allocate!");
 
     if (ptr)
     {

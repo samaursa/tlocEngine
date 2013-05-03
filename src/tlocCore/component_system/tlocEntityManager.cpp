@@ -51,7 +51,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
 
-    m_entities[a_entity->GetIndex()] = NULL;
+    m_entities[a_entity->GetIndex()] = nullptr;
     m_entitiesToRemove.push_back(a_entity);
 
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
@@ -201,13 +201,12 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    return NULL;
+    return nullptr;
   }
 
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template class core_sptr::SharedPtr<EntityManager>;
-  template class core_sptr::SharedPtr<const EntityManager>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EntityManager);
 
 };};};

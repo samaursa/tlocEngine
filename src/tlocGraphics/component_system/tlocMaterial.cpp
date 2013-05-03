@@ -3,7 +3,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   Material::Material()
-    : base_type(component_system::components::material)
+    : base_type(k_component_type)
     , m_shaderProgram(new shader_prog_ptr::value_type())
   {
   }

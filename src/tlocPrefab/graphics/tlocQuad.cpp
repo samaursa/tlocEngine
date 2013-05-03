@@ -13,15 +13,14 @@ namespace tloc { namespace prefab { namespace graphics {
   using tloc::graphics::component_system::Quad;
   using tloc::graphics::component_system::QuadPtr;
 
-  using math_t::Rectangle;
+  using math_t::Rectangle_T;
   using math_cs::Transform;
   using math_cs::TransformPtr;
 
-  template <typename T_Real>
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
                core_cs::ComponentPoolManager& a_poolMgr,
-               math_t::Rectangle<T_Real> a_rect)
+               const math_t::Rectf32& a_rect)
   {
     using namespace tloc::graphics::component_system::components;
     using namespace tloc::math_cs::components;
@@ -41,10 +40,9 @@ namespace tloc { namespace prefab { namespace graphics {
     quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->GetElement() = QuadPtr(new Quad(a_rect) );
+    itrQuad->SetElement(QuadPtr(new Quad(a_rect) ));
 
     // Create the transform component (and the transform pool if necessary)
-    cpool;
 
     if (a_poolMgr.Exists(transform) == false)
     { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
@@ -56,7 +54,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->SetElement(TransformPtr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
@@ -65,11 +63,5 @@ namespace tloc { namespace prefab { namespace graphics {
 
     return ent;
   }
-
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit Instantiations
-
-  template Entity* CreateQuad<f32>(EntityManager&, ComponentPoolManager&,
-                                   Rectangle<f32>);
 
 };};};

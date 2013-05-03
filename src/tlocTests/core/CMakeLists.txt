@@ -5,9 +5,12 @@ set(TLOC_TESTS_CORE
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
   tlocBufferArgTest.cpp
+  tlocCheckPointsTest.cpp
+  tlocComponentPoolManagerTest.cpp
   tlocContainerTraitsTest.cpp
   tlocEntityManagerTest.cpp
   tlocEntityTest.cpp
+  tlocErrorTest.cpp
   tlocEventManagerTest.cpp
   tlocFileIOTest.cpp
   tlocForwardListTest.cpp
@@ -24,7 +27,6 @@ set(TLOC_TESTS_CORE
   tlocProtectedBufferTest.cpp
   tlocQueueTest.cpp
   tlocRandomTest.cpp
-  tlocRangeTest.cpp
   tlocSharedPtrTest.cpp
   tlocStackTest.cpp
   tlocStringTest.cpp
@@ -45,16 +47,27 @@ set(TLOC_TESTS_CORE
 #-------------------------------------------
 # Project setup
 
-add_executable(tlocTestsCore
+set(TLOC_CURRENT_EXEC_NAME tlocTestsCore)
+
+add_executable(${TLOC_CURRENT_EXEC_NAME}
+  ${TLOC_APP_TYPE}
   ${TLOC_TESTS_CORE}
   )
 
-add_dependencies(tlocTestsCore
+add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocCore
   )
 
-target_link_libraries(tlocTestsCore
-  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/tlocCore.lib
+target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
+  tlocCore
   )
+
+if(APPLE)
+  set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
+  set(PRODUCT_NAME    "\${PRODUCT_NAME}")
+  set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
+    set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
+      MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
+endif()
 
 # Filters to organize the source files

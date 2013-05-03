@@ -12,9 +12,6 @@ set(TLOC_ENGINE_CORE
     tlocNoOpt.h
     tlocPair.h
     tlocPair.inl
-    tlocRange.h
-    tlocRange.inl
-    tlocRange.cpp
     tlocStaticAssert.h
 )
 set(TLOC_ENGINE_CORE_BASE_CLASSES
@@ -152,7 +149,6 @@ set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.inl
     memory/tloc_memory.cpp
     memory/tlocAllocators.h
-    memory/tlocAllocators.inl
     memory/tlocAllocators.cpp
     memory/tlocBufferArg.h
     memory/tlocBufferArg.cpp

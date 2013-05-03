@@ -4,6 +4,8 @@
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
+  //------------------------------------------------------------------------
+
 #define KEYBOARD_IMPL_TEMP    typename T_ParentKeyboard
 #define KEYBOARD_IMPL_PARAMS  T_ParentKeyboard
 #define KEYBOARD_IMPL_TYPE    typename KeyboardImpl<KEYBOARD_IMPL_PARAMS>
@@ -149,7 +151,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                  const keyboard_param_type& a_params)
     : KeyboardImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
-    , m_keyboard(NULL)
+    , m_keyboard(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
   {
     DoInitialize();
@@ -162,7 +164,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_keyboard->Unacquire();
       m_keyboard->Release();
-      m_keyboard = NULL;
+      m_keyboard = TLOC_NULL;
     }
   }
 
@@ -194,7 +196,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::DoInitialize()
   {
-    if (FAILED(m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL)))
+    if (FAILED(m_directInput->
+      CreateDevice(GUID_SysKeyboard, &m_keyboard, TLOC_NULL)))
     {
       // LOG: Keyboard failed to initialize
       TLOC_ASSERT(false, "Keyboard failed to initialize!");
@@ -275,7 +278,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     HRESULT hRes;
 
     hRes = m_keyboard->
-      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
     {
       // Try one more time
@@ -287,7 +290,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       else
       {
         hRes = m_keyboard->
-          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
         if (hRes != DI_OK)
         {
           // we don't have the keyboard, return

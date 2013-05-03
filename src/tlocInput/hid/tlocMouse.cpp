@@ -2,7 +2,7 @@
 
 #include <tlocCore/types/tlocTypes.inl>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl>
-#include <tlocCore/tlocRange.inl>
+#include <tlocMath/tlocRange.inl>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -21,19 +21,6 @@ namespace tloc { namespace input { namespace hid {
 #define MOUSE_PARAMS T_Policy, T_Platform
 #define MOUSE_TYPE   typename Mouse<MOUSE_PARAMS>
 
-  template class Mouse<InputPolicy::Buffered>;
-  template class Mouse<InputPolicy::Immediate>;
-
-  // Force instantiate the constructor for each platform
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
-  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
-#elif defined (TLOC_OS_IPHONE)
-  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
-  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
-#else
-# error TODO
-#endif
 
   //------------------------------------------------------------------------
   // Method definitions
@@ -145,5 +132,24 @@ namespace tloc { namespace input { namespace hid {
   {
     m_clampY = a_range;
   }
+
+  //------------------------------------------------------------------------
+  // Forward Instantiations
+
+  template class Mouse<InputPolicy::Buffered>;
+  template class Mouse<InputPolicy::Immediate>;
+
+  //------------------------------------------------------------------------
+  // Force instantiate the constructor for each platform
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
+#else
+# error TODO
+#endif
 
 };};};

@@ -16,8 +16,8 @@ namespace TestingImageLoader
   extern color_type png_test_1[10][10];
   extern color_type png_test_2[10][10];
 
-  String g_png_test_1_path(GetAssetPath() + String("/images/png_test_1.png"));
-  String g_png_test_2_path(GetAssetPath() + String("/images/png_test_2.png"));
+  String g_png_test_1_path(GetAssetsPath() + String("/images/png_test_1.png"));
+  String g_png_test_2_path(GetAssetsPath() + String("/images/png_test_2.png"));
 
   TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {

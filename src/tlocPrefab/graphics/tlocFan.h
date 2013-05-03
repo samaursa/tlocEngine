@@ -10,11 +10,10 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  template <typename T_Real>
   core_cs::Entity*
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
-              math_t::Circle<T_Real> a_circle,
+              math_t::Circlef32 a_circle,
               tl_size a_numSides);
 
 };};};

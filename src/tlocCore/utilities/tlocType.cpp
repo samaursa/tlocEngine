@@ -131,6 +131,8 @@ namespace tloc { namespace core { namespace utils {
 #define INSTANTIATE_CAST_NUMBER(_type_)\
   template _type_  CastNumber(s8);\
   template _type_  CastNumber(u8);\
+  template _type_  CastNumber(s16);\
+  template _type_  CastNumber(u16);\
   template _type_  CastNumber(s32);\
   template _type_  CastNumber(u32);\
   template _type_  CastNumber(s64);\
@@ -142,6 +144,8 @@ namespace tloc { namespace core { namespace utils {
 
   INSTANTIATE_CAST_NUMBER(s8);
   INSTANTIATE_CAST_NUMBER(u8);
+  INSTANTIATE_CAST_NUMBER(s16);
+  INSTANTIATE_CAST_NUMBER(u16);
   INSTANTIATE_CAST_NUMBER(s32);
   INSTANTIATE_CAST_NUMBER(s64);
   INSTANTIATE_CAST_NUMBER(u32);

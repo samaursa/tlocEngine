@@ -101,8 +101,8 @@ namespace tloc { namespace physics { namespace box2d {
   PhysicsManager::
     PhysicsManager()
     : m_flags(count)
-    , m_world(NULL)
-    , m_contactListener(NULL)
+    , m_world(nullptr)
+    , m_contactListener(nullptr)
   {
   }
 
@@ -124,7 +124,7 @@ namespace tloc { namespace physics { namespace box2d {
     m_world->GetWorld().SetContactListener(m_contactListener);
 
     m_flags.Mark(initialized);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -138,7 +138,7 @@ namespace tloc { namespace physics { namespace box2d {
     delete m_world;
     delete m_contactListener;
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

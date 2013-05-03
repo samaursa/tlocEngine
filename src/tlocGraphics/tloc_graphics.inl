@@ -11,7 +11,6 @@
 #include <tlocGraphics/opengl/tloc_opengl.inl>
 #include <tlocGraphics/renderer/tloc_renderer.inl>
 #include <tlocGraphics/types/tloc_types.inl>
-#include <tlocGraphics/view_projection/tloc_view_projection.inl>
 #include <tlocGraphics/window/tloc_window.inl>
 
 #endif

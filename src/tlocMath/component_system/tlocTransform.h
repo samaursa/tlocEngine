@@ -60,8 +60,8 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<f64>        Transformf64;
 
   TLOC_TYPEDEF_SHARED_PTR(Transform, transform);
-  TLOC_TYPEDEF_SHARED_PTR(Transform, transform_f32);
-  TLOC_TYPEDEF_SHARED_PTR(Transform, transform_f64);
+  TLOC_TYPEDEF_SHARED_PTR(Transformf32, transform_f32);
+  TLOC_TYPEDEF_SHARED_PTR(Transformf64, transform_f64);
 
   typedef core::component_system::
           ComponentPool_TI<transform_sptr>              TransformPool;

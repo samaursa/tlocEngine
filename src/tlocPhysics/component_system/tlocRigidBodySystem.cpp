@@ -1,5 +1,6 @@
 #include "tlocRigidBodySystem.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl>
 
@@ -220,5 +221,10 @@ namespace tloc { namespace physics { namespace component_system {
 
     return result;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodySystem);
 
 };};};

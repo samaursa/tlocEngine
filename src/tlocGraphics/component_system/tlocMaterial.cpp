@@ -62,9 +62,9 @@ namespace tloc { namespace graphics { namespace component_system {
   template class core::containers::Array<Material::shader_op_ptr>;
 
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Material>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Material);
 
   // Pool
-  template class core::component_system::ComponentPool_TI<MaterialPtr>;
+  template class core::component_system::ComponentPool_TI<material_sptr>;
 
 };};};

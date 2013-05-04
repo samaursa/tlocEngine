@@ -67,9 +67,9 @@ namespace tloc { namespace physics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBodyListener> RigidBodyListenerPtr;
+  TLOC_TYPEDEF_SHARED_PTR(RigidBodyListener, rigid_body_listener);
 
-  typedef core::component_system::ComponentPool_TI<RigidBodyListenerPtr>
+  typedef core::component_system::ComponentPool_TI<rigid_body_listener_sptr>
                                                         rigid_body_listener_pool;
 
 };};};

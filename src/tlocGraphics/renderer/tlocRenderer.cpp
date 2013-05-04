@@ -54,7 +54,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::DoInitialize()
   {
     m_flags.Mark(initialized);
-    return common_error_types::error_success;
+    return ErrorSuccess;
   }
 
 };};};

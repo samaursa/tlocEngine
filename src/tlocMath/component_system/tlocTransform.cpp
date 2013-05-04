@@ -80,7 +80,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetPosition(const position_type& a_pos)
   {
-    SetUpdateRequired(true);
+    this->SetUpdateRequired(true);
     m_transformation[12] = a_pos[0];
     m_transformation[13] = a_pos[1];
     m_transformation[14] = a_pos[2];
@@ -90,7 +90,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetOrientation(const orientation_type& a_ori)
   {
-    SetUpdateRequired(true);
+    this->SetUpdateRequired(true);
     m_transformation[0] = a_ori[0];
     m_transformation[1] = a_ori[1];
     m_transformation[2] = a_ori[2];

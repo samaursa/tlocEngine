@@ -1350,11 +1350,15 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
                 "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.IsMarked(k_uniformsCached) == false)
+    {
+      const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
+      retError = DoPrepareVariables(m_uniforms, uniCont);
 
-    m_flags.Mark(k_uniformsCached);
+      m_flags.Mark(k_uniformsCached);
+    }
     return retError;
   }
 
@@ -1369,15 +1373,21 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
                 "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type&
-      attrCont = a_shaderProgram.GetAttributeInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.IsMarked(k_attributesCached) == false)
+    {
+      const glsl_var_info_cont_type&
+        attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    error_type retError = DoPrepareVariables(m_attributes, attrCont);
+      retError = DoPrepareVariables(m_attributes, attrCont);
 
-    m_flags.Mark(k_attributesCached);
+      m_flags.Mark(k_attributesCached);
+    }
     return retError;
 
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::uniform_iterator ShaderOperator::
     begin_uniform()
@@ -1385,11 +1395,15 @@ namespace tloc { namespace graphics { namespace gl {
     return m_uniforms.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator ShaderOperator::
     end_uniform()
   {
     return m_uniforms.end();
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::attribute_iterator ShaderOperator::
     begin_attribute()
@@ -1397,10 +1411,33 @@ namespace tloc { namespace graphics { namespace gl {
     return m_attributes.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::attribute_iterator ShaderOperator::
     end_attribute()
   {
     return m_attributes.end();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearAttributeCache()
+  { m_flags.Unmark(k_attributesCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearUniformCache()
+  { m_flags.Unmark(k_uniformsCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearCache()
+  {
+    ClearAttributeCache();
+    ClearUniformCache();
   }
 
   //------------------------------------------------------------------------

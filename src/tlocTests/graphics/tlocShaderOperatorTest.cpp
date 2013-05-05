@@ -257,7 +257,21 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
+    CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
+    CHECK(gl::Error().Succeeded());
+    sp.Disable();
+
+    sp.Enable();
+    CHECK(gl::Error().Succeeded());
+    so->ClearCache();
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy->ClearCache();
+    CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy2->ClearCache();
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(gl::Error().Succeeded());
     sp.Disable();

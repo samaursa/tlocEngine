@@ -14,6 +14,9 @@ namespace TestingWindow
   using namespace graphics;
   using namespace graphics::win;
 
+  tl_size g_windowSizeX = 0;
+  tl_size g_windowSizeY = 0;
+
   struct sampleObject
   {
     sampleObject() : m_windowEventCount(0)
@@ -31,6 +34,9 @@ namespace TestingWindow
 
       m_windowEventCount++;
       m_counts[a_event.m_type] = m_counts[a_event.m_type] + 1;
+
+      CHECK(a_event.GetWidth() == g_windowSizeX);
+      CHECK(a_event.GetHeight() == g_windowSizeY);
     }
 
     s32 m_windowEventCount;
@@ -60,15 +66,18 @@ namespace TestingWindow
     sampleObject callbacks;
     CHECK(callbacks.m_windowEventCount == 0);
     {
+      g_windowSizeX = 200; g_windowSizeY = 200;
+
       Window win2;
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
-      win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
+      win2.Create(graphics_mode
+        (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
         WindowSettings("Test"), WindowSettings::style_titlebar);
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK(win2.GetWidth() == 200);
-      CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetWidth() == g_windowSizeX);
+      CHECK(win2.GetHeight() == g_windowSizeY);
       CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
@@ -80,15 +89,17 @@ namespace TestingWindow
     CHECK(callbacks.m_counts[WindowEvent::destroy] == 1);
 
     { // Bug-fix test - Client is incorrect size with default window styles
+      g_windowSizeX = 400; g_windowSizeY = 400;
       Window win2;
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
-      win2.Create(graphics_mode(graphics_mode::Properties(200, 200)),
+      win2.Create(graphics_mode
+        (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
         WindowSettings("Test"));
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK(win2.GetWidth() == 200);
-      CHECK(win2.GetHeight() == 200);
+      CHECK(win2.GetWidth() == g_windowSizeX);
+      CHECK(win2.GetHeight() == g_windowSizeY);
       CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
     }
   }
@@ -97,10 +108,13 @@ namespace TestingWindow
   {
     typedef Window::graphics_mode graphics_mode;
 
+    g_windowSizeX = 1920; g_windowSizeY = 1080;
+
     Window win3;
     CHECK(win3.IsValid() == false);
     CHECK(win3.IsCreated() == false);
-    win3.Create(graphics_mode(graphics_mode::Properties(1920, 1080)),
+    win3.Create(graphics_mode
+      (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
       WindowSettings("Testing"), WindowSettings::style_fullscreen);
     CHECK(win3.IsValid() == true);
     CHECK(win3.IsCreated() == true);

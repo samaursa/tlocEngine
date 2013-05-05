@@ -69,17 +69,19 @@ namespace tloc { namespace graphics { namespace gl {
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram);
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram);
 
-    uniform_iterator begin_uniform();
-    uniform_iterator end_uniform();
+    uniform_iterator begin_uniforms();
+    uniform_iterator end_uniforms();
 
-    attribute_iterator begin_attribute();
-    attribute_iterator end_attribute();
+    attribute_iterator begin_attributes();
+    attribute_iterator end_attributes();
 
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called
-    void ClearAttributeCache();
-    void ClearUniformCache();
+    void ClearAttributesCache();
+    void ClearUniformsCache();
     void ClearCache();
+    bool GetAttributesCached();
+    bool GetUniformsCached();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());

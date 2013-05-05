@@ -1351,13 +1351,11 @@ namespace tloc { namespace graphics { namespace gl {
                 "Shader not enabled - did you forget to call Enable()?");
 
     error_type retError = ErrorSuccess;
-    if (m_flags.IsMarked(k_uniformsCached) == false)
+    if (m_flags.ReturnAndMark(k_uniformsCached) == false)
     {
       const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
       retError = DoPrepareVariables(m_uniforms, uniCont);
-
-      m_flags.Mark(k_uniformsCached);
     }
     return retError;
   }
@@ -1374,14 +1372,12 @@ namespace tloc { namespace graphics { namespace gl {
                 "Shader not enabled - did you forget to call Enable()?");
 
     error_type retError = ErrorSuccess;
-    if (m_flags.IsMarked(k_attributesCached) == false)
+    if (m_flags.ReturnAndMark(k_attributesCached) == false)
     {
       const glsl_var_info_cont_type&
         attrCont = a_shaderProgram.GetAttributeInfoRef();
 
       retError = DoPrepareVariables(m_attributes, attrCont);
-
-      m_flags.Mark(k_attributesCached);
     }
     return retError;
 
@@ -1390,7 +1386,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::uniform_iterator ShaderOperator::
-    begin_uniform()
+    begin_uniforms()
   {
     return m_uniforms.begin();
   }
@@ -1398,7 +1394,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::uniform_iterator ShaderOperator::
-    end_uniform()
+    end_uniforms()
   {
     return m_uniforms.end();
   }
@@ -1406,7 +1402,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::attribute_iterator ShaderOperator::
-    begin_attribute()
+    begin_attributes()
   {
     return m_attributes.begin();
   }
@@ -1414,7 +1410,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::attribute_iterator ShaderOperator::
-    end_attribute()
+    end_attributes()
   {
     return m_attributes.end();
   }
@@ -1422,13 +1418,13 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    ClearAttributeCache()
+    ClearAttributesCache()
   { m_flags.Unmark(k_attributesCached); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    ClearUniformCache()
+    ClearUniformsCache()
   { m_flags.Unmark(k_uniformsCached); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1436,9 +1432,21 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderOperator::
     ClearCache()
   {
-    ClearAttributeCache();
-    ClearUniformCache();
+    ClearAttributesCache();
+    ClearUniformsCache();
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    GetAttributesCached()
+  { return m_flags[k_attributesCached]; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    GetUniformsCached()
+  { return m_flags[k_uniformsCached]; }
 
   //------------------------------------------------------------------------
   // explicit instantiation

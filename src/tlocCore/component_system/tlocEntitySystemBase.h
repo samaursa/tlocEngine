@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -149,6 +150,9 @@ namespace tloc { namespace core { namespace component_system {
     event_manager_sptr    m_eventMgr;
     entity_manager_sptr   m_entityMgr;
 
+    core_utils::Checkpoints m_flags;
+    static const tl_int     s_flagCount;
+
   };
 
   //------------------------------------------------------------------------
@@ -162,6 +166,7 @@ namespace tloc { namespace core { namespace component_system {
                       Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
+    , m_flags(s_flagCount)
   {
     TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
     TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,

@@ -33,6 +33,8 @@ namespace tloc { namespace graphics { namespace component_system {
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
+     , m_quadList(new vec3_cont_type(4))
+     , m_texList(new vec2_cont_type(4))
   {
     m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
@@ -157,22 +159,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const rect_type& rect = q.GetRectangleRef();
 
-      m_quadList.resize(4); // number of vertexes a quad has
-      m_texList.resize(4); // number of vertexes a quad has
+      (*m_quadList)[0] = vec3_type(rect.GetValue<rect_type::right>(),
+                                   rect.GetValue<rect_type::top>(), 0);
+      (*m_quadList)[1] = vec3_type(rect.GetValue<rect_type::left>(),
+                                   rect.GetValue<rect_type::top>(), 0);
+      (*m_quadList)[2] = vec3_type(rect.GetValue<rect_type::right>(),
+                                   rect.GetValue<rect_type::bottom>(), 0);
+      (*m_quadList)[3] = vec3_type(rect.GetValue<rect_type::left>(),
+                                   rect.GetValue<rect_type::bottom>(), 0);
 
-      m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[2] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
-      m_quadList[3] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
-
-      m_texList[0] = vec2_type(1.0f, 1.0f);
-      m_texList[1] = vec2_type(0.0f, 1.0f);
-      m_texList[2] = vec2_type(1.0f, 0.0f);
-      m_texList[3] = vec2_type(0.0f, 0.0f);
+      (*m_texList)[0] = vec2_type(1.0f, 1.0f);
+      (*m_texList)[1] = vec2_type(0.0f, 1.0f);
+      (*m_texList)[2] = vec2_type(1.0f, 0.0f);
+      (*m_texList)[3] = vec2_type(0.0f, 0.0f);
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
@@ -184,16 +183,16 @@ namespace tloc { namespace graphics { namespace component_system {
       Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        qPos = m_quadList[i].ConvertTo<Vec4f32>();
+        qPos = (*m_quadList)[i].ConvertTo<Vec4f32>();
         qPos = tMatrix * qPos;
 
-        m_quadList[i].ConvertFrom(qPos);
+        (*m_quadList)[i].ConvertFrom(qPos);
       }
 
-      const tl_size numVertices = m_quadList.size();
+      const tl_size numVertices = m_quadList->size();
 
-      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::SwapArray() );
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::SwapArray() );
+      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::Shared() );
+      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::Shared() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
@@ -214,16 +213,16 @@ namespace tloc { namespace graphics { namespace component_system {
         // Add the mvp
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
-      }
 
-      const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+        const material_type::shader_op_cont& cont = mat.GetShaderOperators();
 
-      for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
-      {
-        material_type::shader_op_ptr so = *itr;
+        for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+        {
+          material_type::shader_op_ptr so = *itr;
 
-        so->EnableAllUniforms(*m_shaderPtr);
-        so->EnableAllAttributes(*m_shaderPtr);
+          so->EnableAllUniforms(*m_shaderPtr);
+          so->EnableAllAttributes(*m_shaderPtr);
+        }
       }
 
       so_quad->PrepareAllAttributes(*m_shaderPtr);

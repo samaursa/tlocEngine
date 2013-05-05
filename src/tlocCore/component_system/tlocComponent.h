@@ -39,6 +39,9 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(bool, GetEnabled, m_enabled);
 
     TLOC_DECL_AND_DEF_SETTER(bool, SetUpdateRequired, m_updateRequired);
+
+  protected:
+    // Only EntityManager is allowed to change this
     TLOC_DECL_AND_DEF_SETTER(bool, SetEnabled, m_enabled);
 
   protected:

@@ -37,9 +37,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
-    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef math::types::Mat4f32                              matrix_type;
+
+    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
+    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+
+    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
+    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
 
     typedef gl::shader_program_sptr                           shader_prog_ptr;
 
@@ -71,8 +75,8 @@ namespace tloc { namespace graphics { namespace component_system {
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
 
-    vec3_cont_type            m_vertList;
-    vec2_cont_type            m_texList;
+    vec3_cont_ptr             m_vertList;
+    vec2_cont_ptr             m_texList;
     gl::shader_operator_sptr  m_projectionOperator;
     gl::attribute_sptr        m_vData;
     gl::attribute_sptr        m_tData;

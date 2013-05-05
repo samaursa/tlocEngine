@@ -33,8 +33,12 @@ namespace tloc { namespace graphics { namespace component_system {
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::fan))
      , m_sharedCam(nullptr)
+     , m_vertList(new vec3_cont_type())
+     , m_texList(new vec2_cont_type())
   {
-    m_vertList.reserve(30);
+    //
+    m_vertList->reserve(30);
+    m_texList->reserve(30);
 
     m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
@@ -150,8 +154,8 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef math::types::Circlef32 circle_type;
       using namespace math::types;
 
-      m_vertList.clear();
-      m_texList.clear();
+      m_vertList->clear();
+      m_texList->clear();
 
       const circle_type& circ = f.GetEllipseRef();
 
@@ -169,7 +173,7 @@ namespace tloc { namespace graphics { namespace component_system {
         Vec4f32 coord4f = newCoord.ConvertTo<Vec4f32, p_tuple::overflow_zero>();
         coord4f[3] = 1;
         coord4f = tMatrix * coord4f;
-        m_vertList.push_back(coord4f.ConvertTo<Vec3f32>());
+        m_vertList->push_back(coord4f.ConvertTo<Vec3f32>());
       }
 
       for (f32 i = 0; i <= numSides; ++i)
@@ -181,24 +185,24 @@ namespace tloc { namespace graphics { namespace component_system {
         coord4f[3] = 1;
         coord4f = tMatrix * coord4f ;
 
-        m_vertList.push_back(coord4f .ConvertTo<Vec3f32>());
+        m_vertList->push_back(coord4f .ConvertTo<Vec3f32>());
       }
 
       // Create the texture co-ordinates
       circle_type circForTex;
       circForTex.SetRadius(0.5f);
-      m_texList.push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
+      m_texList->push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
       for (f32 i = 0; i <= numSides; ++i)
       {
         Vec2f32 newTexCoord = circForTex.GetCoord(degree_f32(angleInterval * i));
         newTexCoord += Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
-        m_texList.push_back(newTexCoord);
+        m_texList->push_back(newTexCoord);
       }
 
-      const tl_size numVertices = m_vertList.size();
+      const tl_size numVertices = m_vertList->size();
 
-      m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::SwapArray() );
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::SwapArray() );
+      m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::Shared());
+      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::Shared());
 
       shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
       so_fan->AddAttribute(m_vData);
@@ -219,16 +223,16 @@ namespace tloc { namespace graphics { namespace component_system {
         // Add the mvp
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
-      }
 
-      const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+        const material_type::shader_op_cont& cont = mat.GetShaderOperators();
 
-      for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
-      {
-        material_type::shader_op_ptr so = *itr;
+        for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+        {
+          material_type::shader_op_ptr so = *itr;
 
-        so->EnableAllUniforms(*m_shaderPtr);
-        so->EnableAllAttributes(*m_shaderPtr);
+          so->EnableAllUniforms(*m_shaderPtr);
+          so->EnableAllAttributes(*m_shaderPtr);
+        }
       }
 
       so_fan->PrepareAllAttributes(*m_shaderPtr);

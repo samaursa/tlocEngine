@@ -43,6 +43,8 @@ namespace tloc { namespace core { namespace component_system {
     ComponentPool_I();
   };
 
+  TLOC_TYPEDEF_SHARED_PTR(ComponentPool_I, component_pool);
+
   //////////////////////////////////////////////////////////////////////////
   // ComponentPool_TI
 
@@ -99,7 +101,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef ComponentPool_I                             component_pool_type;
     typedef tl_size                                     size_type;
     typedef containers::tl_array
-      <component_pool_type*>::type                      cont_type;
+      <component_pool_sptr>::type                       cont_type;
 
     typedef cont_type::iterator                         iterator;
     typedef cont_type::const_iterator                   const_iterator;
@@ -110,19 +112,7 @@ namespace tloc { namespace core { namespace component_system {
     ~ComponentPoolManager();
 
     template <typename T_Component>
-    iterator CreateNewPool(component_type a_compNumber)
-    {
-      TLOC_ASSERT(Exists(a_compNumber) == false,
-                  "ComponentPool of type a_compNumber already exists!");
-
-      DoResize(a_compNumber + 1);
-
-      iterator itr = m_pools.begin();
-      core::advance(itr, a_compNumber);
-      *itr = new ComponentPool_TI<T_Component>();
-
-      return GetPool(a_compNumber);
-    }
+    iterator  CreateNewPool(component_type a_compNumber);
 
     void      DestroyPool(component_type a_number);
     iterator  GetPool(component_type a_number);
@@ -140,6 +130,26 @@ namespace tloc { namespace core { namespace component_system {
   private:
     cont_type m_pools;
   };
+
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_Component>
+  ComponentPoolManager::iterator
+    ComponentPoolManager::
+    CreateNewPool(component_type a_compNumber)
+  {
+    TLOC_ASSERT(Exists(a_compNumber) == false,
+      "ComponentPool of type a_compNumber already exists!");
+
+    DoResize(a_compNumber + 1);
+
+    iterator itr = m_pools.begin();
+    core::advance(itr, a_compNumber);
+    itr->reset(new ComponentPool_TI<T_Component>());
+
+    return GetPool(a_compNumber);
+  }
 
   //------------------------------------------------------------------------
   // typedefs

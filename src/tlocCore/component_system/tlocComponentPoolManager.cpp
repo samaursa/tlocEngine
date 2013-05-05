@@ -21,9 +21,7 @@ namespace tloc { namespace core { namespace component_system {
 
   ComponentPoolManager::
     ~ComponentPoolManager()
-  {
-    delete_ptrs(m_pools.begin(), m_pools.end());
-  }
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -34,7 +32,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(index < m_pools.size(),
       "Pool not allocated for passed component type");
 
-    delete m_pools[index];
+    m_pools[index].reset();
 
     iterator itr = m_pools.begin();
     advance(itr, index);
@@ -90,5 +88,6 @@ namespace tloc { namespace core { namespace component_system {
   // Explicit instantiations
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPoolManager);
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPool_I);
 
 };};};

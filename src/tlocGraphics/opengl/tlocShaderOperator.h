@@ -80,8 +80,8 @@ namespace tloc { namespace graphics { namespace gl {
     void ClearAttributesCache();
     void ClearUniformsCache();
     void ClearCache();
-    bool GetAttributesCached();
-    bool GetUniformsCached();
+    bool IsAttributesCached();
+    bool IsUniformsCached();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());

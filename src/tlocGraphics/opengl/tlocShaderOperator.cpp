@@ -1439,13 +1439,13 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool ShaderOperator::
-    GetAttributesCached()
+    IsAttributesCached()
   { return m_flags[k_attributesCached]; }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool ShaderOperator::
-    GetUniformsCached()
+    IsUniformsCached()
   { return m_flags[k_uniformsCached]; }
 
   //------------------------------------------------------------------------

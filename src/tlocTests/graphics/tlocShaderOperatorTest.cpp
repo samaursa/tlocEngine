@@ -257,16 +257,16 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
-    CHECK(so->GetUniformsCached());
+    CHECK(so->IsUniformsCached());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
 
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
-    CHECK(soCopy->GetUniformsCached());
+    CHECK(soCopy->IsUniformsCached());
 
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
-    CHECK(soCopy2->GetUniformsCached());
+    CHECK(soCopy2->IsUniformsCached());
     CHECK(gl::Error().Succeeded());
     sp.Disable();
 
@@ -275,19 +275,19 @@ namespace TestingShaderOperator
     CHECK(gl::Error().Succeeded());
 
     so->ClearUniformsCache();
-    CHECK_FALSE(so->GetUniformsCached());
+    CHECK_FALSE(so->IsUniformsCached());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
-    CHECK(so->GetUniformsCached());
+    CHECK(so->IsUniformsCached());
 
     soCopy->ClearCache();
-    CHECK_FALSE(soCopy->GetUniformsCached());
+    CHECK_FALSE(soCopy->IsUniformsCached());
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
-    CHECK(soCopy->GetUniformsCached());
+    CHECK(soCopy->IsUniformsCached());
 
     soCopy2->ClearCache();
-    CHECK_FALSE(soCopy2->GetUniformsCached());
+    CHECK_FALSE(soCopy2->IsUniformsCached());
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
-    CHECK(soCopy2->GetUniformsCached());
+    CHECK(soCopy2->IsUniformsCached());
 
     CHECK(gl::Error().Succeeded());
     sp.Disable();
@@ -677,15 +677,15 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(so->GetAttributesCached());
+    CHECK(so->IsAttributesCached());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
 
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(soCopy->GetAttributesCached());
+    CHECK(soCopy->IsAttributesCached());
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
 
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(soCopy2->GetAttributesCached());
+    CHECK(soCopy2->IsAttributesCached());
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
     CHECK(gl::Error().Succeeded());
     sp.Disable();
@@ -695,19 +695,19 @@ namespace TestingShaderOperator
     CHECK(gl::Error().Succeeded());
 
     so->ClearAttributesCache();
-    CHECK_FALSE(so->GetAttributesCached());
+    CHECK_FALSE(so->IsAttributesCached());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(so->GetAttributesCached());
+    CHECK(so->IsAttributesCached());
 
     soCopy->ClearAttributesCache();
-    CHECK_FALSE(soCopy->GetAttributesCached());
+    CHECK_FALSE(soCopy->IsAttributesCached());
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(soCopy->GetAttributesCached());
+    CHECK(soCopy->IsAttributesCached());
 
     soCopy->ClearAttributesCache();
-    CHECK_FALSE(soCopy2->GetAttributesCached());
+    CHECK_FALSE(soCopy2->IsAttributesCached());
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess);
-    CHECK(soCopy2->GetAttributesCached());
+    CHECK(soCopy2->IsAttributesCached());
 
     CHECK(gl::Error().Succeeded());
     sp.Disable();

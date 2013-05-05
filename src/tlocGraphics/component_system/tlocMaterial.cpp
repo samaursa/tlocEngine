@@ -30,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
   bool Material::
     RemoveShaderOperator(shader_op_ptr a_shaderOp)
   {
-    auto itr = core::remove_all(m_shaderOperators, a_shaderOp);
+    shader_op_cont_itr itr = core::remove_all(m_shaderOperators, a_shaderOp);
     if (itr != m_shaderOperators.end())
     {
       SetUpdateRequired(true);

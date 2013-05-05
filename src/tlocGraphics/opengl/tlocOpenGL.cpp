@@ -89,9 +89,9 @@ namespace tloc { namespace graphics { namespace gl {
       if (g_maxTextureUnits == 0)
       { return TLOC_ERROR(error::error_no_texture_units_available); }
 
+      ++g_currentTextureUnit;
       if (g_currentTextureUnit < g_maxTextureUnits)
       {
-        ++g_currentTextureUnit;
         glActiveTexture( g_availableTextureUnits[g_currentTextureUnit] );
         return ErrorSuccess;
       }

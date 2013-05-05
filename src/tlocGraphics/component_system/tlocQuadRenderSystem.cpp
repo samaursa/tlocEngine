@@ -33,6 +33,8 @@ namespace tloc { namespace graphics { namespace component_system {
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
+     , m_quadList(new vec3_cont_type(4))
+     , m_texList(new vec2_cont_type(4))
   {
     m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
@@ -133,17 +135,17 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Quad      quad_type;
-    typedef graphics::component_system::Material  material_type;
-    typedef material_type::shader_op_ptr          shader_op_ptr;
+    typedef graphics::component_system::Material  mat_type;
+    typedef mat_type::shader_op_ptr          shader_op_ptr;
 
     const entity_type* ent = a_ent;
 
     if (ent->HasComponent(components::material))
     {
 
-      ComponentMapper<material_type> matArr =
+      ComponentMapper<mat_type> matArr =
         ent->GetComponents(components::material);
-      material_type& mat = matArr[0];
+      mat_type& mat = matArr[0];
 
       ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
       Quad& q = quad[0];
@@ -157,22 +159,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const rect_type& rect = q.GetRectangleRef();
 
-      m_quadList.resize(4); // number of vertexes a quad has
-      m_texList.resize(4); // number of vertexes a quad has
+      (*m_quadList)[0] = vec3_type(rect.GetValue<rect_type::right>(),
+                                   rect.GetValue<rect_type::top>(), 0);
+      (*m_quadList)[1] = vec3_type(rect.GetValue<rect_type::left>(),
+                                   rect.GetValue<rect_type::top>(), 0);
+      (*m_quadList)[2] = vec3_type(rect.GetValue<rect_type::right>(),
+                                   rect.GetValue<rect_type::bottom>(), 0);
+      (*m_quadList)[3] = vec3_type(rect.GetValue<rect_type::left>(),
+                                   rect.GetValue<rect_type::bottom>(), 0);
 
-      m_quadList[0] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[1] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::top>(), 0);
-      m_quadList[2] = vec3_type(rect.GetValue<rect_type::right>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
-      m_quadList[3] = vec3_type(rect.GetValue<rect_type::left>(),
-                                rect.GetValue<rect_type::bottom>(), 0);
-
-      m_texList[0] = vec2_type(1.0f, 1.0f);
-      m_texList[1] = vec2_type(0.0f, 1.0f);
-      m_texList[2] = vec2_type(1.0f, 0.0f);
-      m_texList[3] = vec2_type(0.0f, 0.0f);
+      (*m_texList)[0] = vec2_type(1.0f, 1.0f);
+      (*m_texList)[1] = vec2_type(0.0f, 1.0f);
+      (*m_texList)[2] = vec2_type(1.0f, 0.0f);
+      (*m_texList)[3] = vec2_type(0.0f, 0.0f);
 
       ComponentMapper<transform_type> posList =
         ent->GetComponents(math::component_system::components::transform);
@@ -184,16 +183,16 @@ namespace tloc { namespace graphics { namespace component_system {
       Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
       {
-        qPos = m_quadList[i].ConvertTo<Vec4f32>();
+        qPos = (*m_quadList)[i].ConvertTo<Vec4f32>();
         qPos = tMatrix * qPos;
 
-        m_quadList[i].ConvertFrom(qPos);
+        (*m_quadList)[i].ConvertFrom(qPos);
       }
 
-      const tl_size numVertices = m_quadList.size();
+      const tl_size numVertices = m_quadList->size();
 
-      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::SwapArray() );
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::SwapArray() );
+      m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::Shared() );
+      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::Shared() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
@@ -202,7 +201,7 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Enable the shader
 
-      material_type::shader_prog_ptr sp = mat.GetShaderProgRef();
+      mat_type::shader_prog_ptr sp = mat.GetShaderProgRef();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
@@ -214,16 +213,19 @@ namespace tloc { namespace graphics { namespace component_system {
         // Add the mvp
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
-      }
 
-      const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
-      for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
-      {
-        material_type::shader_op_ptr so = *itr;
+        const mat_type::shader_op_cont& cont = mat.GetShaderOperators();
 
-        so->EnableAllUniforms(*m_shaderPtr);
-        so->EnableAllAttributes(*m_shaderPtr);
+        for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+             itr != itrEnd; ++itr)
+        {
+          mat_type::shader_op_ptr so = *itr;
+
+          so->EnableAllUniforms(*m_shaderPtr);
+          so->EnableAllAttributes(*m_shaderPtr);
+        }
       }
 
       so_quad->PrepareAllAttributes(*m_shaderPtr);

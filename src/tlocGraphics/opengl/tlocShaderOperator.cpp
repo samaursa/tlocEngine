@@ -1216,13 +1216,19 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
-  { m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) ); }
+  {
+    m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
+    m_flags.Unmark(k_uniformsCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
-  { m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) ); }
+  {
+    m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
+    m_flags.Unmark(k_attributesCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1350,11 +1356,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
                 "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.ReturnAndMark(k_uniformsCached) == false)
+    {
+      const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
-
-    m_flags.Mark(k_uniformsCached);
+      retError = DoPrepareVariables(m_uniforms, uniCont);
+    }
     return retError;
   }
 
@@ -1369,39 +1377,82 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
                 "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type&
-      attrCont = a_shaderProgram.GetAttributeInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.ReturnAndMark(k_attributesCached) == false)
+    {
+      const glsl_var_info_cont_type&
+        attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    error_type retError = DoPrepareVariables(m_attributes, attrCont);
-
-    m_flags.Mark(k_attributesCached);
+      retError = DoPrepareVariables(m_attributes, attrCont);
+    }
     return retError;
 
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator ShaderOperator::
-    begin_uniform()
+    begin_uniforms()
   {
     return m_uniforms.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator ShaderOperator::
-    end_uniform()
+    end_uniforms()
   {
     return m_uniforms.end();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::attribute_iterator ShaderOperator::
-    begin_attribute()
+    begin_attributes()
   {
     return m_attributes.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::attribute_iterator ShaderOperator::
-    end_attribute()
+    end_attributes()
   {
     return m_attributes.end();
   }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearAttributesCache()
+  { m_flags.Unmark(k_attributesCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearUniformsCache()
+  { m_flags.Unmark(k_uniformsCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearCache()
+  {
+    ClearAttributesCache();
+    ClearUniformsCache();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    IsAttributesCached()
+  { return m_flags[k_attributesCached]; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    IsUniformsCached()
+  { return m_flags[k_uniformsCached]; }
 
   //------------------------------------------------------------------------
   // explicit instantiation

@@ -141,6 +141,7 @@ namespace TestingShaderOperator
       uniform->SetValueAs(f32(5.0f));
 
       so->AddUniform(uniform);
+      CHECK_FALSE(so->IsUniformsCached());
     }
     {
       uniform_ptr_type    uniform(new gl::Uniform());
@@ -291,6 +292,25 @@ namespace TestingShaderOperator
 
     CHECK(gl::Error().Succeeded());
     sp.Disable();
+
+    // Test Removal
+    typedef shader_op_ptr::value_type::size_type size_type;
+    const size_type numUniforms = so->GetNumberOfUniforms();
+
+    // Removing uniforms does not affect cache
+    so->RemoveUniform(so->begin_uniforms()->first);
+    CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
+
+    so->RemoveUniform(so->begin_uniforms()->first);
+    CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
+
+    sp.Enable();
+    CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    CHECK(so->IsUniformsCached());
+    sp.Disable();
+
+    so->RemoveAllUniforms();
+    CHECK(so->GetNumberOfUniforms() == 0);
   }
 
 #if defined (TLOC_OS_WIN)
@@ -587,6 +607,7 @@ namespace TestingShaderOperator
       attribute->SetValueAs(f32(5.0f));
 
       so->AddAttribute(attribute);
+      CHECK_FALSE(so->IsAttributesCached());
     }
     {
       attribute_ptr_type attribute(new gl::Attribute());
@@ -711,6 +732,25 @@ namespace TestingShaderOperator
 
     CHECK(gl::Error().Succeeded());
     sp.Disable();
+
+    // Test Removal
+    typedef shader_op_ptr::value_type::size_type size_type;
+    const size_type numAttributes = so->GetNumberOfAttributes();
+
+    // Removing uniforms does not affect cache
+    so->RemoveAttribute(so->begin_attributes()->first);
+    CHECK(so->GetNumberOfAttributes() == numAttributes - 1);
+
+    so->RemoveAttribute(so->begin_attributes()->first);
+    CHECK(so->GetNumberOfAttributes() == numAttributes - 2);
+
+    sp.Enable();
+    CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    CHECK(so->IsAttributesCached());
+    sp.Disable();
+
+    so->RemoveAllAttributes();
+    CHECK(so->GetNumberOfAttributes() == 0);
   }
 
 #if defined (TLOC_OS_WIN)

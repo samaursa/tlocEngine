@@ -1216,13 +1216,19 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
-  { m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) ); }
+  {
+    m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
+    m_flags.Unmark(k_uniformsCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
-  { m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) ); }
+  {
+    m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
+    m_flags.Unmark(k_attributesCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

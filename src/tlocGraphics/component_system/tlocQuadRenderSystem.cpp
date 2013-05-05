@@ -135,17 +135,17 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Quad      quad_type;
-    typedef graphics::component_system::Material  material_type;
-    typedef material_type::shader_op_ptr          shader_op_ptr;
+    typedef graphics::component_system::Material  mat_type;
+    typedef mat_type::shader_op_ptr          shader_op_ptr;
 
     const entity_type* ent = a_ent;
 
     if (ent->HasComponent(components::material))
     {
 
-      ComponentMapper<material_type> matArr =
+      ComponentMapper<mat_type> matArr =
         ent->GetComponents(components::material);
-      material_type& mat = matArr[0];
+      mat_type& mat = matArr[0];
 
       ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
       Quad& q = quad[0];
@@ -201,7 +201,7 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Enable the shader
 
-      material_type::shader_prog_ptr sp = mat.GetShaderProgRef();
+      mat_type::shader_prog_ptr sp = mat.GetShaderProgRef();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
@@ -214,11 +214,14 @@ namespace tloc { namespace graphics { namespace component_system {
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
 
-        const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
-        for (auto itr = cont.begin(), itrEnd = cont.end(); itr != itrEnd; ++itr)
+        const mat_type::shader_op_cont& cont = mat.GetShaderOperators();
+
+        for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+             itr != itrEnd; ++itr)
         {
-          material_type::shader_op_ptr so = *itr;
+          mat_type::shader_op_ptr so = *itr;
 
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);

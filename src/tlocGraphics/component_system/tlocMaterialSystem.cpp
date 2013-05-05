@@ -80,12 +80,13 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Add user attributes and uniforms
 
-      typedef mat_type::shader_op_ptr          shader_op_ptr;
+      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+
+      const mat_type::shader_op_cont& cont = currMat.GetShaderOperators();
 
       sp->Enable();
-      for (auto itr = currMat.GetShaderOperators().begin(),
-        itrEnd = currMat.GetShaderOperators().end();
-        itr != itrEnd; ++itr)
+      for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+           itr != itrEnd; ++itr)
       {
         (*itr)->PrepareAllUniforms(*sp);
         (*itr)->PrepareAllAttributes(*sp);

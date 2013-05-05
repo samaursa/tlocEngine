@@ -33,10 +33,10 @@ namespace tloc { namespace core { namespace component_system {
     { }
 
     TLOC_DECL_AND_DEF_GETTER(component_type, GetType, m_type);
-    TLOC_DECL_AND_DEF_GETTER(bool, GetUpdateRequired, m_updateRequired);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsUpdateRequired, m_updateRequired);
     TLOC_DECL_AND_DEF_GETTER(counter_size_type, GetTotalComponents,
                              counter_type::GetCurrentObjectCount());
-    TLOC_DECL_AND_DEF_GETTER(bool, GetEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
 
     TLOC_DECL_AND_DEF_SETTER(bool, SetUpdateRequired, m_updateRequired);
 

@@ -40,7 +40,7 @@ namespace tloc { namespace core { namespace component_system {
     const component_list_list&  GetComponentsList() const;
 
     TLOC_DECL_AND_DEF_SETTER(bool, SetActive, m_active);
-    TLOC_DECL_AND_DEF_GETTER(bool, GetActive, m_active);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsActive, m_active);
 
   protected:
 

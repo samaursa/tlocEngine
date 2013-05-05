@@ -41,7 +41,7 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      if ( (*itr)->GetActive())
+      if ( (*itr)->IsActive())
       { ProcessEntity(a_mgr, *itr); }
     }
   }

@@ -125,6 +125,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     DoAddRef();
   }
 
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename Y>
+  void SharedPtr<T, T_NullCopyPolicy>::
+    reset(Y* a_ptr)
+  {
+    this_type(a_ptr).swap(*this);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Global operators
 

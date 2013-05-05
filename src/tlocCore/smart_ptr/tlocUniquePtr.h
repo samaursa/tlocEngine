@@ -65,6 +65,16 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   };
 
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T>
+  template <typename T_Other>
+  UniquePtr<T>::
+    UniquePtr(const UniquePtr<T_Other>& a_other)
+    : m_rawPtr( static_cast<pointer>(a_other.release()) )
+  { }
+
   //////////////////////////////////////////////////////////////////////////
   // Global operators
 

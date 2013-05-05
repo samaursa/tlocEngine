@@ -145,14 +145,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
-  template <typename Y>
-  void SharedPtr<SHARED_PTR_PARAMS>::
-    reset(Y* a_ptr) 
-  {
-    this_type(a_ptr).swap(*this);
-  }
-
-  template <SHARED_PTR_TEMPS>
   void SharedPtr<SHARED_PTR_PARAMS>::
     swap(this_type& a_other)
   {

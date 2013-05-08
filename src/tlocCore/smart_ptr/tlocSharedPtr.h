@@ -29,7 +29,6 @@ namespace tloc { namespace core { namespace smart_ptr {
             "Copy of NULL SharedPtr is disabled");
           TLOC_UNUSED(a_rawPtr);
         }
-
       };
     };
   };
@@ -70,7 +69,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     template <typename T_Other, typename T_OtherPolicy>
     this_type& operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other);
-    this_type& operator= (const this_type& a_other);
+    this_type& operator= (this_type a_other);
 
     ///-------------------------------------------------------------------------
     /// @brief Dangerous to use this. Use SharedPtr<> semantics
@@ -100,6 +99,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename Y>
     void           reset(Y* a_ptr);
 
+    template <typename T_Other>
+    void           swap(SharedPtr<T_Other, null_copy_policy_type>& a_other);
     void           swap(this_type& a_other);
 
     //------------------------------------------------------------------------
@@ -153,6 +154,17 @@ namespace tloc { namespace core { namespace smart_ptr {
     reset(Y* a_ptr)
   {
     this_type(a_ptr).swap(*this);
+  }
+
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename T_Other>
+  void SharedPtr<T, T_NullCopyPolicy>::
+    swap(SharedPtr<T_Other, T_NullCopyPolicy>& a_other)
+  {
+    using core::swap;
+
+    swap(m_rawPtr, a_other.m_rawPtr);
+    swap(m_refCount, a_other.m_refCount);
   }
 
   //////////////////////////////////////////////////////////////////////////

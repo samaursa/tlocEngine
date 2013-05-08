@@ -137,6 +137,10 @@ namespace TestingSharedPtr
       CHECK(sp->m_value == 5);
       CHECK(sp2->m_value == 10);
 
+      swap(sp2, sp);
+      CHECK(sp->m_value == 10);
+      CHECK(sp2->m_value == 5);
+
       CHECK_CTOR_DTOR_COUNT(2, 0);
     }
     CHECK_CTOR_DTOR_COUNT(2, 2);

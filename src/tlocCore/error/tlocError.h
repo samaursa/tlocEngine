@@ -2,6 +2,7 @@
 #define _TLOC_CORE_ERROR_H_
 
 #include <tlocCore/tlocCoreBase.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocCore/error/tlocErrorTypes.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -28,6 +29,8 @@ namespace tloc { namespace core { namespace error {
     tl_int      GetLineNumber() const;
     const char* GetFileName() const;
 
+    void        swap(this_type& a_other);
+
     bool operator==(const this_type& a_other) const;
     bool operator==(const code_type& a_other) const;
 
@@ -48,6 +51,14 @@ namespace tloc { namespace core { namespace error {
   private:
     code_type m_error;
   };
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_Derived>
+  TL_I void swap(Error_TI<T_Derived>& a,
+                 Error_TI<T_Derived>& b)
+  { a.swap(b); }
 
   //////////////////////////////////////////////////////////////////////////
   // Error_T<T_BuildConfig>
@@ -80,6 +91,8 @@ namespace tloc { namespace core { namespace error {
 
     void operator=(const this_type& a_other);
 
+    void swap(this_type& a_other);
+
     using base_type::operator ==;
     using base_type::operator !=;
 
@@ -111,6 +124,14 @@ namespace tloc { namespace core { namespace error {
 
   };
 
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_BuildConfig>
+  TL_I void swap(Error_T<T_BuildConfig>& a,
+                 Error_T<T_BuildConfig>& b)
+  { a.swap(b); }
+
   //////////////////////////////////////////////////////////////////////////
   // Error_T<>
 
@@ -133,6 +154,8 @@ namespace tloc { namespace core { namespace error {
     ~Error_T();
 
     void operator=(const this_type& a_other);
+
+    void swap(this_type& a_other);
 
     using base_type::operator ==;
     using base_type::operator !=;
@@ -158,6 +181,13 @@ namespace tloc { namespace core { namespace error {
 
     using base_type::DoSetErrorCode;
   };
+
+  //------------------------------------------------------------------------
+  // swap
+
+  TL_I void swap(Error_TI<configs::p_build_config::Release>& a,
+                 Error_TI<configs::p_build_config::Release>& b)
+  { a.swap(b); }
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs

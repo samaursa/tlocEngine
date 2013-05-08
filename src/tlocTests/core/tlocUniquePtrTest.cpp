@@ -15,6 +15,8 @@ namespace TestingUniquePtr
   using namespace core;
   using namespace core::containers;
 
+  using smart_ptr::UniquePtr;
+
   struct UniqueStruct
   {
     UniqueStruct(tl_int a_value) : m_value(a_value)
@@ -257,7 +259,6 @@ namespace TestingUniquePtr
 
   void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
   {
-    using smart_ptr::UniquePtr;
     using namespace smart_ptr::priv;
 
     {

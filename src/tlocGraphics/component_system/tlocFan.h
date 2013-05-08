@@ -14,7 +14,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Fan
-    : public tloc::core::component_system::Component_T<Fan, components::fan>
+    : public core_cs::Component_T<Fan, components::fan>
   {
   public:
     typedef Fan                                     this_type;
@@ -41,8 +41,7 @@ namespace tloc { namespace graphics { namespace component_system {
   };
 
   TLOC_TYPEDEF_SHARED_PTR(Fan, fan);
-  typedef core::component_system::
-    ComponentPool_TI<fan_sptr>                     FanPool;
+  TLOC_TYPEDEF_COMPONENT_POOL(fan_sptr, fan_sptr);
 
 };};};
 

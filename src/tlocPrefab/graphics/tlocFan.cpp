@@ -25,38 +25,35 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace tloc::graphics::component_system::components;
 
     typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef gfx_cs::fan_sptr_pool   fan_pool;
+
+    gfx_cs::fan_sptr_pool_sptr      fanPool;
 
     // Create the fan (and the fan pool if necessary)
-    comp_pool_ptr cpool;
     if (a_poolMgr.Exists(fan) == false)
-    { cpool = a_poolMgr.CreateNewPool<fan_sptr>(fan); }
+    { fanPool = a_poolMgr.CreateNewPool<fan_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(fan); }
-
-    typedef tloc::graphics::component_system::FanPool fan_pool;
-
-    fan_pool* fanPool = (*cpool)->GetAs<fan_pool>();
+    { fanPool = a_poolMgr.GetPool<fan_sptr>(); }
 
     fan_pool::iterator itr = fanPool->GetNext();
-    itr->SetElement(fan_sptr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+    itr->SetValue(fan_sptr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+
+
+    typedef math_cs::transform_f32_sptr_pool  t_pool;
+    math_cs::transform_f32_sptr_pool_sptr     tPool;
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
+    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
-
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
+    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(transform_sptr(new Transform()) );
+    itrTransform->SetValue(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itr->GetElement()) );
+    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
+    a_mgr.InsertComponent(ent, &*(itr->GetValue()) );
 
     return ent;
   }

@@ -14,7 +14,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Quad
-    : public tloc::core::component_system::Component_T<Quad, components::quad>
+    : public core_cs::Component_T<Quad, components::quad>
   {
   public:
     typedef Quad                                      this_type;
@@ -37,9 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(Quad, quad);
-
-  typedef core::component_system::
-    ComponentPool_TI<quad_sptr>                 QuadPool;
+  TLOC_TYPEDEF_COMPONENT_POOL(quad_sptr, quad_sptr);
 
 };};};
 

@@ -46,8 +46,6 @@ namespace tloc { namespace math { namespace component_system {
 
   // SmartPtr
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Projection);
-
-  // Pool
-  template class core::component_system::ComponentPool_TI<projection_sptr>;
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(projection_sptr);
 
 };};};

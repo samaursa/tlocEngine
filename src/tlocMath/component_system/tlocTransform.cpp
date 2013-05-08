@@ -131,8 +131,7 @@ namespace tloc { namespace math { namespace component_system {
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
 
-  // Pool
-  template class core::component_system::ComponentPool_TI<transform_f32_sptr>;
-  template class core::component_system::ComponentPool_TI<transform_f64_sptr>;
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
 
 };};};

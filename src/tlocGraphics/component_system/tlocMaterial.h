@@ -18,7 +18,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Material
-    : public core::component_system::Component_T<Material, components::material>
+    : public core_cs::Component_T<Material, components::material>
   {
   public:
     typedef core::component_system::Component_T
@@ -72,9 +72,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(Material, material);
-
-  typedef core::component_system::
-    ComponentPool_TI<material_sptr>                 MaterialPool;
+  TLOC_TYPEDEF_COMPONENT_POOL(material_sptr, material_sptr);
 
 };};};
 

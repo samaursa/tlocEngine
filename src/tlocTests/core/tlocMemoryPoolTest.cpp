@@ -90,52 +90,52 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
+  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
   {
-    a->SetElement(b);
+    a->SetValue(b);
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
+  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
   {
-    (*a)->SetElement(b);
+    (*a)->SetValue(b);
   }
 
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_stack, p_user)
+  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_user)
   {
     a->m_element = b;
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetElement(T_Elem1 a, const T_Elem2& b, p_on_heap, p_user)
+  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_heap, p_user)
   {
     (*a)->m_element = b;
   }
 
   template <typename T_Elem1>
-  typename T_Elem1::wrapper_value_type GetElement(T_Elem1& a, p_on_stack, p_wrapper)
+  typename T_Elem1::wrapper_value_type GetValue(T_Elem1& a, p_on_stack, p_wrapper)
   {
-    return a.GetElement();
+    return a.GetValue();
   }
 
   template <typename T_Elem1>
   typename Loki::TypeTraits<T_Elem1>::PointeeType::wrapper_value_type
-    GetElement(T_Elem1& a, p_on_heap, p_wrapper)
+    GetValue(T_Elem1& a, p_on_heap, p_wrapper)
   {
-    return a->GetElement();
+    return a->GetValue();
   }
 
   template <typename T_Elem1>
-  T_Elem1 GetElement(T_Elem1& a, p_on_stack, p_user)
+  T_Elem1 GetValue(T_Elem1& a, p_on_stack, p_user)
   {
     return a;
   }
 
   template <typename T_Elem1>
   typename Loki::TypeTraits<T_Elem1>::PointeeType
-    GetElement(T_Elem1& a, p_on_heap, p_user)
+    GetValue(T_Elem1& a, p_on_heap, p_user)
   {
     return *a;
   }
@@ -236,7 +236,7 @@ namespace TestingMemoryPool
 
     for (tl_int i = 0; i < T_PoolSize; ++i)
     {
-      SetElement(pool.GetNext(), i, p_alloc_type(), p_index_type() );
+      SetValue(pool.GetNext(), i, p_alloc_type(), p_index_type() );
     }
 
     bool recycleTestPassed = true;
@@ -244,7 +244,7 @@ namespace TestingMemoryPool
     {
       const tl_int indexToRecycle = 0;
       const typename pool_type::value_type elementToCheck =
-        GetElement(pool[0], typename pool_type::policy_allocation_type(),
+        GetValue(pool[0], typename pool_type::policy_allocation_type(),
                             typename pool_type::policy_indexing_type() );
 
       pool.RecycleAtIndex(indexToRecycle);
@@ -252,7 +252,7 @@ namespace TestingMemoryPool
       for (typename T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
            itr != itrEnd; ++itr)
       {
-        if (GetElement(*itr, typename pool_type::policy_allocation_type(),
+        if (GetValue(*itr, typename pool_type::policy_allocation_type(),
           typename pool_type::policy_indexing_type()) == elementToCheck)
         {
           recycleTestPassed = false;

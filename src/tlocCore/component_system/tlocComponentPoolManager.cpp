@@ -20,6 +20,13 @@ namespace tloc { namespace core { namespace component_system {
   // ComponentPoolManager
 
   ComponentPoolManager::
+    ComponentPoolManager()
+    : m_numActivePools(0)
+  { }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ComponentPoolManager::
     ~ComponentPoolManager()
   { }
 
@@ -33,15 +40,13 @@ namespace tloc { namespace core { namespace component_system {
       "Pool not allocated for passed component type");
 
     m_pools[index].reset();
-
-    iterator itr = m_pools.begin();
-    advance(itr, index);
-    m_pools.erase(itr);
+    --m_numActivePools;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ComponentPoolManager::iterator ComponentPoolManager::
+  component_pool_sptr
+    ComponentPoolManager::
     GetPool(component_type a_number)
   {
     TLOC_ASSERT( (size_type)a_number < m_pools.size(),
@@ -50,7 +55,7 @@ namespace tloc { namespace core { namespace component_system {
     iterator itr = m_pools.begin();
     core::advance(itr, a_number);
 
-    return itr;
+    return *itr;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -58,7 +63,11 @@ namespace tloc { namespace core { namespace component_system {
   bool ComponentPoolManager::
     Exists(component_type a_number)
   {
-    if (core::utils::CastNumber<size_type, component_type>(a_number) >= size())
+    size_type cIndex =
+      core_utils::CastNumber<size_type>(a_number);
+    size_type s = size();
+
+    if (s == 0 ||  cIndex >= s)
     { return false; }
 
     iterator itr = m_pools.begin();
@@ -74,6 +83,12 @@ namespace tloc { namespace core { namespace component_system {
   ComponentPoolManager::size_type ComponentPoolManager::
     size() const
   { return m_pools.size(); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ComponentPoolManager::size_type ComponentPoolManager::
+    GetNumActivePools() const
+  { return m_numActivePools; }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

@@ -20,8 +20,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // SmartPtr
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Quad);
-
-  // Pool
-  template class core::component_system::ComponentPool_TI<quad_sptr>;
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(quad_sptr);
 
 };};};

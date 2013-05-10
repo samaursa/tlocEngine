@@ -1177,8 +1177,7 @@ namespace tloc { namespace graphics { namespace gl {
             itr->second = index;
             DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
 
-            core_str::String errStr;
-            gl::Error err; err.GetErrorAsString(errStr);
+            gl::Error err;
             TLOC_ASSERT(err.Succeeded(),
                         "glUniform*/glAttribute* failed in DoSet()");
             break;

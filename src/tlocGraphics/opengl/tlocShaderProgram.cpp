@@ -238,7 +238,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::Enable() const
   {
     glUseProgram(GetHandle());
-    if (gl::Error().Failed())
+    gl::Error err;
+    if (err.Failed())
     {
       return TLOC_ERROR(error::error_shader_program_enable);
     }

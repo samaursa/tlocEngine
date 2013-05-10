@@ -71,11 +71,11 @@ namespace TestingEntity
     CHECK(e->HasComponent(g_component) == true);
     CHECK(e->HasComponent(g_component + 1) == true);
 
-    CHECK(&e->GetComponent<Component1>() == &c1);
-    CHECK(&e->GetComponent<Component2>() == &c2);
+    CHECK(e->GetComponent<Component1>() == &c1);
+    CHECK(e->GetComponent<Component2>() == &c2);
 
-    CHECK(e->GetComponent<Component1>().m_value == 10);
-    CHECK(e->GetComponent<Component2>().m_value == 20);
+    CHECK(e->GetComponent<Component1>()->m_value == 10);
+    CHECK(e->GetComponent<Component2>()->m_value == 20);
 
     Entity::component_list& clist = e->DoGetComponents(g_component);
 

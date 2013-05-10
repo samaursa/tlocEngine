@@ -25,41 +25,36 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace tloc::graphics::component_system::components;
     using namespace tloc::math_cs::components;
 
-    typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef ComponentPoolManager      pool_mgr;
+    typedef gfx_cs::quad_sptr_pool    quad_pool;
+
+    gfx_cs::quad_sptr_pool_sptr       quadPool;
 
     // Create the quad (and the quad pool if necessary)
-    comp_pool_ptr cpool;
     if (a_poolMgr.Exists(quad) == false)
-    { cpool = a_poolMgr.CreateNewPool<quad_sptr>(quad); }
+    { quadPool = a_poolMgr.CreateNewPool<quad_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(quad); }
-
-    typedef tloc::graphics::component_system::QuadPool    quad_pool;
-
-    quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
+    { quadPool = a_poolMgr.GetPool<quad_sptr>(); }
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->SetElement(quad_sptr(new Quad(a_rect) ));
+    itrQuad->SetValue(quad_sptr(new Quad(a_rect) ));
 
     // Create the transform component (and the transform pool if necessary)
+    typedef math_cs::transform_f32_sptr_pool  t_pool;
+    math_cs::transform_f32_sptr_pool_sptr     tPool;
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<transform_sptr>(transform); }
+    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
-
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
+    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(transform_sptr(new Transform()) );
+    itrTransform->SetValue(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itrQuad->GetElement()) );
+    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
+    a_mgr.InsertComponent(ent, &*(itrQuad->GetValue()) );
 
     return ent;
   }

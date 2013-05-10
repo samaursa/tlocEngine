@@ -103,16 +103,16 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       if (m_sharedCam->HasComponent(projection))
       {
-        ComponentMapper<math_cs::Projection> projMatList =
-          m_sharedCam->GetComponents(math_cs::components::projection);
-        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
+        math_cs::Projection* projMat =
+          m_sharedCam->GetComponent<math_cs::Projection>();
+        m_vpMatrix = projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 
       if (m_sharedCam->HasComponent(transform))
       {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-        viewMat = viewMatList[0].GetTransformation().Cast<matrix_type>();
+        math_cs::Transform* vMat =
+          m_sharedCam->GetComponent<math_cs::Transform>();
+        viewMat = vMat->GetTransformation().Cast<matrix_type>();
       }
     }
 
@@ -131,22 +131,15 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     using math_t::degree_f32;
 
-    typedef math::component_system::Transform     transform_type;
-    typedef graphics::component_system::Fan       fan_type;
-    typedef graphics::component_system::Material  material_type;
-    typedef material_type::shader_op_ptr          shader_op_ptr;
+    typedef gfx_cs::Material::shader_op_ptr          shader_op_ptr;
 
     const entity_type* ent = a_ent;
 
     if (ent->HasComponent(components::material))
     {
+      gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
 
-      ComponentMapper<material_type> matArr =
-        ent->GetComponents(components::material);
-      material_type& mat = matArr[0];
-
-      ComponentMapper<fan_type> fan = ent->GetComponents(components::fan);
-      Fan& f = fan[0];
+      gfx_cs::Fan* fanPtr = ent->GetComponent<gfx_cs::Fan>();
 
       //------------------------------------------------------------------------
       // Prepare the Fan
@@ -157,15 +150,13 @@ namespace tloc { namespace graphics { namespace component_system {
       m_vertList->clear();
       m_texList->clear();
 
-      const circle_type& circ = f.GetEllipseRef();
+      const circle_type& circ = fanPtr->GetEllipseRef();
 
-      const size_type numSides = f.GetNumSides();
+      const size_type numSides = fanPtr->GetNumSides();
       const f32 angleInterval = 360.0f/numSides;
 
-      ComponentMapper<transform_type> posList =
-        ent->GetComponents(math::component_system::components::transform);
-      math::component_system::Transform& pos = posList[0];
-      const Mat4f32& tMatrix = pos.GetTransformation().Cast<Mat4f32>();
+      math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
+      const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
 
       // Push the center vertex
       {
@@ -211,12 +202,15 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Enable the shader
 
-      material_type::shader_prog_ptr sp = mat.GetShaderProgRef();
+      gfx_cs::Material::shader_prog_ptr sp = matPtr->GetShaderProgRef();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( !m_shaderPtr && m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get() )
       {
+        if (m_shaderPtr)
+        { m_shaderPtr->Disable(); }
+
         sp->Enable();
         m_shaderPtr = sp;
 
@@ -224,13 +218,13 @@ namespace tloc { namespace graphics { namespace component_system {
         m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
         m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
 
-      typedef material_type::shader_op_cont::const_iterator     const_itr_type;
-      const material_type::shader_op_cont& cont = mat.GetShaderOperators();
+      typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
+      const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        material_type::shader_op_ptr so = *itr;
+        gfx_cs::Material::shader_op_ptr so = *itr;
 
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);

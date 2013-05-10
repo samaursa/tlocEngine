@@ -63,21 +63,17 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::this_type& 
     SharedPtr<SHARED_PTR_PARAMS>::
-    operator= (const this_type& a_other)
+    operator= (this_type a_other)
   {
-    DoRemoveRef();
-    m_rawPtr = a_other.m_rawPtr;
-    m_refCount = a_other.m_refCount;
-    DoAddRef();
-
+    this->swap(a_other);
     return *this;
   }
 
   template <SHARED_PTR_TEMPS>
-  template <typename T_Other> 
+  template <typename T_Other, typename T_OtherPolicy>
   SHARED_PTR_TYPE::this_type& 
     SharedPtr<SHARED_PTR_PARAMS>::
-    operator= (const SharedPtr<T_Other>& a_other)
+    operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other)
   {
     DoRemoveRef();
     m_rawPtr = a_other.get();

@@ -18,7 +18,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Material
-    : public core::component_system::Component_T<Material, components::material>
+    : public core_cs::Component_T<Material, components::material>
   {
   public:
     typedef core::component_system::Component_T
@@ -54,12 +54,10 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (shader_op_cont, GetShaderOperators, m_shaderOperators);
 
-    TLOC_DECL_AND_DEF_COMPONENT_SETTER(string_type, SetVertexSource,
-                                       m_vertexProgram);
-    TLOC_DECL_AND_DEF_COMPONENT_SETTER(string_type, SetFragmentSource,
-                                       m_fragmentProgram);
-    TLOC_DECL_AND_DEF_SETTER(shader_prog_ptr, SetShaderProgram,
-                             m_shaderProgram);
+    void SetVertexSource(const string_type& a_source);
+    void SetFragmentSource(const string_type& a_source);
+    void SetShaderProgram(const shader_prog_ptr& a_sp);
+
   private:
     string_type            m_vertexProgram;
     string_type            m_fragmentProgram;
@@ -72,9 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(Material, material);
-
-  typedef core::component_system::
-    ComponentPool_TI<material_sptr>                 MaterialPool;
+  TLOC_TYPEDEF_COMPONENT_POOL(material_sptr, material_sptr);
 
 };};};
 

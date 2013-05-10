@@ -106,17 +106,16 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       if (m_sharedCam->HasComponent(projection))
       {
-        ComponentMapper<math_cs::Projection> projMatList =
-          m_sharedCam->GetComponents(math_cs::components::projection);
-        m_vpMatrix = projMatList[0].GetFrustumRef().GetProjectionMatrix().
-          Cast<matrix_type>();
+        math_cs::Projection* projMat =
+          m_sharedCam->GetComponent<math_cs::Projection>();
+        m_vpMatrix = projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 
       if (m_sharedCam->HasComponent(transform))
       {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-        viewMat = viewMatList[0].GetTransformation().Cast<matrix_type>();
+        math_cs::Transform* vMat =
+          m_sharedCam->GetComponent<math_cs::Transform>();
+        viewMat = vMat->GetTransformation().Cast<matrix_type>();
       }
     }
 
@@ -136,19 +135,16 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::component_system::Transform     transform_type;
     typedef graphics::component_system::Quad      quad_type;
     typedef graphics::component_system::Material  mat_type;
-    typedef mat_type::shader_op_ptr          shader_op_ptr;
+    typedef mat_type::shader_op_ptr               shader_op_ptr;
 
     const entity_type* ent = a_ent;
 
     if (ent->HasComponent(components::material))
     {
 
-      ComponentMapper<mat_type> matArr =
-        ent->GetComponents(components::material);
-      mat_type& mat = matArr[0];
+      gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
 
-      ComponentMapper<quad_type> quad = ent->GetComponents(components::quad);
-      Quad& q = quad[0];
+      gfx_cs::Quad* quadPtr = ent->GetComponent<gfx_cs::Quad>();
 
       //------------------------------------------------------------------------
       // Prepare the Quad
@@ -157,7 +153,7 @@ namespace tloc { namespace graphics { namespace component_system {
       using math::types::Mat4f32;
       using math::types::Vec4f32;
 
-      const rect_type& rect = q.GetRectangleRef();
+      const rect_type& rect = quadPtr->GetRectangleRef();
 
       (*m_quadList)[0] = vec3_type(rect.GetValue<rect_type::right>(),
                                    rect.GetValue<rect_type::top>(), 0);
@@ -173,12 +169,10 @@ namespace tloc { namespace graphics { namespace component_system {
       (*m_texList)[2] = vec2_type(1.0f, 0.0f);
       (*m_texList)[3] = vec2_type(0.0f, 0.0f);
 
-      ComponentMapper<transform_type> posList =
-        ent->GetComponents(math::component_system::components::transform);
-      math::component_system::Transform& pos = posList[0];
+      math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
 
       // Change the position of the quad
-      const Mat4f32& tMatrix = pos.GetTransformation().Cast<Mat4f32>();
+      const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
 
       Vec4f32 qPos;
       for (int i = 0; i < 4; ++i)
@@ -201,11 +195,12 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Enable the shader
 
-      mat_type::shader_prog_ptr sp = mat.GetShaderProgRef();
+      mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( !m_shaderPtr && m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr ||
+           m_shaderPtr.get() != sp.get() )
       {
         sp->Enable();
         m_shaderPtr = sp;
@@ -216,7 +211,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
-        const mat_type::shader_op_cont& cont = mat.GetShaderOperators();
+        const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
         for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
              itr != itrEnd; ++itr)

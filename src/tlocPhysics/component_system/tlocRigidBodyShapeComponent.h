@@ -43,9 +43,7 @@ namespace tloc { namespace physics { namespace component_system {
   // Typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(RigidBodyShape, rigid_body_shape);
-
-  typedef core::component_system::ComponentPool_TI<rigid_body_shape_sptr>
-                                                      rigid_body_shape_pool;
+  TLOC_TYPEDEF_COMPONENT_POOL(rigid_body_shape_sptr, rigid_body_shape_sptr);
 
 };};};
 

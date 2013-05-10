@@ -46,6 +46,27 @@ namespace tloc { namespace graphics { namespace component_system {
     m_shaderOperators.clear();
   }
 
+  void Material::
+    SetVertexSource(const string_type& a_source)
+  {
+    m_vertexProgram = a_source;
+    SetUpdateRequired(true);
+  }
+
+  void Material::
+    SetFragmentSource(const string_type& a_source)
+  {
+    m_fragmentProgram = a_source;
+    SetUpdateRequired(true);
+  }
+
+  void Material::
+    SetShaderProgram(const shader_prog_ptr& a_sp)
+  {
+    m_shaderProgram = a_sp;
+    SetUpdateRequired(true);
+  }
+
   bool Material::operator ==(const Material& a_other) const
   {
     return GetUniqueGroupID() == a_other.GetUniqueGroupID();
@@ -63,8 +84,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // SmartPtr
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Material);
-
-  // Pool
-  template class core::component_system::ComponentPool_TI<material_sptr>;
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(material_sptr);
 
 };};};

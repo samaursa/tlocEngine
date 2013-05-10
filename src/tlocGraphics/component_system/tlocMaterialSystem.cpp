@@ -47,22 +47,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (mat_mapper::size_type i = 0; i < mat.size(); ++i)
     {
-      mat_type& currMat = mat[i];
+      mat_type* matPtr = mat[i];
 
       gl::VertexShader          vShader;
       gl::FragmentShader        fShader;
       gl::Shader_I::error_type  result = ErrorSuccess;
 
-      shader_prog_ptr sp = currMat.GetShaderProgRef();
+      shader_prog_ptr sp = matPtr->GetShaderProgRef();
 
       if (sp->IsLinked())
       { continue; }
 
-      vShader.Load(currMat.GetVertexSource().c_str() );
+      vShader.Load(matPtr->GetVertexSource().c_str() );
       result = vShader.Compile();
       TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
 
-      result = fShader.Load(currMat.GetFragmentSource().c_str());
+      result = fShader.Load(matPtr->GetFragmentSource().c_str());
       result = fShader.Compile();
       TLOC_ASSERT(result == ErrorSuccess, "Could not compile fragment shader");
 
@@ -70,7 +70,6 @@ namespace tloc { namespace graphics { namespace component_system {
         (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
       TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
 
-      sp->Enable().Ignore();
       result = sp->Link();
       TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
       sp->LoadUniformInfo();
@@ -82,7 +81,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
-      const mat_type::shader_op_cont& cont = currMat.GetShaderOperators();
+      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       sp->Enable();
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();

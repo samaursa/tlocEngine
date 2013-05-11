@@ -37,20 +37,26 @@ namespace tloc { namespace graphics { namespace component_system {
                        set_index a_setIndex = set_index(0));
     void      ModifyCoord(const vec_type& a_coord, size_type a_index,
                           set_index a_setIndex = set_index(0));
+    void      ModifyCoords(const cont_type& a_coords,
+                           set_index a_setIndex = set_index(0));
     void      RemoveCoord(size_type a_index,
                           set_index a_setIndex = set_index(0));
-    void      RemoveAllCoords(set_index a_setIndex = set_index(0));
+    void      ClearCoords(set_index a_setIndex = set_index(0));
     vec_type  GetCoord(size_type a_index,
                        set_index a_setIndex = set_index(0)) const;
 
     const cont_type& GetCoords(set_index a_setIndex = set_index(0)) const;
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_coordSets.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSet, m_currentSet);
+
+    TLOC_DECL_AND_DEF_SETTER(size_type, SetCurrentSet, m_currentSet);
   private:
     void      DoResizeSetToAccomodate(set_index a_index);
 
   private:
     cont_set_type  m_coordSets;
+    size_type      m_currentSet;
   };
 
   //------------------------------------------------------------------------

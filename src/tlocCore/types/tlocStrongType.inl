@@ -70,7 +70,7 @@ namespace tloc { namespace core { namespace types {
 
   template <STRONG_TYPE_TEMP>
   STRONG_TYPE_TYPE::this_type& 
-    StrongType_T<STRONG_TYPE_PARAMS>::operator= (this_type const & a_other)
+    StrongType_T<STRONG_TYPE_PARAMS>::operator= (const this_type& a_other)
   { 
     m_value = a_other.m_value; 
     return *this; 

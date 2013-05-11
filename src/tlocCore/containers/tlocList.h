@@ -403,4 +403,17 @@ namespace tloc { namespace core { namespace containers {
 
 };};};
 
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T, typename T_Node, typename T_Policy, 
+            bool T_DedicatedSize>
+  void swap(core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& a,
+            core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& b)
+  { a.swap(b); }
+
+};};
+
 #endif

@@ -577,6 +577,20 @@ namespace TestingStrings
 
   }
 
+  TEST_CASE("Core/Strings/swap", "")
+  {
+    String str("abcdefg");
+    String str2("hijklmno");
+
+    str.swap(str2);
+    CHECK(str.compare("hijklmno") == 0);
+    CHECK(str2.compare("abcdefg") == 0);
+
+    swap(str2, str);
+    CHECK(str2.compare("hijklmno") == 0);
+    CHECK(str.compare("abcdefg") == 0);
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/UpperLower", "")
   {
     CHECK(CharToUpper('a') == 'A');

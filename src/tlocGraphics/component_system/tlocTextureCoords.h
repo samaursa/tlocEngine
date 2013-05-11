@@ -6,6 +6,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
@@ -22,21 +23,34 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef f32                                                 real_type;
     typedef math_t::Vector2<real_type>                          vec_type;
     typedef core_conts::tl_array<vec_type>::type                cont_type;
+    typedef core_conts::tl_array<cont_type>::type               cont_set_type;
     typedef tl_size                                             size_type;
+
+    typedef core_t::StrongType_T<size_type, 0>                  set_index;
 
   public:
     TextureCoords();
-    explicit TextureCoords(const cont_type& a_coords);
+    explicit TextureCoords(const cont_set_type& a_coords);
 
     // adds coord and returns its index
-    size_type AddCoord(const vec_type& a_coord);
-    void      ModifyCoord(const vec_type& a_coord, size_type a_index);
-    vec_type  GetCoord(size_type a_index) const;
+    size_type AddCoord(const vec_type& a_coord,
+                       set_index a_setIndex = set_index(0));
+    void      ModifyCoord(const vec_type& a_coord, size_type a_index,
+                          set_index a_setIndex = set_index(0));
+    void      RemoveCoord(size_type a_index,
+                          set_index a_setIndex = set_index(0));
+    void      RemoveAllCoords(set_index a_setIndex = set_index(0));
+    vec_type  GetCoord(size_type a_index,
+                       set_index a_setIndex = set_index(0)) const;
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(cont_type, GetCoords, m_coords);
+    const cont_type& GetCoords(set_index a_setIndex = set_index(0)) const;
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_coordSets.size());
+  private:
+    void      DoResizeSetToAccomodate(set_index a_index);
 
   private:
-    cont_type m_coords;
+    cont_set_type  m_coordSets;
   };
 
   //------------------------------------------------------------------------

@@ -12,14 +12,14 @@
 
 namespace tloc { namespace math {
 
-  template <typename T_IntegerType>
+  template <typename T_NumberType>
   class Range_T
   {
-    TLOC_STATIC_ASSERT_IS_ARITH(T_IntegerType);
+    TLOC_STATIC_ASSERT_IS_ARITH(T_NumberType);
 
   public:
-    typedef Range_T<T_IntegerType>  this_type;
-    typedef T_IntegerType           value_type;
+    typedef Range_T<T_NumberType>   this_type;
+    typedef T_NumberType            value_type;
     typedef tl_size                 size_type;
     typedef value_type*             pointer;
     typedef value_type const *      const_pointer;
@@ -30,13 +30,13 @@ namespace tloc { namespace math {
 
   public:
     class iterator
-      : public core::iterator<core::bidirectional_iterator_tag, T_IntegerType>
+      : public core::iterator<core::bidirectional_iterator_tag, T_NumberType>
     {
     public:
       typedef core::iterator
-        <core::bidirectional_iterator_tag, T_IntegerType> base_type;
+        <core::bidirectional_iterator_tag, T_NumberType> base_type;
 
-      typedef Range_T<T_IntegerType>                range_type;
+      typedef Range_T<T_NumberType>                 range_type;
       typedef typename range_type::value_type       value_type;
       typedef typename range_type::size_type        size_type;
       typedef typename range_type::iterator         this_type;
@@ -77,13 +77,13 @@ namespace tloc { namespace math {
 
   public:
     class reverse_iterator
-      : public core::iterator<core::bidirectional_iterator_tag, T_IntegerType>
+      : public core::iterator<core::bidirectional_iterator_tag, T_NumberType>
     {
     public:
       typedef core::iterator
-        <core::bidirectional_iterator_tag, T_IntegerType> base_type;
+        <core::bidirectional_iterator_tag, T_NumberType> base_type;
 
-      typedef Range_T<T_IntegerType>                range_type;
+      typedef Range_T<T_NumberType>                 range_type;
       typedef typename range_type::value_type       value_type;
       typedef typename range_type::size_type        size_type;
       typedef typename range_type::reverse_iterator this_type;

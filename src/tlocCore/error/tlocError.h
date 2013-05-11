@@ -52,14 +52,6 @@ namespace tloc { namespace core { namespace error {
     code_type m_error;
   };
 
-  //------------------------------------------------------------------------
-  // swap
-
-  template <typename T_Derived>
-  TL_I void swap(Error_TI<T_Derived>& a,
-                 Error_TI<T_Derived>& b)
-  { a.swap(b); }
-
   //////////////////////////////////////////////////////////////////////////
   // Error_T<T_BuildConfig>
 
@@ -123,14 +115,6 @@ namespace tloc { namespace core { namespace error {
     mutable const char*   m_file;
 
   };
-
-  //------------------------------------------------------------------------
-  // swap
-
-  template <typename T_BuildConfig>
-  TL_I void swap(Error_T<T_BuildConfig>& a,
-                 Error_T<T_BuildConfig>& b)
-  { a.swap(b); }
 
   //////////////////////////////////////////////////////////////////////////
   // Error_T<>
@@ -196,6 +180,26 @@ namespace tloc { namespace core { namespace error {
 
 
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_Derived>
+  TL_I void swap(core_err::Error_TI<T_Derived>& a,
+                 core_err::Error_TI<T_Derived>& b)
+  { a.swap(b); }
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_BuildConfig>
+  TL_I void swap(core_err::Error_T<T_BuildConfig>& a,
+                 core_err::Error_T<T_BuildConfig>& b)
+  { a.swap(b); }
+
+};};
 
 ///////////////////////////////////////////////////////////////////////////
 // Macros for the basic error types

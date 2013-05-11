@@ -83,7 +83,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief
     /// Will recycle all the components that are not in use (i.e. their
-    /// reference count is 1). Returns the iterator to the first unused element.
+    /// reference count is 1).
     ///-------------------------------------------------------------------------
     void            RecycleAllUnused();
     size_type       GetUsed() const;

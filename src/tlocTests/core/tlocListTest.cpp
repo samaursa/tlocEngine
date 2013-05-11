@@ -793,6 +793,19 @@ namespace TestingList
     CHECK(*itr2++ == 100);
     CHECK(*itr2++ == 100);
     CHECK(*itr2++ == 100);
+
+    swap(first, second);
+    itr = second.begin();
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+
+    itr2 = first.begin();
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
   }
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/testSwap", "")

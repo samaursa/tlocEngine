@@ -57,7 +57,7 @@ namespace tloc { namespace core {
   template <typename T_Container>
   back_insert_iterator<T_Container>&
     back_insert_iterator<T_Container>::
-    operator=( const back_insert_iterator<T_Container>& aOther )
+    operator=( const this_type& aOther )
   {
     return *this;
   }
@@ -108,7 +108,7 @@ namespace tloc { namespace core {
   template <typename T_Container>
   front_insert_iterator<T_Container>&
     front_insert_iterator<T_Container>::
-    operator=( const front_insert_iterator<T_Container>& aOther )
+    operator=( const this_type& aOther )
   {
     return *this;
   }
@@ -160,7 +160,7 @@ namespace tloc { namespace core {
   template <typename T_Container>
   insert_iterator<T_Container>&
     insert_iterator<T_Container>::
-    operator=( const insert_iterator<T_Container>& aOther )
+    operator=( const this_type& aOther )
   {
     TLOC_ASSERT_ITERATOR(&m_container == aOther.m_container,
       "Iterators belong to different containers!");

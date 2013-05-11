@@ -88,6 +88,10 @@
 #if defined(TLOC_OS_WIN)
 # define TLOC_MAIN main
 #elif defined(TLOC_OS_IPHONE)
+  // This is a function declaration for TLOC_MAIN (note that TLOC_MAIN is
+  // no longer a macro name on iOS). If you get an unresolved linking error wrt
+  // TLOC_MAIN make sure to define: int TLOC_MAIN(int argc, char** argv){}
+  // and of course, put your 'main' code in that function
   int TLOC_MAIN(int argc, char** argv);
 #endif
 

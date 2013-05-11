@@ -409,11 +409,11 @@ namespace tloc { namespace core { namespace string {
   template <STRING_BASE_TYPES>
   STRING_BASE_TYPE::this_type& 
     StringBase<STRING_BASE_PARAMS>::
-    operator=( const StringBase<T>& aStr )
+    operator=(this_type aStr )
   {
     TLOC_ASSERT_STRING_WARN(&aStr != this, "Assigning the same string!");
-
-    return assign(aStr.m_begin, aStr.m_end);
+    aStr.swap(*this);
+    return *this;
   }
 
   template <STRING_BASE_TYPES>

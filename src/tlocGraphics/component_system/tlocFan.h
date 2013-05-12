@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     Fan();
-    Fan(const ellipse_type& a_ellipse, sides a_sides = sides(30) );
+    explicit Fan(const ellipse_type& a_ellipse, sides a_sides = sides(30) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(ellipse_type, GetEllipseRef, m_ellipse);
     TLOC_DECL_AND_DEF_COMPONENT_SETTER(ellipse_type, SetEllipse, m_ellipse);

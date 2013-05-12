@@ -14,7 +14,8 @@ namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
                core_cs::ComponentPoolManager& a_poolMgr,
-               const math_t::Rectf32& a_rect);
+               const math_t::Rectf32& a_rect,
+               bool a_addTexCoords = true);
 
 
 };};};

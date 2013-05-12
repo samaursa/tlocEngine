@@ -74,11 +74,11 @@ namespace tloc { namespace graphics { namespace component_system {
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
 
-    gl::shader_operator_sptr m_projectionOperator;
+    gl::shader_operator_sptr m_mvpOperator;
+    gl::uniform_sptr         m_uniVpMat;
 
     // Cache
     vec3_cont_ptr      m_quadList;
-    vec2_cont_ptr      m_texList;
     gl::attribute_sptr  m_vData;
     gl::attribute_sptr  m_tData;
   };

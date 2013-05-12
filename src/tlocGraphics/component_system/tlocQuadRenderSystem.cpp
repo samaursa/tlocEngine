@@ -14,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -34,14 +35,17 @@ namespace tloc { namespace graphics { namespace component_system {
                  Variadic<component_type, 1>(components::quad))
      , m_sharedCam(nullptr)
      , m_quadList(new vec3_cont_type(4))
-     , m_texList(new vec2_cont_type(4))
   {
-    m_vData = gl::attribute_sptr(new gl::Attribute());
+    m_vData.reset(new gl::Attribute());
     m_vData->SetName("a_vPos");
+
+    m_uniVpMat.reset(new gl::Uniform());
+    m_uniVpMat->SetName("u_mvp");
+
     m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
 
-    m_projectionOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
+    m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -80,9 +84,8 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   error_type QuadRenderSystem::InitializeEntity(const entity_manager*,
-                                                const entity_type* a_ent)
+                                                const entity_type*)
   {
-    TLOC_UNUSED(a_ent);
     return ErrorSuccess;
   }
 
@@ -115,17 +118,12 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         math_cs::Transform* vMat =
           m_sharedCam->GetComponent<math_cs::Transform>();
-        viewMat = vMat->GetTransformation().Cast<matrix_type>();
+        math_cs::Transform vMatInv = vMat->Invert();
+        viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
       }
     }
 
     m_vpMatrix.Mul(viewMat);
-
-    gl::uniform_sptr vpMat(new gl::Uniform());
-    vpMat->SetName("u_mvp").SetValueAs(m_vpMatrix);
-
-    m_projectionOperator->RemoveAllUniforms();
-    m_projectionOperator->AddUniform(vpMat);
   }
 
   void QuadRenderSystem::ProcessEntity(const entity_manager*,
@@ -141,10 +139,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (ent->HasComponent(components::material))
     {
-
       gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
-
-      gfx_cs::Quad* quadPtr = ent->GetComponent<gfx_cs::Quad>();
+      gfx_cs::Quad*     quadPtr = ent->GetComponent<gfx_cs::Quad>();
 
       //------------------------------------------------------------------------
       // Prepare the Quad
@@ -164,33 +160,40 @@ namespace tloc { namespace graphics { namespace component_system {
       (*m_quadList)[3] = vec3_type(rect.GetValue<rect_type::left>(),
                                    rect.GetValue<rect_type::bottom>(), 0);
 
-      (*m_texList)[0] = vec2_type(1.0f, 1.0f);
-      (*m_texList)[1] = vec2_type(0.0f, 1.0f);
-      (*m_texList)[2] = vec2_type(1.0f, 0.0f);
-      (*m_texList)[3] = vec2_type(0.0f, 0.0f);
-
       math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
-
-      // Change the position of the quad
       const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
 
-      Vec4f32 qPos;
-      for (int i = 0; i < 4; ++i)
-      {
-        qPos = (*m_quadList)[i].ConvertTo<Vec4f32>();
-        qPos = tMatrix * qPos;
+      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
 
-        (*m_quadList)[i].ConvertFrom(qPos);
-      }
+      // Generate the mvp matrix
+      m_uniVpMat->SetValueAs(tFinalMat);
+
+      m_mvpOperator->RemoveAllUniforms();
+      m_mvpOperator->AddUniform(m_uniVpMat);
 
       const tl_size numVertices = m_quadList->size();
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::Shared() );
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::Shared() );
 
       shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
-      so_quad->AddAttribute(m_tData);
+
+      if (ent->HasComponent(components::texture_coords))
+      {
+        typedef gfx_cs::TextureCoords::set_index    set_index;
+
+        gfx_cs::TextureCoords* texCoordPtr =
+          ent->GetComponent<gfx_cs::TextureCoords>();
+
+        gfx_cs::TextureCoords::cont_type_sptr
+          texCoordCont = texCoordPtr->GetCoords
+          (set_index(texCoordPtr->GetCurrentSet()) );
+
+        m_tData->SetVertexArray
+          (texCoordCont, gl::p_shader_variable_ti::Shared() );
+
+        so_quad->AddAttribute(m_tData);
+      }
 
       //------------------------------------------------------------------------
       // Enable the shader
@@ -205,10 +208,6 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-        // Add the mvp
-        m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
-        m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
-
       typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
         const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
@@ -222,6 +221,10 @@ namespace tloc { namespace graphics { namespace component_system {
           so->EnableAllAttributes(*m_shaderPtr);
         }
       }
+
+      // Add the mvp
+      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
+      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
 
       so_quad->PrepareAllAttributes(*m_shaderPtr);
       so_quad->EnableAllAttributes(*m_shaderPtr);

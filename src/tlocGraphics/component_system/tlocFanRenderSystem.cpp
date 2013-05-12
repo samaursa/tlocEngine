@@ -14,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -34,19 +35,20 @@ namespace tloc { namespace graphics { namespace component_system {
                  Variadic<component_type, 1>(components::fan))
      , m_sharedCam(nullptr)
      , m_vertList(new vec3_cont_type())
-     , m_texList(new vec2_cont_type())
   {
     //
     m_vertList->reserve(30);
-    m_texList->reserve(30);
 
     m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
 
+    m_uniVpMat.reset(new gl::Uniform());
+    m_uniVpMat->SetName("u_mvp");
+
     m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
 
-    m_projectionOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
+    m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   void FanRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
@@ -112,17 +114,12 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         math_cs::Transform* vMat =
           m_sharedCam->GetComponent<math_cs::Transform>();
-        viewMat = vMat->GetTransformation().Cast<matrix_type>();
+        math_cs::Transform vMatInv = vMat->Invert();
+        viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
       }
     }
 
     m_vpMatrix.Mul(viewMat);
-
-    gl::uniform_sptr vpMat(new gl::Uniform());
-    vpMat->SetName("u_mvp").SetValueAs(m_vpMatrix);
-
-    m_projectionOperator->RemoveAllUniforms();
-    m_projectionOperator->AddUniform(vpMat);
   }
 
   void FanRenderSystem::ProcessEntity(const entity_manager*,
@@ -148,7 +145,6 @@ namespace tloc { namespace graphics { namespace component_system {
       using namespace math::types;
 
       m_vertList->clear();
-      m_texList->clear();
 
       const circle_type& circ = fanPtr->GetEllipseRef();
 
@@ -158,46 +154,50 @@ namespace tloc { namespace graphics { namespace component_system {
       math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
       const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
 
+      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
+
+      m_uniVpMat->SetValueAs(tFinalMat);
+
+      m_mvpOperator->RemoveAllUniforms();
+      m_mvpOperator->AddUniform(m_uniVpMat);
+
       // Push the center vertex
       {
         Vec2f32 newCoord = circ.GetPosition();
-        Vec4f32 coord4f = newCoord.ConvertTo<Vec4f32, p_tuple::overflow_zero>();
-        coord4f[3] = 1;
-        coord4f = tMatrix * coord4f;
-        m_vertList->push_back(coord4f.ConvertTo<Vec3f32>());
+        m_vertList->push_back
+          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
       }
 
       for (f32 i = 0; i <= numSides; ++i)
       {
         Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
-        Vec4f32 coord4f =
-          newCoord.ConvertTo<Vec4f32, p_tuple::overflow_zero>();
-
-        coord4f[3] = 1;
-        coord4f = tMatrix * coord4f ;
-
-        m_vertList->push_back(coord4f .ConvertTo<Vec3f32>());
-      }
-
-      // Create the texture co-ordinates
-      circle_type circForTex;
-      circForTex.SetRadius(0.5f);
-      m_texList->push_back(Vec2f32(0.5f, 0.5f)); // Push the center vertex
-      for (f32 i = 0; i <= numSides; ++i)
-      {
-        Vec2f32 newTexCoord = circForTex.GetCoord(degree_f32(angleInterval * i));
-        newTexCoord += Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
-        m_texList->push_back(newTexCoord);
+        m_vertList->push_back
+          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>() );
       }
 
       const tl_size numVertices = m_vertList->size();
 
       m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::Shared());
-      m_tData->SetVertexArray(m_texList, gl::p_shader_variable_ti::Shared());
 
       shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
       so_fan->AddAttribute(m_vData);
-      so_fan->AddAttribute(m_tData);
+
+      if (ent->HasComponent(components::texture_coords))
+      {
+        typedef gfx_cs::TextureCoords::set_index    set_index;
+
+        gfx_cs::TextureCoords* texCoordPtr =
+          ent->GetComponent<gfx_cs::TextureCoords>();
+
+        gfx_cs::TextureCoords::cont_type_sptr
+          texCoordCont = texCoordPtr->GetCoords
+          (set_index(texCoordPtr->GetCurrentSet()) );
+
+        m_tData->SetVertexArray
+          (texCoordCont, gl::p_shader_variable_ti::Shared() );
+
+        so_fan->AddAttribute(m_tData);
+      }
 
       //------------------------------------------------------------------------
       // Enable the shader
@@ -214,10 +214,6 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-        // Add the mvp
-        m_projectionOperator->PrepareAllUniforms(*m_shaderPtr);
-        m_projectionOperator->EnableAllUniforms(*m_shaderPtr);
-
       typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
       const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
 
@@ -230,6 +226,10 @@ namespace tloc { namespace graphics { namespace component_system {
           so->EnableAllAttributes(*m_shaderPtr);
         }
       }
+
+      // Add the mvp
+      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
+      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
 
       so_fan->PrepareAllAttributes(*m_shaderPtr);
       so_fan->EnableAllAttributes(*m_shaderPtr);

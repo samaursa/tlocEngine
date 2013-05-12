@@ -3,6 +3,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocFan.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -16,7 +17,8 @@ namespace tloc { namespace prefab { namespace graphics {
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
               math_t::Circlef32 a_circle,
-              tl_size a_numSides)
+              tl_size a_numSides,
+              bool a_addTexCoords)
   {
     using namespace core_cs;
     using namespace math_cs;
@@ -54,6 +56,41 @@ namespace tloc { namespace prefab { namespace graphics {
     Entity* ent = a_mgr.CreateEntity();
     a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
     a_mgr.InsertComponent(ent, &*(itr->GetValue()) );
+
+    // Create the texture coords (and the texture coord pool if necessary)
+    if (a_addTexCoords)
+    {
+      typedef gfx_cs::texture_coords_sptr_pool  tcoord_pool;
+      gfx_cs::texture_coords_sptr_pool_sptr     tCoordPool;
+
+      if (a_poolMgr.Exists(texture_coords) == false)
+      { tCoordPool = a_poolMgr.CreateNewPool<texture_coords_sptr>(); }
+      else
+      { tCoordPool = a_poolMgr.GetPool<texture_coords_sptr>(); }
+
+      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
+      texture_coords_sptr tc(new TextureCoords());
+
+      typedef math_t::Circlef32 circle_type;
+      // Create the texture co-ordinates
+      circle_type circForTex;
+      circForTex.SetRadius(0.5f);
+
+      using math_t::degree_f32;
+      const f32 angleInterval = 360.0f/a_numSides;
+
+      tc->AddCoord(math_t::Vec2f32(0.5f, 0.5f));
+      for (f32 i = 0; i <= a_numSides; ++i)
+      {
+        math_t::Vec2f32 newTexCoord =
+          circForTex.GetCoord(degree_f32(angleInterval * i));
+        newTexCoord += math_t::Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
+        tc->AddCoord(newTexCoord);
+      }
+
+      itrTCoord->SetValue(tc);
+      a_mgr.InsertComponent(ent, itrTCoord->GetValue().get() );
+    }
 
     return ent;
   }

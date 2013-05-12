@@ -18,7 +18,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     value_type GetError();
     template <typename T_String>
-    void       GetErrorAsString(T_String& a_out);
+    void       GetLastErrorAsString(T_String& a_out);
 
   private:
     value_type m_lastError;

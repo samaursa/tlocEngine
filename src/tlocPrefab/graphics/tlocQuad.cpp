@@ -3,6 +3,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -10,8 +11,11 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
 
-  using tloc::graphics::component_system::Quad;
-  using tloc::graphics::component_system::quad_sptr;
+  using gfx_cs::Quad;
+  using gfx_cs::quad_sptr;
+
+  using gfx_cs::TextureCoords;
+  using gfx_cs::texture_coords_sptr;
 
   using math_t::Rectangle_T;
   using math_cs::Transform;
@@ -20,17 +24,18 @@ namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
                core_cs::ComponentPoolManager& a_poolMgr,
-               const math_t::Rectf32& a_rect)
+               const math_t::Rectf32& a_rect,
+               bool a_addTexCoords)
   {
-    using namespace tloc::graphics::component_system::components;
-    using namespace tloc::math_cs::components;
+    using namespace gfx_cs::components;
+    using namespace math_cs::components;
 
     typedef ComponentPoolManager      pool_mgr;
-    typedef gfx_cs::quad_sptr_pool    quad_pool;
-
-    gfx_cs::quad_sptr_pool_sptr       quadPool;
 
     // Create the quad (and the quad pool if necessary)
+    typedef gfx_cs::quad_sptr_pool    quad_pool;
+    gfx_cs::quad_sptr_pool_sptr       quadPool;
+
     if (a_poolMgr.Exists(quad) == false)
     { quadPool = a_poolMgr.CreateNewPool<quad_sptr>(); }
     else
@@ -53,8 +58,29 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
-    a_mgr.InsertComponent(ent, &*(itrQuad->GetValue()) );
+    a_mgr.InsertComponent(ent, itrTransform->GetValue().get() );
+    a_mgr.InsertComponent(ent, itrQuad->GetValue().get() );
+
+    // Create the texture coords (and the texture coord pool if necessary)
+    if (a_addTexCoords)
+    {
+      typedef gfx_cs::texture_coords_sptr_pool  tcoord_pool;
+      gfx_cs::texture_coords_sptr_pool_sptr     tCoordPool;
+
+      if (a_poolMgr.Exists(texture_coords) == false)
+      { tCoordPool = a_poolMgr.CreateNewPool<texture_coords_sptr>(); }
+      else
+      { tCoordPool = a_poolMgr.GetPool<texture_coords_sptr>(); }
+
+      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
+      texture_coords_sptr tc(new TextureCoords());
+      tc->AddCoord(math_t::Vec2f32(1.0f, 1.0f));
+      tc->AddCoord(math_t::Vec2f32(0.0f, 1.0f));
+      tc->AddCoord(math_t::Vec2f32(1.0f, 0.0f));
+      tc->AddCoord(math_t::Vec2f32(0.0f, 0.0f));
+      itrTCoord->SetValue(tc);
+      a_mgr.InsertComponent(ent, itrTCoord->GetValue().get() );
+    }
 
     return ent;
   }

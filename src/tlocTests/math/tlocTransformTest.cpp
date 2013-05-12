@@ -77,6 +77,13 @@ namespace TestingTransform
       0.0f,  0.89399666f, -0.44807363f, 0.0f,
      -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
 
+    t = t.Invert();
+    tInvTrans = t.GetTransformation();
+    CHECK_MATRIX4F(tInvTrans,
+      1.0f,  0.0f       ,  0.0f       , 0.0f,
+      0.0f, -0.44807363f, -0.89399666f, 0.0f,
+      0.0f,  0.89399666f, -0.44807363f, 0.0f,
+     -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
 
   }
 };

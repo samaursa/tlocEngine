@@ -44,18 +44,21 @@ namespace tloc { namespace math { namespace proj {
   //------------------------------------------------------------------------
   // Frustum
 
-  class Frustum
+  template <typename T_Real>
+  class Frustum_TI
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_Real);
+
   public:
-    typedef Frustum                                     this_type;
-    typedef tl_float                                    real_type;
+    typedef T_Real                                      real_type;
+    typedef Frustum_TI<real_type>                       this_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
 
   public:
-    Frustum(const this_type& a_other);
-    ~Frustum();
+    Frustum_TI(const this_type& a_other);
+    ~Frustum_TI();
 
     template <typename T_Plane>
     real_type GetPlane() const;
@@ -64,11 +67,11 @@ namespace tloc { namespace math { namespace proj {
                                           GetProjectionMatrix, m_projMatrix);
 
   protected:
-    typedef core::data_structs::Variadic<real_type,
+    typedef typename core::data_structs::Variadic<real_type,
       p_frustum::PlaneCount::k_planeIndex> plane_args;
 
   protected:
-    Frustum();
+    Frustum_TI();
 
     void DoDefinePlanes(const plane_args& a_vars);
 
@@ -82,16 +85,17 @@ namespace tloc { namespace math { namespace proj {
   //````````````````````````````````````````````````````````````````````````
   // template definitions
 
+  template <typename T_Real>
   template <typename T_Planes>
-  Frustum::real_type
-    Frustum::
+  typename Frustum_TI<T_Real>::real_type
+    Frustum_TI<T_Real>::
     GetPlane() const
   { return m_planes[T_Planes::k_planeIndex]; }
 
   //------------------------------------------------------------------------
   //
 
-  template <typename T_FrustumType>
+  template <typename T_Real, typename T_FrustumType>
   class Frustum_T
   {
     TLOC_STATIC_ASSERT(
@@ -103,23 +107,30 @@ namespace tloc { namespace math { namespace proj {
   //------------------------------------------------------------------------
   // Frustum_T<Perspective>
 
-  template <>
-  class Frustum_T<p_frustum::Perspective> : public Frustum
+  template <typename T_Real>
+  class Frustum_T<T_Real, p_frustum::Perspective>
+    : public Frustum_TI<T_Real>
   {
-  public:
-    typedef p_frustum::Perspective                      projection_type;
-    typedef Frustum_T<projection_type>                  this_type;
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_Real);
 
-    typedef tl_float                                    real_type;
+  public:
+    typedef Frustum_TI<T_Real>                          base_type;
+    typedef typename base_type::real_type               real_type;
+    typedef typename base_type::plane_args              plane_args;
+
+    typedef p_frustum::Perspective                      projection_type;
+    typedef Frustum_T<T_Real, projection_type>          this_type;
+
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
     typedef math::types::Rectangle_T<real_type>         rect_type;
-    typedef tl_size                                     size_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
 
-    typedef types::FOV                                  fov_type;
-    typedef types::AspectRatio                          ar_type;
+    typedef types::FOV_T<real_type>                     fov_type;
+    typedef types::AspectRatio_T<real_type>             ar_type;
+    typedef types::Degree_T<real_type>                  degree_type;
+    typedef utils::Pythagoras_T<real_type>              pyth_type;
 
   public:
     typedef struct Params
@@ -154,28 +165,38 @@ namespace tloc { namespace math { namespace proj {
     ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
-  private:
 
+  private:
     Params                        m_params;
   };
 
   //------------------------------------------------------------------------
   // Frustum_T<Orthographic>
 
-  template <>
-  class Frustum_T<p_frustum::Orthographic> : public Frustum
+  template <typename T_Real>
+  class Frustum_T<T_Real, p_frustum::Orthographic>
+    : public Frustum_TI<T_Real>
   {
-  public:
-    typedef p_frustum::Perspective                      projection_type;
-    typedef Frustum_T<projection_type>                  this_type;
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_Real);
 
-    typedef tl_float                                    real_type;
+  public:
+    typedef Frustum_TI<T_Real>                          base_type;
+    typedef typename base_type::real_type               real_type;
+    typedef typename base_type::plane_args              plane_args;
+
+    typedef p_frustum::Orthographic                     projection_type;
+    typedef Frustum_T<T_Real, projection_type>          this_type;
+
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
     typedef math::types::Rectangle_T<real_type>         rect_type;
     typedef tl_size                                     size_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
     typedef math::types::Matrix4<real_type>             matrix_type;
+
+    typedef types::FOV_T<real_type>                     fov_type;
+    typedef types::AspectRatio_T<real_type>             ar_type;
+    typedef types::Degree_T<real_type>                  degree_type;
 
   public:
     Frustum_T();
@@ -189,8 +210,18 @@ namespace tloc { namespace math { namespace proj {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef Frustum_T<p_frustum::Perspective>   frustum_persp;
-  typedef Frustum_T<p_frustum::Orthographic>  frustum_ortho;
+  typedef Frustum_TI<tl_float>  Frustum;
+  typedef Frustum_TI<f32>       frustum_f32;
+  typedef Frustum_TI<f64>       frustum_f64;
+
+  typedef Frustum_T<tl_float, p_frustum::Perspective>   FrustumPersp;
+  typedef Frustum_T<tl_float, p_frustum::Orthographic>  FrustumOrtho;
+
+  typedef Frustum_T<f32, p_frustum::Perspective>   frustum_persp_f32;
+  typedef Frustum_T<f32, p_frustum::Orthographic>  frustum_ortho_f32;
+
+  typedef Frustum_T<f64, p_frustum::Perspective>   frustum_persp_f64;
+  typedef Frustum_T<f64, p_frustum::Orthographic>  frustum_ortho_f64;
 
 };};};
 

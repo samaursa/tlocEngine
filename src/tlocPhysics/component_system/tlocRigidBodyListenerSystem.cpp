@@ -2,6 +2,7 @@
 
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
@@ -47,10 +48,10 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component& rbListenerComponent =
+      rb_listener_component* rbListenerComponent =
         rbListenerComponentsMapped[0];
 
-      return rbListenerComponent.GetRigidBodyListener();
+      return rbListenerComponent->GetRigidBodyListener();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -143,7 +144,7 @@ namespace tloc { namespace physics { namespace component_system {
                   RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
-      return error::error_rigid_body_not_attached;
+      return TLOC_ERROR(error::error_rigid_body_not_attached);
     }
 
     return ErrorSuccess;
@@ -213,5 +214,10 @@ namespace tloc { namespace physics { namespace component_system {
     m_allContactEvents[contact::k_end].push_back(a_event);
     return false;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);
 
 };};};

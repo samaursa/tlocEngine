@@ -4,9 +4,28 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  Attribute::
+    Attribute()
+    : m_isAttribArray(false)
+  { }
+
+  Attribute::
+    Attribute(const this_type& a_other)
+    : base_type(a_other)
+    , m_isAttribArray(false)
+  { }
+
+  Attribute::this_type& Attribute::
+    operator=(const this_type& a_other)
+  {
+    base_type::operator=(a_other);
+    m_isAttribArray = a_other.m_isAttribArray;
+    return *this;
+  }
+
   //------------------------------------------------------------------------
   //
 
-  template class tloc::core::smart_ptr::SharedPtr<Attribute>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Attribute);
 
 };};};

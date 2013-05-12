@@ -37,6 +37,11 @@ namespace TestingMatrix3
     REQUIRE(sizeof(Mat3f64) == (sizeof(f64) * 9));
   }
 
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/General",
     "Test general/basic functionality")
   {

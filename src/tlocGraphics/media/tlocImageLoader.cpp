@@ -22,7 +22,7 @@ namespace tloc { namespace graphics { namespace media {
       { return res; }
 
       imgFile.GetContents(a_out);
-      return common_error_types::error_success;
+      return TLOC_ERROR(common_error_types::error_success);
     }
   };
 
@@ -69,7 +69,7 @@ namespace tloc { namespace graphics { namespace media {
     if (lodePngErr)
     {
       // LOG: Take log from lodepng_error_text(lodePngErr);
-      res = graphics::error::error_image_decoding;
+      res = TLOC_ERROR(graphics::error::error_image_decoding);
     }
     else
     {

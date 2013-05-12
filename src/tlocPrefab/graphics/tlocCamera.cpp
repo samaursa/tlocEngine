@@ -11,8 +11,8 @@ namespace tloc { namespace prefab { namespace graphics {
   core_cs::Entity*
     CreateCamera(core_cs::EntityManager& a_mgr,
                  core_cs::ComponentPoolManager& a_poolMgr,
-                 const math_proj::Frustum& a_frustum,
-                 const math_t::Vec3f a_pos)
+                 const math_proj::frustum_f32& a_frustum,
+                 const math_t::Vec3f32 a_pos)
   {
     using math_cs::components::transform;
     using tloc::math_cs::components::projection;
@@ -21,41 +21,38 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace math_cs;
     using namespace tloc::graphics::component_system;
 
-    typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef ComponentPoolManager                    pool_mgr;
+    typedef tloc::math_cs::transform_f32_sptr_pool  t_pool;
 
-    comp_pool_ptr cpool;
+    transform_f32_sptr_pool_sptr                    tPool;
 
     // Get or create the transform pool
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
+    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
 
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform(a_pos));
+    itrTransform->SetValue(transform_f32_sptr(new Transformf32(a_pos)) );
+
+    typedef tloc::math_cs::projection_sptr_pool   p_pool;
+
+    projection_sptr_pool_sptr pPool;
 
     // Get or create the projection pool
     if (a_poolMgr.Exists(projection) == false)
-    { cpool = a_poolMgr.CreateNewPool<ProjectionPtr>(projection); }
+    { pPool = a_poolMgr.CreateNewPool<projection_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(projection); }
-
-    typedef tloc::math_cs::ProjectionPool p_pool;
-
-    p_pool* pPool = (*cpool)->GetAs<p_pool>();
+    { pPool = a_poolMgr.GetPool<projection_sptr>(); }
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->GetElement() = ProjectionPtr(new Projection(a_frustum));
+    itrProjection->SetValue(projection_sptr(new Projection(a_frustum)) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itrProjection->GetElement()) );
+    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
+    a_mgr.InsertComponent(ent, &*(itrProjection->GetValue()) );
 
     return ent;
   }

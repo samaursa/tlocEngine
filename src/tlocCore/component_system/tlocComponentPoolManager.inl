@@ -19,7 +19,9 @@ namespace tloc { namespace core { namespace component_system {
     {
       for (; a_begin != a_end; ++a_begin)
       {
-        TLOC_ASSERT(a_begin->GetElement().use_count() == 1,
+        // User count should be <= 1 (i.e. we are the only ones with a reference
+        // to the pointer
+        TLOC_ASSERT(a_begin->GetValue().use_count() <= 1,
                     "Element still in use!");
       }
     }
@@ -44,7 +46,7 @@ namespace tloc { namespace core { namespace component_system {
     ~ComponentPool_TI()
   {
     DoAssertElementsNotInUse(begin(), end(), 
-                             configs::BuildConfig<>::GetBuildConfigType());
+                             configs::BuildConfig::GetBuildConfigType());
   }
 
   template <COMPONENT_POOL_TEMPS>
@@ -81,7 +83,7 @@ namespace tloc { namespace core { namespace component_system {
 
     for (; itr != itrEnd; ++itr)
     {
-      if (itr->GetElement().use_count() == 1)
+      if (itr->GetValue().use_count() == 1)
       {
         m_pool.RecycleElement(itr);
       }
@@ -92,6 +94,13 @@ namespace tloc { namespace core { namespace component_system {
   COMPONENT_POOL_TYPE::size_type ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     GetUsed() const
   { return m_pool.GetUsed(); }
+
+  //------------------------------------------------------------------------
+  // explicit instantiation helpers
+
+#define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
+  template class core_cs::ComponentPool_TI<_type_>;\
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(core_cs::ComponentPool_TI<_type_>)
   
 };};};
 

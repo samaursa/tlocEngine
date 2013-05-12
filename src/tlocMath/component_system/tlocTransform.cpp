@@ -80,6 +80,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetPosition(const position_type& a_pos)
   {
+    this->SetUpdateRequired(true);
     m_transformation[12] = a_pos[0];
     m_transformation[13] = a_pos[1];
     m_transformation[14] = a_pos[2];
@@ -89,6 +90,7 @@ namespace tloc { namespace math { namespace component_system {
   void Transform_T<TRANSFORM_PARAMS>
     ::SetOrientation(const orientation_type& a_ori)
   {
+    this->SetUpdateRequired(true);
     m_transformation[0] = a_ori[0];
     m_transformation[1] = a_ori[1];
     m_transformation[2] = a_ori[2];
@@ -102,6 +104,23 @@ namespace tloc { namespace math { namespace component_system {
     m_transformation[10] = a_ori[8];
   }
 
+  template <TRANSFORM_TEMPS>
+  TRANSFORM_TYPE::this_type Transform_T<TRANSFORM_PARAMS>
+    ::Invert() const
+  {
+    // from: http://stackoverflow.com/a/2625420/368599
+    //inv(A) = [ inv(M)   -inv(M) * b ]
+    //         [   0            1     ]
+
+    orientation_type rotMat = GetOrientation();
+    rotMat.Inverse();
+
+    position_type posV = GetPosition();
+    posV = (rotMat * -1) * posV;
+
+    return this_type(position_type(posV), orientation_type(rotMat));
+  }
+
   //------------------------------------------------------------------------
   // Explicit instantiations
 
@@ -109,11 +128,10 @@ namespace tloc { namespace math { namespace component_system {
   template class Transform_T<f64>;
 
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Transform_T<f32> >;
-  template class core::smart_ptr::SharedPtr<Transform_T<f64> >;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
 
-  // Pool
-  template class core::component_system::ComponentPool_TI<TransformPtr32>;
-  template class core::component_system::ComponentPool_TI<TransformPtr64>;
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
 
 };};};

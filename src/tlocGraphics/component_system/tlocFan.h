@@ -14,7 +14,7 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Fan
-    : public tloc::core::component_system::Component_T<Fan, components::fan>
+    : public core_cs::Component_T<Fan, components::fan>
   {
   public:
     typedef Fan                                     this_type;
@@ -27,22 +27,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     Fan();
-    Fan(const ellipse_type& a_ellipse, sides a_sides = sides(30) );
+    explicit Fan(const ellipse_type& a_ellipse, sides a_sides = sides(30) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(ellipse_type, GetEllipseRef, m_ellipse);
-    TLOC_DECL_AND_DEF_SETTER(ellipse_type, SetEllipse, m_ellipse);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(ellipse_type, SetEllipse, m_ellipse);
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSides, m_sides);
-    TLOC_DECL_AND_DEF_SETTER(size_type, SetNumSides, m_sides);
+    TLOC_DECL_AND_DEF_COMPONENT_SETTER(size_type, SetNumSides, m_sides);
 
   private:
     ellipse_type m_ellipse;
     size_type    m_sides;
   };
 
-  typedef core::smart_ptr::SharedPtr<Fan>        FanPtr;
-  typedef core::component_system::
-    ComponentPool_TI<FanPtr>                     FanPool;
+  TLOC_TYPEDEF_SHARED_PTR(Fan, fan);
+  TLOC_TYPEDEF_COMPONENT_POOL(fan_sptr, fan_sptr);
 
 };};};
 

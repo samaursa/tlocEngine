@@ -15,6 +15,7 @@ namespace tloc { namespace graphics { namespace component_system {
       quad, // specialized mesh
       fan,
       material,
+      texture_coords,
 
       count
     }; typedef tl_int value_type;

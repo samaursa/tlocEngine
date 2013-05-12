@@ -144,13 +144,10 @@ namespace tloc { namespace core { namespace types {
     void Assign(const this_type& a_other);
 
     template <typename T>
-    this_type& operator= (const T& a_other)
-    {
-      Assign(a_other);
-      return *this;
-    }
+    this_type& operator= (const T& a_other);
+    this_type& operator= (const this_type& a_other);
 
-    this_type& Swap(this_type& a_other);
+    this_type& swap(this_type& a_other);
 
     template <typename T>
     T& Cast();
@@ -163,10 +160,18 @@ namespace tloc { namespace core { namespace types {
     bool IsSameType(const this_type& a_other) const;
 
   private:
+
+  private:
     typedef p_any::detail::Policy_I   policy_base_type;
     policy_base_type* m_policy;
     void*             m_object;
   };
+
+  //--
+  // swap function
+
+  TL_I void swap(Any& a, Any& b)
+  { a.swap(b); }
 
 };};};
 

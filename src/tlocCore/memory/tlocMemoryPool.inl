@@ -49,23 +49,35 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_value_type& 
+  void
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>:: 
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetElement()
+    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
+    SetValue(const wrapper_value_type& a_value)
   {
     TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex, 
-      "Accessing an invalid element (see pool wrapper)"); 
-    return m_element;
+      "Accessing an invalid value (see pool wrapper)"); 
+    m_element = a_value;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   const MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_value_type&
-  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-  Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetElement() const
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetValue() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
-                          "Accessing an invalid element (see pool wrapper)");
+                          "Accessing an invalid value (see pool wrapper)");
+    return m_element;
+  }
+
+  template <MEMORY_POOL_INDEX_TEMP>
+  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
+  MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_value_type&
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetValue()
+  {
+    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
+                          "Accessing an invalid value (see pool wrapper)");
     return m_element;
   }
 

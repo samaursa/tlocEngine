@@ -5,6 +5,14 @@
 
 namespace tloc { namespace core { namespace component_system {
 
+  enum
+  {
+    k_systemInitialized = 0,
+    k_count
+  };
+
+  const tl_int EntitySystemBase::s_flagCount = k_count;
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs]
 
@@ -18,8 +26,11 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntitySystemBase::Initialize()
   {
+    m_flags.Mark(k_systemInitialized);
+
     if (Pre_Initialize() == ErrorSuccess)
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
@@ -31,8 +42,12 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntitySystemBase::ProcessActiveEntities()
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
+      "Did you forget to call Initialize()?");
+
     if (CheckProcessing())
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities();
       DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities);
       Post_ProcessActiveEntities();
@@ -43,6 +58,7 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (Pre_Shutdown() == ErrorSuccess)
     {
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();

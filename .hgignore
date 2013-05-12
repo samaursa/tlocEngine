@@ -14,6 +14,7 @@ syntax: glob
 *.exe
 *.htm
 *.orig
+*.rej
 .DS_Store
 *.build/**
 xcuserdata/**
@@ -23,8 +24,7 @@ xcuserdata/**
 *.sln
 *.vcproj
 CMakeFiles/**
-build/**
-buildx64/**
+build*/
 *.res
 *.swp
 tlocAssetsPath.h

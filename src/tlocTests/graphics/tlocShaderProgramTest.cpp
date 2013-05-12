@@ -104,6 +104,12 @@ namespace TestingShaderProgram
     sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     CHECK(gl::Error().Succeeded());
+
+    CHECK(sp.HasAttribute("vVertex"));
+    CHECK(sp.HasAttribute("vColor"));
+    CHECK_FALSE(sp.HasAttribute("vColorNotInShader"));
+    CHECK(sp.HasUniform("u_Color"));
+    CHECK_FALSE(sp.HasUniform("u_ColorNotInShader"));
   }
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")

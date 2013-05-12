@@ -118,7 +118,7 @@ namespace tloc { namespace core { namespace string {
     this_type& operator+= (const_pointer aCharStr);
     this_type& operator+= (const_reference aChar);
 
-    this_type& operator = (const this_type& aStr);
+    this_type& operator = (this_type aStr);
     this_type& operator = (const_pointer aCharStr);
     this_type& operator = (value_type aChar);
 
@@ -340,7 +340,7 @@ namespace tloc { namespace core { namespace string {
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
   //////////////////////////////////////////////////////////////////////////
-  // Plus operator global
+  // operator+ global
 
   template <typename T>
   StringBase<T>
@@ -427,5 +427,16 @@ namespace tloc { namespace core { namespace string {
   typedef StringBase<char32>  StringW;
 
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
+  { a.swap(b); }
+
+};};
 
 #endif

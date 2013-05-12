@@ -9,13 +9,13 @@ set(internal_FIXME "FIXME!")
 #------------------------------------------------------------------------------
 # CACHE Variables
 
-set(TLOC_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
+set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_DEP_PATH ${internal_FIXME} CACHE PATH "The tloc dependency REPOSITORY path goes here. Make sure that you have run CMake on the repository.")
 set(TLOC_DEP_BUILD_PATH ${internal_FIXME} CACHE PATH "The tloc dependency BUILD path goes here. Make sure that you have run CMake on the repository.")
 
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS
-  TLOC_PATH
+  TLOC_ENGINE_PATH
   TLOC_DEP_PATH
   TLOC_DEP_BUILD_PATH
   )

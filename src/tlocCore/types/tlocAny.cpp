@@ -29,6 +29,13 @@ namespace tloc { namespace core { namespace types {
     m_policy->Delete(&m_object);
   }
 
+  Any::this_type&
+    Any::operator=(const this_type& a_other)
+  {
+    Assign(a_other);
+    return *this;
+  }
+
   void Any::Assign( const this_type& a_other )
   {
     Reset();
@@ -37,7 +44,7 @@ namespace tloc { namespace core { namespace types {
   }
 
   Any::this_type&
-    Any::Swap( this_type& a_other )
+    Any::swap( this_type& a_other )
   {
     core::swap(m_policy, a_other.m_policy);
     core::swap(m_object, a_other.m_object);

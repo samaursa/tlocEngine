@@ -28,9 +28,6 @@ namespace tloc { namespace math { namespace types {
   public:
     Ray_T();
     Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
-    Ray_T(const this_type& a_other);
-
-    ~Ray_T();
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetDirection, m_direction);

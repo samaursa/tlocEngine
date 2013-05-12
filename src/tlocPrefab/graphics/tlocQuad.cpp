@@ -3,6 +3,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -10,56 +11,76 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
 
-  using tloc::graphics::component_system::Quad;
-  using tloc::graphics::component_system::QuadPtr;
+  using gfx_cs::Quad;
+  using gfx_cs::quad_sptr;
+
+  using gfx_cs::TextureCoords;
+  using gfx_cs::texture_coords_sptr;
 
   using math_t::Rectangle_T;
   using math_cs::Transform;
-  using math_cs::TransformPtr;
+  using math_cs::transform_sptr;
 
   core_cs::Entity*
     CreateQuad(core_cs::EntityManager& a_mgr,
                core_cs::ComponentPoolManager& a_poolMgr,
-               const math_t::Rectf32& a_rect)
+               const math_t::Rectf32& a_rect,
+               bool a_addTexCoords)
   {
-    using namespace tloc::graphics::component_system::components;
-    using namespace tloc::math_cs::components;
+    using namespace gfx_cs::components;
+    using namespace math_cs::components;
 
-    typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef ComponentPoolManager      pool_mgr;
 
     // Create the quad (and the quad pool if necessary)
-    comp_pool_ptr cpool;
+    typedef gfx_cs::quad_sptr_pool    quad_pool;
+    gfx_cs::quad_sptr_pool_sptr       quadPool;
+
     if (a_poolMgr.Exists(quad) == false)
-    { cpool = a_poolMgr.CreateNewPool<QuadPtr>(quad); }
+    { quadPool = a_poolMgr.CreateNewPool<quad_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(quad); }
-
-    typedef tloc::graphics::component_system::QuadPool    quad_pool;
-
-    quad_pool* quadPool = (*cpool)->GetAs<quad_pool>();
+    { quadPool = a_poolMgr.GetPool<quad_sptr>(); }
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    itrQuad->GetElement() = QuadPtr(new Quad(a_rect) );
+    itrQuad->SetValue(quad_sptr(new Quad(a_rect) ));
 
     // Create the transform component (and the transform pool if necessary)
+    typedef math_cs::transform_f32_sptr_pool  t_pool;
+    math_cs::transform_f32_sptr_pool_sptr     tPool;
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
-
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
+    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    itrTransform->SetValue(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itrQuad->GetElement()) );
+    a_mgr.InsertComponent(ent, itrTransform->GetValue().get() );
+    a_mgr.InsertComponent(ent, itrQuad->GetValue().get() );
+
+    // Create the texture coords (and the texture coord pool if necessary)
+    if (a_addTexCoords)
+    {
+      typedef gfx_cs::texture_coords_sptr_pool  tcoord_pool;
+      gfx_cs::texture_coords_sptr_pool_sptr     tCoordPool;
+
+      if (a_poolMgr.Exists(texture_coords) == false)
+      { tCoordPool = a_poolMgr.CreateNewPool<texture_coords_sptr>(); }
+      else
+      { tCoordPool = a_poolMgr.GetPool<texture_coords_sptr>(); }
+
+      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
+      texture_coords_sptr tc(new TextureCoords());
+      tc->AddCoord(math_t::Vec2f32(1.0f, 1.0f));
+      tc->AddCoord(math_t::Vec2f32(0.0f, 1.0f));
+      tc->AddCoord(math_t::Vec2f32(1.0f, 0.0f));
+      tc->AddCoord(math_t::Vec2f32(0.0f, 0.0f));
+      itrTCoord->SetValue(tc);
+      a_mgr.InsertComponent(ent, itrTCoord->GetValue().get() );
+    }
 
     return ent;
   }

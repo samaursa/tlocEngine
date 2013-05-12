@@ -26,18 +26,6 @@ namespace tloc { namespace math { namespace types {
     , m_direction(a_direction)
   { }
 
-  template <RAY_TEMPS>
-  Ray_T<RAY_PARAMS>::
-    Ray_T(const this_type& a_other)
-    : m_origin(a_other.m_origin)
-    , m_direction(a_other.m_direction)
-  { }
-
-  template <RAY_TEMPS>
-  Ray_T<RAY_PARAMS>::
-    ~Ray_T()
-  { }
-
   //------------------------------------------------------------------------
   // Explicit instantiations
 

@@ -43,6 +43,11 @@ namespace TestingMatrix4
     REQUIRE(sizeof(Mat4f64) == (sizeof(f64) * 16));
   }
 
+  TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
     "Test general/basic functionality")
   {

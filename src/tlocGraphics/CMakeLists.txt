@@ -6,7 +6,7 @@ set(TLOC_GRAPHICS
   tloc_graphics.inl 
   )
 
-set(3RD_PARTY_PATH ${TLOC_PATH}/src/3rdParty/Graphics/)
+set(3RD_PARTY_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/)
 set(TLOC_GRAPHICS_3RD_PARTY_COMPRESSION
   ${3RD_PARTY_PATH}/miniz/miniz.c
   )
@@ -56,6 +56,8 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocTextureCoords.h
+  component_system/tlocTextureCoords.cpp
   component_system/tlocQuad.cpp 
   component_system/tlocQuad.h 
   component_system/tlocQuadRenderSystem.cpp 
@@ -197,8 +199,8 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_PATH}/src/3rdParty/Graphics/GLEW/
-  ${TLOC_PATH}/src/3rdParty/Graphics/glext/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
 
 add_library(tlocGraphics STATIC

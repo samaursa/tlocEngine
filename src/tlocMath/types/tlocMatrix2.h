@@ -33,6 +33,8 @@ namespace tloc { namespace math { namespace types {
     using base_type::m_values;
     using base_type::k_MatrixSize;
 
+    using base_type::operator*;
+
     //------------------------------------------------------------------------
     // Constructors
 

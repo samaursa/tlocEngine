@@ -39,7 +39,7 @@ endif()
 include_directories(
   ${TLOC_DEP_PATH}/include/
   ${TLOC_DEP_PATH}/src/
-  ${TLOC_PATH}/src/
+  ${TLOC_ENGINE_PATH}/src/
   )
 
 # All libraries/projects add their name to this variable

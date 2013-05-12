@@ -47,7 +47,7 @@ namespace tloc { namespace core { namespace types {
     explicit StrongType_T(const_sel_val_type_ref a_value);
     StrongType_T(this_type const & a_other);
 
-    this_type& operator= (this_type const & a_other);
+    this_type& operator= (const this_type& a_other);
     this_type& operator= (const_sel_val_type_ptr a_other);
 
     // Generally called operator T() or operator T&()

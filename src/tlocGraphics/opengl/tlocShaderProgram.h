@@ -61,8 +61,11 @@ namespace tloc { namespace graphics { namespace gl {
     error_type Link();
     bool       IsLinked() const;
 
-    void LoadUniformInfo();
-    void LoadAttributeInfo();
+    void       LoadUniformInfo();
+    void       LoadAttributeInfo();
+
+    bool       HasAttribute(const char* a_name);
+    bool       HasUniform(const char* a_name);
 
     TLOC_DECL_GETTER_CONST_DIRECT
       (glsl_var_info_cont_type, GetUniformInfoRef);
@@ -70,29 +73,14 @@ namespace tloc { namespace graphics { namespace gl {
       (glsl_var_info_cont_type, GetAttributeInfoRef);
 
     template <typename T_ProgramIvParam>
-    gl_result_type Get() const
-    {
-      type_traits::AssertTypeIsSupported
-        < T_ProgramIvParam,
-        p_shader_program::DeleteStatus,
-        p_shader_program::LinkStatus,
-        p_shader_program::ValidateStatus,
-        p_shader_program::InfoLogLength,
-        p_shader_program::AttachedShaders,
-        p_shader_program::ActiveAttributes,
-        p_shader_program::ActiveAttributeMaxLength,
-        p_shader_program::ActiveUniforms,
-        p_shader_program::ActiveUniformMaxLength>();
-      return DoGet<T_ProgramIvParam>();
-    }
-
-    error_type Enable() const;
-    bool       IsEnabled() const;
-    error_type Disable() const;
+    gl_result_type  Get() const;
+    error_type      Enable() const;
+    bool            IsEnabled() const;
+    error_type      Disable() const;
 
   private:
     template <typename T_ProgramIvParam>
-    gl_result_type DoGet() const;
+    gl_result_type  DoGet() const;
 
   private:
     core::utils::Checkpoints         m_flags;
@@ -104,9 +92,32 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_ProgramIvParam>
+  ShaderProgram::gl_result_type
+    ShaderProgram::
+    Get() const
+  {
+    type_traits::AssertTypeIsSupported
+      < T_ProgramIvParam,
+      p_shader_program::DeleteStatus,
+      p_shader_program::LinkStatus,
+      p_shader_program::ValidateStatus,
+      p_shader_program::InfoLogLength,
+      p_shader_program::AttachedShaders,
+      p_shader_program::ActiveAttributes,
+      p_shader_program::ActiveAttributeMaxLength,
+      p_shader_program::ActiveUniforms,
+      p_shader_program::ActiveUniformMaxLength>();
+    return DoGet<T_ProgramIvParam>();
+  }
+
+
+  //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<ShaderProgram>     ShaderProgramPtr;
+  TLOC_TYPEDEF_SHARED_PTR(ShaderProgram, shader_program);
 
 };};};
 

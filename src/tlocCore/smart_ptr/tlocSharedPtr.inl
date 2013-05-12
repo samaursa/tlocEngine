@@ -19,19 +19,22 @@ namespace tloc { namespace core { namespace smart_ptr {
 #define SHARED_PTR_TYPE   typename SharedPtr<SHARED_PTR_PARAMS>
 
   template <SHARED_PTR_TEMPS>
-  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr() 
+  SharedPtr<SHARED_PTR_PARAMS>::
+    SharedPtr() 
     : m_rawPtr(nullptr) 
     , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
-  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(nullptr_t)
+  SharedPtr<SHARED_PTR_PARAMS>::
+    SharedPtr(nullptr_t)
     : m_rawPtr(nullptr)
     , m_refCount(nullptr)
   { }
 
   template <SHARED_PTR_TEMPS>
-  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(pointer a_rawPtr)
+  SharedPtr<SHARED_PTR_PARAMS>::
+    SharedPtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
@@ -40,7 +43,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
-  SharedPtr<SHARED_PTR_PARAMS>::SharedPtr(const this_type& a_other)
+  SharedPtr<SHARED_PTR_PARAMS>::
+    SharedPtr(const this_type& a_other)
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
@@ -50,27 +54,26 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
-  SharedPtr<SHARED_PTR_PARAMS>::~SharedPtr()
+  SharedPtr<SHARED_PTR_PARAMS>::
+    ~SharedPtr()
   {
       DoRemoveRef();
   }
 
   template <SHARED_PTR_TEMPS>
-  SHARED_PTR_TYPE::this_type&
-  SharedPtr<SHARED_PTR_PARAMS>::operator= (const this_type& a_other)
+  SHARED_PTR_TYPE::this_type& 
+    SharedPtr<SHARED_PTR_PARAMS>::
+    operator= (this_type a_other)
   {
-    DoRemoveRef();
-    m_rawPtr = a_other.m_rawPtr;
-    m_refCount = a_other.m_refCount;
-    DoAddRef();
-
+    this->swap(a_other);
     return *this;
   }
 
   template <SHARED_PTR_TEMPS>
-  template <typename T_Other>
-  SHARED_PTR_TYPE::this_type&
-  SharedPtr<SHARED_PTR_PARAMS>::operator= (const SharedPtr<T_Other>& a_other)
+  template <typename T_Other, typename T_OtherPolicy>
+  SHARED_PTR_TYPE::this_type& 
+    SharedPtr<SHARED_PTR_PARAMS>::
+    operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other)
   {
     DoRemoveRef();
     m_rawPtr = a_other.get();
@@ -82,17 +85,20 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::pointer
-  SharedPtr<SHARED_PTR_PARAMS>::get() const
+    SharedPtr<SHARED_PTR_PARAMS>::
+    get() const
   { return m_rawPtr; }
 
   template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::ref_count_type*
-  SharedPtr<SHARED_PTR_PARAMS>::DoExposeCounter() const
+    SharedPtr<SHARED_PTR_PARAMS>::
+    DoExposeCounter() const
   { return m_refCount; }
 
   template <SHARED_PTR_TEMPS>
   SHARED_PTR_TYPE::pointer
-  SharedPtr<SHARED_PTR_PARAMS>::operator->() const
+    SharedPtr<SHARED_PTR_PARAMS>::
+    operator->() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference NULL ptr!");
     return m_rawPtr;
@@ -135,14 +141,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
-  template <typename Y>
-  void SharedPtr<SHARED_PTR_PARAMS>::
-    reset(Y* a_ptr) 
-  {
-    this_type(a_ptr).swap(*this);
-  }
-
-  template <SHARED_PTR_TEMPS>
   void SharedPtr<SHARED_PTR_PARAMS>::
     swap(this_type& a_other)
   {
@@ -176,5 +174,14 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(_type_)\
+  template class tloc::core_sptr::SharedPtr<_type_>;\
+  template class tloc::core_sptr::SharedPtr<const _type_>;\
+  template class tloc::core_sptr::SharedPtr<_type_,\
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>;\
+  template class tloc::core_sptr::SharedPtr<const _type_,\
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>
+
 
 #endif

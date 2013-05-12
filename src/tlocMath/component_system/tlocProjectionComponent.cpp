@@ -7,18 +7,18 @@ namespace tloc { namespace math { namespace component_system {
 
   namespace
   {
-    typedef math_proj::frustum_persp          frustum_type;
+    typedef math_proj::frustum_persp_f32      frustum_type;
     typedef frustum_type::param_type          frustum_param_type;
 
     frustum_type GetDefaultFrustum()
     {
-      using math::types::Degree;
+      using math_t::degree_f32;
 
       typedef frustum_type::fov_type  fov_type;
       typedef fov_type::ar_type       ar_type;
 
       ar_type   ar(ar_type::width(800), ar_type::height(600));
-      fov_type  fov(Degree(70.0f), ar, types::p_FOV::vertical());
+      fov_type  fov(degree_f32(70.0f), ar, types::p_FOV::vertical());
 
       frustum_param_type params(fov);
       params.SetNear(1.0f);
@@ -45,9 +45,7 @@ namespace tloc { namespace math { namespace component_system {
   // Explicit Instantiations
 
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Projection>;
-
-  // Pool
-  template class core::component_system::ComponentPool_TI<ProjectionPtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Projection);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(projection_sptr);
 
 };};};

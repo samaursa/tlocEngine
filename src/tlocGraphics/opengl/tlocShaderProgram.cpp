@@ -81,6 +81,9 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetUniformLocation
           (a_shaderProgram.GetHandle(), itr->m_name.Get());
+        // LOG:
+        TLOC_ASSERT(itr->m_location != -1,
+          "Using reserved prefix gl_ in variable name which is disallowed");
       }
     }
 
@@ -116,6 +119,9 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetAttribLocation
           (a_shaderProgram.GetHandle(), itr->m_name.Get());
+        // LOG:
+        TLOC_ASSERT(itr->m_location != -1,
+          "Using reserved prefix gl_ in variable name which is disallowed");
       }
 
     }
@@ -216,6 +222,32 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
     { DoGetAttributeInfo(*this, m_attributeInfo); }
+  }
+
+  struct ShaderVarCompare
+  {
+    ShaderVarCompare(const char* a_name)
+      : m_name(a_name)
+    { }
+
+    bool operator() (const ShaderVariableInfo& a_sv)
+    { return core_str::StrCmp(a_sv.m_name.Get(), m_name) == 0; }
+
+    const char* m_name;
+  };
+
+  bool ShaderProgram::
+    HasAttribute(const char* a_name)
+  {
+    return core::find_if_all(m_attributeInfo, ShaderVarCompare(a_name))
+      != m_attributeInfo.end();
+  }
+
+  bool ShaderProgram::
+    HasUniform(const char* a_name)
+  {
+    return core::find_if_all(m_uniformInfo, ShaderVarCompare(a_name))
+      != m_uniformInfo.end();
   }
 
   const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::

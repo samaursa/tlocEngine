@@ -18,6 +18,7 @@ namespace TestingTextureCoords
 
     gfx_cs::texture_coords_sptr texCoords(new gfx_cs::TextureCoords());
     CHECK(texCoords->GetNumSets() == 0);
+    CHECK(texCoords->GetCurrentSet() == 0);
 
     texCoords->AddCoord(vec_type(1.0f, 1.0f));
     texCoords->AddCoord(vec_type(0.0f, 1.0f));

@@ -14,7 +14,8 @@ namespace tloc { namespace prefab { namespace graphics {
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
               math_t::Circlef32 a_circle,
-              tl_size a_numSides);
+              tl_size a_numSides,
+              bool a_addTexCoords = true);
 
 };};};
 

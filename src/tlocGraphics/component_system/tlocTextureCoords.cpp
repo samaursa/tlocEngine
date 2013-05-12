@@ -8,6 +8,7 @@ namespace tloc { namespace graphics { namespace component_system {
   TextureCoords::
     TextureCoords()
     : base_type(k_component_type)
+    , m_currentSet(0)
   { }
 
   TextureCoords::
@@ -22,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
     AddCoord(const vec_type& a_coord, set_index a_setIndex)
   {
     DoResizeSetToAccomodate(a_setIndex);
-    m_coordSets[a_setIndex].push_back(a_coord);
+    m_coordSets[a_setIndex]->push_back(a_coord);
     return m_coordSets.size() - 1;
   }
 
@@ -31,7 +32,7 @@ namespace tloc { namespace graphics { namespace component_system {
                 set_index a_setIndex)
   {
     DoResizeSetToAccomodate(a_setIndex);
-    m_coordSets[a_setIndex][a_index] = a_coord;
+    (*m_coordSets[a_setIndex])[a_index] = a_coord;
   }
 
   void TextureCoords::
@@ -39,36 +40,39 @@ namespace tloc { namespace graphics { namespace component_system {
                  set_index a_setIndex)
   {
     DoResizeSetToAccomodate(a_setIndex);
-    m_coordSets[a_setIndex] = a_coords;
+    (*m_coordSets[a_setIndex]) = a_coords;
   }
 
   void TextureCoords::
     RemoveCoord(size_type a_index, set_index a_setIndex)
   {
-    cont_type::iterator itr = m_coordSets[a_setIndex].begin() + a_index;
-    m_coordSets[a_setIndex].erase(itr);
+    cont_type::iterator itr = m_coordSets[a_setIndex]->begin() + a_index;
+    m_coordSets[a_setIndex]->erase(itr);
   }
 
   void TextureCoords::
     ClearCoords(set_index a_setIndex)
   {
-    m_coordSets[a_setIndex].clear();
+    m_coordSets[a_setIndex]->clear();
   }
 
   TextureCoords::vec_type
     TextureCoords::
     GetCoord(size_type a_index, set_index a_setIndex) const
   {
-    return m_coordSets[a_setIndex][a_index];
+    return (*m_coordSets[a_setIndex])[a_index];
   }
 
   void TextureCoords::
     DoResizeSetToAccomodate(set_index a_index)
   {
-    m_coordSets.resize(a_index + 1);
+    if (a_index >= m_coordSets.size())
+    {
+      m_coordSets.push_back(cont_type_sptr(new cont_type()) );
+    }
   }
 
-  const TextureCoords::cont_type&
+  TextureCoords::cont_type_sptr
     TextureCoords::
     GetCoords(set_index a_setIndex) const
   {

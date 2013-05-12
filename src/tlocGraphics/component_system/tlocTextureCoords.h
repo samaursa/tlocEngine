@@ -21,9 +21,10 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef TextureCoords                                       this_type;
     typedef Component_T<this_type, components::texture_coords>  base_type;
     typedef f32                                                 real_type;
-    typedef math_t::Vector2<real_type>                          vec_type;
+    typedef math_t::Vec2f32                                     vec_type;
     typedef core_conts::tl_array<vec_type>::type                cont_type;
-    typedef core_conts::tl_array<cont_type>::type               cont_set_type;
+    typedef core_sptr::SharedPtr<cont_type>                     cont_type_sptr;
+    typedef core_conts::tl_array<cont_type_sptr>::type          cont_set_type;
     typedef tl_size                                             size_type;
 
     typedef core_t::StrongType_T<size_type, 0>                  set_index;
@@ -45,7 +46,7 @@ namespace tloc { namespace graphics { namespace component_system {
     vec_type  GetCoord(size_type a_index,
                        set_index a_setIndex = set_index(0)) const;
 
-    const cont_type& GetCoords(set_index a_setIndex = set_index(0)) const;
+    cont_type_sptr GetCoords(set_index a_setIndex = set_index(0)) const;
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_coordSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSet, m_currentSet);

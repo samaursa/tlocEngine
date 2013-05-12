@@ -132,15 +132,14 @@ int TLOC_MAIN(int argc, char *argv[])
     gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());
   so->AddUniform(u_to);
 
-  // Finally, set this shader operator as the master operator (aka user operator)
-  // in our material.
+  // Finally, add this shader operator to the material
   mat.AddShaderOperator(so);
 
   //------------------------------------------------------------------------
   // The prefab library has some prefabricated entities for us
 
-  math_t::Rectf rect(math_t::Rectf::width(1.0f * 2.0f),
-                     math_t::Rectf::height(win.GetAspectRatio().Get() * 2.0f ) );
+  math_t::Rectf rect(math_t::Rectf::width(1.0f * 1.5f),
+                     math_t::Rectf::height(win.GetAspectRatio().Get() * 1.5f ) );
 
   core_cs::Entity* q = prefab_gfx::CreateQuad(*entityMgr.get(), cpoolMgr, rect);
   entityMgr->InsertComponent(q, &mat);

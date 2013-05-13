@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/tlocFunctional.h>
+#include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -105,20 +106,20 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     //------------------------------------------------------------------------
     // friend functions - casting
-    template <typename T_Other, typename T_NullCopyPolicy, typename U>
+    template <typename T_T, typename T_T_NullCopyPolicy, typename U>
     friend
-    SharedPtr<T_Other, T_NullCopyPolicy>
-      static_pointer_cast(const SharedPtr<U, T_NullCopyPolicy>& a_sp);
+    SharedPtr<T_T, T_T_NullCopyPolicy>
+      static_pointer_cast(const SharedPtr<U, T_T_NullCopyPolicy>& a_sp);
 
     template <typename T_Other, typename U>
     friend
     SharedPtr<T_Other>
       static_pointer_cast(const SharedPtr<T_Other>& a_sp);
 
-    template <typename T_Other, typename T_NullCopyPolicy, typename U>
+    template <typename T_T, typename T_T_NullCopyPolicy, typename U>
     friend
-    SharedPtr<T_Other, T_NullCopyPolicy>
-      const_pointer_cast(const SharedPtr<U, T_NullCopyPolicy>& a_sp);
+    SharedPtr<T_T, T_T_NullCopyPolicy>
+      const_pointer_cast(const SharedPtr<U, T_T_NullCopyPolicy>& a_sp);
 
     template <typename T_Other, typename U>
     friend
@@ -270,7 +271,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   SharedPtr<T>
     static_pointer_cast(const SharedPtr<U>& a_sp)
   {
-    return static_pointer_cast<T, p_shared_ptr::null_copy::Allow>(a_sp);
+    return core_sptr::static_pointer_cast
+      <T, p_shared_ptr::null_copy::Allow>(a_sp);
   }
 
   template <typename T, typename T_NullCopyPolicy, typename U>

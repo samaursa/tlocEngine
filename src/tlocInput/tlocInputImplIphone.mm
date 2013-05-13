@@ -23,7 +23,7 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject, tl_int T_Index>
     struct DoCreateHID
     {
-      T_InputObject* Create(parameter_options::Type,
+      T_InputObject* Create(param_options::value_type,
                             input_param_type)
       {
         TLOC_STATIC_ASSERT_FALSE(T_InputObject,
@@ -34,7 +34,7 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Keyboard::m_index>
     {
-      T_InputObject* Create(parameter_options::Type,
+      T_InputObject* Create(param_options::value_type,
                             input_param_type)
       {
         iphone_keyboard_param_type params;
@@ -45,7 +45,7 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Mouse::m_index>
     {
-      T_InputObject* Create(parameter_options::Type,
+      T_InputObject* Create(param_options::value_type,
                             input_param_type)
       {
         iphone_mouse_param_type params;
@@ -56,7 +56,7 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
     {
-      T_InputObject* Create(parameter_options::Type,
+      T_InputObject* Create(param_options::value_type,
                             input_param_type)
       {
         TLOC_ASSERT_WIP();
@@ -67,7 +67,7 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::TouchSurface::m_index>
     {
-      T_InputObject* Create(parameter_options::Type a_params,
+      T_InputObject* Create(param_options::value_type a_params,
                             input_param_type a_inputManagerParams)
       {
         UIWindow* window = a_inputManagerParams.m_param1.template Cast<UIWindow*>();
@@ -159,7 +159,7 @@ namespace tloc { namespace input { namespace priv {
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
-    CreateHID(parameter_options::Type a_params)
+    CreateHID(param_options::value_type a_params)
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
@@ -325,11 +325,11 @@ namespace tloc { namespace input { namespace priv {
 #define INSTANTIATE_HID(_HID_) \
   template _HID_<i_buff>*  \
   InputManagerImpl<i_mgr_buff >::CreateHID<_HID_<i_buff> >\
-  (parameter_options::Type);\
+  (param_options::value_type);\
   \
   template _HID_<i_imm>*  \
   InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
-  (parameter_options::Type);\
+  (param_options::value_type);\
   \
   template _HID_<i_buff>*  \
   InputManagerImpl<i_mgr_buff >::GetHID<_HID_<i_buff> >(tl_size);\

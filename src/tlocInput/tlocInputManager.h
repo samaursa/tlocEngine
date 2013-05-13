@@ -53,7 +53,7 @@ namespace tloc { namespace input {
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
     T_InputObject*  CreateHID
-      (parameter_options::Type a_params = parameter_options::TL_DEFAULT)
+      (param_options::value_type a_params = param_options::TL_WIN_DISCL_DEFAULT)
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
 
@@ -125,7 +125,7 @@ namespace tloc { namespace input {
     size_type DoGetTotalHID(input_type a_inputType);
 
     template <typename T_InputObject>
-    T_InputObject*  DoCreateHID(parameter_options::Type a_params);
+    T_InputObject*  DoCreateHID(param_options::value_type a_params);
 
     template <typename T_InputObject>
     T_InputObject* DoGetHID(size_type a_index);

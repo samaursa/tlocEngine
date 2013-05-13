@@ -73,7 +73,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(parameter_options::Type a_params);
+    T_InputObject*  CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.

@@ -212,25 +212,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
 
     DWORD coop = 0;
-    // Default parameters or...?
-    if (m_params.m_param3 == 0)
-    {
-      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-      //coop = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
-    }
-    else
-    {
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_BACKGROUND)
-      { coop = DISCL_BACKGROUND; }
-      else { coop = DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
-      { coop |= DISCL_NONEXCLUSIVE; }
-      else { coop = DISCL_EXCLUSIVE; } // default
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    { coop |= DISCL_BACKGROUND; }
+    else { coop |= DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NOWINKEY)
-      { coop |= DISCL_NOWINKEY; }
-    }
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    { coop |= DISCL_NONEXCLUSIVE; }
+    else { coop |= DISCL_EXCLUSIVE; } // default
+
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))
     {

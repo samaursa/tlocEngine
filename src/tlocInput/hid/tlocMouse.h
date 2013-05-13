@@ -149,7 +149,7 @@ namespace tloc { namespace input { namespace hid {
     void Update();
     void Reset();
 
-    TLOC_DECL_AND_DEF_GETTER(bool, GetClamped, m_clamped);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsClamped, m_clamped);
     TLOC_DECL_AND_DEF_SETTER(bool, SetClamped, m_clamped);
 
     TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampX, m_clampX);

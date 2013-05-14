@@ -2,7 +2,7 @@
 
 #include <tlocGraphics/opengl/tlocUniform.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace TestingUniformVariable
 {

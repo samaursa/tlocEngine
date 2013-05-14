@@ -8,7 +8,7 @@
 #include "tlocMath.h"
 #include <cmath>
 #include <cstdlib>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 
 namespace tloc {
 

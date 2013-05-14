@@ -1,15 +1,15 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/memory/tlocMemoryPool.h>
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 namespace TestingSharedPtr
 {

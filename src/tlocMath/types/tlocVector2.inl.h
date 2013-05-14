@@ -5,11 +5,11 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
-#include <tlocMath/tlocMath.inl>
-#include <tlocMath/types/tlocVector.inl>
+#include <tlocMath/tlocMath.inl.h>
+#include <tlocMath/types/tlocVector.inl.h>
 
 namespace tloc { namespace math { namespace types {
 

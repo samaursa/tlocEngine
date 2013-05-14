@@ -11,7 +11,7 @@
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBody.h>
-#include <tlocPhysics/box2d/tlocRigidBody.inl>
+#include <tlocPhysics/box2d/tlocRigidBody.inl.h>
 #include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system {

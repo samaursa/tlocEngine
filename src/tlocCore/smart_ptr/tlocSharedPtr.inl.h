@@ -6,22 +6,22 @@
 #endif
 
 #include "tlocSharedPtr.h"
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 
-#define SHARED_PTR_TEMPS  typename T, typename T_NullCopyPolicy 
+#define SHARED_PTR_TEMPS  typename T, typename T_NullCopyPolicy
 #define SHARED_PTR_PARAMS T, T_NullCopyPolicy
 #define SHARED_PTR_TYPE   typename SharedPtr<SHARED_PTR_PARAMS>
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::
-    SharedPtr() 
-    : m_rawPtr(nullptr) 
+    SharedPtr()
+    : m_rawPtr(nullptr)
     , m_refCount(nullptr)
   { }
 
@@ -61,7 +61,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <SHARED_PTR_TEMPS>
-  SHARED_PTR_TYPE::this_type& 
+  SHARED_PTR_TYPE::this_type&
     SharedPtr<SHARED_PTR_PARAMS>::
     operator= (this_type a_other)
   {
@@ -71,7 +71,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   template <typename T_Other, typename T_OtherPolicy>
-  SHARED_PTR_TYPE::this_type& 
+  SHARED_PTR_TYPE::this_type&
     SharedPtr<SHARED_PTR_PARAMS>::
     operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other)
   {

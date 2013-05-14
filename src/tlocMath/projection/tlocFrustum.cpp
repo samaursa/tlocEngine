@@ -1,8 +1,8 @@
 #include "tlocFrustum.h"
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #include <tlocMath/tloc_math.h>
-#include <tlocMath/tloc_math.inl>
+#include <tlocMath/tloc_math.inl.h>
 
 namespace tloc { namespace math { namespace proj {
 

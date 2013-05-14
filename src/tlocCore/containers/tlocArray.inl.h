@@ -5,9 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/tlocAlgorithms.inl>
-#include <tlocCore/iterators/tlocIterator.inl>
-#include <tlocCore/memory/tlocMemory.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/iterators/tlocIterator.inl.h>
+#include <tlocCore/memory/tlocMemory.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -101,7 +101,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // General
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type
     ArrayBase<ARRAY_BASE_PARAMS>::defaultCapacity()
   {
     return sm_defaultCapacity;
@@ -109,32 +109,32 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   //------------------------------------------------------------------------
   // Assignment
-  
+
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::this_type& 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::this_type&
     ArrayBase<ARRAY_BASE_PARAMS>::operator= (const this_type& a_toCopy)
   {
     TLOC_ASSERT_ARRAY(&a_toCopy != this, "Assigning array to itself!");
-    
+
     const ArrayBase<ARRAY_BASE_PARAMS>::size_type sizeOfOther = a_toCopy.size();
     if (sizeOfOther > capacity())
     {
       m_begin    = DoReAllocate(sizeOfOther);
-      m_end      = uninitialized_copy(a_toCopy.begin(), 
-                                      a_toCopy.end(), 
+      m_end      = uninitialized_copy(a_toCopy.begin(),
+                                      a_toCopy.end(),
                                       m_begin);
       m_capacity = m_end;
     }
     else if (sizeOfOther > size())
     {
       copy(a_toCopy.begin(), a_toCopy.begin() + (m_end - m_begin), m_begin);
-      m_end = uninitialized_copy(a_toCopy.begin() + (m_end - m_begin), 
-                                 a_toCopy.end(), 
+      m_end = uninitialized_copy(a_toCopy.begin() + (m_end - m_begin),
+                                 a_toCopy.end(),
                                  m_end);
     }
     else
     {
-      const ArrayBase<ARRAY_BASE_PARAMS>::iterator itr = 
+      const ArrayBase<ARRAY_BASE_PARAMS>::iterator itr =
         copy(a_toCopy.begin(), a_toCopy.end(), m_begin);
       if (itr != m_end)
       {
@@ -149,7 +149,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Element access
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reference
     ArrayBase<ARRAY_BASE_PARAMS>::at(size_type a_index)
   {
     TLOC_ASSERT_ARRAY_INDEX(a_index);
@@ -157,7 +157,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference
     ArrayBase<ARRAY_BASE_PARAMS>::at(size_type a_index) const
   {
     TLOC_ASSERT_ARRAY_INDEX(a_index);
@@ -165,7 +165,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reference
     ArrayBase<ARRAY_BASE_PARAMS>::operator[](size_type a_index)
   {
     TLOC_ASSERT_ARRAY_INDEX(a_index);
@@ -173,7 +173,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference
     ArrayBase<ARRAY_BASE_PARAMS>::operator[](size_type a_index) const
   {
     TLOC_ASSERT_ARRAY_INDEX(a_index);
@@ -181,7 +181,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reference
     ArrayBase<ARRAY_BASE_PARAMS>::front()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -189,7 +189,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference
     ArrayBase<ARRAY_BASE_PARAMS>::front() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -197,7 +197,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reference
     ArrayBase<ARRAY_BASE_PARAMS>::back()
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -205,7 +205,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reference
     ArrayBase<ARRAY_BASE_PARAMS>::back() const
   {
     TLOC_ASSERT_ARRAY_NOT_EMPTY();
@@ -213,7 +213,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
     ArrayBase<ARRAY_BASE_PARAMS>::data()
   {
     return m_begin;
@@ -223,56 +223,56 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Iterator access
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::begin()
   {
     return m_begin;
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::begin() const
   {
     return m_begin;
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::end()
   {
     return m_end;
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::end() const
   {
     return m_end;
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::rbegin()
   {
     return reverse_iterator(end());
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::rbegin() const
   {
     return const_reverse_iterator(end());
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::reverse_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::rend()
   {
     return reverse_iterator(begin());
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::const_reverse_iterator
     ArrayBase<ARRAY_BASE_PARAMS>::rend() const
   {
     return const_reverse_iterator(begin());
@@ -282,14 +282,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Capacity
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type
     ArrayBase<ARRAY_BASE_PARAMS>::size() const
   {
     return (m_end - m_begin);
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::size_type
     ArrayBase<ARRAY_BASE_PARAMS>::capacity() const
   {
     return (m_capacity - m_begin);
@@ -327,14 +327,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::erase(iterator a_position)
   {
     return DoErase(a_position, policy_type());
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::iterator
     ArrayBase<ARRAY_BASE_PARAMS>::erase(iterator a_rangeBegin, iterator a_rangeEnd)
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(a_rangeBegin, a_rangeEnd);
@@ -360,14 +360,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Internal functions
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
     ArrayBase<ARRAY_BASE_PARAMS>::DoAllocate(const size_type& a_size)
   {
     return a_size ? (pointer)TL_MALLOC(a_size * sizeof(value_type)) : nullptr;
   }
 
   template <ARRAY_BASE_TYPES>
-  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer 
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
     ArrayBase<ARRAY_BASE_PARAMS>::DoReAllocate(const size_type& a_size)
   {
     return (pointer)TL_REALLOC(m_begin, sizeof(value_type) * a_size);
@@ -380,7 +380,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_BASE_TYPES>
-  void ArrayBase<ARRAY_BASE_PARAMS>::DoDestroyValues(pointer a_rangeBegin, 
+  void ArrayBase<ARRAY_BASE_PARAMS>::DoDestroyValues(pointer a_rangeBegin,
                                                      pointer a_rangeEnd)
   {
     while (a_rangeBegin != a_rangeEnd)
@@ -429,7 +429,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   {
     TLOC_ASSERT_ARRAY_RANGE_BEGIN_AND_NOT_EQUAL_END(a_position);
 
-    if ( (a_position + 1) < m_end) 
+    if ( (a_position + 1) < m_end)
     { copy(a_position + 1, m_end, a_position); }
     --m_end;
     m_end->~value_type();
@@ -470,8 +470,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_TYPES>
-  Array<ARRAY_PARAMS>::Array(size_type a_numElemsToInsert, 
-                                   const_reference a_valueToCopy) 
+  Array<ARRAY_PARAMS>::Array(size_type a_numElemsToInsert,
+                                   const_reference a_valueToCopy)
     : base_type(a_numElemsToInsert)
   {
     /*insert(0, aNumElemsToInsert, aValueToCopy);*/
@@ -488,7 +488,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <ARRAY_TYPES>
   template <typename T_InputIterator>
-  Array<ARRAY_PARAMS>::Array(T_InputIterator a_rangeBegin, 
+  Array<ARRAY_PARAMS>::Array(T_InputIterator a_rangeBegin,
                                    T_InputIterator a_rangeEnd)
     : base_type()
   {
@@ -513,7 +513,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_TYPES>
-  void Array<ARRAY_PARAMS>::resize(size_type a_newSize, 
+  void Array<ARRAY_PARAMS>::resize(size_type a_newSize,
                                         const_reference a_value)
   {
     size_type currSize = size();
@@ -585,7 +585,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // Modifiers
 
   template <ARRAY_TYPES>
-  void Array<ARRAY_PARAMS>::assign(size_type a_repetitionNum, 
+  void Array<ARRAY_PARAMS>::assign(size_type a_repetitionNum,
                                         const_reference a_elemToCopy)
   {
     if (size() < a_repetitionNum)
@@ -653,7 +653,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <ARRAY_TYPES>
   template <typename T_InputIterator>
-  void Array<ARRAY_PARAMS>::insert(iterator a_position, 
+  void Array<ARRAY_PARAMS>::insert(iterator a_position,
                                         T_InputIterator a_rangeBegin,
                                         T_InputIterator a_rangeEnd)
   {
@@ -681,18 +681,18 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
   template <ARRAY_TYPES>
   template <typename T_Number>
-  void Array<ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum, 
-                                          T_Number a_elemToCopy, 
+  void Array<ARRAY_PARAMS>::DoAssign(T_Number a_repetitionNum,
+                                          T_Number a_elemToCopy,
                                           is_arith_t)
   {
-    assign(static_cast<size_type>(a_repetitionNum), 
+    assign(static_cast<size_type>(a_repetitionNum),
            static_cast<value_type>(a_elemToCopy));
   }
 
   template <ARRAY_TYPES>
   template <typename T_InputIterator>
-  void Array<ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin, 
-                                          T_InputIterator a_rangeEnd, 
+  void Array<ARRAY_PARAMS>::DoAssign(T_InputIterator a_rangeBegin,
+                                          T_InputIterator a_rangeEnd,
                                           is_not_arith_t)
   {
     size_type projectedSize = tloc::core::distance(a_rangeBegin, a_rangeEnd);
@@ -708,7 +708,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   // insert() helpers
 
   template <ARRAY_TYPES>
-  void Array<ARRAY_PARAMS>::DoInsertValue(iterator a_position, 
+  void Array<ARRAY_PARAMS>::DoInsertValue(iterator a_position,
                                                const_reference a_value)
   {
     TLOC_ASSERT_ARRAY_POSITION(a_position);
@@ -717,7 +717,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     {
       // Value may be from within the range of the array, in which case, the
       // pointer will be moved by one to where it will be once everything is
-      // moved over. 
+      // moved over.
       const_pointer valuePtr = &a_value;
       if (valuePtr >= a_position && valuePtr < m_end)
       {
@@ -725,7 +725,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       }
 
       // We directly assume that the value is not going to be inserted at m_end
-      // at this point. 
+      // at this point.
       ::new(m_end) value_type(*(m_end - 1)); // We need initialize and move the end value
       copy_backward(a_position, m_end - 1, m_end);
       *a_position = *valuePtr;
@@ -743,8 +743,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   }
 
   template <ARRAY_TYPES>
-  void Array<ARRAY_PARAMS>::DoInsertValues(iterator a_position, 
-                                                size_type a_numElemsToInsert, 
+  void Array<ARRAY_PARAMS>::DoInsertValues(iterator a_position,
+                                                size_type a_numElemsToInsert,
                                                 const_reference a_value)
   {
     TLOC_ASSERT_ARRAY_POSITION(a_position);
@@ -807,7 +807,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
                                           T_Number a_value,
                                           is_integral_t)
   {
-    insert(a_position, static_cast<size_type>(a_n), 
+    insert(a_position, static_cast<size_type>(a_n),
            static_cast<value_type>(a_value));
   }
 
@@ -840,7 +840,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
     else
     {
-      const size_type oldPosition = 
+      const size_type oldPosition =
         static_cast<size_type>(tloc::core::distance(m_begin, a_position));
       reserve(newSize); // 'position' is now invalid
       DoInsertByIterator(m_begin + oldPosition, a_first, a_last);

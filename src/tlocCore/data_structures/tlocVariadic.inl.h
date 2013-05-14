@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 namespace tloc { namespace core { namespace data_structs {
 
@@ -76,7 +76,7 @@ namespace tloc { namespace core { namespace data_structs {
     operator[](2)   = a_array[2];
     operator[](3)   = a_array[3];
   }
-  
+
   //------------------------------------------------------------------------
 
   template <typename T>

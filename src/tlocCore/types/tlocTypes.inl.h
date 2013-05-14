@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/types/tlocConditionalType.inl>
+#include <tlocCore/types/tlocConditionalType.inl.h>
 
 namespace tloc { namespace core {
 

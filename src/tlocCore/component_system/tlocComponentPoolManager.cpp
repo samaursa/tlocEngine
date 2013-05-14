@@ -1,7 +1,7 @@
 #include "tlocComponentPoolManager.h"
-#include "tlocComponentPoolManager.inl"
+#include "tlocComponentPoolManager.inl.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 

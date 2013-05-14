@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 
-#include <tlocCore/memory/tlocMemory.inl>
+#include <tlocCore/memory/tlocMemory.inl.h>
 
 #endif

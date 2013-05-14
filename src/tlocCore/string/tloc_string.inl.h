@@ -5,6 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #endif

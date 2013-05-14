@@ -7,8 +7,8 @@
 
 #include "tloc_smart_ptr.h"
 
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #endif

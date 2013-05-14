@@ -5,9 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -64,7 +64,7 @@ namespace tloc { namespace math { namespace types {
   { }
 
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(value_type a_value) 
+  TL_FI Vector<VECTOR_PARAMS>::Vector(value_type a_value)
     : base_type(a_value)
   { }
 
@@ -109,7 +109,7 @@ namespace tloc { namespace math { namespace types {
   // Math Operations
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Add(const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -131,7 +131,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -151,7 +151,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -171,7 +171,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Mul(const value_type a_real)
   {
     ITERATE_VECTOR
@@ -183,7 +183,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Div(const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -203,7 +203,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Div(const value_type a_real)
   {
     ITERATE_VECTOR
@@ -215,7 +215,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::LengthSquared() const
   {
     T lengthSq = 0;
@@ -229,7 +229,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::Length() const
   {
     return DoLength<p_vector::accurate>(*this);
@@ -258,9 +258,9 @@ namespace tloc { namespace math { namespace types {
     return Norm<p_vector::accurate>(a_vector);
   }
 
-  template <VECTOR_TEMP> 
+  template <VECTOR_TEMP>
   template <typename T_Accuracy>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::DoNorm(const this_type& a_vector)
   {
     value_type dblLength = a_vector.LengthSquared();
@@ -278,15 +278,15 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::Distance(const this_type& a_vector) const
   {
     return DoDistance<p_vector::accurate>(a_vector);
   }
 
-  template <VECTOR_TEMP> 
+  template <VECTOR_TEMP>
   template <typename T_Accuracy>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::DoDistance(const this_type& a_vector) const
   {
     this_type lTemp = *this;
@@ -297,7 +297,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::DistanceSquared(const this_type& a_vector) const
   {
     this_type lTemp = *this;
@@ -308,7 +308,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::Dot(const this_type& a_vector) const
   {
     value_type dotProd = 0;
@@ -322,7 +322,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type 
+  TL_FI VECTOR_TYPE::value_type
     Vector<VECTOR_PARAMS>::DotAbs(const this_type& a_vector) const
   {
     value_type dotProd = Dot(a_vector);
@@ -330,7 +330,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector)
   {
     ITERATE_VECTOR
@@ -353,7 +353,7 @@ namespace tloc { namespace math { namespace types {
   // Operators
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector) const
   {
     this_type returnVec;
@@ -365,7 +365,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector) const
   {
     this_type returnVec;
@@ -377,7 +377,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator* (const_reference a_value) const
   {
     this_type returnVec;
@@ -389,7 +389,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector) const
   {
     this_type returnVec;
@@ -401,7 +401,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator/ (const_reference a_value) const
   {
     this_type returnVec;
@@ -413,7 +413,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type 
+  TL_FI VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector) const
   {
     this_type returnVec;
@@ -425,7 +425,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::operator+= (const this_type& a_vector)
   {
     Add(a_vector);
@@ -434,7 +434,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::operator-= (const this_type& a_vector)
   {
     Sub(a_vector);
@@ -443,7 +443,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::operator*= (const_reference a_value)
   {
     Mul(a_value);
@@ -452,7 +452,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type& 
+  TL_FI VECTOR_TYPE::this_type&
     Vector<VECTOR_PARAMS>::operator*= (const this_type& a_vector)
   {
     Mul(a_vector);

@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 

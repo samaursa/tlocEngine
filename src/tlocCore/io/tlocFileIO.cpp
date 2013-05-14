@@ -2,7 +2,7 @@
 
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <stdio.h>
 

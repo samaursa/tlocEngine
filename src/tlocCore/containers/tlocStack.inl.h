@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -25,7 +25,7 @@ namespace tloc { namespace core { namespace containers {
   // Ctors
 
   template <STACK_TYPES>
-  Stack<STACK_PARAMS>::Stack() 
+  Stack<STACK_PARAMS>::Stack()
     : m_container()
   {
   }
@@ -40,7 +40,7 @@ namespace tloc { namespace core { namespace containers {
   // Capacity
 
   template <STACK_TYPES>
-  typename Stack<STACK_PARAMS>::size_type 
+  typename Stack<STACK_PARAMS>::size_type
     Stack<STACK_PARAMS>::size() const
   {
     return m_container.size();

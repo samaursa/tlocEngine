@@ -8,9 +8,9 @@
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
 
 namespace TestingMemory
 {

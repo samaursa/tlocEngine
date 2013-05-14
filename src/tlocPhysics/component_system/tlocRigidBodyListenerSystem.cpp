@@ -1,8 +1,8 @@
 #include "tlocRigidBodyListenerSystem.h"
 
 #include <tlocCore/error/tlocError.h>
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>

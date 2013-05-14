@@ -1,8 +1,8 @@
 #include "tlocAny.h"
-#include "tlocAny.inl"
+#include "tlocAny.inl.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace types {
 

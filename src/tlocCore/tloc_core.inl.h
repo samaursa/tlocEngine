@@ -7,24 +7,24 @@
 
 #include "tloc_core.h"
 
-#include <tlocCore/tlocPair.inl>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocPair.inl.h>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
-#include <tlocCore/base_classes/tloc_base_classes.inl>
-#include <tlocCore/component_system/tloc_component_system.inl>
-#include <tlocCore/configs/tloc_configs.inl>
-#include <tlocCore/containers/tloc_containers.inl>
-#include <tlocCore/data_structures/tloc_data_structures.inl>
-#include <tlocCore/error/tloc_error.inl>
-#include <tlocCore/io/tloc_io.inl>
-#include <tlocCore/iterators/tloc_iterators.inl>
-#include <tlocCore/memory/tloc_memory.inl>
-#include <tlocCore/platform/tloc_platform.inl>
-#include <tlocCore/rng/tloc_rng.inl>
-#include <tlocCore/smart_ptr/tloc_smart_ptr.inl>
-#include <tlocCore/string/tloc_string.inl>
-#include <tlocCore/time/tloc_time.inl>
-#include <tlocCore/types/tloc_types.inl>
-#include <tlocCore/utilities/tloc_utilities.inl>
+#include <tlocCore/base_classes/tloc_base_classes.inl.h>
+#include <tlocCore/component_system/tloc_component_system.inl.h>
+#include <tlocCore/configs/tloc_configs.inl.h>
+#include <tlocCore/containers/tloc_containers.inl.h>
+#include <tlocCore/data_structures/tloc_data_structures.inl.h>
+#include <tlocCore/error/tloc_error.inl.h>
+#include <tlocCore/io/tloc_io.inl.h>
+#include <tlocCore/iterators/tloc_iterators.inl.h>
+#include <tlocCore/memory/tloc_memory.inl.h>
+#include <tlocCore/platform/tloc_platform.inl.h>
+#include <tlocCore/rng/tloc_rng.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/string/tloc_string.inl.h>
+#include <tlocCore/time/tloc_time.inl.h>
+#include <tlocCore/types/tloc_types.inl.h>
+#include <tlocCore/utilities/tloc_utilities.inl.h>
 
 #endif

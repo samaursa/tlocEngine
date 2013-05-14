@@ -1,8 +1,8 @@
 #include "tlocEventManager.h"
 
-#include <tlocCore/component_system/tlocEvent.inl>
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/component_system/tlocEvent.inl.h>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 

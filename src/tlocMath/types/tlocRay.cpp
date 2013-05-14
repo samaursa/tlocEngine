@@ -1,6 +1,6 @@
 #include "tlocRay.h"
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 
 #include <tlocMath/types/tlocVector2.h>

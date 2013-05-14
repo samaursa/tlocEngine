@@ -1,5 +1,5 @@
 #include "tlocVariadic.h"
-#include "tlocVariadic.inl"
+#include "tlocVariadic.inl.h"
 
 namespace tloc { namespace core { namespace data_structs {
 

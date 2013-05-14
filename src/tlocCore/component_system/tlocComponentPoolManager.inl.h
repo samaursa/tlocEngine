@@ -6,7 +6,7 @@
 #endif
 
 #include "tlocComponentPoolManager.h"
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace component_system {
@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace component_system {
     }
 
     template <typename T_Iterator>
-    void DoAssertElementsNotInUse(T_Iterator, T_Iterator, 
+    void DoAssertElementsNotInUse(T_Iterator, T_Iterator,
                                   configs::p_build_config::Release)
     { /* Intentioanlly Empty */ }
   }
@@ -45,7 +45,7 @@ namespace tloc { namespace core { namespace component_system {
   ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     ~ComponentPool_TI()
   {
-    DoAssertElementsNotInUse(begin(), end(), 
+    DoAssertElementsNotInUse(begin(), end(),
                              configs::BuildConfig::GetBuildConfigType());
   }
 
@@ -61,7 +61,7 @@ namespace tloc { namespace core { namespace component_system {
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::const_iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
-    begin() const 
+    begin() const
   { return m_pool.begin(); }
 
   template <COMPONENT_POOL_TEMPS>
@@ -71,7 +71,7 @@ namespace tloc { namespace core { namespace component_system {
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::const_iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
-    end() const 
+    end() const
   { return m_pool.end(); }
 
   template <COMPONENT_POOL_TEMPS>
@@ -101,7 +101,7 @@ namespace tloc { namespace core { namespace component_system {
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
   template class core_cs::ComponentPool_TI<_type_>;\
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(core_cs::ComponentPool_TI<_type_>)
-  
+
 };};};
 
 #endif

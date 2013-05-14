@@ -1,13 +1,13 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/memory/tlocMemoryPool.h>
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 #define TEST_MEMORY_POOL_INDEX(funcName)\
   funcName<MemoryPoolIndexed<tl_uint, 100>, 100>();\

@@ -1,5 +1,5 @@
 #include "tlocString.h"
-#include "tlocString.inl"
+#include "tlocString.inl.h"
 
 namespace tloc { namespace core { namespace string {
 

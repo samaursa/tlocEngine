@@ -5,19 +5,19 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/containers/tlocArrayFixed.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
 
-#include <tlocCore/containers/tlocHashmap.inl>
-#include <tlocCore/containers/tlocHashtable.inl>
+#include <tlocCore/containers/tlocHashmap.inl.h>
+#include <tlocCore/containers/tlocHashtable.inl.h>
 
-#include <tlocCore/containers/tlocForwardList.inl>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocForwardList.inl.h>
+#include <tlocCore/containers/tlocList.inl.h>
 
-#include <tlocCore/containers/tlocQueue.inl>
+#include <tlocCore/containers/tlocQueue.inl.h>
 
-#include <tlocCore/containers/tlocStack.inl>
+#include <tlocCore/containers/tlocStack.inl.h>
 
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #endif

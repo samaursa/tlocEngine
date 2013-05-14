@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/memory/tlocMemory.h>
-#include <tlocCore/memory/tlocMemory.inl>
+#include <tlocCore/memory/tlocMemory.inl.h>
 
 namespace TestingMemory
 {

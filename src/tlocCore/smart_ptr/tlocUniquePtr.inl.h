@@ -6,11 +6,11 @@
 #endif
 
 #include "tlocUniquePtr.h"
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 
@@ -34,7 +34,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
-  { 
+  {
     priv::DoStartTrackingPtr( (void*)a_rawPtr);
   }
 
@@ -125,7 +125,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     DoDestroyRawPtr()
   {
     if (m_rawPtr)
-    { 
+    {
       priv::DoStopTrackingPtr( (void*)m_rawPtr);
       delete m_rawPtr;
       m_rawPtr = nullptr;

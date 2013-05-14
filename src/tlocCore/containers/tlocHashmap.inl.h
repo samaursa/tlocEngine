@@ -5,10 +5,10 @@
 #error "Must include header before including inline file"
 #endif
 
-#include <tlocCore/tlocPair.inl>
-#include <tlocCore/containers/tlocHashtable.inl>
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/tlocPair.inl.h>
+#include <tlocCore/containers/tlocHashtable.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/containers/tlocList.inl.h>
 
 #include <tlocCore/types/tlocTypeTraits.h>
 
@@ -36,8 +36,8 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <HASH_MAP_TYPES>
-  TL_FI HashMap<HASH_MAP_PARAMS>::HashMap(size_type aBucketCount, 
-                                          const T_HashFunc& aHashFunction, 
+  TL_FI HashMap<HASH_MAP_PARAMS>::HashMap(size_type aBucketCount,
+                                          const T_HashFunc& aHashFunction,
                                           const T_KeyEqual& aKeyEqual)
     : base_type(aBucketCount)
   {

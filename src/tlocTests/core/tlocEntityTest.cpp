@@ -5,7 +5,7 @@
 #define protected public
 #define private public
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
 namespace TestingEntity

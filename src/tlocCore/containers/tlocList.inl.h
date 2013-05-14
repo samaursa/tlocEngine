@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/tlocAlgorithms.inl>
-#include <tlocCore/iterators/tlocIterator.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/iterators/tlocIterator.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -22,7 +22,7 @@ namespace tloc { namespace core { namespace containers {
 #define LIST_NODE_TYPES typename T
 #define DOUBLY_LIST_NODE_PARAMS T, doubly_linked_tag
 #define SINGLY_LIST_NODE_PARAMS T, singly_linked_tag
-  
+
   //////////////////////////////////////////////////////////////////////////
   // ListNode (singly_linked)
 
@@ -50,7 +50,7 @@ namespace tloc { namespace core { namespace containers {
 
   template <LIST_NODE_TYPES>
   TL_FI void ListNode<SINGLY_LIST_NODE_PARAMS>
-    ::swap_after(ListNode<SINGLY_LIST_NODE_PARAMS>& a, 
+    ::swap_after(ListNode<SINGLY_LIST_NODE_PARAMS>& a,
                  ListNode<SINGLY_LIST_NODE_PARAMS>& b)
   {
     TLOC_ASSERT_WIP();
@@ -112,7 +112,7 @@ namespace tloc { namespace core { namespace containers {
     ::splice_after(ListNode<SINGLY_LIST_NODE_PARAMS>* aFirst,
                    ListNode<SINGLY_LIST_NODE_PARAMS>* aLast)
   {
-    // Not the most efficient implementation as it requires iteration. Find a 
+    // Not the most efficient implementation as it requires iteration. Find a
     // way to do it without iterating the other list
 
 #ifndef TLOC_DISABLE_EXTENDED_SINGLY_LIST
@@ -137,7 +137,7 @@ namespace tloc { namespace core { namespace containers {
   {
     this_type* node = this;
     this_type* nextNode = node->m_next;
-    do 
+    do
     {
       this_type* temp = nextNode->m_next;
       nextNode->m_next = node;
@@ -168,7 +168,7 @@ namespace tloc { namespace core { namespace containers {
 #ifdef TLOC_DISABLE_EXTENDED_SINGLY_LIST
     TLOC_STATIC_ASSERT(false, Singly_linked_node_extended_operations_disabled!);
 #endif
-    
+
     this_type* temp = this;
     while (temp->m_next != this)
     {
@@ -180,7 +180,7 @@ namespace tloc { namespace core { namespace containers {
 
   template <LIST_NODE_TYPES>
   const typename ListNode<SINGLY_LIST_NODE_PARAMS>::this_type*
-    ListNode<SINGLY_LIST_NODE_PARAMS>::getPrev() const 
+    ListNode<SINGLY_LIST_NODE_PARAMS>::getPrev() const
   {
 #ifdef TLOC_DISABLE_EXTENDED_SINGLY_LIST
     TLOC_STATIC_ASSERT(false, Singly_linked_node_extended_operations_disabled!);
@@ -238,7 +238,7 @@ namespace tloc { namespace core { namespace containers {
 
   template <LIST_NODE_TYPES>
   TL_FI void ListNode<DOUBLY_LIST_NODE_PARAMS>
-    ::swap(ListNode<DOUBLY_LIST_NODE_PARAMS>& a, 
+    ::swap(ListNode<DOUBLY_LIST_NODE_PARAMS>& a,
            ListNode<DOUBLY_LIST_NODE_PARAMS>& b)
   {
     if (a.m_next != &b && b.m_next != &a)
@@ -271,14 +271,14 @@ namespace tloc { namespace core { namespace containers {
     a = b;
     b = temp;
   }
- 
+
   template <LIST_NODE_TYPES>
   TL_FI void ListNode<DOUBLY_LIST_NODE_PARAMS>
-    ::swap_after(ListNode<DOUBLY_LIST_NODE_PARAMS>& a, 
+    ::swap_after(ListNode<DOUBLY_LIST_NODE_PARAMS>& a,
                  ListNode<DOUBLY_LIST_NODE_PARAMS>& b)
   {
     TLOC_ASSERT_WIP();
-  } 
+  }
 
   template <LIST_NODE_TYPES>
   void ListNode<DOUBLY_LIST_NODE_PARAMS>
@@ -308,7 +308,7 @@ namespace tloc { namespace core { namespace containers {
     aLast->m_prev->m_next = m_next;
     m_next->m_prev = aLast->m_prev;
     m_next = aFirst;
-    
+
     aLast->m_prev = aFirst->m_prev; // For the foreign list
 
     aFirst->m_prev = this;
@@ -335,7 +335,7 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_NODE_TYPES>
-  const typename ListNode<DOUBLY_LIST_NODE_PARAMS>::this_type* 
+  const typename ListNode<DOUBLY_LIST_NODE_PARAMS>::this_type*
     ListNode<DOUBLY_LIST_NODE_PARAMS>::getNext() const
   {
     return m_next;
@@ -668,7 +668,7 @@ namespace tloc { namespace core { namespace containers {
   TL_FI void List<LIST_TEMP>::insert(iterator aPos, size_type aNumOfValues,
                                      const value_type& aValue)
   {
-    DoInsertValuesAfter(aPos.m_node->getPrev(), 
+    DoInsertValuesAfter(aPos.m_node->getPrev(),
                         aNumOfValues, aValue);
   }
 
@@ -680,7 +680,7 @@ namespace tloc { namespace core { namespace containers {
     typedef typename Loki::TypeTraits<T_Iterator> inputUnknown;
     typedef typename Loki::Int2Type<inputUnknown::isArith> inputArith;
 
-    DoInsertAfter(aPos.m_node->getPrev(), aFirst, aLast, 
+    DoInsertAfter(aPos.m_node->getPrev(), aFirst, aLast,
                   inputArith());
   }
 
@@ -799,7 +799,7 @@ namespace tloc { namespace core { namespace containers {
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::swap(this_type& aOther)
   {
-    // We swap the pointers rather than the node that the pointer is pointing 
+    // We swap the pointers rather than the node that the pointer is pointing
     // to. This is a much faster O(1) operation on a singly linked list whereas
     // a node swap is an O(n) operation
     core::swap(m_sizeAndNode.m_var, aOther.m_sizeAndNode.m_var);
@@ -886,7 +886,7 @@ namespace tloc { namespace core { namespace containers {
 
   template <LIST_TEMP_TYPES>
   TL_FI void List<LIST_TEMP>::splice_after(iterator aPos, this_type& aFrom,
-                                           iterator aOtherBegin, 
+                                           iterator aOtherBegin,
                                            iterator aOtherEnd)
   {
     // According to the standard, the splice begins AFTER aOtherBegin, i.e.
@@ -1075,7 +1075,7 @@ namespace tloc { namespace core { namespace containers {
   {
     // We need to new our sentry node
     m_sizeAndNode.m_var = new node_type();
-    
+
     m_size() = 0;
     m_node().init();
   }
@@ -1156,7 +1156,7 @@ namespace tloc { namespace core { namespace containers {
     // Deal with over/under flow
     if (aRangeBegin != aRangeEnd)
     {
-      DoInsertAfter(m_node().getPrev(), aRangeBegin, aRangeEnd, 
+      DoInsertAfter(m_node().getPrev(), aRangeBegin, aRangeEnd,
                     is_not_arith());
     }
     else
@@ -1182,7 +1182,7 @@ namespace tloc { namespace core { namespace containers {
     // Deal with over/under flow
     if (aNumTimes > 0)
     {
-      DoInsertValuesAfter(m_node().getPrev(), aNumTimes, 
+      DoInsertValuesAfter(m_node().getPrev(), aNumTimes,
                           aValueCopy);
     }
     else
@@ -1201,7 +1201,7 @@ namespace tloc { namespace core { namespace containers {
 
   template <LIST_TEMP_TYPES>
   template <typename T_InputIterator>
-  TL_FI void List<LIST_TEMP>::DoInsertAfter(node_type* aPos, 
+  TL_FI void List<LIST_TEMP>::DoInsertAfter(node_type* aPos,
     T_InputIterator aFirst, T_InputIterator aLast, is_not_arith)
   {
     while (aFirst != aLast)
@@ -1253,12 +1253,12 @@ namespace tloc { namespace core { namespace containers {
   TL_FI typename List<LIST_TEMP>::size_type
     List<LIST_TEMP>::DoGetSize(size_not_stored) const
   {
-    return distance(const_iterator(m_node().getNext()), 
+    return distance(const_iterator(m_node().getNext()),
                     const_iterator(&m_node()));
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements, 
+  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements,
                                         const value_type& aValue, size_stored)
   {
     // Assuming the user would usually want to grow the list when calling resize
@@ -1275,14 +1275,14 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements, 
-                                        const value_type& aValue, 
+  TL_FI void List<LIST_TEMP>::DoResize (size_type aNumElements,
+                                        const value_type& aValue,
                                         size_not_stored)
   {
     iterator itr(m_node().getNext());
     size_type count = 0;
 
-    while ( (itr.m_node != &m_node()) && 
+    while ( (itr.m_node != &m_node()) &&
             (count < aNumElements) )
     {
       ++count; ++itr;
@@ -1299,8 +1299,8 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom, 
-                                             iterator aBegin, iterator aEnd, 
+  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom,
+                                             iterator aBegin, iterator aEnd,
                                              size_stored)
   {
     TLOC_UNUSED(aPos);
@@ -1319,8 +1319,8 @@ namespace tloc { namespace core { namespace containers {
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom, 
-                                             iterator aBegin, iterator aEnd, 
+  TL_FI void List<LIST_TEMP>::DoSpliceAfter (iterator aPos, this_type& aFrom,
+                                             iterator aBegin, iterator aEnd,
                                              size_not_stored)
   {
     TLOC_UNUSED(aFrom);
@@ -1335,28 +1335,28 @@ namespace tloc { namespace core { namespace containers {
   // Helper functions for m_sizeAndNode
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::node_type& 
+  TL_FI typename List<LIST_TEMP>::node_type&
     List<LIST_TEMP>::m_node()
   {
     return *(m_sizeAndNode.m_var);
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI const typename List<LIST_TEMP>::node_type& 
+  TL_FI const typename List<LIST_TEMP>::node_type&
     List<LIST_TEMP>::m_node() const
   {
     return *(m_sizeAndNode.m_var);
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI typename List<LIST_TEMP>::list_size& 
+  TL_FI typename List<LIST_TEMP>::list_size&
     List<LIST_TEMP>::m_size()
   {
     return (list_size&)m_sizeAndNode;
   }
 
   template <LIST_TEMP_TYPES>
-  TL_FI const typename List<LIST_TEMP>::list_size& 
+  TL_FI const typename List<LIST_TEMP>::list_size&
     List<LIST_TEMP>::m_size() const
   {
     return (list_size&)m_sizeAndNode;

@@ -1,5 +1,5 @@
 #include "tlocCheckpoints.h"
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 namespace tloc { namespace core { namespace utils {
 

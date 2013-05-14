@@ -1,12 +1,12 @@
-#ifndef TLOC_MEMORY_POOL_INL 
-#define TLOC_MEMORY_POOL_INL 
+#ifndef TLOC_MEMORY_POOL_INL
+#define TLOC_MEMORY_POOL_INL
 
 #ifndef TLOC_MEMORY_POOL_H
 #error "Must include header before including the inline file"
 #endif
 
 #include "tlocMemoryPool.h"
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions
@@ -33,14 +33,14 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper() 
+    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper()
     : m_index(parent_type::sm_invalidIndex)
   {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>:: 
+  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper(const wrapper_type& a_rhs)
   {
     m_element = a_rhs.m_element;
@@ -50,12 +50,12 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   void
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>:: 
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
     SetValue(const wrapper_value_type& a_value)
   {
-    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex, 
-      "Accessing an invalid value (see pool wrapper)"); 
+    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
+      "Accessing an invalid value (see pool wrapper)");
     m_element = a_value;
   }
 
@@ -83,8 +83,8 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MEMORY_POOL_INDEX_WRAPPER_TYPE::index_type 
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>:: 
+  MEMORY_POOL_INDEX_WRAPPER_TYPE::index_type
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetIndex() const
   {
     return m_index;
@@ -188,7 +188,7 @@ namespace tloc { namespace core { namespace memory {
   {
     if (m_numAvail >= (index_type)m_allElements.size())
     {
-      TLOC_ASSERT_MEMORY_POOL_INDEX(false, 
+      TLOC_ASSERT_MEMORY_POOL_INDEX(false,
         "Trying to recycle more elements than we have!");
       return;
     }
@@ -200,7 +200,7 @@ namespace tloc { namespace core { namespace memory {
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
     wrapper_type& toSwap = this->operator[]( DoGetIndex(*a_retElem, policy_allocation_type()) );
     core::swap(toSwap, m_allElements[lastUsedElem]);
-    core::swap(DoGetIndex(toSwap, policy_allocation_type()), 
+    core::swap(DoGetIndex(toSwap, policy_allocation_type()),
            DoGetIndex(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
   }
@@ -226,7 +226,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::wrapper_type& 
+  MEMORY_POOL_INDEX_TYPE::wrapper_type&
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index)
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX((size_type)a_index < GetTotal() - GetAvail(),
@@ -236,7 +236,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::wrapper_type const & 
+  MEMORY_POOL_INDEX_TYPE::wrapper_type const &
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index) const
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < GetTotal() - GetAvail(),
@@ -246,30 +246,30 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::size_type 
+  MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetTotal() const
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(m_allElements.size() > 0, 
+    TLOC_ASSERT_MEMORY_POOL_INDEX(m_allElements.size() > 0,
       "m_allElements.size() should never be 0 as g_initialStartSize is > 0");
     return m_allElements.size();
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::size_type 
+  MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
   {
     return m_numAvail != -1 ? m_numAvail : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::size_type 
+  MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
   {
     return m_numAvail != -1 ? (m_allElements.size() - GetAvail()) : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::iterator 
+  MEMORY_POOL_INDEX_TYPE::iterator
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::begin()
   {
     return m_allElements.begin();
@@ -283,8 +283,8 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::iterator 
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::end() 
+  MEMORY_POOL_INDEX_TYPE::iterator
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::end()
   {
     return m_allElements.end() - GetAvail();
   }
@@ -301,7 +301,7 @@ namespace tloc { namespace core { namespace memory {
     IsValid(const iterator a_element) const
   {
     return (m_numAvail != sm_invalidIndex) &&
-           (a_element != m_allElements.end()) && 
+           (a_element != m_allElements.end()) &&
            (DoGetIndex(*a_element, policy_allocation_type()) != sm_invalidIndex) &&
            (DoGetIndex(*a_element, policy_allocation_type()) < (index_type)GetUsed());
   }
@@ -325,7 +325,7 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoInitializeRange(iterator a_begin, iterator a_end, 
+    DoInitializeRange(iterator a_begin, iterator a_end,
                       index_type a_startingIndex)
   {
     for ( ; a_begin != a_end; ++a_begin)
@@ -382,7 +382,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type  
+  MEMORY_POOL_INDEX_TYPE::index_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
   {
     return m_allElements.size() - m_numAvail;
@@ -405,7 +405,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type  
+  MEMORY_POOL_INDEX_TYPE::index_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const
   {
@@ -413,7 +413,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type  
+  MEMORY_POOL_INDEX_TYPE::index_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const
   {

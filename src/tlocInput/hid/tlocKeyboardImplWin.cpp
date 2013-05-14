@@ -1,6 +1,6 @@
 #include "tlocKeyboardImplWin.h"
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 

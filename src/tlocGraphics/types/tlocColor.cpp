@@ -1,9 +1,9 @@
 #include "tlocColor.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocType.h>
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 namespace tloc { namespace graphics { namespace types {
 

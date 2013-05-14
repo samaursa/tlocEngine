@@ -1,5 +1,5 @@
 #include "tlocStrongType.h"
-#include "tlocStrongType.inl"
+#include "tlocStrongType.inl.h"
 
 #include "tlocStrongTypeExplicitMacros.h"
   TLOC_INSTANTIATE_STRONG_TYPE(s8);

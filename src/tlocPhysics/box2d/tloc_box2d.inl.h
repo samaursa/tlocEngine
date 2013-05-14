@@ -5,6 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocPhysics/box2d/tlocRigidBody.inl>
+#include <tlocPhysics/box2d/tlocRigidBody.inl.h>
 
 #endif

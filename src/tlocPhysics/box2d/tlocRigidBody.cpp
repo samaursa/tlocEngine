@@ -1,5 +1,5 @@
 #include "tlocRigidBody.h"
-#include "tlocRigidBody.inl"
+#include "tlocRigidBody.inl.h"
 
 namespace tloc { namespace physics { namespace box2d {
 

@@ -7,7 +7,7 @@
 
 #include "tlocTable.h"
 #include <tlocCore/utilities/tlocType.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 namespace tloc { namespace core { namespace data_structs {
   //////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   Table<TABLE_PARAMS>::
-    Table (const Variadic<value_type, k_TableSize>& a_vars, 
+    Table (const Variadic<value_type, k_TableSize>& a_vars,
            table_order a_tableOrder)
   { Set(a_vars, a_tableOrder); }
 
@@ -119,7 +119,7 @@ namespace tloc { namespace core { namespace data_structs {
     ASSERT_NUM_COLS;
     return m_values[aRow + aCol * T_Rows];
   }
-  
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
@@ -166,7 +166,7 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  TABLE_TYPE::value_type* 
+  TABLE_TYPE::value_type*
     Table<TABLE_PARAMS>::
     data()
   { return m_values; }
@@ -180,12 +180,12 @@ namespace tloc { namespace core { namespace data_structs {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  namespace 
+  namespace
   {
     typedef type_true       typesAreSame;
     typedef type_false      typesAreDifferent;
 
-    template <typename T_OtherType, typename T_ValueType, 
+    template <typename T_OtherType, typename T_ValueType,
               tl_size T_Rows, tl_size T_Cols>
     const Table<T_OtherType, T_Rows, T_Cols>&
       DoCast(const Table<T_ValueType, T_Rows, T_Cols>& a_table, typesAreSame)
@@ -193,7 +193,7 @@ namespace tloc { namespace core { namespace data_structs {
       return a_table;
     }
 
-    template <typename T_OtherType, typename T_ValueType, 
+    template <typename T_OtherType, typename T_ValueType,
               tl_size T_Rows, tl_size T_Cols>
     Table<T_OtherType, T_Rows, T_Cols>
       DoCast(const Table<T_ValueType, T_Rows, T_Cols>& a_table, typesAreDifferent)
@@ -218,8 +218,8 @@ namespace tloc { namespace core { namespace data_structs {
     typedef Loki::IsSameType<value_type, other_value_type>  type_result;
     typedef Loki::Int2Type<type_result::value>              types_same_or_not;
 
-    TLOC_STATIC_ASSERT((T_TableType::k_Rows == k_Rows && 
-                        T_TableType::k_Cols == k_Cols), 
+    TLOC_STATIC_ASSERT((T_TableType::k_Rows == k_Rows &&
+                        T_TableType::k_Cols == k_Cols),
                         Rows_and_cols_must_be_same);
 
     return static_cast<T_TableType>
@@ -242,7 +242,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   template <typename T_ArrayType>
-  void 
+  void
     Table<TABLE_PARAMS>::
     Set(const T_ArrayType (&values)[k_TableSize], table_order aTableOrder)
   {
@@ -255,9 +255,9 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void 
+  void
     Table<TABLE_PARAMS>::
-    Set(const Variadic<value_type, k_TableSize>& a_vars, 
+    Set(const Variadic<value_type, k_TableSize>& a_vars,
         table_order a_tableOrder)
   {
     if (a_tableOrder == k_ColMajor)

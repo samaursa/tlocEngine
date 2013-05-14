@@ -3,16 +3,16 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
 
 #include <tlocCore/tlocFunctional.h>
 
 #include <tlocCore/containers/tlocHashtable.h>
-#include <tlocCore/containers/tlocHashtable.inl>
+#include <tlocCore/containers/tlocHashtable.inl.h>
 
 namespace TestingHashtable
 {

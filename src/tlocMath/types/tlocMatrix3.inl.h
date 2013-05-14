@@ -6,8 +6,8 @@
 #endif
 
 #include "tlocMatrix3.h"
-#include <tlocMath/types/tlocVector3.inl>
-#include <tlocMath/types/tlocMatrix.inl>
+#include <tlocMath/types/tlocVector3.inl.h>
+#include <tlocMath/types/tlocMatrix.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -40,8 +40,8 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_3_TYPES>
   Matrix3<MATRIX_3_PARAMS>::
-    Matrix3(value_type m00, value_type m01, value_type m02, 
-            value_type m10, value_type m11, value_type m12, 
+    Matrix3(value_type m00, value_type m01, value_type m02,
+            value_type m10, value_type m11, value_type m12,
             value_type m20, value_type m21, value_type m22)
   {
     m_values[0] = m00; m_values[3] = m01; m_values[6] = m02;
@@ -64,9 +64,9 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_3_TYPES>
   Matrix3<MATRIX_3_PARAMS>::
-    Matrix3(const Vector<value_type, 3>& aVec1, 
-            const Vector<value_type, 3>& aVec2, 
-            const Vector<value_type, 3>& aVec3, 
+    Matrix3(const Vector<value_type, 3>& aVec1,
+            const Vector<value_type, 3>& aVec2,
+            const Vector<value_type, 3>& aVec3,
             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
@@ -85,14 +85,14 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_3_TYPES>
   Matrix3<MATRIX_3_PARAMS>::
-    Matrix3(const value_type (&values)[k_MatrixSize], 
+    Matrix3(const value_type (&values)[k_MatrixSize],
             typename base_type::matrix_order aOrder)
-    : base_type(values, aOrder) 
+    : base_type(values, aOrder)
   { }
 
   template <MATRIX_3_TYPES>
   Matrix3<MATRIX_3_PARAMS>::
-    Matrix3 (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars, 
+    Matrix3 (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars,
              matrix_order a_order)
     : base_type(a_vars, a_order)
   { }
@@ -101,7 +101,7 @@ namespace tloc { namespace math { namespace types {
   // Math Operations
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     Mul(const this_type& aMatrix)
   {
@@ -146,7 +146,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_3_TYPES>
   void Matrix3<MATRIX_3_PARAMS>::
-    Mul(const Vector<value_type, 3>& aVectorIn, 
+    Mul(const Vector<value_type, 3>& aVectorIn,
         Vector<value_type, 3>& aVectorOut) const
   {
     aVectorOut[0] = m_values[0] * aVectorIn[0] +
@@ -161,15 +161,15 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::value_type 
+  typename Matrix3<MATRIX_3_PARAMS>::value_type
     Matrix3<MATRIX_3_PARAMS>::
     Determinant() const
   {
-    value_type m11_12_21_22 = 
+    value_type m11_12_21_22 =
       (m_values[4] * m_values[8] - m_values[7] * m_values[5]) * m_values[0];
-    value_type m10_12_20_22 = 
+    value_type m10_12_20_22 =
       (m_values[1] * m_values[8] - m_values[7] * m_values[2]) * m_values[3];
-    value_type m10_11_20_21 = 
+    value_type m10_11_20_21 =
       (m_values[1] * m_values[5] - m_values[4] * m_values[2]) * m_values[6];
 
     return m11_12_21_22 - m10_12_20_22 + m10_11_20_21;
@@ -199,7 +199,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     Adjoint()
   {
@@ -228,7 +228,7 @@ namespace tloc { namespace math { namespace types {
 
   // Taken directly from WildMagic5 (modified to suit out needs)
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     Orthonormalize()
   {
@@ -245,7 +245,7 @@ namespace tloc { namespace math { namespace types {
     // product of vectors A and B.
 
     // Compute q0.
-    value_type invLength = 
+    value_type invLength =
       Math<value_type>::InvSqrt(m_values[0] * m_values[0] +
                                 m_values[1] * m_values[1] +
                                 m_values[2] * m_values[2]);
@@ -304,7 +304,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     FastOrthonormalize()
   {
@@ -321,7 +321,7 @@ namespace tloc { namespace math { namespace types {
     // product of vectors A and B.
 
     // Compute q0.
-    value_type invLength = 
+    value_type invLength =
       Math<value_type>::FastInvSqrt(m_values[0] * m_values[0] +
                                     m_values[1] * m_values[1] +
                                     m_values[2] * m_values[2]);
@@ -372,7 +372,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  void 
+  void
     Matrix3<MATRIX_3_PARAMS>::
     FastOrthonormalize( const this_type& aMatrix )
   {
@@ -463,7 +463,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationX( const_reference aXAngle )
   {
@@ -481,7 +481,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationY( const_reference aYAngle )
   {
@@ -499,7 +499,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type& 
+  typename Matrix3<MATRIX_3_PARAMS>::this_type&
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationZ( const_reference aZAngle )
   {
@@ -755,7 +755,7 @@ namespace tloc { namespace math { namespace types {
       value_type sum, diff, discr, eigVal0, eigVal1, cs, sn, tmp;
       s32 row;
 
-      sum = Math<value_type>::FAbs(aDiagonal[0]) + 
+      sum = Math<value_type>::FAbs(aDiagonal[0]) +
             Math<value_type>::FAbs(aDiagonal[1]);
       if (Math<value_type>::FAbs(aSubdiagonal[0]) + sum == sum)
       {
@@ -814,7 +814,7 @@ namespace tloc { namespace math { namespace types {
         return true;
       }
 
-      sum = Math<value_type>::FAbs(aDiagonal[1]) + 
+      sum = Math<value_type>::FAbs(aDiagonal[1]) +
             Math<value_type>::FAbs(aDiagonal[2]);
       if (Math<value_type>::FAbs(aSubdiagonal[1]) + sum == sum)
       {

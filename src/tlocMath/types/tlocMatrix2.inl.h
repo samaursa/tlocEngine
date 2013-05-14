@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/types/tlocVector2.inl>
-#include <tlocMath/types/tlocMatrix.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
+#include <tlocMath/types/tlocMatrix.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -25,24 +25,24 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2()
-    : base_type() 
+    : base_type()
   { }
 
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const this_type& aMatrix)
-    : base_type(aMatrix) 
+    : base_type(aMatrix)
   { }
 
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const base_type& aMatrix)
-    : base_type(aMatrix) 
+    : base_type(aMatrix)
   { }
 
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(value_type m00, value_type m01, 
+    Matrix2(value_type m00, value_type m01,
             value_type m10, value_type m11)
   {
     m_values[0] = m00;
@@ -66,8 +66,8 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const Vector2<value_type>& aVec1, 
-            const Vector2<value_type>& aVec2, 
+    Matrix2(const Vector2<value_type>& aVec1,
+            const Vector2<value_type>& aVec2,
             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
@@ -89,13 +89,13 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder)
-    : base_type(values, aOrder) 
+    : base_type(values, aOrder)
   { }
 
   template <MATRIX_2_TYPES>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const tloc::core::data_structs::Variadic<value_type, 4>& a_vars, 
-            matrix_order a_order) 
+    Matrix2(const tloc::core::data_structs::Variadic<value_type, 4>& a_vars,
+            matrix_order a_order)
     : base_type(a_vars, a_order)
   { }
 
@@ -103,7 +103,7 @@ namespace tloc { namespace math { namespace types {
   // Math Operations
 
   template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type& 
+  typename Matrix2<MATRIX_2_PARAMS>::this_type&
     Matrix2<MATRIX_2_PARAMS>::
     Mul(const this_type& aMatrix)
   {
@@ -125,7 +125,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TYPES>
   void Matrix2<MATRIX_2_PARAMS>::
-    Mul(const Vector2<value_type>& aVectorIn, 
+    Mul(const Vector2<value_type>& aVectorIn,
         Vector2<value_type>& aVectorOut) const
   {
     aVectorOut[0] = (m_values[0] * aVectorIn[0]) + (m_values[2] * aVectorIn[1]);
@@ -133,7 +133,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::value_type 
+  typename Matrix2<MATRIX_2_PARAMS>::value_type
     Matrix2<MATRIX_2_PARAMS>::
     Determinant() const
   {
@@ -165,7 +165,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type& 
+  typename Matrix2<MATRIX_2_PARAMS>::this_type&
     Matrix2<MATRIX_2_PARAMS>::
     Adjoint()
   {
@@ -187,7 +187,7 @@ namespace tloc { namespace math { namespace types {
 
   // Taken directly from WildMagic5 (modified to suit out needs)
   template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type& 
+  typename Matrix2<MATRIX_2_PARAMS>::this_type&
     Matrix2<MATRIX_2_PARAMS>::
     Orthonormalize()
   {
@@ -219,11 +219,11 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type& 
+  typename Matrix2<MATRIX_2_PARAMS>::this_type&
     Matrix2<MATRIX_2_PARAMS>::
     FastOrthonormalize()
   {
-    value_type invLength = Math<value_type>::FastInvSqrt(m_values[0] * 
+    value_type invLength = Math<value_type>::FastInvSqrt(m_values[0] *
       m_values[0] + m_values[2] * m_values[2]);
     m_values[0] *= invLength;
     m_values[2] *= invLength;
@@ -243,7 +243,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TYPES>
-  void 
+  void
     Matrix2<MATRIX_2_PARAMS>::
     FastOrthonormalize( const this_type& aMatrix )
   {
@@ -255,7 +255,7 @@ namespace tloc { namespace math { namespace types {
   void Matrix2<MATRIX_2_PARAMS>::
     EigenDecomposition(this_type& aRot, this_type& aDiag) const
   {
-    value_type sum = Math<value_type>::FAbs(m_values[0]) + 
+    value_type sum = Math<value_type>::FAbs(m_values[0]) +
       Math<value_type>::FAbs(m_values[3]);
     if (Math<value_type>::FAbs(m_values[2]) + sum == sum)
     {
@@ -273,7 +273,7 @@ namespace tloc { namespace math { namespace types {
 
     value_type trace = m_values[0] + m_values[3];
     value_type diff = m_values[0] - m_values[3];
-    value_type discr = Math<value_type>::Sqrt(diff * diff + ((value_type)4) * 
+    value_type discr = Math<value_type>::Sqrt(diff * diff + ((value_type)4) *
       m_values[2] * m_values[2]);
     eigVal0and1[0] = ((value_type)0.5) * (trace - discr);
     eigVal0and1[1] = ((value_type)0.5) * (trace + discr);

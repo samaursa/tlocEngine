@@ -2,9 +2,9 @@
 
 #include <tlocCore/types/tlocTypeTraits.h>
 
-#include <tlocCore/types/tlocAny.inl>
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/types/tlocAny.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>

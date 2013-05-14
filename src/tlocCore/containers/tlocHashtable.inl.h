@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/tlocAlgorithms.inl>
-#include <tlocCore/iterators/tlocIterator.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/iterators/tlocIterator.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -232,7 +232,7 @@ namespace tloc { namespace core { namespace containers {
     HashtableItrBase<HASHTABLE_ITR_BASE_PARAMS>::GetCurrBucketNumber() const
   {
     typedef typename bucket_array_type::const_iterator b_array_const_itr;
-  
+
     b_array_const_itr itr    = m_bucketContainer->begin();
     b_array_const_itr itrEnd = m_bucketContainer->end();
 
@@ -603,7 +603,7 @@ namespace tloc { namespace core { namespace containers {
   {
     size_type bucketCount = bucket_count();
 
-    if (bucketCount == 0) { return end(); } 
+    if (bucketCount == 0) { return end(); }
 
     const hash_code_type hc = get_hash_code(a_key);
     const size_type n = (size_type)bucket_index(hc, bucketCount);
@@ -711,8 +711,8 @@ namespace tloc { namespace core { namespace containers {
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_iterator
-    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr, 
-                                             const key_type& a_key, 
+    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr,
+                                             const key_type& a_key,
                                              hash_code_type  a_hashCode) const
   {
     bucket_iterator itr = (*a_itr).begin();
@@ -727,12 +727,12 @@ namespace tloc { namespace core { namespace containers {
       ++itr;
     }
 
-    return itrEnd; 
+    return itrEnd;
   }
 
   template <HASH_TABLE_TYPES>
   TL_FI typename Hashtable<HASH_TABLE_PARAMS>::bucket_iterator
-    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr, 
+    Hashtable<HASH_TABLE_PARAMS>::DoFindNode(local_iterator& a_itr,
                                              hash_code_type  a_hashCode) const
   {
     bucket_iterator itr = (*a_itr).begin();
@@ -747,7 +747,7 @@ namespace tloc { namespace core { namespace containers {
       ++itr;
     }
 
-    return itrEnd; 
+    return itrEnd;
   }
 
   //------------------------------------------------------------------------
@@ -761,7 +761,7 @@ namespace tloc { namespace core { namespace containers {
   {
     const key_type& k = extract_key(a_value);
     const hash_code_type c = get_hash_code(k);
-    
+
     // TODO: Rewrite without using find, only DoFindNode
     iterator itr = find(k);
 
@@ -810,7 +810,7 @@ namespace tloc { namespace core { namespace containers {
     {
       typename buckets_array_type::iterator itrB = itr.m_currBucket;
       // Select the appropriate insert() function (insert() or insert_after())
-      return iterator(&m_bucketArray, itrB, DoInsertSelect<TLOC_DUMMY_PARAM> 
+      return iterator(&m_bucketArray, itrB, DoInsertSelect<TLOC_DUMMY_PARAM>
         (itr.m_currBucket, itr.m_currNode, newElement, bucket_iterator_type()) );
     }
     else

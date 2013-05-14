@@ -5,12 +5,12 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/tlocMath.inl>
-#include <tlocMath/tlocRange.inl>
+#include <tlocMath/tlocMath.inl.h>
+#include <tlocMath/tlocRange.inl.h>
 
-#include <tlocMath/component_system/tloc_component_system.inl>
-#include <tlocMath/types/tloc_types.inl>
-#include <tlocMath/utilities/tloc_utilities.inl>
-#include <tlocMath/projection/tloc_projection.inl>
+#include <tlocMath/component_system/tloc_component_system.inl.h>
+#include <tlocMath/types/tloc_types.inl.h>
+#include <tlocMath/utilities/tloc_utilities.inl.h>
+#include <tlocMath/projection/tloc_projection.inl.h>
 
 #endif

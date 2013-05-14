@@ -1,7 +1,7 @@
 #include "tlocEntitySystemBase.h"
 
-#include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 

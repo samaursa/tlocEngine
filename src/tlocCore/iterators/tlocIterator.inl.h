@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container>
   insert_iterator<T_Container>::
-    insert_iterator( T_Container& aContainer, iterator_type aItr ) 
+    insert_iterator( T_Container& aContainer, iterator_type aItr )
     : m_container(aContainer), m_itr(aItr)
   {
   }
@@ -225,7 +225,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Itr>
-  reverse_iterator<T_Itr>& 
+  reverse_iterator<T_Itr>&
     reverse_iterator<T_Itr>::
     operator++()
   {
@@ -234,7 +234,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Itr>
-  reverse_iterator<T_Itr> 
+  reverse_iterator<T_Itr>
     reverse_iterator<T_Itr>::
     operator++( int )
   {
@@ -262,7 +262,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Itr>
-  reverse_iterator<T_Itr>& 
+  reverse_iterator<T_Itr>&
     reverse_iterator<T_Itr>::
     operator--()
   {
@@ -271,7 +271,7 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Itr>
-  reverse_iterator<T_Itr> 
+  reverse_iterator<T_Itr>
     reverse_iterator<T_Itr>::
     operator--( int )
   {
@@ -316,35 +316,35 @@ namespace tloc { namespace core {
   }
 
   template <typename T_Itr1, typename T_Itr2>
-  bool operator!=( const reverse_iterator<T_Itr1>& a, 
+  bool operator!=( const reverse_iterator<T_Itr1>& a,
                    const reverse_iterator<T_Itr2>& b )
   {
     return a.base() != b.base();
   }
 
   template <typename T_Itr1, typename T_Itr2>
-  bool operator<( const reverse_iterator<T_Itr1>& a, 
+  bool operator<( const reverse_iterator<T_Itr1>& a,
                   const reverse_iterator<T_Itr2>& b )
   {
     return a.base() > b.base();
   }
 
   template <typename T_Itr1, typename T_Itr2>
-  bool operator<=( const reverse_iterator<T_Itr1>& a, 
+  bool operator<=( const reverse_iterator<T_Itr1>& a,
                    const reverse_iterator<T_Itr2>& b )
   {
     return a.base() >= b.base();
   }
 
   template <typename T_Itr1, typename T_Itr2>
-  bool operator>( const reverse_iterator<T_Itr1>& a, 
+  bool operator>( const reverse_iterator<T_Itr1>& a,
                   const reverse_iterator<T_Itr2>& b )
   {
     return a.base() < b.base();
   }
 
   template <typename T_Itr1, typename T_Itr2>
-  bool operator>=( const reverse_iterator<T_Itr1>& a, 
+  bool operator>=( const reverse_iterator<T_Itr1>& a,
                    const reverse_iterator<T_Itr2>& b )
   {
     return a.base() <= b.base();
@@ -352,7 +352,7 @@ namespace tloc { namespace core {
 
   template <typename T_Itr1, typename T_Itr2>
   typename reverse_iterator<T_Itr1>::difference_type
-    operator-( const reverse_iterator<T_Itr1>& a, 
+    operator-( const reverse_iterator<T_Itr1>& a,
                const reverse_iterator<T_Itr2>& b )
   {
     return b.base() - a.base();
@@ -411,7 +411,7 @@ namespace tloc { namespace core {
 
   //////////////////////////////////////////////////////////////////////////
   // Custom generic iterators (not defined in the standard)
-  
+
   //````````````````````````````````````````````````````````````````````````
   // Macros
 
@@ -420,26 +420,26 @@ namespace tloc { namespace core {
 
 #define LIST_ITR_PARAMS T_Node, T_Itr_Type, T, T_Ptr, T_Ref
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS>:: 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>::
     list_iterator() : m_node()
   {
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   list_iterator<LIST_ITR_PARAMS>::
     list_iterator(const T_Node* aNode) : m_node(const_cast<T_Node*>(aNode))
   {
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   list_iterator<LIST_ITR_PARAMS>::
     list_iterator(const iterator& aOtherItr)
   : m_node(aOtherItr.m_node)
   {
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   typename list_iterator<LIST_ITR_PARAMS>::reference
     list_iterator<LIST_ITR_PARAMS>::
     operator* () const
@@ -447,7 +447,7 @@ namespace tloc { namespace core {
     return m_node->getValue();
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   typename list_iterator<LIST_ITR_PARAMS>::pointer
     list_iterator<LIST_ITR_PARAMS>::
     operator-> () const
@@ -455,17 +455,17 @@ namespace tloc { namespace core {
     return &m_node->getValue();
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS>& 
-    list_iterator<LIST_ITR_PARAMS>:: 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>&
+    list_iterator<LIST_ITR_PARAMS>::
     operator++()
   {
     m_node = m_node->getNext();
     return *this;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS> 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>
     list_iterator<LIST_ITR_PARAMS>::
     operator++(int)
   {
@@ -474,8 +474,8 @@ namespace tloc { namespace core {
     return tempItr;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS>& 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>&
     list_iterator<LIST_ITR_PARAMS>::
     operator--()
   {
@@ -485,8 +485,8 @@ namespace tloc { namespace core {
     return subOperation(iterator_category());
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS> 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>
     list_iterator<LIST_ITR_PARAMS>::
     operator--(int)
   {
@@ -496,7 +496,7 @@ namespace tloc { namespace core {
     return subOperation(int(), iterator_category());
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   template <typename T_Ptr2, typename T_Ref2>
   bool list_iterator<LIST_ITR_PARAMS>::
     operator==(const list_iterator
@@ -505,7 +505,7 @@ namespace tloc { namespace core {
     return m_node == a_other.m_node;
   }
 
-  template <LIST_ITR_TEMP> 
+  template <LIST_ITR_TEMP>
   template <typename T_Ptr2, typename T_Ref2>
   bool list_iterator<LIST_ITR_PARAMS>::
     operator!=(const list_iterator
@@ -523,8 +523,8 @@ namespace tloc { namespace core {
     m_node = a_other.m_node;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS>& 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>&
     list_iterator<LIST_ITR_PARAMS>::
     subOperation(singly_linked_tag)
   {
@@ -532,8 +532,8 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS> 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>
     list_iterator<LIST_ITR_PARAMS>::
     subOperation(int, singly_linked_tag)
   {
@@ -542,8 +542,8 @@ namespace tloc { namespace core {
     return tempItr;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS>& 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>&
     list_iterator<LIST_ITR_PARAMS>::
     subOperation(doubly_linked_tag)
   {
@@ -551,8 +551,8 @@ namespace tloc { namespace core {
     return *this;
   }
 
-  template <LIST_ITR_TEMP> 
-  list_iterator<LIST_ITR_PARAMS> 
+  template <LIST_ITR_TEMP>
+  list_iterator<LIST_ITR_PARAMS>
     list_iterator<LIST_ITR_PARAMS>::
     subOperation(int, doubly_linked_tag)
   {

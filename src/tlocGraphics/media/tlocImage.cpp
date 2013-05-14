@@ -1,7 +1,7 @@
 #include "tlocImage.h"
 
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace graphics { namespace media {
 

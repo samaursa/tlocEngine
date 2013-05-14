@@ -1,8 +1,8 @@
 #include "tlocShaderProgram.h"
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocCore/utilities/tlocType.h>
 

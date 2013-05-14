@@ -8,7 +8,7 @@
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 
 namespace tloc { namespace math {
 
@@ -70,7 +70,7 @@ namespace tloc { namespace math {
     TLOC_ASSERT_LOW_LEVEL(m_range == a_other.m_range, "Mismatched ranges!");
     return m_index == a_other.m_index;
   }
-  
+
   template <RANGE_T_TEMP>
   bool
     Range_T<RANGE_T_PARAMS>::iterator::
@@ -213,7 +213,7 @@ namespace tloc { namespace math {
     TLOC_ASSERT_LOW_LEVEL(m_range == a_other.m_range, "Mismatched ranges!");
     return m_index == a_other.m_index;
   }
-  
+
   template <RANGE_T_TEMP>
   bool
     Range_T<RANGE_T_PARAMS>::reverse_iterator::
@@ -342,7 +342,7 @@ namespace tloc { namespace math {
   }
 
   template <RANGE_T_TEMP>
-  RANGE_T_TYPE::this_type& 
+  RANGE_T_TYPE::this_type&
     Range_T<RANGE_T_PARAMS>::
     operator =(const this_type& a_other)
   {
@@ -363,34 +363,34 @@ namespace tloc { namespace math {
   }
 
   template <RANGE_T_TEMP>
-  RANGE_T_TYPE::value_type 
+  RANGE_T_TYPE::value_type
     Range_T<RANGE_T_PARAMS>::
     at(size_type a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL (a_index < size(), "Index out of bounds!");
-    return m_begin + (m_stepSize * 
+    return m_begin + (m_stepSize *
             core_utils::CastNumber<value_type, size_type>(a_index));
   }
 
   template <RANGE_T_TEMP>
-  RANGE_T_TYPE::value_type 
-    Range_T<RANGE_T_PARAMS>:: 
+  RANGE_T_TYPE::value_type
+    Range_T<RANGE_T_PARAMS>::
     operator[] (size_type a_index) const
   {
     return at(a_index);
   }
 
   template <RANGE_T_TEMP>
-  RANGE_T_TYPE::value_type 
-    Range_T<RANGE_T_PARAMS>:: 
+  RANGE_T_TYPE::value_type
+    Range_T<RANGE_T_PARAMS>::
     front() const
   {
     return m_begin;
   }
 
   template <RANGE_T_TEMP>
-  RANGE_T_TYPE::value_type 
-    Range_T<RANGE_T_PARAMS>:: 
+  RANGE_T_TYPE::value_type
+    Range_T<RANGE_T_PARAMS>::
     back() const
   {
     size_type currSize = size();
@@ -399,7 +399,7 @@ namespace tloc { namespace math {
 
   template <RANGE_T_TEMP>
   RANGE_T_TYPE::const_iterator
-    Range_T<RANGE_T_PARAMS>:: 
+    Range_T<RANGE_T_PARAMS>::
     begin() const
   {
     return const_iterator(*this, 0);
@@ -407,7 +407,7 @@ namespace tloc { namespace math {
 
   template <RANGE_T_TEMP>
   RANGE_T_TYPE::const_reverse_iterator
-    Range_T<RANGE_T_PARAMS>:: 
+    Range_T<RANGE_T_PARAMS>::
     rbegin() const
   {
     return const_reverse_iterator(*this, 0);
@@ -415,7 +415,7 @@ namespace tloc { namespace math {
 
   template <RANGE_T_TEMP>
   RANGE_T_TYPE::const_iterator
-    Range_T<RANGE_T_PARAMS>:: 
+    Range_T<RANGE_T_PARAMS>::
     end() const
   {
     return const_iterator(*this, size());
@@ -423,7 +423,7 @@ namespace tloc { namespace math {
 
   template <RANGE_T_TEMP>
   RANGE_T_TYPE::const_reverse_iterator
-    Range_T<RANGE_T_PARAMS>:: 
+    Range_T<RANGE_T_PARAMS>::
     rend() const
   {
     return const_reverse_iterator(*this, size());
@@ -444,7 +444,7 @@ namespace tloc { namespace math {
   {
     return size();
   }
-  
+
   template <RANGE_T_TEMP>
   bool
     Range_T<RANGE_T_PARAMS>::

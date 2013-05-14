@@ -1,9 +1,9 @@
 #include "tlocMaterialSystem.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>

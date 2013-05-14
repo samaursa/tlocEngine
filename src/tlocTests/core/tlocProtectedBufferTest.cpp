@@ -2,7 +2,7 @@
 
 #define private public
 #include <tlocCore/data_structures/tlocCharBuffer.h>
-#include <tlocCore/data_structures/tlocCharBuffer.inl>
+#include <tlocCore/data_structures/tlocCharBuffer.inl.h>
 
 namespace ProtectedBufferTest
 {

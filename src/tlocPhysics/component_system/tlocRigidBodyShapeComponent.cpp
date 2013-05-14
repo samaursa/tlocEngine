@@ -1,7 +1,7 @@
 #include "tlocRigidBodyShapeComponent.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace physics { namespace component_system {
 

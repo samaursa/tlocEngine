@@ -6,9 +6,9 @@
 #endif
 
 #include "tlocVector3.h"
-#include <tlocCore/tlocAlgorithms.inl>
-#include <tlocMath/tlocMath.inl>
-#include <tlocMath/types/tlocVector.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocMath/tlocMath.inl.h>
+#include <tlocMath/types/tlocVector.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -37,7 +37,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_3_TYPES>
   Vector3<VECTOR_3_PARAMS>::
-    Vector3(const_reference aX, const_reference aY, const_reference aZ) 
+    Vector3(const_reference aX, const_reference aY, const_reference aZ)
     : base_type(core::data_structs::Variadic<value_type, 3>(aX, aY, aZ) )
   { }
 
@@ -63,7 +63,7 @@ namespace tloc { namespace math { namespace types {
   // Math operations
 
   template <VECTOR_3_TYPES>
-  typename Vector3<VECTOR_3_PARAMS>::this_type& 
+  typename Vector3<VECTOR_3_PARAMS>::this_type&
     Vector3<VECTOR_3_PARAMS>::
     Cross(const this_type& aVector)
   {

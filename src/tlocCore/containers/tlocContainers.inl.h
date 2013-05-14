@@ -1,4 +1,4 @@
-#ifndef TLOC_CONTAINERS_INL 
+#ifndef TLOC_CONTAINERS_INL
 #define TLOC_CONTAINERS_INL
 
 #ifndef TLOC_CONTAINERS_H
@@ -7,9 +7,9 @@
 
 #include "tlocContainers.h"
 
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/containers/tlocArrayFixed.inl>
-#include <tlocCore/containers/tlocList.inl>
-#include <tlocCore/containers/tlocHashmap.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
+#include <tlocCore/containers/tlocList.inl.h>
+#include <tlocCore/containers/tlocHashmap.inl.h>
 
 #endif

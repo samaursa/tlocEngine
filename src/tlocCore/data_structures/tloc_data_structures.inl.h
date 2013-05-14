@@ -5,13 +5,13 @@
   #error "Must include header before including the inline file"
 #endif
 
-#include <tlocCore/data_structures/tlocCharBuffer.inl>
-#include <tlocCore/data_structures/tlocProtectedBuffer.inl>
+#include <tlocCore/data_structures/tlocCharBuffer.inl.h>
+#include <tlocCore/data_structures/tlocProtectedBuffer.inl.h>
 
-#include <tlocCore/data_structures/tlocTable.inl>
+#include <tlocCore/data_structures/tlocTable.inl.h>
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 #endif

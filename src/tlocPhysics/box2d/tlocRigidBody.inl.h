@@ -5,8 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/types/tlocVector2.inl>
-#include <tlocMath/types/tlocMatrix2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
+#include <tlocMath/types/tlocMatrix2.inl.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/box2d/tlocWorld.h>

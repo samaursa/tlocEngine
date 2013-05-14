@@ -7,8 +7,8 @@
 
 #include "tlocTuple.h"
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocType.h>
 
@@ -143,7 +143,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple>
-  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>::
     ConvertTo() const
   {
     T_OtherTuple toRet;
@@ -155,7 +155,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   template <typename T_OtherTuple, typename T_Policy>
-  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>:: 
+  TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>::
     ConvertTo() const
   {
     type_traits::AssertTypeIsSupported
@@ -176,7 +176,7 @@ namespace tloc { namespace core { namespace data_structs {
     typedef type_true       typesAreSame;
     typedef type_false      typesAreDifferent;
 
-    template <typename T_OtherType, typename T_ValueType, 
+    template <typename T_OtherType, typename T_ValueType,
               tl_size T_Size>
     const Tuple<T_OtherType, T_Size>&
       DoCast(const Tuple<T_ValueType, T_Size>& a_tuple, typesAreSame)
@@ -184,7 +184,7 @@ namespace tloc { namespace core { namespace data_structs {
       return a_tuple;
     }
 
-    template <typename T_OtherType, typename T_ValueType, 
+    template <typename T_OtherType, typename T_ValueType,
               tl_size T_Size>
     Tuple<T_OtherType, T_Size>
       DoCast(const Tuple<T_ValueType, T_Size>& a_tuple, typesAreDifferent)
@@ -211,7 +211,7 @@ namespace tloc { namespace core { namespace data_structs {
     typedef Loki::IsSameType<value_type, other_value_type>  type_result;
     typedef Loki::Int2Type<type_result::value>              types_same_or_not;
 
-    TLOC_STATIC_ASSERT((T_TupleType::k_TupleSize == k_TupleSize), 
+    TLOC_STATIC_ASSERT((T_TupleType::k_TupleSize == k_TupleSize),
                         Tuple_sizes_must_be_same);
 
     return DoCast<other_value_type, value_type, T_Size>
@@ -391,7 +391,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
   {
-    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType), 
+    TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType),
       Array_type_must_be_the_same_size_as_the_tuple_type);
 
     ITERATE_TUPLE

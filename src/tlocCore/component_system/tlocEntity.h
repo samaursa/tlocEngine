@@ -86,6 +86,6 @@ namespace tloc { namespace core { namespace component_system {
 /// header because of linker issues (because it is not a template) ;)
 /// http://www.parashift.com/c++-faq/inline-member-fns.html
 ///-------------------------------------------------------------------------
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #endif

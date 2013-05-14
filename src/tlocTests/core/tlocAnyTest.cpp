@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/types/tlocAny.h>
-#include <tlocCore/types/tlocAny.inl>
+#include <tlocCore/types/tlocAny.inl.h>
 
 // We are using std::string instead of our string to try to segregate the tests
 // as much as possible from the rest of the engine code

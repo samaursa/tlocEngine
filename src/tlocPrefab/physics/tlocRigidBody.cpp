@@ -1,7 +1,7 @@
 #include "tlocRigidBody.h"
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocMath/component_system/tlocTransform.h>

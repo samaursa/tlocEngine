@@ -7,12 +7,12 @@
 
 #include "tloc_types.h"
 
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 
-#include <tlocCore/types/tlocAny.inl>
+#include <tlocCore/types/tlocAny.inl.h>
 
-#include <tlocCore/types/tlocConditionalType.inl>
+#include <tlocCore/types/tlocConditionalType.inl.h>
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 
 #endif

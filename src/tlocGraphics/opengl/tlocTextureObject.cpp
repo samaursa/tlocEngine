@@ -1,6 +1,6 @@
 #include "tlocTextureObject.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>

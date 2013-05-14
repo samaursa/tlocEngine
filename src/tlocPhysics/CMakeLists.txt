@@ -3,7 +3,7 @@ set(TLOC_PHYSICS
   tlocPhysicsBase.h 
   tloc_physics.cpp 
   tloc_physics.h 
-  tloc_physics.inl
+  tloc_physics.inl.h
   )
 
 set(TLOC_PHYSICS_BOX2D 
@@ -11,7 +11,7 @@ set(TLOC_PHYSICS_BOX2D
   box2d/tlocPhysicsManager.h 
   box2d/tlocRigidBody.cpp 
   box2d/tlocRigidBody.h 
-  box2d/tlocRigidBody.inl 
+  box2d/tlocRigidBody.inl.h 
   box2d/tlocRigidBodyDef.cpp 
   box2d/tlocRigidBodyDef.h 
   box2d/tlocRigidBodyShapeDef.cpp 
@@ -20,7 +20,7 @@ set(TLOC_PHYSICS_BOX2D
   box2d/tlocWorld.h 
   box2d/tloc_box2d.cpp 
   box2d/tloc_box2d.h 
-  box2d/tloc_box2d.inl
+  box2d/tloc_box2d.inl.h
   )
 
 set(TLOC_PHYSICS_COMPONENT_SYSTEM 
@@ -37,14 +37,14 @@ set(TLOC_PHYSICS_COMPONENT_SYSTEM
   component_system/tlocRigidBodySystem.h 
   component_system/tloc_component_system.cpp 
   component_system/tloc_component_system.h 
-  component_system/tloc_component_system.inl
+  component_system/tloc_component_system.inl.h
   )
 
 set(TLOC_PHYSICS_ERROR 
   error/tlocErrorTypes.h 
   error/tloc_error.cpp 
   error/tloc_error.h 
-  error/tloc_error.inl
+  error/tloc_error.inl.h
   )
 
 #-------------------------------------------

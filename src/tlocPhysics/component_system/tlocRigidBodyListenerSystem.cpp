@@ -163,7 +163,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    Pre_ProcessActiveEntities()
+    Pre_ProcessActiveEntities(f64)
   {
     typedef contact_event_list::const_iterator      const_contact_iterator;
 
@@ -194,7 +194,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    ProcessEntity(const entity_manager* , const entity_type* )
+    ProcessEntity(const entity_manager* , const entity_type*, f64 )
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -40,7 +40,7 @@ namespace tloc { namespace core { namespace component_system {
     return ErrorFailure;
   }
 
-  void EntitySystemBase::ProcessActiveEntities()
+  void EntitySystemBase::ProcessActiveEntities(f64 a_deltaT)
   {
     TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
       "Did you forget to call Initialize()?");
@@ -48,9 +48,9 @@ namespace tloc { namespace core { namespace component_system {
     if (CheckProcessing())
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
-      Pre_ProcessActiveEntities();
-      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities);
-      Post_ProcessActiveEntities();
+      Pre_ProcessActiveEntities(a_deltaT);
+      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities, a_deltaT);
+      Post_ProcessActiveEntities(a_deltaT);
     }
   }
 

@@ -93,7 +93,7 @@ namespace tloc { namespace graphics { namespace component_system {
                                               const entity_type*)
   { return ErrorSuccess; }
 
-  void QuadRenderSystem::Pre_ProcessActiveEntities()
+  void QuadRenderSystem::Pre_ProcessActiveEntities(f64)
   {
     using namespace core::component_system;
     using namespace math::component_system::components;
@@ -127,7 +127,8 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   void QuadRenderSystem::ProcessEntity(const entity_manager*,
-                                       const entity_type* a_ent)
+                                       const entity_type* a_ent,
+                                       f64)
   {
     using namespace core::component_system;
     typedef math::component_system::Transform     transform_type;
@@ -234,7 +235,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
   }
 
-  void QuadRenderSystem::Post_ProcessActiveEntities()
+  void QuadRenderSystem::Post_ProcessActiveEntities(f64)
   {
     // No materials/entities may have been loaded initially
     // (m_shaderPtr would have remained NULL)

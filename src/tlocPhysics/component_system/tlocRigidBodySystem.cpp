@@ -124,7 +124,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodySystem::
-    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent)
+    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent, f64)
   {
     using namespace tloc::core::component_system;
 

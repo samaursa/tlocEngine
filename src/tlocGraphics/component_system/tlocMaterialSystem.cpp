@@ -101,7 +101,8 @@ namespace tloc { namespace graphics { namespace component_system {
   { return ErrorSuccess; }
 
   void MaterialSystem::ProcessEntity(const entity_manager*,
-                                     const entity_type* )
+                                     const entity_type*,
+                                     f64)
   { }
 
   //////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,8 @@ namespace tloc { namespace graphics { namespace component_system {
                                       const entity_type* a_ent);
 
     virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent);
+                               const entity_type* a_ent,
+                               f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}

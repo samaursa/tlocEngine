@@ -56,6 +56,8 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocTextureAnimator.h
+  component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureCoords.h
   component_system/tlocTextureCoords.cpp
   component_system/tlocQuad.cpp 

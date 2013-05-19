@@ -16,6 +16,7 @@ namespace tloc { namespace graphics { namespace component_system {
       fan,
       material,
       texture_coords,
+      texture_animator,
 
       count
     }; typedef tl_int value_type;

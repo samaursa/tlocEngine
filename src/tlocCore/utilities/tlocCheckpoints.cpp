@@ -9,7 +9,15 @@ namespace tloc { namespace core { namespace utils {
   {
   }
 
-  Checkpoints::value_type Checkpoints::
+  Checkpoints::value_type&
+    Checkpoints::
+    operator [](tl_int a_index)
+  {
+    return m_flags[a_index];
+  }
+
+  Checkpoints::value_type
+    Checkpoints::
     operator [](tl_int a_index) const
   {
     return m_flags[a_index];

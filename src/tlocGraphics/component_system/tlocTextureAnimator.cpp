@@ -5,84 +5,134 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  namespace {
+
+    enum
+    {
+      k_looping,
+      k_paused,
+      k_spriteSetChanged,
+      k_count
+    };
+
+  };
+
   TextureAnimator::
     TextureAnimator()
     : base_type(k_component_type)
     , m_currentSet(0)
-    , m_currentFrame(0)
     , m_fps(24)
-    , m_loop(true)
     , m_startTime(0)
+    , m_dimensions(0, 0)
+    , m_flags(k_count)
   { }
 
-  TextureAnimator::
-    TextureAnimator(const cont_set_type& a_coords)
-    : base_type(k_component_type)
-    , m_coordSets(a_coords)
-    , m_currentSet(0)
-    , m_currentFrame(0)
-    , m_fps(24)
-    , m_loop(true)
-    , m_startTime(0)
-  { }
-
-  TextureAnimator::size_type
+  void
     TextureAnimator::
-    AddSpriteCoord(const vec_type& a_coord, set_index a_setIndex)
+    AddSpriteSet(const coord_set& a_coord)
   {
-    DoResizeSetToAccomodate(a_setIndex);
-    m_coordSets[a_setIndex]->push_back(a_coord);
-    return m_coordSets.size() - 1;
+    m_coordSets.push_back(a_coord);
   }
 
-  void TextureAnimator::
-    ModifySpriteCoord(const vec_type& a_coord, size_type a_index,
-                set_index a_setIndex)
-  {
-    DoResizeSetToAccomodate(a_setIndex);
-    (*m_coordSets[a_setIndex])[a_index] = a_coord;
-  }
-
-  void TextureAnimator::
-    ModifySpriteCoords(const cont_type& a_coords,
-                 set_index a_setIndex)
-  {
-    DoResizeSetToAccomodate(a_setIndex);
-    (*m_coordSets[a_setIndex]) = a_coords;
-  }
-
-  void TextureAnimator::
-    RemoveSpriteCoord(size_type a_index, set_index a_setIndex)
-  {
-    cont_type::iterator itr = m_coordSets[a_setIndex]->begin() + a_index;
-    m_coordSets[a_setIndex]->erase(itr);
-  }
-
-  void TextureAnimator::
-    ClearSpriteCoords(set_index a_setIndex)
-  {
-    m_coordSets[a_setIndex]->clear();
-  }
-
-  TextureAnimator::vec_type
+  void
     TextureAnimator::
-    GetSpriteCoord(size_type a_index, set_index a_setIndex) const
+    ModifySpriteSet(const coord_set& a_coord, size_type a_index)
   {
-    return (*m_coordSets[a_setIndex])[a_index];
+    m_coordSets[a_index] = a_coord;
   }
 
-  void TextureAnimator::
-    DoResizeSetToAccomodate(set_index a_index)
-  {
-    if (a_index >= m_coordSets.size())
-    { m_coordSets.push_back(cont_type_sptr(new cont_type()) ); }
-  }
-
-  TextureAnimator::cont_type_sptr
+  void
     TextureAnimator::
-    GetSpriteCoords(set_index a_setIndex) const
+    RemoveSpriteCoord(size_type a_index)
+  {
+    cont_type::iterator itr = m_coordSets.begin();
+    core::advance(itr, a_index);
+    m_coordSets.erase(itr);
+  }
+
+  TextureAnimator::coord_set
+    TextureAnimator::
+    GetSpriteSet(size_type a_setIndex)
   {
     return m_coordSets[a_setIndex];
+  }
+
+  const TextureAnimator::coord_set
+    TextureAnimator::
+    GetSpriteSet(size_type a_setIndex) const
+  {
+    return m_coordSets[a_setIndex];
+  }
+
+  void
+    TextureAnimator::
+    NextFrame()
+  {
+    const size_type setSize = m_coordSets[m_currentSet].GetNumSets();
+    size_type currentFrame = m_coordSets[m_currentSet].GetCurrentSet();
+
+    if (currentFrame >= setSize)
+    {
+      if (m_flags.IsMarked(k_looping))
+      { currentFrame = 0; }
+      else
+      { currentFrame = setSize - 1; }
+    }
+
+    m_coordSets[m_currentSet].SetCurrentSet(currentFrame);
+  }
+
+  void
+    TextureAnimator::
+    PrevFrame()
+  {
+    const size_type setSize = m_coordSets[m_currentSet].GetNumSets();
+    size_type currentFrame = m_coordSets[m_currentSet].GetCurrentSet();
+
+    currentFrame--;
+    if (currentFrame >= setSize)
+    {
+      if (m_flags.IsMarked(k_looping))
+      { currentFrame = setSize - 1; }
+      else
+      { currentFrame = 0; }
+    }
+
+    m_coordSets[m_currentSet].SetCurrentSet(currentFrame);
+  }
+
+  const bool
+    TextureAnimator::
+    IsLooping() const
+  { return m_flags.IsMarked(k_looping); }
+
+  const bool
+    TextureAnimator::
+    IsPaused() const
+  { return m_flags.IsMarked(k_paused); }
+
+  const bool
+    TextureAnimator::
+    IsSpriteSetChanged() const
+  { return m_flags.IsMarked(k_spriteSetChanged); }
+
+  void
+    TextureAnimator::
+    SetLooping(const bool& a_looping)
+  { m_flags[k_looping] = a_looping; }
+
+  void
+    TextureAnimator::
+    SetPaused(const bool& a_pause)
+  { m_flags[k_paused] = a_pause; }
+
+  void
+    TextureAnimator::
+    SetCurrentSpriteSet(const size_type& a_spriteSetIndex)
+  {
+    TLOC_ASSERT(a_spriteSetIndex < GetNumSpriteSets(), "Index out of bounds!");
+    m_currentSet = a_spriteSetIndex;
+    m_flags.Mark(k_spriteSetChanged);
   }
 
   //////////////////////////////////////////////////////////////////////////

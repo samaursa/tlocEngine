@@ -101,6 +101,61 @@ namespace tloc { namespace graphics { namespace media {
     return parser_type().Parse(a_fileContents, m_spriteInfo);
   }
 
+  struct nameMatch
+  {
+    nameMatch(const char* a_name)
+      : m_name (a_name)
+    { }
+
+    bool operator()(const SpriteInfo& a_si)
+    {
+      if (a_si.m_name.find(m_name) != core_str::String::npos)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
+    const char* m_name;
+  };
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::const_iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    begin(const string_type& a_name) const
+  {
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+  }
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::const_iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    end(const string_type& a_name) const
+  {
+    const_iterator itr =
+      core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
+                        nameMatch(a_name.c_str()));
+
+    // end iterator must be past-the-end, ensure that this is the case
+    if (itr != m_spriteInfo.end())
+    { ++itr; }
+
+    return itr;
+  }
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::const_iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    begin() const
+  { return m_spriteInfo.begin(); }
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::const_iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    end() const
+  { return m_spriteInfo.end(); }
+
   //------------------------------------------------------------------------
   // explicit instantiations
 

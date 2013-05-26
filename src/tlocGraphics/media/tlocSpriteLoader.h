@@ -35,12 +35,21 @@ namespace tloc { namespace graphics { namespace media {
     typedef T_ParserType                          parser_type;
     typedef core_err::Error                       error_type;
     typedef core_str::String                      string_type;
-    typedef core_conts::Array<SpriteInfo>         sprite_info_cont;
-    typedef typename sprite_info_cont::size_type  size_type;
+
+    typedef core_conts::Array<SpriteInfo>               sprite_info_cont;
+    typedef typename sprite_info_cont::size_type        size_type;
+    typedef typename sprite_info_cont::iterator         iterator;
+    typedef typename sprite_info_cont::const_iterator   const_iterator;
 
   public:
-    bool       IsSupported(const core_str::String& a_input);
+    bool       IsSupported(const string_type& a_input);
     error_type Init(const string_type& a_fileContents);
+
+    const_iterator  begin() const;
+    const_iterator  end() const;
+
+    const_iterator  begin(const string_type& a_name) const;
+    const_iterator  end(const string_type& a_name) const;
 
     TLOC_DECL_AND_DEF_GETTER(sprite_info_cont, GetSpriteInfo, m_spriteInfo);
 

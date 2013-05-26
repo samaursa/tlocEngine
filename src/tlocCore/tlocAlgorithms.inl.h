@@ -112,7 +112,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all(T_Container1& a_toSearch, T_Container2& a_toFind)
+    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind)
   {
     return find_end(a_toSearch.begin(), a_toSearch.end(), a_toFind.begin(),
                     a_toFind.end());
@@ -120,12 +120,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all(T_Container1& a_toSearch, T_Container2& a_toFind,
-                 T_BinaryPred a_pred)
+    find_end_all_all(T_Container1& a_toSearch,
+                     T_Container2& a_toFind,
+                     T_BinaryPred a_pred)
   {
-   typedef typename T_Container1::value_type cont_value_type;
     return find_end(a_toSearch.begin(), a_toSearch.end(), a_toFind.begin(),
-      a_toFind.end(), equal_to<cont_value_type>());
+      a_toFind.end(), a_pred);
   }
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
@@ -183,6 +183,47 @@ namespace tloc { namespace core {
     }
 
     return retItr;
+  }
+
+  template <class T_ForwardIterator, class T_Value>
+  T_ForwardIterator
+    find_end(T_ForwardIterator a_begin, T_ForwardIterator a_end,
+             const T_Value& a_value)
+  {
+    return find_if_end(a_begin, a_end, core::equal_to_stored<T_Value>(a_value));
+  }
+
+  template <typename T_Container, class T_Value>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    find_end_all(T_Container& a_toSearch, const T_Value& a_value)
+  {
+    return find_end(a_toSearch.begin(), a_toSearch.end(), a_value);
+  }
+
+  template <class T_ForwardIterator, class T_Predicate>
+  T_ForwardIterator
+    find_if_end(T_ForwardIterator a_begin, T_ForwardIterator a_end,
+                T_Predicate a_pred)
+  {
+    T_ForwardIterator itrToRet = a_end;
+    while (a_begin != a_end)
+    {
+      if ( a_pred(*a_begin) )
+      {
+        itrToRet = a_begin;
+      }
+
+      ++a_begin;
+    }
+
+    return itrToRet;
+  }
+
+  template <class T_Container, class T_Predicate>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    find_if_end_all(T_Container& a_container, T_Predicate a_pred)
+  {
+    find_if_end(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_Container1, typename T_Container2>
@@ -1283,8 +1324,8 @@ namespace tloc { namespace core {
   }
 
   template <class T_Container1, class T_Container2, class T_UnaryPred>
-  typename T_Container2::iterator
-    transform_all(const T_Container1& a_toTransform,
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container2)
+    transform_all(T_Container1& a_toTransform,
                   T_Container2& a_result, T_UnaryPred a_op)
   {
     TLOC_ASSERT_LOW_LEVEL(a_toTransform.size() <= a_result.size(),
@@ -1296,9 +1337,9 @@ namespace tloc { namespace core {
 
   template <class T_Container1, class T_Container2, class T_Container3,
             class T_BinaryPred>
-  typename T_Container3::iterator
-    transform_all(const T_Container1& a_toTransform,
-                  const T_Container2& a_toTransformWith,
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container3)
+    transform_all(T_Container1& a_toTransform,
+                  T_Container2& a_toTransformWith,
                   T_Container3& a_result,
                   T_BinaryPred a_binary_op)
   {
@@ -1780,8 +1821,8 @@ namespace tloc { namespace core {
 
     template <typename T_Container>
     T_Container
-      DoMerge(const T_Container& aLeftFirst,
-              const T_Container& aRightFirst)
+      DoMerge(T_Container& aLeftFirst,
+              T_Container& aRightFirst)
     {
       const typename T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
       T_Container mergedContainer(size);

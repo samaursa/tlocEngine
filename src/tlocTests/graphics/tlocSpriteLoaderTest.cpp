@@ -51,5 +51,14 @@ namespace TestingSpriteLoader
     CHECK(sl_ssp.GetSpriteInfo()[103].m_startingPos[1] == 1120);
     CHECK(sl_ssp.GetSpriteInfo()[103].m_endingPos[0] == 140);
     CHECK(sl_ssp.GetSpriteInfo()[103].m_endingPos[1] == 140);
+
+    SpriteLoader_SpriteSheetPacker::const_iterator itr, itrEnd;
+
+    itr = sl_ssp.begin("red_idle");
+    itrEnd = sl_ssp.end("red_idle");
+
+    CHECK(itr == sl_ssp.begin());
+    CHECK(itr != sl_ssp.end());
+    CHECK(itrEnd == sl_ssp.end());
   }
 };

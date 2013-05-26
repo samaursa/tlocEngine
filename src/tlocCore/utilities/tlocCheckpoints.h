@@ -23,8 +23,10 @@ namespace tloc { namespace core { namespace utils {
 
     Checkpoints(tl_uint a_numberOfCheckpoints);
 
-    value_type operator[](tl_int a_index) const;
-    value_type IsMarked(tl_int a_index) const;
+    value_type& operator[](tl_int a_index);
+    value_type  operator[](tl_int a_index) const;
+
+    value_type  IsMarked(tl_int a_index) const;
 
     void       Mark(size_type a_index);
     void       Unmark(size_type a_index);

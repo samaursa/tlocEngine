@@ -86,6 +86,8 @@ set(TLOC_GRAPHICS_MEDIA
   media/tloc_media.cpp 
   media/tloc_media.h 
   media/tloc_media.inl.h
+  media/tlocSpriteLoader.h
+  media/tlocSpriteLoader.cpp
   )
 
 set(TLOC_GRAPHICS_OPENGL 

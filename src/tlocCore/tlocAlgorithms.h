@@ -608,6 +608,31 @@ namespace tloc { namespace core {
   void
     delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last);
 
+  template <class T_InputIterator, class T_OutputIterator, class T_UnaryPred>
+  T_OutputIterator
+    transform (T_InputIterator a_first, T_InputIterator a_last,
+               T_OutputIterator a_result, T_UnaryPred a_op);
+
+  template <class T_InputIterator1, class T_InputIterator2,
+            class T_OutputIterator, class T_BinaryPred>
+  T_OutputIterator
+    transform (T_InputIterator1 a_first1, T_InputIterator1 a_last,
+               T_InputIterator2 a_first2, T_OutputIterator a_result,
+               T_BinaryPred a_binary_op);
+
+  template <class T_Container1, class T_Container2, class T_UnaryPred>
+  typename T_Container2::iterator
+    transform_all(const T_Container1& a_toTransform,
+                  T_Container2& a_result, T_UnaryPred a_op);
+
+  template <class T_Container1, class T_Container2, class T_Container3,
+            class T_BinaryPred>
+  typename T_Container3::iterator
+    transform_all(const T_Container1& a_toTransform,
+                  const T_Container2& a_toTransformWith,
+                  T_Container3& a_result,
+                  T_BinaryPred a_binary_op);
+
   namespace detail
   {
     typedef	type_false IsComplexItr;

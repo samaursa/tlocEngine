@@ -1755,6 +1755,151 @@ namespace tloc { namespace core { namespace string {
     return ::wcstombs(a_out, a_in, a_inSize);
   }
 
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, T a_delim, T_StringContainer& a_out)
+  {
+    typedef const T*        iterator;
+
+    iterator itr      = a_string;
+    iterator itrCurr  = itr;
+    iterator itrEnd   = a_string + StrLen(a_string);
+
+    while (itrCurr != itrEnd)
+    {
+      if (*itrCurr == a_delim)
+      {
+        if (itr != itrCurr)
+        {
+          a_out.push_back(StringBase<T>(itr, itrCurr));
+        }
+
+        while(*itrCurr == a_delim)
+        {
+          ++itrCurr;
+        }
+
+        itr = itrCurr;
+      }
+      else
+      {
+        ++itrCurr;
+      }
+    }
+
+    if (itr != itrCurr)
+    {
+      a_out.push_back(StringBase<T>(itr, itrCurr));
+    }
+  }
+
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, const T* a_delims, T_StringContainer& a_out)
+  {
+    typedef const T*        iterator;
+
+    iterator itr      = a_string;
+    iterator itrCurr  = itr;
+    iterator itrEnd   = a_string + StrLen(a_string);
+
+    StringBase<T> delims(a_delims);
+
+    while (itrCurr != itrEnd)
+    {
+      if (delims.find(*itrCurr) != delims.npos)
+      {
+        if (itr != itrCurr)
+        {
+          a_out.push_back(StringBase<T>(itr, itrCurr));
+        }
+
+        while(delims.find(*itrCurr) != delims.npos)
+        {
+          ++itrCurr;
+        }
+
+        itr = itrCurr;
+      }
+      else
+      {
+        ++itrCurr;
+      }
+    }
+
+    if (itr != itrCurr)
+    {
+      a_out.push_back(StringBase<T>(itr, itrCurr));
+    }
+  }
+
+  TL_I bool
+    IsCntrl(char8 a_char)
+  {
+    // We cannot test for NULL in g_controlStr because it is also the terminator
+    if (a_char == NULL)
+    { return true; }
+
+    return g_controlsStr.find(a_char) != String::npos;
+  }
+
+  TL_I bool
+    IsBlank(char8 a_char)
+  { return g_blankStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsSpace(char8 a_char)
+  { return g_spaceStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsUpper(char8 a_char)
+  { return g_upperStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsLower(char8 a_char)
+  { return g_lowerStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsAlpha(char8 a_char)
+  { return g_alphaStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsDigit(char8 a_char)
+  { return g_digitStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr    = a_char;
+    iterator itrEnd = a_char + StrLen(a_char);
+
+    while (itr != itrEnd)
+    {
+      if (IsDigit(*itr) == false)
+      {
+        return false;
+      }
+      ++itr;
+    }
+
+    return true;
+  }
+
+  TL_I bool
+    IsXDigit(char8 a_char)
+  { return g_xdigitStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsAlNum(char8 a_char)
+  { return g_alnumStr.find(a_char) != String::npos; }
+
+  TL_I bool
+    IsPunct(char8 a_char)
+  { return g_punctStr.find(a_char) != String::npos; }
+
+
   //````````````````````````````````````````````````````````````````````````
   // Global operators
 

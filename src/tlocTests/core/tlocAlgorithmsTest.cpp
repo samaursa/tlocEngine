@@ -1131,4 +1131,49 @@ namespace TestingAlgorithms
     delete_ptrs(myList.begin(), myList.end());
     CHECK(CountDestruction::m_dtorCount == numElements * 2);
   }
+
+  tl_int op_increase (tl_int i)
+  { return ++i; }
+
+  TEST_CASE("Core/Algorithms/transform", "")
+  {
+    Array<tl_int> foo;
+    Array<tl_int> bar;
+
+    for (tl_int i = 1; i < 6; ++i)
+    { foo.push_back(i * 10); }
+
+    bar.resize(foo.size());
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    bar.clear();
+    bar.resize(foo.size());
+    core::transform_all(foo, bar, op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), foo.begin(),
+                    std::plus<tl_int>());
+    CHECK(foo[0] == 21);
+    CHECK(foo[1] == 41);
+    CHECK(foo[2] == 61);
+    CHECK(foo[3] == 81);
+    CHECK(foo[4] == 101);
+
+    core::transform_all(foo, bar, foo, std::plus<tl_int>());
+    CHECK(foo[0] == 32);
+    CHECK(foo[1] == 62);
+    CHECK(foo[2] == 92);
+    CHECK(foo[3] == 122);
+    CHECK(foo[4] == 152);
+  }
 };

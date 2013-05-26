@@ -657,4 +657,176 @@ namespace TestingStrings
       CHECK(retIndex == 19);
     }
   }
+
+  TEST_CASE("Core/Strings/FreeFunctions/Tokenize", "")
+  {
+    {
+      char32 sentence[] = L"This is a normal sentence.";
+
+      core_conts::Array<StringW> tokens;
+      Tokenize(sentence, L' ', tokens);
+      REQUIRE(tokens.size() == 5);
+
+      CHECK(tokens[0].compare(L"This") == 0);
+      CHECK(tokens[1].compare(L"is") == 0);
+      CHECK(tokens[2].compare(L"a") == 0);
+      CHECK(tokens[3].compare(L"normal") == 0);
+      CHECK(tokens[4].compare(L"sentence.") == 0);
+    }
+
+    {
+      char8  sentence[] = "This is a sentence.";
+
+      core_conts::Array<String> tokens;
+      Tokenize(sentence, ' ', tokens);
+
+      REQUIRE(tokens.size() == 4);
+
+      CHECK(tokens[0].compare("This") == 0);
+      CHECK(tokens[1].compare("is") == 0);
+      CHECK(tokens[2].compare("a") == 0);
+      CHECK(tokens[3].compare("sentence.") == 0);
+    }
+
+    {
+      char8  sentence[] = "::Multiple::tokens:separated:by:::delims:";
+
+      core_conts::Array<String> tokens;
+      Tokenize(sentence, ':', tokens);
+
+      REQUIRE(tokens.size() == 5);
+
+      CHECK(tokens[0].compare("Multiple") == 0);
+      CHECK(tokens[1].compare("tokens") == 0);
+      CHECK(tokens[2].compare("separated") == 0);
+      CHECK(tokens[3].compare("by") == 0);
+      CHECK(tokens[4].compare("delims") == 0);
+    }
+
+    {
+      char8  sentence[] = " \t\r multiple \t delims \t\n and tokens.";
+
+      core_conts::Array<String> tokens;
+      Tokenize(sentence, " \t\r\n", tokens);
+
+      REQUIRE(tokens.size() == 4);
+
+      CHECK(tokens[0].compare("multiple") == 0);
+      CHECK(tokens[1].compare("delims") == 0);
+      CHECK(tokens[2].compare("and") == 0);
+      CHECK(tokens[3].compare("tokens.") == 0);
+    }
+
+    {
+      char8  sentence[] = " \t\r multiple \t delims \t\n and tokens.\t\n ";
+
+      core_conts::Array<String> tokens;
+      Tokenize(sentence, " \t\r\n", tokens);
+
+      REQUIRE(tokens.size() == 4);
+
+      CHECK(tokens[0].compare("multiple") == 0);
+      CHECK(tokens[1].compare("delims") == 0);
+      CHECK(tokens[2].compare("and") == 0);
+      CHECK(tokens[3].compare("tokens.") == 0);
+    }
+  }
+
+  TEST_CASE("Core/Strings/FreeFunctions/IsAsciiCharacter", "")
+  {
+    CHECK(IsDigit('1'));
+    CHECK(IsDigit('2'));
+    CHECK(IsDigit('3'));
+    CHECK(IsDigit('4'));
+    CHECK(IsDigit('5'));
+    CHECK(IsDigit('6'));
+    CHECK(IsDigit('7'));
+    CHECK(IsDigit('8'));
+    CHECK(IsDigit('9'));
+    CHECK(IsDigit('0'));
+
+    CHECK_FALSE(IsDigit(0));
+    CHECK(IsDigit(51));
+
+    CHECK(IsCntrl('\t'));
+    CHECK(IsCntrl('\f'));
+    CHECK(IsCntrl('\v'));
+    CHECK(IsCntrl('\n'));
+    CHECK(IsCntrl('\r'));
+    CHECK_FALSE(IsCntrl('A'));
+    CHECK_FALSE(IsCntrl('0'));
+
+    CHECK(IsBlank('\t'));
+    CHECK(IsBlank(' '));
+    CHECK_FALSE(IsBlank('A'));
+    CHECK_FALSE(IsBlank('0'));
+
+    CHECK(IsSpace('\t'));
+    CHECK(IsSpace('\f'));
+    CHECK(IsSpace('\v'));
+    CHECK(IsSpace('\n'));
+    CHECK(IsSpace('\r'));
+    CHECK(IsSpace(' '));
+
+    bool testPassed = true;
+    for (char8 i = 'A'; i <= 'Z'; ++i)
+    {
+      if (IsUpper(i) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    testPassed = true;
+    for (char8 i = 'a'; i <= 'z'; ++i)
+    {
+      if (IsLower(i) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    testPassed = true;
+    for (char8 i = 'A', j = 'a';
+         i <= 'Z', j <= 'z'; ++i, ++j)
+    {
+      if (IsAlpha(i) == false ||
+          IsAlpha(j) == false ||
+          IsAlNum(i) == false ||
+          IsAlNum(j) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    testPassed = true;
+    for (char8 i = '0'; i <= '9'; ++i)
+    {
+      if (IsDigit(i) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    testPassed = true;
+    for (char8 i = '0'; i <= '9'; ++i)
+    {
+      if (IsXDigit(i) == false ||
+          IsAlNum(i) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    testPassed = true;
+    for (char8 i = 'A', j = 'a'; i <= 'F', j<= 'f'; ++i, ++j)
+    {
+      if (IsXDigit(i) == false ||
+          IsXDigit(j) == false ||
+          IsAlNum(i) == false ||
+          IsAlNum(j) == false)
+      { testPassed = false; break; }
+    }
+    CHECK(testPassed);
+
+    CHECK(IsNumber("12356889771239080"));
+    CHECK_FALSE(IsNumber("12312A123123"));
+    CHECK_FALSE(IsNumber("A12312123123"));
+    CHECK_FALSE(IsNumber("12312123123Z"));
+  }
 };

@@ -1250,6 +1250,68 @@ namespace tloc { namespace core {
     }
   }
 
+  template <class T_InputIterator, class T_OutputIterator, class T_UnaryPred>
+  T_OutputIterator
+    transform (T_InputIterator a_first, T_InputIterator a_last,
+               T_OutputIterator a_result, T_UnaryPred a_op)
+  {
+    while(a_first != a_last)
+    {
+      *a_result = a_op(*a_first);
+      ++a_result;
+      ++a_first;
+    }
+
+    return a_result;
+  }
+
+  template <class T_InputIterator1, class T_InputIterator2,
+  class T_OutputIterator, class T_BinaryPred>
+    T_OutputIterator
+    transform (T_InputIterator1 a_first1, T_InputIterator1 a_last1,
+               T_InputIterator2 a_first2, T_OutputIterator a_result,
+               T_BinaryPred a_binary_op)
+  {
+    while(a_first1 != a_last1)
+    {
+      *a_result = a_binary_op(*a_first1, *a_first2);
+      ++a_result;
+      ++a_first1; ++a_first2;
+    }
+
+    return a_result;
+  }
+
+  template <class T_Container1, class T_Container2, class T_UnaryPred>
+  typename T_Container2::iterator
+    transform_all(const T_Container1& a_toTransform,
+                  T_Container2& a_result, T_UnaryPred a_op)
+  {
+    TLOC_ASSERT_LOW_LEVEL(a_toTransform.size() <= a_result.size(),
+      "Result container not big enough");
+    return
+      core::transform(a_toTransform.begin(), a_toTransform.end(),
+                      a_result.begin(), a_op);
+  }
+
+  template <class T_Container1, class T_Container2, class T_Container3,
+            class T_BinaryPred>
+  typename T_Container3::iterator
+    transform_all(const T_Container1& a_toTransform,
+                  const T_Container2& a_toTransformWith,
+                  T_Container3& a_result,
+                  T_BinaryPred a_binary_op)
+  {
+    TLOC_ASSERT_LOW_LEVEL(a_toTransform.size() == a_toTransformWith.size(),
+      "Container sizes don't match");
+    TLOC_ASSERT_LOW_LEVEL(a_toTransform.size() <= a_result.size(),
+      "Result container not big enough");
+
+    return
+      core::transform(a_toTransform.begin(), a_toTransform.end(),
+                      a_toTransformWith.begin(), a_result.begin(), a_binary_op);
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // Internal use only
 

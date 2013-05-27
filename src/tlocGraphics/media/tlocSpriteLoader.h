@@ -6,6 +6,10 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 
+#include <tlocGraphics/types/tlocDimension.h>
+
+#include <tlocMath/types/tlocVector2.h>
+
 namespace tloc { namespace graphics { namespace media {
 
   struct SpriteInfo
@@ -13,6 +17,9 @@ namespace tloc { namespace graphics { namespace media {
     core_str::String      m_name;
     core_ds::Tuple2s32    m_startingPos;
     core_ds::Tuple2s32    m_endingPos;
+
+    math_t::Vec2f32       m_texCoordStart;
+    math_t::Vec2f32       m_texCoordEnd;
   };
 
   namespace p_sprite_loader
@@ -35,6 +42,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef T_ParserType                          parser_type;
     typedef core_err::Error                       error_type;
     typedef core_str::String                      string_type;
+    typedef types::Dimension2i                    dim_type;
 
     typedef core_conts::Array<SpriteInfo>               sprite_info_cont;
     typedef typename sprite_info_cont::size_type        size_type;
@@ -43,7 +51,8 @@ namespace tloc { namespace graphics { namespace media {
 
   public:
     bool       IsSupported(const string_type& a_input);
-    error_type Init(const string_type& a_fileContents);
+    error_type Init(const string_type& a_fileContents,
+                    dim_type a_imageDimensions);
 
     const_iterator  begin() const;
     const_iterator  end() const;
@@ -54,7 +63,8 @@ namespace tloc { namespace graphics { namespace media {
     TLOC_DECL_AND_DEF_GETTER(sprite_info_cont, GetSpriteInfo, m_spriteInfo);
 
   private:
-    sprite_info_cont  m_spriteInfo;
+    sprite_info_cont    m_spriteInfo;
+    core_ds::Tuple2s32  m_imageDimensions;
   };
 
   //------------------------------------------------------------------------

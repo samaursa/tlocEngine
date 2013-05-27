@@ -4,6 +4,9 @@
 
 #include <tlocCore/string/tlocString.inl.h>
 
+#include <tlocMath/tlocRange.h>
+#include <tlocMath/utilities/tlocScale.h>
+
 namespace tloc { namespace graphics { namespace media {
 
   namespace p_sprite_loader { namespace parser {
@@ -95,10 +98,46 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::error_type
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    Init(const string_type& a_fileContents)
+    Init(const string_type& a_fileContents, dim_type a_imageDimensions)
   {
     m_spriteInfo.clear();
-    return parser_type().Parse(a_fileContents, m_spriteInfo);
+    error_type err = parser_type().Parse(a_fileContents, m_spriteInfo);
+    if (err == ErrorSuccess)
+    {
+      using math::range_s32;
+      using math::range_f32;
+
+      typedef math_utils::scale_f32_s32     range_type;
+
+      range_s32 spriteRangeX(0, a_imageDimensions[gfx_t::dimension::width]);
+      range_s32 spriteRangeY(0, a_imageDimensions[gfx_t::dimension::height]);
+
+      range_f32 texRange(0.0f, 1.0f);
+
+      range_type texToSpriteX =
+        range_type( range_type::range_small(texRange),
+                    range_type::range_large(spriteRangeX) );
+
+      range_type texToSpriteY =
+        range_type( range_type::range_small(texRange),
+                    range_type::range_large(spriteRangeY) );
+
+      iterator itr = m_spriteInfo.begin();
+      iterator itrEnd = m_spriteInfo.end();
+
+      while (itr != itrEnd)
+      {
+        itr->m_texCoordStart[0] = texToSpriteX.ScaleDown(itr->m_startingPos[0]);
+        itr->m_texCoordStart[1] = texToSpriteY.ScaleDown(itr->m_startingPos[1]);
+
+        itr->m_texCoordEnd[0] = texToSpriteX.ScaleDown(itr->m_endingPos[0]);
+        itr->m_texCoordEnd[1] = texToSpriteY.ScaleDown(itr->m_endingPos[1]);
+
+        ++itr;
+      }
+    }
+
+    return err;
   }
 
   struct nameMatch

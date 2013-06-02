@@ -5,6 +5,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocGraphics/types/tlocDimension.h>
 
@@ -50,9 +51,13 @@ namespace tloc { namespace graphics { namespace media {
     typedef typename sprite_info_cont::const_iterator   const_iterator;
 
   public:
+    SpriteLoader_T();
+
     bool       IsSupported(const string_type& a_input);
     error_type Init(const string_type& a_fileContents,
                     dim_type a_imageDimensions);
+
+    bool       IsInitialized() const;
 
     const_iterator  begin() const;
     const_iterator  end() const;
@@ -63,8 +68,9 @@ namespace tloc { namespace graphics { namespace media {
     TLOC_DECL_AND_DEF_GETTER(sprite_info_cont, GetSpriteInfo, m_spriteInfo);
 
   private:
-    sprite_info_cont    m_spriteInfo;
-    core_ds::Tuple2s32  m_imageDimensions;
+    sprite_info_cont        m_spriteInfo;
+    core_ds::Tuple2s32      m_imageDimensions;
+    core_utils::Checkpoints m_flags;
   };
 
   //------------------------------------------------------------------------

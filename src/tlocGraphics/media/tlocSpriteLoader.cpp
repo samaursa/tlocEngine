@@ -9,6 +9,11 @@
 
 namespace tloc { namespace graphics { namespace media {
 
+  enum {
+    k_initialized,
+    k_count
+  };
+
   namespace p_sprite_loader { namespace parser {
 
     bool
@@ -88,6 +93,12 @@ namespace tloc { namespace graphics { namespace media {
 #define SPRITE_LOADER_TYPE    typename SpriteLoader_T<T_ParserType>
 
   template <SPRITE_LOADER_TEMPS>
+  SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    SpriteLoader_T()
+    : m_flags(k_count)
+  { }
+
+  template <SPRITE_LOADER_TEMPS>
   bool
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     IsSupported(const core_str::String& a_input)
@@ -135,9 +146,19 @@ namespace tloc { namespace graphics { namespace media {
 
         ++itr;
       }
+
+      m_flags.Mark(k_initialized);
     }
 
     return err;
+  }
+
+  template <SPRITE_LOADER_TEMPS>
+  bool
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    IsInitialized() const
+  {
+    return m_flags.IsMarked(k_initialized);
   }
 
   struct nameMatch

@@ -4,8 +4,8 @@
 namespace tloc { namespace core { namespace utils {
 
   Checkpoints::
-    Checkpoints(tl_uint a_numberOfCheckpoints)
-    : m_flags(a_numberOfCheckpoints)
+    Checkpoints(tl_uint a_numberOfCheckpoints, bool a_initial)
+    : m_flags(a_numberOfCheckpoints, a_initial)
   {
   }
 

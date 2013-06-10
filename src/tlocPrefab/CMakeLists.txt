@@ -18,6 +18,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocFan.h 
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocSprite.h
+  graphics/tlocSprite.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 

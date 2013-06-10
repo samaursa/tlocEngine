@@ -45,17 +45,21 @@ namespace TestingSpriteLoader
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].m_startingPos, 140, 0);
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].m_endingPos, 140, 140);
     CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].m_texCoordStart, 140.0f/1820.0f, 0);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].m_texCoordEnd, 140.0f/1820.0f, 140.0f/1260.0f);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].m_texCoordEnd, 140.0f/1820.0f + 140.0f/1820.0f,
+                                                         140.0f/1260.0f);
 
     CHECK(sl_ssp.GetSpriteInfo()[9].m_name.compare("red_idle_0010") == 0);
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].m_startingPos, 420, 0);
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].m_endingPos, 140, 140);
     CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].m_texCoordStart, 420.0f/1820.0f, 0);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].m_texCoordEnd, 140.0f/1820.0f, 140.0f/1260.0f);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].m_texCoordEnd, 420.0f/1820.0f + 140.0f/1820.0f,
+                                                         140.0f/1260.0f);
 
     CHECK(sl_ssp.GetSpriteInfo()[103].m_name.compare("red_idle_0104") == 0);
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].m_startingPos, 700, 1120);
     CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].m_texCoordStart, 700.0f/1820.0f, 1120.0f/1260.0f);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].m_texCoordEnd, 700.0f/1820.0f + 140.0f/1820.0f,
+                                                           1120.0f/1260.0f + 140.0f/1260.0f);
     CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].m_endingPos, 140, 140);
 
     SpriteLoader_SpriteSheetPacker::const_iterator itr, itrEnd;

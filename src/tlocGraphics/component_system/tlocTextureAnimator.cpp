@@ -71,6 +71,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const size_type setSize = m_coordSets[m_currentSet].GetNumSets();
     size_type currentFrame = m_coordSets[m_currentSet].GetCurrentSet();
 
+    ++currentFrame;
     if (currentFrame >= setSize)
     {
       if (m_flags.IsMarked(k_looping))
@@ -80,6 +81,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     m_coordSets[m_currentSet].SetCurrentSet(currentFrame);
+    m_flags.Mark(k_spriteSetChanged);
   }
 
   void
@@ -99,6 +101,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     m_coordSets[m_currentSet].SetCurrentSet(currentFrame);
+    m_flags.Mark(k_spriteSetChanged);
   }
 
   const bool

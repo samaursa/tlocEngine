@@ -9,15 +9,15 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace gfx_med;
     using namespace p_sprite_loader::parser;
 
-    template <typename T_ParserType>
+    template <typename SpriteLoaderIterator>
     void
       DoAddSpriteAnimation(core_cs::Entity* a_entity,
                            core_cs::EntityManager& a_mgr,
                            core_cs::ComponentPoolManager& a_poolMgr,
-                           typename gfx_med::SpriteLoader_T <T_ParserType>::
-                           const_iterator a_begin,
-                           typename gfx_med::SpriteLoader_T <T_ParserType>::
-                           const_iterator a_end)
+                           SpriteLoaderIterator a_begin,
+                           SpriteLoaderIterator a_end,
+                           bool a_loop,
+                           tl_size a_fps)
     {
       TLOC_ASSERT_NOT_NULL(a_entity);
 
@@ -37,30 +37,51 @@ namespace tloc { namespace prefab { namespace graphics {
 
       texture_animator_sptr taPtr = itrTa->GetValue();
 
-      while (a_begin != a_end)
+      TextureCoords tcoord;
+      for (int i = 0; a_begin != a_end; ++i, ++a_begin)
       {
         SpriteInfo si = *a_begin;
 
-        TextureCoords tcoord;
-        tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart) );
         tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd[0],
-                                                si.m_texCoordStart[1]) );
-        tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd) );
+                                                si.m_texCoordStart[1]),
+                                                TextureCoords::set_index(i));
+        tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart),
+                                                TextureCoords::set_index(i));
+        tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd),
+                                                TextureCoords::set_index(i));
         tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart[0],
-                                                si.m_texCoordEnd[1]) );
+                                                si.m_texCoordEnd[1]),
+                                                TextureCoords::set_index(i));
         ++a_begin;
       }
+
+      taPtr->AddSpriteSet(tcoord);
+      taPtr->SetLooping(a_loop);
+      taPtr->SetFPS(a_fps);
 
       a_mgr.InsertComponent(a_entity, taPtr.get() );
     }
 
+    //------------------------------------------------------------------------
+    // Explicit instantiations
+
     template void
-      DoAddSpriteAnimation<SpriteSheetPacker>
+      DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::iterator>
       (core_cs::Entity* a_entity,
        core_cs::EntityManager&,
        core_cs::ComponentPoolManager&,
-       SpriteLoader_T<SpriteSheetPacker>::const_iterator,
-       SpriteLoader_T<SpriteSheetPacker>::const_iterator);
+       SpriteLoader_SpriteSheetPacker::iterator,
+       SpriteLoader_SpriteSheetPacker::iterator,
+       bool, tl_size);
+
+    template void
+      DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
+      (core_cs::Entity* a_entity,
+       core_cs::EntityManager&,
+       core_cs::ComponentPoolManager&,
+       SpriteLoader_SpriteSheetPacker::const_iterator,
+       SpriteLoader_SpriteSheetPacker::const_iterator,
+       bool, tl_size);
 
   };
 

@@ -48,6 +48,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
+  private:
+    f64   m_totalTime;
   };
 
   //------------------------------------------------------------------------

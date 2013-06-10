@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSets, m_coordSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSetIndex, m_currentSet);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetFPS, m_fps);
-    TLOC_DECL_AND_DEF_GETTER(tl_float,  GetStartTime, m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetStartTime, m_startTime);
     TLOC_DECL_AND_DEF_GETTER(dim_type,  GetDimensions, m_dimensions);
 
     TLOC_DECL_GETTER(bool, IsLooping);
@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsSpriteSetChanged);
 
     TLOC_DECL_AND_DEF_SETTER(size_type, SetFPS, m_fps);
-    TLOC_DECL_AND_DEF_SETTER(tl_float,  SetStartTime, m_startTime);
+    TLOC_DECL_AND_DEF_SETTER(f64,  SetStartTime, m_startTime);
     TLOC_DECL_AND_DEF_SETTER(dim_type,  SetDimensions, m_dimensions);
 
     TLOC_DECL_SETTER(bool, SetLooping);
@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
     cont_type         m_coordSets;
     size_type         m_currentSet;
     size_type         m_fps;
-    tl_float          m_startTime;
+    f64               m_startTime;
     dim_type          m_dimensions;
 
     core_utils::Checkpoints m_flags;

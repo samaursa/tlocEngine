@@ -6,5 +6,6 @@
 #include <tlocPrefab/graphics/tlocCamera.h>
 #include <tlocPrefab/graphics/tlocFan.h>
 #include <tlocPrefab/graphics/tlocQuad.h>
+#include <tlocPrefab/graphics/tlocSprite.h>
 
 #endif

@@ -13,36 +13,38 @@ namespace tloc { namespace prefab { namespace graphics {
 
   namespace priv {
 
-    template <typename T_ParserType>
+  template <typename SpriteLoaderIterator>
     void
       DoAddSpriteAnimation(core_cs::Entity* a_entity,
                            core_cs::EntityManager& a_mgr,
                            core_cs::ComponentPoolManager& a_poolMgr,
-                           typename gfx_med::SpriteLoader_T <T_ParserType>::
-                           const_iterator a_begin,
-                           typename gfx_med::SpriteLoader_T <T_ParserType>::
-                           const_iterator a_end);
+                           SpriteLoaderIterator a_begin,
+                           SpriteLoaderIterator a_end,
+                           bool a_loop,
+                           tl_size a_fps);
 
   };
 
-  template <typename T_ParserType>
+  template <typename SpriteLoaderIterator>
   void
     AddSpriteAnimation(core_cs::Entity* a_entity,
                        core_cs::EntityManager& a_mgr,
                        core_cs::ComponentPoolManager& a_poolMgr,
-                       typename gfx_med::SpriteLoader_T
-                       <T_ParserType>::const_iterator a_begin,
-                       typename gfx_med::SpriteLoader_T
-                       <T_ParserType>::const_iterator a_end)
+                       SpriteLoaderIterator a_begin,
+                       SpriteLoaderIterator a_end,
+                       bool a_loop = true,
+                       tl_size a_fps = 24)
   {
     using namespace gfx_med;
     using namespace p_sprite_loader::parser;
 
     type_traits::AssertTypeIsSupported
-      <T_ParserType,
-       SpriteSheetPacker>();
+      <SpriteLoaderIterator,
+       SpriteLoader_SpriteSheetPacker::iterator,
+       SpriteLoader_SpriteSheetPacker::const_iterator>();
 
-    DoAddSpriteAnimation(a_entity, a_mgr, a_poolMgr, a_begin, a_end);
+    priv::DoAddSpriteAnimation(a_entity, a_mgr, a_poolMgr,
+                               a_begin, a_end, a_loop, a_fps);
   }
 
 };};};

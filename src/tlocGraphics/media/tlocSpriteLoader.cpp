@@ -141,8 +141,10 @@ namespace tloc { namespace graphics { namespace media {
         itr->m_texCoordStart[0] = texToSpriteX.ScaleDown(itr->m_startingPos[0]);
         itr->m_texCoordStart[1] = texToSpriteY.ScaleDown(itr->m_startingPos[1]);
 
-        itr->m_texCoordEnd[0] = texToSpriteX.ScaleDown(itr->m_endingPos[0]);
-        itr->m_texCoordEnd[1] = texToSpriteY.ScaleDown(itr->m_endingPos[1]);
+        itr->m_texCoordEnd[0] = itr->m_texCoordStart[0] +
+                                texToSpriteX.ScaleDown(itr->m_endingPos[0]);
+        itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] +
+                                texToSpriteY.ScaleDown(itr->m_endingPos[1]);
 
         ++itr;
       }

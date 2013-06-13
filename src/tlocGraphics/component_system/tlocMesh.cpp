@@ -1,5 +1,8 @@
 #include "tlocMesh.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+
 namespace tloc { namespace graphics { namespace component_system {
 
 #define MESH_TEMPS  typename T_VertexStoragePolicy
@@ -12,10 +15,16 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(vertex_storage_policy::k_component_id)
   { }
 
-  // -----------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // explicit instantiation
 
   template class Mesh_T<p_primitive::ArrayOfStructures>;
   template class Mesh_T<p_primitive::StructureOfArrays>;
+
+  // SmartPtr
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh);
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh_Interleaved);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_sptr);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_interleaved_sptr);
 
 };};};

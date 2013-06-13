@@ -30,10 +30,10 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef gl::shader_program_sptr                           shader_prog_ptr;
+    typedef gl::shader_program_sptr                       shader_prog_ptr;
 
-    typedef Mesh_T                                            mesh_type;
-    typedef typename Mesh_T::vert_type                        vert_type;
+    typedef Mesh_T                                        mesh_type;
+    typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
 
   public:
     MeshRenderSystem(event_manager_sptr a_eventMgr,

@@ -67,12 +67,20 @@ namespace tloc { namespace graphics { namespace component_system {
   class Primitive_TI
     : public T_VertexStoragePolicy
   {
-  protected:
+  public:
     typedef types::Vert3fpnt                                vert_type;
     typedef typename core_conts::tl_array<vert_type>::type  cont_type;
     typedef typename cont_type::iterator                    iterator;
     typedef typename cont_type::const_iterator              const_iterator;
     typedef tl_size                                         size_type;
+
+    typedef T_VertexStoragePolicy                           base_type;
+
+  public:
+    using base_type::AddVertex;
+    using base_type::GetVertex;
+    using base_type::ModifyVertex;
+    using base_type::size;
 
   protected:
     Primitive_TI();

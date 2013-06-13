@@ -3,6 +3,9 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
+
 #include <tlocGraphics/component_system/tlocPrimitive.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -26,7 +29,13 @@ namespace tloc { namespace graphics { namespace component_system {
        vertex_storage_policy::k_component_id>           base_type;
     typedef Primitive_TI<vertex_storage_policy>         base_primitive_type;
 
+  public:
     Mesh_T();
+
+    using base_primitive_type::AddVertex;
+    using base_primitive_type::GetVertex;
+    using base_primitive_type::ModifyVertex;
+    using base_primitive_type::size;
   };
 
   //------------------------------------------------------------------------
@@ -34,6 +43,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   typedef Mesh_T<p_primitive::ArrayOfStructures>  Mesh_Interleaved;
   typedef Mesh_T<p_primitive::StructureOfArrays>  Mesh;
+
+  TLOC_TYPEDEF_SHARED_PTR(Mesh, mesh);
+  TLOC_TYPEDEF_COMPONENT_POOL(mesh_sptr, mesh_sptr);
+
+  TLOC_TYPEDEF_SHARED_PTR(Mesh_Interleaved, mesh_interleaved);
+  TLOC_TYPEDEF_COMPONENT_POOL(mesh_interleaved_sptr, mesh_interleaved_sptr);
 
 };};};
 

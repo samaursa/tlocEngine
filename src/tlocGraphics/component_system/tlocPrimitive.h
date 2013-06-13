@@ -11,28 +11,54 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  //template <tl_int T_ComponentType>
-  //class IPrimitive
-  //  : public core::component_system::Component_T<IPrimitive, T_ComponentType>
-  //{
-  //protected:
-  //  typedef core::component_system::Component_T<IPrimitive>   base_type;
+  template <typename T_VertexType = types::Vert3fpn>
+  class Primitive_TI
+  {
+  protected:
+    typedef T_VertexType                                    vert_type;
+    typedef typename core_conts::tl_array<vert_type>::type  cont_type;
+    typedef typename cont_type::iterator                    iterator;
+    typedef typename cont_type::const_iterator              const_iterator;
+    typedef tl_size                                         size_type;
 
-  //  typedef types::Vert3fpnc                              vert_type;
-  //  typedef core::containers::tl_array<vert_type>::type   cont_type;
-  //  typedef cont_type::iterator                           iterator;
-  //  typedef cont_type::const_iterator                     const_iterator;
+  public:
+    TLOC_DECL_AND_DEF_GETTER(iterator, begin, m_vertexes.begin());
+    TLOC_DECL_AND_DEF_GETTER(iterator, end, m_vertexes.end());
 
-  //public:
-  //  TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(cont_type, GetVertexes, m_vertexes);
+    void AddVertex(const vert_type& a_vertex);
+    void ModifyVertex(size_type a_position, const vert_type& a_vertex);
 
-  //protected:
-  //  IPrimitive(components::value_type a_id);
-  //  TLOC_DECL_AND_DEF_GETTER_DIRECT(cont_type, DoGetVertexes, m_vertexes);
+  protected:
+    Primitive_TI();
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(cont_type, DoGetVertexes, m_vertexes);
 
-  //protected:
-  //  cont_type m_vertexes;
-  //};
+  protected:
+    cont_type m_vertexes;
+  };
+
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_ComponentType>
+  Primitive_TI<T_ComponentType>::
+    Primitive_TI()
+  { }
+
+  template <typename T_ComponentType>
+  void
+    Primitive_TI<T_ComponentType>::
+    AddVertex(const vert_type& a_vertex)
+  {
+    m_vertexes.push_back(a_vertex);
+  }
+
+  template <typename T_ComponentType>
+  void
+    Primitive_TI<T_ComponentType>::
+    ModifyVertex(size_type a_position, const vert_type& a_vertex)
+  {
+    m_vertexes[a_position] = a_vertex;
+  }
 
 };};};
 

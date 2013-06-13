@@ -32,6 +32,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gl::shader_program_sptr                           shader_prog_ptr;
 
+    typedef Mesh_T                                            mesh_type;
+    typedef typename Mesh_T::vert_type                        vert_type;
+
   public:
     MeshRenderSystem(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);

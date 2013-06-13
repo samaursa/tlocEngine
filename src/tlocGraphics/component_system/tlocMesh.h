@@ -7,26 +7,33 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  template <typename T_VertexType>
+  template <typename T_VertexStoragePolicy = p_primitive::StructureOfArrays>
   class Mesh_T
-    : public Primitive_TI<T_VertexType>
-    , public core_cs::Component_T<Mesh_T<T_VertexType>, components::mesh>
+    : public Primitive_TI<T_VertexStoragePolicy>
+    , public core_cs::Component_T<Mesh_T
+      <T_VertexStoragePolicy>, T_VertexStoragePolicy::k_component_id>
   {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_VertexStoragePolicy, p_primitive::ArrayOfStructures>::value ||
+      Loki::IsSameType<T_VertexStoragePolicy, p_primitive::StructureOfArrays>::value),
+      Unsupported_template_parameter);
   public:
-    typedef T_VertexType                              vert_type;
-    typedef Primitive_TI<vert_type>                   base_primitive_type;
-    typedef Mesh_T<vert_type>                         this_type;
-    typedef Component_T<this_type, components::mesh>  base_type;
+    typedef T_VertexStoragePolicy                       vertex_storage_policy;
+    typedef Primitive_TI<vertex_storage_policy>         base_primitive_type;
+    typedef Mesh_T<vertex_storage_policy>               this_type;
+    typedef core_cs::Component_T
+      <this_type,
+       vertex_storage_policy::k_component_id>           base_type;
+    typedef Primitive_TI<vertex_storage_policy>         base_primitive_type;
+
+    Mesh_T();
   };
 
   //------------------------------------------------------------------------
   // typedef
 
-  typedef Mesh_T<types::Vert3fp>          Mesh_Pos;
-  typedef Mesh_T<types::Vert3fpt>         Mesh_PosTex;
-  typedef Mesh_T<types::Vert3fpn>         Mesh_PosNorm;
-  typedef Mesh_T<types::Vert3fpnc>        Mesh_PosNormCol;
-  typedef Mesh_T<types::Vert3fpnct>       Mesh_PosNormColTex;
+  typedef Mesh_T<p_primitive::ArrayOfStructures>  Mesh_Interleaved;
+  typedef Mesh_T<p_primitive::StructureOfArrays>  Mesh;
 
 };};};
 

@@ -121,30 +121,36 @@ namespace tloc { namespace graphics { namespace types {
   typedef Vertex1_T<p_vertex_t::VertexPos2f>                 Vert2fp;
   typedef Vertex2_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f>                Vert2fpn;
+  typedef Vertex2_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::TexCoord>                    Vert2fpt;
   typedef Vertex3_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol>                   Vert2fpnc;
+  typedef Vertex3_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexNorm2f,
+                    p_vertex_t::TexCoord>                    Vert2fpnt;
   typedef Vertex4_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert2fpnct;
-  typedef Vertex2_T<p_vertex_t::VertexPos2f,
-                    p_vertex_t::TexCoord>                    Vert2fpt;
 
   //````````````````````````````````````````````````````````````````````````
   // 3D
   typedef Vertex1_T<p_vertex_t::VertexPos3f>                 Vert3fp;
   typedef Vertex2_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f>                Vert3fpn;
+  typedef Vertex2_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::TexCoord>                    Vert3fpt;
   typedef Vertex3_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol>                   Vert3fpnc;
+  typedef Vertex3_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexNorm3f,
+                    p_vertex_t::TexCoord>                    Vert3fpnt;
   typedef Vertex4_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert3fpnct;
-  typedef Vertex2_T<p_vertex_t::VertexPos3f,
-                    p_vertex_t::TexCoord>                    Vert3fpt;
 
 };};};
 

@@ -11,54 +11,72 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  template <typename T_VertexType = types::Vert3fpn>
+  namespace p_primitive
+  {
+    class ArrayOfStructures
+    {
+    public:
+      enum { k_component_id = components::mesh_interleaved };
+
+    public:
+      typedef types::Vert3fpnt                                  vert_type;
+      typedef core_conts::tl_array<vert_type>::type             cont_type;
+      typedef tl_size                                           size_type;
+
+    public:
+      void      AddVertex(const vert_type& a_vertex);
+      vert_type GetVertex(size_type a_position) const;
+      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
+      size_type size() const;
+
+    private:
+      cont_type m_vertexes;
+    };
+
+    class StructureOfArrays
+    {
+    public:
+      enum { k_component_id = components::mesh};
+
+    public:
+      typedef types::Vert3fpnt                                vert_type;
+      typedef types::Vert3fp                                  vert_pos_type;
+      typedef types::p_vertex_t::VertexNorm3f                 vert_norm_type;
+      typedef types::p_vertex_t::TexCoord                     vert_tcoord_type;
+
+      typedef core_conts::tl_array<vert_pos_type>::type       cont_pos_type;
+      typedef core_conts::tl_array<vert_norm_type>::type      cont_norm_type;
+      typedef core_conts::tl_array<vert_tcoord_type>::type    cont_tcoord_type;
+
+      typedef tl_size                                               size_type;
+
+    public:
+      void      AddVertex(const vert_type& a_vertex);
+      vert_type GetVertex(size_type a_position) const;
+      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
+      size_type size() const;
+
+    private:
+      cont_pos_type     m_positions;
+      cont_norm_type    m_normals;
+      cont_tcoord_type  m_tcoords;
+    };
+  };
+
+  template <typename T_VertexStoragePolicy = p_primitive::StructureOfArrays>
   class Primitive_TI
+    : public T_VertexStoragePolicy
   {
   protected:
-    typedef T_VertexType                                    vert_type;
+    typedef types::Vert3fpnt                                vert_type;
     typedef typename core_conts::tl_array<vert_type>::type  cont_type;
     typedef typename cont_type::iterator                    iterator;
     typedef typename cont_type::const_iterator              const_iterator;
     typedef tl_size                                         size_type;
 
-  public:
-    TLOC_DECL_AND_DEF_GETTER(iterator, begin, m_vertexes.begin());
-    TLOC_DECL_AND_DEF_GETTER(iterator, end, m_vertexes.end());
-
-    void AddVertex(const vert_type& a_vertex);
-    void ModifyVertex(size_type a_position, const vert_type& a_vertex);
-
   protected:
     Primitive_TI();
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(cont_type, DoGetVertexes, m_vertexes);
-
-  protected:
-    cont_type m_vertexes;
   };
-
-  //------------------------------------------------------------------------
-  // template definitions
-
-  template <typename T_ComponentType>
-  Primitive_TI<T_ComponentType>::
-    Primitive_TI()
-  { }
-
-  template <typename T_ComponentType>
-  void
-    Primitive_TI<T_ComponentType>::
-    AddVertex(const vert_type& a_vertex)
-  {
-    m_vertexes.push_back(a_vertex);
-  }
-
-  template <typename T_ComponentType>
-  void
-    Primitive_TI<T_ComponentType>::
-    ModifyVertex(size_type a_position, const vert_type& a_vertex)
-  {
-    m_vertexes[a_position] = a_vertex;
-  }
 
 };};};
 

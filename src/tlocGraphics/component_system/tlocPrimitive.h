@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     public:
       typedef types::Vert3fpnt                                  vert_type;
-      typedef core_conts::tl_array<vert_type>::type             cont_type;
+      typedef core_conts::Array<vert_type>                      cont_type;
       typedef tl_size                                           size_type;
 
     public:
@@ -44,11 +44,11 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef types::p_vertex_t::VertexNorm3f                 vert_norm_type;
       typedef types::p_vertex_t::TexCoord                     vert_tcoord_type;
 
-      typedef core_conts::tl_array<vert_pos_type>::type       cont_pos_type;
-      typedef core_conts::tl_array<vert_norm_type>::type      cont_norm_type;
-      typedef core_conts::tl_array<vert_tcoord_type>::type    cont_tcoord_type;
+      typedef core_conts::Array<vert_pos_type>                cont_pos_type;
+      typedef core_conts::Array<vert_norm_type>               cont_norm_type;
+      typedef core_conts::Array<vert_tcoord_type>             cont_tcoord_type;
 
-      typedef tl_size                                               size_type;
+      typedef tl_size                                         size_type;
 
     public:
       void      AddVertex(const vert_type& a_vertex);

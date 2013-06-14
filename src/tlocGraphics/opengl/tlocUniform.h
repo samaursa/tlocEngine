@@ -18,7 +18,6 @@
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
-#include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -55,7 +54,6 @@ namespace tloc { namespace graphics { namespace gl {
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
          TextureObject,
-         Vert3fp,
          Array<f32>,
          Array<Vec2f32>,
          Array<Vec3f32>,
@@ -67,8 +65,7 @@ namespace tloc { namespace graphics { namespace gl {
          Array<u32>,
          Array<Tuple2u32>,
          Array<Tuple3u32>,
-         Array<Tuple4u32>,
-         Array<Vert3fp>
+         Array<Tuple4u32>
         >();
     }
 
@@ -88,8 +85,7 @@ namespace tloc { namespace graphics { namespace gl {
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
-         TextureObject,
-         Vert3fp
+         TextureObject
         >();
     }
 
@@ -117,8 +113,7 @@ namespace tloc { namespace graphics { namespace gl {
          Array<Tuple4u32>,
          Array<Mat2f32>,
          Array<Mat3f32>,
-         Array<Mat4f32>,
-         Array<Vert3fp>
+         Array<Mat4f32>
         >();
     }
 

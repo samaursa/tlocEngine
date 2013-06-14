@@ -16,10 +16,10 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::core::data_structs;
-  using namespace tloc::core::containers;
-  using namespace tloc::core::smart_ptr;
-  using namespace tloc::math::types;
+  using namespace core::data_structs;
+  using namespace core::containers;
+  using namespace core::smart_ptr;
+  using namespace math::types;
 
   //------------------------------------------------------------------------
   // Supported types

@@ -836,5 +836,16 @@ namespace TestingStrings
     CHECK_FALSE(IsRealNumber("-12.0.23"));
     CHECK_FALSE(IsRealNumber("12.0A23"));
     CHECK_FALSE(IsRealNumber("-12.0A.23"));
+
+    CHECK(IsPosNumber("1234"));
+    CHECK(IsPosRealNumber("12.3456"));
+    CHECK(IsPosRealNumber("12345"));
+    CHECK(IsNegNumber("-123"));
+    CHECK(IsNegRealNumber("-123.12355"));
+
+    CHECK_FALSE(IsPosNumber("-12345"));
+    CHECK_FALSE(IsPosNumber("123.4567"));
+    CHECK_FALSE(IsPosRealNumber("-1234.5678"));
+
   }
 };

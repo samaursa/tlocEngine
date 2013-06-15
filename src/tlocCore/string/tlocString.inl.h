@@ -1939,6 +1939,60 @@ namespace tloc { namespace core { namespace string {
   }
 
   TL_I bool
+    IsNegNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsNegRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsPosNumber(const char8* a_char)
+  {
+    if (IsNegNumber(a_char) == false)
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsPosRealNumber(const char8* a_char)
+  {
+    if (IsNegRealNumber(a_char) == false)
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
     IsXDigit(char8 a_char)
   { return g_xdigitStr.find(a_char) != String::npos; }
 

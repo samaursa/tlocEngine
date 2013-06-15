@@ -431,6 +431,18 @@ namespace tloc { namespace core { namespace string {
     IsRealNumber(const char8* a_char);
 
   TL_I bool
+    IsNegNumber(const char8* a_char);
+
+  TL_I bool
+    IsNegRealNumber(const char8* a_char);
+
+  TL_I bool
+    IsPosNumber(const char8* a_char);
+
+  TL_I bool
+    IsPosRealNumber(const char8* a_char);
+
+  TL_I bool
     IsXDigit(char8 a_char);
 
   TL_I bool

@@ -1875,12 +1875,63 @@ namespace tloc { namespace core { namespace string {
     iterator itr    = a_char;
     iterator itrEnd = a_char + StrLen(a_char);
 
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
     while (itr != itrEnd)
     {
       if (IsDigit(*itr) == false)
       {
         return false;
       }
+      ++itr;
+    }
+
+    return true;
+  }
+
+  TL_I bool
+    IsRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+    iterator itrEnd = a_char + StrLen(a_char);
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
+    bool decimalPointFound = false;
+
+    while (itr != itrEnd)
+    {
+      if (*itr == '.')
+      {
+        if (decimalPointFound)
+        { return false; }
+
+        decimalPointFound = true;
+      }
+      else
+      {
+        if (IsDigit(*itr) == false)
+        { return false; }
+      }
+
       ++itr;
     }
 

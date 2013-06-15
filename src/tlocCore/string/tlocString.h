@@ -428,6 +428,9 @@ namespace tloc { namespace core { namespace string {
     IsNumber(const char8* a_char);
 
   TL_I bool
+    IsRealNumber(const char8* a_char);
+
+  TL_I bool
     IsXDigit(char8 a_char);
 
   TL_I bool

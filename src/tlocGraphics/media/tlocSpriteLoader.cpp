@@ -101,7 +101,7 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   bool
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    IsSupported(const core_str::String& a_input)
+    IsSupported(const core_str::String& a_input) const
   {
     return parser_type().IsSupported(a_input);
   }

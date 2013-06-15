@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/component_system/tlocPrimitive.h>
+#include <tlocGraphics/opengl/tlocAttribute.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -36,6 +37,19 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_primitive_type::GetVertex;
     using base_primitive_type::ModifyVertex;
     using base_primitive_type::size;
+
+    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetPosAttribute, m_posAttr);
+    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetNormAttribute, m_normAttr);
+    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetTCoordAttribute, m_tcoordAttr);
+
+    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetPosAttribute, m_posAttr);
+    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetNormAttribute, m_normAttr);
+    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetTCoordAttribute, m_tcoordAttr);
+
+  private:
+    gl::attribute_sptr  m_posAttr;
+    gl::attribute_sptr  m_normAttr;
+    gl::attribute_sptr  m_tcoordAttr;
   };
 
   //------------------------------------------------------------------------

@@ -40,13 +40,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     public:
       typedef types::Vert3fpnt                                vert_type;
-      typedef types::Vert3fp                                  vert_pos_type;
-      typedef types::p_vertex_t::VertexNorm3f                 vert_norm_type;
-      typedef types::p_vertex_t::TexCoord                     vert_tcoord_type;
+      typedef math_t::Vec3f32                                 pos_type;
+      typedef math_t::Vec3f32                                 norm_type;
+      typedef math_t::Vec2f32                                 tcoord_type;
 
-      typedef core_conts::Array<vert_pos_type>                cont_pos_type;
-      typedef core_conts::Array<vert_norm_type>               cont_norm_type;
-      typedef core_conts::Array<vert_tcoord_type>             cont_tcoord_type;
+      typedef core_conts::Array<pos_type>                     cont_pos_type;
+      typedef core_conts::Array<norm_type>                    cont_norm_type;
+      typedef core_conts::Array<tcoord_type>                  cont_tcoord_type;
 
       typedef tl_size                                         size_type;
 

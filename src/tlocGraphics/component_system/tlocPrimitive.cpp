@@ -48,9 +48,9 @@ namespace tloc { namespace graphics { namespace component_system {
       StructureOfArrays::
       AddVertex(const vert_type& a_vertex)
     {
-      vert_pos_type     pos; pos.SetPosition(a_vertex.GetPosition());
-      vert_norm_type    norm; norm.SetNormal(a_vertex.GetNormal());
-      vert_tcoord_type  tcoord; tcoord.SetTexCoord(a_vertex.GetTexCoord());
+      pos_type     pos(a_vertex.GetPosition());
+      norm_type    norm(a_vertex.GetNormal());
+      tcoord_type  tcoord(a_vertex.GetTexCoord());
 
       m_positions.push_back(pos);
       m_normals.push_back(norm);
@@ -64,9 +64,9 @@ namespace tloc { namespace graphics { namespace component_system {
       GetVertex(size_type a_position) const
     {
       vert_type vertex;
-      vertex.SetPosition(m_positions[a_position].GetPosition());
-      vertex.SetNormal(m_normals[a_position].GetNormal());
-      vertex.SetTexCoord(m_tcoords[a_position].GetTexCoord());
+      vertex.SetPosition(m_positions[a_position]);
+      vertex.SetNormal(m_normals[a_position]);
+      vertex.SetTexCoord(m_tcoords[a_position]);
 
       return vertex;
     }
@@ -77,9 +77,9 @@ namespace tloc { namespace graphics { namespace component_system {
       StructureOfArrays::
       ModifyVertex(size_type a_position, const vert_type& a_vertex)
     {
-      vert_pos_type     pos; pos.SetPosition(a_vertex.GetPosition());
-      vert_norm_type    norm; norm.SetNormal(a_vertex.GetNormal());
-      vert_tcoord_type  tcoord; tcoord.SetTexCoord(a_vertex.GetTexCoord());
+      pos_type     pos(a_vertex.GetPosition());
+      norm_type    norm(a_vertex.GetNormal());
+      tcoord_type  tcoord(a_vertex.GetTexCoord());
 
       m_positions[a_position] = pos;
       m_normals[a_position]   = norm;

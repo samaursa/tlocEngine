@@ -825,8 +825,16 @@ namespace TestingStrings
     CHECK(testPassed);
 
     CHECK(IsNumber("12356889771239080"));
+    CHECK(IsNumber("-12356889771239080"));
     CHECK_FALSE(IsNumber("12312A123123"));
     CHECK_FALSE(IsNumber("A12312123123"));
     CHECK_FALSE(IsNumber("12312123123Z"));
+
+    CHECK(IsRealNumber("12.023"));
+    CHECK(IsRealNumber("-12.023"));
+    CHECK_FALSE(IsRealNumber("--12.023"));
+    CHECK_FALSE(IsRealNumber("-12.0.23"));
+    CHECK_FALSE(IsRealNumber("12.0A23"));
+    CHECK_FALSE(IsRealNumber("-12.0A.23"));
   }
 };

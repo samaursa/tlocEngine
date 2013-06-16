@@ -32,11 +32,21 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_conts::Array<tcoord_type>        cont_tcoord_type;
 
   public:
-    struct ObjGroup
+    class ObjGroup
     {
+    public:
+      ObjGroup() { }
+
       cont_index_type   m_posIndices;
       cont_index_type   m_normIndices;
       cont_index_type   m_tcoordIndices;
+    };
+
+    class Vertices
+    {
+    public:
+      Vertices() { }
+
       cont_pos_type     m_pos;
       cont_norm_type    m_norms;
       cont_tcoord_type  m_tcoords;
@@ -46,26 +56,49 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_conts::Array<ObjGroup>           cont_obj_groups;
     typedef cont_obj_groups::iterator             iterator;
     typedef cont_obj_groups::const_iterator       const_iterator;
+    typedef cont_pos_type::iterator               iterator_pos;
+    typedef cont_pos_type::const_iterator         const_iterator_pos;
+    typedef cont_norm_type::iterator              iterator_norm;
+    typedef cont_norm_type::const_iterator        const_iterator_norm;
+    typedef cont_tcoord_type::iterator            iterator_tcoord;
+    typedef cont_tcoord_type::const_iterator      const_iterator_tcoord;
 
   public:
     ObjLoader();
 
-    bool       IsSupported(const string_type& a_input);
-    error_type Init(const string_type& a_fileContents);
+    bool            IsSupported(const string_type& a_input);
+    error_type      Init(const string_type& a_fileContents);
 
-    bool       IsInitialized() const;
+    bool            IsInitialized() const;
+    bool            IsValid() const;
 
     const ObjGroup& GetGroup(size_type a_groupIndex) const;
 
-    const_iterator   begin() const;
-    const_iterator   end() const;
+    const_iterator          begin() const;
+    const_iterator          end() const;
+
+    const_iterator_pos      begin_pos() const;
+    const_iterator_pos      end_pos() const;
+
+    const_iterator_norm     begin_norms() const;
+    const_iterator_norm     end_norms() const;
+
+    const_iterator_tcoord   begin_tcoords() const;
+    const_iterator_tcoord   end_tcoords() const;
 
     TLOC_DECL_AND_DEF_GETTER(cont_obj_groups::size_type, GetNumGroups,
                              m_objects.size());
-
+    TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumPositions,
+                             m_vertices.m_pos.size());
+    TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumNormals,
+                             m_vertices.m_norms.size());
+    TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumTCoords,
+                             m_vertices.m_tcoords.size());
 
   private:
-    cont_obj_groups   m_objects;
+    Vertices                m_vertices;
+    cont_obj_groups         m_objects;
+    core_utils::Checkpoints m_flags;
 
   };
 

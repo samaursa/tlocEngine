@@ -1,9 +1,9 @@
+// Put this here first to avoid abs function ambiguity problems
+#include <3rdParty/Graphics/lodepng/lodepng.h>
+
 #include "tlocTestCommon.h"
 
 #include <tlocGraphics/media/tlocImageLoader.h>
-
-#include <3rdParty/Graphics/lodepng/lodepng.h>
-#include <3rdParty/Graphics/lodepng/lodepng.c>
 
 namespace TestingImageLoader
 {

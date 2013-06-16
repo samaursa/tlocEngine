@@ -1916,7 +1916,10 @@ namespace tloc { namespace core { namespace string {
     }
 
     bool decimalPointFound = false;
+    bool exponentFound = false;
 
+    // NOTE about exponent digits: Any exponent digit count is accepted,
+    // including 0. The user should check manually if # of digits is required
     while (itr != itrEnd)
     {
       if (*itr == '.')
@@ -1925,6 +1928,16 @@ namespace tloc { namespace core { namespace string {
         { return false; }
 
         decimalPointFound = true;
+      }
+      else if (exponentFound == false && (*itr == 'E' || *itr == 'e') )
+      {
+        exponentFound = true;
+        // is the next char a + or -?
+        // Note that sign is optional: http://www.cplusplus.com/reference/ios/scientific/
+        if ( itr != itrEnd && (*(itr + 1) == '+' || *(itr + 1) == '-') )
+        {
+          ++itr;
+        }
       }
       else
       {

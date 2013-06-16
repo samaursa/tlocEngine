@@ -832,6 +832,18 @@ namespace TestingStrings
 
     CHECK(IsRealNumber("12.023"));
     CHECK(IsRealNumber("-12.023"));
+    CHECK(IsRealNumber("-12.023E-02"));
+    CHECK(IsRealNumber("-12.023E+02"));
+    CHECK(IsRealNumber("-12.023e+02"));
+    CHECK(IsRealNumber("-12.023e-02"));
+    CHECK(IsRealNumber("-12.023e02"));
+    CHECK(IsRealNumber("12.023e02"));
+    CHECK(IsRealNumber("12.023E+02"));
+    CHECK(IsRealNumber("12.023E-02"));
+    CHECK(IsRealNumber("12.023e-02"));
+    CHECK(IsRealNumber("12.023e+02"));
+    CHECK(IsRealNumber("12.023E02"));
+    CHECK(IsRealNumber("12.023e02"));
     CHECK_FALSE(IsRealNumber("--12.023"));
     CHECK_FALSE(IsRealNumber("-12.0.23"));
     CHECK_FALSE(IsRealNumber("12.0A23"));

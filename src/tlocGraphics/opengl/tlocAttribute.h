@@ -52,15 +52,16 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     template <typename T, typename T_Technique>
-    derived_type& SetVertexArray(core::containers::Array<T>& a_array,
-                                 T_Technique)
+    derived_type&
+      SetVertexArray(core::containers::Array<T>& a_array, T_Technique)
     {
       m_isAttribArray = true;
       return base_type::SetValueAs(a_array, T_Technique());
     }
 
     template <typename T>
-    derived_type& SetVertexArray
+    derived_type&
+      SetVertexArray
       (core::smart_ptr::SharedPtr<core::containers::Array<T> > a_array,
        p_shader_variable_ti::Shared)
     {

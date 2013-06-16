@@ -22,15 +22,18 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef types::Vert3fpnt                                  vert_type;
       typedef core_conts::Array<vert_type>                      cont_type;
       typedef tl_size                                           size_type;
+      typedef core_sptr::SharedPtr<cont_type>                   cont_sptr;
 
     public:
+      ArrayOfStructures();
+
       void      AddVertex(const vert_type& a_vertex);
       vert_type GetVertex(size_type a_position) const;
       void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
       size_type size() const;
 
     private:
-      cont_type m_vertexes;
+      cont_sptr m_vertexes;
     };
 
     class StructureOfArrays
@@ -48,18 +51,28 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef core_conts::Array<norm_type>                    cont_norm_type;
       typedef core_conts::Array<tcoord_type>                  cont_tcoord_type;
 
+      typedef core_sptr::SharedPtr<cont_pos_type>             cont_pos_sptr;
+      typedef core_sptr::SharedPtr<cont_norm_type>            cont_norm_sptr;
+      typedef core_sptr::SharedPtr<cont_tcoord_type>          cont_tcoord_sptr;
+
       typedef tl_size                                         size_type;
 
     public:
+      StructureOfArrays();
+
       void      AddVertex(const vert_type& a_vertex);
       vert_type GetVertex(size_type a_position) const;
       void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
       size_type size() const;
 
+      TLOC_DECL_AND_DEF_GETTER(cont_pos_sptr, GetPositions, m_positions);
+      TLOC_DECL_AND_DEF_GETTER(cont_norm_sptr, GetNormals, m_normals);
+      TLOC_DECL_AND_DEF_GETTER(cont_tcoord_sptr, GetTCoords, m_tcoords);
+
     private:
-      cont_pos_type     m_positions;
-      cont_norm_type    m_normals;
-      cont_tcoord_type  m_tcoords;
+      cont_pos_sptr     m_positions;
+      cont_norm_sptr    m_normals;
+      cont_tcoord_sptr  m_tcoords;
     };
   };
 

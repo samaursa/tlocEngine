@@ -2,6 +2,9 @@
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
+#include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/component_system/tlocProjectionComponent.h>
+
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -16,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-#define MESH_RENDER_SYSTEM_TEMPS    template<class> class Mesh_T
+#define MESH_RENDER_SYSTEM_TEMPS    typename Mesh_T
 #define MESH_RENDER_SYSTEM_PARAMS   Mesh_T
 #define MESH_RENDER_SYSTEM_TYPE     typename MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>
 
@@ -24,8 +27,10 @@ namespace tloc { namespace graphics { namespace component_system {
   MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
     MeshRenderSystem(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr)
-                     : base_type(a_eventMgr, a_entityMgr)
-                     , m_sharedCam(nullptr)
+    : base_type(a_eventMgr, a_entityMgr,
+                Variadic<component_type, 1>
+                (mesh_type::vertex_storage_policy::k_component_id) )
+    , m_sharedCam(nullptr)
   {
     m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
@@ -61,8 +66,28 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_RENDER_SYSTEM_TEMPS>
   MESH_RENDER_SYSTEM_TYPE::error_type
     MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
-    InitializeEntity(const entity_manager*, const entity_type*)
-  { return ErrorSuccess; }
+    InitializeEntity(const entity_manager*, const entity_type* a_ent)
+  {
+    mesh_type* meshType = a_ent->GetComponent<mesh_type>();
+
+    gl::attribute_sptr posAttr = meshType->GetPosAttribute();
+    gl::attribute_sptr normAttr = meshType->GetNormAttribute();
+    gl::attribute_sptr tcoordAttr = meshType->GetTCoordAttribute();
+
+    posAttr->SetVertexArray(meshType->GetPositions(),
+                            gl::p_shader_variable_ti::Shared());
+    posAttr->SetName("a_vPos");
+
+    normAttr->SetVertexArray(meshType->GetNormals(),
+                            gl::p_shader_variable_ti::Shared());
+    normAttr->SetName("a_vNorm");
+
+    tcoordAttr->SetVertexArray(meshType->GetTCoords(),
+                            gl::p_shader_variable_ti::Shared());
+    tcoordAttr->SetName("a_tCoord");
+
+    return ErrorSuccess;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -95,7 +120,8 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         math_cs::Projection* projMat =
           m_sharedCam->GetComponent<math_cs::Projection>();
-        m_vpMatrix = projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
+        m_vpMatrix =
+          projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
       }
 
       if (m_sharedCam->HasComponent(transform))
@@ -115,9 +141,10 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
     MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
-    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent, f64)
+    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64)
   {
     using namespace core_cs;
+    using math::types::Mat4f32;
 
     typedef math_cs::Transform        transform_type;
     typedef gfx_cs::Material          mat_type;
@@ -132,10 +159,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::Material*   matPtr = ent->GetComponent<gfx_cs::Material>();
     math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
-    mesh_ptr            meshPtr = ent->GetComponent<Mesh_T>();
+    mesh_type*          meshPtr = ent->GetComponent<Mesh_T>();
 
 
-    const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
+    const Mat4f32& tMatrix =
+      posPtr->GetTransformation().Cast<Mat4f32>();
 
     Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
 
@@ -149,6 +177,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
     shader_op_ptr so_mesh(new shader_op_ptr::value_type());
     //so_mesh->AddAttribute(m_
+
+    TLOC_UNUSED_2(matPtr, numVertices);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    Post_ProcessActiveEntities(f64)
+  { }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  template class MeshRenderSystem<Mesh>;
 
 };};};

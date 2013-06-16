@@ -14,9 +14,11 @@
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 
+#include <tlocMath/types/tlocMatrix4.h>
+
 namespace tloc { namespace graphics { namespace component_system {
 
-  template < template<class> class Mesh_T>
+  template <typename Mesh_T>
   class MeshRenderSystem : public core::component_system::EntityProcessingSystem
   {
   public:
@@ -34,6 +36,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Mesh_T                                        mesh_type;
     typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
+
+    typedef math::types::Vec3f32                          vec3_type;
+    typedef math::types::Mat4f32                          matrix_type;
 
   public:
     MeshRenderSystem(event_manager_sptr a_eventMgr,
@@ -62,6 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
   private:
     shader_prog_ptr     m_shaderPtr;
     const entity_type*  m_sharedCam;
+    matrix_type         m_vpMatrix;
 
     gl::shader_operator_sptr m_mvpOperator;
     gl::uniform_sptr         m_uniVpMat;

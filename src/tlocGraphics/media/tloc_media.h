@@ -5,6 +5,7 @@
 
 #include <tlocGraphics/media/tlocImage.h>
 #include <tlocGraphics/media/tlocImageLoader.h>
+#include <tlocGraphics/media/tlocObjLoader.h>
 #include <tlocGraphics/media/tlocSpriteLoader.h>
 
 #endif

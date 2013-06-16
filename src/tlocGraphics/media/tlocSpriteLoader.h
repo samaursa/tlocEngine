@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace media {
   public:
     SpriteLoader_T();
 
-    bool       IsSupported(const string_type& a_input);
+    bool       IsSupported(const string_type& a_input) const;
     error_type Init(const string_type& a_fileContents,
                     dim_type a_imageDimensions);
 

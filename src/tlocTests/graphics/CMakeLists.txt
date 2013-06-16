@@ -8,6 +8,7 @@ set(TLOC_TESTS_GRAPHICS
   tlocGraphicsModesTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
+  tlocObjLoaderTest.cpp
   tlocShaderComponentTest.cpp
   tlocShaderOperatorTest.cpp
   tlocShaderProgramTest.cpp

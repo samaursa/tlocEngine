@@ -1,3 +1,7 @@
+// Put this here first to avoid abs function ambiguity problems
+#include <3rdParty/Graphics/lodepng/lodepng.h>
+#include <3rdParty/Graphics/lodepng/lodepng.c>
+
 #include "tlocImageLoader.h"
 
 #include <tlocCore/io/tlocFileIO.h>
@@ -47,9 +51,6 @@ namespace tloc { namespace graphics { namespace media {
 
   //------------------------------------------------------------------------
   // ImageLoaderPng
-
-#include <3rdParty/Graphics/lodepng/lodepng.h>
-#include <3rdParty/Graphics/lodepng/lodepng.c>
 
   ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
   {

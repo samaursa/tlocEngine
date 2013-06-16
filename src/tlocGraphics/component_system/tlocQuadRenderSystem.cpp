@@ -176,7 +176,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::Shared() );
 
-      shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
+      shader_op_ptr so_quad(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
 
       if (ent->HasComponent(components::texture_coords))

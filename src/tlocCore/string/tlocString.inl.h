@@ -1875,6 +1875,16 @@ namespace tloc { namespace core { namespace string {
     iterator itr    = a_char;
     iterator itrEnd = a_char + StrLen(a_char);
 
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
     while (itr != itrEnd)
     {
       if (IsDigit(*itr) == false)
@@ -1885,6 +1895,114 @@ namespace tloc { namespace core { namespace string {
     }
 
     return true;
+  }
+
+  TL_I bool
+    IsRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+    iterator itrEnd = a_char + StrLen(a_char);
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
+    bool decimalPointFound = false;
+    bool exponentFound = false;
+
+    // NOTE about exponent digits: Any exponent digit count is accepted,
+    // including 0. The user should check manually if # of digits is required
+    while (itr != itrEnd)
+    {
+      if (*itr == '.')
+      {
+        if (decimalPointFound)
+        { return false; }
+
+        decimalPointFound = true;
+      }
+      else if (exponentFound == false && (*itr == 'E' || *itr == 'e') )
+      {
+        exponentFound = true;
+        // is the next char a + or -?
+        // Note that sign is optional: http://www.cplusplus.com/reference/ios/scientific/
+        if ( itr != itrEnd && (*(itr + 1) == '+' || *(itr + 1) == '-') )
+        {
+          ++itr;
+        }
+      }
+      else
+      {
+        if (IsDigit(*itr) == false)
+        { return false; }
+      }
+
+      ++itr;
+    }
+
+    return true;
+  }
+
+  TL_I bool
+    IsNegNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsNegRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsPosNumber(const char8* a_char)
+  {
+    if (IsNegNumber(a_char) == false)
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  TL_I bool
+    IsPosRealNumber(const char8* a_char)
+  {
+    if (IsNegRealNumber(a_char) == false)
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
   }
 
   TL_I bool

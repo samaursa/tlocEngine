@@ -4,14 +4,19 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
+#include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
+#include <tlocGraphics/component_system/tlocMesh.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  template < template<class> class Mesh_T>
   class MeshRenderSystem : public core::component_system::EntityProcessingSystem
   {
   public:
@@ -25,17 +30,41 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
+    typedef gl::shader_program_sptr                       shader_prog_ptr;
+
+    typedef Mesh_T                                        mesh_type;
+    typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
+
   public:
     MeshRenderSystem(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
 
-    virtual error_type Initialize();
-    virtual error_type Shutdown();
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent);
+    void AttachCamera(const entity_type* a_cameraEntity);
 
-    virtual void Pre_OnEvent(const event_type& a_event);
-    virtual void Post_OnEvent(const event_type& a_event);
+    virtual error_type Pre_Initialize();
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
+                                        const entity_type* a_ent);
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
+                                      const entity_type* a_ent);
+
+    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
+    virtual void ProcessEntity(const entity_manager* a_mgr,
+                               const entity_type* a_ent,
+                               f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
+
+    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
+
+    virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
+    virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
+  private:
+    shader_prog_ptr     m_shaderPtr;
+    const entity_type*  m_sharedCam;
+
+    gl::shader_operator_sptr m_mvpOperator;
+    gl::uniform_sptr         m_uniVpMat;
   };
 
 };};};

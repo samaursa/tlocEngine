@@ -11,6 +11,8 @@
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector2.h>
 
+#include <tlocGraphics/types/tlocVertex.h>
+
 namespace tloc { namespace graphics { namespace media {
 
   class ObjLoader
@@ -37,6 +39,7 @@ namespace tloc { namespace graphics { namespace media {
     public:
       ObjGroup() { }
 
+      core_str::String  m_name;
       cont_index_type   m_posIndices;
       cont_index_type   m_normIndices;
       cont_index_type   m_tcoordIndices;
@@ -63,6 +66,9 @@ namespace tloc { namespace graphics { namespace media {
     typedef cont_tcoord_type::iterator            iterator_tcoord;
     typedef cont_tcoord_type::const_iterator      const_iterator_tcoord;
 
+    typedef gfx_t::Vert3fpnt                      vert_type;
+    typedef core_conts::Array<vert_type>          vert_cont_type;
+
   public:
     ObjLoader();
 
@@ -85,6 +91,9 @@ namespace tloc { namespace graphics { namespace media {
 
     const_iterator_tcoord   begin_tcoords() const;
     const_iterator_tcoord   end_tcoords() const;
+
+    error_type              GetUnpacked(vert_cont_type& a_vertsOut,
+                                        size_type a_groupIndex) const;
 
     TLOC_DECL_AND_DEF_GETTER(cont_obj_groups::size_type, GetNumGroups,
                              m_objects.size());

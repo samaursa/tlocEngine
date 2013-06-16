@@ -78,14 +78,21 @@ namespace tloc { namespace graphics { namespace media {
       while (begin->size() == 0)
       { ++begin; }
 
-      if (begin->compare("g") == 0)
+      // treating groups and objects as the same
+      if (begin->compare("g") == 0 || begin->compare("o") == 0)
       {
+        ++begin;
+
         if (verticesRecorded && currGroup->m_posIndices.size() != 0)
         {
           m_objects.push_back(ObjGroup());
           currGroup = m_objects.begin();
           core::advance(currGroup, m_objects.size() - 1);
         }
+
+        // the group may be nameless
+        if (begin != end)
+        { currGroup->m_name = *begin; }
       }
       else if (begin->compare("v") == 0)
       {
@@ -355,5 +362,56 @@ RETURN_ERROR:
     return m_vertices.m_tcoords.end();
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ObjLoader::error_type
+    ObjLoader::
+    GetUnpacked(vert_cont_type& a_vertsOut, size_type a_groupIndex) const
+  {
+    const ObjGroup& currGroup = m_objects[a_groupIndex];
+
+    if (currGroup.m_posIndices.empty())
+    { return TLOC_ERROR(error::error_obj_corrupt_or_invalid); }
+
+    const size_type posIndexSize = currGroup.m_posIndices.size();
+
+    const bool normIndexEmpty = currGroup.m_normIndices.empty();
+    const bool tcoordIndexEmpty = currGroup.m_tcoordIndices.empty();
+
+    if (normIndexEmpty == false)
+    {
+      if (currGroup.m_normIndices.size() != posIndexSize)
+      { return TLOC_ERROR(error::error_obj_corrupt_or_invalid); }
+    }
+
+    if (tcoordIndexEmpty == false)
+    {
+      if (currGroup.m_tcoordIndices.size() != posIndexSize)
+      { return TLOC_ERROR(error::error_obj_corrupt_or_invalid); }
+    }
+
+    for (size_type i = 0; i < posIndexSize; ++i)
+    {
+      vert_type newVert;
+      pos_type  pos = m_vertices.m_pos[currGroup.m_posIndices[i] - 1];
+
+      norm_type norm;
+      tcoord_type tcoord;
+
+      if (normIndexEmpty == false)
+      { norm = m_vertices.m_norms[currGroup.m_normIndices[i] - 1]; }
+
+      if (tcoordIndexEmpty == false)
+      { tcoord = m_vertices.m_tcoords[currGroup.m_tcoordIndices[i] - 1]; }
+
+      newVert.SetPosition(pos);
+      newVert.SetNormal(norm);
+      newVert.SetTexCoord(tcoord);
+
+      a_vertsOut.push_back(newVert);
+    }
+
+    return ErrorSuccess;
+  }
 
 };};};

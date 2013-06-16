@@ -31,7 +31,8 @@ namespace tloc { namespace graphics { namespace error {
     error_unsupported_sprite_sheet_format,
     error_sprite_sheet_parse_error,
 
-    error_obj_file_parse_error
+    error_obj_file_parse_error,
+    error_obj_corrupt_or_invalid
   };
 
 };};};

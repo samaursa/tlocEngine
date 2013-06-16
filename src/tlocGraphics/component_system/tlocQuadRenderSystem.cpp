@@ -209,7 +209,7 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+        typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
         const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 

@@ -176,9 +176,42 @@ namespace tloc { namespace graphics { namespace component_system {
     const tl_size numVertices = meshPtr->size();
 
     shader_op_ptr so_mesh(new shader_op_ptr::value_type());
-    //so_mesh->AddAttribute(m_
+    so_mesh->AddAttribute(meshPtr->GetPosAttribute());
+    so_mesh->AddAttribute(meshPtr->GetNormAttribute());
+    so_mesh->AddAttribute(meshPtr->GetTCoordAttribute());
 
     TLOC_UNUSED_2(matPtr, numVertices);
+
+    mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
+
+    if (m_shaderPtr == nullptr ||
+        m_shaderPtr.get() != sp.get())
+    {
+      sp->Enable();
+      m_shaderPtr = sp;
+
+      typedef mat_type::shader_op_cont_const_itr    shader_op_itr;
+
+      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
+
+      for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+        itr != itrEnd; ++itr)
+      {
+        mat_type::shader_op_ptr so = *itr;
+
+        so->EnableAllUniforms(*m_shaderPtr);
+        so->EnableAllAttributes(*m_shaderPtr);
+      }
+    }
+
+    m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
+    m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+
+    so_mesh->PrepareAllAttributes(*m_shaderPtr);
+    so_mesh->EnableAllAttributes(*m_shaderPtr);
+
+    glDrawArrays(GL_TRIANGLES, 0,
+                 core_utils::CastNumber<GLsizei, tl_size>(numVertices));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

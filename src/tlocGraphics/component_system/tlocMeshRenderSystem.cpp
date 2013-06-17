@@ -21,11 +21,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
 #define MESH_RENDER_SYSTEM_TEMPS    typename Mesh_T
 #define MESH_RENDER_SYSTEM_PARAMS   Mesh_T
-#define MESH_RENDER_SYSTEM_TYPE     typename MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>
+#define MESH_RENDER_SYSTEM_TYPE     typename MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>
 
   template <MESH_RENDER_SYSTEM_TEMPS>
-  MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
-    MeshRenderSystem(event_manager_sptr a_eventMgr,
+  MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>
@@ -42,7 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     AttachCamera(const entity_type* a_cameraEntity)
   {
     m_sharedCam = a_cameraEntity;
@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   {
     return ErrorSuccess;
@@ -65,7 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     InitializeEntity(const entity_manager*, const entity_type* a_ent)
   {
     mesh_type* meshType = a_ent->GetComponent<mesh_type>();
@@ -93,7 +93,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     ShutdownEntity(const entity_manager*, const entity_type*)
   { return ErrorSuccess; }
 
@@ -101,7 +101,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Pre_ProcessActiveEntities(f64)
   {
     using namespace core::component_system;
@@ -140,7 +140,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     ProcessEntity(const entity_manager* , const entity_type* a_ent, f64)
   {
     using namespace core_cs;
@@ -218,13 +218,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
-    MeshRenderSystem<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64)
   { }
 
   // -----------------------------------------------------------------------
   // explicit instantiation
 
-  template class MeshRenderSystem<Mesh>;
+  template class MeshRenderSystem_T<Mesh>;
 
 };};};

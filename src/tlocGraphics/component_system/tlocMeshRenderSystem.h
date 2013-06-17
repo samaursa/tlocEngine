@@ -19,7 +19,8 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   template <typename Mesh_T>
-  class MeshRenderSystem : public core::component_system::EntityProcessingSystem
+  class MeshRenderSystem_T
+    : public core::component_system::EntityProcessingSystem
   {
   public:
     typedef core::component_system::EntityProcessingSystem  base_type;
@@ -41,7 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::types::Mat4f32                          matrix_type;
 
   public:
-    MeshRenderSystem(event_manager_sptr a_eventMgr,
+    MeshRenderSystem_T(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
 
     void AttachCamera(const entity_type* a_cameraEntity);
@@ -72,6 +73,11 @@ namespace tloc { namespace graphics { namespace component_system {
     gl::shader_operator_sptr m_mvpOperator;
     gl::uniform_sptr         m_uniVpMat;
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef MeshRenderSystem_T<Mesh>      MeshRenderSystem;
 
 };};};
 

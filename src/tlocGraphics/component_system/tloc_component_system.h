@@ -14,12 +14,11 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
-#include <tlocGraphics/component_system/tlocComponentType.h>
-
 #include <tlocGraphics/component_system/tlocFanRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
+#include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 
 #endif

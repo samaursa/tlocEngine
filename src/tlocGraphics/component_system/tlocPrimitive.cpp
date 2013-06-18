@@ -141,7 +141,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::ArrayOfStructures::cont_type);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_pos_type);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
+  //TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);
 
 };};};

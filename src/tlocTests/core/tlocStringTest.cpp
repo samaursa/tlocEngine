@@ -786,7 +786,7 @@ namespace TestingStrings
 
     testPassed = true;
     for (char8 i = 'A', j = 'a';
-         i <= 'Z', j <= 'z'; ++i, ++j)
+         i <= 'Z' && j <= 'z'; ++i, ++j)
     {
       if (IsAlpha(i) == false ||
           IsAlpha(j) == false ||
@@ -814,7 +814,7 @@ namespace TestingStrings
     CHECK(testPassed);
 
     testPassed = true;
-    for (char8 i = 'A', j = 'a'; i <= 'F', j<= 'f'; ++i, ++j)
+    for (char8 i = 'A', j = 'a'; i <= 'F' && j<= 'f'; ++i, ++j)
     {
       if (IsXDigit(i) == false ||
           IsXDigit(j) == false ||

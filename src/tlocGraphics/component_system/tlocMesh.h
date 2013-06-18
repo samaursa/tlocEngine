@@ -27,9 +27,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef Mesh_T<vertex_storage_policy>               this_type;
     typedef core_cs::Component_T
       <this_type,
-       vertex_storage_policy::k_component_id>           base_type;
-    typedef Primitive_TI<vertex_storage_policy>         base_primitive_type;
-
+       vertex_storage_policy::k_component_id>             base_type;
+    
   public:
     Mesh_T();
 

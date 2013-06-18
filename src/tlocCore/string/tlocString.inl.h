@@ -1837,7 +1837,7 @@ namespace tloc { namespace core { namespace string {
     IsCntrl(char8 a_char)
   {
     // We cannot test for NULL in g_controlStr because it is also the terminator
-    if (a_char == NULL)
+    if (a_char == 0)
     { return true; }
 
     return g_controlsStr.find(a_char) != String::npos;

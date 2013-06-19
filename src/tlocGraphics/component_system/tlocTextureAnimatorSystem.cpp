@@ -51,13 +51,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     TextureAnimatorSystem::
-    Pre_ProcessActiveEntities(f64)
+    Pre_ProcessActiveEntities(f64 a_deltaT)
   {
+    m_totalTime += a_deltaT;
   }
 
   void
     TextureAnimatorSystem::
-    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64 a_deltaT)
+    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64)
   {
     using namespace core::component_system;
     using math_t::Vec4f32;
@@ -65,12 +66,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gfx_cs::TextureCoords                 tex_coords;
 
-    m_totalTime += a_deltaT;
-
     const entity_type* ent = a_ent;
 
     gfx_cs::TextureAnimator* texAnim =
       ent->GetComponent<gfx_cs::TextureAnimator>();
+
+    if (texAnim->IsPaused())
+    { return; }
 
     f64 diff = m_totalTime - texAnim->GetStartTime();
     f64 fps = 1.0f / core_utils::CastNumber<f64>(texAnim->GetFPS());

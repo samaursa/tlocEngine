@@ -2,12 +2,12 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
-#include <tlocCore/component_system/tlocEntityManager.inl>
+#include <tlocCore/component_system/tlocEntityManager.inl.h>
 #include <tlocCore/component_system/tlocEvent.h>
 
 namespace TestingEntityManager
@@ -66,9 +66,9 @@ namespace TestingEntityManager
       }
     }
 
-    tl_int m_entEventCounter;
-    tl_int m_compEventCounter;
-    tl_int m_totalEvents;
+    tl_uint m_entEventCounter;
+    tl_int  m_compEventCounter;
+    tl_int  m_totalEvents;
   };
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
@@ -95,7 +95,7 @@ namespace TestingEntityManager
     {
       newEnt = eMgr.CreateEntity();
       myList.push_back(newEnt);
-      if (newEnt == NULL) { stressTestPassed = false; break; }
+      if (newEnt == nullptr) { stressTestPassed = false; break; }
     }
     CHECK(eMgr.GetUnusedEntities() == 0);
     CHECK(entTrack.m_entEventCounter == entityCount);

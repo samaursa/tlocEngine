@@ -1,8 +1,8 @@
 #include "tlocRigidBodyDef.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -288,7 +288,6 @@ namespace tloc { namespace physics { namespace box2d {
   template void RigidBodyDef::DoSetType<p_rigid_body::KinematicBody>();
   template void RigidBodyDef::DoSetType<p_rigid_body::DynamicBody>();
 
-  template class core::smart_ptr::SharedPtr<RigidBodyDef>;
-  //template class core::smart_ptr::SharedPtr<b2BodyDef>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyDef);
 
 };};};

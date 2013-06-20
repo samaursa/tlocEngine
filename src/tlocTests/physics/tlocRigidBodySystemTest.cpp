@@ -5,7 +5,7 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/types/tlocRectangle.h>
@@ -35,17 +35,17 @@ namespace TestingRigidBodySystem
 
     typedef core::component_system::event_manager_sptr  event_manager_sptr;
     typedef core::component_system::entity_manager_sptr entity_manager_sptr;
-    typedef core::component_system::Entity        entity_type;
+    typedef core::component_system::Entity              entity_type;
 
-    typedef math::types::Rectf                rect_shape_type;
-    typedef math::types::Circlef              circle_shape_type;
-    typedef math::component_system::Transform transform_type;
+    typedef math::types::Rectf32                        rect_shape_type;
+    typedef math::types::Circlef32                      circle_shape_type;
+    typedef math::component_system::Transform           transform_type;
 
-    typedef box2d::PhysicsManager       physics_manager;
-    typedef box2d::ContactEvent         contact_event_type;
-    typedef box2d::RigidBodyShapeDef    rigid_body_shape_def_type;
-    typedef box2d::RigidBodyDef         rigid_body_def_type;
-    typedef box2d::rigid_body_def_sptr  rigid_body_def_sptr;
+    typedef box2d::PhysicsManager               physics_manager;
+    typedef box2d::ContactEvent                 contact_event_type;
+    typedef box2d::RigidBodyShapeDef            rigid_body_shape_def_type;
+    typedef box2d::RigidBodyDef                 rigid_body_def_type;
+    typedef box2d::rigid_body_def_sptr          rigid_body_def_sptr;
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
@@ -204,8 +204,8 @@ namespace TestingRigidBodySystem
     entityMgr->InsertComponent(rbDynamicCircleEntity, &rbListenerComponent);
 
     //------------------------------------------------------------------------
-    CHECK(rigidBodySys.Initialize() == ErrorSuccess());
-    CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess());
+    CHECK(rigidBodySys.Initialize() == ErrorSuccess);
+    CHECK(rigidBodyListenerSys.Initialize() == ErrorSuccess);
 
     // Update everything once so everything is in the right position
     rigidBodySys.ProcessActiveEntities();
@@ -270,8 +270,8 @@ namespace TestingRigidBodySystem
     CHECK(myWorldContactCallback.m_numContactBegin == 1);
     CHECK(myComponentContactCallback.m_numContactBegin == 1);
 
-    CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess());
-    CHECK(rigidBodySys.Shutdown() == ErrorSuccess());
-    CHECK(physicsMgr.Shutdown() == ErrorSuccess());
+    CHECK(rigidBodyListenerSys.Shutdown() == ErrorSuccess);
+    CHECK(rigidBodySys.Shutdown() == ErrorSuccess);
+    CHECK(physicsMgr.Shutdown() == ErrorSuccess);
   }
 };

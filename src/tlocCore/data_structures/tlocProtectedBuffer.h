@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace data_structs {
     typedef T                                           value_type;
     typedef tl_size                                     size_type;
     typedef typename
-      configs::BuildConfig<>:: build_config_type        build_config_type;
+      configs::BuildConfig:: build_config_type        build_config_type;
 
     typedef priv::p_procted_buffer::Overflow<build_config_type>   overflow_type;
 

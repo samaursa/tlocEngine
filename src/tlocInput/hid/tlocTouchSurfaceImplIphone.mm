@@ -1,23 +1,29 @@
-//
-//  tlocTouchSurfaceImplIphone.cpp
-//  tlocInput
-//
-//  Created by Skopworks Inc on 12-08-31.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
-
 #include "tlocTouchSurfaceImplIphone.h"
+
 #include <tlocCore/tlocAlgorithms.h>
-#include <tloccore/tlocAlgorithms.inl>
+#include <tloccore/tlocAlgorithms.inl.h>
+
+#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
   
 #define TOUCH_SURFACE_IMPL_TEMP     typename T_ParentTouchSurface
 #define TOUCH_SURFACE_IMPL_PARAMS   T_ParentTouchSurface
 #define TOUCH_SURFACE_IMPL_TYPE     typename TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>
-  
-  //------------------------------------------------------------------------
+
+  //////////////////////////////////////////////////////////////////////////
+  // Free functions and definitions
+
+  namespace {
+    typedef OpenGLView*  view_internal_type;
+
+    view_internal_type DoExtractView(const core_t::Any& a_any)
+    {
+      return a_any.Cast<view_internal_type>();
+    }
+  };
+
+  //////////////////////////////////////////////////////////////////////////
   // TouchSurfaceImpl
   
   template <TOUCH_SURFACE_IMPL_TEMP>
@@ -27,7 +33,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     : base_type(a_parent, a_params)
   {
     view_handle_type view = DoGetViewHandle();
-    TLOC_ASSERT_NOT_NULL(view);
+    TLOC_ASSERT_NOT_NULL(DoExtractView(view));
 
     DoInitialize(view, policy_type());
   }
@@ -36,7 +42,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::~TouchSurfaceImpl()
   {
     view_handle_type view = DoGetViewHandle();
-    TLOC_ASSERT_NOT_NULL(view);
+    TLOC_ASSERT_NOT_NULL(DoExtractView(view));
 
     DoDestroy(view, policy_type());
   }
@@ -64,10 +70,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentTouches.resize(m_touchDevice.GetCurrentTouches().size());
     }
 
-    core::copy(m_touchDevice.GetCurrentTouches().begin(),
-               m_touchDevice.GetCurrentTouches().end(),
-               m_currentTouches.begin());
-
     DoUpdate(policy_type());
   }
 
@@ -82,28 +84,28 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoInitialize(view_handle_type a_view, InputPolicy::Buffered)
   {
-    [a_view RegisterTouchSurfaceDeviceBuffered:&m_touchDevice];
+    [DoExtractView(a_view) RegisterTouchSurfaceDeviceBuffered:&m_touchDevice];
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoInitialize(view_handle_type a_view, InputPolicy::Immediate)
   {
-    [a_view RegisterTouchSurfaceDeviceImmediate:&m_touchDevice];
+    [DoExtractView(a_view) RegisterTouchSurfaceDeviceImmediate:&m_touchDevice];
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoDestroy(view_handle_type a_view, InputPolicy::Buffered)
   {
-    [a_view UnRegisterTouchSurfaceDeviceBuffered:&m_touchDevice];
+    [DoExtractView(a_view) UnRegisterTouchSurfaceDeviceBuffered:&m_touchDevice];
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoDestroy(view_handle_type a_view, InputPolicy::Immediate)
   {
-    [a_view UnRegisterTouchSurfaceDeviceImmediate:&m_touchDevice];
+    [DoExtractView(a_view) UnRegisterTouchSurfaceDeviceImmediate:&m_touchDevice];
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
@@ -117,6 +119,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoUpdate(InputPolicy::Buffered)
   {
+    core::copy(m_touchDevice.GetCurrentTouches().begin(),
+               m_touchDevice.GetCurrentTouches().end(),
+               m_currentTouches.begin());
+
     typename touch_device_type::buffer_container_type::const_iterator itr =
       m_touchDevice.GetBufferedTouches().begin();
     const typename touch_device_type::buffer_container_type::const_iterator itrEnd =
@@ -146,16 +152,22 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
       ++itr;
     }
+
+    // We need to reset the touch device's buffer to prevent touches from
+    // accumulating
+    m_touchDevice.Reset();
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoUpdate(InputPolicy::Immediate)
   {
-    // Does nothing
+    core::copy(m_touchDevice.GetCurrentTouches().begin(),
+               m_touchDevice.GetCurrentTouches().end(),
+               m_currentTouches.begin());
   }
 
-  //------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////
   // Explicit Instantiations
   template class TouchSurfaceImpl< TouchSurface<InputPolicy::Buffered> >;
   template class TouchSurfaceImpl< TouchSurface<InputPolicy::Immediate> >;

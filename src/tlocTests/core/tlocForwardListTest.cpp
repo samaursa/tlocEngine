@@ -1,8 +1,8 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/containers/tlocForwardList.h>
-#include <tlocCore/containers/tlocForwardList.inl>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocForwardList.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 namespace TestingForwardList
 {

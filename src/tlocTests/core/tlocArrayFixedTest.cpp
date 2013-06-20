@@ -2,9 +2,9 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
-#include <tlocCore/containers/tlocArrayFixed.inl>
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
 
 namespace TestingStackArray
 {

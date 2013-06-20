@@ -1,15 +1,13 @@
 #include "tlocRigidBodyComponent.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl>
-
-#include <tlocPhysics/component_system/tlocComponentType.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace physics { namespace component_system{
 
   RigidBody::
     RigidBody(rigid_body_def_sptr a_rigidBodyDef)
-    : base_type(components::k_rigidBody)
+    : base_type(k_component_type)
     , m_rigidBodyDef(a_rigidBodyDef)
   {
   }
@@ -17,7 +15,7 @@ namespace tloc { namespace physics { namespace component_system{
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 
-  template class core::smart_ptr::SharedPtr<RigidBody>;
-  template class core::component_system::ComponentPool_TI<RigidBodyPtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(rigid_body_sptr);
 
 };};};

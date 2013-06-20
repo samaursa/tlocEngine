@@ -1,9 +1,17 @@
 #include "tlocEntitySystemBase.h"
 
-#include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
+
+  enum
+  {
+    k_systemInitialized = 0,
+    k_count
+  };
+
+  const tl_int EntitySystemBase::s_flagCount = k_count;
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs]
@@ -18,38 +26,46 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntitySystemBase::Initialize()
   {
-    if (Pre_Initialize() == ErrorSuccess())
+    m_flags.Mark(k_systemInitialized);
+
+    if (Pre_Initialize() == ErrorSuccess)
     {
-      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess())
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
+      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
       }
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
-  void EntitySystemBase::ProcessActiveEntities()
+  void EntitySystemBase::ProcessActiveEntities(f64 a_deltaT)
   {
+    TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
+      "Did you forget to call Initialize()?");
+
     if (CheckProcessing())
     {
-      Pre_ProcessActiveEntities();
-      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities);
-      Post_ProcessActiveEntities();
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
+      Pre_ProcessActiveEntities(a_deltaT);
+      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities, a_deltaT);
+      Post_ProcessActiveEntities(a_deltaT);
     }
   }
 
   error_type EntitySystemBase::Shutdown()
   {
-    if (Pre_Shutdown() == ErrorSuccess())
+    if (Pre_Shutdown() == ErrorSuccess)
     {
-      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess())
+      TLOC_ASSERT_NOT_NULL(m_entityMgr);
+      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();
       }
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
   bool EntitySystemBase::OnEvent(const EventBase& a_event)
@@ -72,6 +88,7 @@ namespace tloc { namespace core { namespace component_system {
             entity_ptr_array::iterator entItr = core::find_all(m_activeEntities, ent);
             if (entItr == m_activeEntities.end())
             {
+              OnComponentInsert(entEvent);
               m_activeEntities.push_back(ent);
             }
           }
@@ -80,10 +97,31 @@ namespace tloc { namespace core { namespace component_system {
             entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
             if (itr != m_activeEntities.end())
             {
+              OnComponentRemove(entEvent);
               m_activeEntities.erase(itr);
             }
           }
         }
+        break;
+      }
+    case entity_events::disable_component:
+    case entity_events::enable_component:
+      {
+        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        Component* comp = entEvent.GetComponent();
+
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        {
+          if (comp->GetType() == *itr)
+          {
+            if (type == entity_events::disable_component)
+            { OnComponentDisable(entEvent); }
+            else
+            { OnComponentEnable(entEvent); }
+          }
+        }
+        break;
       }
     }
 

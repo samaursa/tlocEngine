@@ -3,6 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
@@ -14,6 +16,8 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 #include <tlocGraphics/window/tlocWindowHandle.h>
+
+#include <tlocMath/types/tlocAspectRatio.h>
 
 // Platform independant window implementation (forward declaration)
 #include "tlocWindowImpl.h"
@@ -34,9 +38,29 @@ namespace tloc { namespace graphics { namespace win {
       events_count
     };
 
-    WindowEvent(const EventType& a_event = none) : m_type(a_event) {}
+    typedef tl_size                           size_type;
+    typedef core_ds::Tuple<size_type, 2>      dim_type;
+    typedef core_ds::Variadic<size_type, 2>   variadic_type;
+
+    WindowEvent()
+      : m_type(none)
+      , m_dim(variadic_type(0, 0))
+    { }
+
+    WindowEvent(const EventType& a_event,
+                tl_size a_sizeX, tl_size a_sizeY)
+      : m_type(a_event)
+      , m_dim(variadic_type(a_sizeX, a_sizeY))
+    { }
+
+    size_type GetWidth() const
+    { return m_dim[0]; }
+
+    size_type GetHeight() const
+    { return m_dim[1]; }
 
     EventType m_type;
+    dim_type  m_dim;
   };
 
   struct WindowCallbacks
@@ -85,6 +109,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename WindowHandle<T_Platform>::type      window_handle_type;
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
+    typedef math_t::AspectRatio                          aspect_ratio;
 
   public:
 
@@ -117,7 +142,8 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
     void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                window_style_type a_style = WindowSettings::style_resize |
+                window_style_type a_style = WindowSettings::style_titlebar |
+                                            WindowSettings::style_resize |
                                             WindowSettings::style_close);
 
     ///-------------------------------------------------------------------------
@@ -153,6 +179,31 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of producing.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Gets the aspect ratio of this window.
+    ///
+    /// @return The aspect ratio.
+    ///-------------------------------------------------------------------------
+    aspect_ratio GetAspectRatio() const;
 
     ///-------------------------------------------------------------------------
     /// Gets an event on the stack, if stack is empty, then asks the window

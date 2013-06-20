@@ -6,11 +6,12 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocFunctional.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 namespace TestingAlgorithms
 {
@@ -418,20 +419,26 @@ namespace TestingAlgorithms
     s32 match1[] = {1,2,3};
 
     // using default comparison:
-    it = find_end (myvector.begin(), myvector.end(), match1, match1+3);
+    it = core::find_end (myvector.begin(), myvector.end(), match1, match1+3);
 
     CHECK( (s32)(it - myvector.begin()) == 5); // pos
 
     s32 match2[] = {4,5,1};
 
     // using predicate comparison:
-    it = find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
+    it = core::find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
 
     CHECK( (s32)(it - myvector.begin()) == 3); // pos
 
     s32 match3[] = {1,2,3,4,5,6,6,7,8,8,5,4,3,23,2,2,1,2,3,4};
-    it = find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
+    it = core::find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
     CHECK(it == myvector.end());
+
+    it = find_end(myvector.begin(), myvector.end(), 4);
+    CHECK(it == myvector.end() - 2);
+
+    it = find_end_all(myvector, 4);
+    CHECK(it == myvector.end() - 2);
   }
 
   bool comp_case_insensitive (int c1, int c2)
@@ -1130,5 +1137,50 @@ namespace TestingAlgorithms
     CHECK(CountDestruction::m_dtorCount == numElements);
     delete_ptrs(myList.begin(), myList.end());
     CHECK(CountDestruction::m_dtorCount == numElements * 2);
+  }
+
+  tl_int op_increase (tl_int i)
+  { return ++i; }
+
+  TEST_CASE("Core/Algorithms/transform", "")
+  {
+    Array<tl_int> foo;
+    Array<tl_int> bar;
+
+    for (tl_int i = 1; i < 6; ++i)
+    { foo.push_back(i * 10); }
+
+    bar.resize(foo.size());
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    bar.clear();
+    bar.resize(foo.size());
+    core::transform_all(foo, bar, op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), foo.begin(),
+                    std::plus<tl_int>());
+    CHECK(foo[0] == 21);
+    CHECK(foo[1] == 41);
+    CHECK(foo[2] == 61);
+    CHECK(foo[3] == 81);
+    CHECK(foo[4] == 101);
+
+    core::transform_all(foo, bar, foo, std::plus<tl_int>());
+    CHECK(foo[0] == 32);
+    CHECK(foo[1] == 62);
+    CHECK(foo[2] == 92);
+    CHECK(foo[3] == 122);
+    CHECK(foo[4] == 152);
   }
 };

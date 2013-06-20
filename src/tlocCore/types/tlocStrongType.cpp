@@ -1,9 +1,12 @@
 #include "tlocStrongType.h"
-#include "tlocStrongType.inl"
+#include "tlocStrongType.inl.h"
 
 #include "tlocStrongTypeExplicitMacros.h"
   TLOC_INSTANTIATE_STRONG_TYPE(s8);
   TLOC_INSTANTIATE_STRONG_TYPE(u8);
+
+  TLOC_INSTANTIATE_STRONG_TYPE(s16);
+  TLOC_INSTANTIATE_STRONG_TYPE(u16);
 
   TLOC_INSTANTIATE_STRONG_TYPE(s32);
   TLOC_INSTANTIATE_STRONG_TYPE(s64);

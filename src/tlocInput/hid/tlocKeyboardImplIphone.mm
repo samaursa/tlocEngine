@@ -1,5 +1,9 @@
 #include "tlocKeyboardImplIphone.h"
 
+#include <tlocCore/types/tlocAny.inl.h>
+
+#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
+
 namespace tloc { namespace input { namespace hid { namespace priv {
 
 #define KEYBOARD_IMPL_TEMP    typename T_ParentKeyboard

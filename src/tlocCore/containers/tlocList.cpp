@@ -1,5 +1,5 @@
 #include "tlocList.h"
-#include "tlocList.inl"
+#include "tlocList.inl.h"
 
 namespace tloc { namespace core { namespace containers {
 

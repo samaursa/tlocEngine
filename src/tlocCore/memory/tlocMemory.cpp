@@ -1,5 +1,5 @@
 #include "tlocMemory.h"
-#include "tlocMemory.inl"
+#include "tlocMemory.inl.h"
 
 #ifdef TLOC_OS_WIN
   #include <crtdbg.h>

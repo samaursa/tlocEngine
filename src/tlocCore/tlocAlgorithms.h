@@ -66,12 +66,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all(const T_Container1& a_toSearch, const T_Container2& a_toFind);
+    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind);
 
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all(const T_Container1& a_toSearch, const T_Container2& a_toFind,
-                 T_BinaryPred a_pred);
+    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind,
+                     T_BinaryPred a_pred);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
   T_ForwardIterator1
@@ -89,17 +89,34 @@ namespace tloc { namespace core {
              T_ForwardIterator2 a_rangeToFindEnd,
              T_BinaryPredicate  a_pred);
 
+  template <class T_ForwardIterator, class T_Value>
+  T_ForwardIterator
+    find_end(T_ForwardIterator a_begin, T_ForwardIterator a_end,
+             const T_Value& a_value);
+
+  template <typename T_Container, class T_Value>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    find_end_all(T_Container& a_toSearch, const T_Value& a_value);
+
+  template <class T_ForwardIterator, class T_Predicate>
+  T_ForwardIterator
+    find_if_end(T_ForwardIterator a_begin, T_ForwardIterator a_end,
+                T_Predicate a_pred);
+
+  template <class T_Container, class T_Predicate>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    find_if_end_all(T_Container& a_container, T_Predicate a_pred);
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_first_of_all(const T_Container1& a_toSearch,
-                      const T_Container2& a_toFind);
+    find_first_of_all(T_Container1& a_toSearch,
+                      T_Container2& a_toFind);
 
  template <typename T_Container1, typename T_Container2,
            typename T_BinaryPredicate>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_first_of_all(const T_Container1& a_toSearch,
-                      const T_Container2& a_toFind,
+    find_first_of_all(T_Container1& a_toSearch,
+                      T_Container2& a_toFind,
                       T_BinaryPredicate   a_pred);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
@@ -120,14 +137,14 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_first_not_of_all(const T_Container1& a_toSearch,
-                          const T_Container2& a_toFind);
+    find_first_not_of_all(T_Container1& a_toSearch,
+                          T_Container2& a_toFind);
 
  template <typename T_Container1, typename T_Container2,
            typename T_BinaryPredicate>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_first_not_of_all(const T_Container1& a_toSearch,
-                          const T_Container2& a_toFind,
+    find_first_not_of_all(T_Container1& a_toSearch,
+                          T_Container2& a_toFind,
                           T_BinaryPredicate   a_pred);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
@@ -182,11 +199,11 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_InputItr>
   Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1), T_InputItr>
-    mismatch_all(const T_Container1& a_toSearch, T_InputItr a_toCompare);
+    mismatch_all(T_Container1& a_toSearch, T_InputItr a_toCompare);
 
   template <typename T_Container1, typename T_InputItr, typename T_BinaryPred>
   Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1),  T_InputItr>
-    mismatch_all(const T_Container1& a_toSearch, T_InputItr a_toCompare,
+    mismatch_all(T_Container1& a_toSearch, T_InputItr a_toCompare,
                  T_BinaryPred a_pred);
 
   template <typename T_InputIterator1, typename T_InputIterator2>
@@ -202,11 +219,11 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_InputItr>
   bool
-    equal_all(const T_Container1& a_toSearch, T_InputItr a_toCompare);
+    equal_all(T_Container1& a_toSearch, T_InputItr a_toCompare);
 
   template <typename T_Container1, typename T_InputItr, typename T_BinaryPred>
   bool
-    equal_all(const T_Container1& a_toSearch, T_InputItr a_toCompare,
+    equal_all(T_Container1& a_toSearch, T_InputItr a_toCompare,
               T_BinaryPred a_pred);
 
   template <typename T_InputIterator1, typename T_InputIterator2>
@@ -244,12 +261,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    search_all(const T_Container1& a_toSearch, const T_Container2& a_toFind);
+    search_all(T_Container1& a_toSearch, T_Container2& a_toFind);
 
   template <typename T_Container1, typename T_Container2,
             typename T_BinaryPredicate>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    search_all(const T_Container1& a_toSearch, const T_Container2& a_toFind,
+    search_all(T_Container1& a_toSearch, T_Container2& a_toFind,
                T_BinaryPredicate a_pred);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
@@ -270,12 +287,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_Size, typename T>
   typename T_Container::iterator
-    search_n_all(const T_Container& a_toSearch, T_Size a_count, T const & a_value);
+    search_n_all(T_Container& a_toSearch, T_Size a_count, T const & a_value);
 
   template <typename T_Container, typename T_Size, typename T,
             typename T_BinaryPred>
   typename T_Container::iterator
-    search_n_all(const T_Container& a_toSearch, T_Size a_count, T const & a_value,
+    search_n_all(T_Container& a_toSearch, T_Size a_count, T const & a_value,
                  T_BinaryPred a_pred);
 
   template <typename T_ForwardIterator, typename T_Size, typename T>
@@ -314,12 +331,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_OutputItr, typename T>
   T_OutputItr
-    remove_copy_all(const T_Container1& a_in, T_OutputItr a_out,
+    remove_copy_all(T_Container1& a_in, T_OutputItr a_out,
                     T const & a_value);
 
   template <typename T_Container1, typename T_OutputItr, typename T_UnaryPred>
   T_OutputItr
-    remove_copy_if_all(const T_Container1& a_in, T_OutputItr a_out,
+    remove_copy_if_all(T_Container1& a_in, T_OutputItr a_out,
                        T_UnaryPred a_pred);
 
   template <typename T_InputItr, typename T_OutputItr, typename T>
@@ -352,13 +369,13 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_OutputItr, typename T>
   T_OutputItr
-    replace_copy_all(const T_Container1& a_in, T_OutputItr a_out,
+    replace_copy_all(T_Container1& a_in, T_OutputItr a_out,
                      T const & a_oldValue, T const & a_newValue);
 
   template <typename T_Container1, typename T_OutputItr, typename T_UnaryPred,
             typename T>
   T_OutputItr
-    replace_copy_if_all(const T_Container1& a_in, T_OutputItr a_out,
+    replace_copy_if_all(T_Container1& a_in, T_OutputItr a_out,
                         T_UnaryPred a_pred, T const & a_newValue);
 
   template <typename T_InputItr, typename T_OutputItr, typename T>
@@ -388,7 +405,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   void
-    unique_copy_all(const T_Container1& a_in, T_Container2& a_out);
+    unique_copy_all(T_Container1& a_in, T_Container2& a_out);
 
   ///-------------------------------------------------------------------------
   /// @brief Removes duplicate elements.
@@ -398,7 +415,7 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
   void
-    unique_copy_all(const T_Container1& a_in, T_Container2& a_out,
+    unique_copy_all(T_Container1& a_in, T_Container2& a_out,
                     T_BinaryPred);
 
   ///-------------------------------------------------------------------------
@@ -406,8 +423,8 @@ namespace tloc { namespace core {
   ///-------------------------------------------------------------------------
   template <typename T_Container1, typename T_Container2, typename T_Container3>
   void
-    unique_copy_only_all (const T_Container1& a_in, T_Container2& a_out,
-                          const T_Container3& a_matchList);
+    unique_copy_only_all (T_Container1& a_in, T_Container2& a_out,
+                          T_Container3& a_matchList);
 
   ///-------------------------------------------------------------------------
   /// @brief Removes duplicate elements only if they are found in a_matchList
@@ -418,8 +435,8 @@ namespace tloc { namespace core {
   template <typename T_Container1, typename T_Container2, typename T_Container3,
             typename T_BinaryPred>
   void
-    unique_copy_only_all (const T_Container1& a_in, T_Container2& a_out,
-                          const T_Container3& a_matchList, T_BinaryPred);
+    unique_copy_only_all (T_Container1& a_in, T_Container2& a_out,
+                          T_Container3& a_matchList, T_BinaryPred);
 
   //------------------------------------------------------------------------
   // Sorting
@@ -539,7 +556,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_OutputIterator>
   T_OutputIterator
-    copy_all(const T_Container& a_toCopy, T_OutputIterator a_destRangeBegin);
+    copy_all(T_Container& a_toCopy, T_OutputIterator a_destRangeBegin);
 
   // Copies the range of elements [a_rangeBegin, a_rangeEnd) to aCopyTo and returns
   // an iterator to the first element in the destination range.
@@ -559,7 +576,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_OutputIterator>
   T_OutputIterator
-    copy_backward_all(const T_Container& a_toCopy,
+    copy_backward_all(T_Container& a_toCopy,
                       T_OutputIterator a_destRangeBegin);
 
   template <typename T_Container, typename T>
@@ -586,11 +603,11 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T>
   typename T_Container::iterator
-    lower_bound_all(const T_Container& a_toSearch, T const & a_value);
+    lower_bound_all(T_Container& a_toSearch, T const & a_value);
 
   template <typename T_Container, typename T, typename T_BinaryPred>
   typename T_Container::iterator
-    lower_bound_all(const T_Container& a_toSearch, T const & a_value,
+    lower_bound_all(T_Container& a_toSearch, T const & a_value,
                     T_BinaryPred a_pred);
 
   template <typename T_ForwardIterator, typename T>
@@ -607,6 +624,30 @@ namespace tloc { namespace core {
   template <typename T_ForwardItr>
   void
     delete_ptrs(T_ForwardItr a_first, T_ForwardItr a_last);
+
+  template <class T_InputIterator, class T_OutputIterator, class T_UnaryPred>
+  T_OutputIterator
+    transform (T_InputIterator a_first, T_InputIterator a_last,
+               T_OutputIterator a_result, T_UnaryPred a_op);
+
+  template <class T_InputIterator1, class T_InputIterator2,
+            class T_OutputIterator, class T_BinaryPred>
+  T_OutputIterator
+    transform (T_InputIterator1 a_first1, T_InputIterator1 a_last,
+               T_InputIterator2 a_first2, T_OutputIterator a_result,
+               T_BinaryPred a_binary_op);
+
+  template <class T_Container1, class T_Container2, class T_UnaryPred>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container2)
+    transform_all(T_Container1& a_toTransform,
+                  T_Container2& a_result, T_UnaryPred a_op);
+
+  template <class T_Container1, class T_Container2, class T_Container3,
+            class T_BinaryPred>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container3)
+    transform_all(T_Container1& a_toTransform, T_Container2& a_toTransformWith,
+                  T_Container3& a_result,
+                  T_BinaryPred a_binary_op);
 
   namespace detail
   {
@@ -934,7 +975,7 @@ namespace tloc { namespace core {
     ///-------------------------------------------------------------------------
     template <typename T_Container>
     T_Container
-      DoMerge(const T_Container& a_left, const T_Container& a_right);
+      DoMerge(T_Container& a_left, T_Container& a_right);
 
     ///-------------------------------------------------------------------------
     /// Performs "merge insertion sort" on a set of iterators.

@@ -1,8 +1,8 @@
 #include "tlocVector.h"
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
-#include "tlocVector.inl"
+#include "tlocVector.inl.h"
 
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -23,7 +23,7 @@
 #undef CLASS_NAME
 //------------------------------------------------------------------------
 // Include the definitions
-#include "tlocVector.inl"
+#include "tlocVector.inl.h"
 
 #else
 

@@ -17,6 +17,8 @@ namespace tloc { namespace math { namespace types {
   template<typename T>
   class Vector3 : public Vector<T, 3>
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
@@ -95,7 +97,7 @@ namespace tloc { namespace math { namespace types {
 };};};
 
 #ifdef TLOC_FULL_SOURCE
-#include "tlocVector3.inl"
+#include "tlocVector3.inl.h"
 #endif
 
 #endif

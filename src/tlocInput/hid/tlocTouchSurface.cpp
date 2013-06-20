@@ -1,6 +1,6 @@
 #include "tlocTouchSurface.h"
 
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes

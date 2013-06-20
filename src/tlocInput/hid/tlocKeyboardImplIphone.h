@@ -3,18 +3,16 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
-#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
-
 namespace tloc { namespace input {
 
-  // TODO: Fix this so it actually has the correct params associated (such as the UIWindow)
-  typedef ParamList<OpenGLView*> iphone_keyboard_param_type;
+  typedef ParamList<core_t::Any> iphone_keyboard_param_type;
 
 };};
 

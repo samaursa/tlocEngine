@@ -1,15 +1,23 @@
 #include "tlocCheckpoints.h"
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 namespace tloc { namespace core { namespace utils {
 
   Checkpoints::
-    Checkpoints(tl_uint a_numberOfCheckpoints)
-    : m_flags(a_numberOfCheckpoints)
+    Checkpoints(tl_uint a_numberOfCheckpoints, bool a_initial)
+    : m_flags(a_numberOfCheckpoints, a_initial)
   {
   }
 
-  Checkpoints::value_type Checkpoints::
+  Checkpoints::value_type&
+    Checkpoints::
+    operator [](tl_int a_index)
+  {
+    return m_flags[a_index];
+  }
+
+  Checkpoints::value_type
+    Checkpoints::
     operator [](tl_int a_index) const
   {
     return m_flags[a_index];
@@ -24,13 +32,13 @@ namespace tloc { namespace core { namespace utils {
   void Checkpoints::
     MarkAll()
   {
-    SetAllTo(false);
+    SetAllTo(true);
   }
 
   void Checkpoints::
     UnmarkAll()
   {
-    SetAllTo(true);
+    SetAllTo(false);
   }
 
   void Checkpoints::
@@ -62,7 +70,7 @@ namespace tloc { namespace core { namespace utils {
   void Checkpoints::
     Unmark(size_type a_index)
   {
-    m_flags[a_index] = true;
+    m_flags[a_index] = false;
   }
 
   void Checkpoints::

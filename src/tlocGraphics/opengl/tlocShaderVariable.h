@@ -5,7 +5,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/types/tlocAny.h>
-#include <tlocCore/types/tlocAny.inl>
+#include <tlocCore/types/tlocAny.inl.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocCore/containers/tlocContainerTraits.h>

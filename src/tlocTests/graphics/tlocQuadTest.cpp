@@ -2,7 +2,7 @@
 
 #include <tlocGraphics/component_system/tlocQuad.h>
 
-namespace TestingColor
+namespace TestingQuad
 {
   using namespace tloc;
   using namespace tloc::graphics::component_system;

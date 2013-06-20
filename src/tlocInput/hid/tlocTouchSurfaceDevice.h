@@ -4,12 +4,12 @@
 #include <tloccore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
-  
+
   class TouchSurfaceBufferedElement
   {
   public:
@@ -39,7 +39,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     TouchSurfaceEvent m_event;
   };
-  
+
   class TouchSurfaceDeviceBase
   {
     static const tl_size sm_maxTouches = 11;
@@ -60,7 +60,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     const touch_surface_event_type*
       GetTouch(touch_handle_type a_touchHandle) const;
-    
+
   protected:
 
     TouchSurfaceDeviceBase();
@@ -83,7 +83,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   private:
     container_type m_currentTouches;
   };
-  
+
   class TouchSurfaceDeviceBuffered
     : public TouchSurfaceDeviceBase
   {
@@ -102,14 +102,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     TouchSurfaceDeviceBuffered();
 
     const buffer_container_type& GetBufferedTouches() const;
-  
+
     void SendOnTouchBegin(touch_handle_type a_touchHandle,
                           tl_float a_x, tl_float a_y);
-    void SendOnTouchEnd(touch_handle_type a_touchHandle, 
+    void SendOnTouchEnd(touch_handle_type a_touchHandle,
                         tl_float a_x, tl_float a_y);
     void SendOnTouchMove(touch_handle_type a_touchHandle,
                          tl_float a_x, tl_float a_y);
-    void SendOnTouchCancel(touch_handle_type a_touchHandle, 
+    void SendOnTouchCancel(touch_handle_type a_touchHandle,
                            tl_float a_x, tl_float a_y);
 
     void Reset();
@@ -145,9 +145,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                            tl_float a_x, tl_float a_y);
 
     void Reset();
-    
+
   };
-  
+
 };};};};
 
 #endif

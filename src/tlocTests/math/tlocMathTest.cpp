@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 
 namespace TestingTlocMath
 {
@@ -82,5 +82,37 @@ namespace TestingTlocMath
     f32 value1 = 0.0f;
     f32 value2 = 1.0f;
     CHECK(Mathf::Lerp(value1, value2) == Approx(0.5f));
+  }
+
+  TEST_CASE("Math/Remainder", "")
+  {
+    {
+      tl_float num1 = 6.0f;
+      tl_float num2 = 2.0f;
+      tl_float rem = math::Remainder(num1, num2);
+      CHECK(rem == Approx(0.0f));
+
+      num1 = 5.0f;
+      rem = math::Remainder(num1, num2);
+      CHECK(rem == Approx(1.0f));
+    }
+
+    {
+      tl_float num1 = 1.0f;
+      tl_float num2 = 0.1f;
+      tl_float rem = math::Remainder(num1, num2);
+      CHECK(rem == Approx(0.0f));
+    }
+
+    {
+      tl_int num1 = 6;
+      tl_int num2 = 2;
+      tl_int rem = math::Remainder(num1, num2);
+      CHECK(rem == 0);
+
+      num1 = 5;
+      rem = math::Remainder(num1, num2);
+      CHECK(rem == 1);
+    }
   }
 };

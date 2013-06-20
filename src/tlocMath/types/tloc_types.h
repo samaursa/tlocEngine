@@ -4,7 +4,10 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocMath/types/tlocAngle.h>
+#include <tlocMath/types/tlocAspectRatio.h>
 #include <tlocMath/types/tlocCircle.h>
+#include <tlocMath/types/tlocFOV.h>
+#include <tlocMath/types/tlocRay.h>
 #include <tlocMath/types/tlocRectangle.h>
 
 #include <tlocMath/types/tloc_matrix.h>

@@ -17,8 +17,12 @@
 // Avoid including extra headers here
 
 #include <assert.h>
+#include <tlocCore/types/tlocNullptr.h>
 #include <tlocCore/tlocStaticAssert.h>
+#include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
+
+#include <3rdParty/loki/TypeTraits.h>
 
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
@@ -70,11 +74,24 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// NULL
+// We disallow the use of NULL but some APIs require 0 as an input argument
+// which can be easily overlooked. Passing NULL in those cases is preferred.
+// We provide TLOC_NULL which should be used instead of NULL. This is to show
+// that the use of NULL was deliberate and that nullptr could not be used.
+
+#define TLOC_NULL NULL
+
+//////////////////////////////////////////////////////////////////////////
 // Platform specific
 
 #if defined(TLOC_OS_WIN)
 # define TLOC_MAIN main
 #elif defined(TLOC_OS_IPHONE)
+  // This is a function declaration for TLOC_MAIN (note that TLOC_MAIN is
+  // no longer a macro name on iOS). If you get an unresolved linking error wrt
+  // TLOC_MAIN make sure to define: int TLOC_MAIN(int argc, char** argv){}
+  // and of course, put your 'main' code in that function
   int TLOC_MAIN(int argc, char** argv);
 #endif
 
@@ -155,7 +172,7 @@
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
 # if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
-#   error "Exception handling must be disabled for this project."
+#   error "RTTI must be disabled for this project."
 # endif
 #endif
 
@@ -293,8 +310,15 @@
 
 #if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
 
-# define TLOC_ASSERT(_Expression, _Msg) \
+// Sometimes VS gives the warning C4127: conditional expression is constant. To
+// circumvent that, TLOC_ASSERT for VS is slightly different.
+#if defined(_MSC_VER)
+  #define TLOC_ASSERT(_Expression, _Msg) \
+  assert( (_Msg, _Expression) )
+#else
+  #define TLOC_ASSERT(_Expression, _Msg) \
   assert(_Expression && _Msg)
+#endif
 
 // Use this macro when warning the user of a potential problem that the user may
 // have overlooked. These can be safely disabled, i.e. the function guarantees
@@ -311,8 +335,8 @@
 #endif
 
 // Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != NULL, #_Pointer_ " cannot be NULL")
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == NULL, #_Pointer_ " should be NULL")
+#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
+#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
 
 //````````````````````````````````````````````````````````````````````````
 // Compile time
@@ -323,6 +347,9 @@
 #else
 # define TLOC_STATIC_ASSERT(_Expression, _Msg)
 #endif
+
+# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
+  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
 
 # define TLOC_STATIC_ASSERT_WIP() \
   TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
@@ -339,13 +366,15 @@
   TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
 
 # define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isFloat, Type_must_be_a_FLOAT);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT);
 # define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isArith, Type_must_be_an_ARITHMETIC);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC);
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<T>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
+# define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
+  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported);
 
 //------------------------------------------------------------------------
 // Low level assertions

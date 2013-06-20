@@ -2,7 +2,7 @@
 
 #define private public
 #include <tlocCore/data_structures/tlocCharBuffer.h>
-#include <tlocCore/data_structures/tlocCharBuffer.inl>
+#include <tlocCore/data_structures/tlocCharBuffer.inl.h>
 
 namespace ProtectedBufferTest
 {
@@ -29,7 +29,7 @@ namespace ProtectedBufferTest
   TEST_CASE("Core/containers/ProtectedBuffers", "")
   {
     typedef CharBuffer<5>                              char5;
-    typedef configs::BuildConfig<>::build_config_type  build_config_type;
+    typedef configs::BuildConfig::build_config_type  build_config_type;
 
     {
       const char* word = "1234";
@@ -48,7 +48,7 @@ namespace ProtectedBufferTest
       bool isBufferValid = p.DoIsBufferValid(build_config_type());
 
       CheckBufferStatusForInvalidBuffer
-        <configs::BuildConfig<>::build_config_type>()(isBufferValid);
+        <configs::BuildConfig::build_config_type>()(isBufferValid);
       //CHECK(isBufferValid == false);
 
       p.DoInit(build_config_type()); // To avoid the assertion in the destructor

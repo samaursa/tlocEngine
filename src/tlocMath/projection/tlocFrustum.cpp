@@ -236,7 +236,7 @@ namespace tloc { namespace math { namespace proj {
 
     Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
     Vector3<real_type> rayDir(rayOrigin);
-    rayDir.Norm();
+    rayDir.Normalize();
 
     return ray_type(typename ray_type::origin(rayOrigin),
                     typename ray_type::direction(rayDir));

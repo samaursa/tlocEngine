@@ -98,7 +98,7 @@ namespace tloc { namespace math { namespace types {
   {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_xyPoint);
+    displacement = displacement.Sub(a_xyPoint);
 
     value_type distance = displacement.Length();
 
@@ -113,7 +113,7 @@ namespace tloc { namespace math { namespace types {
   {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_other.m_position);
+    displacement = displacement.Sub(a_other.m_position);
 
     value_type outerDistance = displacement.Length() + a_other.m_radius;
 
@@ -128,7 +128,7 @@ namespace tloc { namespace math { namespace types {
   {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_other.m_position);
+    displacement = displacement.Sub(a_other.m_position);
 
     value_type distance = displacement.Length();
 

@@ -123,7 +123,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    m_vpMatrix.Mul(viewMat);
+    m_vpMatrix = m_vpMatrix * viewMat;
   }
 
   void QuadRenderSystem::ProcessEntity(const entity_manager*,

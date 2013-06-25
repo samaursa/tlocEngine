@@ -133,7 +133,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    m_vpMatrix.Mul(viewMat);
+    m_vpMatrix = m_vpMatrix * viewMat;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

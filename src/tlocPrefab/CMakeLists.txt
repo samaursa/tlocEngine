@@ -2,13 +2,13 @@ set(TLOC_PREFAB
   tlocPrefabBase.h 
   tloc_prefab.cpp 
   tloc_prefab.h 
-  tloc_prefab.inl 
+  tloc_prefab.inl.h 
   )
 
 set(TLOC_PREFAB_CORE
   core/tloc_core.cpp 
   core/tloc_core.h 
-  core/tloc_core.inl 
+  core/tloc_core.inl.h 
   )
 
 set(TLOC_PREFAB_GRAPHICS
@@ -16,23 +16,27 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCamera.h 
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
+  graphics/tlocMesh.h
+  graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocSprite.h
+  graphics/tlocSprite.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
-  graphics/tloc_graphics.inl 
+  graphics/tloc_graphics.inl.h 
   )
 
 set(TLOC_PREFAB_INPUT
   input/tloc_input.cpp 
   input/tloc_input.h 
-  input/tloc_input.inl 
+  input/tloc_input.inl.h 
   )
 
 set(TLOC_PREFAB_MATH
   math/tloc_math.cpp 
   math/tloc_math.h 
-  math/tloc_math.inl 
+  math/tloc_math.inl.h 
   )
 
 set(TLOC_PREFAB_PHYSICS
@@ -40,7 +44,7 @@ set(TLOC_PREFAB_PHYSICS
   physics/tlocRigidBody.h 
   physics/tloc_physics.cpp 
   physics/tloc_physics.h 
-  physics/tloc_physics.inl
+  physics/tloc_physics.inl.h
   )
 
 #-------------------------------------------

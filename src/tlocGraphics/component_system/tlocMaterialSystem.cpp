@@ -1,8 +1,9 @@
 #include "tlocMaterialSystem.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -37,78 +38,59 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
-    ComponentMapper<mat_type> mat = a_ent->GetComponents(components::material);
+    typedef ComponentMapper<mat_type>                   mat_mapper;
+
+    mat_mapper mat = a_ent->GetComponents(components::material);
 
     // Material should have vertex and fragment shader data, for now we will
     // assume that both exist
-    mat_type& currMat = mat[0];
 
-    gl::VertexShader          vShader;
-    gl::FragmentShader        fShader;
-    gl::Shader_I::error_type  result = ErrorSuccess;
-
-    shader_prog_ptr sp = currMat.GetShaderProgRef();
-
-    if (sp->IsLinked())
-    { return ErrorSuccess; }
-
-    vShader.Load(currMat.GetVertexSource().c_str() );
-    result = vShader.Compile();
-    TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
-
-    result = fShader.Load(currMat.GetFragmentSource().c_str());
-    result = fShader.Compile();
-    TLOC_ASSERT(result == ErrorSuccess, "Could not compile fragment shader");
-
-    result = sp->AttachShaders
-      (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
-    TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
-
-    sp->Enable().Ignore();
-    result = sp->Link();
-    TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
-    sp->LoadUniformInfo();
-    sp->LoadAttributeInfo();
-    sp->Disable();
-
-    //------------------------------------------------------------------------
-    // Add user attributes and uniforms
-
-    typedef mat_type::shader_op_ptr          shader_op_ptr;
-
-    // Add user's attributes and uniforms
-    if ( currMat.GetMasterShaderOperator() )
+    for (mat_mapper::size_type i = 0; i < mat.size(); ++i)
     {
-      shader_op_ptr so_user = shader_op_ptr(new shader_op_ptr::value_type());
+      mat_type* matPtr = mat[i];
 
-      {
-        gl::ShaderOperator::uniform_iterator itr, itrEnd;
-        itr = currMat.GetMasterShaderOperator()->begin_uniform();
-        itrEnd = currMat.GetMasterShaderOperator()->end_uniform();
+      gl::VertexShader          vShader;
+      gl::FragmentShader        fShader;
+      gl::Shader_I::error_type  result = ErrorSuccess;
 
-        for (; itr != itrEnd; ++itr)
-        {
-          so_user->AddUniform(itr->first);
-        }
-      }
+      shader_prog_ptr sp = matPtr->GetShaderProgRef();
 
-      {
-        gl::ShaderOperator::attribute_iterator itr, itrEnd;
-        itr = currMat.GetMasterShaderOperator()->begin_attribute();
-        itrEnd = currMat.GetMasterShaderOperator()->end_attribute();
+      if (sp->IsLinked())
+      { continue; }
 
-        for (; itr != itrEnd; ++itr)
-        {
-          so_user->AddAttribute(itr->first);
-        }
-      }
+      vShader.Load(matPtr->GetVertexSource().c_str() );
+      result = vShader.Compile();
+      TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
 
-      sp->Enable();
-      so_user->PrepareAllUniforms(*sp);
-      so_user->PrepareAllAttributes(*sp);
+      result = fShader.Load(matPtr->GetFragmentSource().c_str());
+      result = fShader.Compile();
+      TLOC_ASSERT(result == ErrorSuccess, "Could not compile fragment shader");
+
+      result = sp->AttachShaders
+        (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
+      TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
+
+      result = sp->Link();
+      TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
+      sp->LoadUniformInfo();
+      sp->LoadAttributeInfo();
       sp->Disable();
 
-      currMat.DoGetShaderOpContainerRef().push_back(so_user);
+      //------------------------------------------------------------------------
+      // Add user attributes and uniforms
+
+      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+
+      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
+
+      sp->Enable();
+      for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+           itr != itrEnd; ++itr)
+      {
+        (*itr)->PrepareAllUniforms(*sp);
+        (*itr)->PrepareAllAttributes(*sp);
+      }
+      sp->Disable();
     }
 
     return ErrorSuccess;
@@ -119,7 +101,13 @@ namespace tloc { namespace graphics { namespace component_system {
   { return ErrorSuccess; }
 
   void MaterialSystem::ProcessEntity(const entity_manager*,
-                                     const entity_type* )
+                                     const entity_type*,
+                                     f64)
   { }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  template class core_sptr::SharedPtr<MaterialSystem>;
 
 };};};

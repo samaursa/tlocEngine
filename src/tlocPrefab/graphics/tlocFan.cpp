@@ -3,6 +3,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocFan.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -16,7 +17,8 @@ namespace tloc { namespace prefab { namespace graphics {
     CreateFan(core_cs::EntityManager& a_mgr,
               core_cs::ComponentPoolManager& a_poolMgr,
               math_t::Circlef32 a_circle,
-              tl_size a_numSides)
+              tl_size a_numSides,
+              bool a_addTexCoords)
   {
     using namespace core_cs;
     using namespace math_cs;
@@ -25,38 +27,70 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace tloc::graphics::component_system::components;
 
     typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef gfx_cs::fan_sptr_pool   fan_pool;
+
+    gfx_cs::fan_sptr_pool_sptr      fanPool;
 
     // Create the fan (and the fan pool if necessary)
-    comp_pool_ptr cpool;
     if (a_poolMgr.Exists(fan) == false)
-    { cpool = a_poolMgr.CreateNewPool<FanPtr>(fan); }
+    { fanPool = a_poolMgr.CreateNewPool<fan_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(fan); }
-
-    typedef tloc::graphics::component_system::FanPool fan_pool;
-
-    fan_pool* fanPool = (*cpool)->GetAs<fan_pool>();
+    { fanPool = a_poolMgr.GetPool<fan_sptr>(); }
 
     fan_pool::iterator itr = fanPool->GetNext();
-    itr->SetElement(FanPtr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+    itr->SetValue(fan_sptr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+
+
+    typedef math_cs::transform_f32_sptr_pool  t_pool;
+    math_cs::transform_f32_sptr_pool_sptr     tPool;
 
     if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
-
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
+    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetElement(TransformPtr(new Transform()) );
+    itrTransform->SetValue(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
     Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itr->GetElement()) );
+    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
+    a_mgr.InsertComponent(ent, &*(itr->GetValue()) );
+
+    // Create the texture coords (and the texture coord pool if necessary)
+    if (a_addTexCoords)
+    {
+      typedef gfx_cs::texture_coords_sptr_pool  tcoord_pool;
+      gfx_cs::texture_coords_sptr_pool_sptr     tCoordPool;
+
+      if (a_poolMgr.Exists(texture_coords) == false)
+      { tCoordPool = a_poolMgr.CreateNewPool<texture_coords_sptr>(); }
+      else
+      { tCoordPool = a_poolMgr.GetPool<texture_coords_sptr>(); }
+
+      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
+      texture_coords_sptr tc(new TextureCoords());
+
+      typedef math_t::Circlef32 circle_type;
+      // Create the texture co-ordinates
+      circle_type circForTex;
+      circForTex.SetRadius(0.5f);
+
+      using math_t::degree_f32;
+      const f32 angleInterval = 360.0f/a_numSides;
+
+      tc->AddCoord(math_t::Vec2f32(0.5f, 0.5f));
+      for (f32 i = 0; i <= a_numSides; ++i)
+      {
+        math_t::Vec2f32 newTexCoord =
+          circForTex.GetCoord(degree_f32(angleInterval * i));
+        newTexCoord += math_t::Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
+        tc->AddCoord(newTexCoord);
+      }
+
+      itrTCoord->SetValue(tc);
+      a_mgr.InsertComponent(ent, itrTCoord->GetValue().get() );
+    }
 
     return ent;
   }

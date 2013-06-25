@@ -673,6 +673,8 @@ namespace TestingInput
 
   TEST_CASE("Input/InputManager/General", "")
   {
+    using namespace input::param_options;
+
     core::time::Timer_T<> countDown;
 
     HWND wnd = CreateWin32Window();
@@ -682,10 +684,13 @@ namespace TestingInput
     InputManagerB inputMgr(params);
     InputManagerI inputMgrImm(params);
 
-    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>();
+    param_options::value_type options =
+      TL_WIN_DISCL_FOREGROUND | TL_WIN_DISCL_EXCLUSIVE;
+
+    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>(options);
     CHECK( (kb != nullptr) );
 
-    KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>();
+    KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>(options);
     CHECK( (kbImm != nullptr) );
 
     if (kb)
@@ -702,12 +707,12 @@ namespace TestingInput
     MouseB::abs_range_type rangeX(-1000, 1000);
     MouseB::abs_range_type rangeY(-1000, 1000);
 
-    MouseB* mouse = inputMgr.CreateHID<MouseB>();
+    MouseB* mouse = inputMgr.CreateHID<MouseB>(options);
     CHECK( (mouse != nullptr) );
     mouse->SetClampX(rangeX);
     mouse->SetClampY(rangeY);
 
-    MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>();
+    MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>(options);
     CHECK( (mouseImm != nullptr) );
     mouseImm->SetClampX(rangeX);
     mouseImm->SetClampY(rangeY);

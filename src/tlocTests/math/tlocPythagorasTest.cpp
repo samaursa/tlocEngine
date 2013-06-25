@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
 
 namespace TestingPythagoras

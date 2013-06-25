@@ -1,4 +1,5 @@
 #include "tlocError.h"
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace error {
 
@@ -61,6 +62,14 @@ namespace tloc { namespace core { namespace error {
     GetFileName() const
   {
     return static_cast<const derived_type*>(this)->DoGetFileName();
+  }
+
+  template <ERROR_TI_TEMP>
+  void Error_TI<ERROR_TI_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_error, a_other.m_error);
   }
 
   template <ERROR_TI_TEMP>
@@ -152,6 +161,18 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_T_TEMP>
   void Error_T<ERROR_T_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    base_type::swap(a_other);
+    swap(m_errorCheckedByUser, a_other.m_errorCheckedByUser);
+    swap(m_file, a_other.m_file);
+    swap(m_line, a_other.m_line);
+  }
+
+  template <ERROR_T_TEMP>
+  void Error_T<ERROR_T_PARAMS>::
     DoFailed() const
   { m_errorCheckedByUser = true; }
 
@@ -206,6 +227,13 @@ namespace tloc { namespace core { namespace error {
     DoSetErrorCode(a_other.GetErrorCode());
   }
 
+  void Error_T<ERROR_T_RELEASE_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    base_type::swap(a_other);
+  }
 
   void Error_T<ERROR_T_RELEASE_PARAMS>::
     DoSucceeded() const

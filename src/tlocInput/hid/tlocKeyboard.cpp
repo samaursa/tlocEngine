@@ -1,7 +1,7 @@
 #include "tlocKeyboard.h"
 
-#include <tlocCore/types/tlocTypes.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes

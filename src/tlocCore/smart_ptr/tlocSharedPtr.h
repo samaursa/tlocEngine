@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/tlocFunctional.h>
+#include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -29,7 +30,6 @@ namespace tloc { namespace core { namespace smart_ptr {
             "Copy of NULL SharedPtr is disabled");
           TLOC_UNUSED(a_rawPtr);
         }
-
       };
     };
   };
@@ -64,13 +64,13 @@ namespace tloc { namespace core { namespace smart_ptr {
     explicit SharedPtr(pointer a_rawPtr);
     SharedPtr(const this_type& a_other);
 
-    template <typename T_Other>
-    SharedPtr(const SharedPtr<T_Other>& a_other);
+    template <typename T_Other, typename T_OtherPolicy>
+    SharedPtr(const SharedPtr<T_Other, T_OtherPolicy>& a_other);
     ~SharedPtr();
 
-    template <typename T_Other>
-    this_type& operator= (const SharedPtr<T_Other>& a_other);
-    this_type& operator= (const this_type& a_other);
+    template <typename T_Other, typename T_OtherPolicy>
+    this_type& operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other);
+    this_type& operator= (this_type a_other);
 
     ///-------------------------------------------------------------------------
     /// @brief Dangerous to use this. Use SharedPtr<> semantics
@@ -100,7 +100,31 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename Y>
     void           reset(Y* a_ptr);
 
+    template <typename T_Other>
+    void           swap(SharedPtr<T_Other, null_copy_policy_type>& a_other);
     void           swap(this_type& a_other);
+
+    //------------------------------------------------------------------------
+    // friend functions - casting
+    template <typename T_T, typename T_T_NullCopyPolicy, typename U>
+    friend
+    SharedPtr<T_T, T_T_NullCopyPolicy>
+      static_pointer_cast(const SharedPtr<U, T_T_NullCopyPolicy>& a_sp);
+
+    template <typename T_Other, typename U>
+    friend
+    SharedPtr<T_Other>
+      static_pointer_cast(const SharedPtr<T_Other>& a_sp);
+
+    template <typename T_T, typename T_T_NullCopyPolicy, typename U>
+    friend
+    SharedPtr<T_T, T_T_NullCopyPolicy>
+      const_pointer_cast(const SharedPtr<U, T_T_NullCopyPolicy>& a_sp);
+
+    template <typename T_Other, typename U>
+    friend
+    SharedPtr<T_Other>
+      const_pointer_cast(const SharedPtr<U>& a_sp);
 
   private:
     void DoAddRef();
@@ -115,14 +139,33 @@ namespace tloc { namespace core { namespace smart_ptr {
   // Template definitions
 
   template <typename T, typename T_NullCopyPolicy>
-  template <typename T_Other>
+  template <typename T_Other, typename T_OtherPolicy>
   SharedPtr<T, T_NullCopyPolicy>::
-    SharedPtr(const SharedPtr<T_Other>& a_other)
+    SharedPtr(const SharedPtr<T_Other, T_OtherPolicy>& a_other)
     : m_rawPtr  (a_other.get() )
     , m_refCount(a_other.DoExposeCounter() )
   {
     // Mainly for containers
     DoAddRef();
+  }
+
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename Y>
+  void SharedPtr<T, T_NullCopyPolicy>::
+    reset(Y* a_ptr)
+  {
+    this_type(a_ptr).swap(*this);
+  }
+
+  template <typename T, typename T_NullCopyPolicy>
+  template <typename T_Other>
+  void SharedPtr<T, T_NullCopyPolicy>::
+    swap(SharedPtr<T_Other, T_NullCopyPolicy>& a_other)
+  {
+    using core::swap;
+
+    swap(m_rawPtr, a_other.m_rawPtr);
+    swap(m_refCount, a_other.m_refCount);
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -206,6 +249,52 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <class T>
   bool operator >=(nullptr_t, const SharedPtr<T>& b)
   { return !(nullptr < b); }
+
+  //////////////////////////////////////////////////////////////////////////
+  // casting
+
+  template <typename T, typename T_NullCopyPolicy, typename U>
+  SharedPtr<T, T_NullCopyPolicy>
+    static_pointer_cast(const SharedPtr<U, T_NullCopyPolicy>& a_sp)
+  {
+    typedef SharedPtr<T, T_NullCopyPolicy>   return_type;
+
+    return_type sp;
+    sp.m_rawPtr = static_cast<T*>(a_sp.m_rawPtr);
+    sp.m_refCount = a_sp.m_refCount;
+    sp.DoAddRef();
+
+    return sp;
+  }
+
+  template <typename T, typename U>
+  SharedPtr<T>
+    static_pointer_cast(const SharedPtr<U>& a_sp)
+  {
+    return core_sptr::static_pointer_cast
+      <T, p_shared_ptr::null_copy::Allow>(a_sp);
+  }
+
+  template <typename T, typename T_NullCopyPolicy, typename U>
+  SharedPtr<T, T_NullCopyPolicy>
+    const_pointer_cast(const SharedPtr<U, T_NullCopyPolicy>& a_sp)
+  {
+    typedef SharedPtr<T, T_NullCopyPolicy>   return_type;
+
+    return_type sp;
+    sp.m_rawPtr = const_cast<T*>(a_sp.m_rawPtr);
+    sp.m_refCount = a_sp.m_refCount;
+    sp.DoAddRef();
+
+    return sp;
+  }
+
+  template <typename T, typename U>
+  SharedPtr<T>
+    const_pointer_cast(const SharedPtr<U>& a_sp)
+  {
+    return static_pointer_cast<T, p_shared_ptr::null_copy::Allow>(a_sp);
+  }
 
 };};};
 

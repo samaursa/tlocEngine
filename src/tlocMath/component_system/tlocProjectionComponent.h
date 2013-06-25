@@ -36,9 +36,8 @@ namespace tloc { namespace math { namespace component_system {
   //------------------------------------------------------------------------
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<Projection>    ProjectionPtr;
-  typedef core::component_system::
-          ComponentPool_TI<ProjectionPtr>           ProjectionPool;
+  TLOC_TYPEDEF_SHARED_PTR(Projection, projection);
+  TLOC_TYPEDEF_COMPONENT_POOL(projection_sptr, projection_sptr);
 
 };};};
 

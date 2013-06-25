@@ -1,5 +1,6 @@
 set(TLOC_TESTS_GRAPHICS
   main.cpp
+  tlocTestCommon.h
   tlocAttributeVariableTest.cpp
   tlocColorTest.cpp
   tlocGLGeneralTest.cpp
@@ -7,11 +8,13 @@ set(TLOC_TESTS_GRAPHICS
   tlocGraphicsModesTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
+  tlocObjLoaderTest.cpp
   tlocShaderComponentTest.cpp
   tlocShaderOperatorTest.cpp
   tlocShaderProgramTest.cpp
+  tlocSpriteLoaderTest.cpp
   tlocTestCommon.cpp
-  tlocTestCommon.h
+  tlocTextureCoordsTest.cpp
   tlocUniformVariableTest.cpp
   tlocVertexTest.cpp
   tlocWindowTest.cpp

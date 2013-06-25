@@ -1,8 +1,8 @@
 #include "tlocInputManager.h"
 #include "tlocInputTypes.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
@@ -44,7 +44,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
-    DoCreateHID(parameter_options::Type a_params)
+    DoCreateHID(param_options::value_type a_params)
   {
     return m_impl->template CreateHID<T_InputObject>(a_params);
   }
@@ -120,7 +120,7 @@ namespace tloc { namespace input {
 
 #define INSTANTIATE_FOR_HID(_HID_, _type_)\
   template _HID_<_type_::policy_type>* _type_::DoCreateHID\
-  <_HID_<_type_::policy_type> >(parameter_options::Type);\
+  <_HID_<_type_::policy_type> >(param_options::value_type);\
   template _HID_<_type_::policy_type>* _type_::DoGetHID\
   <_HID_<_type_::policy_type> >(_type_::size_type);\
 

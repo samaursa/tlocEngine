@@ -265,6 +265,6 @@ namespace tloc { namespace core { namespace memory {
 /// of the rare few classes where the inline file is being inclued in the
 /// header
 ///-------------------------------------------------------------------------
-#include "tlocMemoryPool.inl"
+#include "tlocMemoryPool.inl.h"
 
 #endif

@@ -1,8 +1,8 @@
 #include "tlocCircle.h"
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -171,7 +171,7 @@ namespace tloc { namespace math { namespace types {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiation for StrongType<>
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef32::point_type);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef64::point_type);

@@ -33,7 +33,7 @@ namespace tloc { namespace core { namespace component_system {
     const component_list&       GetComponents(component_type a_type) const;
 
     template <typename T_ComponentType>
-    T_ComponentType&            GetComponent(size_type a_index = 0) const;
+    T_ComponentType*            GetComponent(size_type a_index = 0) const;
 
     entity_id                   GetID() const;
     size_type                   GetIndex() const;
@@ -64,7 +64,7 @@ namespace tloc { namespace core { namespace component_system {
   // template definitions
 
   template <typename T_ComponentType>
-  T_ComponentType&
+  T_ComponentType*
     Entity::GetComponent(size_type a_index) const
   {
     typedef ComponentMapper<T_ComponentType> cmapper;
@@ -86,6 +86,6 @@ namespace tloc { namespace core { namespace component_system {
 /// header because of linker issues (because it is not a template) ;)
 /// http://www.parashift.com/c++-faq/inline-member-fns.html
 ///-------------------------------------------------------------------------
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #endif

@@ -1,7 +1,7 @@
 #include "tlocEntityManager.h"
 
-#include <tlocCore/component_system/tlocEntity.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 

@@ -1,7 +1,8 @@
 #include "tlocRigidBodySystem.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -29,10 +30,11 @@ namespace tloc { namespace physics { namespace component_system {
     {
       using namespace tloc::core::component_system;
 
-      ComponentMapper<rb_component> rigidBodyComponents =
-        a_ent->GetComponents(components::k_rigidBody);
 
-      return rigidBodyComponents[0];
+      phys_cs::RigidBody* rigidBodyPtr =
+        a_ent->GetComponent<phys_cs::RigidBody>();
+
+      return *rigidBodyPtr;
     }
 
     error_type
@@ -61,7 +63,8 @@ namespace tloc { namespace physics { namespace component_system {
 
       for (size_type i = 0; i < numComponents; ++i)
       {
-        const rb_shape_type rbShape = rigidBodyShapeComponents[i].GetRigidBodyShape();
+        const rb_shape_type rbShape =
+          rigidBodyShapeComponents[i]->GetRigidBodyShape();
 
         result = rb.CreateRigidBodyShape(rbShape);
 
@@ -121,7 +124,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodySystem::
-    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent)
+    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent, f64)
   {
     using namespace tloc::core::component_system;
 
@@ -139,22 +142,19 @@ namespace tloc { namespace physics { namespace component_system {
 
     const entity_type* ent = a_ent;
 
-    ComponentMapper<transform_type> transformComponents =
-      ent->GetComponents(tloc::math::component_system::components::transform);
-
-    transform_type& transform = transformComponents[0];
+    math_cs::Transform* transformPtr = ent->GetComponent<math_cs::Transform>();
 
     transform_type::position_type position((real_type)rbPosition[0],
                                            (real_type)rbPosition[1],
-                                           transform.GetPosition()[2]);
+                                           transformPtr->GetPosition()[2]);
 
     transform_type::orientation_type orientation
       ((real_type)rbOrientation[0], (real_type)rbOrientation[2], (real_type)0,
        (real_type)rbOrientation[1], (real_type)rbOrientation[3], (real_type)0,
        (real_type)0,                (real_type)0,                (real_type)1);
 
-    transform.SetPosition(position);
-    transform.SetOrientation(orientation);
+    transformPtr->SetPosition(position);
+    transformPtr->SetOrientation(orientation);
 
     TLOC_UNUSED(a_mgr);
   }
@@ -220,5 +220,10 @@ namespace tloc { namespace physics { namespace component_system {
 
     return result;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodySystem);
 
 };};};

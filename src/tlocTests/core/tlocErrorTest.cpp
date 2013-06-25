@@ -39,8 +39,8 @@ namespace TestingPair
 
     {
       error::Error err = TLOC_ERROR(common_error_types::error_failure);
-      err == ErrorFailure; // We checked the error
-      TLOC_UNUSED(err);
+      bool result = err == ErrorFailure; // We checked the error
+      TLOC_UNUSED_2(err, result);
       // Should not crash on destruction
 
       // Should crash if uncommented
@@ -53,6 +53,20 @@ namespace TestingPair
 
       // Will crash unless we choose to ignore
       err.Ignore();
+    }
+
+    {
+      error::Error err = TLOC_ERROR(common_error_types::error_success);
+      error::Error err2 = TLOC_ERROR(common_error_types::error_failure);
+
+      err.swap(err2);
+
+      CHECK(err  == common_error_types::error_failure);
+      CHECK(err2 == common_error_types::error_success);
+
+      swap(err2, err);
+      CHECK(err2 == common_error_types::error_failure);
+      CHECK(err  == common_error_types::error_success);
     }
 
     {

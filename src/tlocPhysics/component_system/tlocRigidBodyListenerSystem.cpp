@@ -1,7 +1,8 @@
 #include "tlocRigidBodyListenerSystem.h"
 
 #include <tlocCore/error/tlocError.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
@@ -47,10 +48,10 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component& rbListenerComponent =
+      rb_listener_component* rbListenerComponent =
         rbListenerComponentsMapped[0];
 
-      return rbListenerComponent.GetRigidBodyListener();
+      return rbListenerComponent->GetRigidBodyListener();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -162,7 +163,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    Pre_ProcessActiveEntities()
+    Pre_ProcessActiveEntities(f64)
   {
     typedef contact_event_list::const_iterator      const_contact_iterator;
 
@@ -193,7 +194,7 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    ProcessEntity(const entity_manager* , const entity_type* )
+    ProcessEntity(const entity_manager* , const entity_type*, f64 )
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -213,5 +214,10 @@ namespace tloc { namespace physics { namespace component_system {
     m_allContactEvents[contact::k_end].push_back(a_event);
     return false;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);
 
 };};};

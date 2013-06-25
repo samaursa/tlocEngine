@@ -2,6 +2,7 @@
 #define _TLOC_CORE_ERROR_H_
 
 #include <tlocCore/tlocCoreBase.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocCore/error/tlocErrorTypes.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -27,6 +28,8 @@ namespace tloc { namespace core { namespace error {
 
     tl_int      GetLineNumber() const;
     const char* GetFileName() const;
+
+    void        swap(this_type& a_other);
 
     bool operator==(const this_type& a_other) const;
     bool operator==(const code_type& a_other) const;
@@ -79,6 +82,8 @@ namespace tloc { namespace core { namespace error {
     ~Error_T();
 
     void operator=(const this_type& a_other);
+
+    void swap(this_type& a_other);
 
     using base_type::operator ==;
     using base_type::operator !=;
@@ -134,6 +139,8 @@ namespace tloc { namespace core { namespace error {
 
     void operator=(const this_type& a_other);
 
+    void swap(this_type& a_other);
+
     using base_type::operator ==;
     using base_type::operator !=;
 
@@ -159,6 +166,13 @@ namespace tloc { namespace core { namespace error {
     using base_type::DoSetErrorCode;
   };
 
+  //------------------------------------------------------------------------
+  // swap
+
+  TL_I void swap(Error_TI<configs::p_build_config::Release>& a,
+                 Error_TI<configs::p_build_config::Release>& b)
+  { a.swap(b); }
+
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -166,6 +180,26 @@ namespace tloc { namespace core { namespace error {
 
 
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_Derived>
+  TL_I void swap(core_err::Error_TI<T_Derived>& a,
+                 core_err::Error_TI<T_Derived>& b)
+  { a.swap(b); }
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T_BuildConfig>
+  TL_I void swap(core_err::Error_T<T_BuildConfig>& a,
+                 core_err::Error_T<T_BuildConfig>& b)
+  { a.swap(b); }
+
+};};
 
 ///////////////////////////////////////////////////////////////////////////
 // Macros for the basic error types

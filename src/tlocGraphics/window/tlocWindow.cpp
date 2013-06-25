@@ -1,6 +1,6 @@
 #include "tlocWindow.h"
 
-#include <tlocCore/containers/tlocQueue.inl>
+#include <tlocCore/containers/tlocQueue.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes

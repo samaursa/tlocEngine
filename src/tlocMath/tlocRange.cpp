@@ -1,5 +1,5 @@
 #include "tlocRange.h"
-#include "tlocRange.inl"
+#include "tlocRange.inl.h"
 
 namespace tloc { namespace math {
 

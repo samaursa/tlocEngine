@@ -118,7 +118,7 @@ namespace tloc { namespace core { namespace string {
     this_type& operator+= (const_pointer aCharStr);
     this_type& operator+= (const_reference aChar);
 
-    this_type& operator = (const this_type& aStr);
+    this_type& operator = (this_type aStr);
     this_type& operator = (const_pointer aCharStr);
     this_type& operator = (value_type aChar);
 
@@ -340,7 +340,7 @@ namespace tloc { namespace core { namespace string {
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
   //////////////////////////////////////////////////////////////////////////
-  // Plus operator global
+  // operator+ global
 
   template <typename T>
   StringBase<T>
@@ -395,6 +395,62 @@ namespace tloc { namespace core { namespace string {
   tl_int
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
 
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, T a_delim, T_StringContainer& a_out);
+
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, const T* a_delims, T_StringContainer& a_out);
+
+  TL_I bool
+    IsCntrl(char8 a_char);
+
+  TL_I bool
+    IsBlank(char8 a_char);
+
+  TL_I bool
+    IsSpace(char8 a_char);
+
+  TL_I bool
+    IsUpper(char8 a_char);
+
+  TL_I bool
+    IsLower(char8 a_char);
+
+  TL_I bool
+    IsAlpha(char8 a_char);
+
+  TL_I bool
+    IsDigit(char8 a_char);
+
+  TL_I bool
+    IsNumber(const char8* a_char);
+
+  TL_I bool
+    IsRealNumber(const char8* a_char);
+
+  TL_I bool
+    IsNegNumber(const char8* a_char);
+
+  TL_I bool
+    IsNegRealNumber(const char8* a_char);
+
+  TL_I bool
+    IsPosNumber(const char8* a_char);
+
+  TL_I bool
+    IsPosRealNumber(const char8* a_char);
+
+  TL_I bool
+    IsXDigit(char8 a_char);
+
+  TL_I bool
+    IsAlNum(char8 a_char);
+
+  TL_I bool
+    IsPunct(char8 a_char);
+
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone
   // use StrCmp() for those operations
@@ -426,6 +482,50 @@ namespace tloc { namespace core { namespace string {
   typedef StringBase<char8>   String;
   typedef StringBase<char32>  StringW;
 
+  //------------------------------------------------------------------------
+  // global vars
+
+  extern char8 g_controls[];
+  extern String g_controlsStr;
+
+  extern char8 g_blank[];
+  extern String g_blankStr;
+
+  extern char8 g_space[];
+  extern String g_spaceStr;
+
+  extern char8 g_upper[];
+  extern String g_upperStr;
+
+  extern char8 g_lower[];
+  extern String g_lowerStr;
+
+  extern char8 g_alpha[];
+  extern String g_alphaStr;
+
+  extern char8 g_digit[];
+  extern String g_digitStr;
+
+  extern char8 g_xdigit[];
+  extern String g_xdigitStr;
+
+  extern char8 g_alnum[];
+  extern String g_alnumStr;
+
+  extern char8 g_punct[];
+  extern String g_punctStr;
+
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
+  { a.swap(b); }
+
+};};
 
 #endif

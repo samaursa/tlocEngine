@@ -1,7 +1,7 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 //------------------------------------------------------------------------
 // Local functions/vars

@@ -1,15 +1,15 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/memory/tlocMemoryPool.h>
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 namespace TestingSharedPtr
 {
@@ -136,6 +136,10 @@ namespace TestingSharedPtr
 
       CHECK(sp->m_value == 5);
       CHECK(sp2->m_value == 10);
+
+      swap(sp2, sp);
+      CHECK(sp->m_value == 10);
+      CHECK(sp2->m_value == 5);
 
       CHECK_CTOR_DTOR_COUNT(2, 0);
     }
@@ -276,12 +280,12 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->SetElement(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      memPool.GetNext()->SetElement(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->SetElement(
+        memPool.GetNext()->SetValue(
           my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
@@ -294,9 +298,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetElement()->x != counter &&
-          itr->GetElement()->y != counter + 1 &&
-          itr->GetElement()->z != counter + 2)
+        if (itr->GetValue()->x != counter &&
+          itr->GetValue()->y != counter + 1 &&
+          itr->GetValue()->z != counter + 2)
         {
           testPassed = false;
           break;
@@ -475,4 +479,72 @@ namespace TestingSharedPtr
   {
     DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
   }
+
+  struct BaseClass
+  {
+    tl_int m_int;
+  };
+
+  struct DerivedClass : public BaseClass
+  {
+    DerivedClass()
+    { }
+    DerivedClass(tl_float a_float)
+      : m_float(a_float)
+    { }
+
+    tl_float m_float;
+  };
+
+  template <typename T_PtrPolicyType>
+  void CastTest()
+  {
+    SharedPtr<DerivedClass, T_PtrPolicyType> dc(new DerivedClass());
+    dc->m_float = 10.0f;
+    dc->m_int = 5;
+
+    SharedPtr<BaseClass, T_PtrPolicyType> bc(dc);
+
+    CHECK(dc->m_float == Approx(10.0f));
+    CHECK(dc->m_int == 5);
+
+    SharedPtr<DerivedClass, T_PtrPolicyType> dcCopy =
+      core_sptr::static_pointer_cast<DerivedClass, T_PtrPolicyType>(bc);
+
+    CHECK(bc->m_int == 5);
+    CHECK(dc->m_float == Approx(10.0f));
+    CHECK(dc->m_int == 5);
+    CHECK(dcCopy->m_float == Approx(10.0f));
+    CHECK(dcCopy->m_int == 5);
+
+    CHECK(dcCopy.use_count() == 3);
+  }
+
+  TEST_CASE("core/smart_ptr/shared_ptr/static_pointer_cast", "")
+  {
+    CastTest<core_sptr::p_shared_ptr::null_copy::Allow>();
+    CastTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
+  }
+
+  template <typename T_PtrPolicyType>
+  void ConstTest()
+  {
+    const SharedPtr<DerivedClass, T_PtrPolicyType>
+      dcConst(new DerivedClass(5.0f));
+
+    SharedPtr<DerivedClass, T_PtrPolicyType> dc =
+      core_sptr::const_pointer_cast<DerivedClass, T_PtrPolicyType>(dcConst);
+
+    CHECK(dc->m_float == Approx(5.0f));
+    CHECK(dcConst->m_float == Approx(5.0f));
+
+    CHECK(dcConst.use_count() == 2);
+  }
+
+  TEST_CASE("core/smart_ptr/shared_ptr/const_pointer_cast", "")
+  {
+    ConstTest<core_sptr::p_shared_ptr::null_copy::Allow>();
+    ConstTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
+  }
+
 }

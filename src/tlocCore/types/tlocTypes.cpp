@@ -1,5 +1,5 @@
 #include "tlocTypes.h"
-#include "tlocTypes.inl"
+#include "tlocTypes.inl.h"
 
 namespace tloc { namespace core {
 

@@ -384,28 +384,33 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
     case WM_DESTROY:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::destroy));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::destroy, GetWidth(), GetHeight()));
         DoCleanup();
         break;
       }
     case WM_CLOSE:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::close));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::close, GetWidth(), GetHeight()));
         break;
       }
     case WM_SIZE:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::resized));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::resized, GetWidth(), GetHeight()));
         break;
       }
     case WM_SETFOCUS:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::gained_focus));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::gained_focus, GetWidth(), GetHeight()));
         break;
       }
     case WM_KILLFOCUS:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::lost_focus));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::lost_focus, GetWidth(), GetHeight()));
         break;
       }
     }

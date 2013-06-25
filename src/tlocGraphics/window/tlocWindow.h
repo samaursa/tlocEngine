@@ -3,6 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/string/tlocString.h>
@@ -36,9 +38,29 @@ namespace tloc { namespace graphics { namespace win {
       events_count
     };
 
-    WindowEvent(const EventType& a_event = none) : m_type(a_event) {}
+    typedef tl_size                           size_type;
+    typedef core_ds::Tuple<size_type, 2>      dim_type;
+    typedef core_ds::Variadic<size_type, 2>   variadic_type;
+
+    WindowEvent()
+      : m_type(none)
+      , m_dim(variadic_type(0, 0))
+    { }
+
+    WindowEvent(const EventType& a_event,
+                tl_size a_sizeX, tl_size a_sizeY)
+      : m_type(a_event)
+      , m_dim(variadic_type(a_sizeX, a_sizeY))
+    { }
+
+    size_type GetWidth() const
+    { return m_dim[0]; }
+
+    size_type GetHeight() const
+    { return m_dim[1]; }
 
     EventType m_type;
+    dim_type  m_dim;
   };
 
   struct WindowCallbacks

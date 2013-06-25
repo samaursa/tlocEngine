@@ -147,7 +147,7 @@ namespace tloc { namespace core { namespace types {
     this_type& operator= (const T& a_other);
     this_type& operator= (const this_type& a_other);
 
-    this_type& Swap(this_type& a_other);
+    this_type& swap(this_type& a_other);
 
     template <typename T>
     T& Cast();
@@ -167,8 +167,14 @@ namespace tloc { namespace core { namespace types {
     void*             m_object;
   };
 
+  //--
+  // swap function
+
+  TL_I void swap(Any& a, Any& b)
+  { a.swap(b); }
+
 };};};
 
-#include "tlocAny.inl"
+#include "tlocAny.inl.h"
 
 #endif

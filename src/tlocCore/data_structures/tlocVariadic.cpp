@@ -1,5 +1,5 @@
 #include "tlocVariadic.h"
-#include "tlocVariadic.inl"
+#include "tlocVariadic.inl.h"
 
 namespace tloc { namespace core { namespace data_structs {
 
@@ -13,5 +13,6 @@ namespace tloc { namespace core { namespace data_structs {
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f32);
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f64);
   TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(f128);
+  TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(tl_ulong);
 
 };};};

@@ -1,7 +1,7 @@
 #include "tlocTouchSurfaceImplIphone.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tloccore/tlocAlgorithms.inl>
+#include <tloccore/tlocAlgorithms.inl.h>
 
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 

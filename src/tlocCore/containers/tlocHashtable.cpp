@@ -1,8 +1,8 @@
 #include "tlocHashtable.h"
-#include <tlocCore/containers/tlocHashtable.inl>
+#include <tlocCore/containers/tlocHashtable.inl.h>
 
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
 
 namespace tloc { namespace core { namespace containers {
 

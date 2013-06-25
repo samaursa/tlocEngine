@@ -214,9 +214,8 @@ const char8* GetErrorString(GLenum a_errorCode)
   }
 
   template <typename T_String>
-  void Error::GetErrorAsString(T_String& a_out)
+  void Error::GetLastErrorAsString(T_String& a_out)
   {
-    GetError();
     const char* myError = GetErrorString(m_lastError);
     if (myError) { a_out = myError; }
   }
@@ -224,6 +223,6 @@ const char8* GetErrorString(GLenum a_errorCode)
   //------------------------------------------------------------------------
   // Explicit Instantiation
 
-  template void Error::GetErrorAsString(core::string::String&);
+  template void Error::GetLastErrorAsString(core::string::String&);
 
 };};};

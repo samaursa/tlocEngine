@@ -3,7 +3,7 @@
 #include <tlocMath/types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 namespace TestingRectangle
 {

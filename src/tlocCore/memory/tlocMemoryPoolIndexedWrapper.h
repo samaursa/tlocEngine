@@ -23,8 +23,9 @@ public:
   Wrapper();
   Wrapper(const wrapper_type& a_rhs);
 
-  const wrapper_value_type& GetElement() const;
-  void                      SetElement(const wrapper_value_type& a_value);
+  wrapper_value_type&       GetValue();
+  const wrapper_value_type& GetValue() const;
+  void                      SetValue(const wrapper_value_type& a_value);
 
   index_type        GetIndex() const;
   bool operator ==(wrapper_type& a_rhs);

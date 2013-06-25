@@ -5,6 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -36,11 +37,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
-    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef math::types::Mat4f32                              matrix_type;
 
-    typedef gl::ShaderProgramPtr                              shader_prog_ptr;
+    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
+    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+
+    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
+    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
+
+    typedef gl::shader_program_sptr                           shader_prog_ptr;
 
   public:
     FanRenderSystem(event_manager_sptr a_eventMgr,
@@ -54,10 +59,11 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
-    virtual void Pre_ProcessActiveEntities();
+    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent);
-    virtual void Post_ProcessActiveEntities();
+                               const entity_type* a_ent,
+                               f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
@@ -70,12 +76,18 @@ namespace tloc { namespace graphics { namespace component_system {
     const entity_type*  m_sharedCam;
     matrix_type         m_vpMatrix;
 
-    vec3_cont_type          m_vertList;
-    vec2_cont_type          m_texList;
-    gl::ShaderOperatorPtr   m_projectionOperator;
-    gl::AttributePtr        m_vData;
-    gl::AttributePtr        m_tData;
+    gl::shader_operator_sptr  m_mvpOperator;
+    gl::uniform_sptr          m_uniVpMat;
+
+    vec3_cont_ptr             m_vertList;
+    gl::attribute_sptr        m_vData;
+    gl::attribute_sptr        m_tData;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core_sptr::SharedPtr<FanRenderSystem>  fan_render_system_sptr;
 
 };};};
 

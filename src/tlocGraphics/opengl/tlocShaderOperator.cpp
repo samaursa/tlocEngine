@@ -1,8 +1,8 @@
 #include "tlocShaderOperator.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -1177,8 +1177,7 @@ namespace tloc { namespace graphics { namespace gl {
             itr->second = index;
             DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
 
-            core_str::String errStr;
-            gl::Error err; err.GetErrorAsString(errStr);
+            gl::Error err; TLOC_UNUSED(err);
             TLOC_ASSERT(err.Succeeded(),
                         "glUniform*/glAttribute* failed in DoSet()");
             break;
@@ -1208,20 +1207,27 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::
-    ShaderOperator() : m_flags(k_count)
+    ShaderOperator()
+    : m_flags(k_count)
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
-  { m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) ); }
+  {
+    m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
+    m_flags.Unmark(k_uniformsCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
-  { m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) ); }
+  {
+    m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
+    m_flags.Unmark(k_attributesCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1249,7 +1255,7 @@ namespace tloc { namespace graphics { namespace gl {
     for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
         itr != itrEnd; ++itr)
     {
-      if (itr->first.get() == a_attribute.get())
+      if (itr->first == a_attribute)
       { break; }
     }
 
@@ -1291,7 +1297,7 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
-      UniformPtr uniformPtr = itr->first;
+      uniform_sptr uniformPtr = itr->first;
 
       if (uniformPtr->GetType() == GL_SAMPLER_2D)
       {
@@ -1301,6 +1307,10 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }
+      else
+      {
+        // LOG: Uniform cannot be set. Did you forget to call PrepareAllUniforms?
+      }
     }
   }
 
@@ -1322,11 +1332,15 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     {
-      AttributePtr attribPtr = itr->first;
+      attribute_sptr attribPtr = itr->first;
 
       // If we already know which info to pick
       if (itr->second >= 0)
       { DoSet(attrCont[itr->second], *attribPtr); }
+      else
+      {
+        // LOG: Attribute cannot be set. Did you forget to call EnableAllAttributes?
+      }
     }
   }
 
@@ -1339,13 +1353,15 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
-                "Shader noet enabled - did you forget to call Enable()?");
+                "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.ReturnAndMark(k_uniformsCached) == false)
+    {
+      const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    error_type retError = DoPrepareVariables(m_uniforms, uniCont);
-
-    m_flags.Mark(k_uniformsCached);
+      retError = DoPrepareVariables(m_uniforms, uniCont);
+    }
     return retError;
   }
 
@@ -1358,48 +1374,91 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
     TLOC_ASSERT(a_shaderProgram.IsEnabled(),
-                "Shader noet enabled - did you forget to call Enable()?");
+                "Shader not enabled - did you forget to call Enable()?");
 
-    const glsl_var_info_cont_type&
-      attrCont = a_shaderProgram.GetAttributeInfoRef();
+    error_type retError = ErrorSuccess;
+    if (m_flags.ReturnAndMark(k_attributesCached) == false)
+    {
+      const glsl_var_info_cont_type&
+        attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    error_type retError = DoPrepareVariables(m_attributes, attrCont);
-
-    m_flags.Mark(k_attributesCached);
+      retError = DoPrepareVariables(m_attributes, attrCont);
+    }
     return retError;
 
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator ShaderOperator::
-    begin_uniform()
+    begin_uniforms()
   {
     return m_uniforms.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator ShaderOperator::
-    end_uniform()
+    end_uniforms()
   {
     return m_uniforms.end();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::attribute_iterator ShaderOperator::
-    begin_attribute()
+    begin_attributes()
   {
     return m_attributes.begin();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::attribute_iterator ShaderOperator::
-    end_attribute()
+    end_attributes()
   {
     return m_attributes.end();
   }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearAttributesCache()
+  { m_flags.Unmark(k_attributesCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearUniformsCache()
+  { m_flags.Unmark(k_uniformsCached); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
+    ClearCache()
+  {
+    ClearAttributesCache();
+    ClearUniformsCache();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    IsAttributesCached()
+  { return m_flags[k_attributesCached]; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    IsUniformsCached()
+  { return m_flags[k_uniformsCached]; }
+
   //------------------------------------------------------------------------
   // explicit instantiation
 
-  template class core::smart_ptr::SharedPtr<ShaderOperator>;
-  template class Array<UniformPtr>;
-  template class Array<AttributePtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
+  template class Array<uniform_sptr>;
+  template class Array<attribute_sptr>;
 
 
 };};};

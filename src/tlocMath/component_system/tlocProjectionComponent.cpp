@@ -1,7 +1,7 @@
 #include "tlocProjectionComponent.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace math { namespace component_system {
 
@@ -45,9 +45,7 @@ namespace tloc { namespace math { namespace component_system {
   // Explicit Instantiations
 
   // SmartPtr
-  template class core::smart_ptr::SharedPtr<Projection>;
-
-  // Pool
-  template class core::component_system::ComponentPool_TI<ProjectionPtr>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Projection);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(projection_sptr);
 
 };};};

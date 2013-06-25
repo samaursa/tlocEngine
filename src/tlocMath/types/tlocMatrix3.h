@@ -74,39 +74,25 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Math operations
 
-    // Modifies this matrix by multiplying the incoming matrix and storing
-    // the result in this matrix
-    this_type&  Mul(const this_type& aMatrix);
-
-    // Modifies this matrix by multiplying the incoming matrices and storing
-    // the result in this matrix
-    void        Mul(const this_type& aMatrix1, const this_type& aMatrix2);
-
-    // Multiplies the incoming inVector with this matrix and stores it in
-    // the outVector. Since we are assuming column major matrices, the
-    // result is: vOut = M * vIn
-    void        Mul(const Vector<value_type, 3>& aVectorIn,
-                    Vector<value_type, 3>& aVectorOut) const;
-
     // Returns the determinant of this Matrix
     value_type  Determinant() const;
 
     // Modifies this matrix by storing its inverse
     // If determinant is 0, then false is returned, otherwise, true.
-    bool        Inverse();
+    this_type   Inverse() const;
 
     // Modifies this matrix by storing the inverse of the incoming matrix.
     // If determinant is 0, the false is returned, otherwise, true.
-    bool        Inverse(const this_type& aMatrix);
+    void        Inverse(const this_type& aMatrix);
 
     // Modifies this matrix by storing its adjoint
-    this_type&  Adjoint();
+    this_type   Adjoint() const;
 
     // Modifies this matrix by storing the adjoint of the incoming matrix
     void        Adjoint(const this_type& aMatrix);
 
     // Normalizes the column vectors of the matrix
-    this_type&  Orthonormalize();
+    this_type   Orthonormalize() const;
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix
@@ -114,7 +100,7 @@ namespace tloc { namespace math { namespace types {
 
     // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
     // used in the Quake engine and may result in lost precision
-    this_type&  FastOrthonormalize();
+    this_type   FastOrthonormalize() const;
 
     // Modifies this matrix by storing the orthonormalized version of the
     // incoming matrix. Uses FastInvSqrt() used in the Quake engine and
@@ -130,13 +116,13 @@ namespace tloc { namespace math { namespace types {
     void        EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
     // Modifies this matrix to be a rotation matrix about the x-axis
-    this_type&  MakeRotationX(const_reference aXAngle);
+    void        MakeRotationX(const_reference aXAngle);
 
     // Modifies this matrix to be a rotation matrix about the y-axis
-    this_type&  MakeRotationY(const_reference aYAngle);
+    void        MakeRotationY(const_reference aYAngle);
 
     // Modifies this matrix to be a rotation matrix about the z-axis
-    this_type&  MakeRotationZ(const_reference aZAngle);
+    void        MakeRotationZ(const_reference aZAngle);
 
     // Modifies this vector by creating a rotation matrix from the incoming
     // angles by the order specified by the function. E.g. MakeEulerXYZ will

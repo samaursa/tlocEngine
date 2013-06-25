@@ -17,8 +17,9 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
-#define MATRIX_TYPES typename T, tl_size T_Size
+#define MATRIX_TEMPS  typename T, tl_size T_Size
 #define MATRIX_PARAMS T, T_Size
+#define MATRIX_TYPE   typename Matrix<MATRIX_PARAMS>
 
   //////////////////////////////////////////////////////////////////////////
   // Misc Macros
@@ -29,26 +30,26 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Constructors
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   Matrix<MATRIX_PARAMS>::
     Matrix()
     : base_type()
   { }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   Matrix<MATRIX_PARAMS>::
     Matrix(value_type aValue)
     : base_type(aValue)
   { }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   Matrix<MATRIX_PARAMS>::
     Matrix(const value_type (&values)[k_MatrixSize],
                                       matrix_order aOrder)
                                       : base_type(values, aOrder)
   { }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   Matrix<MATRIX_PARAMS>::
     Matrix (const tloc::core::data_structs::Variadic<T, k_MatrixSize> &a_vars,
             matrix_order a_order)
@@ -58,29 +59,32 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Modifiers
 
-  template <MATRIX_TYPES>
-  void Matrix<MATRIX_PARAMS>::
-    Zero()
+  template <MATRIX_TEMPS>
+  void
+    Matrix<MATRIX_PARAMS>::
+    MakeZero()
   {
     memset(m_values, 0, sizeof(T) * k_MatrixSize);
   }
 
-  template <MATRIX_TYPES>
-  void Matrix<MATRIX_PARAMS>::
-    Identity()
+  template <MATRIX_TEMPS>
+  void
+    Matrix<MATRIX_PARAMS>::
+    MakeIdentity()
   {
-    Zero();
+    MakeZero();
     ITERATE_MATRIX_HALF
     {
       Set(i, i, 1);
     }
   }
 
-  template <MATRIX_TYPES>
-  void Matrix<MATRIX_PARAMS>::
+  template <MATRIX_TEMPS>
+  void
+    Matrix<MATRIX_PARAMS>::
     MakeDiagonal(const value_type values[T_Size])
   {
-    Zero();
+    MakeZero();
     ITERATE_MATRIX_HALF
     {
       Set(i, i, values[i]);
@@ -90,20 +94,22 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Math operations
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::this_type
     Matrix<MATRIX_PARAMS>::
-    Add(const this_type& aMatrix)
+    Add(const this_type& a_matrix) const
   {
+    this_type temp(*this);
+
     ITERATE_MATRIX
     {
-      m_values[i] += aMatrix[i];
+      temp.m_values[i] += a_matrix[i];
     }
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
     Add(const this_type& aMatrix1, const this_type& aMatrix2)
   {
@@ -111,120 +117,134 @@ namespace tloc { namespace math { namespace types {
     Add(aMatrix2);
   }
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::this_type
     Matrix<MATRIX_PARAMS>::
-    Sub(const this_type& aMatrix)
+    Sub(const this_type& a_matrix) const
   {
+    this_type temp(*this);
+
     ITERATE_MATRIX
     {
-      m_values[i] -= aMatrix[i];
+      temp.m_values[i] -= a_matrix[i];
     }
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
     Sub(const this_type& aMatrix1, const this_type& aMatrix2)
   {
-    base_type::operator=(aMatrix1);
-    Sub(aMatrix2);
+    *this = aMatrix1.Sub(aMatrix2);
   }
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::this_type
     Matrix<MATRIX_PARAMS>::
-    Mul(const this_type& aMatrix)
+    Mul(const this_type& a_matrix) const
   {
+    this_type temp(*this);
+
     for (tl_size i = 0; i < T_Size; ++i)
     {
       Vector<value_type, T_Size> row;
-      GetRow(i, row);
+      temp.GetRow(i, row);
       for (tl_size j = 0; j < T_Size; ++j)
       {
         Vector<value_type, T_Size> col;
-        aMatrix.GetCol(j, col);
+        a_matrix.GetCol(j, col);
 
-        Set(i, j, row.Dot(col));
+        temp.Set(i, j, row.Dot(col));
       }
     }
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
-    Mul(const this_type& aMatrix1, const this_type& aMatrix2)
+    Mul(const this_type& a_matrix1, const this_type& a_matrix2)
   {
-    base_type::operator=(aMatrix1);
-    Mul(aMatrix2);
+    *this = a_matrix1.Mul(a_matrix2);
   }
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::this_type
     Matrix<MATRIX_PARAMS>::
-    Mul(const_reference aReal)
+    Mul(const_reference aReal) const
   {
+    this_type temp(*this);
+
     ITERATE_MATRIX
     {
-      m_values[i] *= aReal;
+      temp.m_values[i] *= aReal;
     }
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_TYPES>
-  void Matrix<MATRIX_PARAMS>::
-    Mul(const Vector<value_type, T_Size>& aVectorIn,
-        Vector<value_type, T_Size>& aVectorOut) const
+  template <MATRIX_TEMPS>
+  void
+    Matrix<MATRIX_PARAMS>::
+    Mul(const vec_type& a_vecIn, vec_type& a_vecOut) const
   {
     ITERATE_MATRIX_HALF
     {
       Vector<value_type, T_Size> row;
       GetRow(i, row);
-      aVectorOut[(tl_int)i] = aVectorIn.Dot(row);
+      a_vecOut[(tl_int)i] = a_vecIn.Dot(row);
     }
   }
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::vec_type
     Matrix<MATRIX_PARAMS>::
-    Div(const_reference aReal)
+    Mul(const vec_type& a_vecIn) const
+  {
+    vec_type temp;
+    Mul(a_vecIn, temp);
+    return temp;
+  }
+
+  template <MATRIX_TEMPS>
+  MATRIX_TYPE::this_type
+    Matrix<MATRIX_PARAMS>::
+    Div(const_reference aReal) const
   {
     TLOC_ASSERT_LOW_LEVEL(Math<value_type>::Approx(aReal, 0.0f) == false,
       "The matrix is being divided by zero!");
 
+    this_type temp(*this);
+
     ITERATE_MATRIX
     {
-      m_values[i] /= aReal;
+      temp.m_values[i] /= aReal;
     }
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_TYPES>
-  typename Matrix<MATRIX_PARAMS>::this_type&
+  template <MATRIX_TEMPS>
+  typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
-    Transpose()
+    Transpose() const
   {
-    this_type temp(*this);
-    Set(temp.m_values, base_type::k_RowMajor);
-
-    return *this;
+    this_type temp(m_values, base_type::k_RowMajor);
+    return temp;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
-    Transpose(const this_type& aMatrix)
+    Transpose(const this_type& a_matrix)
   {
-    Set(aMatrix.m_values, base_type::k_RowMajor);
+    Set(a_matrix.m_values, base_type::k_RowMajor);
   }
 
   //------------------------------------------------------------------------
   // Accessors
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
     GetDiagonal(Vector<value_type, T_Size>& aVector)
   {
@@ -237,7 +257,7 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Operators
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
     operator+ (const this_type& a_matrix) const
@@ -249,135 +269,121 @@ namespace tloc { namespace math { namespace types {
     return returnMat;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
     operator- (const this_type& a_matrix) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Sub(a_matrix);
-
+    this_type returnMat = Sub(a_matrix);
     return returnMat;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
     operator* (const this_type& a_matrix) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Mul(a_matrix);
-
+    this_type returnMat = Mul(a_matrix);
     return returnMat;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
     operator* (const_reference a_value) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Mul(a_value);
-
+    this_type returnMat = Mul(a_value);
     return returnMat;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   Vector<typename Matrix<MATRIX_PARAMS>::value_type, T_Size>
     Matrix<MATRIX_PARAMS>::
     operator* (const Vector<value_type, T_Size>& a_vector) const
   {
-    Vector<value_type, T_Size> returnVec;
-    Mul(a_vector, returnVec);
-
+    vec_type returnVec = Mul(a_vector);
     return returnVec;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type
     Matrix<MATRIX_PARAMS>::
     operator/ (const_reference a_matrix) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Div(a_matrix);
-
+    this_type returnMat = Div(a_matrix);
     return returnMat;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type&
     Matrix<MATRIX_PARAMS>::
     operator+= (const this_type& a_matrix)
   {
-    Add(a_matrix);
+    *this = Add(a_matrix);
     return *this;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type&
     Matrix<MATRIX_PARAMS>::
     operator-= (const this_type& a_matrix)
   {
-    Sub(a_matrix);
+    *this = Sub(a_matrix);
     return *this;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type&
     Matrix<MATRIX_PARAMS>::
     operator*= (const this_type& a_matrix)
   {
-    Mul(a_matrix);
+    *this = Mul(a_matrix);
     return *this;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type&
     Matrix<MATRIX_PARAMS>::
     operator*= (const_reference a_value)
   {
-    Mul(a_value);
+    *this = Mul(a_value);
     return *this;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   typename Matrix<MATRIX_PARAMS>::this_type&
     Matrix<MATRIX_PARAMS>::
     operator/= (const_reference a_value)
   {
-    Div(a_value);
+    *this = Div(a_value);
     return *this;
   }
 
-  //template <MATRIX_TYPES>
+  //template <MATRIX_TEMPS>
   //Matrix<MATRIX_PARAMS>& Matrix<MATRIX_PARAMS>::
-  //  operator=(const this_type& aMatrix )
+  //  operator=(const this_type& a_matrix )
   //{
-  //  base_type::operator =(aMatrix);
+  //  base_type::operator =(a_matrix);
   //  return *this;
   //}
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   bool Matrix<MATRIX_PARAMS>::
-    operator==( const this_type& aMatrix )
+    operator==( const this_type& a_matrix )
   {
     ITERATE_MATRIX
     {
-      if (!Math<T>::Approx(m_values[i], aMatrix[i])) { return false; }
+      if (!Math<T>::Approx(m_values[i], a_matrix[i])) { return false; }
     }
 
     return true;
   }
 
-  template <MATRIX_TYPES>
+  template <MATRIX_TEMPS>
   bool Matrix<MATRIX_PARAMS>::
-    operator!=( const this_type& aMatrix )
+    operator!=( const this_type& a_matrix )
   {
-    return !operator==(aMatrix);
+    return !operator==(a_matrix);
   }
 
 };};};

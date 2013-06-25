@@ -18,6 +18,7 @@ namespace tloc { namespace math { namespace types {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
+    typedef T                                     value_type;
     typedef Matrix2<T>                            this_type;
     typedef Matrix<T, 2>                          base_type;
 
@@ -71,53 +72,18 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Math operations
 
-    // Modifies this matrix by multiplying the incoming matrix and storing
-    // the result in this matrix
-    this_type& Mul(const this_type& aMatrix);
+    value_type  Determinant() const;
 
-    // Modifies this matrix by multiplying the incoming matrices and storing
-    // the result in this matrix
-    void Mul(const this_type& aMatrix1,
-             const this_type& aMatrix2);
+    this_type   Inverse() const;
+    void        Inverse(const this_type& a_matrix);
 
-    // Multiplies the incoming inVector with this matrix and stores it in
-    // the outVector. Since we are assuming column major matrices, the
-    // result is: vOut = M * vIn
-    void Mul(const Vector2<value_type>& aVectorIn,
-             Vector2<value_type>& aVectorOut) const;
+    this_type   Adjoint() const;
+    void        Adjoint(const this_type& a_matrix);
 
-    // Returns the determinant of this Matrix
-    value_type Determinant() const;
-
-    // Modifies this matrix by storing its inverse
-    // If determinant is 0, then false is returned, otherwise, true.
-    bool Inverse();
-
-    // Modifies this matrix by storing the inverse of the incoming matrix.
-    // If determinant is 0, the false is returned, otherwise, true.
-    bool Inverse(const this_type& aMatrix);
-
-    // Modifies this matrix by storing its adjoint
-    this_type& Adjoint();
-
-    // Modifies this matrix by storing the adjoint of the incoming matrix
-    void Adjoint(const this_type& aMatrix);
-
-    // Normalizes the column vectors of the matrix
-    this_type& Orthonormalize();
-
-    // Modifies this matrix by storing the orthonormalized version of the
-    // incoming matrix
-    void Orthonormalize(const this_type& aMatrix);
-
-    // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
-    // used in the Quake engine and may result in lost precision
-    this_type& FastOrthonormalize();
-
-    // Modifies this matrix by storing the orthonormalized version of the
-    // incoming matrix. This uses FastInvSqrt() used in the Quake engine
-    // and may result in lost precision
-    void FastOrthonormalize(const this_type& aMatrix);
+    this_type   Orthonormalize() const;
+    void        Orthonormalize(const this_type& a_matrix);
+    this_type   FastOrthonormalize() const;
+    void        FastOrthonormalize(const this_type& a_matrix);
 
     // Taken from WildMagic5
     // The matrix must be symmetric.  Factor M = R * D * R^T where

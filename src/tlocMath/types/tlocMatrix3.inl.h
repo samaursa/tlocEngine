@@ -17,28 +17,29 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
-#define MATRIX_3_TYPES typename T
+#define MATRIX_3_TEMP   typename T
 #define MATRIX_3_PARAMS T
+#define MATRIX_3_TYPE   typename Matrix3<MATRIX_3_PARAMS>
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3()
     : base_type() {}
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(const this_type& aMatrix)
     : base_type(aMatrix) {}
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(const base_type& aMatrix)
     : base_type(aMatrix) {}
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(value_type m00, value_type m01, value_type m02,
             value_type m10, value_type m11, value_type m12,
@@ -49,7 +50,7 @@ namespace tloc { namespace math { namespace types {
     m_values[2] = m20; m_values[5] = m21; m_values[8] = m22;
   }
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(value_type m00, value_type m11, value_type m22)
   {
@@ -57,12 +58,12 @@ namespace tloc { namespace math { namespace types {
     MakeDiagonal(diag);
   }
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(const_reference aValue)
     : base_type(aValue) {}
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(const Vector<value_type, 3>& aVec1,
             const Vector<value_type, 3>& aVec2,
@@ -83,14 +84,14 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3(const value_type (&values)[k_MatrixSize],
             typename base_type::matrix_order aOrder)
     : base_type(values, aOrder)
   { }
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   Matrix3<MATRIX_3_PARAMS>::
     Matrix3 (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars,
              matrix_order a_order)
@@ -100,67 +101,7 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Math Operations
 
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
-    Matrix3<MATRIX_3_PARAMS>::
-    Mul(const this_type& aMatrix)
-  {
-    this_type temp(*this);
-    Mul(temp, aMatrix);
-
-    return *this;
-  }
-
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
-    Mul(const this_type& aMatrix1, const this_type& aMatrix2)
-  {
-    m_values[0] = aMatrix1[0] * aMatrix2[0] +
-                  aMatrix1[3] * aMatrix2[1] +
-                  aMatrix1[6] * aMatrix2[2];
-    m_values[1] = aMatrix1[1] * aMatrix2[0] +
-                  aMatrix1[4] * aMatrix2[1] +
-                  aMatrix1[7] * aMatrix2[2];
-    m_values[2] = aMatrix1[2] * aMatrix2[0] +
-                  aMatrix1[5] * aMatrix2[1] +
-                  aMatrix1[8] * aMatrix2[2];
-    m_values[3] = aMatrix1[0] * aMatrix2[3] +
-                  aMatrix1[3] * aMatrix2[4] +
-                  aMatrix1[6] * aMatrix2[5];
-    m_values[4] = aMatrix1[1] * aMatrix2[3] +
-                  aMatrix1[4] * aMatrix2[4] +
-                  aMatrix1[7] * aMatrix2[5];
-    m_values[5] = aMatrix1[2] * aMatrix2[3] +
-                  aMatrix1[5] * aMatrix2[4] +
-                  aMatrix1[8] * aMatrix2[5];
-    m_values[6] = aMatrix1[0] * aMatrix2[6] +
-                  aMatrix1[3] * aMatrix2[7] +
-                  aMatrix1[6] * aMatrix2[8];
-    m_values[7] = aMatrix1[1] * aMatrix2[6] +
-                  aMatrix1[4] * aMatrix2[7] +
-                  aMatrix1[7] * aMatrix2[8];
-    m_values[8] = aMatrix1[2] * aMatrix2[6] +
-                  aMatrix1[5] * aMatrix2[7] +
-                  aMatrix1[8] * aMatrix2[8];
-  }
-
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
-    Mul(const Vector<value_type, 3>& aVectorIn,
-        Vector<value_type, 3>& aVectorOut) const
-  {
-    aVectorOut[0] = m_values[0] * aVectorIn[0] +
-                    m_values[3] * aVectorIn[1] +
-                    m_values[6] * aVectorIn[2];
-    aVectorOut[1] = m_values[1] * aVectorIn[0] +
-                    m_values[4] * aVectorIn[1] +
-                    m_values[7] * aVectorIn[2];
-    aVectorOut[2] = m_values[2] * aVectorIn[0] +
-                    m_values[5] * aVectorIn[1] +
-                    m_values[8] * aVectorIn[2];
-  }
-
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   typename Matrix3<MATRIX_3_PARAMS>::value_type
     Matrix3<MATRIX_3_PARAMS>::
     Determinant() const
@@ -175,42 +116,44 @@ namespace tloc { namespace math { namespace types {
     return m11_12_21_22 - m10_12_20_22 + m10_11_20_21;
   }
 
-  template <MATRIX_3_TYPES>
-  bool Matrix3<MATRIX_3_PARAMS>::
-    Inverse()
+  template <MATRIX_3_TEMP>
+  MATRIX_3_TYPE::this_type
+    Matrix3<MATRIX_3_PARAMS>::
+    Inverse() const
   {
-    this_type temp(*this);
-    return Inverse(temp);
+    this_type temp;
+    temp.Inverse(*this);
+    return temp;
   }
 
-  template <MATRIX_3_TYPES>
-  bool Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     Inverse(const this_type& aMatrix)
   {
     value_type detInv = aMatrix.Determinant();
-    if (Math<value_type>::Approx(detInv, (value_type)0)) { return false; }
 
+    TLOC_ASSERT_LOW_LEVEL
+      (Math<value_type>::IsEqual(detInv, 0.0f) == false, "Divide by zero!");
     detInv = ((value_type)1) / detInv;
 
     Adjoint(aMatrix);
-    base_type::Mul(detInv);
-
-    return true;
+    *this = Mul(detInv);
   }
 
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  MATRIX_3_TYPE::this_type
     Matrix3<MATRIX_3_PARAMS>::
-    Adjoint()
+    Adjoint() const
   {
-    this_type temp(*this);
-    Adjoint(temp);
-
-    return *this;
+    this_type temp;
+    temp.Adjoint(*this);
+    return temp;
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     Adjoint(const this_type& aMatrix)
   {
     // Matrix adjoint which is the matrix of minors turned into matrix of
@@ -227,11 +170,22 @@ namespace tloc { namespace math { namespace types {
   }
 
   // Taken directly from WildMagic5 (modified to suit out needs)
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  MATRIX_3_TYPE::this_type
     Matrix3<MATRIX_3_PARAMS>::
-    Orthonormalize()
+    Orthonormalize() const
   {
+    this_type temp;
+    temp.Orthonormalize(*this);
+    return temp;
+  }
+
+  template <MATRIX_3_TEMP>
+  void Matrix3<MATRIX_3_PARAMS>::
+    Orthonormalize( const this_type& aMatrix )
+  {
+    *this = aMatrix;
+
     // Copied from WildMagic5
 
     // Algorithm uses Gram-Schmidt orthogonalization.  If 'this' matrix is
@@ -291,23 +245,25 @@ namespace tloc { namespace math { namespace types {
     m_values[6] *= invLength;
     m_values[7] *= invLength;
     m_values[8] *= invLength;
-
-    return *this;
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
-    Orthonormalize( const this_type& aMatrix )
-  {
-    base_type::operator= (aMatrix);
-    Orthonormalize();
-  }
-
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  MATRIX_3_TYPE::this_type
     Matrix3<MATRIX_3_PARAMS>::
-    FastOrthonormalize()
+    FastOrthonormalize() const
   {
+    this_type temp;
+    temp.FastOrthonormalize(*this);
+    return temp;
+  }
+
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
+    FastOrthonormalize( const this_type& aMatrix )
+  {
+    *this = aMatrix;
+
     // Copied from WildMagic5
 
     // Algorithm uses Gram-Schmidt orthogonalization.  If 'this' matrix is
@@ -367,20 +323,9 @@ namespace tloc { namespace math { namespace types {
     m_values[6] *= invLength;
     m_values[7] *= invLength;
     m_values[8] *= invLength;
-
-    return *this;
   }
 
-  template <MATRIX_3_TYPES>
-  void
-    Matrix3<MATRIX_3_PARAMS>::
-    FastOrthonormalize( const this_type& aMatrix )
-  {
-    base_type::operator= (aMatrix);
-    FastOrthonormalize();
-  }
-
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   void Matrix3<MATRIX_3_PARAMS>::
     EigenDecomposition(this_type& aRot, this_type& aDiag) const
   {
@@ -462,8 +407,8 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  void
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationX( const_reference aXAngle )
   {
@@ -477,11 +422,10 @@ namespace tloc { namespace math { namespace types {
                              (value_type)0,           sine,         cosine };
 
     Set(values, base_type::k_RowMajor);
-    return *this;
   }
 
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  void
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationY( const_reference aYAngle )
   {
@@ -495,11 +439,10 @@ namespace tloc { namespace math { namespace types {
                                      -sine,  (value_type)0,         cosine};
 
     Set(values, base_type::k_RowMajor);
-    return *this;
   }
 
-  template <MATRIX_3_TYPES>
-  typename Matrix3<MATRIX_3_PARAMS>::this_type&
+  template <MATRIX_3_TEMP>
+  void
     Matrix3<MATRIX_3_PARAMS>::
     MakeRotationZ( const_reference aZAngle )
   {
@@ -513,12 +456,11 @@ namespace tloc { namespace math { namespace types {
                              (value_type)0,  (value_type)0,  (value_type)1 };
 
     Set(values, base_type::k_RowMajor);
-    return *this;
-
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerXYZ(value_type aXAngle, value_type aYAngle, value_type aZAngle)
   {
     this_type matY, matZ;
@@ -527,11 +469,12 @@ namespace tloc { namespace math { namespace types {
     matY.MakeRotationY(aYAngle);
     matZ.MakeRotationZ(aZAngle);
 
-    Mul(matY.Mul(matZ));
+    *this = Mul(matY.Mul(matZ));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerXZY(value_type aXAngle, value_type aZAngle, value_type aYAngle)
   {
     this_type matY, matZ;
@@ -540,11 +483,12 @@ namespace tloc { namespace math { namespace types {
     matY.MakeRotationY(aYAngle);
     matZ.MakeRotationZ(aZAngle);
 
-    Mul(matZ.Mul(matY));
+    *this = Mul(matZ.Mul(matY));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerYXZ( value_type aYAngle, value_type aXAngle, value_type aZAngle )
   {
     this_type matX, matZ;
@@ -553,11 +497,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matZ.MakeRotationZ(aZAngle);
 
-    Mul(matX.Mul(matZ));
+    *this = Mul(matX.Mul(matZ));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerYZX( value_type aYAngle, value_type aZAngle, value_type aXAngle )
   {
     this_type matX, matZ;
@@ -566,11 +511,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matZ.MakeRotationZ(aZAngle);
 
-    Mul(matZ.Mul(matX));
+    *this = Mul(matZ.Mul(matX));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerZXY( value_type aZAngle, value_type aXAngle, value_type aYAngle )
   {
     this_type matX, matY;
@@ -579,11 +525,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matY.MakeRotationY(aYAngle);
 
-    Mul(matX.Mul(matY));
+    *this = Mul(matX.Mul(matY));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerZYX( value_type aZAngle, value_type aYAngle, value_type aXAngle )
   {
     this_type matX, matY;
@@ -592,11 +539,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matY.MakeRotationY(aYAngle);
 
-    Mul(matY.Mul(matX));
+    *this = Mul(matY.Mul(matX));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerXYX( value_type aXAngle0, value_type aYAngle, value_type aXAngle1 )
   {
     this_type matX, matY;
@@ -605,11 +553,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle1);
     matY.MakeRotationY(aYAngle);
 
-    Mul(matY.Mul(matX));
+    *this = Mul(matY.Mul(matX));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerXZX( value_type aXAngle0, value_type aZAngle, value_type aXAngle1 )
   {
     this_type matX, matZ;
@@ -618,11 +567,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle1);
     matZ.MakeRotationZ(aZAngle);
 
-    Mul(matZ.Mul(matX));
+    *this = Mul(matZ.Mul(matX));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerYXY( value_type aYAngle0, value_type aXAngle, value_type aYAngle1 )
   {
     this_type matX, matY;
@@ -631,11 +581,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matY.MakeRotationY(aYAngle1);
 
-    Mul(matX.Mul(matY));
+    *this = Mul(matX.Mul(matY));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerYZY( value_type aYAngle0, value_type aZAngle, value_type aYAngle1 )
   {
     this_type matY, matZ;
@@ -644,11 +595,12 @@ namespace tloc { namespace math { namespace types {
     matZ.MakeRotationZ(aZAngle);
     matY.MakeRotationY(aYAngle1);
 
-    Mul(matZ.Mul(matY));
+    *this = Mul(matZ.Mul(matY));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerZXZ( value_type aZAngle0, value_type aXAngle, value_type aZAngle1 )
   {
     this_type matZ, matX;
@@ -657,11 +609,12 @@ namespace tloc { namespace math { namespace types {
     matX.MakeRotationX(aXAngle);
     matZ.MakeRotationZ(aZAngle1);
 
-    Mul(matX.Mul(matZ));
+    *this = Mul(matX.Mul(matZ));
   }
 
-  template <MATRIX_3_TYPES>
-  void Matrix3<MATRIX_3_PARAMS>::
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerZYZ( value_type aZAngle0, value_type aYAngle, value_type aZAngle1 )
   {
     this_type matZ, matY;
@@ -670,13 +623,13 @@ namespace tloc { namespace math { namespace types {
     matY.MakeRotationY(aYAngle);
     matZ.MakeRotationZ(aZAngle1);
 
-    Mul(matY.Mul(matZ));
+    *this = Mul(matY.Mul(matZ));
   }
 
   //------------------------------------------------------------------------
   // Helper functions
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   bool Matrix3<MATRIX_3_PARAMS>::
     DoTridiagonalize( value_type aDiagonal[3], value_type aSubdiagonal[2] )
   {
@@ -738,7 +691,7 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
-  template <MATRIX_3_TYPES>
+  template <MATRIX_3_TEMP>
   bool Matrix3<MATRIX_3_PARAMS>::
     DoQLAlgorithm( value_type aDiagonal[3], value_type aSubdiagonal[2] )
   {

@@ -16,31 +16,32 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
-#define MATRIX_2_TYPES typename T
+#define MATRIX_2_TEMPS typename T
 #define MATRIX_2_PARAMS T
+#define MATRIX_2_TYPE  typename Matrix2<MATRIX_2_PARAMS>
 
   //------------------------------------------------------------------------
   // Constructors
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2()
     : base_type()
   { }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const this_type& aMatrix)
-    : base_type(aMatrix)
+    Matrix2(const this_type& a_matrix)
+    : base_type(a_matrix)
   { }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const base_type& aMatrix)
-    : base_type(aMatrix)
+    Matrix2(const base_type& a_matrix)
+    : base_type(a_matrix)
   { }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(value_type m00, value_type m01,
             value_type m10, value_type m11)
@@ -51,7 +52,7 @@ namespace tloc { namespace math { namespace types {
     m_values[3] = m11;
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(value_type m00, value_type m11)
   {
@@ -59,40 +60,40 @@ namespace tloc { namespace math { namespace types {
     MakeDiagonal(diag);
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const_reference aValue)
     : base_type(aValue) {}
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const Vector2<value_type>& aVec1,
-            const Vector2<value_type>& aVec2,
+    Matrix2(const Vector2<value_type>& a_vec1,
+            const Vector2<value_type>& a_vec2,
             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
     {
-      m_values[0] = aVec1[0];
-      m_values[1] = aVec1[1];
-      m_values[2] = aVec2[0];
-      m_values[3] = aVec2[1];
+      m_values[0] = a_vec1[0];
+      m_values[1] = a_vec1[1];
+      m_values[2] = a_vec2[0];
+      m_values[3] = a_vec2[1];
     }
     else
     {
-      m_values[0] = aVec1[0];
-      m_values[2] = aVec1[1];
-      m_values[1] = aVec2[0];
-      m_values[3] = aVec2[1];
+      m_values[0] = a_vec1[0];
+      m_values[2] = a_vec1[1];
+      m_values[1] = a_vec2[0];
+      m_values[3] = a_vec2[1];
     }
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder)
     : base_type(values, aOrder)
   { }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
     Matrix2(const tloc::core::data_structs::Variadic<value_type, 4>& a_vars,
             matrix_order a_order)
@@ -102,169 +103,150 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Math Operations
 
-  template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type&
-    Matrix2<MATRIX_2_PARAMS>::
-    Mul(const this_type& aMatrix)
-  {
-    this_type temp(*this);
-    Mul(temp, aMatrix);
-
-    return *this;
-  }
-
-  template <MATRIX_2_TYPES>
-  void Matrix2<MATRIX_2_PARAMS>::
-    Mul(const this_type& aMatrix1, const this_type& aMatrix2)
-  {
-    m_values[0] = (aMatrix1[0] * aMatrix2[0]) + (aMatrix1[2] * aMatrix2[1]);
-    m_values[2] = (aMatrix1[1] * aMatrix2[0]) + (aMatrix1[3] * aMatrix2[1]);
-    m_values[1] = (aMatrix1[0] * aMatrix2[2]) + (aMatrix1[2] * aMatrix2[3]);
-    m_values[3] = (aMatrix1[1] * aMatrix2[2]) + (aMatrix1[3] * aMatrix2[3]);
-  }
-
-  template <MATRIX_2_TYPES>
-  void Matrix2<MATRIX_2_PARAMS>::
-    Mul(const Vector2<value_type>& aVectorIn,
-        Vector2<value_type>& aVectorOut) const
-  {
-    aVectorOut[0] = (m_values[0] * aVectorIn[0]) + (m_values[2] * aVectorIn[1]);
-    aVectorOut[1] = (m_values[1] * aVectorIn[0]) + (m_values[3] * aVectorIn[1]);
-  }
-
-  template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::value_type
+  template <MATRIX_2_TEMPS>
+  MATRIX_2_TYPE::value_type
     Matrix2<MATRIX_2_PARAMS>::
     Determinant() const
   {
     return (m_values[0] * m_values[3]) - (m_values[2] * m_values[1]);
   }
 
-  template <MATRIX_2_TYPES>
-  bool Matrix2<MATRIX_2_PARAMS>::
-    Inverse()
-  {
-    this_type temp(*this);
-    return Inverse(temp);
-  }
-
-  template <MATRIX_2_TYPES>
-  bool Matrix2<MATRIX_2_PARAMS>::
-    Inverse(const this_type& aMatrix)
-  {
-    T detInv = ((T)1) / aMatrix.Determinant();
-
-    if (Math<T>::Approx(detInv, (T)0)) { return false; }
-
-    m_values[0] = aMatrix[3] * detInv;
-    m_values[1] = -aMatrix[1] * detInv;
-    m_values[2] = -aMatrix[2] * detInv;
-    m_values[3] = aMatrix[0] * detInv;
-
-    return true;
-  }
-
-  template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type&
+  template <MATRIX_2_TEMPS>
+  MATRIX_2_TYPE::this_type
     Matrix2<MATRIX_2_PARAMS>::
-    Adjoint()
+    Inverse() const
   {
-    this_type temp(*this);
-    Adjoint(temp);
-
-    return *this;
+    this_type temp;
+    temp.Inverse(*this);
+    return temp;
   }
 
-  template <MATRIX_2_TYPES>
-  void Matrix2<MATRIX_2_PARAMS>::
-    Adjoint(const this_type& aMatrix)
+  template <MATRIX_2_TEMPS>
+  void
+    Matrix2<MATRIX_2_PARAMS>::
+    Inverse(const this_type& a_matrix)
   {
-    m_values[0] = aMatrix[3];
-    m_values[1] = -aMatrix[1];
-    m_values[2] = -aMatrix[2];
-    m_values[3] = aMatrix[0];
+    value_type detInv = a_matrix.Determinant();
+
+    TLOC_ASSERT_LOW_LEVEL
+      (Math<value_type>::IsEqual(detInv, 0.0f) == false, "Divide by zero!");
+    detInv = ((value_type)1) / detInv;
+
+    m_values[0] =  a_matrix[3] * detInv;
+    m_values[1] = -a_matrix[1] * detInv;
+    m_values[2] = -a_matrix[2] * detInv;
+    m_values[3] =  a_matrix[0] * detInv;
+  }
+
+  template <MATRIX_2_TEMPS>
+  typename Matrix2<MATRIX_2_PARAMS>::this_type
+    Matrix2<MATRIX_2_PARAMS>::
+    Adjoint() const
+  {
+    this_type temp;
+    temp.Adjoint(*this);
+
+    return temp;
+  }
+
+  template <MATRIX_2_TEMPS>
+  void Matrix2<MATRIX_2_PARAMS>::
+    Adjoint(const this_type& a_matrix)
+  {
+    m_values[0] = a_matrix[3];
+    m_values[1] = -a_matrix[1];
+    m_values[2] = -a_matrix[2];
+    m_values[3] = a_matrix[0];
   }
 
   // Taken directly from WildMagic5 (modified to suit out needs)
-  template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type&
+  template <MATRIX_2_TEMPS>
+  typename Matrix2<MATRIX_2_PARAMS>::this_type
     Matrix2<MATRIX_2_PARAMS>::
-    Orthonormalize()
+    Orthonormalize() const
   {
-    value_type invLength = Math<value_type>::InvSqrt(m_values[0] * m_values[0] +
-      m_values[1] * m_values[1]);
-    m_values[0] *= invLength;
-    m_values[1] *= invLength;
+    this_type temp(*this);
+
+    value_type invLength =
+      Math<value_type>::InvSqrt(temp.m_values[0] * temp.m_values[0] +
+                                temp.m_values[1] * temp.m_values[1]);
+    temp.m_values[0] *= invLength;
+    temp.m_values[1] *= invLength;
 
     // Compute q1
-    value_type dot0 = (m_values[0] * m_values[2]) + (m_values[1] * m_values[3]);
-    m_values[2] -= dot0 * m_values[0];
-    m_values[3] -= dot0 * m_values[2];
+    value_type dot0 = (temp.m_values[0] * temp.m_values[2]) +
+                      (temp.m_values[1] * temp.m_values[3]);
+    temp.m_values[2] -= dot0 * temp.m_values[0];
+    temp.m_values[3] -= dot0 * temp.m_values[2];
 
-    invLength = Math<value_type>::InvSqrt(m_values[2] * m_values[2] +
-      m_values[3] * m_values[3]);
+    invLength =
+      Math<value_type>::InvSqrt(temp.m_values[2] * temp.m_values[2] +
+                                temp.m_values[3] * temp.m_values[3]);
 
-    m_values[2] *= invLength;
-    m_values[3] *= invLength;
+    temp.m_values[2] *= invLength;
+    temp.m_values[3] *= invLength;
 
-    return *this;
+    return temp;
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   void Matrix2<MATRIX_2_PARAMS>::
-    Orthonormalize( const this_type& aMatrix )
+    Orthonormalize( const this_type& a_matrix )
   {
-    base_type::operator= (aMatrix);
-    Orthonormalize();
+    *this = a_matrix.Orthonormalize();
   }
 
-  template <MATRIX_2_TYPES>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type&
+  template <MATRIX_2_TEMPS>
+  typename Matrix2<MATRIX_2_PARAMS>::this_type
     Matrix2<MATRIX_2_PARAMS>::
-    FastOrthonormalize()
+    FastOrthonormalize() const
   {
-    value_type invLength = Math<value_type>::FastInvSqrt(m_values[0] *
-      m_values[0] + m_values[2] * m_values[2]);
-    m_values[0] *= invLength;
-    m_values[2] *= invLength;
+    this_type temp(*this);
+
+    value_type invLength =
+      Math<value_type>::FastInvSqrt( (temp.m_values[0] * temp.m_values[0]) +
+                                     (temp.m_values[2] * temp.m_values[2]) );
+    temp.m_values[0] *= invLength;
+    temp.m_values[2] *= invLength;
 
     // Compute q1
-    value_type dot0 = m_values[0] * m_values[1] + m_values[2] * m_values[3];
-    m_values[1] -= dot0 * m_values[0];
-    m_values[3] -= dot0 * m_values[2];
+    value_type dot0 = (temp.m_values[0] * temp.m_values[1]) +
+                      (temp.m_values[2] * temp.m_values[3]);
+    temp.m_values[1] -= dot0 * temp.m_values[0];
+    temp.m_values[3] -= dot0 * temp.m_values[2];
 
-    invLength = Math<value_type>::FastInvSqrt(m_values[1] * m_values[1] +
-                                              m_values[3] * m_values[3]);
+    invLength =
+      Math<value_type>::FastInvSqrt(temp.m_values[1] * temp.m_values[1] +
+                                    temp.m_values[3] * temp.m_values[3]);
 
-    m_values[1] *= invLength;
-    m_values[3] *= invLength;
+    temp.m_values[1] *= invLength;
+    temp.m_values[3] *= invLength;
 
     return *this;
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   void
     Matrix2<MATRIX_2_PARAMS>::
-    FastOrthonormalize( const this_type& aMatrix )
+    FastOrthonormalize( const this_type& a_matrix )
   {
-    base_type::operator= (aMatrix);
-    FastOrthonormalize();
+    *this = a_matrix.FastOrthonormalize();
   }
 
-  template <MATRIX_2_TYPES>
+  template <MATRIX_2_TEMPS>
   void Matrix2<MATRIX_2_PARAMS>::
-    EigenDecomposition(this_type& aRot, this_type& aDiag) const
+    EigenDecomposition(this_type& a_rot, this_type& a_diag) const
   {
     value_type sum = Math<value_type>::FAbs(m_values[0]) +
       Math<value_type>::FAbs(m_values[3]);
     if (Math<value_type>::FAbs(m_values[2]) + sum == sum)
     {
       // The matrix is diagonal
-      aRot[0] = (value_type)1; aRot[2] = (value_type)0;
-      aRot[1] = (value_type)0; aRot[3] = (value_type)1;
+      a_rot[0] = (value_type)1; a_rot[2] = (value_type)0;
+      a_rot[1] = (value_type)0; a_rot[3] = (value_type)1;
 
-      aDiag[0] = m_values[0]; aDiag[2] = (value_type)0;
-      aDiag[1] = (value_type)0;        aDiag[3] = m_values[3];
+      a_diag[0] = m_values[0]; a_diag[2] = (value_type)0;
+      a_diag[1] = (value_type)0;        a_diag[3] = m_values[3];
 
       return;
     }
@@ -277,7 +259,7 @@ namespace tloc { namespace math { namespace types {
       m_values[2] * m_values[2]);
     eigVal0and1[0] = ((value_type)0.5) * (trace - discr);
     eigVal0and1[1] = ((value_type)0.5) * (trace + discr);
-    aDiag.MakeDiagonal( eigVal0and1 );
+    a_diag.MakeDiagonal( eigVal0and1 );
 
     value_type cs, sn;
     if (diff >= (value_type)0)
@@ -295,10 +277,10 @@ namespace tloc { namespace math { namespace types {
     cs *= invLength;
     sn *= invLength;
 
-    aRot.m_values[0] = cs;
-    aRot.m_values[1] = sn;
-    aRot.m_values[2] = -sn;
-    aRot.m_values[3] = cs;
+    a_rot.m_values[0] = cs;
+    a_rot.m_values[1] = sn;
+    a_rot.m_values[2] = -sn;
+    a_rot.m_values[3] = cs;
   }
 
 };};};

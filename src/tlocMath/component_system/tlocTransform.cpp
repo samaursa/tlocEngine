@@ -113,7 +113,7 @@ namespace tloc { namespace math { namespace component_system {
     //         [   0            1     ]
 
     orientation_type rotMat = GetOrientation();
-    rotMat.Inverse();
+    rotMat = rotMat.Inverse();
 
     position_type posV = GetPosition();
     posV = (rotMat * -1) * posV;

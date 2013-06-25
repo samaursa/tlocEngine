@@ -461,6 +461,40 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix3<MATRIX_3_PARAMS>::
+    MakeRotation(const vec_type& a_axis, Radian_T<value_type> a_angle)
+  {
+    // Taken from WildMagic5 and checked against Essential Mathematics for
+    // Games
+
+    value_type cs = Math<value_type>::Cos(a_angle.Get());
+    value_type sn = Math<value_type>::Sin(a_angle.Get());
+    value_type oneMinusCos = ((value_type)1) - cs;
+    value_type x2 = a_axis[0]*a_axis[0];
+    value_type y2 = a_axis[1]*a_axis[1];
+    value_type z2 = a_axis[2]*a_axis[2];
+    value_type xym = a_axis[0]*a_axis[1]*oneMinusCos;
+    value_type xzm = a_axis[0]*a_axis[2]*oneMinusCos;
+    value_type yzm = a_axis[1]*a_axis[2]*oneMinusCos;
+    value_type xSin = a_axis[0]*sn;
+    value_type ySin = a_axis[1]*sn;
+    value_type zSin = a_axis[2]*sn;
+
+    m_values[0] = x2*oneMinusCos + cs;
+    m_values[1] = xym + zSin;
+    m_values[2] = xzm - ySin;
+
+    m_values[3] = xym - zSin;
+    m_values[4] = y2*oneMinusCos + cs;
+    m_values[5] = yzm + xSin;
+
+    m_values[6] = xzm + ySin;
+    m_values[7] = yzm - xSin;
+    m_values[8] = z2*oneMinusCos + cs;
+  }
+
+  template <MATRIX_3_TEMP>
+  void
+    Matrix3<MATRIX_3_PARAMS>::
     MakeEulerXYZ(value_type aXAngle, value_type aYAngle, value_type aZAngle)
   {
     this_type matY, matZ;

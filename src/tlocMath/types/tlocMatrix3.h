@@ -7,6 +7,8 @@
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix.h>
 
+#include <tlocMath/types/tlocAngle.h>
+
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
@@ -25,6 +27,7 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
     typedef typename base_type::const_reference   const_reference;
+    typedef typename base_type::vec_type          vec_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -77,34 +80,18 @@ namespace tloc { namespace math { namespace types {
     // Returns the determinant of this Matrix
     value_type  Determinant() const;
 
-    // Modifies this matrix by storing its inverse
-    // If determinant is 0, then false is returned, otherwise, true.
     this_type   Inverse() const;
-
-    // Modifies this matrix by storing the inverse of the incoming matrix.
-    // If determinant is 0, the false is returned, otherwise, true.
     void        Inverse(const this_type& aMatrix);
 
-    // Modifies this matrix by storing its adjoint
     this_type   Adjoint() const;
-
-    // Modifies this matrix by storing the adjoint of the incoming matrix
     void        Adjoint(const this_type& aMatrix);
 
-    // Normalizes the column vectors of the matrix
     this_type   Orthonormalize() const;
-
-    // Modifies this matrix by storing the orthonormalized version of the
-    // incoming matrix
     void        Orthonormalize(const this_type& aMatrix);
 
     // Normalizes the column vectors of the matrix. This uses FastInvSqrt()
     // used in the Quake engine and may result in lost precision
     this_type   FastOrthonormalize() const;
-
-    // Modifies this matrix by storing the orthonormalized version of the
-    // incoming matrix. Uses FastInvSqrt() used in the Quake engine and
-    // may result in lost precision
     void        FastOrthonormalize(const this_type& aMatrix);
 
     // Taken from WildMagic5
@@ -115,14 +102,12 @@ namespace tloc { namespace math { namespace types {
     // eigenvalues are ordered as d0 <= d1.
     void        EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
-    // Modifies this matrix to be a rotation matrix about the x-axis
     void        MakeRotationX(const_reference aXAngle);
-
-    // Modifies this matrix to be a rotation matrix about the y-axis
     void        MakeRotationY(const_reference aYAngle);
-
-    // Modifies this matrix to be a rotation matrix about the z-axis
     void        MakeRotationZ(const_reference aZAngle);
+
+    void        MakeRotation(const vec_type& a_axis,
+                             Radian_T<value_type> a_angle);
 
     // Modifies this vector by creating a rotation matrix from the incoming
     // angles by the order specified by the function. E.g. MakeEulerXYZ will

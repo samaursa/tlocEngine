@@ -213,12 +213,22 @@ namespace TestingMatrix3
   {
     a.MakeRotationX(90 * Mathf::DEG_TO_RAD);
     CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, 1, 0, -1, 0);
+    CHECK(a.Determinant() == Approx(1.0f));
 
     a.MakeRotationY(90 * Mathf::DEG_TO_RAD);
     CHECK_MATRIX3F(a, 0, 0, -1, 0, 1, 0, 1, 0, 0);
+    CHECK(a.Determinant() == Approx(1.0f));
 
     a.MakeRotationZ(90 * Mathf::DEG_TO_RAD);
     CHECK_MATRIX3F(a, 0, 1, 0, -1, 0, 0, 0, 0, 1);
+    CHECK(a.Determinant() == Approx(1.0f));
+
+    a.MakeRotation(math_t::Vec3f(0.8401834f, 0.5385441f, 0.0637344f),
+                   math_t::Degree(49.498245f));
+    CHECK_MATRIX3F(a, 0.8969123f, 0.2070685f, -0.390731f,
+                      0.110143f, 0.7511351f, 0.6508952f,
+                      0.4282718f, -0.626832f, 0.6508951f);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakerEulerXYZ",
@@ -309,6 +319,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,            0, 0.70710677f, 0.70710677f,
                        0.70710677f,        0.5f,       -0.5f,
                       -0.70710677f,        0.5f,       -0.5f);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerXZX",
@@ -322,6 +333,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,           0, -0.70710677f, 0.70710677f,
                       0.70710677f,        -0.5f,       -0.5f,
                       0.70710677f,         0.5f,        0.5f);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYXY",
@@ -335,6 +347,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,        0.5f, 0.70710677f,         0.5f,
                       0.70710677f,           0, -0.70710677f,
                             -0.5f, 0.70710677f,        -0.5f);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerYZY",
@@ -348,6 +361,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,       -0.5f, -0.70710677f,        0.5f,
                       0.70710677f,            0, 0.70710677f,
                             -0.5f,  0.70710677f,        0.5f);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZXZ",
@@ -361,6 +375,7 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,        0.5f,       -0.5f,  0.70710677f,
                              0.5f,       -0.5f, -0.70710677f,
                       0.70710677f, 0.70710677f,            0);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakeEulerZYZ",
@@ -374,5 +389,6 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a,        -0.5f,       -0.5f, 0.70710677f,
                               0.5f,        0.5f, 0.70710677f,
                       -0.70710677f, 0.70710677f,           0);
+    CHECK(a.Determinant() == Approx(1.0f));
   }
 };

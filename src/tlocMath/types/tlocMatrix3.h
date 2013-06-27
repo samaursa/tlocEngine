@@ -33,6 +33,7 @@ namespace tloc { namespace math { namespace types {
     // using declarations for access to base class
     using base_type::Set;
     using base_type::MakeDiagonal;
+    using base_type::Mul;
     using base_type::m_values;
     using base_type::k_MatrixSize;
 

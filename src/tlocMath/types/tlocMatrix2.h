@@ -18,7 +18,6 @@ namespace tloc { namespace math { namespace types {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef T                                     value_type;
     typedef Matrix2<T>                            this_type;
     typedef Matrix<T, 2>                          base_type;
 

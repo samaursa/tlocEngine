@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_ARCBALL_CONTROLLER_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_ARCBALL_CONTROLLER_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_ARCBALL_SYSTEM_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_ARCBALL_SYSTEM_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
@@ -18,7 +18,7 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class ArcballSystem
+  class ArcBallSystem
     : public core::component_system::EntityProcessingSystem
   {
   public:
@@ -33,7 +33,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_value_type;
 
   public:
-    ArcballSystem();
+    ArcBallSystem(event_manager_sptr a_eventMgr,
+                  entity_manager_sptr a_entityMgr);
 
     virtual error_type Pre_Initialize() { return ErrorSuccess; }
 

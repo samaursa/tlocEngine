@@ -60,22 +60,31 @@ namespace tloc { namespace math { namespace types {
   // Constructors
 
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector()
+  Vector<VECTOR_PARAMS>::
+    Vector()
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(value_type a_value)
+  Vector<VECTOR_PARAMS>::
+    Vector(value_type a_value)
     : base_type(a_value)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
   template <typename T_ArrayType>
-  TL_FI Vector<VECTOR_PARAMS>::Vector(const T_ArrayType (&aArray)[T_Size])
+  Vector<VECTOR_PARAMS>::
+    Vector(const T_ArrayType (&aArray)[T_Size])
     : base_type(aArray)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI Vector<VECTOR_PARAMS>::
+  Vector<VECTOR_PARAMS>::
     Vector(const core::data_structs::Variadic<T, T_Size>& a_vars)
     : base_type(a_vars)
   { }
@@ -84,13 +93,19 @@ namespace tloc { namespace math { namespace types {
   // Modifiers
 
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Zero()
+  void
+    Vector<VECTOR_PARAMS>::
+    Zero()
   {
     Set(0);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Neg()
+  void
+    Vector<VECTOR_PARAMS>::
+    Negate()
   {
     ITERATE_VECTOR
     {
@@ -98,125 +113,188 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Neg(const this_type& a_vector)
+  void
+    Vector<VECTOR_PARAMS>::
+    Negate(const this_type& a_vector)
   {
     base_type::operator=(a_vector);
-    Neg();
+    Negate();
   }
 
   //------------------------------------------------------------------------
   // Math Operations
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Add(const this_type& a_vector)
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Add(const this_type& a_vector) const
+  {
+    this_type temp(*this);
+
+    ITERATE_VECTOR
+    {
+      temp.m_values[i] += a_vector[i];
+    }
+
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  void
+    Vector<VECTOR_PARAMS>::
+    Add(const this_type& a_vector1, const this_type& a_vector2)
+  {
+    *this = a_vector1.Add(a_vector2);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Sub(const this_type& a_vector) const
+  {
+    this_type temp(*this);
+
+    ITERATE_VECTOR
+    {
+      temp.m_values[i] -= a_vector[i];
+    }
+
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  void
+    Vector<VECTOR_PARAMS>::
+    Sub(const this_type& a_vector1, const this_type& a_vector2)
+  {
+    *this = a_vector1.Sub(a_vector2);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Mul(const this_type& a_vector) const
+  {
+    this_type temp(*this);
+
+    ITERATE_VECTOR
+    {
+      temp.m_values[i] *= a_vector[i];
+    }
+
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  void Vector<VECTOR_PARAMS>::
+    Mul(const this_type& a_vector1, const this_type& a_vector2)
+  {
+    *this = a_vector1.Mul(a_vector2);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Mul(const value_type a_real) const
+  {
+    this_type temp(*this);
+
+    ITERATE_VECTOR
+    {
+      temp.m_values[i] *= a_real;
+    }
+
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  void
+    Vector<VECTOR_PARAMS>::
+    Mul(const this_type& a_vector, const value_type a_real)
   {
     ITERATE_VECTOR
     {
-      m_values[i] += a_vector[i];
+      m_values[i] = a_vector.m_values[i] * a_real;
     }
-
-    return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Add(const this_type& a_vector1,
-                                        const this_type& a_vector2)
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Div(const this_type& a_vector) const
   {
+    this_type temp(*this);
+
     ITERATE_VECTOR
     {
-      m_values[i] = a_vector1[i] + a_vector2[i];
+      temp.m_values[i] /= a_vector[i];
     }
+
+    return temp;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector)
+  void
+    Vector<VECTOR_PARAMS>::
+    Div(const this_type& a_vector1, const this_type& a_vector2)
   {
+    *this = a_vector1.Div(a_vector2);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Div(const value_type a_real) const
+  {
+    this_type temp(*this);
+
     ITERATE_VECTOR
     {
-      m_values[i] -= a_vector[i];
+      temp.m_values[i] /= a_real;
     }
 
-    return *this;
+    return temp;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Sub(const this_type& a_vector1,
-                                        const this_type& a_vector2)
+  void
+    Vector<VECTOR_PARAMS>::
+    Div(const this_type& a_vector, const value_type a_real)
   {
-    *this = a_vector1;
-    Sub(a_vector2);
+    *this = a_vector.Div(a_real);
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector)
-  {
-    ITERATE_VECTOR
-    {
-      m_values[i] *= a_vector[i];
-    }
-
-    return *this;
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Mul(const this_type& a_vector1,
-                                        const this_type& a_vector2)
-  {
-    *this = a_vector1;
-    Mul(a_vector2);
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Mul(const value_type a_real)
-  {
-    ITERATE_VECTOR
-    {
-      m_values[i] *= a_real;
-    }
-
-    return *this;
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Div(const this_type& a_vector)
-  {
-    ITERATE_VECTOR
-    {
-      m_values[i] /= a_vector[i];
-    }
-
-    return *this;
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Div(const this_type& a_vector1,
-                                        const this_type& a_vector2)
-  {
-    base_type::operator=(a_vector1);
-    Div(a_vector2);
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Div(const value_type a_real)
-  {
-    ITERATE_VECTOR
-    {
-      m_values[i] /= a_real;
-    }
-
-    return *this;
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::LengthSquared() const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    LengthSquared() const
   {
     T lengthSq = 0;
 
@@ -228,40 +306,55 @@ namespace tloc { namespace math { namespace types {
     return lengthSq;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::Length() const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    Length() const
   {
     return DoLength<p_vector::accurate>(*this);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::DoLength(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    DoLength(const this_type& a_vector) const
   {
     value_type length = a_vector.LengthSquared();
     return GetSqrt(length, T_Accuracy());
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::Norm()
-  {
-    return Norm<p_vector::accurate>(*this);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::Norm(const this_type& a_vector)
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    Normalize()
   {
-    return Norm<p_vector::accurate>(a_vector);
+    return Normalize<p_vector::accurate>(*this);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    Normalize(const this_type& a_vector)
+  {
+    return Normalize<p_vector::accurate>(a_vector);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::DoNorm(const this_type& a_vector)
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    DoNorm(const this_type& a_vector)
   {
     value_type dblLength = a_vector.LengthSquared();
 
@@ -277,17 +370,23 @@ namespace tloc { namespace math { namespace types {
     return (T)1 / invLength;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::Distance(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    Distance(const this_type& a_vector) const
   {
     return DoDistance<p_vector::accurate>(a_vector);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::DoDistance(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    DoDistance(const this_type& a_vector) const
   {
     this_type lTemp = *this;
     lTemp.Sub(a_vector);
@@ -296,20 +395,25 @@ namespace tloc { namespace math { namespace types {
     return length;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::DistanceSquared(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    DistanceSquared(const this_type& a_vector) const
   {
-    this_type lTemp = *this;
-    lTemp.Sub(a_vector);
+    this_type lTemp = Sub(a_vector);
 
     value_type lengthSq = lTemp.LengthSquared();
     return lengthSq;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::Dot(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    Dot(const this_type& a_vector) const
   {
     value_type dotProd = 0;
 
@@ -321,165 +425,177 @@ namespace tloc { namespace math { namespace types {
     return dotProd;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::DotAbs(const this_type& a_vector) const
+  VECTOR_TYPE::value_type
+    Vector<VECTOR_PARAMS>::
+    DotAbs(const this_type& a_vector) const
   {
     value_type dotProd = Dot(a_vector);
     return Math<value_type>::Abs(dotProd);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector)
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    Midpoint(const this_type& a_vector) const
   {
+    this_type temp(*this);
+
     ITERATE_VECTOR
     {
-      m_values[i] = (m_values[i] + a_vector[i]) * (value_type)0.5;
+      temp.m_values[i] = (temp.m_values[i] + a_vector[i]) * (value_type)0.5;
     }
 
-    return *this;
+    return temp;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI void Vector<VECTOR_PARAMS>::Midpoint(const this_type& a_vector1,
-                                             const this_type& a_vector2)
+  void
+    Vector<VECTOR_PARAMS>::
+    Midpoint(const this_type& a_vector1, const this_type& a_vector2)
   {
-    *this = a_vector1;
-    Midpoint(a_vector2);
+    *this = a_vector1.Midpoint(a_vector2);
   }
 
   //------------------------------------------------------------------------
   // Operators
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator+ (const this_type& a_vector) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator+ (const this_type& a_vector) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Add(a_vector);
-
-    return returnVec;
+    return Add(a_vector);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator- (const this_type& a_vector) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator- (const this_type& a_vector) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Sub(a_vector);
-
-    return returnVec;
+    return Sub(a_vector);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator* (const_reference a_value) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator* (const_reference a_value) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Mul(a_value);
-
-    return returnVec;
+    return Mul(a_value);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator* (const this_type& a_vector) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator* (const this_type& a_vector) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Mul(a_vector);
-
-    return returnVec;
+    return Mul(a_vector);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator/ (const_reference a_value) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator/ (const_reference a_value) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Div(a_value);
-
-    return returnVec;
+    return Div(a_value);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::operator/ (const this_type& a_vector) const
+  VECTOR_TYPE::this_type
+    Vector<VECTOR_PARAMS>::
+    operator/ (const this_type& a_vector) const
   {
-    this_type returnVec;
-    returnVec = (*this);
-
-    returnVec.Div(a_vector);
-
-    return returnVec;
+    return Div(a_vector);
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator+= (const this_type& a_vector)
-  {
-    Add(a_vector);
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator+= (const this_type& a_vector)
+  {
+    Add(*this, a_vector);
     return (*this);
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator-= (const this_type& a_vector)
-  {
-    Sub(a_vector);
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator-= (const this_type& a_vector)
+  {
+    Sub(*this, a_vector);
     return (*this);;
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator*= (const_reference a_value)
-  {
-    Mul(a_value);
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator*= (const_reference a_value)
+  {
+    Mul(*this, a_value);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator*= (const this_type& a_vector)
+  {
+    Mul(*this, a_vector);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator/= (const_reference a_value)
+  {
+    Div(*this, a_value);
     return (*this);
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator*= (const this_type& a_vector)
-  {
-    Mul(a_vector);
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <VECTOR_TEMP>
+  VECTOR_TYPE::this_type&
+    Vector<VECTOR_PARAMS>::
+    operator/=(const this_type& a_vector)
+  {
+    Div(*this, a_vector);
     return (*this);
   }
 
-  template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator/= (const_reference a_value)
-  {
-    Div(a_value);
-
-    return (*this);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  TL_FI VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::operator/= (const this_type& a_vector)
-  {
-    Div(a_vector);
-
-    return (*this);
-  }
-
-  template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator == (const this_type& a_vector) const
+  bool
+    Vector<VECTOR_PARAMS>::
+    operator==(const this_type& a_vector) const
   {
     ITERATE_VECTOR
     {
@@ -489,8 +605,12 @@ namespace tloc { namespace math { namespace types {
     return true;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::operator != (const this_type& a_vector) const
+  bool
+    Vector<VECTOR_PARAMS>::
+    operator!=(const this_type& a_vector) const
   {
     return !operator==(a_vector);
   }
@@ -499,7 +619,9 @@ namespace tloc { namespace math { namespace types {
   // Checks
 
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::IsValid()
+  bool
+    Vector<VECTOR_PARAMS>::
+    IsValid()
   {
     ITERATE_VECTOR
     {
@@ -509,8 +631,12 @@ namespace tloc { namespace math { namespace types {
     return true;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <VECTOR_TEMP>
-  TL_FI bool Vector<VECTOR_PARAMS>::IsZero()
+  bool
+    Vector<VECTOR_PARAMS>::
+    IsZero()
   {
     ITERATE_VECTOR
     {

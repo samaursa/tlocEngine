@@ -63,9 +63,9 @@ namespace tloc { namespace math { namespace types {
   // Math operations
 
   template <VECTOR_3_TYPES>
-  typename Vector3<VECTOR_3_PARAMS>::this_type&
+  typename Vector3<VECTOR_3_PARAMS>::this_type
     Vector3<VECTOR_3_PARAMS>::
-    Cross(const this_type& aVector)
+    Cross(const this_type& aVector) const
   {
     /*
     y * rkVector.z - z * rkVector.y,
@@ -73,21 +73,20 @@ namespace tloc { namespace math { namespace types {
     x * rkVector.y - y * rkVector.x);
     */
 
-    this_type temp(*this);
+    this_type temp;
 
-    m_values[0] = temp[1] * aVector[2] - temp[2] * aVector[1];
-    m_values[1] = temp[2] * aVector[0] - temp[0] * aVector[2];
-    m_values[2] = temp[0] * aVector[1] - temp[1] * aVector[0];
+    temp.m_values[0] = m_values[1] * aVector[2] - m_values[2] * aVector[1];
+    temp.m_values[1] = m_values[2] * aVector[0] - m_values[0] * aVector[2];
+    temp.m_values[2] = m_values[0] * aVector[1] - m_values[1] * aVector[0];
 
-    return *this;
+    return temp;
   }
 
   template <VECTOR_3_TYPES>
   void Vector3<VECTOR_3_PARAMS>::
     Cross(const this_type& aVector1, const this_type& aVector2)
   {
-    *this = aVector1;
-    Cross(aVector2);
+    *this = aVector1.Cross(aVector2);
   }
 
 };};};

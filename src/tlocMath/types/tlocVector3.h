@@ -46,12 +46,11 @@ namespace tloc { namespace math { namespace types {
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    this_type& Cross(const this_type& aVector);
+    this_type Cross(const this_type& aVector) const;
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    void Cross(const this_type& aVector1,
-                     const this_type& aVector2);
+    void Cross(const this_type& aVector1, const this_type& aVector2);
 
     static const Vector3 ZERO;
     static const Vector3 UNIT_X;

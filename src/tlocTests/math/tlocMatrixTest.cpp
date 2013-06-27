@@ -98,8 +98,8 @@ namespace TestingMatrix
     Matrix<tl_float, 3> h(rawArray, Matrix<tl_float, 3>::k_ColMajor);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    c.Zero();
-    c.Identity();
+    c.MakeZero();
+    c.MakeIdentity();
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
     Matrix<tl_float, 3> i(Variadic9f(rawArray),
@@ -110,7 +110,7 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Modifiers",
     "Test modifiers")
   {
-    c.Zero();
+    c.MakeZero();
     tl_float numbers[3] = {1,2,3};
     c.MakeDiagonal(numbers);
 
@@ -121,7 +121,7 @@ namespace TestingMatrix
     "Test addition")
   {
     c = a;
-    c.Add(a);
+    c = c.Add(a);
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
 
     d.Add(a, a);
@@ -142,7 +142,7 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub",
     "Test subtraction")
   {
-    a.Sub(b);
+    a = a.Sub(b);
     CHECK_MATRIX3F(a, 0, 2, 4, -2, 0, 2, -4, -2, 0);
 
     d.Sub(b, a);
@@ -169,17 +169,17 @@ namespace TestingMatrix
     c(2, 2) = 1;
 
     d = c;
-    d.Mul(c);
+    d = d.Mul(c);
     CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
-    d.Mul(10);
+    d = d.Mul(10);
     CHECK_MATRIX3F(d, 10, 0, 0, 0, 10, 0, 0, 0, 10);
     c.Set(1);
-    d.Add(c);
+    d = d.Add(c);
     CHECK_MATRIX3F(d, 11, 1, 1, 1, 11, 1, 1, 1, 11);
 
     //------------------------------------------------------------------------
-    c.Identity();
+    c.MakeIdentity();
     Vec3f someVec(1, 0, 0);
     Vec3f result;
     c.Mul(someVec, result);
@@ -187,7 +187,7 @@ namespace TestingMatrix
     CHECK_VEC3F(result, 1, 0, 0); //-V550
 
     //------------------------------------------------------------------------
-    c.Zero(); d.Zero();
+    c.MakeZero(); d.MakeZero();
     tl_float numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     c.Set(numArray, Matrix<tl_float, 3>::k_RowMajor);
     d = c;
@@ -236,7 +236,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(d, 11, 1, 1, 1, 11, 1, 1, 1, 11);
 
     //------------------------------------------------------------------------
-    c.Identity();
+    c.MakeIdentity();
     Vec3f someVec(1, 0, 0);
     Vec3f result;
     result = c * someVec;
@@ -244,7 +244,7 @@ namespace TestingMatrix
     CHECK_VEC3F(result, 1, 0, 0); //-V550
 
     //------------------------------------------------------------------------
-    c.Zero(); d.Zero();
+    c.MakeZero(); d.MakeZero();
     tl_float numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     c.Set(numArray, Matrix<tl_float, 3>::k_RowMajor);
     d = c;
@@ -257,7 +257,7 @@ namespace TestingMatrix
   {
     d.Set(11);
     CHECK_MATRIX3F(d, 11, 11, 11, 11, 11, 11, 11, 11, 11);
-    d.Div(11);
+    d = d.Div(11);
     CHECK_MATRIX3F(d, 1, 1, 1, 1, 1, 1, 1, 1, 1);
   }
 
@@ -284,11 +284,11 @@ namespace TestingMatrix
     c(2, 2) = 1;
 
     d = c;
-    d.Transpose();
+    d = d.Transpose();
     CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 0, 0, 1);
     d(0, 2) = 1;
     CHECK_MATRIX3F(d, 1, 0, 0, 0, 1, 0, 1, 0, 1);
-    d.Transpose();
+    d = d.Transpose();
     CHECK_MATRIX3F(d, 1, 0, 1, 0, 1, 0, 0, 0, 1);
 
     e = d;

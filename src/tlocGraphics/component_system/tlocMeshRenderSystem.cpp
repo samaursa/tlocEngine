@@ -109,8 +109,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace graphics::component_system::components;
 
     matrix_type viewMat;
-    viewMat.Identity();
-    m_vpMatrix.Identity();
+    viewMat.MakeIdentity();
+    m_vpMatrix.MakeIdentity();
 
     // vMVP, but since we are doing column major, it becomes PVMv
 
@@ -133,7 +133,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    m_vpMatrix.Mul(viewMat);
+    m_vpMatrix = m_vpMatrix * viewMat;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

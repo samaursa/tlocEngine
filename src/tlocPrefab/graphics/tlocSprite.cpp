@@ -52,7 +52,6 @@ namespace tloc { namespace prefab { namespace graphics {
         tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart[0],
                                                 si.m_texCoordEnd[1]),
                                                 TextureCoords::set_index(i));
-        ++a_begin;
       }
 
       taPtr->AddSpriteSet(tcoord);

@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Camera()
     : base_type(k_component_type)
     , m_frustum(GetDefaultFrustum())
-    , m_vpMat(view_proj_mat_type::IDENTITY)
+    , m_vpMat(matrix_type::IDENTITY)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Camera(const frustum_type& a_frustum)
     : base_type(k_component_type)
     , m_frustum(a_frustum)
-    , m_vpMat(view_proj_mat_type::IDENTITY)
+    , m_vpMat(matrix_type::IDENTITY)
   { }
 
   // -----------------------------------------------------------------------

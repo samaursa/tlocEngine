@@ -7,7 +7,6 @@
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
-#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
@@ -15,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocCamera.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -56,30 +56,12 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(math_cs::components::projection),
-      "The passed entity does not have the projection component!");
+    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
+      "The passed entity is not a camera!");
   }
 
   error_type FanRenderSystem::Pre_Initialize()
-  {
-    using namespace core::component_system;
-    using namespace math::component_system::components;
-    using namespace graphics::component_system::components;
-
-    matrix_type viewMat;
-    viewMat.MakeIdentity();
-
-    if (m_sharedCam)
-    {
-      if (m_sharedCam->HasComponent(transform))
-      { }
-
-      if (m_sharedCam->HasComponent(projection))
-      { }
-    }
-
-    return ErrorSuccess;
-  }
+  { return ErrorSuccess; }
 
   error_type FanRenderSystem::InitializeEntity(const entity_manager*,
                                                const entity_type* )
@@ -91,35 +73,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void FanRenderSystem::Pre_ProcessActiveEntities(f64)
   {
-    using namespace core::component_system;
-    using namespace math::component_system::components;
-    using namespace graphics::component_system::components;
-
-    matrix_type viewMat;
-    viewMat.MakeIdentity();
-    m_vpMatrix.MakeIdentity();
-
-    // vMVP, but since we are doing column major, it becomes PVMv
-
-    if (m_sharedCam)
+    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
     {
-      if (m_sharedCam->HasComponent(projection))
-      {
-        math_cs::Projection* projMat =
-          m_sharedCam->GetComponent<math_cs::Projection>();
-        m_vpMatrix = projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
-      }
-
-      if (m_sharedCam->HasComponent(transform))
-      {
-        math_cs::Transform* vMat =
-          m_sharedCam->GetComponent<math_cs::Transform>();
-        math_cs::Transform vMatInv = vMat->Invert();
-        viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
-      }
+      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
     }
-
-    m_vpMatrix = m_vpMatrix * viewMat;
+    else
+    {
+      m_vpMatrix.MakeIdentity();
+    }
   }
 
   void FanRenderSystem::ProcessEntity(const entity_manager*,

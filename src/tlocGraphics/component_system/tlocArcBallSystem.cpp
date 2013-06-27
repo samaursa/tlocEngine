@@ -59,7 +59,7 @@ namespace tloc { namespace graphics { namespace component_system {
     ori.GetCol(0, leftVec);
 
     pos_type upVec;
-    ori.GetCol(1, leftVec);
+    ori.GetCol(1, upVec);
 
     ori_type rotMatVertical;
     rotMatVertical.MakeRotation(leftVec, vAngle);
@@ -68,9 +68,27 @@ namespace tloc { namespace graphics { namespace component_system {
     rotMatHorizontal.MakeRotation(upVec, hAngle);
 
     pos = rotMatVertical * pos;
-    pos = rotMatVertical * pos;
+
+    // calculate the new up
+    pos_type dirVec(pos);
+    dirVec.Normalize();
+    upVec = dirVec.Cross(leftVec);
+
+    pos = rotMatHorizontal * pos;
+
+    // calculate the new left
+    dirVec = pos;
+    dirVec.Normalize();
+    leftVec = upVec.Cross(dirVec);
+
+    ori.SetCol(0, leftVec);
+    ori.SetCol(1, upVec);
+    ori.SetCol(2, dirVec);
 
     t->SetPosition(pos);
+    t->SetOrientation(ori);
+
+    arcBall->Reset();
   }
 
 };};};

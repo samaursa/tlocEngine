@@ -29,11 +29,16 @@ namespace tloc { namespace graphics { namespace component_system {
     ArcBall();
     explicit ArcBall(const vec_type& a_focusPoint);
 
+    void Reset();
+
+    void FlipVertical();
+    void FlipHorizontal();
+
     TLOC_DECL_AND_DEF_GETTER(vec_type, GetFocus, m_focusPoint);
     TLOC_DECL_AND_DEF_SETTER(vec_type, SetFocus, m_focusPoint);
 
-    TLOC_DECL_AND_DEF_SETTER(angle_type, MoveVertical, m_verticalAngle);
-    TLOC_DECL_AND_DEF_SETTER(angle_type, MoveHorizontal, m_horizontalAngle);
+    TLOC_DECL_SETTER(angle_type, MoveVertical);
+    TLOC_DECL_SETTER(angle_type, MoveHorizontal);
 
     TLOC_DECL_AND_DEF_GETTER(angle_type, GetVerticalAngle, m_verticalAngle);
     TLOC_DECL_AND_DEF_GETTER(angle_type, GetHorizontalAngle, m_horizontalAngle);

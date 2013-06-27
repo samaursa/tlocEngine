@@ -1,6 +1,6 @@
 #include "tlocRigidBodyShapeDef.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <Box2D/Common/b2Math.h>
@@ -59,6 +59,11 @@ namespace tloc { namespace physics { namespace box2d {
 
     m_fixtureDef.shape = circle;
     m_internalShape = shape_internal_type_sptr(circle);
+  }
+
+  void RigidBodyShapeDef::DoSetParent(const entity_type* a_parent)
+  {
+    m_fixtureDef.userData = const_cast<entity_type*>(a_parent);
   }
 
   //////////////////////////////////////////////////////////////////////////

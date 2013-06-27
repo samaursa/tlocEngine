@@ -10,22 +10,22 @@
 #define TLOC_TOUCH_SURFACE_IMPL_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocTouchSurface.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
-
-#import "tlocGraphics/window/tlocOpenGLViewIphone.h"
+#include <tlocInput/hid/tlocTouchSurfaceDevice.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
+#include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
 namespace tloc { namespace input {
   
-  typedef ParamList<OpenGLView*> iphone_touch_surface_param_type;
+  typedef ParamList<core_t::Any> iphone_touch_surface_param_type;
   
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
   
   template <typename T_ParentTouchSurface>
   class TouchSurfaceImpl 
@@ -90,6 +90,6 @@ namespace tloc { namespace input { namespace priv {
     touch_device_type m_touchDevice;
   };
   
-};};};
+};};};};
 
 #endif

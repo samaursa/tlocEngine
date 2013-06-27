@@ -1,7 +1,7 @@
 #include "tlocMatrix.h"
 
 #define TLOC_MATRIX_ALLOW_EASY_OPERATIONS
-#include "tlocMatrix.inl"
+#include "tlocMatrix.inl.h"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -23,7 +23,7 @@
 
 //------------------------------------------------------------------------
 // Include the definitions
-#include "tlocMatrix.inl"
+#include "tlocMatrix.inl.h"
 
 #else
 

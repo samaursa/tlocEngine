@@ -1,8 +1,9 @@
 #include "tlocShaderProgram.h"
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocCore/utilities/tlocType.h>
 
@@ -81,6 +82,9 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetUniformLocation
           (a_shaderProgram.GetHandle(), itr->m_name.Get());
+        // LOG:
+        TLOC_ASSERT(itr->m_location != -1,
+          "Using reserved prefix gl_ in variable name which is disallowed");
       }
     }
 
@@ -116,6 +120,9 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetAttribLocation
           (a_shaderProgram.GetHandle(), itr->m_name.Get());
+        // LOG:
+        TLOC_ASSERT(itr->m_location != -1,
+          "Using reserved prefix gl_ in variable name which is disallowed");
       }
 
     }
@@ -166,7 +173,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_flags.Mark(k_shaderAttached);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   ShaderProgram::error_type ShaderProgram::Link()
@@ -181,15 +188,18 @@ namespace tloc { namespace graphics { namespace gl {
     GLint result = Get<p_shader_program::LinkStatus>();
     if (result == GL_FALSE)
     {
-      String errorString;
-      gl::Error().GetErrorAsString(errorString);
+      s32 logLen;
+      char logBuffer[1000];
+      glGetProgramInfoLog(handle, sizeof(logBuffer), &logLen, logBuffer);
+
+      DoSetError(logBuffer);
 
       // TODO: Write shader log
-      return error::error_shader_program_link;
+      return TLOC_ERROR(error::error_shader_program_link);
     }
 
     m_flags.Mark(k_shaderLinked);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   bool ShaderProgram::IsLinked() const
@@ -215,6 +225,32 @@ namespace tloc { namespace graphics { namespace gl {
     { DoGetAttributeInfo(*this, m_attributeInfo); }
   }
 
+  struct ShaderVarCompare
+  {
+    ShaderVarCompare(const char* a_name)
+      : m_name(a_name)
+    { }
+
+    bool operator() (const ShaderVariableInfo& a_sv)
+    { return core_str::StrCmp(a_sv.m_name.Get(), m_name) == 0; }
+
+    const char* m_name;
+  };
+
+  bool ShaderProgram::
+    HasAttribute(const char* a_name)
+  {
+    return core::find_if_all(m_attributeInfo, ShaderVarCompare(a_name))
+      != m_attributeInfo.end();
+  }
+
+  bool ShaderProgram::
+    HasUniform(const char* a_name)
+  {
+    return core::find_if_all(m_uniformInfo, ShaderVarCompare(a_name))
+      != m_uniformInfo.end();
+  }
+
   const ShaderProgram::glsl_var_info_cont_type& ShaderProgram::
     GetUniformInfoRef() const
   {
@@ -235,18 +271,23 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::Enable() const
   {
     glUseProgram(GetHandle());
-    if (gl::Error().Failed())
+    gl::Error err;
+    if (err.Failed())
     {
-      return error::error_shader_program_enable;
+      return TLOC_ERROR(error::error_shader_program_enable);
     }
 
-    return ErrorSuccess();
+    ResetTextureUnits();
+    return ErrorSuccess;
   }
 
   bool ShaderProgram::
     IsEnabled() const
   {
-    if (gl::Get<gl::p_get::CurrentProgram>() == GetHandle())
+    // NOTE: OpenGL defines program name to be u32 but glGetIntegeriv returns
+    //       s32, thus the cast.
+    if (gl::Get<gl::p_get::CurrentProgram>() ==
+        core::utils::CastNumber<GLint, object_handle>(GetHandle()) )
     { return true; }
 
     return false;
@@ -259,10 +300,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (gl::Error().Failed())
     {
-      return error::error_shader;
+      return TLOC_ERROR(error::error_shader);
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //------------------------------------------------------------------------
@@ -343,6 +384,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   // SmartPtr
 
-  template class tloc::core::smart_ptr::SharedPtr<ShaderProgram>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);
 
 };};};

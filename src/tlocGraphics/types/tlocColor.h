@@ -7,6 +7,8 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
+#include <tlocMath/types/tlocVector4.h>
+
 namespace tloc { namespace graphics { namespace types {
 
   namespace p_color
@@ -102,8 +104,24 @@ namespace tloc { namespace graphics { namespace types {
     template <typename T_ColorFormat, typename T_VectorType>
     void DoGetAs(T_VectorType& a_vec);
 
+    template <typename T_ValueType>
+    void DoSetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
+                 T_ValueType a_A);
+
     container_type      m_rgba;
   };
+
+  //--
+  // Template definitions
+
+  template <typename T_ValueType>
+  void Color::SetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
+                    T_ValueType a_A)
+  {
+    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueType);
+    DoSetAs(a_R, a_G, a_B, a_A);
+  }
+
 
 };};};
 

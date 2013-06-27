@@ -2,10 +2,10 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 
 #include <tlocCore/containers/tlocQueue.h>
-#include <tlocCore/containers/tlocQueue.inl>
+#include <tlocCore/containers/tlocQueue.inl.h>
 
 namespace TestingQueue
 {
@@ -100,29 +100,6 @@ namespace TestingQueue
     "Test pop functionality")
   {
     testPop<int_list_queue>();
-  }
-
-  template <typename T_QueueType>
-  void testGetContainer()
-  {
-    T_QueueType myQueue;
-    FILL_INT_QUEUE_BY_AMOUNT(myQueue, 4);
-
-    typename T_QueueType::container_type myContainer
-      = myQueue._Get_container();
-    typename T_QueueType::container_type::iterator itr
-      = myContainer.begin();
-
-    CHECK(*itr++ == 0);
-    CHECK(*itr++ == 1);
-    CHECK(*itr++ == 2);
-    CHECK(*itr++ == 3);
-  }
-
-  TEST_CASE_METHOD(QueueFixture, "Core/Container/Queue/GetContainer",
-    "Test grabbing container from queue and container contents")
-  {
-    testGetContainer<int_list_queue>();
   }
 
 #undef FILL_INT_QUEUE_BY_AMOUNT

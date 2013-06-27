@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocGraphics/types/tlocVertex.h>
+#include <tlocMath/types/tlocVector3.h>
 
 namespace TestingGraphicsVertex
 {
@@ -11,6 +12,13 @@ namespace TestingGraphicsVertex
                public EmptyType_T<0>
   {
   };
+
+#define CHECK_VEC3F(vec,x,y,z) CHECK((vec[0]) == (Approx(x)) ); \
+                               CHECK((vec[1]) == (Approx(y)) ); \
+                               CHECK((vec[2]) == (Approx(z)) );
+
+#define CHECK_VEC2F(vec,x,y) CHECK((vec[0]) == (Approx(x)) ); \
+                             CHECK((vec[1]) == (Approx(y)) );
 
   TEST_CASE("Graphics/gl/Vertex", "")
   {
@@ -26,5 +34,14 @@ namespace TestingGraphicsVertex
     CHECK(sizeof( types::Vert3fpnc) == (24 + sizeof(types::Color)) );
     CHECK(sizeof( types::Vert3fpnct) == (32 + sizeof(types::Color)) );
     CHECK(sizeof( types::Vert3fpt) == 20);
+
+    types::Vert3fpnct v;
+    v.SetPosition(math_t::Vec3f32(1, 2, 3));
+    v.SetNormal(math_t::Vec3f32(0, 1, 0));
+    v.SetTexCoord(math_t::Vec2f32(1, 0));
+
+    CHECK_VEC3F(v.GetPosition(), 1, 2, 3);
+    CHECK_VEC3F(v.GetNormal(), 0, 1, 0);
+    CHECK_VEC2F(v.GetTexCoord(), 1, 0);
   }
 };

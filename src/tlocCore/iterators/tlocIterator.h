@@ -121,12 +121,12 @@ namespace tloc { namespace core {
     typedef typename T_Container::iterator                 iterator_type;
     typedef back_insert_iterator<T_Container>              this_type;
 
-    TL_FI explicit back_insert_iterator(T_Container& aContainer);
-    TL_FI this_type& operator* ();
-    TL_FI this_type& operator++();
-    TL_FI this_type& operator++(int);
-    TL_FI this_type& operator= (const_reference aValue);
-    TL_FI this_type& operator= (const this_type& aOther);
+    explicit back_insert_iterator(T_Container& aContainer);
+    this_type& operator* ();
+    this_type& operator++();
+    this_type& operator++(int);
+    this_type& operator= (const_reference aValue);
+    this_type& operator= (const this_type& aOther);
 
   protected:
     T_Container& m_container;
@@ -145,12 +145,12 @@ namespace tloc { namespace core {
     typedef typename T_Container::iterator                 iterator_type;
     typedef front_insert_iterator<T_Container>             this_type;
 
-    TL_FI explicit front_insert_iterator (T_Container& aContainer);
-    TL_FI this_type& operator* ();
-    TL_FI this_type& operator++();
-    TL_FI this_type& operator++(int);
-    TL_FI this_type& operator=(const_reference aValue);
-    TL_FI this_type& operator=(const this_type& aOther);
+    explicit front_insert_iterator (T_Container& aContainer);
+    this_type& operator* ();
+    this_type& operator++();
+    this_type& operator++(int);
+    this_type& operator=(const_reference aValue);
+    this_type& operator=(const this_type& aOther);
 
   protected:
     T_Container& m_container;
@@ -171,12 +171,12 @@ namespace tloc { namespace core {
     typedef typename T_Container::iterator                 iterator_type;
     typedef insert_iterator<T_Container>                   this_type;
 
-    TL_FI explicit insert_iterator (T_Container& aContainer, iterator_type aItr);
-    TL_FI this_type& operator* ();
-    TL_FI this_type& operator++();
-    TL_FI this_type& operator++(int);
-    TL_FI this_type& operator=(const_reference aValue);
-    TL_FI this_type& operator=(const insert_iterator<T_Container>& aOther);
+    explicit insert_iterator (T_Container& aContainer, iterator_type aItr);
+    this_type& operator* ();
+    this_type& operator++();
+    this_type& operator++(int);
+    this_type& operator=(const_reference aValue);
+    this_type& operator=(const insert_iterator<T_Container>& aOther);
 
   protected:
     T_Container&                    m_container;
@@ -200,27 +200,27 @@ namespace tloc { namespace core {
     typedef typename iterator_traits<T_Itr>::reference        reference;
     typedef reverse_iterator<T_Itr>                           this_type;
 
-    TL_FI reverse_iterator();
-    TL_FI explicit
+    reverse_iterator();
+    explicit
     reverse_iterator(T_Itr aIterator);
     template <typename U>
-    TL_FI reverse_iterator(const reverse_iterator<U>& aOther);
+    reverse_iterator(const reverse_iterator<U>& aOther);
 
-    TL_FI T_Itr             base() const;
+    T_Itr             base() const;
 
     template <typename U>
-    TL_FI this_type&        operator=   (const reverse_iterator<U>& aOther);
-    TL_FI reference         operator*   () const;
-    TL_FI reverse_iterator  operator+   (difference_type aDistance) const;
-    TL_FI reverse_iterator& operator++  ();
-    TL_FI reverse_iterator  operator++  (int);
-    TL_FI reverse_iterator& operator+=  (difference_type aDistance);
-    TL_FI reverse_iterator  operator-   (difference_type aDistance);
-    TL_FI reverse_iterator& operator--  ();
-    TL_FI reverse_iterator  operator--  (int);
-    TL_FI reverse_iterator& operator-=  (difference_type aDistance);
-    TL_FI pointer           operator->  () const;
-    TL_FI reference         operator[]  (difference_type aDistance) const;
+    this_type&        operator=   (const reverse_iterator<U>& aOther);
+    reference         operator*   () const;
+    reverse_iterator  operator+   (difference_type aDistance) const;
+    reverse_iterator& operator++  ();
+    reverse_iterator  operator++  (int);
+    reverse_iterator& operator+=  (difference_type aDistance);
+    reverse_iterator  operator-   (difference_type aDistance);
+    reverse_iterator& operator--  ();
+    reverse_iterator  operator--  (int);
+    reverse_iterator& operator-=  (difference_type aDistance);
+    pointer           operator->  () const;
+    reference         operator[]  (difference_type aDistance) const;
 
   protected:
     T_Itr             m_itr;
@@ -231,35 +231,36 @@ namespace tloc { namespace core {
   // Global operators for reverse_iterator
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator==(const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator==(const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator!=(const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator!=(const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator< (const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator< (const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator<=(const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator<=(const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator> (const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator> (const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I bool operator>=(const reverse_iterator<T_Itr1>& a,
-                       const reverse_iterator<T_Itr2>& b);
+  bool operator>=(const reverse_iterator<T_Itr1>& a,
+                  const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr1, typename T_Itr2>
-  TL_I typename reverse_iterator<T_Itr1>::difference_type
-    operator- (const reverse_iterator<T_Itr1>& a, const reverse_iterator<T_Itr2>& b);
+  typename reverse_iterator<T_Itr1>::difference_type
+    operator- (const reverse_iterator<T_Itr1>& a,
+               const reverse_iterator<T_Itr2>& b);
 
   template <typename T_Itr>
-  TL_I typename reverse_iterator<T_Itr>::difference_type
+  typename reverse_iterator<T_Itr>::difference_type
     operator+ (typename reverse_iterator<T_Itr>::difference_type aDistance,
                const reverse_iterator<T_Itr>& a);
 
@@ -267,13 +268,13 @@ namespace tloc { namespace core {
   // Iterator construction
 
   template <typename T_Container>
-  TL_FI back_insert_iterator<T_Container> back_inserter(T_Container& aContainer);
+  back_insert_iterator<T_Container> back_inserter(T_Container& aContainer);
 
   template <typename T_Container>
-  TL_FI front_insert_iterator<T_Container> front_inserter(T_Container& aContainer);
+  front_insert_iterator<T_Container> front_inserter(T_Container& aContainer);
 
   template <typename T_Container>
-  TL_FI insert_iterator<T_Container>  inserter(T_Container& aContainer);
+  insert_iterator<T_Container>  inserter(T_Container& aContainer);
 
 
   //////////////////////////////////////////////////////////////////////////
@@ -308,40 +309,42 @@ namespace tloc { namespace core {
     typedef list_iterator<T_Node, T_Itr_Type, T, T*, T&>        iterator;
     typedef T_Itr_Type                                 iterator_category;
 
-    TL_FI list_iterator();
-    TL_FI list_iterator(const T_Node* aNode);
-    TL_FI list_iterator(const iterator& aOtherItr);
+    list_iterator();
+    list_iterator(const T_Node* aNode);
+    list_iterator(const iterator& aOtherItr);
     //template <typename T_Ptr2, typename T_Ref2>
-    //TL_FI list_iterator(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
+    //list_iterator(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
 
-    TL_FI reference       operator*() const;
-    TL_FI pointer         operator->() const;
-    TL_FI this_type&      operator++();
-    TL_FI this_type       operator++(int);
-    TL_FI this_type&      operator--();
-    TL_FI this_type       operator--(int);
+    reference       operator*() const;
+    pointer         operator->() const;
+    this_type&      operator++();
+    this_type       operator++(int);
+    this_type&      operator--();
+    this_type       operator--(int);
     template <typename T_Ptr2, typename T_Ref2>
-    TL_FI bool            operator==(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
+    bool            operator==(const list_iterator<T_Node, T_Itr_Type, T,
+                                                   T_Ptr2, T_Ref2>& a_other);
     template <typename T_Ptr2, typename T_Ref2>
-    TL_FI bool            operator!=(const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
+    bool            operator!=(const list_iterator<T_Node, T_Itr_Type, T,
+                                                   T_Ptr2, T_Ref2>& a_other);
 
     template <typename T_Ptr2, typename T_Ref2>
-    TL_FI void            operator=
+    void            operator=
       (const list_iterator<T_Node, T_Itr_Type, T, T_Ptr2, T_Ref2>& a_other);
 
     T_Node*               m_node;
 
   protected:
-    TL_FI this_type&      subOperation(singly_linked_tag);
-    TL_FI this_type       subOperation(int, singly_linked_tag);
-    TL_FI this_type&      subOperation(doubly_linked_tag);
-    TL_FI this_type       subOperation(int, doubly_linked_tag);
+    this_type&      subOperation(singly_linked_tag);
+    this_type       subOperation(int, singly_linked_tag);
+    this_type&      subOperation(doubly_linked_tag);
+    this_type       subOperation(int, doubly_linked_tag);
   };
 
   template <typename T_Node, typename T, typename T_Ptr, typename T_Ref,
   typename T_ConstPtr, typename T_ConstRef>
-  TL_I bool operator==(const list_iterator<T_Node, T, T_Ptr, T_Ref>& a,
-                       const list_iterator<T_Node, T, T_ConstPtr, T_ConstRef>& b)
+  bool operator==(const list_iterator<T_Node, T, T_Ptr, T_Ref>& a,
+                  const list_iterator<T_Node, T, T_ConstPtr, T_ConstRef>& b)
   {
     return a.m_node == b.m_node;
   }
@@ -350,30 +353,30 @@ namespace tloc { namespace core {
   // Global functions
 
   template <typename T_InputItr>
-  TL_FI typename iterator_traits<T_InputItr>::difference_type
+  typename iterator_traits<T_InputItr>::difference_type
     distance(T_InputItr aBegin, T_InputItr aEnd);
 
   template <typename T_InputItr, typename T_Distance>
-  TL_FI void advance(T_InputItr& aItr, T_Distance aN);
+  void advance(T_InputItr& aItr, T_Distance aN);
 
   namespace detail
   {
     template <typename T_InputItr>
-    TL_FI typename iterator_traits<T_InputItr>::difference_type
+    typename iterator_traits<T_InputItr>::difference_type
       distance(T_InputItr aBegin, T_InputItr aEnd, random_access_iterator_tag);
 
     template <typename T_InputItr>
-    TL_FI typename iterator_traits<T_InputItr>::difference_type
+    typename iterator_traits<T_InputItr>::difference_type
       distance(T_InputItr aItr, T_InputItr aEnd, input_iterator_tag);
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance(T_InputItr& aItr, T_Distance aN, input_iterator_tag);
+    void advance(T_InputItr& aItr, T_Distance aN, input_iterator_tag);
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance(T_InputItr& aItr, T_Distance aN, bidirectional_iterator_tag);
+    void advance(T_InputItr& aItr, T_Distance aN, bidirectional_iterator_tag);
 
     template <typename T_InputItr, typename T_Distance>
-    TL_FI void advance(T_InputItr& aItr, T_Distance aN, random_access_iterator_tag);
+    void advance(T_InputItr& aItr, T_Distance aN, random_access_iterator_tag);
   };
 
 };};

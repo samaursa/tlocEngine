@@ -11,12 +11,14 @@
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace math { namespace component_system {
 
   template <typename T_Real>
   class Transform_T
-    : public core::component_system::Component_T<Transform_T<T_Real> >
+    : public core::component_system::Component_T<Transform_T<T_Real>,
+                                                 components::transform>
   {
   public:
     typedef T_Real                    real_type;
@@ -26,16 +28,22 @@ namespace tloc { namespace math { namespace component_system {
     typedef types::Vector3<real_type> position_type;
     typedef types::Matrix3<real_type> orientation_type;
 
-    typedef core::component_system::Component_T<this_type>    base_type;
+    typedef core::component_system::Component_T
+      <this_type, components::transform>    base_type;
 
   public:
     Transform_T();
+    explicit Transform_T(const position_type& a_position);
+    explicit Transform_T(const position_type& a_position,
+                         const orientation_type& a_orientation);
 
     position_type     GetPosition() const;
     orientation_type  GetOrientation() const;
 
     void              SetPosition(const position_type& a_pos);
     void              SetOrientation(const orientation_type& a_ori);
+
+    this_type         Invert() const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (transform_type, GetTransformation, m_transformation);
@@ -51,16 +59,13 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<f32>        Transformf32;
   typedef Transform_T<f64>        Transformf64;
 
-  typedef core::smart_ptr::SharedPtr<Transform>    TransformPtr;
-  typedef core::smart_ptr::SharedPtr<Transformf32> TransformPtr32;
-  typedef core::smart_ptr::SharedPtr<Transformf64> TransformPtr64;
+  TLOC_TYPEDEF_SHARED_PTR(Transform, transform);
+  TLOC_TYPEDEF_SHARED_PTR(Transformf32, transform_f32);
+  TLOC_TYPEDEF_SHARED_PTR(Transformf64, transform_f64);
 
-  typedef core::component_system::
-          ComponentPool_TI<TransformPtr>           TransformPool;
-  typedef core::component_system::
-          ComponentPool_TI<TransformPtr32>         TransformPool32;
-  typedef core::component_system::
-          ComponentPool_TI<TransformPtr64>         TransformPool64;
+  TLOC_TYPEDEF_COMPONENT_POOL(transform_sptr, transform_sptr);
+  TLOC_TYPEDEF_COMPONENT_POOL(transform_f32_sptr, transform_f32_sptr);
+  TLOC_TYPEDEF_COMPONENT_POOL(transform_f64_sptr, transform_f64_sptr);
 
 };};};
 

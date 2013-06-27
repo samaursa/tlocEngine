@@ -5,7 +5,6 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/tlocFunctional.h>
-#include <tlocCore/tlocNoOpt.h>
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/tlocAlgorithms.h>
 

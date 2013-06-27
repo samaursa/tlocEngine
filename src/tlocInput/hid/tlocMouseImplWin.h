@@ -14,11 +14,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
-#include <dinput.h>
+#include <WinSDK/dinput.h>
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
+  typedef ParamList<HWND, IDirectInput8*, param_options::value_type>
     windows_mouse_param_type;
 
 };};
@@ -50,12 +50,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     ///
     /// @return true if button is down, false if not.
     ///-------------------------------------------------------------------------
-    bool IsButtonDown(button_code_type a_button) const;
+    bool        IsButtonDown(button_code_type a_button) const;
+    MouseEvent  GetState() const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
+    void Reset();
 
   private:
 
@@ -67,6 +69,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     void        DoUpdate(InputPolicy::Buffered);
     void        DoUpdate(InputPolicy::Immediate);
+
+    void        DoReset(InputPolicy::Buffered);
+    void        DoReset(InputPolicy::Immediate);
 
   private:
 

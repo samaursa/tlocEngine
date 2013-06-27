@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix4.h>
-#include <tlocMath/types/tlocMatrix4.inl>
 
 namespace TestingMatrix4
 {
@@ -44,10 +43,15 @@ namespace TestingMatrix4
     REQUIRE(sizeof(Mat4f64) == (sizeof(f64) * 16));
   }
 
+  TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
     "Test general/basic functionality")
   {
-    a.Zero();
+    a.MakeZero();
     Mat4f f(a);
     CHECK_MATRIX4F(f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 

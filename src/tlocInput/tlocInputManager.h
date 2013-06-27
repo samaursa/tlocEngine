@@ -53,9 +53,15 @@ namespace tloc { namespace input {
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
     T_InputObject*  CreateHID
-      (parameter_options::Type a_params = parameter_options::TL_DEFAULT)
+      (param_options::value_type a_params = param_options::TL_WIN_DISCL_DEFAULT)
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
+
+      // Static assert: You are likely mixing immediate and buffered policies
+      type_traits::AssertTypeIsSupported
+        <typename T_InputObject::policy_type,
+         policy_type>();
+
       return DoCreateHID<T_InputObject>(a_params);
     }
 
@@ -68,13 +74,21 @@ namespace tloc { namespace input {
     void Update()
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
-      DoUpdate(T_InputObject::k_index);
+      DoUpdate(T_InputObject::m_index);
     }
 
     ///-------------------------------------------------------------------------
     /// Updates all HIDs
     ///-------------------------------------------------------------------------
     void Update();
+
+    template <typename T_InputObject>
+    void Reset()
+    {
+      p_hid::IsInputTypeSupported<T_InputObject>();
+    }
+
+    void Reset();
 
     ///-------------------------------------------------------------------------
     /// Returns an HID with the given type at the given index
@@ -102,15 +116,16 @@ namespace tloc { namespace input {
     size_type GetTotalHID()
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
-      return DoGetTotalHID<T_InputObject>();
+      return DoGetTotalHID(T_InputObject::m_index);
     }
 
   private:
     void      DoUpdate(input_type a_inputType);
+    void      DoReset(input_type a_inputType);
     size_type DoGetTotalHID(input_type a_inputType);
 
     template <typename T_InputObject>
-    T_InputObject*  DoCreateHID(parameter_options::Type a_params);
+    T_InputObject*  DoCreateHID(param_options::value_type a_params);
 
     template <typename T_InputObject>
     T_InputObject* DoGetHID(size_type a_index);

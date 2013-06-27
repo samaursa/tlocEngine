@@ -23,6 +23,16 @@ namespace tloc { namespace graphics { namespace error {
     error_shader_uniform_invalid_type,
     error_shader_uniform_not_attached,
     error_shader_attribute_not_attached,
+
+    error_invalid_texture_unit,
+    error_no_texture_units_available,
+    error_texture_unit_limit_reached,
+
+    error_unsupported_sprite_sheet_format,
+    error_sprite_sheet_parse_error,
+
+    error_obj_file_parse_error,
+    error_obj_corrupt_or_invalid
   };
 
 };};};

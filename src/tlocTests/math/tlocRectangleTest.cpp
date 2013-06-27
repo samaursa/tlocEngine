@@ -3,16 +3,21 @@
 #include <tlocMath/types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 namespace TestingRectangle
 {
   using namespace tloc;
   using namespace tloc::math::types;
 
+  TEST_CASE("Graphics/types/Rectangle/Size", "")
+  {
+    CHECK(sizeof(Rectf32) == sizeof(Rectf32::point_type)*2 );
+    CHECK(sizeof(Rectf64) == sizeof(Rectf64::point_type)*2 );
+  }
+
   TEST_CASE("Graphics/types/Rectangle", "")
   {
-
     Rectf r = Rectf(Rectf::left(-1), Rectf::right(0),
               Rectf::top(0), Rectf::bottom(-1) );
     CHECK(r.IsValid());
@@ -121,6 +126,18 @@ namespace TestingRectangle
     center[0] = 0;
     center[1] = 0;
     CHECK((r.GetPosition() == center));
+
+    // assignemnt operator
+    Rectf s = Rectf(Rectf::width(5), Rectf::height(10));
+    s.SetPosition(Rectf::point_type(5, 9));
+    r = s;
+    CHECK(r.GetWidth() == Approx(5));
+    CHECK(r.GetHeight() == Approx(10));
+    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+
+    // different types
+    Rectf32 r32;
+    Rectf64 r64(r32);
   }
 
   TEST_CASE("Graphics/types/Rectangle/GetCoord", "")
@@ -135,5 +152,23 @@ namespace TestingRectangle
     CHECK( (r.GetCoord_TopRight() == Vec2f(0.5f, 1.0f)) );
     CHECK( (r.GetCoord_BottomLeft() == Vec2f(-0.5f, -1.0f)) );
     CHECK( (r.GetCoord_BottomRight() == Vec2f(0.5f, -1.0f)) );
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection", "")
+  {
+    // NOTE: Rectangle origin is at its center
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+    Ray2f ray(Ray2f::origin(Vec2f(0, 0)) );
+    CHECK(r.Intersects(ray));
+
+    r.SetPosition(Vec2f(3, 2));
+    CHECK_FALSE(r.Intersects(ray));
+
+    ray = Ray2f(Ray2f::origin(Vec2f(2.5, 1.0f)) );
+    CHECK(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.1f, 2.0f));
+    CHECK_FALSE(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.0f, 3.0f));
+    CHECK_FALSE(r.Intersects(ray));
   }
 };

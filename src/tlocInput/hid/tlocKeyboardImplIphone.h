@@ -3,22 +3,20 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
-#include <tlocInput/HIDs/tlocKeyboard.h>
-#include <tlocInput/HIDs/tlocKeyboardImpl.h>
-
-#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
+#include <tlocInput/hid/tlocKeyboard.h>
+#include <tlocInput/hid/tlocKeyboardImpl.h>
 
 namespace tloc { namespace input {
 
-  // TODO: Fix this so it actually has the correct params associated (such as the UIWindow)
-  typedef ParamList<OpenGLView*> iphone_keyboard_param_type;
+  typedef ParamList<core_t::Any> iphone_keyboard_param_type;
 
 };};
 
-namespace tloc { namespace input { namespace priv {
+namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <typename T_ParentKeyboard>
   class KeyboardImpl
@@ -53,6 +51,7 @@ namespace tloc { namespace input { namespace priv {
     /// Buffer any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
+    void Reset();
 
   private:
 
@@ -73,6 +72,6 @@ namespace tloc { namespace input { namespace priv {
     uchar8                  m_rawBuffer[s_bufferSize];
   };
 
-};};};
+};};};};
 
 #endif

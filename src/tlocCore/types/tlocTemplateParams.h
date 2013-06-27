@@ -5,17 +5,18 @@
 
 namespace tloc
 {
-  template <class T1  = TLOC_DUMMY_PARAM(),
-            class T2  = TLOC_DUMMY_PARAM(),
-            class T3  = TLOC_DUMMY_PARAM(),
-            class T4  = TLOC_DUMMY_PARAM(),
-            class T5  = TLOC_DUMMY_PARAM(),
-            class T6  = TLOC_DUMMY_PARAM(),
-            class T7  = TLOC_DUMMY_PARAM(),
-            class T8  = TLOC_DUMMY_PARAM(),
-            class T9  = TLOC_DUMMY_PARAM(),
-            class T10 = TLOC_DUMMY_PARAM(),
-            class T11 = TLOC_DUMMY_PARAM()> struct ParamList;
+  template <class T1  = TLOC_DUMMY_PARAM,
+            class T2  = TLOC_DUMMY_PARAM,
+            class T3  = TLOC_DUMMY_PARAM,
+            class T4  = TLOC_DUMMY_PARAM,
+            class T5  = TLOC_DUMMY_PARAM,
+            class T6  = TLOC_DUMMY_PARAM,
+            class T7  = TLOC_DUMMY_PARAM,
+            class T8  = TLOC_DUMMY_PARAM,
+            class T9  = TLOC_DUMMY_PARAM,
+            class T10 = TLOC_DUMMY_PARAM,
+            class T11 = TLOC_DUMMY_PARAM>
+  struct ParamList;
 
   template <class T1>
   struct ParamList<T1>

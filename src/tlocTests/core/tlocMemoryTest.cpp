@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/memory/tlocMemory.h>
-#include <tlocCore/memory/tlocMemory.inl>
+#include <tlocCore/memory/tlocMemory.inl.h>
 
 namespace TestingMemory
 {
@@ -57,7 +57,7 @@ namespace TestingMemory
   TEST_CASE("Core/Memory", "Testing memory allocators")
   {
     tl_int* a = new tl_int();
-    REQUIRE(a != NULL);
+    REQUIRE( (a != nullptr) );
     delete a;
   }
 

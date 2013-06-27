@@ -1,7 +1,8 @@
 #include "tlocRigidBodyListenerSystem.h"
 
 #include <tlocCore/error/tlocError.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
@@ -47,10 +48,10 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component& rbListenerComponent =
+      rb_listener_component* rbListenerComponent =
         rbListenerComponentsMapped[0];
 
-      return rbListenerComponent.GetRigidBodyListener();
+      return rbListenerComponent->GetRigidBodyListener();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -96,8 +97,8 @@ namespace tloc { namespace physics { namespace component_system {
   // RigidBodyListenerSystem
 
   RigidBodyListenerSystem::
-    RigidBodyListenerSystem(event_manager* a_eventMgr,
-                            entity_manager* a_entityMgr,
+    RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
+                            entity_manager_sptr a_entityMgr,
                             physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr
     , Variadic<component_type, 1>(components::k_rigidBodyListener))
@@ -112,7 +113,7 @@ namespace tloc { namespace physics { namespace component_system {
   {
     m_physicsMgr->Register(this);
     m_allContactEvents.resize(contact::k_count);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -122,14 +123,14 @@ namespace tloc { namespace physics { namespace component_system {
   {
     m_physicsMgr->UnRegister(this);
     m_allContactEvents.clear();
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    InitializeEntity(entity_manager* a_mgr,
-                     entity_type* a_ent)
+    InitializeEntity(const entity_manager* ,
+                     const entity_type* a_ent)
   {
     const entity_type* ent = a_ent;
 
@@ -143,27 +144,26 @@ namespace tloc { namespace physics { namespace component_system {
                   RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
-      return error::error_rigid_body_not_attached;
+      return TLOC_ERROR(error::error_rigid_body_not_attached);
     }
 
-    TLOC_UNUSED(a_mgr);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    ShutdownEntity(entity_manager* a_mgr,
-                   entity_type* a_ent)
+    ShutdownEntity(const entity_manager* a_mgr,
+                   const entity_type* a_ent)
   {
     TLOC_UNUSED_2(a_mgr, a_ent);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    Pre_ProcessActiveEntities()
+    Pre_ProcessActiveEntities(f64)
   {
     typedef contact_event_list::const_iterator      const_contact_iterator;
 
@@ -194,11 +194,8 @@ namespace tloc { namespace physics { namespace component_system {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void RigidBodyListenerSystem::
-    ProcessEntity(entity_manager* a_mgr,
-                  entity_type* a_ent)
-  {
-    TLOC_UNUSED_2(a_mgr, a_ent);
-  }
+    ProcessEntity(const entity_manager* , const entity_type*, f64 )
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -217,5 +214,10 @@ namespace tloc { namespace physics { namespace component_system {
     m_allContactEvents[contact::k_end].push_back(a_event);
     return false;
   }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);
 
 };};};

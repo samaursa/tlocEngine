@@ -15,39 +15,34 @@
 namespace tloc { namespace core { namespace containers {
 
   template <typename T, typename T_Policy = Array_Ordered>
-  struct tl_array
+  struct tl_array : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(tl_array);
     typedef Array<T, T_Policy>        type;
   };
 
   template <typename T, tl_size T_Capacity>
-  struct tl_array_fixed
+  struct tl_array_fixed : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(tl_array_fixed);
     typedef ArrayFixed<T, T_Capacity> type;
   };
 
   template <typename T, bool T_DedicatedSize = true>
-  struct tl_singly_list
+  struct tl_singly_list : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(tl_singly_list);
     typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(),
                  T_DedicatedSize> type;
   };
 
   template <typename T, bool T_DedicatedSize = true>
-  struct tl_doubly_list
+  struct tl_doubly_list : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(tl_doubly_list);
     typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(),
                  T_DedicatedSize> type;
   };
 
   template <typename T_Key, typename T_Value>
-  struct tl_hash_map
+  struct tl_hash_map : public utils::TypedefHelperBase<T_Key>
   {
-    DECL_TYPEDEF_HELPER(tl_hash_map);
     typedef HashMap<T_Key, T_Value>   type;
   };
 

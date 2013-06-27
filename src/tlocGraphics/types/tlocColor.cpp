@@ -1,11 +1,9 @@
 #include "tlocColor.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocType.h>
-#include <tlocCore/data_structures/tlocTuple.inl>
-
-#include <tlocMath/types/tlocVector4.h>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 namespace tloc { namespace graphics { namespace types {
 
@@ -152,10 +150,10 @@ namespace tloc { namespace graphics { namespace types {
 
         real_type clamped[4] =
         {
-          core::tlClamp<real_type>(a_R, 0, 1),
-          core::tlClamp<real_type>(a_G, 0, 1),
-          core::tlClamp<real_type>(a_B, 0, 1),
-          core::tlClamp<real_type>(a_A, 0, 1),
+          core::Clamp<real_type>(a_R, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_G, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_B, 0.0f, 1.0f),
+          core::Clamp<real_type>(a_A, 0.0f, 1.0f),
         };
 
         a_out[0] = static_cast<value_type>(g_maxValue * clamped[0]);
@@ -180,13 +178,13 @@ namespace tloc { namespace graphics { namespace types {
   }
 
   template <typename T_ValueType>
-  void Color::SetAs(T_ValueType a_R, T_ValueType a_G,
-                    T_ValueType a_B, T_ValueType a_A)
+  void Color::DoSetAs(T_ValueType a_R, T_ValueType a_G,
+                      T_ValueType a_B, T_ValueType a_A)
   {
-    typedef Loki::Select <
-                          Loki::TypeTraits<T_ValueType>::isFloat,
-                          real_type_true, byte_type_true
-                         >::Result  selected_type;
+    typedef typename Loki::Select <
+                                   Loki::TypeTraits<T_ValueType>::isFloat,
+                                   real_type_true, byte_type_true
+                                  >::Result  selected_type;
 
     priv::DoSetAs(a_R, a_G, a_B, a_A, m_rgba, selected_type() );
   }
@@ -299,15 +297,20 @@ namespace tloc { namespace graphics { namespace types {
   template int_color_type Color::DoGetAs<p_color::format::ARGB>();
   template int_color_type Color::DoGetAs<p_color::format::BGRA>();
 
+  // The reason for template ctors is to avoid declaring the constructors for
+  // all of the following types. s32 and s64 are there to facilitate casting
+  // from an r-value constant.
   template Color::Color(u8, u8, u8, u8);
-  template Color::Color(uchar8, uchar8, uchar8, uchar8);
+  template Color::Color(s32, s32, s32, s32);
+  template Color::Color(s64, s64, s64, s64);
   template Color::Color(f32, f32, f32, f32);
   template Color::Color(f64, f64, f64, f64);
 
-  template void Color::SetAs(u8, u8, u8, u8);
-  template void Color::SetAs(uchar8, uchar8, uchar8, uchar8);
-  template void Color::SetAs(f32, f32, f32, f32);
-  template void Color::SetAs(f64, f64, f64, f64);
+  template void Color::DoSetAs(u8, u8, u8, u8);
+  template void Color::DoSetAs(s32, s32, s32, s32);
+  template void Color::DoSetAs(s64, s64, s64, s64);
+  template void Color::DoSetAs(f32, f32, f32, f32);
+  template void Color::DoSetAs(f64, f64, f64, f64);
 
 #define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
   template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&);\
@@ -315,7 +318,6 @@ namespace tloc { namespace graphics { namespace types {
   template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&);\
   template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&)
 
-  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);
 

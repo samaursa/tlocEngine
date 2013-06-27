@@ -1,7 +1,7 @@
 #include "tlocPath.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/io/tlocFileIO.h>

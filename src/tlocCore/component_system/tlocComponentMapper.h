@@ -3,7 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-#include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/component_system/tlocComponent.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -14,16 +14,16 @@ namespace tloc { namespace core { namespace component_system {
   class ComponentMapper
   {
   public:
-    typedef Entity::component_list              component_list;
+    typedef component_ptr_array                 component_list;
     typedef typename component_list::size_type  size_type;
 
     ComponentMapper(component_list const& a_list) : m_compList(a_list) {}
 
     size_type size() const { return m_compList.size(); }
 
-    T& operator[](tl_int a_index)
+    T* operator[](tl_int a_index)
     {
-      return *(static_cast<T*>(m_compList[a_index]));
+      return static_cast<T*>(m_compList[a_index]);
     }
 
   private:

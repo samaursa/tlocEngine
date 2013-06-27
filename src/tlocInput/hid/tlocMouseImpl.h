@@ -16,6 +16,7 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   struct MouseEvent
   {
+  public:
     enum ButtonCode
     {
       none    = 0,
@@ -29,14 +30,22 @@ namespace tloc { namespace input { namespace hid {
       button8 = 1 << 7,
 
       count = core::utils::EnumCounter<button8, true>::result,
-    };  typedef u32 button_code_type;
+    };  typedef s32 button_code_type;
 
-    MouseEvent(ButtonCode a_code = none) : m_buttonCode(a_code) {}
+  public:
+    typedef Component::AxisRelAbs     axis_type;
 
+  public:
+    MouseEvent(ButtonCode a_code = none)
+      : m_buttonCode(a_code)
+      , m_X(0, 0) , m_Y(0, 0) , m_Z(0, 0)
+    { }
+
+  public:
     button_code_type  m_buttonCode;
 
     // m_Z is the mouse wheel
-    Component::AxisRelAbs m_X, m_Y, m_Z;
+    axis_type m_X, m_Y, m_Z;
   };
 
 };};};
@@ -68,8 +77,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     MouseImplBase(parent_type* a_parent, param_list_type a_params)
       : base_type(a_parent), m_params(a_params)
-    {
-    }
+    { }
 
     const param_list_type& GetParams() const
     {

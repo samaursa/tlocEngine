@@ -16,6 +16,8 @@ namespace TestingVector3f
 
   struct Vector3fFixture
   {
+    typedef Vec3f::value_type     real_type;
+
     Vector3fFixture()
       : b(Variadic3f(5, 6, 7))
     {
@@ -120,37 +122,39 @@ namespace TestingVector3f
     CHECK_VEC3F(c, -4.0f, -4.0f, -4.0f); //-V550
 
     // Addition single
-    c.Add(b);
+    c = c.Add(b);
     CHECK_VEC3F(c, 1.0f, 2.0f, 3.0f); //-V550
 
     // Subtraction single
-    c.Sub(a);
+    c = c.Sub(a);
     CHECK_VEC3F(c, 0, 0, 0); //-V550
-    c.Sub(a);
+    c = c.Sub(a);
     CHECK_VEC3F(c, -1, -2, -3); //-V550
 
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
     c.Zero();
-    c.Mul(a);
+    c = c.Mul(a);
     CHECK_VEC3F(c, 0, 0, 0); //-V550
-    c = b; c.Mul(b);
+    c = b;
+    c = c.Mul(b);
     CHECK_VEC3F(c, 25.0f, 36.0f, 49.0f); //-V550
 
     // Multiplication double
-    c.Zero(); c.Mul(a, b);
+    c.Zero();
+    c.Mul(a, b);
     CHECK_VEC3F(c, 5.0f, 12.0f, 21.0f); //-V550
 
     // Multiplication single
-    c.Mul(2);
+    c = c.Mul(2);
     CHECK_VEC3F(c, 10.0f, 24.0f, 42.0f); //-V550
 
     //////////////////////////////////////////////////////////////////////////
     // Division
-    c.Div(a);
+    c = c.Div(a);
     CHECK_VEC3F(c, 10.0f, 12.0f, 14.0f); //-V550
 
-    c.Div(14.0f);
+    c = c.Div(14.0f);
     CHECK_VEC3F(c, 10.0f/14.0f, 12.0f/14.0f, 14.0f/14.0f); //-V550
   }
 
@@ -230,23 +234,23 @@ namespace TestingVector3f
     "Tests the normalize, length and distance functions")
   {
     c[0] = 2, c[1] = 0; c[2] = 0;
-    c.Norm();
+    c.Normalize();
     CHECK_VEC3F(c, 1, 0, 0); //-V550
 
     d = c;
-    c.Add(d);
+    c = c.Add(d);
     CHECK_VEC3F(c, 2, 0, 0); //-V550
     c[1] = 2; c[2] = 2;
-    d.Norm(c);
+    d.Normalize(c);
 
     CHECK_VEC3F(d, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
-    c.Norm();
+    c.Normalize();
     CHECK_VEC3F(c, 0.5773503f, 0.5773503f, 0.5773503f); //-V550
-    tl_float length = c.Norm();
+    tl_float length = c.Normalize();
     CHECK(length == Approx(1.0f)); //-V550
 
     c[0] = 2; c[1] = 2; c[2] = 2;
-    c.Norm<p_vector::fast>();
+    c.Normalize<p_vector::fast>();
     tl_float percDiff = abs((c[0] - 0.577f) / c[0]);
     // Make sure all the values are the same
     CHECK_VEC3F(c, c[0], c[1], c[2]); //-V550
@@ -276,13 +280,13 @@ namespace TestingVector3f
     CHECK(c.Dot(d) == Approx(0)); //-V550
     CHECK(c.Dot(e) == Approx(1)); //-V550
     d.Zero(); d[2] = 1;
-    e = c; e.Neg();
+    e = c; e.Negate();
     CHECK(c.Dot(d) == Approx(0)); //-V550
     CHECK(c.Dot(e) == Approx(-1)); //-V550
 
     c.Zero(); c[0] = -1; c[1] = 1;
     d.Zero(); d[0] = 0.5f; d[1] = 0.3f;
-    d.Norm();
+    d.Normalize();
     CHECK(d.Length() == Approx(1.0f)); //-V550
     CHECK(c.Dot(d) < 0);
     CHECK(c.DotAbs(d) >= 0);
@@ -294,14 +298,14 @@ namespace TestingVector3f
     c.Set(1); d.Set(2);
     e.Midpoint(c, d);
     CHECK_VEC3F(e, 1.5f, 1.5f, 1.5f); //-V550
-    e.Midpoint(d);
+    e = e.Midpoint(d);
     CHECK_VEC3F(e, 1.75f, 1.75f, 1.75f); //-V550
 
     c.Zero(); c[0] = 1;
     d.Zero(); d[1] = 1;
-    c.Cross(d);
+    c = c.Cross(d);
     CHECK_VEC3F(c, 0, 0, 1); //-V550
-    c.Cross(d);
+    c = c.Cross(d);
     CHECK_VEC3F(c, -1, 0, 0); //-V550
     e.Cross(c, d);
     CHECK_VEC3F(e, 0, 0, -1); //-V550
@@ -310,19 +314,20 @@ namespace TestingVector3f
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks",
     "Tests == and != comparisons as well as checks")
   {
-    CHECK((a != b) == true);
+    CHECK((a != b));
     a = b;
-    CHECK((a == b) == true);
-    a[0] = 0.0000001f; b[0] = 0.0000002f;
-    CHECK((a == b) == true);
+    CHECK((a == b));
+    a[0] = 0.0000001f; b[0] = 0.0000001f;
+    CHECK((a == b)); // NOTE: on 32-bit systems above numbers are less than
+                     // epsilon and will always return true.
     a[0] = 0.000002f; b[0] = 0.000005f;
-    CHECK((a != b) == true);
+    CHECK((a != b));
 
     a.Zero();
-    CHECK(a.IsZero() == true);
-    CHECK(a.IsValid() == true);
+    CHECK(a.IsZero());
+    CHECK(a.IsValid());
     a[2] = sqrt(-2.0f);
-    CHECK(a.IsValid() == false);
+    CHECK_FALSE(a.IsValid());
   }
 
 }

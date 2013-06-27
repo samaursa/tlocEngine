@@ -2,18 +2,17 @@
 #define TLOC_INPUT_IPHONE_H
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocTemplateParams.h>
 
-#include "tlocInput.h"
+#include "tlocInputManager.h"
 #include "tlocInputImpl.h"
 #include "tlocInputTypes.h"
 
-#import <UIKit/UIkit.h>
-#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
-
 namespace tloc { namespace input {
 
-  typedef InputParameterList<UIWindow*> input_param_type;
+  typedef ParamList<core_t::Any> input_param_type;
 
 };};
 
@@ -36,6 +35,9 @@ namespace tloc { namespace input { namespace priv {
     typedef InputManagerImpl<parent_type>           this_type;
     typedef InputManagerImplBase
       <parent_type, param_type>                     base_type;
+
+    typedef core_t::Any /* (UIWindow*) */           window_handle_type;
+    typedef core_t::Any /* (OpenGLView*) */         view_handle_type;
 
     typedef typename parent_type::platform_type       platform_type;
     typedef typename parent_type::policy_type         policy_type;
@@ -65,8 +67,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(input_type a_inputType,
-                              parameter_options::Type a_params);
+    T_InputObject*  CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.
@@ -74,6 +75,8 @@ namespace tloc { namespace input { namespace priv {
     /// @param  a_inputType Type of HID.
     ///-------------------------------------------------------------------------
     void Update(input_type a_inputType);
+
+    void Reset(input_type a_inputType);
 
     ///-------------------------------------------------------------------------
     /// Returns an HID with the given type at the given index
@@ -84,7 +87,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(input_type a_inputType, size_type a_index);
+    T_InputObject* GetHID(size_type a_index);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.
@@ -99,13 +102,13 @@ namespace tloc { namespace input { namespace priv {
     //------------------------------------------------------------------------
     // Platform specific methods
     
-    UIWindow* GetWindowHandle();
+    window_handle_type GetWindowHandle();
     
   private:
     
-    OpenGLView* DoGetOpenGLViewHandle();
+    view_handle_type DoGetOpenGLViewHandle();
 
-    InputDeviceInfo m_iphoneHIDs[hid::count];
+    InputDeviceInfo m_iphoneHIDs[p_hid::Count::m_index];
 
   };
 

@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef s32 object_handle; // s32 because GLint is s32
+    typedef u32 object_handle; // GLuint is u32
 
     bool IsValid();
 
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     ObjectRefCounted(const ObjectRefCounted& a_other)
       : ObjectBase()
-      , m_refCount(NULL)
+      , m_refCount(nullptr)
     {
       operator=(a_other);
     }
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     void SetHandle(object_handle const & a_handle)
     {
-      TLOC_ASSERT(m_refCount == NULL, "Object already has a handle!");
+      TLOC_ASSERT(m_refCount == nullptr, "Object already has a handle!");
       m_refCount = new size_type(0);
 
       base_type::SetHandle(a_handle);
@@ -73,13 +73,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(size_type, use_count, *m_refCount );
 
     bool IsLastRef()
-    { return m_refCount == NULL || use_count() == 0; }
+    { return m_refCount == nullptr || use_count() == 0; }
 
   protected:
 
     ObjectRefCounted()
       : ObjectBase()
-      , m_refCount(NULL)
+      , m_refCount(nullptr)
     { }
 
     ~ObjectRefCounted()
@@ -91,7 +91,7 @@ namespace tloc { namespace graphics { namespace gl {
         if ( IsLastRef() )
         {
           delete m_refCount;
-          m_refCount = NULL;
+          m_refCount = nullptr;
         }
         else
         { --(refCount); }
@@ -122,6 +122,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef ObjectBase                  base_type;
     typedef base_type::object_handle    object_handle;
+    typedef core::error::Error          error_type;
     typedef core::string::String        string_type;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);

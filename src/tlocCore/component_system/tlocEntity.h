@@ -6,8 +6,9 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/component_system/tlocComponentMapper.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -31,17 +32,23 @@ namespace tloc { namespace core { namespace component_system {
     bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
+    template <typename T_ComponentType>
+    T_ComponentType*            GetComponent(size_type a_index = 0) const;
+
     entity_id                   GetID() const;
     size_type                   GetIndex() const;
     const component_list_list&  GetComponentsList() const;
 
+    TLOC_DECL_AND_DEF_SETTER(bool, SetActive, m_active);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsActive, m_active);
+
   protected:
 
-    void                  SetID(entity_id a_id);
-    void                  SetIndex(size_type a_index);
+    void                        SetID(entity_id a_id);
+    void                        SetIndex(size_type a_index);
 
-    component_list&       DoGetComponents(component_type a_type);
-    void                  InsertComponent(Component* a_type);
+    component_list&             DoGetComponents(component_type a_type);
+    void                        InsertComponent(Component* a_type);
 
     component_list_list&        GetComponentsList();
 
@@ -49,14 +56,36 @@ namespace tloc { namespace core { namespace component_system {
 
     entity_id           m_id;
     size_type           m_index;
+    bool                m_active;
     component_list_list m_allComponents;
   };
 
-  typedef smart_ptr::SharedPtr<Entity>                       entity_sptr;
-  typedef smart_ptr::SharedPtr<const Entity>                 entity_const_sptr;
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_ComponentType>
+  T_ComponentType*
+    Entity::GetComponent(size_type a_index) const
+  {
+    typedef ComponentMapper<T_ComponentType> cmapper;
+    cmapper temp = GetComponents(T_ComponentType::k_component_type);
+    return temp[a_index];
+  }
+
+  //------------------------------------------------------------------------
+  // typedef
+
+  TLOC_TYPEDEF_SHARED_PTR(Entity, entity);
 
   typedef containers::tl_array<Entity*>::type                entity_ptr_array;
   typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;
 };};};
+
+///-------------------------------------------------------------------------
+/// @note one of the few one of the few inline files we include in the
+/// header because of linker issues (because it is not a template) ;)
+/// http://www.parashift.com/c++-faq/inline-member-fns.html
+///-------------------------------------------------------------------------
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #endif

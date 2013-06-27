@@ -2,6 +2,8 @@
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
+  //------------------------------------------------------------------------
+
 #define MOUSE_IMPL_TEMP    typename T_ParentMouse
 #define MOUSE_IMPL_PARAMS  T_ParentMouse
 #define MOUSE_IMPL_TYPE    typename MouseImpl<MOUSE_IMPL_PARAMS>
@@ -37,7 +39,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     const mouse_param_type& a_params)
     : MouseImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
-    , m_mouse(NULL)
+    , m_mouse(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
     , m_currentState(MouseEvent::none)
   {
@@ -51,14 +53,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_mouse->Unacquire();
       m_mouse->Release();
-      m_mouse = NULL;
+      m_mouse = TLOC_NULL;
     }
   }
 
   template <MOUSE_IMPL_TEMP>
   bool MouseImpl<MOUSE_IMPL_PARAMS>::IsButtonDown(button_code_type a_mouse) const
   {
-    return (m_currentState.m_buttonCode & a_mouse) == 1;
+    return (m_currentState.m_buttonCode & a_mouse) == a_mouse;
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  MouseEvent MouseImpl<MOUSE_IMPL_PARAMS>::GetState() const
+  {
+    return m_currentState;
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -68,39 +76,40 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   }
 
   template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::Reset()
+  {
+    DoReset(policy_type());
+  }
+
+  template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoInitialize()
   {
-    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
+    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, TLOC_NULL)))
     {
       // LOG: Mouse failed to initialize
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
     if ( FAILED(m_mouse->SetDataFormat(&c_dfDIMouse2)) )
     {
       // LOG: Mouse format error
+      TLOC_ASSERT(false, "Unable to initialize the mouse");
       return;
     }
 
     DWORD coop = 0;
-    // Default parameters or...?
-    if (m_params.m_param3 == parameter_options::TL_DEFAULT)
-    {
-      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-    }
-    else
-    {
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_BACKGROUND)
-      { coop = DISCL_BACKGROUND; }
-      else { coop = DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
-      { coop |= DISCL_NONEXCLUSIVE; }
-      else { coop = DISCL_EXCLUSIVE; } // default
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    { coop |= DISCL_BACKGROUND; }
+    else { coop |= DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NOWINKEY)
-      { coop |= DISCL_NOWINKEY; }
-    }
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    { coop |= DISCL_NONEXCLUSIVE; }
+    else { coop |= DISCL_EXCLUSIVE; } // default
+
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))
     {
@@ -120,6 +129,14 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       // LOG: Unable to acquire Win32 mouse
       return;
     }
+
+    // Set the limits
+    RECT rect;
+    GetClientRect(m_windowPtr, &rect);
+    parent_type::abs_value_type width  = rect.right - rect.left;
+    parent_type::abs_value_type height = rect.bottom - rect.top;
+    m_parent->SetClampX(parent_type::abs_range_type(0, width));
+    m_parent->SetClampY(parent_type::abs_range_type(0, height));
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -148,14 +165,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_X.m_rel() = 0;
     m_currentState.m_Y.m_rel() = 0;
     m_currentState.m_Z.m_rel() = 0;
-    m_currentState.m_buttonCode = MouseEvent::none;
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::mouse_buffer_size];
     DWORD entries = buffer_size::mouse_buffer_size;
     HRESULT hRes;
 
     hRes = m_mouse->
-      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
     {
       // Try one more time
@@ -167,7 +183,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       else
       {
         hRes = m_mouse->
-          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
         if (hRes != DI_OK)
         {
           // we don't have the mouse, return
@@ -186,14 +202,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     for (tl_size i = 0; i < entries; ++i)
     {
       // Grab the key code that was pressed/released
-      m_currentState.m_buttonCode |= TranslateKeyCode(diBuff[i].dwOfs);
+      MouseEvent::ButtonCode code = TranslateKeyCode(diBuff[i].dwOfs);
 
-      if (m_currentState.m_buttonCode != MouseEvent::none)
+      m_currentState.m_buttonCode |= code;
+
+      if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-          m_parent->SendOnButtonPress(m_currentState);
+        { m_parent->SendOnButtonPress(m_currentState, code); }
         else
-          m_parent->SendOnButtonRelease(m_currentState);
+        {
+          m_currentState.m_buttonCode ^= code;
+          m_parent->SendOnButtonRelease(m_currentState, code);
+        }
       }
       else
       {
@@ -226,7 +247,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (axesUpdated)
     {
       // Going with OIS's suggestion here
-      if (m_params.m_param3 == parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
+      if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
       {
         POINT point;
         GetCursorPos(&point);
@@ -241,6 +262,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
+      // Clamp the values
+      if (m_parent->IsClamped())
+      { m_parent->Clamp(m_currentState); }
+
       m_parent->SendOnMouseMove(m_currentState);
     }
   }
@@ -250,21 +275,24 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     HRESULT hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
 
-    if (hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
+    while(hRes == DIERR_INPUTLOST || hRes == DIERR_NOTACQUIRED)
     {
       hRes = m_mouse->Acquire();
       if (hRes != DIERR_OTHERAPPHASPRIO)
       {
-        m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
+        hRes = m_mouse->GetDeviceState(s_bufferSize, &m_mouseBuffer);
       }
     }
+
+    if (hRes != DI_OK)
+    { return; }
 
     m_currentState.m_X.m_rel() = m_mouseBuffer.lX;
     m_currentState.m_Y.m_rel() = m_mouseBuffer.lY;
     m_currentState.m_Z.m_rel() = m_mouseBuffer.lZ;
 
     // Going with OIS's suggestion here
-    if (m_params.m_param3 == parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    if (m_params.m_param3 == param_options::TL_WIN_DISCL_NONEXCLUSIVE)
     {
       POINT point;
       GetCursorPos(&point);
@@ -280,21 +308,39 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
     if(m_mouseBuffer.rgbButtons[0] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::left;
-    else if(m_mouseBuffer.rgbButtons[1] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::right;
-    else if(m_mouseBuffer.rgbButtons[2] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::middle;
-    else if(m_mouseBuffer.rgbButtons[3] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button4;
-    else if(m_mouseBuffer.rgbButtons[4] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button5;
-    else if(m_mouseBuffer.rgbButtons[5] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button6;
-    else if(m_mouseBuffer.rgbButtons[6] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button7;
-    else if(m_mouseBuffer.rgbButtons[7] & 0x80)
-      m_currentState.m_buttonCode = MouseEvent::button8;
+      m_currentState.m_buttonCode |= MouseEvent::left;
+    if(m_mouseBuffer.rgbButtons[1] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::right;
+    if(m_mouseBuffer.rgbButtons[2] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::middle;
+    if(m_mouseBuffer.rgbButtons[3] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button4;
+    if(m_mouseBuffer.rgbButtons[4] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button5;
+    if(m_mouseBuffer.rgbButtons[5] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button6;
+    if(m_mouseBuffer.rgbButtons[6] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button7;
+    if(m_mouseBuffer.rgbButtons[7] & 0x80)
+      m_currentState.m_buttonCode |= MouseEvent::button8;
+
+    // Clamp the values
+    if (m_parent->IsClamped())
+    { m_parent->Clamp(m_currentState); }
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Buffered)
+  {
+    /* Intentionally empty */
+  }
+
+  template <MOUSE_IMPL_TEMP>
+  void MouseImpl<MOUSE_IMPL_PARAMS>::
+    DoReset(InputPolicy::Immediate)
+  {
+    m_currentState.m_buttonCode = 0;
   }
 
 };};};};

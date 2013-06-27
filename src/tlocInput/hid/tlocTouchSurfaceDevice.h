@@ -4,12 +4,12 @@
 #include <tloccore/tlocBase.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
-#include <tlocInput/HIDs/tlocTouchSurfaceImpl.h>
+#include <tlocInput/hid/tlocTouchSurfaceImpl.h>
 
-namespace tloc { namespace input { namespace priv {
-  
+namespace tloc { namespace input { namespace hid { namespace priv {
+
   class TouchSurfaceBufferedElement
   {
   public:
@@ -39,17 +39,17 @@ namespace tloc { namespace input { namespace priv {
 
     TouchSurfaceEvent m_event;
   };
-  
+
   class TouchSurfaceDeviceBase
   {
     static const tl_size sm_maxTouches = 11;
   public:
-    typedef core::tl_array_fixed
+    typedef core_conts::tl_array_fixed
       <TouchSurfaceEvent, sm_maxTouches>::type      container_type;
 
     typedef TouchSurfaceBufferedElement             buffered_elem_type;
 
-    typedef core::tl_array_fixed
+    typedef core_conts::tl_array_fixed
       <buffered_elem_type,
       buffer_size::touch_surface_buffer_size>::type buffer_container_type;
 
@@ -60,7 +60,7 @@ namespace tloc { namespace input { namespace priv {
 
     const touch_surface_event_type*
       GetTouch(touch_handle_type a_touchHandle) const;
-    
+
   protected:
 
     TouchSurfaceDeviceBase();
@@ -83,7 +83,7 @@ namespace tloc { namespace input { namespace priv {
   private:
     container_type m_currentTouches;
   };
-  
+
   class TouchSurfaceDeviceBuffered
     : public TouchSurfaceDeviceBase
   {
@@ -102,14 +102,14 @@ namespace tloc { namespace input { namespace priv {
     TouchSurfaceDeviceBuffered();
 
     const buffer_container_type& GetBufferedTouches() const;
-  
+
     void SendOnTouchBegin(touch_handle_type a_touchHandle,
                           tl_float a_x, tl_float a_y);
-    void SendOnTouchEnd(touch_handle_type a_touchHandle, 
+    void SendOnTouchEnd(touch_handle_type a_touchHandle,
                         tl_float a_x, tl_float a_y);
     void SendOnTouchMove(touch_handle_type a_touchHandle,
                          tl_float a_x, tl_float a_y);
-    void SendOnTouchCancel(touch_handle_type a_touchHandle, 
+    void SendOnTouchCancel(touch_handle_type a_touchHandle,
                            tl_float a_x, tl_float a_y);
 
     void Reset();
@@ -145,9 +145,9 @@ namespace tloc { namespace input { namespace priv {
                            tl_float a_x, tl_float a_y);
 
     void Reset();
-    
+
   };
-  
-};};};
+
+};};};};
 
 #endif

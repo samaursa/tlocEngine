@@ -1,6 +1,6 @@
 #include "tlocPhysicsManager.h"
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
 
@@ -35,6 +35,9 @@ namespace tloc { namespace physics { namespace box2d {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    // @note: Decided against passing the rigid body shape components (that is
+    // the fixture) in event due to the processing involved in finding the
+    // shape components.
     ContactEvent
       DoCreateContactEvent(fixture_type* a_fixtureA, fixture_type* a_fixtureB)
     {
@@ -98,8 +101,8 @@ namespace tloc { namespace physics { namespace box2d {
   PhysicsManager::
     PhysicsManager()
     : m_flags(count)
-    , m_world(NULL)
-    , m_contactListener(NULL)
+    , m_world(nullptr)
+    , m_contactListener(nullptr)
   {
   }
 
@@ -121,7 +124,7 @@ namespace tloc { namespace physics { namespace box2d {
     m_world->GetWorld().SetContactListener(m_contactListener);
 
     m_flags.Mark(initialized);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -135,7 +138,7 @@ namespace tloc { namespace physics { namespace box2d {
     delete m_world;
     delete m_contactListener;
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -204,6 +207,6 @@ namespace tloc { namespace physics { namespace box2d {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiation
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::physics::box2d::PhysicsManager::vec_type);

@@ -1,6 +1,6 @@
 #include "tlocShaderVariableInfo.h"
 
-#include <tlocCore/data_structures/tlocProtectedBuffer.inl>
+#include <tlocCore/data_structures/tlocProtectedBuffer.inl.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

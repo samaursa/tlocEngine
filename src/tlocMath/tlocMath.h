@@ -4,6 +4,8 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
+#include <limits>
+#include <cmath>
 
 namespace tloc {
 
@@ -49,12 +51,12 @@ namespace tloc {
     //------------------------------------------------------------------------
     // Fast Specialized functions
 
-    static T FastInvSqrt(T aValue);
-    static u32 FastPowOfTwo(const u32& aPower);
+    static T    FastInvSqrt(T aValue);
+    static u32  FastPowOfTwo(const u32& aPower);
 
     // returns 1 for positive floats, -1 for negative floats, 0 for 0.0f
     // taken from http://www.musicdsp.org/showone.php?id=249
-    static s32 FastSignInt(const f32& aRealIn);
+    static s32  FastSignInt(const f32& aRealIn);
 
     //------------------------------------------------------------------------
     // Simple Interpolations
@@ -62,8 +64,9 @@ namespace tloc {
     // Simple linear interpolation between two values.
     // The equation is:
     //        returnedValue = aBias * aValue1 + (1 - aBias) * aValue2;
-    static T Lerp(T aValue1, T aValue2, T aBias = (T)0.5);
+    static T    Lerp(T aValue1, T aValue2, T aBias = (T)0.5);
 
+  public:
     static const T EPSILON;
     static const T ZERO_TOLERANCE;
     static const T MAX_REAL;
@@ -91,6 +94,8 @@ namespace tloc {
     static const T      m_sinTable[64];
   };
 
+
+
   //------------------------------------------------------------------------
   // Typedefs
   typedef Math<s32>   Mathi;
@@ -100,6 +105,50 @@ namespace tloc {
   typedef Math<f64>   Mathf64;
 
   typedef Math<tl_float>   Mathf;
+
+  namespace math {
+
+    namespace priv
+    {
+      typedef type_true   IsFloat;
+      typedef type_false  IsNotFloat;
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsFloat);
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsNotFloat);
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat);
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat);
+
+      typedef type_true   IsUnsigned;
+      typedef type_false  IsSigned;
+
+      template <typename T>
+      T DoAbs(T a_value, IsSigned);
+
+      template <typename T>
+      T DoAbs(T a_value, IsUnsigned);
+
+    };
+
+    template <typename T>
+    T Abs(T a_value);
+
+    template <typename T>
+    T Remainder(T a_numerator, T a_denominator);
+
+    template <typename T>
+    T Epsilon();
+
+    template <typename T>
+    bool Approx(T a_num1, T a_num2);
+
+  };
 
 };
 

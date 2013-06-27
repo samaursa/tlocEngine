@@ -14,11 +14,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
-#include <dinput.h>
+#include <WinSDK/dinput.h>
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
+  typedef ParamList<HWND, IDirectInput8*, param_options::value_type>
     windows_keyboard_param_type;
 
 };};
@@ -55,11 +55,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     /// @return true if key is down, false if not.
     ///-------------------------------------------------------------------------
     bool IsKeyDown(keycode_type a_key) const;
+    bool IsModifierDown(modifier_type a_key) const;
 
     ///-------------------------------------------------------------------------
-    /// Buffer any keys that were pressed between this and the last update
+    /// Process any keys that were pressed between this and the last update
     ///-------------------------------------------------------------------------
     void Update();
+    void Reset();
 
   private:
 
@@ -72,16 +74,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     void        DoUpdate(InputPolicy::Buffered);
     void        DoUpdate(InputPolicy::Immediate);
 
+    void        DoReset(InputPolicy::Buffered);
+    void        DoReset(InputPolicy::Immediate);
+
   private:
 
     IDirectInput8*        m_directInput;
     IDirectInputDevice8*  m_keyboard;
     HWND                  m_windowPtr;
 
-    bool                   m_buffer[KeyboardEvent::Count];
+    bool                  m_buffer[KeyboardEvent::Count];
 
-    static const size_type s_bufferSize = 256;
-    uchar8                  m_rawBuffer[s_bufferSize];
+    static const DWORD    s_bufferSize = 256;
+    uchar8                m_rawBuffer[s_bufferSize];
   };
 
 };};};};

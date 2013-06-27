@@ -6,7 +6,8 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tloccontainers.inl>
+#include <tlocCore/containers/tloccontainers.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/types/tlocDimension.h>
@@ -49,6 +50,11 @@ namespace tloc { namespace graphics { namespace media {
     dimension_type          m_dim;
     pixel_container_type    m_pixels;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(Image, image);
 
 };};};
 

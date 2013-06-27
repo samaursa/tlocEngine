@@ -36,12 +36,10 @@ namespace tloc { namespace input {
     }
   }
 
-  namespace parameter_options
+  namespace param_options
   {
-    enum Type
+    enum
     {
-      TL_DEFAULT = 0,
-
       // Useful only for windows
       TL_WIN_DISCL_BACKGROUND   = 1 << 0,
       TL_WIN_DISCL_EXCLUSIVE    = 1 << 1,
@@ -49,8 +47,11 @@ namespace tloc { namespace input {
       TL_WIN_DISCL_NONEXCLUSIVE = 1 << 3,
       TL_WIN_DISCL_NOWINKEY     = 1 << 4,
 
-      count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
-    };
+      TL_WIN_DISCL_DEFAULT = TL_WIN_DISCL_FOREGROUND |
+                             TL_WIN_DISCL_NONEXCLUSIVE,
+
+      k_count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
+    }; typedef tl_int value_type;
   }
 
   namespace buffer_size
@@ -113,8 +114,9 @@ namespace tloc { namespace input {
         p_axis::RelativeAndAbsolute>::value>                  policy_result_type;
 
       // Relative and absolute types
-      typedef core::ConditionalTypePackage<value_type, value_type, policy_result_type::value>
-                                                              rel_and_abs;
+      typedef core::ConditionalTypePackage
+              <value_type, value_type,
+               policy_result_type::value>                     rel_and_abs;
       typedef value_type                                      rel_type;
       typedef typename rel_and_abs::cond_type                 abs_type;
 
@@ -167,8 +169,11 @@ namespace tloc { namespace input {
       typedef p_axis::AbsoluteOnly                              policy_type;
 
       typedef typename base_type::rel_and_abs                   rel_and_abs;
-      typedef typename base_type::abs_type                      rel_type;
+
+      // Note: These are intentionally switched, as base_type::abs_type does not
+      // "exist" due to the conditional type.
       typedef typename base_type::rel_type                      abs_type;
+      typedef typename base_type::abs_type                      rel_type;
 
       using base_type::m_absoluteAndRelative;
 
@@ -193,12 +198,12 @@ namespace tloc { namespace input {
     };
 
     typedef Type<p_type::Button>     Button;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, s64>         AxisRel;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, s64>         AxisAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, s64>  AxisRelAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, f64>         AxisRelf;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, f64>         AxisAbsf;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, f64>  AxisRelAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
+    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
+    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
+    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
   }

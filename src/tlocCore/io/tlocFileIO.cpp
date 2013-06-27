@@ -1,6 +1,9 @@
 #include "tlocFileIO.h"
 
 #include <tlocCore/memory/tlocMemory.h>
+#include <tlocCore/string/tlocString.h>
+#include <tlocCore/string/tlocString.inl.h>
+
 #include <stdio.h>
 
 namespace tloc { namespace core { namespace io {
@@ -74,7 +77,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FileIO_T<FILE_IO_PARAMS>::FileIO_T(const Path& a_path)
-    : m_fileName(a_path), m_file(nullptr)
+    : m_file(nullptr), m_fileName(a_path)
   {
     TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
   }
@@ -89,16 +92,16 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Open()
   {
     if (m_fileName.HasFilename() == false)
-    { return common_error_types::error_path_incorrect; }
+    { return TLOC_ERROR(common_error_types::error_path_incorrect); }
 
     m_file = detail::DoOpen(m_fileName.GetPath(), access_policy_type(),
                             file_format_type());
     if (m_file)
     {
-      return ErrorSuccess();
+      return ErrorSuccess;
     }
 
-    return ErrorFailure();
+    return ErrorFailure;
   }
 
   template <FILE_IO_TEMP>
@@ -117,9 +120,9 @@ namespace tloc { namespace core { namespace io {
   FILE_IO_TYPE::error_type FileIO_T<FILE_IO_PARAMS>::Delete()
   {
     if (::remove(m_fileName.GetPath()) == 0)
-    { return tloc::ErrorSuccess(); }
+    { return ErrorSuccess; }
     else
-    { return tloc::ErrorFailure(); }
+    { return ErrorFailure; }
   }
 
   template <FILE_IO_TEMP>
@@ -127,23 +130,28 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::GetContents(String& a_out) const
   {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");
-    fseek(m_file, 0, SEEK_END);
 
-    tl_size fileSize = ftell(m_file);
+    if (fseek(m_file, 0, SEEK_END) != 0)
+    { return ErrorFailure; }
+
+    tl_int fileSize = ftell(m_file);
+    if (fileSize < 0)
+    { return ErrorFailure; }
+
     rewind(m_file);
 
     const tl_size fileSizeInclNull = fileSize + 1;
     char* buffer = (char*)TL_MALLOC(sizeof(char) * fileSizeInclNull);
 
     tl_size result = fread(buffer, 1, fileSizeInclNull, m_file);
-    if (result == 0) { return ErrorFailure(); }
+    if (result == 0) { return ErrorFailure; }
 
     buffer[result] = '\0';
     a_out.assign(buffer, buffer + result);
 
     TL_FREE(buffer);
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   template <FILE_IO_TEMP>
@@ -153,12 +161,12 @@ namespace tloc { namespace core { namespace io {
     {
       if (fclose(m_file) == EOF)
       {
-        return ErrorFailure();
+        return ErrorFailure;
       }
     }
 
     m_file = nullptr;
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //------------------------------------------------------------------------

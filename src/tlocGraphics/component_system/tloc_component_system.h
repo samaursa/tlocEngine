@@ -9,10 +9,8 @@
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocPrimitive.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
-
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
-
-#include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/component_system/tlocTextureAnimator.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
@@ -20,5 +18,7 @@
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
+#include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
+#include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 
 #endif

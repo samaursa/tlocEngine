@@ -1,6 +1,7 @@
 #include "tlocImage.h"
 
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -21,9 +22,9 @@ namespace tloc { namespace graphics { namespace media {
     Image::LoadFromMemory(const uchar8* a_buffer, dimension_type a_dim,
                           size_type a_channels)
   {
-    if ( (a_buffer == NULL) || a_dim[0] == 0 || a_dim[1] == 0 ||
+    if ( (a_buffer == nullptr) || a_dim[0] == 0 || a_dim[1] == 0 ||
          (a_channels == 0) )
-    { return error_type(common_error_types::error_no_data); }
+    { return TLOC_ERROR(common_error_types::error_no_data); }
 
     // Check if a_size can accommodate a whole number of Color*
     TLOC_ASSERT( ((a_channels % sizeof(color_type)) == 0),
@@ -34,7 +35,7 @@ namespace tloc { namespace graphics { namespace media {
 
     m_dim = a_dim;
 
-    return tloc::ErrorSuccess();
+    return ErrorSuccess;
   }
 
   Image::error_type
@@ -45,7 +46,7 @@ namespace tloc { namespace graphics { namespace media {
     m_pixels.clear();
     m_pixels.resize(m_dim[width] * m_dim[height] , a_color);
 
-    return tloc::ErrorSuccess();
+    return ErrorSuccess;
   }
 
   void Image::SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)
@@ -60,6 +61,8 @@ namespace tloc { namespace graphics { namespace media {
 
   //------------------------------------------------------------------------
   // Explicitly instantiate the container
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
 
   template class core::containers::Array<types::Color>;
 

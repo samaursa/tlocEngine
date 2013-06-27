@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include "tlocCore/tlocAlgorithms.inl"
+#include "tlocCore/tlocAlgorithms.inl.h"
 
 #include <tlocCore/data_structures/tlocTuple.h>
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
 
@@ -82,7 +82,7 @@ namespace TestingTuple
   TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
     "Test the Tuple ctor with varadic")
   {
-    Tuple<tl_int, 4> p(Variadic4i(1, 2, 3, 4));
+    Tuple<tl_int, 4> p(Variadic4s(1, 2, 3, 4));
 
     CHECK(p.GetSize() == 4);
     CHECK(p[0] == 1);
@@ -130,14 +130,27 @@ namespace TestingTuple
     Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
     Tuple<tl_int, 5> a5(2);
 
-    a4_one = a3.ConvertTo<Tuple<int, 4>, p_tuple::overflow_one>();
+    a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_one>();
     CHECK_TUP(a4_one, 0, 0, 0, 1);
-    a4_one = a3.ConvertTo<Tuple<int, 4>, p_tuple::overflow_zero>();
+    a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_zero>();
     CHECK_TUP(a4_one, 0, 0, 0, 0);
 
-    a4_same = a5.ConvertTo<Tuple<int, 4> >();
+    a4_same = a5.ConvertTo<Tuple<tl_int, 4> >();
     CHECK_TUP(a4_same, 2, 2, 2, 2);
-    a4_same = a3.ConvertTo<Tuple<int, 4> >(); // default overflow policy is overflow_one
+    a4_same = a3.ConvertTo<Tuple<tl_int, 4> >(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/Implicit conversion",
+    "Conversion from different tuple types")
+  {
+    Tuple<s64, 4> a3(core_ds::Variadic<s64, 4>(1, 2, 3, 9));
+    Tuple<s32, 4> a4(0);
+
+    a4 = a3.Cast<Tuple<s32, 4> >();
+    CHECK_TUP(a4, 1, 2, 3, 9);
+
+    a4 = a4.Cast<Tuple<s32, 4> >();
+    CHECK_TUP(a4, 1, 2, 3, 9);
   }
 };

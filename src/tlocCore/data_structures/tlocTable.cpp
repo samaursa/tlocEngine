@@ -1,5 +1,5 @@
 #include "tlocTable.h"
-#include "tlocTable.inl"
+#include "tlocTable.inl.h"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 
 //------------------------------------------------------------------------
 // Include the definitions
-#include "tlocTable.inl"
+#include "tlocTable.inl.h"
 
 #else
 

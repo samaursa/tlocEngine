@@ -6,6 +6,11 @@
 
 #include <tlocCore/rng/tlocRngWell512.h>
 
+// Why include this? LLVM release complains - possible reason is that compiler
+// optimizes the functioncall of RNG_T and calls RngWell512 directly and then
+// is unable to locate the definition thus causing a linker error.
+#include <tlocCore/rng/tlocRngWell512.inl.h>
+
 namespace tloc { namespace core { namespace rng {
 
   template <typename T_Generator> class RNG_T;

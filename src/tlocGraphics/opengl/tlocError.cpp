@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace gl {
     { GLU_OUT_OF_MEMORY, "out of memory"},
     { GLU_INCOMPATIBLE_GL_VERSION, "incompatible gl version"},
     { GLU_INVALID_OPERATION, "invalid operation"},
-    { NULL, NULL } /* end of list indicator */
+    { TLOC_NULL, TLOC_NULL} /* end of list indicator */
   };
 
   //------------------------------------------------------------------------
@@ -207,16 +207,15 @@ const char8* GetErrorString(GLenum a_errorCode)
     return !Succeeded();
   }
 
-  GLenum Error::GetError()
+  Error::value_type Error::GetError()
   {
     m_lastError = glGetError();
     return m_lastError;
   }
 
   template <typename T_String>
-  void Error::GetErrorAsString(T_String& a_out)
+  void Error::GetLastErrorAsString(T_String& a_out)
   {
-    GetError();
     const char* myError = GetErrorString(m_lastError);
     if (myError) { a_out = myError; }
   }
@@ -224,6 +223,6 @@ const char8* GetErrorString(GLenum a_errorCode)
   //------------------------------------------------------------------------
   // Explicit Instantiation
 
-  template void Error::GetErrorAsString(core::string::String&);
+  template void Error::GetLastErrorAsString(core::string::String&);
 
 };};};

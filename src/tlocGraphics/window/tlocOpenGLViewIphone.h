@@ -1,5 +1,5 @@
 #include <tlocCore/tlocBase.h>
-#include <tlocInput/HIDs/tlocTouchSurfaceDevice.h>
+#include <tlocInput/hid/tlocTouchSurfaceDevice.h>
 
 #import <UIKit/UIKit.h>
 
@@ -21,6 +21,7 @@
 ///                       A stencil buffer will not be created if 0.
 ///-------------------------------------------------------------------------
 - (id)initWithFrame:(CGRect)a_frame
+        screenScale:(CGFloat)a_scale
       retainBacking:(BOOL)a_retained
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits
@@ -43,13 +44,13 @@
 - (void)UpdateRenderBufferDimensions;
 
 - (void)RegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (void)RegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (bool)UnRegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 - (bool)UnRegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice;
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice;
 
 ///-------------------------------------------------------------------------
 /// Callback function that will be called once, immediately after the user 

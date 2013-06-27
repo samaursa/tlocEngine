@@ -5,6 +5,7 @@
 
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -44,6 +45,11 @@ namespace tloc { namespace core { namespace component_system {
     listeners_list        m_globalListeners;
     event_list            m_events;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(EventManager, event_manager);
 
 };};};
 

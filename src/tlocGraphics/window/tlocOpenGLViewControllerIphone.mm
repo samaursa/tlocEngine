@@ -7,6 +7,7 @@
 //
 
 #import "tlocOpenGLViewControllerIphone.h"
+#import "tlocOpenGLViewIphone.h"
 #include <tlocGraphics/window/tlocWindowImplIphone.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,12 +28,16 @@
   return self;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:
-    (UIInterfaceOrientation)toInterfaceOrientation
+- (BOOL)shouldAutorotate
 {
-  // TODO: based on window settings, allow or disallow the view to change 
-  // orientation
   return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+  // TODO: based on window settings, allow or disallow the view to change
+  // orientation
+  return UIInterfaceOrientationMaskAll;
 }
 
 - (void)loadView
@@ -46,12 +51,12 @@
   // TODO: instead of grabbing the bounds of the main screen, make it grab
   // grab from the screen it's on. Only use dimensions that the window
   // already has.
-  UIWindow* uiwindow = self->windowImpl->GetWindowHandle();
+  UIWindow* uiwindow = self->windowImpl->GetWindowHandle().Cast<UIWindow*>();
   UIScreen* uiscreen = [uiwindow screen];
   
   CGRect frame;
   if (self->windowImpl->GetWindowSettings().m_style& 
-      tloc::graphics::WindowSettings::style_titlebar) 
+      tloc::graphics::win::WindowSettings::style_titlebar)
   {
     frame = [uiscreen applicationFrame];
   }
@@ -62,12 +67,16 @@
   
   [uiwindow setFrame:frame];
   
-  OpenGLView* view = self->windowImpl->GetOpenGLViewHandle();
+  OpenGLView* view = self->windowImpl->GetOpenGLViewHandle().Cast<OpenGLView*>();
   [view setFrame:uiwindow.bounds];
   [view UpdateRenderBufferDimensions];
   
-  self->windowImpl->GetParentWindowHandle()
-    ->SendEvent(tloc::graphics::WindowEvent::resized);
+  tloc::graphics::win::WindowEvent evt
+    (tloc::graphics::win::WindowEvent::resized,
+     self->windowImpl->GetParentWindowHandle()->GetWidth(),
+     self->windowImpl->GetParentWindowHandle()->GetHeight());
+  
+  self->windowImpl->GetParentWindowHandle()->SendEvent(evt);
 }
 
 @end

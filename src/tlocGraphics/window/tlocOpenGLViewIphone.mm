@@ -19,8 +19,8 @@
   
   GLenum m_depthBufferFormat;
   
-  tloc::input::priv::TouchSurfaceDeviceImmediate* m_touchObserverImmediate;
-  tloc::input::priv::TouchSurfaceDeviceBuffered* m_touchObserverBuffered;
+  tloc::input::hid::priv::TouchSurfaceDeviceImmediate* m_touchObserverImmediate;
+  tloc::input::hid::priv::TouchSurfaceDeviceBuffered* m_touchObserverBuffered;
 }
 
 @end
@@ -32,13 +32,14 @@
 
 @synthesize context = m_context;
 
-typedef tloc::input::priv::TouchSurfaceDeviceBuffered::touch_handle_type
+typedef tloc::input::hid::priv::TouchSurfaceDeviceBuffered::touch_handle_type
                                               touch_handle_buffered_type;
 
-typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
+typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
                                               touch_handle_immediate_type;
 
 - (id)initWithFrame:(CGRect)a_frame
+        screenScale:(CGFloat)a_scale
       retainBacking:(BOOL)a_retained 
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits 
@@ -164,7 +165,8 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
     self.multipleTouchEnabled = YES;
     
     // This mimics the behaviour when creating a window on the Win32 platform.
-    glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
+    glViewport(0, 0, self.bounds.size.width * a_scale,
+               self.bounds.size.height * a_scale);
   }
   return self;
 }
@@ -214,27 +216,29 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
 }
 
 - (void)RegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
 {
   if (m_touchObserverBuffered == NULL)
   {
     m_touchObserverBuffered =
-      static_cast<tloc::input::priv::TouchSurfaceDeviceBuffered*>(a_touchDevice);
+      static_cast
+        <tloc::input::hid::priv::TouchSurfaceDeviceBuffered*>(a_touchDevice);
   }
 }
 
 - (void)RegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
 {
   if (m_touchObserverImmediate == NULL)
   {
     m_touchObserverImmediate =
-      static_cast<tloc::input::priv::TouchSurfaceDeviceImmediate*>(a_touchDevice);
+      static_cast
+        <tloc::input::hid::priv::TouchSurfaceDeviceImmediate*>(a_touchDevice);
   }
 }
 
 - (bool)UnRegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
 {
   if (a_touchDevice == m_touchObserverBuffered)
   {
@@ -248,7 +252,7 @@ typedef tloc::input::priv::TouchSurfaceDeviceImmediate::touch_handle_type
 }
 
 - (bool)UnRegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
 {
   if (a_touchDevice == m_touchObserverImmediate)
   {

@@ -19,6 +19,9 @@ namespace tloc { namespace graphics { namespace component_system {
       texture_coords,
       texture_animator,
 
+      camera,
+      arcball,
+
       count
     }; typedef tl_int value_type;
   };

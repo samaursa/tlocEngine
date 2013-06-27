@@ -40,6 +40,14 @@ set(TLOC_GRAPHICS_APPLICATION
   )
 
 set(TLOC_GRAPHICS_COMPONENT_SYSTEM
+  component_system/tlocArcBall.h
+  component_system/tlocArcBall.cpp
+  component_system/tlocArcBallSystem.h
+  component_system/tlocArcBallSystem.cpp
+  component_system/tlocCamera.h
+  component_system/tlocCamera.cpp
+  component_system/tlocCameraSystem.h
+  component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
@@ -149,8 +157,6 @@ set(TLOC_GRAPHICS_TYPES
   )
 
 set(TLOC_GRAPHICS_VIEW_PROJECTION 
-  
-  view/tlocCamera.h 
   )
 
 set(TLOC_GRAPHICS_WINDOW 

@@ -21,10 +21,11 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class QuadRenderSystem : public core::component_system::EntityProcessingSystem
+  class QuadRenderSystem
+    : public core::component_system::EntityProcessingSystem
   {
   public:
-    typedef core::component_system::EntityProcessingSystem  base_type;
+    typedef core::component_system::EntityProcessingSystem    base_type;
     using base_type::component_type;
     using base_type::error_type;
 

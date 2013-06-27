@@ -36,7 +36,6 @@ namespace tloc { namespace math { namespace types {
     // typedefs (similar to std containers)
     typedef Matrix<T, T_Size>                             this_type;
     typedef core::data_structs::Table<T, T_Size, T_Size>  base_type;
-    typedef Vector<value_type, T_Size>                    vec_type;
 
     typedef typename base_type::table_order               table_order;
     typedef table_order                                   matrix_order;
@@ -44,6 +43,8 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::value_type                value_type;
     typedef typename base_type::value_type&               reference;
     typedef typename base_type::value_type const&         const_reference;
+
+    typedef Vector<value_type, T_Size>                    vec_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class

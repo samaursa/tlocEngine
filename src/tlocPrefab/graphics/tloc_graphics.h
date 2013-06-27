@@ -3,6 +3,7 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
+#include <tlocPrefab/graphics/tlocArcBall.h>
 #include <tlocPrefab/graphics/tlocCamera.h>
 #include <tlocPrefab/graphics/tlocFan.h>
 #include <tlocPrefab/graphics/tlocMesh.h>

@@ -27,6 +27,7 @@ namespace tloc { namespace core { namespace utils {
     value_type  operator[](tl_int a_index) const;
 
     value_type  IsMarked(tl_int a_index) const;
+    value_type  IsUnMarked(tl_int a_index) const;
 
     void       Mark(size_type a_index);
     void       Unmark(size_type a_index);

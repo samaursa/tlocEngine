@@ -29,6 +29,12 @@ namespace tloc { namespace core { namespace utils {
     return m_flags[a_index];
   }
 
+  bool Checkpoints::
+    IsUnMarked(tl_int a_index) const
+  {
+    return m_flags[a_index] == false;
+  }
+
   void Checkpoints::
     MarkAll()
   {

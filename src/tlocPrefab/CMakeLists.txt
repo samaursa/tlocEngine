@@ -12,6 +12,8 @@ set(TLOC_PREFAB_CORE
   )
 
 set(TLOC_PREFAB_GRAPHICS
+  graphics/tlocArcBall.h
+  graphics/tlocArcBall.cpp
   graphics/tlocCamera.cpp 
   graphics/tlocCamera.h 
   graphics/tlocFan.cpp 

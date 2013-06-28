@@ -11,6 +11,7 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       k_looping,
       k_paused,
+      k_stopped,
       k_spriteSetChanged,
       k_count
     };
@@ -80,7 +81,14 @@ namespace tloc { namespace graphics { namespace component_system {
       { currentFrame = setSize - 1; }
     }
 
-    m_coordSets[m_currentSet].SetCurrentSet(currentFrame);
+    SetFrame(currentFrame);
+  }
+
+  void
+    TextureAnimator::
+    SetFrame(size_type a_index)
+  {
+    m_coordSets[m_currentSet].SetCurrentSet(a_index);
     m_flags.Mark(k_spriteSetChanged);
   }
 
@@ -116,6 +124,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   const bool
     TextureAnimator::
+    IsStopped() const
+  { return m_flags.IsMarked(k_stopped); }
+
+  const bool
+    TextureAnimator::
     IsSpriteSetChanged() const
   { return m_flags.IsMarked(k_spriteSetChanged); }
 
@@ -128,6 +141,22 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimator::
     SetPaused(const bool& a_pause)
   { m_flags[k_paused] = a_pause; }
+
+  void
+    TextureAnimator::
+    SetStopped(const bool& a_stop)
+  {
+    m_flags[k_stopped] = a_stop;
+    if (a_stop)
+    { SetFrame(0); }
+  }
+
+  void
+    TextureAnimator::
+    SetSpriteSetChanged(const bool& a_changed)
+  {
+    m_flags[k_spriteSetChanged] = a_changed;
+  }
 
   void
     TextureAnimator::

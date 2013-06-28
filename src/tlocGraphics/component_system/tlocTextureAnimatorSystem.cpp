@@ -71,27 +71,31 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::TextureAnimator* texAnim =
       ent->GetComponent<gfx_cs::TextureAnimator>();
 
-    if (texAnim->IsPaused())
-    { return; }
-
     f64 diff = m_totalTime - texAnim->GetStartTime();
     f64 fps = 1.0f / core_utils::CastNumber<f64>(texAnim->GetFPS());
 
-    if (diff > fps)
+    while (diff > fps)
     {
-      texAnim->NextFrame();
-      texAnim->SetStartTime(m_totalTime + diff - fps);
+
+      if (texAnim->IsPaused() == false &&
+          texAnim->IsStopped() == false)
+      {
+        texAnim->NextFrame();
+      }
+
+      texAnim->SetStartTime(texAnim->GetStartTime() + fps);
+      diff = m_totalTime - texAnim->GetStartTime();
     }
 
-    if (ent->HasComponent(components::texture_coords))
+    if (ent->HasComponent(components::texture_coords) &&
+        texAnim->IsSpriteSetChanged())
     {
       gfx_cs::TextureCoords* coordPtr =
         ent->GetComponent<gfx_cs::TextureCoords>();
 
-      if (texAnim->IsSpriteSetChanged())
-      {
-        *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
-      }
+      *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
+
+      texAnim->SetSpriteSetChanged(false);
     }
   }
 

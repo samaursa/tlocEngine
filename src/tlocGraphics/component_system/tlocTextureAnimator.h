@@ -44,6 +44,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void            NextFrame();
     void            PrevFrame();
+    void            SetFrame(size_type a_index);
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSets, m_coordSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSetIndex, m_currentSet);
@@ -53,6 +54,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_GETTER(bool, IsLooping);
     TLOC_DECL_GETTER(bool, IsPaused);
+    TLOC_DECL_GETTER(bool, IsStopped);
     TLOC_DECL_GETTER(bool, IsSpriteSetChanged);
 
     TLOC_DECL_AND_DEF_SETTER(size_type, SetFPS, m_fps);
@@ -61,6 +63,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_SETTER(bool, SetLooping);
     TLOC_DECL_SETTER(bool, SetPaused);
+    TLOC_DECL_SETTER(bool, SetStopped);
+    TLOC_DECL_SETTER(bool, SetSpriteSetChanged);
     TLOC_DECL_SETTER(size_type, SetCurrentSpriteSet);
 
   private:

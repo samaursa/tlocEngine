@@ -55,7 +55,7 @@ namespace tloc { namespace prefab { namespace graphics {
         SpriteLoader_SpriteSheetPacker::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, true, 24);
+                                 a_begin, a_end, m_loop, m_fps);
     }
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);

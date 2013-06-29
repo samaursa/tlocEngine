@@ -76,7 +76,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     while (diff > fps)
     {
-
       if (texAnim->IsPaused() == false &&
           texAnim->IsStopped() == false)
       {

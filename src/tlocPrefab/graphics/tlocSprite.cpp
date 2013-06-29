@@ -10,8 +10,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   template <typename SpriteLoaderIterator>
   void
     DoAddSpriteAnimation(core_cs::Entity* a_entity,
-                         core_cs::EntityManager& a_mgr,
-                         core_cs::ComponentPoolManager& a_poolMgr,
+                         core_cs::EntityManager* a_mgr,
+                         core_cs::ComponentPoolManager* a_poolMgr,
                          SpriteLoaderIterator a_begin,
                          SpriteLoaderIterator a_end,
                          bool a_loop,
@@ -25,10 +25,10 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     typedef gfx_cs::texture_animator_sptr_pool      ta_pool;
     gfx_cs::texture_animator_sptr_pool_sptr         taPool;
 
-    if (a_poolMgr.Exists(texture_animator) == false)
-    { taPool = a_poolMgr.CreateNewPool<texture_animator_sptr>(); }
+    if (a_poolMgr->Exists(texture_animator) == false)
+    { taPool = a_poolMgr->CreateNewPool<texture_animator_sptr>(); }
     else
-    { taPool = a_poolMgr.GetPool<texture_animator_sptr>(); }
+    { taPool = a_poolMgr->GetPool<texture_animator_sptr>(); }
 
     ta_pool::iterator itrTa = taPool->GetNext();
     itrTa->SetValue(texture_animator_sptr(new TextureAnimator()) );
@@ -56,7 +56,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     taPtr->SetLooping(a_loop);
     taPtr->SetFPS(a_fps);
 
-    a_mgr.InsertComponent(a_entity, taPtr.get() );
+    a_mgr->InsertComponent(a_entity, taPtr.get() );
   }
 
   //------------------------------------------------------------------------
@@ -65,8 +65,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::iterator>
     (core_cs::Entity* a_entity,
-     core_cs::EntityManager&,
-     core_cs::ComponentPoolManager&,
+     core_cs::EntityManager*,
+     core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
      bool, tl_size);
@@ -74,8 +74,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
     (core_cs::Entity* a_entity,
-     core_cs::EntityManager&,
-     core_cs::ComponentPoolManager&,
+     core_cs::EntityManager*,
+     core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      bool, tl_size);

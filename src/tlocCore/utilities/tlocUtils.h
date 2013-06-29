@@ -69,6 +69,26 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DECL_AND_DEF_SETTER(_type_, _name_, _var_)\
   TLOC_DECL_SETTER(_type_, _name_) { _var_ = a_in; }
 
+  // -----------------------------------------------------------------------
+  // For parameters
+
+  // This will declare and define getter/setter with the passed name. It
+  // will also return *this (reference of the instance) to allow chaining
+  // these methods.
+  // NOTE: You need to typedef the class as this_type
+
+  // Variable name is _name_
+  // Getter name is Get_name_
+  // Setter name is Set_name_
+
+#define TLOC_DECL_PARAM_VAR(_type_, _methodName_, _var_)\
+  this_type& _methodName_(const _type_& a_value)\
+  {\
+    _var_ = a_value;\
+    return *this;\
+  }\
+  _type_ _var_
+
   //------------------------------------------------------------------------
   // Expansions
 
@@ -76,12 +96,12 @@ namespace tloc { namespace core { namespace utils {
   TLOC_DECL_AND_DEF_GETTER_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(_type_, _name_, _var_)
 
-  ///-------------------------------------------------------------------------
-  /// Enum counter.
-  ///
-  /// This class is useful to count enums that are bit shifted, where a 'count'
-  /// doesn't give us the correct answer (for full usage, see tests)
-  ///-------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // Enum counter.
+  //
+  // This class is useful to count enums that are bit shifted, where a 'count'
+  // doesn't give us the correct answer (for full usage, see tests)
+  // -----------------------------------------------------------------------
   template <int T_CountInBits, bool T_CountZero = false>
   struct EnumCounter
   {
@@ -100,7 +120,7 @@ namespace tloc { namespace core { namespace utils {
     enum { result = 2 };
   };
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Enum to Index converter
 
   template <int T_Enum, bool T_IncludeZero = false>
@@ -121,12 +141,12 @@ namespace tloc { namespace core { namespace utils {
     enum { result = 1 };
   };
 
-  ///-----------------------------------------------------------------------------
-  /// Used to prevent a struct or class from being initialized by declaring a
-  /// constructor with a static assert. Must be inherited from.
-  ///
-  /// \tparam  T A type that cannot be evaluated until compilation.
-  ///-----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // Used to prevent a struct or class from being initialized by declaring a
+  // constructor with a static assert. Must be inherited from.
+  //
+  // \tparam  T A type that cannot be evaluated until compilation.
+  // -----------------------------------------------------------------------
 
   template <typename T>
   struct TypedefHelperBase

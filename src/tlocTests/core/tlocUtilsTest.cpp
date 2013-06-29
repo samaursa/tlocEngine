@@ -259,4 +259,22 @@ namespace TestingMemory
     CHECK(g.GetA() == 3);
     CHECK( *(g.GetC()) == Approx(9.0f));
   }
+
+  TEST_CASE("Core/Utilities/ParamVariableWithSetter", "")
+  {
+    struct params
+    {
+      typedef params      this_type;
+
+      TLOC_DECL_PARAM_VAR(bool, SetParam1, m_param1);
+      TLOC_DECL_PARAM_VAR(bool, SetParam2, m_param2);
+      TLOC_DECL_PARAM_VAR(bool, SetParam3, m_param3);
+    };
+
+    params p = params().SetParam1(true).SetParam2(false).SetParam3(true);
+
+    CHECK(p.m_param1);
+    CHECK_FALSE(p.m_param2);
+    CHECK(p.m_param3);
+  }
 };

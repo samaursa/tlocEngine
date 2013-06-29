@@ -11,11 +11,23 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  core_cs::Entity*
-    CreateMesh(core_cs::EntityManager& a_mgr,
-               core_cs::ComponentPoolManager& a_poolMgr,
-               core_conts::Array<gfx_cs::Mesh::vert_type> a_vertices);
+  class Mesh
+    : public Prefab_I
+  {
+  public:
+    typedef Mesh                                          this_type;
+    typedef core_conts::Array<gfx_cs::Mesh::vert_type>    vert_cont_type;
 
+  public:
+    Mesh(core_cs::EntityManager*  a_entMgr,
+         core_cs::ComponentPoolManager* a_poolMgr)
+         : Prefab_I(a_entMgr, a_poolMgr)
+    { }
+
+    entity_type* Create(const vert_cont_type& a_vertices);
+    void         Add(entity_type* a_ent, const vert_cont_type& a_vertices);
+
+  };
 
 };};};
 

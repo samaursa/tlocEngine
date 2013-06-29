@@ -9,10 +9,8 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   void
-    AddArcBall(core_cs::Entity* a_ent,
-               core_cs::EntityManager& a_mgr,
-               core_cs::ComponentPoolManager& a_poolMgr,
-               const math_t::Vec3f32 a_focusPoint)
+    ArcBall::
+    Add(core_cs::Entity* a_ent)
   {
     TLOC_ASSERT_NOT_NULL(a_ent);
 
@@ -27,19 +25,19 @@ namespace tloc { namespace prefab { namespace graphics {
 
     gfx_cs::arcball_sptr_pool_sptr      arcPool;
 
-    if (a_poolMgr.Exists(arcball) == false)
+    if (m_compPoolMgr->Exists(arcball) == false)
     {
-      arcPool = a_poolMgr.CreateNewPool<arcball_sptr>();
+      arcPool = m_compPoolMgr->CreateNewPool<arcball_sptr>();
     }
     else
     {
-      arcPool = a_poolMgr.GetPool<arcball_sptr>();
+      arcPool = m_compPoolMgr->GetPool<arcball_sptr>();
     }
 
     ab_pool::iterator itrArcBall = arcPool->GetNext();
-    itrArcBall->SetValue(arcball_sptr(new ArcBall(a_focusPoint)) );
+    itrArcBall->SetValue(arcball_sptr(new gfx_cs::ArcBall(m_focusPoint)) );
 
-    a_mgr.InsertComponent(a_ent, itrArcBall->GetValue().get());
+    m_entMgr->InsertComponent(a_ent, itrArcBall->GetValue().get());
   }
 
 };};};

@@ -12,11 +12,24 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  void
-    AddArcBall(core_cs::Entity* a_ent,
-               core_cs::EntityManager& a_mgr,
-               core_cs::ComponentPoolManager& a_poolMgr,
-               const math_t::Vec3f32 a_focusPoint = math_t::Vec3f32::ZERO);
+  class ArcBall
+    : public Prefab_I
+  {
+  public:
+    typedef ArcBall                                     this_type;
+    typedef math_t::Vec3f32                             vec_type;
+
+  public:
+    ArcBall(core_cs::EntityManager*  a_entMgr,
+            core_cs::ComponentPoolManager* a_poolMgr)
+            : Prefab_I(a_entMgr, a_poolMgr)
+            , m_focusPoint(vec_type::ZERO)
+    { }
+
+    void Add(entity_type* a_ent);
+
+    TLOC_DECL_PARAM_VAR(vec_type, Focus, m_focusPoint);
+  };
 
 };};};
 

@@ -11,62 +11,69 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
 
+  using namespace core_cs;
+  using namespace math_cs;
+  using namespace math_cs::components;
+  using namespace tloc::graphics::component_system;
+  using namespace tloc::graphics::component_system::components;
+
   using math_t::Circle_T;
 
-  core_cs::Entity*
-    CreateFan(core_cs::EntityManager& a_mgr,
-              core_cs::ComponentPoolManager& a_poolMgr,
-              math_t::Circlef32 a_circle,
-              tl_size a_numSides,
-              bool a_addTexCoords)
+  Fan::entity_type*
+    Fan::
+    Create()
   {
-    using namespace core_cs;
-    using namespace math_cs;
-    using namespace math_cs::components;
-    using namespace tloc::graphics::component_system;
-    using namespace tloc::graphics::component_system::components;
+    entity_type* ent = m_entMgr->CreateEntity();
+    Add(ent);
 
+    return ent;
+  }
+
+  void
+    Fan::
+    Add(entity_type* a_ent)
+  {
     typedef ComponentPoolManager    pool_mgr;
     typedef gfx_cs::fan_sptr_pool   fan_pool;
 
     gfx_cs::fan_sptr_pool_sptr      fanPool;
 
     // Create the fan (and the fan pool if necessary)
-    if (a_poolMgr.Exists(fan) == false)
-    { fanPool = a_poolMgr.CreateNewPool<fan_sptr>(); }
+    if (m_compPoolMgr->Exists(fan) == false)
+    { fanPool = m_compPoolMgr->CreateNewPool<fan_sptr>(); }
     else
-    { fanPool = a_poolMgr.GetPool<fan_sptr>(); }
+    { fanPool = m_compPoolMgr->GetPool<fan_sptr>(); }
 
     fan_pool::iterator itr = fanPool->GetNext();
-    itr->SetValue(fan_sptr(new Fan(a_circle, Fan::sides(a_numSides)) ) );
+    itr->SetValue(fan_sptr(new
+      gfx_cs::Fan(m_circle, gfx_cs::Fan::sides(m_numSides)) ) );
 
 
     typedef math_cs::transform_f32_sptr_pool  t_pool;
     math_cs::transform_f32_sptr_pool_sptr     tPool;
 
-    if (a_poolMgr.Exists(transform) == false)
-    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
+    if (m_compPoolMgr->Exists(transform) == false)
+    { tPool = m_compPoolMgr->CreateNewPool<transform_sptr>(); }
     else
-    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
     itrTransform->SetValue(transform_sptr(new Transform()) );
 
     // Create an entity from the manager and return to user
-    Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
-    a_mgr.InsertComponent(ent, &*(itr->GetValue()) );
+    m_entMgr->InsertComponent(a_ent, itrTransform->GetValue().get() );
+    m_entMgr->InsertComponent(a_ent, itr->GetValue().get() );
 
     // Create the texture coords (and the texture coord pool if necessary)
-    if (a_addTexCoords)
+    if (m_texCoords)
     {
       typedef gfx_cs::texture_coords_sptr_pool  tcoord_pool;
       gfx_cs::texture_coords_sptr_pool_sptr     tCoordPool;
 
-      if (a_poolMgr.Exists(texture_coords) == false)
-      { tCoordPool = a_poolMgr.CreateNewPool<texture_coords_sptr>(); }
+      if (m_compPoolMgr->Exists(texture_coords) == false)
+      { tCoordPool = m_compPoolMgr->CreateNewPool<texture_coords_sptr>(); }
       else
-      { tCoordPool = a_poolMgr.GetPool<texture_coords_sptr>(); }
+      { tCoordPool = m_compPoolMgr->GetPool<texture_coords_sptr>(); }
 
       tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
       texture_coords_sptr tc(new TextureCoords());
@@ -77,10 +84,10 @@ namespace tloc { namespace prefab { namespace graphics {
       circForTex.SetRadius(0.5f);
 
       using math_t::degree_f32;
-      const f32 angleInterval = 360.0f/a_numSides;
+      const f32 angleInterval = 360.0f/m_numSides;
 
       tc->AddCoord(math_t::Vec2f32(0.5f, 0.5f));
-      for (f32 i = 0; i <= a_numSides; ++i)
+      for (f32 i = 0; i <= m_numSides; ++i)
       {
         math_t::Vec2f32 newTexCoord =
           circForTex.GetCoord(degree_f32(angleInterval * i));
@@ -89,10 +96,8 @@ namespace tloc { namespace prefab { namespace graphics {
       }
 
       itrTCoord->SetValue(tc);
-      a_mgr.InsertComponent(ent, itrTCoord->GetValue().get() );
+      m_entMgr->InsertComponent(a_ent, itrTCoord->GetValue().get() );
     }
-
-    return ent;
   }
 
 };};};

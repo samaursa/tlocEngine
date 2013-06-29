@@ -31,7 +31,7 @@ namespace tloc { namespace prefab { namespace graphics {
     void         Add(entity_type* a_ent);
 
 
-    TLOC_DECL_PARAM_VAR(bool, AddTexCoords, m_texCoords);
+    TLOC_DECL_PARAM_VAR(bool, TexCoords, m_texCoords);
     TLOC_DECL_PARAM_VAR(rect_type, Dimensions, m_rect);
   };
 

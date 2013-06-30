@@ -113,8 +113,10 @@ namespace TestingMatrix
     c.MakeZero();
     tl_float numbers[3] = {1,2,3};
     c.MakeDiagonal(numbers);
-
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 2, 0, 0, 0, 3);
+
+    c.MakeDiagonal(Vector3<tl_float>(5, 6, 7));;
+    CHECK_MATRIX3F(c, 5, 0, 0, 0, 6, 0, 0, 0, 7);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Add",

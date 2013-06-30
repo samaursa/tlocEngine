@@ -21,6 +21,7 @@ namespace tloc { namespace math { namespace component_system {
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
+    , m_scale(1, 1, 1)
   { }
 
   template <TRANSFORM_TEMPS>
@@ -31,6 +32,7 @@ namespace tloc { namespace math { namespace component_system {
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
+    , m_scale(1, 1, 1)
   {
     SetPosition(a_position);
   }
@@ -44,6 +46,7 @@ namespace tloc { namespace math { namespace component_system {
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
+    , m_scale(1, 1, 1)
   {
     SetPosition(a_position);
     SetOrientation(a_orientation);
@@ -73,7 +76,27 @@ namespace tloc { namespace math { namespace component_system {
            m_transformation[1], m_transformation[5], m_transformation[9],
            m_transformation[2], m_transformation[6], m_transformation[10]);
 
+    orientation_type scaleMat(0);
+    scaleMat.MakeDiagonal(m_scale);
+
+    ori3 = ori3 * scaleMat;
+
     return ori3;
+  }
+
+  template <TRANSFORM_TEMPS>
+  TRANSFORM_TYPE::transform_type
+    Transform_T<TRANSFORM_PARAMS>::
+    GetTransformation() const
+  {
+    transform_type t(m_transformation);
+
+    transform_type scaleMat(0);
+    scaleMat.MakeDiagonal(m_scale.ConvertTo<math_t::Vector4<real_type> >());
+
+    t = t * scaleMat;
+
+    return t;
   }
 
   template <TRANSFORM_TEMPS>

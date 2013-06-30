@@ -82,6 +82,7 @@ namespace tloc { namespace math { namespace types {
 
     // Modifies this matrix to be a diagonal matrix
     void MakeDiagonal(const value_type values[T_Size]);
+    void MakeDiagonal(const Vector<value_type, T_Size>& a_diagonal);
 
     //------------------------------------------------------------------------
     // Math operations

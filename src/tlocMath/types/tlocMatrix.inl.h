@@ -91,6 +91,18 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
+  template <MATRIX_TEMPS>
+  void
+    Matrix<MATRIX_PARAMS>::
+    MakeDiagonal(const Vector<value_type, T_Size>& a_diagonal)
+  {
+    MakeZero();
+    ITERATE_MATRIX_HALF
+    {
+      Set(i, i, a_diagonal[i]);
+    }
+  }
+
   //------------------------------------------------------------------------
   // Math operations
 

@@ -85,5 +85,16 @@ namespace TestingTransform
       0.0f,  0.89399666f, -0.44807363f, 0.0f,
      -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
 
+    // testing scale
+    Vec3f32 scale(2.0f, 2.0f, 2.0f);
+
+    ori = t.GetOrientation();
+    Mat3f32 scaleMat(0);
+    scaleMat.MakeDiagonal(scale);
+    ori = ori * scaleMat;
+
+    t.SetScale(scale);
+
+    CHECK( (t.GetOrientation() == ori) );
   }
 };

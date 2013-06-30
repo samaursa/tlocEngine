@@ -70,5 +70,22 @@ namespace TestingScale
     ScaleFloat<f32, u16>();
     ScaleFloat<f32, u32>();
     ScaleFloat<f32, u64>();
+
+  }
+
+  TEST_CASE("math/utilities/Scale/same type", "")
+  {
+    typedef math_utils::Scale_T<tl_float, tl_float> scale_float_to_float;
+
+    scale_float_to_float s
+      (math::RangeNeg1to1<tl_float, math::p_range::Inclusive>().Get(),
+       math::Range_T<tl_float>(0.0f, 100.0f));
+    CHECK(s.ScaleUp(-1.0f) == Approx(0.0f));
+    CHECK(s.ScaleUp(0.0f) == Approx(50.0f));
+    CHECK(s.ScaleUp(1.0f) == Approx(100.0f));
+
+    CHECK(s.ScaleDown(0.0f) == Approx(-1.0f));
+    CHECK(s.ScaleDown(50.0f) == Approx(0.0f));
+    CHECK(s.ScaleDown(99.0f) == Approx(0.98f));
   }
 };

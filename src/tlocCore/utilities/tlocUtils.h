@@ -66,8 +66,14 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DECL_SETTER(_type_, _name_)\
   void            _name_(_type_ const & a_in)
 
+#define TLOC_DECL_SETTER_BY_VALUE(_type_, _name_)\
+  void            _name_(_type_ a_in)
+
 #define TLOC_DECL_AND_DEF_SETTER(_type_, _name_, _var_)\
   TLOC_DECL_SETTER(_type_, _name_) { _var_ = a_in; }
+
+#define TLOC_DECL_AND_DEF_SETTER_BY_VALUE(_type_, _name_, _var_)\
+  TLOC_DECL_SETTER_BY_VALUE(_type_, _name_) { _var_ = a_in; }
 
   // -----------------------------------------------------------------------
   // For parameters

@@ -65,9 +65,15 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
     TLOC_ASSERT_NOT_NULL(ta);
 
+    const TextureAnimator::size_type currSetIndex =
+      ta->GetCurrentSpriteSetIndex();
+
     ta->AddSpriteSet(tcoord);
+    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
+
+    ta->SetCurrentSpriteSet(currSetIndex);
 
     a_mgr->InsertComponent(a_entity, ta);
   }

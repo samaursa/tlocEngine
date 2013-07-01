@@ -88,15 +88,22 @@ namespace tloc { namespace graphics { namespace media {
 
   };};
 
+  // ///////////////////////////////////////////////////////////////////////
+  // SpriteLoader
+
 #define SPRITE_LOADER_TEMPS   typename T_ParserType
 #define SPRITE_LOADER_PARAMS  T_ParserType
 #define SPRITE_LOADER_TYPE    typename SpriteLoader_T<T_ParserType>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SPRITE_LOADER_TEMPS>
   SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     SpriteLoader_T()
     : m_flags(k_count)
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SPRITE_LOADER_TEMPS>
   bool
@@ -105,6 +112,8 @@ namespace tloc { namespace graphics { namespace media {
   {
     return parser_type().IsSupported(a_input);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::error_type
@@ -155,6 +164,8 @@ namespace tloc { namespace graphics { namespace media {
     return err;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SPRITE_LOADER_TEMPS>
   bool
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
@@ -162,6 +173,8 @@ namespace tloc { namespace graphics { namespace media {
   {
     return m_flags.IsMarked(k_initialized);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   struct nameMatch
   {
@@ -183,12 +196,42 @@ namespace tloc { namespace graphics { namespace media {
   };
 
   template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    begin(const string_type& a_name)
+  {
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    end(const string_type& a_name)
+  {
+    iterator itr =
+      core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
+                        nameMatch(a_name.c_str()));
+
+    // end iterator must be past-the-end, ensure that this is the case
+    if (itr != m_spriteInfo.end())
+    { ++itr; }
+
+    return itr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     begin(const string_type& a_name) const
   {
     return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
@@ -206,11 +249,31 @@ namespace tloc { namespace graphics { namespace media {
     return itr;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    begin()
+  { return m_spriteInfo.begin(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <SPRITE_LOADER_TEMPS>
+  SPRITE_LOADER_TYPE::iterator
+    SpriteLoader_T<SPRITE_LOADER_PARAMS>::
+    end()
+  { return m_spriteInfo.end(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     begin() const
   { return m_spriteInfo.begin(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator

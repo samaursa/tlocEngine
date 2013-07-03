@@ -92,7 +92,8 @@ namespace tloc { namespace math { namespace component_system {
     transform_type t(m_transformation);
 
     transform_type scaleMat(0);
-    scaleMat.MakeDiagonal(m_scale.ConvertTo<math_t::Vector4<real_type> >());
+    scaleMat.
+      MakeDiagonal(m_scale.template ConvertTo<math_t::Vector4<real_type> >());
 
     t = t * scaleMat;
 

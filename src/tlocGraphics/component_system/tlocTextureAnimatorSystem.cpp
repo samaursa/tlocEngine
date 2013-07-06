@@ -72,7 +72,7 @@ namespace tloc { namespace graphics { namespace component_system {
       ent->GetComponent<gfx_cs::TextureAnimator>();
 
     f64 diff = m_totalTime - texAnim->GetStartTime();
-    f64 fps = 1.0f / core_utils::CastNumber<f64>(texAnim->GetFPS());
+    f64 fps = texAnim->GetFrameDeltaT();
 
     while (diff > fps)
     {

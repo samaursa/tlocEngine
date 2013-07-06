@@ -63,6 +63,14 @@ namespace tloc { namespace graphics { namespace types {
     }
 
     template <typename T_ColorFormat, typename T_VectorType>
+    T_VectorType GetAs()
+    {
+      T_VectorType v;
+      GetAs<T_ColorFormat>(v);
+      return v;
+    }
+
+    template <typename T_ColorFormat, typename T_VectorType>
     void     GetAs(T_VectorType& a_vec)
     {
       using namespace p_color::format;

@@ -77,6 +77,14 @@ namespace tloc { namespace core { namespace component_system {
     return m_allComponents;
   }
 
+  TL_I void
+    Entity::Activate() const
+  { m_active = true; }
+
+  TL_I void
+    Entity::Deactivate() const
+  { m_active = false; }
+
 };};};
 
 #endif

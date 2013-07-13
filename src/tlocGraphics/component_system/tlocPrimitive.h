@@ -31,6 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
       vert_type GetVertex(size_type a_position) const;
       void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
       size_type size() const;
+      void      clear();
 
     private:
       cont_sptr m_vertexes;
@@ -64,6 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
       vert_type GetVertex(size_type a_position) const;
       void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
       size_type size() const;
+      void      clear();
 
       TLOC_DECL_AND_DEF_GETTER(cont_pos_sptr, GetPositions, m_positions);
       TLOC_DECL_AND_DEF_GETTER(cont_norm_sptr, GetNormals, m_normals);

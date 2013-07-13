@@ -59,9 +59,13 @@ namespace tloc { namespace graphics { namespace media {
 
     bool       IsInitialized() const;
 
+    iterator        begin();
+    iterator        end();
     const_iterator  begin() const;
     const_iterator  end() const;
 
+    iterator        begin(const string_type& a_name);
+    iterator        end(const string_type& a_name);
     const_iterator  begin(const string_type& a_name) const;
     const_iterator  end(const string_type& a_name) const;
 

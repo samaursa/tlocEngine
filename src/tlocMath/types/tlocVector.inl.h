@@ -389,7 +389,7 @@ namespace tloc { namespace math { namespace types {
     DoDistance(const this_type& a_vector) const
   {
     this_type lTemp = *this;
-    lTemp.Sub(a_vector);
+    lTemp = lTemp.Sub(a_vector);
 
     value_type length = lTemp.DoLength<T_Accuracy>(lTemp);
     return length;

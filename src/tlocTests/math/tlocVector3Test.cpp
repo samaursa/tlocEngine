@@ -266,6 +266,10 @@ namespace TestingVector3f
     CHECK(dis == Approx(1)); //-V550
 
     d[0] = 3;
+    dis = c.Distance(d);
+    CHECK(dis == Approx(2));
+
+    d[0] = 3;
     dis = c.DistanceSquared(d);
     CHECK_VEC3F(c, 1, 0, 0); //-V550
     CHECK_VEC3F(d, 3, 0, 0); //-V550

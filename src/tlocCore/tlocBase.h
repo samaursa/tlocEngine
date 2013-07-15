@@ -193,7 +193,7 @@
 
 // Use nedmalloc
 #ifndef TLOC_USING_STD_ALLOC
-  #define TLOC_USING_NED_MALLOC
+  //#define TLOC_USING_NED_MALLOC
 #endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow

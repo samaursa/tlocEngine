@@ -22,7 +22,8 @@ namespace tloc { namespace math { namespace types {
     typedef T                                       real_type;
     typedef Rectangle_T<real_type>                  this_type;
     typedef Vector2<real_type>                      point_type;
-    typedef Ray_T<real_type, 2>                     ray_type;
+    typedef Ray_T<real_type, 2>                     ray_2d_type;
+    typedef Ray_T<real_type, 3>                     ray_3d_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
     typedef core::types::StrongType_T<real_type, 1>   height;
@@ -82,7 +83,8 @@ namespace tloc { namespace math { namespace types {
     bool        Intersects(const this_type& a_other) const;
     bool        Intersects(const this_type& a_other,
                            this_type& a_overlapOut) const;
-    bool        Intersects(const ray_type& a_ray) const;
+    bool        Intersects(const ray_2d_type& a_ray) const;
+    bool        Intersects(const ray_3d_type& a_ray) const;
 
   private:
     real_type   DoGetValue(tl_int a_index) const;

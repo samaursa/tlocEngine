@@ -301,9 +301,10 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
-  bool
+  TLOC_RECTANGLE_TYPE::intersect_ret_type
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Intersects(const ray_3d_type& a_ray, real_type a_range) const
+    Intersects(const ray_3d_type& a_ray, from_origin a_fo,
+               double_sided a_ds) const
   {
     // following http://geomalgorithms.com/a05-_intersect-1.html
 
@@ -312,17 +313,32 @@ namespace tloc { namespace math { namespace types {
     const vec_type& orig = a_ray.GetOrigin();
     const vec_type& dir = a_ray.GetDirection();
 
+    const real_type dirDotNormal = dir.Dot(s_normal);
+
+    // Is the ray above the plane with same direction as plane normal or
+    // below the plane with the opposite direction as plane normal? Both
+    // conditions mean ray is not intersecting if from_origin
+    if (a_fo && ( (orig[2] < 0.0f && dirDotNormal < 0.0f) ||
+                  (orig[2] > 0.0f && dirDotNormal > 0.0f)) )
+    { return false; }
+
+    if (!a_ds && dirDotNormal >= 0.0f)
+    { return false; }
+
     vec_type origNeg(orig);
     origNeg.Negate();
 
-    real_type sNumer = m_normal.Dot(origNeg);
-    real_type sDenom = m_normal.Dot(dir * a_range);
+    real_type sNumer = -(orig.Dot(s_normal));
+    real_type sDenom = dir.Dot(s_normal);
 
     real_type s = sNumer / sDenom;
 
     vec_type p = orig + (dir * s);
 
-    return false;
+    bool intersects = Intersects(ray_2d_type(ray_2d_type::origin
+      (p.ConvertTo<ray_2d_type::vec_type>() )) );
+
+    return core::MakePair(intersects, p);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -378,6 +394,5 @@ namespace tloc { namespace math { namespace types {
 
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32);
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64);
-  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f128);
 
 };};};

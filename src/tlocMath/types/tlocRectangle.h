@@ -26,6 +26,9 @@ namespace tloc { namespace math { namespace types {
     typedef Ray_T<real_type, 2>                     ray_2d_type;
     typedef Ray_T<real_type, 3>                     ray_3d_type;
 
+    typedef core::Pair<bool,
+      typename ray_3d_type::vec_type>               intersect_ret_type;
+
     typedef math_t::Vector3<real_type>              dir_vec_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
@@ -36,6 +39,9 @@ namespace tloc { namespace math { namespace types {
     typedef core::types::StrongType_T<real_type, 5>   bottom;
 
     typedef core::types::StrongType_T<point_type, 0>  position;
+
+    typedef core::types::StrongType_T<bool, 0>        from_origin;
+    typedef core::types::StrongType_T<bool, 1>        double_sided;
 
   public:
     Rectangle_T();
@@ -72,7 +78,7 @@ namespace tloc { namespace math { namespace types {
     point_type  GetPosition() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetNormal, m_normal);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetNormal, s_normal);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -88,8 +94,10 @@ namespace tloc { namespace math { namespace types {
     bool        Intersects(const this_type& a_other,
                            this_type& a_overlapOut) const;
     bool        Intersects(const ray_2d_type& a_ray) const;
-    bool        Intersects(const ray_3d_type& a_ray,
-                           real_type a_range = 1000.0f) const;
+    intersect_ret_type
+                Intersects(const ray_3d_type& a_ray,
+                           from_origin a_fo = from_origin(true),
+                           double_sided a_ds = double_sided(false) ) const;
 
   private:
     real_type   DoGetValue(tl_int a_index) const;
@@ -100,12 +108,12 @@ namespace tloc { namespace math { namespace types {
     point_type    m_dimensions;
     point_type    m_position;
 
-    static const dir_vec_type m_normal;
+    static const dir_vec_type s_normal;
   };
 
   template <typename T>
   typename Rectangle_T<T>::dir_vec_type
-    const Rectangle_T<T>::m_normal = typename Rectangle_T<T>::
+    const Rectangle_T<T>::s_normal = typename Rectangle_T<T>::
     dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------

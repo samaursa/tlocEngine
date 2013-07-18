@@ -154,7 +154,7 @@ namespace TestingRectangle
     CHECK( (r.GetCoord_BottomRight() == Vec2f(0.5f, -1.0f)) );
   }
 
-  TEST_CASE("Graphics/types/Rectangle/RayIntersection", "")
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection_2d", "")
   {
     // NOTE: Rectangle origin is at its center
     Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
@@ -170,5 +170,54 @@ namespace TestingRectangle
     CHECK_FALSE(r.Intersects(ray));
     r.SetPosition(Vec2f(3.0f, 3.0f));
     CHECK_FALSE(r.Intersects(ray));
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection_3d", "")
+  {
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+
+    math_t::Vec3f dir(0, 0, -1.0f);
+
+    Ray3f ray(Ray3f::origin(Vec3f(0, 0, 5.0f)),
+              Ray3f::direction(dir) );
+    CHECK(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 1.0f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, 5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(5.0f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 0.1f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, 5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(0.5f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 0.1f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, -5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray, Rectf::from_origin(false)).first);
+
+    dir = Vec3f(0, 0.1f, 1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, -5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK_FALSE(r.Intersects(ray, Rectf::from_origin(false)).first);
+    CHECK(r.Intersects(ray,
+                       Rectf::from_origin(false),
+                       Rectf::double_sided(true)).first);
   }
 };

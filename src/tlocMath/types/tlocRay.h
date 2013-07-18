@@ -57,16 +57,16 @@ namespace tloc { namespace math { namespace types {
     Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, m_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, s_direction);
 
   private:
     vec_type                  m_origin;
-    static const dir_vec_type m_direction;
+    static const dir_vec_type s_direction;
   };
 
   template <typename T>
   typename Ray_T<T, 2>::dir_vec_type
-    const Ray_T<T, 2>::m_direction =
+    const Ray_T<T, 2>::s_direction =
     typename Ray_T<T, 2>::dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------

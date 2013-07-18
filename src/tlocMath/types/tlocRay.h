@@ -38,6 +38,35 @@ namespace tloc { namespace math { namespace types {
 
   };
 
+  template <typename T>
+  class Ray_T<T, 2>
+  {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
+  public:
+    typedef Ray_T<T, 2>        this_type;
+    typedef Vector<T, 2>       vec_type;
+
+    typedef core::types::StrongType_T<vec_type, 0>   origin;
+    typedef core::types::StrongType_T<vec_type, 1>   direction;
+
+  public:
+    Ray_T();
+    Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetDirection, m_direction);
+
+  private:
+    vec_type              m_origin;
+    static const vec_type m_direction;
+  };
+
+  template <typename T>
+  typename Ray_T<T, 2>::vec_type
+    const Ray_T<T, 2>::m_direction =
+    typename Ray_T<T, 2>::vec_type(core_ds::Variadic<T, 2>(0, 0));
+
   //------------------------------------------------------------------------
   // Typedefs
 

@@ -8,6 +8,9 @@
 
 namespace tloc { namespace math { namespace types {
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Ray_T<T, T_Size>
+
 #define RAY_TEMPS   typename T, tl_size T_Size
 #define RAY_PARAMS  T, T_Size
 #define RAY_TYPE    typename Ray_T<RAY_PARAMS>
@@ -19,11 +22,34 @@ namespace tloc { namespace math { namespace types {
     , m_direction(0)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <RAY_TEMPS>
   Ray_T<RAY_PARAMS>::
     Ray_T(origin a_origin, direction a_direction)
     : m_origin(a_origin)
     , m_direction(a_direction)
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Ray_T<T, 2>
+
+#define RAY2_TEMPS   typename T
+#define RAY2_PARAMS  T, 2
+#define RAY2_TYPE    typename Ray_T<RAY_PARAMS>
+
+  template <RAY2_TEMPS>
+  Ray_T<RAY2_PARAMS>::
+    Ray_T()
+    : m_origin(0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY2_TEMPS>
+  Ray_T<RAY2_PARAMS>::
+    Ray_T(origin a_origin, direction )
+    : m_origin(a_origin)
   { }
 
   //------------------------------------------------------------------------

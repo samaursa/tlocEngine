@@ -10,4 +10,10 @@ namespace tloc { namespace core { namespace types {\
   template class StrongType_T<_type_, 7>;\
   template class StrongType_T<_type_, 8>;\
   template class StrongType_T<_type_, 9>;\
+  template class StrongType_T<_type_, 10>;\
+  template class StrongType_T<_type_, 11>;\
+  template class StrongType_T<_type_, 12>;\
+  template class StrongType_T<_type_, 13>;\
+  template class StrongType_T<_type_, 14>;\
+  template class StrongType_T<_type_, 15>;\
 };};};

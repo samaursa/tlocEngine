@@ -33,6 +33,8 @@ set(TLOC_MATH_TYPES
   types/tlocAspectRatio.h 
   types/tlocCircle.cpp 
   types/tlocCircle.h
+  types/tlocCuboid.h
+  types/tlocCuboid.cpp
   types/tlocFOV.h
   types/tlocFOV.cpp
   types/tlocMatrix.cpp 

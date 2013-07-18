@@ -21,6 +21,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef Ray_T<T, T_Size>        this_type;
     typedef Vector<T, T_Size>       vec_type;
+    typedef Vector<T, T_Size>       dir_vec_type;
 
     typedef core::types::StrongType_T<vec_type, 0>   origin;
     typedef core::types::StrongType_T<vec_type, 1>   direction;
@@ -30,11 +31,11 @@ namespace tloc { namespace math { namespace types {
     Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetDirection, m_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, m_direction);
 
   private:
-    vec_type m_origin;
-    vec_type m_direction;
+    vec_type      m_origin;
+    dir_vec_type  m_direction;
 
   };
 
@@ -46,6 +47,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef Ray_T<T, 2>        this_type;
     typedef Vector<T, 2>       vec_type;
+    typedef Vector<T, 3>       dir_vec_type;
 
     typedef core::types::StrongType_T<vec_type, 0>   origin;
     typedef core::types::StrongType_T<vec_type, 1>   direction;
@@ -55,17 +57,17 @@ namespace tloc { namespace math { namespace types {
     Ray_T(origin a_origin, direction a_direction = direction(vec_type(0)) );
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetDirection, m_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, m_direction);
 
   private:
-    vec_type              m_origin;
-    static const vec_type m_direction;
+    vec_type                  m_origin;
+    static const dir_vec_type m_direction;
   };
 
   template <typename T>
-  typename Ray_T<T, 2>::vec_type
+  typename Ray_T<T, 2>::dir_vec_type
     const Ray_T<T, 2>::m_direction =
-    typename Ray_T<T, 2>::vec_type(core_ds::Variadic<T, 2>(0, 0));
+    typename Ray_T<T, 2>::dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------
   // Typedefs

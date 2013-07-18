@@ -303,8 +303,25 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TEMP>
   bool
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Intersects(const ray_3d_type&) const
+    Intersects(const ray_3d_type& a_ray, real_type a_range) const
   {
+    // following http://geomalgorithms.com/a05-_intersect-1.html
+
+    typedef ray_3d_type::vec_type           vec_type;
+
+    const vec_type& orig = a_ray.GetOrigin();
+    const vec_type& dir = a_ray.GetDirection();
+
+    vec_type origNeg(orig);
+    origNeg.Negate();
+
+    real_type sNumer = m_normal.Dot(origNeg);
+    real_type sDenom = m_normal.Dot(dir * a_range);
+
+    real_type s = sNumer / sDenom;
+
+    vec_type p = orig + (dir * s);
+
     return false;
   }
 

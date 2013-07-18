@@ -8,6 +8,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocRay.h>
 
 namespace tloc { namespace math { namespace types {
@@ -24,6 +25,8 @@ namespace tloc { namespace math { namespace types {
     typedef Vector2<real_type>                      point_type;
     typedef Ray_T<real_type, 2>                     ray_2d_type;
     typedef Ray_T<real_type, 3>                     ray_3d_type;
+
+    typedef math_t::Vector3<real_type>              dir_vec_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
     typedef core::types::StrongType_T<real_type, 1>   height;
@@ -69,6 +72,7 @@ namespace tloc { namespace math { namespace types {
     point_type  GetPosition() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetNormal, m_normal);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -84,7 +88,8 @@ namespace tloc { namespace math { namespace types {
     bool        Intersects(const this_type& a_other,
                            this_type& a_overlapOut) const;
     bool        Intersects(const ray_2d_type& a_ray) const;
-    bool        Intersects(const ray_3d_type& a_ray) const;
+    bool        Intersects(const ray_3d_type& a_ray,
+                           real_type a_range = 1000.0f) const;
 
   private:
     real_type   DoGetValue(tl_int a_index) const;
@@ -94,7 +99,14 @@ namespace tloc { namespace math { namespace types {
   private:
     point_type    m_dimensions;
     point_type    m_position;
+
+    static const dir_vec_type m_normal;
   };
+
+  template <typename T>
+  typename Rectangle_T<T>::dir_vec_type
+    const Rectangle_T<T>::m_normal = typename Rectangle_T<T>::
+    dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------
   // Template definitions

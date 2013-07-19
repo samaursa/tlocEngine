@@ -249,6 +249,8 @@ namespace tloc { namespace math { namespace types {
     GetPosition() const
   { return m_position; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   bool
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
@@ -265,7 +267,7 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Intersects(const this_type& a_other) const
   {
-    Rectangle_T temp;
+    this_type temp;
     return Intersects(a_other, temp);
   }
 

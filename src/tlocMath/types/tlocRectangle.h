@@ -53,7 +53,7 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T(const Rectangle_T<T_Real>& a_other);
 
     this_type&  operator= (const this_type& a_other);
-    void        swap(this_type& a_rect);
+    void        swap(this_type& a_other);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);

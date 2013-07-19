@@ -325,8 +325,7 @@ namespace tloc { namespace math { namespace types {
     if (!a_ds && dirDotNormal >= 0.0f)
     { return false; }
 
-    vec_type origNeg(orig);
-    origNeg.Negate();
+    vec_type origNeg(orig.Inverse());
 
     real_type sNumer = -(orig.Dot(s_normal));
     real_type sDenom = dir.Dot(s_normal);

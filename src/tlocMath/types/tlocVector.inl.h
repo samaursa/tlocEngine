@@ -95,7 +95,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   void
     Vector<VECTOR_PARAMS>::
-    Zero()
+    MakeZero()
   {
     Set(0);
   }
@@ -103,14 +103,17 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  void
+  VECTOR_TYPE::this_type
     Vector<VECTOR_PARAMS>::
-    Negate()
+    Inverse() const
   {
+    this_type inv(*this);
     ITERATE_VECTOR
     {
-      m_values[i] = -m_values[i];
+      inv.m_values[i] = -inv.m_values[i];
     }
+
+    return inv;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -118,10 +121,9 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   void
     Vector<VECTOR_PARAMS>::
-    Negate(const this_type& a_vector)
+    Inverse(const this_type& a_vector)
   {
-    base_type::operator=(a_vector);
-    Negate();
+    base_type::operator=(a_vector.Inverse());
   }
 
   //------------------------------------------------------------------------

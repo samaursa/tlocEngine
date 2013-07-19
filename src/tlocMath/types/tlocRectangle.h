@@ -52,7 +52,8 @@ namespace tloc { namespace math { namespace types {
     template <typename T_Real>
     Rectangle_T(const Rectangle_T<T_Real>& a_other);
 
-    this_type& operator= (const this_type& a_other);
+    this_type&  operator= (const this_type& a_other);
+    void        swap(this_type& a_rect);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -145,6 +146,13 @@ namespace tloc { namespace math { namespace types {
     tloc::type_traits::AssertTypeIsSupported<T_Side2, left, right>();
     return DoGetCoord<T_Side1, T_Side2>();
   }
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(Rectangle_T<T>& a, Rectangle_T<T>& b)
+  { a.swap(b); }
 
   //------------------------------------------------------------------------
   // Typedefs

@@ -39,7 +39,8 @@ namespace tloc { namespace math { namespace types {
     template <typename T_Real>
     Circle_T(const Circle_T<T_Real>& a_other);
 
-    this_type& operator=(const this_type& a_other);
+    this_type&  operator=(const this_type& a_other);
+    void        swap(this_type& a_rect);
 
     bool operator ==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -65,6 +66,13 @@ namespace tloc { namespace math { namespace types {
     value_type m_radius;
     point_type m_position;
   };
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(Circle_T<T>& a, Circle_T<T>& b)
+  { a.swap(b); }
 
   //------------------------------------------------------------------------
   // Template definitions

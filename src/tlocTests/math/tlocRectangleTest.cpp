@@ -127,13 +127,35 @@ namespace TestingRectangle
     center[1] = 0;
     CHECK((r.GetPosition() == center));
 
-    // assignemnt operator
+    // assignemnt operator and swap
     Rectf s = Rectf(Rectf::width(5), Rectf::height(10));
     s.SetPosition(Rectf::point_type(5, 9));
     r = s;
     CHECK(r.GetWidth() == Approx(5));
     CHECK(r.GetHeight() == Approx(10));
     CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+
+    s = Rectf(Rectf::width(2), Rectf::height(3));
+    s.SetPosition(Rectf::point_type(1, 8));
+    s.swap(r);
+
+    CHECK(s.GetWidth() == Approx(5));
+    CHECK(s.GetHeight() == Approx(10));
+    CHECK(s.GetPosition() == Rectf::point_type(5, 9));
+
+    CHECK(r.GetWidth() == Approx(2));
+    CHECK(r.GetHeight() == Approx(3));
+    CHECK(r.GetPosition() == Rectf::point_type(1, 8));
+
+    swap(s, r);
+
+    CHECK(r.GetWidth() == Approx(5));
+    CHECK(r.GetHeight() == Approx(10));
+    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+
+    CHECK(s.GetWidth() == Approx(2));
+    CHECK(s.GetHeight() == Approx(3));
+    CHECK(s.GetPosition() == Rectf::point_type(1, 8));
 
     // different types
     Rectf32 r32;

@@ -284,7 +284,7 @@ namespace TestingVector3f
     CHECK(c.Dot(d) == Approx(0)); //-V550
     CHECK(c.Dot(e) == Approx(1)); //-V550
     d.MakeZero(); d[2] = 1;
-    e = c; e.Inverse();
+    e = c; e = e.Inverse();
     CHECK(c.Dot(d) == Approx(0)); //-V550
     CHECK(c.Dot(e) == Approx(-1)); //-V550
 

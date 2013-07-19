@@ -111,9 +111,23 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     operator= (const this_type& a_other)
   {
-    m_dimensions = a_other.m_dimensions;
-    m_position = a_other.m_position;
+    this_type temp(a_other);
+    swap(temp);
+
     return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TEMP>
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    swap(this_type& a_rect)
+  {
+    using core::swap;
+
+    swap(m_dimensions, a_rect.m_dimensions);
+    swap(m_position, a_rect.m_position);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -50,6 +50,19 @@ namespace tloc { namespace math { namespace types {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  void
+    Circle_T<TLOC_CIRCLE_TEMP>::
+    swap(this_type& a_circ)
+  {
+    using core::swap;
+
+    swap(m_radius, a_circ.m_radius);
+    swap(m_position, a_circ.m_position);
+  }
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>

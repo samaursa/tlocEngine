@@ -13,14 +13,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::top,
                  typename Cuboid_T<T_Real>::left,
-                 typename Cuboid_T<T_Real>::near)
+                 typename Cuboid_T<T_Real>::back)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::left>(),
                         a_cube.template GetValue<typename cuboid_type::top>(),
-                        a_cube.template GetValue<typename cuboid_type::near>());
+                        a_cube.template GetValue<typename cuboid_type::back>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -30,14 +30,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::top,
                  typename Cuboid_T<T_Real>::right,
-                 typename Cuboid_T<T_Real>::near)
+                 typename Cuboid_T<T_Real>::back)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::right>(),
                         a_cube.template GetValue<typename cuboid_type::top>(),
-                        a_cube.template GetValue<typename cuboid_type::near>());
+                        a_cube.template GetValue<typename cuboid_type::back>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -47,14 +47,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::bottom,
                  typename Cuboid_T<T_Real>::left,
-                 typename Cuboid_T<T_Real>::near)
+                 typename Cuboid_T<T_Real>::back)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::left>(),
                         a_cube.template GetValue<typename cuboid_type::bottom>(),
-                        a_cube.template GetValue<typename cuboid_type::near>());
+                        a_cube.template GetValue<typename cuboid_type::back>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -64,14 +64,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::bottom,
                  typename Cuboid_T<T_Real>::right,
-                 typename Cuboid_T<T_Real>::near)
+                 typename Cuboid_T<T_Real>::back)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::right>(),
                         a_cube.template GetValue<typename cuboid_type::bottom>(),
-                        a_cube.template GetValue<typename cuboid_type::near>());
+                        a_cube.template GetValue<typename cuboid_type::back>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -81,14 +81,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::top,
                  typename Cuboid_T<T_Real>::left,
-                 typename Cuboid_T<T_Real>::far)
+                 typename Cuboid_T<T_Real>::front)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::left>(),
                         a_cube.template GetValue<typename cuboid_type::top>(),
-                        a_cube.template GetValue<typename cuboid_type::far>());
+                        a_cube.template GetValue<typename cuboid_type::front>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -98,14 +98,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::top,
                  typename Cuboid_T<T_Real>::right,
-                 typename Cuboid_T<T_Real>::far)
+                 typename Cuboid_T<T_Real>::front)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::right>(),
                         a_cube.template GetValue<typename cuboid_type::top>(),
-                        a_cube.template GetValue<typename cuboid_type::far>());
+                        a_cube.template GetValue<typename cuboid_type::front>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -115,14 +115,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::bottom,
                  typename Cuboid_T<T_Real>::left,
-                 typename Cuboid_T<T_Real>::far)
+                 typename Cuboid_T<T_Real>::front)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::left>(),
                         a_cube.template GetValue<typename cuboid_type::bottom>(),
-                        a_cube.template GetValue<typename cuboid_type::far>());
+                        a_cube.template GetValue<typename cuboid_type::front>());
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -132,14 +132,14 @@ namespace tloc { namespace math { namespace types {
       DoGetCoord(const Cuboid_T<T_Real>& a_cube,
                  typename Cuboid_T<T_Real>::bottom,
                  typename Cuboid_T<T_Real>::right,
-                 typename Cuboid_T<T_Real>::far)
+                 typename Cuboid_T<T_Real>::front)
     {
       typedef Cuboid_T<T_Real>                  cuboid_type;
       typedef typename cuboid_type::point_type  point_type;
 
       return point_type(a_cube.template GetValue<typename cuboid_type::right>(),
                         a_cube.template GetValue<typename cuboid_type::bottom>(),
-                        a_cube.template GetValue<typename cuboid_type::far>());
+                        a_cube.template GetValue<typename cuboid_type::front>());
     }
   };
 
@@ -170,8 +170,8 @@ namespace tloc { namespace math { namespace types {
 
   template <CUBOID_TEMP>
   Cuboid_T<CUBOID_PARAMS>::
-    Cuboid_T(left a_l, right a_r, top a_t, bottom a_b, near a_n, far a_f)
-    : m_dimensions( (a_r - a_l), (a_t - a_b), (a_near - a_far) )
+    Cuboid_T(left a_l, right a_r, top a_t, bottom a_b, front a_fr, back a_ba)
+    : m_dimensions( (a_l - a_r), (a_t - a_b), (a_fr - a_ba) )
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -262,64 +262,64 @@ namespace tloc { namespace math { namespace types {
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_TopLeftNear() const
-  { return DoGetCoord<top, left, near>(); }
+    GetCoord_TopLeftBack() const
+  { return DoGetCoord<top, left, back>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_TopRightNear() const
-  { return DoGetCoord<top, right, near>(); }
+    GetCoord_TopRightBack() const
+  { return DoGetCoord<top, right, back>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_BottomLeftNear() const
-  { return DoGetCoord<bottom, left, near>(); }
+    GetCoord_BottomLeftBack() const
+  { return DoGetCoord<bottom, left, back>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_BottomRightNear() const
-  { return DoGetCoord<bottom, right, near>(); }
+    GetCoord_BottomRightBack() const
+  { return DoGetCoord<bottom, right, back>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_TopLeftFar() const
-  { return DoGetCoord<top, left, far>(); }
+    GetCoord_TopLeftFront() const
+  { return DoGetCoord<top, left, front>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_TopRightFar() const
-  { return DoGetCoord<top, right, far>(); }
+    GetCoord_TopRightFront() const
+  { return DoGetCoord<top, right, front>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_BottomLeftFar() const
-  { return DoGetCoord<bottom, left, far>(); }
+    GetCoord_BottomLeftFront() const
+  { return DoGetCoord<bottom, left, front>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   CUBOID_TYPE::point_type
     Cuboid_T<CUBOID_PARAMS>::
-    GetCoord_BottomRightFar() const
-  { return DoGetCoord<bottom, right, far>(); }
+    GetCoord_BottomRightFront() const
+  { return DoGetCoord<bottom, right, front>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -332,8 +332,8 @@ namespace tloc { namespace math { namespace types {
            (a_xyzPoint[0] <= GetValue<right>()   ) &&
            (a_xyzPoint[1] <= GetValue<top>()     ) &&
            (a_xyzPoint[1] >= GetValue<bottom>()  ) &&
-           (a_xyzPoint[2] >= GetValue<near>()    ) &&
-           (a_xyzPoint[2] <= GetValue<far>()     );
+           (a_xyzPoint[2] >= GetValue<back>()    ) &&
+           (a_xyzPoint[2] <= GetValue<front>()     );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -372,10 +372,10 @@ namespace tloc { namespace math { namespace types {
     right   overR( tlMax(GetValue<right>()  , a_other.GetValue<right>()) );
     top     overT( tlMax(GetValue<top>()    , a_other.GetValue<top>()) );
     bottom  overB( tlMax(GetValue<bottom>() , a_other.GetValue<bottom>()) );
-    near    overN( tlMax(GetValue<near>()   , a_other.GetValue<near>()) );
-    far     overF( tlMax(GetValue<far>()    , a_other.GetValue<far>()) );
+    front   overFr( tlMax(GetValue<front>() , a_other.GetValue<front>()) );
+    back    overBa( tlMax(GetValue<back>()  , a_other.GetValue<back>()) );
 
-    a_overlapOut = this_type(overL, overR, overT, overB, overN, overF);
+    a_overlapOut = this_type(overL, overR, overT, overB, overFr, overBa);
 
     if (a_overlapOut.IsValid())
     { return true; }
@@ -399,9 +399,8 @@ namespace tloc { namespace math { namespace types {
 
     const vec3_type& rayOrig = a_ray.GetOrigin();
     const vec3_type& rayDir  = a_ray.GetDirection();
-    const vec3_type  rayDirInv(1.0f / rayDir[0],
-                               1.0f / rayDir[1],
-                               1.0f / rayDir[2]);
+    const vec3_type  rayDirInv( core_ds::Variadic<real_type, 3>
+      (1.0f / rayDir[0], 1.0f / rayDir[1], 1.0f / rayDir[2]) );
 
     const point_type halfDimMin = m_dimensions * -0.5f;
     const point_type halfDimMax = m_dimensions * 0.5f;
@@ -459,5 +458,95 @@ namespace tloc { namespace math { namespace types {
     else
     { return true; }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
+  CUBOID_TYPE::real_type
+    Cuboid_T<CUBOID_PARAMS>::
+    DoGetValue(tl_int a_index) const
+  {
+    TLOC_ASSERT_LOW_LEVEL
+      (a_index >= left::k_index && a_index <= bottom::k_index, "Out of bounds!");
+
+    const real_type half = 0.5f;
+    switch (a_index)
+    {
+    case left::k_index:
+      return -(m_dimensions[width::k_index] * half);
+    case right::k_index:
+      return (m_dimensions[width::k_index] * half);
+    case top::k_index:
+      return (m_dimensions[height::k_index] * half);
+    case bottom::k_index:
+      return -(m_dimensions[height::k_index] * half);
+    case back::k_index:
+      return -(m_dimensions[depth::k_index] * half);
+    case front::k_index:
+      return  (m_dimensions[depth::k_index] * half);
+    default:
+      return 0;
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
+  template <typename T_Side1, typename T_Side2, typename T_Side3>
+  CUBOID_TYPE::point_type
+    Cuboid_T<CUBOID_PARAMS>::
+    DoGetCoord() const
+  {
+    return priv::DoGetCoord<real_type>(*this, T_Side1(0), T_Side2(0), T_Side3(0));
+  }
+
+  //------------------------------------------------------------------------
+  // Explicit initialization
+
+#define TLOC_EXPLICITLY_INSTANTIATE_CUBOID(_type_)\
+  template class Cuboid_T<_type_>;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::top, \
+                               Cuboid_T<_type_>::left, \
+                               Cuboid_T<_type_>::back>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::top, \
+                               Cuboid_T<_type_>::right, \
+                               Cuboid_T<_type_>::back>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::bottom, \
+                               Cuboid_T<_type_>::left, \
+                               Cuboid_T<_type_>::back>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::bottom, \
+                               Cuboid_T<_type_>::right, \
+                               Cuboid_T<_type_>::back>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::top, \
+                               Cuboid_T<_type_>::left, \
+                               Cuboid_T<_type_>::front>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::top, \
+                               Cuboid_T<_type_>::right, \
+                               Cuboid_T<_type_>::front>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::bottom, \
+                               Cuboid_T<_type_>::left, \
+                               Cuboid_T<_type_>::front>() const;\
+  \
+  template Cuboid_T<_type_>::point_type \
+  Cuboid_T<_type_>::DoGetCoord<Cuboid_T<_type_>::bottom, \
+                               Cuboid_T<_type_>::right, \
+                               Cuboid_T<_type_>::front>() const
+
+  TLOC_EXPLICITLY_INSTANTIATE_CUBOID(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_CUBOID(f64);
 
 };};};

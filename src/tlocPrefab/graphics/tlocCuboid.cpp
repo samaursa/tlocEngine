@@ -156,110 +156,110 @@ namespace tloc { namespace prefab { namespace graphics {
     // Back face
     itr->SetPosition(blb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(tlb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(trb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     itr->SetPosition(blb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(trb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(brb);
     itr->SetNormal(backNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 1 (left face when looking down z-axis)
     itr->SetPosition(brf);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(trb);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(trf);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     itr->SetPosition(brf);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(brb);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(trb);
     itr->SetNormal(leftNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 2 (right face when looking down z-axis)
     itr->SetPosition(blb);
     itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(blf);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlb);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-
-    itr->SetPosition(blf);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(tlf);
     itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(tlb);
     itr->SetNormal(rightNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    INCREMENT_AND_CHECK_ITR();
+
+    itr->SetPosition(blb);
+    itr->SetNormal(rightNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
+    INCREMENT_AND_CHECK_ITR();
+    itr->SetPosition(blf);
+    itr->SetNormal(rightNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 3.0f));
+    INCREMENT_AND_CHECK_ITR();
+    itr->SetPosition(tlf);
+    itr->SetNormal(rightNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // bottom
 
     itr->SetPosition(blf);
     itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(blb);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brf);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
-    INCREMENT_AND_CHECK_ITR();
-
-    itr->SetPosition(blb);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(brb);
     itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
     itr->SetPosition(brf);
     itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(tCoord);
+    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 1.0f));
+    INCREMENT_AND_CHECK_ITR();
+
+    itr->SetPosition(blf);
+    itr->SetNormal(bottomNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
+    INCREMENT_AND_CHECK_ITR();
+    itr->SetPosition(blb);
+    itr->SetNormal(bottomNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    INCREMENT_AND_CHECK_ITR();
+    itr->SetPosition(brb);
+    itr->SetNormal(bottomNorm);
+    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
 
     // -----------------------------------------------------------------------
 

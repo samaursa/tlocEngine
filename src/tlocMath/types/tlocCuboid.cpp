@@ -156,14 +156,17 @@ namespace tloc { namespace math { namespace types {
   Cuboid_T<CUBOID_PARAMS>::
     Cuboid_T()
     : m_dimensions(0.0f, 0.0f, 0.0f)
+    , m_position(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
   Cuboid_T<CUBOID_PARAMS>::
-    Cuboid_T(width a_w, height a_h, depth a_d)
+    Cuboid_T(width a_w, height a_h, depth a_d,
+             position a_pos = position(point_type(0)) )
     : m_dimensions(a_w, a_h, a_d)
+    , m_position(a_pos)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -171,7 +174,8 @@ namespace tloc { namespace math { namespace types {
   template <CUBOID_TEMP>
   Cuboid_T<CUBOID_PARAMS>::
     Cuboid_T(left a_l, right a_r, top a_t, bottom a_b, front a_fr, back a_ba)
-    : m_dimensions( (a_l - a_r), (a_t - a_b), (a_fr - a_ba) )
+    : m_dimensions( (a_r - a_l), (a_t - a_b), (a_fr - a_ba) )
+    , m_position( (a_l + a_r) * 0.5f, (a_t + a_b) * 0.5f, (a_fr + a_ba) * 0.5f)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -324,6 +328,38 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
+  void
+    Cuboid_T<CUBOID_PARAMS>::
+    SetPosition(const point_type& a_centerPosition)
+  { m_position = a_centerPosition; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
+  void
+    Cuboid_T<CUBOID_PARAMS>::
+    ResetPosition()
+  { m_position.Set(0); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
+  void
+    Cuboid_T<CUBOID_PARAMS>::
+    Offset(const point_type& a_offsetBy)
+  { m_position += a_offsetBy; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
+  CUBOID_TYPE::point_type
+    Cuboid_T<CUBOID_PARAMS>::
+    GetPosition() const
+  { return m_position; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
   bool
     Cuboid_T<CUBOID_PARAMS>::
     Contains(const point_type &a_xyzPoint)
@@ -369,10 +405,10 @@ namespace tloc { namespace math { namespace types {
     using namespace core;
 
     left    overL( tlMax(GetValue<left>()   , a_other.GetValue<left>()) );
-    right   overR( tlMax(GetValue<right>()  , a_other.GetValue<right>()) );
-    top     overT( tlMax(GetValue<top>()    , a_other.GetValue<top>()) );
+    right   overR( tlMin(GetValue<right>()  , a_other.GetValue<right>()) );
+    top     overT( tlMin(GetValue<top>()    , a_other.GetValue<top>()) );
     bottom  overB( tlMax(GetValue<bottom>() , a_other.GetValue<bottom>()) );
-    front   overFr( tlMax(GetValue<front>() , a_other.GetValue<front>()) );
+    front   overFr( tlMin(GetValue<front>() , a_other.GetValue<front>()) );
     back    overBa( tlMax(GetValue<back>()  , a_other.GetValue<back>()) );
 
     a_overlapOut = this_type(overL, overR, overT, overB, overFr, overBa);
@@ -418,13 +454,13 @@ namespace tloc { namespace math { namespace types {
 
     if (rayDir[1] >= 0)
     {
-      tymin = (halfDimMin[1] - rayOrig[0]) * rayDirInv[0];
-      tymax = (halfDimMax[1] - rayOrig[0]) * rayDirInv[0];
+      tymin = (halfDimMin[1] - rayOrig[1]) * rayDirInv[1];
+      tymax = (halfDimMax[1] - rayOrig[1]) * rayDirInv[1];
     }
     else
     {
-      tymin = (halfDimMax[1] - rayOrig[0]) * rayDirInv[0];
-      tymax = (halfDimMin[1] - rayOrig[0]) * rayDirInv[0];
+      tymin = (halfDimMax[1] - rayOrig[1]) * rayDirInv[1];
+      tymax = (halfDimMin[1] - rayOrig[1]) * rayDirInv[1];
     }
 
     if ( (tmin > tymax) || (tymin > tmax) )
@@ -467,23 +503,23 @@ namespace tloc { namespace math { namespace types {
     DoGetValue(tl_int a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL
-      (a_index >= left::k_index && a_index <= bottom::k_index, "Out of bounds!");
+      (a_index >= left::k_index && a_index <= front::k_index, "Out of bounds!");
 
     const real_type half = 0.5f;
     switch (a_index)
     {
     case left::k_index:
-      return -(m_dimensions[width::k_index] * half);
+      return -(m_dimensions[width::k_index] * half) + m_position[0];
     case right::k_index:
-      return (m_dimensions[width::k_index] * half);
+      return (m_dimensions[width::k_index] * half) + m_position[0];
     case top::k_index:
-      return (m_dimensions[height::k_index] * half);
+      return (m_dimensions[height::k_index] * half) + m_position[1];
     case bottom::k_index:
-      return -(m_dimensions[height::k_index] * half);
+      return -(m_dimensions[height::k_index] * half) + m_position[1];
     case back::k_index:
-      return -(m_dimensions[depth::k_index] * half);
+      return -(m_dimensions[depth::k_index] * half) + m_position[2];
     case front::k_index:
-      return  (m_dimensions[depth::k_index] * half);
+      return  (m_dimensions[depth::k_index] * half) + m_position[2];
     default:
       return 0;
     }

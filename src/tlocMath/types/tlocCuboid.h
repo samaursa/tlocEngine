@@ -35,6 +35,8 @@ namespace tloc { namespace math { namespace types {
     typedef core::types::StrongType_T<real_type, 7>   back;
     typedef core::types::StrongType_T<real_type, 8>   front;
 
+    typedef core::types::StrongType_T<point_type, 0>  position;
+
     typedef core::types::StrongType_T<bool, 0>        from_origin;
     typedef core::types::StrongType_T<bool, 1>        double_sided;
 
@@ -45,7 +47,8 @@ namespace tloc { namespace math { namespace types {
 
   public:
     Cuboid_T();
-    Cuboid_T(width a_w, height a_h, depth a_d);
+    Cuboid_T(width a_w, height a_h, depth a_d,
+             position a_pos = position(point_type(0)) );
     Cuboid_T(left a_l, right a_r, top a_t, bottom a_b, front a_fr, back a_ba);
 
     template <typename T_Real>
@@ -80,6 +83,11 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCoord_BottomLeftFront() const;
     point_type  GetCoord_BottomRightFront() const;
 
+    void        SetPosition(const point_type& a_centerPosition);
+    void        ResetPosition();
+    void        Offset(const point_type& a_offsetBy);
+    point_type  GetPosition() const;
+
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
 
     bool        IsValid() const;
@@ -97,6 +105,7 @@ namespace tloc { namespace math { namespace types {
 
   private:
     point_type    m_dimensions;
+    point_type    m_position;
 
   };
 

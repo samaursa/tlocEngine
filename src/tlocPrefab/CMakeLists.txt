@@ -16,6 +16,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocArcBall.cpp
   graphics/tlocCamera.cpp 
   graphics/tlocCamera.h 
+  graphics/tlocCuboid.h
+  graphics/tlocCuboid.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
   graphics/tlocMesh.h

@@ -163,8 +163,7 @@ namespace tloc { namespace math { namespace types {
 
   template <CUBOID_TEMP>
   Cuboid_T<CUBOID_PARAMS>::
-    Cuboid_T(width a_w, height a_h, depth a_d,
-             position a_pos = position(point_type(0)) )
+    Cuboid_T(width a_w, height a_h, depth a_d, position a_pos)
     : m_dimensions(a_w, a_h, a_d)
     , m_position(a_pos)
   { }
@@ -424,12 +423,11 @@ namespace tloc { namespace math { namespace types {
   template <CUBOID_TEMP>
   bool
     Cuboid_T<CUBOID_PARAMS>::
-    Intersects(const ray_3d_type& a_ray,
-               from_origin a_fo = from_origin(true)) const
+    Intersects(const ray_3d_type& a_ray, from_origin a_fo) const
   {
     // using the method: http://people.csail.mit.edu/amy/papers/box-jgt.pdf
 
-    typedef ray_3d_type::vec_type             vec3_type;
+    typedef typename ray_3d_type::vec_type             vec3_type;
 
     real_type tmin, tmax, tymin, tymax, tzmin, tzmax;
 

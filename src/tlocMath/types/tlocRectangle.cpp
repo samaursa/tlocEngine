@@ -324,7 +324,7 @@ namespace tloc { namespace math { namespace types {
   {
     // following http://geomalgorithms.com/a05-_intersect-1.html
 
-    typedef ray_3d_type::vec_type           vec_type;
+    typedef typename ray_3d_type::vec_type           vec_type;
 
     const vec_type& orig = a_ray.GetOrigin();
     const vec_type& dir = a_ray.GetDirection();
@@ -341,8 +341,6 @@ namespace tloc { namespace math { namespace types {
     if (!a_ds && dirDotNormal >= 0.0f)
     { return false; }
 
-    vec_type origNeg(orig.Inverse());
-
     real_type sNumer = -(orig.Dot(s_normal));
     real_type sDenom = dir.Dot(s_normal);
 
@@ -350,8 +348,8 @@ namespace tloc { namespace math { namespace types {
 
     vec_type p = orig + (dir * s);
 
-    bool intersects = Intersects(ray_2d_type(ray_2d_type::origin
-      (p.ConvertTo<ray_2d_type::vec_type>() )) );
+    bool intersects = Intersects(ray_2d_type(typename ray_2d_type::origin
+      (p.template ConvertTo<typename ray_2d_type::vec_type>() )) );
 
     return core::MakePair(intersects, p);
   }

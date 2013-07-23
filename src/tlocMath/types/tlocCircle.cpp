@@ -54,7 +54,7 @@ namespace tloc { namespace math { namespace types {
 
   template <TLOC_CIRCLE_TEMP>
   void
-    Circle_T<TLOC_CIRCLE_TEMP>::
+    Circle_T<TLOC_CIRCLE_PARAMS>::
     swap(this_type& a_circ)
   {
     using core::swap;

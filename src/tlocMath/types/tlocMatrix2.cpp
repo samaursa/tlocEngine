@@ -1,5 +1,5 @@
 #include "tlocMatrix2.h"
-#include "tlocMatrix2.inl"
+#include "tlocMatrix2.inl.h"
 
 namespace tloc { namespace math { namespace types {
 

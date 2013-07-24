@@ -7,7 +7,7 @@ namespace tloc { namespace core { namespace memory {
   BufferArg::size_type const s_maximumValidBufferSize = 2048;
 
   BufferArg::BufferArg(const char* a_buffer)
-    : m_buffer(a_buffer), m_end(NULL)
+    : m_buffer(a_buffer), m_end(nullptr)
   {
   }
 

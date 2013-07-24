@@ -10,6 +10,8 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
+#include <tlocPhysics/component_system/tlocComponentType.h>
+
 namespace tloc { namespace physics {
 
   ///-------------------------------------------------------------------------
@@ -26,6 +28,8 @@ namespace tloc { namespace physics {
   public:
     virtual void OnContactBegin(const entity_type* a_ent) = 0;
     virtual void OnContactEnd(const entity_type* a_ent) = 0;
+
+    virtual ~RigidBodyListener() { }
   };
 
 };};
@@ -38,11 +42,13 @@ namespace tloc { namespace physics { namespace component_system {
   /// RigidBodyListener callback class.
   ///-------------------------------------------------------------------------
   class RigidBodyListener :
-    public core::component_system::Component_T<RigidBodyListener>
+    public core::component_system::Component_T<RigidBodyListener,
+                                               components::k_rigidBodyListener>
   {
   public:
     typedef RigidBodyListener                                       this_type;
-    typedef core::component_system::Component_T<RigidBodyListener>  base_type;
+    typedef core::component_system::Component_T
+      <RigidBodyListener, components::k_rigidBodyListener>          base_type;
 
     typedef physics::RigidBodyListener  rigid_body_listener_type;
 
@@ -63,10 +69,8 @@ namespace tloc { namespace physics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBodyListener> RigidBodyListenerPtr;
-
-  typedef core::component_system::ComponentPool_TI<RigidBodyListenerPtr>
-                                                        rigid_body_listener_pool;
+  TLOC_TYPEDEF_SHARED_PTR(RigidBodyListener, rigid_body_listener);
+  TLOC_TYPEDEF_COMPONENT_POOL(rigid_body_listener_sptr, rigid_body_listener_sptr);
 
 };};};
 

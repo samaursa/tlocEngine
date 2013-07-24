@@ -1,6 +1,6 @@
 #include "tlocTextureObject.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -83,7 +83,7 @@ namespace tloc { namespace graphics { namespace gl {
     glBindTexture(a_texType, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type TextureObject::
@@ -102,7 +102,7 @@ namespace tloc { namespace graphics { namespace gl {
     glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //------------------------------------------------------------------------

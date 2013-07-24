@@ -31,7 +31,7 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool                  m_available;
+    bool                  m_inUse;
     GUID                  m_productGuid;
     GUID                  m_deviceGuid;
     core::string::String  m_deviceName;
@@ -73,7 +73,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(parameter_options::Type a_params);
+    T_InputObject*  CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.

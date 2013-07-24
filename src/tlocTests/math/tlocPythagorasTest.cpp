@@ -1,17 +1,16 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocMath.inl>
+#include <tlocMath/tlocMath.inl.h>
 #include <tlocMath/utilities/tlocPythagoras.h>
 
 namespace TestingPythagoras
 {
   using namespace tloc;
-  using namespace math;
 
   TEST_CASE("Math/Pythagoras/Ctors", "")
   {
-    typedef utils::Pythagoras pyth;
+    typedef math::utils::Pythagoras pyth;
     using math::types::Degree;
     using math::types::Radian;
 

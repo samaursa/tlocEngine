@@ -88,22 +88,28 @@ namespace TestingShaderProgram
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader vShader;
-    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader fShader;
 
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    CHECK(sp.Link() == ErrorSuccess());
+    CHECK(sp.Link() == ErrorSuccess);
 
     CHECK(gl::Error().Succeeded());
     sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
     CHECK(gl::Error().Succeeded());
+
+    CHECK(sp.HasAttribute("vVertex"));
+    CHECK(sp.HasAttribute("vColor"));
+    CHECK_FALSE(sp.HasAttribute("vColorNotInShader"));
+    CHECK(sp.HasUniform("u_Color"));
+    CHECK_FALSE(sp.HasUniform("u_ColorNotInShader"));
   }
 
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
@@ -119,16 +125,16 @@ namespace TestingShaderProgram
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader vShader;
-    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::FragmentShader fShader;
-    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess());
-    REQUIRE(fShader.Compile() == ErrorSuccess());
+    REQUIRE(fShader.Load(fShaderStr) == ErrorSuccess);
+    REQUIRE(fShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::two_shader_components(&vShader, &fShader));
-    CHECK(sp.Link() == ErrorSuccess());
+    CHECK(sp.Link() == ErrorSuccess);
 
     sp.LoadAttributeInfo();
     sp.LoadUniformInfo();
@@ -155,17 +161,17 @@ namespace TestingShaderProgram
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     gl::VertexShader vShader;
-    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess());
-    REQUIRE(vShader.Compile() == ErrorSuccess());
+    REQUIRE(vShader.Load(vShaderStrWithAttrAndUni) == ErrorSuccess);
+    REQUIRE(vShader.Compile() == ErrorSuccess);
 
     gl::ShaderProgram sp;
     sp.AttachShaders(gl::ShaderProgram::one_shader_component(&vShader));
-    CHECK(sp.Link() == ErrorSuccess());
+    CHECK(sp.Link() == ErrorSuccess);
 
     sp.AddUniform( gl::Uniform().SetName("uUni").SetValueAs(Vec4f32(0, 0, 0, 1)) );
-    REQUIRE(sp.Enable() == ErrorSuccess() );
-    CHECK(sp.LoadAllUniforms() == ErrorSuccess());
-    CHECK(sp.Disable() == ErrorSuccess() );
+    REQUIRE(sp.Enable() == ErrorSuccess );
+    CHECK(sp.LoadAllUniforms() == ErrorSuccess);
+    CHECK(sp.Disable() == ErrorSuccess );
 
     Vec4f32 colVec;
     graphics::types::Color col(0.5f, 0.5f, 0.5f, 1.0f);
@@ -173,8 +179,8 @@ namespace TestingShaderProgram
 
     sp.AddAttribute( gl::Attribute().SetName("vVertex").SetValueAs(Vec4f32(0, 0, 0, 1)) );
     sp.AddAttribute( gl::Attribute().SetName("vColor").SetValueAs(colVec) );
-    REQUIRE(sp.Enable() == ErrorSuccess() );
-    CHECK(sp.LoadAllAttributes() == ErrorSuccess() );
-    CHECK(sp.Disable() == ErrorSuccess() );
+    REQUIRE(sp.Enable() == ErrorSuccess );
+    CHECK(sp.LoadAllAttributes() == ErrorSuccess );
+    CHECK(sp.Disable() == ErrorSuccess );
   }*/
 };

@@ -1,5 +1,5 @@
 #include "tlocTuple.h"
-#include "tlocTuple.inl"
+#include "tlocTuple.inl.h"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -24,7 +24,7 @@
 #undef CLASS_NAME
 //------------------------------------------------------------------------
 // Include the definitions
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #else
 

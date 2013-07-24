@@ -42,7 +42,7 @@ namespace TestingFileIO
 
     // Prepare the file that we will be testing
     FILE* m_file = fopen(path, "w");
-    REQUIRE(m_file != NULL);
+    REQUIRE((m_file != nullptr));
 
     fputs(sentence, m_file);
     fclose(m_file);

@@ -1,6 +1,6 @@
 #include "tlocWindowImplIphone.h"
 
-#include <tlocCore/types/tlocAny.inl>
+#include <tlocCore/types/tlocAny.inl.h>
 
 #import <UIKit/UIKit.h>
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
@@ -94,11 +94,15 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     m_handle.Assign<UIWindow*>([[UIWindow alloc]
                             initWithFrame:[currentScreen bounds]]);
 
+    CGFloat screenScale = [currentScreen scale];
+
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
     CGRect viewFrame = m_handle.Cast<UIWindow*>().bounds;
 
-    m_view = [[OpenGLView alloc] initWithFrame:viewFrame retainBacking:NO
+    m_view = [[OpenGLView alloc] initWithFrame:viewFrame
+                                   screenScale:screenScale
+                                 retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
                                   bitsPerDepth:a_settings.m_depthBits 
                                 bitsPerStencil:a_settings.m_stencilBits];
@@ -130,6 +134,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetHeight() const
   {
     return (size_type)m_view.Cast<OpenGLView*>().bounds.size.height;
+  }
+  
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxWidth() const
+  {
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    return static_cast<size_type>(width);
+  }
+
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxHeight() const
+  {
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    return static_cast<size_type>(height);
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)
@@ -172,16 +190,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_handle;
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool)
   {
-    // There does not appear to be a way to change vertical sync on the iOS
-    TLOC_ASSERT(false, "Cannot currently change vertical sync on iOS");
+    // LOG: iOS does not have vertical sync
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool)
   {
-    // There is no concept of a mouse on the iOS
-    TLOC_ASSERT(false, "Function not implemented and needed on iOS");
+    // LOG: SetMouseVisibility() does nothing on iOS
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)
@@ -203,12 +219,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     [GetOpenGLView(m_view) setHidden:!a_visible];
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char* a_title)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
   {
-    OpenGLView* view = GetOpenGLView(m_view);
-
-    NSString *title = [[NSString alloc] initWithUTF8String:a_title];
-    [view setTitle:title];
+    // LOG: iOS platform has no title
   }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const

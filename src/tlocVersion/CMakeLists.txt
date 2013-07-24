@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_DEBUG           ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT})
 set(CMAKE_CXX_FLAGS_RELEASE         ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT})
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT})
 
-if(MSVC)
+if(TLOC_COMPILER_MSVC)
   # VS2010 gives warnings if these options are in the command line
   string(REGEX REPLACE "/Zm1000"  "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
   string(REGEX REPLACE "/GX"      "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
@@ -35,3 +35,11 @@ add_custom_target(tlocVersionTool ALL
   COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tlocVersion 
   DEPENDS tlocVersion
  )
+
+if(TLOC_COMPILER_MSVC)
+  set_target_properties(tlocVersion
+    PROPERTIES
+    LINK_FLAGS_RELEASE "/LTCG"
+    LINK_FLAGS_RELWITHDEBINFO "/LTCG"
+    )
+endif()

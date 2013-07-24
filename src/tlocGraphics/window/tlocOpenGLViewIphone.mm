@@ -39,6 +39,7 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
                                               touch_handle_immediate_type;
 
 - (id)initWithFrame:(CGRect)a_frame
+        screenScale:(CGFloat)a_scale
       retainBacking:(BOOL)a_retained 
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits 
@@ -164,7 +165,8 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
     self.multipleTouchEnabled = YES;
     
     // This mimics the behaviour when creating a window on the Win32 platform.
-    glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
+    glViewport(0, 0, self.bounds.size.width * a_scale,
+               self.bounds.size.height * a_scale);
   }
   return self;
 }

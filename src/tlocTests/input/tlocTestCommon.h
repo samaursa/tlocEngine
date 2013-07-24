@@ -10,6 +10,6 @@
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
 
-extern const char* g_assetPath;
+#include "tlocAssetsPath.h"
 
 #endif

@@ -17,6 +17,8 @@ namespace tloc { namespace math { namespace types {
   template<typename T>
   class Vector3 : public Vector<T, 3>
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
@@ -44,12 +46,11 @@ namespace tloc { namespace math { namespace types {
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    this_type& Cross(const this_type& aVector);
+    this_type Cross(const this_type& aVector) const;
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    void Cross(const this_type& aVector1,
-                     const this_type& aVector2);
+    void Cross(const this_type& aVector1, const this_type& aVector2);
 
     static const Vector3 ZERO;
     static const Vector3 UNIT_X;
@@ -95,7 +96,7 @@ namespace tloc { namespace math { namespace types {
 };};};
 
 #ifdef TLOC_FULL_SOURCE
-#include "tlocVector3.inl"
+#include "tlocVector3.inl.h"
 #endif
 
 #endif

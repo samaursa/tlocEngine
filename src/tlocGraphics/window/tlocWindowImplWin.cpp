@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   // Global variables
 
   const wchar_t g_className[]                                = L"TLOC_Window";
-  WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = NULL;
+  WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = nullptr;
   WINDOW_IMPL_WIN_TYPE::size_type g_currWindowCount          = 0;
 
   //////////////////////////////////////////////////////////////////////////
@@ -31,13 +31,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>::WindowImpl(parent_window_type* a_parent)
     : WindowImplBase(a_parent)
-    , m_handle(NULL)
+    , m_handle(nullptr)
     , m_callbackPtr(0)
-    , m_cursor(NULL)
-    , m_icon(NULL)
+    , m_cursor(nullptr)
+    , m_icon(nullptr)
     , m_isCursorIn(false)
-    , m_deviceContext(NULL)
-    , m_OpenGLContext(NULL)
+    , m_deviceContext(nullptr)
+    , m_OpenGLContext(nullptr)
   {
     TLOC_ASSERT_NOT_NULL(a_parent);
   }
@@ -45,7 +45,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>::~WindowImpl()
   {
     if (m_icon) { DestroyIcon(m_icon); }
-    if (m_callbackPtr == NULL)
+    if (m_callbackPtr == TLOC_NULL)
     {
       if (m_handle) { DestroyWindow(m_handle); }
 
@@ -54,7 +54,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       // If this is the last window...
       if (g_currWindowCount == 0)
       {
-        UnregisterClassW(g_className, GetModuleHandle(NULL));
+        UnregisterClassW(g_className, GetModuleHandle(TLOC_NULL));
       }
     }
     else
@@ -75,10 +75,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // Create a dummy window
     m_handle = CreateWindowW(g_className, L"", WS_POPUP | WS_DISABLED, 0, 0,
-      (INT)props.m_width, (INT)props.m_height, NULL, NULL,
-      GetModuleHandle(NULL), NULL);
+      (INT)props.m_width, (INT)props.m_height, TLOC_NULL, TLOC_NULL,
+      GetModuleHandle(TLOC_NULL), TLOC_NULL);
 
     error = GetLastError();
+    // Possible reasons:
+    // - Too high a resolution
+    // - Incorrect window properties
+    TLOC_ASSERT(error == 0, "Error creating Window");
 
     ShowWindow(m_handle, SW_HIDE);
 
@@ -118,13 +122,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties modeProps = a_mode.GetProperties();
 
     // Center the window to the screen regardless of the given size
-    HDC screenDC     = GetDC(NULL);
-    tl_int left   = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
-    tl_int top    = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
-    tl_size width  = modeProps.m_width;
-    tl_size height = modeProps.m_height;
+    HDC       screenDC = GetDC(TLOC_NULL);
+    tl_int    left		 = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
+    tl_int    top			 = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+    size_type width		 = modeProps.m_width;
+    size_type height	 = modeProps.m_height;
     // LOG: Window resolution greater than screen's resolution
-    ReleaseDC(NULL, screenDC);
+    ReleaseDC(TLOC_NULL, screenDC);
+
+    // If width and height are bigger than screen, warn the user
+    // LOG: This should be a log warning
+    TLOC_ASSERT(width <= GetMaxWidth(), "Screen width not supported");
+    TLOC_ASSERT(height <= GetMaxHeight(), "Screen height not supported");
 
     DWORD win32Style = WS_VISIBLE;
     if (a_style == WindowSettings::style_none)
@@ -145,8 +154,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
     if (fullScreen == false)
     {
-      RECT rect = {0, 0, 
-                   core_utils::CastNumber<LONG, tl_size>(width), 
+      RECT rect = {0, 0,
+                   core_utils::CastNumber<LONG, tl_size>(width),
                    core_utils::CastNumber<LONG, tl_size>(height)};
       AdjustWindowRect(&rect, win32Style, false);
       width = rect.right - rect.left;
@@ -159,10 +168,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
-      (s32)top, (s32)width, (s32)height, NULL, NULL,
-      GetModuleHandle(NULL), this);
+      (s32)top, (s32)width, (s32)height, TLOC_NULL, TLOC_NULL,
+      GetModuleHandle(TLOC_NULL), this);
 
-    if (fullScreen) 
+    if (fullScreen)
     { DoSwitchToFullscreen(a_mode); }
 
     // LOG: Grab log from GetLastError
@@ -193,6 +202,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return GetGraphicsMode().GetProperties().m_height;
   }
 
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxWidth() const
+  {
+    size_type maxWidth  = GetSystemMetrics(SM_CXSCREEN);
+    return maxWidth;
+  }
+
+  WINDOW_IMPL_WIN_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxHeight() const
+  {
+    size_type maxHeight = GetSystemMetrics(SM_CYSCREEN);
+    return maxHeight;
+  }
+
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetActive(bool a_active)
   {
     if (a_active)
@@ -210,7 +233,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       if (wglGetCurrentContext() == m_OpenGLContext)
       {
-        wglMakeCurrent(NULL, NULL);
+        wglMakeCurrent(TLOC_NULL, TLOC_NULL);
       }
       else
       {
@@ -225,7 +248,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     if (!m_callbackPtr)
     {
       MSG msg;
-      while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+      while (PeekMessage(&msg, TLOC_NULL, 0, 0, PM_REMOVE))
       {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
@@ -255,10 +278,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetMouseVisibility(bool a_enable)
   {
-    if (a_enable) { m_cursor = LoadCursor(NULL, IDC_ARROW); }
+    if (a_enable) { m_cursor = LoadCursor(TLOC_NULL, IDC_ARROW); }
     else
     {
-      m_cursor = NULL;
+      m_cursor = TLOC_NULL;
     }
 
     SetCursor(m_cursor);
@@ -266,7 +289,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetPosition(s32 a_x, s32 a_y)
   {
-    SetWindowPos(m_handle, NULL, a_x, a_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+    SetWindowPos(m_handle, TLOC_NULL, a_x, a_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetSize
@@ -283,7 +306,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     a_width  = rect.right - rect.left;
     a_height = rect.bottom - rect.top;
 
-    SetWindowPos(m_handle, NULL, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
+    SetWindowPos(m_handle, TLOC_NULL, 0, 0,
+                 width, height, SWP_NOMOVE | SWP_NOZORDER);
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)
@@ -354,34 +378,39 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
     DoProcessEvent(UINT a_message, WPARAM a_wparam, LPARAM a_lparam)
   {
-    if (m_handle == NULL) { return; }
+    if (m_handle == TLOC_NULL) { return; }
 
     switch (a_message)
     {
     case WM_DESTROY:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::destroy));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::destroy, GetWidth(), GetHeight()));
         DoCleanup();
         break;
       }
     case WM_CLOSE:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::close));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::close, GetWidth(), GetHeight()));
         break;
       }
     case WM_SIZE:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::resized));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::resized, GetWidth(), GetHeight()));
         break;
       }
     case WM_SETFOCUS:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::gained_focus));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::gained_focus, GetWidth(), GetHeight()));
         break;
       }
     case WM_KILLFOCUS:
       {
-        m_parentWindow->SendEvent(WindowEvent(WindowEvent::lost_focus));
+        m_parentWindow->SendEvent(WindowEvent
+          (WindowEvent::lost_focus, GetWidth(), GetHeight()));
         break;
       }
     }
@@ -398,11 +427,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowClass.lpfnWndProc   = &this_type::DoWindowProcedure;
     WindowClass.cbClsExtra    = 0;
     WindowClass.cbWndExtra    = 0;
-    WindowClass.hInstance     = GetModuleHandle(NULL);
-    WindowClass.hIcon         = NULL;
+    WindowClass.hInstance     = GetModuleHandle(TLOC_NULL);
+    WindowClass.hIcon         = TLOC_NULL;
     WindowClass.hCursor       = 0;
     WindowClass.hbrBackground = 0;
-    WindowClass.lpszMenuName  = NULL;
+    WindowClass.lpszMenuName  = TLOC_NULL;
     WindowClass.lpszClassName = g_className;
 
     ATOM result = RegisterClassW(&WindowClass);
@@ -567,8 +596,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // SFML: Restore the previous video mode (in case we are fullscreen)
     if (g_currFullScreenWindow == this)
     {
-      ChangeDisplaySettings(NULL, 0);
-      g_currFullScreenWindow = NULL;
+      ChangeDisplaySettings(TLOC_NULL, 0);
+      g_currFullScreenWindow = TLOC_NULL;
     }
 
     // SFML: Unhide the mouse cursor
@@ -579,13 +608,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       SetActive(false);
       wglDeleteContext(m_OpenGLContext);
-      m_OpenGLContext = NULL;
+      m_OpenGLContext = TLOC_NULL;
     }
 
     if (m_deviceContext)
     {
       ReleaseDC(m_handle, m_deviceContext);
-      m_deviceContext = NULL;
+      m_deviceContext = TLOC_NULL;
     }
   }
 

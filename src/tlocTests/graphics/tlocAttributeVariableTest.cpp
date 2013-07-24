@@ -2,12 +2,35 @@
 
 #include <tlocGraphics/opengl/tlocAttribute.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace TestingAttributeVariable
 {
   using namespace tloc;
   using namespace tloc::graphics;
+
+  TEST_CASE("Graphics/gl/Attribute/copy", "")
+  {
+    using namespace tloc::core_ds;
+    using namespace tloc::core_conts;
+    using namespace tloc::math_t;
+
+    Vec2f32 v(0.0f, 1.0f);
+
+    gl::Attribute a;
+    a.SetValueAs(v);
+
+    {
+      gl::Attribute acopy(a);
+      CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+    }
+
+    {
+      gl::Attribute acopy;
+      acopy = a;
+      CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+    }
+  }
 
   TEST_CASE("Graphics/gl/Attribute", "")
   {

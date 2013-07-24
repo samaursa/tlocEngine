@@ -5,6 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -31,13 +32,14 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem(event_manager_sptr a_eventMgr,
                    entity_manager_sptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr, 
+    virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr, 
+    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr, 
-                               const entity_type* a_ent);
+    virtual void ProcessEntity(const entity_manager* a_mgr,
+                               const entity_type* a_ent,
+                               f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
@@ -45,6 +47,11 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef core_sptr::SharedPtr<MaterialSystem>  material_system_sptr;
 
 };};};
 

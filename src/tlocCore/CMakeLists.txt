@@ -1,25 +1,22 @@
 set(TLOC_ENGINE_CORE
     tlocBase.h
     tloc_core.h
-    tloc_core.inl
+    tloc_core.inl.h
     tloc_core.cpp
     tlocAlgorithms.h
-    tlocAlgorithms.inl
+    tlocAlgorithms.inl.h
     tlocCoreBase.h
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
     tlocFunctional.h
     tlocNoOpt.h
     tlocPair.h
-    tlocPair.inl
-    tlocRange.h
-    tlocRange.inl
-    tlocRange.cpp
+    tlocPair.inl.h
     tlocStaticAssert.h
 )
 set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
-    base_classes/tloc_base_classes.inl
+    base_classes/tloc_base_classes.inl.h
     base_classes/tloc_base_classes.cpp
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
@@ -30,41 +27,41 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
 )
 set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tloc_component_system.h
-    component_system/tloc_component_system.inl
+    component_system/tloc_component_system.inl.h
     component_system/tloc_component_system.cpp
     component_system/tlocComponent.h
-    component_system/tlocComponent.inl
+    component_system/tlocComponent.inl.h
     component_system/tlocComponent.cpp
     component_system/tlocComponentMapper.h
-    component_system/tlocComponentMapper.inl
+    component_system/tlocComponentMapper.inl.h
     component_system/tlocComponentMapper.cpp
     component_system/tlocComponentPoolManager.h
-    component_system/tlocComponentPoolManager.inl
+    component_system/tlocComponentPoolManager.inl.h
     component_system/tlocComponentPoolManager.cpp
     component_system/tlocComponentType.h
-    component_system/tlocComponentType.inl
+    component_system/tlocComponentType.inl.h
     component_system/tlocComponentType.cpp
     component_system/tlocEntity.h
-    component_system/tlocEntity.inl
+    component_system/tlocEntity.inl.h
     component_system/tlocEntity.cpp
     component_system/tlocEntityEvent.h
     component_system/tlocEntityManager.h
-    component_system/tlocEntityManager.inl
+    component_system/tlocEntityManager.inl.h
     component_system/tlocEntityManager.cpp
     component_system/tlocEntityProcessingSystem.h
     component_system/tlocEntityProcessingSystem.cpp
     component_system/tlocEntitySystemBase.h
     component_system/tlocEntitySystemBase.cpp
     component_system/tlocEvent.h
-    component_system/tlocEvent.inl
+    component_system/tlocEvent.inl.h
     component_system/tlocEvent.cpp
     component_system/tlocEventManager.h
-    component_system/tlocEventManager.inl
+    component_system/tlocEventManager.inl.h
     component_system/tlocEventManager.cpp
 )
 set(TLOC_ENGINE_CORE_CONFIGS
     configs/tloc_configs.h
-    configs/tloc_configs.inl
+    configs/tloc_configs.inl.h
     configs/tloc_configs.cpp
     configs/tlocBuildConfig.h
     configs/tlocBuildConfig.cpp
@@ -72,60 +69,60 @@ set(TLOC_ENGINE_CORE_CONFIGS
 )
 set(TLOC_ENGINE_CORE_CONTAINERS
     containers/tloc_containers.h
-    containers/tloc_containers.inl
+    containers/tloc_containers.inl.h
     containers/tloc_containers.cpp
     containers/tlocArray.h
-    containers/tlocArray.inl
+    containers/tlocArray.inl.h
     containers/tlocArray.cpp
     containers/tlocArrayFixed.h
-    containers/tlocArrayFixed.inl
+    containers/tlocArrayFixed.inl.h
     containers/tlocArrayFixed.cpp
     containers/tlocContainers.h
-    containers/tlocContainers.inl
+    containers/tlocContainers.inl.h
     containers/tlocContainerTraits.h
     containers/tlocForwardList.h
-    containers/tlocForwardList.inl
+    containers/tlocForwardList.inl.h
     containers/tlocForwardList.cpp
     containers/tlocHashmap.h
-    containers/tlocHashmap.inl
+    containers/tlocHashmap.inl.h
     containers/tlocHashmap.cpp
     containers/tlocHashtable.h
-    containers/tlocHashtable.inl
+    containers/tlocHashtable.inl.h
     containers/tlocHashtable.cpp
     containers/tlocList.h
-    containers/tlocList.inl
+    containers/tlocList.inl.h
     containers/tlocList.cpp
     containers/tlocQueue.h
-    containers/tlocQueue.inl
+    containers/tlocQueue.inl.h
     containers/tlocQueue.cpp
     containers/tlocStack.h
-    containers/tlocStack.inl
+    containers/tlocStack.inl.h
     containers/tlocStack.cpp
 )
 set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tloc_data_structures.h
-    data_structures/tloc_data_structures.inl
+    data_structures/tloc_data_structures.inl.h
     data_structures/tloc_data_structures.cpp
     data_structures/tlocCharBuffer.h
-    data_structures/tlocCharBuffer.inl
+    data_structures/tlocCharBuffer.inl.h
     data_structures/tlocProtectedBuffer.h
-    data_structures/tlocProtectedBuffer.inl
+    data_structures/tlocProtectedBuffer.inl.h
     data_structures/tlocProtectedBuffer.cpp
     data_structures/tlocTable.h
-    data_structures/tlocTable.inl
+    data_structures/tlocTable.inl.h
     data_structures/tlocTable.cpp
     data_structures/tlocTuple.h
-    data_structures/tlocTuple.inl
+    data_structures/tlocTuple.inl.h
     data_structures/tlocTuple.cpp
     data_structures/tlocTupleExplicitMacros.h
     data_structures/tlocVariadic.h
-    data_structures/tlocVariadic.inl
+    data_structures/tlocVariadic.inl.h
     data_structures/tlocVariadic.cpp
     data_structures/tlocVariadicTypedefMacros.h
 )
 set(TLOC_ENGINE_CORE_ERROR
     error/tloc_error.h
-    error/tloc_error.inl
+    error/tloc_error.inl.h
     error/tloc_error.cpp
     error/tlocError.h
     error/tlocError.cpp
@@ -133,7 +130,7 @@ set(TLOC_ENGINE_CORE_ERROR
 )
 set(TLOC_ENGINE_CORE_IO
     io/tloc_io.h
-    io/tloc_io.inl
+    io/tloc_io.inl.h
     io/tloc_io.cpp
     io/tlocFileIO.h
     io/tlocFileIO.cpp
@@ -142,36 +139,35 @@ set(TLOC_ENGINE_CORE_IO
 )
 set(TLOC_ENGINE_CORE_ITERATORS
     iterators/tloc_iterators.h
-    iterators/tloc_iterators.inl
+    iterators/tloc_iterators.inl.h
     iterators/tloc_iterators.cpp
     iterators/tlocIterator.h
-    iterators/tlocIterator.inl
+    iterators/tlocIterator.inl.h
 )
 set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.h
-    memory/tloc_memory.inl
+    memory/tloc_memory.inl.h
     memory/tloc_memory.cpp
     memory/tlocAllocators.h
-    memory/tlocAllocators.inl
     memory/tlocAllocators.cpp
     memory/tlocBufferArg.h
     memory/tlocBufferArg.cpp
     memory/tlocLinkMe.cpp
     memory/tlocMemory.h
     memory/tlocMemory.cpp
-    memory/tlocMemory.inl
+    memory/tlocMemory.inl.h
     memory/tlocMemoryPool.h
-    memory/tlocMemoryPool.inl
+    memory/tlocMemoryPool.inl.h
     memory/tlocMemoryPoolIndexedWrapper.h
 )
 set(TLOC_ENGINE_CORE_PARSERS
     parsers/tloc_parsers.h
-    parsers/tloc_parsers.inl
+    parsers/tloc_parsers.inl.h
     parsers/tloc_parsers.cpp
 )
 set(TLOC_ENGINE_CORE_PLATFORM
     platform/tloc_platform.h
-    platform/tloc_platform.inl
+    platform/tloc_platform.inl.h
     platform/tloc_platform.cpp
     platform/tlocPlatform.h
     platform/tlocPlatform.cpp
@@ -179,59 +175,59 @@ set(TLOC_ENGINE_CORE_PLATFORM
 )
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h
-    rng/tloc_rng.inl
+    rng/tloc_rng.inl.h
     rng/tloc_rng.cpp
     rng/tlocRandom.h
     rng/tlocRandom.cpp
     rng/tlocRngWell512.h
-    rng/tlocRngWell512.inl
+    rng/tlocRngWell512.inl.h
     rng/tlocRngWell512.cpp
 )
 set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tloc_smart_ptr.h
-    smart_ptr/tloc_smart_ptr.inl
+    smart_ptr/tloc_smart_ptr.inl.h
     smart_ptr/tloc_smart_ptr.cpp
     smart_ptr/tlocSharedPtr.h
-    smart_ptr/tlocSharedPtr.inl
+    smart_ptr/tlocSharedPtr.inl.h
     smart_ptr/tlocSmartPtr.h
-    smart_ptr/tlocSmartPtr.inl
+    smart_ptr/tlocSmartPtr.inl.h
     smart_ptr/tlocSmartPtrTracker.h
     smart_ptr/tlocSmartPtrTracker.cpp
     smart_ptr/tlocUniquePtr.h
-    smart_ptr/tlocUniquePtr.inl
+    smart_ptr/tlocUniquePtr.inl.h
 )
 set(TLOC_ENGINE_CORE_STRING
     string/tloc_string.h
-    string/tloc_string.inl
+    string/tloc_string.inl.h
     string/tloc_string.cpp
     string/tlocString.h
-    string/tlocString.inl
+    string/tlocString.inl.h
     string/tlocString.cpp
 )
 set(TLOC_ENGINE_CORE_TIME
     time/tloc_time.h
-    time/tloc_time.inl
+    time/tloc_time.inl.h
     time/tloc_time.cpp
     time/tlocTime.h
-    time/tlocTime.inl
+    time/tlocTime.inl.h
     time/tlocTime.cpp
 )
 set(TLOC_ENGINE_CORE_TYPES
     types/tloc_types.h
-    types/tloc_types.inl
+    types/tloc_types.inl.h
     types/tloc_types.cpp
     types/tlocAny.h
-    types/tlocAny.inl
+    types/tlocAny.inl.h
     types/tlocAny.cpp
     types/tlocBasicTypes.h
     types/tlocBasicTypes.cpp
     types/tlocNullptr.h
     types/tlocNullptr.cpp
     types/tlocConditionalType.h
-    types/tlocConditionalType.inl
+    types/tlocConditionalType.inl.h
     types/tlocConditionalType.cpp
     types/tlocStrongType.h
-    types/tlocStrongType.inl
+    types/tlocStrongType.inl.h
     types/tlocStrongType.cpp
     types/tlocStrongTypeExplicitMacros.h
     types/tlocTemplateParams.h
@@ -240,14 +236,14 @@ set(TLOC_ENGINE_CORE_TYPES
     types/tlocTemplateTypesNxM.helper.h
     types/tlocTemplateTypesNxN.h
     types/tlocTypes.h
-    types/tlocTypes.inl
+    types/tlocTypes.inl.h
     types/tlocTypes.cpp
     types/tlocTypeTraits.h
     types/tlocTypeTraitsCommonType.h
 )
 set(TLOC_ENGINE_CORE_UTILITIES
     utilities/tloc_utilities.h
-    utilities/tloc_utilities.inl
+    utilities/tloc_utilities.inl.h
     utilities/tloc_utilities.cpp
     utilities/tlocCheckpoints.h
     utilities/tlocCheckpoints.cpp

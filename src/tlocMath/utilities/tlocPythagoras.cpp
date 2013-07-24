@@ -1,9 +1,8 @@
 #include "tlocPythagoras.h"
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocMath/tlocMath.h>
-#include <tlocMath/tlocMath.inl>
-#include <cmath>
+#include <tlocMath/tlocMath.inl.h>
 
 namespace tloc { namespace math { namespace utils {
 

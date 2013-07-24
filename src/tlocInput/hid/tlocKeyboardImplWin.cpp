@@ -1,8 +1,10 @@
 #include "tlocKeyboardImplWin.h"
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
+
+  //------------------------------------------------------------------------
 
 #define KEYBOARD_IMPL_TEMP    typename T_ParentKeyboard
 #define KEYBOARD_IMPL_PARAMS  T_ParentKeyboard
@@ -149,7 +151,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                  const keyboard_param_type& a_params)
     : KeyboardImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
-    , m_keyboard(NULL)
+    , m_keyboard(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
   {
     DoInitialize();
@@ -162,7 +164,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_keyboard->Unacquire();
       m_keyboard->Release();
-      m_keyboard = NULL;
+      m_keyboard = TLOC_NULL;
     }
   }
 
@@ -194,7 +196,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::DoInitialize()
   {
-    if (FAILED(m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL)))
+    if (FAILED(m_directInput->
+      CreateDevice(GUID_SysKeyboard, &m_keyboard, TLOC_NULL)))
     {
       // LOG: Keyboard failed to initialize
       TLOC_ASSERT(false, "Keyboard failed to initialize!");
@@ -209,25 +212,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
 
     DWORD coop = 0;
-    // Default parameters or...?
-    if (m_params.m_param3 == 0)
-    {
-      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-      //coop = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
-    }
-    else
-    {
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_BACKGROUND)
-      { coop = DISCL_BACKGROUND; }
-      else { coop = DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
-      { coop |= DISCL_NONEXCLUSIVE; }
-      else { coop = DISCL_EXCLUSIVE; } // default
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    { coop |= DISCL_BACKGROUND; }
+    else { coop |= DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NOWINKEY)
-      { coop |= DISCL_NOWINKEY; }
-    }
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    { coop |= DISCL_NONEXCLUSIVE; }
+    else { coop |= DISCL_EXCLUSIVE; } // default
+
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))
     {
@@ -275,7 +270,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     HRESULT hRes;
 
     hRes = m_keyboard->
-      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
     {
       // Try one more time
@@ -287,7 +282,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       else
       {
         hRes = m_keyboard->
-          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
         if (hRes != DI_OK)
         {
           // we don't have the keyboard, return

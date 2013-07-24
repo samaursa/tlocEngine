@@ -67,5 +67,34 @@ namespace TestingTransform
 
     bool isEqual = answer.ConvertTo<Vec3f32>() == answerToCheck;
     CHECK( isEqual );
+
+    // Position is 1, 2, 5 with the above +=
+    tf32 tInv = t.Invert();
+    Mat4f32 tInvTrans = tInv.GetTransformation();
+    CHECK_MATRIX4F(tInvTrans,
+      1.0f,  0.0f       ,  0.0f       , 0.0f,
+      0.0f, -0.44807363f, -0.89399666f, 0.0f,
+      0.0f,  0.89399666f, -0.44807363f, 0.0f,
+     -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
+
+    t = t.Invert();
+    tInvTrans = t.GetTransformation();
+    CHECK_MATRIX4F(tInvTrans,
+      1.0f,  0.0f       ,  0.0f       , 0.0f,
+      0.0f, -0.44807363f, -0.89399666f, 0.0f,
+      0.0f,  0.89399666f, -0.44807363f, 0.0f,
+     -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
+
+    // testing scale
+    Vec3f32 scale(2.0f, 2.0f, 2.0f);
+
+    ori = t.GetOrientation();
+    Mat3f32 scaleMat(0);
+    scaleMat.MakeDiagonal(scale);
+    ori = ori * scaleMat;
+
+    t.SetScale(scale);
+
+    CHECK( (t.GetOrientation() == ori) );
   }
 };

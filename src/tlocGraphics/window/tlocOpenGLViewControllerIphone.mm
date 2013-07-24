@@ -71,8 +71,12 @@
   [view setFrame:uiwindow.bounds];
   [view UpdateRenderBufferDimensions];
   
-  self->windowImpl->GetParentWindowHandle()
-    ->SendEvent(tloc::graphics::win::WindowEvent::resized);
+  tloc::graphics::win::WindowEvent evt
+    (tloc::graphics::win::WindowEvent::resized,
+     self->windowImpl->GetParentWindowHandle()->GetWidth(),
+     self->windowImpl->GetParentWindowHandle()->GetHeight());
+  
+  self->windowImpl->GetParentWindowHandle()->SendEvent(evt);
 }
 
 @end

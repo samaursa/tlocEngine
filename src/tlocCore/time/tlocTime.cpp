@@ -1,5 +1,5 @@
 #include "tlocTime.h"
-#include "tlocTime.inl"
+#include "tlocTime.inl.h"
 
 namespace tloc { namespace core { namespace time {
 

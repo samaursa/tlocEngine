@@ -1,8 +1,8 @@
 #include "tlocMouse.h"
 
-#include <tlocCore/types/tlocTypes.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
-#include <tlocCore/tlocRange.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocMath/tlocRange.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes

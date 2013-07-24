@@ -2,6 +2,8 @@
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
+  //------------------------------------------------------------------------
+
 #define MOUSE_IMPL_TEMP    typename T_ParentMouse
 #define MOUSE_IMPL_PARAMS  T_ParentMouse
 #define MOUSE_IMPL_TYPE    typename MouseImpl<MOUSE_IMPL_PARAMS>
@@ -37,7 +39,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     const mouse_param_type& a_params)
     : MouseImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
-    , m_mouse(NULL)
+    , m_mouse(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
     , m_currentState(MouseEvent::none)
   {
@@ -51,7 +53,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_mouse->Unacquire();
       m_mouse->Release();
-      m_mouse = NULL;
+      m_mouse = TLOC_NULL;
     }
   }
 
@@ -82,7 +84,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoInitialize()
   {
-    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL)))
+    if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, TLOC_NULL)))
     {
       // LOG: Mouse failed to initialize
       TLOC_ASSERT(false, "Unable to initialize the mouse");
@@ -97,24 +99,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
 
     DWORD coop = 0;
-    // Default parameters or...?
-    if (m_params.m_param3 == parameter_options::TL_DEFAULT)
-    {
-      coop = DISCL_FOREGROUND | DISCL_EXCLUSIVE;
-    }
-    else
-    {
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_BACKGROUND)
-      { coop = DISCL_BACKGROUND; }
-      else { coop = DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
-      { coop |= DISCL_NONEXCLUSIVE; }
-      else { coop = DISCL_EXCLUSIVE; } // default
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    { coop |= DISCL_BACKGROUND; }
+    else { coop |= DISCL_FOREGROUND; } // default
 
-      if (m_params.m_param3 & parameter_options::TL_WIN_DISCL_NOWINKEY)
-      { coop |= DISCL_NOWINKEY; }
-    }
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    { coop |= DISCL_NONEXCLUSIVE; }
+    else { coop |= DISCL_EXCLUSIVE; } // default
+
+    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))
     {
@@ -176,7 +171,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     HRESULT hRes;
 
     hRes = m_mouse->
-      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+      GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
     {
       // Try one more time
@@ -188,7 +183,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       else
       {
         hRes = m_mouse->
-          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, NULL);
+          GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
         if (hRes != DI_OK)
         {
           // we don't have the mouse, return
@@ -252,7 +247,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (axesUpdated)
     {
       // Going with OIS's suggestion here
-      if (m_params.m_param3 == parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
+      if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
       {
         POINT point;
         GetCursorPos(&point);
@@ -268,7 +263,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
       // Clamp the values
-      if (m_parent->GetClamped())
+      if (m_parent->IsClamped())
       { m_parent->Clamp(m_currentState); }
 
       m_parent->SendOnMouseMove(m_currentState);
@@ -297,7 +292,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_Z.m_rel() = m_mouseBuffer.lZ;
 
     // Going with OIS's suggestion here
-    if (m_params.m_param3 == parameter_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    if (m_params.m_param3 == param_options::TL_WIN_DISCL_NONEXCLUSIVE)
     {
       POINT point;
       GetCursorPos(&point);
@@ -330,7 +325,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode |= MouseEvent::button8;
 
     // Clamp the values
-    if (m_parent->GetClamped())
+    if (m_parent->IsClamped())
     { m_parent->Clamp(m_currentState); }
   }
 

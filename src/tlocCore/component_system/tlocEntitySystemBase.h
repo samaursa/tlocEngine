@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -53,7 +54,7 @@ namespace tloc { namespace core { namespace component_system {
     /// Process the active entities. The entities are not processed if
     /// CheckProcessing returns 0.
     ///-------------------------------------------------------------------------
-    void ProcessActiveEntities();
+    void ProcessActiveEntities(f64 a_deltaT = 0);
 
   protected:
 
@@ -111,18 +112,19 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called before processing entities
     ///-------------------------------------------------------------------------
-    virtual void Pre_ProcessActiveEntities() = 0;
+    virtual void Pre_ProcessActiveEntities(f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
     virtual void DoProcessActiveEntities(const entity_manager* a_mgr,
-                                         const entity_ptr_array& a_entities) = 0;
+                                         const entity_ptr_array& a_entities,
+                                         f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
     ///-------------------------------------------------------------------------
-    virtual void Post_ProcessActiveEntities() = 0;
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT) = 0;
 
     virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
     virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
@@ -149,6 +151,9 @@ namespace tloc { namespace core { namespace component_system {
     event_manager_sptr    m_eventMgr;
     entity_manager_sptr   m_entityMgr;
 
+    core_utils::Checkpoints m_flags;
+    static const tl_int     s_flagCount;
+
   };
 
   //------------------------------------------------------------------------
@@ -162,6 +167,7 @@ namespace tloc { namespace core { namespace component_system {
                       Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
+    , m_flags(s_flagCount)
   {
     TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
     TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,

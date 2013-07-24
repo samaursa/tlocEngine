@@ -4,12 +4,13 @@
 #include <tlocInput/tlocInputBase.h>
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/tlocRange.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocMath/tlocRange.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
@@ -120,7 +121,7 @@ namespace tloc { namespace input { namespace hid {
     typedef T_Policy                                    policy_type;
     typedef MouseEvent                                  event_type;
     typedef event_type::axis_type::abs_type::value_type abs_value_type;
-    typedef core::Range_T<abs_value_type>               abs_range_type;
+    typedef math::Range_T<abs_value_type>               abs_range_type;
     typedef event_type::axis_type::rel_type             rel_value_type;
     typedef event_type::button_code_type                button_code_type;
 
@@ -148,7 +149,7 @@ namespace tloc { namespace input { namespace hid {
     void Update();
     void Reset();
 
-    TLOC_DECL_AND_DEF_GETTER(bool, GetClamped, m_clamped);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsClamped, m_clamped);
     TLOC_DECL_AND_DEF_SETTER(bool, SetClamped, m_clamped);
 
     TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampX, m_clampX);

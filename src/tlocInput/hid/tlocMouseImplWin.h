@@ -18,7 +18,7 @@
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
+  typedef ParamList<HWND, IDirectInput8*, param_options::value_type>
     windows_mouse_param_type;
 
 };};

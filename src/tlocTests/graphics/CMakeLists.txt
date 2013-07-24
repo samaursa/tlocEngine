@@ -1,27 +1,28 @@
 set(TLOC_TESTS_GRAPHICS
   main.cpp
+  tlocTestCommon.h
   tlocAttributeVariableTest.cpp
   tlocColorTest.cpp
-  tlocFOVTest.cpp
-  tlocFrustumTest.cpp
   tlocGLGeneralTest.cpp
   tlocGLObjectTest.cpp
   tlocGraphicsModesTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
+  tlocObjLoaderTest.cpp
   tlocShaderComponentTest.cpp
   tlocShaderOperatorTest.cpp
   tlocShaderProgramTest.cpp
+  tlocSpriteLoaderTest.cpp
   tlocTestCommon.cpp
-  tlocTestCommon.h
+  tlocTextureCoordsTest.cpp
   tlocUniformVariableTest.cpp
   tlocVertexTest.cpp
   tlocWindowTest.cpp
   )
 
 set(TLOC_TESTS_GRAPHICS_ASSETS
-    ${TLOC_PATH}/assets
-   )
+  ${TLOC_ENGINE_PATH}/assets
+  )
 
 #-------------------------------------------
 # Project setup
@@ -60,7 +61,7 @@ if(APPLE)
   set(PRODUCT_NAME    "\${PRODUCT_NAME}")
   set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
   set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
-			MACOSX_BUNDLE_INFO_PLIST ${TLOC_PATH}/platform/iOS/tlocEngine.plist)
+    MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
   set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES
                         RESOURCE "${TLOC_TESTS_GRAPHICS_ASSETS}")
 endif()

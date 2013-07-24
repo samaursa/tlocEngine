@@ -7,7 +7,7 @@ set(TLOC_INPUT
   tlocInputTypes.h 
   tloc_input.cpp 
   tloc_input.h 
-  tloc_input.inl
+  tloc_input.inl.h
   )
 
 set(TLOC_INPUT_HID 
@@ -27,7 +27,7 @@ set(TLOC_INPUT_HID
   hid/tlocTouchSurfaceImpl.h 
   hid/tloc_hid.cpp 
   hid/tloc_hid.h 
-  hid/tloc_hid.inl
+  hid/tloc_hid.inl.h
   )
 
 #-------------------------------------------
@@ -78,6 +78,12 @@ endif()
 add_library(tlocInput STATIC
   ${TLOC_INPUT}
   ${TLOC_INPUT_HID}
+  )
+
+add_dependencies(tlocInput
+  tlocCore
+  tlocGraphics
+  tlocMath
   )
 
 # Filters to organize the source files

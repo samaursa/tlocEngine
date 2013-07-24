@@ -21,6 +21,7 @@
 ///                       A stencil buffer will not be created if 0.
 ///-------------------------------------------------------------------------
 - (id)initWithFrame:(CGRect)a_frame
+        screenScale:(CGFloat)a_scale
       retainBacking:(BOOL)a_retained
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits

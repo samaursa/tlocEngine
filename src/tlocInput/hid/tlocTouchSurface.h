@@ -135,7 +135,7 @@ namespace tloc { namespace input { namespace hid {
     typedef priv::TouchSurfaceImpl<this_type> impl_type;
     typedef core::smart_ptr::UniquePtr<impl_type> impl_ptr_type;
 
-    impl_type*  m_impl;
+    impl_ptr_type  m_impl;
   };
 
   typedef TouchSurface<InputPolicy::Buffered>   TouchSurfaceB;

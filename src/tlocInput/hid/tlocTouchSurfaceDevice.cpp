@@ -121,9 +121,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoPushBackBufferedElement(bufferedElem);
 
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
-
-    DoEraseTouch(itr);
+    if (itr != GetCurrentTouches().end())
+    {
+      DoEraseTouch(itr);
+    }
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -135,10 +136,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoPushBackBufferedElement(bufferedElem);
 
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
-
-    (*itr).m_X.m_abs() = a_x;
-    (*itr).m_Y.m_abs() = a_y;
+    if (itr != GetCurrentTouches().end())
+    {
+      (*itr).m_X.m_abs() = a_x;
+      (*itr).m_Y.m_abs() = a_y;
+    }
   }
 
   void TouchSurfaceDeviceBuffered::

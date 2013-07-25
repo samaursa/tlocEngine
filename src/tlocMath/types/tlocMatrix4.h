@@ -103,6 +103,23 @@ namespace tloc { namespace math { namespace types {
     this_type DoInvert(p_matrix4::Affine) const;
   };
 
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T>
+  template <typename T_InverseType>
+  typename Matrix4<T>::this_type
+    Matrix4<T>::Invert() const
+  {
+    type_traits::AssertTypeIsSupported
+      <T_InverseType, p_matrix4::Affine, p_matrix4::NonAffine>();
+
+    return DoInvert(T_InverseType());
+  }
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Matrix4<f32>  Mat4f32;
   typedef Matrix4<f64>  Mat4f64;
   typedef Matrix4<f128> Mat4f128;

@@ -97,7 +97,8 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  void Transform_T<TRANSFORM_PARAMS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
     ::SetPosition(const position_type& a_pos)
   {
     this->SetUpdateRequired(true);
@@ -107,7 +108,8 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  void Transform_T<TRANSFORM_PARAMS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
     ::SetOrientation(const orientation_type& a_ori)
   {
     this->SetUpdateRequired(true);
@@ -125,7 +127,8 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  TRANSFORM_TYPE::this_type Transform_T<TRANSFORM_PARAMS>
+  TRANSFORM_TYPE::this_type
+    Transform_T<TRANSFORM_PARAMS>
     ::Invert() const
   {
     // from: http://stackoverflow.com/a/2625420/368599

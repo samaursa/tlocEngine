@@ -314,7 +314,7 @@ namespace tloc { namespace math { namespace types {
     DoInvert(p_matrix4::Affine) const
   {
     // from: http://stackoverflow.com/a/2625420/368599
-    //adj(A) = [ adj(M)   -adj(M) * b ]
+    //adj(A) = [ inv(M)   -inv(M) * b ]
     //         [   0            1     ]
 
     this_type toRet(*this);
@@ -326,7 +326,7 @@ namespace tloc { namespace math { namespace types {
     Vector3<value_type>  vectorPart(toRet[12], toRet[13], toRet[14]);
 
     orientationPart = orientationPart.Inverse();
-    vectorPart      = vectorPart.Inverse();
+    vectorPart      = orientationPart * vectorPart.Inverse();
 
     toRet[0] = orientationPart[0];
     toRet[1] = orientationPart[1];

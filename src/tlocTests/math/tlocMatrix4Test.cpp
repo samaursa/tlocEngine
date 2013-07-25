@@ -113,5 +113,30 @@ namespace TestingMatrix4
     c = a.Invert();
 
     CHECK( (c == b * detInv) );
+
+    Vec4f row1Norm(a[0], a[4], a[8], a[12]);
+    Vec4f row2Norm(a[1], a[5], a[9], a[13]);
+    Vec4f row3Norm(a[2], a[6], a[10], a[14]);
+    Vec4f row4Norm(0, 0, 0, 1);
+
+    row1Norm.Normalize();
+    row2Norm.Normalize();
+    row3Norm.Normalize();
+
+    a.SetRow(0, row1Norm);
+    a.SetRow(1, row2Norm);
+    a.SetRow(2, row3Norm);
+    a.SetRow(3, row4Norm);
+
+    detInv = 1.0f / a.Determinant();
+
+    b = a.Invert();
+    c = a.Invert<math_t::p_matrix4::Affine>();
+
+    CHECK_MATRIX4F(b,
+      c[0], c[1], c[2], c[3],
+      c[4], c[5], c[6], c[7],
+      c[8], c[9], c[10], c[11],
+      c[12], c[13], c[14], c[15]);
   }
 };

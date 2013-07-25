@@ -139,6 +139,8 @@ namespace tloc { namespace math { namespace types {
   bool Circle_T<TLOC_CIRCLE_PARAMS>::
     Intersects(const this_type& a_other) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
     displacement = displacement.Sub(a_other.m_position);

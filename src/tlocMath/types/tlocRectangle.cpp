@@ -278,6 +278,8 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Intersects(const this_type& a_other, this_type& a_overlapOut) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     using namespace core;
 
     left    overL(tlMax(GetValue<left>()  , a_other.GetValue<left>()));
@@ -300,6 +302,8 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Intersects(const ray_2d_type& a_ray) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     const point_type& rayOrigin = a_ray.GetOrigin();
 
     // Since we are a 2D box, we assume our direction is +Z
@@ -322,6 +326,8 @@ namespace tloc { namespace math { namespace types {
     Intersects(const ray_3d_type& a_ray, from_origin a_fo,
                double_sided a_ds) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     // following http://geomalgorithms.com/a05-_intersect-1.html
 
     typedef typename ray_3d_type::vec_type           vec_type;

@@ -425,6 +425,8 @@ namespace tloc { namespace math { namespace types {
     Cuboid_T<CUBOID_PARAMS>::
     Intersects(const ray_3d_type& a_ray, from_origin a_fo) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     // using the method: http://people.csail.mit.edu/amy/papers/box-jgt.pdf
 
     typedef typename ray_3d_type::vec_type             vec3_type;

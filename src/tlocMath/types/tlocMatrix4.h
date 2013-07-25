@@ -9,6 +9,20 @@
 
 namespace tloc { namespace math { namespace types {
 
+  namespace p_matrix4
+  {
+    struct NonAffine{};
+    // i.e. the matrix is an actual transformation matrix
+    struct Affine{};
+  };
+
+  // Matrix indices (columns are vertical)
+  //
+  // 0   4   8    12
+  // 1   5   9    13
+  // 2   6   10   14
+  // 3   7   11   15
+
   template <typename T>
   class Matrix4 : public Matrix<T, 4>
   {
@@ -72,6 +86,21 @@ namespace tloc { namespace math { namespace types {
     Matrix4(const core::data_structs::
             Variadic<value_type, k_MatrixSize>& a_vars,
             matrix_order a_order);
+
+    this_type Adjoint() const;
+
+    // Non-affine inverse assumed. Slower than affine inverse.
+    this_type Invert() const;
+
+    // Affine: faster, but incorrect results for non-affine matrices
+    template <typename T_InverseType>
+    this_type Invert() const;
+
+    value_type Determinant() const;
+
+  private:
+    this_type DoInvert(p_matrix4::NonAffine) const;
+    this_type DoInvert(p_matrix4::Affine) const;
   };
 
   typedef Matrix4<f32>  Mat4f32;

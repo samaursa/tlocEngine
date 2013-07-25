@@ -91,4 +91,27 @@ namespace TestingMatrix4
                       10.0f, 10.0f, 10.0f, 10.0f,
                       10.0f, 10.0f, 10.0f, 10.0f);
   }
+
+  TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/Inverse and determinant", "")
+  {
+    a = Mat4f(4, 7, 1, 2,
+              3, 6, 8, 9,
+              6, 7, 5, 2,
+              3, 8, 9, 0);
+
+    CHECK(a.Determinant() == Approx(-1378.0f));
+
+    Mat4f::value_type detInv = 1.0f / a.Determinant();
+
+    b = a.Adjoint();
+    CHECK_MATRIX4F(b,
+      227.0f  , -345.0f ,  231.0f  , -51.0f,
+      64.0f   ,  12.0f  , -32.0f   , -154.0f,
+      -515.0f ,  291.0f , -87.0f   ,  55.0f,
+      204.0f  , -134.0f , -102.0f  ,  112.0f);
+
+    c = a.Invert();
+
+    CHECK( (c == b * detInv) );
+  }
 };

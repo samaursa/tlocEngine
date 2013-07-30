@@ -22,13 +22,8 @@ namespace TestingCuboid
 
   TEST_CASE("Graphics/types/Cuboid", "")
   {
-    SECTION("Basics", "")
+    TL_NESTED_FUNC_BEGIN(testBasics) void testBasics(Cuboidf& c)
     {
-      // NOTE: The cube always ends up centered at the origin
-      Cuboidf c(Cuboidf::left(-1), Cuboidf::right(1),
-                Cuboidf::top(1.5), Cuboidf::bottom(-1),
-                Cuboidf::front(2), Cuboidf::back(-1));
-
       CHECK(c.IsValid());
       CHECK(c.GetWidth() == Approx(2.0f));
       CHECK(c.GetHeight() == Approx(2.5f));
@@ -69,6 +64,28 @@ namespace TestingCuboid
       CHECK_VEC3F(c.GetCoord_TopRightBack(), 1.0f, 1.5f, -1.0f);
       CHECK_VEC3F(c.GetCoord_BottomLeftBack(), -1.0f, -1.0f, -1.0f);
       CHECK_VEC3F(c.GetCoord_BottomRightBack(), 1.0f, -1.0f, -1.0f);
+    }
+    TL_NESTED_FUNC_END();
+
+    SECTION("Basics", "")
+    {
+      Cuboidf c(Cuboidf::left(-1), Cuboidf::right(1),
+                Cuboidf::top(1.5), Cuboidf::bottom(-1),
+                Cuboidf::front(2), Cuboidf::back(-1));
+
+      TL_NESTED_CALL(testBasics)(c);
+
+      // same as above, this time with vector extents
+      c = Cuboidf(Cuboidf::point_type(-1, -1, -1),
+                  Cuboidf::point_type(1.0f, 1.5f, 2.0f));
+
+      TL_NESTED_CALL(testBasics)(c);
+
+      // same as above, this time with extents and position
+      c = Cuboidf(Cuboidf::width(2.0f), Cuboidf::height(2.5f), Cuboidf::depth(3.0f));
+      c.SetPosition(Cuboidf::point_type(0.0f, 0.25f, 0.5f));
+
+      TL_NESTED_CALL(testBasics)(c);
 
       c = Cuboidf();
       CHECK_FALSE(c.IsValid());

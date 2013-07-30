@@ -180,6 +180,19 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
+  Cuboid_T<CUBOID_PARAMS>::
+    Cuboid_T(const point_type& a_start, const point_type& a_end)
+    : m_dimensions( (a_end[0] - a_start[0]),
+                    (a_end[1] - a_start[1]),
+                    (a_end[2] - a_start[2]) )
+    , m_position( (a_start[0] + a_end[0]) * 0.5f,
+                  (a_start[1] + a_end[1]) * 0.5f,
+                  (a_start[2] + a_end[2]) * 0.5f )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
   CUBOID_TYPE::this_type&
     Cuboid_T<CUBOID_PARAMS>::
     operator=(const this_type& a_other)

@@ -51,6 +51,7 @@ namespace tloc { namespace math { namespace types {
              position a_pos = position(point_type(0)) );
     Cuboid_T(left a_l, right a_r, top a_t, bottom a_b, front a_fr, back a_ba);
     Cuboid_T(const point_type& a_start, const point_type& a_end);
+    Cuboid_T(const this_type& a_other);
 
     template <typename T_Real>
     Cuboid_T(const Cuboid_T<T_Real>& a_cuboid);

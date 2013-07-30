@@ -87,6 +87,15 @@ namespace TestingCuboid
 
       TL_NESTED_CALL(testBasics)(c);
 
+      Cuboidf cCopy(c);
+      CHECK(c.GetPosition() == cCopy.GetPosition());
+
+      Cuboidf cSwap(Cuboidf::point_type(0, 0, 0),
+                    Cuboidf::point_type(1, 1, 1));
+      cSwap.swap(c);
+      CHECK_VEC3F(cSwap.GetPosition(), 0.0f, 0.25f, 0.5f);
+      CHECK_VEC3F(c.GetPosition(), 0.5f, 0.5f, 0.5f);
+
       c = Cuboidf();
       CHECK_FALSE(c.IsValid());
     }

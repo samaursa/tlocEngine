@@ -193,6 +193,15 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <CUBOID_TEMP>
+  Cuboid_T<CUBOID_PARAMS>::
+    Cuboid_T(const this_type& a_other)
+    : m_dimensions(a_other.m_dimensions)
+    , m_position(a_other.m_position)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <CUBOID_TEMP>
   CUBOID_TYPE::this_type&
     Cuboid_T<CUBOID_PARAMS>::
     operator=(const this_type& a_other)
@@ -213,6 +222,7 @@ namespace tloc { namespace math { namespace types {
     using core::swap;
 
     swap(m_dimensions, a_cuboid.m_dimensions);
+    swap(m_position, a_cuboid.m_position);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -446,7 +456,7 @@ namespace tloc { namespace math { namespace types {
 
     real_type tmin, tmax, tymin, tymax, tzmin, tzmax;
 
-    const vec3_type& rayOrig = a_ray.GetOrigin();
+    const vec3_type& rayOrig = a_ray.GetOrigin() + m_position.Inverse();
     const vec3_type& rayDir  = a_ray.GetDirection();
     const vec3_type  rayDirInv( core_ds::Variadic<real_type, 3>
       (1.0f / rayDir[0], 1.0f / rayDir[1], 1.0f / rayDir[2]) );

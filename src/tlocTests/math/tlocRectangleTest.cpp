@@ -46,6 +46,15 @@ namespace TestingRectangle
     CHECK(r.GetValue<Rectf::top>()    == Approx(1.0f));
     CHECK(r.GetValue<Rectf::bottom>() == Approx(0.0f));
 
+    r = Rectf(Rectf::point_type(1.0f, 2.0f),
+              Rectf::point_type(2.0f, 4.0f));
+    CHECK(r.GetWidth() == 1.0f);
+    CHECK(r.GetHeight() == 2.0f);
+    CHECK(r.GetValue<Rectf::left>()   == Approx(1.0f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(2.0f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(4.0f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(2.0f));
+
     r = Rectf();
     CHECK(r.GetValue<Rectf::left>()    == 0);
     CHECK(r.GetValue<Rectf::right>()   == 0);

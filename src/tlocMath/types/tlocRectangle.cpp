@@ -107,6 +107,15 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
+  Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    Rectangle_T(const point_type& a_start, const point_type& a_end)
+    : m_dimensions( (a_end[0] - a_start[0]), (a_end[1] - a_start[1]) )
+    , m_position( (a_end[0] + a_start[0]) * 0.5f, (a_end[1] + a_start[1]) * 0.5f )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::this_type&
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     operator= (const this_type& a_other)

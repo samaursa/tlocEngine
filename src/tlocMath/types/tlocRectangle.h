@@ -48,6 +48,7 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T(width a_w, height a_h,
                 position a_pos = position(point_type(0)) );
     Rectangle_T(left a_l, right a_r, top a_t, bottom a_b);
+    Rectangle_T(const point_type& a_start, const point_type& a_end);
 
     template <typename T_Real>
     Rectangle_T(const Rectangle_T<T_Real>& a_other);

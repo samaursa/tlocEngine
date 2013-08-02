@@ -7,6 +7,7 @@
 #include <tlocPrefab/graphics/tlocCamera.h>
 #include <tlocPrefab/graphics/tlocCuboid.h>
 #include <tlocPrefab/graphics/tlocFan.h>
+#include <tlocPrefab/graphics/tlocMaterial.h>
 #include <tlocPrefab/graphics/tlocMesh.h>
 #include <tlocPrefab/graphics/tlocQuad.h>
 #include <tlocPrefab/graphics/tlocSprite.h>

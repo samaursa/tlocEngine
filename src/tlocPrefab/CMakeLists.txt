@@ -20,6 +20,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCuboid.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
+  graphics/tlocMaterial.h
+  graphics/tlocMaterial.cpp
   graphics/tlocMesh.h
   graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 

@@ -23,7 +23,9 @@ namespace tloc { namespace prefab { namespace graphics {
                            SpriteLoaderIterator a_end,
                            bool a_loop,
                            tl_size a_fps,
-                           bool a_append);
+                           bool a_append,
+                           tl_size a_startingFrame,
+                           bool a_paused);
 
   };
 
@@ -32,6 +34,7 @@ namespace tloc { namespace prefab { namespace graphics {
   {
   public:
     typedef SpriteAnimation       this_type;
+    typedef tl_size               size_type;
 
   public:
     SpriteAnimation(core_cs::EntityManager*  a_entMgr,
@@ -40,6 +43,8 @@ namespace tloc { namespace prefab { namespace graphics {
                     , m_loop(true)
                     , m_fps(24)
                     , m_append(true)
+                    , m_startingFrame(0)
+                    , m_paused(false)
     { }
 
     template <typename SpriteLoaderIterator>
@@ -57,7 +62,8 @@ namespace tloc { namespace prefab { namespace graphics {
         SpriteLoader_SpriteSheetPacker::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, m_loop, m_fps, m_append);
+                                 a_begin, a_end, m_loop, m_fps, m_append,
+                                 m_startingFrame, m_paused);
     }
 
     template <typename T_ContOfSpriteLoaderItrBeginEndPair>
@@ -74,7 +80,6 @@ namespace tloc { namespace prefab { namespace graphics {
       typedef typename pair_type::second_type               pair_type_second;
 
       typedef typename cont_type::iterator                  itr_type;
-
 
       type_traits::AssertTypeIsSupported
         <pair_type_first,
@@ -99,9 +104,11 @@ namespace tloc { namespace prefab { namespace graphics {
       }
     }
 
-    TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
-    TLOC_DECL_PARAM_VAR(tl_size, Fps, m_fps);
-    TLOC_DECL_PARAM_VAR(bool, Append, m_append);
+    TLOC_DECL_PARAM_VAR(bool,       Loop, m_loop);
+    TLOC_DECL_PARAM_VAR(tl_size,    Fps, m_fps);
+    TLOC_DECL_PARAM_VAR(bool,       Append, m_append);
+    TLOC_DECL_PARAM_VAR(size_type,  StartingFrame, m_startingFrame);
+    TLOC_DECL_PARAM_VAR(bool,       Paused, m_paused);
   };
 
 };};};

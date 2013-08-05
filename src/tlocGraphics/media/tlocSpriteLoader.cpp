@@ -157,8 +157,8 @@ namespace tloc { namespace graphics { namespace media {
 
         // sprite sheet packer y-coord starts from the top, OpenGL start
         // from the bottom, so we need to flip the y-coords
-        itr->m_texCoordStart[1] = 1.0f - itr->m_texCoordStart[1];
-        itr->m_texCoordEnd[1]   = 1.0f - itr->m_texCoordEnd[1];
+        itr->m_texCoordStart[1] = 1.0f + Mathf32::EPSILON - itr->m_texCoordStart[1];
+        itr->m_texCoordEnd[1]   = 1.0f + Mathf32::EPSILON - itr->m_texCoordEnd[1];
 
         ++itr;
       }

@@ -16,7 +16,9 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          SpriteLoaderIterator a_end,
                          bool a_loop,
                          tl_size a_fps,
-                         bool a_append)
+                         bool a_append,
+                         tl_size a_startingFrame,
+                         bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
 
@@ -72,6 +74,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
+    ta->SetFrame(a_startingFrame);
+    ta->SetPaused(a_paused);
 
     ta->SetCurrentSpriteSet(currSetIndex);
 
@@ -88,7 +92,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size, bool);
+     bool, tl_size, bool, tl_size, bool);
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
@@ -97,6 +101,6 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size, bool);
+     bool, tl_size, bool, tl_size, bool);
 
 };};};};

@@ -151,14 +151,17 @@ namespace tloc { namespace graphics { namespace component_system {
         gfx_cs::TextureCoords* texCoordPtr =
           ent->GetComponent<gfx_cs::TextureCoords>();
 
-        gfx_cs::TextureCoords::cont_type_sptr
-          texCoordCont = texCoordPtr->GetCoords
-          (set_index(texCoordPtr->GetCurrentSet()) );
+        if (texCoordPtr->GetNumSets())
+        {
+          gfx_cs::TextureCoords::cont_type_sptr
+            texCoordCont = texCoordPtr->GetCoords
+            (set_index(texCoordPtr->GetCurrentSet()) );
 
-        m_tData->SetVertexArray
-          (texCoordCont, gl::p_shader_variable_ti::Shared() );
+          m_tData->SetVertexArray
+            (texCoordCont, gl::p_shader_variable_ti::Shared() );
 
-        so_fan->AddAttribute(m_tData);
+          so_fan->AddAttribute(m_tData);
+        }
       }
 
       //------------------------------------------------------------------------

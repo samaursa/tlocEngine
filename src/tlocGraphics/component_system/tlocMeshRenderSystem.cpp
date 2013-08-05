@@ -159,8 +159,6 @@ namespace tloc { namespace graphics { namespace component_system {
     so_mesh->AddAttribute(meshPtr->GetNormAttribute());
     so_mesh->AddAttribute(meshPtr->GetTCoordAttribute());
 
-    TLOC_UNUSED_2(matPtr, numVertices);
-
     mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
 
     if (m_shaderPtr == nullptr ||

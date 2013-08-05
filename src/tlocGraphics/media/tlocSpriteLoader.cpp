@@ -155,6 +155,11 @@ namespace tloc { namespace graphics { namespace media {
         itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] +
                                 texToSpriteY.ScaleDown(itr->m_endingPos[1]);
 
+        // sprite sheet packer y-coord starts from the top, OpenGL start
+        // from the bottom, so we need to flip the y-coords
+        itr->m_texCoordStart[1] = 1.0f - itr->m_texCoordStart[1];
+        itr->m_texCoordEnd[1]   = 1.0f - itr->m_texCoordEnd[1];
+
         ++itr;
       }
 

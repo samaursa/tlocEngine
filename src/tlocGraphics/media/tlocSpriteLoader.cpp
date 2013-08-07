@@ -20,10 +20,8 @@ namespace tloc { namespace graphics { namespace media {
       SpriteSheetPacker::
       IsSupported(const core_str::String& a_input)
     {
-      core_str::String firstLine = a_input.substr(0, a_input.find('\n'));
-
       core_conts::Array<core_str::String> firstLineTokens;
-      core_str::Tokenize(firstLine.c_str(), ' ', firstLineTokens);
+      core_str::Tokenize(a_input.c_str(), " \r\n", firstLineTokens);
 
       // The file is setup such that:
       // - first token == name
@@ -56,7 +54,7 @@ namespace tloc { namespace graphics { namespace media {
       typedef core_conts::Array<core_str::String>   string_array;
 
       string_array allLines;
-      core_str::Tokenize(a_input.c_str(), '\n', allLines);
+      core_str::Tokenize(a_input.c_str(), "\n\r", allLines);
 
       string_array::iterator itr = allLines.begin();
       string_array::iterator itrEnd = allLines.end();

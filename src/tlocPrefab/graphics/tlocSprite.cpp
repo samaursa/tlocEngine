@@ -16,7 +16,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          SpriteLoaderIterator a_end,
                          bool a_loop,
                          tl_size a_fps,
-                         bool a_append,
+                         tl_size a_setIndex,
                          tl_size a_startingFrame,
                          bool a_paused)
   {
@@ -30,9 +30,11 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
     gfx_cs::TextureAnimator* ta = nullptr;
 
-    if (a_entity->HasComponent(texture_animator) && a_append)
+    const tl_size size = a_entity->GetComponents(texture_animator).size();
+
+    if (size && a_setIndex < size)
     {
-      ta = a_entity->GetComponent<TextureAnimator>();
+      ta = a_entity->GetComponent<TextureAnimator>(a_setIndex);
     }
     else
     {
@@ -46,6 +48,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
       texture_animator_sptr taPtr = itrTa->GetValue();
       ta = taPtr.get();
+
+      a_mgr->InsertComponent(a_entity, ta);
     }
 
     TextureCoords tcoord;
@@ -78,8 +82,6 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     ta->SetPaused(a_paused);
 
     ta->SetCurrentSpriteSet(currSetIndex);
-
-    a_mgr->InsertComponent(a_entity, ta);
   }
 
   //------------------------------------------------------------------------
@@ -92,7 +94,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size, bool, tl_size, bool);
+     bool, tl_size, tl_size, tl_size, bool);
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
@@ -101,6 +103,6 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size, bool, tl_size, bool);
+     bool, tl_size, tl_size, tl_size, bool);
 
 };};};};

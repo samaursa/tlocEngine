@@ -23,7 +23,7 @@ namespace tloc { namespace prefab { namespace graphics {
                            SpriteLoaderIterator a_end,
                            bool a_loop,
                            tl_size a_fps,
-                           bool a_append,
+                           tl_size a_setIndex,
                            tl_size a_startingFrame,
                            bool a_paused);
 
@@ -42,9 +42,9 @@ namespace tloc { namespace prefab { namespace graphics {
                     : Prefab_I(a_entMgr, a_poolMgr)
                     , m_loop(true)
                     , m_fps(24)
-                    , m_append(true)
                     , m_startingFrame(0)
                     , m_paused(false)
+                    , m_setIndex(0)
     { }
 
     template <typename SpriteLoaderIterator>
@@ -62,7 +62,7 @@ namespace tloc { namespace prefab { namespace graphics {
         SpriteLoader_SpriteSheetPacker::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, m_loop, m_fps, m_append,
+                                 a_begin, a_end, m_loop, m_fps, m_setIndex,
                                  m_startingFrame, m_paused);
     }
 
@@ -106,9 +106,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
     TLOC_DECL_PARAM_VAR(bool,       Loop, m_loop);
     TLOC_DECL_PARAM_VAR(tl_size,    Fps, m_fps);
-    TLOC_DECL_PARAM_VAR(bool,       Append, m_append);
     TLOC_DECL_PARAM_VAR(size_type,  StartingFrame, m_startingFrame);
     TLOC_DECL_PARAM_VAR(bool,       Paused, m_paused);
+    TLOC_DECL_PARAM_VAR(tl_size,    SetIndex, m_setIndex);
   };
 
 };};};

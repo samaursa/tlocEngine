@@ -42,8 +42,17 @@ namespace tloc { namespace graphics { namespace component_system {
     m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
 
-    m_tData = gl::attribute_sptr(new gl::Attribute());
-    m_tData->SetName("a_tCoord");
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord2");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord3");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord4");
 
     m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
@@ -137,20 +146,30 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         typedef gfx_cs::TextureCoords::set_index    set_index;
 
-        gfx_cs::TextureCoords* texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>();
+        const tl_size numTexCoords =
+          ent->GetComponents(gfx_cs::TextureCoords::k_component_type).size();
 
-        if (texCoordPtr->GetNumSets())
+        TLOC_ASSERT(numTexCoords <= 4,
+          "QuadSystem does not support more than 4 texture coordinates");
+
+        for (tl_size i = 0; i < numTexCoords; ++i)
         {
-          gfx_cs::TextureCoords::cont_type_sptr
-            texCoordCont = texCoordPtr->GetCoords
-            (set_index(texCoordPtr->GetCurrentSet()) );
+          gfx_cs::TextureCoords* texCoordPtr =
+            ent->GetComponent<gfx_cs::TextureCoords>(i);
 
-          m_tData->SetVertexArray
-            (texCoordCont, gl::p_shader_variable_ti::Shared() );
+          if (texCoordPtr && texCoordPtr->GetNumSets())
+          {
+            gfx_cs::TextureCoords::cont_type_sptr
+              texCoordCont = texCoordPtr->GetCoords
+              (set_index(texCoordPtr->GetCurrentSet()) );
 
-          so_quad->AddAttribute(m_tData);
+            m_tData[i]->SetVertexArray
+              (texCoordCont, gl::p_shader_variable_ti::Shared() );
+
+            so_quad->AddAttribute(m_tData[i]);
+          }
         }
+
       }
 
       //------------------------------------------------------------------------

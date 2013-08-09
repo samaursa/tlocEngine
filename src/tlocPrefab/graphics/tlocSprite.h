@@ -91,11 +91,6 @@ namespace tloc { namespace prefab { namespace graphics {
          SpriteLoader_SpriteSheetPacker::iterator,
          SpriteLoader_SpriteSheetPacker::const_iterator>();
 
-      // We cannot add multiple sprite sheets without append, let the user know
-      // LOG: convert following assert into a log
-      TLOC_ASSERT(m_append,
-        "Append is set to falsed, unable to generate multiple spritesheets");
-
       for (itr_type itr = a_spriteLoaderIterators.begin(),
                     itrEnd = a_spriteLoaderIterators.end();
                     itr != itrEnd; ++itr)

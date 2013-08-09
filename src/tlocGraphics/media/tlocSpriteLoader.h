@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     core_str::String      m_name;
     core_ds::Tuple2s32    m_startingPos;
-    core_ds::Tuple2s32    m_endingPos;
+    core_ds::Tuple2s32    m_dimensions;
 
     math_t::Vec2f32       m_texCoordStart;
     math_t::Vec2f32       m_texCoordEnd;
@@ -27,7 +27,20 @@ namespace tloc { namespace graphics { namespace media {
   {
     namespace parser {
 
+      // ///////////////////////////////////////////////////////////////////////
+      // SpriteSheetPacker
+
       struct SpriteSheetPacker
+      {
+        bool            IsSupported(const core_str::String& a_input);
+        core_err::Error Parse(const core_str::String& a_input,
+                              core_conts::Array<SpriteInfo>& a_out);
+      };
+
+      // ///////////////////////////////////////////////////////////////////////
+      // TexturePacker
+
+      struct TexturePacker
       {
         bool            IsSupported(const core_str::String& a_input);
         core_err::Error Parse(const core_str::String& a_input,
@@ -53,11 +66,11 @@ namespace tloc { namespace graphics { namespace media {
   public:
     SpriteLoader_T();
 
-    bool       IsSupported(const string_type& a_input) const;
-    error_type Init(const string_type& a_fileContents,
-                    dim_type a_imageDimensions);
+    bool            IsSupported(const string_type& a_input) const;
+    error_type      Init(const string_type& a_fileContents,
+                         dim_type a_imageDimensions);
 
-    bool       IsInitialized() const;
+    bool            IsInitialized() const;
 
     iterator        begin();
     iterator        end();
@@ -82,6 +95,8 @@ namespace tloc { namespace graphics { namespace media {
 
   typedef SpriteLoader_T
     <p_sprite_loader::parser::SpriteSheetPacker> SpriteLoader_SpriteSheetPacker;
+  typedef SpriteLoader_T
+    <p_sprite_loader::parser::TexturePacker>     SpriteLoader_TexturePacker;
 
 };};};
 

@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     core_str::String      m_name;
     core_ds::Tuple2s32    m_startingPos;
-    core_ds::Tuple2s32    m_endingPos;
+    core_ds::Tuple2s32    m_dimensions;
 
     math_t::Vec2f32       m_texCoordStart;
     math_t::Vec2f32       m_texCoordEnd;

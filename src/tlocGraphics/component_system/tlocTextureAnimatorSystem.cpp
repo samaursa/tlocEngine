@@ -37,9 +37,15 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     const entity_type* ent = a_ent;
 
-    gfx_cs::TextureAnimator* texAnim =
-      ent->GetComponent<gfx_cs::TextureAnimator>();
-    texAnim->SetStartTime(0);
+    const tl_size size =
+      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+
+    for (tl_size i = 0; i < size; ++i)
+    {
+      gfx_cs::TextureAnimator* texAnim =
+        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+      texAnim->SetStartTime(0);
+    }
 
     return ErrorSuccess;
   }
@@ -68,33 +74,42 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const entity_type* ent = a_ent;
 
-    gfx_cs::TextureAnimator* texAnim =
-      ent->GetComponent<gfx_cs::TextureAnimator>();
+    const tl_size size =
+      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
 
-    f64 diff = m_totalTime - texAnim->GetStartTime();
-    f64 fps = texAnim->GetFrameDeltaT();
-
-    while (diff > fps)
+    for (tl_size i = 0; i < size; ++i)
     {
-      if (texAnim->IsPaused() == false &&
-          texAnim->IsStopped() == false)
+      gfx_cs::TextureAnimator* texAnim =
+        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+
+      f64 diff = m_totalTime - texAnim->GetStartTime();
+      f64 fps = texAnim->GetFrameDeltaT();
+
+      while (diff > fps)
       {
-        texAnim->NextFrame();
+        if (texAnim->IsPaused() == false &&
+          texAnim->IsStopped() == false)
+        {
+          texAnim->NextFrame();
+        }
+
+        texAnim->SetStartTime(texAnim->GetStartTime() + fps);
+        diff = m_totalTime - texAnim->GetStartTime();
       }
 
-      texAnim->SetStartTime(texAnim->GetStartTime() + fps);
-      diff = m_totalTime - texAnim->GetStartTime();
-    }
+      if (ent->HasComponent(components::texture_coords) &&
+          texAnim->IsSpriteSetChanged())
+      {
+        gfx_cs::TextureCoords* coordPtr =
+          ent->GetComponent<gfx_cs::TextureCoords>(i);
 
-    if (ent->HasComponent(components::texture_coords) &&
-        texAnim->IsSpriteSetChanged())
-    {
-      gfx_cs::TextureCoords* coordPtr =
-        ent->GetComponent<gfx_cs::TextureCoords>();
+        TLOC_ASSERT(coordPtr,
+          "Texture coords don't exist for corresponding texture animator");
 
-      *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
+        *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
 
-      texAnim->SetSpriteSetChanged(false);
+        texAnim->SetSpriteSetChanged(false);
+      }
     }
   }
 

@@ -47,6 +47,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gl::shader_program_sptr                           shader_prog_ptr;
 
+    typedef core_conts::ArrayFixed<gl::attribute_sptr, 4>     attributes_cont;
+
   public:
     QuadRenderSystem(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
@@ -80,9 +82,9 @@ namespace tloc { namespace graphics { namespace component_system {
     gl::uniform_sptr         m_uniVpMat;
 
     // Cache
-    vec3_cont_ptr      m_quadList;
+    vec3_cont_ptr       m_quadList;
     gl::attribute_sptr  m_vData;
-    gl::attribute_sptr  m_tData;
+    attributes_cont     m_tData;
   };
 
   //------------------------------------------------------------------------

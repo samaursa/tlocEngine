@@ -75,6 +75,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
       ta->GetCurrentSpriteSetIndex();
 
     ta->AddSpriteSet(tcoord);
+    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
     ta->SetFrame(a_startingFrame);

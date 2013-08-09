@@ -3,9 +3,22 @@
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 #include <tlocMath/tlocRange.h>
 #include <tlocMath/utilities/tlocScale.h>
+
+#define RAPIDXML_NO_EXCEPTIONS
+#include <RapidXML/rapidxml.hpp>
+
+namespace rapidxml {
+
+  void parse_error_handler(const char *what, void *)
+  {
+    TLOC_ASSERT(false, what);
+  }
+
+};
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -15,6 +28,9 @@ namespace tloc { namespace graphics { namespace media {
   };
 
   namespace p_sprite_loader { namespace parser {
+
+    // ///////////////////////////////////////////////////////////////////////
+    // SpriteSheetPacker
 
     bool
       SpriteSheetPacker::
@@ -45,6 +61,8 @@ namespace tloc { namespace graphics { namespace media {
 
       return true;
     }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     core_err::Error
       SpriteSheetPacker::
@@ -79,6 +97,132 @@ namespace tloc { namespace graphics { namespace media {
         a_out.push_back(si);
 
         ++itr;
+      }
+
+      return ErrorSuccess;
+    }
+
+    // ///////////////////////////////////////////////////////////////////////
+    // TexturePacker
+
+    bool
+      TexturePacker_IsSpriteNodeSupported(rapidxml::xml_node<>* a_spriteNode)
+    {
+      using namespace rapidxml;
+
+      static const char* attributes[] =
+      {
+        "sprite",
+        "n",
+        "x",
+        "y",
+        "w",
+        "h"
+      }; tl_size attributesCount = core_utils::ArraySize(attributes);
+
+      for (tl_size i = 0; i < attributesCount; ++i)
+      {
+        xml_attribute<>* currAtt =
+          a_spriteNode->first_attribute(attributes[i]);
+
+        if (currAtt == nullptr)
+        { return false; }
+
+        char firstChar = currAtt->name()[0];
+        if ( core_str::StrLen(currAtt->name()) == 1 &&
+          (firstChar == 'x' ||
+          firstChar == 'y' ||
+          firstChar == 'w' ||
+          firstChar == 'h') )
+        {
+          // the value must be a number
+          if (core_str::IsNumber(currAtt->value()) == false)
+          { return false; }
+        }
+      }
+
+      return true;
+    }
+
+    bool
+      TexturePacker::
+      IsSupported(const core_str::String& a_input)
+    {
+      using namespace rapidxml;
+
+      char* buff = new char[a_input.length() + 1];
+
+      core::copy_all(a_input, buff);
+      buff[a_input.length()] = '\0';
+
+      xml_document<> doc;
+      doc.parse<0>(buff);
+
+      xml_node<>* textureAtlasNode = doc.first_node("TextureAtlas");
+      if (!textureAtlasNode ||
+          core_str::StrCmp(textureAtlasNode->name(), "TextureAtlas") != 0)
+      { return false; }
+
+      xml_node<>* nextSpriteNode = textureAtlasNode->first_node("sprite");
+      while (nextSpriteNode)
+      {
+        if (TexturePacker_IsSpriteNodeSupported(nextSpriteNode) == false)
+        { return false; }
+
+        nextSpriteNode = nextSpriteNode->next_sibling("sprite");
+      }
+
+      return true;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    core_err::Error
+      TexturePacker::
+      Parse(const core_str::String& a_input,
+            core_conts::Array<SpriteInfo>& a_out)
+    {
+      using namespace rapidxml;
+
+      char* buff = new char[a_input.length() + 1];
+
+      core::copy_all(a_input, buff);
+      buff[a_input.length()] = '\0';
+
+      xml_document<> doc;
+      doc.parse<0>(buff);
+
+      xml_node<>* textureAtlasNode = doc.first_node("TextureAtlas");
+      if (!textureAtlasNode ||
+          core_str::StrCmp(textureAtlasNode->name(), "TextureAtlas") != 0)
+      { return TLOC_ERROR(gfx_err::error_unsupported_sprite_sheet_format); }
+
+      xml_node<>* nextSpriteNode = textureAtlasNode->first_node("sprite");
+      while (nextSpriteNode)
+      {
+        if (TexturePacker_IsSpriteNodeSupported(nextSpriteNode) == false)
+        { return TLOC_ERROR(gfx_err::error_unsupported_sprite_sheet_format); }
+
+        xml_attribute<>* nAttr = nextSpriteNode->first_attribute("n");
+        xml_attribute<>* xAttr = nextSpriteNode->first_attribute("x");
+        xml_attribute<>* yAttr = nextSpriteNode->first_attribute("y");
+        xml_attribute<>* wAttr = nextSpriteNode->first_attribute("w");
+        xml_attribute<>* hAttr = nextSpriteNode->first_attribute("h");
+
+        TLOC_ASSERT_NOT_NULL(nAttr);
+        TLOC_ASSERT_NOT_NULL(xAttr); TLOC_ASSERT_NOT_NULL(yAttr);
+        TLOC_ASSERT_NOT_NULL(wAttr); TLOC_ASSERT_NOT_NULL(hAttr);
+
+        SpriteInfo si;
+        si.m_name = nAttr->value();
+        si.m_startingPos[0] = atoi(xAttr->value());
+        si.m_startingPos[1] = atoi(yAttr->value());
+        si.m_endingPos[0]   = atoi(wAttr->value());
+        si.m_endingPos[1]   = atoi(hAttr->value());
+
+        a_out.push_back(si);
+
+        nextSpriteNode = nextSpriteNode->next_sibling("sprite");
       }
 
       return ErrorSuccess;
@@ -288,5 +432,6 @@ namespace tloc { namespace graphics { namespace media {
   // explicit instantiations
 
   template class SpriteLoader_T<p_sprite_loader::parser::SpriteSheetPacker>;
+  template class SpriteLoader_T<p_sprite_loader::parser::TexturePacker>;
 
 };};};

@@ -27,7 +27,20 @@ namespace tloc { namespace graphics { namespace media {
   {
     namespace parser {
 
+      // ///////////////////////////////////////////////////////////////////////
+      // SpriteSheetPacker
+
       struct SpriteSheetPacker
+      {
+        bool            IsSupported(const core_str::String& a_input);
+        core_err::Error Parse(const core_str::String& a_input,
+                              core_conts::Array<SpriteInfo>& a_out);
+      };
+
+      // ///////////////////////////////////////////////////////////////////////
+      // TexturePacker
+
+      struct TexturePacker
       {
         bool            IsSupported(const core_str::String& a_input);
         core_err::Error Parse(const core_str::String& a_input,
@@ -53,11 +66,11 @@ namespace tloc { namespace graphics { namespace media {
   public:
     SpriteLoader_T();
 
-    bool       IsSupported(const string_type& a_input) const;
-    error_type Init(const string_type& a_fileContents,
-                    dim_type a_imageDimensions);
+    bool            IsSupported(const string_type& a_input) const;
+    error_type      Init(const string_type& a_fileContents,
+                         dim_type a_imageDimensions);
 
-    bool       IsInitialized() const;
+    bool            IsInitialized() const;
 
     iterator        begin();
     iterator        end();
@@ -82,6 +95,8 @@ namespace tloc { namespace graphics { namespace media {
 
   typedef SpriteLoader_T
     <p_sprite_loader::parser::SpriteSheetPacker> SpriteLoader_SpriteSheetPacker;
+  typedef SpriteLoader_T
+    <p_sprite_loader::parser::TexturePacker>     SpriteLoader_TexturePacker;
 
 };};};
 

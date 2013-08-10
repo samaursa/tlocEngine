@@ -15,6 +15,7 @@ namespace rapidxml {
 
   void parse_error_handler(const char *what, void *)
   {
+    TLOC_UNUSED(what);
     TLOC_ASSERT(false, what);
   }
 

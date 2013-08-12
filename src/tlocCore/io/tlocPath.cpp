@@ -91,7 +91,7 @@ namespace tloc { namespace core { namespace io {
     return false;
   }
 
-  void Path::SetPath(const char* a_path)
+  void Path::SetPath(const BufferArg& a_path)
   {
     m_path = a_path;
     DoFixPath();

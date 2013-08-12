@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace io {
     bool HasFilename() const;
 
     TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
-    void SetPath(const char* a_path);
+    void SetPath(const BufferArg& a_path);
 
   private:
     void DoFixPath();

@@ -4,30 +4,57 @@
 
 namespace tloc { namespace core { namespace memory {
 
-  BufferArg::size_type const s_maximumValidBufferSize = 2048;
+#define TLOC_BUFFER_ARG_TEMPS   typename T_Char
+#define TLOC_BUFFER_ARG_PARAMS  T_Char
+#define TLOC_BUFFER_ARG_TYPE    typename BufferArg<TLOC_BUFFER_ARG_PARAMS>
 
-  BufferArg::BufferArg(const char* a_buffer)
+  tloc::BufferArg::size_type const s_maximumValidBufferSize = 2048;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // BufferArg
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    BufferArg(const char_type* a_buffer)
     : m_buffer(a_buffer), m_end(nullptr)
   {
   }
 
-  BufferArg::BufferArg(const char* a_buffer, size_type a_end)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    BufferArg(const char_type* a_buffer, size_type a_end)
     : m_buffer(a_buffer), m_end(a_buffer + a_end)
   {
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
   template <typename T_String>
-  BufferArg::BufferArg(const T_String& a_string)
+  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    BufferArg(const T_String& a_string)
     : m_buffer(a_string.c_str()), m_end(a_string.end())
   {
   }
 
-  bool BufferArg::IsValid() const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  bool
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    IsValid() const
   {
     return IsValid(s_maximumValidBufferSize);
   }
 
-  bool BufferArg::IsValid(size_type a_maximumSize) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  bool
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    IsValid(size_type a_maximumSize) const
   {
     if (m_end)
     { return true; }
@@ -41,23 +68,52 @@ namespace tloc { namespace core { namespace memory {
     return false;
   }
 
-  const char BufferArg::operator [](tl_int a_index) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    operator const TLOC_BUFFER_ARG_TYPE::char_type *() const
+  {
+    return m_buffer;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  const TLOC_BUFFER_ARG_TYPE::char_type
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    operator [](tl_int a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL(IsValid(), "Index out of bounds!");
     return m_buffer[a_index];
   }
 
-  const char* BufferArg::GetPtr() const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  const TLOC_BUFFER_ARG_TYPE::char_type*
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    GetPtr() const
   {
     return m_buffer;
   }
 
-  BufferArg::size_type BufferArg::GetSize() const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  TLOC_BUFFER_ARG_TYPE::size_type
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    GetSize() const
   {
     return m_end - m_buffer;
   }
 
-  BufferArg::size_type BufferArg::GetMaxAllowedBuffSize()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  TLOC_BUFFER_ARG_TYPE::size_type
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    GetMaxAllowedBuffSize()
   {
     return s_maximumValidBufferSize;
   }
@@ -65,6 +121,10 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
-  template BufferArg::BufferArg(const string::String& a_string);
+  template BufferArg<char8>;
+  template BufferArg<char32>;
+
+  template BufferArg<char>::BufferArg(const string::String& a_string);
+  template BufferArg<char32>::BufferArg(const string::StringW& a_string);
 
 };};};

@@ -48,7 +48,7 @@ namespace TestingFileIO
     fclose(m_file);
 
     // Start our tests
-    io::FileIO_ReadA fileReader(path);
+    io::FileIO_ReadA fileReader = io::FileIO_ReadA(core_io::Path(path));
     CHECK_FALSE(fileReader.IsOpen());
     CHECK(fileReader.Open() == common_error_types::error_success);
     CHECK(fileReader.IsOpen());

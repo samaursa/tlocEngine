@@ -36,8 +36,8 @@ namespace tloc { namespace prefab { namespace graphics {
     core_io::Path vsFullPath( (m_assetsPath + a_vertexShader.GetPath()).c_str() );
     core_io::Path fsFullPath( (m_assetsPath + a_fragmentShader.GetPath()).c_str() );
 
-    core_io::FileIO_ReadA vsFile(vsFullPath.GetPath());
-    core_io::FileIO_ReadA fsFile(fsFullPath.GetPath());
+    core_io::FileIO_ReadA vsFile = core_io::FileIO_ReadA(vsFullPath);
+    core_io::FileIO_ReadA fsFile = core_io::FileIO_ReadA(fsFullPath);
 
     core_err::Error err = ErrorSuccess;
     err = vsFile.Open();

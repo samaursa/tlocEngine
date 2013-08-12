@@ -100,8 +100,8 @@ namespace TestingShaderComponent
     REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
 
     // Load the files
-    io::FileIO_ReadA vsFile( g_vShaderPath.c_str() );
-    io::FileIO_ReadA fsFile( g_fShaderPath.c_str() );
+    io::FileIO_ReadA vsFile = io::FileIO_ReadA( core_io::Path(g_vShaderPath) );
+    io::FileIO_ReadA fsFile = io::FileIO_ReadA( core_io::Path(g_fShaderPath) );
 
     REQUIRE(vsFile.Open() == ErrorSuccess);
     REQUIRE(fsFile.Open() == ErrorSuccess);

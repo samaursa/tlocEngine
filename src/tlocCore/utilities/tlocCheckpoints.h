@@ -21,10 +21,13 @@ namespace tloc { namespace core { namespace utils {
     typedef containers::tl_array <value_type>::type   flags_type;
     typedef tl_size                                   size_type;
 
-    Checkpoints(tl_uint a_numberOfCheckpoints);
+    Checkpoints(tl_uint a_numberOfCheckpoints, bool a_initial = false);
 
-    value_type operator[](tl_int a_index) const;
-    value_type IsMarked(tl_int a_index) const;
+    value_type& operator[](tl_int a_index);
+    value_type  operator[](tl_int a_index) const;
+
+    value_type  IsMarked(tl_int a_index) const;
+    value_type  IsUnMarked(tl_int a_index) const;
 
     void       Mark(size_type a_index);
     void       Unmark(size_type a_index);

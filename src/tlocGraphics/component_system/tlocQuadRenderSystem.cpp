@@ -7,7 +7,6 @@
 
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
-#include <tlocMath/component_system/tlocProjectionComponent.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
@@ -15,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocCamera.h>
 
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -42,8 +42,17 @@ namespace tloc { namespace graphics { namespace component_system {
     m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
 
-    m_tData = gl::attribute_sptr(new gl::Attribute());
-    m_tData->SetName("a_tCoord");
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord2");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord3");
+
+    m_tData.push_back(gl::attribute_sptr(new gl::Attribute()));
+    m_tData.back()->SetName("a_tCoord4");
 
     m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
@@ -53,41 +62,16 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(math_cs::components::projection),
-      "The passed entity does not have the projection component!");
+    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
+      "The passed entity is not a camera!");
   }
 
   error_type QuadRenderSystem::Pre_Initialize()
-  {
-    using namespace core::component_system;
-    using namespace math::component_system::components;
-    using namespace graphics::component_system::components;
-
-    matrix_type viewMat;
-    viewMat.Identity();
-
-    if (m_sharedCam)
-    {
-      if (m_sharedCam->HasComponent(transform))
-      {
-        ComponentMapper<math::component_system::Transform> viewMatList =
-          m_sharedCam->GetComponents(math::component_system::components::transform);
-        TLOC_UNUSED(viewMatList);
-      }
-
-      if (m_sharedCam->HasComponent(projection))
-      {
-      }
-    }
-
-    return ErrorSuccess;
-  }
+  { return ErrorSuccess; }
 
   error_type QuadRenderSystem::InitializeEntity(const entity_manager*,
                                                 const entity_type*)
-  {
-    return ErrorSuccess;
-  }
+  { return ErrorSuccess; }
 
   error_type QuadRenderSystem::ShutdownEntity(const entity_manager*,
                                               const entity_type*)
@@ -95,35 +79,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Pre_ProcessActiveEntities(f64)
   {
-    using namespace core::component_system;
-    using namespace math::component_system::components;
-    using namespace graphics::component_system::components;
-
-    matrix_type viewMat;
-    viewMat.Identity();
-    m_vpMatrix.Identity();
-
-    // vMVP, but since we are doing column major, it becomes PVMv
-
-    if (m_sharedCam)
+    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
     {
-      if (m_sharedCam->HasComponent(projection))
-      {
-        math_cs::Projection* projMat =
-          m_sharedCam->GetComponent<math_cs::Projection>();
-        m_vpMatrix = projMat->GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
-      }
-
-      if (m_sharedCam->HasComponent(transform))
-      {
-        math_cs::Transform* vMat =
-          m_sharedCam->GetComponent<math_cs::Transform>();
-        math_cs::Transform vMatInv = vMat->Invert();
-        viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
-      }
+      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
     }
-
-    m_vpMatrix.Mul(viewMat);
+    else
+    {
+      m_vpMatrix.MakeIdentity();
+    }
   }
 
   void QuadRenderSystem::ProcessEntity(const entity_manager*,
@@ -176,24 +139,37 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_vData->SetVertexArray(m_quadList, gl::p_shader_variable_ti::Shared() );
 
-      shader_op_ptr so_quad = shader_op_ptr(new shader_op_ptr::value_type());
+      shader_op_ptr so_quad(new shader_op_ptr::value_type());
       so_quad->AddAttribute(m_vData);
 
       if (ent->HasComponent(components::texture_coords))
       {
         typedef gfx_cs::TextureCoords::set_index    set_index;
 
-        gfx_cs::TextureCoords* texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>();
+        const tl_size numTexCoords =
+          ent->GetComponents(gfx_cs::TextureCoords::k_component_type).size();
 
-        gfx_cs::TextureCoords::cont_type_sptr
-          texCoordCont = texCoordPtr->GetCoords
-          (set_index(texCoordPtr->GetCurrentSet()) );
+        TLOC_ASSERT(numTexCoords <= 4,
+          "QuadSystem does not support more than 4 texture coordinates");
 
-        m_tData->SetVertexArray
-          (texCoordCont, gl::p_shader_variable_ti::Shared() );
+        for (tl_size i = 0; i < numTexCoords; ++i)
+        {
+          gfx_cs::TextureCoords* texCoordPtr =
+            ent->GetComponent<gfx_cs::TextureCoords>(i);
 
-        so_quad->AddAttribute(m_tData);
+          if (texCoordPtr && texCoordPtr->GetNumSets())
+          {
+            gfx_cs::TextureCoords::cont_type_sptr
+              texCoordCont = texCoordPtr->GetCoords
+              (set_index(texCoordPtr->GetCurrentSet()) );
+
+            m_tData[i]->SetVertexArray
+              (texCoordCont, gl::p_shader_variable_ti::Shared() );
+
+            so_quad->AddAttribute(m_tData[i]);
+          }
+        }
+
       }
 
       //------------------------------------------------------------------------
@@ -209,7 +185,7 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+        typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
 
         const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 

@@ -67,9 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
     DoResizeSetToAccomodate(set_index a_index)
   {
     if (a_index >= m_coordSets.size())
-    {
-      m_coordSets.push_back(cont_type_sptr(new cont_type()) );
-    }
+    { m_coordSets.push_back(cont_type_sptr(new cont_type()) ); }
   }
 
   TextureCoords::cont_type_sptr

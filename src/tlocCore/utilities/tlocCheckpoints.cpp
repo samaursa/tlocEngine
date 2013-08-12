@@ -4,12 +4,20 @@
 namespace tloc { namespace core { namespace utils {
 
   Checkpoints::
-    Checkpoints(tl_uint a_numberOfCheckpoints)
-    : m_flags(a_numberOfCheckpoints)
+    Checkpoints(tl_uint a_numberOfCheckpoints, bool a_initial)
+    : m_flags(a_numberOfCheckpoints, a_initial)
   {
   }
 
-  Checkpoints::value_type Checkpoints::
+  Checkpoints::value_type&
+    Checkpoints::
+    operator [](tl_int a_index)
+  {
+    return m_flags[a_index];
+  }
+
+  Checkpoints::value_type
+    Checkpoints::
     operator [](tl_int a_index) const
   {
     return m_flags[a_index];
@@ -19,6 +27,12 @@ namespace tloc { namespace core { namespace utils {
     IsMarked(tl_int a_index) const
   {
     return m_flags[a_index];
+  }
+
+  bool Checkpoints::
+    IsUnMarked(tl_int a_index) const
+  {
+    return m_flags[a_index] == false;
   }
 
   void Checkpoints::

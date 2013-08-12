@@ -40,6 +40,14 @@ set(TLOC_GRAPHICS_APPLICATION
   )
 
 set(TLOC_GRAPHICS_COMPONENT_SYSTEM
+  component_system/tlocArcBall.h
+  component_system/tlocArcBall.cpp
+  component_system/tlocArcBallSystem.h
+  component_system/tlocArcBallSystem.cpp
+  component_system/tlocCamera.h
+  component_system/tlocCamera.cpp
+  component_system/tlocCameraSystem.h
+  component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
@@ -56,6 +64,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocTextureAnimator.h
+  component_system/tlocTextureAnimator.cpp
+  component_system/tlocTextureAnimatorSystem.h
+  component_system/tlocTextureAnimatorSystem.cpp
   component_system/tlocTextureCoords.h
   component_system/tlocTextureCoords.cpp
   component_system/tlocQuad.cpp 
@@ -82,6 +94,10 @@ set(TLOC_GRAPHICS_MEDIA
   media/tloc_media.cpp 
   media/tloc_media.h 
   media/tloc_media.inl.h
+  media/tlocObjLoader.h
+  media/tlocObjLoader.cpp
+  media/tlocSpriteLoader.h
+  media/tlocSpriteLoader.cpp
   )
 
 set(TLOC_GRAPHICS_OPENGL 
@@ -141,8 +157,6 @@ set(TLOC_GRAPHICS_TYPES
   )
 
 set(TLOC_GRAPHICS_VIEW_PROJECTION 
-  
-  view/tlocCamera.h 
   )
 
 set(TLOC_GRAPHICS_WINDOW 

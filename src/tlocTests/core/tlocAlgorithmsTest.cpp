@@ -7,6 +7,7 @@
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocFunctional.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/string/tlocString.h>
@@ -418,20 +419,26 @@ namespace TestingAlgorithms
     s32 match1[] = {1,2,3};
 
     // using default comparison:
-    it = find_end (myvector.begin(), myvector.end(), match1, match1+3);
+    it = core::find_end (myvector.begin(), myvector.end(), match1, match1+3);
 
     CHECK( (s32)(it - myvector.begin()) == 5); // pos
 
     s32 match2[] = {4,5,1};
 
     // using predicate comparison:
-    it = find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
+    it = core::find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
 
     CHECK( (s32)(it - myvector.begin()) == 3); // pos
 
     s32 match3[] = {1,2,3,4,5,6,6,7,8,8,5,4,3,23,2,2,1,2,3,4};
-    it = find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
+    it = core::find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
     CHECK(it == myvector.end());
+
+    it = find_end(myvector.begin(), myvector.end(), 4);
+    CHECK(it == myvector.end() - 2);
+
+    it = find_end_all(myvector, 4);
+    CHECK(it == myvector.end() - 2);
   }
 
   bool comp_case_insensitive (int c1, int c2)

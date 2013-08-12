@@ -77,5 +77,14 @@ namespace TestingCheckpoints
 
     CHECK_FALSE(cp.ReturnAndToggle(k_flag1));
     CHECK(cp.ReturnAndToggle(k_flag1));
+
+    cp[k_flag1] = true;
+    CHECK(cp[k_flag1]);
+    CHECK(cp.IsMarked(k_flag1));
+    CHECK_FALSE(cp.IsUnMarked(k_flag1));
+    cp.Unmark(k_flag1);
+    CHECK_FALSE(cp.IsMarked(k_flag1));
+    CHECK(cp.IsUnMarked(k_flag1));
+
   }
 };

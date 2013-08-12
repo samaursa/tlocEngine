@@ -28,6 +28,8 @@ namespace tloc { namespace physics {
   public:
     virtual void OnContactBegin(const entity_type* a_ent) = 0;
     virtual void OnContactEnd(const entity_type* a_ent) = 0;
+
+    virtual ~RigidBodyListener() { }
   };
 
 };};

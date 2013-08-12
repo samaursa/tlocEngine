@@ -184,7 +184,7 @@ namespace tloc { namespace math { namespace types {
 
     TLOC_STATIC_ASSERT(
       ( Loki::Conversion<T_AngleType, this_type>::exists2Way ||
-        Loki::TypeTraits<T_AngleType>::isFloat),
+        Loki::TypeTraits<T_AngleType>::isArith),
         T_AngleType_must_be_derived_from_Angle_T_or_must_be_value_type);
 
     // Select the type to cast to, this is necessary for f32 and f64 (does
@@ -221,7 +221,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_STATIC_ASSERT(
       ( Loki::Conversion<T_AngleType, base_type>::exists2Way ||
         Loki::TypeTraits<T_AngleType>::isFloat),
-        T_AngleType_must_be_derived_from_Angle_T);
+        T_AngleType_must_be_a_real_number_or_derived_from_Angle_T);
   }
 
   //------------------------------------------------------------------------
@@ -235,7 +235,7 @@ namespace tloc { namespace math { namespace types {
   {
     TLOC_STATIC_ASSERT(
       ( Loki::Conversion<T_AngleType, base_type>::exists2Way ||
-        Loki::TypeTraits<T_AngleType>::isFloat),
+        Loki::TypeTraits<T_AngleType>::isArith),
         T_AngleType_must_be_derived_from_Angle_T);
   }
 

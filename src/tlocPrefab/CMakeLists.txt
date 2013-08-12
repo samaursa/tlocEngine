@@ -12,12 +12,22 @@ set(TLOC_PREFAB_CORE
   )
 
 set(TLOC_PREFAB_GRAPHICS
+  graphics/tlocArcBall.h
+  graphics/tlocArcBall.cpp
   graphics/tlocCamera.cpp 
   graphics/tlocCamera.h 
+  graphics/tlocCuboid.h
+  graphics/tlocCuboid.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
+  graphics/tlocMaterial.h
+  graphics/tlocMaterial.cpp
+  graphics/tlocMesh.h
+  graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocSprite.h
+  graphics/tlocSprite.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 

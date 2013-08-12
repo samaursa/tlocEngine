@@ -8,6 +8,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocRay.h>
 
 namespace tloc { namespace math { namespace types {
@@ -22,7 +23,13 @@ namespace tloc { namespace math { namespace types {
     typedef T                                       real_type;
     typedef Rectangle_T<real_type>                  this_type;
     typedef Vector2<real_type>                      point_type;
-    typedef Ray_T<real_type, 2>                     ray_type;
+    typedef Ray_T<real_type, 2>                     ray_2d_type;
+    typedef Ray_T<real_type, 3>                     ray_3d_type;
+
+    typedef core::Pair<bool,
+      typename ray_3d_type::vec_type>               intersect_ret_type;
+
+    typedef math_t::Vector3<real_type>              dir_vec_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
     typedef core::types::StrongType_T<real_type, 1>   height;
@@ -33,16 +40,21 @@ namespace tloc { namespace math { namespace types {
 
     typedef core::types::StrongType_T<point_type, 0>  position;
 
+    typedef core::types::StrongType_T<bool, 0>        from_origin;
+    typedef core::types::StrongType_T<bool, 1>        double_sided;
+
   public:
     Rectangle_T();
     Rectangle_T(width a_w, height a_h,
                 position a_pos = position(point_type(0)) );
     Rectangle_T(left a_l, right a_r, top a_t, bottom a_b);
+    Rectangle_T(const point_type& a_start, const point_type& a_end);
 
     template <typename T_Real>
     Rectangle_T(const Rectangle_T<T_Real>& a_other);
 
-    this_type& operator= (const this_type& a_other);
+    this_type&  operator= (const this_type& a_other);
+    void        swap(this_type& a_other);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -68,6 +80,7 @@ namespace tloc { namespace math { namespace types {
     point_type  GetPosition() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetNormal, s_normal);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -82,7 +95,11 @@ namespace tloc { namespace math { namespace types {
     bool        Intersects(const this_type& a_other) const;
     bool        Intersects(const this_type& a_other,
                            this_type& a_overlapOut) const;
-    bool        Intersects(const ray_type& a_ray) const;
+    bool        Intersects(const ray_2d_type& a_ray) const;
+    intersect_ret_type
+                Intersects(const ray_3d_type& a_ray,
+                           from_origin a_fo = from_origin(true),
+                           double_sided a_ds = double_sided(false) ) const;
 
   private:
     real_type   DoGetValue(tl_int a_index) const;
@@ -92,7 +109,14 @@ namespace tloc { namespace math { namespace types {
   private:
     point_type    m_dimensions;
     point_type    m_position;
+
+    static const dir_vec_type s_normal;
   };
+
+  template <typename T>
+  typename Rectangle_T<T>::dir_vec_type
+    const Rectangle_T<T>::s_normal = typename Rectangle_T<T>::
+    dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------
   // Template definitions
@@ -123,6 +147,13 @@ namespace tloc { namespace math { namespace types {
     tloc::type_traits::AssertTypeIsSupported<T_Side2, left, right>();
     return DoGetCoord<T_Side1, T_Side2>();
   }
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(Rectangle_T<T>& a, Rectangle_T<T>& b)
+  { a.swap(b); }
 
   //------------------------------------------------------------------------
   // Typedefs

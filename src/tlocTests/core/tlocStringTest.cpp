@@ -786,7 +786,7 @@ namespace TestingStrings
 
     testPassed = true;
     for (char8 i = 'A', j = 'a';
-         i <= 'Z', j <= 'z'; ++i, ++j)
+         i <= 'Z' && j <= 'z'; ++i, ++j)
     {
       if (IsAlpha(i) == false ||
           IsAlpha(j) == false ||
@@ -814,7 +814,7 @@ namespace TestingStrings
     CHECK(testPassed);
 
     testPassed = true;
-    for (char8 i = 'A', j = 'a'; i <= 'F', j<= 'f'; ++i, ++j)
+    for (char8 i = 'A', j = 'a'; i <= 'F' && j<= 'f'; ++i, ++j)
     {
       if (IsXDigit(i) == false ||
           IsXDigit(j) == false ||
@@ -825,8 +825,39 @@ namespace TestingStrings
     CHECK(testPassed);
 
     CHECK(IsNumber("12356889771239080"));
+    CHECK(IsNumber("-12356889771239080"));
     CHECK_FALSE(IsNumber("12312A123123"));
     CHECK_FALSE(IsNumber("A12312123123"));
     CHECK_FALSE(IsNumber("12312123123Z"));
+
+    CHECK(IsRealNumber("12.023"));
+    CHECK(IsRealNumber("-12.023"));
+    CHECK(IsRealNumber("-12.023E-02"));
+    CHECK(IsRealNumber("-12.023E+02"));
+    CHECK(IsRealNumber("-12.023e+02"));
+    CHECK(IsRealNumber("-12.023e-02"));
+    CHECK(IsRealNumber("-12.023e02"));
+    CHECK(IsRealNumber("12.023e02"));
+    CHECK(IsRealNumber("12.023E+02"));
+    CHECK(IsRealNumber("12.023E-02"));
+    CHECK(IsRealNumber("12.023e-02"));
+    CHECK(IsRealNumber("12.023e+02"));
+    CHECK(IsRealNumber("12.023E02"));
+    CHECK(IsRealNumber("12.023e02"));
+    CHECK_FALSE(IsRealNumber("--12.023"));
+    CHECK_FALSE(IsRealNumber("-12.0.23"));
+    CHECK_FALSE(IsRealNumber("12.0A23"));
+    CHECK_FALSE(IsRealNumber("-12.0A.23"));
+
+    CHECK(IsPosNumber("1234"));
+    CHECK(IsPosRealNumber("12.3456"));
+    CHECK(IsPosRealNumber("12345"));
+    CHECK(IsNegNumber("-123"));
+    CHECK(IsNegRealNumber("-123.12355"));
+
+    CHECK_FALSE(IsPosNumber("-12345"));
+    CHECK_FALSE(IsPosNumber("123.4567"));
+    CHECK_FALSE(IsPosRealNumber("-1234.5678"));
+
   }
 };

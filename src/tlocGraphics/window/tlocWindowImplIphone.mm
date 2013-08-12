@@ -94,11 +94,15 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     m_handle.Assign<UIWindow*>([[UIWindow alloc]
                             initWithFrame:[currentScreen bounds]]);
 
+    CGFloat screenScale = [currentScreen scale];
+
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
     CGRect viewFrame = m_handle.Cast<UIWindow*>().bounds;
 
-    m_view = [[OpenGLView alloc] initWithFrame:viewFrame retainBacking:NO
+    m_view = [[OpenGLView alloc] initWithFrame:viewFrame
+                                   screenScale:screenScale
+                                 retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
                                   bitsPerDepth:a_settings.m_depthBits 
                                 bitsPerStencil:a_settings.m_stencilBits];

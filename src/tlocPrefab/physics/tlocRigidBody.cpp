@@ -12,16 +12,19 @@
 
 namespace tloc { namespace prefab { namespace physics {
 
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBody
+
   using namespace core_conts;
   using namespace core_cs;
   using tloc::physics::box2d::rigid_body_def_sptr;
   using tloc::physics::box2d::RigidBodyShapeDef;
 
-  Entity*
-    CreateRigidBody
-    (EntityManager& a_mgr,
-     ComponentPoolManager& a_poolMgr,
-     rigid_body_def_sptr a_rbDef)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RigidBody::entity_type*
+    RigidBody::
+    Create(const rb_def_sptr& a_rbDef)
   {
     using namespace math_cs;
     using namespace math_cs::components;
@@ -31,27 +34,27 @@ namespace tloc { namespace prefab { namespace physics {
 
     transform_f32_sptr_pool_sptr                    tPool;
 
-    if (a_poolMgr.Exists(transform) == false)
-    { tPool = a_poolMgr.CreateNewPool<transform_sptr>(); }
+    if (m_compPoolMgr->Exists(transform) == false)
+    { tPool = m_compPoolMgr->CreateNewPool<transform_sptr>(); }
     else
-    { tPool = a_poolMgr.GetPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->GetPool<transform_sptr>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
     itrTransform->SetValue(transform_sptr(new Transform()) );
 
-    Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetValue()) );
+    entity_type* ent = m_entMgr->CreateEntity();
+    m_entMgr->InsertComponent(ent, &*(itrTransform->GetValue()) );
 
-    AddRigidBody(ent, a_mgr, a_poolMgr, a_rbDef);
+    Add(ent, a_rbDef);
 
     return ent;
   }
 
-  void AddRigidBody
-    (Entity* a_ent,
-     EntityManager& a_mgr,
-     ComponentPoolManager& a_poolMgr,
-     rigid_body_def_sptr a_rbDef)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RigidBody::
+    Add(entity_type* a_ent, const rb_def_sptr& a_rbDef)
   {
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
@@ -62,23 +65,25 @@ namespace tloc { namespace prefab { namespace physics {
     core_sptr::SharedPtr<rb_pool>     rbPool;
 
     // Create the RigidBody (and the RigidBody pool if necessary)
-    if (a_poolMgr.Exists(k_rigidBody) == false)
-    { rbPool = a_poolMgr.CreateNewPool<rigid_body_sptr>(); }
+    if (m_compPoolMgr->Exists(k_rigidBody) == false)
+    { rbPool = m_compPoolMgr->CreateNewPool<rigid_body_sptr>(); }
     else
-    { rbPool = a_poolMgr.GetPool<rigid_body_sptr>(); }
+    { rbPool = m_compPoolMgr->GetPool<rigid_body_sptr>(); }
 
     typedef rigid_body_sptr_pool      rb_pool;
 
     rb_pool::iterator itrRb = rbPool->GetNext();
-    itrRb->SetValue(rigid_body_sptr(new RigidBody(a_rbDef)) );
+    itrRb->SetValue(rigid_body_sptr(new phys_cs::RigidBody(a_rbDef)) );
 
-    a_mgr.InsertComponent(a_ent, &*(itrRb->GetValue()) );
+    m_entMgr->InsertComponent(a_ent, &*(itrRb->GetValue()) );
   }
 
-  void AddRigidBodyShape(Entity* a_ent,
-                         EntityManager& a_mgr,
-                         ComponentPoolManager& a_poolMgr,
-                         RigidBodyShapeDef a_rbShape)
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBodyShape
+
+  void
+    RigidBodyShape::
+    Add(Entity* a_ent, RigidBodyShapeDef a_rbShape)
   {
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
@@ -89,24 +94,24 @@ namespace tloc { namespace prefab { namespace physics {
     core_sptr::SharedPtr<rb_shape_pool> rbShapePool;
 
     // Create the RigidBody (and the RigidBody pool if necessary)
-    if (a_poolMgr.Exists(k_rigidBodyShape) == false)
-    { rbShapePool = a_poolMgr.CreateNewPool<rigid_body_shape_sptr>(); }
+    if (m_compPoolMgr->Exists(k_rigidBodyShape) == false)
+    { rbShapePool = m_compPoolMgr->CreateNewPool<rigid_body_shape_sptr>(); }
     else
-    { rbShapePool = a_poolMgr.GetPool<rigid_body_shape_sptr>(); }
+    { rbShapePool = m_compPoolMgr->GetPool<rigid_body_shape_sptr>(); }
 
 
     rb_shape_pool::iterator itrRbShape = rbShapePool->GetNext();
-    itrRbShape->SetValue(rigid_body_shape_sptr(new RigidBodyShape(a_rbShape)) );
+    itrRbShape->SetValue(rigid_body_shape_sptr
+      (new phys_cs::RigidBodyShape(a_rbShape)) );
 
-    a_mgr.InsertComponent(a_ent, &*(itrRbShape->GetValue()) );
+    m_entMgr->InsertComponent(a_ent, &*(itrRbShape->GetValue()) );
   }
 
-  void AddRigidBodyShape
-    (Entity* a_ent,
-     EntityManager& a_mgr,
-     ComponentPoolManager& a_poolMgr,
-     const core_conts::
-     tl_array<const RigidBodyShapeDef>::type& a_rbShapes)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RigidBodyShape::
+    Add(entity_type* a_ent, const rb_shape_def_cont& a_rbShapes)
   {
     typedef tl_array<const RigidBodyShapeDef>::type
       rb_shape_ptr_array;
@@ -118,14 +123,16 @@ namespace tloc { namespace prefab { namespace physics {
 
     for (/* */; itr != itrEnd; ++itr)
     {
-      AddRigidBodyShape(a_ent, a_mgr, a_poolMgr, *itr);
+      Add(a_ent, *itr);
     }
   }
 
-  void AddRigidBodyListener(Entity* a_ent,
-                            EntityManager& a_mgr,
-                            ComponentPoolManager& a_poolMgr,
-                            tloc::physics::RigidBodyListener* a_listener)
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBodyListener
+
+  void
+    RigidBodyListener::
+    Add(entity_type* a_ent, rb_listener* a_listener)
   {
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
@@ -136,18 +143,18 @@ namespace tloc { namespace prefab { namespace physics {
     rigid_body_listener_sptr_pool_sptr      rbListenerPool;
 
     // Create the RigidBody (and the RigidBody pool if necessary)
-    if (a_poolMgr.Exists(k_rigidBodyListener) == false)
-    { rbListenerPool = a_poolMgr.CreateNewPool<rigid_body_listener_sptr>(); }
+    if (m_compPoolMgr->Exists(k_rigidBodyListener) == false)
+    { rbListenerPool = m_compPoolMgr->CreateNewPool<rigid_body_listener_sptr>(); }
     else
-    { rbListenerPool = a_poolMgr.GetPool<rigid_body_listener_sptr>(); }
+    { rbListenerPool = m_compPoolMgr->GetPool<rigid_body_listener_sptr>(); }
 
     typedef rigid_body_listener_sptr_pool rb_listener_pool;
 
     rb_listener_pool::iterator itrRbListener = rbListenerPool->GetNext();
     itrRbListener->SetValue
-      (rigid_body_listener_sptr(new RigidBodyListener(a_listener)) );
+      (rigid_body_listener_sptr( new rb_listener_comp(a_listener)) );
 
-    a_mgr.InsertComponent(a_ent, &*(itrRbListener->GetValue()) );
+    m_entMgr->InsertComponent(a_ent, itrRbListener->GetValue().get() );
   }
 
 };};};

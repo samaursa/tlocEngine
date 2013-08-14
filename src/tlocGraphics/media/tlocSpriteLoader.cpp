@@ -293,9 +293,9 @@ namespace tloc { namespace graphics { namespace media {
         itr->m_texCoordStart[1] = texToSpriteY.ScaleDown(itr->m_startingPos[1]);
 
         itr->m_texCoordEnd[0] = itr->m_texCoordStart[0] +
-                                texToSpriteX.ScaleDown(itr->m_dimensions[0]);
+                                texToSpriteX.ScaleDown(itr->m_dimensions[0] - 1);
         itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] +
-                                texToSpriteY.ScaleDown(itr->m_dimensions[1]);
+                                texToSpriteY.ScaleDown(itr->m_dimensions[1] - 1);
 
         // sprite sheet packer y-coord starts from the top, OpenGL start
         // from the bottom, so we need to flip the y-coords

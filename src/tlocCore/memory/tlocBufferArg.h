@@ -3,6 +3,8 @@
 
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace core { namespace memory {
 
@@ -12,10 +14,18 @@ namespace tloc { namespace core { namespace memory {
   template <typename T_Char = char8>
   class BufferArg
   {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Char, char8>::value ||
+      Loki::IsSameType<T_Char, char32>::value),
+      Buffer_arg_only_supports_char_types);
+
   public:
-    typedef T_Char          value_type;
-    typedef value_type      char_type;
-    typedef tl_size         size_type;
+    typedef T_Char            value_type;
+    typedef value_type        char_type;
+    typedef tl_size           size_type;
+
+    typedef string::StringBase<char_type> string_type;
+
   public:
 
     ///-------------------------------------------------------------------------
@@ -26,8 +36,7 @@ namespace tloc { namespace core { namespace memory {
     BufferArg(const char_type* a_buffer);
     BufferArg(const char_type* a_buffer, size_type a_end);
 
-    template <typename T_String>
-    BufferArg(T_String const& a_string);
+    BufferArg(const string_type& a_string);
 
     ///-------------------------------------------------------------------------
     /// @brief

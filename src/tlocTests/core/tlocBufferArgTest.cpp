@@ -21,6 +21,20 @@ namespace TestingBufferPtr
       const char* implicitConversion = buffPtr;
       CHECK(StrCmp(implicitConversion, buffPtr) == 0);
     }
+
+    {
+      char* someBuff = "ABCDEFGHIJKLMNOPQRST";
+      BufferArg buffPtr(someBuff);
+      CHECK(buffPtr.IsValid() == true);
+    }
+
+    {
+      char someBuff[] = {'a', 'b', 'c', 'd', '\0'};
+      BufferArg buffPtr(someBuff);
+      CHECK(buffPtr.IsValid() == true);
+      CHECK( (StrCmp("abcd", buffPtr) == 0) );
+    }
+
     {
       String someStr = "ABCDEFGHIJKLMNOP";
       BufferArg buffPtr(someStr);

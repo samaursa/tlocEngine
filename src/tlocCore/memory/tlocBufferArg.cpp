@@ -1,7 +1,5 @@
 #include "tlocBufferArg.h"
 
-#include <tlocCore/string/tlocString.h>
-
 namespace tloc { namespace core { namespace memory {
 
 #define TLOC_BUFFER_ARG_TEMPS   typename T_Char
@@ -32,10 +30,9 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  template <typename T_String>
   BufferArg<TLOC_BUFFER_ARG_PARAMS>::
-    BufferArg(const T_String& a_string)
-    : m_buffer(a_string.c_str()), m_end(a_string.end())
+    BufferArg(const string_type& a_string)
+    : m_buffer(a_string.begin()), m_end(a_string.end())
   {
   }
 
@@ -122,10 +119,6 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
-  template BufferArg<char8>;
-  template BufferArg<char32>;
-
-  template BufferArg<char>::BufferArg(const string::String& a_string);
-  template BufferArg<char32>::BufferArg(const string::StringW& a_string);
-
+  template class BufferArg<char8>;
+  template class BufferArg<char32>;
 };};};

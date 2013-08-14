@@ -32,16 +32,6 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  template <typename T_String>
-  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
-    BufferArg(const T_String& a_string)
-    : m_buffer(a_string.c_str()), m_end(a_string.end())
-  {
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_BUFFER_ARG_TEMPS>
   bool
     BufferArg<TLOC_BUFFER_ARG_PARAMS>::
     IsValid() const
@@ -119,13 +109,35 @@ namespace tloc { namespace core { namespace memory {
     return s_maximumValidBufferSize;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  template <typename T_String>
+  void
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    DoInit(T_String const& a_string, p_buffer_arg::string_type)
+  {
+    m_buffer = a_string.begin();
+    m_end = a_string.end();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  void
+    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    DoInit(const char_type* a_buffer, p_buffer_arg::char_type)
+  {
+    m_buffer = a_buffer;
+  }
+
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
   template BufferArg<char8>;
   template BufferArg<char32>;
 
-  template BufferArg<char>::BufferArg(const string::String& a_string);
-  template BufferArg<char32>::BufferArg(const string::StringW& a_string);
+  template void BufferArg<char>::DoInit(const string::String& a_string, type_false);
+  template void BufferArg<char32>::DoInit(const string::StringW& a_string, type_false);
 
 };};};

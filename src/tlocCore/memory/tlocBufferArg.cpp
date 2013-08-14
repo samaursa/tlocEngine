@@ -1,7 +1,5 @@
 #include "tlocBufferArg.h"
 
-#include <tlocCore/string/tlocString.h>
-
 namespace tloc { namespace core { namespace memory {
 
 #define TLOC_BUFFER_ARG_TEMPS   typename T_Char
@@ -26,6 +24,15 @@ namespace tloc { namespace core { namespace memory {
   BufferArg<TLOC_BUFFER_ARG_PARAMS>::
     BufferArg(const char_type* a_buffer, size_type a_end)
     : m_buffer(a_buffer), m_end(a_buffer + a_end)
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BUFFER_ARG_TEMPS>
+  BufferArg<TLOC_BUFFER_ARG_PARAMS>::
+    BufferArg(const string_type& a_string)
+    : m_buffer(a_string.begin()), m_end(a_string.end())
   {
   }
 
@@ -109,35 +116,9 @@ namespace tloc { namespace core { namespace memory {
     return s_maximumValidBufferSize;
   }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_BUFFER_ARG_TEMPS>
-  template <typename T_String>
-  void
-    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
-    DoInit(T_String const& a_string, p_buffer_arg::string_type)
-  {
-    m_buffer = a_string.begin();
-    m_end = a_string.end();
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_BUFFER_ARG_TEMPS>
-  void
-    BufferArg<TLOC_BUFFER_ARG_PARAMS>::
-    DoInit(const char_type* a_buffer, p_buffer_arg::char_type)
-  {
-    m_buffer = a_buffer;
-  }
-
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
-  template BufferArg<char8>;
-  template BufferArg<char32>;
-
-  template void BufferArg<char>::DoInit(const string::String& a_string, type_false);
-  template void BufferArg<char32>::DoInit(const string::StringW& a_string, type_false);
-
+  template class BufferArg<char8>;
+  template class BufferArg<char32>;
 };};};

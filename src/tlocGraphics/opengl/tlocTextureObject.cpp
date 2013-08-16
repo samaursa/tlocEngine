@@ -99,8 +99,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     return ErrorSuccess;
   }

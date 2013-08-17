@@ -54,14 +54,40 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // static variables initialization
+
+  namespace p_texture_object {
+    using namespace wrap_technique;
+    using namespace filter;
+
+    typedef wrap_technique::value_type  wvt;
+    typedef filter::value_type          fvt;
+
+    const wvt ClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt ClampToBorder::s_glEnumValue = GL_CLAMP_TO_BORDER;
+    const wvt MirroredRepeat::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt Repeat::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt MirrorClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+
+    const fvt Nearest::s_glEnumValue = GL_NEAREST;
+    const fvt Linear::s_glEnumValue = GL_LINEAR;
+    const fvt NearestMipmapNearest::s_glEnumValue = GL_NEAREST_MIPMAP_NEAREST;
+    const fvt LinearMipmapNearest::s_glEnumValue = GL_LINEAR_MIPMAP_NEAREST;
+    const fvt NearestMipmapLinear::s_glEnumValue = GL_NEAREST_MIPMAP_LINEAR;
+    const fvt LinearMipmapLinear::s_glEnumValue = GL_LINEAR_MIPMAP_LINEAR;
+
+  };
+
   //////////////////////////////////////////////////////////////////////////
   // TextureObject
 
   typedef TextureObject::error_type   error_type;
 
   TextureObject::
-    TextureObject()
+    TextureObject(const Params& a_params)
     : m_texType(GL_NONE)
+    , m_params(a_params)
   {
     object_handle handle;
     glGenTextures(1, &handle);
@@ -97,12 +123,20 @@ namespace tloc { namespace graphics { namespace gl {
       core_utils::CastNumber<GLsizei, size_type>(a_image.GetHeight()),
       0, GL_RGBA, GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
 
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    Update();
 
     return ErrorSuccess;
+  }
+
+  void
+    TextureObject::
+    Update()
+  {
+    TLOC_ASSERT(m_texType != GL_NONE, "Update parameters on a GL_NONE texture");
+    glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
+    glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
+    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
+    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
   }
 
   //------------------------------------------------------------------------

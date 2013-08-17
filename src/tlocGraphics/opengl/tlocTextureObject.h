@@ -30,9 +30,146 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
+  namespace p_texture_object
+  {
+    namespace wrap_technique
+    {
+      typedef s32         value_type;
+
+      struct ClampToEdge
+      { static const value_type s_glEnumValue; };
+      struct ClampToBorder
+      { static const value_type s_glEnumValue; };
+      struct MirroredRepeat
+      { static const value_type s_glEnumValue; };
+      struct Repeat
+      { static const value_type s_glEnumValue; };
+      struct MirrorClampToEdge
+      { static const value_type s_glEnumValue; };
+    };
+
+    namespace filter
+    {
+      typedef s32         value_type;
+
+      struct Nearest
+      { static const value_type s_glEnumValue; };
+      struct Linear
+      { static const value_type s_glEnumValue; };
+      struct NearestMipmapNearest
+      { static const value_type s_glEnumValue; };
+      struct LinearMipmapNearest
+      { static const value_type s_glEnumValue; };
+      struct NearestMipmapLinear
+      { static const value_type s_glEnumValue; };
+      struct LinearMipmapLinear
+      { static const value_type s_glEnumValue; };
+    };
+  };
+
   class TextureObject
     : public Object_T<TextureObject, p_object::WithError>
   {
+  public:
+    struct Params
+    {
+      typedef Params                                          this_type;
+      typedef p_texture_object::wrap_technique::value_type    wrap_value_type;
+      typedef p_texture_object::filter::value_type            filter_value_type;
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      Params()
+      {
+        using namespace p_texture_object::wrap_technique;
+        using namespace p_texture_object::filter;
+
+        // defaults
+        Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
+        MinFilter<Linear>().MagFilter<Linear>();
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_WrapTechnique>
+      this_type&
+        Wrap_S()
+      {
+        using namespace p_texture_object::wrap_technique;
+
+        tloc::type_traits::AssertTypeIsSupported<T_WrapTechnique,
+          ClampToEdge, ClampToBorder, MirroredRepeat,
+          Repeat, MirrorClampToEdge>();
+
+        m_wrap_s = T_WrapTechnique::s_glEnumValue;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_WrapTechnique>
+      this_type&
+        Wrap_T()
+      {
+        using namespace p_texture_object::wrap_technique;
+
+        tloc::type_traits::AssertTypeIsSupported<T_WrapTechnique,
+          ClampToEdge, ClampToBorder, MirroredRepeat,
+          Repeat, MirrorClampToEdge>();
+
+        m_wrap_t = T_WrapTechnique::s_glEnumValue;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_Filter>
+      this_type&
+        MinFilter()
+      {
+        using namespace p_texture_object::filter;
+
+        tloc::type_traits::AssertTypeIsSupported<T_Filter,
+          Nearest, Linear, NearestMipmapNearest, LinearMipmapNearest,
+          NearestMipmapLinear, LinearMipmapLinear>();
+
+        m_minFilter = T_Filter::s_glEnumValue;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_Filter>
+      this_type&
+        MagFilter()
+      {
+        using namespace p_texture_object::filter;
+
+        tloc::type_traits::AssertTypeIsSupported<T_Filter,
+          Nearest, Linear>();
+
+        m_magFilter = T_Filter::s_glEnumValue;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      TLOC_DECL_AND_DEF_GETTER
+        (wrap_value_type, GetWrap_S, m_wrap_s);
+      TLOC_DECL_AND_DEF_GETTER
+        (wrap_value_type, GetWrap_T, m_wrap_t);
+      TLOC_DECL_AND_DEF_GETTER
+        (filter_value_type, GetMinFilter, m_minFilter);
+      TLOC_DECL_AND_DEF_GETTER
+        (filter_value_type, GetMagFilter, m_magFilter);
+
+    private:
+      wrap_value_type       m_wrap_s;
+      wrap_value_type       m_wrap_t;
+      filter_value_type     m_minFilter;
+      filter_value_type     m_magFilter;
+    };
+
   public:
     template <typename T> friend class ObjectRefCounted;
 
@@ -44,7 +181,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef media::Image                                  image_type;
 
   public:
-    TextureObject();
+    TextureObject(const Params& a_params = Params());
     ~TextureObject();
 
     template <typename T_Target>
@@ -52,12 +189,17 @@ namespace tloc { namespace graphics { namespace gl {
     error_type  Initialize(const image_type& a_image);
 
     error_type  Activate(s32 a_texUnit);
+    void        Update();
+
+    TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
   private:
     error_type  DoBind(texture_type a_texType);
 
   private:
     texture_type m_texType;
+    Params       m_params;
 
   };
 

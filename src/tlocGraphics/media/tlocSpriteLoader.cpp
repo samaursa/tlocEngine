@@ -287,15 +287,21 @@ namespace tloc { namespace graphics { namespace media {
       iterator itr = m_spriteInfo.begin();
       iterator itrEnd = m_spriteInfo.end();
 
+      // we need to include the last row and col due to precision errors
+      // NOTE: You should have at least 1 pixel transparent padding around each
+      // sprite
+      const f32 oneRow = texToSpriteX.ScaleDown(1);
+      const f32 oneCol = texToSpriteY.ScaleDown(1);
+
       while (itr != itrEnd)
       {
         itr->m_texCoordStart[0] = texToSpriteX.ScaleDown(itr->m_startingPos[0]);
         itr->m_texCoordStart[1] = texToSpriteY.ScaleDown(itr->m_startingPos[1]);
 
-        itr->m_texCoordEnd[0] = itr->m_texCoordStart[0] +
-                                texToSpriteX.ScaleDown(itr->m_dimensions[0]);
-        itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] +
-                                texToSpriteY.ScaleDown(itr->m_dimensions[1]);
+        itr->m_texCoordEnd[0] = itr->m_texCoordStart[0] + oneRow +
+                                texToSpriteX.ScaleDown(itr->m_dimensions[0] - 1);
+        itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] + oneCol +
+                                texToSpriteY.ScaleDown(itr->m_dimensions[1] - 1);
 
         // sprite sheet packer y-coord starts from the top, OpenGL start
         // from the bottom, so we need to flip the y-coords

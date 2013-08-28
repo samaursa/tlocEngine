@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:9367a3e2d889d7dc49a355fe1f606887$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="animation_spawn_alpha.png" width="2380" height="2040">
+    <sprite n="animation_spawn_alpha_000.png" x="0" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_001.png" x="340" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_002.png" x="680" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_003.png" x="1020" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_004.png" x="1360" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_005.png" x="1700" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_006.png" x="2040" y="0" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_007.png" x="0" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_008.png" x="340" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_009.png" x="680" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_010.png" x="1020" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_011.png" x="1360" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_012.png" x="1700" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_013.png" x="2040" y="340" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_014.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_015.png" x="340" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_016.png" x="680" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_017.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_018.png" x="1020" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_019.png" x="340" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_020.png" x="1360" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_021.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_022.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_023.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_024.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_025.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_026.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_027.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_028.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_029.png" x="0" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_030.png" x="1700" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_031.png" x="2040" y="680" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_032.png" x="0" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_033.png" x="340" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_034.png" x="680" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_035.png" x="1020" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_036.png" x="1360" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_037.png" x="1700" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_038.png" x="2040" y="1020" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_039.png" x="0" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_040.png" x="340" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_041.png" x="680" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_042.png" x="1020" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_043.png" x="1360" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_044.png" x="1700" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_045.png" x="2040" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_046.png" x="0" y="1700" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_047.png" x="1700" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_048.png" x="340" y="1700" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_049.png" x="2040" y="1360" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_050.png" x="680" y="1700" w="340" h="340"/>
+    <sprite n="animation_spawn_alpha_051.png" x="1700" y="1360" w="340" h="340"/>
+</TextureAtlas>

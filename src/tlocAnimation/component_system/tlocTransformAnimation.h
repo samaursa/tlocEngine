@@ -14,10 +14,10 @@
 namespace tloc { namespace animation { namespace component_system {
 
   class TransformAnimation
-    : public core_cs::Component_T<TransformAnimation, keyframe_animation>
+    : public core_cs::Component_T<TransformAnimation, components::transform_animation>
   {
   public:
-    typedef keyframe_set_mat4f64                    keyframe_set_type;
+    typedef types::keyframe_set_mat4f64                    keyframe_set_type;
 
     struct KeyframeSetInfo
     {
@@ -39,7 +39,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   public:
     typedef TransformAnimation                                      this_type;
-    typedef Component_T<this_type, components::keyframe_animation>  base_type;
+    typedef Component_T<this_type, components::transform_animation> base_type;
     typedef tl_size                                                 size_type;
 
     typedef core_conts::Array<KeyframeSetInfo>      cont_type;
@@ -48,10 +48,10 @@ namespace tloc { namespace animation { namespace component_system {
   public:
     TransformAnimation();
 
-    void AddKeyframe(const keyframe_set_type& a_keyframe);
-    void ModifyKeyframe(const keyframe_set_type& a_keyframe,
+    void AddKeyframeSet(const keyframe_set_type& a_keyframe);
+    void ModifyKeyframeSet(const keyframe_set_type& a_keyframe,
                         size_type a_index);
-    void RemoveKeyframe(size_type a_index);
+    void RemoveKeyframeSet(size_type a_index);
 
     keyframe_set_type&         GetKeyframeSet(size_type a_index);
     const keyframe_set_type&   GetKeyframeSet(size_type a_index) const;
@@ -85,8 +85,13 @@ namespace tloc { namespace animation { namespace component_system {
   private:
     cont_type     m_keyframeSets;
     size_type     m_currentSet;
-
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(TransformAnimation, transform_animation);
+  TLOC_TYPEDEF_COMPONENT_POOL(transform_animation_sptr, transform_animation_sptr);
 
 };};};
 

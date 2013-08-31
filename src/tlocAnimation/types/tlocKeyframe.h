@@ -127,6 +127,7 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSet, m_currentSet);
 
     TLOC_DECL_AND_DEF_SETTER(size_type, SetCurrentSet, m_currentSet);
+
   private:
     void      DoResizeSetToAccomodate(set_index a_index);
 

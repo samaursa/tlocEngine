@@ -8,10 +8,10 @@ set(TLOC_ANIMATION
 
 set(TLOC_ANIMATION_COMPONENT_SYSTEM
   component_system/tlocComponentType.h
-  component_system/tlocKeyframeAnimation.h
-  component_system/tlocKeyframeAnimation.cpp
-  component_system/tlocKeyframeAnimationSystem.h
-  component_system/tlocKeyframeAnimationSystem.cpp
+  component_system/tlocTransformAnimation.h
+  component_system/tlocTransformAnimation.cpp
+  component_system/tlocTransformAnimationSystem.h
+  component_system/tlocTransformAnimationSystem.cpp
   component_system/tloc_component_system.cpp 
   component_system/tloc_component_system.h 
   component_system/tloc_component_system.inl.h

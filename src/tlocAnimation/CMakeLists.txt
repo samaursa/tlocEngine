@@ -7,6 +7,7 @@ set(TLOC_ANIMATION
   )
 
 set(TLOC_ANIMATION_COMPONENT_SYSTEM
+  component_system/tlocComponentType.h
   component_system/tlocKeyframeAnimation.h
   component_system/tlocKeyframeAnimation.cpp
   component_system/tlocKeyframeAnimationSystem.h
@@ -24,8 +25,9 @@ set(TLOC_GRAPHICS_ERROR
   )
 
 set(TLOC_GRAPHICS_TYPES 
-  types/tlocKeyframe.cpp 
   types/tlocKeyframe.h 
+  types/tlocKeyframe.inl.h
+  types/tlocKeyframe.cpp 
   types/tloc_types.cpp 
   types/tloc_types.h 
   types/tloc_types.inl.h

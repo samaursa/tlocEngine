@@ -66,6 +66,8 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSet_T<KEYFRAME_SET_PARAMS>::
     KeyframeSet_T()
     : m_currentSet(0)
+    , m_currentFrame(0)
+    , m_currentKeyframePair(core::MakePair(0, 0))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -74,7 +76,8 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSet_T<KEYFRAME_SET_PARAMS>::
     KeyframeSet_T(const cont_set_type& a_keyframes)
     : m_keyframeSets(a_keyframes)
-    , m_currentSet(0)
+    , m_currentFrame(0)
+    , m_currentKeyframePair(core::MakePair(0, 0))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -84,6 +87,14 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSet_T<KEYFRAME_SET_PARAMS>::
     AddKeyframe(const keyframe_type& a_keyframe, set_index a_setIndex)
   {
+    // we start with the first two keyframes as a pair
+    if (m_currentKeyframePair.first == 0 &&
+        m_currentKeyframePair.second == 0 &&
+        m_keyframeSets.size() > 1)
+    {
+      m_currentKeyframePair = core::MakePair(0, 1);
+    }
+
     DoResizeSetToAccomodate(a_setIndex);
     m_keyframeSets[a_setIndex]->push_back(a_keyframe);
     return m_keyframeSets.size() - 1;
@@ -151,6 +162,95 @@ namespace tloc { namespace animation { namespace types {
     GetKeyframes(set_index a_setIndex) const
   {
     return m_keyframeSets[a_setIndex];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <KEYFRAME_SET_TEMPS>
+  void
+    KeyframeSet_T<KEYFRAME_SET_PARAMS>::
+    NextFrame()
+  {
+    TLOC_ASSERT(m_keyframeSets.size() > 0, "No keyframes in set");
+
+    ++m_currentFrame;
+    if ( m_currentKeyframePair.second < m_currentFrame)
+    {
+      m_currentKeyframePair.first = m_currentKeyframePair.second;
+      ++m_currentKeyframePair.second;
+
+      if (m_currentKeyframePair.second >= m_keyframeSets.size())
+      {
+        --m_currentKeyframePair.second;
+      }
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <KEYFRAME_SET_TEMPS>
+  void
+    KeyframeSet_T<KEYFRAME_SET_PARAMS>::
+    PrevFrame()
+  {
+    TLOC_ASSERT(m_keyframeSets.size() > 0, "No keyframes in set");
+
+    if (m_currentFrame == 0)
+    {
+      m_currentKeyframePair.first = 0;
+      m_currentKeyframePair.second = 1;
+
+      if (m_currentKeyframePair.second == m_keyframeSets.size())
+      {
+        m_currentKeyframePair.second = 0;
+      }
+    }
+    else
+    {
+      --m_currentFrame;
+
+      if (m_currentKeyframePair.first > m_currentFrame)
+      {
+        --m_currentKeyframePair.first;
+        --m_currentKeyframePair.second;
+      }
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <KEYFRAME_SET_TEMPS>
+  void
+    KeyframeSet_T<KEYFRAME_SET_PARAMS>::
+    SetCurrentFrame(size_type a_currentFrame)
+  {
+    cont_type::iterator itr     = m_keyframeSets[m_currentSet]->begin(),
+                        itrEnd  = m_keyframeSets[m_currentSet]->end();
+
+    size_type counter = 0;
+    while (itr != itrEnd)
+    {
+      keyframe_type& kf = *itr;
+
+      if (kf.GetFrame() <= a_currentFrame)
+      {
+        if (counter == m_keyframeSets[m_currentSet]->size() - 1)
+        {
+          m_currentKeyframePair = core::MakePair(counter, counter);
+        }
+        else
+        {
+          m_currentKeyframePair = core::MakePair(counter, counter + 1);
+        }
+
+        break;
+      }
+
+      ++itr;
+      ++counter;
+    }
+
+    m_currentFrame = a_currentFrame;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

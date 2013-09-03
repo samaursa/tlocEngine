@@ -81,6 +81,32 @@ namespace tloc { namespace animation { namespace component_system {
 
     const entity_type* ent = a_ent;
 
+    anim_cs::TransformAnimation* transAnim =
+      ent->GetComponent<anim_cs::TransformAnimation>(0);
+
+    f64 diff = m_totalTime - transAnim->GetStartTime();
+    f64 fps = transAnim->GetFrameDeltaT();
+
+    while (diff > fps)
+    {
+      if (transAnim->IsPaused() == false &&
+        transAnim->IsStopped() == false)
+      {
+        transAnim->NextFrame();
+      }
+
+      transAnim->SetStartTime(transAnim->GetStartTime() + fps);
+      diff = m_totalTime - transAnim->GetStartTime();
+    }
+
+    if (ent->HasComponent(components::transform_animation) &&
+        transAnim->IsTransformSetChanged())
+    {
+      math_cs::Transform* transPtr =
+        ent->GetComponent<math_cs::Transform>(0);
+      TLOC_UNUSED(transPtr);
+    }
+
     const tl_size size =
       ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
 
@@ -89,20 +115,6 @@ namespace tloc { namespace animation { namespace component_system {
       anim_cs::TransformAnimation* transAnim =
         ent->GetComponent<anim_cs::TransformAnimation>(i);
 
-      f64 diff = m_totalTime - transAnim->GetStartTime();
-      f64 fps = transAnim->GetFrameDeltaT();
-
-      while (diff > fps)
-      {
-        if (transAnim->IsPaused() == false &&
-            transAnim->IsStopped() == false)
-        {
-          transAnim->NextFrame();
-        }
-
-        transAnim->SetStartTime(transAnim->GetStartTime() + fps);
-        diff = m_totalTime - transAnim->GetStartTime();
-      }
 
       if (ent->HasComponent(components::transform_animation) &&
           transAnim->IsTransformSetChanged())

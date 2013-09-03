@@ -110,19 +110,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     NextFrame()
   {
-    const size_type setSize = m_keyframeSets[m_currentSet].m_keyframes.GetNumSets();
-    size_type currentFrame = m_keyframeSets[m_currentSet].m_keyframes.GetCurrentSet();
-
-    ++currentFrame;
-    if (currentFrame >= setSize)
-    {
-      if (m_keyframeSets[m_currentSet].m_flags.IsMarked(k_looping))
-      { currentFrame = 0; }
-      else
-      { currentFrame = setSize - 1; }
-    }
-
-    SetFrame(currentFrame);
+    m_keyframeSets[m_currentSet].m_keyframes.NextFrame();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -131,20 +119,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     PrevFrame()
   {
-    const size_type setSize = m_keyframeSets[m_currentSet].m_keyframes.GetNumSets();
-    size_type currentFrame = m_keyframeSets[m_currentSet].m_keyframes.GetCurrentSet();
-
-    currentFrame--;
-    if (currentFrame >= setSize)
-    {
-      if (m_keyframeSets[m_currentSet].m_flags.IsMarked(k_looping))
-      { currentFrame = setSize - 1; }
-      else
-      { currentFrame = 0; }
-    }
-
-    m_keyframeSets[m_currentSet].m_keyframes.SetCurrentSet(currentFrame);
-    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+    m_keyframeSets[m_currentSet].m_keyframes.PrevFrame();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

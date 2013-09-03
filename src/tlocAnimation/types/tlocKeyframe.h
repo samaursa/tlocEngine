@@ -44,7 +44,7 @@ namespace tloc { namespace animation { namespace types {
 
   public:
     typedef T                                     value_type;
-    typedef tl_int                                index_type;
+    typedef tl_size                               index_type;
     typedef core_t::StrongType_T<index_type, 0>   interpolation_type;
 
   public:
@@ -103,6 +103,7 @@ namespace tloc { namespace animation { namespace types {
     typedef tl_size                                     size_type;
 
     typedef core_t::StrongType_T<size_type, 0>          set_index;
+    typedef core::Pair<size_type, size_type>            index_pair;
 
   public:
     KeyframeSet_T();
@@ -123,10 +124,16 @@ namespace tloc { namespace animation { namespace types {
                                      set_index a_setIndex = set_index(0)) const;
     cont_type_sptr GetKeyframes(set_index a_setIndex = set_index(0)) const;
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_keyframeSets.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSet, m_currentSet);
+    void      NextFrame();
+    void      PrevFrame();
 
-    TLOC_DECL_AND_DEF_SETTER(size_type, SetCurrentSet, m_currentSet);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_keyframeSets.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSet, m_currentSet);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
+    TLOC_DECL_AND_DEF_GETTER(index_pair, GetCurrentKeyframePair, m_currentKeyframePair);
+
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentFrame);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentKeyframeSet, m_currentSet);
 
   private:
     void      DoResizeSetToAccomodate(set_index a_index);
@@ -134,6 +141,8 @@ namespace tloc { namespace animation { namespace types {
   private:
     cont_set_type   m_keyframeSets;
     size_type       m_currentSet;
+    size_type       m_currentFrame;
+    index_pair      m_currentKeyframePair;
 
   };
 

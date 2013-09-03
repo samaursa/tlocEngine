@@ -104,30 +104,32 @@ namespace tloc { namespace animation { namespace component_system {
     {
       math_cs::Transform* transPtr =
         ent->GetComponent<math_cs::Transform>(0);
-      TLOC_UNUSED(transPtr);
-    }
 
-    const tl_size size =
-      ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
+      typedef anim_cs::TransformAnimation::keyframe_set_type    kf_set;
 
-    for (tl_size i = 0; i < size; ++i)
-    {
-      anim_cs::TransformAnimation* transAnim =
-        ent->GetComponent<anim_cs::TransformAnimation>(i);
+      kf_set& currKfSet =
+        transAnim->GetKeyframeSet(transAnim->GetCurrentKeyframeSetIndex());
 
+      const kf_set::size_type currFrame = currKfSet.GetCurrentFrame();
+      const kf_set::size_type totalFrames = currKfSet.GetTotalFrames();
 
-      if (ent->HasComponent(components::transform_animation) &&
-          transAnim->IsTransformSetChanged())
-      {
-        math_cs::Transform* transPtr =
-          ent->GetComponent<math_cs::Transform>(i);
+      kf_set::index_pair kfIndexPair = currKfSet.GetCurrentKeyframePair();
 
-        TLOC_ASSERT(transPtr,
-          "Transform animation doesn't exist for corresponding animator");
+      const kf_set::keyframe_type& kf1 =
+        currKfSet.GetKeyframe(kfIndexPair.first,
+        kf_set::set_index(currKfSet.GetCurrentKeyframeSet()) );
 
-        //*transPtr =
-        //  transAnim->GetKeyframeSet(transAnim->GetCurrentKeyframeSetIndex());
-      }
+      const kf_set::keyframe_type& kf2 =
+        currKfSet.GetKeyframe(kfIndexPair.second,
+        kf_set::set_index(currKfSet.GetCurrentKeyframeSet()) );
+
+      // interpolate between the two keyframes (linear for now - this needs
+      // to change to accomodate for all different types of interpolations)
+      kf_set::keyframe_type::value_type
+        interpolatedVal = kf2.GetValue() *
+        (f32)currFrame/(f32)totalFrames + kf1.GetValue();
+
+      transPtr->SetTransformation(interpolatedVal);
     }
   }
 

@@ -17,7 +17,7 @@ namespace tloc { namespace animation { namespace component_system {
     : public core_cs::Component_T<TransformAnimation, components::transform_animation>
   {
   public:
-    typedef types::keyframe_set_mat4f64                    keyframe_set_type;
+    typedef types::keyframe_set_mat4f32                    keyframe_set_type;
 
     struct KeyframeSetInfo
     {

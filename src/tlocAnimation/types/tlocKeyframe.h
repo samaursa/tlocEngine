@@ -130,6 +130,7 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_keyframeSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSet, m_currentSet);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
+    TLOC_DECL_GETTER(size_type, GetTotalFrames);
     TLOC_DECL_AND_DEF_GETTER(index_pair, GetCurrentKeyframePair, m_currentKeyframePair);
 
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentFrame);

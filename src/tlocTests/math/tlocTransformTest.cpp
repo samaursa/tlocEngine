@@ -99,6 +99,17 @@ namespace TestingTransform
       t.SetScale(scale);
 
       CHECK( (t.GetOrientation() == ori) );
+
+      t.SetTransformation(Mat4f32(1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1),
+                          Vec3f32(2, 2, 2));
+      CHECK_MATRIX4F(t.GetTransformation(),
+                     2, 0, 0, 0,
+                     0, 2, 0, 0,
+                     0, 0, 2, 0,
+                     0, 0, 0, 1);
     }
 
     SECTION("4x4 ctor", "")

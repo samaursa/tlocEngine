@@ -60,6 +60,9 @@ namespace tloc { namespace math { namespace component_system {
 
     void              SetPosition(const position_type& a_pos);
     void              SetOrientation(const orientation_type& a_ori);
+    void              SetTransformation(const transform_type& a_tr,
+                                        const scale_type& a_scale =
+                                        scale_type::ONE);
 
     this_type         Invert() const;
 

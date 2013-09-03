@@ -256,6 +256,22 @@ namespace tloc { namespace animation { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <KEYFRAME_SET_TEMPS>
+  const KEYFRAME_SET_TYPE::size_type
+    KeyframeSet_T<KEYFRAME_SET_PARAMS>::
+    GetTotalFrames() const
+  {
+    if (m_keyframeSets.size() > 0 &&
+        m_keyframeSets[m_currentSet]->size() > 0)
+    {
+      return m_keyframeSets[m_currentSet]->back().GetFrame();
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <KEYFRAME_SET_TEMPS>
   void
     KeyframeSet_T<KEYFRAME_SET_PARAMS>::
     DoResizeSetToAccomodate(set_index a_index)

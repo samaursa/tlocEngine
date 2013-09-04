@@ -53,6 +53,14 @@ set(TLOC_PREFAB_PHYSICS
   physics/tloc_physics.inl.h
   )
 
+set(TLOC_PREFAB_ANIMATION
+  animation/tloc_animation.h
+  animation/tloc_animation.inl.h
+  animation/tloc_animation.cpp
+  animation/tlocKeyframeAnimation.h
+  animation/tlocKeyframeAnimation.cpp
+  )
+
 #-------------------------------------------
 # Project setup
 
@@ -67,6 +75,7 @@ add_library(tlocPrefab STATIC
   ${TLOC_PREFAB_INPUT}
   ${TLOC_PREFAB_MATH}
   ${TLOC_PREFAB_PHYSICS}
+  ${TLOC_PREFAB_ANIMATION}
   )
 
 add_dependencies(tlocPrefab
@@ -84,4 +93,4 @@ source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})
 source_group(input            FILES ${TLOC_PREFAB_INPUT})
 source_group(math             FILES ${TLOC_PREFAB_MATH})
 source_group(physics          FILES ${TLOC_PREFAB_PHYSICS})
-
+source_group(animation        FILES ${TLOC_PREFAB_ANIMATION})

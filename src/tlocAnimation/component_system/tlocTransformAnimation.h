@@ -50,7 +50,7 @@ namespace tloc { namespace animation { namespace component_system {
 
     void AddKeyframeSet(const keyframe_set_type& a_keyframe);
     void ModifyKeyframeSet(const keyframe_set_type& a_keyframe,
-                        size_type a_index);
+                           size_type a_index);
     void RemoveKeyframeSet(size_type a_index);
 
     keyframe_set_type&         GetKeyframeSet(size_type a_index);

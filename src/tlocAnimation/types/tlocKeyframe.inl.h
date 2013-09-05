@@ -51,6 +51,9 @@ namespace tloc { namespace animation { namespace types {
     : m_loop(false)
     , m_stopOnLastFrame(true)
     , m_keyframes(new cont_type())
+    , m_currentFrame(0)
+    , m_totalFrames(0)
+    , m_currentPairIndex(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -60,7 +63,12 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     AddKeyframe(const keyframe_type& a_keyframe)
   {
+    TLOC_ASSERT( (m_keyframes->size() ?
+      m_keyframes->back().GetFrame() < a_keyframe.GetFrame() : true),
+      "Incoming keyframe has a smaller frame number than the previous keyframe");
+
     m_keyframes->push_back(a_keyframe);
+    m_totalFrames = a_keyframe.GetFrame();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -81,16 +89,27 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     NextFrame()
   {
-    TLOC_ASSERT(m_currentFrame < m_keyframes->size(),
+    const size_type totalFrames = GetTotalFrames();
+
+    TLOC_ASSERT(m_currentFrame < totalFrames,
       "m_currentFrame is at an invalid index");
 
     ++m_currentFrame;
-    if (m_currentFrame == m_keyframes->size())
+    if (m_currentFrame > totalFrames)
     {
       if (m_loop || m_stopOnLastFrame == false)
       { m_currentFrame = 0; }
       else
       { --m_currentFrame; }
+    }
+    else
+    {
+      if (operator[](m_currentPairIndex + 1).GetFrame() <= m_currentFrame)
+      {
+        ++m_currentPairIndex;
+        TLOC_ASSERT(m_currentPairIndex < m_keyframes->size(),
+          "m_currentPairIndex is out of bounds");
+      }
     }
   }
 
@@ -101,7 +120,9 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     PrevFrame()
   {
-    TLOC_ASSERT(m_currentFrame < m_keyframes->size(),
+    const size_type totalFrames = GetTotalFrames();
+
+    TLOC_ASSERT(m_currentFrame < totalFrames,
       "m_currentFrame is at an invalid index");
 
     if (m_currentFrame == 0)
@@ -110,7 +131,31 @@ namespace tloc { namespace animation { namespace types {
       { m_currentFrame = m_keyframes->size() - 1; }
     }
     else
-    { --m_currentFrame; }
+    {
+      --m_currentFrame;
+
+      if (operator[](m_currentPairIndex).GetFrame() > m_currentFrame)
+      {
+        TLOC_ASSERT(m_currentPairIndex > 0,
+          "m_currentPairIndx will go out of bounds");
+        --m_currentPairIndex;
+      }
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  TL_KEYFRAME_SEQUENCE_TYPE::kf_pair
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    GetKeyframePairAtCurrentFrame()
+  {
+    const size_type secondIndex =
+      m_currentPairIndex == m_keyframes->size() - 1 ?
+      m_currentPairIndex : m_currentPairIndex + 1;
+
+    return core::MakePair(operator[](m_currentPairIndex),
+                          operator[](secondIndex));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

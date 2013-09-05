@@ -46,6 +46,7 @@ namespace tloc { namespace animation { namespace types {
     typedef T                                     value_type;
     typedef tl_size                               index_type;
     typedef core_t::StrongType_T<index_type, 0>   interpolation_type;
+    typedef core_t::StrongType_T<index_type, 1>   relative_frame_number;
 
   public:
     Keyframe_T();
@@ -103,6 +104,8 @@ namespace tloc { namespace animation { namespace types {
     typedef core_sptr::SharedPtr<cont_type>             cont_type_sptr;
 
     typedef tl_size                                     size_type;
+    typedef core::Pair<keyframe_type,
+                       keyframe_type>                   kf_pair;
 
     typedef core_t::StrongType_T<bool, 0>               loop;
 
@@ -121,6 +124,8 @@ namespace tloc { namespace animation { namespace types {
     void      NextFrame();
     void      PrevFrame();
 
+    kf_pair   GetKeyframePairAtCurrentFrame();
+
     // standard container methods that are exposed
     keyframe_type&        operator[](size_type a_index);
     const keyframe_type&  operator[](size_type a_index) const;
@@ -128,6 +133,7 @@ namespace tloc { namespace animation { namespace types {
     size_type             size();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalFrames, m_totalFrames);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentFrame, m_currentFrame);
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
@@ -136,6 +142,8 @@ namespace tloc { namespace animation { namespace types {
   private:
     cont_type_sptr  m_keyframes;
     size_type       m_currentFrame;
+    size_type       m_totalFrames;
+    size_type       m_currentPairIndex;
   };
 
   // -----------------------------------------------------------------------
@@ -148,6 +156,9 @@ namespace tloc { namespace animation { namespace types {
     : m_loop(false)
     , m_stopOnLastFrame(true)
     , m_keyframes(new cont_type())
+    , m_currentFrame(0)
+    , m_totalFrames(0)
+    , m_currentPairIndex(0)
   {
     type_traits::AssertTypeIsSupported
       <T_KeyframeContainer::value_type,
@@ -177,6 +188,27 @@ namespace tloc { namespace animation { namespace types {
       m_keyframes->push_back(*itr);
     }
   }
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef KeyframeSequence_T<keyframe_f32>           keyframe_sequence_f32;
+  typedef KeyframeSequence_T<keyframe_vec2f32>       keyframe_sequence_vec2f32;
+  typedef KeyframeSequence_T<keyframe_vec3f32>       keyframe_sequence_vec3f32;
+  typedef KeyframeSequence_T<keyframe_vec4f32>       keyframe_sequence_vec4f32;
+
+  typedef KeyframeSequence_T<keyframe_f64>           keyframe_sequence_f64;
+  typedef KeyframeSequence_T<keyframe_vec2f64>       keyframe_sequence_vec2f64;
+  typedef KeyframeSequence_T<keyframe_vec3f64>       keyframe_sequence_vec3f64;
+  typedef KeyframeSequence_T<keyframe_vec4f64>       keyframe_sequence_vec4f64;
+
+  typedef KeyframeSequence_T<keyframe_mat2f32>       keyframe_sequence_mat2f32;
+  typedef KeyframeSequence_T<keyframe_mat3f32>       keyframe_sequence_mat3f32;
+  typedef KeyframeSequence_T<keyframe_mat4f32>       keyframe_sequence_mat4f32;
+
+  typedef KeyframeSequence_T<keyframe_mat2f64>       keyframe_sequence_mat2f64;
+  typedef KeyframeSequence_T<keyframe_mat3f64>       keyframe_sequence_mat3f64;
+  typedef KeyframeSequence_T<keyframe_mat4f64>       keyframe_sequence_mat4f64;
 
   // ///////////////////////////////////////////////////////////////////////
   // KeyframeSet

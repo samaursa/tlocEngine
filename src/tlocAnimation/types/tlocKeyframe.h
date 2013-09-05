@@ -87,6 +87,98 @@ namespace tloc { namespace animation { namespace types {
   typedef Keyframe_T<math_t::Mat4f64>           keyframe_mat4f64;
 
   // ///////////////////////////////////////////////////////////////////////
+  // KeyframeSequence_T
+
+  template <typename T_KeyframeType>
+  class KeyframeSequence_T
+  {
+  public:
+    typedef T_KeyframeType                              keyframe_type;
+    typedef KeyframeSequence_T<keyframe_type>           this_type;
+
+    typedef typename
+            core_conts::tl_array<keyframe_type>::type   cont_type;
+    typedef typename cont_type::iterator                iterator;
+    typedef typename cont_type::const_iterator          const_iterator;
+    typedef core_sptr::SharedPtr<cont_type>             cont_type_sptr;
+
+    typedef tl_size                                     size_type;
+
+    typedef core_t::StrongType_T<bool, 0>               loop;
+
+  public:
+    KeyframeSequence_T();
+    template <typename T_KeyframeContainer>
+    explicit KeyframeSequence_T(const T_KeyframeContainer& a_sequence);
+
+    void      AddKeyframe(const keyframe_type& a_keyframe);
+
+    template <typename T_KeyframeContainer>
+    void      AddKeyframes(const T_KeyframeContainer& a_sequence);
+
+    void      RemoveKeyframe(size_type a_index);
+
+    void      NextFrame();
+    void      PrevFrame();
+
+    // standard container methods that are exposed
+    keyframe_type&        operator[](size_type a_index);
+    const keyframe_type&  operator[](size_type a_index) const;
+    void                  clear();
+    size_type             size();
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentFrame, m_currentFrame);
+
+    TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
+    TLOC_DECL_PARAM_VAR(bool, StopOnLastFrame, m_stopOnLastFrame);
+
+  private:
+    cont_type_sptr  m_keyframes;
+    size_type       m_currentFrame;
+  };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_KeyframeType>
+  template <typename T_KeyframeContainer>
+  KeyframeSequence_T<T_KeyframeType>::
+    KeyframeSequence_T(const T_KeyframeContainer& a_sequence)
+    : m_loop(false)
+    , m_stopOnLastFrame(true)
+    , m_keyframes(new cont_type())
+  {
+    type_traits::AssertTypeIsSupported
+      <T_KeyframeContainer::value_type,
+       keyframe_type>();
+
+    m_keyframes->resize(a_sequence.size());
+    core::copy_all(a_sequence, m_keyframes->begin());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_KeyframeType>
+  template <typename T_KeyframeContainer>
+  void
+    KeyframeSequence_T<T_KeyframeType>::
+    AddKeyframes(const T_KeyframeContainer& a_sequence)
+  {
+    type_traits::AssertTypeIsSupported
+      <T_KeyframeContainer::value_type,
+       keyframe_type>();
+
+    T_KeyframeContainer::const_iterator itr = a_sequence.begin(),
+                                        itrEnd = a_sequence.end();
+
+    for (; itr != itrEnd; ++itr)
+    {
+      m_keyframes->push_back(*itr);
+    }
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // KeyframeSet
 
   template <typename T_KeyframeType>
@@ -94,7 +186,7 @@ namespace tloc { namespace animation { namespace types {
   {
   public:
     typedef T_KeyframeType                              keyframe_type;
-    typedef KeyframeSet_T<keyframe_type>                value_type;
+    typedef KeyframeSet_T<keyframe_type>                this_type;
     typedef typename
             core_conts::tl_array<keyframe_type>::type   cont_type;
     typedef core_sptr::SharedPtr<cont_type>             cont_type_sptr;
@@ -122,7 +214,7 @@ namespace tloc { namespace animation { namespace types {
 
     const keyframe_type& GetKeyframe(size_type a_index,
                                      set_index a_setIndex = set_index(0)) const;
-    cont_type_sptr GetKeyframes(set_index a_setIndex = set_index(0)) const;
+    cont_type_sptr GetKeyframeSet(set_index a_setIndex = set_index(0)) const;
 
     void      NextFrame();
     void      PrevFrame();
@@ -130,9 +222,10 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSets, m_keyframeSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSet, m_currentSet);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
+    TLOC_DECL_AND_DEF_GETTER(index_pair, GetCurrentKeyframePair, m_currentKeyframePair);
+
     TLOC_DECL_GETTER(size_type, GetTotalFrames);
     TLOC_DECL_GETTER(size_type, GetNumFramesCurrKeyframePair);
-    TLOC_DECL_AND_DEF_GETTER(index_pair, GetCurrentKeyframePair, m_currentKeyframePair);
 
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentFrame);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentKeyframeSet, m_currentSet);

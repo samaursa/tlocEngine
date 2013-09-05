@@ -125,12 +125,25 @@ namespace tloc { namespace animation { namespace component_system {
 
       // interpolate between the two keyframes (linear for now - this needs
       // to change to accomodate for all different types of interpolations)
+
+      const f32 mu = (f32)currFrame / (f32)totalFrames;
+
       kf_set::keyframe_type::value_type
-        interpolatedVal = kf2.GetValue() *
-        (f32)currFrame/(f32)totalFrames + kf1.GetValue();
+        interpolatedVal = kf2.GetValue() * mu + kf1.GetValue() * (1.0f - mu);
 
       transPtr->SetTransformation(interpolatedVal);
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void TransformAnimationSystem::
+    Post_ProcessActiveEntities(f64)
+  { }
+
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  template class core_sptr::SharedPtr<TransformAnimationSystem>;
 
 };};};

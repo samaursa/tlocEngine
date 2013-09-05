@@ -56,8 +56,8 @@ namespace tloc { namespace animation { namespace types {
   // ///////////////////////////////////////////////////////////////////////
   // KeyframeSet
 
-#define KEYFRAME_SET_TEMPS  typename T
-#define KEYFRAME_SET_PARAMS T
+#define KEYFRAME_SET_TEMPS  typename T_KeyframeType
+#define KEYFRAME_SET_PARAMS T_KeyframeType
 #define KEYFRAME_SET_TYPE   typename KeyframeSet_T<KEYFRAME_SET_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -87,16 +87,17 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSet_T<KEYFRAME_SET_PARAMS>::
     AddKeyframe(const keyframe_type& a_keyframe, set_index a_setIndex)
   {
+    DoResizeSetToAccomodate(a_setIndex);
+    m_keyframeSets[a_setIndex]->push_back(a_keyframe);
+
     // we start with the first two keyframes as a pair
     if (m_currentKeyframePair.first == 0 &&
         m_currentKeyframePair.second == 0 &&
-        m_keyframeSets.size() > 1)
+        m_keyframeSets[a_setIndex]->size() > 1)
     {
       m_currentKeyframePair = core::MakePair(0, 1);
     }
 
-    DoResizeSetToAccomodate(a_setIndex);
-    m_keyframeSets[a_setIndex]->push_back(a_keyframe);
     return m_keyframeSets.size() - 1;
   }
 
@@ -174,7 +175,8 @@ namespace tloc { namespace animation { namespace types {
     TLOC_ASSERT(m_keyframeSets.size() > 0, "No keyframes in set");
 
     ++m_currentFrame;
-    if ( m_currentKeyframePair.second < m_currentFrame)
+    if ( (*m_keyframeSets[m_currentSet])[m_currentKeyframePair.second].GetFrame()
+         < m_currentFrame)
     {
       m_currentKeyframePair.first = m_currentKeyframePair.second;
       ++m_currentKeyframePair.second;
@@ -200,7 +202,8 @@ namespace tloc { namespace animation { namespace types {
       m_currentKeyframePair.first = 0;
       m_currentKeyframePair.second = 1;
 
-      if (m_currentKeyframePair.second == m_keyframeSets.size())
+      if ( (*m_keyframeSets[m_currentSet])[m_currentKeyframePair.second].GetFrame()
+            == m_keyframeSets.size())
       {
         m_currentKeyframePair.second = 0;
       }

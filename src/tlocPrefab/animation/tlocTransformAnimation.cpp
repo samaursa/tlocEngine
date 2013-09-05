@@ -1,4 +1,4 @@
-#include "tlocKeyframeAnimation.h"
+#include "tlocTransformAnimation.h"
 
 #include <tlocAnimation/component_system/tlocComponentType.h>
 
@@ -10,12 +10,12 @@ namespace tloc { namespace prefab { namespace animation {
 
   using anim_cs::transform_animation_sptr;
 
-  typedef KeyframeAnimation::entity_type      entity_type;
+  typedef TransformAnimation::entity_type      entity_type;
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  KeyframeAnimation::
-    KeyframeAnimation(core_cs::EntityManager* a_entMgr,
+  TransformAnimation::
+    TransformAnimation(core_cs::EntityManager* a_entMgr,
                       core_cs::ComponentPoolManager* a_poolMgr)
                       : Prefab_I(a_entMgr, a_poolMgr)
   { }
@@ -23,7 +23,7 @@ namespace tloc { namespace prefab { namespace animation {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    KeyframeAnimation::
+    TransformAnimation::
     Add(entity_type* a_ent, const keyframe_set_type& a_keyframes)
   {
     using namespace anim_cs::components;

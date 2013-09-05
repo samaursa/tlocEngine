@@ -57,8 +57,8 @@ set(TLOC_PREFAB_ANIMATION
   animation/tloc_animation.h
   animation/tloc_animation.inl.h
   animation/tloc_animation.cpp
-  animation/tlocKeyframeAnimation.h
-  animation/tlocKeyframeAnimation.cpp
+  animation/tlocTransformAnimation.h
+  animation/tlocTransformAnimation.cpp
   )
 
 #-------------------------------------------

@@ -29,8 +29,6 @@ namespace tloc { namespace animation { namespace component_system {
       KeyframeSetInfo(const KeyframeSetInfo& a_other);
       explicit KeyframeSetInfo(const keyframe_set_type& a_keyframes);
 
-      this_type& operator=(const this_type& a_other);
-
       keyframe_set_type         m_keyframes;
       tl_float                  m_frameDeltaT;
       f64                       m_startTime;

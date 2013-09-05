@@ -11,16 +11,16 @@
 
 namespace tloc { namespace prefab { namespace animation {
 
-  class KeyframeAnimation
+  class TransformAnimation
     : public Prefab_I
   {
   public:
-    typedef KeyframeAnimation                                 this_type;
+    typedef TransformAnimation                                 this_type;
     typedef tl_size                                           size_type;
     typedef anim_cs::TransformAnimation::keyframe_set_type    keyframe_set_type;
 
   public:
-    KeyframeAnimation(core_cs::EntityManager* a_entMgr,
+    TransformAnimation(core_cs::EntityManager* a_entMgr,
              core_cs::ComponentPoolManager* a_poolMgr);
 
     void          Add(entity_type* a_ent, const keyframe_set_type& a_keyframes);

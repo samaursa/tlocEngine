@@ -3,6 +3,6 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
-#include <tlocPrefab/animation/tlocKeyframeAnimation.h>
+#include <tlocPrefab/animation/tlocTransformAnimation.h>
 
 #endif

@@ -23,7 +23,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   TransformAnimation::KeyframeSetInfo::
     KeyframeSetInfo()
-    : m_frameDeltaT(24)
+    : m_frameDeltaT(1.0f / 24.0f)
     , m_startTime(0)
     , m_flags(k_count)
   { }
@@ -33,7 +33,7 @@ namespace tloc { namespace animation { namespace component_system {
   TransformAnimation::KeyframeSetInfo::
     KeyframeSetInfo(const keyframe_set_type& a_keyframes)
     : m_keyframes(a_keyframes)
-    , m_frameDeltaT(24)
+    , m_frameDeltaT(1.0f / 24.0f)
     , m_startTime(0)
     , m_flags(k_count)
   { }
@@ -111,6 +111,7 @@ namespace tloc { namespace animation { namespace component_system {
     NextFrame()
   {
     m_keyframeSets[m_currentSet].m_keyframes.NextFrame();
+    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -120,6 +121,17 @@ namespace tloc { namespace animation { namespace component_system {
     PrevFrame()
   {
     m_keyframeSets[m_currentSet].m_keyframes.PrevFrame();
+    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    SetFrame(size_type a_index)
+  {
+    m_keyframeSets[m_currentSet].m_keyframes.SetCurrentFrame(a_index);
+    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -10,6 +10,8 @@
 
 #include <tlocAnimation/component_system/tlocTransformAnimation.h>
 
+#include <stdio.h>
+
 namespace tloc { namespace animation { namespace component_system {
 
   using namespace core_ds;
@@ -111,7 +113,7 @@ namespace tloc { namespace animation { namespace component_system {
         transAnim->GetKeyframeSet(transAnim->GetCurrentKeyframeSetIndex());
 
       const kf_set::size_type currFrame = currKfSet.GetCurrentFrame();
-      const kf_set::size_type totalFrames = currKfSet.GetTotalFrames();
+      const kf_set::size_type totalFrames = currKfSet.GetNumFramesCurrKeyframePair();
 
       kf_set::index_pair kfIndexPair = currKfSet.GetCurrentKeyframePair();
 
@@ -123,10 +125,12 @@ namespace tloc { namespace animation { namespace component_system {
         currKfSet.GetKeyframe(kfIndexPair.second,
         kf_set::set_index(currKfSet.GetCurrentKeyframeSet()) );
 
-      // interpolate between the two keyframes (linear for now - this needs
-      // to change to accomodate for all different types of interpolations)
+      const kf_set::size_type currRelativeFrame = currFrame - kf1.GetFrame();
 
-      const f32 mu = (f32)currFrame / (f32)totalFrames;
+      // interpolate between the two keyframes (linear for now - this needs
+      // to change to accommodate for all different types of interpolations)
+
+      const f32 mu = totalFrames == 0 ? 0 : (f32)currRelativeFrame / (f32)totalFrames;
 
       kf_set::keyframe_type::value_type
         interpolatedVal = kf2.GetValue() * mu + kf1.GetValue() * (1.0f - mu);

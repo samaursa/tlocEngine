@@ -91,7 +91,7 @@ namespace tloc { namespace animation { namespace types {
   {
     const size_type totalFrames = GetTotalFrames();
 
-    TLOC_ASSERT(m_currentFrame < totalFrames,
+    TLOC_ASSERT(m_currentFrame <= totalFrames,
       "m_currentFrame is at an invalid index");
 
     ++m_currentFrame;
@@ -122,7 +122,7 @@ namespace tloc { namespace animation { namespace types {
   {
     const size_type totalFrames = GetTotalFrames();
 
-    TLOC_ASSERT(m_currentFrame < totalFrames,
+    TLOC_ASSERT(m_currentFrame <= totalFrames,
       "m_currentFrame is at an invalid index");
 
     if (m_currentFrame == 0)
@@ -150,12 +150,8 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     GetKeyframePairAtCurrentFrame()
   {
-    const size_type secondIndex =
-      m_currentPairIndex == m_keyframes->size() - 1 ?
-      m_currentPairIndex : m_currentPairIndex + 1;
-
     return core::MakePair(operator[](m_currentPairIndex),
-                          operator[](secondIndex));
+                          operator[](DoGetSecondIndex()));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -196,6 +192,38 @@ namespace tloc { namespace animation { namespace types {
     clear()
   {
     m_keyframes->clear();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  TL_KEYFRAME_SEQUENCE_TYPE::size_type
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    GetFramesBetweenCurrentPair()
+  {
+    return GetFramesBetween(m_currentPairIndex, DoGetSecondIndex());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  TL_KEYFRAME_SEQUENCE_TYPE::size_type
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    GetFramesBetween(size_type a_index1, size_type a_index2)
+  {
+    return operator[](a_index2).GetFrame() - operator[](a_index1).GetFrame();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  TL_KEYFRAME_SEQUENCE_TYPE::size_type
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    DoGetSecondIndex()
+  {
+    return m_currentPairIndex == m_keyframes->size() - 1
+      ? m_currentPairIndex
+      : m_currentPairIndex + 1;
   }
 
   // -----------------------------------------------------------------------

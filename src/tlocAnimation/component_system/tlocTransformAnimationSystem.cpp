@@ -113,7 +113,7 @@ namespace tloc { namespace animation { namespace component_system {
         transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
 
       const kf_seq::size_type currFrame = currKfSeq.GetCurrentFrame();
-      const kf_seq::size_type totalFrames = currKfSeq.GetTotalFrames();
+      const kf_seq::size_type totalFrames = currKfSeq.GetFramesBetweenCurrentPair();
 
       kf_seq::kf_pair kfPair = currKfSeq.GetKeyframePairAtCurrentFrame();
 

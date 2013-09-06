@@ -132,12 +132,18 @@ namespace tloc { namespace animation { namespace types {
     void                  clear();
     size_type             size();
 
+    size_type             GetFramesBetweenCurrentPair();
+    size_type             GetFramesBetween(size_type a_index1, size_type a_index2);
+
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalFrames, m_totalFrames);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentFrame, m_currentFrame);
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
     TLOC_DECL_PARAM_VAR(bool, StopOnLastFrame, m_stopOnLastFrame);
+
+  private:
+    size_type       DoGetSecondIndex();
 
   private:
     cont_type_sptr  m_keyframes;

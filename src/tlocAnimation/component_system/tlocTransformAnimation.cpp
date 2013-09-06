@@ -21,8 +21,8 @@ namespace tloc { namespace animation { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // KeyframeSetInfo
 
-  TransformAnimation::KeyframeSetInfo::
-    KeyframeSetInfo()
+  TransformAnimation::KeyframeSequenceSetType::
+    KeyframeSequenceSetType()
     : m_frameDeltaT(1.0f / 24.0f)
     , m_startTime(0)
     , m_flags(k_count)
@@ -30,22 +30,22 @@ namespace tloc { namespace animation { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TransformAnimation::KeyframeSetInfo::
-    KeyframeSetInfo(const keyframe_set_type& a_keyframes)
-    : m_keyframes(a_keyframes)
-    , m_frameDeltaT(1.0f / 24.0f)
-    , m_startTime(0)
-    , m_flags(k_count)
+  TransformAnimation::KeyframeSequenceSetType::
+    KeyframeSequenceSetType(const KeyframeSequenceSetType& a_other)
+    : m_kfSeq(a_other.m_kfSeq)
+    , m_frameDeltaT(a_other.m_frameDeltaT)
+    , m_startTime(a_other.m_startTime)
+    , m_flags(a_other.m_flags)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TransformAnimation::KeyframeSetInfo::
-    KeyframeSetInfo(const KeyframeSetInfo& a_other)
-    : m_keyframes(a_other.m_keyframes)
-    , m_frameDeltaT(a_other.m_frameDeltaT)
-    , m_startTime(a_other.m_startTime)
-    , m_flags(a_other.m_flags)
+  TransformAnimation::KeyframeSequenceSetType::
+    KeyframeSequenceSetType(const kf_seq_type& a_keyframes)
+    : m_kfSeq(a_keyframes)
+    , m_frameDeltaT(1.0f / 24.0f)
+    , m_startTime(0)
+    , m_flags(k_count)
   { }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -54,25 +54,25 @@ namespace tloc { namespace animation { namespace component_system {
   TransformAnimation::
     TransformAnimation()
     : base_type(k_component_type)
-    , m_currentSet(0)
+    , m_currentSeq(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
-    AddKeyframeSet(const keyframe_set_type& a_keyframe)
+    AddKeyframeSet(const kf_seq_type& a_keyframe)
   {
-    m_keyframeSets.push_back(KeyframeSetInfo(a_keyframe));
+    m_kfSeqSet.push_back(KeyframeSequenceSetType(a_keyframe));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
-    ModifyKeyframeSet(const keyframe_set_type& a_keyframe, size_type a_index)
+    ModifyKeyframeSet(const kf_seq_type& a_keyframe, size_type a_index)
   {
-    m_keyframeSets[a_index] = KeyframeSetInfo(a_keyframe);
+    m_kfSeqSet[a_index] = KeyframeSequenceSetType(a_keyframe);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -81,27 +81,27 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     RemoveKeyframeSet(size_type a_index)
   {
-    cont_type::iterator itr = m_keyframeSets.begin();
+    cont_type::iterator itr = m_kfSeqSet.begin();
     core::advance(itr, a_index);
-    m_keyframeSets.erase(itr);
+    m_kfSeqSet.erase(itr);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TransformAnimation::keyframe_set_type&
+  TransformAnimation::kf_seq_type&
     TransformAnimation::
-    GetKeyframeSet(size_type a_index)
+    GetKeyframeSequence(size_type a_index)
   {
-    return m_keyframeSets[a_index].m_keyframes;
+    return m_kfSeqSet[a_index].m_kfSeq;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const TransformAnimation::keyframe_set_type&
+  const TransformAnimation::kf_seq_type&
     TransformAnimation::
-    GetKeyframeSet(size_type a_index) const
+    GetKeyframeSequence(size_type a_index) const
   {
-    return m_keyframeSets[a_index].m_keyframes;
+    return m_kfSeqSet[a_index].m_kfSeq;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -110,8 +110,8 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     NextFrame()
   {
-    m_keyframeSets[m_currentSet].m_keyframes.NextFrame();
-    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+    m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame();
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -120,8 +120,8 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     PrevFrame()
   {
-    m_keyframeSets[m_currentSet].m_keyframes.PrevFrame();
-    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+    m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame();
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -130,8 +130,8 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     SetFrame(size_type a_index)
   {
-    m_keyframeSets[m_currentSet].m_keyframes.SetCurrentFrame(a_index);
-    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+    m_kfSeqSet[m_currentSeq].m_kfSeq.SetCurrentFrame(a_index);
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -139,49 +139,49 @@ namespace tloc { namespace animation { namespace component_system {
   const bool
     TransformAnimation::
     IsLooping() const
-  { return m_keyframeSets[m_currentSet].m_flags.IsMarked(k_looping); }
+  { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_looping); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const bool
     TransformAnimation::
     IsPaused() const
-  { return m_keyframeSets[m_currentSet].m_flags.IsMarked(k_paused); }
+  { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_paused); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const bool
     TransformAnimation::
     IsStopped() const
-  { return m_keyframeSets[m_currentSet].m_flags.IsMarked(k_stopped); }
+  { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_stopped); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const bool
     TransformAnimation::
     IsTransformSetChanged() const
-  { return m_keyframeSets[m_currentSet].m_flags.IsMarked(k_keyframeSetChanged); }
+  { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_keyframeSetChanged); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const TransformAnimation::size_type
     TransformAnimation::
     GetFPS() const
-  { return static_cast<size_type>(1.0f / m_keyframeSets[m_currentSet].m_frameDeltaT); }
+  { return static_cast<size_type>(1.0f / m_kfSeqSet[m_currentSeq].m_frameDeltaT); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
     SetLooping(bool a_looping)
-  { m_keyframeSets[m_currentSet].m_flags[k_looping] = a_looping; }
+  { m_kfSeqSet[m_currentSeq].m_flags[k_looping] = a_looping; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
     SetPaused(bool a_pause)
-  { m_keyframeSets[m_currentSet].m_flags[k_paused] = a_pause; }
+  { m_kfSeqSet[m_currentSeq].m_flags[k_paused] = a_pause; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -189,7 +189,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     SetStopped(bool a_stop)
   {
-    m_keyframeSets[m_currentSet].m_flags[k_stopped] = a_stop;
+    m_kfSeqSet[m_currentSeq].m_flags[k_stopped] = a_stop;
     if (a_stop)
     { SetFrame(0); }
   }
@@ -199,7 +199,7 @@ namespace tloc { namespace animation { namespace component_system {
   void
     TransformAnimation::
     SetTransformSetChanged(bool a_changed)
-  { m_keyframeSets[m_currentSet].m_flags[k_keyframeSetChanged] = a_changed; }
+  { m_kfSeqSet[m_currentSeq].m_flags[k_keyframeSetChanged] = a_changed; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -207,9 +207,9 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     SetCurrentTransformSet(size_type a_spriteSetIndex)
   {
-    TLOC_ASSERT(a_spriteSetIndex < GetNumKeyframeSets(), "Index out of bounds!");
-    m_currentSet = a_spriteSetIndex;
-    m_keyframeSets[m_currentSet].m_flags.Mark(k_keyframeSetChanged);
+    TLOC_ASSERT(a_spriteSetIndex < GetNumSequences(), "Index out of bounds!");
+    m_currentSeq = a_spriteSetIndex;
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -218,7 +218,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     SetFPS(size_type a_fps)
   {
-    m_keyframeSets[m_currentSet].m_frameDeltaT =
+    m_kfSeqSet[m_currentSeq].m_frameDeltaT =
       1.0f / core_utils::CastNumber<tl_float>(a_fps);
   }
 

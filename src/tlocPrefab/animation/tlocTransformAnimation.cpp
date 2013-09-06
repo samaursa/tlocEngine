@@ -24,7 +24,7 @@ namespace tloc { namespace prefab { namespace animation {
 
   void
     TransformAnimation::
-    Add(entity_type* a_ent, const keyframe_set_type& a_keyframes)
+    Add(entity_type* a_ent, const kf_seq_type& a_keyframes)
   {
     using namespace anim_cs::components;
     using anim_cs::TransformAnimation;

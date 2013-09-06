@@ -107,33 +107,26 @@ namespace tloc { namespace animation { namespace component_system {
       math_cs::Transform* transPtr =
         ent->GetComponent<math_cs::Transform>(0);
 
-      typedef anim_cs::TransformAnimation::keyframe_set_type    kf_set;
+      typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
 
-      kf_set& currKfSet =
-        transAnim->GetKeyframeSet(transAnim->GetCurrentKeyframeSetIndex());
+      kf_seq& currKfSeq =
+        transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
 
-      const kf_set::size_type currFrame = currKfSet.GetCurrentFrame();
-      const kf_set::size_type totalFrames = currKfSet.GetNumFramesCurrKeyframePair();
+      const kf_seq::size_type currFrame = currKfSeq.GetCurrentFrame();
+      const kf_seq::size_type totalFrames = currKfSeq.GetTotalFrames();
 
-      kf_set::index_pair kfIndexPair = currKfSet.GetCurrentKeyframePair();
+      kf_seq::kf_pair kfPair = currKfSeq.GetKeyframePairAtCurrentFrame();
 
-      const kf_set::keyframe_type& kf1 =
-        currKfSet.GetKeyframe(kfIndexPair.first,
-        kf_set::set_index(currKfSet.GetCurrentKeyframeSet()) );
-
-      const kf_set::keyframe_type& kf2 =
-        currKfSet.GetKeyframe(kfIndexPair.second,
-        kf_set::set_index(currKfSet.GetCurrentKeyframeSet()) );
-
-      const kf_set::size_type currRelativeFrame = currFrame - kf1.GetFrame();
+      const kf_seq::size_type currRelativeFrame = currFrame - kfPair.first.GetFrame();
 
       // interpolate between the two keyframes (linear for now - this needs
       // to change to accommodate for all different types of interpolations)
 
       const f32 mu = totalFrames == 0 ? 0 : (f32)currRelativeFrame / (f32)totalFrames;
 
-      kf_set::keyframe_type::value_type
-        interpolatedVal = kf2.GetValue() * mu + kf1.GetValue() * (1.0f - mu);
+      kf_seq::keyframe_type::value_type
+        interpolatedVal = kfPair.second.GetValue() * mu +
+                          kfPair.first.GetValue() * (1.0f - mu);
 
       transPtr->SetTransformation(interpolatedVal);
     }

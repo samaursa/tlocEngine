@@ -7,25 +7,34 @@
 namespace tloc { namespace animation { namespace types {
 
   // -----------------------------------------------------------------------
+  // explicit instantiations
+
+#define TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(_type_)\
+  template class Keyframe_T<_type_>;\
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR( core_conts::Array<Keyframe_T<_type_> >)
+
+  // -----------------------------------------------------------------------
   // Keyframe_T explicit instantiations
 
-  template class Keyframe_T<f32>;
-  template class Keyframe_T<math_t::Vec2f32>;
-  template class Keyframe_T<math_t::Vec3f32>;
-  template class Keyframe_T<math_t::Vec4f32>;
+  using namespace math_t;
 
-  template class Keyframe_T<f64>;
-  template class Keyframe_T<math_t::Vec2f64>;
-  template class Keyframe_T<math_t::Vec3f64>;
-  template class Keyframe_T<math_t::Vec4f64>;
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(f32);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec2f32);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec3f32);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec4f32);
 
-  template class Keyframe_T<math_t::Mat2f32>;
-  template class Keyframe_T<math_t::Mat3f32>;
-  template class Keyframe_T<math_t::Mat4f32>;
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(f64);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec2f64);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec3f64);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Vec4f64);
 
-  template class Keyframe_T<math_t::Mat2f64>;
-  template class Keyframe_T<math_t::Mat3f64>;
-  template class Keyframe_T<math_t::Mat4f64>;
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat2f32);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat3f32);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat4f32);
+
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat2f64);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat3f64);
+  TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(Mat4f64);
 
   // -----------------------------------------------------------------------
   // KeyframeSequence_T explicit instantiations
@@ -47,26 +56,5 @@ namespace tloc { namespace animation { namespace types {
   template class KeyframeSequence_T<keyframe_mat2f64>;
   template class KeyframeSequence_T<keyframe_mat3f64>;
   template class KeyframeSequence_T<keyframe_mat4f64>;
-
-  // -----------------------------------------------------------------------
-  // KeyframeSet_T explicit instantiations
-
-  template class KeyframeSet_T<keyframe_f32>;
-  template class KeyframeSet_T<keyframe_vec2f32>;
-  template class KeyframeSet_T<keyframe_vec3f32>;
-  template class KeyframeSet_T<keyframe_vec4f32>;
-
-  template class KeyframeSet_T<keyframe_f64>;
-  template class KeyframeSet_T<keyframe_vec2f64>;
-  template class KeyframeSet_T<keyframe_vec3f64>;
-  template class KeyframeSet_T<keyframe_vec4f64>;
-
-  template class KeyframeSet_T<keyframe_mat2f32>;
-  template class KeyframeSet_T<keyframe_mat3f32>;
-  template class KeyframeSet_T<keyframe_mat4f32>;
-
-  template class KeyframeSet_T<keyframe_mat2f64>;
-  template class KeyframeSet_T<keyframe_mat3f64>;
-  template class KeyframeSet_T<keyframe_mat4f64>;
 
 };};};

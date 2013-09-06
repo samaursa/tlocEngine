@@ -17,19 +17,19 @@ namespace tloc { namespace animation { namespace component_system {
     : public core_cs::Component_T<TransformAnimation, components::transform_animation>
   {
   public:
-    typedef types::keyframe_set_mat4f32                    keyframe_set_type;
+    typedef types::keyframe_sequence_mat4f32        kf_seq_type;
 
-    struct KeyframeSetInfo
+    struct KeyframeSequenceSetType
     {
     public:
-      typedef KeyframeSetInfo       this_type;
+      typedef KeyframeSequenceSetType               this_type;
 
     public:
-      KeyframeSetInfo();
-      KeyframeSetInfo(const KeyframeSetInfo& a_other);
-      explicit KeyframeSetInfo(const keyframe_set_type& a_keyframes);
+      KeyframeSequenceSetType();
+      KeyframeSequenceSetType(const KeyframeSequenceSetType& a_other);
+      explicit KeyframeSequenceSetType(const kf_seq_type& a_kfSeq);
 
-      keyframe_set_type         m_keyframes;
+      kf_seq_type               m_kfSeq;
       tl_float                  m_frameDeltaT;
       f64                       m_startTime;
       core_utils::Checkpoints   m_flags;
@@ -40,29 +40,29 @@ namespace tloc { namespace animation { namespace component_system {
     typedef Component_T<this_type, components::transform_animation> base_type;
     typedef tl_size                                                 size_type;
 
-    typedef core_conts::Array<KeyframeSetInfo>      cont_type;
-    typedef cont_type::iterator                     iterator;
+    typedef core_conts::Array<KeyframeSequenceSetType>      cont_type;
+    typedef cont_type::iterator                             iterator;
 
   public:
     TransformAnimation();
 
-    void AddKeyframeSet(const keyframe_set_type& a_keyframe);
-    void ModifyKeyframeSet(const keyframe_set_type& a_keyframe,
+    void AddKeyframeSet(const kf_seq_type& a_keyframe);
+    void ModifyKeyframeSet(const kf_seq_type& a_keyframe,
                            size_type a_index);
     void RemoveKeyframeSet(size_type a_index);
 
-    keyframe_set_type&         GetKeyframeSet(size_type a_index);
-    const keyframe_set_type&   GetKeyframeSet(size_type a_index) const;
+    kf_seq_type&         GetKeyframeSequence(size_type a_index);
+    const kf_seq_type&   GetKeyframeSequence(size_type a_index) const;
 
     void NextFrame();
     void PrevFrame();
     void SetFrame(size_type a_index);
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumKeyframeSets, m_keyframeSets.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSetIndex, m_currentSet);
-    TLOC_DECL_AND_DEF_GETTER(f64, GetStartTime, m_keyframeSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSequences, m_kfSeqSet.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKFSequence, m_currentSeq);
+    TLOC_DECL_AND_DEF_GETTER(f64, GetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
     TLOC_DECL_AND_DEF_GETTER
-      (f64, GetFrameDeltaT, m_keyframeSets[m_currentSet].m_frameDeltaT);
+      (f64, GetFrameDeltaT, m_kfSeqSet[m_currentSeq].m_frameDeltaT);
 
     TLOC_DECL_GETTER(bool, IsLooping);
     TLOC_DECL_GETTER(bool, IsPaused);
@@ -71,7 +71,7 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_GETTER(size_type, GetFPS);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
-      (f64, SetStartTime, m_keyframeSets[m_currentSet].m_startTime);
+      (f64, SetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
 
     TLOC_DECL_SETTER_BY_VALUE(bool, SetLooping);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);
@@ -81,8 +81,8 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetFPS);
 
   private:
-    cont_type     m_keyframeSets;
-    size_type     m_currentSet;
+    cont_type     m_kfSeqSet;
+    size_type     m_currentSeq;
   };
 
   // -----------------------------------------------------------------------

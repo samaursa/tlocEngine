@@ -48,6 +48,22 @@ namespace TestingKeyframe
     CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 30);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
 
+    kfs.SetCurrentFrame(5);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
+
+    kfs.SetCurrentFrame(11);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 10);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
+
+    kfs.SetCurrentFrame(25);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 10);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
+
+    kfs.SetCurrentFrame(30);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 30);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
+
     kfs.clear();
 
     CHECK(kfs.size() == 0);

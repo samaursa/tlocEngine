@@ -28,7 +28,7 @@ namespace tloc { namespace prefab { namespace animation {
     TLOC_DECL_PARAM_VAR(tl_size, Fps, m_fps);
     TLOC_DECL_PARAM_VAR(size_type, StartingFrame, m_startingFrame);
     TLOC_DECL_PARAM_VAR(bool, Paused, m_paused);
-    TLOC_DECL_PARAM_VAR(tl_size, SetIndex, m_setIndex);
+    TLOC_DECL_PARAM_VAR(tl_size, Sequence, m_sequenceIndex);
   };
 
 };};};

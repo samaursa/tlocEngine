@@ -146,6 +146,22 @@ namespace tloc { namespace animation { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  void
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    SetCurrentFrame(size_type a_frame)
+  {
+    m_currentFrame = 0;
+    m_currentPairIndex = 0;
+
+    for (size_type i = 0; i < a_frame; ++i)
+    {
+      NextFrame();
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
   TL_KEYFRAME_SEQUENCE_TYPE::kf_pair
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     GetKeyframePairAtCurrentFrame()

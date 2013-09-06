@@ -123,6 +123,7 @@ namespace tloc { namespace animation { namespace types {
 
     void      NextFrame();
     void      PrevFrame();
+    void      SetCurrentFrame(size_type a_frame);
 
     kf_pair   GetKeyframePairAtCurrentFrame();
 
@@ -137,7 +138,6 @@ namespace tloc { namespace animation { namespace types {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentFrame, m_currentFrame);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalFrames, m_totalFrames);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, SetCurrentFrame, m_currentFrame);
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
     TLOC_DECL_PARAM_VAR(bool, StopOnLastFrame, m_stopOnLastFrame);

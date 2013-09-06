@@ -18,6 +18,10 @@ namespace tloc { namespace prefab { namespace animation {
     TransformAnimation(core_cs::EntityManager* a_entMgr,
                       core_cs::ComponentPoolManager* a_poolMgr)
                       : Prefab_I(a_entMgr, a_poolMgr)
+                      , m_fps(24)
+                      , m_startingFrame(0)
+                      , m_paused(false)
+                      , m_sequenceIndex(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -43,6 +47,10 @@ namespace tloc { namespace prefab { namespace animation {
     ta_pool::iterator itrTransformAnim = taPool->GetNext();
     itrTransformAnim->SetValue(transform_animation_sptr(new TransformAnimation()) );
     itrTransformAnim->GetValue()->AddKeyframeSet(a_keyframes);
+    itrTransformAnim->GetValue()->SetFPS(m_fps);
+    itrTransformAnim->GetValue()->SetFrame(m_startingFrame);
+    itrTransformAnim->GetValue()->SetPaused(m_paused);
+    itrTransformAnim->GetValue()->SetCurrentTransformSet(m_sequenceIndex);
 
     m_entMgr->InsertComponent(a_ent, itrTransformAnim->GetValue().get());
   }

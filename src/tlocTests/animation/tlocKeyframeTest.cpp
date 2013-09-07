@@ -18,8 +18,8 @@ namespace TestingKeyframe
 
     CHECK(kfs.GetTotalFrames() == 30);
     CHECK(kfs.GetCurrentFrame() == 0);
-    CHECK(kfs.m_loop == false);
-    CHECK(kfs.m_stopOnLastFrame == true);
+    CHECK_FALSE(kfs.m_loop);
+    CHECK(kfs.m_stopOnLastFrame);
 
     CHECK(kfs.GetFramesBetween(0, 1) == 10);
     CHECK(kfs.GetFramesBetween(1, 2) == 20);
@@ -31,7 +31,7 @@ namespace TestingKeyframe
 
     CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
-    kfs.NextFrame();
+    CHECK_FALSE(kfs.NextFrame());
     CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
 
@@ -45,7 +45,7 @@ namespace TestingKeyframe
     { kfs.NextFrame(); }
     CHECK(kfs.GetCurrentFrame() == 30);
 
-    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 30);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 10);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
 
     kfs.SetCurrentFrame(5);
@@ -61,8 +61,13 @@ namespace TestingKeyframe
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
 
     kfs.SetCurrentFrame(30);
-    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 30);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 10);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
+
+    kfs.Loop(true);
+    CHECK(kfs.NextFrame());
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
 
     kfs.clear();
 

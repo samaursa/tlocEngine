@@ -85,7 +85,7 @@ namespace tloc { namespace animation { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TL_KEYFRAME_SEQUENCE_TEMPS>
-  void
+  bool
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     NextFrame()
   {
@@ -98,7 +98,11 @@ namespace tloc { namespace animation { namespace types {
     if (m_currentFrame > totalFrames)
     {
       if (m_loop || m_stopOnLastFrame == false)
-      { m_currentFrame = 0; }
+      {
+        m_currentFrame = 0;
+        m_currentPairIndex = 0;
+        return true;
+      }
       else
       { --m_currentFrame; }
     }
@@ -109,14 +113,21 @@ namespace tloc { namespace animation { namespace types {
         ++m_currentPairIndex;
         TLOC_ASSERT(m_currentPairIndex < m_keyframes->size(),
           "m_currentPairIndex is out of bounds");
+
+        if (m_currentPairIndex == m_keyframes->size() - 1)
+        { --m_currentPairIndex; }
+
+        return true;
       }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TL_KEYFRAME_SEQUENCE_TEMPS>
-  void
+  bool
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     PrevFrame()
   {
@@ -128,7 +139,11 @@ namespace tloc { namespace animation { namespace types {
     if (m_currentFrame == 0)
     {
       if (m_loop || m_stopOnLastFrame)
-      { m_currentFrame = m_keyframes->size() - 1; }
+      {
+        m_currentFrame = totalFrames;
+        m_currentPairIndex = m_keyframes->size() - 1;
+        return true;
+      }
     }
     else
     {
@@ -139,8 +154,11 @@ namespace tloc { namespace animation { namespace types {
         TLOC_ASSERT(m_currentPairIndex > 0,
           "m_currentPairIndx will go out of bounds");
         --m_currentPairIndex;
+        return true;
       }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -237,9 +255,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     DoGetSecondIndex()
   {
-    return m_currentPairIndex == m_keyframes->size() - 1
-      ? m_currentPairIndex
-      : m_currentPairIndex + 1;
+    return m_currentPairIndex + 1;
   }
 
   // -----------------------------------------------------------------------

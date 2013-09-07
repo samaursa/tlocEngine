@@ -174,7 +174,10 @@ namespace tloc { namespace animation { namespace component_system {
   void
     TransformAnimation::
     SetLooping(bool a_looping)
-  { m_kfSeqSet[m_currentSeq].m_flags[k_looping] = a_looping; }
+  {
+    m_kfSeqSet[m_currentSeq].m_flags[k_looping] = a_looping;
+    m_kfSeqSet[m_currentSeq].m_kfSeq.Loop(a_looping);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

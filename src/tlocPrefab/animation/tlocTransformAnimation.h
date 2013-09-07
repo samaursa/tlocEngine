@@ -30,6 +30,7 @@ namespace tloc { namespace prefab { namespace animation {
     TLOC_DECL_PARAM_VAR(bool, Paused, m_paused);
     TLOC_DECL_PARAM_VAR(tl_size, Sequence, m_sequenceIndex);
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
+    TLOC_DECL_PARAM_VAR(bool, Reverse, m_reverse);
   };
 
 };};};

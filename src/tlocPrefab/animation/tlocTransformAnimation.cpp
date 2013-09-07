@@ -23,6 +23,7 @@ namespace tloc { namespace prefab { namespace animation {
                       , m_paused(false)
                       , m_sequenceIndex(0)
                       , m_loop(false)
+                      , m_reverse(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -53,6 +54,7 @@ namespace tloc { namespace prefab { namespace animation {
     itrTransformAnim->GetValue()->SetPaused(m_paused);
     itrTransformAnim->GetValue()->SetCurrentTransformSet(m_sequenceIndex);
     itrTransformAnim->GetValue()->SetLooping(m_loop);
+    itrTransformAnim->GetValue()->SetReverse(m_reverse);
 
     m_entMgr->InsertComponent(a_ent, itrTransformAnim->GetValue().get());
   }

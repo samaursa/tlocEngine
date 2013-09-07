@@ -141,7 +141,7 @@ namespace tloc { namespace animation { namespace types {
       if (m_loop || m_stopOnLastFrame)
       {
         m_currentFrame = totalFrames;
-        m_currentPairIndex = m_keyframes->size() - 1;
+        m_currentPairIndex = m_keyframes->size() - 2;
         return true;
       }
     }

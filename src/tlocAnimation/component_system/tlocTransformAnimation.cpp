@@ -12,6 +12,7 @@ namespace tloc { namespace animation { namespace component_system {
       k_looping,
       k_paused,
       k_stopped,
+      k_reverse,
       k_keyframeSetChanged,
       k_count
     };
@@ -110,7 +111,11 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     NextFrame()
   {
-    m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame();
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
+    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+    else
+    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+
     m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
@@ -120,7 +125,12 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     PrevFrame()
   {
-    m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame();
+
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
+    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+    else
+    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+
     m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
@@ -154,6 +164,13 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     IsStopped() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_stopped); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const bool
+    TransformAnimation::
+    IsReversed() const
+  { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -195,6 +212,15 @@ namespace tloc { namespace animation { namespace component_system {
     m_kfSeqSet[m_currentSeq].m_flags[k_stopped] = a_stop;
     if (a_stop)
     { SetFrame(0); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    SetReverse(bool a_reverse)
+  {
+    m_kfSeqSet[m_currentSeq].m_flags[k_reverse] = a_reverse;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -7,6 +7,18 @@ namespace TestingKeyframe
   using namespace tloc;
   using namespace tloc::anim_t;
 
+  TEST_CASE("Animation/types/Keyframe", "")
+  {
+    keyframe_f32 kf;
+    kf.SetValue(5.0f);
+    kf.SetFrame(10);
+    kf.SetInterpolationType(keyframe_f32::k_ease_in_cubic);
+
+    CHECK(kf.GetValue() == Approx(5.0f));
+    CHECK(kf.GetFrame() == 10);
+    CHECK( (kf.GetInterpolationType() == keyframe_f32::k_ease_in_cubic) );
+  }
+
   TEST_CASE("Animation/types/KeyframeSequence", "")
   {
     keyframe_sequence_f32 kfs;

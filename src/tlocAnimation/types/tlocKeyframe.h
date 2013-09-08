@@ -59,6 +59,11 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (index_type, GetInterpolationType, m_interpolationType);
 
+    TLOC_DECL_AND_DEF_SETTER(value_type, SetValue, m_value);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(index_type, SetFrame, m_frameNumber);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(index_type, SetInterpolationType,
+                                      m_interpolationType);
+
   private:
     value_type  m_value;
     index_type  m_frameNumber;

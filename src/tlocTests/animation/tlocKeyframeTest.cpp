@@ -12,11 +12,11 @@ namespace TestingKeyframe
     keyframe_f32 kf;
     kf.SetValue(5.0f);
     kf.SetFrame(10);
-    kf.SetInterpolationType(keyframe_f32::k_ease_in_cubic);
+    kf.SetInterpolationType(p_keyframe::k_ease_in_cubic);
 
     CHECK(kf.GetValue() == Approx(5.0f));
     CHECK(kf.GetFrame() == 10);
-    CHECK( (kf.GetInterpolationType() == keyframe_f32::k_ease_in_cubic) );
+    CHECK( (kf.GetInterpolationType() == p_keyframe::k_ease_in_cubic) );
   }
 
   TEST_CASE("Animation/types/KeyframeSequence", "")

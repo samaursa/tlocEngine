@@ -22,10 +22,8 @@ namespace tloc { namespace animation { namespace types {
   // ///////////////////////////////////////////////////////////////////////
   // Keyframe
 
-  template <typename T>
-  class Keyframe_T
+  namespace p_keyframe
   {
-  public:
     enum
     {
       k_linear,
@@ -41,7 +39,11 @@ namespace tloc { namespace animation { namespace types {
 
       k_count
     };
+  };
 
+  template <typename T>
+  class Keyframe_T
+  {
   public:
     typedef T                                     value_type;
     typedef tl_size                               index_type;
@@ -52,7 +54,7 @@ namespace tloc { namespace animation { namespace types {
     Keyframe_T();
 
     Keyframe_T(value_type a_value, index_type a_frameNumber,
-             interpolation_type a_type = interpolation_type(k_linear));
+             interpolation_type a_type = interpolation_type(p_keyframe::k_linear));
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, GetValue, m_value);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(index_type, GetFrame, m_frameNumber);

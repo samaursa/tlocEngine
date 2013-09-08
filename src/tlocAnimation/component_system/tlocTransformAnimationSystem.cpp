@@ -131,24 +131,26 @@ namespace tloc { namespace animation { namespace component_system {
       const kf_type::value_type& second = kfPair.second.GetValue();
       const kf_type::value_type& delta = (second - first);
 
+      using namespace anim_t::p_keyframe;
+
       switch(kfPair.first.GetInterpolationType())
       {
-      case kf_type::k_linear:
+      case k_linear:
         {
           interpolatedVal = second * mu + first * (1.0f - mu);
           break;
         }
-      case kf_type::k_ease_in_quadratic:
+      case k_ease_in_quadratic:
         {
           interpolatedVal = second * mu * mu + first * (1.0f - mu * mu);
           break;
         }
-      case kf_type::k_ease_out_quadratic:
+      case k_ease_out_quadratic:
         {
           interpolatedVal = delta * -1.0f * mu * (mu - 2) + first;
           break;
         }
-      case kf_type::k_ease_in_out_quadratic:
+      case k_ease_in_out_quadratic:
         {
           f32 mu2 = mu * 2;
           if (mu2 < 1)
@@ -163,18 +165,18 @@ namespace tloc { namespace animation { namespace component_system {
           }
           break;
         }
-      case kf_type::k_ease_in_cubic:
+      case k_ease_in_cubic:
         {
           interpolatedVal = delta * mu * mu * mu + first;
           break;
         }
-      case kf_type::k_ease_out_cubic:
+      case k_ease_out_cubic:
         {
           f32 mu2 = mu - 1;
           interpolatedVal = delta * (mu2 * mu2 * mu2 + 1) + first;
           break;
         }
-      case kf_type::k_ease_in_out_cubic:
+      case k_ease_in_out_cubic:
         {
           f32 mu2 = mu * 2;
           if (mu2 < 1)
@@ -188,20 +190,20 @@ namespace tloc { namespace animation { namespace component_system {
           }
           break;
         }
-      case kf_type::k_ease_in_sin:
+      case k_ease_in_sin:
         {
           interpolatedVal =
             delta * -1.0f * Mathf32::Cos(mu * (Mathf32::PI * 0.5f)) +
             delta + first;
           break;
         }
-      case kf_type::k_ease_out_sin:
+      case k_ease_out_sin:
         {
           interpolatedVal =
             delta * Mathf32::Sin(mu * (Mathf32::PI * 0.5f)) + first;
           break;
         }
-      case kf_type::k_ease_in_out_sin:
+      case k_ease_in_out_sin:
         {
           interpolatedVal =
             delta * -0.5f * (Mathf32::Cos(Mathf32::PI * mu) - 1.0f) +

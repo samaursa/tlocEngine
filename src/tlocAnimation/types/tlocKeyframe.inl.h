@@ -22,7 +22,7 @@ namespace tloc { namespace animation { namespace types {
   Keyframe_T<TL_KEYFRAME_PARAMS>::
     Keyframe_T()
     : m_frameNumber(0)
-    , m_interpolationType(k_linear)
+    , m_interpolationType(p_keyframe::k_linear)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -30,7 +30,7 @@ namespace tloc { namespace animation { namespace types {
   template <TL_KEYFRAME_TEMPS>
   Keyframe_T<TL_KEYFRAME_PARAMS>::
     Keyframe_T(value_type a_value, index_type a_frameNumber,
-    interpolation_type a_type = interpolation_type(k_linear))
+    interpolation_type a_type = interpolation_type(p_keyframe::k_linear))
     : m_value(a_value)
     , m_frameNumber(a_frameNumber)
     , m_interpolationType(a_type)

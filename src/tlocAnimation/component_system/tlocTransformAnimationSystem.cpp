@@ -108,6 +108,7 @@ namespace tloc { namespace animation { namespace component_system {
         ent->GetComponent<math_cs::Transform>(0);
 
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
+      typedef kf_seq::keyframe_type                       kf_type;
 
       kf_seq& currKfSeq =
         transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
@@ -124,9 +125,94 @@ namespace tloc { namespace animation { namespace component_system {
 
       const f32 mu = totalFrames == 0 ? 0 : (f32)currRelativeFrame / (f32)totalFrames;
 
-      kf_seq::keyframe_type::value_type
-        interpolatedVal = kfPair.second.GetValue() * mu +
-                          kfPair.first.GetValue() * (1.0f - mu);
+      kf_seq::keyframe_type::value_type interpolatedVal;
+
+      const kf_type::value_type& first = kfPair.first.GetValue();
+      const kf_type::value_type& second = kfPair.second.GetValue();
+      const kf_type::value_type& delta = (second - first);
+
+      using namespace anim_t::p_keyframe;
+
+      switch(kfPair.first.GetInterpolationType())
+      {
+      case k_linear:
+        {
+          interpolatedVal = second * mu + first * (1.0f - mu);
+          break;
+        }
+      case k_ease_in_quadratic:
+        {
+          interpolatedVal = second * mu * mu + first * (1.0f - mu * mu);
+          break;
+        }
+      case k_ease_out_quadratic:
+        {
+          interpolatedVal = delta * -1.0f * mu * (mu - 2) + first;
+          break;
+        }
+      case k_ease_in_out_quadratic:
+        {
+          f32 mu2 = mu * 2;
+          if (mu2 < 1)
+          {
+            interpolatedVal = delta * 0.5f * mu2 * mu2 + first;
+          }
+          else
+          {
+            mu2--;
+            interpolatedVal =
+              (first - second) * 0.5f * (mu2 * (mu2 - 2) - 1) + first;
+          }
+          break;
+        }
+      case k_ease_in_cubic:
+        {
+          interpolatedVal = delta * mu * mu * mu + first;
+          break;
+        }
+      case k_ease_out_cubic:
+        {
+          f32 mu2 = mu - 1;
+          interpolatedVal = delta * (mu2 * mu2 * mu2 + 1) + first;
+          break;
+        }
+      case k_ease_in_out_cubic:
+        {
+          f32 mu2 = mu * 2;
+          if (mu2 < 1)
+          {
+            interpolatedVal = delta * 0.5f * mu2 * mu2 * mu2 + first;
+          }
+          else
+          {
+            mu2 -= 2;
+            interpolatedVal = delta * 0.5f * (mu2 * mu2 * mu2 + 2) + first;
+          }
+          break;
+        }
+      case k_ease_in_sin:
+        {
+          interpolatedVal =
+            delta * -1.0f * Mathf32::Cos(mu * (Mathf32::PI * 0.5f)) +
+            delta + first;
+          break;
+        }
+      case k_ease_out_sin:
+        {
+          interpolatedVal =
+            delta * Mathf32::Sin(mu * (Mathf32::PI * 0.5f)) + first;
+          break;
+        }
+      case k_ease_in_out_sin:
+        {
+          interpolatedVal =
+            delta * -0.5f * (Mathf32::Cos(Mathf32::PI * mu) - 1.0f) +
+            first;
+          break;
+        }
+      default:
+        TLOC_ASSERT(false, "Unsupported interpolation type");
+      }
 
       transPtr->SetTransformation(interpolatedVal);
     }

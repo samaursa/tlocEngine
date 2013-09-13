@@ -58,6 +58,9 @@ namespace tloc { namespace graphics { namespace gl {
   // static variables initialization
 
   namespace p_texture_object {
+
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
+
     using namespace wrap_technique;
     using namespace filter;
 
@@ -76,6 +79,32 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt LinearMipmapNearest::s_glEnumValue = GL_LINEAR_MIPMAP_NEAREST;
     const fvt NearestMipmapLinear::s_glEnumValue = GL_NEAREST_MIPMAP_LINEAR;
     const fvt LinearMipmapLinear::s_glEnumValue = GL_LINEAR_MIPMAP_LINEAR;
+
+#elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
+
+    using namespace wrap_technique;
+    using namespace filter;
+
+    typedef wrap_technique::value_type  wvt;
+    typedef filter::value_type          fvt;
+
+    const wvt ClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt MirroredRepeat::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt Repeat::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt MirrorClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+
+    const fvt Nearest::s_glEnumValue = GL_NEAREST;
+    const fvt Linear::s_glEnumValue = GL_LINEAR;
+    const fvt NearestMipmapNearest::s_glEnumValue = GL_NEAREST_MIPMAP_NEAREST;
+    const fvt LinearMipmapNearest::s_glEnumValue = GL_LINEAR_MIPMAP_NEAREST;
+    const fvt NearestMipmapLinear::s_glEnumValue = GL_NEAREST_MIPMAP_LINEAR;
+    const fvt LinearMipmapLinear::s_glEnumValue = GL_LINEAR_MIPMAP_LINEAR;
+
+    const wvt ClampToBorder::s_glEnumValue = 0;
+
+#else
+# error "WIP"
+#endif
 
   };
 

@@ -30,7 +30,7 @@ namespace tloc { namespace animation { namespace types {
   template <TL_KEYFRAME_TEMPS>
   Keyframe_T<TL_KEYFRAME_PARAMS>::
     Keyframe_T(value_type a_value, index_type a_frameNumber,
-    interpolation_type a_type = interpolation_type(p_keyframe::k_linear))
+    interpolation_type a_type)
     : m_value(a_value)
     , m_frameNumber(a_frameNumber)
     , m_interpolationType(a_type)
@@ -78,7 +78,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     RemoveKeyframe(size_type a_index)
   {
-    cont_type::iterator itr = m_keyframes->begin() + a_index;
+    typename cont_type::iterator itr = m_keyframes->begin() + a_index;
     m_keyframes->erase(itr);
   }
 

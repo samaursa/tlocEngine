@@ -175,7 +175,7 @@ namespace tloc { namespace animation { namespace types {
     , m_currentPairIndex(0)
   {
     type_traits::AssertTypeIsSupported
-      <T_KeyframeContainer::value_type,
+      <typename T_KeyframeContainer::value_type,
        keyframe_type>();
 
     m_keyframes->resize(a_sequence.size());
@@ -191,11 +191,11 @@ namespace tloc { namespace animation { namespace types {
     AddKeyframes(const T_KeyframeContainer& a_sequence)
   {
     type_traits::AssertTypeIsSupported
-      <T_KeyframeContainer::value_type,
+      <typename T_KeyframeContainer::value_type,
        keyframe_type>();
 
-    T_KeyframeContainer::const_iterator itr = a_sequence.begin(),
-                                        itrEnd = a_sequence.end();
+    typename T_KeyframeContainer::const_iterator itr = a_sequence.begin(),
+                                                 itrEnd = a_sequence.end();
 
     for (; itr != itrEnd; ++itr)
     {

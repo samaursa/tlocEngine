@@ -36,8 +36,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::containers::Array<attribute_pair_type> attribute_cont_type;
     typedef attribute_cont_type::iterator                attribute_iterator;
 
+    typedef core_conts::tl_array<index_type>::type       index_cont_type;
+    typedef index_cont_type::iterator                    index_iterator;
+
   public:
     ShaderOperator();
+    ~ShaderOperator();
 
     void AddUniform(const uniform_ptr_type& a_uniform);
     void AddAttribute(const attribute_ptr_type& a_attribute);
@@ -92,6 +96,7 @@ namespace tloc { namespace graphics { namespace gl {
     uniform_cont_type           m_uniforms;
     attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
+    index_cont_type             m_enabledVertexAttrib;
 
   };
 

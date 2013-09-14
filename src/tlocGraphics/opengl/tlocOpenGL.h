@@ -61,6 +61,11 @@ namespace tloc { namespace graphics { namespace gl {
       typedef GLint value_type;
       static const value_type s_glParamName;
     };
+    struct MaxVertexAttribs
+    {
+      typedef GLint value_type;
+      static const value_type s_glParamName;
+    };
   };
 
   template <typename T_GlPName>

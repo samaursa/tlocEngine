@@ -49,6 +49,8 @@ namespace tloc { namespace graphics { namespace gl {
       = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName
       = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+    const GLint MaxVertexAttribs::s_glParamName
+      = GL_MAX_VERTEX_ATTRIBS;
   };
 
   //------------------------------------------------------------------------

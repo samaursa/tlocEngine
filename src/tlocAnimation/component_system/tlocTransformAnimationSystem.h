@@ -52,6 +52,11 @@ namespace tloc { namespace animation { namespace component_system {
     f64   m_totalTime;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(TransformAnimationSystem, transform_animation_system);
+
 };};};
 
 #endif

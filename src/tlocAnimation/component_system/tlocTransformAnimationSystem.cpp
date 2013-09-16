@@ -229,4 +229,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   template class core_sptr::SharedPtr<TransformAnimationSystem>;
 
+  // SmartPtr
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
+
 };};};

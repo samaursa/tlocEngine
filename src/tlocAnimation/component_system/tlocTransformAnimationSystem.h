@@ -49,7 +49,6 @@ namespace tloc { namespace animation { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    f64   m_totalTime;
   };
 
   // -----------------------------------------------------------------------

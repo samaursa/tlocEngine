@@ -32,6 +32,7 @@ namespace tloc { namespace animation { namespace component_system {
       kf_seq_type               m_kfSeq;
       tl_float                  m_frameDeltaT;
       f64                       m_startTime;
+      f64                       m_totalTime;
       core_utils::Checkpoints   m_flags;
     };
 
@@ -61,6 +62,7 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSequences, m_kfSeqSet.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKFSequence, m_currentSeq);
     TLOC_DECL_AND_DEF_GETTER(f64, GetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(f64, GetTotalTime, m_kfSeqSet[m_currentSeq].m_totalTime);
     TLOC_DECL_AND_DEF_GETTER
       (f64, GetFrameDeltaT, m_kfSeqSet[m_currentSeq].m_frameDeltaT);
 
@@ -73,6 +75,8 @@ namespace tloc { namespace animation { namespace component_system {
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
       (f64, SetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE
+      (f64, SetTotalTime, m_kfSeqSet[m_currentSeq].m_totalTime);
 
     TLOC_DECL_SETTER_BY_VALUE(bool, SetLooping);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);

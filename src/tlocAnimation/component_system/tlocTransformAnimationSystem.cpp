@@ -215,6 +215,7 @@ namespace tloc { namespace animation { namespace component_system {
       }
 
       transPtr->SetTransformation(interpolatedVal);
+      transPtr->SetUpdateRequired(false);
     }
   }
 

@@ -1073,7 +1073,9 @@ namespace tloc { namespace core {
   void
     sort(T_InputIterator a_first, T_InputIterator a_last)
   {
-    detail::DoSort(a_first, a_last, sort_quicksort_randompivot());
+    typedef PointeeType<T_InputIterator>::value_type value_type;
+    detail::DoSort(a_first, a_last, sort_quicksort_randompivot(),
+                   less<value_type>());
   }
 
   template <typename T_InputIterator, typename T_SortAlgorithm>
@@ -1081,7 +1083,8 @@ namespace tloc { namespace core {
     sort(T_InputIterator a_first, T_InputIterator a_last,
          T_SortAlgorithm aSortAlg)
   {
-    detail::DoSort(a_first, a_last, aSortAlg);
+    typedef PointeeType<T_InputIterator>::value_type value_type;
+    detail::DoSort(a_first, a_last, aSortAlg, less<value_type>());
   }
 
   //------------------------------------------------------------------------
@@ -1533,17 +1536,17 @@ namespace tloc { namespace core {
     //------------------------------------------------------------------------
     // Sort helpers
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_autoselect)
+             sort_quicksort_autoselect, T_Compare a_compare)
     {
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_randompivot)
+             sort_quicksort_randompivot, T_Compare a_compare)
     {
       const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
       const tl_ptrdiff randomPiv =
@@ -1553,13 +1556,13 @@ namespace tloc { namespace core {
       tloc::core::advance(randItr, randomPiv);
 
       core::swap(*a_first, *randItr);
-      DoSort(a_first, a_last, sort_quicksort_leftpivot() );
+      DoSort(a_first, a_last, sort_quicksort_leftpivot(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_middlepivot)
+             sort_quicksort_middlepivot, T_Compare a_compare)
     {
       const tl_ptrdiff halfSize = tloc::core::distance(a_first, a_last) / 2;
 
@@ -1567,13 +1570,13 @@ namespace tloc { namespace core {
       tloc::core::advance(midItr, halfSize);
 
       core::swap(*a_first, *midItr);
-      DoSort(a_first, a_last, sort_quicksort_leftpivot() );
+      DoSort(a_first, a_last, sort_quicksort_leftpivot(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_rightpivot)
+             sort_quicksort_rightpivot, T_Compare a_compare)
     {
       // Swap the rightpivot with the left most element. We can then call
       // quicksort_leftpivot
@@ -1581,43 +1584,46 @@ namespace tloc { namespace core {
       --rightPivot;
 
       core::swap(*a_first, *rightPivot);
-      DoSort(a_first, a_last, sort_quicksort_leftpivot() );
+      DoSort(a_first, a_last, sort_quicksort_leftpivot(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_leftpivot)
+             sort_quicksort_leftpivot, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
-      DoQuicksortLeftPivot(a_first, a_last, pointer_type());
+      DoQuicksortLeftPivot(a_first, a_last, pointer_type(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last,
-                           IsRawItr)
+                           IsRawItr, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
-      DoQuicksort(a_first, a_last, value_type());
+      DoQuicksort(a_first, a_last, value_type(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last,
-                           IsComplexItr)
+                           IsComplexItr, T_Compare a_compare)
     {
       // It is assumed, since the inputer iterator is complex, it has a typedef
       // for value_type. If there is a COMPILE ERROR here then the complex
       // object is either not an iterator OR does not have a value_type typedef
-      DoQuicksort(a_first, a_last, typename T_InputIterator::value_type());
+      DoQuicksort(a_first, a_last, typename T_InputIterator::value_type(),
+                  a_compare);
     }
 
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType,
+              typename T_Compare>
     void
-      DoQuicksort(T_InputIterator a_first, T_InputIterator a_last, T_ValueType)
+      DoQuicksort(T_InputIterator a_first, T_InputIterator a_last, T_ValueType,
+                  T_Compare a_compare)
     {
       if (a_first == a_last) { return; }
 
@@ -1632,7 +1638,7 @@ namespace tloc { namespace core {
       {
         if (currItr == a_first)
         {
-          if (*a_last < pivot)
+          if (a_compare(*a_last, pivot)) // if (*a_last < pivot)
           {
             *a_first = *a_last;
             ++a_first;
@@ -1645,7 +1651,7 @@ namespace tloc { namespace core {
         }
         else
         {
-          if (*a_first > pivot)
+          if (a_compare(pivot, *a_first)) // if (*a_first > pivot)
           {
             *a_last = *a_first;
             --a_last;
@@ -1660,45 +1666,46 @@ namespace tloc { namespace core {
 
       *a_first = pivot;
       if (startItr != a_first)
-      { DoSort(startItr, a_first, sort_quicksort_leftpivot() ); }
+      { DoSort(startItr, a_first, sort_quicksort_leftpivot(), a_compare); }
       if (++a_last != endItr)
-      { DoSort(a_last, endItr, sort_quicksort_leftpivot() ); }
+      { DoSort(a_last, endItr, sort_quicksort_leftpivot(), a_compare); }
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_insertionsort)
+             sort_insertionsort, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
-      DoInsertionsortWithItrType(a_first, a_last, pointer_type());
+      DoInsertionsortWithItrType(a_first, a_last, pointer_type(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                                 IsRawItr)
+                                 IsRawItr, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
-      DoInsertionsortWithValueType(a_first,a_last, value_type());
+      DoInsertionsortWithValueType(a_first,a_last, value_type(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoInsertionsortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                                 IsComplexItr)
+                                 IsComplexItr, T_Compare a_compare)
     {
       DoInsertionsortWithValueType(a_first, a_last,
-                                   typename T_InputIterator::value_type());
+                                   typename T_InputIterator::value_type(),
+                                   a_compare);
     }
 
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
       DoInsertionsortWithValueType(T_InputIterator a_first,
                                    T_InputIterator a_last,
-                                   T_ValueType)
+                                   T_ValueType, T_Compare a_compare)
     {
       if (a_first != a_last)
       {
@@ -1719,7 +1726,7 @@ namespace tloc { namespace core {
           --currentItrMinusOne;
 
           while (currentItr != a_first
-                 && *currentItrMinusOne > currentValue)
+                 && a_compare(currentValue, *currentItrMinusOne)) // && *currentItrMinusOne > currentValue)
           {
             *currentItr = *currentItrMinusOne;
 
@@ -1732,42 +1739,42 @@ namespace tloc { namespace core {
       }
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoSort(T_InputIterator a_first,
-             T_InputIterator a_last,
-             sort_mergesort)
+      DoSort(T_InputIterator a_first, T_InputIterator a_last,
+             sort_mergesort, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
-      DoMergesortWithItrType(a_first, a_last, pointer_type());
+      DoMergesortWithItrType(a_first, a_last, pointer_type(), a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                             IsComplexItr)
+                             IsComplexItr, T_Compare a_compare)
     {
-      DoMergesortWithValueType(a_first,
-                               a_last,
-                               typename T_InputIterator::value_type());
+      DoMergesortWithValueType(a_first, a_last,
+                               typename T_InputIterator::value_type(),
+                               a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                             IsRawItr)
+                             IsRawItr, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
-      DoMergesortWithValueType(a_first, a_last, value_type());
+      DoMergesortWithValueType(a_first, a_last, value_type(), a_compare);
     }
 
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType,
+              typename T_Compare>
     void
       DoMergesortWithValueType(T_InputIterator a_first, T_InputIterator a_last,
-                               T_ValueType)
+                               T_ValueType, T_Compare a_compare)
     {
       if (a_first != a_last)
       {
@@ -1777,7 +1784,7 @@ namespace tloc { namespace core {
 
         tloc::core::copy(a_first, a_last, unsortedArray.begin());
 
-        T_Container sortedArray = DoMergesort(unsortedArray);
+        T_Container sortedArray = DoMergesort(unsortedArray, a_compare);
         //unsortedArray = DoMergesort(unsortedArray);
 
         tloc::core::copy(sortedArray.begin(), sortedArray.end(), a_first);
@@ -1785,9 +1792,9 @@ namespace tloc { namespace core {
       }
     }
 
-    template <typename T_Container>
+    template <typename T_Container, typename T_Compare>
     T_Container
-      DoMergesort(T_Container& aUnsorted)
+      DoMergesort(T_Container& aUnsorted, T_Compare a_compare)
     {
       const tl_size size = aUnsorted.size();
       if ((size - 1) != 0)
@@ -1808,10 +1815,10 @@ namespace tloc { namespace core {
         tloc::core::copy(first, midItr, leftSide.begin());
         tloc::core::copy(midItr, last, rightSide.begin());
 
-        T_Container LeftSideSorted = DoMergesort(leftSide);
-        T_Container RightSideSorted = DoMergesort(rightSide);
+        T_Container LeftSideSorted = DoMergesort(leftSide, a_compare);
+        T_Container RightSideSorted = DoMergesort(rightSide, a_compare);
 
-        return DoMerge(LeftSideSorted, RightSideSorted);
+        return DoMerge(LeftSideSorted, RightSideSorted, a_compare);
       }
       else
       {
@@ -1819,10 +1826,10 @@ namespace tloc { namespace core {
       }
     }
 
-    template <typename T_Container>
+    template <typename T_Container, typename T_Compare>
     T_Container
-      DoMerge(T_Container& aLeftFirst,
-              T_Container& aRightFirst)
+      DoMerge(T_Container& aLeftFirst, T_Container& aRightFirst,
+              T_Compare a_compare)
     {
       const typename T_Container::size_type size = aLeftFirst.size() + aRightFirst.size();
       T_Container mergedContainer(size);
@@ -1836,7 +1843,7 @@ namespace tloc { namespace core {
 
       while ((leftItr != endLeftItr) && (rightItr != endRightItr))
       {
-        if (*leftItr < *rightItr)
+        if (a_compare(*leftItr, *rightItr)) //if (*leftItr < *rightItr)
         {
           *mergedItr = *leftItr;
           ++leftItr;
@@ -1866,20 +1873,21 @@ namespace tloc { namespace core {
       return mergedContainer;
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_merge_insertionsort)
+             sort_merge_insertionsort, T_Compare a_compare)
     {
       if (a_first != a_last)
       {
-        DoMergeInsertionSort(a_first, a_last);
+        DoMergeInsertionSort(a_first, a_last, a_compare);
       }
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last)
+      DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last,
+                           T_Compare a_compare)
     {
       const tl_ptrdiff size = tloc::core::distance(a_first, a_last);
       if ((size - 1) != 0)
@@ -1888,58 +1896,58 @@ namespace tloc { namespace core {
         T_InputIterator midItr = a_first;
         tloc::core::advance(midItr, halfSize);
 
-        DoMergeInsertionSort(a_first, midItr);
-        DoMergeInsertionSort(midItr, a_last);
-        DoMergeInsertion(a_first, midItr, a_last);
+        DoMergeInsertionSort(a_first, midItr, a_compare);
+        DoMergeInsertionSort(midItr, a_last, a_compare);
+        DoMergeInsertion(a_first, midItr, a_last, a_compare);
       }
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoMergeInsertion(T_InputIterator aLeftFirst,
-                       T_InputIterator aRightFirst,
-                       T_InputIterator a_last)
+      DoMergeInsertion(T_InputIterator aLeftFirst, T_InputIterator aRightFirst,
+                       T_InputIterator a_last, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator> unknown_type;
       typedef typename Loki::Int2Type<unknown_type::isPointer> pointer_type;
 
       for (/* */; aLeftFirst != aRightFirst; ++aLeftFirst)
       {
-        if (*aLeftFirst > *aRightFirst)
+        if (a_compare(*aRightFirst, aLeftFirst)) // if (*aLeftFirst > *aRightFirst)
         {
           core::swap(*aLeftFirst, *aRightFirst);
-          DoSortFirstElementWithItrType(aRightFirst, a_last, pointer_type());
+          DoSortFirstElementWithItrType(aRightFirst, a_last, pointer_type(),
+                                        a_compare);
         }
       }
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSortFirstElementWithItrType(T_InputIterator a_first,
                                     T_InputIterator a_last,
-                                    IsComplexItr)
+                                    IsComplexItr, T_Compare a_compare)
     {
-      DoSortFirstElementWithValueType(a_first,
-                                      a_last,
-                                      typename T_InputIterator::value_type());
+      DoSortFirstElementWithValueType(a_first, a_last,
+                                      typename T_InputIterator::value_type(),
+                                      a_compare);
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSortFirstElementWithItrType(T_InputIterator a_first,
                                     T_InputIterator a_last,
-                                    IsRawItr)
+                                    IsRawItr, T_Compare a_compare)
     {
       typedef typename Loki::TypeTraits<T_InputIterator>::PointeeType value_type;
 
-      DoSortFirstElementWithValueType(a_first, a_last, value_type());
+      DoSortFirstElementWithValueType(a_first, a_last, value_type(), a_compare);
     }
 
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
       DoSortFirstElementWithValueType(T_InputIterator a_first,
                                       T_InputIterator a_last,
-                                      T_ValueType)
+                                      T_ValueType, T_Compare a_compare)
     {
       T_ValueType valueToBeSorted = *a_first;
 
@@ -1947,7 +1955,8 @@ namespace tloc { namespace core {
       T_InputIterator currentItrPlusOne = currentItr;
       ++currentItrPlusOne;
 
-      while (currentItrPlusOne != a_last && *currentItrPlusOne < valueToBeSorted)
+      while (currentItrPlusOne != a_last &&
+             a_compare(*currentItrPlusOne,valueToBeSorted))
       {
         *currentItr = *currentItrPlusOne;
         ++currentItr;
@@ -1957,10 +1966,10 @@ namespace tloc { namespace core {
       *currentItr = valueToBeSorted;
     }
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-                sort_bubblesort)
+             sort_bubblesort, T_Compare a_compare)
     {
       T_InputIterator endOfUnsortedItr;
       T_InputIterator currentItr;
@@ -1980,7 +1989,7 @@ namespace tloc { namespace core {
              currentItrPlusOne != endOfUnsortedItr;
              currentItr = currentItrPlusOne, ++currentItrPlusOne)
         {
-          if (*currentItr > *currentItrPlusOne)
+          if (a_compare(*currentItrPlusOne, *currentItr)) // if (*currentItr > *currentItrPlusOne)
           {
             core::swap(*currentItr, *currentItrPlusOne);
             swapped = true;

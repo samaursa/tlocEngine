@@ -512,6 +512,10 @@ namespace tloc { namespace core {
   void
     sort(T_InputIterator a_first, T_InputIterator a_last);
 
+  template <typename T_InputIterator, typename T_Compare>
+  void
+    sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp);
+
   // The sorting function can sort with multiple different techniques. Use
   // sort_autoselect to automatically select the best sorting algorithm for
   // the given container. Some techniques may not be compatible with the given
@@ -519,6 +523,12 @@ namespace tloc { namespace core {
   template <typename T_InputIterator, typename T_SortAlgorithm>
   void
     sort(T_InputIterator a_first, T_InputIterator a_last,
+         T_SortAlgorithm);
+
+  template <typename T_InputIterator, typename T_SortAlgorithm,
+            typename T_Compare>
+  void
+    sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp,
          T_SortAlgorithm);
 
   //------------------------------------------------------------------------
@@ -758,10 +768,10 @@ namespace tloc { namespace core {
     /// @param  a_first Range begin iterator.
     /// @param  a_last  Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_autoselect);
+             sort_quicksort_autoselect, T_Compare);
 
     // This quicksort helper will select a random pivot. It is considered one
     // of the most efficient sorting methods
@@ -774,10 +784,10 @@ namespace tloc { namespace core {
     /// @param  a_first Range begin iterator.
     /// @param  a_last  Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_randompivot);
+             sort_quicksort_randompivot, T_Compare);
 
     // This quicksort helper will select the pivot somewhere in the middle of the
     // container. This is not an efficient method for a random List<>
@@ -791,10 +801,10 @@ namespace tloc { namespace core {
     /// @param  a_first Range begin iterator.
     /// @param  a_last  Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_middlepivot);
+             sort_quicksort_middlepivot, T_Compare);
 
     // This quicksort helper will select the right most element (or a_last - 1)
     // as the pivot. This is not an efficient method for a not-so-random container
@@ -809,10 +819,10 @@ namespace tloc { namespace core {
     /// @param  a_first Range begin iterator.
     /// @param  a_last  Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_rightpivot);
+             sort_quicksort_rightpivot, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -824,20 +834,20 @@ namespace tloc { namespace core {
     /// @param  a_first Range begin iterator.
     /// @param  a_last  Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_quicksort_leftpivot);
+             sort_quicksort_leftpivot, T_Compare);
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last,
-                           IsRawItr);
+                           IsRawItr, T_Compare);
 
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoQuicksortLeftPivot(T_InputIterator a_first, T_InputIterator a_last,
-                           IsComplexItr);
+                           IsComplexItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Quicksort helper. This will perform the leftpivot quicksort on the
@@ -848,9 +858,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  The value type.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
-      DoQuicksort(T_InputIterator a_first, T_InputIterator a_last, T_ValueType);
+      DoQuicksort(T_InputIterator a_first, T_InputIterator a_last,
+                  T_ValueType, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Insertionsort Helper. This function will do insertion sort with a set
@@ -860,10 +871,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Insertionsort identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_insertionsort);
+             sort_insertionsort, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Insertionsort helper. This function will do insertion sort with a set
@@ -873,10 +884,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Raw iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoInsertionsortWithItrType(T_InputIterator a_first,
-                                 T_InputIterator a_last, IsRawItr);
+                                 T_InputIterator a_last, IsRawItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Insertionsort helper. This function will do insertion sort with a set
@@ -886,11 +897,11 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoInsertionsortWithItrType(T_InputIterator a_first,
                                  T_InputIterator a_last,
-                                 IsComplexItr);
+                                 IsComplexItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Insertionsort helper. This function performs the actual insertion
@@ -900,11 +911,11 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  The value type.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
       DoInsertionsortWithValueType(T_InputIterator a_first,
                                    T_InputIterator a_last,
-                                   T_ValueType);
+                                   T_ValueType, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Preforms mergesort on a set of iterators.
@@ -913,9 +924,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Mergesort identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoSort(T_InputIterator a_first, T_InputIterator a_last, sort_mergesort);
+      DoSort(T_InputIterator a_first, T_InputIterator a_last,
+             sort_mergesort, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs mergesort provided that the iterators are complex.
@@ -924,10 +936,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                             IsComplexItr);
+                             IsComplexItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs mergesort provided that the iterators are raw.
@@ -936,10 +948,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Raw iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoMergesortWithItrType(T_InputIterator a_first, T_InputIterator a_last,
-                             IsRawItr);
+                             IsRawItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// performs mergesort if the value type of the iterator is known.
@@ -948,10 +960,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  The Value Type.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
       DoMergesortWithValueType(T_InputIterator a_first, T_InputIterator a_last,
-                               T_ValueType);
+                               T_ValueType, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs mergesort on a container. Note: This function will not work
@@ -961,9 +973,9 @@ namespace tloc { namespace core {
     ///
     /// @return Returns a copy of the sorted container.
     ///-------------------------------------------------------------------------
-    template <typename T_Container>
+    template <typename T_Container, typename T_Compare>
     T_Container
-      DoMergesort(T_Container& a_unsorted);
+      DoMergesort(T_Container& a_unsorted, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Merges two sorted containers into a container and returns it.
@@ -973,9 +985,9 @@ namespace tloc { namespace core {
     ///
     /// @return Merged container.
     ///-------------------------------------------------------------------------
-    template <typename T_Container>
+    template <typename T_Container, typename T_Compare>
     T_Container
-      DoMerge(T_Container& a_left, T_Container& a_right);
+      DoMerge(T_Container& a_left, T_Container& a_right, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs "merge insertion sort" on a set of iterators.
@@ -984,10 +996,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  MergeInsertionSort identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
-             sort_merge_insertionsort);
+             sort_merge_insertionsort, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs "Merge Insertion Sort" on a set of iterators. Note: This
@@ -996,9 +1008,10 @@ namespace tloc { namespace core {
     /// @param  a_first  Range begin iterator.
     /// @param  a_last   Range past the end iterator.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last);
+      DoMergeInsertionSort(T_InputIterator a_first, T_InputIterator a_last,
+                           T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Merges two sorted neighboring containers together with only their
@@ -1011,11 +1024,10 @@ namespace tloc { namespace core {
     ///                     list.
     /// @param  a_last       Iterator that defines the end of the right list.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoMergeInsertion(T_InputIterator a_leftFirst,
-                       T_InputIterator a_rightFirst,
-                       T_InputIterator a_last);
+      DoMergeInsertion(T_InputIterator a_leftFirst, T_InputIterator a_rightFirst,
+                       T_InputIterator a_last, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Takes the first element in the provided iterator range and places it
@@ -1027,11 +1039,11 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSortFirstElementWithItrType(T_InputIterator a_first,
                                     T_InputIterator a_last,
-                                    IsComplexItr);
+                                    IsComplexItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Takes the first element in the provided iterator range and places it
@@ -1043,11 +1055,11 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
       DoSortFirstElementWithItrType(T_InputIterator a_first,
                                     T_InputIterator a_last,
-                                    IsRawItr);
+                                    IsRawItr, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Takes the first element in the provided iterator range and places it
@@ -1059,11 +1071,11 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Complex iterator identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator, typename T_ValueType>
+    template <typename T_InputIterator, typename T_ValueType, typename T_Compare>
     void
       DoSortFirstElementWithValueType(T_InputIterator a_first,
                                       T_InputIterator a_last,
-                                      T_ValueType);
+                                      T_ValueType, T_Compare);
 
     ///-------------------------------------------------------------------------
     /// Performs Bubblesort on a range of iterators.
@@ -1072,9 +1084,10 @@ namespace tloc { namespace core {
     /// @param  a_last       Range past the end iterator.
     /// @param  parameter3  Bubblesort identifier.
     ///-------------------------------------------------------------------------
-    template <typename T_InputIterator>
+    template <typename T_InputIterator, typename T_Compare>
     void
-      DoSort(T_InputIterator a_first, T_InputIterator a_last, sort_bubblesort);
+      DoSort(T_InputIterator a_first, T_InputIterator a_last, sort_bubblesort,
+             T_Compare);
 
   }
 

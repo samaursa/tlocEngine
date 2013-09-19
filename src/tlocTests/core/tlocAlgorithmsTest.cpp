@@ -940,7 +940,7 @@ namespace TestingAlgorithms
     List<s32>  myIntsList(itrBegin, itrEnd);
     List<s32, ListNode<s32, singly_linked_tag> >  myIntsListSinglyLinked(itrBegin, itrEnd);
 
-    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType() );
+    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -953,7 +953,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -966,7 +966,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -996,7 +996,7 @@ namespace TestingAlgorithms
 
     tloc::core::detail::DoSort(myIntsListSinglyLinked.begin(),
                                myIntsListSinglyLinked.end(),
-                               T_SortType());
+                               T_SortType(), less<s32>());
 
     List<s32, ListNode<s32, singly_linked_tag> >::iterator singleListItr,
                                                            singleListItr2,

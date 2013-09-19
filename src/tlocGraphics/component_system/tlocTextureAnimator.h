@@ -42,6 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
       TextureCoords           m_coords;
       tl_float                m_frameDeltaT;
       f64                     m_startTime;
+      f64                     m_totalTime;
       core_utils::Checkpoints m_flags;
     };
 
@@ -73,6 +74,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSets, m_coordSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSetIndex, m_currentSet);
     TLOC_DECL_AND_DEF_GETTER(f64,  GetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetTotalTime, m_coordSets[m_currentSet].m_totalTime);
     TLOC_DECL_AND_DEF_GETTER(f64,  GetFrameDeltaT, m_coordSets[m_currentSet].m_frameDeltaT);
 
     TLOC_DECL_GETTER(bool, IsLooping);
@@ -83,6 +85,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
       (f64,  SetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE
+      (f64,  SetTotalTime, m_coordSets[m_currentSet].m_totalTime);
 
     TLOC_DECL_SETTER_BY_VALUE(bool, SetLooping);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);

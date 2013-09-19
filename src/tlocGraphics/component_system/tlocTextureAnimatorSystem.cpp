@@ -23,7 +23,6 @@ namespace tloc { namespace graphics { namespace component_system {
                           entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::texture_animator))
-     , m_totalTime(0)
   { }
 
   error_type
@@ -57,14 +56,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     TextureAnimatorSystem::
-    Pre_ProcessActiveEntities(f64 a_deltaT)
-  {
-    m_totalTime += a_deltaT;
-  }
+    Pre_ProcessActiveEntities(f64 )
+  { }
 
   void
     TextureAnimatorSystem::
-    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64)
+    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
     using math_t::Vec4f32;
@@ -82,7 +79,9 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_cs::TextureAnimator* texAnim =
         ent->GetComponent<gfx_cs::TextureAnimator>(i);
 
-      f64 diff = m_totalTime - texAnim->GetStartTime();
+      texAnim->SetTotalTime(texAnim->GetTotalTime() + a_deltaT);
+
+      f64 diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
       f64 fps = texAnim->GetFrameDeltaT();
 
       while (diff > fps)
@@ -94,7 +93,7 @@ namespace tloc { namespace graphics { namespace component_system {
         }
 
         texAnim->SetStartTime(texAnim->GetStartTime() + fps);
-        diff = m_totalTime - texAnim->GetStartTime();
+        diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
       }
 
       if (ent->HasComponent(components::texture_coords) &&

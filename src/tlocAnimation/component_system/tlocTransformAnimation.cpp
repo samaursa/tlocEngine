@@ -26,6 +26,7 @@ namespace tloc { namespace animation { namespace component_system {
     KeyframeSequenceSetType()
     : m_frameDeltaT(1.0f / 24.0f)
     , m_startTime(0)
+    , m_totalTime(0)
     , m_flags(k_count)
   { }
 
@@ -36,6 +37,7 @@ namespace tloc { namespace animation { namespace component_system {
     : m_kfSeq(a_other.m_kfSeq)
     , m_frameDeltaT(a_other.m_frameDeltaT)
     , m_startTime(a_other.m_startTime)
+    , m_totalTime(a_other.m_totalTime)
     , m_flags(a_other.m_flags)
   { }
 
@@ -46,6 +48,7 @@ namespace tloc { namespace animation { namespace component_system {
     : m_kfSeq(a_keyframes)
     , m_frameDeltaT(1.0f / 24.0f)
     , m_startTime(0)
+    , m_totalTime(0)
     , m_flags(k_count)
   { }
 

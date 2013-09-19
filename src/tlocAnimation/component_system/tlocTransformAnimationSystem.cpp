@@ -26,7 +26,6 @@ namespace tloc { namespace animation { namespace component_system {
                              entity_manager_sptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::transform_animation))
-    , m_totalTime(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -68,16 +67,15 @@ namespace tloc { namespace animation { namespace component_system {
 
   void
     TransformAnimationSystem::
-    Pre_ProcessActiveEntities(f64 a_deltaT)
+    Pre_ProcessActiveEntities(f64 )
   {
-    m_totalTime += a_deltaT;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimationSystem::
-    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 )
+    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
 
@@ -86,7 +84,9 @@ namespace tloc { namespace animation { namespace component_system {
     anim_cs::TransformAnimation* transAnim =
       ent->GetComponent<anim_cs::TransformAnimation>(0);
 
-    f64 diff = m_totalTime - transAnim->GetStartTime();
+    transAnim->SetTotalTime(transAnim->GetTotalTime() + a_deltaT);
+
+    f64 diff = transAnim->GetTotalTime() - transAnim->GetStartTime();
     f64 fps = transAnim->GetFrameDeltaT();
 
     while (diff > fps)
@@ -98,7 +98,7 @@ namespace tloc { namespace animation { namespace component_system {
       }
 
       transAnim->SetStartTime(transAnim->GetStartTime() + fps);
-      diff = m_totalTime - transAnim->GetStartTime();
+      diff = transAnim->GetTotalTime() - transAnim->GetStartTime();
     }
 
     if (ent->HasComponent(components::transform_animation) &&
@@ -215,6 +215,7 @@ namespace tloc { namespace animation { namespace component_system {
       }
 
       transPtr->SetTransformation(interpolatedVal);
+      transPtr->SetUpdateRequired(false);
     }
   }
 
@@ -228,5 +229,8 @@ namespace tloc { namespace animation { namespace component_system {
   // explicit instantiations
 
   template class core_sptr::SharedPtr<TransformAnimationSystem>;
+
+  // SmartPtr
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
 
 };};};

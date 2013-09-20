@@ -26,6 +26,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocSceneNode.h
+  graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
   graphics/tloc_graphics.cpp 

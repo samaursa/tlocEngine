@@ -64,9 +64,9 @@ namespace tloc { namespace graphics { namespace component_system {
       (transform_type, GetWorldTransform, m_worldTransform);
     TLOC_DECL_AND_DEF_GETTER(index_type, GetLevel, m_level);
 
-    TLOC_DECL_GETTER(entity_ptr_type, GetEntity);
+    TLOC_DECL_AND_DEF_GETTER(entity_ptr_type, GetEntity, m_entity);
     TLOC_DECL_AND_DEF_GETTER(pointer, GetParent, m_parent);
-    TLOC_DECL_SETTER(pointer, SetParent);
+    TLOC_DECL_SETTER_BY_VALUE(pointer, SetParent);
 
     TLOC_DECL_GETTER(bool, IsHierarchyUpdateRequired);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetHierarchyUpdateRequired);

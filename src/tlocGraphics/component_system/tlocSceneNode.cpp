@@ -127,8 +127,37 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneNode::
+    SetParent(pointer a_parentNode)
+  {
+    m_parent = a_parentNode;
+    SetHierarchyUpdateRequired(true);
+    SetTransformUpdateRequired(true);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const bool
+    SceneNode::
+    IsHierarchyUpdateRequired() const
+  {
+    return m_flags.IsMarked(k_hierarchyUpdate);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    SceneNode::
     SetHierarchyUpdateRequired(bool a_updateRequired)
   { m_flags[k_hierarchyUpdate] = a_updateRequired; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const bool
+    SceneNode::
+    IsTransformUpdateRequired() const
+  {
+    return m_flags.IsMarked(k_transformUpdate);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

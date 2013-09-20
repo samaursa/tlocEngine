@@ -9,7 +9,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
-
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -114,7 +114,12 @@ namespace tloc { namespace graphics { namespace component_system {
       const f32 angleInterval = 360.0f/numSides;
 
       math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
-      const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
+
+      Mat4f32 tMatrix;
+      if (ent->HasComponent(components::node))
+      { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+      else
+      { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
       Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
 

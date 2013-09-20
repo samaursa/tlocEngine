@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
       texture_coords,
       texture_animator,
 
-      node,
+      scene_node,
 
       camera,
       arcball,

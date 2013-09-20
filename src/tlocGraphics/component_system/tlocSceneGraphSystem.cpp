@@ -50,7 +50,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem
     (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::node))
+                Variadic<component_type, 1>(components::scene_node))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

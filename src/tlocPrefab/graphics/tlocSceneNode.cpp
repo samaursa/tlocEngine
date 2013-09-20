@@ -54,7 +54,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef gfx_cs::scene_node_sptr_pool        scene_node_pool;
     gfx_cs::scene_node_sptr_pool_sptr           sceneNodePool;
 
-    if (m_compPoolMgr->Exists(node) == false)
+    if (m_compPoolMgr->Exists(scene_node) == false)
     { sceneNodePool = m_compPoolMgr->CreateNewPool<scene_node_sptr>(); }
     else
     { sceneNodePool = m_compPoolMgr->GetPool<scene_node_sptr>(); }

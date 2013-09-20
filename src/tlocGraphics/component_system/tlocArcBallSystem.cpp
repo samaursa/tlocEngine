@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
     math_cs::Transform* t = a_ent->GetComponent<math_cs::Transform>();
     gfx_cs::ArcBall* arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
-    if (a_ent->HasComponent(gfx_cs::components::node))
+    if (a_ent->HasComponent(gfx_cs::components::scene_node))
     {
       math_cs::Transform tWorld
         (a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform());

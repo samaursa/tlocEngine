@@ -142,7 +142,7 @@ namespace tloc { namespace graphics { namespace component_system {
     mesh_type*          meshPtr = ent->GetComponent<Mesh_T>();
 
     Mat4f32 tMatrix;
-    if (ent->HasComponent(components::node))
+    if (ent->HasComponent(components::scene_node))
     { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
     else
     { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }

@@ -20,9 +20,13 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // Node
 
+  class SceneGraphSystem;
+
   class Node
     : public core_cs::Component_T<Node, components::node>
   {
+    friend class SceneGraphSystem;
+
   public:
     typedef core_cs::Component_T<Node, components::node>  base_type;
 
@@ -38,7 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef node_cont_type::iterator              node_cont_iterator;
     typedef node_cont_type::const_iterator        node_cont_const_iterator;
 
-    typedef math_cs::Transformf32                 transform_type;
+    typedef math_cs::Transform::transform_type    transform_type;
     typedef tl_size                               index_type;
 
   public:
@@ -55,9 +59,9 @@ namespace tloc { namespace graphics { namespace component_system {
     node_cont_const_iterator  begin() const;
     node_cont_const_iterator  end() const;
 
-    TLOC_DECL_SETTER(transform_type, SetLocalTransform);
+    TLOC_DECL_SETTER(transform_type, SetWorldTransform);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (transform_type, GetLocalTransform, m_localTransform);
+      (transform_type, GetWorldTransform, m_worldTransform);
     TLOC_DECL_AND_DEF_GETTER(index_type, GetLevel, m_level);
 
     TLOC_DECL_GETTER(bool, IsHierarchyUpdateRequired);
@@ -79,7 +83,7 @@ namespace tloc { namespace graphics { namespace component_system {
     node_cont_type          m_children;
     index_type              m_level;
 
-    transform_type          m_localTransform;
+    transform_type          m_worldTransform;
     core_utils::Checkpoints m_flags;
 
   };

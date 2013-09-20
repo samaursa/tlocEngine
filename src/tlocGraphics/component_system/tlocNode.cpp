@@ -26,7 +26,9 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_parent(nullptr)
     , m_level(0)
     , m_flags(k_count)
-  { }
+  {
+    m_flags.MarkAll();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -37,7 +39,9 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_parent(nullptr)
     , m_level(0)
     , m_flags(k_count)
-  { }
+  {
+    m_flags.MarkAll();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -113,9 +117,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     Node::
-    SetLocalTransform(const transform_type& a_transform)
+    SetWorldTransform(const transform_type& a_transform)
   {
-    m_localTransform = a_transform;
+    m_worldTransform = a_transform;
     SetTransformUpdateRequired(true);
   }
 

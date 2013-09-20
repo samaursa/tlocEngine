@@ -29,9 +29,13 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem(event_manager_sptr   a_eventMgr,
                      entity_manager_sptr  a_entityMgr);
 
+    virtual void SortEntities();
+
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
+    virtual error_type Post_Initialize();
+
     virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 

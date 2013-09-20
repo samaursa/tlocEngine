@@ -56,6 +56,8 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     void ProcessActiveEntities(f64 a_deltaT = 0);
 
+    virtual void SortEntities() = 0;
+
   protected:
 
     template <tl_size T_VarSize>

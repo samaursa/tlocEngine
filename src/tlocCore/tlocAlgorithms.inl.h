@@ -1074,17 +1074,29 @@ namespace tloc { namespace core {
     sort(T_InputIterator a_first, T_InputIterator a_last)
   {
     typedef PointeeType<T_InputIterator>::value_type value_type;
-    detail::DoSort(a_first, a_last, sort_quicksort_randompivot(),
-                   less<value_type>());
+    sort(a_first, a_last, less<value_type>());
   }
 
-  template <typename T_InputIterator, typename T_SortAlgorithm>
+  template <typename T_InputIterator, typename T_Compare_or_SortAlgorithm>
   void
     sort(T_InputIterator a_first, T_InputIterator a_last,
-         T_SortAlgorithm aSortAlg)
+         T_Compare_or_SortAlgorithm a_comp)
+  {
+    typedef Loki::Int2Type
+      <Loki::Conversion<T_Compare_or_SortAlgorithm, sort_base>::exists>
+      compare_or_sort;
+
+    detail::sort(a_first, a_last, a_comp, compare_or_sort());
+  }
+
+  template <typename T_InputIterator, typename T_SortAlgorithm,
+            typename T_Compare>
+  void
+    sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp,
+         T_SortAlgorithm)
   {
     typedef PointeeType<T_InputIterator>::value_type value_type;
-    detail::DoSort(a_first, a_last, aSortAlg, less<value_type>());
+    detail::DoSort(a_first, a_last, aSortAlg, a_comp);
   }
 
   //------------------------------------------------------------------------
@@ -1535,6 +1547,24 @@ namespace tloc { namespace core {
 
     //------------------------------------------------------------------------
     // Sort helpers
+
+    template <typename T_InputIterator, typename T_Compare>
+    void
+      sort(T_InputIterator a_first, T_InputIterator a_last,
+           T_Compare a_comp, IsCompareFunctionObject)
+    {
+      typedef PointeeType<T_InputIterator>::value_type value_type;
+      detail::DoSort(a_first, a_last, sort_quicksort_randompivot(), a_comp);
+    }
+
+    template <typename T_InputIterator, typename T_SortAlgorithm>
+    void
+      sort(T_InputIterator a_first, T_InputIterator a_last,
+           T_SortAlgorithm a_comp, IsSortingAlgorithm)
+    {
+      typedef PointeeType<T_InputIterator>::value_type value_type;
+      sort(a_first, a_last, less<value_type>(), aSortAlg);
+    }
 
     template <typename T_InputIterator, typename T_Compare>
     void

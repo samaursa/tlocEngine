@@ -441,6 +441,11 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Sorting
 
+  // The base is needed to distinguish sorting algorithsm from T_Compare
+  // function object (needed because otherwise the functions have the same
+  // signature)
+  struct sort_base{};
+
   ///-------------------------------------------------------------------------
   /// @brief
   /// Quicksort where the left most element is selected as the pivot. On
@@ -448,7 +453,7 @@ namespace tloc { namespace core {
   /// selection. This is also the default technique used for non random
   /// access containers.
   ///-------------------------------------------------------------------------
-  struct sort_quicksort_leftpivot{};
+  struct sort_quicksort_leftpivot : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -456,38 +461,38 @@ namespace tloc { namespace core {
   /// a large linked list, this may be a better choice than a random
   /// selection.
   ///-------------------------------------------------------------------------
-  struct sort_quicksort_rightpivot{};
+  struct sort_quicksort_rightpivot : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
   /// Quicksort where the middle element is selected as the pivot. This
   /// is not the best choice for a linked list.
   ///-------------------------------------------------------------------------
-  struct sort_quicksort_middlepivot{};
+  struct sort_quicksort_middlepivot : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
   /// The default Quicksort variant that is used on random access
   /// containers. This may not be the best choice for linked lists.
   ///-------------------------------------------------------------------------
-  struct sort_quicksort_randompivot{};
+  struct sort_quicksort_randompivot : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
   /// Will select the leftpivot sort or randompivot sort depending on the
   /// type of container and its size.
   ///-------------------------------------------------------------------------
-  struct sort_quicksort_autoselect{};
+  struct sort_quicksort_autoselect : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief Use when seek time is a bottleneck (for example disk access)
   ///-------------------------------------------------------------------------
-  struct sort_mergesort{};
+  struct sort_mergesort : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief Use when merge sort and low memory consumption is required.
   ///-------------------------------------------------------------------------
-  struct sort_merge_insertionsort{};
+  struct sort_merge_insertionsort : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -495,16 +500,16 @@ namespace tloc { namespace core {
   /// autosort is used, this algorithm is selected for smaller
   /// containers. STABLE IN-PLACE ONLINE.
   ///-------------------------------------------------------------------------
-  struct sort_insertionsort{};
+  struct sort_insertionsort : public sort_base {};
 
   ///-------------------------------------------------------------------------
   /// @brief
   /// Use only when low memory consumption is desired and the container
   /// is nearly sorted.
   ///-------------------------------------------------------------------------
-  struct sort_bubblesort{};
+  struct sort_bubblesort : public sort_base {};
 
-  struct sort_autoselect{};
+  struct sort_autoselect : public sort_base {};
 
   // The default sort function. It sorts using random quicksort. See overloaded
   // sort function for using a different sorting algorithm.
@@ -512,18 +517,23 @@ namespace tloc { namespace core {
   void
     sort(T_InputIterator a_first, T_InputIterator a_last);
 
-  template <typename T_InputIterator, typename T_Compare>
+  template <typename T_InputIterator, typename T_Compare_or_SortAlgorithm>
   void
-    sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp);
+    sort(T_InputIterator a_first, T_InputIterator a_last,
+         T_Compare_or_SortAlgorithm a_comp);
 
   // The sorting function can sort with multiple different techniques. Use
   // sort_autoselect to automatically select the best sorting algorithm for
   // the given container. Some techniques may not be compatible with the given
   // container
-  template <typename T_InputIterator, typename T_SortAlgorithm>
-  void
-    sort(T_InputIterator a_first, T_InputIterator a_last,
-         T_SortAlgorithm);
+
+  // Commented because of the above function (same signature) - left here just
+  // to make it clear that this is what it is 'supposed' to be like
+
+  //template <typename T_InputIterator, typename T_SortAlgorithm>
+  //void
+  //  sort(T_InputIterator a_first, T_InputIterator a_last,
+  //       T_SortAlgorithm);
 
   template <typename T_InputIterator, typename T_SortAlgorithm,
             typename T_Compare>
@@ -669,6 +679,23 @@ namespace tloc { namespace core {
 
     typedef	type_false IsNotChar;
     typedef	type_true	 IsChar;
+
+    typedef type_true  IsSortingAlgorithm;
+    typedef type_false IsCompareFunctionObject;
+
+    // -----------------------------------------------------------------------
+    // Helper for one of the sort functions which must select between a sort
+    // algorithm and a comparison function object
+
+    template <typename T_InputIterator, typename T_Compare>
+    void
+      sort(T_InputIterator a_first, T_InputIterator a_last,
+           T_Compare a_comp, IsCompareFunctionObject);
+
+    template <typename T_InputIterator, typename T_SortAlgorithm>
+    void
+      sort(T_InputIterator a_first, T_InputIterator a_last,
+           T_SortAlgorithm a_comp, IsSortingAlgorithm);
 
     // ------------------------------------------------------------------------
     //  Range verification helpers: for raw iterators we check the range, for

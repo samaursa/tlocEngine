@@ -22,15 +22,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
   class SceneGraphSystem;
 
-  class Node
-    : public core_cs::Component_T<Node, components::node>
+  class SceneNode
+    : public core_cs::Component_T<SceneNode, components::node>
   {
     friend class SceneGraphSystem;
 
   public:
-    typedef core_cs::Component_T<Node, components::node>  base_type;
+    typedef core_cs::Component_T<SceneNode, components::node>  base_type;
 
-    typedef Node                                          this_type;
+    typedef SceneNode                                          this_type;
     typedef this_type*                                    pointer;
     typedef this_type&                                    reference;
 
@@ -46,8 +46,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef tl_size                               index_type;
 
   public:
-    Node();
-    explicit Node(entity_ptr_type a_entity);
+    SceneNode();
+    explicit SceneNode(entity_ptr_type a_entity);
 
     void        AddChild(pointer a_childNode);
     bool        HasChild(pointer a_childNode);
@@ -92,14 +92,14 @@ namespace tloc { namespace graphics { namespace component_system {
   // NodeCompare
 
   template <typename T_NodeType>
-  struct NodeCompareByLevel
+  struct SceneNodeCompareByLevel
   { TLOC_STATIC_ASSERT_FALSE(T_NodeType, Unsupported_node_type); };
 
   template <>
-  struct NodeCompareByLevel<Node>
+  struct SceneNodeCompareByLevel<SceneNode>
   {
   public:
-    typedef Node                value_type;
+    typedef SceneNode                value_type;
 
   public:
     bool
@@ -110,10 +110,10 @@ namespace tloc { namespace graphics { namespace component_system {
   };
 
   template <>
-  struct NodeCompareByLevel<Node*>
+  struct SceneNodeCompareByLevel<SceneNode*>
   {
   public:
-    typedef Node*               value_type;
+    typedef SceneNode*               value_type;
 
   public:
     bool
@@ -126,15 +126,15 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // Node compare by entity pointer
 
-  struct NodeCompare
+  struct SceneNodeCompare
   {
   public:
-    typedef Node::entity_ptr_type             entity_ptr_type;
-    typedef Node::pointer                     node_ptr_type;
+    typedef SceneNode::entity_ptr_type             entity_ptr_type;
+    typedef SceneNode::pointer                     node_ptr_type;
 
   public:
 
-    NodeCompare(entity_ptr_type a_entityPtr)
+    SceneNodeCompare(entity_ptr_type a_entityPtr)
       : m_entToCompare(a_entityPtr)
     { }
 
@@ -150,8 +150,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Node, node);
-  TLOC_TYPEDEF_COMPONENT_POOL(node_sptr, node_sptr);
+  TLOC_TYPEDEF_SHARED_PTR(SceneNode, scene_node);
+  TLOC_TYPEDEF_COMPONENT_POOL(scene_node_sptr, scene_node_sptr);
 
 };};};
 

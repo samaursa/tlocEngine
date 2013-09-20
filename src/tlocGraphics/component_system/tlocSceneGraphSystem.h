@@ -52,6 +52,11 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(SceneGraphSystem, scene_graph_system);
+
 };};};
 
 #endif

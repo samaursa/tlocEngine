@@ -9,7 +9,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocNode.h>
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -25,19 +25,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   struct NodeCompareFromEntity
   {
-    typedef Node*                       node_ptr_type;
-    typedef core_cs::Entity*            entity_ptr_type;
+    typedef SceneNode*                            node_ptr_type;
+    typedef core_cs::Entity*                      entity_ptr_type;
 
     bool
       operator()(entity_ptr_type a_first, entity_ptr_type a_second)
     {
-      TLOC_ASSERT(a_first->HasComponent(Node::k_component_type),
+      TLOC_ASSERT(a_first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
-      TLOC_ASSERT(a_second->HasComponent(Node::k_component_type),
+      TLOC_ASSERT(a_second->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
 
-      Node* firstNode = a_first->GetComponent<Node>();
-      Node* secondNode = a_second->GetComponent<Node>();
+      SceneNode* firstNode = a_first->GetComponent<SceneNode>();
+      SceneNode* secondNode = a_second->GetComponent<SceneNode>();
 
       return firstNode->GetLevel() < secondNode->GetLevel();
     }
@@ -80,19 +80,19 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT(a_ent->HasComponent(math_cs::Transform::k_component_type),
       "Node component requires Transform component");
 
-    Node* node = a_ent->GetComponent<Node>();
+    SceneNode* node = a_ent->GetComponent<SceneNode>();
 
     // get the level of this node relative to its parents. If the parent
     // already has a level and update hierarchy is not required, then find
     // the level from there
 
-    Node* parent = node->GetParent();
+    SceneNode* parent = node->GetParent();
 
     if (parent)
     {
       if (parent->IsHierarchyUpdateRequired())
       {
-        Node::index_type nodeLevel = 0;
+        SceneNode::index_type nodeLevel = 0;
         while (parent)
         {
           ++nodeLevel;
@@ -145,9 +145,9 @@ namespace tloc { namespace graphics { namespace component_system {
     using math_cs::Transform;
 
     Transform* localTransform = a_ent->GetComponent<Transform>();
-    Node* node = a_ent->GetComponent<Node>();
+    SceneNode* node = a_ent->GetComponent<SceneNode>();
 
-    Node*         nodeParent = node->GetParent();
+    SceneNode*         nodeParent = node->GetParent();
 
     if (nodeParent == nullptr)
     {
@@ -169,5 +169,10 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities(f64)
   {
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneGraphSystem);
 
 };};};

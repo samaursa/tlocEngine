@@ -1,4 +1,4 @@
-#include "tlocNode.h"
+#include "tlocSceneNode.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // Node
 
-  Node::
-    Node()
+  SceneNode::
+    SceneNode()
     : base_type(k_component_type)
     , m_entity(nullptr)
     , m_parent(nullptr)
@@ -32,8 +32,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Node::
-    Node(entity_ptr_type a_entity)
+  SceneNode::
+    SceneNode(entity_ptr_type a_entity)
     : base_type(k_component_type)
     , m_entity(a_entity)
     , m_parent(nullptr)
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Node::
+    SceneNode::
     AddChild(pointer a_childNode)
   {
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
@@ -58,7 +58,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Node::
+    SceneNode::
     RemoveChild(pointer a_childNode)
   {
     TLOC_ASSERT(a_childNode->GetParent() == this,
@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Node::
+    SceneNode::
     HasChild(pointer a_childNode)
   {
     node_cont_iterator itr = core::find_all(m_children, a_childNode);
@@ -87,36 +87,36 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Node::node_cont_iterator
-    Node::
+  SceneNode::node_cont_iterator
+    SceneNode::
     begin()
   { return m_children.begin(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Node::node_cont_const_iterator
-    Node::
+  SceneNode::node_cont_const_iterator
+    SceneNode::
     begin() const
   { return m_children.begin(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Node::node_cont_iterator
-    Node::
+  SceneNode::node_cont_iterator
+    SceneNode::
     end()
   { return m_children.end(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Node::node_cont_const_iterator
-    Node::
+  SceneNode::node_cont_const_iterator
+    SceneNode::
     end() const
   { return m_children.end(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Node::
+    SceneNode::
     SetWorldTransform(const transform_type& a_transform)
   {
     m_worldTransform = a_transform;
@@ -126,15 +126,22 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Node::
+    SceneNode::
     SetHierarchyUpdateRequired(bool a_updateRequired)
   { m_flags[k_hierarchyUpdate] = a_updateRequired; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Node::
+    SceneNode::
     SetTransformUpdateRequired(bool a_updateRequired)
   { m_flags[k_transformUpdate] = a_updateRequired; }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  // SmartPtr
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneNode);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(scene_node_sptr);
 
 };};};

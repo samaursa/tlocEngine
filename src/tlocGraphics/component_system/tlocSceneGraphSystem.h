@@ -29,6 +29,9 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem(event_manager_sptr   a_eventMgr,
                      entity_manager_sptr  a_entityMgr);
 
+    static void DeactivateHierarchy(const entity_type* a_parent);
+    static void ActivateHierarchy(const entity_type* a_parent);
+
     virtual void SortEntities();
 
     virtual error_type Pre_Initialize();

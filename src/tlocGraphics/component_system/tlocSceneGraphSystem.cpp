@@ -57,6 +57,50 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
+    DeactivateHierarchy(const entity_type* a_parent)
+  {
+    TLOC_ASSERT_NOT_NULL(a_parent);
+
+    a_parent->Deactivate();
+
+    if (a_parent->HasComponent(components::scene_node) == false)
+    { return; }
+
+    SceneNode* node = a_parent->GetComponent<SceneNode>();
+
+    for (SceneNode::node_cont_iterator
+         itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
+    {
+      DeactivateHierarchy( (*itr)->GetEntity() );
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    SceneGraphSystem::
+    ActivateHierarchy(const entity_type* a_parent)
+  {
+    TLOC_ASSERT_NOT_NULL(a_parent);
+
+    a_parent->Activate();
+
+    if (a_parent->HasComponent(components::scene_node) == false)
+    { return; }
+
+    SceneNode* node = a_parent->GetComponent<SceneNode>();
+
+    for (SceneNode::node_cont_iterator
+         itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
+    {
+      ActivateHierarchy( (*itr)->GetEntity() );
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    SceneGraphSystem::
     SortEntities()
   {
     core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(),

@@ -1554,16 +1554,16 @@ namespace tloc { namespace core {
            T_Compare a_comp, IsCompareFunctionObject)
     {
       typedef PointeeType<T_InputIterator>::value_type value_type;
-      detail::DoSort(a_first, a_last, sort_quicksort_randompivot(), a_comp);
+      DoSort(a_first, a_last, sort_quicksort_randompivot(), a_comp);
     }
 
     template <typename T_InputIterator, typename T_SortAlgorithm>
     void
       sort(T_InputIterator a_first, T_InputIterator a_last,
-           T_SortAlgorithm a_comp, IsSortingAlgorithm)
+           T_SortAlgorithm a_sortAlgorithm, IsSortingAlgorithm)
     {
       typedef PointeeType<T_InputIterator>::value_type value_type;
-      sort(a_first, a_last, less<value_type>(), aSortAlg);
+      DoSort(a_first, a_last, a_sortAlgorithm, less<value_type>());
     }
 
     template <typename T_InputIterator, typename T_Compare>
@@ -1579,6 +1579,10 @@ namespace tloc { namespace core {
              sort_quicksort_randompivot, T_Compare a_compare)
     {
       const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
+
+      if (size < 2)
+      { return; }
+
       const tl_ptrdiff randomPiv =
         rng::g_defaultRNG.GetRandomInteger(0, (rng::rng_default::int_type)size);
 
@@ -1594,7 +1598,12 @@ namespace tloc { namespace core {
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
              sort_quicksort_middlepivot, T_Compare a_compare)
     {
-      const tl_ptrdiff halfSize = tloc::core::distance(a_first, a_last) / 2;
+      const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
+
+      if (size < 2)
+      { return; }
+
+      const tl_ptrdiff halfSize = size / 2;
 
       T_InputIterator midItr = a_first;
       tloc::core::advance(midItr, halfSize);
@@ -1608,6 +1617,11 @@ namespace tloc { namespace core {
       DoSort(T_InputIterator a_first, T_InputIterator a_last,
              sort_quicksort_rightpivot, T_Compare a_compare)
     {
+      const tl_ptrdiff size      = tloc::core::distance(a_first, a_last);
+
+      if (size < 2)
+      { return; }
+
       // Swap the rightpivot with the left most element. We can then call
       // quicksort_leftpivot
       T_InputIterator rightPivot = a_last;
@@ -1942,7 +1956,7 @@ namespace tloc { namespace core {
 
       for (/* */; aLeftFirst != aRightFirst; ++aLeftFirst)
       {
-        if (a_compare(*aRightFirst, aLeftFirst)) // if (*aLeftFirst > *aRightFirst)
+        if (a_compare(*aRightFirst, *aLeftFirst)) // if (*aLeftFirst > *aRightFirst)
         {
           core::swap(*aLeftFirst, *aRightFirst);
           DoSortFirstElementWithItrType(aRightFirst, a_last, pointer_type(),

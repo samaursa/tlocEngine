@@ -9,16 +9,56 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace component_system {
+
+  namespace p_entity
+  {
+    template <typename T_BuildConfig>
+    class Entity_I
+    {
+    public:
+      Entity_I(const char* a_name)
+        : m_name(a_name)
+      { }
+
+      void        SetDebugName(const char* a_name)
+      { m_name = a_name; }
+
+      const char* GetDebugName() const
+      { return m_name; }
+
+    private:
+      const char* m_name;
+    };
+
+    template <>
+    class Entity_I<core_cfg::p_build_config::Release>
+    {
+    public:
+      Entity_I(const char* )
+      { }
+
+      void        SetDebugName(const char* )
+      { }
+
+      const char* GetDebugName() const
+      { return "No name assigned - RELEASE CONFIG"; }
+    };
+  };
 
   class EntityWorld;
   class EntityManager;
 
   class Entity
+    : public p_entity::Entity_I<core_cfg::BuildConfig::build_config_type>
   {
   public:
     friend class EntityManager;
+
+    typedef p_entity::Entity_I
+      <core_cfg::BuildConfig::build_config_type>        base_type;
 
     typedef components::value_type                      component_type;
     typedef core::component_system::
@@ -28,6 +68,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                         size_type;
 
     Entity(entity_id  a_id);
+    Entity(entity_id  a_id, const char* a_debugName);
 
     bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;

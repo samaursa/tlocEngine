@@ -63,6 +63,9 @@ namespace TestingWindow
     CHECK(win.IsValid() == true);
     CHECK(win.IsCreated() == true);
 
+    win.SetMouseVisibility(false);
+    CHECK(GetCursor() == TLOC_NULL);
+
     sampleObject callbacks;
     CHECK(callbacks.m_windowEventCount == 0);
     {

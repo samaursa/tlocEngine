@@ -292,6 +292,8 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     void SendEvent(const WindowEvent& a_event);
 
+    TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
+
   private:
     typedef tloc::type_true   IsWindowHandle;
     typedef tloc::type_false  IsNotWindowHandle;
@@ -308,6 +310,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
+    bool                                    m_mouseVisible;
   };
 
   //////////////////////////////////////////////////////////////////////////

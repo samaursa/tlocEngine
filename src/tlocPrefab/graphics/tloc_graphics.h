@@ -10,6 +10,7 @@
 #include <tlocPrefab/graphics/tlocMaterial.h>
 #include <tlocPrefab/graphics/tlocMesh.h>
 #include <tlocPrefab/graphics/tlocQuad.h>
+#include <tlocPrefab/graphics/tlocSceneNode.h>
 #include <tlocPrefab/graphics/tlocSprite.h>
 
 #endif

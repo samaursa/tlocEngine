@@ -58,6 +58,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     node_cont_const_iterator  begin() const;
     node_cont_const_iterator  end() const;
+    node_cont_type::size_type size() const;
+
+    bool IsParentDisabled() const;
 
     TLOC_DECL_SETTER(transform_type, SetWorldTransform);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
@@ -66,7 +69,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_AND_DEF_GETTER(entity_ptr_type, GetEntity, m_entity);
     TLOC_DECL_AND_DEF_GETTER(pointer, GetParent, m_parent);
-    TLOC_DECL_SETTER_BY_VALUE(pointer, SetParent);
 
     TLOC_DECL_GETTER(bool, IsHierarchyUpdateRequired);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetHierarchyUpdateRequired);

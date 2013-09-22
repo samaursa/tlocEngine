@@ -32,7 +32,9 @@ namespace tloc { namespace graphics { namespace win {
 
 
   template <WINDOW_TEMP>
-  Window_T<WINDOW_PARAMS>::Window_T() : m_impl(nullptr)
+  Window_T<WINDOW_PARAMS>::Window_T()
+    : m_impl(nullptr)
+    , m_mouseVisible(true)
   {
   }
 
@@ -185,6 +187,7 @@ namespace tloc { namespace graphics { namespace win {
   void Window_T<WINDOW_PARAMS>::SetMouseVisibility(bool a_visible)
   {
     VALIDATE_WINDOW();
+    m_mouseVisible = a_visible;
     m_impl->SetMouseVisibility(a_visible);
   }
 

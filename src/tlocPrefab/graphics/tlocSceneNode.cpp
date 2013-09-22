@@ -61,7 +61,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
     scene_node_pool::iterator itrSceneNode = sceneNodePool->GetNext();
     itrSceneNode->SetValue(scene_node_sptr(new gfx_cs::SceneNode(a_ent)) );
-    itrSceneNode->GetValue()->SetParent(m_parent);
+
+    if (m_parent)
+    { m_parent->AddChild(itrSceneNode->GetValue().get()); }
 
     m_entMgr->InsertComponent(a_ent, itrSceneNode->GetValue().get());
   }

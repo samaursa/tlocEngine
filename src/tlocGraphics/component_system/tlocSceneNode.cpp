@@ -25,6 +25,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_entity(nullptr)
     , m_parent(nullptr)
     , m_level(0)
+    , m_worldTransform(transform_type::IDENTITY)
     , m_flags(k_count)
   {
     m_flags.MarkAll();
@@ -38,6 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_entity(a_entity)
     , m_parent(nullptr)
     , m_level(0)
+    , m_worldTransform(transform_type::IDENTITY)
     , m_flags(k_count)
   {
     m_flags.MarkAll();
@@ -49,9 +51,11 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     AddChild(pointer a_childNode)
   {
+
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
+    a_childNode->m_parent = this;
     m_children.push_back(a_childNode);
   }
 
@@ -115,22 +119,37 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  bool
     SceneNode::
-    SetWorldTransform(const transform_type& a_transform)
+    IsParentDisabled() const
   {
-    m_worldTransform = a_transform;
-    SetTransformUpdateRequired(true);
+    // Disable us if our parent is disabled
+    SceneNode* p = GetParent();
+    while(p)
+    {
+      if (p->GetEntity()->IsActive() == false)
+      { return true; }
+
+      p = p->GetParent();
+    }
+
+    return false;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::node_cont_type::size_type
+    SceneNode::
+    size() const
+  { return m_children.size(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     SceneNode::
-    SetParent(pointer a_parentNode)
+    SetWorldTransform(const transform_type& a_transform)
   {
-    m_parent = a_parentNode;
-    SetHierarchyUpdateRequired(true);
+    m_worldTransform = a_transform;
     SetTransformUpdateRequired(true);
   }
 

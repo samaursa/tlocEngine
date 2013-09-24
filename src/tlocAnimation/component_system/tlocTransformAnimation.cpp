@@ -179,7 +179,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   const bool
     TransformAnimation::
-    IsTransformSetChanged() const
+    IsKFSequenceChanged() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_keyframeSetChanged); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -230,14 +230,14 @@ namespace tloc { namespace animation { namespace component_system {
 
   void
     TransformAnimation::
-    SetTransformSetChanged(bool a_changed)
+    SetKFSequenceChanged(bool a_changed)
   { m_kfSeqSet[m_currentSeq].m_flags[k_keyframeSetChanged] = a_changed; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
-    SetCurrentTransformSet(size_type a_spriteSetIndex)
+    SetCurrentKFSequence(size_type a_spriteSetIndex)
   {
     TLOC_ASSERT(a_spriteSetIndex < GetNumSequences(), "Index out of bounds!");
     m_currentSeq = a_spriteSetIndex;

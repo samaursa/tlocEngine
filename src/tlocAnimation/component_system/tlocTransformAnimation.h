@@ -70,7 +70,7 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_GETTER(bool, IsPaused);
     TLOC_DECL_GETTER(bool, IsStopped);
     TLOC_DECL_GETTER(bool, IsReversed);
-    TLOC_DECL_GETTER(bool, IsTransformSetChanged);
+    TLOC_DECL_GETTER(bool, IsKFSequenceChanged);
     TLOC_DECL_GETTER(size_type, GetFPS);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
@@ -82,8 +82,8 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetStopped);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetReverse);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetTransformSetChanged);
-    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentTransformSet);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetKFSequenceChanged);
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentKFSequence);
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetFPS);
 
   private:

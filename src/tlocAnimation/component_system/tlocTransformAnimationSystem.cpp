@@ -102,7 +102,7 @@ namespace tloc { namespace animation { namespace component_system {
     }
 
     if (ent->HasComponent(components::transform_animation) &&
-        transAnim->IsTransformSetChanged())
+        transAnim->IsKFSequenceChanged())
     {
       math_cs::Transform* transPtr =
         ent->GetComponent<math_cs::Transform>(0);

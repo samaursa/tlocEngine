@@ -61,9 +61,13 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMesh.h 
   component_system/tlocMeshRenderSystem.cpp 
   component_system/tlocMeshRenderSystem.h 
+  component_system/tlocSceneNode.h
+  component_system/tlocSceneNode.cpp
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocSceneGraphSystem.h
+  component_system/tlocSceneGraphSystem.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h

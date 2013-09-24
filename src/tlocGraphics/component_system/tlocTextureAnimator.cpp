@@ -25,6 +25,7 @@ namespace tloc { namespace graphics { namespace component_system {
     CoordSet()
     : m_frameDeltaT(24)
     , m_startTime(0)
+    , m_totalTime(0)
     , m_flags(k_count)
   { }
 
@@ -33,6 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : m_coords(a_coords)
     , m_frameDeltaT(24)
     , m_startTime(0)
+    , m_totalTime(0)
     , m_flags(k_count)
   { }
 
@@ -41,6 +43,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : m_coords(a_other.m_coords)
     , m_frameDeltaT(a_other.m_frameDeltaT)
     , m_startTime(a_other.m_startTime)
+    , m_totalTime(a_other.m_totalTime)
     , m_flags(a_other.m_flags)
   { }
 

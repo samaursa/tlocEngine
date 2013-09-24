@@ -940,7 +940,7 @@ namespace TestingAlgorithms
     List<s32>  myIntsList(itrBegin, itrEnd);
     List<s32, ListNode<s32, singly_linked_tag> >  myIntsListSinglyLinked(itrBegin, itrEnd);
 
-    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType() );
+    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -953,7 +953,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -966,7 +966,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -996,7 +996,7 @@ namespace TestingAlgorithms
 
     tloc::core::detail::DoSort(myIntsListSinglyLinked.begin(),
                                myIntsListSinglyLinked.end(),
-                               T_SortType());
+                               T_SortType(), less<s32>());
 
     List<s32, ListNode<s32, singly_linked_tag> >::iterator singleListItr,
                                                            singleListItr2,
@@ -1051,6 +1051,28 @@ namespace TestingAlgorithms
     SortDetailsTests<sort_bubblesort>();
   }
 
+  template <typename T_SortingAlgorithm>
+  void TestEdgeCases()
+  {
+    // Sorting function crashes when array is size 0. Testing size 1 and 2
+    // for good measure after the fix.
+
+    Array<s32> emptyArray;
+    core::sort(emptyArray.begin(), emptyArray.end(), T_SortingAlgorithm());
+
+    Array<s32> size1Array;
+    size1Array.push_back(99);
+    core::sort(size1Array.begin(), size1Array.end(), T_SortingAlgorithm());
+    CHECK(size1Array.front() == 99);
+
+    Array<s32> size2Array;
+    size2Array.push_back(2);
+    size2Array.push_back(1);
+    core::sort(size2Array.begin(), size2Array.end(), T_SortingAlgorithm());
+    CHECK(size2Array.front() == 1);
+    CHECK(size2Array.back() == 2);
+  }
+
   TEST_CASE("Core/Algorithms/Sort", "")
   {
     const s32 k_arraySize = 26;
@@ -1094,6 +1116,15 @@ namespace TestingAlgorithms
       ++listItr2;
       ++listItr;
     }
+
+    TestEdgeCases<sort_bubblesort>();
+    TestEdgeCases<sort_insertionsort>();
+    TestEdgeCases<sort_merge_insertionsort>();
+    TestEdgeCases<sort_mergesort>();
+    TestEdgeCases<sort_quicksort_leftpivot>();
+    TestEdgeCases<sort_quicksort_middlepivot>();
+    TestEdgeCases<sort_quicksort_randompivot>();
+    TestEdgeCases<sort_quicksort_rightpivot>();
   }
 
   struct CountDestruction

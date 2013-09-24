@@ -413,6 +413,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
           (WindowEvent::lost_focus, GetWidth(), GetHeight()));
         break;
       }
+    case WM_MOUSEMOVE:
+      {
+        // We rely on DirectInput for mouse movements, but here we need to make
+        // sure that the mouse cursor is set properly to avoid the problem
+        // where the mouse cursor's icon is not updated when re-entering
+        // client area
+        SetMouseVisibility(m_parentWindow->IsMouseVisible());
+      }
     }
 
     TLOC_UNUSED_2(a_wparam, a_lparam);

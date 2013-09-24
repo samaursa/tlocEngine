@@ -56,6 +56,8 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     void ProcessActiveEntities(f64 a_deltaT = 0);
 
+    virtual void SortEntities() = 0;
+
   protected:
 
     template <tl_size T_VarSize>
@@ -141,8 +143,8 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
-                                          m_activeEntities);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_ptr_array, DoGetActiveEntities,
+                                    m_activeEntities);
 
   private:
     component_type_array  m_typeFlags;

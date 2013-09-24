@@ -5,6 +5,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
 
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -140,9 +141,11 @@ namespace tloc { namespace graphics { namespace component_system {
     math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
     mesh_type*          meshPtr = ent->GetComponent<Mesh_T>();
 
-
-    const Mat4f32& tMatrix =
-      posPtr->GetTransformation().Cast<Mat4f32>();
+    Mat4f32 tMatrix;
+    if (ent->HasComponent(components::scene_node))
+    { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+    else
+    { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
     Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
 

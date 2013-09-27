@@ -31,7 +31,6 @@ namespace TestingKeyframe
     CHECK(kfs.GetTotalFrames() == 30);
     CHECK(kfs.GetCurrentFrame() == 0);
     CHECK_FALSE(kfs.m_loop);
-    CHECK(kfs.m_stopOnLastFrame);
 
     CHECK(kfs.GetFramesBetween(0, 1) == 10);
     CHECK(kfs.GetFramesBetween(1, 2) == 20);

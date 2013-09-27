@@ -49,7 +49,6 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     KeyframeSequence_T()
     : m_loop(false)
-    , m_stopOnLastFrame(true)
     , m_keyframes(new cont_type())
     , m_currentFrame(0)
     , m_totalFrames(0)
@@ -97,7 +96,7 @@ namespace tloc { namespace animation { namespace types {
     ++m_currentFrame;
     if (m_currentFrame > totalFrames)
     {
-      if (m_loop || m_stopOnLastFrame == false)
+      if (m_loop)
       {
         m_currentFrame = 0;
         m_currentPairIndex = 0;
@@ -138,11 +137,15 @@ namespace tloc { namespace animation { namespace types {
 
     if (m_currentFrame == 0)
     {
-      if (m_loop || m_stopOnLastFrame)
+      if (m_loop)
       {
         m_currentFrame = totalFrames;
         m_currentPairIndex = m_keyframes->size() - 2;
         return true;
+      }
+      else
+      {
+        m_currentFrame = 0;
       }
     }
     else

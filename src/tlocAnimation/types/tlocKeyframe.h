@@ -148,7 +148,6 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalFrames, m_totalFrames);
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
-    TLOC_DECL_PARAM_VAR(bool, StopOnLastFrame, m_stopOnLastFrame);
 
   private:
     size_type       DoGetSecondIndex();

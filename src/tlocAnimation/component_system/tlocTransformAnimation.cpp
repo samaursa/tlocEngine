@@ -114,12 +114,15 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     NextFrame()
   {
-    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
-    else
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+    bool updated = false;
 
-    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+    else
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+
+    if (updated)
+    { m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -128,13 +131,15 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     PrevFrame()
   {
+    bool updated = false;
 
     if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
     else
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
 
-    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+    if (updated)
+    { m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

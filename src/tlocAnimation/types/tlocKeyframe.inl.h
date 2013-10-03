@@ -258,7 +258,8 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     DoGetSecondIndex()
   {
-    return m_currentPairIndex + 1;
+    TLOC_ASSERT(size() != 0, "No keyframes in sequence");
+    return size() > 1 ? m_currentPairIndex + 1 : m_currentPairIndex;
   }
 
   // -----------------------------------------------------------------------

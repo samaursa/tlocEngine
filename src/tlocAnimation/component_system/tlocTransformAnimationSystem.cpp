@@ -110,8 +110,7 @@ namespace tloc { namespace animation { namespace component_system {
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
       typedef kf_seq::keyframe_type                       kf_type;
 
-      kf_seq& currKfSeq =
-        transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
+      kf_seq& currKfSeq = transAnim->GetCurrentKeyframeSequence();
 
       if (currKfSeq.size() == 0)
       { return; }

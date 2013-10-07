@@ -55,12 +55,15 @@ namespace tloc { namespace animation { namespace component_system {
     kf_seq_type&         GetKeyframeSequence(size_type a_index);
     const kf_seq_type&   GetKeyframeSequence(size_type a_index) const;
 
+    kf_seq_type&         GetCurrentKeyframeSequence();
+    const kf_seq_type&   GetCurrentKeyframeSequence() const;
+
     void NextFrame();
     void PrevFrame();
     void SetFrame(size_type a_index);
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSequences, m_kfSeqSet.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKFSequence, m_currentSeq);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalKeyframeSequences, m_kfSeqSet.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSequenceIndex, m_currentSeq);
     TLOC_DECL_AND_DEF_GETTER(f64, GetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
     TLOC_DECL_AND_DEF_GETTER(f64, GetTotalTime, m_kfSeqSet[m_currentSeq].m_totalTime);
     TLOC_DECL_AND_DEF_GETTER

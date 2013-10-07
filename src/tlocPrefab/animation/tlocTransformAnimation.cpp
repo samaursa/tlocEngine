@@ -62,10 +62,10 @@ namespace tloc { namespace prefab { namespace animation {
     }
 
     const TransformAnimation::size_type
-      currSeqIndex = ta->GetCurrentKFSequence();
+      currSeqIndex = ta->GetCurrentKeyframeSequenceIndex();
 
     ta->AddKeyframeSet(a_keyframes);
-    ta->SetCurrentKFSequence(ta->GetNumSequences() - 1);
+    ta->SetCurrentKFSequence(ta->GetTotalKeyframeSequences() - 1);
     ta->SetFPS(m_fps);
     ta->SetFrame(m_startingFrame);
     ta->SetPaused(m_paused);
@@ -91,7 +91,7 @@ namespace tloc { namespace prefab { namespace animation {
     anim_cs::TransformAnimation* ta = a_ent->GetComponent<TransformAnimation>();
 
     const TransformAnimation::size_type
-      currSeqIndex = ta->GetCurrentKFSequence();
+      currSeqIndex = ta->GetCurrentKeyframeSequenceIndex();
 
     ta->ModifyKeyframeSet(a_keyframes, a_sequenceIndex);
     ta->SetCurrentKFSequence(a_sequenceIndex);

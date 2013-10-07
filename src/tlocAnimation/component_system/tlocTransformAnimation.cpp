@@ -110,6 +110,24 @@ namespace tloc { namespace animation { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  TransformAnimation::kf_seq_type&
+    TransformAnimation::
+    GetCurrentKeyframeSequence()
+  {
+    return m_kfSeqSet[GetCurrentKeyframeSequenceIndex()].m_kfSeq;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const TransformAnimation::kf_seq_type&
+    TransformAnimation::
+    GetCurrentKeyframeSequence() const
+  {
+    return m_kfSeqSet[GetCurrentKeyframeSequenceIndex()].m_kfSeq;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     TransformAnimation::
     NextFrame()
@@ -244,7 +262,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     SetCurrentKFSequence(size_type a_spriteSetIndex)
   {
-    TLOC_ASSERT(a_spriteSetIndex < GetNumSequences(), "Index out of bounds!");
+    TLOC_ASSERT(a_spriteSetIndex < GetTotalKeyframeSequences(), "Index out of bounds!");
     m_currentSeq = a_spriteSetIndex;
     m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }

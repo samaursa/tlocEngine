@@ -1,13 +1,16 @@
 #include "tlocMouse.h"
 
-#include <tlocCore/types/tlocTypes.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocMath/tlocRange.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
 # include <tlocInput/hid/tlocMouseImplWin.h>
+#elif defined (TLOC_OS_IPHONE)
+# include <tlocInput/hid/tlocMouseImplIphone.h>
 #else
 # error "WIP"
 #endif
@@ -18,16 +21,6 @@ namespace tloc { namespace input { namespace hid {
 #define MOUSE_PARAMS T_Policy, T_Platform
 #define MOUSE_TYPE   typename Mouse<MOUSE_PARAMS>
 
-  template Mouse<InputPolicy::Buffered>;
-  template Mouse<InputPolicy::Immediate>;
-
-  // Force instantiate the constructor for each platform
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
-  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
-#else
-# error TODO
-#endif
 
   //------------------------------------------------------------------------
   // Method definitions
@@ -35,6 +28,7 @@ namespace tloc { namespace input { namespace hid {
   template <MOUSE_TEMP>
   template <typename T_ParamList>
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
+    : m_clamped(true)
   {
     m_impl.reset(new impl_type(this, a_paramList));
   }
@@ -100,6 +94,22 @@ namespace tloc { namespace input { namespace hid {
   }
 
   template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::
+    Clamp(event_type& a_event) const
+  {
+    // TODO: Replace with Clamp<>() method when available
+    a_event.m_X.m_abs() =
+      core::Clamp(a_event.m_X.m_abs(),
+                  GetClampX().front(),
+                  GetClampX().back());
+
+    a_event.m_Y.m_abs() =
+      core::Clamp(a_event.m_Y.m_abs(),
+                  GetClampY().front(),
+                  GetClampY().back());
+  }
+
+  template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::Update()
   {
     m_impl->Update();
@@ -110,5 +120,36 @@ namespace tloc { namespace input { namespace hid {
   {
     m_impl->Reset();
   }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::SetClampX(const abs_range_type& a_range)
+  {
+    m_clampX = a_range;
+  }
+
+  template <MOUSE_TEMP>
+  void Mouse<MOUSE_PARAMS>::SetClampY(const abs_range_type& a_range)
+  {
+    m_clampY = a_range;
+  }
+
+  //------------------------------------------------------------------------
+  // Forward Instantiations
+
+  template class Mouse<InputPolicy::Buffered>;
+  template class Mouse<InputPolicy::Immediate>;
+
+  //------------------------------------------------------------------------
+  // Force instantiate the constructor for each platform
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
+#else
+# error TODO
+#endif
 
 };};};

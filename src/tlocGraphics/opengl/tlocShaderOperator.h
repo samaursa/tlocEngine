@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
   public:
     typedef ShaderOperator          this_type;
-    typedef UniformPtr              uniform_ptr_type;
-    typedef AttributePtr            attribute_ptr_type;
+    typedef uniform_sptr            uniform_ptr_type;
+    typedef attribute_sptr          attribute_ptr_type;
     typedef core::error::Error      error_type;
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
@@ -36,8 +36,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::containers::Array<attribute_pair_type> attribute_cont_type;
     typedef attribute_cont_type::iterator                attribute_iterator;
 
+    typedef core_conts::tl_array<index_type>::type       index_cont_type;
+    typedef index_cont_type::iterator                    index_iterator;
+
   public:
     ShaderOperator();
+    ~ShaderOperator();
 
     void AddUniform(const uniform_ptr_type& a_uniform);
     void AddAttribute(const attribute_ptr_type& a_attribute);
@@ -47,12 +51,6 @@ namespace tloc { namespace graphics { namespace gl {
 
     void RemoveAllUniforms();
     void RemoveAllAttributes();
-
-    uniform_iterator begin_uniform();
-    uniform_iterator end_uniform();
-
-    attribute_iterator begin_attribute();
-    attribute_iterator end_attribute();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -75,6 +73,20 @@ namespace tloc { namespace graphics { namespace gl {
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram);
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram);
 
+    uniform_iterator begin_uniforms();
+    uniform_iterator end_uniforms();
+
+    attribute_iterator begin_attributes();
+    attribute_iterator end_attributes();
+
+    // The following functions will destroy the uniform/attribute cache which
+    // was setup when Prepare*() methods were called
+    void ClearAttributesCache();
+    void ClearUniformsCache();
+    void ClearCache();
+    bool IsAttributesCached();
+    bool IsUniformsCached();
+
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributes,
@@ -84,10 +96,10 @@ namespace tloc { namespace graphics { namespace gl {
     uniform_cont_type           m_uniforms;
     attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
+    index_cont_type             m_enabledVertexAttrib;
 
   };
 
-  typedef tloc::core::smart_ptr::
-          SharedPtr<ShaderOperator>  ShaderOperatorPtr;
+  TLOC_TYPEDEF_SHARED_PTR(ShaderOperator, shader_operator);
 
 };};};

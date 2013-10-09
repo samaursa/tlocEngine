@@ -1,7 +1,6 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix4.h>
-#include <tlocMath/types/tlocMatrix4.inl>
 
 namespace TestingMatrix4
 {
@@ -44,10 +43,15 @@ namespace TestingMatrix4
     REQUIRE(sizeof(Mat4f64) == (sizeof(f64) * 16));
   }
 
+  TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
     "Test general/basic functionality")
   {
-    a.Zero();
+    a.MakeZero();
     Mat4f f(a);
     CHECK_MATRIX4F(f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
@@ -86,5 +90,53 @@ namespace TestingMatrix4
                       10.0f, 10.0f, 10.0f, 10.0f,
                       10.0f, 10.0f, 10.0f, 10.0f,
                       10.0f, 10.0f, 10.0f, 10.0f);
+  }
+
+  TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/Inverse and determinant", "")
+  {
+    a = Mat4f(4, 7, 1, 2,
+              3, 6, 8, 9,
+              6, 7, 5, 2,
+              3, 8, 9, 0);
+
+    CHECK(a.Determinant() == Approx(-1378.0f));
+
+    Mat4f::value_type detInv = 1.0f / a.Determinant();
+
+    b = a.Adjoint();
+    CHECK_MATRIX4F(b,
+      227.0f  , -345.0f ,  231.0f  , -51.0f,
+      64.0f   ,  12.0f  , -32.0f   , -154.0f,
+      -515.0f ,  291.0f , -87.0f   ,  55.0f,
+      204.0f  , -134.0f , -102.0f  ,  112.0f);
+
+    c = a.Invert();
+
+    CHECK( (c == b * detInv) );
+
+    Vec4f row1Norm(a[0], a[4], a[8], a[12]);
+    Vec4f row2Norm(a[1], a[5], a[9], a[13]);
+    Vec4f row3Norm(a[2], a[6], a[10], a[14]);
+    Vec4f row4Norm(0, 0, 0, 1);
+
+    row1Norm.Normalize();
+    row2Norm.Normalize();
+    row3Norm.Normalize();
+
+    a.SetRow(0, row1Norm);
+    a.SetRow(1, row2Norm);
+    a.SetRow(2, row3Norm);
+    a.SetRow(3, row4Norm);
+
+    detInv = 1.0f / a.Determinant();
+
+    b = a.Invert();
+    c = a.Invert<math_t::p_matrix4::Affine>();
+
+    CHECK_MATRIX4F(b,
+      c[0], c[1], c[2], c[3],
+      c[4], c[5], c[6], c[7],
+      c[8], c[9], c[10], c[11],
+      c[12], c[13], c[14], c[15]);
   }
 };

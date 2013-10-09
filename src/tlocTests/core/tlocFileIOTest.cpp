@@ -42,13 +42,13 @@ namespace TestingFileIO
 
     // Prepare the file that we will be testing
     FILE* m_file = fopen(path, "w");
-    REQUIRE(m_file != NULL);
+    REQUIRE((m_file != nullptr));
 
     fputs(sentence, m_file);
     fclose(m_file);
 
     // Start our tests
-    io::FileIO_ReadA fileReader(path);
+    io::FileIO_ReadA fileReader = io::FileIO_ReadA(core_io::Path(path));
     CHECK_FALSE(fileReader.IsOpen());
     CHECK(fileReader.Open() == common_error_types::error_success);
     CHECK(fileReader.IsOpen());

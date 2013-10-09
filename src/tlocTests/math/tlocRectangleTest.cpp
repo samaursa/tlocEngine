@@ -3,16 +3,21 @@
 #include <tlocMath/types/tlocRectangle.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
-#include <tlocCore/data_structures/tlocVariadic.inl>
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 namespace TestingRectangle
 {
   using namespace tloc;
   using namespace tloc::math::types;
 
+  TEST_CASE("Graphics/types/Rectangle/Size", "")
+  {
+    CHECK(sizeof(Rectf32) == sizeof(Rectf32::point_type)*2 );
+    CHECK(sizeof(Rectf64) == sizeof(Rectf64::point_type)*2 );
+  }
+
   TEST_CASE("Graphics/types/Rectangle", "")
   {
-
     Rectf r = Rectf(Rectf::left(-1), Rectf::right(0),
               Rectf::top(0), Rectf::bottom(-1) );
     CHECK(r.IsValid());
@@ -40,6 +45,15 @@ namespace TestingRectangle
     CHECK(r.GetValue<Rectf::right>()  == Approx(1.0f));
     CHECK(r.GetValue<Rectf::top>()    == Approx(1.0f));
     CHECK(r.GetValue<Rectf::bottom>() == Approx(0.0f));
+
+    r = Rectf(Rectf::point_type(1.0f, 2.0f),
+              Rectf::point_type(2.0f, 4.0f));
+    CHECK(r.GetWidth() == 1.0f);
+    CHECK(r.GetHeight() == 2.0f);
+    CHECK(r.GetValue<Rectf::left>()   == Approx(1.0f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(2.0f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(4.0f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(2.0f));
 
     r = Rectf();
     CHECK(r.GetValue<Rectf::left>()    == 0);
@@ -122,13 +136,39 @@ namespace TestingRectangle
     center[1] = 0;
     CHECK((r.GetPosition() == center));
 
-    // assignemnt operator
+    // assignemnt operator and swap
     Rectf s = Rectf(Rectf::width(5), Rectf::height(10));
     s.SetPosition(Rectf::point_type(5, 9));
     r = s;
     CHECK(r.GetWidth() == Approx(5));
     CHECK(r.GetHeight() == Approx(10));
     CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+
+    s = Rectf(Rectf::width(2), Rectf::height(3));
+    s.SetPosition(Rectf::point_type(1, 8));
+    s.swap(r);
+
+    CHECK(s.GetWidth() == Approx(5));
+    CHECK(s.GetHeight() == Approx(10));
+    CHECK(s.GetPosition() == Rectf::point_type(5, 9));
+
+    CHECK(r.GetWidth() == Approx(2));
+    CHECK(r.GetHeight() == Approx(3));
+    CHECK(r.GetPosition() == Rectf::point_type(1, 8));
+
+    swap(s, r);
+
+    CHECK(r.GetWidth() == Approx(5));
+    CHECK(r.GetHeight() == Approx(10));
+    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+
+    CHECK(s.GetWidth() == Approx(2));
+    CHECK(s.GetHeight() == Approx(3));
+    CHECK(s.GetPosition() == Rectf::point_type(1, 8));
+
+    // different types
+    Rectf32 r32;
+    Rectf64 r64(r32);
   }
 
   TEST_CASE("Graphics/types/Rectangle/GetCoord", "")
@@ -143,5 +183,72 @@ namespace TestingRectangle
     CHECK( (r.GetCoord_TopRight() == Vec2f(0.5f, 1.0f)) );
     CHECK( (r.GetCoord_BottomLeft() == Vec2f(-0.5f, -1.0f)) );
     CHECK( (r.GetCoord_BottomRight() == Vec2f(0.5f, -1.0f)) );
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection_2d", "")
+  {
+    // NOTE: Rectangle origin is at its center
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+    Ray2f ray(Ray2f::origin(Vec2f(0, 0)) );
+    CHECK(r.Intersects(ray));
+
+    r.SetPosition(Vec2f(3, 2));
+    CHECK_FALSE(r.Intersects(ray));
+
+    ray = Ray2f(Ray2f::origin(Vec2f(2.5, 1.0f)) );
+    CHECK(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.1f, 2.0f));
+    CHECK_FALSE(r.Intersects(ray));
+    r.SetPosition(Vec2f(3.0f, 3.0f));
+    CHECK_FALSE(r.Intersects(ray));
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/RayIntersection_3d", "")
+  {
+    Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
+
+    math_t::Vec3f dir(0, 0, -1.0f);
+
+    Ray3f ray(Ray3f::origin(Vec3f(0, 0, 5.0f)),
+              Ray3f::direction(dir) );
+    CHECK(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 1.0f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, 5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(5.0f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 0.1f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, 5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray).second[0] == Approx(0.0f));
+    CHECK(r.Intersects(ray).second[1] == Approx(0.5f));
+    CHECK(r.Intersects(ray).second[2] == Approx(0.0f));
+
+    dir = Vec3f(0, 0.1f, -1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, -5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK(r.Intersects(ray, Rectf::from_origin(false)).first);
+
+    dir = Vec3f(0, 0.1f, 1.0f);
+    dir.Normalize();
+    ray = Ray3f( Ray3f::origin(Vec3f(0, 0, -5.0f)),
+                 Ray3f::direction(dir) );
+    CHECK_FALSE(r.Intersects(ray).first);
+    CHECK_FALSE(r.Intersects(ray, Rectf::from_origin(false)).first);
+    CHECK(r.Intersects(ray,
+                       Rectf::from_origin(false),
+                       Rectf::double_sided(true)).first);
   }
 };

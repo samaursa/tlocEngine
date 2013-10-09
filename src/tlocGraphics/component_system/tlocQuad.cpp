@@ -1,24 +1,25 @@
 #include "tlocQuad.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
   Quad::Quad()
-    : base_type(component_system::components::quad)
+    : base_type(k_component_type)
     , m_rect(rect_type::width(1.0f), rect_type::height(1.0f))
   { }
 
   Quad::Quad(const rect_type& a_rect)
-    : base_type(component_system::components::quad)
+    : base_type(k_component_type)
     , m_rect(a_rect)
   { }
 
-  // SmartPtr
-  template class core::smart_ptr::SharedPtr<Quad>;
+  //////////////////////////////////////////////////////////////////////////
+  // explicit instantiations
 
-  // Pool
-  template class core::component_system::ComponentPool_TI<QuadPtr>;
+  // SmartPtr
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Quad);
+  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(quad_sptr);
 
 };};};

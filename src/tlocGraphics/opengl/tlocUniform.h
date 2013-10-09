@@ -29,6 +29,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Uniform                         this_type;
     typedef ShaderVariable_TI<this_type>    base_type;
 
+  public:
+    Uniform();
+    Uniform(const this_type& a_other);
+
+    this_type& operator=(const this_type& a_other);
+
   protected:
     template <typename T>
     void DoCheckTypeCompatibility() const
@@ -36,6 +42,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::containers;
       using namespace core::data_structs;
       using namespace math::types;
+      using namespace graphics::types;
 
       tloc::type_traits::AssertTypeIsSupported
         <T,
@@ -67,6 +74,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       using namespace core::data_structs;
       using namespace math::types;
+      using namespace graphics::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -87,6 +95,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::data_structs;
       using namespace core::containers;
       using namespace math::types;
+      using namespace graphics::types;
 
       tloc::type_traits::AssertTypeIsSupported
         <Array<T>,
@@ -113,7 +122,7 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<Uniform>   UniformPtr;
+  TLOC_TYPEDEF_SHARED_PTR(Uniform, uniform);
 
 };};};
 

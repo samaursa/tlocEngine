@@ -10,6 +10,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyShapeDef.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -17,10 +18,13 @@ namespace tloc { namespace physics { namespace component_system {
   /// @brief  RigidBodyShape component defines the "visible" physical structure
   /// of a RigidBody. Multiple RigidBodyShapes can be attached to one RigidBody.
   ///-------------------------------------------------------------------------
-  class RigidBodyShape : public core::component_system::Component_T<RigidBodyShape>
+  class RigidBodyShape
+    : public core::component_system::Component_T<RigidBodyShape,
+                                                 components::k_rigidBodyShape>
   {
   public:
-    typedef core::component_system::Component_T<RigidBodyShape> base_type;
+    typedef core::component_system::Component_T
+      <RigidBodyShape, components::k_rigidBodyShape> base_type;
 
     typedef RigidBodyShape            this_type;
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
@@ -38,10 +42,8 @@ namespace tloc { namespace physics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBodyShape>  RigidBodyShapePtr;
-
-  typedef core::component_system::ComponentPool_TI<RigidBodyShapePtr>
-                                                      rigid_body_shape_pool;
+  TLOC_TYPEDEF_SHARED_PTR(RigidBodyShape, rigid_body_shape);
+  TLOC_TYPEDEF_COMPONENT_POOL(rigid_body_shape_sptr, rigid_body_shape_sptr);
 
 };};};
 

@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 namespace TestingStrongType

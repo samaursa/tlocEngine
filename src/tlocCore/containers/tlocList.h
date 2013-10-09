@@ -388,21 +388,32 @@ namespace tloc { namespace core { namespace containers {
   // Default types for easy instantiation
 
   template <typename T, bool T_DedicatedSize = true>
-  struct SinglyList
+  struct SinglyList : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(SinglyList);
     typedef List<T, ListNode<T, singly_linked_tag>, List_Dynamic(),
       T_DedicatedSize> type;
   };
 
   template <typename T, bool T_DedicatedSize = true>
-  struct DoublyList
+  struct DoublyList : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(DoublyList);
-    typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(),
+      typedef List<T, ListNode<T, doubly_linked_tag>, List_Dynamic(),
       T_DedicatedSize> type;
   };
 
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T, typename T_Node, typename T_Policy, 
+            bool T_DedicatedSize>
+  void swap(core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& a,
+            core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& b)
+  { a.swap(b); }
+
+};};
 
 #endif

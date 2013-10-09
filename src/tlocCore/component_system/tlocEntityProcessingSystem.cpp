@@ -4,29 +4,26 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
 
-  EntityProcessingSystem::~EntityProcessingSystem()
-  { }
-
   //````````````````````````````````````````````````````````````````````````
   // Initialization
 
   error_type EntityProcessingSystem::Pre_Initialize()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type EntityProcessingSystem::
-    DoInitialize(EntityManager* a_mgr, const entity_ptr_array& a_entities)
+    DoInitialize(const EntityManager* a_mgr, const entity_ptr_array& a_entities)
   {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      InitializeEntity(a_mgr, *itr);
+      InitializeEntity(a_mgr, *itr).Ignore();
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type EntityProcessingSystem::Post_Initialize()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   //````````````````````````````````````````````````````````````````````````
   // Processing
@@ -34,41 +31,44 @@ namespace tloc { namespace core { namespace component_system {
   bool EntityProcessingSystem::CheckProcessing()
   { return true; }
 
-  void EntityProcessingSystem::Pre_ProcessActiveEntities()
+  void EntityProcessingSystem::Pre_ProcessActiveEntities(f64)
   { }
 
   void EntityProcessingSystem::
-    DoProcessActiveEntities(EntityManager* a_mgr, const entity_ptr_array& a_entities)
+    DoProcessActiveEntities(const EntityManager* a_mgr,
+                            const entity_ptr_array& a_entities,
+                            f64 a_deltaT)
   {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      ProcessEntity(a_mgr, *itr);
+      if ( (*itr)->IsActive())
+      { ProcessEntity(a_mgr, *itr, a_deltaT); }
     }
   }
 
-  void EntityProcessingSystem::Post_ProcessActiveEntities()
+  void EntityProcessingSystem::Post_ProcessActiveEntities(f64)
   { }
 
   //````````````````````````````````````````````````````````````````````````
   // Shutdown
 
   error_type EntityProcessingSystem::Pre_Shutdown()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
   error_type EntityProcessingSystem::
-    DoShutdown(EntityManager* a_mgr, const entity_ptr_array& a_entities)
+    DoShutdown(const EntityManager* a_mgr, const entity_ptr_array& a_entities)
   {
     for (entity_ptr_array::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      ShutdownEntity(a_mgr, *itr);
+      ShutdownEntity(a_mgr, *itr).Ignore();
     }
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   error_type EntityProcessingSystem::Post_Shutdown()
-  { return ErrorSuccess(); }
+  { return ErrorSuccess; }
 
 };};};

@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
@@ -25,11 +26,13 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                               size_type;
     typedef core::error::Error                    error_type;
 
-    typedef core::component_system::EventManager        event_manager;
-    typedef core::component_system::EventBase           event_type;
-    typedef EventBase::event_type                       event_value_type;
-    typedef core::component_system::EntityManager       entity_manager;
-    typedef core::component_system::Entity              entity_type;
+    typedef core_cs::EntityManager                entity_manager;
+    typedef core_cs::EventManager                 event_manager;
+    typedef core_cs::event_manager_sptr           event_manager_sptr;
+    typedef core_cs::EventBase                    event_type;
+    typedef core_cs::entity_manager_sptr          entity_manager_sptr;
+    typedef core_cs::Entity                       entity_type;
+    typedef EventBase::event_type                 event_value_type;
 
     typedef containers::tl_array_fixed
       <component_type, max_component_types>::type       component_type_array;
@@ -51,16 +54,19 @@ namespace tloc { namespace core { namespace component_system {
     /// Process the active entities. The entities are not processed if
     /// CheckProcessing returns 0.
     ///-------------------------------------------------------------------------
-    void ProcessActiveEntities();
+    void ProcessActiveEntities(f64 a_deltaT = 0);
+
+    virtual void SortEntities() = 0;
 
   protected:
 
     template <tl_size T_VarSize>
-    EntitySystemBase(event_manager* a_eventMgr, entity_manager* a_entityMgr,
+    EntitySystemBase(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr,
                      const data_structs::
-                           Variadic<component_type, T_VarSize>& a_typeFlags);
+                      Variadic<component_type, T_VarSize>& a_typeFlags);
 
-    ~EntitySystemBase();
+    virtual ~EntitySystemBase();
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called
@@ -70,7 +76,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoInitialize(entity_manager* a_mgr,
+    virtual error_type DoInitialize(const entity_manager* a_mgr,
                                     const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -87,7 +93,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoShutdown(entity_manager* a_mgr,
+    virtual error_type DoShutdown(const entity_manager* a_mgr,
                                   const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
@@ -108,21 +114,28 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called before processing entities
     ///-------------------------------------------------------------------------
-    virtual void Pre_ProcessActiveEntities() = 0;
+    virtual void Pre_ProcessActiveEntities(f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
-    virtual void DoProcessActiveEntities(entity_manager* a_mgr,
-                                         const entity_ptr_array& a_entities) = 0;
+    virtual void DoProcessActiveEntities(const entity_manager* a_mgr,
+                                         const entity_ptr_array& a_entities,
+                                         f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
     ///-------------------------------------------------------------------------
-    virtual void Post_ProcessActiveEntities() = 0;
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT) = 0;
+
+    virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
+
+    virtual void OnComponentDisable(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentEnable(const EntityComponentEvent& a_event) = 0;
 
     ///-------------------------------------------------------------------------
-    /// @brief Called by EventManager (we are/should-be a registered listener)
+    /// @brief Called by EventManager (we are/should-be a registered listener).
     ///
     /// @param  a_event The event.
     ///
@@ -130,15 +143,18 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
-                                          m_activeEntities);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_ptr_array, DoGetActiveEntities,
+                                    m_activeEntities);
 
-  protected:
+  private:
     component_type_array  m_typeFlags;
     entity_ptr_array      m_activeEntities;
 
-    EventManager*     m_eventMgr;
-    EntityManager*    m_entityMgr;
+    event_manager_sptr    m_eventMgr;
+    entity_manager_sptr   m_entityMgr;
+
+    core_utils::Checkpoints m_flags;
+    static const tl_int     s_flagCount;
 
   };
 
@@ -147,11 +163,13 @@ namespace tloc { namespace core { namespace component_system {
 
   template <tl_size T_VarSize>
   EntitySystemBase::
-    EntitySystemBase(EventManager* a_eventMgr, EntityManager* a_entityMgr,
+    EntitySystemBase(event_manager_sptr a_eventMgr,
+                     entity_manager_sptr a_entityMgr,
                      const data_structs::
-                           Variadic<component_type, T_VarSize>& a_typeFlags)
+                      Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
+    , m_flags(s_flagCount)
   {
     TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
     TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,

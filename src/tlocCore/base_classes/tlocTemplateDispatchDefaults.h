@@ -3,8 +3,8 @@
 
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocArray.inl>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/containers/tlocList.inl.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 #include "tlocTemplateDispatch.h"
@@ -15,16 +15,14 @@ namespace tloc { namespace core { namespace base_classes {
   // Helpers for the base group
 
   template <typename T, typename T_CallbackMethods>
-  struct CallbackGroupTArray
+  struct CallbackGroupTArray : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(CallbackGroupTArray);
     typedef CallbackGroupT<T_CallbackMethods, containers::Array<T*> > type;
   };
 
   template <typename T, typename T_CallbackMethods>
-  struct CallbackGroupTList
+  struct CallbackGroupTList : public utils::TypedefHelperBase<T>
   {
-    DECL_TYPEDEF_HELPER(CallbackGroupTList);
     typedef CallbackGroupT<T_CallbackMethods, containers::List<T*> > type;
   };
 
@@ -32,9 +30,8 @@ namespace tloc { namespace core { namespace base_classes {
   // Helpers for the dispatcher base
 
   template <typename T_Callbacks, template <typename T> class T_CallbackGroupT>
-  struct DispatcherBaseArray
+  struct DispatcherBaseArray : public utils::TypedefHelperBase<T_Callbacks>
   {
-    DECL_TYPEDEF_HELPER(DispatcherBaseArray);
     typedef DispatcherBase<T_Callbacks, T_CallbackGroupT,
                            containers::ArrayOrderedTemp> type;
   };

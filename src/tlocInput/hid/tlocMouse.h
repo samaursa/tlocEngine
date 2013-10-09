@@ -10,6 +10,8 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
+#include <tlocMath/tlocRange.h>
+
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
@@ -115,24 +117,31 @@ namespace tloc { namespace input { namespace hid {
     , public p_hid::Mouse
   {
   public:
-    typedef T_Platform                      platform_type;
-    typedef T_Policy                        policy_type;
-    typedef MouseEvent::button_code_type    button_code_type;
+    typedef T_Platform                                  platform_type;
+    typedef T_Policy                                    policy_type;
+    typedef MouseEvent                                  event_type;
+    typedef event_type::axis_type::abs_type::value_type abs_value_type;
+    typedef math::Range_T<abs_value_type>               abs_range_type;
+    typedef event_type::axis_type::rel_type             rel_value_type;
+    typedef event_type::button_code_type                button_code_type;
 
-    typedef Mouse<policy_type, platform_type>  this_type;
+    typedef Mouse<policy_type, platform_type>           this_type;
 
+  public:
     template <typename T_ParamList>
     Mouse(const T_ParamList& a_paramList);
     ~Mouse();
 
     bool        IsButtonDown(button_code_type a_button) const;
-    MouseEvent  GetState() const;
+    event_type  GetState() const;
 
-    void SendOnButtonPress(const MouseEvent& a_event, 
+    void SendOnButtonPress(const MouseEvent& a_event,
                            button_code_type a_buttonCode) const;
-    void SendOnButtonRelease(const MouseEvent& a_event, 
+    void SendOnButtonRelease(const MouseEvent& a_event,
                              button_code_type a_buttonCode) const;
     void SendOnMouseMove(const MouseEvent& a_event) const;
+
+    void Clamp(event_type& a_event) const;
 
     ///-------------------------------------------------------------------------
     /// Buffer any keys that were pressed between this and the last update
@@ -140,12 +149,25 @@ namespace tloc { namespace input { namespace hid {
     void Update();
     void Reset();
 
-  private:
+    TLOC_DECL_AND_DEF_GETTER(bool, IsClamped, m_clamped);
+    TLOC_DECL_AND_DEF_SETTER(bool, SetClamped, m_clamped);
 
+    TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampX, m_clampX);
+    TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampY, m_clampY);
+
+    TLOC_DECL_SETTER(abs_range_type, SetClampX);
+    TLOC_DECL_SETTER(abs_range_type, SetClampY);
+
+  private:
     typedef priv::MouseImpl<this_type>               impl_type;
     typedef core::smart_ptr::UniquePtr<impl_type>    impl_ptr_type;
 
+  private:
+
     impl_ptr_type  m_impl;
+    abs_range_type m_clampX;
+    abs_range_type m_clampY;
+    bool           m_clamped;
   };
 
   typedef Mouse<InputPolicy::Buffered>   MouseB;

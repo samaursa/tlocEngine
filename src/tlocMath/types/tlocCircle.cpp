@@ -1,8 +1,8 @@
 #include "tlocCircle.h"
 
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -17,14 +17,14 @@ namespace tloc { namespace math { namespace types {
 
 #define TLOC_CIRCLE_TEMP typename T
 #define TLOC_CIRCLE_PARAMS T
-#define TLOC_CIRCLE_TYPE typename Circle<TLOC_CIRCLE_PARAMS>
+#define TLOC_CIRCLE_TYPE typename Circle_T<TLOC_CIRCLE_PARAMS>
 
   //////////////////////////////////////////////////////////////////////////
   // Circle<T>
 
   template <TLOC_CIRCLE_TEMP>
-  Circle<TLOC_CIRCLE_PARAMS>::
-    Circle(radius a_r, position a_p)
+  Circle_T<TLOC_CIRCLE_PARAMS>::
+    Circle_T(radius a_r, position a_p)
     : m_radius(a_r)
     , m_position(a_p)
   { }
@@ -32,8 +32,8 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  Circle<TLOC_CIRCLE_PARAMS>::
-    Circle(diameter a_d, position a_p)
+  Circle_T<TLOC_CIRCLE_PARAMS>::
+    Circle_T(diameter a_d, position a_p)
     : m_radius(a_d * 0.5f)
     , m_position(a_p)
   { }
@@ -41,17 +41,8 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  Circle<TLOC_CIRCLE_PARAMS>::
-    Circle(const this_type& a_other)
-    : m_radius(a_other.m_radius)
-    , m_position(a_other.m_position)
-  { }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_CIRCLE_TEMP>
   TLOC_CIRCLE_TYPE::this_type&
-    Circle<TLOC_CIRCLE_PARAMS>::
+    Circle_T<TLOC_CIRCLE_PARAMS>::
     operator=(const this_type& a_other)
   {
     m_radius = a_other.m_radius;
@@ -59,10 +50,23 @@ namespace tloc { namespace math { namespace types {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  void
+    Circle_T<TLOC_CIRCLE_PARAMS>::
+    swap(this_type& a_circ)
+  {
+    using core::swap;
+
+    swap(m_radius, a_circ.m_radius);
+    swap(m_position, a_circ.m_position);
+  }
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  bool Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
     operator ==(const this_type& a_other) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
@@ -73,7 +77,7 @@ namespace tloc { namespace math { namespace types {
 
   template <TLOC_CIRCLE_TEMP>
   TLOC_CIRCLE_TYPE::value_type
-    Circle<TLOC_CIRCLE_PARAMS>::
+    Circle_T<TLOC_CIRCLE_PARAMS>::
     GetRadius() const
   {
     TLOC_ASSERT_CIRCLE_VALID();
@@ -83,7 +87,7 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  void Circle<TLOC_CIRCLE_PARAMS>::
+  void Circle_T<TLOC_CIRCLE_PARAMS>::
     SetRadius(value_type a_radius)
   {
     m_radius = a_radius;
@@ -93,7 +97,7 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  bool Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
     IsValid() const
   {
     return m_radius > (value_type)0;
@@ -102,12 +106,12 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  bool Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
     Contains(const point_type& a_xyPoint) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_xyPoint);
+    displacement = displacement.Sub(a_xyPoint);
 
     value_type distance = displacement.Length();
 
@@ -117,12 +121,12 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  bool Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
     Contains(const this_type& a_other) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_other.m_position);
+    displacement = displacement.Sub(a_other.m_position);
 
     value_type outerDistance = displacement.Length() + a_other.m_radius;
 
@@ -132,12 +136,14 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  bool Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
     Intersects(const this_type& a_other) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     TLOC_ASSERT_CIRCLE_VALID();
     Vector2<value_type> displacement(m_position);
-    displacement.Sub(a_other.m_position);
+    displacement = displacement.Sub(a_other.m_position);
 
     value_type distance = displacement.Length();
 
@@ -147,7 +153,17 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
-  TLOC_CIRCLE_TYPE::point_type  Circle<TLOC_CIRCLE_PARAMS>::
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
+    Intersects(const ray_type& a_ray) const
+  {
+    this_type rayCircle(radius(0), position(a_ray.GetOrigin()) );
+    return Intersects(rayCircle);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
+  TLOC_CIRCLE_TYPE::point_type  Circle_T<TLOC_CIRCLE_PARAMS>::
     GetCoord(Radian_T<value_type> a_angle) const
   {
     // Get the point on a unit circle
@@ -161,16 +177,16 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Explicit instantiation for Circle<>
 
-  template class Circle<f32>;
-  template class Circle<f64>;
-  template class Circle<f128>;
+  template class Circle_T<f32>;
+  template class Circle_T<f64>;
+  template class Circle_T<f128>;
 
 };};};
 
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiation for StrongType<>
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef32::point_type);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef64::point_type);

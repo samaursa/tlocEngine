@@ -1,5 +1,5 @@
 #include "tlocVector2.h"
-#include "tlocVector2.inl"
+#include "tlocVector2.inl.h"
 
 namespace tloc { namespace math { namespace types {
 

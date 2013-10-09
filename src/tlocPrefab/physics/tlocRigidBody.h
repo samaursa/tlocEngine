@@ -3,51 +3,88 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
+#include <tlocCore/types/tlocStrongType.h>
+
 #include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidBodyShapeComponent.h>
 #include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
 
 namespace tloc { namespace prefab { namespace physics {
 
-  core_cs::Entity*
-    CreateRigidBody(core_cs::EntityManager& a_mgr,
-                    core_cs::ComponentPoolManager& a_poolMgr,
-                    tloc::physics::box2d::rigid_body_def_sptr a_rbDef);
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBody
 
-  void AddRigidBody(core_cs::Entity* a_ent,
-                    core_cs::EntityManager& a_mgr,
-                    core_cs::ComponentPoolManager& a_poolMgr,
-                    tloc::physics::box2d::rigid_body_def_sptr a_rbDef);
-
-  void AddRigidBodyShape(core_cs::Entity* a_ent,
-                         core_cs::EntityManager& a_mgr,
-                         core_cs::ComponentPoolManager& a_poolMgr,
-                         const tloc::physics::box2d::RigidBodyShapeDef a_rbShape);
-
-  void AddRigidBodyShape
-    (core_cs::Entity* a_ent,
-     core_cs::EntityManager& a_mgr,
-     core_cs::ComponentPoolManager& a_poolMgr,
-     const core_conts::
-     tl_array<const tloc::physics::box2d::RigidBodyShapeDef>::type& a_rbShapes);
-
-  void AddRigidBodyListener(core_cs::Entity* a_ent,
-                            core_cs::EntityManager& a_mgr,
-                            core_cs::ComponentPoolManager,
-                            tloc::physics::RigidBodyListener* a_listener);
-
-  template <typename T_Shape>
-  void AddRigidBodyShape(core_cs::Entity* a_ent,
-                         core_cs::EntityManager& a_mgr,
-                         core_cs::ComponentPoolManager& a_poolMgr,
-                         const T_Shape a_shape,
-                         tl_float a_density)
+  class RigidBody
+    : public Prefab_I
   {
-    tloc::physics::box2d::RigidBodyShapeDef rbShape(a_shape);
-    rbShape.SetDensity(a_density);
+    public:
+      typedef RigidBody                         this_type;
+      typedef phys_box2d::rigid_body_def_sptr   rb_def_sptr;
 
-    AddRigidBodyShape(a_ent, a_mgr, a_poolMgr, rbShape);
-  }
+    public:
+      RigidBody(core_cs::EntityManager*  a_entMgr,
+                core_cs::ComponentPoolManager* a_poolMgr)
+                : Prefab_I(a_entMgr, a_poolMgr)
+      { }
+
+      entity_type*  Create(const rb_def_sptr& a_rbDef);
+      void          Add(entity_type* a_ent, const rb_def_sptr& a_rbDef);
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBodyShape
+
+  class RigidBodyShape
+    : public Prefab_I
+  {
+    public:
+      typedef RigidBodyShape                      this_type;
+      typedef phys_box2d::RigidBodyShapeDef       rb_shape_def;
+      typedef core_conts::tl_array
+        <const rb_shape_def>::type                rb_shape_def_cont;
+
+      typedef core_t::StrongType_T<tl_float, 0>   density;
+
+    public:
+      RigidBodyShape(core_cs::EntityManager*  a_entMgr,
+                     core_cs::ComponentPoolManager* a_poolMgr)
+                     : Prefab_I(a_entMgr, a_poolMgr)
+      { }
+
+      entity_type*  Create(rb_shape_def a_rbDef);
+      void          Add(entity_type* a_ent, rb_shape_def a_rbShape);
+      void          Add(entity_type* a_ent, const rb_shape_def_cont& a_rbShapes);
+
+      template <typename T_Shape>
+      void          Add(entity_type* a_ent, const T_Shape a_shape,
+                        density a_density)
+      {
+        tloc::physics::box2d::RigidBodyShapeDef rbShape(a_shape);
+        rbShape.SetDensity(a_density);
+
+        Add(a_ent, rbShape);
+      }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RigidBodyListener
+
+  class RigidBodyListener
+    : public Prefab_I
+  {
+    public:
+      typedef RigidBodyListener                   this_type;
+      typedef tloc::physics::RigidBodyListener    rb_listener;
+      typedef phys_cs::RigidBodyListener          rb_listener_comp;
+
+    public:
+      RigidBodyListener(core_cs::EntityManager*  a_entMgr,
+                        core_cs::ComponentPoolManager* a_poolMgr)
+                        : Prefab_I(a_entMgr, a_poolMgr)
+      { }
+
+      void Add(entity_type* a_ent, rb_listener* a_listener);
+  };
 
 };};};
 

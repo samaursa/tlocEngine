@@ -1,3 +1,7 @@
+// Put this here first to avoid abs function ambiguity problems
+#include <3rdParty/Graphics/lodepng/lodepng.h>
+#include <3rdParty/Graphics/lodepng/lodepng.c>
+
 #include "tlocImageLoader.h"
 
 #include <tlocCore/io/tlocFileIO.h>
@@ -22,7 +26,7 @@ namespace tloc { namespace graphics { namespace media {
       { return res; }
 
       imgFile.GetContents(a_out);
-      return common_error_types::error_success;
+      return TLOC_ERROR(common_error_types::error_success);
     }
   };
 
@@ -48,9 +52,6 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // ImageLoaderPng
 
-#include <3rdParty/Graphics/lodepng/lodepng.h>
-#include <3rdParty/Graphics/lodepng/lodepng.c>
-
   ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
   {
     String fileCont;
@@ -69,7 +70,7 @@ namespace tloc { namespace graphics { namespace media {
     if (lodePngErr)
     {
       // LOG: Take log from lodepng_error_text(lodePngErr);
-      res = graphics::error::error_image_decoding;
+      res = TLOC_ERROR(graphics::error::error_image_decoding);
     }
     else
     {

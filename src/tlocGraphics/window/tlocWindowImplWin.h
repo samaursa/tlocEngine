@@ -7,7 +7,7 @@
 #include <tlocCore/types/tlocTypes.h>
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
@@ -34,8 +34,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // TODO: Static assert to prevent other platforms from using this class
 
     typedef core::PlatformInfo<>::platform_type          platform_type;
-    typedef WindowImpl<Window_T<> >                        this_type;
-    typedef WindowImplBase<Window_T<> >                    base_type;
+    typedef WindowImpl<Window_T<> >                      this_type;
+    typedef WindowImplBase<Window_T<> >                  base_type;
     typedef GraphicsMode<platform_type>                  graphics_mode;
     typedef base_type::parent_window_type                parent_window_type;
 
@@ -87,6 +87,24 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
 
     void ProcessEvents();
 

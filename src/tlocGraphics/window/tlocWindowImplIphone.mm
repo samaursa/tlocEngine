@@ -1,11 +1,33 @@
 #include "tlocWindowImplIphone.h"
 
+#include <tlocCore/types/tlocAny.inl.h>
+
 #import <UIKit/UIKit.h>
+#import <tlocGraphics/window/tlocOpenGLViewIphone.h>
+#import <tlocGraphics/window/tlocOpenGLViewControllerIphone.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
 #define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
 #define WINDOW_IMPL_IPHONE_TYPE WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>
+
+  ///
+  // Helper functions
+
+  OpenGLView* GetOpenGLView(const core_t::Any& a_any)
+  {
+    return a_any.Cast<OpenGLView*>();
+  }
+
+  UIWindow* GetUIWindow(const core_t::Any& a_any)
+  {
+    return a_any.Cast<UIWindow*>();
+  }
+
+  OpenGLViewController* GetViewController(const core_t::Any& a_any)
+  {
+    return a_any.Cast<OpenGLViewController*>();
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Global variables
@@ -17,10 +39,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::WindowImpl(parent_window_type* a_parent)
     : WindowImplBase(a_parent)
-    , m_handle(nil)
     , m_viewController(nil)
     , m_view(nil)
   {
+    m_handle.Assign(nil);
     TLOC_ASSERT_NOT_NULL(a_parent);
   }
 
@@ -29,16 +51,16 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     --g_currWindowCount;
     priv::SetNonActiveWindow(m_parentWindow);
     
-    [m_view release];
-    [m_viewController release];
-    [m_handle release];
+    [GetOpenGLView(m_view) release];
+    [GetViewController(m_viewController) release];
+    [GetUIWindow(m_handle) release];
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::Create()
   {
     // This function was meant to create a dummy context, in order to create
     // a true context. This is not needed on iOS.
-    TLOC_STATIC_ASSERT(false, "Function not implemented and needed on iOS");
+    TLOC_ASSERT(false, "Function not implemented and needed on iOS" );
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::
@@ -63,48 +85,39 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // TODO: Change this to the actual screen that we want our window to be on
     // for now only supports main device
     UIScreen* currentScreen = [UIScreen mainScreen];
-    
-    if (a_style& WindowSettings::style_titlebar) 
-    {
-      [UIApplication sharedApplication].statusBarHidden = NO;
-      m_handle = [[UIWindow alloc] initWithFrame:[currentScreen applicationFrame]];
-    }
-    else 
-    {
-      [UIApplication sharedApplication].statusBarHidden = YES;
-      m_handle = [[UIWindow alloc] initWithFrame:[currentScreen bounds]];
-    }
-    
+
+    [UIApplication sharedApplication].statusBarHidden =
+      !(a_style & WindowSettings::style_titlebar);
+
+    // The window must take the screens bounds. This is since our view
+    // automatically adjusts its size even when there is a title bar present.
+    m_handle.Assign<UIWindow*>([[UIWindow alloc]
+                            initWithFrame:[currentScreen bounds]]);
+
+    CGFloat screenScale = [currentScreen scale];
+
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
-    CGRect viewFrame;
-    if (a_style& WindowSettings::style_fullscreen) 
-    {
-      viewFrame = m_handle.bounds;
-    }
-    else 
-    {
-      size_type width = modeProps.m_width;
-      size_type height = modeProps.m_height;
-      size_type left = (m_handle.bounds.size.width - width) / 2;
-      size_type top = (m_handle.bounds.size.height - height) / 2;
-      
-      viewFrame = CGRectMake(left, top, width, height);
-    }
-    
-    m_view = [[OpenGLView alloc] initWithFrame:viewFrame retainBacking:NO 
+    CGRect viewFrame = m_handle.Cast<UIWindow*>().bounds;
+
+    m_view = [[OpenGLView alloc] initWithFrame:viewFrame
+                                   screenScale:screenScale
+                                 retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
                                   bitsPerDepth:a_settings.m_depthBits 
                                 bitsPerStencil:a_settings.m_stencilBits];
     
     m_viewController = [[OpenGLViewController alloc] initWithWindow:this];
     
-    TLOC_ASSERT(m_view && m_viewController && m_handle, "CreateWindow failed.");
+    TLOC_ASSERT(GetOpenGLView(m_view) &&
+                GetViewController(m_viewController) &&
+                GetUIWindow(m_handle), "CreateWindow failed.");
     
-    [m_viewController setView:m_view];
-    
-    [m_handle addSubview:m_view];
-    [m_handle makeKeyAndVisible];
+    [GetViewController(m_viewController) setView:GetOpenGLView(m_view)];
+
+    [GetUIWindow(m_handle)
+     setRootViewController:GetViewController(m_viewController)];
+    [GetUIWindow(m_handle) makeKeyAndVisible];
     
     ++g_currWindowCount;
     
@@ -114,22 +127,38 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   WINDOW_IMPL_IPHONE_TYPE::size_type
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetWidth() const
   {
-    return (size_type)m_view.bounds.size.width;
+    return (size_type)m_view.Cast<OpenGLView*>().bounds.size.width;
   }
 
   WINDOW_IMPL_IPHONE_TYPE::size_type
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetHeight() const
   {
-    return (size_type)m_view.bounds.size.height;
+    return (size_type)m_view.Cast<OpenGLView*>().bounds.size.height;
+  }
+  
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxWidth() const
+  {
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    return static_cast<size_type>(width);
+  }
+
+  WINDOW_IMPL_IPHONE_TYPE::size_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetMaxHeight() const
+  {
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    return static_cast<size_type>(height);
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)
   {
+    OpenGLView* view = GetOpenGLView(m_view);
+
     if (a_active) 
     {
-      if ([m_view context] && [EAGLContext currentContext] != [m_view context]) 
+      if ([view context] && [EAGLContext currentContext] != [view context]) 
       {
-        [m_view SetAsCurrentContext];
+        [view SetAsCurrentContext];
       }
       else 
       {
@@ -138,7 +167,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     }
     else 
     {
-      if ([EAGLContext currentContext] == [m_view context]) 
+      if ([EAGLContext currentContext] == [GetOpenGLView(m_view) context]) 
       {
         [EAGLContext setCurrentContext:nil];
       }
@@ -161,49 +190,52 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_handle;
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool)
   {
-    // There does not appear to be a way to change vertical sync on the iOS
-    TLOC_STATIC_ASSERT(false, "Cannot currently change vertical sync on iOS");
+    // LOG: iOS does not have vertical sync
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool a_enable)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool)
   {
-    // There is no concept of a mouse on the iOS
-    TLOC_STATIC_ASSERT(false, "Function not implemented and needed on iOS");
+    // LOG: SetMouseVisibility() does nothing on iOS
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)
   {
-    m_view.frame = CGRectOffset(m_view.frame, (CGFloat)a_x, (CGFloat)a_y);
+    OpenGLView* view = GetOpenGLView(m_view);
+    view.frame = CGRectOffset(view.frame, (CGFloat)a_x, (CGFloat)a_y);
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetSize
     (size_type a_width, size_type a_height)
   {
-    m_view.frame = CGRectMake(m_view.frame.origin.x, m_view.frame.origin.y, 
+    OpenGLView* view = GetOpenGLView(m_view);
+    view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, 
                               (CGFloat)a_width, (CGFloat)a_height);
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVisibility(bool a_visible)
   {
-    [m_view setHidden:!a_visible];
+    [GetOpenGLView(m_view) setHidden:!a_visible];
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char* a_title)
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
   {
-    NSString *title = [[NSString alloc] initWithUTF8String:a_title];
-    [m_view setTitle:title];
+    // LOG: iOS platform has no title
   }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const
   {
-    return m_handle && m_view && m_viewController;
+    UIWindow* uiWin = GetUIWindow(m_handle);
+    OpenGLView* view = GetOpenGLView(m_view);
+    OpenGLViewController* viewController = GetViewController(m_viewController);
+
+    return uiWin && view && viewController;
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SwapBuffers()
   {
-    [m_view SwapBuffers];
+    [GetOpenGLView(m_view) SwapBuffers];
   }
   
   //------------------------------------------------------------------------

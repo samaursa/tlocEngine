@@ -1,6 +1,6 @@
 #include "tlocWindow.h"
 
-#include <tlocCore/containers/tlocQueue.inl>
+#include <tlocCore/containers/tlocQueue.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependant includes
@@ -32,7 +32,9 @@ namespace tloc { namespace graphics { namespace win {
 
 
   template <WINDOW_TEMP>
-  Window_T<WINDOW_PARAMS>::Window_T() : m_impl(NULL)
+  Window_T<WINDOW_PARAMS>::Window_T()
+    : m_impl(nullptr)
+    , m_mouseVisible(true)
   {
   }
 
@@ -50,11 +52,20 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
-  void Window_T<WINDOW_PARAMS>::Create(window_handle_type a_ptr,
-                                     const WindowSettings& a_settings)
+  void Window_T<WINDOW_PARAMS>::
+    DoCreate(window_handle_type a_ptr, const WindowSettings& a_settings,
+             IsWindowHandle)
   {
     DoCreateImpl();
     m_impl->Create(a_ptr, a_settings);
+  }
+
+  template <WINDOW_TEMP>
+  void Window_T<WINDOW_PARAMS>::
+  DoCreate(const graphics_mode& a_mode, const WindowSettings& a_settings,
+          IsNotWindowHandle)
+  {
+    Create(a_mode, a_settings);
   }
 
   template <WINDOW_TEMP>
@@ -73,13 +84,13 @@ namespace tloc { namespace graphics { namespace win {
     VALIDATE_WINDOW();
 
     delete m_impl;
-    m_impl = NULL;
+    m_impl = nullptr;
   }
 
   template <WINDOW_TEMP>
   bool Window_T<WINDOW_PARAMS>::IsValid() const
   {
-    return m_impl != NULL;
+    return m_impl != nullptr;
   }
 
   template <WINDOW_TEMP>
@@ -103,6 +114,32 @@ namespace tloc { namespace graphics { namespace win {
   {
     VALIDATE_WINDOW();
     return m_impl->GetHeight();
+  }
+
+  template <WINDOW_TEMP>
+  WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::GetMaxWidth() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetMaxWidth();
+  }
+
+  template <WINDOW_TEMP>
+  WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::GetMaxHeight() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetMaxHeight();
+  }
+
+  template <WINDOW_TEMP>
+  WINDOW_TYPE::aspect_ratio
+    Window_T<WINDOW_PARAMS>::
+    GetAspectRatio() const
+  {
+    typedef aspect_ratio::value_type f_type;
+    f_type width  = (f_type)GetWidth();
+    f_type height = (f_type)GetHeight();
+    return aspect_ratio(aspect_ratio::width(width),
+                        aspect_ratio::height(height) );
   }
 
   template <WINDOW_TEMP>
@@ -150,6 +187,7 @@ namespace tloc { namespace graphics { namespace win {
   void Window_T<WINDOW_PARAMS>::SetMouseVisibility(bool a_visible)
   {
     VALIDATE_WINDOW();
+    m_mouseVisible = a_visible;
     m_impl->SetMouseVisibility(a_visible);
   }
 
@@ -234,7 +272,7 @@ namespace tloc { namespace graphics { namespace win {
     {
       if (a_window == g_currentActiveWindow)
       {
-        g_currentActiveWindow = NULL;
+        g_currentActiveWindow = nullptr;
       }
     }
   };

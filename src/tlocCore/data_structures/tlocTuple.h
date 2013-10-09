@@ -31,113 +31,119 @@ namespace tloc { namespace core { namespace data_structs {
 
   public:
     // Empty default constructor
-    TL_FI Tuple();
-    TL_FI Tuple(const Tuple<T, T_Size>& aTuple);
+    Tuple();
+    Tuple(const Tuple<T, T_Size>& aTuple);
 
     template <typename T_TupleType>
-    TL_FI Tuple(const Tuple<T_TupleType, T_Size>& aTuple);
+    Tuple(const Tuple<T_TupleType, T_Size>& aTuple);
 
     template <typename T_ArrayType>
-    TL_FI Tuple(const T_ArrayType (&aArray)[T_Size]);
+    Tuple(const T_ArrayType (&aArray)[T_Size]);
 
     template <template <class, class> class T_Variadic>
-    TL_FI Tuple(const T_Variadic<T, tl_size>& a_vars);
+    Tuple(const T_Variadic<T, tl_size>& a_vars);
 
-    TL_FI explicit Tuple(const T& aValue);
+    explicit Tuple(const T& aValue);
 
     //------------------------------------------------------------------------
     // Accessors
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI value_type& operator[] (tl_int aIndex);
+    value_type& operator[] (tl_int aIndex);
 
     // Access range is that of an integer, approx. 2.1 billion elements.
     // If size is more than that, use the get function instead
-    TL_FI const value_type& operator[] (tl_int aIndex) const;
+    const value_type& operator[] (tl_int aIndex) const;
 
-    TL_FI value_type& Get(size_type aIndex);
-    TL_FI const value_type& Get(size_type aIndex) const;
+    value_type& Get(size_type aIndex);
+    const value_type& Get(size_type aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
-    TL_FI T*        data();
-    TL_FI T const*  data() const;
+    T*        data();
+    T const*  data() const;
 
     // Access the size of the tuple
-    TL_FI size_type GetSize() const;
+    size_type GetSize() const;
 
     //------------------------------------------------------------------------
     // Modifiers
 
     // Modifies this tuple so that all values of this tuple equal aValue
-    TL_FI void Set(T aValue);
+    void Set(T aValue);
 
     // Copies the values of the other tuple into this tuple
     template <typename T_TupleType>
-    TL_FI void Set(const Tuple<T_TupleType, T_Size>& aTuple);
+    void Set(const Tuple<T_TupleType, T_Size>& aTuple);
 
     // Copies the values in the array into this tuple
     template <typename T_ArrayType>
-    TL_FI void Set(const T_ArrayType (&aArray)[T_Size]);
+    void Set(const T_ArrayType (&aArray)[T_Size]);
 
     // Swaps the tuple with the incoming vector
-    TL_FI void Swap(this_type& aVector);
+    void Swap(this_type& aVector);
 
     // Converts between different sized tuples. The default overflow policy
     // applied here is p_tuple::overflow_one
     template <typename T_OtherValueType, tl_size T_TupleSize>
-    TL_FI void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other);
+    void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other);
 
     // Converts between different sized tuples.
     template <typename T_OtherValueType, tl_size T_TupleSize, typename T_Policy>
-    TL_FI void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
+    void ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
                            T_Policy a_conversionPolicy);
 
     // Converts between different sized tuples. The default overflow policy
     // applied here is p_tuple::overflow_one. T_OtherTuple should be derived
     // from this_type
     template <typename T_OtherTuple>
-    TL_FI T_OtherTuple ConvertTo() const;
+    T_OtherTuple ConvertTo() const;
 
     // Converts between different sized tuples. See previous.
     template <typename T_OtherTuple, typename T_Policy>
-    TL_FI T_OtherTuple ConvertTo() const;
+    T_OtherTuple ConvertTo() const;
+
+    template <typename T_TupleType>
+    T_TupleType Cast() const;
 
     //------------------------------------------------------------------------
     // Operators
 
-    TL_FI Tuple& operator=(const Tuple& a_other);
-    TL_FI bool operator == (const this_type& aTuple) const;
-    TL_FI bool operator != (const this_type& aTuple) const;
+    Tuple& operator=(const Tuple& a_other);
+    bool operator == (const this_type& aTuple) const;
+    bool operator != (const this_type& aTuple) const;
 
   private:
 
     template <typename T_ArrayType>
-    TL_FI void DoSet(const T_ArrayType (&aArray)[T_Size], type_false);
-    TL_FI void DoSet(const T (&aArray)[T_Size], type_true);
+    void DoSet(const T_ArrayType (&aArray)[T_Size], type_false);
+    void DoSet(const T (&aArray)[T_Size], type_true);
 
     template <typename T_TupleType>
-    TL_FI void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
-    TL_FI void DoSet(const this_type& aTuple, type_true);
+    void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
+    void DoSet(const this_type& aTuple, type_true);
 
     typedef type_true     incoming_bigger;
     typedef type_false    incoming_smaller;
 
     template <typename T_OtherTuple, typename T_Policy>
-    TL_FI void DoConvertFrom(const T_OtherTuple& a_other,
+    void DoConvertFrom(const T_OtherTuple& a_other,
                              incoming_bigger);
 
     template <typename T_OtherTuple, typename T_Policy>
-    TL_FI void DoConvertFrom(const T_OtherTuple& a_other,
+    void DoConvertFrom(const T_OtherTuple& a_other,
                              incoming_smaller);
 
     template <tl_size T_TupleSize>
-    TL_FI void DoFillRemaining(p_tuple::overflow_same);
+    void DoFillRemaining(p_tuple::overflow_same);
     template <tl_size T_TupleSize>
-    TL_FI void DoFillRemaining(p_tuple::overflow_one);
+    void DoFillRemaining(p_tuple::overflow_one);
     template <tl_size T_TupleSize>
-    TL_FI void DoFillRemaining(p_tuple::overflow_zero);
+    void DoFillRemaining(p_tuple::overflow_zero);
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
 
   typedef Tuple<tl_float,	2>    Tuple2f;
   typedef Tuple<f32,			2>    Tuple2f32;
@@ -174,5 +180,7 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<bool,     4>    Tuple4b;
 
 };};};
+
+#include "tlocTuple.inl.h"
 
 #endif

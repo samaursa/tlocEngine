@@ -6,11 +6,12 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocFunctional.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 namespace TestingAlgorithms
 {
@@ -56,28 +57,21 @@ namespace TestingAlgorithms
     CHECK(maximum == j);
   }
 
-  TEST_CASE("Core/Algorithms/tlClamp", "Test the tlClamp() function")
-  {
-    tl_uint i = 10;
-    tl_uint clampedI = tlClamp<tl_uint>(i, 0, 10);
-    CHECK(clampedI == 10u);
-
-    clampedI = tlClamp<tl_uint>(i, 0, 5);
-    CHECK(clampedI == 5);
-
-    clampedI = tlClamp<tl_uint>(i, 4, 5);
-    CHECK(clampedI == 5);
-
-    clampedI = tlClamp<tl_uint>(i, 12, 15);
-    CHECK(clampedI == 12);
-  }
-
   TEST_CASE("Core/Algorithms/Swap", "Test the swap() functions")
   {
     u32 i = 10, j = 15;
-    tlSwap(i, j);
+    core::swap(i, j);
     CHECK(i == 15);
     CHECK(j == 10);
+  }
+
+  TEST_CASE("Core/Algorithms/Clamp", "")
+  {
+    tl_int i = 10;
+    CHECK(Clamp(i, 0, 20) == 10);
+    CHECK(Clamp(i, 15, 20) == 15);
+    CHECK(Clamp(i, 5, 8) == 8);
+    CHECK(Clamp(i, -5, 0) == 0);
   }
 
   TEST_CASE("Core/Algorithms/Fill", "Test the fill() functions")
@@ -425,20 +419,26 @@ namespace TestingAlgorithms
     s32 match1[] = {1,2,3};
 
     // using default comparison:
-    it = find_end (myvector.begin(), myvector.end(), match1, match1+3);
+    it = core::find_end (myvector.begin(), myvector.end(), match1, match1+3);
 
     CHECK( (s32)(it - myvector.begin()) == 5); // pos
 
     s32 match2[] = {4,5,1};
 
     // using predicate comparison:
-    it = find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
+    it = core::find_end (myvector.begin(), myvector.end(), match2, match2+3, myfunction);
 
     CHECK( (s32)(it - myvector.begin()) == 3); // pos
 
     s32 match3[] = {1,2,3,4,5,6,6,7,8,8,5,4,3,23,2,2,1,2,3,4};
-    it = find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
+    it = core::find_end(myvector.begin(), myvector.end(), match3, match3 + 20);
     CHECK(it == myvector.end());
+
+    it = find_end(myvector.begin(), myvector.end(), 4);
+    CHECK(it == myvector.end() - 2);
+
+    it = find_end_all(myvector, 4);
+    CHECK(it == myvector.end() - 2);
   }
 
   bool comp_case_insensitive (int c1, int c2)
@@ -940,7 +940,7 @@ namespace TestingAlgorithms
     List<s32>  myIntsList(itrBegin, itrEnd);
     List<s32, ListNode<s32, singly_linked_tag> >  myIntsListSinglyLinked(itrBegin, itrEnd);
 
-    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType() );
+    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -953,7 +953,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -966,7 +966,7 @@ namespace TestingAlgorithms
     }
 
     tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
-                               T_SortType() );
+                               T_SortType(), less<s32>());
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -996,7 +996,7 @@ namespace TestingAlgorithms
 
     tloc::core::detail::DoSort(myIntsListSinglyLinked.begin(),
                                myIntsListSinglyLinked.end(),
-                               T_SortType());
+                               T_SortType(), less<s32>());
 
     List<s32, ListNode<s32, singly_linked_tag> >::iterator singleListItr,
                                                            singleListItr2,
@@ -1051,6 +1051,28 @@ namespace TestingAlgorithms
     SortDetailsTests<sort_bubblesort>();
   }
 
+  template <typename T_SortingAlgorithm>
+  void TestEdgeCases()
+  {
+    // Sorting function crashes when array is size 0. Testing size 1 and 2
+    // for good measure after the fix.
+
+    Array<s32> emptyArray;
+    core::sort(emptyArray.begin(), emptyArray.end(), T_SortingAlgorithm());
+
+    Array<s32> size1Array;
+    size1Array.push_back(99);
+    core::sort(size1Array.begin(), size1Array.end(), T_SortingAlgorithm());
+    CHECK(size1Array.front() == 99);
+
+    Array<s32> size2Array;
+    size2Array.push_back(2);
+    size2Array.push_back(1);
+    core::sort(size2Array.begin(), size2Array.end(), T_SortingAlgorithm());
+    CHECK(size2Array.front() == 1);
+    CHECK(size2Array.back() == 2);
+  }
+
   TEST_CASE("Core/Algorithms/Sort", "")
   {
     const s32 k_arraySize = 26;
@@ -1094,6 +1116,15 @@ namespace TestingAlgorithms
       ++listItr2;
       ++listItr;
     }
+
+    TestEdgeCases<sort_bubblesort>();
+    TestEdgeCases<sort_insertionsort>();
+    TestEdgeCases<sort_merge_insertionsort>();
+    TestEdgeCases<sort_mergesort>();
+    TestEdgeCases<sort_quicksort_leftpivot>();
+    TestEdgeCases<sort_quicksort_middlepivot>();
+    TestEdgeCases<sort_quicksort_randompivot>();
+    TestEdgeCases<sort_quicksort_rightpivot>();
   }
 
   struct CountDestruction
@@ -1137,5 +1168,50 @@ namespace TestingAlgorithms
     CHECK(CountDestruction::m_dtorCount == numElements);
     delete_ptrs(myList.begin(), myList.end());
     CHECK(CountDestruction::m_dtorCount == numElements * 2);
+  }
+
+  tl_int op_increase (tl_int i)
+  { return ++i; }
+
+  TEST_CASE("Core/Algorithms/transform", "")
+  {
+    Array<tl_int> foo;
+    Array<tl_int> bar;
+
+    for (tl_int i = 1; i < 6; ++i)
+    { foo.push_back(i * 10); }
+
+    bar.resize(foo.size());
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    bar.clear();
+    bar.resize(foo.size());
+    core::transform_all(foo, bar, op_increase);
+    CHECK(bar[0] == 11);
+    CHECK(bar[1] == 21);
+    CHECK(bar[2] == 31);
+    CHECK(bar[3] == 41);
+    CHECK(bar[4] == 51);
+
+    core::transform(foo.begin(), foo.end(), bar.begin(), foo.begin(),
+                    std::plus<tl_int>());
+    CHECK(foo[0] == 21);
+    CHECK(foo[1] == 41);
+    CHECK(foo[2] == 61);
+    CHECK(foo[3] == 81);
+    CHECK(foo[4] == 101);
+
+    core::transform_all(foo, bar, foo, std::plus<tl_int>());
+    CHECK(foo[0] == 32);
+    CHECK(foo[1] == 62);
+    CHECK(foo[2] == 92);
+    CHECK(foo[3] == 122);
+    CHECK(foo[4] == 152);
   }
 };

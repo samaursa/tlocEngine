@@ -3,16 +3,29 @@
 
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace core { namespace memory {
 
   ///-------------------------------------------------------------------------
   /// @brief Meant to be used only as a function argument.
   ///-------------------------------------------------------------------------
+  template <typename T_Char = char8>
   class BufferArg
   {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Char, char8>::value ||
+      Loki::IsSameType<T_Char, char32>::value),
+      Buffer_arg_only_supports_char_types);
+
   public:
-    typedef tl_size   size_type;
+    typedef T_Char            value_type;
+    typedef value_type        char_type;
+    typedef tl_size           size_type;
+
+    typedef string::StringBase<char_type> string_type;
+
   public:
 
     ///-------------------------------------------------------------------------
@@ -20,11 +33,10 @@ namespace tloc { namespace core { namespace memory {
     /// Assumes a_buffer is NULL terminated. Call IsValid() to check if
     /// it is.
     ///-------------------------------------------------------------------------
-    BufferArg(const char* a_buffer);
-    BufferArg(const char* a_buffer, size_type a_end);
+    BufferArg(const char_type* a_buffer);
+    BufferArg(const char_type* a_buffer, size_type a_end);
 
-    template <typename T_String>
-    BufferArg(T_String const& a_string);
+    BufferArg(const string_type& a_string);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -38,23 +50,26 @@ namespace tloc { namespace core { namespace memory {
     ///-------------------------------------------------------------------------
     bool IsValid(size_type a_maximumSize) const;
 
-    const char operator[](tl_int a_index) const;
+    const char_type operator[](tl_int a_index) const;
 
-    const char* GetPtr() const;
-    size_type   GetSize() const;
+    operator char_type const *() const;
+
+    const char_type*  GetPtr() const;
+    size_type         GetSize() const;
 
     static size_type   GetMaxAllowedBuffSize();
 
   private:
-    const char* m_buffer;
-    const char* m_end;
+    const char_type* m_buffer;
+    const char_type* m_end;
   };
 
 };};};
 
 namespace tloc
 {
-  typedef core::memory::BufferArg   BufferArg;
+  typedef core::memory::BufferArg<>       BufferArg;
+  typedef core::memory::BufferArg<char32> BufferArgW;
 };
 
 #endif

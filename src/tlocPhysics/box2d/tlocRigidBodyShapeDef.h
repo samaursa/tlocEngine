@@ -31,8 +31,8 @@ namespace tloc { namespace physics { namespace box2d {
     typedef RigidBodyShapeDef   this_type;
     typedef f32                 float_type;
 
-    typedef math::types::Rectangle<float_type>  rect_type;
-    typedef math::types::Circle<float_type>     circle_type;
+    typedef math::types::Rectangle_T<float_type>  rect_type;
+    typedef math::types::Circle_T<float_type>     circle_type;
 
   public:
 
@@ -70,11 +70,10 @@ namespace tloc { namespace physics { namespace box2d {
     void DoSetShape(const rect_type& a_rect);
     void DoSetShape(const circle_type& a_circle);
 
+    void DoSetParent(const entity_type* a_parent);
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (fixture_def_internal_type, DoGetFixtureDef, m_fixtureDef);
-
-    TLOC_DECL_AND_DEF_SETTER
-      (entity_type*, DoSetParent, m_fixtureDef.userData);
 
   private:
     typedef b2Shape                                     shape_internal_type;

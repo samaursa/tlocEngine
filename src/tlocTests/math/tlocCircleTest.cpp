@@ -57,6 +57,30 @@ namespace TestingCircle
     CHECK(d.IsValid());
     CHECK(d.GetRadius() == Approx(0.2f));
     CHECK(d.GetPosition() == point_type(1, 1));
+
+    f = circle_type(circle_type::radius(0.4f),
+                    circle_type::position(point_type(2, 3)) );
+    d.swap(f);
+    CHECK(f.IsValid());
+    CHECK(f.GetRadius() == Approx(0.2f));
+    CHECK(f.GetPosition() == point_type(1, 1));
+
+    CHECK(d.IsValid());
+    CHECK(d.GetRadius() == Approx(0.4f));
+    CHECK(d.GetPosition() == point_type(2, 3));
+
+    swap(d, f);
+    CHECK(d.IsValid());
+    CHECK(d.GetRadius() == Approx(0.2f));
+    CHECK(d.GetPosition() == point_type(1, 1));
+
+    CHECK(f.IsValid());
+    CHECK(f.GetRadius() == Approx(0.4f));
+    CHECK(f.GetPosition() == point_type(2, 3));
+
+    // different types
+    Circlef32 circ;
+    Circlef64 circ64(circ);
   }
 
   TEST_CASE("Math/types/Circle/Radius", "")
@@ -134,6 +158,24 @@ namespace TestingCircle
       circle_type::position( point_type(0, 3 ) ) );
     CHECK(c.Intersects(c6) == false); // Does not intersect a smaller circle
                                       // outside itself
+
+    Ray2f ray( Ray2f::origin(Vec2f(0, 0)) );
+    circle_type c7(circle_type::radius( (value_type)1 ) );
+    CHECK(c7.Intersects(ray));
+
+    c7.SetPosition(Vec2f(2.0f, 0.0f));
+    CHECK_FALSE(c7.Intersects(ray));
+
+    c7.SetPosition(Vec2f(0.5f, 0.8f));
+    CHECK(c7.Intersects(ray));
+
+    ray = Ray2f(Ray2f::origin(Vec2f(0.5f, 0.8f)) );
+    CHECK(c7.Intersects(ray));
+    c7.SetPosition(Vec2f(-0.5f, 0.8f));
+    CHECK_FALSE(c7.Intersects(ray));
+    c7.SetPosition(Vec2f(0.5f, -0.8f));
+    CHECK_FALSE(c7.Intersects(ray));
+
   }
 
   TEST_CASE("Math/types/Circle/GetCoord", "")

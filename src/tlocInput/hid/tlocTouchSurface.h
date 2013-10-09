@@ -15,6 +15,7 @@
 #include <tloccore/containers/tlocContainers.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocTouchSurfaceImpl.h>
@@ -132,8 +133,13 @@ namespace tloc { namespace input { namespace hid {
   private:
 
     typedef priv::TouchSurfaceImpl<this_type> impl_type;
-    impl_type*  m_impl;
+    typedef core::smart_ptr::UniquePtr<impl_type> impl_ptr_type;
+
+    impl_ptr_type  m_impl;
   };
+
+  typedef TouchSurface<InputPolicy::Buffered>   TouchSurfaceB;
+  typedef TouchSurface<InputPolicy::Immediate>  TouchSurfaceI;
 
 };};};
 

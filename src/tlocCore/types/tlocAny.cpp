@@ -1,25 +1,18 @@
 #include "tlocAny.h"
-#include "tlocAny.inl"
+#include "tlocAny.inl.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl>
+#include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace types {
 
   Any::Any()  : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
-              , m_object(NULL)
+              , m_object(nullptr)
   { }
-
-  Any::Any( const char* a_other )
-    : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
-    , m_object(NULL)
-  {
-    Assign(a_other);
-  }
 
   Any::Any( const this_type& a_other )
     : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
-    , m_object(NULL)
+    , m_object(nullptr)
   {
     Assign(a_other);
   }
@@ -27,6 +20,13 @@ namespace tloc { namespace core { namespace types {
   Any::~Any()
   {
     m_policy->Delete(&m_object);
+  }
+
+  Any::this_type&
+    Any::operator=(const this_type& a_other)
+  {
+    Assign(a_other);
+    return *this;
   }
 
   void Any::Assign( const this_type& a_other )
@@ -37,10 +37,10 @@ namespace tloc { namespace core { namespace types {
   }
 
   Any::this_type&
-    Any::Swap( this_type& a_other )
+    Any::swap( this_type& a_other )
   {
-    tlSwap(m_policy, a_other.m_policy);
-    tlSwap(m_object, a_other.m_object);
+    core::swap(m_policy, a_other.m_policy);
+    core::swap(m_object, a_other.m_object);
     return *this;
   }
 

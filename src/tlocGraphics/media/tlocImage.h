@@ -6,7 +6,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tloccontainers.inl>
+#include <tlocCore/containers/tloccontainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/types/tlocColor.h>
@@ -54,7 +54,7 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core::smart_ptr::SharedPtr<Image> image_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(Image, image);
 
 };};};
 

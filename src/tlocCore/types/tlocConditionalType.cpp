@@ -1,5 +1,5 @@
 #include "tlocConditionalType.h"
-#include "tlocConditionalType.inl"
+#include "tlocConditionalType.inl.h"
 
 #include <tlocCore/types/tlocBasicTypes.h>
 

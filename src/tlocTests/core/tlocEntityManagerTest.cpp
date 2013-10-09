@@ -2,12 +2,12 @@
 
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
-#include <tlocCore/component_system/tlocEntityManager.inl>
+#include <tlocCore/component_system/tlocEntityManager.inl.h>
 #include <tlocCore/component_system/tlocEvent.h>
 
 namespace TestingEntityManager
@@ -66,18 +66,20 @@ namespace TestingEntityManager
       }
     }
 
-    tl_int m_entEventCounter;
-    tl_int m_compEventCounter;
-    tl_int m_totalEvents;
+    tl_uint m_entEventCounter;
+    tl_int  m_compEventCounter;
+    tl_int  m_totalEvents;
   };
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
   {
-    EntityTracker   entTrack;
-    EventManager    evtMgr;
-    evtMgr.AddGlobalListener(&entTrack);
+    const tl_uint entityCount = 100;
 
-    EntityManager   eMgr(&evtMgr);
+    EntityTracker   entTrack;
+    event_manager_sptr evtMgr(new EventManager());
+    evtMgr->AddGlobalListener(&entTrack);
+
+    EntityManager   eMgr(evtMgr);
 
     Entity* newEnt = eMgr.CreateEntity();
     CHECK(newEnt != NULL);
@@ -89,14 +91,14 @@ namespace TestingEntityManager
     bool stressTestPassed = true;
     EntityManager::entity_cont myList;
 
-    for (tl_uint i = 0; i < 100; ++i)
+    for (tl_uint i = 0; i < entityCount; ++i)
     {
       newEnt = eMgr.CreateEntity();
       myList.push_back(newEnt);
-      if (newEnt == NULL) { stressTestPassed = false; break; }
+      if (newEnt == nullptr) { stressTestPassed = false; break; }
     }
     CHECK(eMgr.GetUnusedEntities() == 0);
-    CHECK(entTrack.m_entEventCounter == 100);
+    CHECK(entTrack.m_entEventCounter == entityCount);
     CHECK(stressTestPassed);
 
     for (EntityManager::entity_cont::iterator itr = myList.begin(),
@@ -106,7 +108,7 @@ namespace TestingEntityManager
     }
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
-    CHECK(eMgr.GetUnusedEntities() == 100);
+    CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
 
     newEnt = eMgr.CreateEntity();
     CHECK(entTrack.m_entEventCounter == 1);
@@ -129,6 +131,6 @@ namespace TestingEntityManager
     eMgr.DestroyEntity(newEnt);
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
-    CHECK(eMgr.GetUnusedEntities() == 100);
+    CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
   }
 };

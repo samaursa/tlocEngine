@@ -1,7 +1,7 @@
 #include "tlocShaderVariable.h"
 
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
@@ -16,10 +16,10 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  using namespace tloc::core::data_structs;
-  using namespace tloc::core::containers;
-  using namespace tloc::core::smart_ptr;
-  using namespace tloc::math::types;
+  using namespace core::data_structs;
+  using namespace core::containers;
+  using namespace core::smart_ptr;
+  using namespace math::types;
 
   //------------------------------------------------------------------------
   // Supported types

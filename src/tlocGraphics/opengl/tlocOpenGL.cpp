@@ -1,10 +1,10 @@
 #include "tlocOpenGL.h"
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -49,6 +49,8 @@ namespace tloc { namespace graphics { namespace gl {
       = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName
       = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+    const GLint MaxVertexAttribs::s_glParamName
+      = GL_MAX_VERTEX_ATTRIBS;
   };
 
   //------------------------------------------------------------------------
@@ -87,16 +89,16 @@ namespace tloc { namespace graphics { namespace gl {
     if (g_maxTextureUnits != -1)
     {
       if (g_maxTextureUnits == 0)
-      { return error::error_no_texture_units_available; }
+      { return TLOC_ERROR(error::error_no_texture_units_available); }
 
+      ++g_currentTextureUnit;
       if (g_currentTextureUnit < g_maxTextureUnits)
       {
-        ++g_currentTextureUnit;
         glActiveTexture( g_availableTextureUnits[g_currentTextureUnit] );
-        return ErrorSuccess();
+        return ErrorSuccess;
       }
       else
-      { return error::error_texture_unit_limit_reached; }
+      { return TLOC_ERROR(error::error_texture_unit_limit_reached); }
     }
 
     DoSetMaxTextureUnits();

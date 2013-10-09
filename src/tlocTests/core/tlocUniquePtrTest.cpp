@@ -1,19 +1,21 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 #include <tlocCore/memory/tlocMemoryPool.h>
-#include <tlocCore/memory/tlocMemoryPool.inl>
+#include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 namespace TestingUniquePtr
 {
   using namespace tloc;
   using namespace core;
   using namespace core::containers;
+
+  using smart_ptr::UniquePtr;
 
   struct UniqueStruct
   {
@@ -257,7 +259,6 @@ namespace TestingUniquePtr
 
   void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
   {
-    using smart_ptr::UniquePtr;
     using namespace smart_ptr::priv;
 
     {

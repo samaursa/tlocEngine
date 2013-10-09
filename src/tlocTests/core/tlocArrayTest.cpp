@@ -3,9 +3,9 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 namespace TestingArray
 {

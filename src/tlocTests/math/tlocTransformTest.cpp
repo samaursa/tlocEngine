@@ -34,38 +34,93 @@ namespace TestingTransform
   TEST_CASE("math/component_system/Transform/", "")
   {
     typedef math::component_system::Transformf32  tf32;
-    tf32 t;
-    tf32::position_type pos(1, 2, 5);
-    t.SetPosition(pos);
-    CHECK_VEC3F(t.GetPosition(), 1, 2, 5);
 
-    tf32::orientation_type ori;
-    ori.MakeRotationX(90);
-    t.SetOrientation(ori);
+    SECTION("Everything", "")
+    {
+      tf32 t;
+      tf32::position_type pos(1, 2, 5);
+      t.SetPosition(pos);
+      CHECK_VEC3F(t.GetPosition(), 1, 2, 5);
 
-    CHECK_MATRIX3F(t.GetOrientation(),
-                   ori[0], ori[1], ori[2],
-                   ori[3], ori[4], ori[5],
-                   ori[6], ori[7], ori[8]);
+      tf32::orientation_type ori;
+      ori.MakeRotationX(90);
+      t.SetOrientation(ori);
 
-    CHECK_MATRIX4F(t.GetTransformation(),
-                   ori[0], ori[1], ori[2], 0,
-                   ori[3], ori[4], ori[5], 0,
-                   ori[6], ori[7], ori[8], 0,
-                   pos[0], pos[1], pos[2], 1);
+      CHECK_MATRIX3F(t.GetOrientation(),
+                     ori[0], ori[1], ori[2],
+                     ori[3], ori[4], ori[5],
+                     ori[6], ori[7], ori[8]);
 
-    Vec4f32 pos4(1, 0, 0, 1);
-    Vec4f32 answer;
+      CHECK_MATRIX4F(t.GetTransformation(),
+                     ori[0], ori[1], ori[2], 0,
+                     ori[3], ori[4], ori[5], 0,
+                     ori[6], ori[7], ori[8], 0,
+                     pos[0], pos[1], pos[2], 1);
 
-    t.GetTransformation().Mul(pos4, answer);
+      Vec4f32 pos4(1, 0, 0, 1);
+      Vec4f32 answer;
 
-    Vec3f32 answerToCheck;
-    answerToCheck.ConvertFrom(pos4);
+      t.GetTransformation().Mul(pos4, answer);
 
-    answerToCheck = t.GetOrientation() * answerToCheck;
-    answerToCheck += t.GetPosition();
+      Vec3f32 answerToCheck;
+      answerToCheck.ConvertFrom(pos4);
 
-    bool isEqual = answer.ConvertTo<Vec3f32>() == answerToCheck;
-    CHECK( isEqual );
+      answerToCheck = t.GetOrientation() * answerToCheck;
+      answerToCheck += t.GetPosition();
+
+      bool isEqual = answer.ConvertTo<Vec3f32>() == answerToCheck;
+      CHECK( isEqual );
+
+      // Position is 1, 2, 5 with the above +=
+      tf32 tInv = t.Invert();
+      Mat4f32 tInvTrans = tInv.GetTransformation();
+      CHECK_MATRIX4F(tInvTrans,
+        1.0f,  0.0f       ,  0.0f       , 0.0f,
+        0.0f, -0.44807363f, -0.89399666f, 0.0f,
+        0.0f,  0.89399666f, -0.44807363f, 0.0f,
+       -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
+
+      t = t.Invert();
+      tInvTrans = t.GetTransformation();
+      CHECK_MATRIX4F(tInvTrans,
+        1.0f,  0.0f       ,  0.0f       , 0.0f,
+        0.0f, -0.44807363f, -0.89399666f, 0.0f,
+        0.0f,  0.89399666f, -0.44807363f, 0.0f,
+       -1.0f, -3.57384f   ,  4.02836f   , 1.0f);
+
+      // testing scale
+      Vec3f32 scale(2.0f, 2.0f, 2.0f);
+
+      ori = t.GetOrientation();
+      Mat3f32 scaleMat(0);
+      scaleMat.MakeDiagonal(scale);
+      ori = ori * scaleMat;
+
+      t.SetScale(scale);
+
+      CHECK( (t.GetOrientation() == ori) );
+
+      t.SetTransformation(Mat4f32(1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1),
+                          Vec3f32(2, 2, 2));
+      CHECK_MATRIX4F(t.GetTransformation(),
+                     2, 0, 0, 0,
+                     0, 2, 0, 0,
+                     0, 0, 2, 0,
+                     0, 0, 0, 1);
+    }
+
+    SECTION("4x4 ctor", "")
+    {
+      tf32 t(math_t::Mat4f32::IDENTITY);
+
+      tf32::orientation_type ori = t.GetOrientation();
+      CHECK_MATRIX4F(t.GetTransformation(), 1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1);
+    }
   }
 };

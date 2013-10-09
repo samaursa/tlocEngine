@@ -167,7 +167,6 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSequence_T<T_KeyframeType>::
     KeyframeSequence_T(const T_KeyframeContainer& a_sequence)
     : m_loop(false)
-    , m_stopOnLastFrame(true)
     , m_keyframes(new cont_type())
     , m_currentFrame(0)
     , m_totalFrames(0)

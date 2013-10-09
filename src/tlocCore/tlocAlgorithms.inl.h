@@ -1073,7 +1073,7 @@ namespace tloc { namespace core {
   void
     sort(T_InputIterator a_first, T_InputIterator a_last)
   {
-    typedef PointeeType<T_InputIterator>::value_type value_type;
+    typedef typename PointeeType<T_InputIterator>::value_type value_type;
     sort(a_first, a_last, less<value_type>());
   }
 
@@ -1093,10 +1093,10 @@ namespace tloc { namespace core {
             typename T_Compare>
   void
     sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp,
-         T_SortAlgorithm)
+         T_SortAlgorithm a_sortAlg)
   {
-    typedef PointeeType<T_InputIterator>::value_type value_type;
-    detail::DoSort(a_first, a_last, aSortAlg, a_comp);
+    typedef typename PointeeType<T_InputIterator>::value_type value_type;
+    detail::DoSort(a_first, a_last, a_sortAlg, a_comp);
   }
 
   //------------------------------------------------------------------------
@@ -1553,7 +1553,7 @@ namespace tloc { namespace core {
       sort(T_InputIterator a_first, T_InputIterator a_last,
            T_Compare a_comp, IsCompareFunctionObject)
     {
-      typedef PointeeType<T_InputIterator>::value_type value_type;
+      typedef typename PointeeType<T_InputIterator>::value_type value_type;
       DoSort(a_first, a_last, sort_quicksort_randompivot(), a_comp);
     }
 
@@ -1562,7 +1562,7 @@ namespace tloc { namespace core {
       sort(T_InputIterator a_first, T_InputIterator a_last,
            T_SortAlgorithm a_sortAlgorithm, IsSortingAlgorithm)
     {
-      typedef PointeeType<T_InputIterator>::value_type value_type;
+      typedef typename PointeeType<T_InputIterator>::value_type value_type;
       DoSort(a_first, a_last, a_sortAlgorithm, less<value_type>());
     }
 

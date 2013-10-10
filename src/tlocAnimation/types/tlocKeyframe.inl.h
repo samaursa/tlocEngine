@@ -171,6 +171,8 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     SetCurrentFrame(size_type a_frame)
   {
+    TLOC_ASSERT(a_frame <= m_totalFrames, "Out of bounds!");
+
     m_currentFrame = 0;
     m_currentPairIndex = 0;
 

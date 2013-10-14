@@ -185,6 +185,30 @@ namespace tloc { namespace animation { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  void
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    GotoBegin()
+  {
+    m_currentFrame = 0;
+    m_currentPairIndex = 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
+  void
+    KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
+    GotoEnd()
+  {
+    const size_type kfSize = m_keyframes->size();
+
+    m_currentFrame = m_totalFrames;
+    m_currentPairIndex = kfSize > 1 ? m_keyframes->size() - 2 : 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TL_KEYFRAME_SEQUENCE_TEMPS>
   TL_KEYFRAME_SEQUENCE_TYPE::kf_pair
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     GetKeyframePairAtCurrentFrame()
@@ -231,6 +255,7 @@ namespace tloc { namespace animation { namespace types {
     clear()
   {
     m_keyframes->clear();
+    m_totalFrames = 0;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

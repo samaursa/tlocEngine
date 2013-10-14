@@ -128,10 +128,15 @@ namespace tloc { namespace animation { namespace types {
 
     void      RemoveKeyframe(size_type a_index);
 
-    // returns true if a frame change occurs
+    // returns true if a keyframe change occurs
     bool      NextFrame();
     bool      PrevFrame();
     void      SetCurrentFrame(size_type a_frame);
+
+    // Unlike SetCurrentFrame, these functions will not throw an assertion
+    // if the sequence is empty
+    void      GotoBegin();
+    void      GotoEnd();
 
     kf_pair   GetKeyframePairAtCurrentFrame();
 

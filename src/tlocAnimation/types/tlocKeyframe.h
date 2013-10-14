@@ -6,7 +6,6 @@
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/containers/tloc_containers.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/types/tlocVector2.h>
@@ -108,7 +107,6 @@ namespace tloc { namespace animation { namespace types {
             core_conts::tl_array<keyframe_type>::type   cont_type;
     typedef typename cont_type::iterator                iterator;
     typedef typename cont_type::const_iterator          const_iterator;
-    typedef core_sptr::SharedPtr<cont_type>             cont_type_sptr;
 
     typedef tl_size                                     size_type;
     typedef core::Pair<keyframe_type,
@@ -158,7 +156,7 @@ namespace tloc { namespace animation { namespace types {
     size_type       DoGetSecondIndex();
 
   private:
-    cont_type_sptr  m_keyframes;
+    cont_type       m_keyframes;
     size_type       m_currentFrame;
     size_type       m_totalFrames;
     size_type       m_currentPairIndex;

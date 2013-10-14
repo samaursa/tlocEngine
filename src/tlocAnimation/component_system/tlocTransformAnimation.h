@@ -61,6 +61,8 @@ namespace tloc { namespace animation { namespace component_system {
     void NextFrame();
     void PrevFrame();
     void SetFrame(size_type a_index);
+    void GotoBegin();
+    void GotoEnd();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalKeyframeSequences, m_kfSeqSet.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSequenceIndex, m_currentSeq);

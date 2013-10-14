@@ -172,6 +172,42 @@ namespace tloc { namespace animation { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  void
+    TransformAnimation::
+    GotoBegin()
+  {
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse) == false)
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoBegin();
+    }
+    else
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoEnd();
+    }
+
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    GotoEnd()
+  {
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse) == false)
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoEnd();
+    }
+    else
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoBegin();
+    }
+
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   const bool
     TransformAnimation::
     IsLooping() const

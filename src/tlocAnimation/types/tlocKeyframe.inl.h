@@ -49,7 +49,6 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     KeyframeSequence_T()
     : m_loop(false)
-    , m_keyframes(new cont_type())
     , m_currentFrame(0)
     , m_totalFrames(0)
     , m_currentPairIndex(0)
@@ -62,11 +61,11 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     AddKeyframe(const keyframe_type& a_keyframe)
   {
-    TLOC_ASSERT( (m_keyframes->size() ?
-      m_keyframes->back().GetFrame() < a_keyframe.GetFrame() : true),
+    TLOC_ASSERT( (m_keyframes.size() ?
+      m_keyframes.back().GetFrame() < a_keyframe.GetFrame() : true),
       "Incoming keyframe has a smaller frame number than the previous keyframe");
 
-    m_keyframes->push_back(a_keyframe);
+    m_keyframes.push_back(a_keyframe);
     m_totalFrames = a_keyframe.GetFrame();
   }
 
@@ -77,8 +76,8 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     RemoveKeyframe(size_type a_index)
   {
-    typename cont_type::iterator itr = m_keyframes->begin() + a_index;
-    m_keyframes->erase(itr);
+    typename cont_type::iterator itr = m_keyframes.begin() + a_index;
+    m_keyframes.erase(itr);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -110,10 +109,10 @@ namespace tloc { namespace animation { namespace types {
       if (operator[](m_currentPairIndex + 1).GetFrame() <= m_currentFrame)
       {
         ++m_currentPairIndex;
-        TLOC_ASSERT(m_currentPairIndex < m_keyframes->size(),
+        TLOC_ASSERT(m_currentPairIndex < m_keyframes.size(),
           "m_currentPairIndex is out of bounds");
 
-        if (m_currentPairIndex == m_keyframes->size() - 1)
+        if (m_currentPairIndex == m_keyframes.size() - 1)
         { --m_currentPairIndex; }
 
         return true;
@@ -140,7 +139,7 @@ namespace tloc { namespace animation { namespace types {
       if (m_loop)
       {
         m_currentFrame = totalFrames;
-        m_currentPairIndex = m_keyframes->size() - 2;
+        m_currentPairIndex = m_keyframes.size() - 2;
         return true;
       }
       else
@@ -200,10 +199,10 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     GotoEnd()
   {
-    const size_type kfSize = m_keyframes->size();
+    const size_type kfSize = m_keyframes.size();
 
     m_currentFrame = m_totalFrames;
-    m_currentPairIndex = kfSize > 1 ? m_keyframes->size() - 2 : 0;
+    m_currentPairIndex = kfSize > 1 ? m_keyframes.size() - 2 : 0;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -224,7 +223,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     operator[](size_type a_index)
   {
-    return (*m_keyframes)[a_index];
+    return m_keyframes[a_index];
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -234,7 +233,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     operator[](size_type a_index) const
   {
-    return (*m_keyframes)[a_index];
+    return m_keyframes[a_index];
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -244,7 +243,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     size()
   {
-    return m_keyframes->size();
+    return m_keyframes.size();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -254,7 +253,7 @@ namespace tloc { namespace animation { namespace types {
     KeyframeSequence_T<TL_KEYFRAME_SEQUENCE_PARAMS>::
     clear()
   {
-    m_keyframes->clear();
+    m_keyframes.clear();
     m_totalFrames = 0;
   }
 

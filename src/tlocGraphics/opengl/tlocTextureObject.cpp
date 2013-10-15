@@ -115,7 +115,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   TextureObject::
     TextureObject(const Params& a_params)
-    : m_texType(GL_NONE)
+    : m_texImageUnit(-1)
     , m_params(a_params)
   {
     object_handle handle;
@@ -129,28 +129,31 @@ namespace tloc { namespace graphics { namespace gl {
     if (IsLastRef())
     {
       object_handle handle = GetHandle();
+      if (IsActive())
+      { Deactivate(); }
       glDeleteTextures(1, &handle);
     }
   }
 
-  error_type TextureObject::
-    DoBind(texture_type a_texType)
+  error_type
+    TextureObject::
+    Bind() const
   {
-    m_texType = a_texType;
     object_handle handle = GetHandle();
-    glBindTexture(a_texType, handle);
+    glBindTexture(m_params.GetTextureType(), handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
     return ErrorSuccess;
   }
 
-  error_type TextureObject::
+  error_type
+    TextureObject::
     Initialize(const image_type& a_image)
   {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
-    Bind<p_texture_object::target::Tex2D>();
-    glTexImage2D(m_texType, 0, GL_RGBA,
+    Bind();
+    glTexImage2D(m_params.GetTextureType(), 0, GL_RGBA,
       core_utils::CastNumber<GLsizei, size_type>(a_image.GetWidth()),
       core_utils::CastNumber<GLsizei, size_type>(a_image.GetHeight()),
       0, GL_RGBA, GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
@@ -160,15 +163,55 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
+  error_type
+    TextureObject::
+    Activate()
+  {
+    if (IsActive())
+    { return TLOC_ERROR(gfx_err::error_texture_object_already_activated); }
+
+    texture_image_unit_type tUnit;
+    error_type err = GetNextAvailableTextureImageUnit(tUnit);
+    if (err == ErrorSuccess)
+    {
+      m_texImageUnit = tUnit;
+      return ErrorSuccess;
+    }
+
+    return TLOC_ERROR(gfx_err::error_no_texture_units_available);
+  }
+
+  bool
+    TextureObject::
+    IsActive() const
+  { return m_texImageUnit != -1; }
+
+  error_type
+    TextureObject::
+    Deactivate()
+  {
+    if (IsActive())
+    {
+      RecycleTextureImageUnit(m_texImageUnit);
+      m_texImageUnit = -1;
+
+      return ErrorSuccess;
+    }
+
+    return TLOC_ERROR(error::error_texture_object_never_activated);
+  }
+
   void
     TextureObject::
     Update()
   {
-    TLOC_ASSERT(m_texType != GL_NONE, "Update parameters on a GL_NONE texture");
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
-    glTexParameteri(m_texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
-    glTexParameteri(m_texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
-    glTexParameteri(m_texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
+    texture_type texType = m_params.GetTextureType();
+
+    TLOC_ASSERT(texType != GL_NONE, "Update parameters on a GL_NONE texture");
+    glTexParameteri(texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
+    glTexParameteri(texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
+    glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
+    glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
   }
 
   //------------------------------------------------------------------------

@@ -536,8 +536,13 @@ namespace tloc { namespace graphics { namespace gl {
             isShared
             ? *a_uniform.GetValueAsShared<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
-          glBindTexture(GL_TEXTURE_2D, m.GetHandle());
-          glUniform1i(a_info.m_location, GetActiveTextureUnit());
+
+          GLint texImgUnit = m.GetTextureImageUnit();
+
+          ActivateTextureImageUnit(texImgUnit);
+          m.Bind();
+          glUniform1i(a_info.m_location,
+                      GetTextureUnitFromTextureImageUnit(texImgUnit));
           break;
         }
       default:
@@ -1336,12 +1341,6 @@ namespace tloc { namespace graphics { namespace gl {
          itr != itrEnd; ++itr)
     {
       uniform_sptr uniformPtr = itr->first;
-
-      if (uniformPtr->GetType() == GL_SAMPLER_2D)
-      {
-        if (ActivateNextAvailableTextureUnit() != ErrorSuccess)
-        { TLOC_ASSERT(false, "Could not activate texture unit"); }
-      }
 
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }

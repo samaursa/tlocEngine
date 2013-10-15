@@ -74,6 +74,7 @@ namespace tloc { namespace graphics { namespace gl {
     struct Params
     {
       typedef Params                                          this_type;
+      typedef p_texture_object::target::enum_type             texture_type;
       typedef p_texture_object::wrap_technique::value_type    wrap_value_type;
       typedef p_texture_object::filter::value_type            filter_value_type;
 
@@ -87,6 +88,7 @@ namespace tloc { namespace graphics { namespace gl {
         // defaults
         Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
         MinFilter<Linear>().MagFilter<Linear>();
+        TextureType<p_texture_object::target::Tex2D>();
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -154,6 +156,11 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      template <typename T_Target>
+      void  TextureType();
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       TLOC_DECL_AND_DEF_GETTER
         (wrap_value_type, GetWrap_S, m_wrap_s);
       TLOC_DECL_AND_DEF_GETTER
@@ -162,12 +169,15 @@ namespace tloc { namespace graphics { namespace gl {
         (filter_value_type, GetMinFilter, m_minFilter);
       TLOC_DECL_AND_DEF_GETTER
         (filter_value_type, GetMagFilter, m_magFilter);
+      TLOC_DECL_AND_DEF_GETTER
+        (texture_type, GetTextureType, m_textureType);
 
     private:
       wrap_value_type       m_wrap_s;
       wrap_value_type       m_wrap_t;
       filter_value_type     m_minFilter;
       filter_value_type     m_magFilter;
+      texture_type          m_textureType;
     };
 
   public:
@@ -177,6 +187,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Object_T<TextureObject, p_object::WithError>  base_type;
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
+    typedef s32                                           texture_image_unit_type;
     typedef p_texture_object::target::enum_type           texture_type;
     typedef media::Image                                  image_type;
 
@@ -184,31 +195,35 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params = Params());
     ~TextureObject();
 
-    template <typename T_Target>
-    error_type  Bind();
     error_type  Initialize(const image_type& a_image);
 
-    error_type  Activate(s32 a_texUnit);
+    error_type  Bind() const;
+
+    error_type  Activate();
+    bool        IsActive() const;
+    error_type  Deactivate();
+
     void        Update();
 
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
-  private:
-    error_type  DoBind(texture_type a_texType);
+    TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
 
   private:
-    texture_type m_texType;
-    Params       m_params;
 
+  private:
+    texture_image_unit_type   m_texImageUnit;
+    Params                    m_params;
   };
 
   //------------------------------------------------------------------------
   // Template method definitions
 
   template <typename T_Target>
-  TextureObject::error_type TextureObject::
-    Bind()
+  void
+    TextureObject::Params::
+    TextureType()
   {
     using namespace p_texture_object::target;
 
@@ -219,10 +234,10 @@ namespace tloc { namespace graphics { namespace gl {
     //   TexRectangle, TexCubeMap, TexBuffer, Tex2DMultiSample,
     //   Tex1DArray, Tex2DArray, TexCubeMapArray, Tex2DMultiSampleArray>();
 
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_Target,
       Tex2D, TexCubeMap>();
-    return DoBind(T_Target::s_glParamName);
+    m_textureType = T_Target::s_glParamName;
   }
 
   //------------------------------------------------------------------------

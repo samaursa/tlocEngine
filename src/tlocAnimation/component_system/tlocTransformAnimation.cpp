@@ -110,16 +110,37 @@ namespace tloc { namespace animation { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  TransformAnimation::kf_seq_type&
+    TransformAnimation::
+    GetCurrentKeyframeSequence()
+  {
+    return m_kfSeqSet[GetCurrentKeyframeSequenceIndex()].m_kfSeq;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const TransformAnimation::kf_seq_type&
+    TransformAnimation::
+    GetCurrentKeyframeSequence() const
+  {
+    return m_kfSeqSet[GetCurrentKeyframeSequenceIndex()].m_kfSeq;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     TransformAnimation::
     NextFrame()
   {
-    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
-    else
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+    bool updated = false;
 
-    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+    else
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+
+    if (updated)
+    { m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -128,13 +149,15 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimation::
     PrevFrame()
   {
+    bool updated = false;
 
     if (m_kfSeqSet[m_currentSeq].m_flags.IsUnMarked(k_reverse))
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.PrevFrame(); }
     else
-    { m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
+    { updated = m_kfSeqSet[m_currentSeq].m_kfSeq.NextFrame(); }
 
-    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+    if (updated)
+    { m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -144,6 +167,42 @@ namespace tloc { namespace animation { namespace component_system {
     SetFrame(size_type a_index)
   {
     m_kfSeqSet[m_currentSeq].m_kfSeq.SetCurrentFrame(a_index);
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    GotoBegin()
+  {
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse) == false)
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoBegin();
+    }
+    else
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoEnd();
+    }
+
+    m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    GotoEnd()
+  {
+    if (m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse) == false)
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoEnd();
+    }
+    else
+    {
+      m_kfSeqSet[m_currentSeq].m_kfSeq.GotoBegin();
+    }
+
     m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }
 
@@ -179,7 +238,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   const bool
     TransformAnimation::
-    IsTransformSetChanged() const
+    IsKFSequenceChanged() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_keyframeSetChanged); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -230,16 +289,16 @@ namespace tloc { namespace animation { namespace component_system {
 
   void
     TransformAnimation::
-    SetTransformSetChanged(bool a_changed)
+    SetKFSequenceChanged(bool a_changed)
   { m_kfSeqSet[m_currentSeq].m_flags[k_keyframeSetChanged] = a_changed; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     TransformAnimation::
-    SetCurrentTransformSet(size_type a_spriteSetIndex)
+    SetCurrentKFSequence(size_type a_spriteSetIndex)
   {
-    TLOC_ASSERT(a_spriteSetIndex < GetNumSequences(), "Index out of bounds!");
+    TLOC_ASSERT(a_spriteSetIndex < GetTotalKeyframeSequences(), "Index out of bounds!");
     m_currentSeq = a_spriteSetIndex;
     m_kfSeqSet[m_currentSeq].m_flags.Mark(k_keyframeSetChanged);
   }

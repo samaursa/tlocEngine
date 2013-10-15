@@ -55,12 +55,17 @@ namespace tloc { namespace animation { namespace component_system {
     kf_seq_type&         GetKeyframeSequence(size_type a_index);
     const kf_seq_type&   GetKeyframeSequence(size_type a_index) const;
 
+    kf_seq_type&         GetCurrentKeyframeSequence();
+    const kf_seq_type&   GetCurrentKeyframeSequence() const;
+
     void NextFrame();
     void PrevFrame();
     void SetFrame(size_type a_index);
+    void GotoBegin();
+    void GotoEnd();
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSequences, m_kfSeqSet.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKFSequence, m_currentSeq);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalKeyframeSequences, m_kfSeqSet.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentKeyframeSequenceIndex, m_currentSeq);
     TLOC_DECL_AND_DEF_GETTER(f64, GetStartTime, m_kfSeqSet[m_currentSeq].m_startTime);
     TLOC_DECL_AND_DEF_GETTER(f64, GetTotalTime, m_kfSeqSet[m_currentSeq].m_totalTime);
     TLOC_DECL_AND_DEF_GETTER
@@ -70,7 +75,7 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_GETTER(bool, IsPaused);
     TLOC_DECL_GETTER(bool, IsStopped);
     TLOC_DECL_GETTER(bool, IsReversed);
-    TLOC_DECL_GETTER(bool, IsTransformSetChanged);
+    TLOC_DECL_GETTER(bool, IsKFSequenceChanged);
     TLOC_DECL_GETTER(size_type, GetFPS);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
@@ -82,8 +87,8 @@ namespace tloc { namespace animation { namespace component_system {
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetStopped);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetReverse);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetTransformSetChanged);
-    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentTransformSet);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetKFSequenceChanged);
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentKFSequence);
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetFPS);
 
   private:

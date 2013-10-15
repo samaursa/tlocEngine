@@ -31,7 +31,6 @@ namespace TestingKeyframe
     CHECK(kfs.GetTotalFrames() == 30);
     CHECK(kfs.GetCurrentFrame() == 0);
     CHECK_FALSE(kfs.m_loop);
-    CHECK(kfs.m_stopOnLastFrame);
 
     CHECK(kfs.GetFramesBetween(0, 1) == 10);
     CHECK(kfs.GetFramesBetween(1, 2) == 20);
@@ -95,7 +94,24 @@ namespace TestingKeyframe
     CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
     CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
 
+    kfs.GotoBegin();
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 0);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 10);
+    CHECK_FALSE(kfs.NextFrame()); // no keyframe change occurs
+
+    kfs.GotoEnd();
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().first.GetFrame() == 10);
+    CHECK(kfs.GetKeyframePairAtCurrentFrame().second.GetFrame() == 30);
+    CHECK(kfs.NextFrame()); // keyframe change occurs (loop is true)
+
     kfs.clear();
+    CHECK(kfs.GetTotalFrames() == 0);
+
+    kfs.GotoBegin(); // should not crash
+    kfs.GotoEnd(); // should not crash
+    CHECK(kfs.NextFrame()); // keyframe change occurs (loop is true)
+    kfs.Loop(false);
+    CHECK_FALSE(kfs.NextFrame()); // keyframe change does not occur
 
     CHECK(kfs.size() == 0);
   }

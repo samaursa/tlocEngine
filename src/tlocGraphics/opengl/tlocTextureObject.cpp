@@ -126,8 +126,11 @@ namespace tloc { namespace graphics { namespace gl {
   TextureObject::
     ~TextureObject()
   {
-    object_handle handle = GetHandle();
-    glDeleteTextures(1, &handle);
+    if (IsLastRef())
+    {
+      object_handle handle = GetHandle();
+      glDeleteTextures(1, &handle);
+    }
   }
 
   error_type TextureObject::

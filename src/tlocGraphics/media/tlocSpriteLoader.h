@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace media {
     namespace parser {
 
       using core_str::String;
-      using types::Dimension2i;
+      using types::Dimension2u;
 
       // ///////////////////////////////////////////////////////////////////////
       // SpriteSheetPacker
@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace media {
       {
         bool            IsSupported(const String& a_input);
         core_err::Error Parse(const String& a_input,
-                              const Dimension2i a_imgDim,
+                              const Dimension2u a_imgDim,
                               core_conts::Array<SpriteInfo>& a_out);
       };
 
@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace media {
       {
         bool            IsSupported(const String& a_input);
         core_err::Error Parse(const String& a_input,
-                              const Dimension2i a_imgDim,
+                              const Dimension2u a_imgDim,
                               core_conts::Array<SpriteInfo>& a_out);
       };
     };
@@ -61,7 +61,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef T_ParserType                          parser_type;
     typedef core_err::Error                       error_type;
     typedef core_str::String                      string_type;
-    typedef types::Dimension2i                    dim_type;
+    typedef types::Dimension2u                    dim_type;
 
     typedef core_conts::Array<SpriteInfo>               sprite_info_cont;
     typedef typename sprite_info_cont::size_type        size_type;

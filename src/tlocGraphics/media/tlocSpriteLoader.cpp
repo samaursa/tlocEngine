@@ -33,7 +33,7 @@ namespace tloc { namespace graphics { namespace media {
     // -----------------------------------------------------------------------
     // typedefs
 
-    typedef types::Dimension2i                dim_type;
+    typedef types::Dimension2u                dim_type;
 
     // ///////////////////////////////////////////////////////////////////////
     // MaxDimensions - helper to keep track of the maximum dimensions
@@ -104,7 +104,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       SpriteSheetPacker::
       Parse(const core_str::String& a_input,
-            const Dimension2i a_imgDim,
+            const Dimension2u a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       typedef core_conts::Array<core_str::String>   string_array;
@@ -134,7 +134,7 @@ namespace tloc { namespace graphics { namespace media {
         si.m_dimensions[0]   = atoi(eachLine[4].c_str());
         si.m_dimensions[1]   = atoi(eachLine[5].c_str());
 
-        dim_type dim(core_ds::Variadic2s32
+        dim_type dim(core_ds::Variadic2u32
           (si.m_startingPos[0] + si.m_dimensions[0],
            si.m_startingPos[1] + si.m_dimensions[1]) );
         maxDim.ModifyMaxDimension(dim);
@@ -230,7 +230,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       TexturePacker::
       Parse(const core_str::String& a_input,
-            const Dimension2i a_imgDim,
+            const Dimension2u a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       using namespace rapidxml;
@@ -252,9 +252,11 @@ namespace tloc { namespace graphics { namespace media {
       xml_attribute<>* heightAttr = textureAtlasNode->first_attribute("height");
 
       TLOC_UNUSED_2(widthAttr, heightAttr); // to avoid warnings in Release
-      TLOC_ASSERT(atoi(widthAttr->value()) == a_imgDim[0] &&
-                  atoi(heightAttr->value()) == a_imgDim[1],
-                  "Image dimensions don't match that of sprite sheet");
+      TLOC_ASSERT(
+        core_utils::CastNumber<Dimension2u::value_type>(atoi(widthAttr->value()))
+        == a_imgDim[0] &&
+        core_utils::CastNumber<Dimension2u::value_type>(atoi(heightAttr->value()))
+        == a_imgDim[1], "Image dimensions don't match that of sprite sheet");
 
       xml_node<>* nextSpriteNode = textureAtlasNode->first_node("sprite");
       while (nextSpriteNode)

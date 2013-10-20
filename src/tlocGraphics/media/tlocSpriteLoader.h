@@ -27,13 +27,17 @@ namespace tloc { namespace graphics { namespace media {
   {
     namespace parser {
 
+      using core_str::String;
+      using types::Dimension2i;
+
       // ///////////////////////////////////////////////////////////////////////
       // SpriteSheetPacker
 
       struct SpriteSheetPacker
       {
-        bool            IsSupported(const core_str::String& a_input);
-        core_err::Error Parse(const core_str::String& a_input,
+        bool            IsSupported(const String& a_input);
+        core_err::Error Parse(const String& a_input,
+                              const Dimension2i a_imgDim,
                               core_conts::Array<SpriteInfo>& a_out);
       };
 
@@ -42,8 +46,9 @@ namespace tloc { namespace graphics { namespace media {
 
       struct TexturePacker
       {
-        bool            IsSupported(const core_str::String& a_input);
-        core_err::Error Parse(const core_str::String& a_input,
+        bool            IsSupported(const String& a_input);
+        core_err::Error Parse(const String& a_input,
+                              const Dimension2i a_imgDim,
                               core_conts::Array<SpriteInfo>& a_out);
       };
     };
@@ -83,10 +88,11 @@ namespace tloc { namespace graphics { namespace media {
     const_iterator  end(const string_type& a_name) const;
 
     TLOC_DECL_AND_DEF_GETTER(sprite_info_cont, GetSpriteInfo, m_spriteInfo);
+    TLOC_DECL_AND_DEF_GETTER(dim_type, GetDimensions, m_imageDimensions);
 
   private:
     sprite_info_cont        m_spriteInfo;
-    core_ds::Tuple2s32      m_imageDimensions;
+    dim_type                m_imageDimensions;
     core_utils::Checkpoints m_flags;
   };
 

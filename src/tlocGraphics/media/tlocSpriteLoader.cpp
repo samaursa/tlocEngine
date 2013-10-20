@@ -146,6 +146,7 @@ namespace tloc { namespace graphics { namespace media {
 
       // Image can be larger than what we can find from the sprite data due to
       // padding, but it cannot be smaller
+      TLOC_UNUSED(a_imgDim);
       TLOC_ASSERT( (maxDim.m_dim[0] <= a_imgDim[0] &&
                     maxDim.m_dim[1] <= a_imgDim[1]),
                   "Sprite dimensions are larger than image dimensions");
@@ -251,7 +252,7 @@ namespace tloc { namespace graphics { namespace media {
       xml_attribute<>* widthAttr = textureAtlasNode->first_attribute("width");
       xml_attribute<>* heightAttr = textureAtlasNode->first_attribute("height");
 
-      TLOC_UNUSED_2(widthAttr, heightAttr); // to avoid warnings in Release
+      TLOC_UNUSED_3(widthAttr, heightAttr, a_imgDim); // to avoid warnings in Release
       TLOC_ASSERT(
         core_utils::CastNumber<Dimension2u::value_type>(atoi(widthAttr->value()))
         == a_imgDim[0] &&

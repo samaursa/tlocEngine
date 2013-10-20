@@ -25,14 +25,25 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  Material::entity_type*
+    Material::
+    Create(BufferArg a_vertexShader,
+           BufferArg a_fragmentShader)
+  {
+    Entity* ent = m_entMgr->CreateEntity();
+    Add(ent, a_vertexShader, a_fragmentShader);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     Material::
     Add(entity_type* a_ent,
         const core_io::Path& a_vertexShader,
         const core_io::Path& a_fragmentShader)
   {
-    using namespace gfx_cs::components;
-
     core_io::Path vsFullPath( (m_assetsPath + a_vertexShader.GetPath()).c_str() );
     core_io::Path fsFullPath( (m_assetsPath + a_fragmentShader.GetPath()).c_str() );
 
@@ -51,6 +62,17 @@ namespace tloc { namespace prefab { namespace graphics {
     vsFile.GetContents(vsCode);
     fsFile.GetContents(fsCode);
 
+    Add(a_ent, vsCode, fsCode);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Material::
+    Add(entity_type* a_ent, BufferArg a_vertexShader, BufferArg a_fragmentShader)
+  {
+    using namespace gfx_cs::components;
+
     typedef ComponentPoolManager              pool_mgr;
     typedef gfx_cs::material_sptr_pool        mat_pool;
 
@@ -66,8 +88,8 @@ namespace tloc { namespace prefab { namespace graphics {
 
     gfx_cs::material_sptr mat = itrMat->GetValue();
 
-    mat->SetVertexSource(vsCode);
-    mat->SetFragmentSource(fsCode);
+    mat->SetVertexSource(a_vertexShader);
+    mat->SetFragmentSource(a_fragmentShader);
 
     gfx_gl::shader_operator_sptr so =
       gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());

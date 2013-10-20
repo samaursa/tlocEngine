@@ -39,6 +39,12 @@ namespace tloc { namespace prefab { namespace graphics {
                       const core_io::Path& a_vertexShader,
                       const core_io::Path& a_fragmentShader);
 
+    entity_type*  Create(BufferArg a_vertexShader,
+                         BufferArg a_fragmentShader);
+    void          Add(entity_type* a_ent,
+                      BufferArg a_vertexShader,
+                      BufferArg a_fragmentShader);
+
     Material&     AddUniform(const uniform_sptr_type& a_uniform);
     Material&     AddAttribute(const attribute_sptr_type& a_attribute);
 

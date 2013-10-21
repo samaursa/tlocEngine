@@ -940,7 +940,8 @@ namespace TestingAlgorithms
     List<s32>  myIntsList(itrBegin, itrEnd);
     List<s32, ListNode<s32, singly_linked_tag> >  myIntsListSinglyLinked(itrBegin, itrEnd);
 
-    tloc::core::detail::DoSort(itrBegin, itrEnd, T_SortType(), less<s32>());
+    tloc::core::detail::DoSortWithAlgorithm(itrBegin, itrEnd,
+                                            T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -952,8 +953,8 @@ namespace TestingAlgorithms
       CHECK( myints[i] == sortedRawArray[i]);
     }
 
-    tloc::core::detail::DoSort(myIntsArray.begin(), myIntsArray.end(),
-                               T_SortType(), less<s32>());
+    tloc::core::detail::DoSortWithAlgorithm(myIntsArray.begin(), myIntsArray.end(),
+                                            T_SortType(), less<s32>());
 
     for (u32 i = 1; i < 26; ++i)
     {
@@ -965,8 +966,8 @@ namespace TestingAlgorithms
       CHECK( myIntsArray[i] == sortedRawArray[i]);
     }
 
-    tloc::core::detail::DoSort(myIntsList.begin(), myIntsList.end(),
-                               T_SortType(), less<s32>());
+    tloc::core::detail::DoSortWithAlgorithm(myIntsList.begin(), myIntsList.end(),
+                                            T_SortType(), less<s32>());
 
     List<s32>::iterator listItr, listItr2, listItrEnd;
     listItr2 = myIntsList.begin();
@@ -994,9 +995,9 @@ namespace TestingAlgorithms
       ++sortedItr;
     }
 
-    tloc::core::detail::DoSort(myIntsListSinglyLinked.begin(),
-                               myIntsListSinglyLinked.end(),
-                               T_SortType(), less<s32>());
+    tloc::core::detail::DoSortWithAlgorithm(myIntsListSinglyLinked.begin(),
+                                            myIntsListSinglyLinked.end(),
+                                            T_SortType(), less<s32>());
 
     List<s32, ListNode<s32, singly_linked_tag> >::iterator singleListItr,
                                                            singleListItr2,
@@ -1200,14 +1201,14 @@ namespace TestingAlgorithms
     CHECK(bar[4] == 51);
 
     core::transform(foo.begin(), foo.end(), bar.begin(), foo.begin(),
-                    std::plus<tl_int>());
+                    plus<tl_int>());
     CHECK(foo[0] == 21);
     CHECK(foo[1] == 41);
     CHECK(foo[2] == 61);
     CHECK(foo[3] == 81);
     CHECK(foo[4] == 101);
 
-    core::transform_all(foo, bar, foo, std::plus<tl_int>());
+    core::transform_all(foo, bar, foo, plus<tl_int>());
     CHECK(foo[0] == 32);
     CHECK(foo[1] == 62);
     CHECK(foo[2] == 92);

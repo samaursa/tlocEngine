@@ -6,7 +6,6 @@
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/containers/tloc_containers.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/types/tlocVector2.h>
@@ -108,7 +107,6 @@ namespace tloc { namespace animation { namespace types {
             core_conts::tl_array<keyframe_type>::type   cont_type;
     typedef typename cont_type::iterator                iterator;
     typedef typename cont_type::const_iterator          const_iterator;
-    typedef core_sptr::SharedPtr<cont_type>             cont_type_sptr;
 
     typedef tl_size                                     size_type;
     typedef core::Pair<keyframe_type,
@@ -128,10 +126,15 @@ namespace tloc { namespace animation { namespace types {
 
     void      RemoveKeyframe(size_type a_index);
 
-    // returns true if a frame change occurs
+    // returns true if a keyframe change occurs
     bool      NextFrame();
     bool      PrevFrame();
     void      SetCurrentFrame(size_type a_frame);
+
+    // Unlike SetCurrentFrame, these functions will not throw an assertion
+    // if the sequence is empty
+    void      GotoBegin();
+    void      GotoEnd();
 
     kf_pair   GetKeyframePairAtCurrentFrame();
 
@@ -148,13 +151,12 @@ namespace tloc { namespace animation { namespace types {
     TLOC_DECL_AND_DEF_GETTER(size_type, GetTotalFrames, m_totalFrames);
 
     TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
-    TLOC_DECL_PARAM_VAR(bool, StopOnLastFrame, m_stopOnLastFrame);
 
   private:
     size_type       DoGetSecondIndex();
 
   private:
-    cont_type_sptr  m_keyframes;
+    cont_type       m_keyframes;
     size_type       m_currentFrame;
     size_type       m_totalFrames;
     size_type       m_currentPairIndex;
@@ -168,7 +170,6 @@ namespace tloc { namespace animation { namespace types {
   KeyframeSequence_T<T_KeyframeType>::
     KeyframeSequence_T(const T_KeyframeContainer& a_sequence)
     : m_loop(false)
-    , m_stopOnLastFrame(true)
     , m_keyframes(new cont_type())
     , m_currentFrame(0)
     , m_totalFrames(0)

@@ -277,7 +277,6 @@ namespace tloc { namespace graphics { namespace gl {
       return TLOC_ERROR(error::error_shader_program_enable);
     }
 
-    ResetTextureUnits();
     return ErrorSuccess;
   }
 
@@ -298,7 +297,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
     glUseProgram(0);
 
-    if (gl::Error().Failed())
+    gl::Error glErr;
+    if (glErr.Failed())
     {
       return TLOC_ERROR(error::error_shader);
     }

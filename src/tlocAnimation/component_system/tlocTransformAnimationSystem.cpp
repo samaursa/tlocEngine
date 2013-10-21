@@ -102,7 +102,7 @@ namespace tloc { namespace animation { namespace component_system {
     }
 
     if (ent->HasComponent(components::transform_animation) &&
-        transAnim->IsTransformSetChanged())
+        transAnim->IsKFSequenceChanged())
     {
       math_cs::Transform* transPtr =
         ent->GetComponent<math_cs::Transform>(0);
@@ -110,8 +110,10 @@ namespace tloc { namespace animation { namespace component_system {
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
       typedef kf_seq::keyframe_type                       kf_type;
 
-      kf_seq& currKfSeq =
-        transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
+      kf_seq& currKfSeq = transAnim->GetCurrentKeyframeSequence();
+
+      if (currKfSeq.size() == 0)
+      { return; }
 
       const kf_seq::size_type currFrame = currKfSeq.GetCurrentFrame();
       const kf_seq::size_type totalFrames = currKfSeq.GetFramesBetweenCurrentPair();
@@ -228,9 +230,6 @@ namespace tloc { namespace animation { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // explicit instantiations
 
-  template class core_sptr::SharedPtr<TransformAnimationSystem>;
-
-  // SmartPtr
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
 
 };};};

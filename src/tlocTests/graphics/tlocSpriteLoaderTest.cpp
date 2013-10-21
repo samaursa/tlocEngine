@@ -38,7 +38,7 @@ namespace TestingSpriteLoader
     core_str::String fileContents;
     txtFile.GetContents(fileContents);
 
-    sl_ssp.Init(fileContents, gfx_t::Dimension2i(1820, 1260));
+    sl_ssp.Init(fileContents, gfx_t::Dimension2u(1820, 1260));
 
     CHECK(sl_ssp.GetSpriteInfo().size() == 104);
 
@@ -93,7 +93,7 @@ namespace TestingSpriteLoader
     core_str::String fileContents;
     txtFile.GetContents(fileContents);
 
-    sl_tp.Init(fileContents, gfx_t::Dimension2i(2380, 2040));
+    sl_tp.Init(fileContents, gfx_t::Dimension2u(2380, 2040));
 
     CHECK(sl_tp.GetSpriteInfo().size() == 52);
 
@@ -122,7 +122,7 @@ namespace TestingSpriteLoader
     core_str::String fileContents;
     txtFile.GetContents(fileContents);
 
-    sl_tp.Init(fileContents, gfx_t::Dimension2i(5000, 4000));
+    sl_tp.Init(fileContents, gfx_t::Dimension2u(5000, 4000));
 
     CHECK(sl_tp.GetSpriteInfo().size() == 842);
 

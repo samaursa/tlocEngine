@@ -4,6 +4,7 @@
 
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocMath/tlocRange.h>
 #include <tlocMath/utilities/tlocScale.h>
@@ -29,6 +30,42 @@ namespace tloc { namespace graphics { namespace media {
   };
 
   namespace p_sprite_loader { namespace parser {
+
+    // -----------------------------------------------------------------------
+    // typedefs
+
+    typedef types::Dimension2u                dim_type;
+
+    // ///////////////////////////////////////////////////////////////////////
+    // MaxDimensions - helper to keep track of the maximum dimensions
+
+    struct MaxDimensions
+    {
+      MaxDimensions()
+        : m_dim(0, 0)
+      { }
+
+      bool ModifyMaxDimension(dim_type a_dim)
+      {
+        bool dimChanged = false;
+
+        if (a_dim[0] > m_dim[0])
+        {
+          m_dim[0] = a_dim[0];
+          dimChanged = true;
+        }
+
+        if (a_dim[1] > m_dim[1])
+        {
+          m_dim[1] = a_dim[1];
+          dimChanged = true;
+        }
+
+        return dimChanged;
+      }
+
+      dim_type m_dim;
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     // SpriteSheetPacker
@@ -68,6 +105,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       SpriteSheetPacker::
       Parse(const core_str::String& a_input,
+            const Dimension2u a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       typedef core_conts::Array<core_str::String>   string_array;
@@ -79,6 +117,8 @@ namespace tloc { namespace graphics { namespace media {
       string_array::iterator itrEnd = allLines.end();
 
       string_array eachLine;
+
+      MaxDimensions maxDim;
 
       while (itr != itrEnd)
       {
@@ -95,10 +135,22 @@ namespace tloc { namespace graphics { namespace media {
         si.m_dimensions[0]   = atoi(eachLine[4].c_str());
         si.m_dimensions[1]   = atoi(eachLine[5].c_str());
 
+        dim_type dim(core_ds::Variadic2u32
+          (si.m_startingPos[0] + si.m_dimensions[0],
+           si.m_startingPos[1] + si.m_dimensions[1]) );
+        maxDim.ModifyMaxDimension(dim);
+
         a_out.push_back(si);
 
         ++itr;
       }
+
+      // Image can be larger than what we can find from the sprite data due to
+      // padding, but it cannot be smaller
+      TLOC_UNUSED(a_imgDim);
+      TLOC_ASSERT( (maxDim.m_dim[0] <= a_imgDim[0] &&
+                    maxDim.m_dim[1] <= a_imgDim[1]),
+                  "Sprite dimensions are larger than image dimensions");
 
       return ErrorSuccess;
     }
@@ -180,6 +232,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       TexturePacker::
       Parse(const core_str::String& a_input,
+            const Dimension2u a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       using namespace rapidxml;
@@ -196,6 +249,16 @@ namespace tloc { namespace graphics { namespace media {
       if (!textureAtlasNode ||
           core_str::StrCmp(textureAtlasNode->name(), "TextureAtlas") != 0)
       { return TLOC_ERROR(gfx_err::error_unsupported_sprite_sheet_format); }
+
+      xml_attribute<>* widthAttr = textureAtlasNode->first_attribute("width");
+      xml_attribute<>* heightAttr = textureAtlasNode->first_attribute("height");
+
+      TLOC_UNUSED_3(widthAttr, heightAttr, a_imgDim); // to avoid warnings in Release
+      TLOC_ASSERT(
+        core_utils::CastNumber<Dimension2u::value_type>(atoi(widthAttr->value()))
+        == a_imgDim[0] &&
+        core_utils::CastNumber<Dimension2u::value_type>(atoi(heightAttr->value()))
+        == a_imgDim[1], "Image dimensions don't match that of sprite sheet");
 
       xml_node<>* nextSpriteNode = textureAtlasNode->first_node("sprite");
       while (nextSpriteNode)
@@ -243,6 +306,7 @@ namespace tloc { namespace graphics { namespace media {
   SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     SpriteLoader_T()
     : m_flags(k_count)
+    , m_imageDimensions(0, 0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -262,8 +326,12 @@ namespace tloc { namespace graphics { namespace media {
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     Init(const string_type& a_fileContents, dim_type a_imageDimensions)
   {
+    m_imageDimensions = a_imageDimensions;
+
     m_spriteInfo.clear();
-    error_type err = parser_type().Parse(a_fileContents, m_spriteInfo);
+    error_type err =
+      parser_type().Parse(a_fileContents, m_imageDimensions, m_spriteInfo);
+
     if (err == ErrorSuccess)
     {
       using math::range_s32;
@@ -271,8 +339,8 @@ namespace tloc { namespace graphics { namespace media {
 
       typedef math_utils::scale_f32_s32     range_type;
 
-      range_s32 spriteRangeX(0, a_imageDimensions[gfx_t::dimension::width]);
-      range_s32 spriteRangeY(0, a_imageDimensions[gfx_t::dimension::height]);
+      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width]);
+      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height]);
 
       range_f32 texRange(0.0f, 1.0f);
 
@@ -331,13 +399,21 @@ namespace tloc { namespace graphics { namespace media {
 
   struct nameMatch
   {
-    nameMatch(const char* a_name)
+    nameMatch(BufferArg a_name)
       : m_name (a_name)
     { }
 
     bool operator()(const SpriteInfo& a_si)
     {
-      if (a_si.m_name.find(m_name) != core_str::String::npos)
+      typedef SpriteInfo::string_type::size_type      size_type;
+
+      const size_type siNameLength = a_si.m_name.length();
+      const size_type compNameLength = core_str::StrLen(m_name);
+
+      if (siNameLength < compNameLength)
+      { return false; }
+
+      if (a_si.m_name.compare(0, compNameLength, m_name) == 0)
       {
         return true;
       }

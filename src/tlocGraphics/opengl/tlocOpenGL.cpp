@@ -6,6 +6,8 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 
+#include <tlocGraphics/opengl/tlocError.h>
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_get
@@ -63,8 +65,9 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::tl_array<GLint>::type   gl_int_array;
 
     GLint         g_maxTextureUnits = -1;
-    GLint         g_currentTextureUnit = 0;
+    GLint         g_currentActiveTextureUnit = 0;
     gl_int_array  g_availableTextureUnits;
+    gl_int_array  g_usedTextureUnits;
 
     void DoSetMaxTextureUnits()
     {
@@ -72,56 +75,109 @@ namespace tloc { namespace graphics { namespace gl {
 
       // Prepare our array
       g_availableTextureUnits.reserve(g_maxTextureUnits);
-      for (int i = 0; i < g_maxTextureUnits; ++i)
+
+      // Fill it backwards so that the first available texture unit is
+      // GL_TEXTURE0
+      for (int i = g_maxTextureUnits - 1; i >= 0; --i)
       {
         g_availableTextureUnits.push_back(GL_TEXTURE0 + i);
       }
     }
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Texture image unit functions
+  // For clarification on Texture image units and Texture units:
+  // http://www.opengl.org/wiki/Sampler_(GLSL)
+
   GLint
-    GetActiveTextureUnit()
-  { return g_currentTextureUnit; }
+    GetActiveTextureImageUnit()
+  { return g_currentActiveTextureUnit; }
 
   core_err::Error
-    ActivateNextAvailableTextureUnit()
+    GetNextAvailableTextureImageUnit(GLint& a_texImgUnitOut)
   {
     if (g_maxTextureUnits != -1)
     {
       if (g_maxTextureUnits == 0)
       { return TLOC_ERROR(error::error_no_texture_units_available); }
 
-      ++g_currentTextureUnit;
-      if (g_currentTextureUnit < g_maxTextureUnits)
-      {
-        glActiveTexture( g_availableTextureUnits[g_currentTextureUnit] );
-        return ErrorSuccess;
-      }
-      else
+      // You will want to disable some textures to get back texture units
+      if (g_availableTextureUnits.size() == 0)
       { return TLOC_ERROR(error::error_texture_unit_limit_reached); }
+
+      g_availableTextureUnits.pop_back(a_texImgUnitOut);
+      g_usedTextureUnits.push_back(a_texImgUnitOut);
+
+      TLOC_ASSERT(IsValidTextureImageUnit(a_texImgUnitOut),
+        "Unable to get a correct texture unit");
+
+      return ErrorSuccess;
     }
 
     DoSetMaxTextureUnits();
-    return ActivateNextAvailableTextureUnit();
+    return GetNextAvailableTextureImageUnit(a_texImgUnitOut);
   }
 
   void
-    ActivateTextureUnit(GLint a_texUnit)
+    RecycleTextureImageUnit(GLint a_texImgUnit)
+  {
+    TLOC_ASSERT_LOW_LEVEL(IsValidTextureImageUnit(a_texImgUnit), "Invalid texture unit");
+
+    gl_int_array::iterator itr =
+      core::find_all(g_usedTextureUnits, a_texImgUnit);
+
+    TLOC_ASSERT(itr != g_usedTextureUnits.end(),
+      "Texture unit was not used and cannot be recycled");
+
+    g_availableTextureUnits.push_back(*itr);
+    g_usedTextureUnits.erase(itr);
+  }
+
+  void
+    ActivateTextureImageUnit(GLint a_texImgUnit)
   {
     if (g_maxTextureUnits != -1)
     {
-      TLOC_ASSERT_LOW_LEVEL(a_texUnit < g_maxTextureUnits,
-        "Exceeded maximum texture units available");
-      glActiveTexture(a_texUnit);
+      TLOC_ASSERT_LOW_LEVEL(IsValidTextureImageUnit(a_texImgUnit), "Invalid texture unit");
+
+      if (g_currentActiveTextureUnit != a_texImgUnit)
+      {
+        g_currentActiveTextureUnit = a_texImgUnit;
+        glActiveTexture(a_texImgUnit);
+
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glActiveTexture() failed");
+      }
       return;
     }
 
     DoSetMaxTextureUnits();
-    ActivateTextureUnit(a_texUnit);
+    ActivateTextureImageUnit(a_texImgUnit);
   }
 
-  void
-    ResetTextureUnits()
-  { g_currentTextureUnit = 0; }
+  bool
+    IsValidTextureImageUnit(GLint a_texImgUnit)
+  {
+    return a_texImgUnit >= GL_TEXTURE0 &&
+           a_texImgUnit < GL_TEXTURE0 + g_maxTextureUnits;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Texture Unit functions
+
+  bool
+    IsValidTextureUnit(GLint a_texUnit)
+  {
+    return a_texUnit < g_maxTextureUnits;
+  }
+
+  GLint
+    GetTextureUnitFromTextureImageUnit(GLint a_texImgUnit)
+  {
+    TLOC_ASSERT(IsValidTextureImageUnit(a_texImgUnit), "Invalid texture image unit");
+
+    return a_texImgUnit - GL_TEXTURE0;
+  }
 
 };};};

@@ -54,8 +54,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (shader_op_cont, GetShaderOperators, m_shaderOperators);
 
-    void SetVertexSource(const string_type& a_source);
-    void SetFragmentSource(const string_type& a_source);
+    void SetVertexSource(BufferArg a_source);
+    void SetFragmentSource(BufferArg a_source);
     void SetShaderProgram(const shader_prog_ptr& a_sp);
 
   private:

@@ -3,14 +3,14 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocCore/types/tlocBasicTypes.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
   class Error
   {
   public:
-    typedef GLenum      value_type;
+    typedef s32                 value_type; // GLenum
 
   public:
     bool Succeeded();

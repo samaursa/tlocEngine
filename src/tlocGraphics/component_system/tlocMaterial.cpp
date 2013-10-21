@@ -47,14 +47,14 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   void Material::
-    SetVertexSource(const string_type& a_source)
+    SetVertexSource(BufferArg a_source)
   {
     m_vertexProgram = a_source;
     SetUpdateRequired(true);
   }
 
   void Material::
-    SetFragmentSource(const string_type& a_source)
+    SetFragmentSource(BufferArg a_source)
   {
     m_fragmentProgram = a_source;
     SetUpdateRequired(true);

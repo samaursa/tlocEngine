@@ -80,10 +80,19 @@ namespace tloc { namespace graphics { namespace gl {
     return toRet;
   }
 
-  GLint                GetActiveTextureUnit();
-  core_err::Error      ActivateNextAvailableTextureUnit();
-  void                 ActivateTextureUnit(GLint a_texUnit);
-  void                 ResetTextureUnits();
+  // Texture image units start from GL_TEXTURE0 and go all the way to
+  // GL_TEXTURE0 + max_units - 1
+  GLint                GetActiveTextureImageUnit();
+  core_err::Error      GetNextAvailableTextureImageUnit(GLint& a_texImgUnitOut);
+  void                 RecycleTextureImageUnit(GLint a_texImgUnit);
+  void                 ActivateTextureImageUnit(GLint a_texImgUnit);
+  bool                 IsValidTextureImageUnit(GLint a_texImgUnit);
+
+  // Texture units start from 0 to max_units - 1
+  bool                 IsValidTextureUnit(GLint a_texUnit);
+  GLint                GetTextureUnitFromTextureImageUnit(GLint a_texImgUnit);
+
+
 
 };};};
 

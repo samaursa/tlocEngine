@@ -4,6 +4,7 @@
 
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocMath/tlocRange.h>
 #include <tlocMath/utilities/tlocScale.h>
@@ -398,13 +399,21 @@ namespace tloc { namespace graphics { namespace media {
 
   struct nameMatch
   {
-    nameMatch(const char* a_name)
+    nameMatch(BufferArg a_name)
       : m_name (a_name)
     { }
 
     bool operator()(const SpriteInfo& a_si)
     {
-      if (a_si.m_name.find(m_name) != core_str::String::npos)
+      typedef SpriteInfo::string_type::size_type      size_type;
+
+      const size_type siNameLength = a_si.m_name.length();
+      const size_type compNameLength = core_str::StrLen(m_name);
+
+      if (siNameLength < compNameLength)
+      { return false; }
+
+      if (a_si.m_name.compare(0, compNameLength, m_name) == 0)
       {
         return true;
       }

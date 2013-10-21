@@ -15,7 +15,9 @@ namespace tloc { namespace graphics { namespace media {
 
   struct SpriteInfo
   {
-    core_str::String      m_name;
+    typedef core_str::String      string_type;
+
+    string_type           m_name;
     core_ds::Tuple2s32    m_startingPos;
     core_ds::Tuple2s32    m_dimensions;
 

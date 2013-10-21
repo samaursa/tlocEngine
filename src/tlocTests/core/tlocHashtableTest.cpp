@@ -9,6 +9,8 @@
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocList.inl.h>
 
+#include <tlocCore/string/tlocString.h>
+
 #include <tlocCore/tlocFunctional.h>
 
 #include <tlocCore/containers/tlocHashtable.h>
@@ -35,10 +37,10 @@ namespace TestingHashtable
     typedef DoublyList<e_type, true>::type  doubly_type;
     typedef Array<e_type>                   array_type;
 
-    template <typename T_HashT, typename T_Key, bool T_CacheHash, bool T_Unique>
+    template <typename T_HashT, typename T_Key, bool T_CacheHash, bool T_Unique, typename T_Hasher = hash<T_Key> >
     struct HT
     {
-      typedef HashtablePolicy<T_Key, use_self<T_Key>, hash<T_Key>,
+      typedef HashtablePolicy<T_Key, use_self<T_Key>, T_Hasher,
         hash_to_range_mod, range_hash_default, equal_to<T_Key>,
         prime_rehash_policy, T_HashT, T_CacheHash, T_Unique> type;
     };
@@ -584,4 +586,115 @@ namespace TestingHashtable
       CHECK( *itr == int2);
     }
   }
+
+  // -----------------------------------------------------------------------
+  // string hash test (note that the engine currently does not have a built-in
+  // hasher for const char*, so we will use the following one, courtesy of
+  // https://sites.google.com/site/murmurhash/
+
+  unsigned int MurmurHash2 ( const void * key, int len, unsigned int seed )
+  {
+    // 'm' and 'r' are mixing constants generated offline.
+    // They're not really 'magic', they just happen to work well.
+
+    const unsigned int m = 0x5bd1e995;
+    const int r = 24;
+
+    // Initialize the hash to a 'random' value
+
+    unsigned int h = seed ^ len;
+
+    // Mix 4 bytes at a time into the hash
+
+    const unsigned char * data = (const unsigned char *)key;
+
+    while(len >= 4)
+    {
+      unsigned int k = *(unsigned int *)data;
+
+      k *= m;
+      k ^= k >> r;
+      k *= m;
+
+      h *= m;
+      h ^= k;
+
+      data += 4;
+      len -= 4;
+    }
+
+    // Handle the last few bytes of the input array
+
+    switch(len)
+    {
+    case 3: h ^= data[2] << 16;
+    case 2: h ^= data[1] << 8;
+    case 1: h ^= data[0];
+      h *= m;
+    };
+
+    // Do a few final mixes of the hash to ensure the last few
+    // bytes are well-incorporated.
+
+    h ^= h >> 13;
+    h *= m;
+    h ^= h >> 15;
+
+    return h;
+  }
+
+  struct StringHash
+  {
+    tl_size
+      operator()(const char* a_value) const
+    { return static_cast<tl_size>( MurmurHash2(a_value, core_str::StrLen(a_value), 35)); }
+  };
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with const char*", "")
+  {
+    using core::containers::Hashtable;
+
+    typedef HashtableElement<const char*>       void_elem_type;
+    typedef DoublyList<void_elem_type>::type    bucket_type;
+    typedef DoublyList<bucket_type>::type       bucket_holder_type;
+
+    typedef HashtableFixture::HT
+      <
+        bucket_holder_type, const char*, false, false, StringHash
+      >::type doubly_nohash_nounique;
+
+    typedef Hashtable<doubly_nohash_nounique> ht_type;
+    typedef ht_type::iterator                 ht_itr_type;
+
+    ht_type stringTable;
+
+    const char* str1 = "This";
+    const char* str2 = "is";
+    const char* str3 = "absolutely";
+    const char* str4 = "great";
+
+    stringTable.insert(str1);
+    stringTable.insert(str2);
+
+    CHECK(stringTable.find(str3) == stringTable.end());
+    CHECK(stringTable.find(str4) == stringTable.end());
+    CHECK(stringTable.find(str1) != stringTable.end());
+    CHECK(stringTable.find(str2) != stringTable.end());
+
+    CHECK(stringTable.size() == 2);
+
+    {
+      ht_itr_type itr = stringTable.find(str1);
+      CHECK( *itr == str1);
+    }
+
+    {
+      ht_itr_type itr = stringTable.find(str2);
+      CHECK( *itr == str2);
+    }
+
+    CHECK(stringTable.erase(str1) == 1);
+    CHECK(stringTable.size() == 1);
+  }
+
 };

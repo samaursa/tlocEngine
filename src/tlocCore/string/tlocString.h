@@ -6,6 +6,8 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
+#include <tlocCore/tlocFunctional.h>
+
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Strings
 
@@ -525,6 +527,96 @@ namespace tloc { namespace core {
   template <typename T>
   void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
   { a.swap(b); }
+
+  // -----------------------------------------------------------------------
+  // binary functions for strings
+
+  template <>
+  struct equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  template <>
+  struct not_equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  template <>
+  struct greater<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  template <>
+  struct less<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  template <>
+  struct greater_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  template <>
+  struct less_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
+
+  // -----------------------------------------------------------------------
+  // same as above, for char32
+
+  template <>
+  struct equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  template <>
+  struct not_equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  template <>
+  struct greater<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  template <>
+  struct less<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  template <>
+  struct greater_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  template <>
+  struct less_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
 
 };};
 

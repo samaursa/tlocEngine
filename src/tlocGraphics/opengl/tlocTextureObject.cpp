@@ -152,6 +152,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
+    // We do NOT need the original image because glTexImage2D copies the image
     Bind();
     glTexImage2D(m_params.GetTextureType(), 0, GL_RGBA,
       core_utils::CastNumber<GLsizei, size_type>(a_image.GetWidth()),

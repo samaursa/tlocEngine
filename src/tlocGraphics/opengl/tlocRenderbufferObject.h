@@ -16,7 +16,8 @@ namespace tloc { namespace graphics { namespace gl {
       typedef s32             value_type;
 
       struct RGBA4              { static const value_type s_glParamName; };
-      struct RGB565_A1          { static const value_type s_glParamName; };
+      struct RGB565             { static const value_type s_glParamName; };
+      struct RGB5_A1            { static const value_type s_glParamName; };
       struct DepthComponent16   { static const value_type s_glParamName; };
       struct StencilIndex8      { static const value_type s_glParamName; };
     };
@@ -50,7 +51,7 @@ namespace tloc { namespace graphics { namespace gl {
         using namespace p_renderbuffer_object::internal_format;
 
         tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
-          RGBA4, RGB565_A1, DepthComponent16, StencilIndex8>();
+          RGBA4, RGB565, RGB5_A1, DepthComponent16, StencilIndex8>();
 
         m_formatType = T_InternalFormat::s_glEnumValue;
         return *this;

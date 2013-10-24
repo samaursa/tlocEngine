@@ -5,6 +5,18 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  namespace p_renderbuffer_object {
+    namespace internal_format {
+
+      const value_type RGBA4::s_glParamName = GL_RGBA4;
+      const value_type RGB565::s_glParamName = GL_RGB565;
+      const value_type RGB5_A1::s_glParamName = GL_RGB5_A1;
+      const value_type DepthComponent16::s_glParamName = GL_DEPTH_COMPONENT16;
+      const value_type StencilIndex8::s_glParamName = GL_STENCIL_INDEX8;
+
+    };
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // RenderbufferObject
 

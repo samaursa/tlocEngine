@@ -8,6 +8,41 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  namespace p_framebuffer_object {
+
+    namespace target {
+      const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER;
+      const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER;
+    };
+
+    namespace attachment {
+
+      const value_type  MaxColorAttachments::s_glParamName = GL_MAX_COLOR_ATTACHMENTS;
+
+      const value_type  ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
+      const value_type  ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT1;
+      const value_type  ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT2;
+      const value_type  ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT3;
+      const value_type  ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT4;
+      const value_type  ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT5;
+      const value_type  ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT6;
+      const value_type  ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT7;
+      const value_type  ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT8;
+      const value_type  ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT9;
+      const value_type  ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT10;
+      const value_type  ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT11;
+      const value_type  ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT12;
+      const value_type  ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT13;
+      const value_type  ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT14;
+      const value_type  ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT15;
+
+      const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
+      const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
+      const value_type  DepthStencil::s_glParamName = GL_DEPTH_STENCIL_ATTACHMENT;
+    };
+
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // Bind
 

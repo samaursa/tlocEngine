@@ -25,10 +25,11 @@ namespace tloc { namespace graphics { namespace gl {
     bool IsValid();
 
     TLOC_DECL_AND_DEF_GETTER(object_handle, GetHandle, m_handle);
-    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   protected:
     ObjectBase();
+
+    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   private:
     object_handle m_handle;

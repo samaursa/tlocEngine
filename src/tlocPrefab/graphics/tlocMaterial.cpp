@@ -1,5 +1,7 @@
 #include "tlocMaterial.h"
 
+#include <tlocCore/io/tlocFileIO.h>
+
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace prefab { namespace graphics {

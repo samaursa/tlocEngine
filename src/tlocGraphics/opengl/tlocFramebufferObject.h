@@ -1,7 +1,6 @@
 #ifndef _TLOC_GRAPHICS_GL_FRAMEBUFFER_OBJECT_H_
 #define _TLOC_GRAPHICS_GL_FRAMEBUFFER_OBJECT_H_
 
-#include <tlocCore/tloc_core.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -25,13 +24,17 @@ namespace tloc { namespace graphics { namespace gl {
     {
       Bind(const FramebufferObject& a_fbo);
       ~Bind();
-
-    }; friend struct Bind;
+    };
 
   public:
     FramebufferObject();
     ~FramebufferObject();
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(FramebufferObject, framebuffer_object);
 
 };};};
 

@@ -16,6 +16,9 @@ namespace tloc { namespace graphics { namespace gl {
   {
     object_handle handle = a_fbo.GetHandle();
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
+
+    TLOC_ASSERT(gl::Error().Succeeded(),
+      "OpenGL: Error with glRenderbufferStorage");
   }
 
   FramebufferObject::Bind::
@@ -46,5 +49,11 @@ namespace tloc { namespace graphics { namespace gl {
       glDeleteFramebuffers(1, &handle);
     }
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FramebufferObject);
+
 
 };};};

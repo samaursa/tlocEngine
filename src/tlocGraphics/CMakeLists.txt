@@ -109,10 +109,14 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocAttribute.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
+  opengl/tlocFramebufferObject.h
+  opengl/tlocFramebufferObject.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
+  opengl/tlocRenderbufferObject.h
+  opengl/tlocRenderbufferObject.cpp
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 

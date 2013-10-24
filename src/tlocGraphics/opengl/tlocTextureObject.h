@@ -68,7 +68,7 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   class TextureObject
-    : public Object_T<TextureObject, p_object::WithError>
+    : public Object_T<TextureObject, p_object::OnlyID>
   {
   public:
     struct Params
@@ -184,7 +184,8 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef Object_T<TextureObject, p_object::WithError>  base_type;
+    typedef TextureObject                                 this_type;
+    typedef Object_T<this_type, p_object::OnlyID>         base_type;
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
     typedef s32                                           texture_image_unit_type;

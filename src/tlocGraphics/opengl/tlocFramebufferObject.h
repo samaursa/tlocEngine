@@ -50,13 +50,22 @@ namespace tloc { namespace graphics { namespace gl {
     : public Object_T<FramebufferObject, p_object::OnlyID>
   {
   public:
-    typedef FramebufferObject                               this_type;
-    typedef Object_T<this_type, p_object::OnlyID>           base_type;
-    typedef base_type::object_handle                        object_handle;
-    typedef base_type::error_type                           error_type;
+    typedef FramebufferObject                             this_type;
+    typedef Object_T<this_type, p_object::OnlyID>         base_type;
+    typedef base_type::object_handle                      object_handle;
+    typedef base_type::error_type                         error_type;
 
-    typedef RenderbufferObject                              rbo_type;
-    typedef TextureObject                                   to_type;
+    typedef RenderbufferObject                            rbo_type;
+    typedef TextureObject                                 to_type;
+
+    typedef core_conts::Array<rbo_type>                   rbo_cont;
+    typedef core_conts::Array<to_type>                    to_cont;
+
+    typedef rbo_cont::iterator                            rbo_cont_iterator;
+    typedef rbo_cont::const_iterator                      rbo_cont_const_iterator;
+    typedef to_cont::iterator                             to_cont_iterator;
+    typedef to_cont::const_iterator                       to_cont_const_iterator;
+
 
   public:
     struct Bind
@@ -72,16 +81,32 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_Target, typename T_Attachment,
               typename T_RenderOrTexturebuffer>
     error_type Attach(T_Target a_targe, T_Attachment a_attachment,
-                T_RenderOrTexturebuffer  a_bufferObject);
+                      const T_RenderOrTexturebuffer& a_bufferObject);
+
+    template <typename T_RenderOrTexturebuffer>
+    error_type Detach(const T_RenderOrTexturebuffer& a_bufferObject);
+
+    TLOC_DECL_AND_DEF_GETTER(rbo_cont_const_iterator, begin_renderbufferObjects,
+                             m_renderbufferObjects.begin());
+    TLOC_DECL_AND_DEF_GETTER(rbo_cont_const_iterator, end_renderbufferObjects,
+                             m_renderbufferObjects.end());
+    TLOC_DECL_AND_DEF_GETTER(to_cont_const_iterator, begin_textureObjects,
+                             m_textureObjets.begin());
+    TLOC_DECL_AND_DEF_GETTER(to_cont_const_iterator, end_textureObjects,
+                             m_textureObjets.end());
 
   private:
     error_type DoAttach(p_framebuffer_object::target::value_type a_target,
                         p_framebuffer_object::attachment::value_type a_attachment,
-                        rbo_type  a_rbo);
+                        const rbo_type& a_rbo);
 
     error_type DoAttach(p_framebuffer_object::target::value_type a_target,
                         p_framebuffer_object::attachment::value_type a_attachment,
-                        to_type  a_rbo);
+                        const to_type& a_to);
+
+  private:
+    rbo_cont  m_renderbufferObjects;
+    to_cont   m_textureObjets;
   };
 
   // -----------------------------------------------------------------------
@@ -92,7 +117,7 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::error_type
     FramebufferObject::
     Attach(T_Target a_targe, T_Attachment a_attachment,
-           T_RenderOrTexturebuffer a_bufferObject)
+           const T_RenderOrTexturebuffer& a_bufferObject)
   {
     // -----------------------------------------------------------------------
     // Sanity checks
@@ -116,8 +141,8 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // Internal attach method
 
-    DoAttach(T_Target::s_glParamName, T_Attachment::s_glParamName,
-             a_bufferObject);
+    return DoAttach(T_Target::s_glParamName, T_Attachment::s_glParamName,
+                    a_bufferObject);
   }
 
   // -----------------------------------------------------------------------

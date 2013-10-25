@@ -85,6 +85,40 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::error_type
+    FramebufferObject::
+    DoAttach(p_framebuffer_object::target::value_type a_target,
+             p_framebuffer_object::attachment::value_type a_attachment,
+             const rbo_type& a_rbo)
+  {
+    Bind b(*this);
+    glFramebufferRenderbuffer(a_target, a_attachment, GL_RENDERBUFFER,
+                              a_rbo.GetHandle());
+
+    m_renderbufferObjects.push_back(a_rbo);
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::error_type
+    FramebufferObject::
+    DoAttach(p_framebuffer_object::target::value_type a_target,
+             p_framebuffer_object::attachment::value_type a_attachment,
+             const to_type& a_to)
+  {
+    Bind b(*this);
+    glFramebufferTexture2D(a_target, a_attachment,
+      a_to.GetParams().GetTextureType(), a_to.GetHandle(), 0);
+
+    m_textureObjets.push_back(a_to);
+
+    return ErrorSuccess;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // Explicit instantiations
 

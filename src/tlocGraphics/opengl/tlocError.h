@@ -21,7 +21,8 @@ namespace tloc { namespace graphics { namespace gl {
     void       GetLastErrorAsString(T_String& a_out);
 
   private:
-    value_type m_lastError;
+    value_type          m_lastError;
+    static const char*  s_lastErrorDesc;
   };
 
 };};};

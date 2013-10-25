@@ -3,7 +3,6 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl.h>
 
 namespace TestingBufferPtr
 {
@@ -18,8 +17,13 @@ namespace TestingBufferPtr
       BufferArg buffPtr(someBuff);
       CHECK(buffPtr.IsValid() == true);
 
-      const char* implicitConversion = buffPtr;
-      CHECK(StrCmp(implicitConversion, buffPtr) == 0);
+      const char8* implicitConversion = buffPtr;
+      CHECK(core_mem::StrCmp(implicitConversion, buffPtr) == 0);
+
+      // Added this test because the normal StrCmp function is not selected
+      // because implicit type conversion is not allowed in templated functions
+      BufferArg buffPtr2(someBuff);
+      CHECK(core_mem::StrCmp(buffPtr, buffPtr2) == 0);
     }
 
     {

@@ -7,6 +7,7 @@
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 #include <tlocGraphics/types/tlocColor.h>
@@ -267,6 +268,10 @@ namespace tloc { namespace graphics { namespace renderer {
   typedef Renderer_T<f32>               Renderer;
   typedef Renderer_T<f32>               Renderer_depth32;
   typedef Renderer_T<f64>               Renderer_depth64;
+
+  TLOC_TYPEDEF_SHARED_PTR(Renderer, renderer);
+  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth32, renderer_depth32);
+  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth64, renderer_depth64);
 
 };};};
 

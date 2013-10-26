@@ -1,5 +1,7 @@
 #include "tlocRenderer.h"
+
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace graphics { namespace renderer {
 
@@ -70,5 +72,11 @@ namespace tloc { namespace graphics { namespace renderer {
     DoDestroy()
   { return ErrorSuccess; }
 
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer);
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
 
 };};};

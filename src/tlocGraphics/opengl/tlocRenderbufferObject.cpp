@@ -1,7 +1,7 @@
 #include "tlocRenderbufferObject.h"
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -21,6 +21,12 @@ namespace tloc { namespace graphics { namespace gl {
   // RenderbufferObject
 
   RenderbufferObject::Bind::
+    Bind()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RenderbufferObject::Bind::
     Bind(const RenderbufferObject& a_rbo)
   {
     object_handle handle = a_rbo.GetHandle();
@@ -29,6 +35,8 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glRenderbufferStorage");
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RenderbufferObject::Bind::
     ~Bind()

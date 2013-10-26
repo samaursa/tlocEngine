@@ -115,6 +115,7 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
+  opengl/tlocOpenGLIncludes.h
   opengl/tlocRenderbufferObject.h
   opengl/tlocRenderbufferObject.cpp
   opengl/tlocShader.cpp 

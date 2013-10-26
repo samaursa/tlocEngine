@@ -10,6 +10,7 @@
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 

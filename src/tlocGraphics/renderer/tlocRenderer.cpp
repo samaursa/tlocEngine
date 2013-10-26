@@ -6,92 +6,69 @@ namespace tloc { namespace graphics { namespace renderer {
   //------------------------------------------------------------------------
   // Template Macros
 
-#define RENDERER_BASE_TEMP    typename T_Derived
-#define RENDERER_BASE_PARAMS  T_Derived
-#define RENDERER_BASE_TYPE    typename RendererBase<RENDERER_BASE_PARAMS>
-
-#define RENDERER_TEMP   typename T_Platform
-#define RENDERER_PARAMS T_Platform
+#define RENDERER_TEMPS  typename T_DepthPrecision
+#define RENDERER_PARAMS T_DepthPrecision
 #define RENDERER_TYPE   typename Renderer_T<RENDERER_PARAMS>
 
-  namespace
-  {
-    enum flags
-    {
-      initialized = 0,
-      count
-    };
-  };
+  // ///////////////////////////////////////////////////////////////////////
+  // Renderer_T<>Params
 
-  //------------------------------------------------------------------------
-  // RenderBase
-
-  template <RENDERER_BASE_TEMP>
-  RendererBase<RENDERER_BASE_PARAMS>::RendererBase() : m_flags(count)
+  template <RENDERER_TEMPS>
+  Renderer_T<RENDERER_TEMPS>::Params::
+    Params()
   {
-    TLOC_ASSERT(GetCurrentObjectCount() <= 1,
-                "More than one renderer simultaneously is not supported!");
+    using namespace p_renderer::depth_function;
+    using namespace p_renderer::blend_function;
+    using namespace p_renderer::enable;
   }
 
-  template <RENDERER_BASE_TEMP>
-  RENDERER_BASE_TYPE::error_type
-    RendererBase<RENDERER_BASE_PARAMS>::Initialize()
-  {
-    return static_cast<derived_type*>(this)->DoInitialize();
-  }
+  // ///////////////////////////////////////////////////////////////////////
+  // Renderer_T<>
 
-  template <RENDERER_BASE_TEMP>
-  bool RendererBase<RENDERER_BASE_PARAMS>::IsInitialized()
-  {
-    return GetCurrentObjectCount() > 0;
-  }
+  template <RENDERER_TEMPS>
+  Renderer_T<RENDERER_PARAMS>::
+    Renderer_T(const Params& a_params)
+    : m_params(a_params)
+  { }
 
-  //------------------------------------------------------------------------
-  // Renderer - Generic Implementation
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <RENDERER_TEMP>
+  template <RENDERER_TEMPS>
   RENDERER_TYPE::error_type
-    Renderer_T<RENDERER_PARAMS>::DoInitialize()
+    Renderer_T<RENDERER_PARAMS>::
+    Start() const
   {
-    m_flags.Mark(initialized);
-    return ErrorSuccess;
+    TLOC_ASSERT(IsInitialized(), "Renderer not initialized");
+    // enable FBO
+    m_fboBinder = FramebufferObject::Bind(m_params.FBO());
   }
 
-};};};
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-//------------------------------------------------------------------------
-// Renderer - Windows Implementation
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-# include <tlocGraphics/opengl/tlocOpenGLExt.h>
-
-namespace tloc { namespace graphics { namespace renderer {
-
-#define RENDERER_WIN_TEMP
-#define RENDERER_WIN_PARAMS core::Platform_win
-#define RENDERER_WIN_TYPE   Renderer_T<RENDERER_WIN_PARAMS>
-
-  RENDERER_WIN_TYPE::error_type
-    Renderer_T<RENDERER_WIN_PARAMS>::DoInitialize()
+  template <RENDERER_TEMPS>
+  RENDERER_TYPE::error_type
+    Renderer_T<RENDERER_PARAMS>::
+    End() const
   {
-    if (m_flags[initialized] == false)
-    {
-      error_type res = gl::OpenGLExt::Initialize();
-      if (res != common_error_types::error_initialize)
-      { return res; }
-
-      m_flags.Mark(initialized);
-      return TLOC_ERROR(common_error_types::error_success);
-    }
-
-    return TLOC_ERROR(common_error_types::error_already_initialized);
+    TLOC_ASSERT(IsInitialized(), "Renderer not initialized");
+    m_fboBinder = FramebufferObject::Bind();
   }
 
-};};};
-#endif
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-//------------------------------------------------------------------------
-// Explicitly Instantiate Renderer
+  template <RENDERER_TEMPS>
+  RENDERER_TYPE::error_type
+    Renderer_T<RENDERER_PARAMS>::
+    DoInitialize()
+  { return ErrorSuccess; }
 
-namespace tloc { namespace graphics { namespace renderer {
-  template class RendererBase<Renderer_T<> >;
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  RENDERER_TYPE::error_type
+    Renderer_T<RENDERER_PARAMS>::
+    DoDestroy()
+  { return ErrorSuccess; }
+
+
 };};};

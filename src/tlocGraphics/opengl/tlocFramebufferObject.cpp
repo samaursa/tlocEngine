@@ -3,6 +3,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -47,14 +48,22 @@ namespace tloc { namespace graphics { namespace gl {
   // Bind
 
   FramebufferObject::Bind::
+    Bind()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::Bind::
     Bind(const FramebufferObject& a_fbo)
   {
     object_handle handle = a_fbo.GetHandle();
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
-      "OpenGL: Error with glRenderbufferStorage");
+      "OpenGL: Error with glBindFramebuffer");
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FramebufferObject::Bind::
     ~Bind()
@@ -76,13 +85,46 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FramebufferObject::
+    FramebufferObject(p_framebuffer_object::Default)
+  {
+    SetHandle(0);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::
     ~FramebufferObject()
   {
-    if (IsLastRef())
+    if (IsLastRef() && GetHandle() != 0)
     {
       object_handle handle = GetHandle();
       glDeleteFramebuffers(1, &handle);
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::this_type&
+    FramebufferObject::GetDefaultFramebuffer()
+  {
+    static FramebufferObject g_defaultFBO =
+      FramebufferObject(p_framebuffer_object::Default());
+
+    static bool checkFramebufferStatus = true;
+
+    // Check the status of the Framebuffer once to ensure that there is indeed
+    // a default Framebuffer with an ID of 0
+    if (checkFramebufferStatus)
+    {
+      gfx_t::gl_enum res = glCheckFramebufferStatus(g_defaultFBO.GetHandle());
+      TLOC_UNUSED(res);
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+        "Default Framebuffer doesn't appear to complete "
+        "(or there may be no default Framebuffer in the first place)");
+      checkFramebufferStatus = false;
+    }
+
+    return g_defaultFBO;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -111,8 +153,23 @@ namespace tloc { namespace graphics { namespace gl {
              const to_type& a_to)
   {
     Bind b(*this);
-    glFramebufferTexture2D(a_target, a_attachment,
-      a_to.GetParams().GetTextureType(), a_to.GetHandle(), 0);
+
+    const to_type::Params& toParams = a_to.GetParams();
+
+    if (toParams.GetTextureType() == p_texture_object::target::Tex1D::s_glParamName)
+    {
+      glFramebufferTexture1D(a_target, a_attachment,
+                             toParams.GetTextureType(), a_to.GetHandle(), 0);
+    }
+    else if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
+    {
+      glFramebufferTexture2D(a_target, a_attachment,
+                             toParams.GetTextureType(), a_to.GetHandle(), 0);
+    }
+    else // if (toParams.GetTextureType() == p_texture_object::target::Tex3D::s_glParamName)
+    {
+      TLOC_ASSERT_WIP();
+    }
 
     m_textureObjets.push_back(a_to);
 

@@ -8,7 +8,7 @@
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
@@ -16,7 +16,6 @@
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
-
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -213,7 +212,7 @@ namespace tloc { namespace graphics { namespace component_system {
       so_quad->EnableAllAttributes(*m_shaderPtr);
 
       glDrawArrays(GL_TRIANGLE_STRIP, 0,
-                   core_utils::CastNumber<GLsizei, tl_size>(numVertices));
+                   core_utils::CastNumber<gfx_t::gl_sizei, tl_size>(numVertices));
     }
   }
 

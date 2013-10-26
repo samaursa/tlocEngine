@@ -135,6 +135,31 @@ namespace tloc { namespace graphics { namespace gl {
     string_type m_error;
   };
 
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace find {
+
+    namespace object {
+
+      struct ByHandle
+      {
+        typedef ObjectBase::object_handle         object_handle;
+
+        ByHandle(object_handle  a_handleToSearch)
+          : m_handleToSearch(a_handleToSearch)
+        { }
+
+        bool operator()(const ObjectBase& a_object)
+        { return m_handleToSearch == a_object.GetHandle(); }
+
+      private:
+        object_handle m_handleToSearch;
+      };
+    };
+
+  };};
+
 };};};
 
 #endif

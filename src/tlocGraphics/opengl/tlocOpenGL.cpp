@@ -2,13 +2,76 @@
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
-
-#include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/platform/tlocPlatform.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/error/tlocErrorTypes.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+# include <tlocGraphics/opengl/tlocOpenGLExt.h>
+#endif // TLOC_WIN32
 
 namespace tloc { namespace graphics { namespace gl {
+
+  // -----------------------------------------------------------------------
+  // common typedefs
+
+  typedef core_err::Error           error_type;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // InitializePlatform
+
+  namespace {
+
+    static bool g_platformInitialized = false;
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Platform>
+    core_err::Error
+      DoInitializePlatform(T_Platform)
+    { return ErrorSuccess; }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    // DoInitializePlatform() - Windows Implementation
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+    core_err::Error
+      DoInitializePlatform(core::Platform_win)
+    {
+      if (g_platformInitialized == false)
+      {
+        error_type res = gl::OpenGLExt::Initialize();
+        if (res != common_error_types::error_initialize)
+        { return res; }
+
+        g_platformInitialized = true;
+        return TLOC_ERROR(common_error_types::error_success);
+      }
+
+      return TLOC_ERROR(common_error_types::error_already_initialized);
+    }
+#endif
+
+  };
+
+  core_err::Error
+    InitializePlatform()
+  {
+    core_err::Error err =
+      DoInitializePlatform(core::PlatformInfo<>::platform_type());
+    if (err.Succeeded())
+    {
+      g_platformInitialized = true;
+      return ErrorSuccess;
+    }
+    else
+    { return err; }
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // OpenGL get functions
 
   namespace p_get
   {

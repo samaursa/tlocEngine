@@ -41,6 +41,8 @@ namespace tloc { namespace graphics { namespace gl {
       struct Stencil              { static const value_type s_glParamName; };
       struct DepthStencil         { static const value_type s_glParamName; };
     };
+
+    struct Default { };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -66,10 +68,10 @@ namespace tloc { namespace graphics { namespace gl {
     typedef to_cont::iterator                             to_cont_iterator;
     typedef to_cont::const_iterator                       to_cont_const_iterator;
 
-
   public:
     struct Bind
     {
+      Bind();
       Bind(const FramebufferObject& a_fbo);
       ~Bind();
     };
@@ -86,14 +88,12 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_RenderOrTexturebuffer>
     error_type Detach(const T_RenderOrTexturebuffer& a_bufferObject);
 
-    TLOC_DECL_AND_DEF_GETTER(rbo_cont_const_iterator, begin_renderbufferObjects,
-                             m_renderbufferObjects.begin());
-    TLOC_DECL_AND_DEF_GETTER(rbo_cont_const_iterator, end_renderbufferObjects,
-                             m_renderbufferObjects.end());
-    TLOC_DECL_AND_DEF_GETTER(to_cont_const_iterator, begin_textureObjects,
-                             m_textureObjets.begin());
-    TLOC_DECL_AND_DEF_GETTER(to_cont_const_iterator, end_textureObjects,
-                             m_textureObjets.end());
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (rbo_cont, GetRenderBufferObjects, m_renderbufferObjects);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (to_cont, GetTextureobjects, m_textureObjets);
+
+    static this_type& GetDefaultFramebuffer();
 
   private:
     error_type DoAttach(p_framebuffer_object::target::value_type a_target,
@@ -104,9 +104,15 @@ namespace tloc { namespace graphics { namespace gl {
                         p_framebuffer_object::attachment::value_type a_attachment,
                         const to_type& a_to);
 
+    // This constructor is temporary until we have a better solution on how
+    // to deal with the inconsistent behavior of default framebuffers across
+    // various platforms
+    FramebufferObject(p_framebuffer_object::Default);
+
   private:
     rbo_cont  m_renderbufferObjects;
     to_cont   m_textureObjets;
+    bool      m_defaultFBO;
   };
 
   // -----------------------------------------------------------------------

@@ -77,7 +77,7 @@ namespace tloc { namespace core { namespace memory {
   // Added these overloaded functions because implicit template type conversion
   // is not allowed for template functions
 
-  tl_size StrLen(BufferArg a_charBuff)
+  TL_I tl_size StrLen(BufferArg a_charBuff)
   { return core_str::StrLen(a_charBuff.GetPtr()); }
 
   template <typename T_Char>
@@ -88,7 +88,7 @@ namespace tloc { namespace core { namespace memory {
   tl_int StrCmp(BufferArg a_charBuff, const T_Char* a_ptr)
   { return core_str::StrCmp(a_charBuff.GetPtr(), a_ptr); }
 
-  tl_int StrCmp(BufferArg a_charBuff1, BufferArg a_charBuff2)
+  TL_I tl_int StrCmp(BufferArg a_charBuff1, BufferArg a_charBuff2)
   { return core_str::StrCmp(a_charBuff1.GetPtr(), a_charBuff2.GetPtr()); }
 
 };};};

@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace memory {
     BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
     GetPtr() const
   {
-    TLOC_ASSERT_NULL(m_end); // if m_end is not NULL, then GetPtr() is undefined
+    TLOC_ASSERT(m_end == TLOC_NULL || *m_end == '\0', "BufferArg::m_end is not NULL nor is it '\0'"); // if m_end is not NULL, then GetPtr() is undefined
     return m_buffer;
   }
 

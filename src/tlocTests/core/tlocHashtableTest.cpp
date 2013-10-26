@@ -646,7 +646,7 @@ namespace TestingHashtable
   struct StringHash
   {
     tl_size
-      operator()(const char* a_value) const
+      operator()(const char8* a_value) const
     { return static_cast<tl_size>( MurmurHash2(a_value, core_str::StrLen(a_value), 35)); }
   };
 
@@ -654,13 +654,13 @@ namespace TestingHashtable
   {
     using core::containers::Hashtable;
 
-    typedef HashtableElement<const char*>       void_elem_type;
+    typedef HashtableElement<const char8*>       void_elem_type;
     typedef DoublyList<void_elem_type>::type    bucket_type;
     typedef DoublyList<bucket_type>::type       bucket_holder_type;
 
     typedef HashtableFixture::HT
       <
-        bucket_holder_type, const char*, false, false, StringHash
+        bucket_holder_type, const char8*, false, false, StringHash
       >::type doubly_nohash_nounique;
 
     typedef Hashtable<doubly_nohash_nounique> ht_type;
@@ -668,10 +668,10 @@ namespace TestingHashtable
 
     ht_type stringTable;
 
-    const char* str1 = "This";
-    const char* str2 = "is";
-    const char* str3 = "absolutely";
-    const char* str4 = "great";
+    const char8* str1 = "This";
+    const char8* str2 = "is";
+    const char8* str3 = "absolutely";
+    const char8* str4 = "great";
 
     stringTable.insert(str1);
     stringTable.insert(str2);

@@ -12,7 +12,7 @@ namespace tloc { namespace core { namespace memory {
   /// @brief Meant to be used only as a function argument.
   ///-------------------------------------------------------------------------
   template <typename T_Char = char8>
-  class BufferArg
+  class BufferArg_T
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_Char, char8>::value ||
@@ -33,10 +33,10 @@ namespace tloc { namespace core { namespace memory {
     /// Assumes a_buffer is NULL terminated. Call IsValid() to check if
     /// it is.
     ///-------------------------------------------------------------------------
-    BufferArg(const char_type* a_buffer);
-    BufferArg(const char_type* a_buffer, size_type a_end);
+    BufferArg_T(const char_type* a_buffer);
+    BufferArg_T(const char_type* a_buffer, size_type a_end);
 
-    BufferArg(const string_type& a_string);
+    BufferArg_T(const string_type& a_string);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -68,8 +68,30 @@ namespace tloc { namespace core { namespace memory {
 
 namespace tloc
 {
-  typedef core::memory::BufferArg<>       BufferArg;
-  typedef core::memory::BufferArg<char32> BufferArgW;
+  typedef core::memory::BufferArg_T<>       BufferArg;
+  typedef core::memory::BufferArg_T<char32> BufferArgW;
 };
+
+namespace tloc { namespace core { namespace memory {
+
+  // Added these overloaded functions because implicit template type conversion
+  // is not allowed for template functions
+
+  tl_size StrLen(BufferArg a_charBuff)
+  { return core_str::StrLen(a_charBuff.GetPtr()); }
+
+  template <typename T_Char>
+  tl_int StrCmp(const T_Char* a_ptr, BufferArg a_charBuff)
+  { return core_str::StrCmp(a_ptr, a_charBuff.GetPtr()); }
+
+  template <typename T_Char>
+  tl_int StrCmp(BufferArg a_charBuff, const T_Char* a_ptr)
+  { return core_str::StrCmp(a_charBuff.GetPtr(), a_ptr); }
+
+  tl_int StrCmp(BufferArg a_charBuff1, BufferArg a_charBuff2)
+  { return core_str::StrCmp(a_charBuff1.GetPtr(), a_charBuff2.GetPtr()); }
+
+};};};
+
 
 #endif

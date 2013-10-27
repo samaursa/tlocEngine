@@ -2,6 +2,7 @@
 
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
@@ -94,14 +95,6 @@ namespace tloc { namespace graphics { namespace renderer {
 
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
-    RenderOneFrame()
-    : m_renderer(nullptr)
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
     RenderOneFrame(const this_type* a_renderer)
     : m_renderer(a_renderer)
   {
@@ -113,40 +106,10 @@ namespace tloc { namespace graphics { namespace renderer {
 
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
-    RenderOneFrame(const RenderOneFrame& a_other)
-    : m_renderer(a_other.m_renderer)
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
     ~RenderOneFrame()
   {
-    if (m_renderer)
-    { m_renderer->DoEnd(); }
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <RENDERER_TEMPS>
-  RENDERER_TYPE::RenderOneFrame&
-    Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
-    operator=(RenderOneFrame a_other)
-  {
-    swap(a_other);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <RENDERER_TEMPS>
-  void
-    Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
-    swap(RenderOneFrame& a_other)
-  {
-    using core::swap;
-    swap(m_renderer, a_other.m_renderer);
+    TLOC_ASSERT_NOT_NULL(m_renderer);
+    m_renderer->DoEnd();
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -165,7 +128,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(m_params.m_fbo);
+    fbo_type::Bind b(&m_params.m_fbo);
 
     math_t::Vec4f32 col = m_params.m_clearColor.GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
@@ -211,8 +174,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    //m_fboBinder = fbo_type::Bind(m_params.m_fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_params.m_fbo.GetHandle());
+    m_fboBinder.reset(new fbo_type::Bind(&m_params.m_fbo));
 
     return ErrorSuccess;
   }
@@ -224,9 +186,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     DoEnd() const
   {
-    //m_fboBinder = gfx_gl::FramebufferObject::Bind();
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_fboBinder.reset();
 
     return ErrorSuccess;
   }
@@ -259,5 +219,9 @@ namespace tloc { namespace graphics { namespace renderer {
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
+
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer::RenderOneFrame);
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);
 
 };};};

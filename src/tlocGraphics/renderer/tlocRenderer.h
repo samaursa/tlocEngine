@@ -8,6 +8,8 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 #include <tlocGraphics/types/tlocColor.h>
@@ -216,19 +218,15 @@ namespace tloc { namespace graphics { namespace renderer {
 
   public:
     struct RenderOneFrame
+      : core::NonCopyable
     {
-      RenderOneFrame();
       explicit RenderOneFrame(const this_type* a_renderer);
-      RenderOneFrame(const RenderOneFrame& a_other);
       ~RenderOneFrame();
-
-      RenderOneFrame& operator=(RenderOneFrame a_other);
-
-      void swap(RenderOneFrame& a_other);
 
     private:
       const this_type* m_renderer;
     }; friend struct RenderOneFrame;
+    TLOC_TYPEDEF_UNIQUE_PTR(RenderOneFrame, render_one_frame);
 
   public:
     Renderer_T(const Params& a_params);
@@ -238,13 +236,13 @@ namespace tloc { namespace graphics { namespace renderer {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
 
-  //private:
+  private:
     error_type  DoStart() const;
     error_type  DoEnd() const;
 
   private:
-    Params                    m_params;
-    mutable fbo_type::Bind    m_fboBinder;
+    Params                      m_params;
+    mutable fbo_type::bind_uptr m_fboBinder;
   };
 
   // -----------------------------------------------------------------------

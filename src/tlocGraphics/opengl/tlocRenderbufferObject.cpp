@@ -1,5 +1,8 @@
 #include "tlocRenderbufferObject.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
@@ -21,15 +24,9 @@ namespace tloc { namespace graphics { namespace gl {
   // RenderbufferObject
 
   RenderbufferObject::Bind::
-    Bind()
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  RenderbufferObject::Bind::
-    Bind(const RenderbufferObject& a_rbo)
+    Bind(const RenderbufferObject* a_rbo)
   {
-    object_handle handle = a_rbo.GetHandle();
+    object_handle handle = a_rbo->GetHandle();
     glBindRenderbuffer(GL_RENDERBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
@@ -70,7 +67,7 @@ namespace tloc { namespace graphics { namespace gl {
     RenderbufferObject::
     Initialize()
   {
-    Bind b(*this);
+    Bind b(this);
     glRenderbufferStorage(GL_RENDERBUFFER, m_params.GetFormatType(),
       m_params.GetDimensions()[0], m_params.GetDimensions()[1]);
 
@@ -79,5 +76,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     return ErrorSuccess;
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);
 
 };};};

@@ -1,6 +1,7 @@
 #include "tlocFramebufferObject.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -48,16 +49,10 @@ namespace tloc { namespace graphics { namespace gl {
   // Bind
 
   FramebufferObject::Bind::
-    Bind()
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  FramebufferObject::Bind::
-    Bind(const FramebufferObject& a_fbo)
+    Bind(const FramebufferObject* a_fbo)
   {
-    object_handle handle = a_fbo.GetHandle();
-    glBindFramebuffer(GL_FRAMEBUFFER, handle);
+    object_handle handle = a_fbo->GetHandle();
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -68,7 +63,7 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -124,7 +119,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
 
-      FramebufferObject::Bind(g_defaultFBO);
+      FramebufferObject::Bind b(g_defaultFBO);
       gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
@@ -144,7 +139,7 @@ namespace tloc { namespace graphics { namespace gl {
              p_framebuffer_object::attachment::value_type a_attachment,
              const rbo_type& a_rbo)
   {
-    Bind b(*this);
+    Bind b(this);
     TLOC_ASSERT(a_rbo.GetHandle() >= 0, "Invalid object ID for Renderbuffer");
     glFramebufferRenderbuffer(a_target, a_attachment, GL_RENDERBUFFER,
                               a_rbo.GetHandle());
@@ -166,7 +161,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_to.IsActive(),
       "TextureObject is NOT active - did you forget to call Activate()?");
 
-    Bind b(*this);
+    Bind b(this);
 
     const to_type::Params& toParams = a_to.GetParams();
 
@@ -202,6 +197,6 @@ namespace tloc { namespace graphics { namespace gl {
   // Explicit instantiations
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FramebufferObject);
-
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::Bind);
 
 };};};

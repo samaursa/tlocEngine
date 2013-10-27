@@ -10,6 +10,7 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -53,6 +54,7 @@ namespace tloc { namespace core { namespace component_system {
 
   class Entity
     : public p_entity::Entity_I<core_cfg::BuildConfig::build_config_type>
+    , public core::NonCopyable
   {
   public:
     friend class EntityManager;

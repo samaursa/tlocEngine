@@ -72,7 +72,7 @@ namespace tloc { namespace graphics { namespace gl {
     struct Bind
     {
       Bind();
-      Bind(const FramebufferObject& a_fbo);
+      explicit Bind(const FramebufferObject& a_fbo);
       ~Bind();
     };
 

@@ -103,6 +103,8 @@ namespace tloc { namespace graphics { namespace renderer {
       struct OneMinusDestinationColor { static const value_type s_glParamName; };
       struct SourceAlpha              { static const value_type s_glParamName; };
       struct OneMinusSourceAlpha      { static const value_type s_glParamName; };
+      struct DestinationAlpha         { static const value_type s_glParamName; };
+      struct OneMinusDestinationAlpha { static const value_type s_glParamName; };
       struct ConstantColor            { static const value_type s_glParamName; };
       struct OneMinusConstantColor    { static const value_type s_glParamName; };
       struct ConstantAlpha            { static const value_type s_glParamName; };
@@ -125,6 +127,16 @@ namespace tloc { namespace graphics { namespace renderer {
       struct PolygonSmooth            { static const value_type s_glParamName; };
     };
 
+    namespace clear
+    {
+      typedef s32                     value_type;
+
+      struct ColorBufferBit           { static const value_type s_glParamName; };
+      struct DepthBufferBit           { static const value_type s_glParamName; };
+      struct StencilBufferBit         { static const value_type s_glParamName; };
+
+    };
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -132,19 +144,20 @@ namespace tloc { namespace graphics { namespace renderer {
 
   template <typename T_DepthPrecision = f32>
   class Renderer_T
-    : core_bclass::InitializeAndDestroyOnce_TI<Renderer_T<T_DepthPrecision> >
   {
   public:
-    typedef Renderer_T<T_DepthPrecision>                          this_type;
-    typedef core_bclass::InitializeAndDestroyOnce_TI<this_type>   base_type;
+    typedef Renderer_T<T_DepthPrecision>              this_type;
 
     typedef gfx_t::Color                              color_type;
     typedef p_renderer::depth_function::value_type    depth_function_value_type;
     typedef p_renderer::blend_function::value_type    blend_function_value_type;
     typedef p_renderer::enable::value_type            enable_value_type;
+    typedef p_renderer::clear::value_type             clear_value_type;
 
     typedef core_conts::tl_array
             <enable_value_type>::type                 enable_cont;
+    typedef core_conts::tl_array
+            <clear_value_type>::type                  clear_cont;
 
     typedef T_DepthPrecision                          depth_value_type;
     typedef s32                                       stencil_value_type;
@@ -166,12 +179,17 @@ namespace tloc { namespace graphics { namespace renderer {
       template <typename T_Enable>
       this_type& Enable();
 
+      template <typename T_ClearValue>
+      this_type& Clear();
+
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
       TLOC_DECL_AND_DEF_GETTER
         (blend_function_value_type, GetBlendFunction, m_blendFunction);
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
         (enable_cont, GetFeaturesToEnable, m_enableFeatures);
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+        (clear_cont, GetClearBits, m_clearBits);
 
       TLOC_DECL_PARAM_VAR(color_type, ClearColor, m_clearColor);
       TLOC_DECL_PARAM_VAR(fbo_type, FBO, m_fbo);
@@ -180,22 +198,27 @@ namespace tloc { namespace graphics { namespace renderer {
       depth_function_value_type   m_depthFunction;
       blend_function_value_type   m_blendFunction;
       enable_cont                 m_enableFeatures;
+      clear_cont                  m_clearBits;
     };
+
+  public:
+    struct RenderOneFrame
+    {
+      RenderOneFrame();
+      explicit RenderOneFrame(this_type& a_renderer);
+      ~RenderOneFrame();
+
+      this_type& m_renderer;
+    }; friend struct RenderOneFrame;
 
   public:
     Renderer_T(const Params& a_params);
 
-    error_type  Start() const;
-    error_type  End() const;
-
-    using base_type::Initialize;
-    using base_type::IsInitialized;
-    using base_type::Destroy;
-    using base_type::IsDestroyed;
+    error_type ApplyRenderSettings() const;
 
   private:
-    error_type  DoInitialize();
-    error_type  DoDestroy();
+    error_type  DoStart() const;
+    error_type  DoEnd() const;
 
   private:
     Params                    m_params;
@@ -236,7 +259,8 @@ namespace tloc { namespace graphics { namespace renderer {
       <T_BlendFunction,
       Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
       OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
-      ConstantColor, OneMinusConstantColor, ConstantAlpha,
+      DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
+      OneMinusConstantColor, ConstantAlpha,
       OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
       OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
 
@@ -259,6 +283,24 @@ namespace tloc { namespace graphics { namespace renderer {
       Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
 
     m_enableFeatures.push_back(T_Enable::s_glParamName);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
+  template <typename T_ClearValue>
+  typename Renderer_T<T_DepthPrecision>::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    Clear()
+  {
+    using namespace p_renderer::clear;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_ClearValue,
+       ColorBufferBit, DepthBufferBit, StencilBufferBit>();
+
+    m_clearBits.push_back(T_ClearValue::s_glParamName);
     return *this;
   }
 

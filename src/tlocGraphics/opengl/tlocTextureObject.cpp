@@ -4,6 +4,7 @@
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -14,38 +15,38 @@ namespace tloc { namespace graphics { namespace gl {
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
 
-      const enum_type Tex1D::s_glParamName = GL_TEXTURE_1D;
-      const enum_type Tex2D::s_glParamName = GL_TEXTURE_2D;
-      const enum_type Tex3D::s_glParamName = GL_TEXTURE_3D;
+      const value_type Tex1D::s_glParamName = GL_TEXTURE_1D;
+      const value_type Tex2D::s_glParamName = GL_TEXTURE_2D;
+      const value_type Tex3D::s_glParamName = GL_TEXTURE_3D;
 
-      const enum_type TexRectangle::s_glParamName     = GL_TEXTURE_RECTANGLE;
-      const enum_type TexCubeMap::s_glParamName       = GL_TEXTURE_CUBE_MAP;
-      const enum_type TexBuffer::s_glParamName        = GL_TEXTURE_BUFFER;
-      const enum_type Tex2DMultiSample::s_glParamName = GL_TEXTURE_2D_MULTISAMPLE;
+      const value_type TexRectangle::s_glParamName     = GL_TEXTURE_RECTANGLE;
+      const value_type TexCubeMap::s_glParamName       = GL_TEXTURE_CUBE_MAP;
+      const value_type TexBuffer::s_glParamName        = GL_TEXTURE_BUFFER;
+      const value_type Tex2DMultiSample::s_glParamName = GL_TEXTURE_2D_MULTISAMPLE;
 
-      const enum_type Tex1DArray::s_glParamName = GL_TEXTURE_1D_ARRAY;
-      const enum_type Tex2DArray::s_glParamName = GL_TEXTURE_2D_ARRAY;
-      const enum_type TexCubeMapArray::s_glParamName = GL_TEXTURE_CUBE_MAP_ARRAY;
-      const enum_type
+      const value_type Tex1DArray::s_glParamName = GL_TEXTURE_1D_ARRAY;
+      const value_type Tex2DArray::s_glParamName = GL_TEXTURE_2D_ARRAY;
+      const value_type TexCubeMapArray::s_glParamName = GL_TEXTURE_CUBE_MAP_ARRAY;
+      const value_type
         Tex2DMultiSampleArray::s_glParamName = GL_TEXTURE_2D_MULTISAMPLE_ARRAY;
 
 #elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
 
-      const enum_type Tex2D::s_glParamName      = GL_TEXTURE_2D;
-      const enum_type TexCubeMap::s_glParamName = GL_TEXTURE_CUBE_MAP;
+      const value_type Tex2D::s_glParamName      = GL_TEXTURE_2D;
+      const value_type TexCubeMap::s_glParamName = GL_TEXTURE_CUBE_MAP;
 
-      const enum_type Tex1D::s_glParamName = 0;
-      const enum_type Tex3D::s_glParamName = 0;
+      const value_type Tex1D::s_glParamName = 0;
+      const value_type Tex3D::s_glParamName = 0;
 
-      const enum_type TexRectangle::s_glParamName     = 0;
+      const value_type TexRectangle::s_glParamName     = 0;
 
-      const enum_type TexBuffer::s_glParamName        = 0;
-      const enum_type Tex2DMultiSample::s_glParamName = 0;
+      const value_type TexBuffer::s_glParamName        = 0;
+      const value_type Tex2DMultiSample::s_glParamName = 0;
 
-      const enum_type Tex1DArray::s_glParamName = 0;
-      const enum_type Tex2DArray::s_glParamName = 0;
-      const enum_type TexCubeMapArray::s_glParamName = 0;
-      const enum_type Tex2DMultiSampleArray::s_glParamName = 0;
+      const value_type Tex1DArray::s_glParamName = 0;
+      const value_type Tex2DArray::s_glParamName = 0;
+      const value_type TexCubeMapArray::s_glParamName = 0;
+      const value_type Tex2DMultiSampleArray::s_glParamName = 0;
 
 #else
 # error "WIP"
@@ -152,6 +153,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
+    // We do NOT need the original image because glTexImage2D copies the image
     Bind();
     glTexImage2D(m_params.GetTextureType(), 0, GL_RGBA,
       core_utils::CastNumber<GLsizei, size_type>(a_image.GetWidth()),

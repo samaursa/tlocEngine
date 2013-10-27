@@ -9,6 +9,7 @@
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -297,8 +298,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     glUseProgram(0);
 
-    gl::Error glErr;
-    if (glErr.Failed())
+    if (gl::Error().Failed())
     {
       return TLOC_ERROR(error::error_shader);
     }

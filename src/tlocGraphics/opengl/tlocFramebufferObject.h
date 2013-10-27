@@ -2,7 +2,9 @@
 #define _TLOC_GRAPHICS_GL_FRAMEBUFFER_OBJECT_H_
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocRenderbufferObject.h>
@@ -73,12 +75,12 @@ namespace tloc { namespace graphics { namespace gl {
     // RAII not implemented deliberately because the dtor is not exactly
     // destroying anything, just setting the framebuffer back to default.
     struct Bind
+      : public core::NonCopyable
     {
-      Bind();
-      Bind(const Bind& a_other);
-      explicit Bind(const FramebufferObject& a_fbo);
+      Bind(const FramebufferObject* a_fbo);
       ~Bind();
     };
+    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
 
   public:
     FramebufferObject();

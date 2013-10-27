@@ -134,4 +134,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(_type_)\
+  template class tloc::core_sptr::UniquePtr<_type_>;\
+  template class tloc::core_sptr::UniquePtr<const _type_>
+
 #endif

@@ -1,8 +1,9 @@
 #ifndef _TLOC_GRAPHICS_GL_RENDERBUFFER_OBJECT_H_
 #define _TLOC_GRAPHICS_GL_RENDERBUFFER_OBJECT_H_
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocGraphics/types/tlocDimension.h>
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -71,11 +72,12 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
     struct Bind
+      : public core::NonCopyable
     {
-      Bind();
-      explicit Bind(const RenderbufferObject& a_rbo);
+      explicit Bind(const RenderbufferObject* a_rbo);
       ~Bind();
     };
+    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
 
   public:
     typedef RenderbufferObject                              this_type;
@@ -97,6 +99,11 @@ namespace tloc { namespace graphics { namespace gl {
     Params        m_params;
 
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(RenderbufferObject, render_buffer_object);
 
 };};};
 

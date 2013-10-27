@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace gl {
     Bind(const FramebufferObject& a_fbo)
   {
     object_handle handle = a_fbo.GetHandle();
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, handle);
+    glBindFramebuffer(GL_FRAMEBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -68,7 +68,7 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -174,13 +174,19 @@ namespace tloc { namespace graphics { namespace gl {
     {
       glFramebufferTexture1D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
-      TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferTexture failed");
+
+      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      TLOC_UNUSED(res);
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE, "Incomplete Framebuffer");
     }
     else if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
     {
       glFramebufferTexture2D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
-      TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferTexture failed");
+
+      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      TLOC_UNUSED(res);
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE, "Incomplete Framebuffer");
     }
     else // if (toParams.GetTextureType() == p_texture_object::target::Tex3D::s_glParamName)
     {

@@ -1,7 +1,6 @@
 #ifndef _TLOC_GRAPHICS_GL_TEXTURE_OBJECT_H_
 #define _TLOC_GRAPHICS_GL_TEXTURE_OBJECT_H_
 
-#include <tlocCore/tloc_core.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -12,26 +11,22 @@ namespace tloc { namespace graphics { namespace gl {
   namespace p_texture_object {
     namespace target
     {
-      typedef s32 enum_type; // s32 because GLint is s32
+      typedef s32 value_type; // s32 because GLint is s32
 
-      struct Tex1D                 { static const enum_type s_glParamName; };
-      struct Tex2D                 { static const enum_type s_glParamName; };
-      struct Tex3D                 { static const enum_type s_glParamName; };
+      struct Tex1D                 { static const value_type s_glParamName; };
+      struct Tex2D                 { static const value_type s_glParamName; };
+      struct Tex3D                 { static const value_type s_glParamName; };
 
-      struct TexRectangle          { static const enum_type s_glParamName; };
-      struct TexCubeMap            { static const enum_type s_glParamName; };
-      struct TexBuffer             { static const enum_type s_glParamName; };
-      struct Tex2DMultiSample      { static const enum_type s_glParamName; };
+      struct TexRectangle          { static const value_type s_glParamName; };
+      struct TexCubeMap            { static const value_type s_glParamName; };
+      struct TexBuffer             { static const value_type s_glParamName; };
+      struct Tex2DMultiSample      { static const value_type s_glParamName; };
 
-      struct Tex1DArray            { static const enum_type s_glParamName; };
-      struct Tex2DArray            { static const enum_type s_glParamName; };
-      struct TexCubeMapArray       { static const enum_type s_glParamName; };
-      struct Tex2DMultiSampleArray { static const enum_type s_glParamName; };
+      struct Tex1DArray            { static const value_type s_glParamName; };
+      struct Tex2DArray            { static const value_type s_glParamName; };
+      struct TexCubeMapArray       { static const value_type s_glParamName; };
+      struct Tex2DMultiSampleArray { static const value_type s_glParamName; };
     };
-  };
-
-  namespace p_texture_object
-  {
     namespace wrap_technique
     {
       typedef s32         value_type;
@@ -68,13 +63,13 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   class TextureObject
-    : public Object_T<TextureObject, p_object::WithError>
+    : public Object_T<TextureObject, p_object::OnlyID>
   {
   public:
     struct Params
     {
       typedef Params                                          this_type;
-      typedef p_texture_object::target::enum_type             texture_type;
+      typedef p_texture_object::target::value_type            texture_type;
       typedef p_texture_object::wrap_technique::value_type    wrap_value_type;
       typedef p_texture_object::filter::value_type            filter_value_type;
 
@@ -161,16 +156,11 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      TLOC_DECL_AND_DEF_GETTER
-        (wrap_value_type, GetWrap_S, m_wrap_s);
-      TLOC_DECL_AND_DEF_GETTER
-        (wrap_value_type, GetWrap_T, m_wrap_t);
-      TLOC_DECL_AND_DEF_GETTER
-        (filter_value_type, GetMinFilter, m_minFilter);
-      TLOC_DECL_AND_DEF_GETTER
-        (filter_value_type, GetMagFilter, m_magFilter);
-      TLOC_DECL_AND_DEF_GETTER
-        (texture_type, GetTextureType, m_textureType);
+      TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_S, m_wrap_s);
+      TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_T, m_wrap_t);
+      TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
+      TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMagFilter, m_magFilter);
+      TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
 
     private:
       wrap_value_type       m_wrap_s;
@@ -184,11 +174,12 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef Object_T<TextureObject, p_object::WithError>  base_type;
+    typedef TextureObject                                 this_type;
+    typedef Object_T<this_type, p_object::OnlyID>         base_type;
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
     typedef s32                                           texture_image_unit_type;
-    typedef p_texture_object::target::enum_type           texture_type;
+    typedef p_texture_object::target::value_type           texture_type;
     typedef media::Image                                  image_type;
 
   public:

@@ -25,10 +25,11 @@ namespace tloc { namespace graphics { namespace gl {
     bool IsValid();
 
     TLOC_DECL_AND_DEF_GETTER(object_handle, GetHandle, m_handle);
-    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   protected:
     ObjectBase();
+
+    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   private:
     object_handle m_handle;
@@ -133,6 +134,31 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     string_type m_error;
   };
+
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace find {
+
+    namespace object {
+
+      struct ByHandle
+      {
+        typedef ObjectBase::object_handle         object_handle;
+
+        ByHandle(object_handle  a_handleToSearch)
+          : m_handleToSearch(a_handleToSearch)
+        { }
+
+        bool operator()(const ObjectBase& a_object)
+        { return m_handleToSearch == a_object.GetHandle(); }
+
+      private:
+        object_handle m_handleToSearch;
+      };
+    };
+
+  };};
 
 };};};
 

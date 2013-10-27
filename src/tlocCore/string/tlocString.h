@@ -378,6 +378,9 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2);
+  template <>
+  tl_int
+    StrCmp(const char8* a_ptr1, const char8* a_ptr2);
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
@@ -405,52 +408,52 @@ namespace tloc { namespace core { namespace string {
   void
     Tokenize(const T* a_string, const T* a_delims, T_StringContainer& a_out);
 
-  TL_I bool
+  bool
     IsCntrl(char8 a_char);
 
-  TL_I bool
+  bool
     IsBlank(char8 a_char);
 
-  TL_I bool
+  bool
     IsSpace(char8 a_char);
 
-  TL_I bool
+  bool
     IsUpper(char8 a_char);
 
-  TL_I bool
+  bool
     IsLower(char8 a_char);
 
-  TL_I bool
+  bool
     IsAlpha(char8 a_char);
 
-  TL_I bool
+  bool
     IsDigit(char8 a_char);
 
-  TL_I bool
+  bool
     IsNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsNegNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsNegRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsPosNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsPosRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsXDigit(char8 a_char);
 
-  TL_I bool
+  bool
     IsAlNum(char8 a_char);
 
-  TL_I bool
+  bool
     IsPunct(char8 a_char);
 
   //````````````````````````````````````````````````````````````````````````

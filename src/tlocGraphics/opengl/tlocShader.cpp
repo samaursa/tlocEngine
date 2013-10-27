@@ -4,7 +4,7 @@
 #include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 

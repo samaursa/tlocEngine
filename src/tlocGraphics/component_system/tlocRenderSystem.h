@@ -25,11 +25,13 @@ namespace tloc { namespace graphics { namespace component_system {
        Unsupported_renderer_Renderer_must_be_a_shared_ptr);
 
   public:
-    typedef core_cs::EntityProcessingSystem                   base_type;
+    typedef core_cs::EntityProcessingSystem               base_type;
     using base_type::component_type;
     using base_type::error_type;
 
-    typedef T_RendererSptr                                    renderer_sptr;
+    typedef T_RendererSptr                                renderer_type;
+    typedef typename
+            renderer_type::value_type::RenderOneFrame     render_one_frame;
 
     using base_type::event_manager;
     using base_type::entity_manager;
@@ -44,20 +46,23 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI(event_manager_sptr              a_eventMgr,
                     entity_manager_sptr             a_entityMgr,
                     const core_ds::Variadic
-                      <component_type, T_VarSize>&  a_typeFlags,
-                   renderer_sptr                    a_renderer);
+                      <component_type, T_VarSize>&  a_typeFlags);
 
     void         SetCamera(const entity_type* a_cameraEntity);
     virtual void Pre_ProcessActiveEntities(f64);
+    virtual void Post_ProcessActiveEntities(f64);
 
     TLOC_DECL_AND_DEF_GETTER(entity_type*, GetCamera, m_sharedCam);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (matrix_type, GetViewProjectionMatrix, m_vpMatrix);
+    TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
+    TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
 
   private:
-    const entity_type*  m_sharedCam;
-    renderer_sptr       m_renderer;
-    matrix_type         m_vpMatrix;
+    const entity_type*    m_sharedCam;
+    renderer_type         m_renderer;
+    render_one_frame      m_renderOneFrame;
+    matrix_type           m_vpMatrix;
 
   };
 
@@ -70,14 +75,11 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI(event_manager_sptr            a_eventMgr,
                    entity_manager_sptr            a_entityMgr,
                    const core_ds::Variadic
-                    <component_type, T_VarSize>&  a_typeFlags,
-                   renderer_sptr                  a_renderer)
+                    <component_type, T_VarSize>&  a_typeFlags)
     : base_type(a_eventMgr, a_entityMgr, a_typeFlags)
     , m_sharedCam(nullptr)
-    , m_renderer(a_renderer)
-  {
-    TLOC_ASSERT_NOT_NULL(m_renderer);
-  }
+    , m_renderer(nullptr)
+  { }
 
 };};};
 

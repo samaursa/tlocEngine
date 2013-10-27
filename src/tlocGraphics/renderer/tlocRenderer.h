@@ -116,7 +116,7 @@ namespace tloc { namespace graphics { namespace renderer {
       struct OneMinusSource1Alpha     { static const value_type s_glParamName; };
     };
 
-    namespace enable
+    namespace enable_disable
     {
       typedef s32                     value_type;
 
@@ -151,13 +151,16 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef gfx_t::Color                              color_type;
     typedef p_renderer::depth_function::value_type    depth_function_value_type;
     typedef p_renderer::blend_function::value_type    blend_function_value_type;
-    typedef p_renderer::enable::value_type            enable_value_type;
+    typedef p_renderer::enable_disable::value_type    enable_value_type;
+    typedef p_renderer::enable_disable::value_type    disable_value_type;
     typedef p_renderer::clear::value_type             clear_value_type;
+    typedef core::Pair<blend_function_value_type,
+                       blend_function_value_type>     blend_pair_type;
 
     typedef core_conts::tl_array
             <enable_value_type>::type                 enable_cont;
     typedef core_conts::tl_array
-            <clear_value_type>::type                  clear_cont;
+            <disable_value_type>::type                disable_cont;
 
     typedef T_DepthPrecision                          depth_value_type;
     typedef s32                                       stencil_value_type;
@@ -168,16 +171,23 @@ namespace tloc { namespace graphics { namespace renderer {
   public:
     struct Params
     {
+    public:
+      typedef Params                                  this_type;
+
+    public:
       Params();
 
       template <typename T_DepthFunction>
       this_type& DepthFunction();
 
-      template <typename T_BlendFunction>
+      template <typename T_Source, typename T_Destination>
       this_type& BlendFunction();
 
       template <typename T_Enable>
       this_type& Enable();
+
+      template <typename T_Disable>
+      this_type& Disable();
 
       template <typename T_ClearValue>
       this_type& Clear();
@@ -185,36 +195,48 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
       TLOC_DECL_AND_DEF_GETTER
-        (blend_function_value_type, GetBlendFunction, m_blendFunction);
+        (blend_pair_type, GetBlendFunction, m_blendFunction);
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
         (enable_cont, GetFeaturesToEnable, m_enableFeatures);
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-        (clear_cont, GetClearBits, m_clearBits);
+        (disable_cont, GetFeaturesToDisable, m_disableFeatures);
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+        (clear_value_type, GetClearBits, m_clearBits);
 
       TLOC_DECL_PARAM_VAR(color_type, ClearColor, m_clearColor);
       TLOC_DECL_PARAM_VAR(fbo_type, FBO, m_fbo);
 
     private:
       depth_function_value_type   m_depthFunction;
-      blend_function_value_type   m_blendFunction;
+      blend_pair_type             m_blendFunction;
       enable_cont                 m_enableFeatures;
-      clear_cont                  m_clearBits;
+      disable_cont                m_disableFeatures;
+      clear_value_type            m_clearBits;
     };
 
   public:
     struct RenderOneFrame
     {
       RenderOneFrame();
-      explicit RenderOneFrame(this_type& a_renderer);
+      explicit RenderOneFrame(const this_type* a_renderer);
+      RenderOneFrame(const RenderOneFrame& a_other);
       ~RenderOneFrame();
 
-      this_type& m_renderer;
+      RenderOneFrame& operator=(RenderOneFrame a_other);
+
+      void swap(RenderOneFrame& a_other);
+
+    private:
+      const this_type* m_renderer;
     }; friend struct RenderOneFrame;
 
   public:
     Renderer_T(const Params& a_params);
 
-    error_type ApplyRenderSettings() const;
+    error_type        ApplyRenderSettings() const;
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
+    TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
 
   private:
     error_type  DoStart() const;
@@ -222,15 +244,23 @@ namespace tloc { namespace graphics { namespace renderer {
 
   private:
     Params                    m_params;
-    fbo_type::Bind            m_fboBinder;
+    mutable fbo_type::Bind    m_fboBinder;
   };
+
+  // -----------------------------------------------------------------------
+  // swap
+
+  template <typename T_DepthPrecision>
+  void swap(typename Renderer_T<T_DepthPrecision>::RenderOneFrame& a,
+            typename Renderer_T<T_DepthPrecision>::RenderOneFrame& b)
+  { a.swap(b); }
 
   // -----------------------------------------------------------------------
   // template definitions
 
   template <typename T_DepthPrecision>
   template <typename T_DepthFunction>
-  typename Renderer_T<T_DepthPrecision>::this_type&
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
     DepthFunction()
   {
@@ -248,15 +278,15 @@ namespace tloc { namespace graphics { namespace renderer {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_DepthPrecision>
-  template <typename T_BlendFunction>
-  typename Renderer_T<T_DepthPrecision>::this_type&
+  template <typename T_Source, typename T_Destination>
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
     BlendFunction()
   {
     using namespace p_renderer::blend_function;
 
     tloc::type_traits::AssertTypeIsSupported
-      <T_BlendFunction,
+      <T_Source,
       Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
       OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
       DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
@@ -264,7 +294,17 @@ namespace tloc { namespace graphics { namespace renderer {
       OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
       OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
 
-    m_blendFunction = T_BlendFunction::s_glParamName;
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Destination,
+      Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
+      OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
+      DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
+      OneMinusConstantColor, ConstantAlpha,
+      OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
+      OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
+
+    m_blendFunction.first = T_Source::s_glParamName;
+    m_blendFunction.second = T_Destination::s_glParamName;
     return *this;
   }
 
@@ -272,16 +312,18 @@ namespace tloc { namespace graphics { namespace renderer {
 
   template <typename T_DepthPrecision>
   template <typename T_Enable>
-  typename Renderer_T<T_DepthPrecision>::this_type&
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
     Enable()
   {
-    using namespace p_renderer::enable;
+    using namespace p_renderer::enable_disable;
 
     tloc::type_traits::AssertTypeIsSupported
       <T_Enable,
       Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
 
+    TLOC_ASSERT(core::find_all(m_disableFeatures, T_Enable::s_glParamName) ==
+      m_disableFeatures.end(), "You are disabling then enabling the feature");
     m_enableFeatures.push_back(T_Enable::s_glParamName);
     return *this;
   }
@@ -289,8 +331,28 @@ namespace tloc { namespace graphics { namespace renderer {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_DepthPrecision>
+  template <typename T_Enable>
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    Disable()
+  {
+    using namespace p_renderer::enable_disable;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Enable,
+      Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
+
+    TLOC_ASSERT(core::find_all(m_enableFeatures, T_Enable::s_glParamName) ==
+      m_enableFeatures.end(), "You are enabling then disabling the feature");
+    m_disableFeatures.push_back(T_Enable::s_glParamName);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
   template <typename T_ClearValue>
-  typename Renderer_T<T_DepthPrecision>::this_type&
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
     Clear()
   {
@@ -300,7 +362,7 @@ namespace tloc { namespace graphics { namespace renderer {
       <T_ClearValue,
        ColorBufferBit, DepthBufferBit, StencilBufferBit>();
 
-    m_clearBits.push_back(T_ClearValue::s_glParamName);
+    m_clearBits |= T_ClearValue::s_glParamName;
     return *this;
   }
 
@@ -314,6 +376,11 @@ namespace tloc { namespace graphics { namespace renderer {
   TLOC_TYPEDEF_SHARED_PTR(Renderer, renderer);
   TLOC_TYPEDEF_SHARED_PTR(Renderer_depth32, renderer_depth32);
   TLOC_TYPEDEF_SHARED_PTR(Renderer_depth64, renderer_depth64);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // default renderer
+
+  renderer_sptr GetDefaultRenderer();
 
 };};};
 

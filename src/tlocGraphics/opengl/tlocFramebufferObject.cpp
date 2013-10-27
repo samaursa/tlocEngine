@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace gl {
     Bind(const FramebufferObject& a_fbo)
   {
     object_handle handle = a_fbo.GetHandle();
-    glBindFramebuffer(GL_FRAMEBUFFER, handle);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -68,7 +68,7 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -107,24 +107,26 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::this_type&
     FramebufferObject::GetDefaultFramebuffer()
   {
-    static FramebufferObject g_defaultFBO =
-      FramebufferObject(p_framebuffer_object::Default());
+    static FramebufferObject* g_defaultFBO;
 
-    static bool checkFramebufferStatus = true;
+    static bool createDefaultFBO = true;
 
     // Check the status of the Framebuffer once to ensure that there is indeed
     // a default Framebuffer with an ID of 0
-    if (checkFramebufferStatus)
+    if (createDefaultFBO)
     {
-      gfx_t::gl_enum res = glCheckFramebufferStatus(g_defaultFBO.GetHandle());
+      g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
+
+      FramebufferObject::Bind(g_defaultFBO);
+      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Default Framebuffer doesn't appear to complete "
         "(or there may be no default Framebuffer in the first place)");
-      checkFramebufferStatus = false;
+      createDefaultFBO = false;
     }
 
-    return g_defaultFBO;
+    return *g_defaultFBO;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

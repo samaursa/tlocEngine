@@ -4,6 +4,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/opengl/tlocError.h>
 
 namespace tloc { namespace graphics { namespace renderer {
 
@@ -45,6 +46,24 @@ namespace tloc { namespace graphics { namespace renderer {
       const value_type OneMinusSource1Alpha::s_glParamName      = GL_ONE_MINUS_SRC1_ALPHA;
     };
 
+    namespace enable_disable {
+
+      const value_type Blend::s_glParamName         = GL_BLEND;
+      const value_type DepthTest::s_glParamName     = GL_DEPTH_TEST;
+      const value_type CullFace::s_glParamName      = GL_CULL_FACE;
+      const value_type LineSmooth::s_glParamName    = GL_LINE_SMOOTH;
+      const value_type PolygonSmooth::s_glParamName = GL_POLYGON_SMOOTH;
+
+    };
+
+    namespace clear {
+
+      const value_type ColorBufferBit::s_glParamName   = GL_COLOR_BUFFER_BIT;
+      const value_type DepthBufferBit::s_glParamName   = GL_DEPTH_BUFFER_BIT;
+      const value_type StencilBufferBit::s_glParamName = GL_STENCIL_BUFFER_BIT;
+
+    };
+
   };
 
   //------------------------------------------------------------------------
@@ -60,10 +79,14 @@ namespace tloc { namespace graphics { namespace renderer {
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_TEMPS>::Params::
     Params()
+    : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
+    , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
+    , m_clearBits(0)
   {
-    using namespace p_renderer::depth_function;
-    using namespace p_renderer::blend_function;
-    using namespace p_renderer::enable;
+    using namespace p_renderer;
+
+    DepthFunction<depth_function::Less>();
+    BlendFunction<blend_function::One, blend_function::Zero>();
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -72,22 +95,59 @@ namespace tloc { namespace graphics { namespace renderer {
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
     RenderOneFrame()
+    : m_renderer(nullptr)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
-    RenderOneFrame(this_type& a_renderer)
+    RenderOneFrame(const this_type* a_renderer)
     : m_renderer(a_renderer)
-  { m_renderer.DoStart(); }
+  {
+    TLOC_ASSERT_NOT_NULL(m_renderer);
+    m_renderer->DoStart();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
+    RenderOneFrame(const RenderOneFrame& a_other)
+    : m_renderer(a_other.m_renderer)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDERER_TEMPS>
   Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
     ~RenderOneFrame()
-  { m_renderer.DoEnd(); }
+  {
+    if (m_renderer)
+    { m_renderer->DoEnd(); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  RENDERER_TYPE::RenderOneFrame&
+    Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
+    operator=(RenderOneFrame a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  void
+    Renderer_T<RENDERER_PARAMS>::RenderOneFrame::
+    swap(RenderOneFrame& a_other)
+  {
+    using core::swap;
+    swap(m_renderer, a_other.m_renderer);
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // Renderer_T<>
@@ -105,19 +165,38 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
+    math_t::Vec4f32 col = m_params.m_clearColor.GetAs
+      <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
+
+    glClearColor(col[0], col[1], col[2], col[3]);
     glDepthFunc(m_params.GetDepthFunction());
-    glBlendFunc(m_params.GetBlendFunction());
+    TLOC_ASSERT(gl::Error().Succeeded(), "glDepthFunc returned an error");
+    glBlendFunc(m_params.GetBlendFunction().first,
+                m_params.GetBlendFunction().second);
+    TLOC_ASSERT(gl::Error().Succeeded(), "glBlenFunc returned an error");
 
-    for (enable_cont::iterator itr = m_params.GetFeaturesToEnable().begin(),
+    for (enable_cont::const_iterator itr = m_params.GetFeaturesToEnable().begin(),
       itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)
-    { glEnable(*itr); }
+    {
+      glEnable(*itr);
+      TLOC_ASSERT(gl::Error().Succeeded(), "glEnable returned an error");
+    }
 
-    clear_value_type clearBits = 0;
-    for (clear_cont::iterator itr = m_params.GetClearBits().begin(),
-      itrEnd = m_params.GetClearBits().end();
-      itr != itrEnd; ++itr)
-    { clearBits |= *itr; }
-    glClear(clearBits);
+    for (enable_cont::const_iterator itr = m_params.GetFeaturesToDisable().begin(),
+      itrEnd = m_params.GetFeaturesToDisable().end(); itr != itrEnd; ++itr)
+    {
+      glDisable(*itr);
+      TLOC_ASSERT(gl::Error().Succeeded(), "glDisable returned an error");
+    }
+
+    clear_value_type clearBits = m_params.GetClearBits();
+    if (clearBits != -1)
+    {
+      glClear(m_params.GetClearBits());
+      TLOC_ASSERT(gl::Error().Succeeded(), "glClear returned an error");
+    }
+
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -127,9 +206,10 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     DoStart() const
   {
-    TLOC_ASSERT(IsInitialized(), "Renderer not initialized");
     // enable FBO
-    m_fboBinder = FramebufferObject::Bind(m_params.FBO());
+    m_fboBinder = fbo_type::Bind(m_params.m_fbo);
+
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -139,12 +219,35 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     DoEnd() const
   {
-    TLOC_ASSERT(IsInitialized(), "Renderer not initialized");
-    m_fboBinder = FramebufferObject::Bind();
+    m_fboBinder = gfx_gl::FramebufferObject::Bind();
+
+    return ErrorSuccess;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // default renderer
+
+  // Default params choose the default framebuffer
+  renderer_sptr g_defaultRenderer;
+
+  renderer_sptr
+    GetDefaultRenderer()
+  {
+    static bool constructDefaultRenderer = true;
+    if (constructDefaultRenderer)
+    {
+      g_defaultRenderer.reset(new Renderer(Renderer::Params()));
+      constructDefaultRenderer = false;
+    }
+
+    return g_defaultRenderer;
   }
 
   // -----------------------------------------------------------------------
   // explicit instantiation
+
+  template class Renderer_T<f32>;
+  template class Renderer_T<f64>;
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);

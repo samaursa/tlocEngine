@@ -33,7 +33,6 @@ namespace tloc { namespace graphics { namespace component_system {
     (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
-     , m_sharedCam(nullptr)
      , m_quadList(new vec3_cont_type(4))
   {
     m_vData.reset(new gl::Attribute());
@@ -57,18 +56,6 @@ namespace tloc { namespace graphics { namespace component_system {
     m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
-  void QuadRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
-  {
-    m_sharedCam = a_cameraEntity;
-
-    // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
-      "The passed entity is not a camera!");
-  }
-
-  error_type QuadRenderSystem::Pre_Initialize()
-  { return ErrorSuccess; }
-
   error_type QuadRenderSystem::InitializeEntity(const entity_manager*,
                                                 const entity_type*)
   { return ErrorSuccess; }
@@ -76,18 +63,6 @@ namespace tloc { namespace graphics { namespace component_system {
   error_type QuadRenderSystem::ShutdownEntity(const entity_manager*,
                                               const entity_type*)
   { return ErrorSuccess; }
-
-  void QuadRenderSystem::Pre_ProcessActiveEntities(f64)
-  {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
-    {
-      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
-    }
-    else
-    {
-      m_vpMatrix.MakeIdentity();
-    }
-  }
 
   void QuadRenderSystem::ProcessEntity(const entity_manager*,
                                        const entity_type* a_ent,
@@ -132,7 +107,7 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
-      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
+      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
 
       // Generate the mvp matrix
       m_uniVpMat->SetValueAs(tFinalMat);

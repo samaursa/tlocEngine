@@ -69,6 +69,9 @@ namespace tloc { namespace graphics { namespace gl {
     typedef to_cont::const_iterator                       to_cont_const_iterator;
 
   public:
+
+    // RAII not implemented deliberately because the dtor is not exactly
+    // destroying anything, just setting the framebuffer back to default.
     struct Bind
     {
       Bind();

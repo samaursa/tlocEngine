@@ -7,8 +7,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_I
 
-#define RENDER_SYSTEM_TEMPS   typename T_Renderer
-#define RENDER_SYSTEM_PARAMS  T_Renderer
+#define RENDER_SYSTEM_TEMPS   typename T_RendererSptr
+#define RENDER_SYSTEM_PARAMS  T_RendererSptr
 #define RENDER_SYSTEM_TYPE    typename RenderSystem_TI<RENDER_SYSTEM_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -38,6 +38,20 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       m_vpMatrix.MakeIdentity();
     }
+
+    TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
+    m_renderer->ApplyRenderSettings();
+    m_renderOneFrame = render_one_frame(m_renderer.get());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_ProcessActiveEntities( f64 )
+  {
+    TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
+    m_renderOneFrame = render_one_frame();
   }
 
   // -----------------------------------------------------------------------

@@ -200,6 +200,8 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr->Disable();
       m_shaderPtr.reset();
     }
+
+    base_type::Post_ProcessActiveEntities(f64());
   }
 
   //////////////////////////////////////////////////////////////////////////

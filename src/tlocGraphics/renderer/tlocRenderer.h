@@ -238,7 +238,7 @@ namespace tloc { namespace graphics { namespace renderer {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
 
-  private:
+  //private:
     error_type  DoStart() const;
     error_type  DoEnd() const;
 

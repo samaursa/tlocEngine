@@ -537,6 +537,8 @@ namespace tloc { namespace graphics { namespace gl {
             ? *a_uniform.GetValueAsShared<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
 
+          TLOC_ASSERT(m.IsActive(),
+            "TextureObject is NOT active - did you forget to call Activate()?");
           GLint texImgUnit = m.GetTextureImageUnit();
 
           ActivateTextureImageUnit(texImgUnit);

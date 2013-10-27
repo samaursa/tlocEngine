@@ -37,6 +37,7 @@ namespace TestingGLShaderObject
       {
         glObject temp = obj;
         CHECK(obj.use_count() == 1);
+        CHECK(temp.GetHandle() == 9);
         CHECK(glObject::m_destroyCount == 0);
       }
 

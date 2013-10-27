@@ -104,8 +104,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
                                    screenScale:screenScale
                                  retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
-                                  bitsPerDepth:a_settings.m_depthBits 
-                                bitsPerStencil:a_settings.m_stencilBits];
+                                  bitsPerDepth:a_settings.GetDepthBits() 
+                                bitsPerStencil:a_settings.GetStencilBits()];
     
     m_viewController = [[OpenGLViewController alloc] initWithWindow:this];
     

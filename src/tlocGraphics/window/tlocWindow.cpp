@@ -70,12 +70,11 @@ namespace tloc { namespace graphics { namespace win {
 
   template <WINDOW_TEMP>
   void Window_T<WINDOW_PARAMS>::Create(const graphics_mode& a_mode,
-                                     const WindowSettings& a_settings,
-                                     window_style_type a_style)
+                                     const WindowSettings& a_settings)
 
   {
     DoCreateImpl();
-    m_impl->Create(a_mode, a_settings, a_style);
+    m_impl->Create(a_mode, a_settings);
   }
 
   template <WINDOW_TEMP>

@@ -76,7 +76,7 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == false);
       win2.Create(graphics_mode
         (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
-        WindowSettings("Test"), WindowSettings::style_titlebar);
+        WindowSettings("Test").ClearStyles().AddStyle<p_window_settings::style::TitleBar>());
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == g_windowSizeX);
@@ -107,7 +107,7 @@ namespace TestingWindow
     }
   }
 
-  TEST_CASE("./Graphics/Window/Fullscreen", "")
+  TEST_CASE("Graphics/Window/Fullscreen", "")
   {
     typedef Window::graphics_mode graphics_mode;
 
@@ -118,7 +118,8 @@ namespace TestingWindow
     CHECK(win3.IsCreated() == false);
     win3.Create(graphics_mode
       (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
-      WindowSettings("Testing"), WindowSettings::style_fullscreen);
+      WindowSettings("Testing").ClearStyles()
+      .AddStyle<p_window_settings::style::FullScreen>());
     CHECK(win3.IsValid() == true);
     CHECK(win3.IsCreated() == true);
   }

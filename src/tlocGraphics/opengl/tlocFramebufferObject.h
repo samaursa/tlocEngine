@@ -31,7 +31,7 @@ namespace tloc { namespace graphics { namespace gl {
       struct ColorAttachment
       {
         static const value_type   s_glParamName;
-        enum { k_attachmenIndex = T_ColorAttachmentIndex };
+        enum { k_attachmentIndex = T_ColorAttachmentIndex };
 
         TLOC_STATIC_ASSERT(T_ColorAttachmentIndex >= 0,
                            Invalid_color_attachment_index);
@@ -83,10 +83,11 @@ namespace tloc { namespace graphics { namespace gl {
     FramebufferObject();
     ~FramebufferObject();
 
+    FramebufferObject(const this_type& a_other);
+
     template <typename T_Target, typename T_Attachment,
               typename T_RenderOrTexturebuffer>
-    error_type Attach(T_Target a_targe, T_Attachment a_attachment,
-                      const T_RenderOrTexturebuffer& a_bufferObject);
+    error_type Attach(const T_RenderOrTexturebuffer& a_bufferObject);
 
     template <typename T_RenderOrTexturebuffer>
     error_type Detach(const T_RenderOrTexturebuffer& a_bufferObject);
@@ -115,18 +116,16 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     rbo_cont  m_renderbufferObjects;
     to_cont   m_textureObjets;
-    bool      m_defaultFBO;
   };
 
   // -----------------------------------------------------------------------
   // template definitions
 
-    template <typename T_Target, typename T_Attachment,
-              typename T_RenderOrTexturebuffer>
+  template <typename T_Target, typename T_Attachment,
+            typename T_RenderOrTexturebuffer>
   FramebufferObject::error_type
     FramebufferObject::
-    Attach(T_Target a_targe, T_Attachment a_attachment,
-           const T_RenderOrTexturebuffer& a_bufferObject)
+    Attach(const T_RenderOrTexturebuffer& a_bufferObject)
   {
     // -----------------------------------------------------------------------
     // Sanity checks
@@ -138,7 +137,12 @@ namespace tloc { namespace graphics { namespace gl {
       DrawFramebuffer, ReadFramebuffer>();
 
     tloc::type_traits::AssertTypeIsSupported<T_Attachment,
-      ColorAttachment, Depth, Stencil, DepthStencil>();
+      ColorAttachment<0>, ColorAttachment<1>, ColorAttachment<2>,
+      ColorAttachment<3>, ColorAttachment<4>, ColorAttachment<5>,
+      ColorAttachment<6>, ColorAttachment<7>, ColorAttachment<8>,
+      ColorAttachment<9>, ColorAttachment<10>, ColorAttachment<11>,
+      ColorAttachment<12>, ColorAttachment<13>, ColorAttachment<14>,
+      ColorAttachment<15>, Depth, Stencil, DepthStencil>();
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();

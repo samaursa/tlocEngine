@@ -93,6 +93,13 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FramebufferObject::
+    FramebufferObject(const this_type& a_other)
+    : base_type(a_other)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FramebufferObject::
     ~FramebufferObject()
   {
     if (IsLastRef() && GetHandle() != 0)
@@ -138,8 +145,10 @@ namespace tloc { namespace graphics { namespace gl {
              const rbo_type& a_rbo)
   {
     Bind b(*this);
+    TLOC_ASSERT(a_rbo.GetHandle() >= 0, "Invalid object ID for Renderbuffer");
     glFramebufferRenderbuffer(a_target, a_attachment, GL_RENDERBUFFER,
                               a_rbo.GetHandle());
+    TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferRenderbuffer failed");
 
     m_renderbufferObjects.push_back(a_rbo);
 
@@ -154,6 +163,9 @@ namespace tloc { namespace graphics { namespace gl {
              p_framebuffer_object::attachment::value_type a_attachment,
              const to_type& a_to)
   {
+    TLOC_ASSERT(a_to.IsActive(),
+      "TextureObject is NOT active - did you forget to call Activate()?");
+
     Bind b(*this);
 
     const to_type::Params& toParams = a_to.GetParams();
@@ -162,11 +174,13 @@ namespace tloc { namespace graphics { namespace gl {
     {
       glFramebufferTexture1D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
+      TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferTexture failed");
     }
     else if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
     {
       glFramebufferTexture2D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
+      TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferTexture failed");
     }
     else // if (toParams.GetTextureType() == p_texture_object::target::Tex3D::s_glParamName)
     {

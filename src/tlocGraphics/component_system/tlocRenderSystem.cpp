@@ -40,7 +40,6 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderer->ApplyRenderSettings();
     m_renderOneFrame = render_one_frame(m_renderer.get());
   }
 

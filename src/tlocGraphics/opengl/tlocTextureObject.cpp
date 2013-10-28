@@ -118,6 +118,7 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params)
     : m_texImageUnit(-1)
     , m_params(a_params)
+    , m_dim(0, 0)
   {
     object_handle handle;
     glGenTextures(1, &handle);
@@ -154,10 +155,12 @@ namespace tloc { namespace graphics { namespace gl {
     image_type::pixel_container_type cont = a_image.GetPixels();
 
     // We do NOT need the original image because glTexImage2D copies the image
+    m_dim = a_image.GetDimensions();
+
     Bind();
     glTexImage2D(m_params.GetTextureType(), 0, GL_RGBA,
-      core_utils::CastNumber<GLsizei, size_type>(a_image.GetWidth()),
-      core_utils::CastNumber<GLsizei, size_type>(a_image.GetHeight()),
+      core_utils::CastNumber<GLsizei>(m_dim[0]),
+      core_utils::CastNumber<GLsizei>(m_dim[1]),
       0, GL_RGBA, GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
 
     Update();

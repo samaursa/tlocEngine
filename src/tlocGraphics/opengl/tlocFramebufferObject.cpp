@@ -125,6 +125,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Default Framebuffer doesn't appear to complete "
         "(or there may be no default Framebuffer in the first place)");
+
       createDefaultFBO = false;
     }
 

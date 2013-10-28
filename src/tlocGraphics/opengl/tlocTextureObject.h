@@ -179,8 +179,9 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
     typedef s32                                           texture_image_unit_type;
-    typedef p_texture_object::target::value_type           texture_type;
+    typedef p_texture_object::target::value_type          texture_type;
     typedef media::Image                                  image_type;
+    typedef types::Dimension2u32                          dimension_type;
 
   public:
     TextureObject(const Params& a_params = Params());
@@ -200,12 +201,14 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
     TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
+    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
 
   private:
 
   private:
     texture_image_unit_type   m_texImageUnit;
     Params                    m_params;
+    dimension_type            m_dim;
   };
 
   //------------------------------------------------------------------------

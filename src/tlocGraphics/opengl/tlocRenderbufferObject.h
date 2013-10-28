@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace gl {
       typedef p_renderbuffer_object::
               internal_format::value_type                   format_type;
 
-      typedef types::Dimension2s32                          dimension_type;
+      typedef types::Dimension2u32                          dimension_type;
 
     public:
       Params()

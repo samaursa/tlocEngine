@@ -70,6 +70,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef to_cont::iterator                             to_cont_iterator;
     typedef to_cont::const_iterator                       to_cont_const_iterator;
 
+    typedef to_type::dimension_type                       dimension_type;
+
   public:
 
     // RAII not implemented deliberately because the dtor is not exactly

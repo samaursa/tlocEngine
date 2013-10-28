@@ -82,12 +82,35 @@ namespace tloc { namespace graphics { namespace renderer {
     Params()
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
+    , m_dim(0, 0)
     , m_clearBits(0)
   {
     using namespace p_renderer;
 
-    DepthFunction<depth_function::Less>();
-    BlendFunction<blend_function::One, blend_function::Zero>();
+    SetDepthFunction<depth_function::Less>();
+    SetBlendFunction<blend_function::One, blend_function::Zero>();
+
+    GLint viewDim[4];
+    glGetIntegerv(GL_VIEWPORT, viewDim);
+    TLOC_ASSERT(gl::Error().Succeeded(), "Failed to get viewport dimensions");
+    m_dim[0] = viewDim[2];
+    m_dim[1] = viewDim[3];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  Renderer_T<RENDERER_TEMPS>::Params::
+    Params(dimension_type a_dim)
+    : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
+    , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
+    , m_dim(a_dim)
+    , m_clearBits(0)
+  {
+    using namespace p_renderer;
+
+    SetDepthFunction<depth_function::Less>();
+    SetBlendFunction<blend_function::One, blend_function::Zero>();
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -128,10 +151,18 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(&m_params.m_fbo);
+    fbo_type::Bind b(&m_params.GetFBO());
 
-    math_t::Vec4f32 col = m_params.m_clearColor.GetAs
+    math_t::Vec4f32 col = m_params.GetClearColor().GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
+
+    const dimension_type dim = m_params.GetDimensions();
+
+    using core_utils::CastNumber;
+    // LOG: One or both dimensions is 0
+    TLOC_ASSERT(dim[0] > 0 && dim[1] > 0,
+                "One or both dimensions of the viewport are 0");
+    glViewport(0, 0, CastNumber<GLsizei>(dim[0]), CastNumber<GLsizei>(dim[1]) );
 
     glClearColor(col[0], col[1], col[2], col[3]);
     glDepthFunc(m_params.GetDepthFunction());
@@ -174,7 +205,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    m_fboBinder.reset(new fbo_type::Bind(&m_params.m_fbo));
+    m_fboBinder.reset(new fbo_type::Bind( &m_params.GetFBO() ));
 
     return ErrorSuccess;
   }
@@ -203,7 +234,8 @@ namespace tloc { namespace graphics { namespace renderer {
     static bool constructDefaultRenderer = true;
     if (constructDefaultRenderer)
     {
-      g_defaultRenderer.reset(new Renderer(Renderer::Params()));
+      Renderer::Params p;
+      g_defaultRenderer.reset(new Renderer(p));
       constructDefaultRenderer = false;
     }
 

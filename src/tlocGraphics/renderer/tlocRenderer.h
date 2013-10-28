@@ -168,6 +168,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef s32                                       stencil_value_type;
 
     typedef gl::FramebufferObject                     fbo_type;
+    typedef fbo_type::dimension_type                  dimension_type;
     typedef core_err::Error                           error_type;
 
   public:
@@ -178,12 +179,13 @@ namespace tloc { namespace graphics { namespace renderer {
 
     public:
       Params();
+      Params(dimension_type a_dim);
 
       template <typename T_DepthFunction>
-      this_type& DepthFunction();
+      this_type& SetDepthFunction();
 
       template <typename T_Source, typename T_Destination>
-      this_type& BlendFunction();
+      this_type& SetBlendFunction();
 
       template <typename T_Enable>
       this_type& Enable();
@@ -192,7 +194,7 @@ namespace tloc { namespace graphics { namespace renderer {
       this_type& Disable();
 
       template <typename T_ClearValue>
-      this_type& Clear();
+      this_type& AddClearBit();
 
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
@@ -205,10 +207,19 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
         (clear_value_type, GetClearBits, m_clearBits);
 
-      TLOC_DECL_PARAM_VAR(color_type, ClearColor, m_clearColor);
-      TLOC_DECL_PARAM_VAR(fbo_type, FBO, m_fbo);
+      TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
+
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(fbo_type, GetFBO, m_fbo);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(fbo_type, SetFBO, m_fbo);
+
+      TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(dimension_type, SetDimensions, m_dim);
 
     private:
+      color_type                  m_clearColor;
+      fbo_type                    m_fbo;
+      dimension_type              m_dim;
       depth_function_value_type   m_depthFunction;
       blend_pair_type             m_blendFunction;
       enable_cont                 m_enableFeatures;
@@ -260,7 +271,7 @@ namespace tloc { namespace graphics { namespace renderer {
   template <typename T_DepthFunction>
   typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
-    DepthFunction()
+    SetDepthFunction()
   {
     using namespace p_renderer::depth_function;
 
@@ -279,7 +290,7 @@ namespace tloc { namespace graphics { namespace renderer {
   template <typename T_Source, typename T_Destination>
   typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
-    BlendFunction()
+    SetBlendFunction()
   {
     using namespace p_renderer::blend_function;
 
@@ -352,7 +363,7 @@ namespace tloc { namespace graphics { namespace renderer {
   template <typename T_ClearValue>
   typename Renderer_T<T_DepthPrecision>::Params::this_type&
     Renderer_T<T_DepthPrecision>::Params::
-    Clear()
+    AddClearBit()
   {
     using namespace p_renderer::clear;
 

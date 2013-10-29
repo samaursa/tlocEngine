@@ -8,13 +8,15 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntitySystemBase : public EventListener
+  class EntitySystemBase
+    : public EventListener
+    , public NonCopyable
   {
   public:
 

@@ -31,55 +31,55 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef s32         value_type;
 
-      struct ClampToEdge       { static const value_type s_glEnumValue; };
-      struct ClampToBorder     { static const value_type s_glEnumValue; };
-      struct MirroredRepeat    { static const value_type s_glEnumValue; };
-      struct Repeat            { static const value_type s_glEnumValue; };
-      struct MirrorClampToEdge { static const value_type s_glEnumValue; };
+      struct ClampToEdge       { static const value_type s_glParamName; };
+      struct ClampToBorder     { static const value_type s_glParamName; };
+      struct MirroredRepeat    { static const value_type s_glParamName; };
+      struct Repeat            { static const value_type s_glParamName; };
+      struct MirrorClampToEdge { static const value_type s_glParamName; };
     };
 
     namespace filter
     {
       typedef s32         value_type;
 
-      struct Nearest              { static const value_type s_glEnumValue; };
-      struct Linear               { static const value_type s_glEnumValue; };
-      struct NearestMipmapNearest { static const value_type s_glEnumValue; };
-      struct LinearMipmapNearest  { static const value_type s_glEnumValue; };
-      struct NearestMipmapLinear  { static const value_type s_glEnumValue; };
-      struct LinearMipmapLinear   { static const value_type s_glEnumValue; };
+      struct Nearest              { static const value_type s_glParamName; };
+      struct Linear               { static const value_type s_glParamName; };
+      struct NearestMipmapNearest { static const value_type s_glParamName; };
+      struct LinearMipmapNearest  { static const value_type s_glParamName; };
+      struct NearestMipmapLinear  { static const value_type s_glParamName; };
+      struct LinearMipmapLinear   { static const value_type s_glParamName; };
     };
 
     namespace internal_format
     {
       typedef s32         value_type;
 
-      struct Red             { static const value_type s_glEnumValue; };
-      struct RG              { static const value_type s_glEnumValue; };
-      struct RGB             { static const value_type s_glEnumValue; };
-      struct RGBA            { static const value_type s_glEnumValue; };
-      struct DepthComponent  { static const value_type s_glEnumValue; };
-      struct DepthStencil    { static const value_type s_glEnumValue; };
+      struct Red             { static const value_type s_glParamName; };
+      struct RG              { static const value_type s_glParamName; };
+      struct RGB             { static const value_type s_glParamName; };
+      struct RGBA            { static const value_type s_glParamName; };
+      struct DepthComponent  { static const value_type s_glParamName; };
+      struct DepthStencil    { static const value_type s_glParamName; };
     };
 
     namespace format
     {
       typedef s32         value_type;
 
-      struct Red            { static const value_type s_glEnumValue; };
-      struct RG             { static const value_type s_glEnumValue; };
-      struct RGB            { static const value_type s_glEnumValue; };
-      struct BGR            { static const value_type s_glEnumValue; };
-      struct RGBA           { static const value_type s_glEnumValue; };
-      struct BGRA           { static const value_type s_glEnumValue; };
-      struct RedInteger     { static const value_type s_glEnumValue; };
-      struct RGInteger      { static const value_type s_glEnumValue; };
-      struct RGBInteger     { static const value_type s_glEnumValue; };
-      struct BGRInteger     { static const value_type s_glEnumValue; };
-      struct RGBAInteger    { static const value_type s_glEnumValue; };
-      struct BGRAInteger    { static const value_type s_glEnumValue; };
-      struct StencilIndex   { static const value_type s_glEnumValue; };
-      struct DepthComponent { static const value_type s_glEnumValue; };
+      struct Red            { static const value_type s_glParamName; };
+      struct RG             { static const value_type s_glParamName; };
+      struct RGB            { static const value_type s_glParamName; };
+      struct BGR            { static const value_type s_glParamName; };
+      struct RGBA           { static const value_type s_glParamName; };
+      struct BGRA           { static const value_type s_glParamName; };
+      struct RedInteger     { static const value_type s_glParamName; };
+      struct RGInteger      { static const value_type s_glParamName; };
+      struct RGBInteger     { static const value_type s_glParamName; };
+      struct BGRInteger     { static const value_type s_glParamName; };
+      struct RGBAInteger    { static const value_type s_glParamName; };
+      struct BGRAInteger    { static const value_type s_glParamName; };
+      struct StencilIndex   { static const value_type s_glParamName; };
+      struct DepthComponent { static const value_type s_glParamName; };
     };
   };
 
@@ -112,7 +112,7 @@ namespace tloc { namespace graphics { namespace gl {
           ClampToEdge, ClampToBorder, MirroredRepeat,
           Repeat, MirrorClampToEdge>();
 
-        m_wrap_s = T_WrapTechnique::s_glEnumValue;
+        m_wrap_s = T_WrapTechnique::s_glParamName;
         return *this;
       }
 
@@ -128,7 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
           ClampToEdge, ClampToBorder, MirroredRepeat,
           Repeat, MirrorClampToEdge>();
 
-        m_wrap_t = T_WrapTechnique::s_glEnumValue;
+        m_wrap_t = T_WrapTechnique::s_glParamName;
         return *this;
       }
 
@@ -144,7 +144,7 @@ namespace tloc { namespace graphics { namespace gl {
           Nearest, Linear, NearestMipmapNearest, LinearMipmapNearest,
           NearestMipmapLinear, LinearMipmapLinear>();
 
-        m_minFilter = T_Filter::s_glEnumValue;
+        m_minFilter = T_Filter::s_glParamName;
         return *this;
       }
 
@@ -159,7 +159,7 @@ namespace tloc { namespace graphics { namespace gl {
         tloc::type_traits::AssertTypeIsSupported<T_Filter,
           Nearest, Linear>();
 
-        m_magFilter = T_Filter::s_glEnumValue;
+        m_magFilter = T_Filter::s_glParamName;
         return *this;
       }
 
@@ -174,7 +174,7 @@ namespace tloc { namespace graphics { namespace gl {
         tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
           Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
 
-        m_internalFormat = T_InternalFormat::s_glEnumValue;
+        m_internalFormat = T_InternalFormat::s_glParamName;
         return *this;
       }
 
@@ -191,7 +191,7 @@ namespace tloc { namespace graphics { namespace gl {
           RGBInteger, BGRInteger, RGBAInteger, BGRAInteger, StencilIndex,
           DepthComponent>();
 
-        m_format = T_Format::s_glEnumValue;
+        m_format = T_Format::s_glParamName;
         return *this;
       }
 

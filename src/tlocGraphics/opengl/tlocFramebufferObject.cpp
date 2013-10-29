@@ -284,17 +284,17 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
-      TLOC_ASSERT(toFormat == Red::s_glEnumValue ||
-                  toFormat == RG::s_glEnumValue ||
-                  toFormat == RGB::s_glEnumValue ||
-                  toFormat == RGBA::s_glEnumValue,
+      TLOC_ASSERT(toFormat == Red::s_glParamName ||
+                  toFormat == RG::s_glParamName ||
+                  toFormat == RGB::s_glParamName ||
+                  toFormat == RGBA::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
     else if (a_attachment == p_framebuffer_object::attachment::Depth::s_glParamName)
     {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
-      TLOC_ASSERT(toFormat == DepthComponent::s_glEnumValue,
+      TLOC_ASSERT(toFormat == DepthComponent::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
     else if (a_attachment == p_framebuffer_object::attachment::Stencil::s_glParamName)
@@ -302,7 +302,7 @@ namespace tloc { namespace graphics { namespace gl {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
       TLOC_ASSERT(toFormat ==
-        p_texture_object::internal_format::DepthStencil::s_glEnumValue,
+        p_texture_object::internal_format::DepthStencil::s_glParamName,
         "Incorrect internal format for specified attachment");
     }
     else

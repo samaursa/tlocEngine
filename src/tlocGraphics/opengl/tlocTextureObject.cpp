@@ -72,40 +72,40 @@ namespace tloc { namespace graphics { namespace gl {
     typedef format::value_type          formvt;
     typedef internal_format::value_type ifvt;
 
-    const wvt ClampToEdge::s_glEnumValue       = GL_CLAMP_TO_EDGE;
-    const wvt ClampToBorder::s_glEnumValue     = GL_CLAMP_TO_BORDER;
-    const wvt MirroredRepeat::s_glEnumValue    = GL_CLAMP_TO_EDGE;
-    const wvt Repeat::s_glEnumValue            = GL_CLAMP_TO_EDGE;
-    const wvt MirrorClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
+    const wvt ClampToBorder::s_glParamName     = GL_CLAMP_TO_BORDER;
+    const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;
+    const wvt Repeat::s_glParamName            = GL_CLAMP_TO_EDGE;
+    const wvt MirrorClampToEdge::s_glParamName = GL_CLAMP_TO_EDGE;
 
-    const fvt Nearest::s_glEnumValue              = GL_NEAREST;
-    const fvt Linear::s_glEnumValue               = GL_LINEAR;
-    const fvt NearestMipmapNearest::s_glEnumValue = GL_NEAREST_MIPMAP_NEAREST;
-    const fvt LinearMipmapNearest::s_glEnumValue  = GL_LINEAR_MIPMAP_NEAREST;
-    const fvt NearestMipmapLinear::s_glEnumValue  = GL_NEAREST_MIPMAP_LINEAR;
-    const fvt LinearMipmapLinear::s_glEnumValue   = GL_LINEAR_MIPMAP_LINEAR;
+    const fvt Nearest::s_glParamName              = GL_NEAREST;
+    const fvt Linear::s_glParamName               = GL_LINEAR;
+    const fvt NearestMipmapNearest::s_glParamName = GL_NEAREST_MIPMAP_NEAREST;
+    const fvt LinearMipmapNearest::s_glParamName  = GL_LINEAR_MIPMAP_NEAREST;
+    const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
+    const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
-    const formvt format::Red::s_glEnumValue            = GL_RED;
-    const formvt format::RG::s_glEnumValue             = GL_RG;
-    const formvt format::RGB::s_glEnumValue            = GL_RGB;
-    const formvt format::BGR::s_glEnumValue            = GL_BGR;
-    const formvt format::RGBA::s_glEnumValue           = GL_RGBA;
-    const formvt format::BGRA::s_glEnumValue           = GL_BGRA;
-    const formvt format::RedInteger::s_glEnumValue     = GL_RED_INTEGER;
-    const formvt format::RGInteger::s_glEnumValue      = GL_RG_INTEGER;
-    const formvt format::RGBInteger::s_glEnumValue     = GL_RGB_INTEGER;
-    const formvt format::BGRInteger::s_glEnumValue     = GL_BGR_INTEGER;
-    const formvt format::RGBAInteger::s_glEnumValue    = GL_RGBA_INTEGER;
-    const formvt format::BGRAInteger::s_glEnumValue    = GL_BGRA_INTEGER;
-    const formvt format::StencilIndex::s_glEnumValue   = GL_STENCIL_INDEX;
-    const formvt format::DepthComponent::s_glEnumValue = GL_DEPTH_COMPONENT;
+    const formvt format::Red::s_glParamName            = GL_RED;
+    const formvt format::RG::s_glParamName             = GL_RG;
+    const formvt format::RGB::s_glParamName            = GL_RGB;
+    const formvt format::BGR::s_glParamName            = GL_BGR;
+    const formvt format::RGBA::s_glParamName           = GL_RGBA;
+    const formvt format::BGRA::s_glParamName           = GL_BGRA;
+    const formvt format::RedInteger::s_glParamName     = GL_RED_INTEGER;
+    const formvt format::RGInteger::s_glParamName      = GL_RG_INTEGER;
+    const formvt format::RGBInteger::s_glParamName     = GL_RGB_INTEGER;
+    const formvt format::BGRInteger::s_glParamName     = GL_BGR_INTEGER;
+    const formvt format::RGBAInteger::s_glParamName    = GL_RGBA_INTEGER;
+    const formvt format::BGRAInteger::s_glParamName    = GL_BGRA_INTEGER;
+    const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
+    const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
-    const ifvt internal_format::Red::s_glEnumValue            = GL_RED;
-    const ifvt internal_format::RG::s_glEnumValue             = GL_RG;
-    const ifvt internal_format::RGB::s_glEnumValue            = GL_RGB;
-    const ifvt internal_format::RGBA::s_glEnumValue           = GL_RGBA;
-    const ifvt internal_format::DepthComponent::s_glEnumValue = GL_DEPTH_COMPONENT;
-    const ifvt internal_format::DepthStencil::s_glEnumValue   = GL_DEPTH_STENCIL;
+    const ifvt internal_format::Red::s_glParamName            = GL_RED;
+    const ifvt internal_format::RG::s_glParamName             = GL_RG;
+    const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
+    const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
+    const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
+    const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL;
 
 #elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
 
@@ -115,41 +115,41 @@ namespace tloc { namespace graphics { namespace gl {
     typedef wrap_technique::value_type  wvt;
     typedef filter::value_type          fvt;
 
-    const wvt ClampToEdge::s_glEnumValue       = GL_CLAMP_TO_EDGE;
-    const wvt MirroredRepeat::s_glEnumValue    = GL_CLAMP_TO_EDGE;
-    const wvt Repeat::s_glEnumValue            = GL_CLAMP_TO_EDGE;
-    const wvt MirrorClampToEdge::s_glEnumValue = GL_CLAMP_TO_EDGE;
+    const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
+    const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;
+    const wvt Repeat::s_glParamName            = GL_CLAMP_TO_EDGE;
+    const wvt MirrorClampToEdge::s_glParamName = GL_CLAMP_TO_EDGE;
 
-    const fvt Nearest::s_glEnumValue              = GL_NEAREST;
-    const fvt Linear::s_glEnumValue               = GL_LINEAR;
-    const fvt NearestMipmapNearest::s_glEnumValue = GL_NEAREST_MIPMAP_NEAREST;
-    const fvt LinearMipmapNearest::s_glEnumValue  = GL_LINEAR_MIPMAP_NEAREST;
-    const fvt NearestMipmapLinear::s_glEnumValue  = GL_NEAREST_MIPMAP_LINEAR;
-    const fvt LinearMipmapLinear::s_glEnumValue   = GL_LINEAR_MIPMAP_LINEAR;
+    const fvt Nearest::s_glParamName              = GL_NEAREST;
+    const fvt Linear::s_glParamName               = GL_LINEAR;
+    const fvt NearestMipmapNearest::s_glParamName = GL_NEAREST_MIPMAP_NEAREST;
+    const fvt LinearMipmapNearest::s_glParamName  = GL_LINEAR_MIPMAP_NEAREST;
+    const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
+    const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
-    const formvt format::Red::s_glEnumValue            = GL_RED;
-    const formvt format::RG::s_glEnumValue             = GL_RG;
-    const formvt format::RGB::s_glEnumValue            = GL_RGB;
-    const formvt format::BGR::s_glEnumValue            = GL_BGR;
-    const formvt format::RGBA::s_glEnumValue           = GL_RGBA;
-    const formvt format::BGRA::s_glEnumValue           = GL_BGRA;
-    const formvt format::RedInteger::s_glEnumValue     = GL_RED_INTEGER;
-    const formvt format::RGInteger::s_glEnumValue      = GL_RG_INTEGER;
-    const formvt format::RGBInteger::s_glEnumValue     = GL_RGB_INTEGER;
-    const formvt format::BGRInteger::s_glEnumValue     = GL_BGR_INTEGER;
-    const formvt format::RGBAInteger::s_glEnumValue    = GL_RGBA_INTEGER;
-    const formvt format::BGRAInteger::s_glEnumValue    = GL_BGRA_INTEGER;
-    const formvt format::StencilIndex::s_glEnumValue   = GL_STENCIL_INDEX;
-    const formvt format::DepthComponent::s_glEnumValue = GL_DEPTH_COMPONENT;
+    const formvt format::Red::s_glParamName            = GL_RED;
+    const formvt format::RG::s_glParamName             = GL_RG;
+    const formvt format::RGB::s_glParamName            = GL_RGB;
+    const formvt format::BGR::s_glParamName            = GL_BGR;
+    const formvt format::RGBA::s_glParamName           = GL_RGBA;
+    const formvt format::BGRA::s_glParamName           = GL_BGRA;
+    const formvt format::RedInteger::s_glParamName     = GL_RED_INTEGER;
+    const formvt format::RGInteger::s_glParamName      = GL_RG_INTEGER;
+    const formvt format::RGBInteger::s_glParamName     = GL_RGB_INTEGER;
+    const formvt format::BGRInteger::s_glParamName     = GL_BGR_INTEGER;
+    const formvt format::RGBAInteger::s_glParamName    = GL_RGBA_INTEGER;
+    const formvt format::BGRAInteger::s_glParamName    = GL_BGRA_INTEGER;
+    const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
+    const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
-    const ifvt internal_format::Red::s_glEnumValue            = GL_RED;
-    const ifvt internal_format::RG::s_glEnumValue             = GL_RG;
-    const ifvt internal_format::RGB::s_glEnumValue            = GL_RGB;
-    const ifvt internal_format::RGBA::s_glEnumValue           = GL_RGBA;
-    const ifvt internal_format::DepthComponent::s_glEnumValue = GL_DEPTH_COMPONENT;
-    const ifvt internal_format::DepthStencil::s_glEnumValue   = GL_DEPTH_STENCIL;
+    const ifvt internal_format::Red::s_glParamName            = GL_RED;
+    const ifvt internal_format::RG::s_glParamName             = GL_RG;
+    const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
+    const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
+    const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
+    const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL;
 
-    const wvt ClampToBorder::s_glEnumValue = 0;
+    const wvt ClampToBorder::s_glParamName = 0;
 
 #else
 # error "WIP"

@@ -40,27 +40,12 @@ namespace tloc { namespace graphics { namespace gl {
       typedef types::Dimension2u32                          dimension_type;
 
     public:
-      Params()
-        : m_formatType(p_renderbuffer_object::internal_format::RGBA4::s_glParamName)
-        , m_dimensions(0, 0)
-      { }
+      Params();
 
       template <typename T_InternalFormat>
-      this_type&
-        InternalFormat()
-      {
-        using namespace p_renderbuffer_object::internal_format;
+      this_type& InternalFormat();
 
-        tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
-          RGBA4, RGB565, RGB5_A1, DepthComponent16, StencilIndex8>();
-
-        m_formatType = T_InternalFormat::s_glEnumValue;
-        return *this;
-      }
-
-      this_type&
-        Dimensions(const dimension_type& a_dim)
-      { m_dimensions = a_dim; }
+      this_type& Dimensions(const dimension_type& a_dim);
 
       TLOC_DECL_AND_DEF_GETTER(format_type, GetFormatType, m_formatType);
       TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dimensions);
@@ -99,6 +84,23 @@ namespace tloc { namespace graphics { namespace gl {
     Params        m_params;
 
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_InternalFormat>
+  RenderbufferObject::Params::this_type&
+    RenderbufferObject::Params::
+    InternalFormat()
+  {
+    using namespace p_renderbuffer_object::internal_format;
+
+    tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
+      RGBA4, RGB565, RGB5_A1, DepthComponent16, StencilIndex8>();
+
+    m_formatType = T_InternalFormat::s_glParamName;
+    return *this;
+  }
 
   // -----------------------------------------------------------------------
   // typedefs

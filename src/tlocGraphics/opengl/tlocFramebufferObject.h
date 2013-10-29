@@ -27,8 +27,6 @@ namespace tloc { namespace graphics { namespace gl {
 
       typedef s32                       value_type;
 
-      struct MaxColorAttachments  { static const value_type s_glParamName; };
-
       template <value_type T_ColorAttachmentIndex>
       struct ColorAttachment
       {
@@ -119,6 +117,24 @@ namespace tloc { namespace graphics { namespace gl {
     FramebufferObject(p_framebuffer_object::Default);
 
   private:
+    template <p_framebuffer_object::attachment::value_type T_Index>
+    void DoCheckAttachIndex
+      (p_framebuffer_object::attachment::ColorAttachment<T_Index>);
+
+    template <typename T>
+    void DoCheckAttachIndex(T);
+
+    void DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const rbo_type& a_rbo);
+
+    void DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const to_type& a_to);
+
+  private:
     rbo_cont  m_renderbufferObjects;
     to_cont   m_textureObjets;
   };
@@ -152,9 +168,7 @@ namespace tloc { namespace graphics { namespace gl {
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();
 
-    TLOC_ASSERT(T_Attachment::k_attachmentIndex <
-                MaxColorAttachments::s_glParamName,
-                "Attachment index exceeded maximum allowed attachments");
+    DoCheckAttachIndex(T_Attachment());
 
     // -----------------------------------------------------------------------
     // Internal attach method
@@ -162,6 +176,27 @@ namespace tloc { namespace graphics { namespace gl {
     return DoAttach(T_Target::s_glParamName, T_Attachment::s_glParamName,
                     a_bufferObject);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <p_framebuffer_object::attachment::value_type T_Index>
+  void
+    FramebufferObject::
+    DoCheckAttachIndex
+    (p_framebuffer_object::attachment::ColorAttachment<T_Index> )
+  {
+    using namespace p_framebuffer_object::attachment;
+
+    TLOC_STATIC_ASSERT(T_Index >= 0, Invalid_index_for_color_attachment);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void
+    FramebufferObject::
+    DoCheckAttachIndex(T)
+  { /* do nothing */ }
 
   // -----------------------------------------------------------------------
   // typedefs

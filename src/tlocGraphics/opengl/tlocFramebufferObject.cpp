@@ -19,24 +19,26 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace attachment {
 
-      const value_type  MaxColorAttachments::s_glParamName = GL_MAX_COLOR_ATTACHMENTS;
-
+      // NOTE: we are adding to GL_COLOR_ATTACHME0 for remaining attachments to
+      // ensure compatibility with platforms that do not have enough color
+      // attachments. The color attachment is checked at runtime when attaching
+      // texture or render buffers
       const value_type  ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
-      const value_type  ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT1;
-      const value_type  ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT2;
-      const value_type  ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT3;
-      const value_type  ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT4;
-      const value_type  ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT5;
-      const value_type  ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT6;
-      const value_type  ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT7;
-      const value_type  ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT8;
-      const value_type  ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT9;
-      const value_type  ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT10;
-      const value_type  ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT11;
-      const value_type  ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT12;
-      const value_type  ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT13;
-      const value_type  ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT14;
-      const value_type  ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT15;
+      const value_type  ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 1;
+      const value_type  ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 2;
+      const value_type  ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 3;
+      const value_type  ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 4;
+      const value_type  ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 5;
+      const value_type  ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 6;
+      const value_type  ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 7;
+      const value_type  ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 8;
+      const value_type  ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 9;
+      const value_type  ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT0 + 10;
+      const value_type  ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT0 + 11;
+      const value_type  ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT0 + 12;
+      const value_type  ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT0 + 13;
+      const value_type  ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT0 + 14;
+      const value_type  ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT0 + 15;
 
       const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
       const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
@@ -142,9 +144,15 @@ namespace tloc { namespace graphics { namespace gl {
   {
     Bind b(this);
     TLOC_ASSERT(a_rbo.GetHandle() >= 0, "Invalid object ID for Renderbuffer");
+    DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_rbo);
+
     glFramebufferRenderbuffer(a_target, a_attachment, GL_RENDERBUFFER,
                               a_rbo.GetHandle());
-    TLOC_ASSERT(gl::Error().Succeeded(), "glFramebufferRenderbuffer failed");
+
+    gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    TLOC_UNUSED(res);
+    TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+      "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
 
     m_renderbufferObjects.push_back(a_rbo);
 
@@ -165,6 +173,7 @@ namespace tloc { namespace graphics { namespace gl {
     Bind b(this);
 
     const to_type::Params& toParams = a_to.GetParams();
+    DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
 
     if (toParams.GetTextureType() == p_texture_object::target::Tex1D::s_glParamName)
     {
@@ -173,7 +182,8 @@ namespace tloc { namespace graphics { namespace gl {
 
       gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
       TLOC_UNUSED(res);
-      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE, "Incomplete Framebuffer");
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+        "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
     }
     else if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
     {
@@ -182,7 +192,8 @@ namespace tloc { namespace graphics { namespace gl {
 
       gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
       TLOC_UNUSED(res);
-      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE, "Incomplete Framebuffer");
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+        "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
     }
     else // if (toParams.GetTextureType() == p_texture_object::target::Tex3D::s_glParamName)
     {
@@ -192,6 +203,112 @@ namespace tloc { namespace graphics { namespace gl {
     m_textureObjets.push_back(a_to);
 
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    FramebufferObject::
+    DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const rbo_type& a_rbo)
+  {
+    TLOC_UNUSED_3(a_target, a_attachment, a_rbo); // for release
+
+    using  p_renderbuffer_object::internal_format::value_type;
+
+    using namespace p_renderbuffer_object::internal_format;
+    using namespace p_framebuffer_object::attachment;
+
+    int maxAttachments;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
+
+    // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
+    // that that's the case by over-riding the format type, but instead we
+    // will give the user the option to correct it
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<0>::s_glParamName + maxAttachments - 1)
+    {
+      value_type rboFormat = a_rbo.GetParams().GetFormatType();
+
+      TLOC_ASSERT(rboFormat == RGBA4::s_glParamName ||
+                  rboFormat == RGB565::s_glParamName ||
+                  rboFormat == RGB5_A1::s_glParamName,
+                  "Incorrect internal format for specified attachment");
+    }
+    else if (a_attachment == Depth::s_glParamName)
+    {
+      value_type rboFormat = a_rbo.GetParams().GetFormatType();
+
+      TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName,
+                  "Incorrect internal format for specified attachment");
+    }
+    else if (a_attachment == Stencil::s_glParamName)
+    {
+      value_type rboFormat = a_rbo.GetParams().GetFormatType();
+
+      TLOC_ASSERT(rboFormat == StencilIndex8::s_glParamName,
+                  "Incorrect internal format for specified attachment");
+    }
+    else
+    {
+      TLOC_ASSERT(false, "Unsupported internal format for specified attachment");
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    FramebufferObject::
+    DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const to_type& a_to)
+  {
+    TLOC_UNUSED_3(a_target, a_attachment, a_to); // for release
+
+    using  p_texture_object::internal_format::value_type;
+
+    using namespace p_texture_object::internal_format;
+    using namespace p_framebuffer_object::attachment;
+
+    int maxAttachments;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
+
+    // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
+    // that that's the case by over-riding the format type, but instead we
+    // will give the user the option to correct it
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<0>::s_glParamName + maxAttachments - 1)
+    {
+      value_type toFormat = a_to.GetParams().GetInternalFormat();
+
+      TLOC_ASSERT(toFormat == Red::s_glEnumValue ||
+                  toFormat == RG::s_glEnumValue ||
+                  toFormat == RGB::s_glEnumValue ||
+                  toFormat == RGBA::s_glEnumValue,
+                  "Incorrect internal format for specified attachment");
+    }
+    else if (a_attachment == p_framebuffer_object::attachment::Depth::s_glParamName)
+    {
+      value_type toFormat = a_to.GetParams().GetInternalFormat();
+
+      TLOC_ASSERT(toFormat == DepthComponent::s_glEnumValue,
+                  "Incorrect internal format for specified attachment");
+    }
+    else if (a_attachment == p_framebuffer_object::attachment::Stencil::s_glParamName)
+    {
+      value_type toFormat = a_to.GetParams().GetInternalFormat();
+
+      TLOC_ASSERT(toFormat ==
+        p_texture_object::internal_format::DepthStencil::s_glEnumValue,
+        "Incorrect internal format for specified attachment");
+    }
+    else
+    {
+      TLOC_ASSERT(false, "Unsupported internal format for specified attachment");
+    }
   }
 
   // ///////////////////////////////////////////////////////////////////////

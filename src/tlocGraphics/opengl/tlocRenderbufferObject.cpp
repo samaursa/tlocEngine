@@ -21,6 +21,25 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   // ///////////////////////////////////////////////////////////////////////
+  // RenderbufferObject::Params
+
+  RenderbufferObject::Params::
+    Params()
+    : m_formatType(p_renderbuffer_object::internal_format::RGBA4::s_glParamName)
+    , m_dimensions(0, 0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RenderbufferObject::Params::this_type&
+    RenderbufferObject::Params::
+    Dimensions(const dimension_type& a_dim)
+  {
+    m_dimensions = a_dim;
+    return *this;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // RenderbufferObject
 
   RenderbufferObject::Bind::
@@ -68,6 +87,7 @@ namespace tloc { namespace graphics { namespace gl {
     Initialize()
   {
     Bind b(this);
+
     glRenderbufferStorage(GL_RENDERBUFFER, m_params.GetFormatType(),
       m_params.GetDimensions()[0], m_params.GetDimensions()[1]);
 
@@ -79,6 +99,17 @@ namespace tloc { namespace graphics { namespace gl {
 
   // -----------------------------------------------------------------------
   // explicit instantiations
+
+#define TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(_type_)\
+  template RenderbufferObject::Params::this_type&\
+    RenderbufferObject::Params::InternalFormat<_type_>()
+
+  using namespace p_renderbuffer_object::internal_format;
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGBA4);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGB565);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGB5_A1);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(DepthComponent16);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(StencilIndex8);
 
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
   TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);

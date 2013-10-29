@@ -12,11 +12,22 @@ namespace tloc { namespace graphics { namespace gl {
   namespace p_framebuffer_object {
 
     namespace target {
+
+#if defined (TLOC_OS_WIN)
       const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER;
       const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER;
+#elif defined (TLOC_OS_IPHONE)
+      const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER_APPLE;
+      const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER_APPLE;
+#else
+# error "WIP"
+#endif
+
     };
 
     namespace attachment {
+
+#if defined (TLOC_OS_WIN)
 
       const value_type  MaxColorAttachments::s_glParamName = GL_MAX_COLOR_ATTACHMENTS;
 
@@ -40,6 +51,21 @@ namespace tloc { namespace graphics { namespace gl {
       const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
       const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
       const value_type  DepthStencil::s_glParamName = GL_DEPTH_STENCIL_ATTACHMENT;
+
+#elif defined (TLOC_OS_IPHONE)
+
+      const value_type  MaxColorAttachments::s_glParamName = 1;
+
+      template<>
+      const value_type  ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
+
+      const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
+      const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
+      const value_type  DepthStencil::s_glParamName = 0;
+
+#else
+# error "WIP"
+#endif
     };
 
   };
@@ -57,7 +83,8 @@ namespace tloc { namespace graphics { namespace gl {
     Bind(const FramebufferObject& a_fbo)
   {
     object_handle handle = a_fbo.GetHandle();
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, handle);
+    glBindFramebuffer
+      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -68,7 +95,8 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer
+      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -118,7 +146,9 @@ namespace tloc { namespace graphics { namespace gl {
       g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
 
       FramebufferObject::Bind(g_defaultFBO);
-      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      gfx_t::gl_enum res = glCheckFramebufferStatus
+        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Default Framebuffer doesn't appear to complete "
@@ -148,6 +178,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+#if defined (TLOC_OS_WIN)
+
   FramebufferObject::error_type
     FramebufferObject::
     DoAttach(p_framebuffer_object::target::value_type a_target,
@@ -176,6 +208,34 @@ namespace tloc { namespace graphics { namespace gl {
     m_textureObjets.push_back(a_to);
 
     return ErrorSuccess;
+  }
+
+#elif defined (TLOC_OS_IPHONE)
+
+  FramebufferObject::error_type
+    FramebufferObject::
+    DoAttach(p_framebuffer_object::target::value_type a_target,
+             p_framebuffer_object::attachment::value_type a_attachment,
+             const to_type& a_to)
+  {
+    Bind b(*this);
+
+    const to_type::Params& toParams = a_to.GetParams();
+
+    if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
+    {
+      glFramebufferTexture2D(a_target, a_attachment,
+                             toParams.GetTextureType(), a_to.GetHandle(), 0);
+    }
+
+    m_textureObjets.push_back(a_to);
+
+    return ErrorSuccess;
+
+#else
+# error "WIP"
+#endif
+
   }
 
   // ///////////////////////////////////////////////////////////////////////

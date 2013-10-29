@@ -3,6 +3,7 @@
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

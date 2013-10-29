@@ -12,37 +12,57 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace p_framebuffer_object {
 
+    struct FBOParamBase { };
+
     namespace target {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
 
-      struct DrawFramebuffer      { static const value_type s_glParamName; };
-      struct ReadFramebuffer      { static const value_type s_glParamName; };
+      struct TargetParamBase : public FBOParamBase
+      { static const value_type s_glParamName; };
 
+      struct DrawFramebuffer : public TargetParamBase
+      { static const value_type s_glParamName; };
+      struct ReadFramebuffer : public TargetParamBase
+      { static const value_type s_glParamName;};
     };
 
     namespace attachment {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
 
-      struct MaxColorAttachments  { static const value_type s_glParamName; };
+      struct AttachmentParamBase : public FBOParamBase
+      { static const value_type s_glParamName;};
+
+      struct MaxColorAttachments : public AttachmentParamBase
+      { static const value_type s_glParamName;};
 
       template <value_type T_ColorAttachmentIndex>
-      struct ColorAttachment
+      struct ColorAttachment : public AttachmentParamBase
       {
-        static const value_type   s_glParamName;
-        enum { k_attachmenIndex = T_ColorAttachmentIndex };
+        enum { k_attachmentIndex = T_ColorAttachmentIndex };
+
+        ColorAttachment()
+        {
+          TLOC_ASSERT(k_attachmentIndex < MaxColorAttachments::s_glParamName,
+                      "Attachment index exceeded maximum allowed attachments");
+        }
 
         TLOC_STATIC_ASSERT(T_ColorAttachmentIndex >= 0,
                            Invalid_color_attachment_index);
+
+        static const value_type s_glParamName;
       };
 
-      struct Depth                { static const value_type s_glParamName; };
-      struct Stencil              { static const value_type s_glParamName; };
-      struct DepthStencil         { static const value_type s_glParamName; };
+      struct Depth : public AttachmentParamBase
+      { static const value_type s_glParamName; };
+      struct Stencil : public AttachmentParamBase
+      { static const value_type s_glParamName; };
+      struct DepthStencil : public AttachmentParamBase
+      { static const value_type s_glParamName; };
     };
 
-    struct Default { };
+    struct Default : public FBOParamBase { };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -99,12 +119,15 @@ namespace tloc { namespace graphics { namespace gl {
     static this_type& GetDefaultFramebuffer();
 
   private:
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    typedef p_framebuffer_object::target::value_type      target_value_type;
+    typedef p_framebuffer_object::attachment::value_type  attachment_value_type;
+
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const rbo_type& a_rbo);
 
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const to_type& a_to);
 
     // This constructor is temporary until we have a better solution on how
@@ -134,11 +157,13 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_framebuffer_object::target;
     using namespace p_framebuffer_object::attachment;
 
-    tloc::type_traits::AssertTypeIsSupported<T_Target,
-      DrawFramebuffer, ReadFramebuffer>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Target, TargetParamBase>::exists),
+       Invalid_target_param);
 
-    tloc::type_traits::AssertTypeIsSupported<T_Attachment,
-      ColorAttachment, Depth, Stencil, DepthStencil>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Attachment, AttachmentParamBase>::exists),
+       Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();

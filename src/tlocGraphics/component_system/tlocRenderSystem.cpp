@@ -56,7 +56,6 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // explicit instantiations
 
-  template class RenderSystem_TI<gfx_rend::renderer_sptr>;
   template class RenderSystem_TI<gfx_rend::renderer_depth32_sptr>;
   template class RenderSystem_TI<gfx_rend::renderer_depth64_sptr>;
 

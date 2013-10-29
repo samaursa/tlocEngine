@@ -56,6 +56,7 @@ namespace tloc { namespace core { namespace memory {
             class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndexed
+    : public core::NonCopyable
   {
   public:
 

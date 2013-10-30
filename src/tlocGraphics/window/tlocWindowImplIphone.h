@@ -67,11 +67,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     /// Creates the actual window with the specified properties
     ///
-    /// @param  a_mode The graphics mode
-    /// @param  a_prop The window properties.
+    /// @param  a_mode     The graphics mode
+    /// @param  a_settings The window settings.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                const window_style_type& a_style);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Gets the width.

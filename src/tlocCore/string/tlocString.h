@@ -6,6 +6,8 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
+#include <tlocCore/tlocFunctional.h>
+
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Strings
 
@@ -376,6 +378,9 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2);
+  template <>
+  tl_int
+    StrCmp(const char8* a_ptr1, const char8* a_ptr2);
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
@@ -403,52 +408,52 @@ namespace tloc { namespace core { namespace string {
   void
     Tokenize(const T* a_string, const T* a_delims, T_StringContainer& a_out);
 
-  TL_I bool
+  bool
     IsCntrl(char8 a_char);
 
-  TL_I bool
+  bool
     IsBlank(char8 a_char);
 
-  TL_I bool
+  bool
     IsSpace(char8 a_char);
 
-  TL_I bool
+  bool
     IsUpper(char8 a_char);
 
-  TL_I bool
+  bool
     IsLower(char8 a_char);
 
-  TL_I bool
+  bool
     IsAlpha(char8 a_char);
 
-  TL_I bool
+  bool
     IsDigit(char8 a_char);
 
-  TL_I bool
+  bool
     IsNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsNegNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsNegRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsPosNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsPosRealNumber(const char8* a_char);
 
-  TL_I bool
+  bool
     IsXDigit(char8 a_char);
 
-  TL_I bool
+  bool
     IsAlNum(char8 a_char);
 
-  TL_I bool
+  bool
     IsPunct(char8 a_char);
 
   //````````````````````````````````````````````````````````````````````````
@@ -525,6 +530,96 @@ namespace tloc { namespace core {
   template <typename T>
   void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
   { a.swap(b); }
+
+  // -----------------------------------------------------------------------
+  // binary functions for strings
+
+  template <>
+  struct equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  template <>
+  struct not_equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  template <>
+  struct greater<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  template <>
+  struct less<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  template <>
+  struct greater_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  template <>
+  struct less_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
+
+  // -----------------------------------------------------------------------
+  // same as above, for char32
+
+  template <>
+  struct equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  template <>
+  struct not_equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  template <>
+  struct greater<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  template <>
+  struct less<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  template <>
+  struct greater_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  template <>
+  struct less_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
 
 };};
 

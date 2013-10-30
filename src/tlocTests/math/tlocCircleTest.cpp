@@ -58,6 +58,26 @@ namespace TestingCircle
     CHECK(d.GetRadius() == Approx(0.2f));
     CHECK(d.GetPosition() == point_type(1, 1));
 
+    f = circle_type(circle_type::radius(0.4f),
+                    circle_type::position(point_type(2, 3)) );
+    d.swap(f);
+    CHECK(f.IsValid());
+    CHECK(f.GetRadius() == Approx(0.2f));
+    CHECK(f.GetPosition() == point_type(1, 1));
+
+    CHECK(d.IsValid());
+    CHECK(d.GetRadius() == Approx(0.4f));
+    CHECK(d.GetPosition() == point_type(2, 3));
+
+    swap(d, f);
+    CHECK(d.IsValid());
+    CHECK(d.GetRadius() == Approx(0.2f));
+    CHECK(d.GetPosition() == point_type(1, 1));
+
+    CHECK(f.IsValid());
+    CHECK(f.GetRadius() == Approx(0.4f));
+    CHECK(f.GetPosition() == point_type(2, 3));
+
     // different types
     Circlef32 circ;
     Circlef64 circ64(circ);

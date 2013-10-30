@@ -11,6 +11,7 @@ namespace tloc { namespace math { namespace proj {
 
 #define FRUSTUM_TEMPS   typename T_Real
 #define FRUSTUM_PARAMS  T_Real
+#define FRUSTUM_TYPE    typename Frustum_TI<FRUSTUM_PARAMS>
 
   template <FRUSTUM_TEMPS>
   Frustum_TI<FRUSTUM_PARAMS>::Frustum_TI()
@@ -37,6 +38,42 @@ namespace tloc { namespace math { namespace proj {
     DoDefinePlanes(const plane_args& a_vars)
   {
     m_planes = a_vars;
+  }
+
+  template <FRUSTUM_TEMPS>
+  FRUSTUM_TYPE::ray_type
+    Frustum_TI<FRUSTUM_PARAMS>::
+    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+  {
+
+    TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
+                a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
+                a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
+                "Vector not in Normalized Device Co-ordinates");
+
+    const matrix_type& projMatrix = this->GetProjectionMatrix();
+
+    using math_t::Vector3;
+
+    const real_type z_eye
+      = - (projMatrix.Get(2,3) / (a_xyzNDC[2] + projMatrix.Get(2, 2)) );
+
+    // x_eye = -z_eye/P_00(x_NDC + P_20 + P30/z_eye)
+    real_type x_eye
+    = (-z_eye  / projMatrix.Get(0, 0)) *
+       (a_xyzNDC[0] + projMatrix.Get(0, 2) + (projMatrix.Get(0, 3) / z_eye) );
+
+    // y_eye = -z_eye/P_11(x_NDC + P_21 + P31/z_eye)
+    real_type y_eye =
+      (-z_eye / projMatrix.Get(1, 1)) *
+       (a_xyzNDC[1] + projMatrix.Get(1, 2) + (projMatrix.Get(1, 3) / z_eye) );
+
+    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
+    Vector3<real_type> rayDir(rayOrigin);
+    rayDir.Normalize();
+
+    return ray_type(typename ray_type::origin(rayOrigin),
+                    typename ray_type::direction(rayDir));
   }
 
   //------------------------------------------------------------------------

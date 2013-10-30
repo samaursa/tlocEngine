@@ -105,14 +105,14 @@ namespace TestingVector4f
 
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
-    c.Zero();
+    c.MakeZero();
     c *= a;
     CHECK_VEC4F(c, 0, 0, 0, 0); //-V550
     c = b; c *= b;
     CHECK_VEC4F(c, 25.0f, 36.0f, 49.0f, 64.0f); //-V550
 
     // Multiplication double
-    c.Zero(); c = a * b;
+    c.MakeZero(); c = a * b;
     CHECK_VEC4F(c, 5.0f, 12.0f, 21.0f, 32.0f); //-V550
 
     // Multiplication single

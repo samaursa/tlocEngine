@@ -77,9 +77,9 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Modifiers
 
-    void        Zero();
-    void        Negate();
-    void        Negate(const this_type& a_vector);
+    void        MakeZero();
+    this_type   Inverse() const;
+    void        Inverse(const this_type& a_vector);
 
     //------------------------------------------------------------------------
     // Math Operations

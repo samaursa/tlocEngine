@@ -44,7 +44,7 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 1, 2);
     CHECK_VEC2F(a, 1, 2);
 
-    c.Zero();
+    c.MakeZero();
     CHECK_VEC2F(c, 0, 0);
 
     d = a; e = b; d.Swap(e);
@@ -95,7 +95,7 @@ namespace TestingVector2f
     CHECK_VEC2F(a, BIG_FLOAT, BIG_FLOAT);
 #undef BIG_FLOAT
 
-    a.Zero();
+    a.MakeZero();
     CHECK_VEC2F(a, 0, 0);
   }
 
@@ -126,7 +126,7 @@ namespace TestingVector2f
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
 
-    c.Zero();
+    c.MakeZero();
     c = c.Mul(a);
     CHECK_VEC2F(c, 0, 0);
     c = b;
@@ -167,7 +167,7 @@ namespace TestingVector2f
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
 
-    c.Zero();
+    c.MakeZero();
     c *= a;
     CHECK_VEC2F(c, 0, 0);
     c = b; c *= b;

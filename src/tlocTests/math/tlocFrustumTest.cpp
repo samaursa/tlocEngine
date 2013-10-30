@@ -123,6 +123,13 @@ namespace TestingFrustum
       CHECK(ray.GetOrigin()[0] == Approx( -tan( horFov / 2.0f ) * -5.0f ) );
       CHECK(ray.GetOrigin()[1] == Approx( -tan( verFov / 2.0f ) * -5.0f ) );
       CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
+
+      math_proj::Frustum frBase(fr);
+      ray = frBase.GetRay(xyz);
+
+      CHECK(ray.GetOrigin()[0] == Approx( -tan( horFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[1] == Approx( -tan( verFov / 2.0f ) * -5.0f ) );
+      CHECK(ray.GetOrigin()[2] == Approx( -5.0f ) );
     }
   }
 
@@ -213,11 +220,25 @@ namespace TestingFrustum
       CHECK(ray.GetOrigin()[0] == Approx(-4.0f/3.0f));
       CHECK(ray.GetOrigin()[1] == Approx(-1.0f));
       CHECK(ray.GetOrigin()[2] == Approx(-0.1f));
+
+      math_proj::Frustum frBase(fr);
+      ray = fr.GetRay(xyz);
+
+      CHECK(ray.GetOrigin()[0] == Approx(-4.0f/3.0f));
+      CHECK(ray.GetOrigin()[1] == Approx(-1.0f));
+      CHECK(ray.GetOrigin()[2] == Approx(-0.1f));
     }
 
     {
       math_t::Vec3f xyz(scx.ScaleDown(1024.0f), scy.ScaleDown(768.0f), -1.0f);
       math_t::Ray3f ray = fr.GetRay(xyz);
+
+      CHECK(ray.GetOrigin()[0] == Approx(4.0f/3.0f));
+      CHECK(ray.GetOrigin()[1] == Approx(1.0f));
+      CHECK(ray.GetOrigin()[2] == Approx(-0.1f));
+
+      math_proj::Frustum frBase(fr);
+      ray = fr.GetRay(xyz);
 
       CHECK(ray.GetOrigin()[0] == Approx(4.0f/3.0f));
       CHECK(ray.GetOrigin()[1] == Approx(1.0f));

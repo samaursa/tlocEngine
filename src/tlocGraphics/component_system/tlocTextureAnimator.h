@@ -22,10 +22,35 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::Component_T<TextureAnimator, components::texture_animator>
   {
   public:
+    struct CoordSet
+    {
+      CoordSet();
+      CoordSet(const CoordSet& a_other);
+      explicit CoordSet(const TextureCoords& a_coords);
+
+      CoordSet& operator=(const CoordSet& a_other)
+      {
+        CoordSet temp(a_other);
+        core::swap(m_coords,    temp.m_coords);
+        core::swap(m_frameDeltaT,       temp.m_frameDeltaT);
+        core::swap(m_startTime, temp.m_startTime);
+        core::swap(m_flags,     temp.m_flags);
+
+        return *this;
+      }
+
+      TextureCoords           m_coords;
+      tl_float                m_frameDeltaT;
+      f64                     m_startTime;
+      f64                     m_totalTime;
+      core_utils::Checkpoints m_flags;
+    };
+
+  public:
     typedef TextureAnimator                                       this_type;
     typedef Component_T<this_type, components::texture_animator>  base_type;
     typedef f32                                                   real_type;
-    typedef TextureCoords                                         coord_set;
+    typedef CoordSet                                              coord_set;
     typedef gfx_t::Dimension2u                                    dim_type;
     typedef tl_size                                               size_type;
 
@@ -34,13 +59,13 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     TextureAnimator();
 
-    void            AddSpriteSet(const coord_set& a_coords);
-    void            ModifySpriteSet(const coord_set& a_coords,
+    void            AddSpriteSet(const TextureCoords& a_coords);
+    void            ModifySpriteSet(const TextureCoords& a_coords,
                                     size_type a_index);
-    void            RemoveSpriteCoord(size_type a_index);
+    void            RemoveSpriteSet(size_type a_index);
 
-    coord_set       GetSpriteSet(size_type a_index);
-    const coord_set GetSpriteSet(size_type a_index) const;
+    TextureCoords&       GetSpriteSet(size_type a_index);
+    const TextureCoords& GetSpriteSet(size_type a_index) const;
 
     void            NextFrame();
     void            PrevFrame();
@@ -48,41 +73,31 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSets, m_coordSets.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSetIndex, m_currentSet);
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetFPS, m_fps);
-    TLOC_DECL_AND_DEF_GETTER(f64,  GetStartTime, m_startTime);
-    TLOC_DECL_AND_DEF_GETTER(dim_type,  GetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetTotalTime, m_coordSets[m_currentSet].m_totalTime);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetFrameDeltaT, m_coordSets[m_currentSet].m_frameDeltaT);
 
     TLOC_DECL_GETTER(bool, IsLooping);
     TLOC_DECL_GETTER(bool, IsPaused);
     TLOC_DECL_GETTER(bool, IsStopped);
     TLOC_DECL_GETTER(bool, IsSpriteSetChanged);
+    TLOC_DECL_GETTER(size_type, GetFPS);
 
-    TLOC_DECL_AND_DEF_SETTER(size_type, SetFPS, m_fps);
-    TLOC_DECL_AND_DEF_SETTER(f64,  SetStartTime, m_startTime);
-    TLOC_DECL_AND_DEF_SETTER(dim_type,  SetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE
+      (f64,  SetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE
+      (f64,  SetTotalTime, m_coordSets[m_currentSet].m_totalTime);
 
-    TLOC_DECL_SETTER(bool, SetLooping);
-    TLOC_DECL_SETTER(bool, SetPaused);
-    TLOC_DECL_SETTER(bool, SetStopped);
-    TLOC_DECL_SETTER(bool, SetSpriteSetChanged);
-    TLOC_DECL_SETTER(size_type, SetCurrentSpriteSet);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetLooping);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetStopped);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetSpriteSetChanged);
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentSpriteSet);
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetFPS);
 
   private:
     cont_type         m_coordSets;
     size_type         m_currentSet;
-    size_type         m_fps;
-    f64               m_startTime;
-    dim_type          m_dimensions;
-
-    core_utils::Checkpoints m_flags;
-
-    // padding
-
-    // in animation ->  list of numbers (go from one frame to another in any order)
-    // in animation -> current frame
-    // time interval -> deltaT for the whole animation?
-    // duration OR FPS
-    // loop -> bool
   };
 
   //------------------------------------------------------------------------

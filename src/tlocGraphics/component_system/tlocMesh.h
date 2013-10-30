@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::Component_T
       <this_type,
        vertex_storage_policy::k_component_id>             base_type;
-    
+
   public:
     Mesh_T();
 
@@ -36,6 +36,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_primitive_type::GetVertex;
     using base_primitive_type::ModifyVertex;
     using base_primitive_type::size;
+    using base_primitive_type::clear;
 
     TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetPosAttribute, m_posAttr);
     TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetNormAttribute, m_normAttr);

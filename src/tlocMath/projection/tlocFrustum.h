@@ -55,6 +55,7 @@ namespace tloc { namespace math { namespace proj {
     typedef math::types::Matrix4<real_type>             matrix_type;
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
+    typedef types::Ray_T<real_type, 3>                  ray_type;
 
   public:
     Frustum_TI(const this_type& a_other);
@@ -62,6 +63,8 @@ namespace tloc { namespace math { namespace proj {
 
     template <typename T_Plane>
     real_type GetPlane() const;
+
+    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
                                           GetProjectionMatrix, m_projMatrix);

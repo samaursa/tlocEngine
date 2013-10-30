@@ -22,7 +22,10 @@ namespace tloc { namespace prefab { namespace graphics {
                            SpriteLoaderIterator a_begin,
                            SpriteLoaderIterator a_end,
                            bool a_loop,
-                           tl_size a_fps);
+                           tl_size a_fps,
+                           tl_size a_setIndex,
+                           tl_size a_startingFrame,
+                           bool a_paused);
 
   };
 
@@ -31,6 +34,7 @@ namespace tloc { namespace prefab { namespace graphics {
   {
   public:
     typedef SpriteAnimation       this_type;
+    typedef tl_size               size_type;
 
   public:
     SpriteAnimation(core_cs::EntityManager*  a_entMgr,
@@ -38,6 +42,9 @@ namespace tloc { namespace prefab { namespace graphics {
                     : Prefab_I(a_entMgr, a_poolMgr)
                     , m_loop(true)
                     , m_fps(24)
+                    , m_startingFrame(0)
+                    , m_paused(false)
+                    , m_setIndex(0)
     { }
 
     template <typename SpriteLoaderIterator>
@@ -55,11 +62,48 @@ namespace tloc { namespace prefab { namespace graphics {
         SpriteLoader_SpriteSheetPacker::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, m_loop, m_fps);
+                                 a_begin, a_end, m_loop, m_fps, m_setIndex,
+                                 m_startingFrame, m_paused);
     }
 
-    TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
-    TLOC_DECL_PARAM_VAR(tl_size, Fps, m_fps);
+    template <typename T_ContOfSpriteLoaderItrBeginEndPair>
+    void
+      Add(entity_type* a_entity,
+          T_ContOfSpriteLoaderItrBeginEndPair a_spriteLoaderIterators)
+    {
+      using namespace gfx_med;
+      using namespace p_sprite_loader::parser;
+
+      typedef T_ContOfSpriteLoaderItrBeginEndPair           cont_type;
+      typedef typename cont_type::value_type                pair_type;
+      typedef typename pair_type::first_type                pair_type_first;
+      typedef typename pair_type::second_type               pair_type_second;
+
+      typedef typename cont_type::iterator                  itr_type;
+
+      type_traits::AssertTypeIsSupported
+        <pair_type_first,
+         SpriteLoader_SpriteSheetPacker::iterator,
+         SpriteLoader_SpriteSheetPacker::const_iterator>();
+
+      type_traits::AssertTypeIsSupported
+        <pair_type_second,
+         SpriteLoader_SpriteSheetPacker::iterator,
+         SpriteLoader_SpriteSheetPacker::const_iterator>();
+
+      for (itr_type itr = a_spriteLoaderIterators.begin(),
+                    itrEnd = a_spriteLoaderIterators.end();
+                    itr != itrEnd; ++itr)
+      {
+        Add(a_entity, itr->first, itr->second);
+      }
+    }
+
+    TLOC_DECL_PARAM_VAR(bool,       Loop, m_loop);
+    TLOC_DECL_PARAM_VAR(tl_size,    Fps, m_fps);
+    TLOC_DECL_PARAM_VAR(size_type,  StartingFrame, m_startingFrame);
+    TLOC_DECL_PARAM_VAR(bool,       Paused, m_paused);
+    TLOC_DECL_PARAM_VAR(tl_size,    SetIndex, m_setIndex);
   };
 
 };};};

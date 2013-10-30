@@ -49,9 +49,10 @@ namespace tloc { namespace math { namespace component_system {
 
   public:
     Transform_T();
-    explicit Transform_T(const position_type& a_position);
-    explicit Transform_T(const position_type& a_position,
-                         const orientation_type& a_orientation);
+    explicit Transform_T
+      (const position_type& a_position,
+       const orientation_type& a_orientation = orientation_type::IDENTITY);
+    explicit Transform_T (const transform_type& a_tr);
 
     position_type     GetPosition() const;
     orientation_type  GetOrientation() const;
@@ -59,6 +60,9 @@ namespace tloc { namespace math { namespace component_system {
 
     void              SetPosition(const position_type& a_pos);
     void              SetOrientation(const orientation_type& a_ori);
+    void              SetTransformation(const transform_type& a_tr,
+                                        const scale_type& a_scale =
+                                        scale_type::ONE);
 
     this_type         Invert() const;
 

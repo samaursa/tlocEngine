@@ -1,6 +1,7 @@
 #include "tlocKeyboardImplWin.h"
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
@@ -154,6 +155,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     , m_keyboard(TLOC_NULL)
     , m_windowPtr(a_params.m_param1)
   {
+    core::fill(m_buffer, m_buffer + core_utils::ArraySize(m_buffer), false);
     DoInitialize();
   }
 

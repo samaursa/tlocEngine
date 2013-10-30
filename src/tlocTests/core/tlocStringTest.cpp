@@ -2,6 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 namespace TestingStrings
 {
@@ -75,6 +76,11 @@ namespace TestingStrings
     {
       String f(StringNoInitialize(), 10);
       CHECK(f.capacity() == 10);
+    }
+
+    {
+      String g(BufferArg("Hello"));
+      CHECK(StrCmp(g.c_str(), "Hello") == 0);
     }
 
     {// tests from cplusplus.com

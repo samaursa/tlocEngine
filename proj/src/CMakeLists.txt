@@ -9,6 +9,7 @@ function(add_common_libraries EXEC_NAME)
     tlocInput
     tlocPhysics
     tlocPrefab
+    tlocAnimation
     Box2D
     )
 
@@ -75,9 +76,9 @@ function(load_default_configurations)
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
   elseif(TLOC_COMPILER_XCODE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-rtti -Wno-unused-function" PARENT_SCOPE)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-rtti -Wno-unused-function -g" PARENT_SCOPE)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-rtti -Wno-unused-function" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-rtti -Wno-unused-function" PARENT_SCOPE)
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-rtti -Wno-unused-function -g" PARENT_SCOPE)
   else()
     message("Configuration not applied because compiler is unsupported (or not detected properly)")
   endif()
@@ -130,9 +131,9 @@ if(TLOC_COMPILER_MSVC)
   string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 elseif(TLOC_COMPILER_XCODE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-exceptions -fno-rtti -Wno-unused-function -g")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-exceptions -fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-exceptions -fno-rtti -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-exceptions -fno-rtti -Wno-unused-function -g")
   set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
 else()
   message("Configuration not applied because compiler is unsupported (or not detected properly)")
@@ -157,6 +158,7 @@ link_directories(
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
 
   ${TLOC_DEP_BUILD_PATH}/src/Box2D/
   )

@@ -9,6 +9,7 @@
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -277,7 +278,6 @@ namespace tloc { namespace graphics { namespace gl {
       return TLOC_ERROR(error::error_shader_program_enable);
     }
 
-    ResetTextureUnits();
     return ErrorSuccess;
   }
 

@@ -10,13 +10,6 @@ namespace tloc { namespace core { namespace types {
               , m_object(nullptr)
   { }
 
-  Any::Any( const char* a_other )
-    : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
-    , m_object(nullptr)
-  {
-    Assign(a_other);
-  }
-
   Any::Any( const this_type& a_other )
     : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
     , m_object(nullptr)

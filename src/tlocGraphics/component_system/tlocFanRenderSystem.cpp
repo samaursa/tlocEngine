@@ -8,8 +8,8 @@
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
-
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -27,13 +27,12 @@ namespace tloc { namespace graphics { namespace component_system {
   typedef FanRenderSystem::error_type    error_type;
 
   //////////////////////////////////////////////////////////////////////////
-  // QuadRenderSystem
+  // FanRenderSystem
 
   FanRenderSystem::FanRenderSystem
     (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::fan))
-     , m_sharedCam(nullptr)
      , m_vertList(new vec3_cont_type())
   {
     //
@@ -51,37 +50,19 @@ namespace tloc { namespace graphics { namespace component_system {
     m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
-  void FanRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
-  {
-    m_sharedCam = a_cameraEntity;
-
-    // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
-      "The passed entity is not a camera!");
-  }
-
-  error_type FanRenderSystem::Pre_Initialize()
-  { return ErrorSuccess; }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type FanRenderSystem::InitializeEntity(const entity_manager*,
                                                const entity_type* )
   { return ErrorSuccess; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
                                              const entity_type*)
   { return ErrorSuccess; }
 
-  void FanRenderSystem::Pre_ProcessActiveEntities(f64)
-  {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
-    {
-      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
-    }
-    else
-    {
-      m_vpMatrix.MakeIdentity();
-    }
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void FanRenderSystem::ProcessEntity(const entity_manager*,
                                       const entity_type* a_ent,
@@ -114,9 +95,14 @@ namespace tloc { namespace graphics { namespace component_system {
       const f32 angleInterval = 360.0f/numSides;
 
       math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
-      const Mat4f32& tMatrix = posPtr->GetTransformation().Cast<Mat4f32>();
 
-      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
+      Mat4f32 tMatrix;
+      if (ent->HasComponent(components::scene_node))
+      { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+      else
+      { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
+
+      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
 
       m_uniVpMat->SetValueAs(tFinalMat);
 
@@ -151,14 +137,17 @@ namespace tloc { namespace graphics { namespace component_system {
         gfx_cs::TextureCoords* texCoordPtr =
           ent->GetComponent<gfx_cs::TextureCoords>();
 
-        gfx_cs::TextureCoords::cont_type_sptr
-          texCoordCont = texCoordPtr->GetCoords
-          (set_index(texCoordPtr->GetCurrentSet()) );
+        if (texCoordPtr->GetNumSets())
+        {
+          gfx_cs::TextureCoords::cont_type_sptr
+            texCoordCont = texCoordPtr->GetCoords
+            (set_index(texCoordPtr->GetCurrentSet()) );
 
-        m_tData->SetVertexArray
-          (texCoordCont, gl::p_shader_variable_ti::Shared() );
+          m_tData->SetVertexArray
+            (texCoordCont, gl::p_shader_variable_ti::Shared() );
 
-        so_fan->AddAttribute(m_tData);
+          so_fan->AddAttribute(m_tData);
+        }
       }
 
       //------------------------------------------------------------------------
@@ -200,6 +189,8 @@ namespace tloc { namespace graphics { namespace component_system {
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void FanRenderSystem::Post_ProcessActiveEntities(f64)
   {

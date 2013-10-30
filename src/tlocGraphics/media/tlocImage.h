@@ -43,6 +43,7 @@ namespace tloc { namespace graphics { namespace media {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
+    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
                                           GetPixels, m_pixels);
 

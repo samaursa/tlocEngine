@@ -21,21 +21,8 @@ namespace tloc { namespace math { namespace component_system {
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
-    , m_scale(1, 1, 1)
+    , m_scale(scale_type::ONE)
   { }
-
-  template <TRANSFORM_TEMPS>
-  Transform_T<TRANSFORM_PARAMS>::
-    Transform_T(const position_type& a_position)
-    : base_type(base_type::k_component_type)
-    , m_transformation(1, 0, 0, 0,
-                       0, 1, 0, 0,
-                       0, 0, 1, 0,
-                       0, 0, 0, 1)
-    , m_scale(1, 1, 1)
-  {
-    SetPosition(a_position);
-  }
 
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
@@ -46,10 +33,19 @@ namespace tloc { namespace math { namespace component_system {
                        0, 1, 0, 0,
                        0, 0, 1, 0,
                        0, 0, 0, 1)
-    , m_scale(1, 1, 1)
+    , m_scale(scale_type::ONE)
   {
     SetPosition(a_position);
     SetOrientation(a_orientation);
+  }
+
+  template <TRANSFORM_TEMPS>
+  Transform_T<TRANSFORM_PARAMS>::
+    Transform_T(const transform_type& a_tr)
+    : base_type(base_type::k_component_type)
+    , m_transformation(a_tr)
+    , m_scale(scale_type::ONE)
+  {
   }
 
   template <TRANSFORM_TEMPS>
@@ -101,7 +97,8 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  void Transform_T<TRANSFORM_PARAMS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
     ::SetPosition(const position_type& a_pos)
   {
     this->SetUpdateRequired(true);
@@ -111,7 +108,8 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  void Transform_T<TRANSFORM_PARAMS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
     ::SetOrientation(const orientation_type& a_ori)
   {
     this->SetUpdateRequired(true);
@@ -129,7 +127,17 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
-  TRANSFORM_TYPE::this_type Transform_T<TRANSFORM_PARAMS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
+    ::SetTransformation(const transform_type& a_tr, const scale_type& a_scale)
+  {
+    m_transformation = a_tr;
+    m_scale = a_scale;
+  }
+
+  template <TRANSFORM_TEMPS>
+  TRANSFORM_TYPE::this_type
+    Transform_T<TRANSFORM_PARAMS>
     ::Invert() const
   {
     // from: http://stackoverflow.com/a/2625420/368599

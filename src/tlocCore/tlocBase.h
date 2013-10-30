@@ -149,7 +149,8 @@
   //------------------------------------------------------------------------
   // Typedef fix for compilers
   // This fix is temporary until we can figure out a way to remove typename
-  // limitations from VS
+  // limitations from VS (i.e. adding typedef to VS fails to compile, while
+  // removing typedef fails to compile on LLVM)
 #if defined(_MSC_VER)
 # define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
   typedef _type_ _alias_
@@ -193,7 +194,7 @@
 
 // Use nedmalloc
 #ifndef TLOC_USING_STD_ALLOC
-  #define TLOC_USING_NED_MALLOC
+  //#define TLOC_USING_NED_MALLOC
 #endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
@@ -301,8 +302,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
-#define S(x) #x
-#define S_(x) S(x)
+#define Setfram(x) #x
+#define S_(x) Setfram(x)
 #define S__LINE__ S_(__LINE__)
 
 //````````````````````````````````````````````````````````````````````````

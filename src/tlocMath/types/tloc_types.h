@@ -6,6 +6,7 @@
 #include <tlocMath/types/tlocAngle.h>
 #include <tlocMath/types/tlocAspectRatio.h>
 #include <tlocMath/types/tlocCircle.h>
+#include <tlocMath/types/tlocCuboid.h>
 #include <tlocMath/types/tlocFOV.h>
 #include <tlocMath/types/tlocRay.h>
 #include <tlocMath/types/tlocRectangle.h>

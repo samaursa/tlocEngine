@@ -6,13 +6,13 @@
 
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix4.h>
@@ -22,10 +22,10 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class QuadRenderSystem
-    : public core::component_system::EntityProcessingSystem
+    : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
   {
   public:
-    typedef core::component_system::EntityProcessingSystem    base_type;
+    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>       base_type;
     using base_type::component_type;
     using base_type::error_type;
 
@@ -47,19 +47,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gl::shader_program_sptr                           shader_prog_ptr;
 
+    typedef core_conts::ArrayFixed<gl::attribute_sptr, 4>     attributes_cont;
+
   public:
     QuadRenderSystem(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
 
-    void AttachCamera(const entity_type* a_cameraEntity);
-
-    virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
     virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent,
                                f64 a_deltaT);
@@ -71,18 +69,19 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
+    using base_type::GetCamera;
+    using base_type::GetViewProjectionMatrix;
+
   private:
     shader_prog_ptr     m_shaderPtr;
-    const entity_type*  m_sharedCam;
-    matrix_type         m_vpMatrix;
 
     gl::shader_operator_sptr m_mvpOperator;
     gl::uniform_sptr         m_uniVpMat;
 
     // Cache
-    vec3_cont_ptr      m_quadList;
+    vec3_cont_ptr       m_quadList;
     gl::attribute_sptr  m_vData;
-    gl::attribute_sptr  m_tData;
+    attributes_cont     m_tData;
   };
 
   //------------------------------------------------------------------------

@@ -50,6 +50,15 @@ namespace tloc { namespace graphics { namespace component_system {
       return m_vertexes->size();
     }
 
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      ArrayOfStructures::
+      clear()
+    {
+      m_vertexes->clear();
+    }
+
     // -----------------------------------------------------------------------
     // StructureOfArrays
 
@@ -115,6 +124,17 @@ namespace tloc { namespace graphics { namespace component_system {
                   "Strucure of arrays size mismatch. Check logic of AddVertex "
                   "and ModifyVertex methods");
       return m_positions->size();
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      StructureOfArrays::
+      clear()
+    {
+      m_positions->clear();
+      m_normals->clear();
+      m_tcoords->clear();
     }
 
   };

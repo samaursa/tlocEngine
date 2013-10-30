@@ -4,61 +4,64 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
-
 #include <tlocCore/error/tlocError.h>
-#include <tlocGraphics/error/tlocErrorTypes.h>
 
-// Taken from SFML (we will trust the paths they chose for diff. platforms
+namespace tloc { namespace graphics { namespace types {
 
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+  typedef s32                     gl_int;
+  typedef u32                     gl_uint;
+  typedef u32                     gl_enum;
+  typedef s32                     gl_sizei;
+  typedef f32                     gl_float;
+  typedef f64                     gl_double;
 
-# define WIN32_LEAN_AND_MEAN
-# include <windows.h>
-# include <3rdParty/Graphics/GLEW/glew.h>
-# include <GL/gl.h>
-# include <GL/glu.h>
-
-#elif defined(TLOC_LINUX)
-
-# include <GL/gl.h>
-# include <GL/glu.h>
-
-#elif defined(TLOC_OS_MAC)
-
-# include <OpenGL/gl.h>
-# include <OpenGl/glu.h>
-
-#elif defined(TLOC_OS_IPHONE)
-
-# include <OpenGLES/ES2/gl.h>
-
-#endif
+};};};
 
 namespace tloc { namespace graphics { namespace gl {
 
+  // ///////////////////////////////////////////////////////////////////////
+  // InitializePlatform()
+
+  core_err::Error
+    InitializePlatform();
+  bool
+    IsPlatformInitialized();
+
+  // ///////////////////////////////////////////////////////////////////////
+  // OpenGL get functions (safely wrapped)
+
   namespace p_get
   {
+    using gfx_t::gl_int;
+    using gfx_t::gl_float;
+    using gfx_t::gl_double;
+
     namespace priv
     {
-      extern void DoGet(GLint&     a_out, const GLint a_paramName);
-      extern void DoGet(GLint*&    a_out, const GLint a_paramName);
-      extern void DoGet(GLfloat&   a_out, const GLint a_paramName);
-      extern void DoGet(GLfloat*&  a_out, const GLint a_paramName);
+      void DoGet(gl_int&     a_out, const gl_int a_paramName);
+      void DoGet(gl_int*&    a_out, const gl_int a_paramName);
+      void DoGet(gl_float&   a_out, const gl_int a_paramName);
+      void DoGet(gl_float*&  a_out, const gl_int a_paramName);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
-      extern void DoGet(GLdouble&  a_out, const GLint a_paramName);
-      extern void DoGet(GLdouble*& a_out, const GLint a_paramName);
+      extern void DoGet(gl_double&  a_out, const gl_int a_paramName);
+      extern void DoGet(gl_double*& a_out, const gl_int a_paramName);
 #endif
     };
 
     struct CurrentProgram
     {
-      typedef GLint value_type;
+      typedef gl_int      value_type;
       static const value_type s_glParamName;
     };
     struct MaxCombinedTextureImageUnits
     {
-      typedef GLint value_type;
+      typedef gl_int      value_type;
+      static const value_type s_glParamName;
+    };
+    struct MaxVertexAttribs
+    {
+      typedef gl_int      value_type;
       static const value_type s_glParamName;
     };
   };
@@ -75,10 +78,19 @@ namespace tloc { namespace graphics { namespace gl {
     return toRet;
   }
 
-  GLint                GetActiveTextureUnit();
-  core_err::Error      ActivateNextAvailableTextureUnit();
-  void                 ActivateTextureUnit(GLint a_texUnit);
-  void                 ResetTextureUnits();
+  // Texture image units start from GL_TEXTURE0 and go all the way to
+  // GL_TEXTURE0 + max_units - 1
+  gfx_t::gl_int        GetActiveTextureImageUnit();
+  core_err::Error      GetNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut);
+  void                 RecycleTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+  void                 ActivateTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+  bool                 IsValidTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+
+  // Texture units start from 0 to max_units - 1
+  bool                 IsValidTextureUnit(gfx_t::gl_int a_texUnit);
+ gfx_t::gl_int         GetTextureUnitFromTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+
+
 
 };};};
 

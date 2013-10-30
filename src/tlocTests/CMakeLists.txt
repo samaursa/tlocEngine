@@ -24,6 +24,7 @@ set(tlocAllTests
   tlocTestsInput
   tlocTestsMath
   tlocTestsPhysics
+  tlocTestsAnimation
   )
 
 add_definitions(
@@ -41,6 +42,7 @@ add_subdirectory(graphics)
 add_subdirectory(input)
 add_subdirectory(math)
 add_subdirectory(physics)
+add_subdirectory(animation)
 
 if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})

@@ -5,10 +5,12 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
 
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -30,36 +32,11 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>
                 (mesh_type::vertex_storage_policy::k_component_id) )
-    , m_sharedCam(nullptr)
   {
     m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
 
     m_mvpOperator.reset(new gl::ShaderOperator());
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  void
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    AttachCamera(const entity_type* a_cameraEntity)
-  {
-    m_sharedCam = a_cameraEntity;
-
-    // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
-      "The passed entity is not a camera!");
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    Pre_Initialize()
-  {
-    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -103,23 +80,6 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    Pre_ProcessActiveEntities(f64)
-  {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
-    {
-      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
-    }
-    else
-    {
-      m_vpMatrix.MakeIdentity();
-    }
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  void
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     ProcessEntity(const entity_manager* , const entity_type* a_ent, f64)
   {
     using namespace core_cs;
@@ -140,11 +100,13 @@ namespace tloc { namespace graphics { namespace component_system {
     math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
     mesh_type*          meshPtr = ent->GetComponent<Mesh_T>();
 
+    Mat4f32 tMatrix;
+    if (ent->HasComponent(components::scene_node))
+    { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+    else
+    { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
-    const Mat4f32& tMatrix =
-      posPtr->GetTransformation().Cast<Mat4f32>();
-
-    Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
+    Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
 
     // Generate the mvp matrix
     m_uniVpMat->SetValueAs(tFinalMat);
@@ -158,8 +120,6 @@ namespace tloc { namespace graphics { namespace component_system {
     so_mesh->AddAttribute(meshPtr->GetPosAttribute());
     so_mesh->AddAttribute(meshPtr->GetNormAttribute());
     so_mesh->AddAttribute(meshPtr->GetTCoordAttribute());
-
-    TLOC_UNUSED_2(matPtr, numVertices);
 
     mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
 

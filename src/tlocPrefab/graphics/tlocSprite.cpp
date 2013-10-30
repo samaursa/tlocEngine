@@ -15,7 +15,10 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          SpriteLoaderIterator a_begin,
                          SpriteLoaderIterator a_end,
                          bool a_loop,
-                         tl_size a_fps)
+                         tl_size a_fps,
+                         tl_size a_setIndex,
+                         tl_size a_startingFrame,
+                         bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
 
@@ -25,15 +28,29 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     typedef gfx_cs::texture_animator_sptr_pool      ta_pool;
     gfx_cs::texture_animator_sptr_pool_sptr         taPool;
 
-    if (a_poolMgr->Exists(texture_animator) == false)
-    { taPool = a_poolMgr->CreateNewPool<texture_animator_sptr>(); }
+    gfx_cs::TextureAnimator* ta = nullptr;
+
+    const tl_size size = a_entity->GetComponents(texture_animator).size();
+
+    if (size && a_setIndex < size)
+    {
+      ta = a_entity->GetComponent<TextureAnimator>(a_setIndex);
+    }
     else
-    { taPool = a_poolMgr->GetPool<texture_animator_sptr>(); }
+    {
+      if (a_poolMgr->Exists(texture_animator) == false)
+      { taPool = a_poolMgr->CreateNewPool<texture_animator_sptr>(); }
+      else
+      { taPool = a_poolMgr->GetPool<texture_animator_sptr>(); }
 
-    ta_pool::iterator itrTa = taPool->GetNext();
-    itrTa->SetValue(texture_animator_sptr(new TextureAnimator()) );
+      ta_pool::iterator itrTa = taPool->GetNext();
+      itrTa->SetValue(texture_animator_sptr(new TextureAnimator()) );
 
-    texture_animator_sptr taPtr = itrTa->GetValue();
+      texture_animator_sptr taPtr = itrTa->GetValue();
+      ta = taPtr.get();
+
+      a_mgr->InsertComponent(a_entity, ta);
+    }
 
     TextureCoords tcoord;
     for (int i = 0; a_begin != a_end; ++i, ++a_begin)
@@ -52,11 +69,19 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                                               TextureCoords::set_index(i));
     }
 
-    taPtr->AddSpriteSet(tcoord);
-    taPtr->SetLooping(a_loop);
-    taPtr->SetFPS(a_fps);
+    TLOC_ASSERT_NOT_NULL(ta);
 
-    a_mgr->InsertComponent(a_entity, taPtr.get() );
+    const TextureAnimator::size_type currSetIndex =
+      ta->GetCurrentSpriteSetIndex();
+
+    ta->AddSpriteSet(tcoord);
+    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
+    ta->SetLooping(a_loop);
+    ta->SetFPS(a_fps);
+    ta->SetFrame(a_startingFrame);
+    ta->SetPaused(a_paused);
+
+    ta->SetCurrentSpriteSet(currSetIndex);
   }
 
   //------------------------------------------------------------------------
@@ -69,7 +94,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size);
+     bool, tl_size, tl_size, tl_size, bool);
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
@@ -78,6 +103,6 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size);
+     bool, tl_size, tl_size, tl_size, bool);
 
 };};};};

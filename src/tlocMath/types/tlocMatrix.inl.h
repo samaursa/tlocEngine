@@ -274,10 +274,7 @@ namespace tloc { namespace math { namespace types {
     Matrix<MATRIX_PARAMS>::
     operator+ (const this_type& a_matrix) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Add(a_matrix);
-
+    this_type returnMat = Add(a_matrix);
     return returnMat;
   }
 

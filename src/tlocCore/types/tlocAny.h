@@ -131,7 +131,6 @@ namespace tloc { namespace core { namespace types {
 
   public:
     Any();
-    Any(const char* a_other);
     Any(const this_type& a_other);
 
     template <typename T>
@@ -167,7 +166,7 @@ namespace tloc { namespace core { namespace types {
     void*             m_object;
   };
 
-  //--
+  // -----------------------------------------------------------------------
   // swap function
 
   TL_I void swap(Any& a, Any& b)

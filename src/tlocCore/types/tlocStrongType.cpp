@@ -2,6 +2,8 @@
 #include "tlocStrongType.inl.h"
 
 #include "tlocStrongTypeExplicitMacros.h"
+  TLOC_INSTANTIATE_STRONG_TYPE(bool);
+
   TLOC_INSTANTIATE_STRONG_TYPE(s8);
   TLOC_INSTANTIATE_STRONG_TYPE(u8);
 

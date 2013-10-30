@@ -75,7 +75,7 @@ int TLOC_MAIN(int argc, char *argv[])
 #endif
 
     shaderPath = GetAssetsPath() + shaderPath;
-    core_io::FileIO_ReadA shaderFile(shaderPath.c_str());
+    core_io::FileIO_ReadA shaderFile( (core_io::Path(shaderPath)) );
 
     if (shaderFile.Open() != ErrorSuccess)
     { printf("\nUnable to open the vertex shader"); return 1;}
@@ -92,7 +92,7 @@ int TLOC_MAIN(int argc, char *argv[])
 #endif
 
     shaderPath = GetAssetsPath() + shaderPath;
-    core_io::FileIO_ReadA shaderFile(shaderPath.c_str());
+    core_io::FileIO_ReadA shaderFile( (core_io::Path(shaderPath)) );
 
     if (shaderFile.Open() != ErrorSuccess)
     { printf("\nUnable to open the fragment shader"); return 1;}
@@ -141,7 +141,8 @@ int TLOC_MAIN(int argc, char *argv[])
   math_t::Rectf rect(math_t::Rectf::width(1.0f * 1.5f),
                      math_t::Rectf::height(win.GetAspectRatio().Get() * 1.5f ) );
 
-  core_cs::Entity* q = prefab_gfx::CreateQuad(*entityMgr.get(), cpoolMgr, rect);
+  core_cs::Entity* q = prefab_gfx::Quad(entityMgr.get(), &cpoolMgr).
+    Dimensions(rect).Create();
   entityMgr->InsertComponent(q, &mat);
 
   //------------------------------------------------------------------------

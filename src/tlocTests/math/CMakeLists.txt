@@ -3,6 +3,7 @@ set(TLOC_TESTS_MATH
   tlocAngleTest.cpp
   tlocCircleTest.cpp
   tlocContiguityTest.cpp
+  tlocCuboidTest.cpp
   tlocFOVTest.cpp
   tlocFrustumTest.cpp
   tlocMathTest.cpp

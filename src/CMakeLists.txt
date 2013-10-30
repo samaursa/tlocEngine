@@ -50,6 +50,7 @@ set(tlocAllLibraries
   tlocMath 
   tlocPhysics 
   tlocPrefab
+  tlocAnimation
   )
 
 foreach(lib ${tlocAllLibraries})

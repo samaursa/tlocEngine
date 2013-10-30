@@ -12,6 +12,8 @@ namespace tloc { namespace math { namespace types {
 
   namespace priv {
 
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     template <typename T_Real>
     typename Rectangle_T<T_Real>::point_type
       DoGetCoord(const Rectangle_T<T_Real>& a_rect,
@@ -24,6 +26,8 @@ namespace tloc { namespace math { namespace types {
       return point_type(a_rect.template GetValue<typename rect_type::left>(),
                         a_rect.template GetValue<typename rect_type::top>());
     }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     template <typename T_Real>
     typename Rectangle_T<T_Real>::point_type
@@ -38,6 +42,8 @@ namespace tloc { namespace math { namespace types {
                         a_rect.template GetValue<typename rect_type::top>());
     }
 
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     template <typename T_Real>
     typename Rectangle_T<T_Real>::point_type
       DoGetCoord(const Rectangle_T<T_Real>& a_rect,
@@ -50,6 +56,8 @@ namespace tloc { namespace math { namespace types {
       return point_type(a_rect.template GetValue<typename rect_type::left>(),
                         a_rect.template GetValue<typename rect_type::bottom>());
     }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     template <typename T_Real>
     typename Rectangle_T<T_Real>::point_type
@@ -69,12 +77,16 @@ namespace tloc { namespace math { namespace types {
 #define TLOC_RECTANGLE_PARAMS T
 #define TLOC_RECTANGLE_TYPE typename Rectangle_T<TLOC_RECTANGLE_PARAMS>
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Rectangle_T()
     : m_dimensions(0.0f, 0.0f)
     , m_position(0, 0)
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
@@ -83,6 +95,8 @@ namespace tloc { namespace math { namespace types {
     , m_position(a_pos)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Rectangle_T(left a_l, right a_r, top a_t, bottom a_b)
@@ -90,21 +104,52 @@ namespace tloc { namespace math { namespace types {
     , m_position( (a_l + a_r) * 0.5f, (a_t + a_b) * 0.5f )
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TEMP>
+  Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    Rectangle_T(const point_type& a_start, const point_type& a_end)
+    : m_dimensions( (a_end[0] - a_start[0]), (a_end[1] - a_start[1]) )
+    , m_position( (a_end[0] + a_start[0]) * 0.5f, (a_end[1] + a_start[1]) * 0.5f )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::this_type&
-    Rectangle_T<TLOC_RECTANGLE_PARAMS>::operator= (const this_type& a_other)
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    operator= (const this_type& a_other)
   {
-    m_dimensions = a_other.m_dimensions;
-    m_position = a_other.m_position;
+    this_type temp(a_other);
+    swap(temp);
+
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    swap(this_type& a_rect)
+  {
+    using core::swap;
+
+    swap(m_dimensions, a_rect.m_dimensions);
+    swap(m_position, a_rect.m_position);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TEMP>
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     operator ==(const this_type& a_other) const
   {
     return m_dimensions == a_other.m_dimensions && m_position == a_other.m_position;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::real_type
@@ -112,59 +157,91 @@ namespace tloc { namespace math { namespace types {
     GetWidth() const
   { return m_dimensions[width::k_index]; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   TLOC_RECTANGLE_TYPE::real_type
     Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetHeight() const
   { return m_dimensions[height::k_index]; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  void Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     SetWidth(real_type a_value)
   { m_dimensions[width::k_index] = a_value; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  void Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     SetHeight(real_type a_value)
   { m_dimensions[height::k_index] = a_value; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetCoord_TopLeft() const
   { return DoGetCoord<top, left>(); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetCoord_TopRight() const
   { return DoGetCoord<top, right>(); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetCoord_BottomLeft() const
   { return DoGetCoord<bottom, left>(); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetCoord_BottomRight() const
   { return DoGetCoord<bottom, right>(); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  void Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     SetPosition(const point_type& a_centerPosition)
   { m_position = a_centerPosition; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  void Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     ResetPosition()
   { m_position.Set(0); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  void Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  void
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Offset(const point_type& a_offsetBy)
   { m_position += a_offsetBy; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Contains(const point_type &a_xyPoint)
   {
     return (a_xyPoint[0] >= GetValue<left>()    ) &&
@@ -173,31 +250,45 @@ namespace tloc { namespace math { namespace types {
            (a_xyPoint[1] >= GetValue<bottom>()  );
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     GetPosition() const
   { return m_position; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     IsValid() const
   {
     return m_dimensions[width::k_index] > 0 &&
            m_dimensions[height::k_index] > 0;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Intersects(const this_type& a_other) const
   {
-    Rectangle_T temp;
+    this_type temp;
     return Intersects(a_other, temp);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     Intersects(const this_type& a_other, this_type& a_overlapOut) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     using namespace core;
 
     left    overL(tlMax(GetValue<left>()  , a_other.GetValue<left>()));
@@ -213,10 +304,15 @@ namespace tloc { namespace math { namespace types {
     { return false; }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  bool Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Intersects(const ray_type& a_ray) const
+  bool
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    Intersects(const ray_2d_type& a_ray) const
   {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
     const point_type& rayOrigin = a_ray.GetOrigin();
 
     // Since we are a 2D box, we assume our direction is +Z
@@ -231,8 +327,53 @@ namespace tloc { namespace math { namespace types {
     return true;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::real_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::intersect_ret_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+    Intersects(const ray_3d_type& a_ray, from_origin a_fo,
+               double_sided a_ds) const
+  {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
+    // following http://geomalgorithms.com/a05-_intersect-1.html
+
+    typedef typename ray_3d_type::vec_type           vec_type;
+
+    const vec_type& orig = a_ray.GetOrigin();
+    const vec_type& dir = a_ray.GetDirection();
+
+    const real_type dirDotNormal = dir.Dot(s_normal);
+
+    // Is the ray above the plane with same direction as plane normal or
+    // below the plane with the opposite direction as plane normal? Both
+    // conditions mean ray is not intersecting if from_origin
+    if (a_fo && ( (orig[2] < 0.0f && dirDotNormal < 0.0f) ||
+                  (orig[2] > 0.0f && dirDotNormal > 0.0f)) )
+    { return false; }
+
+    if (!a_ds && dirDotNormal >= 0.0f)
+    { return false; }
+
+    real_type sNumer = -(orig.Dot(s_normal));
+    real_type sDenom = dir.Dot(s_normal);
+
+    real_type s = sNumer / sDenom;
+
+    vec_type p = orig + (dir * s);
+
+    bool intersects = Intersects(ray_2d_type(typename ray_2d_type::origin
+      (p.template ConvertTo<typename ray_2d_type::vec_type>() )) );
+
+    return core::MakePair(intersects, p);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TEMP>
+  TLOC_RECTANGLE_TYPE::real_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     DoGetValue(tl_int a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL
@@ -254,9 +395,12 @@ namespace tloc { namespace math { namespace types {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TLOC_RECTANGLE_TEMP>
   template <typename T_Side1, typename T_Side2>
-  TLOC_RECTANGLE_TYPE::point_type Rectangle_T<TLOC_RECTANGLE_PARAMS>::
+  TLOC_RECTANGLE_TYPE::point_type
+    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
     DoGetCoord() const
   {
     return priv::DoGetCoord<real_type>(*this, T_Side1(0), T_Side2(0));
@@ -278,6 +422,5 @@ namespace tloc { namespace math { namespace types {
 
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32);
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64);
-  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f128);
 
 };};};

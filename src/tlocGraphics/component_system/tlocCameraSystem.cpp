@@ -49,9 +49,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // vMVP, but since we are doing column major, it becomes PVMv
 
-    m_vpMatrix =
-      a_ent->GetComponent<gfx_cs::Camera>()->
-      GetFrustumRef().GetProjectionMatrix().Cast<matrix_type>();
+    m_vpMatrix = a_ent->GetComponent
+      <gfx_cs::Camera>()->GetFrustumRef().GetProjectionMatrix();
 
     if (a_ent->HasComponent(transform))
     {

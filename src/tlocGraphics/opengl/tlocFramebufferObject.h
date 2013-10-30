@@ -14,18 +14,21 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace p_framebuffer_object {
 
-    struct FBOParamBase { };
+    namespace priv {
+      struct FBOPB { };
+    };
 
     namespace target {
 
       typedef s32   value_type;
 
-      struct TargetParamBase : public FBOParamBase
-      { static const value_type s_glParamName; };
+      namespace priv {
+        struct TPB : public p_framebuffer_object::priv::FBOPB { };
+      };
 
-      struct DrawFramebuffer : public TargetParamBase
+      struct DrawFramebuffer : public priv::TPB
       { static const value_type s_glParamName; };
-      struct ReadFramebuffer : public TargetParamBase
+      struct ReadFramebuffer : public priv::TPB
       { static const value_type s_glParamName;};
     };
 
@@ -33,11 +36,12 @@ namespace tloc { namespace graphics { namespace gl {
 
       typedef s32   value_type;
 
-      struct AttachmentParamBase : public FBOParamBase
-      { static const value_type s_glParamName;};
+      namespace priv {
+        struct APB : public p_framebuffer_object::priv::FBOPB { };
+      };
 
       template <value_type T_ColorAttachmentIndex>
-      struct ColorAttachment : public AttachmentParamBase
+      struct ColorAttachment : public priv::APB
       {
         enum { k_attachmentIndex = T_ColorAttachmentIndex };
 
@@ -47,15 +51,15 @@ namespace tloc { namespace graphics { namespace gl {
         static const value_type s_glParamName;
       };
 
-      struct Depth : public AttachmentParamBase
+      struct Depth : public priv::APB
       { static const value_type s_glParamName; };
-      struct Stencil : public AttachmentParamBase
+      struct Stencil : public priv::APB
       { static const value_type s_glParamName; };
-      struct DepthStencil : public AttachmentParamBase
+      struct DepthStencil : public priv::APB
       { static const value_type s_glParamName; };
     };
 
-    struct Default : public FBOParamBase { };
+    struct Default : public priv::FBOPB { };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -160,16 +164,14 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // Sanity checks
 
-    using namespace p_framebuffer_object::target;
-    using namespace p_framebuffer_object::attachment;
+    using namespace p_framebuffer_object::target::priv;
+    using namespace p_framebuffer_object::attachment::priv;
 
     TLOC_STATIC_ASSERT
-      ((Loki::Conversion<T_Target, TargetParamBase>::exists),
-       Invalid_target_param);
+      ((Loki::Conversion<T_Target, TPB>::exists), Invalid_target_param);
 
     TLOC_STATIC_ASSERT
-      ((Loki::Conversion<T_Attachment, AttachmentParamBase>::exists),
-       Invalid_attachment_param);
+      ((Loki::Conversion<T_Attachment, APB>::exists), Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();

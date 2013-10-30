@@ -11,22 +11,26 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 #define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
 #define WINDOW_IMPL_IPHONE_TYPE WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>
 
-  ///
+  //////////////////////////////////////////////////////////////////////////
   // Helper functions
 
-  OpenGLView* GetOpenGLView(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLView*>();
-  }
+  namespace {
 
-  UIWindow* GetUIWindow(const core_t::Any& a_any)
-  {
-    return a_any.Cast<UIWindow*>();
-  }
+    OpenGLView* GetOpenGLView(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLView*>();
+    }
+    
+    UIWindow* GetUIWindow(const core_t::Any& a_any)
+    {
+      return a_any.Cast<UIWindow*>();
+    }
+    
+    OpenGLViewController* GetViewController(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLViewController*>();
+    }
 
-  OpenGLViewController* GetViewController(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLViewController*>();
   }
 
   //////////////////////////////////////////////////////////////////////////

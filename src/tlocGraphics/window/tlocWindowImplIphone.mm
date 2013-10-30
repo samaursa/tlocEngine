@@ -71,8 +71,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::
-    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-           const window_style_type& a_style)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings)
   {
     // TODO: Since we save the settings, make it able to switch between
     // full screen and the user requested size
@@ -87,7 +86,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     UIScreen* currentScreen = [UIScreen mainScreen];
 
     [UIApplication sharedApplication].statusBarHidden =
-      (a_style & p_window_settings::style::TitleBar::s_glParamName) == false;
+      (a_settings.GetStyleBits() &
+       p_window_settings::style::TitleBar::s_glParamName) == false;
 
     // The window must take the screens bounds. This is since our view
     // automatically adjusts its size even when there is a title bar present.

@@ -40,7 +40,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame.reset(new rof_uptr::value_type(m_renderer.get()) );
+    m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -56,7 +56,6 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // explicit instantiations
 
-  template class RenderSystem_TI<gfx_rend::renderer_sptr>;
   template class RenderSystem_TI<gfx_rend::renderer_depth32_sptr>;
   template class RenderSystem_TI<gfx_rend::renderer_depth64_sptr>;
 

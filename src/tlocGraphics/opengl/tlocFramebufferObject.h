@@ -14,35 +14,48 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace p_framebuffer_object {
 
+    struct FBOParamBase { };
+
     namespace target {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
 
-      struct DrawFramebuffer      { static const value_type s_glParamName; };
-      struct ReadFramebuffer      { static const value_type s_glParamName; };
+      struct TargetParamBase : public FBOParamBase
+      { static const value_type s_glParamName; };
 
+      struct DrawFramebuffer : public TargetParamBase
+      { static const value_type s_glParamName; };
+      struct ReadFramebuffer : public TargetParamBase
+      { static const value_type s_glParamName;};
     };
 
     namespace attachment {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
+
+      struct AttachmentParamBase : public FBOParamBase
+      { static const value_type s_glParamName;};
 
       template <value_type T_ColorAttachmentIndex>
-      struct ColorAttachment
+      struct ColorAttachment : public AttachmentParamBase
       {
-        static const value_type   s_glParamName;
         enum { k_attachmentIndex = T_ColorAttachmentIndex };
 
         TLOC_STATIC_ASSERT(T_ColorAttachmentIndex >= 0,
                            Invalid_color_attachment_index);
+
+        static const value_type s_glParamName;
       };
 
-      struct Depth                { static const value_type s_glParamName; };
-      struct Stencil              { static const value_type s_glParamName; };
-      struct DepthStencil         { static const value_type s_glParamName; };
+      struct Depth : public AttachmentParamBase
+      { static const value_type s_glParamName; };
+      struct Stencil : public AttachmentParamBase
+      { static const value_type s_glParamName; };
+      struct DepthStencil : public AttachmentParamBase
+      { static const value_type s_glParamName; };
     };
 
-    struct Default { };
+    struct Default : public FBOParamBase { };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -103,12 +116,15 @@ namespace tloc { namespace graphics { namespace gl {
     static this_type& GetDefaultFramebuffer();
 
   private:
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    typedef p_framebuffer_object::target::value_type      target_value_type;
+    typedef p_framebuffer_object::attachment::value_type  attachment_value_type;
+
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const rbo_type& a_rbo);
 
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const to_type& a_to);
 
     // This constructor is temporary until we have a better solution on how
@@ -117,13 +133,6 @@ namespace tloc { namespace graphics { namespace gl {
     FramebufferObject(p_framebuffer_object::Default);
 
   private:
-    template <p_framebuffer_object::attachment::value_type T_Index>
-    void DoCheckAttachIndex
-      (p_framebuffer_object::attachment::ColorAttachment<T_Index>);
-
-    template <typename T>
-    void DoCheckAttachIndex(T);
-
     void DoCheckInternalFormatAgainstTargetAttachment
       ( p_framebuffer_object::target::value_type a_target,
         p_framebuffer_object::attachment::value_type a_attachment,
@@ -154,21 +163,16 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_framebuffer_object::target;
     using namespace p_framebuffer_object::attachment;
 
-    tloc::type_traits::AssertTypeIsSupported<T_Target,
-      DrawFramebuffer, ReadFramebuffer>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Target, TargetParamBase>::exists),
+       Invalid_target_param);
 
-    tloc::type_traits::AssertTypeIsSupported<T_Attachment,
-      ColorAttachment<0>, ColorAttachment<1>, ColorAttachment<2>,
-      ColorAttachment<3>, ColorAttachment<4>, ColorAttachment<5>,
-      ColorAttachment<6>, ColorAttachment<7>, ColorAttachment<8>,
-      ColorAttachment<9>, ColorAttachment<10>, ColorAttachment<11>,
-      ColorAttachment<12>, ColorAttachment<13>, ColorAttachment<14>,
-      ColorAttachment<15>, Depth, Stencil, DepthStencil>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Attachment, AttachmentParamBase>::exists),
+       Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();
-
-    DoCheckAttachIndex(T_Attachment());
 
     // -----------------------------------------------------------------------
     // Internal attach method
@@ -176,27 +180,6 @@ namespace tloc { namespace graphics { namespace gl {
     return DoAttach(T_Target::s_glParamName, T_Attachment::s_glParamName,
                     a_bufferObject);
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <p_framebuffer_object::attachment::value_type T_Index>
-  void
-    FramebufferObject::
-    DoCheckAttachIndex
-    (p_framebuffer_object::attachment::ColorAttachment<T_Index> )
-  {
-    using namespace p_framebuffer_object::attachment;
-
-    TLOC_STATIC_ASSERT(T_Index >= 0, Invalid_index_for_color_attachment);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T>
-  void
-    FramebufferObject::
-    DoCheckAttachIndex(T)
-  { /* do nothing */ }
 
   // -----------------------------------------------------------------------
   // typedefs

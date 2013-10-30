@@ -10,11 +10,46 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  namespace {
+
+    typedef types::gl_int   int_type;
+
+    int_type DoGetMaxColorAttachments();
+
+#if defined (TLOC_OS_WIN)
+
+    int_type
+      DoGetMaxColorAttachments()
+    {
+      int_type maxAttachments;
+      glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments)
+      return maxAttachments;
+    }
+
+#elif defined (TLOC_OS_IPHONE)
+
+    int_type
+      DoGetMaxColorAttachments()
+    { return 1; }
+
+#endif
+
+  }
+
   namespace p_framebuffer_object {
 
     namespace target {
+
+#if defined (TLOC_OS_WIN)
       const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER;
       const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER;
+#elif defined (TLOC_OS_IPHONE)
+      const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER_APPLE;
+      const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER_APPLE;
+#else
+# error "WIP"
+#endif
+
     };
 
     namespace attachment {
@@ -23,26 +58,87 @@ namespace tloc { namespace graphics { namespace gl {
       // ensure compatibility with platforms that do not have enough color
       // attachments. The color attachment is checked at runtime when attaching
       // texture or render buffers
-      const value_type  ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
-      const value_type  ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 1;
-      const value_type  ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 2;
-      const value_type  ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 3;
-      const value_type  ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 4;
-      const value_type  ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 5;
-      const value_type  ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 6;
-      const value_type  ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 7;
-      const value_type  ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 8;
-      const value_type  ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 9;
-      const value_type  ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT0 + 10;
-      const value_type  ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT0 + 11;
-      const value_type  ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT0 + 12;
-      const value_type  ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT0 + 13;
-      const value_type  ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT0 + 14;
-      const value_type  ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT0 + 15;
+#if defined (TLOC_OS_WIN)
+
+      template<> const value_type
+        ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
+      template<> const value_type
+        ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 1;
+      template<> const value_type
+        ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 2;
+      template<> const value_type
+        ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 3;
+      template<> const value_type
+        ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 4;
+      template<> const value_type
+        ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 5;
+      template<> const value_type
+        ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 6;
+      template<> const value_type
+        ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 7;
+      template<> const value_type
+        ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 8;
+      template<> const value_type
+        ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 9;
+      template<> const value_type
+        ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT0 + 10;
+      template<> const value_type
+        ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT0 + 11;
+      template<> const value_type
+        ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT0 + 12;
+      template<> const value_type
+        ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT0 + 13;
+      template<> const value_type
+        ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT0 + 14;
+      template<> const value_type
+        ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT0 + 15;
 
       const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
       const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
       const value_type  DepthStencil::s_glParamName = GL_DEPTH_STENCIL_ATTACHMENT;
+
+#elif defined (TLOC_OS_IPHONE)
+
+      template<> const value_type
+        ColorAttachment<0>::s_glParamName  = GL_COLOR_ATTACHMENT0;
+      template<> const value_type
+        ColorAttachment<1>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 1;
+      template<> const value_type
+        ColorAttachment<2>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 2;
+      template<> const value_type
+        ColorAttachment<3>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 3;
+      template<> const value_type
+        ColorAttachment<4>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 4;
+      template<> const value_type
+        ColorAttachment<5>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 5;
+      template<> const value_type
+        ColorAttachment<6>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 6;
+      template<> const value_type
+        ColorAttachment<7>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 7;
+      template<> const value_type
+        ColorAttachment<8>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 8;
+      template<> const value_type
+        ColorAttachment<9>::s_glParamName  = GL_COLOR_ATTACHMENT0 + 9;
+      template<> const value_type
+        ColorAttachment<10>::s_glParamName = GL_COLOR_ATTACHMENT0 + 10;
+      template<> const value_type
+        ColorAttachment<11>::s_glParamName = GL_COLOR_ATTACHMENT0 + 11;
+      template<> const value_type
+        ColorAttachment<12>::s_glParamName = GL_COLOR_ATTACHMENT0 + 12;
+      template<> const value_type
+        ColorAttachment<13>::s_glParamName = GL_COLOR_ATTACHMENT0 + 13;
+      template<> const value_type
+        ColorAttachment<14>::s_glParamName = GL_COLOR_ATTACHMENT0 + 14;
+      template<> const value_type
+        ColorAttachment<15>::s_glParamName = GL_COLOR_ATTACHMENT0 + 15;
+
+      const value_type  Depth::s_glParamName = GL_DEPTH_ATTACHMENT;
+      const value_type  Stencil::s_glParamName = GL_STENCIL_ATTACHMENT;
+      const value_type  DepthStencil::s_glParamName = 0;
+
+#else
+# error "WIP"
+#endif
     };
 
   };
@@ -54,7 +150,8 @@ namespace tloc { namespace graphics { namespace gl {
     Bind(const FramebufferObject* a_fbo)
   {
     object_handle handle = a_fbo->GetHandle();
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, handle);
+    glBindFramebuffer
+      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -65,7 +162,8 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer
+      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -122,7 +220,9 @@ namespace tloc { namespace graphics { namespace gl {
       g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
 
       FramebufferObject::Bind b(g_defaultFBO);
-      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      gfx_t::gl_enum res = glCheckFramebufferStatus
+        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Default Framebuffer doesn't appear to complete "
@@ -149,7 +249,8 @@ namespace tloc { namespace graphics { namespace gl {
     glFramebufferRenderbuffer(a_target, a_attachment, GL_RENDERBUFFER,
                               a_rbo.GetHandle());
 
-    gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    gfx_t::gl_enum res = glCheckFramebufferStatus
+      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
     TLOC_UNUSED(res);
     TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
       "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -160,6 +261,8 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#if defined (TLOC_OS_WIN)
 
   FramebufferObject::error_type
     FramebufferObject::
@@ -180,7 +283,8 @@ namespace tloc { namespace graphics { namespace gl {
       glFramebufferTexture1D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
 
-      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      gfx_t::gl_enum res = glCheckFramebufferStatus
+        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -190,7 +294,8 @@ namespace tloc { namespace graphics { namespace gl {
       glFramebufferTexture2D(a_target, a_attachment,
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
 
-      gfx_t::gl_enum res = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+      gfx_t::gl_enum res = glCheckFramebufferStatus
+        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -204,6 +309,43 @@ namespace tloc { namespace graphics { namespace gl {
 
     return ErrorSuccess;
   }
+
+#elif defined (TLOC_OS_IPHONE)
+
+  FramebufferObject::error_type
+    FramebufferObject::
+    DoAttach(p_framebuffer_object::target::value_type a_target,
+             p_framebuffer_object::attachment::value_type a_attachment,
+             const to_type& a_to)
+  {
+    TLOC_ASSERT(a_to.IsActive(),
+      "TextureObject is NOT active - did you forget to call Activate()?");
+
+    Bind b(this);
+
+    const to_type::Params& toParams = a_to.GetParams();
+    DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
+
+    if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
+    {
+      glFramebufferTexture2D(a_target, a_attachment,
+                             toParams.GetTextureType(), a_to.GetHandle(), 0);
+
+      gfx_t::gl_enum res = glCheckFramebufferStatus
+        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+      TLOC_UNUSED(res);
+      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+        "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
+    }
+
+    m_textureObjets.push_back(a_to);
+
+    return ErrorSuccess;
+  }
+
+#else
+# error "WIP"
+#endif
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -221,8 +363,7 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_renderbuffer_object::internal_format;
     using namespace p_framebuffer_object::attachment;
 
-    int maxAttachments;
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
+    types::gl_int maxAttachments = DoGetMaxColorAttachments();
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we
@@ -273,8 +414,7 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_texture_object::internal_format;
     using namespace p_framebuffer_object::attachment;
 
-    int maxAttachments;
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
+    int maxAttachments = DoGetMaxColorAttachments();
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we

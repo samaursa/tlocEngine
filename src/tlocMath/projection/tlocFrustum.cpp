@@ -197,12 +197,12 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    const real_type pTop    = this->template GetPlane<Top>();
-    const real_type pBott   = this->template GetPlane<Bottom>();
-    const real_type pLeft   = this->template GetPlane<Left>();
-    const real_type pRight  = this->template GetPlane<Right>();
-    const real_type pNear   = this->template GetPlane<Near>();
-    const real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = GetPlane<Top>();
+    const real_type pBott   = GetPlane<Bottom>();
+    const real_type pLeft   = GetPlane<Left>();
+    const real_type pRight  = GetPlane<Right>();
+    const real_type pNear   = GetPlane<Near>();
+    const real_type pFar    = GetPlane<Far>();
 
     TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
                 "Divide by zero");
@@ -331,12 +331,12 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    const real_type pTop    = this->template GetPlane<Top>();
-    const real_type pBott   = this->template GetPlane<Bottom>();
-    const real_type pLeft   = this->template GetPlane<Left>();
-    const real_type pRight  = this->template GetPlane<Right>();
-    const real_type pNear   = this->template GetPlane<Near>();
-    const real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = GetPlane<Top>();
+    const real_type pBott   = GetPlane<Bottom>();
+    const real_type pLeft   = GetPlane<Left>();
+    const real_type pRight  = GetPlane<Right>();
+    const real_type pNear   = GetPlane<Near>();
+    const real_type pFar    = GetPlane<Far>();
 
     TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
                 "Divide by zero");
@@ -372,8 +372,8 @@ namespace tloc { namespace math { namespace proj {
                 a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
                 "Vector not in Normalized Device Co-ordinates");
 
-    real_type pFar  = this->template GetPlane<p_frustum::Far>();
-    real_type pNear = this->template GetPlane<p_frustum::Near>();
+    real_type pFar  = GetPlane<p_frustum::Far>();
+    real_type pNear = GetPlane<p_frustum::Near>();
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 

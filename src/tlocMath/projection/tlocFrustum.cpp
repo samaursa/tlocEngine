@@ -212,12 +212,12 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    real_type pTop    = GetPlane<Top>();
+    real_type pBott   = GetPlane<Bottom>();
+    real_type pLeft   = GetPlane<Left>();
+    real_type pRight  = GetPlane<Right>();
+    real_type pNear   = GetPlane<Near>();
+    real_type pFar    = GetPlane<Far>();
 
     real_type RminLReci = 1 / (pRight - pLeft);
     real_type TminBReci = 1 / (pTop - pBott);
@@ -327,12 +327,12 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    real_type pTop    = GetPlane<Top>();
+    real_type pBott   = GetPlane<Bottom>();
+    real_type pLeft   = GetPlane<Left>();
+    real_type pRight  = GetPlane<Right>();
+    real_type pNear   = GetPlane<Near>();
+    real_type pFar    = GetPlane<Far>();
 
     real_type RminLReci = 1 / (pRight - pLeft);
     real_type TminBReci = 1 / (pTop - pBott);
@@ -361,8 +361,8 @@ namespace tloc { namespace math { namespace proj {
                 a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
                 "Vector not in Normalized Device Co-ordinates");
 
-    real_type pFar  = this->template GetPlane<p_frustum::Far>();
-    real_type pNear = this->template GetPlane<p_frustum::Near>();
+    real_type pFar  = GetPlane<p_frustum::Far>();
+    real_type pNear = GetPlane<p_frustum::Near>();
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 

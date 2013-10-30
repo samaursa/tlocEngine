@@ -2,6 +2,7 @@
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocCore/platform/tlocPlatform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -14,25 +15,22 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef types::gl_int   int_type;
 
-    int_type DoGetMaxColorAttachments();
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-#if defined (TLOC_OS_WIN)
-
+    template <typename T_Platform>
     int_type
-      DoGetMaxColorAttachments()
+      DoGetMaxColorAttachments(T_Platform)
     {
       int_type maxAttachments;
-      glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments)
+      glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
       return maxAttachments;
     }
 
-#elif defined (TLOC_OS_IPHONE)
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     int_type
-      DoGetMaxColorAttachments()
+      DoGetMaxColorAttachments(core::Platform_iphone)
     { return 1; }
-
-#endif
 
   }
 
@@ -363,7 +361,8 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_renderbuffer_object::internal_format;
     using namespace p_framebuffer_object::attachment;
 
-    types::gl_int maxAttachments = DoGetMaxColorAttachments();
+    types::gl_int maxAttachments =
+      DoGetMaxColorAttachments(core::PlatformInfo<>::platform_type());
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we
@@ -414,7 +413,8 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_texture_object::internal_format;
     using namespace p_framebuffer_object::attachment;
 
-    int maxAttachments = DoGetMaxColorAttachments();
+    int maxAttachments =
+      DoGetMaxColorAttachments(core::PlatformInfo<>::platform_type());
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we

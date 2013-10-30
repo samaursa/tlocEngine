@@ -196,6 +196,8 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
+    fbo_type::Bind b(&m_params.GetFBO());
+
     math_t::Vec4f32 col = m_params.GetClearColor().template GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
 
@@ -234,9 +236,6 @@ namespace tloc { namespace graphics { namespace renderer {
       glClear(m_params.GetClearBits());
       TLOC_ASSERT(gl::Error().Succeeded(), "glClear returned an error");
     }
-
-    glBindFramebuffer
-      (gl::p_framebuffer_object::target::DrawFramebuffer::s_glParamName, 0);
 
     return ErrorSuccess;
   }

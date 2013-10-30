@@ -1261,6 +1261,7 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
   {
+    TLOC_ASSERT(a_uniform->GetName().size() > 0, "Uniform name is empty");
     m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
   }
@@ -1270,6 +1271,7 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
   {
+    TLOC_ASSERT(a_attribute->GetName().size() > 0, "Attribute name is empty");
     m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
   }

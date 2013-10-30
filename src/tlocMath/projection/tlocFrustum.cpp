@@ -109,6 +109,7 @@ namespace tloc { namespace math { namespace proj {
     : m_fov(a_fov)
   {
     m_aspectRatio = m_fov.GetAspectRatio();
+    SetNear(5.0f).SetFar(100.0f).SetConvergence(1.0f).SetInteraxial(0);
   }
 
   template <FRUSTUM_PERSP_TEMPS>
@@ -116,27 +117,11 @@ namespace tloc { namespace math { namespace proj {
     Params(const Params& a_other)
     : m_near(a_other.m_near)
     , m_far (a_other.m_far)
+    , m_convergence(a_other.m_convergence)
+    , m_interaxial(a_other.m_interaxial)
     , m_aspectRatio(a_other.m_aspectRatio)
     , m_fov(a_other.m_fov)
   { }
-
-  template <FRUSTUM_PERSP_TEMPS>
-  FRUSTUM_PERSP_TYPE::Params&
-    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
-    SetNear(real_type a_near)
-  {
-    m_near = a_near;
-    return *this;
-  }
-
-  template <FRUSTUM_PERSP_TEMPS>
-  FRUSTUM_PERSP_TYPE::Params&
-    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
-    SetFar(real_type a_far)
-  {
-    m_far = a_far;
-    return *this;
-  }
 
   //------------------------------------------------------------------------
   // Frustum
@@ -212,16 +197,23 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = this->template GetPlane<Top>();
+    const real_type pBott   = this->template GetPlane<Bottom>();
+    const real_type pLeft   = this->template GetPlane<Left>();
+    const real_type pRight  = this->template GetPlane<Right>();
+    const real_type pNear   = this->template GetPlane<Near>();
+    const real_type pFar    = this->template GetPlane<Far>();
 
-    real_type RminLReci = 1 / (pRight - pLeft);
-    real_type TminBReci = 1 / (pTop - pBott);
-    real_type FminNReci = 1 / (pFar - pNear);
+    TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(Math<real_type>::Approx( (pTop - pBott), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(Math<real_type>::Approx( (pFar - pNear), 0.0f) == false,
+                "Divide by zero");
+
+    const real_type RminLReci = 1 / (pRight - pLeft);
+    const real_type TminBReci = 1 / (pTop - pBott);
+    const real_type FminNReci = 1 / (pFar - pNear);
 
     matrix_type& projMatrix = this->DoGetProjectionMatrix();
 
@@ -233,6 +225,18 @@ namespace tloc { namespace math { namespace proj {
     projMatrix(3, 2) = -1;
     projMatrix(2, 3) = -2 * pFar * pNear  * FminNReci;
     projMatrix(3, 3) = 0;
+
+    // for stereo camera
+    const real_type pConv     = this->GetParams().GetConvergence();
+    const real_type pInter    = this->GetParams().GetInteraxial();
+
+    TLOC_ASSERT( Math<real_type>::Approx(pConv, 0) == false,
+                 "Divide by zero");
+
+    const real_type pConvInv  = 1 / pConv;
+
+    projMatrix(0, 2) += (pNear * pInter) * pConvInv * RminLReci;
+    projMatrix(0, 3) += (pNear * pInter) * RminLReci;
   }
 
   template <FRUSTUM_PERSP_TEMPS>
@@ -327,16 +331,23 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = this->template GetPlane<Top>();
+    const real_type pBott   = this->template GetPlane<Bottom>();
+    const real_type pLeft   = this->template GetPlane<Left>();
+    const real_type pRight  = this->template GetPlane<Right>();
+    const real_type pNear   = this->template GetPlane<Near>();
+    const real_type pFar    = this->template GetPlane<Far>();
 
-    real_type RminLReci = 1 / (pRight - pLeft);
-    real_type TminBReci = 1 / (pTop - pBott);
-    real_type FminNReci = 1 / (pFar - pNear);
+    TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(Math<real_type>::Approx( (pTop - pBott), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(Math<real_type>::Approx( (pFar - pNear), 0.0f) == false,
+                "Divide by zero");
+
+    const real_type RminLReci = 1 / (pRight - pLeft);
+    const real_type TminBReci = 1 / (pTop - pBott);
+    const real_type FminNReci = 1 / (pFar - pNear);
 
     matrix_type& projMatrix = this->DoGetProjectionMatrix();
 

@@ -128,9 +128,10 @@ namespace tloc { namespace graphics { namespace gl {
     : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectRefCounted<T_Derived> base_type;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
     typedef T_Derived                   derived_type;
-    typedef base_type::object_handle    object_handle;
     typedef core::error::Error          error_type;
 
     typedef Object_T<derived_type, T_Policy> this_type;
@@ -157,9 +158,10 @@ namespace tloc { namespace graphics { namespace gl {
     : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectRefCounted<T_Derived> base_type;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
     typedef T_Derived                   derived_type;
-    typedef base_type::object_handle    object_handle;
     typedef core::error::Error          error_type;
     typedef core::string::String        string_type;
 

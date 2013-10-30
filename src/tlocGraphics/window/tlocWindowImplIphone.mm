@@ -87,7 +87,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     UIScreen* currentScreen = [UIScreen mainScreen];
 
     [UIApplication sharedApplication].statusBarHidden =
-      !(a_style & WindowSettings::style_titlebar);
+      (a_style & p_window_settings::style::TitleBar::s_glParamName) == false;
 
     // The window must take the screens bounds. This is since our view
     // automatically adjusts its size even when there is a title bar present.

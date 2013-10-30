@@ -26,6 +26,9 @@ namespace tloc { namespace graphics { namespace renderer {
     };
 
     namespace blend_function {
+
+#if defined (TLOC_OS_WIN)
+
       const value_type Zero::s_glParamName                      = GL_ZERO;
       const value_type One::s_glParamName                       = GL_ONE;
       const value_type SourceColor::s_glParamName               = GL_SRC_COLOR;
@@ -45,15 +48,57 @@ namespace tloc { namespace graphics { namespace renderer {
       const value_type OneMinusSource1Color::s_glParamName      = GL_ONE_MINUS_SRC1_COLOR;
       const value_type Source1Alpha::s_glParamName              = GL_SRC1_ALPHA;
       const value_type OneMinusSource1Alpha::s_glParamName      = GL_ONE_MINUS_SRC1_ALPHA;
+
+#elif defined (TLOC_OS_IPHONE)
+
+      const value_type Zero::s_glParamName                      = GL_ZERO;
+      const value_type One::s_glParamName                       = GL_ONE;
+      const value_type SourceColor::s_glParamName               = GL_SRC_COLOR;
+      const value_type DestinationColor::s_glParamName          = GL_DST_COLOR;
+      const value_type OneMinusDestinationColor::s_glParamName  = GL_ONE_MINUS_DST_COLOR;
+      const value_type SourceAlpha::s_glParamName               = GL_SRC_ALPHA;
+      const value_type OneMinusSourceAlpha::s_glParamName       = GL_ONE_MINUS_SRC_ALPHA;
+      const value_type DestinationAlpha::s_glParamName          = GL_ONE_MINUS_SRC_ALPHA;
+      const value_type OneMinusDestinationAlpha::s_glParamName  = GL_ONE_MINUS_SRC_ALPHA;
+      const value_type ConstantColor::s_glParamName             = GL_CONSTANT_COLOR;
+      const value_type OneMinusConstantColor::s_glParamName     = GL_ONE_MINUS_CONSTANT_COLOR;
+      const value_type ConstantAlpha::s_glParamName             = GL_CONSTANT_ALPHA;
+      const value_type OneMinusConstantAlpha::s_glParamName     = GL_ONE_MINUS_CONSTANT_ALPHA;
+      const value_type SourceAlphaSaturate::s_glParamName       = GL_SRC_ALPHA_SATURATE;
+
+      const value_type OneMinusSourceColor::s_glParamName       = 0;
+      const value_type Source1Color::s_glParamName              = 0;
+      const value_type OneMinusSource1Color::s_glParamName      = 0;
+      const value_type Source1Alpha::s_glParamName              = 0;
+      const value_type OneMinusSource1Alpha::s_glParamName      = 0;
+
+#else
+# error "WIP"
+#endif
+
     };
 
     namespace enable_disable {
+
+#if defined (TLOC_OS_WIN)
 
       const value_type Blend::s_glParamName         = GL_BLEND;
       const value_type DepthTest::s_glParamName     = GL_DEPTH_TEST;
       const value_type CullFace::s_glParamName      = GL_CULL_FACE;
       const value_type LineSmooth::s_glParamName    = GL_LINE_SMOOTH;
       const value_type PolygonSmooth::s_glParamName = GL_POLYGON_SMOOTH;
+
+#elif defined (TLOC_OS_IPHONE)
+
+      const value_type Blend::s_glParamName         = GL_BLEND;
+      const value_type DepthTest::s_glParamName     = GL_DEPTH_TEST;
+      const value_type CullFace::s_glParamName      = GL_CULL_FACE;
+      const value_type LineSmooth::s_glParamName    = 0;
+      const value_type PolygonSmooth::s_glParamName = 0;
+
+#else
+# error
+#endif
 
     };
 
@@ -78,7 +123,7 @@ namespace tloc { namespace graphics { namespace renderer {
   // Renderer_T<>Params
 
   template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_TEMPS>::Params::
+  Renderer_T<RENDERER_PARAMS>::Params::
     Params()
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
@@ -100,7 +145,7 @@ namespace tloc { namespace graphics { namespace renderer {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_TEMPS>::Params::
+  Renderer_T<RENDERER_PARAMS>::Params::
     Params(dimension_type a_dim)
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
@@ -151,9 +196,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(&m_params.GetFBO());
-
-    math_t::Vec4f32 col = m_params.GetClearColor().GetAs
+    math_t::Vec4f32 col = m_params.GetClearColor().template GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
 
     const dimension_type dim = m_params.GetDimensions();
@@ -192,7 +235,8 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_ASSERT(gl::Error().Succeeded(), "glClear returned an error");
     }
 
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer
+      (gl::p_framebuffer_object::target::DrawFramebuffer::s_glParamName, 0);
 
     return ErrorSuccess;
   }
@@ -248,11 +292,9 @@ namespace tloc { namespace graphics { namespace renderer {
   template class Renderer_T<f32>;
   template class Renderer_T<f64>;
 
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
   TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
 
-  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer::RenderOneFrame);
   TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
   TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);
 

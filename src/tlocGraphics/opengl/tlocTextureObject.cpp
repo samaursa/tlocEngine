@@ -111,9 +111,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     using namespace wrap_technique;
     using namespace filter;
+    using namespace format;
+    using namespace internal_format;
 
     typedef wrap_technique::value_type  wvt;
     typedef filter::value_type          fvt;
+    typedef format::value_type          formvt;
+    typedef internal_format::value_type ifvt;
 
     const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
     const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;
@@ -127,29 +131,33 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
     const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
-    const formvt format::Red::s_glParamName            = GL_RED;
-    const formvt format::RG::s_glParamName             = GL_RG;
     const formvt format::RGB::s_glParamName            = GL_RGB;
-    const formvt format::BGR::s_glParamName            = GL_BGR;
     const formvt format::RGBA::s_glParamName           = GL_RGBA;
     const formvt format::BGRA::s_glParamName           = GL_BGRA;
-    const formvt format::RedInteger::s_glParamName     = GL_RED_INTEGER;
-    const formvt format::RGInteger::s_glParamName      = GL_RG_INTEGER;
-    const formvt format::RGBInteger::s_glParamName     = GL_RGB_INTEGER;
-    const formvt format::BGRInteger::s_glParamName     = GL_BGR_INTEGER;
-    const formvt format::RGBAInteger::s_glParamName    = GL_RGBA_INTEGER;
-    const formvt format::BGRAInteger::s_glParamName    = GL_BGRA_INTEGER;
     const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
     const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
-    const ifvt internal_format::Red::s_glParamName            = GL_RED;
-    const ifvt internal_format::RG::s_glParamName             = GL_RG;
     const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
     const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
-    const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL;
 
     const wvt ClampToBorder::s_glParamName = 0;
+
+    const formvt format::Red::s_glParamName           = 0;
+    const formvt format::RG::s_glParamName            = 0;
+    const formvt format::BGR::s_glParamName           = 0;
+    const formvt format::RedInteger::s_glParamName    = 0;
+    const formvt format::RGInteger::s_glParamName     = 0;
+    const formvt format::RGBInteger::s_glParamName    = 0;
+    const formvt format::BGRInteger::s_glParamName    = 0;
+    const formvt format::RGBAInteger::s_glParamName   = 0;
+    const formvt format::BGRAInteger::s_glParamName   = 0;
+
+    const ifvt internal_format::Red::s_glParamName  = 0;
+    const ifvt internal_format::RG::s_glParamName   = 0;
+
+    const ifvt internal_format::DepthStencil::s_glParamName   = 0;
+
 
 #else
 # error "WIP"

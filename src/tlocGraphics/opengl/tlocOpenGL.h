@@ -9,6 +9,7 @@
 namespace tloc { namespace graphics { namespace types {
 
   typedef s32                     gl_int;
+  typedef u32                     gl_uint;
   typedef u32                     gl_enum;
   typedef s32                     gl_sizei;
   typedef f32                     gl_float;

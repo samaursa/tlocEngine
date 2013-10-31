@@ -372,6 +372,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type rboFormat = a_rbo.GetParams().GetFormatType();
 
+      TLOC_UNUSED(rboFormat); // for release
       TLOC_ASSERT(rboFormat == RGBA4::s_glParamName ||
                   rboFormat == RGB565::s_glParamName ||
                   rboFormat == RGB5_A1::s_glParamName,
@@ -381,6 +382,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type rboFormat = a_rbo.GetParams().GetFormatType();
 
+      TLOC_UNUSED(rboFormat); // for release
       TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
@@ -388,6 +390,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type rboFormat = a_rbo.GetParams().GetFormatType();
 
+      TLOC_UNUSED(rboFormat); // for release
       TLOC_ASSERT(rboFormat == StencilIndex8::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
@@ -424,6 +427,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
+      TLOC_UNUSED(toFormat); // for release
       TLOC_ASSERT(toFormat == Red::s_glParamName ||
                   toFormat == RG::s_glParamName ||
                   toFormat == RGB::s_glParamName ||
@@ -434,6 +438,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
+      TLOC_UNUSED(toFormat); // for release
       TLOC_ASSERT(toFormat == DepthComponent::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
@@ -441,6 +446,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       value_type toFormat = a_to.GetParams().GetInternalFormat();
 
+      TLOC_UNUSED(toFormat); // for release
       TLOC_ASSERT(toFormat ==
         p_texture_object::internal_format::DepthStencil::s_glParamName,
         "Incorrect internal format for specified attachment");

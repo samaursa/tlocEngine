@@ -204,33 +204,34 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  FramebufferObject::this_type&
-    FramebufferObject::GetDefaultFramebuffer()
-  {
-    static FramebufferObject* g_defaultFBO;
+  //FramebufferObject::this_type&
+  //  FramebufferObject::
+  //  GetDefaultFramebuffer()
+  //{
+  //  static FramebufferObject* g_defaultFBO;
 
-    static bool createDefaultFBO = true;
+  //  static bool createDefaultFBO = true;
 
-    // Check the status of the Framebuffer once to ensure that there is indeed
-    // a default Framebuffer with an ID of 0
-    if (createDefaultFBO)
-    {
-      g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
+  //  // Check the status of the Framebuffer once to ensure that there is indeed
+  //  // a default Framebuffer with an ID of 0
+  //  if (createDefaultFBO)
+  //  {
+  //    g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
 
-      FramebufferObject::Bind b(g_defaultFBO);
-      gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+  //    FramebufferObject::Bind b(g_defaultFBO);
+  //    gfx_t::gl_enum res = glCheckFramebufferStatus
+  //      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
 
-      TLOC_UNUSED(res);
-      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
-        "Default Framebuffer doesn't appear to complete "
-        "(or there may be no default Framebuffer in the first place)");
+  //    TLOC_UNUSED(res);
+  //    TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+  //      "Default Framebuffer doesn't appear to complete "
+  //      "(or there may be no default Framebuffer in the first place)");
 
-      createDefaultFBO = false;
-    }
+  //    createDefaultFBO = false;
+  //  }
 
-    return *g_defaultFBO;
-  }
+  //  return *g_defaultFBO;
+  //}
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

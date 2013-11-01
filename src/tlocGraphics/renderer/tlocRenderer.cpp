@@ -126,7 +126,6 @@ namespace tloc { namespace graphics { namespace renderer {
   Renderer_T<RENDERER_PARAMS>::Params::
     Params()
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
     , m_dim(0, 0)
     , m_clearBits(0)
   {
@@ -148,7 +147,6 @@ namespace tloc { namespace graphics { namespace renderer {
   Renderer_T<RENDERER_PARAMS>::Params::
     Params(dimension_type a_dim)
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_fbo(gfx_gl::FramebufferObject::GetDefaultFramebuffer())
     , m_dim(a_dim)
     , m_clearBits(0)
   {
@@ -196,7 +194,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(&m_params.GetFBO());
+    fbo_type::Bind b(m_params.GetFBO().get());
 
     math_t::Vec4f32 col = m_params.GetClearColor().template GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
@@ -248,7 +246,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    m_fboBinder.reset(new fbo_type::Bind( &m_params.GetFBO() ));
+    m_fboBinder.reset(new fbo_type::Bind( m_params.GetFBO().get() ));
 
     return ErrorSuccess;
   }
@@ -263,26 +261,6 @@ namespace tloc { namespace graphics { namespace renderer {
     m_fboBinder.reset();
 
     return ErrorSuccess;
-  }
-
-  // ///////////////////////////////////////////////////////////////////////
-  // default renderer
-
-  // Default params choose the default framebuffer
-  renderer_sptr g_defaultRenderer;
-
-  renderer_sptr
-    GetDefaultRenderer()
-  {
-    static bool constructDefaultRenderer = true;
-    if (constructDefaultRenderer)
-    {
-      Renderer::Params p;
-      g_defaultRenderer.reset(new Renderer(p));
-      constructDefaultRenderer = false;
-    }
-
-    return g_defaultRenderer;
   }
 
   // -----------------------------------------------------------------------

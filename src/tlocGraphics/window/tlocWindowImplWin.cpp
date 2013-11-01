@@ -26,6 +26,23 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = nullptr;
   WINDOW_IMPL_WIN_TYPE::size_type g_currWindowCount          = 0;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Windows has a default framebuffer with the id of 0. We will therefore
+  // manually set that ID on FramebufferObject so that we have a FBO with
+  // an ID of 0. To do that we need to inherit from FBO because its constructor
+  // to construct an FBO with an ID is protected for this very purpose
+
+  class WindowsFramebufferObject
+    : public gl::FramebufferObject
+  {
+  public:
+    typedef gl::FramebufferObject           base_type;
+  public:
+    WindowsFramebufferObject()
+      : base_type(gl::p_framebuffer_object::Default())
+    { }
+  };
+
   //////////////////////////////////////////////////////////////////////////
   // WindowImpl<>
 
@@ -333,6 +350,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // We have a name clash, make sure we are looking in the global scope
     ::SwapBuffers(m_deviceContext);
+  }
+
+  WINDOW_IMPL_WIN_TYPE::fbo_sptr
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoGetFramebuffer()
+  {
+    return fbo_sptr(new WindowsFramebufferObject());
   }
 
   //------------------------------------------------------------------------

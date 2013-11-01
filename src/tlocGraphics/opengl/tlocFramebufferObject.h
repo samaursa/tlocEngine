@@ -9,13 +9,14 @@
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocRenderbufferObject.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_framebuffer_object {
 
     namespace priv {
-      struct FBOPB { };
+      struct FramebufferObjectParamsBase { };
     };
 
     namespace target {
@@ -23,12 +24,17 @@ namespace tloc { namespace graphics { namespace gl {
       typedef s32   value_type;
 
       namespace priv {
-        struct TPB : public p_framebuffer_object::priv::FBOPB { };
+        struct TargetParamsBase :
+          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
       };
 
-      struct DrawFramebuffer : public priv::TPB
+      struct Framebuffer : public priv::TargetParamsBase
       { static const value_type s_glParamName; };
-      struct ReadFramebuffer : public priv::TPB
+
+      struct DrawFramebuffer : public priv::TargetParamsBase
+      { static const value_type s_glParamName; };
+
+      struct ReadFramebuffer : public priv::TargetParamsBase
       { static const value_type s_glParamName;};
     };
 
@@ -37,11 +43,12 @@ namespace tloc { namespace graphics { namespace gl {
       typedef s32   value_type;
 
       namespace priv {
-        struct APB : public p_framebuffer_object::priv::FBOPB { };
+        struct AttachmentParamsBase :
+          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
       };
 
       template <value_type T_ColorAttachmentIndex>
-      struct ColorAttachment : public priv::APB
+      struct ColorAttachment : public priv::AttachmentParamsBase
       {
         enum { k_attachmentIndex = T_ColorAttachmentIndex };
 
@@ -51,15 +58,17 @@ namespace tloc { namespace graphics { namespace gl {
         static const value_type s_glParamName;
       };
 
-      struct Depth : public priv::APB
+      struct Depth : public priv::AttachmentParamsBase
       { static const value_type s_glParamName; };
-      struct Stencil : public priv::APB
+
+      struct Stencil : public priv::AttachmentParamsBase
       { static const value_type s_glParamName; };
-      struct DepthStencil : public priv::APB
+
+      struct DepthStencil : public priv::AttachmentParamsBase
       { static const value_type s_glParamName; };
     };
 
-    struct Default : public priv::FBOPB { };
+    struct Default : public priv::FramebufferObjectParamsBase{ };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -117,7 +126,10 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (to_cont, GetTextureobjects, m_textureObjets);
 
-    static this_type& GetDefaultFramebuffer();
+  protected:
+    // This constructor should be only be used by platforms that require a
+    // FBO with an ID of 0 explicitly
+    FramebufferObject(p_framebuffer_object::Default);
 
   private:
     typedef p_framebuffer_object::target::value_type      target_value_type;
@@ -130,11 +142,6 @@ namespace tloc { namespace graphics { namespace gl {
     error_type DoAttach(target_value_type a_target,
                         attachment_value_type a_attachment,
                         const to_type& a_to);
-
-    // This constructor is temporary until we have a better solution on how
-    // to deal with the inconsistent behavior of default framebuffers across
-    // various platforms
-    FramebufferObject(p_framebuffer_object::Default);
 
   private:
     void DoCheckInternalFormatAgainstTargetAttachment
@@ -168,10 +175,10 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_framebuffer_object::attachment::priv;
 
     TLOC_STATIC_ASSERT
-      ((Loki::Conversion<T_Target, TPB>::exists), Invalid_target_param);
+      ((Loki::Conversion<T_Target, TargetParamsBase>::exists), Invalid_target_param);
 
     TLOC_STATIC_ASSERT
-      ((Loki::Conversion<T_Attachment, APB>::exists), Invalid_attachment_param);
+      ((Loki::Conversion<T_Attachment, AttachmentParamsBase>::exists), Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();

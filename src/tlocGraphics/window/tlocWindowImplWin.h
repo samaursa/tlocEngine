@@ -15,6 +15,8 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
+
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
@@ -42,6 +44,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef HWND                                         window_handle_type;
     typedef WindowSettings::style_type                   window_style_type;
     typedef tl_size                                      size_type;
+
+    typedef gl::FramebufferObject                        fbo_type;
+    typedef gl::framebuffer_object_sptr                  fbo_sptr;
 
   public:
 
@@ -176,6 +181,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();
+
+    ///-------------------------------------------------------------------------
+    /// Called by Window_T<> when setting up the renderer
+    ///-------------------------------------------------------------------------
+    fbo_sptr DoGetFramebuffer();
 
   private:
 

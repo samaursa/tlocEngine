@@ -168,6 +168,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef s32                                       stencil_value_type;
 
     typedef gl::FramebufferObject                     fbo_type;
+    typedef gl::framebuffer_object_sptr               fbo_sptr;
     typedef fbo_type::dimension_type                  dimension_type;
     typedef core_err::Error                           error_type;
 
@@ -210,15 +211,15 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
 
-      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(fbo_type, GetFBO, m_fbo);
-      TLOC_DECL_AND_DEF_SETTER_CHAIN(fbo_type, SetFBO, m_fbo);
+      TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(fbo_sptr, GetFBO, m_fbo);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(fbo_sptr, SetFBO, m_fbo);
 
       TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(dimension_type, SetDimensions, m_dim);
 
     private:
       color_type                  m_clearColor;
-      fbo_type                    m_fbo;
+      fbo_sptr                    m_fbo;
       dimension_type              m_dim;
       depth_function_value_type   m_depthFunction;
       blend_pair_type             m_blendFunction;
@@ -385,11 +386,6 @@ namespace tloc { namespace graphics { namespace renderer {
   TLOC_TYPEDEF_SHARED_PTR(Renderer, renderer);
   TLOC_TYPEDEF_SHARED_PTR(Renderer_depth32, renderer_depth32);
   TLOC_TYPEDEF_SHARED_PTR(Renderer_depth64, renderer_depth64);
-
-  // ///////////////////////////////////////////////////////////////////////
-  // default renderer
-
-  renderer_sptr GetDefaultRenderer();
 
 };};};
 

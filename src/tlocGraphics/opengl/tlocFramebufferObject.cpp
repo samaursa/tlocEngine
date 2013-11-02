@@ -166,8 +166,14 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::Bind::
     ~Bind()
   {
-    glBindFramebuffer
-      (p_framebuffer_object::target::Framebuffer::s_glParamName, 0);
+    // On iOS, binding the frame buffer '0' corrupts the rendering and shows
+    // a blank screen. Although binding to '0' is the correct way to unbind
+    // the previously bound frame buffer, we see now harm (so far) in
+    // not unbinding (especially since it solves the blank screen issue on
+    // iOS)
+
+    // glBindFramebuffer
+    // (p_framebuffer_object::target::Framebuffer::s_glParamName, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////

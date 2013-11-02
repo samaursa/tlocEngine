@@ -7,6 +7,8 @@
 #import <QuartzCore/CAEAGLLayer.h>
 #import <OpenGLES/EAGLDrawable.h>
 
+#include <tlocGraphics/opengl/tlocError.h>
+
 using namespace tloc;
 using namespace input;
 using namespace input_hid;
@@ -108,7 +110,6 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
       self.contentScaleFactor = [UIScreen mainScreen].scale;
     }
       
-
     // Note: We are not initializing the rbo, because it creates its own
     // storage. In this case CAEAGLLayer provides us storage (which will render
     // to the screen)
@@ -119,7 +120,7 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
     m_rboColor.reset(new RenderbufferObject(rboParams));
     m_rboColor->InitializeWithoutStorage();
     {
-      RenderbufferObject::Bind(m_rboColor.get());
+      RenderbufferObject::Bind b(m_rboColor.get());
       [m_context renderbufferStorage:GL_RENDERBUFFER
                         fromDrawable:(CAEAGLLayer*)self.layer];
 
@@ -129,7 +130,6 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
 
     using namespace gfx_gl::p_framebuffer_object;
     m_fbo.reset(new fbo_type);
-    m_fbo->Attach<target::Framebuffer, attachment::ColorAttachment<0> >(*m_rboColor);
 
     if ((a_depthBits) || (a_stencilBits))
     {
@@ -166,10 +166,7 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
       }
       
     }
-    
-    TLOC_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
-                "Framebuffer creation has failed");
-    
+
     // This is so we can properly resize our view when orientation changes.
     self.autoresizingMask = 0;
     
@@ -184,7 +181,7 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
 
 - (void)SwapBuffers
 {
-  RenderbufferObject::Bind(m_rboColor.get());
+  RenderbufferObject::Bind b(m_rboColor.get());
   [m_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 

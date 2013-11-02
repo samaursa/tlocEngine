@@ -20,7 +20,9 @@ namespace tloc { namespace graphics { namespace gl {
       struct RGB565             { static const value_type s_glParamName; };
       struct RGB5_A1            { static const value_type s_glParamName; };
       struct DepthComponent16   { static const value_type s_glParamName; };
+      struct DepthComponent24   { static const value_type s_glParamName; };
       struct StencilIndex8      { static const value_type s_glParamName; };
+      struct Depth24Stencil8    { static const value_type s_glParamName; };
     };
   };
 
@@ -75,6 +77,7 @@ namespace tloc { namespace graphics { namespace gl {
     ~RenderbufferObject();
 
     error_type  Initialize();
+    error_type  InitializeWithoutStorage();
 
   public:
 
@@ -96,7 +99,8 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_renderbuffer_object::internal_format;
 
     tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
-      RGBA4, RGB565, RGB5_A1, DepthComponent16, StencilIndex8>();
+      RGBA4, RGB565, RGB5_A1, DepthComponent16, DepthComponent24, StencilIndex8,
+      Depth24Stencil8>();
 
     m_formatType = T_InternalFormat::s_glParamName;
     return *this;

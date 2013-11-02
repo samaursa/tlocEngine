@@ -263,4 +263,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_view;
   }
 
+  WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::fbo_sptr
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::DoGetFramebuffer()
+  {
+    return [GetOpenGLView(m_view) GetFramebuffer];
+  }
+
 };};};};

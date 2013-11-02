@@ -15,6 +15,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef types::gl_int   int_type;
 
+#if defined (TLOC_OS_WIN)
+
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     template <typename T_Platform>
@@ -25,6 +27,8 @@ namespace tloc { namespace graphics { namespace gl {
       glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttachments);
       return maxAttachments;
     }
+
+#endif
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -39,9 +43,11 @@ namespace tloc { namespace graphics { namespace gl {
     namespace target {
 
 #if defined (TLOC_OS_WIN)
+      const value_type  Framebuffer::s_glParamName     = GL_FRAMEBUFFER;
       const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER;
       const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER;
 #elif defined (TLOC_OS_IPHONE)
+      const value_type  Framebuffer::s_glParamName     = GL_FRAMEBUFFER;
       const value_type  DrawFramebuffer::s_glParamName = GL_DRAW_FRAMEBUFFER_APPLE;
       const value_type  ReadFramebuffer::s_glParamName = GL_READ_FRAMEBUFFER_APPLE;
 #else
@@ -348,6 +354,31 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <typename T_Platform, typename T_RBO>
+  void DoCheckSupportedDepthComponents(T_Platform, const T_RBO& a_rbo)
+  {
+    using namespace p_renderbuffer_object::internal_format;
+    using p_texture_object::internal_format::value_type;
+
+    value_type rboFormat = a_rbo.GetParams().GetFormatType();
+    TLOC_UNUSED(rboFormat);
+    TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName,
+                "Incorrect internal format for specified attachment");
+  }
+
+  template <typename T_RBO>
+  void DoCheckSupportedDepthComponents(core::Platform_iphone, const T_RBO& a_rbo)
+  {
+    using namespace p_renderbuffer_object::internal_format;
+    using p_texture_object::internal_format::value_type;
+
+    value_type rboFormat = a_rbo.GetParams().GetFormatType();
+    TLOC_UNUSED(rboFormat);
+    TLOC_ASSERT(rboFormat == DepthComponent24::s_glParamName ||
+                rboFormat == Depth24Stencil8::s_glParamName,
+                "Incorrect internal format for specified attachment");
+  }
+
   void
     FramebufferObject::
     DoCheckInternalFormatAgainstTargetAttachment
@@ -381,11 +412,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else if (a_attachment == Depth::s_glParamName)
     {
-      value_type rboFormat = a_rbo.GetParams().GetFormatType();
-
-      TLOC_UNUSED(rboFormat); // for release
-      TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName,
-                  "Incorrect internal format for specified attachment");
+      DoCheckSupportedDepthComponents(core::PlatformInfo<>::platform_type(), a_rbo);
     }
     else if (a_attachment == Stencil::s_glParamName)
     {

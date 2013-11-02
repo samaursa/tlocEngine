@@ -339,10 +339,10 @@ namespace tloc { namespace graphics { namespace media {
 
       typedef math_utils::scale_f32_s32     range_type;
 
-      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width]);
-      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height]);
+      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width] + 1);
+      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height] + 1);
 
-      range_f32 texRange(0.0f, 1.0f);
+      range_f32 texRange(0.0f, 2.0f);
 
       range_type texToSpriteX =
         range_type( range_type::range_small(texRange),

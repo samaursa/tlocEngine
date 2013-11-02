@@ -337,7 +337,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     value_type rboFormat = a_rbo.GetParams().GetFormatType();
     TLOC_UNUSED(rboFormat);
-    TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName,
+    TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName ||
+                rboFormat == DepthComponent24::s_glParamName ||
+                rboFormat == Depth24Stencil8::s_glParamName,
                 "Incorrect internal format for specified attachment");
   }
 

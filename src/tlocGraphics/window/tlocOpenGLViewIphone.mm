@@ -131,6 +131,9 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
     using namespace gfx_gl::p_framebuffer_object;
     m_fbo.reset(new fbo_type);
 
+    m_fbo->Attach<p_framebuffer_object::target::Framebuffer,
+    p_framebuffer_object::attachment::ColorAttachment<0> >(*m_rboColor);
+
     if ((a_depthBits) || (a_stencilBits))
     {
       typedef RenderbufferObject::Params rbo_params;
@@ -164,7 +167,6 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
       {
         m_fbo->Attach<target::Framebuffer, attachment::Stencil>(*rboDepth);
       }
-      
     }
 
     // This is so we can properly resize our view when orientation changes.

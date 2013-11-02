@@ -17,6 +17,16 @@ namespace tloc { namespace graphics { namespace gl {
       const value_type DepthComponent16::s_glParamName = GL_DEPTH_COMPONENT16;
       const value_type StencilIndex8::s_glParamName = GL_STENCIL_INDEX8;
 
+#if defined (TLOC_OS_WIN)
+      const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24;
+      const value_type Depth24Stencil8::::s_glParamName = GL_DEPTH24_STENCIL8;
+#elif defined (TLOC_OS_IPHONE)
+      const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24_OES;
+      const value_type Depth24Stencil8::s_glParamName = GL_DEPTH24_STENCIL8_OES;
+#else
+# error "WIP"
+#endif
+
     };
   };
 
@@ -94,6 +104,14 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glRenderbufferStorage");
 
+    return ErrorSuccess;
+  }
+
+  RenderbufferObject::error_type
+    RenderbufferObject::
+    InitializeWithoutStorage()
+  {
+    Bind b(this);
     return ErrorSuccess;
   }
 

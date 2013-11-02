@@ -11,6 +11,8 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
+
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
@@ -41,6 +43,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef tl_size                                 size_type;
     typedef core_t::Any /*(OpenGLView*) */          view_handle_type;
     typedef core_t::Any /*(OpenGLViewController*) */view_controller_handle_type;
+
+    typedef gl::FramebufferObject                   fbo_type;
+    typedef gl::framebuffer_object_sptr             fbo_sptr;
 
   public:
 
@@ -199,6 +204,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The OpenGLView handle
     ///-------------------------------------------------------------------------
     view_handle_type GetOpenGLViewHandle();
+
+    ///-------------------------------------------------------------------------
+    /// Called by Window_T<> when setting up the window
+    ///-------------------------------------------------------------------------
+    fbo_sptr DoGetFramebuffer();
 
   private:
 

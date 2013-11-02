@@ -67,6 +67,8 @@ namespace tloc { namespace graphics { namespace gl {
   RenderbufferObject::Bind::
     ~Bind()
   {
+    TLOC_ASSERT(gl::Error().Succeeded(),
+      "OpenGL: Error with glRenderbufferStorage");
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
   }
 

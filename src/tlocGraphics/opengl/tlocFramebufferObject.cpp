@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     object_handle handle = a_fbo->GetHandle();
     glBindFramebuffer
-      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, handle);
+      (p_framebuffer_object::target::Framebuffer::s_glParamName, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
@@ -167,7 +167,7 @@ namespace tloc { namespace graphics { namespace gl {
     ~Bind()
   {
     glBindFramebuffer
-      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName, 0);
+      (p_framebuffer_object::target::Framebuffer::s_glParamName, 0);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -210,37 +210,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  //FramebufferObject::this_type&
-  //  FramebufferObject::
-  //  GetDefaultFramebuffer()
-  //{
-  //  static FramebufferObject* g_defaultFBO;
-
-  //  static bool createDefaultFBO = true;
-
-  //  // Check the status of the Framebuffer once to ensure that there is indeed
-  //  // a default Framebuffer with an ID of 0
-  //  if (createDefaultFBO)
-  //  {
-  //    g_defaultFBO = new FramebufferObject(p_framebuffer_object::Default());
-
-  //    FramebufferObject::Bind b(g_defaultFBO);
-  //    gfx_t::gl_enum res = glCheckFramebufferStatus
-  //      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
-
-  //    TLOC_UNUSED(res);
-  //    TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
-  //      "Default Framebuffer doesn't appear to complete "
-  //      "(or there may be no default Framebuffer in the first place)");
-
-  //    createDefaultFBO = false;
-  //  }
-
-  //  return *g_defaultFBO;
-  //}
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
   FramebufferObject::error_type
     FramebufferObject::
     DoAttach(p_framebuffer_object::target::value_type a_target,
@@ -255,7 +224,7 @@ namespace tloc { namespace graphics { namespace gl {
                               a_rbo.GetHandle());
 
     gfx_t::gl_enum res = glCheckFramebufferStatus
-      (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+      (p_framebuffer_object::target::Framebuffer::s_glParamName);
     TLOC_UNUSED(res);
     TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
       "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -289,7 +258,7 @@ namespace tloc { namespace graphics { namespace gl {
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
 
       gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+        (p_framebuffer_object::target::Framebuffer::s_glParamName);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -300,7 +269,7 @@ namespace tloc { namespace graphics { namespace gl {
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
 
       gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+        (p_framebuffer_object::target::Framebuffer::s_glParamName);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -337,7 +306,7 @@ namespace tloc { namespace graphics { namespace gl {
                              toParams.GetTextureType(), a_to.GetHandle(), 0);
 
       gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_framebuffer_object::target::DrawFramebuffer::s_glParamName);
+        (p_framebuffer_object::target::Framebuffer::s_glParamName);
       TLOC_UNUSED(res);
       TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
         "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -419,7 +388,8 @@ namespace tloc { namespace graphics { namespace gl {
       value_type rboFormat = a_rbo.GetParams().GetFormatType();
 
       TLOC_UNUSED(rboFormat); // for release
-      TLOC_ASSERT(rboFormat == StencilIndex8::s_glParamName,
+      TLOC_ASSERT(rboFormat == StencilIndex8::s_glParamName ||
+                  rboFormat == Depth24Stencil8::s_glParamName,
                   "Incorrect internal format for specified attachment");
     }
     else

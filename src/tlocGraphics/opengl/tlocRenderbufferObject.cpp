@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace gl {
 
 #if defined (TLOC_OS_WIN)
       const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24;
-      const value_type Depth24Stencil8::::s_glParamName = GL_DEPTH24_STENCIL8;
+      const value_type Depth24Stencil8::s_glParamName = GL_DEPTH24_STENCIL8;
 #elif defined (TLOC_OS_IPHONE)
       const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24_OES;
       const value_type Depth24Stencil8::s_glParamName = GL_DEPTH24_STENCIL8_OES;

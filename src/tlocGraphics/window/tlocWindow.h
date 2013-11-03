@@ -285,7 +285,7 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
-    void SwapBuffers();
+    void SwapBuffers() const;
 
     ///-------------------------------------------------------------------------
     /// Sends a WindowEvent to all registered objects

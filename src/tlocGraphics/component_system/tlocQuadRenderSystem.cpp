@@ -207,6 +207,6 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // explicit instantiations
 
-  template class core_sptr::SharedPtr<QuadRenderSystem>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(QuadRenderSystem);
 
 };};};

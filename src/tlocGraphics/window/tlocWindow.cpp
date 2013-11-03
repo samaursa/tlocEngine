@@ -276,7 +276,7 @@ namespace tloc { namespace graphics { namespace win {
   template <WINDOW_TEMP>
   WINDOW_TYPE::renderer_sptr
     Window_T<WINDOW_PARAMS>::
-    GetRenderer()
+    GetRenderer() const
   {
     VALIDATE_WINDOW();
     return m_renderer;

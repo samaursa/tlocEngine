@@ -112,6 +112,6 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // explicit instantiations
 
-  template class core_sptr::SharedPtr<MaterialSystem>;
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MaterialSystem);
 
 };};};

@@ -1,6 +1,7 @@
 #include "tlocMeshRenderSystem.h"
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
@@ -175,5 +176,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // explicit instantiation
 
   template class MeshRenderSystem_T<Mesh>;
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MeshRenderSystem);
 
 };};};

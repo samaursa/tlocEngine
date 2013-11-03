@@ -297,7 +297,7 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     /// Get the window renderer
     ///-------------------------------------------------------------------------
-    renderer_sptr GetRenderer();
+    renderer_sptr GetRenderer() const;
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
 

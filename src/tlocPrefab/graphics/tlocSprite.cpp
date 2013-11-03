@@ -21,6 +21,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
+    TLOC_ASSERT(a_begin != a_end, "No sprite info available");
 
     using namespace gfx_cs;
     using namespace gfx_cs::components;

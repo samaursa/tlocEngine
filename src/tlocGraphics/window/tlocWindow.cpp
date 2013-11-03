@@ -256,7 +256,7 @@ namespace tloc { namespace graphics { namespace win {
 
   template <WINDOW_TEMP>
   void Window_T<WINDOW_PARAMS>::
-    SwapBuffers()
+    SwapBuffers() const
   {
     VALIDATE_WINDOW();
     m_impl->SwapBuffers();

@@ -15,7 +15,7 @@ namespace tloc { namespace core { namespace component_system {
     m_allComponents.resize(components_group::count);
   }
 
-  TL_I Entity::Entity(entity_id a_id, const char* a_debugName)
+  TL_I Entity::Entity(entity_id a_id, BufferArg a_debugName)
     : base_type(a_debugName)
     , m_id(a_id)
     , m_index(size_type() - 1)

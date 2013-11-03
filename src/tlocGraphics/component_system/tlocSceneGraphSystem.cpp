@@ -57,16 +57,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    DeactivateHierarchy(const entity_type* a_parent)
+    DeactivateHierarchy(const entity_type* a_node)
   {
-    TLOC_ASSERT_NOT_NULL(a_parent);
+    TLOC_ASSERT_NOT_NULL(a_node);
 
-    a_parent->Deactivate();
+    a_node->Deactivate();
 
-    if (a_parent->HasComponent(components::scene_node) == false)
+    if (a_node->HasComponent<gfx_cs::SceneNode>() == false)
     { return; }
 
-    SceneNode* node = a_parent->GetComponent<SceneNode>();
+    SceneNode* node = a_node->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)

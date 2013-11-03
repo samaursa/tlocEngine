@@ -49,6 +49,9 @@ namespace tloc { namespace prefab { namespace graphics {
     SceneNode::
     Add(entity_type* a_ent)
   {
+    TLOC_ASSERT(a_ent->HasComponent(gfx_cs::SceneNode::k_component_type) == false,
+      "Entity already has a SceneNode");
+
     using namespace gfx_cs::components;
 
     typedef gfx_cs::scene_node_sptr_pool        scene_node_pool;

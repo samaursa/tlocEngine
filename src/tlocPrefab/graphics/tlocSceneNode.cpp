@@ -45,7 +45,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     Add(entity_type* a_ent)
   {
@@ -69,6 +69,8 @@ namespace tloc { namespace prefab { namespace graphics {
     { m_parent->AddChild(itrSceneNode->GetValue().get()); }
 
     m_entMgr->InsertComponent(a_ent, itrSceneNode->GetValue().get());
+
+    return *this;
   }
 
 };};};

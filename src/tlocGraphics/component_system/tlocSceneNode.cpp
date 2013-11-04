@@ -51,7 +51,6 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     AddChild(pointer a_childNode)
   {
-
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
@@ -89,13 +88,8 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     RemoveParent()
   {
-    if (m_parent)
-    { m_parent->RemoveChild(this); }
-
-    m_parent = nullptr;
-
-    SetHierarchyUpdateRequired(true);
-    SetTransformUpdateRequired(true);
+    TLOC_ASSERT_NOT_NULL(m_parent);
+    m_parent->RemoveChild(this);
 
     return *this;
   }
@@ -106,14 +100,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     SetParent(pointer a_parentNode)
   {
-    TLOC_ASSERT(HasParent() == false,
-                "This node already has a parent - use RemoveParent() first");
     a_parentNode->AddChild(this);
-    m_parent = a_parentNode;
-
-    SetHierarchyUpdateRequired(true);
-    SetTransformUpdateRequired(true);
-
     return *this;
   }
 

@@ -170,7 +170,12 @@ namespace tloc { namespace graphics { namespace component_system {
     IsLastFrame() const
   {
     const TextureCoords& currSeq = GetCurrentSpriteSequence();
-    return currSeq.GetCurrentSet() > currSeq.GetNumSets();
+
+    const size_type currSet = currSeq.GetCurrentSet();
+    const size_type totalSets = currSeq.GetNumSets();
+    TLOC_ASSERT(currSet < totalSets, "Invalid set index");
+
+    return currSet == totalSets - 1;
   }
 
   const bool

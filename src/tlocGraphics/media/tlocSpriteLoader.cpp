@@ -427,9 +427,9 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    begin(const string_type& a_name)
+    begin(BufferArg a_name)
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -437,11 +437,11 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    end(const string_type& a_name)
+    end(BufferArg a_name)
   {
     iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name.c_str()));
+                        nameMatch(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())
@@ -455,9 +455,9 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    begin(const string_type& a_name) const
+    begin(BufferArg a_name) const
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -465,11 +465,11 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    end(const string_type& a_name) const
+    end(BufferArg a_name) const
   {
     const_iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name.c_str()));
+                        nameMatch(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())

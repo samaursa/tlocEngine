@@ -81,24 +81,34 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureCoords&
     TextureAnimator::
-    GetSpriteSet(size_type a_setIndex)
+    GetSpriteSequence(size_type a_setIndex)
   {
     return m_coordSets[a_setIndex].m_coords;
   }
 
   const TextureCoords&
     TextureAnimator::
-    GetSpriteSet(size_type a_setIndex) const
+    GetSpriteSequence(size_type a_setIndex) const
   {
     return m_coordSets[a_setIndex].m_coords;
   }
+
+  TextureCoords&
+    TextureAnimator::
+    GetCurrentSpriteSequence()
+  { return GetSpriteSequence(GetCurrentSpriteSeqIndex()); }
+
+  const TextureCoords&
+    TextureAnimator::
+    GetCurrentSpriteSequence() const
+  { return GetSpriteSequence(GetCurrentSpriteSeqIndex()); }
 
   void
     TextureAnimator::
     NextFrame()
   {
-    const size_type setSize = m_coordSets[m_currentSet].m_coords.GetNumSets();
-    size_type currentFrame = m_coordSets[m_currentSet].m_coords.GetCurrentSet();
+    const size_type setSize = GetCurrentSpriteSequence().GetNumSets();
+    size_type currentFrame = GetCurrentSpriteSequence().GetCurrentSet();
 
     ++currentFrame;
     if (currentFrame >= setSize)
@@ -116,7 +126,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimator::
     SetFrame(size_type a_index)
   {
-    m_coordSets[m_currentSet].m_coords.SetCurrentSet(a_index);
+    GetCurrentSpriteSequence().SetCurrentSet(a_index);
     m_coordSets[m_currentSet].m_flags.Mark(k_spriteSetChanged);
   }
 
@@ -124,8 +134,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimator::
     PrevFrame()
   {
-    const size_type setSize = m_coordSets[m_currentSet].m_coords.GetNumSets();
-    size_type currentFrame = m_coordSets[m_currentSet].m_coords.GetCurrentSet();
+    const size_type setSize = GetCurrentSpriteSequence().GetNumSets();
+    size_type currentFrame = GetCurrentSpriteSequence().GetCurrentSet();
 
     currentFrame--;
     if (currentFrame >= setSize)
@@ -136,7 +146,7 @@ namespace tloc { namespace graphics { namespace component_system {
       { currentFrame = 0; }
     }
 
-    m_coordSets[m_currentSet].m_coords.SetCurrentSet(currentFrame);
+    GetCurrentSpriteSequence().SetCurrentSet(currentFrame);
     m_coordSets[m_currentSet].m_flags.Mark(k_spriteSetChanged);
   }
 
@@ -157,7 +167,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
   const bool
     TextureAnimator::
-    IsSpriteSetChanged() const
+    IsLastFrame() const
+  {
+    const TextureCoords& currSeq = GetCurrentSpriteSequence();
+    return currSeq.GetCurrentSet() > currSeq.GetNumSets();
+  }
+
+  const bool
+    TextureAnimator::
+    IsSpriteSeqChanged() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_spriteSetChanged); }
 
   const TextureAnimator::size_type
@@ -188,16 +206,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     TextureAnimator::
-    SetSpriteSetChanged(bool a_changed)
+    SetSpriteSequenceChanged(bool a_changed)
   {
     m_coordSets[m_currentSet].m_flags[k_spriteSetChanged] = a_changed;
   }
 
   void
     TextureAnimator::
-    SetCurrentSpriteSet(size_type a_spriteSetIndex)
+    SetCurrentSpriteSequence(size_type a_spriteSetIndex)
   {
-    TLOC_ASSERT(a_spriteSetIndex < GetNumSpriteSets(), "Index out of bounds!");
+    TLOC_ASSERT(a_spriteSetIndex < GetNumSpriteSequences(), "Index out of bounds!");
     m_currentSet = a_spriteSetIndex;
     m_coordSets[m_currentSet].m_flags.Mark(k_spriteSetChanged);
   }

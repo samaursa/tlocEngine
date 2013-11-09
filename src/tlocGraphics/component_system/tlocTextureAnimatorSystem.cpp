@@ -97,7 +97,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       if (ent->HasComponent(components::texture_coords) &&
-          texAnim->IsSpriteSetChanged())
+          texAnim->IsSpriteSeqChanged())
       {
         gfx_cs::TextureCoords* coordPtr =
           ent->GetComponent<gfx_cs::TextureCoords>(i);
@@ -105,9 +105,9 @@ namespace tloc { namespace graphics { namespace component_system {
         TLOC_ASSERT(coordPtr,
           "Texture coords don't exist for corresponding texture animator");
 
-        *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
+        *coordPtr = texAnim->GetSpriteSequence(texAnim->GetCurrentSpriteSeqIndex());
 
-        texAnim->SetSpriteSetChanged(false);
+        texAnim->SetSpriteSequenceChanged(false);
       }
     }
   }

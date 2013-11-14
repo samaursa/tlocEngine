@@ -67,8 +67,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::component_system::
                   component_ptr_array                   component_list;
     typedef containers::tl_array<component_list>::type  component_list_list;
-    typedef tl_uint                         entity_id;
-    typedef tl_size                         size_type;
+    typedef tl_size                                     entity_id;
+    typedef tl_size                                     size_type;
 
     Entity(entity_id  a_id);
     Entity(entity_id  a_id, BufferArg a_debugName);

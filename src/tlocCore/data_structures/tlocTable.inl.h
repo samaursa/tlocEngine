@@ -264,9 +264,9 @@ namespace tloc { namespace core { namespace data_structs {
     { memcpy(m_values, &a_vars, sizeof(T) * k_TableSize); }
     else
     {
-      for (tl_size currRow = 0; currRow < k_Rows; ++currRow)
+      for (tl_int currRow = 0; currRow < k_Rows; ++currRow)
       {
-        for (tl_size currCol = 0; currCol < k_Cols; ++currCol)
+        for (tl_int currCol = 0; currCol < k_Cols; ++currCol)
         {
           Set(currRow, currCol, a_vars.operator[]( (currRow * k_Cols) + currCol) );
         }

@@ -180,8 +180,8 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type&       operator[](tl_int a_index);
-    wrapper_type const& operator[](tl_int a_index) const;
+    wrapper_type&       operator[](index_type a_index);
+    wrapper_type const& operator[](index_type a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;

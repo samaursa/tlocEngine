@@ -44,7 +44,8 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  Shader_I::Shader_I() : m_flags(count)
+  Shader_I::Shader_I()
+    : m_flags(count)
   {
   }
 

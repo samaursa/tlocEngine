@@ -47,21 +47,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     AddChild(pointer a_childNode)
   {
-
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
     a_childNode->m_parent = this;
     m_children.push_back(a_childNode);
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     RemoveChild(pointer a_childNode)
   {
@@ -77,7 +78,59 @@ namespace tloc { namespace graphics { namespace component_system {
     (*itr)->SetHierarchyUpdateRequired(true);
 
     m_children.erase(itr);
+
+    return *this;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::this_type&
+    SceneNode::
+    RemoveParent()
+  {
+    TLOC_ASSERT_NOT_NULL(m_parent);
+    m_parent->RemoveChild(this);
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::this_type&
+    SceneNode::
+    SetParent(pointer a_parentNode)
+  {
+    a_parentNode->AddChild(this);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::entity_ptr_type
+    SceneNode::
+    GetEntity()
+  { return m_entity; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::entity_const_ptr_type
+    SceneNode::
+    GetEntity() const
+  { return m_entity; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::pointer
+    SceneNode::
+    GetParent()
+  { return m_parent; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::const_pointer
+    SceneNode::
+    GetParent() const
+  { return m_parent; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -124,7 +177,7 @@ namespace tloc { namespace graphics { namespace component_system {
     IsParentDisabled() const
   {
     // Disable us if our parent is disabled
-    SceneNode* p = GetParent();
+    const_pointer p = GetParent();
     while(p)
     {
       if (p->GetEntity()->IsActive() == false)
@@ -145,12 +198,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetWorldTransform(const transform_type& a_transform)
   {
     m_worldTransform = a_transform;
     SetTransformUpdateRequired(true);
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -164,10 +219,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetHierarchyUpdateRequired(bool a_updateRequired)
-  { m_flags[k_hierarchyUpdate] = a_updateRequired; }
+  { m_flags[k_hierarchyUpdate] = a_updateRequired; return *this; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -180,10 +235,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetTransformUpdateRequired(bool a_updateRequired)
-  { m_flags[k_transformUpdate] = a_updateRequired; }
+  { m_flags[k_transformUpdate] = a_updateRequired; return *this; }
 
   // ///////////////////////////////////////////////////////////////////////
   // explicit instantiations

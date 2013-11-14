@@ -45,10 +45,13 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     Add(entity_type* a_ent)
   {
+    TLOC_ASSERT(a_ent->HasComponent(gfx_cs::SceneNode::k_component_type) == false,
+      "Entity already has a SceneNode");
+
     using namespace gfx_cs::components;
 
     typedef gfx_cs::scene_node_sptr_pool        scene_node_pool;
@@ -66,6 +69,8 @@ namespace tloc { namespace prefab { namespace graphics {
     { m_parent->AddChild(itrSceneNode->GetValue().get()); }
 
     m_entMgr->InsertComponent(a_ent, itrSceneNode->GetValue().get());
+
+    return *this;
   }
 
 };};};

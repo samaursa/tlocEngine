@@ -182,6 +182,7 @@ set(TLOC_GRAPHICS_WINDOW
   window/tlocWindowHandle.h 
   window/tlocWindowImpl.h 
   window/tlocWindowSettings.h 
+  window/tlocWindowSettings.cpp
   window/tloc_window.cpp 
   window/tloc_window.h 
   window/tloc_window.inl.h

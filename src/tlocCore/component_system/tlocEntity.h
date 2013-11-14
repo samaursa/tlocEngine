@@ -2,6 +2,7 @@
 #define TLOC_ENTITY_H
 
 #include <tlocCore/tlocCoreBase.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
@@ -20,28 +21,28 @@ namespace tloc { namespace core { namespace component_system {
     class Entity_I
     {
     public:
-      Entity_I(const char* a_name)
+      Entity_I(BufferArg a_name)
         : m_name(a_name)
       { }
 
-      void        SetDebugName(const char* a_name)
+      void        SetDebugName(BufferArg a_name)
       { m_name = a_name; }
 
       const char* GetDebugName() const
-      { return m_name; }
+      { return m_name.c_str(); }
 
     private:
-      const char* m_name;
+      core_str::String m_name;
     };
 
     template <>
     class Entity_I<core_cfg::p_build_config::Release>
     {
     public:
-      Entity_I(const char* )
+      Entity_I(BufferArg )
       { }
 
-      void        SetDebugName(const char* )
+      void        SetDebugName(BufferArg )
       { }
 
       const char* GetDebugName() const
@@ -70,13 +71,16 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                         size_type;
 
     Entity(entity_id  a_id);
-    Entity(entity_id  a_id, const char* a_debugName);
+    Entity(entity_id  a_id, BufferArg a_debugName);
 
     bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
     template <typename T_ComponentType>
     T_ComponentType*            GetComponent(size_type a_index = 0) const;
+
+    template <typename T_ComponentType>
+    bool                        HasComponent() const;
 
     entity_id                   GetID() const;
     size_type                   GetIndex() const;
@@ -111,10 +115,19 @@ namespace tloc { namespace core { namespace component_system {
   T_ComponentType*
     Entity::GetComponent(size_type a_index) const
   {
+    TLOC_ASSERT(HasComponent(T_ComponentType::k_component_type),
+      "Component doesn't exist in this entity");
     typedef ComponentMapper<T_ComponentType> cmapper;
     cmapper temp = GetComponents(T_ComponentType::k_component_type);
     return temp[a_index];
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_ComponentType>
+  bool
+    Entity::HasComponent() const
+  { return HasComponent(T_ComponentType::k_component_type); }
 
   //------------------------------------------------------------------------
   // typedef

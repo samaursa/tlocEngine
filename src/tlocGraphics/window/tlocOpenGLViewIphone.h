@@ -1,5 +1,6 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocInput/hid/tlocTouchSurfaceDevice.h>
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
 
 #import <UIKit/UIKit.h>
 
@@ -96,5 +97,10 @@
 ///                       touches belong.
 ///-------------------------------------------------------------------------
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event;
+
+///-------------------------------------------------------------------------
+/// Returns the view's framebuffer
+///-------------------------------------------------------------------------
+- (tloc::gfx_gl::framebuffer_object_sptr)GetFramebuffer;
 
 @end

@@ -339,10 +339,10 @@ namespace tloc { namespace graphics { namespace media {
 
       typedef math_utils::scale_f32_s32     range_type;
 
-      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width]);
-      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height]);
+      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width] + 1);
+      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height] + 1);
 
-      range_f32 texRange(0.0f, 1.0f);
+      range_f32 texRange(0.0f, 2.0f);
 
       range_type texToSpriteX =
         range_type( range_type::range_small(texRange),
@@ -427,9 +427,9 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    begin(const string_type& a_name)
+    begin(BufferArg a_name)
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -437,11 +437,11 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    end(const string_type& a_name)
+    end(BufferArg a_name)
   {
     iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name.c_str()));
+                        nameMatch(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())
@@ -455,9 +455,9 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    begin(const string_type& a_name) const
+    begin(BufferArg a_name) const
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name.c_str()));
+    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -465,11 +465,11 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::const_iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
-    end(const string_type& a_name) const
+    end(BufferArg a_name) const
   {
     const_iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name.c_str()));
+                        nameMatch(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())

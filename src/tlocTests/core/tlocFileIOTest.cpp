@@ -68,5 +68,8 @@ namespace TestingFileIO
     CHECK_FALSE(fileReader.IsOpen());
 
     CHECK(fileReader.Delete() == common_error_types::error_success );
+
+    io::FileIO_ReadA fileReaderNoFile(core_io::Path("fileDoesNotExist.txt"));
+    CHECK(fileReaderNoFile.Open() != ErrorSuccess);
   }
 };

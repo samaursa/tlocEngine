@@ -77,35 +77,35 @@ namespace tloc { namespace graphics { namespace gl {
   {
     namespace priv
     {
-      void DoGet(GLint& a_out, const GLint a_paramName)
+      void DoGet(GLint& a_out, const GLint s_glParamName)
       {
-        glGetIntegerv(a_paramName, &a_out);
+        glGetIntegerv(s_glParamName, &a_out);
       }
 
-      void DoGet(GLint*& a_out, const GLint a_paramName)
+      void DoGet(GLint*& a_out, const GLint s_glParamName)
       {
-        glGetIntegerv(a_paramName, a_out);
+        glGetIntegerv(s_glParamName, a_out);
       }
 
-      void DoGet(GLfloat&		a_out, const GLint a_paramName)
+      void DoGet(GLfloat&		a_out, const GLint s_glParamName)
       {
-        glGetFloatv(a_paramName, &a_out);
+        glGetFloatv(s_glParamName, &a_out);
       }
 
-      void DoGet(GLfloat*&	a_out, const GLint a_paramName)
+      void DoGet(GLfloat*&	a_out, const GLint s_glParamName)
       {
-        glGetFloatv(a_paramName, a_out);
+        glGetFloatv(s_glParamName, a_out);
       }
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
-      void DoGet(GLdouble&	a_out, const GLint a_paramName)
+      void DoGet(GLdouble&	a_out, const GLint s_glParamName)
       {
-        glGetDoublev(a_paramName, &a_out);
+        glGetDoublev(s_glParamName, &a_out);
       }
 
-      void DoGet(GLdouble*&	a_out, const GLint a_paramName)
+      void DoGet(GLdouble*&	a_out, const GLint s_glParamName)
       {
-        glGetDoublev(a_paramName, a_out);
+        glGetDoublev(s_glParamName, a_out);
       }
 #endif
     };

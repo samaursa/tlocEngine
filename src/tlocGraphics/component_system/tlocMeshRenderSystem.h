@@ -75,6 +75,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   typedef MeshRenderSystem_T<Mesh>      MeshRenderSystem;
 
+  TLOC_TYPEDEF_SHARED_PTR(MeshRenderSystem, mesh_render_system);
+
 };};};
 
 #endif

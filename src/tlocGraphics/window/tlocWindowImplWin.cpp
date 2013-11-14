@@ -26,6 +26,23 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = nullptr;
   WINDOW_IMPL_WIN_TYPE::size_type g_currWindowCount          = 0;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Windows has a default framebuffer with the id of 0. We will therefore
+  // manually set that ID on FramebufferObject so that we have a FBO with
+  // an ID of 0. To do that we need to inherit from FBO because its constructor
+  // to construct an FBO with an ID is protected for this very purpose
+
+  class WindowsFramebufferObject
+    : public gl::FramebufferObject
+  {
+  public:
+    typedef gl::FramebufferObject           base_type;
+  public:
+    WindowsFramebufferObject()
+      : base_type(gl::p_framebuffer_object::Default())
+    { }
+  };
+
   //////////////////////////////////////////////////////////////////////////
   // WindowImpl<>
 
@@ -88,9 +105,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     if (m_handle)
     {
-      m_windowSettings.m_depthBits = 0;
-      m_windowSettings.m_stencilBits = 0;
-      m_windowSettings.m_antiAlias = 0;
+      m_windowSettings.SetDepthBits(0);
+      m_windowSettings.SetStencilBits(0);
+      m_windowSettings.SetAntiAlias(0);
 
       DoCreateContext(graphics_mode(props), m_windowSettings);
 
@@ -111,8 +128,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
-    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-           const window_style_type& a_style)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings)
   {
     m_graphicsMode    = a_mode;
     m_windowSettings  = a_settings;
@@ -135,23 +151,25 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     TLOC_ASSERT(width <= GetMaxWidth(), "Screen width not supported");
     TLOC_ASSERT(height <= GetMaxHeight(), "Screen height not supported");
 
+    using namespace p_window_settings;
     DWORD win32Style = WS_VISIBLE;
-    if (a_style == WindowSettings::style_none)
+    if (a_settings.GetStyleBits() == style::None::s_glParamName)
     {
       win32Style |= WS_POPUP;
     }
     else
     {
-      if (a_style& WindowSettings::style_titlebar)
+      if (a_settings.GetStyleBits() & style::TitleBar::s_glParamName)
       { win32Style |= WS_CAPTION | WS_MINIMIZEBOX; }
-      if (a_style& WindowSettings::style_resize)
+      if (a_settings.GetStyleBits() & style::Resize::s_glParamName)
       { win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX; }
-      if (a_style& WindowSettings::style_close)
+      if (a_settings.GetStyleBits() & style::Close::s_glParamName)
       { win32Style |= WS_SYSMENU; }
     }
 
     // Adjust the window's width and height given the requested resolution
-    const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
+    const bool fullScreen = (a_settings.GetStyleBits() &
+                             style::FullScreen::s_glParamName) != 0;
     if (fullScreen == false)
     {
       RECT rect = {0, 0,
@@ -165,7 +183,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
     tl_int retIndex =
-      CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
+      CharAsciiToWide(wTitle, a_settings.GetTitle().c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
       (s32)top, (s32)width, (s32)height, TLOC_NULL, TLOC_NULL,
@@ -334,6 +352,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ::SwapBuffers(m_deviceContext);
   }
 
+  WINDOW_IMPL_WIN_TYPE::fbo_sptr
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoGetFramebuffer()
+  {
+    return fbo_sptr(new WindowsFramebufferObject());
+  }
+
   //------------------------------------------------------------------------
   // Private helper functions
 
@@ -456,7 +481,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     TLOC_ASSERT(m_deviceContext, "Failed to get window's device context");
 
     s32 bestFormat = 0;
-    if (a_settings.m_antiAlias > 0)
+    if (a_settings.GetAntiAlias() > 0)
     {
       // Since we don't have GLEW yet, we will have to manually get the function
       // which will in turn give us the pixel format
@@ -472,8 +497,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
           WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
           WGL_ACCELERATION_ARB, GL_TRUE,
           WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-          WGL_SAMPLE_BUFFERS_ARB, (a_settings.m_antiAlias ? GL_TRUE : GL_FALSE),
-          WGL_SAMPLES_ARB, (a_settings.m_antiAlias),
+          WGL_SAMPLE_BUFFERS_ARB, (a_settings.GetAntiAlias() ? GL_TRUE : GL_FALSE),
+          WGL_SAMPLES_ARB, (a_settings.GetAntiAlias()),
           0, 0
         };
 
@@ -488,11 +513,12 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
         if (isValid == false || numFormats == 0)
         {
-          if (a_settings.m_antiAlias > 2)
+          if (a_settings.GetAntiAlias() > 2)
           {
             // LOG: Failed to find a format that supports the required AA,
             // trying lower levels.
-            a_settings.m_antiAlias = pixAttribs[11] = 2;
+            a_settings.SetAntiAlias(2);
+            pixAttribs[11] = a_settings.GetAntiAlias();
             isValid = wglChoosePixelFormatARB(m_deviceContext, pixAttribs,
               attributeList, maxFormatsToReturn, formats, &numFormats) != 0;
           }
@@ -500,7 +526,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
           if (isValid == false || numFormats == 0)
           {
             // LOG: Cannot find pixel format supporting any AA, disabling AA
-            a_settings.m_antiAlias = 0;
+            a_settings.SetAntiAlias(0);
           }
         }
 
@@ -514,7 +540,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       else
       {
         // LOG: AA not supported and will be disabled
-        a_settings.m_antiAlias = 0;
+        a_settings.SetAntiAlias(0);
       }
     }
 
@@ -530,8 +556,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       pixelDesc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
       pixelDesc.iPixelType = PFD_TYPE_RGBA;
       pixelDesc.cColorBits = static_cast<BYTE>(a_gMode.GetProperties().m_bitsPerPixel);
-      pixelDesc.cDepthBits = static_cast<BYTE>(a_settings.m_depthBits);
-      pixelDesc.cStencilBits = static_cast<BYTE>(a_settings.m_stencilBits);
+      pixelDesc.cDepthBits = static_cast<BYTE>(a_settings.GetDepthBits());
+      pixelDesc.cStencilBits = static_cast<BYTE>(a_settings.GetStencilBits());
       pixelDesc.cAlphaBits = a_gMode.GetProperties().m_bitsPerPixel == 32 ? 8 : 0;
 
       bestFormat = ChoosePixelFormat(m_deviceContext, &pixelDesc);
@@ -546,8 +572,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     DescribePixelFormat(m_deviceContext, bestFormat, pixFormatSize, &pixFormat);
 
-    a_settings.m_depthBits   = pixFormat.cDepthBits;
-    a_settings.m_stencilBits = pixFormat.cStencilBits;
+    a_settings.SetDepthBits(pixFormat.cDepthBits);
+    a_settings.SetStencilBits(pixFormat.cStencilBits);
 
     bool setPixelFormatResult =
       SetPixelFormat(m_deviceContext, bestFormat, &pixFormat) != 0;
@@ -560,7 +586,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     SetActive(true);
 
-    if (a_settings.m_antiAlias > 0)
+    if (a_settings.GetAntiAlias() > 0)
     {
       glEnable(GL_MULTISAMPLE_ARB);
     }
@@ -572,14 +598,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties& props = a_gMode.GetProperties();
 
     DEVMODE devMode;
-    devMode.dmSize       = sizeof(DEVMODE);
-    devMode.dmPelsWidth  = (DWORD)props.m_width;
-    devMode.dmPelsHeight = (DWORD)props.m_height;
-    devMode.dmBitsPerPel = (DWORD)props.m_bitsPerPixel;
+    devMode.dmSize       = sizeof(devMode);
+    devMode.dmPelsWidth  = props.m_width;
+    devMode.dmPelsHeight = props.m_height;
+    devMode.dmBitsPerPel = props.m_bitsPerPixel;
     devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
     s32 result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
-    if (result == DISP_CHANGE_SUCCESSFUL)
+    if (result != DISP_CHANGE_SUCCESSFUL)
     {
       // LOG: Could not change display to fullscreen
       return;

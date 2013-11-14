@@ -23,7 +23,7 @@ namespace tloc { namespace prefab { namespace animation {
     TransformAnimation(core_cs::EntityManager* a_entMgr,
              core_cs::ComponentPoolManager* a_poolMgr);
 
-    void          Add(entity_type* a_ent, const kf_seq_type& a_keyframes);
+    this_type&    Add(entity_type* a_ent, const kf_seq_type& a_keyframes);
     void          Modify(entity_type* a_ent, const kf_seq_type& a_keyframes,
                          tl_size a_sequenceIndex);
 

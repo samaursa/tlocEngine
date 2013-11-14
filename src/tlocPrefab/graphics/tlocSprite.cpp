@@ -21,6 +21,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
+    TLOC_ASSERT(a_begin != a_end, "No sprite info available");
 
     using namespace gfx_cs;
     using namespace gfx_cs::components;
@@ -72,16 +73,16 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     TLOC_ASSERT_NOT_NULL(ta);
 
     const TextureAnimator::size_type currSetIndex =
-      ta->GetCurrentSpriteSetIndex();
+      ta->GetCurrentSpriteSeqIndex();
 
     ta->AddSpriteSet(tcoord);
-    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
+    ta->SetCurrentSpriteSequence(ta->GetNumSpriteSequences() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
     ta->SetFrame(a_startingFrame);
     ta->SetPaused(a_paused);
 
-    ta->SetCurrentSpriteSet(currSetIndex);
+    ta->SetCurrentSpriteSequence(currSetIndex);
   }
 
   //------------------------------------------------------------------------

@@ -27,7 +27,7 @@ namespace tloc { namespace prefab { namespace animation {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  TransformAnimation::this_type&
     TransformAnimation::
     Add(entity_type* a_ent, const kf_seq_type& a_keyframes)
   {
@@ -73,6 +73,8 @@ namespace tloc { namespace prefab { namespace animation {
     ta->SetReverse(m_reverse);
 
     ta->SetCurrentKFSequence(currSeqIndex);
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

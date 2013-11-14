@@ -42,7 +42,7 @@ namespace tloc { namespace graphics { namespace media {
     struct MaxDimensions
     {
       MaxDimensions()
-        : m_dim(0, 0)
+        : m_dim(0)
       { }
 
       bool ModifyMaxDimension(dim_type a_dim)
@@ -105,7 +105,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       SpriteSheetPacker::
       Parse(const core_str::String& a_input,
-            const Dimension2u a_imgDim,
+            const Dimension2 a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       typedef core_conts::Array<core_str::String>   string_array;
@@ -232,7 +232,7 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       TexturePacker::
       Parse(const core_str::String& a_input,
-            const Dimension2u a_imgDim,
+            const Dimension2 a_imgDim,
             core_conts::Array<SpriteInfo>& a_out)
     {
       using namespace rapidxml;
@@ -255,9 +255,9 @@ namespace tloc { namespace graphics { namespace media {
 
       TLOC_UNUSED_3(widthAttr, heightAttr, a_imgDim); // to avoid warnings in Release
       TLOC_ASSERT(
-        core_utils::CastNumber<Dimension2u::value_type>(atoi(widthAttr->value()))
+        core_utils::CastNumber<Dimension2::value_type>(atoi(widthAttr->value()))
         == a_imgDim[0] &&
-        core_utils::CastNumber<Dimension2u::value_type>(atoi(heightAttr->value()))
+        core_utils::CastNumber<Dimension2::value_type>(atoi(heightAttr->value()))
         == a_imgDim[1], "Image dimensions don't match that of sprite sheet");
 
       xml_node<>* nextSpriteNode = textureAtlasNode->first_node("sprite");
@@ -306,7 +306,7 @@ namespace tloc { namespace graphics { namespace media {
   SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     SpriteLoader_T()
     : m_flags(k_count)
-    , m_imageDimensions(0, 0)
+    , m_imageDimensions(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -334,13 +334,13 @@ namespace tloc { namespace graphics { namespace media {
 
     if (err == ErrorSuccess)
     {
-      using math::range_s32;
+      using math::range_tl_size;
       using math::range_f32;
 
-      typedef math_utils::scale_f32_s32     range_type;
+      typedef math_utils::scale_f32_tl_size     range_type;
 
-      range_s32 spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width] + 1);
-      range_s32 spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height] + 1);
+      range_tl_size spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width] + 1);
+      range_tl_size spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height] + 1);
 
       range_f32 texRange(0.0f, 2.0f);
 

@@ -138,9 +138,16 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties modeProps = a_mode.GetProperties();
 
     // Center the window to the screen regardless of the given size
+
     HDC       screenDC = GetDC(TLOC_NULL);
-    tl_int    left		 = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
-    tl_int    top			 = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+
+    const tl_size horDeviceCap = core_utils::CastNumber<tl_size>
+      (GetDeviceCaps(screenDC, HORZRES));
+    const tl_size verDeviceCap = core_utils::CastNumber<tl_size>
+      (GetDeviceCaps(screenDC, VERTRES));
+
+    tl_size   left		 = (horDeviceCap - modeProps.m_width)  / 2;
+    tl_size   top			 = (verDeviceCap - modeProps.m_height) / 2;
     size_type width		 = modeProps.m_width;
     size_type height	 = modeProps.m_height;
     // LOG: Window resolution greater than screen's resolution
@@ -182,7 +189,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
-    tl_int retIndex =
+    tl_size retIndex =
       CharAsciiToWide(wTitle, a_settings.GetTitle().c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
@@ -599,9 +606,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     DEVMODE devMode;
     devMode.dmSize       = sizeof(devMode);
-    devMode.dmPelsWidth  = props.m_width;
-    devMode.dmPelsHeight = props.m_height;
-    devMode.dmBitsPerPel = props.m_bitsPerPixel;
+    devMode.dmPelsWidth  = core_utils::CastNumber<DWORD>(props.m_width);
+    devMode.dmPelsHeight = core_utils::CastNumber<DWORD>(props.m_height);
+    devMode.dmBitsPerPel = core_utils::CastNumber<DWORD>(props.m_bitsPerPixel);
     devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
     s32 result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);

@@ -36,7 +36,7 @@ namespace tloc { namespace graphics { namespace gl {
   RenderbufferObject::Params::
     Params()
     : m_formatType(p_renderbuffer_object::internal_format::RGBA4::s_glParamName)
-    , m_dimensions(0, 0)
+    , m_dimensions(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -24,8 +24,8 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
-#define ITERATE_MATRIX      for (tl_size i = 0; i < k_MatrixSize; ++i)
-#define ITERATE_MATRIX_HALF for (tl_size i = 0; i < T_Size; ++i)
+#define ITERATE_MATRIX      for (tl_int i = 0; i < k_MatrixSize; ++i)
+#define ITERATE_MATRIX_HALF for (tl_int i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors

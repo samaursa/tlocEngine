@@ -40,7 +40,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame = render_one_frame(m_renderer.get());
+    m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -50,7 +50,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities( f64 )
   {
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame = render_one_frame();
+    m_renderOneFrame.reset();
   }
 
   // -----------------------------------------------------------------------

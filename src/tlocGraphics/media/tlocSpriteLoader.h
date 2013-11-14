@@ -6,6 +6,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/types/tlocDimension.h>
 
@@ -84,10 +85,10 @@ namespace tloc { namespace graphics { namespace media {
     const_iterator  begin() const;
     const_iterator  end() const;
 
-    iterator        begin(const string_type& a_name);
-    iterator        end(const string_type& a_name);
-    const_iterator  begin(const string_type& a_name) const;
-    const_iterator  end(const string_type& a_name) const;
+    iterator        begin(BufferArg a_name);
+    iterator        end(BufferArg a_name);
+    const_iterator  begin(BufferArg a_name) const;
+    const_iterator  end(BufferArg a_name) const;
 
     TLOC_DECL_AND_DEF_GETTER(sprite_info_cont, GetSpriteInfo, m_spriteInfo);
     TLOC_DECL_AND_DEF_GETTER(dim_type, GetDimensions, m_imageDimensions);

@@ -52,17 +52,18 @@ namespace tloc { namespace prefab { namespace graphics {
     core_io::FileIO_ReadA vsFile = core_io::FileIO_ReadA(vsFullPath);
     core_io::FileIO_ReadA fsFile = core_io::FileIO_ReadA(fsFullPath);
 
+    core_str::String vsCode, fsCode;
+
     core_err::Error err = ErrorSuccess;
     err = vsFile.Open();
     TLOC_ASSERT(err == ErrorSuccess, "Could not open the vertex shader file");
+    vsFile.GetContents(vsCode);
+    vsFile.Close();
 
     err = fsFile.Open();
     TLOC_ASSERT(err == ErrorSuccess, "Could not open the fragment shader file");
-
-    core_str::String vsCode, fsCode;
-
-    vsFile.GetContents(vsCode);
     fsFile.GetContents(fsCode);
+    fsFile.Close();
 
     Add(a_ent, vsCode, fsCode);
   }

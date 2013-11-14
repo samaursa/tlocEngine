@@ -31,7 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef T_RendererSptr                                renderer_type;
     typedef typename
-            renderer_type::value_type::RenderOneFrame     render_one_frame;
+      renderer_type::value_type::render_one_frame_uptr    rof_uptr;
 
     using base_type::event_manager;
     using base_type::entity_manager;
@@ -61,7 +61,7 @@ namespace tloc { namespace graphics { namespace component_system {
   private:
     const entity_type*    m_sharedCam;
     renderer_type         m_renderer;
-    render_one_frame      m_renderOneFrame;
+    rof_uptr              m_renderOneFrame;
     matrix_type           m_vpMatrix;
 
   };

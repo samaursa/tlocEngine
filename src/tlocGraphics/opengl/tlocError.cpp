@@ -209,7 +209,8 @@ const char8* GetErrorString(GLenum a_errorCode)
   //------------------------------------------------------------------------
   // Error
 
-  const char* Error::s_lastErrorDesc = "None";
+  const char*       Error::s_lastErrorDesc = "None";
+  Error::value_type Error::s_lastError     = GL_NO_ERROR;
 
   bool Error::Succeeded()
   {
@@ -227,6 +228,7 @@ const char8* GetErrorString(GLenum a_errorCode)
 
     if (m_lastError != GL_NO_ERROR)
     {
+      s_lastError = m_lastError;
       GetLastErrorAsString(s_lastErrorDesc);
     }
 

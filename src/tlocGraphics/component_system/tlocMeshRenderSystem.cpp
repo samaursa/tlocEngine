@@ -1,6 +1,7 @@
 #include "tlocMeshRenderSystem.h"
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
@@ -159,11 +160,23 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64)
-  { }
+  {
+    // No materials/entities may have been loaded initially
+    // (m_shaderPtr would have remained NULL)
+    if (m_shaderPtr)
+    {
+      m_shaderPtr->Disable();
+      m_shaderPtr.reset();
+    }
+
+    base_type::Post_ProcessActiveEntities(f64());
+  }
 
   // -----------------------------------------------------------------------
   // explicit instantiation
 
   template class MeshRenderSystem_T<Mesh>;
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MeshRenderSystem);
 
 };};};

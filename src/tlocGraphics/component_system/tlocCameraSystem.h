@@ -54,6 +54,11 @@ namespace tloc { namespace graphics { namespace component_system {
                                f64 a_deltaT);
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(CameraSystem, camera_system);
+
 };};};
 
 #endif

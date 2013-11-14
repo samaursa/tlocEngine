@@ -16,6 +16,7 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 #include <tlocGraphics/window/tlocWindowHandle.h>
+#include <tlocGraphics/renderer/tlocRenderer.h>
 
 #include <tlocMath/types/tlocAspectRatio.h>
 
@@ -110,6 +111,9 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
     typedef math_t::AspectRatio                          aspect_ratio;
+    typedef gfx_rend::Renderer                           renderer_type;
+    typedef renderer_type::Params                        renderer_params_type;
+    typedef gfx_rend::renderer_sptr                      renderer_sptr;
 
   public:
 
@@ -133,6 +137,7 @@ namespace tloc { namespace graphics { namespace win {
       typedef Loki::IsSameType<T_WindowHandleType, window_handle_type>
         win_handle_type;
       DoCreate(a_ptr, a_settings, Loki::Int2Type<win_handle_type::value>() );
+      DoSetupRenderer();
     }
 
     ///-------------------------------------------------------------------------
@@ -141,10 +146,7 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_mode The graphics mode
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                window_style_type a_style = WindowSettings::style_titlebar |
-                                            WindowSettings::style_resize |
-                                            WindowSettings::style_close);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Closes the window and destroys internal implementations. Does NOT
@@ -283,7 +285,7 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
-    void SwapBuffers();
+    void SwapBuffers() const;
 
     ///-------------------------------------------------------------------------
     /// Sends a WindowEvent to all registered objects
@@ -291,6 +293,11 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_event The WindowEvent
     ///-------------------------------------------------------------------------
     void SendEvent(const WindowEvent& a_event);
+
+    ///-------------------------------------------------------------------------
+    /// Get the window renderer
+    ///-------------------------------------------------------------------------
+    renderer_sptr GetRenderer() const;
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
 
@@ -302,7 +309,7 @@ namespace tloc { namespace graphics { namespace win {
                   IsWindowHandle);
     void DoCreate(const graphics_mode& a_mode, const WindowSettings& a_settings,
                   IsNotWindowHandle);
-
+    void DoSetupRenderer();
   protected:
 
     void DoCreateImpl();
@@ -311,6 +318,7 @@ namespace tloc { namespace graphics { namespace win {
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
     bool                                    m_mouseVisible;
+    renderer_sptr                           m_renderer;
   };
 
   //////////////////////////////////////////////////////////////////////////

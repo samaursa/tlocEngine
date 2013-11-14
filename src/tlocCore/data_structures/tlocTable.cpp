@@ -32,12 +32,12 @@
 namespace tloc { namespace core { namespace data_structs {
 
 #define INSTANTIATE_TABLE_FOR_ALL_TYPES(_row_,_col_)\
-  template class Table<f32,			 _row_, _col_>;\
-  template class Table<f64,			 _row_, _col_>;\
-  template class Table<s32,			 _row_, _col_>;\
-  template class Table<s64,			 _row_, _col_>;\
-  template class Table<u32,			 _row_, _col_>;\
-  template class Table<u64,			 _row_, _col_>
+  template class Table<f32,      _row_, _col_>;\
+  template class Table<f64,      _row_, _col_>;\
+  template class Table<s32,      _row_, _col_>;\
+  template class Table<s64,      _row_, _col_>;\
+  template class Table<u32,      _row_, _col_>;\
+  template class Table<u64,      _row_, _col_>
 
   INSTANTIATE_TABLE_FOR_ALL_TYPES(1, 1);
   INSTANTIATE_TABLE_FOR_ALL_TYPES(2, 2);

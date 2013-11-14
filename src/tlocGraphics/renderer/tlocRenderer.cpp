@@ -126,7 +126,7 @@ namespace tloc { namespace graphics { namespace renderer {
   Renderer_T<RENDERER_PARAMS>::Params::
     Params()
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_dim(0, 0)
+    , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
     , m_clearBits(0)
   {
     using namespace p_renderer;

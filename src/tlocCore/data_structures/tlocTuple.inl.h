@@ -20,7 +20,7 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TUPLE for (tl_int i = 0; i < T_Size; ++i)
+#define ITERATE_TUPLE for (tl_size i = 0; i < T_Size; ++i)
 
 #define TUPLE_TEMP   typename T, tl_size T_Size
 #define TUPLE_PARAMS T, T_Size
@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   TL_FI T& Tuple<TUPLE_PARAMS>::
-    operator [](tl_int aIndex)
+    operator [](size_type aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   TL_FI const T& Tuple<TUPLE_PARAMS>::
-    operator [](tl_int aIndex) const
+    operator [](size_type aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
     return m_values[aIndex];
@@ -270,7 +270,7 @@ namespace tloc { namespace core { namespace data_structs {
                   incoming_bigger)
   {
     for (tl_int i = 0; i < k_TupleSize; ++i)
-    { m_values[i] = a_other[i]; }
+    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -282,7 +282,7 @@ namespace tloc { namespace core { namespace data_structs {
                   incoming_smaller)
   {
     for (tl_int i = 0; i < T_OtherTuple::k_TupleSize; ++i)
-    { m_values[i] = a_other[i]; }
+    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
 
     DoFillRemaining<T_OtherTuple::k_TupleSize>(T_Policy());
   }

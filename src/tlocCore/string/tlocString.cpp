@@ -101,13 +101,13 @@ namespace tloc { namespace core { namespace string {
     return memcmp(aPtr1, aPtr2, aNumChars);
   }
 
-  tl_int
+  tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
 
-  tl_int
+  tl_size
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);

@@ -42,7 +42,7 @@ namespace TestingContiguity
 
     for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
-      for (tl_size j = 0; j < numElements; ++j)
+      for (tl_int j = 0; j < numElements; ++j)
       {
         if ( (first + ((i * numElements) + j) )   != (&(v[i][j])) )
         {
@@ -84,7 +84,7 @@ namespace TestingContiguity
 
     for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
-      for (tl_size j = 0; j < numElements; ++j)
+      for (tl_int j = 0; j < numElements; ++j)
       {
         if ( (first + ((i * numElements) + j) )   != (&(v[i][j])) )
         {

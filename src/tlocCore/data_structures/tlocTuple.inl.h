@@ -20,7 +20,7 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TUPLE for (tl_size i = 0; i < T_Size; ++i)
+#define ITERATE_TUPLE for (tl_int i = 0; i < T_Size; ++i)
 
 #define TUPLE_TEMP   typename T, tl_size T_Size
 #define TUPLE_PARAMS T, T_Size

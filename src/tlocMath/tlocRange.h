@@ -132,6 +132,8 @@ namespace tloc { namespace math {
     Range_T(value_type a_begin, value_type a_end,
             step_size a_stepSize = step_size(1));
 
+    bool       IsInRange(value_type a_value) const;
+
     this_type& operator=(const this_type& a_other);
     bool       operator== (const this_type& a_other) const;
 

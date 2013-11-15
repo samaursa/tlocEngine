@@ -27,7 +27,7 @@ namespace tloc { namespace prefab { namespace graphics {
     { }
 
     entity_type* Create();
-    void         Add(entity_type* a_ent);
+    this_type&   Add(entity_type* a_ent);
 
     TLOC_DECL_PARAM_VAR(scene_node_ptr_type, Parent, m_parent);
   };

@@ -22,7 +22,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::containers::tl_array<color_type>::type  pixel_container_type;
     typedef core::error::Error                            error_type;
     typedef Image                                         this_type;
-    typedef types::Dimension2u                            dimension_type;
+    typedef types::Dimension2                             dimension_type;
 
   public:
     Image();

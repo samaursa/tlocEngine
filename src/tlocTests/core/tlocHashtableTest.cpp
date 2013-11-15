@@ -5,6 +5,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocType.h>
 
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocList.inl.h>
@@ -645,9 +646,15 @@ namespace TestingHashtable
 
   struct StringHash
   {
-    tl_size
+    tl_uint
       operator()(const char8* a_value) const
-    { return static_cast<tl_size>( MurmurHash2(a_value, core_str::StrLen(a_value), 35)); }
+    {
+      tl_uint valueLength =
+        core_utils::CastNumber<tl_uint>(core_str::StrLen(a_value));
+
+      return core_utils::CastNumber<tl_uint>
+        (MurmurHash2(a_value, valueLength, 35) );
+    }
   };
 
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with const char*", "")

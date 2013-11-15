@@ -53,8 +53,7 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core_sptr::SharedPtr
-    <TextureAnimatorSystem>                   texture_animation_system_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(TextureAnimatorSystem, texture_animation_system);
 
 };};};
 

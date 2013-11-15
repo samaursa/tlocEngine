@@ -14,7 +14,8 @@ namespace tloc { namespace graphics { namespace media {
     };
   };
 
-  Image::Image() : m_dim(0, 0)
+  Image::Image()
+    : m_dim(0)
   {
   }
 

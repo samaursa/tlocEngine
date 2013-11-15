@@ -178,6 +178,7 @@ namespace tloc { namespace math {
   typedef Range_T<u64>            range_u64;
   typedef Range_T<f32>            range_f32;
   typedef Range_T<f64>            range_f64;
+  typedef Range_T<tl_size>        range_tl_size;
 
   //------------------------------------------------------------------------
   // global definitions

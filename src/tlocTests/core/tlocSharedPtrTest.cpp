@@ -275,7 +275,7 @@ namespace TestingSharedPtr
   {
     const tl_int poolSize = 100;
     {
-      typedef SharedPtr<MyComponent>             my_comp_ptr;
+      typedef SharedPtr<MyComponent>                        my_comp_ptr;
       typedef memory::MemoryPoolIndexed<my_comp_ptr>        my_mem_pool;
       typedef my_mem_pool::iterator                         pool_type;
 

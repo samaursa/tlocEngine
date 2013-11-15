@@ -59,6 +59,11 @@ namespace tloc { namespace graphics { namespace component_system {
                                f64 a_deltaT);
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(ArcBallSystem, arc_ball_system);
+
 };};};
 
 #endif

@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   TL_FI T& Tuple<TUPLE_PARAMS>::
-    operator [](tl_int aIndex)
+    operator [](size_type aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
 
@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   TL_FI const T& Tuple<TUPLE_PARAMS>::
-    operator [](tl_int aIndex) const
+    operator [](size_type aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
     return m_values[aIndex];
@@ -269,8 +269,8 @@ namespace tloc { namespace core { namespace data_structs {
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_bigger)
   {
-    for (size_type i = 0; i < k_TupleSize; ++i)
-    { m_values[i] = a_other[i]; }
+    for (tl_int i = 0; i < k_TupleSize; ++i)
+    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -281,8 +281,8 @@ namespace tloc { namespace core { namespace data_structs {
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_smaller)
   {
-    for (size_type i = 0; i < T_OtherTuple::k_TupleSize; ++i)
-    { m_values[i] = a_other[i]; }
+    for (tl_int i = 0; i < T_OtherTuple::k_TupleSize; ++i)
+    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
 
     DoFillRemaining<T_OtherTuple::k_TupleSize>(T_Policy());
   }
@@ -300,7 +300,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_one)
   {
-    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    for (tl_int i = T_TupleSize; i < k_TupleSize; ++i)
     { m_values[i] = 1; }
   }
 
@@ -311,7 +311,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_zero)
   {
-    for (size_type i = T_TupleSize; i < k_TupleSize; ++i)
+    for (tl_int i = T_TupleSize; i < k_TupleSize; ++i)
     { m_values[i] = 0; }
   }
 

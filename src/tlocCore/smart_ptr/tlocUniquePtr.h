@@ -157,6 +157,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool operator >=(nullptr_t, const UniquePtr<T>& b)
   { return !(nullptr < b); }
 
+
+#define TLOC_TYPEDEF_UNIQUE_PTR(_type_, _typedef_)\
+  typedef tloc::core_sptr::UniquePtr<_type_>  _typedef_##_uptr;\
+  typedef tloc::core_sptr::UniquePtr<const _type_>  _typedef_##_const_uptr
+
 };};};
 
 #endif

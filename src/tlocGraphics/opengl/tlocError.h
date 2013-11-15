@@ -22,6 +22,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   private:
     value_type          m_lastError;
+    static value_type   s_lastError;
     static const char*  s_lastErrorDesc;
   };
 

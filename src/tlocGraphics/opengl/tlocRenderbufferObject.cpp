@@ -1,5 +1,8 @@
 #include "tlocRenderbufferObject.h"
 
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
@@ -14,22 +17,45 @@ namespace tloc { namespace graphics { namespace gl {
       const value_type DepthComponent16::s_glParamName = GL_DEPTH_COMPONENT16;
       const value_type StencilIndex8::s_glParamName = GL_STENCIL_INDEX8;
 
+#if defined (TLOC_OS_WIN)
+      const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24;
+      const value_type Depth24Stencil8::s_glParamName = GL_DEPTH24_STENCIL8;
+#elif defined (TLOC_OS_IPHONE)
+      const value_type DepthComponent24::s_glParamName = GL_DEPTH_COMPONENT24_OES;
+      const value_type Depth24Stencil8::s_glParamName = GL_DEPTH24_STENCIL8_OES;
+#else
+# error "WIP"
+#endif
+
     };
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RenderbufferObject::Params
+
+  RenderbufferObject::Params::
+    Params()
+    : m_formatType(p_renderbuffer_object::internal_format::RGBA4::s_glParamName)
+    , m_dimensions(0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  RenderbufferObject::Params::this_type&
+    RenderbufferObject::Params::
+    Dimensions(const dimension_type& a_dim)
+  {
+    m_dimensions = a_dim;
+    return *this;
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // RenderbufferObject
 
   RenderbufferObject::Bind::
-    Bind()
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  RenderbufferObject::Bind::
-    Bind(const RenderbufferObject& a_rbo)
+    Bind(const RenderbufferObject* a_rbo)
   {
-    object_handle handle = a_rbo.GetHandle();
+    object_handle handle = a_rbo->GetHandle();
     glBindRenderbuffer(GL_RENDERBUFFER, handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(),
@@ -41,6 +67,8 @@ namespace tloc { namespace graphics { namespace gl {
   RenderbufferObject::Bind::
     ~Bind()
   {
+    TLOC_ASSERT(gl::Error().Succeeded(),
+      "OpenGL: Error with glRenderbufferStorage");
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
   }
 
@@ -70,7 +98,8 @@ namespace tloc { namespace graphics { namespace gl {
     RenderbufferObject::
     Initialize()
   {
-    Bind b(*this);
+    Bind b(this);
+
     glRenderbufferStorage(GL_RENDERBUFFER, m_params.GetFormatType(),
       m_params.GetDimensions()[0], m_params.GetDimensions()[1]);
 
@@ -79,5 +108,30 @@ namespace tloc { namespace graphics { namespace gl {
 
     return ErrorSuccess;
   }
+
+  RenderbufferObject::error_type
+    RenderbufferObject::
+    InitializeWithoutStorage()
+  {
+    Bind b(this);
+    return ErrorSuccess;
+  }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+#define TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(_type_)\
+  template RenderbufferObject::Params::this_type&\
+    RenderbufferObject::Params::InternalFormat<_type_>()
+
+  using namespace p_renderbuffer_object::internal_format;
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGBA4);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGB565);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(RGB5_A1);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(DepthComponent16);
+  TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(StencilIndex8);
+
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);
 
 };};};

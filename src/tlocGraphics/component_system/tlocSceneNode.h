@@ -30,13 +30,15 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core_cs::Component_T<SceneNode, components::scene_node>  base_type;
 
-    typedef SceneNode                                          this_type;
+    typedef SceneNode                                     this_type;
     typedef this_type*                                    pointer;
+    typedef const this_type*                              const_pointer;
     typedef this_type&                                    reference;
 
     typedef core_err::Error                               error_type;
 
-    typedef const core_cs::Entity*                        entity_ptr_type;
+    typedef const core_cs::Entity*                        entity_const_ptr_type;
+    typedef  core_cs::Entity*                             entity_ptr_type;
 
     typedef core_conts::tl_array<pointer>::type   node_cont_type;
     typedef node_cont_type::iterator              node_cont_iterator;
@@ -49,9 +51,18 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode();
     explicit SceneNode(entity_ptr_type a_entity);
 
-    void        AddChild(pointer a_childNode);
+    this_type&  AddChild(pointer a_childNode);
     bool        HasChild(pointer a_childNode);
-    void        RemoveChild(pointer a_childNode);
+    this_type&  RemoveChild(pointer a_childNode);
+
+    this_type&  RemoveParent();
+    this_type&  SetParent(pointer a_parentNode);
+
+    entity_ptr_type       GetEntity();
+    entity_const_ptr_type GetEntity() const;
+
+    pointer       GetParent();
+    const_pointer GetParent() const;
 
     node_cont_iterator        begin();
     node_cont_iterator        end();
@@ -62,19 +73,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
     bool IsParentDisabled() const;
 
-    TLOC_DECL_SETTER(transform_type, SetWorldTransform);
+    TLOC_DECL_SETTER_CHAIN(transform_type, SetWorldTransform);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (transform_type, GetWorldTransform, m_worldTransform);
     TLOC_DECL_AND_DEF_GETTER(index_type, GetLevel, m_level);
 
-    TLOC_DECL_AND_DEF_GETTER(entity_ptr_type, GetEntity, m_entity);
-    TLOC_DECL_AND_DEF_GETTER(pointer, GetParent, m_parent);
+    TLOC_DECL_AND_DEF_GETTER(bool, HasParent, m_parent != nullptr);
 
     TLOC_DECL_GETTER(bool, IsHierarchyUpdateRequired);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetHierarchyUpdateRequired);
+    TLOC_DECL_SETTER_BY_VALUE_CHAIN(bool, SetHierarchyUpdateRequired);
 
     TLOC_DECL_GETTER(bool, IsTransformUpdateRequired);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetTransformUpdateRequired);
+    TLOC_DECL_SETTER_BY_VALUE_CHAIN(bool, SetTransformUpdateRequired);
 
   private:
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(index_type, DoSetLevel, m_level);

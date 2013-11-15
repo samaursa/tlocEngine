@@ -395,9 +395,9 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   T
     CharToUpper(const T& aChar);
-  tl_int
+  tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
-  tl_int
+  tl_size
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
 
   template <typename T, typename T_StringContainer>

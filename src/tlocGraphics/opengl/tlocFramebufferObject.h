@@ -2,47 +2,73 @@
 #define _TLOC_GRAPHICS_GL_FRAMEBUFFER_OBJECT_H_
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocRenderbufferObject.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_framebuffer_object {
 
+    namespace priv {
+      struct FramebufferObjectParamsBase { };
+    };
+
     namespace target {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
 
-      struct DrawFramebuffer      { static const value_type s_glParamName; };
-      struct ReadFramebuffer      { static const value_type s_glParamName; };
+      namespace priv {
+        struct TargetParamsBase :
+          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
+      };
 
+      struct Framebuffer : public priv::TargetParamsBase
+      { static const value_type s_glParamName; };
+
+      struct DrawFramebuffer : public priv::TargetParamsBase
+      { static const value_type s_glParamName; };
+
+      struct ReadFramebuffer : public priv::TargetParamsBase
+      { static const value_type s_glParamName;};
     };
 
     namespace attachment {
 
-      typedef s32                       value_type;
+      typedef s32   value_type;
 
-      struct MaxColorAttachments  { static const value_type s_glParamName; };
+      namespace priv {
+        struct AttachmentParamsBase :
+          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
+      };
 
       template <value_type T_ColorAttachmentIndex>
-      struct ColorAttachment
+      struct ColorAttachment : public priv::AttachmentParamsBase
       {
-        static const value_type   s_glParamName;
-        enum { k_attachmenIndex = T_ColorAttachmentIndex };
+        enum { k_attachmentIndex = T_ColorAttachmentIndex };
 
         TLOC_STATIC_ASSERT(T_ColorAttachmentIndex >= 0,
                            Invalid_color_attachment_index);
+
+        static const value_type s_glParamName;
       };
 
-      struct Depth                { static const value_type s_glParamName; };
-      struct Stencil              { static const value_type s_glParamName; };
-      struct DepthStencil         { static const value_type s_glParamName; };
+      struct Depth : public priv::AttachmentParamsBase
+      { static const value_type s_glParamName; };
+
+      struct Stencil : public priv::AttachmentParamsBase
+      { static const value_type s_glParamName; };
+
+      struct DepthStencil : public priv::AttachmentParamsBase
+      { static const value_type s_glParamName; };
     };
 
-    struct Default { };
+    struct Default : public priv::FramebufferObjectParamsBase{ };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -68,25 +94,29 @@ namespace tloc { namespace graphics { namespace gl {
     typedef to_cont::iterator                             to_cont_iterator;
     typedef to_cont::const_iterator                       to_cont_const_iterator;
 
+    typedef to_type::dimension_type                       dimension_type;
+
   public:
 
     // RAII not implemented deliberately because the dtor is not exactly
     // destroying anything, just setting the framebuffer back to default.
     struct Bind
+      : public core::NonCopyable
     {
-      Bind();
-      explicit Bind(const FramebufferObject& a_fbo);
+      Bind(const FramebufferObject* a_fbo);
       ~Bind();
     };
+    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
 
   public:
     FramebufferObject();
     ~FramebufferObject();
 
+    FramebufferObject(const this_type& a_other);
+
     template <typename T_Target, typename T_Attachment,
               typename T_RenderOrTexturebuffer>
-    error_type Attach(T_Target a_targe, T_Attachment a_attachment,
-                      const T_RenderOrTexturebuffer& a_bufferObject);
+    error_type Attach(const T_RenderOrTexturebuffer& a_bufferObject);
 
     template <typename T_RenderOrTexturebuffer>
     error_type Detach(const T_RenderOrTexturebuffer& a_bufferObject);
@@ -96,56 +126,62 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (to_cont, GetTextureobjects, m_textureObjets);
 
-    static this_type& GetDefaultFramebuffer();
+  protected:
+    // This constructor should be only be used by platforms that require a
+    // FBO with an ID of 0 explicitly
+    FramebufferObject(p_framebuffer_object::Default);
 
   private:
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    typedef p_framebuffer_object::target::value_type      target_value_type;
+    typedef p_framebuffer_object::attachment::value_type  attachment_value_type;
+
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const rbo_type& a_rbo);
 
-    error_type DoAttach(p_framebuffer_object::target::value_type a_target,
-                        p_framebuffer_object::attachment::value_type a_attachment,
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
                         const to_type& a_to);
 
-    // This constructor is temporary until we have a better solution on how
-    // to deal with the inconsistent behavior of default framebuffers across
-    // various platforms
-    FramebufferObject(p_framebuffer_object::Default);
+  private:
+    void DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const rbo_type& a_rbo);
+
+    void DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const to_type& a_to);
 
   private:
     rbo_cont  m_renderbufferObjects;
     to_cont   m_textureObjets;
-    bool      m_defaultFBO;
   };
 
   // -----------------------------------------------------------------------
   // template definitions
 
-    template <typename T_Target, typename T_Attachment,
-              typename T_RenderOrTexturebuffer>
+  template <typename T_Target, typename T_Attachment,
+            typename T_RenderOrTexturebuffer>
   FramebufferObject::error_type
     FramebufferObject::
-    Attach(T_Target a_targe, T_Attachment a_attachment,
-           const T_RenderOrTexturebuffer& a_bufferObject)
+    Attach(const T_RenderOrTexturebuffer& a_bufferObject)
   {
     // -----------------------------------------------------------------------
     // Sanity checks
 
-    using namespace p_framebuffer_object::target;
-    using namespace p_framebuffer_object::attachment;
+    using namespace p_framebuffer_object::target::priv;
+    using namespace p_framebuffer_object::attachment::priv;
 
-    tloc::type_traits::AssertTypeIsSupported<T_Target,
-      DrawFramebuffer, ReadFramebuffer>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Target, TargetParamsBase>::exists), Invalid_target_param);
 
-    tloc::type_traits::AssertTypeIsSupported<T_Attachment,
-      ColorAttachment, Depth, Stencil, DepthStencil>();
+    TLOC_STATIC_ASSERT
+      ((Loki::Conversion<T_Attachment, AttachmentParamsBase>::exists), Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
       RenderbufferObject, TextureObject>();
-
-    TLOC_ASSERT(T_Attachment::k_attachmentIndex <
-                MaxColorAttachments::s_glParamName,
-                "Attachment index exceeded maximum allowed attachments");
 
     // -----------------------------------------------------------------------
     // Internal attach method

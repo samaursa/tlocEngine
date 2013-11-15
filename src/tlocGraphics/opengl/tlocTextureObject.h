@@ -31,34 +31,55 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef s32         value_type;
 
-      struct ClampToEdge
-      { static const value_type s_glEnumValue; };
-      struct ClampToBorder
-      { static const value_type s_glEnumValue; };
-      struct MirroredRepeat
-      { static const value_type s_glEnumValue; };
-      struct Repeat
-      { static const value_type s_glEnumValue; };
-      struct MirrorClampToEdge
-      { static const value_type s_glEnumValue; };
+      struct ClampToEdge       { static const value_type s_glParamName; };
+      struct ClampToBorder     { static const value_type s_glParamName; };
+      struct MirroredRepeat    { static const value_type s_glParamName; };
+      struct Repeat            { static const value_type s_glParamName; };
+      struct MirrorClampToEdge { static const value_type s_glParamName; };
     };
 
     namespace filter
     {
       typedef s32         value_type;
 
-      struct Nearest
-      { static const value_type s_glEnumValue; };
-      struct Linear
-      { static const value_type s_glEnumValue; };
-      struct NearestMipmapNearest
-      { static const value_type s_glEnumValue; };
-      struct LinearMipmapNearest
-      { static const value_type s_glEnumValue; };
-      struct NearestMipmapLinear
-      { static const value_type s_glEnumValue; };
-      struct LinearMipmapLinear
-      { static const value_type s_glEnumValue; };
+      struct Nearest              { static const value_type s_glParamName; };
+      struct Linear               { static const value_type s_glParamName; };
+      struct NearestMipmapNearest { static const value_type s_glParamName; };
+      struct LinearMipmapNearest  { static const value_type s_glParamName; };
+      struct NearestMipmapLinear  { static const value_type s_glParamName; };
+      struct LinearMipmapLinear   { static const value_type s_glParamName; };
+    };
+
+    namespace internal_format
+    {
+      typedef s32         value_type;
+
+      struct Red             { static const value_type s_glParamName; };
+      struct RG              { static const value_type s_glParamName; };
+      struct RGB             { static const value_type s_glParamName; };
+      struct RGBA            { static const value_type s_glParamName; };
+      struct DepthComponent  { static const value_type s_glParamName; };
+      struct DepthStencil    { static const value_type s_glParamName; };
+    };
+
+    namespace format
+    {
+      typedef s32         value_type;
+
+      struct Red            { static const value_type s_glParamName; };
+      struct RG             { static const value_type s_glParamName; };
+      struct RGB            { static const value_type s_glParamName; };
+      struct BGR            { static const value_type s_glParamName; };
+      struct RGBA           { static const value_type s_glParamName; };
+      struct BGRA           { static const value_type s_glParamName; };
+      struct RedInteger     { static const value_type s_glParamName; };
+      struct RGInteger      { static const value_type s_glParamName; };
+      struct RGBInteger     { static const value_type s_glParamName; };
+      struct BGRInteger     { static const value_type s_glParamName; };
+      struct RGBAInteger    { static const value_type s_glParamName; };
+      struct BGRAInteger    { static const value_type s_glParamName; };
+      struct StencilIndex   { static const value_type s_glParamName; };
+      struct DepthComponent { static const value_type s_glParamName; };
     };
   };
 
@@ -68,23 +89,16 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     struct Params
     {
-      typedef Params                                          this_type;
-      typedef p_texture_object::target::value_type            texture_type;
-      typedef p_texture_object::wrap_technique::value_type    wrap_value_type;
-      typedef p_texture_object::filter::value_type            filter_value_type;
+      typedef Params                                        this_type;
+      typedef p_texture_object::target::value_type          texture_type;
+      typedef p_texture_object::wrap_technique::value_type  wrap_value_type;
+      typedef p_texture_object::filter::value_type          filter_value_type;
+      typedef p_texture_object::internal_format::value_type internal_format_value_type;
+      typedef p_texture_object::format::value_type          format_value_type;
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      Params()
-      {
-        using namespace p_texture_object::wrap_technique;
-        using namespace p_texture_object::filter;
-
-        // defaults
-        Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
-        MinFilter<Linear>().MagFilter<Linear>();
-        TextureType<p_texture_object::target::Tex2D>();
-      }
+      Params();
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -98,7 +112,7 @@ namespace tloc { namespace graphics { namespace gl {
           ClampToEdge, ClampToBorder, MirroredRepeat,
           Repeat, MirrorClampToEdge>();
 
-        m_wrap_s = T_WrapTechnique::s_glEnumValue;
+        m_wrap_s = T_WrapTechnique::s_glParamName;
         return *this;
       }
 
@@ -114,7 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
           ClampToEdge, ClampToBorder, MirroredRepeat,
           Repeat, MirrorClampToEdge>();
 
-        m_wrap_t = T_WrapTechnique::s_glEnumValue;
+        m_wrap_t = T_WrapTechnique::s_glParamName;
         return *this;
       }
 
@@ -130,7 +144,7 @@ namespace tloc { namespace graphics { namespace gl {
           Nearest, Linear, NearestMipmapNearest, LinearMipmapNearest,
           NearestMipmapLinear, LinearMipmapLinear>();
 
-        m_minFilter = T_Filter::s_glEnumValue;
+        m_minFilter = T_Filter::s_glParamName;
         return *this;
       }
 
@@ -145,7 +159,39 @@ namespace tloc { namespace graphics { namespace gl {
         tloc::type_traits::AssertTypeIsSupported<T_Filter,
           Nearest, Linear>();
 
-        m_magFilter = T_Filter::s_glEnumValue;
+        m_magFilter = T_Filter::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_InternalFormat>
+      this_type&
+        InternalFormat()
+      {
+        using namespace p_texture_object::internal_format;
+
+        tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
+          Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
+
+        m_internalFormat = T_InternalFormat::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_Format>
+      this_type&
+        Format()
+      {
+        using namespace p_texture_object::format;
+
+        tloc::type_traits::AssertTypeIsSupported<T_Format,
+          Red, RG, RGB, BGR, RGBA, BGRA, RedInteger, RedInteger, RGInteger,
+          RGBInteger, BGRInteger, RGBAInteger, BGRAInteger, StencilIndex,
+          DepthComponent>();
+
+        m_format = T_Format::s_glParamName;
         return *this;
       }
 
@@ -161,13 +207,17 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMagFilter, m_magFilter);
       TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
+      TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
+      TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
 
     private:
-      wrap_value_type       m_wrap_s;
-      wrap_value_type       m_wrap_t;
-      filter_value_type     m_minFilter;
-      filter_value_type     m_magFilter;
-      texture_type          m_textureType;
+      wrap_value_type             m_wrap_s;
+      wrap_value_type             m_wrap_t;
+      filter_value_type           m_minFilter;
+      filter_value_type           m_magFilter;
+      texture_type                m_textureType;
+      internal_format_value_type  m_internalFormat;
+      format_value_type           m_format;
     };
 
   public:
@@ -179,8 +229,9 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
     typedef s32                                           texture_image_unit_type;
-    typedef p_texture_object::target::value_type           texture_type;
+    typedef p_texture_object::target::value_type          texture_type;
     typedef media::Image                                  image_type;
+    typedef types::Dimension2u32                          dimension_type;
 
   public:
     TextureObject(const Params& a_params = Params());
@@ -200,12 +251,14 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
     TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
+    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
 
   private:
 
   private:
     texture_image_unit_type   m_texImageUnit;
     Params                    m_params;
+    dimension_type            m_dim;
   };
 
   //------------------------------------------------------------------------

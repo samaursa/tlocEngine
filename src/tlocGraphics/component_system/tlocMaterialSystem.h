@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core_sptr::SharedPtr<MaterialSystem>  material_system_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(MaterialSystem, material_system);
 
 };};};
 

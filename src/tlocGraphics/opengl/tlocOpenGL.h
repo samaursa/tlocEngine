@@ -9,6 +9,7 @@
 namespace tloc { namespace graphics { namespace types {
 
   typedef s32                     gl_int;
+  typedef u32                     gl_uint;
   typedef u32                     gl_enum;
   typedef s32                     gl_sizei;
   typedef f32                     gl_float;
@@ -37,14 +38,14 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace priv
     {
-      void DoGet(gl_int&     a_out, const gl_int a_paramName);
-      void DoGet(gl_int*&    a_out, const gl_int a_paramName);
-      void DoGet(gl_float&   a_out, const gl_int a_paramName);
-      void DoGet(gl_float*&  a_out, const gl_int a_paramName);
+      void DoGet(gl_int&     a_out, const gl_int s_glParamName);
+      void DoGet(gl_int*&    a_out, const gl_int s_glParamName);
+      void DoGet(gl_float&   a_out, const gl_int s_glParamName);
+      void DoGet(gl_float*&  a_out, const gl_int s_glParamName);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
-      extern void DoGet(gl_double&  a_out, const gl_int a_paramName);
-      extern void DoGet(gl_double*& a_out, const gl_int a_paramName);
+      extern void DoGet(gl_double&  a_out, const gl_int s_glParamName);
+      extern void DoGet(gl_double*& a_out, const gl_int s_glParamName);
 #endif
     };
 

@@ -11,22 +11,26 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 #define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
 #define WINDOW_IMPL_IPHONE_TYPE WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>
 
-  ///
+  //////////////////////////////////////////////////////////////////////////
   // Helper functions
 
-  OpenGLView* GetOpenGLView(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLView*>();
-  }
+  namespace {
 
-  UIWindow* GetUIWindow(const core_t::Any& a_any)
-  {
-    return a_any.Cast<UIWindow*>();
-  }
+    OpenGLView* GetOpenGLView(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLView*>();
+    }
+    
+    UIWindow* GetUIWindow(const core_t::Any& a_any)
+    {
+      return a_any.Cast<UIWindow*>();
+    }
+    
+    OpenGLViewController* GetViewController(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLViewController*>();
+    }
 
-  OpenGLViewController* GetViewController(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLViewController*>();
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -71,8 +75,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::
-    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-           const window_style_type& a_style)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings)
   {
     // TODO: Since we save the settings, make it able to switch between
     // full screen and the user requested size
@@ -87,7 +90,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     UIScreen* currentScreen = [UIScreen mainScreen];
 
     [UIApplication sharedApplication].statusBarHidden =
-      !(a_style & WindowSettings::style_titlebar);
+      (a_settings.GetStyleBits() &
+       p_window_settings::style::TitleBar::s_glParamName) == false;
 
     // The window must take the screens bounds. This is since our view
     // automatically adjusts its size even when there is a title bar present.
@@ -104,8 +108,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
                                    screenScale:screenScale
                                  retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
-                                  bitsPerDepth:a_settings.m_depthBits 
-                                bitsPerStencil:a_settings.m_stencilBits];
+                                  bitsPerDepth:a_settings.GetDepthBits() 
+                                bitsPerStencil:a_settings.GetStencilBits()];
     
     m_viewController = [[OpenGLViewController alloc] initWithWindow:this];
     
@@ -257,6 +261,12 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetOpenGLViewHandle()
   {
     return m_view;
+  }
+
+  WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::fbo_sptr
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::DoGetFramebuffer()
+  {
+    return [GetOpenGLView(m_view) GetFramebuffer];
   }
 
 };};};};

@@ -23,6 +23,7 @@
 #elif defined(TLOC_OS_IPHONE)
 
 # include <OpenGLES/ES2/gl.h>
+# include <OpenGLES/ES2/glext.h>
 
 #endif
 

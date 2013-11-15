@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core_sptr::SharedPtr<FanRenderSystem>  fan_render_system_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(FanRenderSystem, fan_render_system);
 
 };};};
 

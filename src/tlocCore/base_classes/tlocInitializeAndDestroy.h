@@ -64,7 +64,8 @@ namespace tloc { namespace core { namespace base_classes {
     InitializeAndDestroy_TI<T_DerivedClass>::
     Initialize()
   {
-    TLOC_ASSERT(IsInitialized(), "This class has already been initialized once");
+    TLOC_ASSERT(IsInitialized() == false,
+                "This class has already been initialized once");
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize();
     if (err == ErrorSuccess)
@@ -80,7 +81,8 @@ namespace tloc { namespace core { namespace base_classes {
     InitializeAndDestroy_TI<T_DerivedClass>::
     Destroy()
   {
-    TLOC_ASSERT(IsDestroyed(), "This class has already been destroyed once");
+    TLOC_ASSERT(IsDestroyed() == false,
+                "This class has already been destroyed once");
 
     error_type err = static_cast<derived_type*>(this)->DoDestroy();
     if (err == ErrorSuccess)
@@ -110,10 +112,10 @@ namespace tloc { namespace core { namespace base_classes {
 // -----------------------------------------------------------------------
 // helper macro
 
-#define TLOC_USING_INITIALIZE_AND_DESTROY_METHODS(_dtype_)\
-  using tloc::core_bclass::InitializeAndDestroy_TI<_dtype_>::Initialize();\
-  using tloc::core_bclass::InitializeAndDestroy_TI<_dtype_>::Destroy();\
-  using tloc::core_bclass::InitializeAndDestroy_TI<_dtype_>::IsInitialized();\
-  using tloc::core_bclass::InitializeAndDestroy_TI<_dtype_>::IsDestroyed()
+#define TLOC_USING_INITIALIZE_AND_DESTROY_METHODS()\
+  using base_type::Initialize;\
+  using base_type::Destroy;\
+  using base_type::IsInitialized;\
+  using base_type::IsDestroyed
 
 #endif

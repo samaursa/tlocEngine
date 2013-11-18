@@ -83,7 +83,7 @@ namespace tloc { namespace input { namespace hid {
   class Keyboard
     : public core::base_classes::DispatcherBaseArray
       <KeyboardCallbacks, KeyboardCallbackGroupT>::type
-    , public core_bclass::NonCopyable
+    , public core_bclass::NonCopyable_I
     , public p_hid::Keyboard
   {
   public:

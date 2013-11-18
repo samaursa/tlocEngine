@@ -22,7 +22,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   ///-------------------------------------------------------------------------
   template <class T_ParentWindow>
   class WindowImplBase
-    : public core_bclass::NonCopyable
+    : public core_bclass::NonCopyable_I
   {
   public:
     typedef T_ParentWindow                             parent_window_type;

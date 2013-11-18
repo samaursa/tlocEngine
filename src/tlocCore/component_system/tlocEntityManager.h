@@ -14,7 +14,7 @@
 namespace tloc { namespace core { namespace component_system {
 
   class EntityManager
-    : public core_bclass::NonCopyable
+    : public core_bclass::NonCopyable_I
   {
   public:
     typedef Entity*                               entity_ptr_type;

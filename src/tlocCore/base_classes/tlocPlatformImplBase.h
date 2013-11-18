@@ -20,7 +20,8 @@ namespace tloc { namespace core { namespace base_classes {
   /// implementations can derive from this class.
   ///-------------------------------------------------------------------------
   template <class T_ParentClass>
-  class ImplBase : public NonCopyable
+  class ImplBase
+    : public NonCopyable_I
   {
   public:
     typedef T_ParentClass                             parent_type;

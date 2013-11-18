@@ -6,7 +6,7 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
   class NonCopyable
   {
@@ -33,6 +33,6 @@ namespace tloc { namespace core {
     NonCopyable& operator= (const NonCopyable& a_other);
   };
 
-};};
+};};};
 
 #endif

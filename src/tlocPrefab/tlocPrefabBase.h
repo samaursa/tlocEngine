@@ -35,7 +35,7 @@ namespace tloc {
   // Base for all prefab objects
 
   class Prefab_I
-    : core::NonCopyable
+    : core_bclass::NonCopyable
   {
   public:
     typedef core_cs::EntityManager          entity_mgr_type;

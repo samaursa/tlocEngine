@@ -113,7 +113,7 @@ namespace tloc { namespace input { namespace hid {
   class Mouse
     : public core::base_classes::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable
     , public p_hid::Mouse
   {
   public:

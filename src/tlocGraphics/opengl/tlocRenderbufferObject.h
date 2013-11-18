@@ -59,7 +59,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
     struct Bind
-      : public core::NonCopyable
+      : public core_bclass::NonCopyable
     {
       explicit Bind(const RenderbufferObject* a_rbo);
       ~Bind();

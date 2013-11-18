@@ -101,7 +101,7 @@ namespace tloc { namespace graphics { namespace gl {
     // RAII not implemented deliberately because the dtor is not exactly
     // destroying anything, just setting the framebuffer back to default.
     struct Bind
-      : public core::NonCopyable
+      : public core_bclass::NonCopyable
     {
       Bind(const FramebufferObject* a_fbo);
       ~Bind();

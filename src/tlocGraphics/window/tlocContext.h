@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
   class Context
-    : public core_bclass::NonCopyable
+    : public core_bclass::NonCopyable_I
   {
   public:
 

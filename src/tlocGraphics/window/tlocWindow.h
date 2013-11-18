@@ -100,7 +100,7 @@ namespace tloc { namespace graphics { namespace win {
   class Window_T
     : public core::base_classes::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
-    , public core_bclass::NonCopyable
+    , public core_bclass::NonCopyable_I
   {
   public:
 

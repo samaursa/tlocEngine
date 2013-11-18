@@ -19,7 +19,7 @@ namespace tloc { namespace physics { namespace box2d {
   /// constraints. An instance can only be constructed by the PhysicsManager.
   ///-------------------------------------------------------------------------
   class World
-    : public core_bclass::NonCopyable
+    : public core_bclass::NonCopyable_I
   {
   public:
     friend class PhysicsManager;

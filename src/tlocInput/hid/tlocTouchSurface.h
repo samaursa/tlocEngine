@@ -103,8 +103,8 @@ namespace tloc { namespace input { namespace hid {
   class TouchSurface
     : public core::base_classes::DispatcherBaseArray
              <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type
-    , public core::NonCopyable
-  , public p_hid::TouchSurface
+    , public core_bclass::NonCopyable
+    , public p_hid::TouchSurface
   {
   public:
     typedef T_Platform                                    platform_type;

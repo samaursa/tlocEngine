@@ -230,7 +230,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
   public:
     struct RenderOneFrame
-      : core::NonCopyable
+      : core_bclass::NonCopyable
     {
       explicit RenderOneFrame(const this_type* a_renderer);
       ~RenderOneFrame();

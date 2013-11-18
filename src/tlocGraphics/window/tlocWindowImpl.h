@@ -21,7 +21,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   /// Platform independant window code
   ///-------------------------------------------------------------------------
   template <class T_ParentWindow>
-  class WindowImplBase : public core::NonCopyable
+  class WindowImplBase
+    : public core_bclass::NonCopyable
   {
   public:
     typedef T_ParentWindow                             parent_window_type;

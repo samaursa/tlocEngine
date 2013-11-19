@@ -109,7 +109,7 @@ namespace tloc { namespace input { namespace hid {
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Mouse
     : public core::base_classes::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type

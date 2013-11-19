@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace gl {
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
     core_err::Error
-      DoInitializePlatform(core::Platform_win)
+      DoInitializePlatform(core_plat::p_platform_info::win)
     {
       if (g_platformInitialized == false)
       {
@@ -60,7 +60,7 @@ namespace tloc { namespace graphics { namespace gl {
     InitializePlatform()
   {
     core_err::Error err =
-      DoInitializePlatform(core::PlatformInfo<>::platform_type());
+      DoInitializePlatform(core_plat::PlatformInfo::platform_type());
     if (err.Succeeded())
     {
       g_platformInitialized = true;

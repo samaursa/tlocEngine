@@ -99,7 +99,7 @@ namespace tloc { namespace input { namespace hid {
   };
 
   template <typename T_Policy = InputPolicy::Buffered,
-    typename T_Platform = typename core::PlatformInfo<>::platform_type>
+    typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class TouchSurface
     : public core::base_classes::DispatcherBaseArray
              <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type

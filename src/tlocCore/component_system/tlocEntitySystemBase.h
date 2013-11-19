@@ -16,7 +16,7 @@ namespace tloc { namespace core { namespace component_system {
 
   class EntitySystemBase
     : public EventListener
-    , public NonCopyable
+    , public core_bclass::NonCopyable_I
   {
   public:
 

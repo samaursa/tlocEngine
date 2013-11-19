@@ -25,8 +25,7 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleUp(small_value_type a_valueToScale) const
   {
-    TLOC_ASSERT( a_valueToScale >= m_smallRange.front() &&
-                 a_valueToScale <= m_smallRange.back(), "Value out of range!");
+    TLOC_ASSERT( m_smallRange.IsInRange(a_valueToScale), "Value out of range!");
 
     small_value_type r1Size;
     large_value_type r2Size;
@@ -54,8 +53,7 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleDown(large_value_type a_valueToScale) const
   {
-    TLOC_ASSERT( a_valueToScale >= m_largeRange.front() &&
-                 a_valueToScale <= m_largeRange.back(), "Value out of range!");
+    TLOC_ASSERT( m_largeRange.IsInRange(a_valueToScale), "Value out of range!");
 
     small_value_type r1Size;
     large_value_type r2Size;

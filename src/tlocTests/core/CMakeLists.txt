@@ -4,6 +4,7 @@ set(TLOC_TESTS_CORE
   tlocAnyTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
+  tlocBaseClassesTest.cpp
   tlocBufferArgTest.cpp
   tlocCheckPointsTest.cpp
   tlocComponentPoolManagerTest.cpp

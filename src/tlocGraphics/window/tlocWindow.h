@@ -96,11 +96,11 @@ namespace tloc { namespace graphics { namespace win {
   ///
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
-  template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
+  template <typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Window_T
     : public core::base_classes::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
   {
   public:
 

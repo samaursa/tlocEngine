@@ -57,6 +57,15 @@ namespace TestingPair
 
     {
       error::Error err = TLOC_ERROR(common_error_types::error_success);
+      err.Check(); // immediately check whether err code is 'success'
+
+      // Should crash if uncommented
+      // err = TLOC_ERROR(common_error_types::error_failure);
+      // err.Check(); // immediately check whether err code is 'success'
+    }
+
+    {
+      error::Error err = TLOC_ERROR(common_error_types::error_success);
       error::Error err2 = TLOC_ERROR(common_error_types::error_failure);
 
       err.swap(err2);

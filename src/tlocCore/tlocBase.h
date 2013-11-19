@@ -179,23 +179,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Memory
-//
-// Notes: The default memory allocator used is the nedmalloc which is a
-// derivation of doug lea malloc:
-//
-// http://www.nedprod.com/programs/portable/nedmalloc/
-//
-// If all of the following macros are commented out, the system defaults
-// to using the definitions contained in <memory.h>. To enable seamless
-// transitions, there are helper macros defined in <tlocMemory.h>
-//
-// Supported macros:
-// TLOC_USING_NED_MALLOC
-
-// Use nedmalloc
-#ifndef TLOC_USING_STD_ALLOC
-  //#define TLOC_USING_NED_MALLOC
-#endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)

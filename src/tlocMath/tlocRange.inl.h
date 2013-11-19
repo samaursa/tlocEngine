@@ -342,6 +342,14 @@ namespace tloc { namespace math {
   }
 
   template <RANGE_T_TEMP>
+  bool
+    Range_T<RANGE_T_PARAMS>::
+    IsInRange(value_type a_value) const
+  {
+    return a_value >= front() && a_value <= back();
+  }
+
+  template <RANGE_T_TEMP>
   RANGE_T_TYPE::this_type&
     Range_T<RANGE_T_PARAMS>::
     operator =(const this_type& a_other)

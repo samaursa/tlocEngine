@@ -55,7 +55,7 @@ namespace tloc { namespace core { namespace component_system {
 
   class Entity
     : public p_entity::Entity_I<core_cfg::BuildConfig::build_config_type>
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
   {
   public:
     friend class EntityManager;

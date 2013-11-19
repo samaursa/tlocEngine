@@ -33,7 +33,7 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     int_type
-      DoGetMaxColorAttachments(core::Platform_iphone)
+      DoGetMaxColorAttachments(core_plat::p_platform_info::iphone)
     { return 1; }
 
   }
@@ -344,7 +344,8 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   template <typename T_RBO>
-  void DoCheckSupportedDepthComponents(core::Platform_iphone, const T_RBO& a_rbo)
+  void DoCheckSupportedDepthComponents(core_plat::p_platform_info::iphone,
+                                       const T_RBO& a_rbo)
   {
     using namespace p_renderbuffer_object::internal_format;
     using p_texture_object::internal_format::value_type;
@@ -371,7 +372,7 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_framebuffer_object::attachment;
 
     types::gl_int maxAttachments =
-      DoGetMaxColorAttachments(core::PlatformInfo<>::platform_type());
+      DoGetMaxColorAttachments(core_plat::PlatformInfo::platform_type());
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we
@@ -389,7 +390,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else if (a_attachment == Depth::s_glParamName)
     {
-      DoCheckSupportedDepthComponents(core::PlatformInfo<>::platform_type(), a_rbo);
+      DoCheckSupportedDepthComponents(core_plat::PlatformInfo::platform_type(), a_rbo);
     }
     else if (a_attachment == Stencil::s_glParamName)
     {
@@ -423,7 +424,7 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_framebuffer_object::attachment;
 
     int maxAttachments =
-      DoGetMaxColorAttachments(core::PlatformInfo<>::platform_type());
+      DoGetMaxColorAttachments(core_plat::PlatformInfo::platform_type());
 
     // GL_DEPTH_COMPONENT16 is the only depth_renderable object. We can ensure
     // that that's the case by over-riding the format type, but instead we

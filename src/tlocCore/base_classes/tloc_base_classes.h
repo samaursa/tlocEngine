@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/base_classes/tlocNonNewable.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>

@@ -27,7 +27,7 @@ namespace TestingBufferPtr
     }
 
     {
-      char* someBuff = "ABCDEFGHIJKLMNOPQRST";
+      const char* someBuff = "ABCDEFGHIJKLMNOPQRST";
       BufferArg buffPtr(someBuff);
       CHECK(buffPtr.IsValid() == true);
     }

@@ -117,10 +117,9 @@ namespace TestingTransform
       tf32 t(math_t::Mat4f32::IDENTITY);
 
       tf32::orientation_type ori = t.GetOrientation();
-      CHECK_MATRIX4F(t.GetTransformation(), 1, 0, 0, 0,
-                                            0, 1, 0, 0,
-                                            0, 0, 1, 0,
-                                            0, 0, 0, 1);
+      CHECK_MATRIX3F(ori, 1, 0, 0,
+                          0, 1, 0,
+                          0, 0, 1);
     }
   }
 };

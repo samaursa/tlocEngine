@@ -139,7 +139,7 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
       typedef RenderbufferObject::Params rbo_params;
       rbo_params rboDepthParams;
       rboDepthParams.Dimensions
-        (rbo_params::dimension_type(renderBufferWidth, renderBufferHeight));
+        (core_ds::MakeTuple(renderBufferWidth, renderBufferHeight));
 
       // NOTE: If a Stencil buffer is requested, it must be packed with a
       // coupling depth buffer. 

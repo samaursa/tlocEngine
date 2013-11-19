@@ -305,8 +305,8 @@ namespace tloc { namespace graphics { namespace media {
   template <SPRITE_LOADER_TEMPS>
   SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     SpriteLoader_T()
-    : m_flags(k_count)
-    , m_imageDimensions(0)
+    : m_imageDimensions(0)
+    , m_flags(k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

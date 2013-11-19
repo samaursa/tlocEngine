@@ -29,7 +29,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // TODO: Static assert to prevent other platforms from using this class
 
-    typedef core::PlatformInfo<>::platform_type     platform_type;
+    typedef core_plat::PlatformInfo::platform_type  platform_type;
     typedef WindowImpl<Window_T<> >                 this_type;
     typedef WindowImplBase<Window_T<> >             base_type;
     typedef GraphicsMode<platform_type>             graphics_mode;

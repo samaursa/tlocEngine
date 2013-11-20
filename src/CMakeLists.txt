@@ -58,7 +58,9 @@ foreach(lib ${tlocAllLibraries})
 endforeach()
 
 # Add the tests directory which contains all test projects
-add_subdirectory(tlocTests)
+if (TLOC_INCLUDE_TESTS)
+  add_subdirectory(tlocTests)
+endif()
 
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
 if(NOT TLOC_PLATFORM_IOS)

@@ -186,12 +186,6 @@ namespace tloc { namespace core { namespace string {
       return address;
     }
 
-    const uchar8* GetEmptyString( uchar8 )
-    {
-      static const uchar8 address[] = {0};
-      return address;
-    }
-
     const char32* GetEmptyString( char32 )
     {
       static const char32 address[] = {0};

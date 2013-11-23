@@ -9,7 +9,7 @@
 #if defined(TLOC_OS_WIN)
 # include <Windows.h>
 #elif defined(TLOC_OS_IPHONE)
-# import <mach/mach_time.h>
+# include <mach/mach_time.h>
 #endif
 
 namespace tloc { namespace core { namespace time {

@@ -11,7 +11,12 @@
 #include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
+  #define NOMINMAX
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+  #define WIN32_LEAN_AND_MEAN
+#endif
 #include <Windows.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>

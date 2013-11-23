@@ -20,6 +20,7 @@
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
+#define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 #include <gl/GL.h>

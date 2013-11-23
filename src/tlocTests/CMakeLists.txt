@@ -1,23 +1,10 @@
 #-----------------------------------------------------------
 # - This project require some settings to be turned on
 
-set(CMAKE_CXX_FLAGS_DEBUG          ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT})
-set(CMAKE_CXX_FLAGS_RELEASE        ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT})
+# set normal (non-strict) compiler flags
+tloc_add_definitions()
 
-if(TLOC_COMPILER_MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm  /EHsc /RTC1 /MTd /GR /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
-elseif(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -fno-rtti -Wno-unused-function -g")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -std=c++11 -stdlib=libc++ -DTLOC_RELEASE_DEBUGINFO -fno-rtti -Wno-unused-function -g")
-else()
-  message("Configuration not applied because compiler is unsupported (or not detected properly)")
-endif()
-
+# add all the test projects
 set(tlocAllTests
   tlocTestsCore
   tlocTestsGraphics
@@ -25,12 +12,6 @@ set(tlocAllTests
   tlocTestsMath
   tlocTestsPhysics
   tlocTestsAnimation
-  )
-
-add_definitions(
-  -DTLOC_ENABLE_CPPUNWIND 
-  -DTLOC_ENABLE_CPPRTTI 
-  -DTLOC_USING_STL 
   )
 
 include_directories(

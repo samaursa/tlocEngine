@@ -28,10 +28,16 @@ namespace tloc { namespace graphics { namespace component_system {
   template class Mesh_T<p_primitive::ArrayOfStructures>;
   template class Mesh_T<p_primitive::StructureOfArrays>;
 
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh_Interleaved);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_sptr);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_interleaved_sptr);
 
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiation
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh_Interleaved);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_interleaved_sptr);

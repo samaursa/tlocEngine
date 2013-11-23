@@ -12,10 +12,12 @@ namespace tloc { namespace physics { namespace component_system{
   {
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(rigid_body_sptr);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+using namespace tloc::phys_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(rigid_body_sptr);

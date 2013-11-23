@@ -177,6 +177,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template class MeshRenderSystem_T<Mesh>;
 
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MeshRenderSystem);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MeshRenderSystem);

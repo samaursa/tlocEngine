@@ -116,9 +116,12 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities(f64)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimatorSystem);
-
 };};};
+
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimatorSystem);

@@ -33,7 +33,8 @@ namespace tloc {
 
   // ///////////////////////////////////////////////////////////////////////
   // explicit specializations
-
+  
+  template class NumericLimits_T<char8>;
   template class NumericLimits_T<tl_int>;
   template class NumericLimits_T<tl_uint>;
   template class NumericLimits_T<tl_size>;

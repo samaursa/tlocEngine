@@ -233,11 +233,13 @@ namespace tloc { namespace graphics { namespace component_system {
       1.0f / core_utils::CastNumber<tl_float>(a_fps);
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimator);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(texture_animator_sptr);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimator);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(texture_animator_sptr);

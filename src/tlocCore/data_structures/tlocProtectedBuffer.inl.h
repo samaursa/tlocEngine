@@ -107,4 +107,7 @@ namespace tloc { namespace core { namespace data_structs {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_PROTECTED_BUFFER(_type_, _size_)\
+  template class tloc::core_ds::ProtectedBuffer<_type_, _size_>
+
 #endif

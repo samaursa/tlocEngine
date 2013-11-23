@@ -20,11 +20,11 @@ typedef Variadic<_type_, 15> Variadic15 ##_post_fix_; \
 typedef Variadic<_type_, 16> Variadic16 ##_post_fix_;
 
 #define TLOC_INSTANTIATE_VARIADIC(_type_, _size_)\
-  template class Variadic<_type_, _size_>;\
-  template Variadic<_type_, _size_>::Variadic(_type_ const (&)[_size_]);\
-  template _type_& Tuple<_type_, _size_>::operator[] (tl_size);\
-  template const _type_& Tuple<_type_, _size_>::operator[] (tl_size) const;\
-  template Tuple<_type_, _size_>::size_type Tuple<_type_, _size_>::GetSize() const
+  template class tloc::core_ds::Variadic<_type_, _size_>;\
+  template tloc::core_ds::Variadic<_type_, _size_>::Variadic(_type_ const (&)[_size_]);\
+  template _type_& tloc::core_ds::Tuple<_type_, _size_>::operator[] (tl_size);\
+  template _type_ const & tloc::core_ds::Tuple<_type_, _size_>::operator[] (tl_size) const;\
+  template tloc::core_ds::Tuple<_type_, _size_>::size_type tloc::core_ds::Tuple<_type_, _size_>::GetSize() const
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VARIADIC_TYPES(_type_) \
   TLOC_INSTANTIATE_VARIADIC(_type_, 1);\

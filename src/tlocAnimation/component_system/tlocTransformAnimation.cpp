@@ -313,11 +313,13 @@ namespace tloc { namespace animation { namespace component_system {
       1.0f / core_utils::CastNumber<tl_float>(a_fps);
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimation);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_animation_sptr);
-
 };};};
+
+// ///////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::anim_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimation);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_animation_sptr);

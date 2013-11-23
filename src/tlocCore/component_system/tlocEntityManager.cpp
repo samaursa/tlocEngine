@@ -204,9 +204,9 @@ namespace tloc { namespace core { namespace component_system {
     return nullptr;
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EntityManager);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::EntityManager);

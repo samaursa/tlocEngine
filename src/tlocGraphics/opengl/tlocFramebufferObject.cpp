@@ -464,10 +464,12 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FramebufferObject);
-  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::Bind);
-
 };};};
+
+// ///////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FramebufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::Bind);

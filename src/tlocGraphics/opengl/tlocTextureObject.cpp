@@ -109,6 +109,14 @@ namespace tloc { namespace graphics { namespace gl {
 
 #elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
 
+    // GL_STENCIL_INDEX is no longer defined in iOS 7 framework
+#if !defined(GL_STENCIL_INDEX) && defined(GL_STENCIL_INDEX8_OES)
+#define GL_STENCIL_INDEX                            GL_STENCIL_INDEX8_OES
+#endif
+#if !defined(GL_STENCIL_INDEX) && defined(GL_STENCIL_INDEX8)
+#define GL_STENCIL_INDEX                            GL_STENCIL_INDEX8
+#endif
+    
     using namespace wrap_technique;
     using namespace filter;
     using namespace format;
@@ -296,9 +304,12 @@ namespace tloc { namespace graphics { namespace gl {
     glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  template class core::smart_ptr::SharedPtr<TextureObject>;
-
 };};};
+
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureObject);

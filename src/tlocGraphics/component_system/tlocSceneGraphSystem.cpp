@@ -214,9 +214,11 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneGraphSystem);
-
 };};};
+
+// ///////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneGraphSystem);

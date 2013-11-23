@@ -131,7 +131,12 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(DepthComponent16);
   TLOC_EXPLICITLY_INSTANTIATE_PARAMS_INTERNAL_FORMAT(StencilIndex8);
 
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
-  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);

@@ -227,9 +227,11 @@ namespace tloc { namespace animation { namespace component_system {
     Post_ProcessActiveEntities(f64)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::anim_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);

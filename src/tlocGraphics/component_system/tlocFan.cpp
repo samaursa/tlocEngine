@@ -17,8 +17,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_sides(a_sides)
   { }
 
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Fan);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(fan_sptr);
-
 };};};
+
+// -----------------------------------------------------------------------
+// Explicit Instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Fan);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(fan_sptr);

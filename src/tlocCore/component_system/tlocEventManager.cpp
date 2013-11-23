@@ -130,9 +130,9 @@ namespace tloc { namespace core { namespace component_system {
     m_events.clear();
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EventManager);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::EventManager);

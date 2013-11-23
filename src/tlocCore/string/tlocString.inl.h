@@ -1706,7 +1706,7 @@ namespace tloc { namespace core { namespace string {
   T
     CharToLower( const T& aChar )
   {
-    TLOC_ASSERT_STRING(aChar <= 0xFF,
+    TLOC_ASSERT_STRING(aChar <= NumericLimits_T<char8>::max(),
       "Character is out of range for this function!");
     return (T)tolower((char8)aChar);
   }
@@ -1715,7 +1715,7 @@ namespace tloc { namespace core { namespace string {
   T
     CharToUpper( const T& aChar)
   {
-    TLOC_ASSERT_STRING(aChar <= 0xFF,
+    TLOC_ASSERT_STRING(aChar <= NumericLimits_T<char8>::max(),
       "Character is out of range for this function!");
     return (T)toupper((char8)aChar);
   }

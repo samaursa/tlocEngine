@@ -139,9 +139,9 @@ namespace tloc { namespace physics { namespace component_system {
 
     if (rbComponents.empty())
     {
-      TLOC_ASSERT(false, "There is no RigidBody component attached to this \
-                  entity! A RigidBody component is needed for a \
-                  RigidBodyListener component to function!");
+      TLOC_ASSERT(false, "There is no RigidBody component attached to this "
+                  "entity! A RigidBody component is needed for a "
+                  "RigidBodyListener component to function!");
 
       // LOG: No RigidBody component attached to this entity!
       return TLOC_ERROR(error::error_rigid_body_not_attached);
@@ -215,9 +215,11 @@ namespace tloc { namespace physics { namespace component_system {
     return false;
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::phys_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodyListenerSystem);

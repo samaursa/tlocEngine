@@ -143,15 +143,6 @@ namespace TestingHashtable
     }
   };
 
-  template class Hashtable<HashtableFixture::singly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doubly_nohash_unique>;
-  template class Hashtable<HashtableFixture::singlydoubly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doublysingly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doublyarray_nohash_unique>;
-  template class Hashtable<HashtableFixture::array_nohash_unique>;
-  template class Hashtable<HashtableFixture::arraysingly_nohash_unique>;
-  template class Hashtable<HashtableFixture::arraydouble_nohash_unique>;
-
 #define TestMethodAllVariationsUniqueHashNotStored(T_Type) \
     T_Type<Hashtable<singly_nohash_unique> >(); \
     T_Type<Hashtable<doubly_nohash_unique> >(); \

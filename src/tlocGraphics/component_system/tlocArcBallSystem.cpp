@@ -105,9 +105,11 @@ namespace tloc { namespace graphics { namespace component_system {
     arcBall->Reset();
   }
 
-  // -----------------------------------------------------------------------
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBallSystem);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBallSystem);

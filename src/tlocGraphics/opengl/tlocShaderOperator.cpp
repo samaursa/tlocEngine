@@ -1500,12 +1500,14 @@ namespace tloc { namespace graphics { namespace gl {
     IsUniformsCached()
   { return m_flags[k_uniformsCached]; }
 
-  //------------------------------------------------------------------------
-  // explicit instantiation
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
-  template class Array<uniform_sptr>;
-  template class Array<attribute_sptr>;
-
-
 };};};
+
+
+//------------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_sptr);

@@ -155,15 +155,21 @@ namespace tloc { namespace math { namespace component_system {
 
   //------------------------------------------------------------------------
   // Explicit instantiations
-
+  
   template class Transform_T<f32>;
   template class Transform_T<f64>;
 
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
-
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+using namespace tloc;
+using namespace tloc::math_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
+
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);

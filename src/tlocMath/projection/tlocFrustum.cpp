@@ -1,5 +1,6 @@
 #include "tlocFrustum.h"
 #include <tlocCore/data_structures/tlocTuple.inl.h>
+#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
 
 #include <tlocMath/tloc_math.h>
 #include <tlocMath/tloc_math.inl.h>
@@ -81,17 +82,6 @@ namespace tloc { namespace math { namespace proj {
 
   template class Frustum_TI<f32>;
   template class Frustum_TI<f64>;
-
-  //------------------------------------------------------------------------
-  // Instantiate tuple for the number of planes we have
-
-  using core::data_structs::Tuple;
-
-  template class Tuple<Frustum_TI<f32>::real_type,
-                       p_frustum::PlaneCount::k_planeIndex>;
-
-  template class Tuple<Frustum_TI<f64>::real_type,
-                       p_frustum::PlaneCount::k_planeIndex>;
 
   //////////////////////////////////////////////////////////////////////////
   // Frustum<Perspective>
@@ -411,3 +401,15 @@ namespace tloc { namespace math { namespace proj {
 
 
 };};};
+
+//------------------------------------------------------------------------
+// Instantiate tuple for the number of planes we have
+
+using namespace tloc;
+using namespace math_proj;
+using core::data_structs::Tuple;
+
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(Frustum_TI<f32>::real_type,
+                                  p_frustum::PlaneCount::k_planeIndex);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(Frustum_TI<f64>::real_type,
+                                  p_frustum::PlaneCount::k_planeIndex);

@@ -269,10 +269,15 @@ namespace tloc { namespace graphics { namespace renderer {
   template class Renderer_T<f32>;
   template class Renderer_T<f64>;
 
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
-
-  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
-  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_rend;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
+
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);

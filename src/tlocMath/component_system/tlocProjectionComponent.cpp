@@ -41,11 +41,11 @@ namespace tloc { namespace math { namespace component_system {
     , m_frustum(a_frustum)
   { }
 
-  //------------------------------------------------------------------------
-  // Explicit Instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Projection);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(projection_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit Instantiations
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::math_cs::Projection);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(tloc::math_cs::projection_sptr);

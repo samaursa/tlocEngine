@@ -64,9 +64,11 @@ namespace tloc { namespace graphics { namespace component_system {
     cam->SetViewProj(m_vpMatrix);
   }
 
-  // -----------------------------------------------------------------------
-  // explicit instantiation
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(CameraSystem);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(CameraSystem);

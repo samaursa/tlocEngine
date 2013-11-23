@@ -348,12 +348,6 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Explicit initialization
 
-  // Supporting up to 4 shader attachments
-  template class Variadic<Shader_I*, 1>;
-  template class Variadic<Shader_I*, 2>;
-  template class Variadic<Shader_I*, 3>;
-  template class Variadic<Shader_I*, 4>;
-
   template ShaderProgram::error_type ShaderProgram::AttachShaders
     (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
@@ -382,8 +376,19 @@ namespace tloc { namespace graphics { namespace gl {
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::ActiveUniformMaxLength>() const;
 
-  // SmartPtr
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit initialization
+
+using namespace tloc::gfx_gl;
+using namespace tloc::core_ds;
+
+// Supporting up to 4 shader attachments
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 1);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 2);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 3);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 4);
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);

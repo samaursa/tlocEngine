@@ -23,9 +23,11 @@ namespace tloc { namespace graphics { namespace gl {
     return *this;
   }
 
-  //------------------------------------------------------------------------
-  //
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Attribute);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit Instantiations
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Attribute);

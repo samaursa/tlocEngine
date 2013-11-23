@@ -74,11 +74,6 @@ namespace tloc { namespace graphics { namespace gl {
       k_count
     };
 
-    bool DoCheckIfShaderIsAttached()
-    {
-      return Get<p_get::CurrentProgram>() != 0;
-    }
-
     //------------------------------------------------------------------------
     // Functions
 

@@ -30,9 +30,11 @@ namespace tloc { namespace input {
     template <typename T_InputObject>
     void IsInputTypeSupported()
     {
+#ifndef TLOC_OS_IPHONE // see changelog for why we have to do this
       TLOC_STATIC_ASSERT(
         (Loki::Conversion<T_InputObject, p_hid::HIDType>::exists),
         Object_must_be_HID_type);
+#endif
     }
   }
 

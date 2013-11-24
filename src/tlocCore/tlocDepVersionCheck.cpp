@@ -1,5 +1,5 @@
 // Compile against the proper dependency version
-#define TLOC_DEP_VERSION_0_0_139_1385246111
+#define TLOC_DEP_VERSION_0_0_140_1385265518
 #include "tlocDepVersion.h"
 
 #include <tlocCore/tlocBase.h>

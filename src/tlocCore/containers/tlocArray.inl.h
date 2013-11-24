@@ -43,8 +43,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeBegin) )
 TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
 #define TLOC_ASSERT_ARRAY_RANGE(_rangeBegin_, _rangeEnd_) \
-  TLOC_ASSERT_ARRAY(_rangeBegin_ <= _rangeEnd_, \
-#_rangeBegin_ " must be smaller than " #_rangeEnd_)
+  TLOC_ASSERT_ARRAY(_rangeBegin_ <= _rangeEnd_, #_rangeBegin_\
+                    " must be smaller than " #_rangeEnd_)
 
 #define TLOC_ASSERT_ARRAY_RANGE_BEGIN_END(_rangeBegin_, _rangeEnd_) \
   TLOC_ASSERT_ARRAY_RANGE_BEGIN(_rangeBegin_);\
@@ -849,4 +849,8 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_ARRAY(_type_)\
+  template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Unordered>;\
+  template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Ordered>
+  
 #endif

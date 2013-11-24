@@ -7,6 +7,7 @@
 
 #include "tlocMemoryPool.h"
 #include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/types/tlocBasicTypes.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions
@@ -115,8 +116,9 @@ namespace tloc { namespace core { namespace memory {
 #define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
   TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
 
-  template <MEMORY_POOL_INDEX_TEMP> MEMORY_POOL_INDEX_TYPE::index_type
-    const MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::sm_invalidIndex = -1;
+  template <MEMORY_POOL_INDEX_TEMP>
+  const MEMORY_POOL_INDEX_TYPE::index_type
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::sm_invalidIndex = -1;
 
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndexed()
@@ -142,7 +144,7 @@ namespace tloc { namespace core { namespace memory {
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::Resize(size_type a_size)
   {
     DoExpand(a_size, container_dynamic_type());
-    m_numAvail = m_allElements.size();
+    m_numAvail = core_utils::CastNumber<index_type>(m_allElements.size());
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -164,7 +166,7 @@ namespace tloc { namespace core { namespace memory {
     const size_type prevSize = GetTotal();
     if (DoExpand(prevSize * 2, container_dynamic_type()) )
     {
-      m_numAvail = GetTotal() - prevSize;
+      m_numAvail = core_utils::CastNumber<index_type>(GetTotal() - prevSize);
 
       return GetNext();
     }
@@ -227,7 +229,7 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::wrapper_type&
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index)
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index)
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX((size_type)a_index < GetTotal() - GetAvail(),
       "Index trying to access unavailable element!");
@@ -237,7 +239,7 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::wrapper_type const &
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](tl_int a_index) const
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index) const
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < GetTotal() - GetAvail(),
       "Index trying to access unavailable element!");
@@ -258,14 +260,14 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
   {
-    return m_numAvail != -1 ? m_numAvail : 0;
+    return m_numAvail != sm_invalidIndex ? m_numAvail : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
   {
-    return m_numAvail != -1 ? (m_allElements.size() - GetAvail()) : 0;
+    return m_numAvail != sm_invalidIndex ? (m_allElements.size() - GetAvail()) : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -350,7 +352,8 @@ namespace tloc { namespace core { namespace memory {
       iterator startingPos = m_allElements.begin();
       advance(startingPos, prevSize);
 
-      DoInitializeRange(startingPos, m_allElements.end(), prevSize);
+      DoInitializeRange(startingPos, m_allElements.end(),
+        core_utils::CastNumber<index_type>(prevSize));
 
       return true;
     }
@@ -369,7 +372,8 @@ namespace tloc { namespace core { namespace memory {
     iterator startingPos = m_allElements.begin();
     advance(startingPos, prevSize);
 
-    DoInitializeRange(startingPos, m_allElements.end(), prevSize);
+    DoInitializeRange(startingPos, m_allElements.end(),
+      core_utils::CastNumber<index_type>(prevSize));
     return true;
   }
 
@@ -385,7 +389,7 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::index_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
   {
-    return m_allElements.size() - m_numAvail;
+    return core_utils::CastNumber<index_type>(m_allElements.size() - m_numAvail);
   }
 
   template <MEMORY_POOL_INDEX_TEMP>

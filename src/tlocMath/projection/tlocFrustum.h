@@ -25,20 +25,13 @@ namespace tloc { namespace math { namespace proj {
     struct FOVy{};
     struct FOVx{};
 
-    struct Near
-    { enum { k_planeIndex = 0 }; };
-    struct Far
-    { enum { k_planeIndex = 1 }; };
-    struct Top
-    { enum { k_planeIndex = 2 }; };
-    struct Bottom
-    { enum { k_planeIndex = 3 }; };
-    struct Left
-    { enum { k_planeIndex = 4 }; };
-    struct Right
-    { enum { k_planeIndex = 5 }; };
-    struct PlaneCount
-    { enum { k_planeIndex = 6 }; };
+    struct Near       { enum { k_planeIndex = 0 }; };
+    struct Far        { enum { k_planeIndex = 1 }; };
+    struct Top        { enum { k_planeIndex = 2 }; };
+    struct Bottom     { enum { k_planeIndex = 3 }; };
+    struct Left       { enum { k_planeIndex = 4 }; };
+    struct Right      { enum { k_planeIndex = 5 }; };
+    struct PlaneCount { enum { k_planeIndex = 6 }; };
   };
 
   //------------------------------------------------------------------------
@@ -136,26 +129,42 @@ namespace tloc { namespace math { namespace proj {
     typedef utils::Pythagoras_T<real_type>              pyth_type;
 
   public:
-    typedef struct Params
+    struct Params
     {
+    public:
+      typedef Params            this_type;
+
+    public:
       Params(const fov_type& a_fov);
       Params(const Params& a_other);
 
-      Params&   SetNear(real_type a_near);
-      Params&   SetFar(real_type a_far);
-
-
       TLOC_DECL_AND_DEF_GETTER(real_type, GetNear, m_near);
       TLOC_DECL_AND_DEF_GETTER(real_type, GetFar, m_far);
+      TLOC_DECL_AND_DEF_GETTER(real_type, GetConvergence, m_convergence);
+      TLOC_DECL_AND_DEF_GETTER(real_type, GetInteraxial, m_interaxial);
+
       TLOC_DECL_AND_DEF_GETTER(ar_type,   GetAspectRatio, m_aspectRatio);
       TLOC_DECL_AND_DEF_GETTER(fov_type,  GetFOV, m_fov);
+
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(real_type, SetNear, m_near);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(real_type, SetFar, m_far);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(real_type, SetConvergence,
+                                              m_convergence);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(real_type, SetInteraxial,
+                                              m_interaxial);
 
     private:
       real_type     m_near;
       real_type     m_far;
+      real_type     m_convergence;
+      real_type     m_interaxial;
+
       ar_type       m_aspectRatio;
       fov_type      m_fov;
-    } param_type;
+    };
+
+  public:
+    typedef Params                                    param_type;
 
   public:
     Frustum_T();
@@ -165,6 +174,12 @@ namespace tloc { namespace math { namespace proj {
     ~Frustum_T();
 
     void      BuildFrustum();
+
+    // TODO: Should be a macro
+    // Calls base function. Only needed for clarity
+    template <typename T_Plane>
+    real_type GetPlane() const;
+
     ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
@@ -172,6 +187,16 @@ namespace tloc { namespace math { namespace proj {
   private:
     Params                        m_params;
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // template definitions
+
+  template <typename T_Real>
+  template <typename T_Planes>
+  typename Frustum_T<T_Real, p_frustum::Perspective>::real_type
+    Frustum_T<T_Real, p_frustum::Perspective>::
+    GetPlane() const
+  { return base_type::template GetPlane<T_Planes>(); }
 
   //------------------------------------------------------------------------
   // Frustum_T<Orthographic>
@@ -207,8 +232,24 @@ namespace tloc { namespace math { namespace proj {
     ~Frustum_T();
 
     void      BuildFrustum();
+
+    // TODO: Should be a macro
+    // Calls base function. Only needed for clarity
+    template <typename T_Plane>
+    real_type GetPlane() const;
+
     ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
   };
+
+  //````````````````````````````````````````````````````````````````````````
+  // template definitions
+
+  template <typename T_Real>
+  template <typename T_Planes>
+  typename Frustum_T<T_Real, p_frustum::Orthographic>::real_type
+    Frustum_T<T_Real, p_frustum::Orthographic>::
+    GetPlane() const
+  { return base_type::template GetPlane<T_Planes>(); }
 
   //------------------------------------------------------------------------
   // typedefs

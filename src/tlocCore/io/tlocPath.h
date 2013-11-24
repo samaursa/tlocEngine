@@ -5,6 +5,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -14,7 +15,7 @@ namespace tloc { namespace core { namespace io {
     typedef string::String        string_type;
 
   public:
-    Path(const char* a_path);
+    Path(const BufferArg& a_path);
 
     void GetFileName(string_type& a_out) const;
     void GetFileNameWithoutExtension(string_type& a_out) const;
@@ -41,7 +42,7 @@ namespace tloc { namespace core { namespace io {
     bool HasFilename() const;
 
     TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
-    void SetPath(const char* a_path);
+    void SetPath(const BufferArg& a_path);
 
   private:
     void DoFixPath();

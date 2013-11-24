@@ -219,6 +219,35 @@ namespace tloc
 #define TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(_cont_)\
   typename Loki::Select<type_traits::IsConst<_cont_>::result, \
   typename _cont_::const_iterator, typename _cont_::iterator>::Result
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Pointee type
+
+  namespace priv {
+
+    template <typename T, bool>
+    struct PointeeType;
+
+    template <typename T>
+    struct PointeeType<T, false>
+    {
+      typedef typename T::value_type                      value_type;
+    };
+
+    template <typename T>
+    struct PointeeType<T, true>
+    {
+      typedef typename Loki::TypeTraits<T>::PointeeType   value_type;
+    };
+
+  };
+
+  template <typename T>
+  struct PointeeType
+  {
+    typedef typename priv::PointeeType
+      <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
+  };
 };
 
 //------------------------------------------------------------------------

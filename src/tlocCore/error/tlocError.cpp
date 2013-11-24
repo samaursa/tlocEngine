@@ -51,6 +51,14 @@ namespace tloc { namespace core { namespace error {
   }
 
   template <ERROR_TI_TEMP>
+  void Error_TI<ERROR_TI_PARAMS>::
+    Check() const
+  {
+    derived_type temp(*static_cast<const derived_type*>(this));
+    TLOC_UNUSED(temp);
+  }
+
+  template <ERROR_TI_TEMP>
   tl_int Error_TI<ERROR_TI_PARAMS>::
     GetLineNumber() const
   {

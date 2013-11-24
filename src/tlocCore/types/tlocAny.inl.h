@@ -47,7 +47,7 @@ namespace tloc { namespace core { namespace types {
 #undef POLICY_TYPE
 
       //////////////////////////////////////////////////////////////////////////
-      // Simple Type 
+      // Simple Type
 
 #define SIMPLE_TYPE_TEMP   typename T
 #define SIMPLE_TYPE_PARAMS T
@@ -84,9 +84,9 @@ namespace tloc { namespace core { namespace types {
         ::GetValue(void* const * a_source) const
       { return reinterpret_cast<void const *>(a_source); }
 
-#undef SIMPLE_TYPE_TEMP   
+#undef SIMPLE_TYPE_TEMP
 #undef SIMPLE_TYPE_PARAMS
-#undef SIMPLE_TYPE_TYPE 
+#undef SIMPLE_TYPE_TYPE
 
       //////////////////////////////////////////////////////////////////////////
       // Complex Type
@@ -133,9 +133,9 @@ namespace tloc { namespace core { namespace types {
         ::GetValue(void* const* a_source) const
       { return *a_source; }
 
-#undef COMPLEX_TYPE_TEMP   
+#undef COMPLEX_TYPE_TEMP
 #undef COMPLEX_TYPE_PARAMS
-#undef COMPLEX_TYPE_TYPE 
+#undef COMPLEX_TYPE_TYPE
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -156,46 +156,62 @@ namespace tloc { namespace core { namespace types {
   // Any Class
 
   template <typename T>
-  Any::Any(const T& a_other)
+  Any::
+    Any(const T& a_other)
     : m_policy(p_any::GetPolicy<p_any::detail::Empty>()), m_object(nullptr)
   {
     Assign(a_other);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
-  void Any::Assign(const T& a_other)
+  void
+    Any::
+    Assign(const T& a_other)
   {
     Reset();
     m_policy = p_any::GetPolicy<T>();
     m_policy->Copy(&a_other, &m_object);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
-  Any::this_type& Any::
+  Any::this_type&
+    Any::
     operator =(const T& a_other)
   {
     Assign(a_other);
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
-  T& Any::Cast()
+  T&
+    Any::
+    Cast()
   {
-    // Can't do this check - static variable address is not shared across 
+    // Can't do this check - static variable address is not shared across
     // multple binaries (i.e. lib and exe)
-    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(), 
+    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
     //                "Type T does not match the original type");
     TLOC_ASSERT_LOW_LEVEL(m_object != nullptr, "Any not assigned a value!");
     T* ret = reinterpret_cast<T*>(m_policy->GetValue(&m_object));
     return *ret;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
-  T const & Any::Cast() const
+  T const &
+    Any::
+    Cast() const
   {
-    // Can't do this check - static variable address is not shared across 
+    // Can't do this check - static variable address is not shared across
     // multple binaries (i.e. lib and exe)
-    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(), 
+    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
     //                "Type T does not match the original type");
     T const * ret = reinterpret_cast<T const*>(m_policy->GetValue(&m_object));
     return *ret;

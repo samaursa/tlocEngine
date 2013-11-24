@@ -19,6 +19,7 @@ namespace tloc {
     namespace input     {};
     namespace math      {};
     namespace physics   {};
+    namespace animation {};
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -28,12 +29,13 @@ namespace tloc {
   namespace prefab_gfx    = prefab::graphics;
   namespace prefab_input  = prefab::input;
   namespace prefab_phys   = prefab::physics;
+  namespace prefab_anim   = prefab::animation;
 
   // ///////////////////////////////////////////////////////////////////////
   // Base for all prefab objects
 
   class Prefab_I
-    : core::NonCopyable
+    : core_bclass::NonCopyable_I
   {
   public:
     typedef core_cs::EntityManager          entity_mgr_type;

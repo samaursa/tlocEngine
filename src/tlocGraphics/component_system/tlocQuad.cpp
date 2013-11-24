@@ -15,11 +15,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_rect(a_rect)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Quad);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(quad_sptr);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Quad);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(quad_sptr);

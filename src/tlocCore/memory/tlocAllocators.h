@@ -9,20 +9,11 @@
 //////////////////////////////////////////////////////////////////////////
 // C allocation
 
-#ifdef TLOC_USING_NED_MALLOC
-#   include <3rdParty/nedmalloc/nedmalloc.h>
-#   define TL_MALLOC(tl_size)                 nedalloc::nedmalloc(tl_size)
-#   define TL_CALLOC(tl_numElements, tl_size) nedalloc::nedcalloc(tl_numElements, tl_size)
-#   define TL_REALLOC(tl_ptr, tl_size)        nedalloc::nedrealloc(tl_ptr, tl_size)
-#   define TL_FREE(tl_ptr)                    nedalloc::nedfree(tl_ptr)
-
-#else   // TLOC_USING_NED_MALLOC
-#   include <memory.h>
-#   define TL_MALLOC(tl_size)                 malloc(tl_size)
-#   define TL_CALLOC(tl_numElements, tl_size) calloc(tl_numElements, tl_size)
-#   define TL_REALLOC(tl_ptr, tl_size)        realloc(tl_ptr, tl_size)
-#   define TL_FREE(tl_ptr)                    free(tl_ptr)
-#endif  // TLOC_USING_NED_MALLOC
+#include <memory.h>
+  #define TL_MALLOC(tl_size)                 malloc(tl_size)
+  #define TL_CALLOC(tl_numElements, tl_size) calloc(tl_numElements, tl_size)
+  #define TL_REALLOC(tl_ptr, tl_size)        realloc(tl_ptr, tl_size)
+  #define TL_FREE(tl_ptr)                    free(tl_ptr)
 
 //////////////////////////////////////////////////////////////////////////
 // C++ allocation

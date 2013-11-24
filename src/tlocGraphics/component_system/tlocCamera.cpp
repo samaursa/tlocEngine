@@ -49,11 +49,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_vpMat(matrix_type::IDENTITY)
   { }
 
-  // -----------------------------------------------------------------------
-  // Explicit Instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Camera);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(camera_sptr);
-
 };};};
+
+// -----------------------------------------------------------------------
+// Explicit Instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Camera);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(camera_sptr);

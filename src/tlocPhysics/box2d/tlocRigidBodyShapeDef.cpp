@@ -66,9 +66,9 @@ namespace tloc { namespace physics { namespace box2d {
     m_fixtureDef.userData = const_cast<entity_type*>(a_parent);
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  template class core::smart_ptr::SharedPtr<b2Shape>;
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(b2Shape);

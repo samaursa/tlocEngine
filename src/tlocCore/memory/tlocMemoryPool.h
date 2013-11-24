@@ -56,6 +56,7 @@ namespace tloc { namespace core { namespace memory {
             class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndexed
+    : public core_bclass::NonCopyable_I
   {
   public:
 
@@ -179,8 +180,8 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type&       operator[](tl_int a_index);
-    wrapper_type const& operator[](tl_int a_index) const;
+    wrapper_type&       operator[](index_type a_index);
+    wrapper_type const& operator[](index_type a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;

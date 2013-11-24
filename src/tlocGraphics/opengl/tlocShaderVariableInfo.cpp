@@ -2,9 +2,10 @@
 
 #include <tlocCore/data_structures/tlocProtectedBuffer.inl.h>
 
-namespace tloc { namespace graphics { namespace gl {
+// ///////////////////////////////////////////////////////////////////////
+// Explicit instantiations
 
-  template class core::data_structs::
-    ProtectedBuffer<char8, ShaderVariableInfo::g_buffSize>;
+using namespace tloc;
+using namespace tloc::gfx_gl;
 
-};};};
+TLOC_EXPLICITLY_INSTANTIATE_PROTECTED_BUFFER(char8, ShaderVariableInfo::g_buffSize);

@@ -149,7 +149,8 @@
   //------------------------------------------------------------------------
   // Typedef fix for compilers
   // This fix is temporary until we can figure out a way to remove typename
-  // limitations from VS
+  // limitations from VS (i.e. adding typedef to VS fails to compile, while
+  // removing typedef fails to compile on LLVM)
 #if defined(_MSC_VER)
 # define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
   typedef _type_ _alias_
@@ -178,23 +179,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Memory
-//
-// Notes: The default memory allocator used is the nedmalloc which is a
-// derivation of doug lea malloc:
-//
-// http://www.nedprod.com/programs/portable/nedmalloc/
-//
-// If all of the following macros are commented out, the system defaults
-// to using the definitions contained in <memory.h>. To enable seamless
-// transitions, there are helper macros defined in <tlocMemory.h>
-//
-// Supported macros:
-// TLOC_USING_NED_MALLOC
-
-// Use nedmalloc
-#ifndef TLOC_USING_STD_ALLOC
-  //#define TLOC_USING_NED_MALLOC
-#endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)
@@ -301,8 +285,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Assertions
 
-#define S(x) #x
-#define S_(x) S(x)
+#define Setfram(x) #x
+#define S_(x) Setfram(x)
 #define S__LINE__ S_(__LINE__)
 
 //````````````````````````````````````````````````````````````````````````
@@ -357,24 +341,24 @@
   TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
 
 # define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER)
 # define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer);
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer)
 # define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
+  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE)
 # define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference)
 
 # define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT)
 # define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC)
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
 # define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
 # define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
-  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported);
+  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported)
 
 //------------------------------------------------------------------------
 // Low level assertions

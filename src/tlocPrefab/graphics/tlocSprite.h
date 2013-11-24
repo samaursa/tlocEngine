@@ -23,7 +23,9 @@ namespace tloc { namespace prefab { namespace graphics {
                            SpriteLoaderIterator a_end,
                            bool a_loop,
                            tl_size a_fps,
-                           bool a_append);
+                           tl_size a_setIndex,
+                           tl_size a_startingFrame,
+                           bool a_paused);
 
   };
 
@@ -32,6 +34,7 @@ namespace tloc { namespace prefab { namespace graphics {
   {
   public:
     typedef SpriteAnimation       this_type;
+    typedef tl_size               size_type;
 
   public:
     SpriteAnimation(core_cs::EntityManager*  a_entMgr,
@@ -39,7 +42,9 @@ namespace tloc { namespace prefab { namespace graphics {
                     : Prefab_I(a_entMgr, a_poolMgr)
                     , m_loop(true)
                     , m_fps(24)
-                    , m_append(true)
+                    , m_startingFrame(0)
+                    , m_paused(false)
+                    , m_setIndex(0)
     { }
 
     template <typename SpriteLoaderIterator>
@@ -57,7 +62,8 @@ namespace tloc { namespace prefab { namespace graphics {
         SpriteLoader_SpriteSheetPacker::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, m_loop, m_fps, m_append);
+                                 a_begin, a_end, m_loop, m_fps, m_setIndex,
+                                 m_startingFrame, m_paused);
     }
 
     template <typename T_ContOfSpriteLoaderItrBeginEndPair>
@@ -75,7 +81,6 @@ namespace tloc { namespace prefab { namespace graphics {
 
       typedef typename cont_type::iterator                  itr_type;
 
-
       type_traits::AssertTypeIsSupported
         <pair_type_first,
          SpriteLoader_SpriteSheetPacker::iterator,
@@ -86,11 +91,6 @@ namespace tloc { namespace prefab { namespace graphics {
          SpriteLoader_SpriteSheetPacker::iterator,
          SpriteLoader_SpriteSheetPacker::const_iterator>();
 
-      // We cannot add multiple sprite sheets without append, let the user know
-      // LOG: convert following assert into a log
-      TLOC_ASSERT(m_append,
-        "Append is set to falsed, unable to generate multiple spritesheets");
-
       for (itr_type itr = a_spriteLoaderIterators.begin(),
                     itrEnd = a_spriteLoaderIterators.end();
                     itr != itrEnd; ++itr)
@@ -99,9 +99,11 @@ namespace tloc { namespace prefab { namespace graphics {
       }
     }
 
-    TLOC_DECL_PARAM_VAR(bool, Loop, m_loop);
-    TLOC_DECL_PARAM_VAR(tl_size, Fps, m_fps);
-    TLOC_DECL_PARAM_VAR(bool, Append, m_append);
+    TLOC_DECL_PARAM_VAR(bool,       Loop, m_loop);
+    TLOC_DECL_PARAM_VAR(tl_size,    Fps, m_fps);
+    TLOC_DECL_PARAM_VAR(size_type,  StartingFrame, m_startingFrame);
+    TLOC_DECL_PARAM_VAR(bool,       Paused, m_paused);
+    TLOC_DECL_PARAM_VAR(tl_size,    SetIndex, m_setIndex);
   };
 
 };};};

@@ -2,6 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 namespace TestingStrings
 {
@@ -75,6 +76,11 @@ namespace TestingStrings
     {
       String f(StringNoInitialize(), 10);
       CHECK(f.capacity() == 10);
+    }
+
+    {
+      String g(BufferArg("Hello"));
+      CHECK(StrCmp(g.c_str(), "Hello") == 0);
     }
 
     {// tests from cplusplus.com
@@ -645,14 +651,14 @@ namespace TestingStrings
 
     {
       char8 s1[256];
-      tl_int retIndex = CharWideToAscii(s1, sentence1, 256);
+      tl_size retIndex = CharWideToAscii(s1, sentence1, 256);
       CHECK(StrCmp(sentence2, s1) == 0);
       CHECK(retIndex == 19);
     }
 
     {
       char32 s2[256];
-      tl_int retIndex = CharAsciiToWide(s2, sentence2, 256);
+      tl_size retIndex = CharAsciiToWide(s2, sentence2, 256);
       CHECK(StrCmp(sentence1, s2) == 0);
       CHECK(retIndex == 19);
     }

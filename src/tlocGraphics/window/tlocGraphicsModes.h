@@ -12,7 +12,7 @@ namespace tloc { namespace graphics { namespace win {
   //////////////////////////////////////////////////////////////////////////
   /// This class was written (initially - modifications may follow) by
   /// following SFML (Simply and Fast Multi-media library).
-  template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
+  template <typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class GraphicsMode
   {
   public:

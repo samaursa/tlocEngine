@@ -99,10 +99,11 @@ namespace tloc { namespace core { namespace component_system {
     { m_pools.resize(a_index, nullptr); }
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPoolManager);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ComponentPool_I);
-
 };};};
+
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core::component_system::ComponentPoolManager);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core::component_system::ComponentPool_I);

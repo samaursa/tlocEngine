@@ -132,6 +132,8 @@ namespace tloc { namespace math {
     Range_T(value_type a_begin, value_type a_end,
             step_size a_stepSize = step_size(1));
 
+    bool       IsInRange(value_type a_value) const;
+
     this_type& operator=(const this_type& a_other);
     bool       operator== (const this_type& a_other) const;
 
@@ -178,6 +180,7 @@ namespace tloc { namespace math {
   typedef Range_T<u64>            range_u64;
   typedef Range_T<f32>            range_f32;
   typedef Range_T<f64>            range_f64;
+  typedef Range_T<tl_size>        range_tl_size;
 
   //------------------------------------------------------------------------
   // global definitions

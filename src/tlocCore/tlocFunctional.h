@@ -46,13 +46,13 @@ namespace tloc { namespace core {
 #define DECL_UNARY_FUNC(T_Arg , T_Result)\
   typedef unary_function_type function_type;\
   typedef T_Arg               argument_type;\
-  typedef T_Result            result_type;
+  typedef T_Result            result_type
 
 #define DECL_BINARY_FUNC(T_Arg1, T_Arg2, T_Result)\
   typedef unary_function_type function_type;\
   typedef T_Arg1              first_argument_type;\
   typedef T_Arg2              second_argument_type;\
-  typedef T_Result            result_type;
+  typedef T_Result            result_type
 
   //////////////////////////////////////////////////////////////////////////
   // Arithmetic operations

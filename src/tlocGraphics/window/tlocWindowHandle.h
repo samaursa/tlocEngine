@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace win {
 #if defined (TLOC_OS_WIN)
 
   template<>
-  struct WindowHandle<core::Platform_win>
+  struct WindowHandle<core_plat::p_platform_info::win>
   {
     typedef HWND         type;
   };
@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace win {
   // since any source file (cpp) that included this header would have to be
   // treated as an Objective-C++ file.
   template<>
-  struct WindowHandle<core::Platform_iphone>
+  struct WindowHandle<core_plat::p_platform_info::iphone>
   {
     typedef core_t::Any /* (UIWindow*) */   type;
   };
@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace win {
 #elif defined (TLOC_OS_LINUX)
 
   template<>
-  struct WindowHandle<core::Platform_linux>
+  struct WindowHandle<core_plat::p_platform_info::linux>
   {
     typedef tl_size       type;
   };

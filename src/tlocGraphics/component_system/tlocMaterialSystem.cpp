@@ -58,6 +58,10 @@ namespace tloc { namespace graphics { namespace component_system {
       if (sp->IsLinked())
       { continue; }
 
+      // TODO: Log this instead
+      TLOC_ASSERT(matPtr->GetVertexSource().size() > 0, "Vertex shader is empty");
+      TLOC_ASSERT(matPtr->GetFragmentSource().size() > 0, "Fragment shader is empty");
+
       vShader.Load(matPtr->GetVertexSource().c_str() );
       result = vShader.Compile();
       TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
@@ -105,9 +109,12 @@ namespace tloc { namespace graphics { namespace component_system {
                                      f64)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  template class core_sptr::SharedPtr<MaterialSystem>;
-
 };};};
+
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MaterialSystem);

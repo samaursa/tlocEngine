@@ -79,11 +79,11 @@ namespace tloc { namespace input { namespace hid {
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Keyboard
     : public core::base_classes::DispatcherBaseArray
       <KeyboardCallbacks, KeyboardCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
     , public p_hid::Keyboard
   {
   public:

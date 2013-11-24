@@ -95,13 +95,14 @@ namespace tloc { namespace core { namespace component_system {
     GetUsed() const
   { return m_pool.GetUsed(); }
 
-  //------------------------------------------------------------------------
-  // explicit instantiation helpers
+};};};
+
+
+//------------------------------------------------------------------------
+// explicit instantiation helpers
 
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
-  template class core_cs::ComponentPool_TI<_type_>;\
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(core_cs::ComponentPool_TI<_type_>)
-
-};};};
+template class tloc::core_cs::ComponentPool_TI<_type_>;\
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
 
 #endif

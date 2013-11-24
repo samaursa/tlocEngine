@@ -14,7 +14,8 @@ namespace tloc { namespace graphics { namespace media {
     };
   };
 
-  Image::Image() : m_dim(0, 0)
+  Image::Image()
+    : m_dim(0)
   {
   }
 
@@ -59,11 +60,13 @@ namespace tloc { namespace graphics { namespace media {
     return m_pixels[a_X + (a_Y * m_dim[width])];
   }
 
-  //------------------------------------------------------------------------
-  // Explicitly instantiate the container
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
-
-  template class core::containers::Array<types::Color>;
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicitly instantiate the container
+
+using namespace tloc::gfx_med;
+using namespace tloc::gfx_t;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Color);

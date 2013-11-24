@@ -9,7 +9,7 @@
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix4.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocShaderVariableInfo.h>
@@ -21,6 +21,8 @@ namespace tloc { namespace graphics { namespace gl {
   using namespace core::containers;
   using namespace core::smart_ptr;
   using namespace core::data_structs;
+
+  typedef core::Pair<ShaderOperator::error_type, GLint> ErrorAttribIndexPair;
 
   namespace
   {
@@ -72,15 +74,10 @@ namespace tloc { namespace graphics { namespace gl {
       k_count
     };
 
-    bool DoCheckIfShaderIsAttached()
-    {
-      return Get<p_get::CurrentProgram>() != 0;
-    }
-
     //------------------------------------------------------------------------
     // Functions
 
-    void DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+    GLint DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
     {
       using namespace core;
 
@@ -534,8 +531,15 @@ namespace tloc { namespace graphics { namespace gl {
             isShared
             ? *a_uniform.GetValueAsShared<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
-          glBindTexture(GL_TEXTURE_2D, m.GetHandle());
-          glUniform1i(a_info.m_location, GetActiveTextureUnit());
+
+          TLOC_ASSERT(m.IsActive(),
+            "TextureObject is NOT active - did you forget to call Activate()?");
+          GLint texImgUnit = m.GetTextureImageUnit();
+
+          ActivateTextureImageUnit(texImgUnit);
+          m.Bind();
+          glUniform1i(a_info.m_location,
+                      GetTextureUnitFromTextureImageUnit(texImgUnit));
           break;
         }
       default:
@@ -543,17 +547,21 @@ namespace tloc { namespace graphics { namespace gl {
           TLOC_ASSERT(false, "Unsupported shader variable type!");
         }
       }
+
+      return -1;
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
+    GLint DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
 
       bool isArray = a_attribute.IsArray();
       bool isShared = a_attribute.IsShared();
       bool isVertexArray = a_attribute.IsAttribArray();
+
+      GLint enabledVertexAttribArray = -1; // -1 means no attrib array enabled
 
       switch(a_info.m_type)
       {
@@ -584,6 +592,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -632,6 +641,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -680,6 +690,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -728,6 +739,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -777,6 +789,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -825,6 +838,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -873,6 +887,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -921,6 +936,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -969,6 +985,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -1017,6 +1034,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -1065,6 +1083,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -1113,6 +1132,7 @@ namespace tloc { namespace graphics { namespace gl {
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
               glEnableVertexAttribArray(a_info.m_location);
+              enabledVertexAttribArray = a_info.m_location;
             }
           }
           else
@@ -1140,12 +1160,14 @@ namespace tloc { namespace graphics { namespace gl {
           TLOC_ASSERT(false, "Unsupported shader variable type!");
         }
       }
+
+      return enabledVertexAttribArray;
     }
   }
 
   template <typename T_ShaderVariableContainer,
   typename T_ShaderVariableInfoContainer>
-  ShaderOperator::error_type
+  ErrorAttribIndexPair
   DoPrepareVariables(T_ShaderVariableContainer& a_shaderVars,
                      const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
   {
@@ -1156,12 +1178,13 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename svc::value_type::first_type  shader_var_ptr_type;
 
     ShaderOperator::error_type retError = ErrorSuccess;
+    GLint attribLocation = -1;
 
     svc_iterator itr, itrEnd;
     for (itr = a_shaderVars.begin(), itrEnd = a_shaderVars.end();
          itr != itrEnd; ++itr)
     {
-      shader_var_ptr_type uniformPtr = itr->first;
+      shader_var_ptr_type shaderVarPtr = itr->first;
 
       ShaderOperator::index_type index = 0;
       svcInfo_const_iterator itrInfo, itrInfoEnd;
@@ -1169,13 +1192,14 @@ namespace tloc { namespace graphics { namespace gl {
            itrInfoEnd = a_shaderVarsInfo.end();
            itrInfo != itrInfoEnd; ++itrInfo)
       {
-        if ( uniformPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+        if ( shaderVarPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
         {
-          if ( uniformPtr->GetType() == itrInfo->m_type &&
+          if ( shaderVarPtr->GetType() == itrInfo->m_type &&
               itrInfo->m_location != -1)
           {
             itr->second = index;
-            DoSet(a_shaderVarsInfo[itr->second], *uniformPtr);
+            attribLocation =
+              DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr);
 
             gl::Error err; TLOC_UNUSED(err);
             TLOC_ASSERT(err.Succeeded(),
@@ -1201,7 +1225,7 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
-    return retError;
+    return core::MakePair(retError, attribLocation);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1213,9 +1237,26 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  ShaderOperator::
+    ~ShaderOperator()
+  {
+    for (index_iterator itr = m_enabledVertexAttrib.begin(),
+                        itrEnd = m_enabledVertexAttrib.end();
+                        itr != itrEnd; ++itr)
+    {
+      TLOC_ASSERT(*itr < gl::Get<gl::p_get::MaxVertexAttribs>(),
+        "Vertex attribute location is greater than maximum number of attributes");
+
+      glDisableVertexAttribArray(*itr);
+    }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void ShaderOperator::
     AddUniform(const uniform_ptr_type& a_uniform)
   {
+    TLOC_ASSERT(a_uniform->GetName().size() > 0, "Uniform name is empty");
     m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
   }
@@ -1225,6 +1266,7 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderOperator::
     AddAttribute(const attribute_ptr_type& a_attribute)
   {
+    TLOC_ASSERT(a_attribute->GetName().size() > 0, "Attribute name is empty");
     m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
   }
@@ -1299,12 +1341,6 @@ namespace tloc { namespace graphics { namespace gl {
     {
       uniform_sptr uniformPtr = itr->first;
 
-      if (uniformPtr->GetType() == GL_SAMPLER_2D)
-      {
-        if (ActivateNextAvailableTextureUnit() != ErrorSuccess)
-        { TLOC_ASSERT(false, "Could not activate texture unit"); }
-      }
-
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }
       else
@@ -1360,7 +1396,9 @@ namespace tloc { namespace graphics { namespace gl {
     {
       const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-      retError = DoPrepareVariables(m_uniforms, uniCont);
+      // no need to check for attrib index since glEnableAttribArray applies
+      // to attributes only
+      retError = DoPrepareVariables(m_uniforms, uniCont).first;
     }
     return retError;
   }
@@ -1382,7 +1420,11 @@ namespace tloc { namespace graphics { namespace gl {
       const glsl_var_info_cont_type&
         attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-      retError = DoPrepareVariables(m_attributes, attrCont);
+      ErrorAttribIndexPair errAndIndex = DoPrepareVariables(m_attributes, attrCont);
+      retError = errAndIndex.first;
+
+      if (errAndIndex.second >= 0)
+      { m_enabledVertexAttrib.push_back(errAndIndex.second); }
     }
     return retError;
 
@@ -1453,12 +1495,14 @@ namespace tloc { namespace graphics { namespace gl {
     IsUniformsCached()
   { return m_flags[k_uniformsCached]; }
 
-  //------------------------------------------------------------------------
-  // explicit instantiation
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
-  template class Array<uniform_sptr>;
-  template class Array<attribute_sptr>;
-
-
 };};};
+
+
+//------------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_sptr);

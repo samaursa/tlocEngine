@@ -48,13 +48,8 @@ namespace tloc { namespace core { namespace data_structs {
     //------------------------------------------------------------------------
     // Accessors
 
-    // Access range is that of an integer, approx. 2.1 billion elements.
-    // If size is more than that, use the get function instead
-    value_type& operator[] (tl_int aIndex);
-
-    // Access range is that of an integer, approx. 2.1 billion elements.
-    // If size is more than that, use the get function instead
-    const value_type& operator[] (tl_int aIndex) const;
+    value_type& operator[] (size_type aIndex);
+    const value_type& operator[] (size_type aIndex) const;
 
     value_type& Get(size_type aIndex);
     const value_type& Get(size_type aIndex) const;
@@ -145,6 +140,7 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // typedefs
 
+  typedef Tuple<tl_size,	2>    Tuple2size;
   typedef Tuple<tl_float,	2>    Tuple2f;
   typedef Tuple<f32,			2>    Tuple2f32;
   typedef Tuple<f64,			2>    Tuple2f64;
@@ -155,6 +151,7 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<u32,			2>    Tuple2u32;
   typedef Tuple<u64,			2>    Tuple2u64;
 
+  typedef Tuple<tl_size,	3>    Tuple3size;
   typedef Tuple<tl_float,	3>    Tuple3f;
   typedef Tuple<f32,			3>    Tuple3f32;
   typedef Tuple<f64,			3>    Tuple3f64;
@@ -165,6 +162,7 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<u32,			3>    Tuple3u32;
   typedef Tuple<u64,			3>    Tuple3u64;
 
+  typedef Tuple<tl_size,	4>    Tuple4size;
   typedef Tuple<tl_float,	4>    Tuple4f;
   typedef Tuple<f32,			4>    Tuple4f32;
   typedef Tuple<f64,			4>    Tuple4f64;
@@ -178,6 +176,49 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<bool,     2>    Tuple2b;
   typedef Tuple<bool,     3>    Tuple3b;
   typedef Tuple<bool,     4>    Tuple4b;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeTuple
+
+  template <typename T>
+  Tuple<T, 2>
+    MakeTuple(T x, T y)
+  {
+    Tuple<T, 2> tupToRet;
+    tupToRet[0] = x;
+    tupToRet[1] = y;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Tuple<T, 3>
+    MakeTuple(T x, T y, T z)
+  {
+    Tuple<T, 3> tupToRet;
+    tupToRet[0] = x;
+    tupToRet[1] = y;
+    tupToRet[2] = z;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Tuple<T, 4>
+    MakeTuple(T x, T y, T z, T w)
+  {
+    Tuple<T, 4> tupToRet;
+    tupToRet[0] = x;
+    tupToRet[1] = y;
+    tupToRet[2] = z;
+    tupToRet[3] = w;
+
+    return tupToRet;
+  }
 
 };};};
 

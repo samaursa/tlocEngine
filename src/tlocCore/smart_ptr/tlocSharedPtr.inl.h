@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::
-    SharedPtr(nullptr_t)
+  SharedPtr(std::nullptr_t)
     : m_rawPtr(nullptr)
     , m_refCount(nullptr)
   { }

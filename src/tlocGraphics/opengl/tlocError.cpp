@@ -1,5 +1,9 @@
 #include "tlocError.h"
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/configs/tlocBuildConfig.h>
+
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -134,8 +138,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   struct ErrorCodeAndString
   {
-    GLuint m_errorCode;
-    const char8* m_errorString;
+    gfx_t::gl_uint  m_errorCode;
+    const char8*    m_errorString;
   };
 
   static const ErrorCodeAndString errors[]=
@@ -193,9 +197,20 @@ const char8* GetErrorString(GLenum a_errorCode)
 
 #endif
 
+  template <typename T_BuildConfig>
+  Error::value_type
+    DoGetOpenGLError(T_BuildConfig)
+  { return glGetError(); }
+
+  Error::value_type
+    DoGetOpenGLError(core_cfg::p_build_config::Release)
+  { return GL_NO_ERROR; }
 
   //------------------------------------------------------------------------
   // Error
+
+  const char*       Error::s_lastErrorDesc = "None";
+  Error::value_type Error::s_lastError     = GL_NO_ERROR;
 
   bool Error::Succeeded()
   {
@@ -209,7 +224,14 @@ const char8* GetErrorString(GLenum a_errorCode)
 
   Error::value_type Error::GetError()
   {
-    m_lastError = glGetError();
+    m_lastError = DoGetOpenGLError(core_cfg::BuildConfig::build_config_type());
+
+    if (m_lastError != GL_NO_ERROR)
+    {
+      s_lastError = m_lastError;
+      GetLastErrorAsString(s_lastErrorDesc);
+    }
+
     return m_lastError;
   }
 
@@ -224,5 +246,6 @@ const char8* GetErrorString(GLenum a_errorCode)
   // Explicit Instantiation
 
   template void Error::GetLastErrorAsString(core::string::String&);
+  template void Error::GetLastErrorAsString(const char*&);
 
 };};};

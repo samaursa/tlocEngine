@@ -26,6 +26,9 @@ namespace tloc { namespace core { namespace component_system {
   public:
     friend class EntitySystemBase;
 
+    virtual void SortEntities()
+    { TLOC_ASSERT(false, "No sorting function defined for this system"); }
+
   protected:
     template <size_type T_VarSize>
     EntityProcessingSystem(event_manager_sptr a_eventMgr,

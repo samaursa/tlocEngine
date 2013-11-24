@@ -221,9 +221,11 @@ namespace tloc { namespace physics { namespace component_system {
     return result;
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodySystem);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::phys_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBodySystem);

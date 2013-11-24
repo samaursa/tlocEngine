@@ -3,8 +3,8 @@
 
 namespace tloc { namespace core { namespace string {
 
-  template class StringBase<char8>;
-  template class StringBase<char32>;
+  // ------------------------------------------------------------------------
+  // static variable definitions
 
   char8 g_controls[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
                         0x09,
@@ -70,6 +70,238 @@ namespace tloc { namespace core { namespace string {
                      0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60,
                      0x7B, 0x7C, 0x7D, 0x7E, NULL};
   String g_punctStr(g_punct);
+
+  // ------------------------------------------------------------------------
+  // specialized function definitions
+
+  template <>
+  tl_size
+    StrLen( const char8* aCharStr)
+  {
+    // According to EASTL, this should call intrinsics
+    return (tl_size)strlen(aCharStr);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  tl_int
+    StrCmp( const char8* src, const char8* dst)
+  {
+    // std implementation is faster
+    return strcmp(src, dst);
+  }
+
+
+  template <>
+  tl_int
+    StrCmp( const char8* aPtr1, const char8* aPtr2,
+            const tl_size& aNumChars )
+  {
+    return memcmp(aPtr1, aPtr2, aNumChars);
+  }
+
+  tl_size
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
+  {
+    return ::mbstowcs(a_out, a_in, a_inSize);
+  }
+
+  tl_size
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
+  {
+    return ::wcstombs(a_out, a_in, a_inSize);
+  }
+
+  bool
+    IsCntrl(char8 a_char)
+  {
+    // We cannot test for NULL in g_controlStr because it is also the terminator
+    if (a_char == 0)
+    { return true; }
+
+    return g_controlsStr.find(a_char) != String::npos;
+  }
+
+  bool
+    IsBlank(char8 a_char)
+  { return g_blankStr.find(a_char) != String::npos; }
+
+  bool
+    IsSpace(char8 a_char)
+  { return g_spaceStr.find(a_char) != String::npos; }
+
+  bool
+    IsUpper(char8 a_char)
+  { return g_upperStr.find(a_char) != String::npos; }
+
+  bool
+    IsLower(char8 a_char)
+  { return g_lowerStr.find(a_char) != String::npos; }
+
+  bool
+    IsAlpha(char8 a_char)
+  { return g_alphaStr.find(a_char) != String::npos; }
+
+  bool
+    IsDigit(char8 a_char)
+  { return g_digitStr.find(a_char) != String::npos; }
+
+  bool
+    IsNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr    = a_char;
+    iterator itrEnd = a_char + StrLen(a_char);
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
+    while (itr != itrEnd)
+    {
+      if (IsDigit(*itr) == false)
+      {
+        return false;
+      }
+      ++itr;
+    }
+
+    return true;
+  }
+
+  bool
+    IsRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+    iterator itrEnd = a_char + StrLen(a_char);
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      ++itr;
+
+      // only a minus sign is not a number
+      if (itr == itrEnd)
+      { return false; }
+    }
+
+    bool decimalPointFound = false;
+    bool exponentFound = false;
+
+    // NOTE about exponent digits: Any exponent digit count is accepted,
+    // including 0. The user should check manually if # of digits is required
+    while (itr != itrEnd)
+    {
+      if (*itr == '.')
+      {
+        if (decimalPointFound)
+        { return false; }
+
+        decimalPointFound = true;
+      }
+      else if (exponentFound == false && (*itr == 'E' || *itr == 'e') )
+      {
+        exponentFound = true;
+        // is the next char a + or -?
+        // Note that sign is optional: http://www.cplusplus.com/reference/ios/scientific/
+        if ( itr != itrEnd && (*(itr + 1) == '+' || *(itr + 1) == '-') )
+        {
+          ++itr;
+        }
+      }
+      else
+      {
+        if (IsDigit(*itr) == false)
+        { return false; }
+      }
+
+      ++itr;
+    }
+
+    return true;
+  }
+
+  bool
+    IsNegNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  bool
+    IsNegRealNumber(const char8* a_char)
+  {
+    typedef const char8*    iterator;
+
+    iterator itr = a_char;
+
+    // Starting with a minus sign? Continue...
+    if (*itr == '-')
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
+  }
+
+  bool
+    IsPosNumber(const char8* a_char)
+  {
+    if (IsNegNumber(a_char) == false)
+    {
+      return IsNumber(a_char);
+    }
+
+    return false;
+  }
+
+  bool
+    IsPosRealNumber(const char8* a_char)
+  {
+    if (IsNegRealNumber(a_char) == false)
+    {
+      return IsRealNumber(a_char);
+    }
+
+    return false;
+  }
+
+  bool
+    IsXDigit(char8 a_char)
+  { return g_xdigitStr.find(a_char) != String::npos; }
+
+  bool
+    IsAlNum(char8 a_char)
+  { return g_alnumStr.find(a_char) != String::npos; }
+
+  bool
+    IsPunct(char8 a_char)
+  { return g_punctStr.find(a_char) != String::npos; }
+
+  // ------------------------------------------------------------------------
+  // explicit instantiations
+
+  template class StringBase<char8>;
+  template class StringBase<char32>;
 
 };};};
 

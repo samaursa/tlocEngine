@@ -74,7 +74,9 @@ namespace tloc { namespace graphics { namespace media {
     }
     else
     {
-      res = DoLoadImageFromMemory(image, dimention_type(width, height), 4);
+      dimention_type dim =
+        core_ds::Variadic<dimention_type::value_type, 2>(width, height);
+      res = DoLoadImageFromMemory(image, dim, 4);
     }
 
     free(image);

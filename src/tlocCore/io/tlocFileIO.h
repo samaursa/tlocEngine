@@ -31,18 +31,24 @@ namespace tloc { namespace core { namespace io {
   public:
     typedef string::String                  string_type;
 
-  public:
     typedef T_AccessPolicy                  access_policy_type;
     typedef T_FileFormat                    file_format_type;
     typedef error::Error                    error_type;
 
+    typedef FileIO_T<access_policy_type, file_format_type>  this_type;
+
+  public:
     FileIO_T(const Path& a_path);
+    FileIO_T(const this_type& a_other);
     ~FileIO_T();
+
+    this_type& operator=(this_type a_other);
 
     error_type      Open();
     error_type      Close();
     error_type      Delete();
     error_type      GetContents(string_type& a_out) const;
+    void            swap(this_type& a_other);
 
     bool            IsOpen();
 
@@ -53,6 +59,14 @@ namespace tloc { namespace core { namespace io {
     FILE*   m_file;
     Path    m_fileName;
   };
+
+  // -----------------------------------------------------------------------
+  // swap
+
+  template <typename T_AccessPolicy, typename T_FileFormat>
+  void swap(FileIO_T<T_AccessPolicy, T_FileFormat>& a,
+            FileIO_T<T_AccessPolicy, T_FileFormat>& b)
+  { a.swap(b); }
 
   //------------------------------------------------------------------------
   // All typedefs for our FileIO template class

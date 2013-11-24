@@ -24,15 +24,25 @@ namespace tloc { namespace graphics { namespace gl {
 
     bool IsValid();
 
+    void swap(ObjectBase& a_other)
+    {
+      using core::swap;
+      swap(m_handle, a_other.m_handle);
+    }
+
     TLOC_DECL_AND_DEF_GETTER(object_handle, GetHandle, m_handle);
-    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   protected:
     ObjectBase();
 
+    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
+
   private:
     object_handle m_handle;
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // ObjectRefCounted
 
   template <typename T_Derived>
   class ObjectRefCounted : public ObjectBase
@@ -48,18 +58,41 @@ namespace tloc { namespace graphics { namespace gl {
       : ObjectBase()
       , m_refCount(nullptr)
     {
-      operator=(a_other);
-    }
-
-    this_type& operator=(const ObjectRefCounted& a_other)
-    {
-      TLOC_ASSERT(GetHandle() == 0 || a_other.GetHandle() == GetHandle(),
-                  "gl::Object copying allowed only on same or invalid handle IDs");
-
+      SetHandle(a_other.GetHandle());
       m_refCount = a_other.m_refCount;
       ++(*m_refCount);
+    }
 
+    ~ObjectRefCounted()
+    {
+      if (m_refCount)
+      {
+        size_type refCount = *m_refCount;
+
+        if ( IsLastRef() )
+        {
+          delete m_refCount;
+          m_refCount = nullptr;
+        }
+        else
+        { --(refCount); }
+
+        if (m_refCount)
+        { *m_refCount = refCount; }
+      }
+    }
+
+    this_type& operator=(ObjectRefCounted a_other)
+    {
+      swap(a_other);
       return *this;
+    }
+
+    void swap(this_type& a_other)
+    {
+      using core::swap;
+      swap(m_refCount, a_other.m_refCount);
+      base_type::swap(a_other);
     }
 
     void SetHandle(object_handle const & a_handle)
@@ -82,48 +115,72 @@ namespace tloc { namespace graphics { namespace gl {
       , m_refCount(nullptr)
     { }
 
-    ~ObjectRefCounted()
-    {
-      if (m_refCount)
-      {
-        size_type refCount = *m_refCount;
-
-        if ( IsLastRef() )
-        {
-          delete m_refCount;
-          m_refCount = nullptr;
-        }
-        else
-        { --(refCount); }
-
-        if (m_refCount)
-        { *m_refCount = refCount; }
-      }
-    }
-
   private:
     size_type* m_refCount;
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Object_T<T_Derived, OnlyID>
+
   template < typename T_Derived,
              typename T_Policy = p_object::OnlyID >
-  class Object_T : public ObjectRefCounted<T_Derived>
+  class Object_T
+    : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectBase                  base_type;
-    typedef base_type::object_handle    object_handle;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
+    typedef T_Derived                   derived_type;
     typedef core::error::Error          error_type;
+
+    typedef Object_T<derived_type, T_Policy> this_type;
+
+  public:
+    Object_T()
+      : base_type()
+    { }
+
+    Object_T(const this_type& a_other)
+      : base_type(a_other)
+    { }
+
+    Object_T(const derived_type& a_other)
+      : base_type(a_other)
+    { }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Object_T<T_Derived, WithError>
 
   template<typename T_Derived>
   class Object_T<T_Derived, p_object::WithError>
     : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectBase                  base_type;
-    typedef base_type::object_handle    object_handle;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
+    typedef T_Derived                   derived_type;
     typedef core::error::Error          error_type;
     typedef core::string::String        string_type;
+
+    typedef Object_T<derived_type>      this_type;
+
+  public:
+
+    Object_T()
+      : base_type()
+    { }
+
+    Object_T(const this_type& a_other)
+
+      : base_type(a_other)
+    { }
+
+    Object_T(const derived_type& a_other)
+      : base_type(a_other)
+    { }
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);
 
@@ -133,6 +190,31 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     string_type m_error;
   };
+
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace find {
+
+    namespace object {
+
+      struct ByHandle
+      {
+        typedef ObjectBase::object_handle         object_handle;
+
+        ByHandle(object_handle  a_handleToSearch)
+          : m_handleToSearch(a_handleToSearch)
+        { }
+
+        bool operator()(const ObjectBase& a_object)
+        { return m_handleToSearch == a_object.GetHandle(); }
+
+      private:
+        object_handle m_handleToSearch;
+      };
+    };
+
+  };};
 
 };};};
 

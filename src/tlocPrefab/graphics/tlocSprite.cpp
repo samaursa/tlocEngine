@@ -16,9 +16,12 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
                          SpriteLoaderIterator a_end,
                          bool a_loop,
                          tl_size a_fps,
-                         bool a_append)
+                         tl_size a_setIndex,
+                         tl_size a_startingFrame,
+                         bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
+    TLOC_ASSERT(a_begin != a_end, "No sprite info available");
 
     using namespace gfx_cs;
     using namespace gfx_cs::components;
@@ -28,9 +31,11 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
     gfx_cs::TextureAnimator* ta = nullptr;
 
-    if (a_entity->HasComponent(texture_animator) && a_append)
+    const tl_size size = a_entity->GetComponents(texture_animator).size();
+
+    if (size && a_setIndex < size)
     {
-      ta = a_entity->GetComponent<TextureAnimator>();
+      ta = a_entity->GetComponent<TextureAnimator>(a_setIndex);
     }
     else
     {
@@ -44,6 +49,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
       texture_animator_sptr taPtr = itrTa->GetValue();
       ta = taPtr.get();
+
+      a_mgr->InsertComponent(a_entity, ta);
     }
 
     TextureCoords tcoord;
@@ -66,16 +73,16 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     TLOC_ASSERT_NOT_NULL(ta);
 
     const TextureAnimator::size_type currSetIndex =
-      ta->GetCurrentSpriteSetIndex();
+      ta->GetCurrentSpriteSeqIndex();
 
     ta->AddSpriteSet(tcoord);
-    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
+    ta->SetCurrentSpriteSequence(ta->GetNumSpriteSequences() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
+    ta->SetFrame(a_startingFrame);
+    ta->SetPaused(a_paused);
 
-    ta->SetCurrentSpriteSet(currSetIndex);
-
-    a_mgr->InsertComponent(a_entity, ta);
+    ta->SetCurrentSpriteSequence(currSetIndex);
   }
 
   //------------------------------------------------------------------------
@@ -88,7 +95,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size, bool);
+     bool, tl_size, tl_size, tl_size, bool);
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
@@ -97,6 +104,6 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
      core_cs::ComponentPoolManager*,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size, bool);
+     bool, tl_size, tl_size, tl_size, bool);
 
 };};};};

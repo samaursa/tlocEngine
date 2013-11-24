@@ -6,22 +6,22 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
-namespace tloc { namespace core {
+namespace tloc { namespace core { namespace base_classes {
 
-  class NonCopyable
+  class NonCopyable_I
   {
   public:
-    NonCopyable() {}
+    NonCopyable_I() {}
 
     template <typename T>
-    NonCopyable(const T& a_Other)
+    NonCopyable_I(const T& a_Other)
     {
       TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
                          Copy_constructor_disabled_for_this_class_by_design);
     }
 
     template <typename T>
-    NonCopyable& operator=(const T& a_Other)
+    NonCopyable_I& operator=(const T& a_Other)
     {
       TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
                          Assignment_operator_disabled_for_this_class_by_design);
@@ -29,10 +29,10 @@ namespace tloc { namespace core {
 
   private:
 
-    NonCopyable(const NonCopyable& a_other);
-    NonCopyable& operator= (const NonCopyable& a_other);
+    NonCopyable_I(const NonCopyable_I& a_other);
+    NonCopyable_I& operator= (const NonCopyable_I& a_other);
   };
 
-};};
+};};};
 
 #endif

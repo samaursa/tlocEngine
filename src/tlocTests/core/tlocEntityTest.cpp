@@ -60,16 +60,16 @@ namespace TestingEntity
     Component2 c2;
     c2.m_value = 20;
 
-    CHECK(e->HasComponent(g_component) == false);
-    CHECK(e->HasComponent(g_component + 1) == false);
+    CHECK_FALSE(e->HasComponent<Component1>() );
+    CHECK_FALSE(e->HasComponent<Component2>() );
 
     e->InsertComponent(&c1);
-    CHECK(e->HasComponent(g_component) == true);
-    CHECK(e->HasComponent(g_component + 1) == false);
+    CHECK(e->HasComponent<Component1>() );
+    CHECK_FALSE(e->HasComponent<Component2>() );
 
     e->InsertComponent(&c2);
-    CHECK(e->HasComponent(g_component) == true);
-    CHECK(e->HasComponent(g_component + 1) == true);
+    CHECK(e->HasComponent<Component1>() );
+    CHECK(e->HasComponent<Component2>() );
 
     CHECK(e->GetComponent<Component1>() == &c1);
     CHECK(e->GetComponent<Component2>() == &c2);

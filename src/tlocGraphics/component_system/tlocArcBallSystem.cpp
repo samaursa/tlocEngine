@@ -5,6 +5,7 @@
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
+#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocArcBall.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -44,22 +45,35 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_cs::Transform::orientation_type  ori_type;
     typedef gfx_cs::ArcBall::angle_type           angle_type;
 
+    pos_type posWorld;
+    ori_type oriWorld;
+
     math_cs::Transform* t = a_ent->GetComponent<math_cs::Transform>();
     gfx_cs::ArcBall* arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
-    pos_type pos = t->GetPosition();
-    ori_type ori = t->GetOrientation();
+    if (a_ent->HasComponent(gfx_cs::components::scene_node))
+    {
+      math_cs::Transform tWorld
+        (a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform());
+      posWorld = tWorld.GetPosition();
+      oriWorld = tWorld.GetOrientation();
+    }
+    else
+    {
+      posWorld = t->GetPosition();
+      oriWorld = t->GetOrientation();
+    }
 
-    pos_type vecToRot = pos - arcBall->GetFocus();
+    pos_type vecToRot = posWorld - arcBall->GetFocus();
 
     angle_type vAngle = arcBall->GetVerticalAngle();
     angle_type hAngle = arcBall->GetHorizontalAngle();
 
     pos_type leftVec;
-    ori.GetCol(0, leftVec);
+    oriWorld.GetCol(0, leftVec);
 
     pos_type upVec;
-    ori.GetCol(1, upVec);
+    oriWorld.GetCol(1, upVec);
 
     ori_type rotMatVertical;
     rotMatVertical.MakeRotation(leftVec, vAngle);
@@ -81,14 +95,21 @@ namespace tloc { namespace graphics { namespace component_system {
     dirVec.Normalize();
     leftVec = upVec.Cross(dirVec);
 
-    ori.SetCol(0, leftVec);
-    ori.SetCol(1, upVec);
-    ori.SetCol(2, dirVec);
+    oriWorld.SetCol(0, leftVec);
+    oriWorld.SetCol(1, upVec);
+    oriWorld.SetCol(2, dirVec);
 
     t->SetPosition(vecToRot + arcBall->GetFocus());
-    t->SetOrientation(ori);
+    t->SetOrientation(oriWorld);
 
     arcBall->Reset();
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBallSystem);

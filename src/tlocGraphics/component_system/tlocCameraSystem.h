@@ -52,10 +52,12 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent,
                                f64 a_deltaT);
-
-  private:
-    const entity_type* m_ent;
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_SHARED_PTR(CameraSystem, camera_system);
 
 };};};
 

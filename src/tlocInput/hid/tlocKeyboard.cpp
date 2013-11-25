@@ -2,6 +2,7 @@
 
 #include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -52,7 +53,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnKeyPress( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnKeyPress( core_utils::GetMemoryAddress(this), a_event) == true)
       {
         return;
       }
@@ -65,7 +67,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnKeyRelease( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->
+          OnKeyRelease( core_utils::GetMemoryAddress(this), a_event) == true)
       {
         return;
       }

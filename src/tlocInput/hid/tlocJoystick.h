@@ -101,9 +101,12 @@ namespace tloc { namespace input { namespace hid {
     };
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Joystick_T<>
+
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core_plat::PlatformInfo::platform_type>
-  class Joystick
+  class Joystick_T
     : public core_bclass::DispatcherBaseArray
         <priv::JoystickCallbacks, priv::JoystickCallbackGroup_T>::type
     , public core_bclass::NonCopyable_I
@@ -118,20 +121,20 @@ namespace tloc { namespace input { namespace hid {
     typedef joystick_event_type::pos3_type          pos3_type;
     typedef joystick_event_type::rot3_type          rot3_type;
 
-    typedef Joystick<policy_type, platform_type>    this_type;
+    typedef Joystick_T<policy_type, platform_type>    this_type;
 
   public:
     template <typename T_ParamList>
-    Joystick(const T_ParamList& a_paramList);
-    ~Joystick();
+    Joystick_T(const T_ParamList& a_paramList);
+    ~Joystick_T();
 
     bool IsButtonDown(button_code_type a_key) const;
 
     void SendButtonPress(const joystick_event_type& a_event) const;
     void SendButtonRelease(const joystick_event_type& a_event) const;
-    void SendPosAxis(const joystick_event_type& a_event) const;
-    void SendRotAxis(const joystick_event_type& a_event) const;
-    void SendPOV(const joystick_event_type& a_event) const;
+    void SendPosAxisChange(const joystick_event_type& a_event) const;
+    void SendRotAxisChange(const joystick_event_type& a_event) const;
+    void SendPOVChange(const joystick_event_type& a_event) const;
 
     void Update();
     void Reset();
@@ -144,8 +147,8 @@ namespace tloc { namespace input { namespace hid {
     impl_ptr_type   m_impl;
   };
 
-  typedef Joystick<InputPolicy::Buffered>           JoystickB;
-  typedef Joystick<InputPolicy::Immediate>          JoystickI;
+  typedef Joystick_T<InputPolicy::Buffered>           JoystickB;
+  typedef Joystick_T<InputPolicy::Immediate>          JoystickI;
 
 };};};
 

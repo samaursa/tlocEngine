@@ -115,8 +115,8 @@ namespace tloc { namespace input { namespace hid {
   public:
     typedef T_Platform                              platform_type;
     typedef T_Policy                                policy_type;
-    typedef priv::JoystickEvent                     joystick_event_type;
-    typedef joystick_event_type::button_code_type   button_code_type;
+    typedef JoystickEvent                           joystick_event_type;
+    typedef joystick_event_type::state_code_type   button_code_type;
     typedef joystick_event_type::pos2_type          pos2_type;
     typedef joystick_event_type::pos3_type          pos3_type;
     typedef joystick_event_type::rot3_type          rot3_type;
@@ -141,8 +141,8 @@ namespace tloc { namespace input { namespace hid {
 
   private:
 
-    typedef priv::JoystickImpl<this_type>           impl_type;
-    typedef core_sptr::UniquePtr<impl_type>         impl_ptr_type;
+    typedef priv::JoystickImpl_T<this_type>           impl_type;
+    typedef core_sptr::UniquePtr<impl_type>           impl_ptr_type;
 
     impl_ptr_type   m_impl;
   };

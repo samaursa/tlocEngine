@@ -21,6 +21,9 @@
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
 
+// ///////////////////////////////////////////////////////////////////////
+// ParamList
+
 namespace tloc { namespace input {
 
   typedef ParamList<HWND, IDirectInput8*, param_options::value_type>

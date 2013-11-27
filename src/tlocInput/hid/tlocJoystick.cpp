@@ -53,7 +53,7 @@ namespace tloc { namespace input { namespace hid {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  void
+  bool
     Joystick_T<JOYSTICK_PARAMS>::
     SendButtonPress(const joystick_event_type& a_event) const
   {
@@ -61,14 +61,16 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnButtonPress( core_utils::GetMemoryAddress(this), a_event) == true)
-      { return; }
+      { return true; }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  void
+  bool
     Joystick_T<JOYSTICK_PARAMS>::
     SendButtonRelease(const joystick_event_type& a_event) const
   {
@@ -76,44 +78,50 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnButtonRelease( core_utils::GetMemoryAddress(this), a_event) == true)
-      { return; }
+      { return true; }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  void
+  bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendPosAxisChange(const joystick_event_type& a_event) const
+    SendAxisChange(const joystick_event_type& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
           OnPosAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
-      { return; }
+      { return true; }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  void
+  bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendRotAxisChange(const joystick_event_type& a_event) const
+    SendSliderChange(const joystick_event_type& a_event) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
           OnRotAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
-      { return; }
+      { return true; }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  void
+  bool
     Joystick_T<JOYSTICK_PARAMS>::
     SendPOVChange(const joystick_event_type& a_event) const
   {
@@ -121,8 +129,10 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnPOVChange( core_utils::GetMemoryAddress(this), a_event) == true)
-      { return; }
+      { return true; }
     }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

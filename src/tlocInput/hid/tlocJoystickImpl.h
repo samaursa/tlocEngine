@@ -5,7 +5,8 @@
 
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocPlatformImplBase.h>
-#include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/containers/tlocArrayFixed.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 #include <tlocInput/tlocInputTypes.h>
 
@@ -16,17 +17,7 @@ namespace tloc { namespace input { namespace hid {
   public:
     enum State
     {
-      k_none = 0,
-
-      k_xPos, k_yPos, k_zPos,
-
-      k_xRot, k_yRot, k_zRot,
-
-      k_slider0, k_slider1, // two sliders as per dinput.h DIJOYSTATE struct
-
-      k_pov0, k_pov1, k_pov2, k_pov3, // 4 POVs as per dinput.h DIJOYSTATE struct
-
-      k_button0, k_button1, k_button2, k_button3, k_button4, k_button5,
+      k_button0 = 0, k_button1, k_button2, k_button3, k_button4, k_button5,
       k_button6, k_button7, k_button8, k_button9, k_button10, k_button11,
       k_button12, k_button13, k_button14, k_button15, k_button16, k_button17,
       k_button18, k_button19, k_button20, k_button21, k_button22, k_button23,
@@ -36,37 +27,56 @@ namespace tloc { namespace input { namespace hid {
       k_count,
     }; typedef s32 state_code_type;
 
-    typedef core_ds::Tuple2s32            pos2_type;
-    typedef core_ds::Tuple3s32            pos3_type;
-    typedef core_ds::Tuple3s32            rot3_type;
+    struct xyAbs
+    {
+      Component::AxisAbs  m_x;
+      Component::AxisAbs  m_y;
+    };
+
+    typedef JoystickEvent                                   this_type;
+    typedef core_conts::Array<bool>                         button_cont;
+    typedef core_conts::Array<Component::AxisAbs>           axis_cont;
+    typedef core_conts::Array<xyAbs>                        slider_cont;
+    typedef core_conts::Array<Component::Pov>               pov_cont;
 
   public:
     JoystickEvent()
-      : m_posAxis(0)
-      , m_rotAxis(0)
-      , m_rglSlider(0)
-      , m_povDirection(0)
-      , m_stateCode(k_none)
+    { Clear(); }
+
+    JoystickEvent(const this_type& a_other)
+      : m_buttons(a_other.m_buttons)
+      , m_axes(a_other.m_axes)
+      , m_pov(a_other.m_pov)
+      , m_sliders(a_other.m_sliders)
     { }
 
-    TLOC_DECL_AND_DEF_GETTER(pos3_type, GetPosAxis, m_posAxis);
-    TLOC_DECL_AND_DEF_GETTER(rot3_type, GetRotAxis, m_rotAxis);
-    TLOC_DECL_AND_DEF_GETTER(pos2_type, GetExtraAxis, m_rglSlider);
-    TLOC_DECL_AND_DEF_GETTER(pos3_type, GetPovDirection, m_povDirection);
-    TLOC_DECL_AND_DEF_GETTER(state_code_type, GetState, m_stateCode);
+    void Clear()
+    {
+      core::fill_all(m_buttons, false);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(pos3_type, SetPosAxis, m_posAxis);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(rot3_type, SetRotAxis, m_rotAxis);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(pos2_type, SetExtraAxis, m_rglSlider);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(pos3_type, SetPovDirection, m_povDirection);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(state_code_type, SetState, m_stateCode);
+      for (axis_cont::iterator itr = m_axes.begin(), itrEnd = m_axes.end();
+           itr != itrEnd; ++itr)
+      {
+        (*itr) = 0;
+      }
 
-  private:
-    pos3_type             m_posAxis;
-    rot3_type             m_rotAxis;
-    pos2_type             m_rglSlider;
-    pos3_type             m_povDirection;
-    state_code_type       m_stateCode;
+      for (pov_cont::iterator itr = m_pov.begin(), itrEnd = m_pov.end();
+           itr != itrEnd; ++itr)
+      { itr->SetDirection(Component::Pov::k_centered); }
+
+      for (slider_cont::iterator itr = m_sliders.begin(), itrEnd = m_sliders.end();
+           itr != itrEnd; ++itr)
+      {
+        itr->m_x = 0;
+        itr->m_y = 0;
+      }
+    }
+
+    button_cont               m_buttons;
+    axis_cont                 m_axes;
+    pov_cont                  m_pov;
+    slider_cont               m_sliders;
+
   };
 
 };};};
@@ -100,9 +110,16 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       GetParams() const
     { return m_params; }
 
+    //! The minimal axis value
+    static const int MIN_AXIS = -32768;
+
+    //! The maximum axis value
+    static const int MAX_AXIS = 32767;
+
   protected:
     using base_type::m_parent;
 
+    JoystickEvent     m_currentState;
     param_list_type   m_params;
   };
 

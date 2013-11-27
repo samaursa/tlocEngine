@@ -307,10 +307,10 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   {
     TLOC_ASSERT_STACK_ARRAY_NEW_SIZE(a_repetitionNum);
 
-    m_end = m_begin;
+    m_end = m_begin.data();
     advance(m_end, a_repetitionNum);
 
-    fill_n(m_begin, a_repetitionNum, a_elemToCopy);
+    fill_n(m_begin.data(), a_repetitionNum, a_elemToCopy);
   }
 
   template <STACK_ARRAY_TYPES>
@@ -615,6 +615,12 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
       ++a_position;
     }
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation macro
+
+#define TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(_type_, _size_)\
+  template class tloc::core_conts::ArrayFixed<_type_, _size_>
 
 };};};
 

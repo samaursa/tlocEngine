@@ -14,6 +14,7 @@ set(TLOC_INPUT_HID
   hid/tlocJoystick.cpp 
   hid/tlocJoystick.h 
   hid/tlocJoystickImpl.h 
+  hid/tlocJoystickImpl.cpp
   hid/tlocKeyboard.cpp 
   hid/tlocKeyboard.h 
   hid/tlocKeyboardImpl.h 

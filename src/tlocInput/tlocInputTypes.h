@@ -208,6 +208,34 @@ namespace tloc { namespace input {
     typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Point of view
+    struct Pov
+    {
+    public:
+      enum
+      {
+        k_centered    = 0,
+        k_north       = 1 << 0,
+        k_south       = 1 << 1,
+        k_east        = 1 << 2,
+        k_west        = 1 << 3,
+        k_north_east  = 1 << 4,
+        k_south_east  = 1 << 5,
+        k_north_west  = 1 << 6,
+        k_south_west  = 1 << 7,
+      }; typedef tl_int direction_type;
+
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE(direction_type, SetDirection, m_direction);
+      TLOC_DECL_AND_DEF_GETTER(direction_type, GetDirection, m_direction);
+
+      bool IsDirection(direction_type a_dir)
+      { return (m_direction & a_dir) != 0; }
+
+    private:
+      direction_type    m_direction;
+    };
   }
 
 };};

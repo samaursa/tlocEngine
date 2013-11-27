@@ -30,12 +30,26 @@ namespace tloc { namespace input {
 
 };};
 
-// ///////////////////////////////////////////////////////////////////////
-// JoystickImpl_T
-
-// Reference: http://www.csh.rit.edu/~oguns/src/DirectInput.cpp
-
 namespace tloc { namespace input { namespace hid { namespace priv {
+
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Joystick Info (from OIS)
+
+  struct JoystickInfo
+  {
+    tl_int            m_deviceId;
+    GUID              m_deviceGuid;
+    GUID              m_productGuid;
+    core_str::String  m_vendor;
+    bool              m_xInput;
+    tl_int            m_xInputDev;
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // JoystickImpl_T
+
+  // Reference: http://www.csh.rit.edu/~oguns/src/DirectInput.cpp
 
   template <typename T_ParentJoystick>
   class JoystickImpl_T
@@ -57,7 +71,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                    const joystick_params_type& a_params);
     ~JoystickImpl_T();
 
-    bool  IsButtonDown(button_code_type a_key) const;
+    bool  IsButtonDown(button_code_type a_key) const
+    {
+      TLOC_UNUSED(a_key);
+      return false;
+    }
 
     void  Update();
     void  Reset();
@@ -69,21 +87,42 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     // Immediate mode does not require anything special
     bool  DoInitializeExtra(InputPolicy::Immediate) { return true; }
 
+    void  DoEnumerate();
+
+    DWORD DoUpdate();
+
     void  DoUpdate(InputPolicy::Buffered);
     void  DoUpdate(InputPolicy::Immediate);
 
-    void  DoReset(InputPolicy::Buffered);
-    void  DoReset(InputPolicy::Immediate);
+    void  DoReset(InputPolicy::Buffered) { }
+    void  DoReset(InputPolicy::Immediate) { }
+
+    bool  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
+    bool  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
+    bool  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
+    bool  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
+
+    //! Enumerate axis callback
+    static BOOL CALLBACK DIEnumDeviceObjectsCallback
+      (LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
 
   private:
+    using base_type::m_currentState;
+    using base_type::m_parent;
+
     IDirectInput8*        m_directInput;
     IDirectInputDevice8*  m_joystick;
+    DIDEVCAPS             m_diJoyCaps;
     HWND                  m_windowPtr;
 
-    bool                  m_buffer[JoystickEvent::k_count];
+    // we have to store the slider count here because the callback DIEnumDevice...
+    // may be called several times which will allow us to use this count to set
+    // the size of the slider array
+    tl_int                      m_sliderCount;
+    core_conts::Array<bool>     m_axisMoved;
+    core_conts::Array<bool>     m_sliderMoved;
 
-    JoystickEvent           m_currentState;
-    static const size_type  s_bufferSize = sizeof(DIJOYSTATE);
+    JoystickInfo          m_joyInfo;
   };
 
 };};};};

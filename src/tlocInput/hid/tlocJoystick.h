@@ -25,9 +25,9 @@ namespace tloc { namespace input { namespace hid {
                                  const JoystickEvent& a_event) const = 0;
       virtual bool OnButtonRelease(const tl_size a_caller,
                                    const JoystickEvent& a_event) const = 0;
-      virtual bool OnPosAxisChange(const tl_size a_caller,
+      virtual bool OnAxisChange(const tl_size a_caller,
                                    const JoystickEvent& a_event) const = 0;
-      virtual bool OnRotAxisChange(const tl_size a_caller,
+      virtual bool OnSliderChange(const tl_size a_caller,
                                    const JoystickEvent& a_event) const = 0;
       virtual bool OnPOVChange(const tl_size a_caller,
                                const JoystickEvent& a_event) const = 0;
@@ -66,23 +66,23 @@ namespace tloc { namespace input { namespace hid {
         return false;
       }
 
-      virtual bool OnPosAxisChange(const tl_size a_caller,
+      virtual bool OnAxisChange(const tl_size a_caller,
                                    const JoystickEvent& a_event) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnPosAxisChange(a_caller, a_event) == true)
+          if (m_observers[i]->OnAxisChange(a_caller, a_event) == true)
           { return true; }
         }
         return false;
       }
 
-      virtual bool OnRotAxisChange(const tl_size a_caller,
+      virtual bool OnSliderChange(const tl_size a_caller,
                                    const JoystickEvent& a_event) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnRotAxisChange(a_caller, a_event) == true)
+          if (m_observers[i]->OnSliderChange(a_caller, a_event) == true)
           { return true; }
         }
         return false;
@@ -116,10 +116,7 @@ namespace tloc { namespace input { namespace hid {
     typedef T_Platform                              platform_type;
     typedef T_Policy                                policy_type;
     typedef JoystickEvent                           joystick_event_type;
-    typedef joystick_event_type::state_code_type   button_code_type;
-    typedef joystick_event_type::pos2_type          pos2_type;
-    typedef joystick_event_type::pos3_type          pos3_type;
-    typedef joystick_event_type::rot3_type          rot3_type;
+    typedef joystick_event_type::state_code_type    button_code_type;
 
     typedef Joystick_T<policy_type, platform_type>    this_type;
 
@@ -130,11 +127,11 @@ namespace tloc { namespace input { namespace hid {
 
     bool IsButtonDown(button_code_type a_key) const;
 
-    void SendButtonPress(const joystick_event_type& a_event) const;
-    void SendButtonRelease(const joystick_event_type& a_event) const;
-    void SendPosAxisChange(const joystick_event_type& a_event) const;
-    void SendRotAxisChange(const joystick_event_type& a_event) const;
-    void SendPOVChange(const joystick_event_type& a_event) const;
+    bool SendButtonPress(const joystick_event_type& a_event) const;
+    bool SendButtonRelease(const joystick_event_type& a_event) const;
+    bool SendAxisChange(const joystick_event_type& a_event) const;
+    bool SendSliderChange(const joystick_event_type& a_event) const;
+    bool SendPOVChange(const joystick_event_type& a_event) const;
 
     void Update();
     void Reset();

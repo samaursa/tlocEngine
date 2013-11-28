@@ -116,6 +116,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     // may be called several times which will allow us to use this count to set
     // the size of the slider array
     tl_int                      m_sliderCount;
+    tl_int                      m_axisNumber;
     core_conts::Array<bool>     m_axisMoved;
     core_conts::Array<bool>     m_sliderMoved;
 

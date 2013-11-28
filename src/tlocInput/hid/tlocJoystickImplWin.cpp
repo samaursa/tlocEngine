@@ -169,6 +169,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     m_currentState.m_buttons.resize(m_diJoyCaps.dwButtons);
     m_currentState.m_axes.resize(m_diJoyCaps.dwAxes);
 
+    m_axisNumber = 0;
+
     m_joystick->EnumObjects(DIEnumDeviceObjectsCallback, this, DIDFT_AXIS);
   }
 
@@ -438,8 +440,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     diptr.diph.dwHeaderSize   = sizeof(DIPROPHEADER);
     diptr.diph.dwHow          = DIPH_BYID;
     diptr.diph.dwObj          = lpddoi->dwType;
-
-    // OIS wanted to flag diptr here, not sure why, we are ommiting that
+    //Add a magic number to recognise we set seomthing
+    diptr.uData               = 0x13130000 | t->m_axisNumber;
 
     // If the axis is a slider, then remove it from regular axis
     tl_int sliderCount = 0;

@@ -33,11 +33,15 @@ namespace tloc { namespace input { namespace hid {
       Component::AxisAbs  m_y;
     };
 
+    typedef Component::Pov                                  pov_type;
+    typedef Component::AxisAbs                              axis_type;
+    typedef xyAbs                                           slider_type;
+
     typedef JoystickEvent                                   this_type;
     typedef core_conts::Array<bool>                         button_cont;
-    typedef core_conts::Array<Component::AxisAbs>           axis_cont;
-    typedef core_conts::Array<xyAbs>                        slider_cont;
-    typedef core_conts::Array<Component::Pov>               pov_cont;
+    typedef core_conts::Array<axis_type>                    axis_cont;
+    typedef core_conts::Array<slider_type>                  slider_cont;
+    typedef core_conts::Array<pov_type>                     pov_cont;
 
   public:
     JoystickEvent()

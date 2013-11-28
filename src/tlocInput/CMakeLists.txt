@@ -5,6 +5,7 @@ set(TLOC_INPUT
   tlocInputManager.cpp 
   tlocInputManager.h 
   tlocInputTypes.h 
+  tlocInputTypes.cpp
   tloc_input.cpp 
   tloc_input.h 
   tloc_input.inl.h

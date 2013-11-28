@@ -55,12 +55,14 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendButtonPress(const joystick_event_type& a_event) const
+    SendButtonPress(const joystick_event_type& a_event,
+                    tl_int a_buttonIndex) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnButtonPress( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnButtonPress( core_utils::GetMemoryAddress(this), a_event,
+                         a_buttonIndex) == true)
       { return true; }
     }
 
@@ -72,12 +74,14 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendButtonRelease(const joystick_event_type& a_event) const
+    SendButtonRelease(const joystick_event_type& a_event,
+                      tl_int a_buttonIndex) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnButtonRelease( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnButtonRelease( core_utils::GetMemoryAddress(this), a_event,
+                           a_buttonIndex) == true)
       { return true; }
     }
 
@@ -89,12 +93,15 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendAxisChange(const joystick_event_type& a_event) const
+    SendAxisChange(const joystick_event_type& a_event,
+                   tl_int a_axisIndex,
+                   joystick_event_type::axis_type a_axis) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnAxisChange( core_utils::GetMemoryAddress(this), a_event,
+                        a_axisIndex, a_axis) == true)
       { return true; }
     }
 
@@ -106,12 +113,15 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendSliderChange(const joystick_event_type& a_event) const
+    SendSliderChange(const joystick_event_type& a_event,
+                     tl_int a_sliderIndex,
+                     joystick_event_type::slider_type a_slider) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnSliderChange( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnSliderChange( core_utils::GetMemoryAddress(this), a_event,
+                          a_sliderIndex, a_slider) == true)
       { return true; }
     }
 
@@ -123,12 +133,15 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   bool
     Joystick_T<JOYSTICK_PARAMS>::
-    SendPOVChange(const joystick_event_type& a_event) const
+    SendPOVChange(const joystick_event_type& a_event,
+                  tl_int a_povIndex,
+                  joystick_event_type::pov_type a_pov) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnPOVChange( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnPOVChange( core_utils::GetMemoryAddress(this), a_event,
+                       a_povIndex, a_pov) == true)
       { return true; }
     }
 

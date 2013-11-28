@@ -22,15 +22,23 @@ namespace tloc { namespace input { namespace hid {
     struct JoystickCallbacks
     {
       virtual bool OnButtonPress(const tl_size a_caller,
-                                 const JoystickEvent& a_event) const = 0;
+                                 const JoystickEvent& a_event,
+                                 tl_int a_buttonIndex) const = 0;
       virtual bool OnButtonRelease(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const = 0;
+                                   const JoystickEvent& a_event,
+                                   tl_int a_buttonIndex) const = 0;
       virtual bool OnAxisChange(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const = 0;
+                                const JoystickEvent& a_event,
+                                tl_int a_axisIndex,
+                                JoystickEvent::axis_type a_axis) const = 0;
       virtual bool OnSliderChange(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const = 0;
+                                  const JoystickEvent& a_event,
+                                  tl_int a_sliderIndex,
+                                  JoystickEvent::slider_type a_slider) const = 0;
       virtual bool OnPOVChange(const tl_size a_caller,
-                               const JoystickEvent& a_event) const = 0;
+                               const JoystickEvent& a_event,
+                               tl_int a_povIndex,
+                               JoystickEvent::pov_type a_pov) const = 0;
     };
 
     template <typename T>
@@ -45,55 +53,68 @@ namespace tloc { namespace input { namespace hid {
 
     public:
       virtual bool OnButtonPress(const tl_size a_caller,
-                                 const JoystickEvent& a_event) const
+                                 const JoystickEvent& a_event,
+                                 tl_int a_buttonIndex) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnButtonPress(a_caller, a_event) == true)
+          if (m_observers[i]->OnButtonPress
+                (a_caller, a_event, a_buttonIndex) == true)
           { return true; }
         }
         return false;
       }
 
       virtual bool OnButtonRelease(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const
+                                   const JoystickEvent& a_event,
+                                   tl_int a_buttonIndex) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnButtonRelease(a_caller, a_event) == true)
+          if (m_observers[i]->OnButtonRelease
+                (a_caller, a_event, a_buttonIndex) == true)
           { return true; }
         }
         return false;
       }
 
       virtual bool OnAxisChange(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const
+                                const JoystickEvent& a_event,
+                                tl_int a_axisIndex,
+                                JoystickEvent::axis_type a_axis) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnAxisChange(a_caller, a_event) == true)
+          if (m_observers[i]->OnAxisChange
+                (a_caller, a_event, a_axisIndex, a_axis) == true)
           { return true; }
         }
         return false;
       }
 
       virtual bool OnSliderChange(const tl_size a_caller,
-                                   const JoystickEvent& a_event) const
+                                  const JoystickEvent& a_event,
+                                  tl_int a_sliderIndex,
+                                  JoystickEvent::slider_type a_slider) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnSliderChange(a_caller, a_event) == true)
+          if (m_observers[i]->OnSliderChange
+                (a_caller, a_event, a_sliderIndex, a_slider) == true)
           { return true; }
         }
         return false;
       }
 
       virtual bool OnPOVChange(const tl_size a_caller,
-                               const JoystickEvent& a_event) const
+                               const JoystickEvent& a_event,
+                               tl_int a_povIndex,
+                               JoystickEvent::pov_type a_pov) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnPOVChange(a_caller, a_event) == true)
+          if (m_observers[i]->OnPOVChange
+                (a_caller, a_event, a_povIndex, a_pov) == true)
           { return true; }
         }
         return false;
@@ -127,11 +148,19 @@ namespace tloc { namespace input { namespace hid {
 
     const joystick_event_type& GetCurrState() const;
 
-    bool SendButtonPress(const joystick_event_type& a_event) const;
-    bool SendButtonRelease(const joystick_event_type& a_event) const;
-    bool SendAxisChange(const joystick_event_type& a_event) const;
-    bool SendSliderChange(const joystick_event_type& a_event) const;
-    bool SendPOVChange(const joystick_event_type& a_event) const;
+    bool SendButtonPress(const joystick_event_type& a_event,
+                         tl_int a_buttonIndex) const;
+    bool SendButtonRelease(const joystick_event_type& a_event,
+                           tl_int a_buttonIndex) const;
+    bool SendAxisChange(const joystick_event_type& a_event,
+                        tl_int a_axisIndex,
+                        joystick_event_type::axis_type a_axis) const;
+    bool SendSliderChange(const joystick_event_type& a_event,
+                          tl_int a_sliderIndex,
+                          joystick_event_type::slider_type a_slider) const;
+    bool SendPOVChange(const joystick_event_type& a_event,
+                       tl_int a_povIndex,
+                       joystick_event_type::pov_type a_pov) const;
 
     void Update();
     void Reset();

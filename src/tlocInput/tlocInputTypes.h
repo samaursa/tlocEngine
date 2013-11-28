@@ -7,6 +7,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 namespace tloc { namespace input {
 
@@ -225,16 +226,22 @@ namespace tloc { namespace input {
         k_south_east  = 1 << 5,
         k_north_west  = 1 << 6,
         k_south_west  = 1 << 7,
+
+        k_count = core_utils::EnumCounter<k_south_west, true>::result
       }; typedef tl_int direction_type;
 
       TLOC_DECL_AND_DEF_SETTER_BY_VALUE(direction_type, SetDirection, m_direction);
       TLOC_DECL_AND_DEF_GETTER(direction_type, GetDirection, m_direction);
 
-      bool IsDirection(direction_type a_dir)
-      { return (m_direction & a_dir) != 0; }
+      bool        IsDirection(direction_type a_dir) const;
+      const char* GetDirectionAsString(direction_type a_dir) const;
+      const char* GetDirectionAsShortString(direction_type a_dir) const;
 
     private:
-      direction_type    m_direction;
+      direction_type      m_direction;
+
+      static const char*  s_enumStrings[];
+      static const char*  s_enumStringsShort[];
     };
   }
 

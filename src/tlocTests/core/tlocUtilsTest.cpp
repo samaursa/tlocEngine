@@ -162,6 +162,7 @@ namespace TestingMemory
   {
     enum
     {
+      zero  = 0,
       one   = 1 << 0,
       two   = 1 << 1,
       three = 1 << 2,
@@ -175,6 +176,7 @@ namespace TestingMemory
     CHECK( (core::utils::EnumToIndex<five>::result) == 4);
     CHECK( (core::utils::EnumToIndex<one>::result) == 0);
 
+    CHECK( (core_utils::EnumToIndex<zero, true>::result) == 0);
     CHECK( (core::utils::EnumToIndex<five, true>::result) == 5);
     CHECK( (core::utils::EnumToIndex<one>::result) == 0);
   }

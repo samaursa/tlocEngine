@@ -318,7 +318,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_axisMoved[i])
         {
-          if (m_parent->SendAxisChange(m_currentState) == false)
+          if (m_parent->SendAxisChange(m_currentState, i,
+                                       m_currentState.m_axes[i]) == false)
             return;
         }
       }
@@ -327,7 +328,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_sliderMoved[i])
         {
-          if (m_parent->SendSliderChange(m_currentState) == false)
+          if (m_parent->SendSliderChange(m_currentState, i,
+                                         m_currentState.m_sliders[i]) == false)
             return;
         }
       }
@@ -375,11 +377,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if( a_di.dwData & 0x80 )
     {
-      return m_parent->SendButtonPress( JoystickEvent(m_currentState) );
+      return m_parent->SendButtonPress( JoystickEvent(m_currentState), a_button);
     }
     else
     {
-      return m_parent->SendButtonRelease( JoystickEvent(m_currentState) );
+      return m_parent->SendButtonRelease( JoystickEvent(m_currentState), a_button);
     }
   }
 
@@ -388,10 +390,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <JOYSTICK_IMPL_TEMP>
   bool
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
-    DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
+    DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
   {
-    DoChangePOV(a_pov, a_di, InputPolicy::Immediate());
-    return m_parent->SendPOVChange(JoystickEvent(m_currentState));
+    DoChangePOV(a_povIndex, a_di, InputPolicy::Immediate());
+    return m_parent->SendPOVChange(JoystickEvent(m_currentState), a_povIndex,
+                                   m_currentState.m_pov[a_povIndex]);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -399,26 +402,26 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <JOYSTICK_IMPL_TEMP>
   bool
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
-    DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate)
+    DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate)
   {
     using namespace Component;
 
     if (LOWORD(a_di.dwData) == 0xFFFF)
     {
-      m_currentState.m_pov[a_pov].SetDirection(Pov::k_centered);
+      m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_centered);
     }
     else
     {
       switch(a_di.dwData)
       {
-      case 0: m_currentState.m_pov[a_pov].SetDirection(Pov::k_north); break;
-      case 4500: m_currentState.m_pov[a_pov].SetDirection(Pov::k_north_east); break;
-      case 9000: m_currentState.m_pov[a_pov].SetDirection(Pov::k_east); break;
-      case 13500: m_currentState.m_pov[a_pov].SetDirection(Pov::k_south_east); break;
-      case 18000: m_currentState.m_pov[a_pov].SetDirection(Pov::k_south); break;
-      case 22500: m_currentState.m_pov[a_pov].SetDirection(Pov::k_south_west); break;
-      case 27000: m_currentState.m_pov[a_pov].SetDirection(Pov::k_west); break;
-      case 31500: m_currentState.m_pov[a_pov].SetDirection(Pov::k_north_west); break;
+      case 0: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_north); break;
+      case 4500: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_north_east); break;
+      case 9000: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_east); break;
+      case 13500: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_south_east); break;
+      case 18000: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_south); break;
+      case 22500: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_south_west); break;
+      case 27000: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_west); break;
+      case 31500: m_currentState.m_pov[a_povIndex].SetDirection(Pov::k_north_west); break;
       }
     }
 

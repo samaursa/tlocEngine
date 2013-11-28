@@ -71,11 +71,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                    const joystick_params_type& a_params);
     ~JoystickImpl_T();
 
-    bool  IsButtonDown(button_code_type a_key) const
-    {
-      TLOC_UNUSED(a_key);
-      return false;
-    }
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (joystick_event_type, GetCurrState, m_currentState);
 
     void  Update();
     void  Reset();

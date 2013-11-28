@@ -130,6 +130,9 @@ namespace tloc { namespace input {
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
 
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Immediate>);
+
 };};
 
 //------------------------------------------------------------------------

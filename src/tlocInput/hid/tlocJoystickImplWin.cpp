@@ -179,7 +179,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoUpdate()
   {
-    m_currentState = JoystickEvent();
+    m_currentState.Clear();
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::joystick_buffer_Size];
     DWORD entries = buffer_size::joystick_buffer_Size;

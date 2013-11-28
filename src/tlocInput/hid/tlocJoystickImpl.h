@@ -48,10 +48,17 @@ namespace tloc { namespace input { namespace hid {
       , m_axes(a_other.m_axes)
       , m_pov(a_other.m_pov)
       , m_sliders(a_other.m_sliders)
-    { }
+    {
+    }
 
     void Clear()
     {
+      m_pov.clear();
+      m_sliders.clear();
+
+      m_pov.resize(4);
+      m_sliders.resize(4);
+
       core::fill_all(m_buttons, false);
 
       for (axis_cont::iterator itr = m_axes.begin(), itrEnd = m_axes.end();

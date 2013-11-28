@@ -43,11 +43,11 @@ namespace tloc { namespace input { namespace hid {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  const JOYSTICK_TYPE::joystick_event_type&
     Joystick_T<JOYSTICK_PARAMS>::
-    IsButtonDown(button_code_type a_key) const
+    GetCurrState() const
   {
-    return m_impl->IsButtonDown(a_key);
+    return m_impl->GetCurrState();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -94,7 +94,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnPosAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
       { return true; }
     }
 
@@ -111,7 +111,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnRotAxisChange( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnSliderChange( core_utils::GetMemoryAddress(this), a_event) == true)
       { return true; }
     }
 
@@ -150,5 +150,19 @@ namespace tloc { namespace input { namespace hid {
     Joystick_T<JOYSTICK_PARAMS>::
     Reset()
   { m_impl->Reset(); }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation for each platform
+
+  template class Joystick_T<InputPolicy::Buffered>;
+  template class Joystick_T<InputPolicy::Immediate>;
+
+#if defined (TLOC_OS_WIN)
+  template Joystick_T<InputPolicy::Buffered>::Joystick_T(const windows_joystick_param_type&);
+  template Joystick_T<InputPolicy::Immediate>::Joystick_T(const windows_joystick_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+#else
+# error TODO
+#endif
 
 };};};

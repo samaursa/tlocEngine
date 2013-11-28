@@ -15,7 +15,7 @@
 
 namespace tloc { namespace input { namespace hid {
 
-  template <typename T_Policy, typename T_Platform>   class Keyboard;
+  template <typename T_Policy, typename T_Platform>   class Joystick_T;
 
   namespace priv {
 
@@ -110,7 +110,7 @@ namespace tloc { namespace input { namespace hid {
     : public core_bclass::DispatcherBaseArray
         <priv::JoystickCallbacks, priv::JoystickCallbackGroup_T>::type
     , public core_bclass::NonCopyable_I
-    , public p_hid::Keyboard
+    , public p_hid::Joystick
   {
   public:
     typedef T_Platform                              platform_type;
@@ -125,7 +125,7 @@ namespace tloc { namespace input { namespace hid {
     Joystick_T(const T_ParamList& a_paramList);
     ~Joystick_T();
 
-    bool IsButtonDown(button_code_type a_key) const;
+    const joystick_event_type& GetCurrState() const;
 
     bool SendButtonPress(const joystick_event_type& a_event) const;
     bool SendButtonRelease(const joystick_event_type& a_event) const;

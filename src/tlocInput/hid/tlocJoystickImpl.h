@@ -97,6 +97,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::platform_type           platform_type;
     typedef typename parent_type::button_code_type        button_code_type;
     typedef typename parent_type::size_type               size_type;
+    typedef typename parent_type::joystick_event_type     joystick_event_type;
 
   public:
     JoystickImplBase(parent_type* a_parent, param_list_type a_params)
@@ -119,8 +120,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   protected:
     using base_type::m_parent;
 
-    JoystickEvent     m_currentState;
-    param_list_type   m_params;
+    joystick_event_type   m_currentState;
+    param_list_type       m_params;
   };
 
 };};};};

@@ -8,6 +8,7 @@
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>
+#include <tlocInput/hid/tlocJoystickImplWin.h>
 #include <tlocInput/hid/tlocTouchSurfaceImplWin.h>
 
 namespace tloc { namespace input { namespace priv {
@@ -60,8 +61,8 @@ namespace tloc { namespace input { namespace priv {
     struct DoCreateHID<T_InputObject, p_hid::Mouse::m_index>
     {
       T_InputObject* Create(param_options::value_type a_params,
-        IDirectInput8* a_directInput,
-        input_param_type a_inputManagerParams)
+                            IDirectInput8* a_directInput,
+                            input_param_type a_inputManagerParams)
       {
         TLOC_UNUSED(a_params);
         windows_mouse_param_type params;
@@ -79,12 +80,18 @@ namespace tloc { namespace input { namespace priv {
     struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
     {
       T_InputObject* Create(param_options::value_type a_params,
-        IDirectInput8* a_directInput,
-        input_param_type a_inputManagerParams)
+                            IDirectInput8* a_directInput,
+                            input_param_type a_inputManagerParams)
       {
-        TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
-        TLOC_ASSERT_WIP()
-          return nullptr;
+        TLOC_UNUSED(a_params);
+        windows_joystick_param_type params;
+        params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
+        params.m_param2 = a_directInput;
+        params.m_param3 = a_params;
+
+        T_InputObject* newInput = new T_InputObject(params);
+
+        return newInput;
       }
     };
 
@@ -148,7 +155,8 @@ namespace tloc { namespace input { namespace priv {
             }
           case p_hid::Joystick::m_index:
             {
-              //delete (Keyboard<policy_type>*)m_winHIDs[i][hidNum];
+              delete static_cast<hid::Joystick_T<policy_type>* >
+                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
               break;
             }
           case p_hid::TouchSurface::m_index:
@@ -204,7 +212,8 @@ namespace tloc { namespace input { namespace priv {
       if (m_winHIDs[T_InputObject::m_index][i].m_inUse == false)
       {
         newInput =
-          DoCreateHID<T_InputObject, T_InputObject::m_index>().Create(a_params, m_directInput, m_params);
+          DoCreateHID<T_InputObject, T_InputObject::m_index>()
+          .Create(a_params, m_directInput, m_params);
 
         m_winHIDs[T_InputObject::m_index][i].m_inUse = true;
         m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;
@@ -263,6 +272,18 @@ namespace tloc { namespace input { namespace priv {
       }
     case joystick_type::m_index:
       {
+        typedef hid::Joystick_T<policy_type>  joystick_type;
+
+        for (size_type i = 0; i < m_winHIDs[joystick_type::m_index].size(); ++i)
+        {
+          if (m_winHIDs[joystick_type::m_index][i].m_inUse)
+          {
+            joystick_type* js = static_cast<joystick_type*>
+              (m_winHIDs[joystick_type::m_index][i].m_devicePtr);
+            js->Update();
+          }
+        }
+
         break;
       }
     case touch_surface_type::m_index:
@@ -319,6 +340,18 @@ namespace tloc { namespace input { namespace priv {
       }
     case joystick_type::m_index:
       {
+        typedef hid::Joystick_T<policy_type>  joystick_type;
+
+        for (size_type i = 0; i < m_winHIDs[joystick_type::m_index].size(); ++i)
+        {
+          if (m_winHIDs[joystick_type::m_index][i].m_inUse)
+          {
+            joystick_type* js = static_cast<joystick_type*>
+              (m_winHIDs[joystick_type::m_index][i].m_devicePtr);
+            js->Reset();
+          }
+        }
+
         break;
       }
     case touch_surface_type::m_index:
@@ -461,21 +494,22 @@ namespace tloc { namespace input { namespace priv {
 
 #define INSTANTIATE_HID(_HID_) \
   template _HID_<i_buff>*  \
-  InputManagerImpl<i_mgr_buff>::CreateHID<_HID_<i_buff> >\
-  (param_options::value_type);\
+    InputManagerImpl<i_mgr_buff>::CreateHID<_HID_<i_buff> >\
+    (param_options::value_type);\
   \
   template _HID_<i_imm>* \
-  InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
-  (param_options::value_type);\
+    InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
+    (param_options::value_type);\
   \
   template _HID_<i_buff>*  \
-  InputManagerImpl<i_mgr_buff>::GetHID<_HID_<i_buff> >(tl_size);\
+    InputManagerImpl<i_mgr_buff>::GetHID<_HID_<i_buff> >(tl_size);\
   template _HID_<i_imm>* \
-  InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
+    InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
   INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::Mouse);
   INSTANTIATE_HID(hid::TouchSurface);
+  INSTANTIATE_HID(hid::Joystick_T);
 
 
 };};};

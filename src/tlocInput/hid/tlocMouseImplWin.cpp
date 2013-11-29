@@ -195,7 +195,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (FAILED(hRes))
     {
       // LOG: Could not get device data
-      TLOC_ASSERT(false, "Could not get device data!");
+      TLOC_ASSERT(false, "Could not get mouse data!");
     }
 
     bool axesUpdated = false;

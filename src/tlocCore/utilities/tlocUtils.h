@@ -126,6 +126,12 @@ namespace tloc { namespace core { namespace utils {
     enum { result = 1 + EnumCounter<T_CountInBits / 2, T_CountZero>::result };
   };
 
+  template <bool T_CountZero>
+  struct EnumCounter<0, T_CountZero>
+  {
+    enum { result = 0 };
+  };
+
   template <>
   struct EnumCounter<1, false>
   {
@@ -145,6 +151,18 @@ namespace tloc { namespace core { namespace utils {
   struct EnumToIndex
   {
     enum { result = 0 + EnumCounter<T_Enum / 2, T_IncludeZero>::result };
+  };
+
+  template <bool T_IncludeZero>
+  struct EnumToIndex<0, T_IncludeZero>
+  {
+    TLOC_STATIC_ASSERT(false, Enum_cannot_be_converted_to_index_when_not_including_zero);
+  };
+
+  template <>
+  struct EnumToIndex<0, true>
+  {
+    enum { result = 0 };
   };
 
   template <>

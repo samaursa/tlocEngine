@@ -27,21 +27,15 @@ namespace tloc { namespace input { namespace hid {
       k_count,
     }; typedef s32 state_code_type;
 
-    struct xyAbs
-    {
-      Component::AxisAbs  m_x;
-      Component::AxisAbs  m_y;
-    };
-
     typedef Component::Pov                                  pov_type;
-    typedef Component::AxisAbs                              axis_type;
-    typedef xyAbs                                           slider_type;
+    typedef core_ds::Tuple3s32                              axis_type;
+    typedef core_ds::Tuple2s32                              slider_type;
 
     typedef JoystickEvent                                   this_type;
     typedef core_conts::Array<bool>                         button_cont;
     typedef core_conts::Array<axis_type>                    axis_cont;
-    typedef core_conts::Array<slider_type>                  slider_cont;
-    typedef core_conts::Array<pov_type>                     pov_cont;
+    typedef core_conts::ArrayFixed<slider_type, 4>          slider_cont;
+    typedef core_conts::ArrayFixed<pov_type, 4>             pov_cont;
 
   public:
     JoystickEvent()
@@ -57,18 +51,12 @@ namespace tloc { namespace input { namespace hid {
 
     void Clear()
     {
-      m_pov.clear();
-      m_sliders.clear();
-
-      m_pov.resize(4);
-      m_sliders.resize(4);
-
       core::fill_all(m_buttons, false);
 
       for (axis_cont::iterator itr = m_axes.begin(), itrEnd = m_axes.end();
            itr != itrEnd; ++itr)
       {
-        (*itr) = 0;
+        itr->Set(0);
       }
 
       for (pov_cont::iterator itr = m_pov.begin(), itrEnd = m_pov.end();
@@ -78,8 +66,7 @@ namespace tloc { namespace input { namespace hid {
       for (slider_cont::iterator itr = m_sliders.begin(), itrEnd = m_sliders.end();
            itr != itrEnd; ++itr)
       {
-        itr->m_x = 0;
-        itr->m_y = 0;
+        itr->Set(0);
       }
     }
 

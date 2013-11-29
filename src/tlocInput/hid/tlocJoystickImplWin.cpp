@@ -3,17 +3,81 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 
-// Copied directly from OIS:
-// DX Only defines macros for the JOYSTICK not JOYSTICK2, so fix it
-#undef DIJOFS_BUTTON
-#undef DIJOFS_POV
+// In dinput.h we have macros for offsets for the DIJOYSTATE struct but no
+// macros for DIJOYSTATE2 struct, we will define our own here (by copying
+// the existing macros in DIJOYSTATE and replacing DIJOYSTATE with DIJOYSTATE2)
 
-#define DIJOFS_BUTTON(n)  (FIELD_OFFSET(DIJOYSTATE2, rgbButtons) + (n))
-#define DIJOFS_POV(n)     (FIELD_OFFSET(DIJOYSTATE2, rgdwPOV)+(n)*sizeof(DWORD))
-#define DIJOFS_SLIDER0(n) (FIELD_OFFSET(DIJOYSTATE2, rglSlider)+(n) * sizeof(LONG))
-#define DIJOFS_SLIDER1(n) (FIELD_OFFSET(DIJOYSTATE2, rglVSlider)+(n) * sizeof(LONG))
-#define DIJOFS_SLIDER2(n) (FIELD_OFFSET(DIJOYSTATE2, rglASlider)+(n) * sizeof(LONG))
-#define DIJOFS_SLIDER3(n) (FIELD_OFFSET(DIJOYSTATE2, rglFSlider)+(n) * sizeof(LONG))
+#define TLOC_DIJOFS_X            FIELD_OFFSET(DIJOYSTATE2, lX)
+#define TLOC_DIJOFS_Y            FIELD_OFFSET(DIJOYSTATE2, lY)
+#define TLOC_DIJOFS_Z            FIELD_OFFSET(DIJOYSTATE2, lZ)
+#define TLOC_DIJOFS_RX           FIELD_OFFSET(DIJOYSTATE2, lRx)
+#define TLOC_DIJOFS_RY           FIELD_OFFSET(DIJOYSTATE2, lRy)
+#define TLOC_DIJOFS_RZ           FIELD_OFFSET(DIJOYSTATE2, lRz)
+
+#define TLOC_DIJOFS_VX            FIELD_OFFSET(DIJOYSTATE2, lVX)
+#define TLOC_DIJOFS_VY            FIELD_OFFSET(DIJOYSTATE2, lVY)
+#define TLOC_DIJOFS_VZ            FIELD_OFFSET(DIJOYSTATE2, lVZ)
+#define TLOC_DIJOFS_VRX           FIELD_OFFSET(DIJOYSTATE2, lVRx)
+#define TLOC_DIJOFS_VRY           FIELD_OFFSET(DIJOYSTATE2, lVRy)
+#define TLOC_DIJOFS_VRZ           FIELD_OFFSET(DIJOYSTATE2, lVRz)
+
+#define TLOC_DIJOFS_AX            FIELD_OFFSET(DIJOYSTATE2, lAX)
+#define TLOC_DIJOFS_AY            FIELD_OFFSET(DIJOYSTATE2, lAY)
+#define TLOC_DIJOFS_AZ            FIELD_OFFSET(DIJOYSTATE2, lAZ)
+#define TLOC_DIJOFS_ARX           FIELD_OFFSET(DIJOYSTATE2, lARx)
+#define TLOC_DIJOFS_ARY           FIELD_OFFSET(DIJOYSTATE2, lARy)
+#define TLOC_DIJOFS_ARZ           FIELD_OFFSET(DIJOYSTATE2, lARz)
+
+#define TLOC_DIJOFS_FX            FIELD_OFFSET(DIJOYSTATE2, lFX)
+#define TLOC_DIJOFS_FY            FIELD_OFFSET(DIJOYSTATE2, lFY)
+#define TLOC_DIJOFS_FZ            FIELD_OFFSET(DIJOYSTATE2, lFZ)
+#define TLOC_DIJOFS_FRX           FIELD_OFFSET(DIJOYSTATE2, lFRx)
+#define TLOC_DIJOFS_FRY           FIELD_OFFSET(DIJOYSTATE2, lFRy)
+#define TLOC_DIJOFS_FRZ           FIELD_OFFSET(DIJOYSTATE2, lFRz)
+
+#define TLOC_DIJOFS_SLIDER0(n)   (FIELD_OFFSET(DIJOYSTATE2, rglSlider) + \
+                                                        (n) * sizeof(LONG))
+#define TLOC_DIJOFS_SLIDER1(n)   (FIELD_OFFSET(DIJOYSTATE2, rglVSlider) + \
+                                                        (n) * sizeof(LONG))
+#define TLOC_DIJOFS_SLIDER2(n)   (FIELD_OFFSET(DIJOYSTATE2, rglASlider) + \
+                                                        (n) * sizeof(LONG))
+#define TLOC_DIJOFS_SLIDER3(n)   (FIELD_OFFSET(DIJOYSTATE2, rglFSlider) + \
+                                                        (n) * sizeof(LONG))
+#define TLOC_DIJOFS_POV(n)      (FIELD_OFFSET(DIJOYSTATE2, rgdwPOV) + \
+                                                        (n) * sizeof(DWORD))
+#define TLOC_DIJOFS_BUTTON(n)   (FIELD_OFFSET(DIJOYSTATE2, rgbButtons) + (n))
+#define TLOC_DIJOFS_BUTTON0      TLOC_DIJOFS_BUTTON(0)
+#define TLOC_DIJOFS_BUTTON1      TLOC_DIJOFS_BUTTON(1)
+#define TLOC_DIJOFS_BUTTON2      TLOC_DIJOFS_BUTTON(2)
+#define TLOC_DIJOFS_BUTTON3      TLOC_DIJOFS_BUTTON(3)
+#define TLOC_DIJOFS_BUTTON4      TLOC_DIJOFS_BUTTON(4)
+#define TLOC_DIJOFS_BUTTON5      TLOC_DIJOFS_BUTTON(5)
+#define TLOC_DIJOFS_BUTTON6      TLOC_DIJOFS_BUTTON(6)
+#define TLOC_DIJOFS_BUTTON7      TLOC_DIJOFS_BUTTON(7)
+#define TLOC_DIJOFS_BUTTON8      TLOC_DIJOFS_BUTTON(8)
+#define TLOC_DIJOFS_BUTTON9      TLOC_DIJOFS_BUTTON(9)
+#define TLOC_DIJOFS_BUTTON10     TLOC_DIJOFS_BUTTON(10)
+#define TLOC_DIJOFS_BUTTON11     TLOC_DIJOFS_BUTTON(11)
+#define TLOC_DIJOFS_BUTTON12     TLOC_DIJOFS_BUTTON(12)
+#define TLOC_DIJOFS_BUTTON13     TLOC_DIJOFS_BUTTON(13)
+#define TLOC_DIJOFS_BUTTON14     TLOC_DIJOFS_BUTTON(14)
+#define TLOC_DIJOFS_BUTTON15     TLOC_DIJOFS_BUTTON(15)
+#define TLOC_DIJOFS_BUTTON16     TLOC_DIJOFS_BUTTON(16)
+#define TLOC_DIJOFS_BUTTON17     TLOC_DIJOFS_BUTTON(17)
+#define TLOC_DIJOFS_BUTTON18     TLOC_DIJOFS_BUTTON(18)
+#define TLOC_DIJOFS_BUTTON19     TLOC_DIJOFS_BUTTON(19)
+#define TLOC_DIJOFS_BUTTON20     TLOC_DIJOFS_BUTTON(20)
+#define TLOC_DIJOFS_BUTTON21     TLOC_DIJOFS_BUTTON(21)
+#define TLOC_DIJOFS_BUTTON22     TLOC_DIJOFS_BUTTON(22)
+#define TLOC_DIJOFS_BUTTON23     TLOC_DIJOFS_BUTTON(23)
+#define TLOC_DIJOFS_BUTTON24     TLOC_DIJOFS_BUTTON(24)
+#define TLOC_DIJOFS_BUTTON25     TLOC_DIJOFS_BUTTON(25)
+#define TLOC_DIJOFS_BUTTON26     TLOC_DIJOFS_BUTTON(26)
+#define TLOC_DIJOFS_BUTTON27     TLOC_DIJOFS_BUTTON(27)
+#define TLOC_DIJOFS_BUTTON28     TLOC_DIJOFS_BUTTON(28)
+#define TLOC_DIJOFS_BUTTON29     TLOC_DIJOFS_BUTTON(29)
+#define TLOC_DIJOFS_BUTTON30     TLOC_DIJOFS_BUTTON(30)
+#define TLOC_DIJOFS_BUTTON31     TLOC_DIJOFS_BUTTON(31)
 
 namespace {
 
@@ -41,6 +105,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
                    , m_directInput(a_params.m_param2)
                    , m_joystick(TLOC_NULL)
                    , m_windowPtr(a_params.m_param1)
+                   , m_sliderCount(0)
+                   , m_povCount(0)
   {
     DoInitialize();
   }
@@ -94,7 +160,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       return;
     }
 
-    if (FAILED(m_joystick->SetDataFormat(&c_dfDIJoystick)) )
+    if (FAILED(m_joystick->SetDataFormat(&c_dfDIJoystick2)) )
     {
       // Log: Joystick format error
       TLOC_ASSERT(false, "Could not set joystick device format");
@@ -166,12 +232,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       TLOC_ASSERT(false, "Failed to get joystick capabilities");
     }
 
+    m_axisCount = m_diJoyCaps.dwAxes;
+    m_povCount = m_diJoyCaps.dwPOVs;
+
     m_currentState.m_buttons.resize(m_diJoyCaps.dwButtons);
     m_currentState.m_axes.resize(m_diJoyCaps.dwAxes);
+    m_currentState.m_pov.resize(m_diJoyCaps.dwPOVs);
 
-    m_axisNumber = 0;
+    m_axisMoved.resize(m_diJoyCaps.dwAxes);
 
     m_joystick->EnumObjects(DIEnumDeviceObjectsCallback, this, DIDFT_AXIS);
+    m_currentState.m_sliders.resize(m_sliderCount);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -181,8 +252,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoUpdate()
   {
-    m_currentState.Clear();
-
     DIDEVICEOBJECTDATA diBuff[buffer_size::joystick_buffer_Size];
     DWORD entries = buffer_size::joystick_buffer_Size;
     HRESULT hRes;
@@ -212,91 +281,197 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       TLOC_ASSERT(false, "Could not get joystick data");
     }
 
-    m_axisMoved.clear();
-    m_sliderMoved.clear();
-
-    m_axisMoved.resize(g_numAxis, false);
-    m_sliderMoved.resize(g_numSliders, false);
+    core::fill_all(m_axisMoved, false);
+    core::fill_all(m_sliderMoved, false);
 
     for (tl_size i = 0; i < entries; ++i)
     {
-      //This may seem out of order, but is in order of the way these variables
-      //are declared in the JoyStick State 2 structure.
-      switch(diBuff[i].dwOfs)
-      {
-        //------ slider -//
-      case DIJOFS_SLIDER0(0):
-        m_sliderMoved[0] = true;
-        m_currentState.m_sliders[0].m_x = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER0(1):
-        m_sliderMoved[0] = true;
-        m_currentState.m_sliders[0].m_y = diBuff[i].dwData;
-        break;
-        //----- Max 4 POVs Next ---------------//
-      case DIJOFS_POV(0):
-        if(DoChangePOV(0,diBuff[i], policy_type()) == false)
-          return entries;
-        break;
-      case DIJOFS_POV(1):
-        if(DoChangePOV(1,diBuff[i], policy_type()) == false)
-          return entries;
-        break;
-      case DIJOFS_POV(2):
-        if(DoChangePOV(2,diBuff[i], policy_type()) == false)
-          return entries;
-        break;
-      case DIJOFS_POV(3):
-        if(DoChangePOV(3,diBuff[i], policy_type()) == false)
-          return entries;
-        break;
-      case DIJOFS_SLIDER1(0):
-        m_sliderMoved[1] = true;
-        m_currentState.m_sliders[1].m_x = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER1(1):
-        m_sliderMoved[1] = true;
-        m_currentState.m_sliders[1].m_y = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER2(0):
-        m_sliderMoved[2] = true;
-        m_currentState.m_sliders[2].m_x = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER2(1):
-        m_sliderMoved[2] = true;
-        m_currentState.m_sliders[2].m_y = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER3(0):
-        m_sliderMoved[3] = true;
-        m_currentState.m_sliders[3].m_x = diBuff[i].dwData;
-        break;
-      case DIJOFS_SLIDER3(1):
-        m_sliderMoved[3] = true;
-        m_currentState.m_sliders[3].m_y = diBuff[i].dwData;
-        break;
-        //-----------------------------------------//
-      default:
-        //Handle Button Events Easily using the DX Offset Macros
-        if( diBuff[i].dwOfs >= DIJOFS_BUTTON(0) && diBuff[i].dwOfs < DIJOFS_BUTTON(128) )
-        {
-          if(DoButtonEvent( (diBuff[i].dwOfs - DIJOFS_BUTTON(0)), diBuff[i],
-                            policy_type()) == false)
-          { return entries; }
-        }
-        else if((short)(diBuff[i].uAppData >> 16) == 0x1313)
-        {	//If it was nothing else, might be axis enumerated earlier (determined by magic number)
-          int axis = (int)(0x0000FFFF & diBuff[i].uAppData); //Mask out the high bit
-          TLOC_ASSERT(axis >= 0 && axis < (int)m_currentState.m_axes.size(),
-            "Axis out of range");
+      const s32 data = diBuff[i].dwData;
+      const s32 offset = diBuff[i].dwOfs;
 
-          if(axis >= 0 && axis < (int)m_currentState.m_axes.size())
+      switch(offset)
+      {
+        // -----------------------------------------------------------------------
+        // Since there are only 4 POVs in the DIJOYSTATE struct
+      case TLOC_DIJOFS_SLIDER0(0):
+        m_sliderMoved[0] = true;
+        m_currentState.m_sliders[0][0] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER0(1):
+        m_sliderMoved[0] = true;
+        m_currentState.m_sliders[0][1] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER1(0):
+        m_sliderMoved[1] = true;
+        m_currentState.m_sliders[1][0] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER1(1):
+        m_sliderMoved[1] = true;
+        m_currentState.m_sliders[1][1] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER2(0):
+        m_sliderMoved[2] = true;
+        m_currentState.m_sliders[2][0] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER2(1):
+        m_sliderMoved[2] = true;
+        m_currentState.m_sliders[2][1] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER3(0):
+        m_sliderMoved[3] = true;
+        m_currentState.m_sliders[3][0] = data;
+        break;
+      case TLOC_DIJOFS_SLIDER3(1):
+        m_sliderMoved[3] = true;
+        m_currentState.m_sliders[3][1] = data;
+        break;
+        // -----------------------------------------------------------------------
+        // Since there are only 4 POVs in the DIJOYSTATE struct
+      case TLOC_DIJOFS_POV(0):
+        if(DoChangePOV(0,diBuff[i], policy_type()) == false)
+        break;
+      case TLOC_DIJOFS_POV(1):
+        if(DoChangePOV(1,diBuff[i], policy_type()) == false)
+        break;
+      case TLOC_DIJOFS_POV(2):
+        if(DoChangePOV(2,diBuff[i], policy_type()) == false)
+        break;
+      case TLOC_DIJOFS_POV(3):
+        if(DoChangePOV(3,diBuff[i], policy_type()) == false)
+        break;
+      default:
+        if( offset >= TLOC_DIJOFS_BUTTON(0) &&
+            offset < TLOC_DIJOFS_BUTTON(joystick_event_type::k_count) )
+        {
+          if(DoButtonEvent( (offset - TLOC_DIJOFS_BUTTON(0)), diBuff[i],
+                            policy_type()) == false)
+          { continue; }
+        }
+        else if (diBuff[i].uAppData == 0x1313)
+        {
+          switch(offset)
           {
-            m_currentState.m_axes[axis] = diBuff[i].dwData;
-            m_axisMoved[axis] = true;
+            // -----------------------------------------------------------------------
+            // axis #1
+          case TLOC_DIJOFS_X:
+            m_currentState.m_axes[0][0] = data;
+            m_axisMoved[0] = true;
+            break;
+          case TLOC_DIJOFS_Y:
+            m_currentState.m_axes[0][1] = data;
+            m_axisMoved[0] = true;
+            break;
+          case TLOC_DIJOFS_Z:
+            m_currentState.m_axes[0][2] = data;
+            m_axisMoved[0] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #2
+          case TLOC_DIJOFS_RX:
+            m_currentState.m_axes[1][0] = data;
+            m_axisMoved[1] = true;
+            break;
+          case TLOC_DIJOFS_RY:
+            m_currentState.m_axes[1][1] = data;
+            m_axisMoved[1] = true;
+            break;
+          case TLOC_DIJOFS_RZ:
+            m_currentState.m_axes[1][2] = data;
+            m_axisMoved[1] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #3
+          case TLOC_DIJOFS_VX:
+            m_currentState.m_axes[2][0] = data;
+            m_axisMoved[2] = true;
+            break;
+          case TLOC_DIJOFS_VY:
+            m_currentState.m_axes[2][1] = data;
+            m_axisMoved[2] = true;
+            break;
+          case TLOC_DIJOFS_VZ:
+            m_currentState.m_axes[2][2] = data;
+            m_axisMoved[2] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #4
+          case TLOC_DIJOFS_VRX:
+            m_currentState.m_axes[3][0] = data;
+            m_axisMoved[3] = true;
+            break;
+          case TLOC_DIJOFS_VRY:
+            m_currentState.m_axes[3][1] = data;
+            m_axisMoved[3] = true;
+            break;
+          case TLOC_DIJOFS_VRZ:
+            m_currentState.m_axes[3][2] = data;
+            m_axisMoved[3] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #5
+          case TLOC_DIJOFS_AX:
+            m_currentState.m_axes[4][0] = data;
+            m_axisMoved[4] = true;
+            break;
+          case TLOC_DIJOFS_AY:
+            m_currentState.m_axes[4][1] = data;
+            m_axisMoved[4] = true;
+            break;
+          case TLOC_DIJOFS_AZ:
+            m_currentState.m_axes[4][2] = data;
+            m_axisMoved[4] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #6
+          case TLOC_DIJOFS_ARX:
+            m_currentState.m_axes[5][0] = data;
+            m_axisMoved[5] = true;
+            break;
+          case TLOC_DIJOFS_ARY:
+            m_currentState.m_axes[5][1] = data;
+            m_axisMoved[5] = true;
+            break;
+          case TLOC_DIJOFS_ARZ:
+            m_currentState.m_axes[5][2] = data;
+            m_axisMoved[5] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #7
+          case TLOC_DIJOFS_FX:
+            m_currentState.m_axes[6][0] = data;
+            m_axisMoved[6] = true;
+            break;
+          case TLOC_DIJOFS_FY:
+            m_currentState.m_axes[6][1] = data;
+            m_axisMoved[6] = true;
+            break;
+          case TLOC_DIJOFS_FZ:
+            m_currentState.m_axes[6][2] = data;
+            m_axisMoved[6] = true;
+            break;
+
+            // -----------------------------------------------------------------------
+            // axis #8
+          case TLOC_DIJOFS_FRX:
+            m_currentState.m_axes[7][0] = data;
+            m_axisMoved[7] = true;
+            break;
+          case TLOC_DIJOFS_FRY:
+            m_currentState.m_axes[7][1] = data;
+            m_axisMoved[7] = true;
+            break;
+          case TLOC_DIJOFS_FRZ:
+            m_currentState.m_axes[7][2] = data;
+            m_axisMoved[7] = true;
+            break;
           }
         }
-
-        break;
       } //end case
     }
 
@@ -314,7 +489,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (entries > 0)
     {
-      for (tl_int i = 0; i < g_numAxis; ++i)
+      for (tl_int i = 0; i < m_axisCount; ++i)
       {
         if (m_axisMoved[i])
         {
@@ -324,7 +499,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         }
       }
 
-      for (tl_int i = 0; i < g_numSliders; ++i)
+      for (tl_int i = 0; i < m_sliderCount; ++i)
       {
         if (m_sliderMoved[i])
         {
@@ -443,14 +618,12 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     diptr.diph.dwHeaderSize   = sizeof(DIPROPHEADER);
     diptr.diph.dwHow          = DIPH_BYID;
     diptr.diph.dwObj          = lpddoi->dwType;
-    //Add a magic number to recognise we set seomthing
-    diptr.uData               = 0x13130000 | t->m_axisNumber;
+    diptr.uData               = 0x1313;
 
     // If the axis is a slider, then remove it from regular axis
-    tl_int sliderCount = 0;
     if (GUID_Slider == lpddoi->guidType)
     {
-      ++sliderCount;
+      t->m_sliderCount++;
       t->m_currentState.m_axes.pop_back();
     }
     else if (FAILED(t->m_joystick->SetProperty(DIPROP_APPDATA, &diptr.diph)) )
@@ -483,3 +656,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template JoystickImpl_T<Joystick_T<InputPolicy::Immediate> >;
 
 };};};};
+
+#include <tlocCore/containers/tlocArray.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(bool);

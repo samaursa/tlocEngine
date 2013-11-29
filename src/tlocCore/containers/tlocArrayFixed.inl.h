@@ -293,7 +293,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
 
   template <STACK_ARRAY_TYPES>
   void ArrayFixed<STACK_ARRAY_PARAMS>::resize(size_type a_newSize,
-                                                   value_type& a_value)
+                                              const value_type& a_value)
   {
     DoResize(a_newSize, a_value);
   }
@@ -426,7 +426,6 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
     ArrayFixed<STACK_ARRAY_PARAMS>::erase(iterator a_rangeBegin,
                                           iterator a_rangeEnd)
   {
-    TLOC_ASSERT_STACK_ARRAY_NOT_EMPTY();
     TLOC_ASSERT_STACK_ARRAY_RANGE_BEGIN_END(a_rangeBegin, a_rangeEnd);
 
     copy(a_rangeEnd, m_end, a_rangeBegin);

@@ -65,7 +65,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonPress(a_caller, a_event, a_buttonCode) == false)
+            OnButtonPress(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -81,7 +81,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonRelease(a_caller, a_event, a_buttonCode) == false)
+            OnButtonRelease(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }

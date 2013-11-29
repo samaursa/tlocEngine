@@ -64,15 +64,17 @@ namespace TestingMemory
   TEST_CASE("Core/Utilities/IsSamePointer", "")
   {
     s32* n = new s32(5); //-V508
-    tl_size ptr = (tl_size)n;
+    tl_uintptr ptr = core_utils::GetMemoryAddress(n);
+    CHECK(ptr == (tl_uintptr)n);
 
     s32* p = new s32(6); //-V508
-    tl_size ptr2 = (tl_size)p;
+    tl_uintptr ptr2 = core_utils::GetMemoryAddress(p);
+    CHECK(ptr2 == (tl_uintptr)p);
 
-    CHECK(core::utils::IsSamePointer(n, ptr) == true);
-    CHECK(core::utils::IsSamePointer(n, p) == false);
-    CHECK(core::utils::IsSamePointer(ptr, ptr2) == false);
-    CHECK(core::utils::IsSamePointer(p, ptr2) == true);
+    CHECK(core_utils::IsSamePointer(n, ptr) == true);
+    CHECK(core_utils::IsSamePointer(n, p) == false);
+    CHECK(core_utils::IsSamePointer(ptr, ptr2) == false);
+    CHECK(core_utils::IsSamePointer(p, ptr2) == true);
   }
 
   TEST_CASE("Core/Utilities/TemplateParams", "")
@@ -160,6 +162,7 @@ namespace TestingMemory
   {
     enum
     {
+      zero  = 0,
       one   = 1 << 0,
       two   = 1 << 1,
       three = 1 << 2,
@@ -173,6 +176,7 @@ namespace TestingMemory
     CHECK( (core::utils::EnumToIndex<five>::result) == 4);
     CHECK( (core::utils::EnumToIndex<one>::result) == 0);
 
+    CHECK( (core_utils::EnumToIndex<zero, true>::result) == 0);
     CHECK( (core::utils::EnumToIndex<five, true>::result) == 5);
     CHECK( (core::utils::EnumToIndex<one>::result) == 0);
   }

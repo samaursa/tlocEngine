@@ -243,6 +243,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     m_joystick->EnumObjects(DIEnumDeviceObjectsCallback, this, DIDFT_AXIS);
     m_currentState.m_sliders.resize(m_sliderCount);
+
+    m_currentState.Clear();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

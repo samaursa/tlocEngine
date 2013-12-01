@@ -126,15 +126,6 @@ namespace tloc { namespace core { namespace string {
 
   template <STRING_BASE_TYPES>
   StringBase<STRING_BASE_PARAMS>::
-    StringBase(StringSprintf, const size_type aFormat, ...)
-  {
-    TLOC_UNUSED(aFormat);
-    //TLOC_STATIC_ASSERT_WIP();
-    // TODO: Implement this string ctor
-  }
-
-  template <STRING_BASE_TYPES>
-  StringBase<STRING_BASE_PARAMS>::
     ~StringBase()
   {
     DoDeallocateSelf();

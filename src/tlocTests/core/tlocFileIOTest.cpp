@@ -67,6 +67,20 @@ namespace TestingFileIO
     CHECK(fileReader.Close() == common_error_types::error_success );
     CHECK_FALSE(fileReader.IsOpen());
 
+    // write something to the file
+    const char* appendedWords = " Appended words.";
+
+    io::FileIO_AppendA fileAppend( (core_io::Path(path)) );
+    REQUIRE(fileAppend.Open() == ErrorSuccess);
+    REQUIRE(fileAppend.Write(appendedWords) == ErrorSuccess);
+    REQUIRE(fileAppend.Close() == ErrorSuccess);
+
+    REQUIRE(fileReader.Open() == ErrorSuccess);
+    String appendedFileContents;
+    fileReader.GetContents(appendedFileContents);
+    CHECK(appendedFileContents.compare(String(sentence) + appendedWords) == 0);
+    REQUIRE(fileReader.Close() == ErrorSuccess);
+
     CHECK(fileReader.Delete() == common_error_types::error_success );
 
     io::FileIO_ReadA fileReaderNoFile(core_io::Path("fileDoesNotExist.txt"));

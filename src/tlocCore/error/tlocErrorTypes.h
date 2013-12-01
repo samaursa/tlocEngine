@@ -40,6 +40,7 @@ namespace tloc {
       error_path_incorrect,
       error_file_not_found,
       error_file_corrupt,
+      error_file_write,
       error_invalid_handle,
     };
   };

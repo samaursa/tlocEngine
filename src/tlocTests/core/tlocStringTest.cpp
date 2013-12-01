@@ -866,4 +866,12 @@ namespace TestingStrings
     CHECK_FALSE(IsPosRealNumber("-1234.5678"));
 
   }
+
+  TEST_CASE("Core/Strings/FreeFunctions/format", "")
+  {
+    String formattedStr =
+      core_str::Format("%s, %i, %.1f, %.1f", "hello world", 5, 10.0f, 20.0);
+
+    CHECK(formattedStr.compare("hello world, 5, 10.0, 20.0") == 0);
+  }
 };

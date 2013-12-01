@@ -142,6 +142,7 @@
 # endif
 
 #else
+  // unsupported compiler
 # error WIP
 #endif
 

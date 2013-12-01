@@ -1,6 +1,12 @@
 #include "tlocString.h"
 #include "tlocString.inl.h"
 
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl.h>
+
+#include <stdio.h>
+#include <stdarg.h>
+
 namespace tloc { namespace core { namespace string {
 
   // ------------------------------------------------------------------------
@@ -92,6 +98,7 @@ namespace tloc { namespace core { namespace string {
     return strcmp(src, dst);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <>
   tl_int
@@ -101,17 +108,23 @@ namespace tloc { namespace core { namespace string {
     return memcmp(aPtr1, aPtr2, aNumChars);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsCntrl(char8 a_char)
@@ -123,29 +136,43 @@ namespace tloc { namespace core { namespace string {
     return g_controlsStr.find(a_char) != String::npos;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsBlank(char8 a_char)
   { return g_blankStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsSpace(char8 a_char)
   { return g_spaceStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsUpper(char8 a_char)
   { return g_upperStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsLower(char8 a_char)
   { return g_lowerStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsAlpha(char8 a_char)
   { return g_alphaStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsDigit(char8 a_char)
   { return g_digitStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsNumber(const char8* a_char)
@@ -176,6 +203,8 @@ namespace tloc { namespace core { namespace string {
 
     return true;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsRealNumber(const char8* a_char)
@@ -231,6 +260,8 @@ namespace tloc { namespace core { namespace string {
     return true;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsNegNumber(const char8* a_char)
   {
@@ -246,6 +277,8 @@ namespace tloc { namespace core { namespace string {
 
     return false;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsNegRealNumber(const char8* a_char)
@@ -263,6 +296,8 @@ namespace tloc { namespace core { namespace string {
     return false;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsPosNumber(const char8* a_char)
   {
@@ -273,6 +308,8 @@ namespace tloc { namespace core { namespace string {
 
     return false;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsPosRealNumber(const char8* a_char)
@@ -285,17 +322,79 @@ namespace tloc { namespace core { namespace string {
     return false;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsXDigit(char8 a_char)
   { return g_xdigitStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsAlNum(char8 a_char)
   { return g_alnumStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsPunct(char8 a_char)
   { return g_punctStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // Note that this solution for a safer sprintf has been taken from:
+  // http://stackoverflow.com/a/69911/368599
+
+  String
+    Vformat (const char *fmt, va_list ap)
+  {
+    // Allocate a buffer on the stack that's big enough for us almost
+    // all the time.
+    const tl_int k_size = 1024;
+    tl_int size = k_size;
+
+    char8 buf[k_size];
+
+    // Try to vsnprintf into our buffer.
+    va_list apcopy;
+
+    // unfortunately va_copy does not exist in the libs distributed with
+    // visual studio - this question provides a solution:
+    // http://stackoverflow.com/a/558259/368599
+#if defined(TLOC_COMPILER_VISUAL_CPP)
+    apcopy = ap;
+#else
+    va_copy (apcopy, ap);
+#endif
+
+    int needed = vsnprintf (&buf[0], size, fmt, ap);
+    // NB. On Windows, vsnprintf returns -1 if the string didn't fit the
+    // buffer.  On Linux & OSX, it returns the length it would have needed.
+
+    if (needed <= size && needed >= 0) {
+      // It fit fine the first time, we're done.
+      return String(&buf[0]);
+    } else {
+      // vsnprintf reported that it wanted to write more characters
+      // than we allotted.  So do a malloc of the right size and try again.
+      // This doesn't happen very often if we chose our initial size
+      // well.
+      core_conts::tl_array<char8>::type buf;
+      size = needed;
+      buf.resize (size);
+      needed = vsnprintf (&buf[0], size, fmt, apcopy);
+      return String(&buf[0]);
+    }
+  }
+
+  String
+    Format(const char8* a_string, ...)
+  {
+    va_list ap;
+    va_start (ap, a_string);
+    String buf = Vformat (a_string, ap);
+    va_end (ap);
+    return buf;
+  }
 
   // ------------------------------------------------------------------------
   // explicit instantiations

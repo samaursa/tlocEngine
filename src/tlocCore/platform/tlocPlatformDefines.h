@@ -13,8 +13,8 @@
 # include "TargetConditionals.h"
 #endif
 
-//////////////////////////////////////////////////////////////////////////
-// Macros
+// ///////////////////////////////////////////////////////////////////////
+// playform macros
 
 #if defined(_WIN64)
 # define TLOC_WIN64
@@ -28,6 +28,17 @@
 # define TLOC_OS_LINUX
 #else
 # error "Unsupported Platform"
+#endif
+
+// ///////////////////////////////////////////////////////////////////////
+// compiler macros
+
+#if defined(_MSC_VER)
+# define TLOC_COMPILER_VISUAL_CPP
+#elif defined (__GNUC__)
+# define TLOC_COMPILER_GCC
+#elif defined (__clang__)
+# define TLOC_COMPILER _CLANG
 #endif
 
 // Convenience Macro

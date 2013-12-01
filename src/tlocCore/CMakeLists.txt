@@ -145,6 +145,13 @@ set(TLOC_ENGINE_CORE_ITERATORS
     iterators/tlocIterator.h
     iterators/tlocIterator.inl.h
 )
+set(TLOC_ENGINE_CORE_LOGGER
+    logger/tloc_logger.h
+    logger/tloc_logger.inl.h
+    logger/tloc_logger.cpp
+    logger/tlocLogger.h
+    logger/tlocLogger.cpp
+)
 set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.h
     memory/tloc_memory.inl.h
@@ -273,6 +280,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_ERROR}
   ${TLOC_ENGINE_CORE_IO}
   ${TLOC_ENGINE_CORE_ITERATORS}
+  ${TLOC_ENGINE_CORE_LOGGER}
   ${TLOC_ENGINE_CORE_MEMORY}
   ${TLOC_ENGINE_CORE_PARSERS}
   ${TLOC_ENGINE_CORE_PLATFORM}
@@ -293,6 +301,7 @@ source_group(data_structures FILES ${TLOC_ENGINE_CORE_DATA_STRUCTURES})
 source_group(error FILES ${TLOC_ENGINE_CORE_ERROR})
 source_group(io FILES ${TLOC_ENGINE_CORE_IO})
 source_group(iterators FILES ${TLOC_ENGINE_CORE_ITERATORS})
+source_group(logger FILES ${TLOC_ENGINE_CORE_LOGGER})
 source_group(memory FILES ${TLOC_ENGINE_CORE_MEMORY})
 source_group(parsers FILES ${TLOC_ENGINE_CORE_PARSERS})
 source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})

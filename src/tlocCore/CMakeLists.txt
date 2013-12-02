@@ -214,7 +214,7 @@ set(TLOC_ENGINE_CORE_STRING
 )
 set(TLOC_ENGINE_CORE_THREADS
     threads/tloc_threads.h
-    threads/tloc_threads.h
+    threads/tloc_threads.inl.h
     threads/tloc_threads.cpp
     threads/tlocLock.h
     threads/tlocLock.cpp

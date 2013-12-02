@@ -26,6 +26,7 @@ namespace tloc {
     namespace rng              {};
     namespace smart_ptr        {};
     namespace string           {};
+    namespace threads          {};
     namespace time             {};
     namespace types            {};
     namespace utils            {};
@@ -48,6 +49,7 @@ namespace tloc {
   namespace core_rng          = core::rng;
   namespace core_sptr         = core::smart_ptr;
   namespace core_str          = core::string;
+  namespace core_threads      = core::threads;
   namespace core_time         = core::time;
   namespace core_t            = core::types;
   namespace core_utils        = core::utils;

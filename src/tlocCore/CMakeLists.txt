@@ -212,6 +212,45 @@ set(TLOC_ENGINE_CORE_STRING
     string/tlocString.inl.h
     string/tlocString.cpp
 )
+set(TLOC_ENGINE_CORE_THREADS
+    threads/tloc_threads.h
+    threads/tloc_threads.h
+    threads/tloc_threads.cpp
+    threads/tlocLock.h
+    threads/tlocLock.cpp
+    threads/tlocMutex.h
+    threads/tlocMutex.cpp
+    threads/tlocMutexImpl.h
+    threads/tlocSleep.h
+    threads/tlocSleep.cpp
+    threads/tlocSleepImpl.h
+    threads/tlocThread.h
+    threads/tlocThread.cpp
+    threads/tlocThreadImpl.h
+)
+
+if(WIN32)
+  set (TLOC_ENGINE_CORE_THREADS
+       ${TLOC_ENGINE_CORE_THREADS}
+       threads/tlocMutexImplWin.h
+       threads/tlocMutexImplWin.cpp
+       threads/tlocSleepImplWin.h
+       threads/tlocSleepImplWin.cpp
+       threads/tlocThreadImplWin.h
+       threads/tlocThreadImplWin.cpp
+  )
+elseif(APPLE)
+  set (TLOC_ENGINE_CORE_THREADS
+       ${TLOC_ENGINE_CORE_THREADS}
+       threads/tlocMutexImplApple.h
+       threads/tlocMutexImplApple.cpp
+       threads/tlocSleepImplApple.h
+       threads/tlocSleepImplApple.cpp
+       threads/tlocThreadImplApple.h
+       threads/tlocThreadImplApple.cpp
+  )
+endif()
+
 set(TLOC_ENGINE_CORE_TIME
     time/tloc_time.h
     time/tloc_time.inl.h
@@ -287,6 +326,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_RNG}
   ${TLOC_ENGINE_CORE_SMART_PTR}
   ${TLOC_ENGINE_CORE_STRING}
+  ${TLOC_ENGINE_CORE_THREADS}
   ${TLOC_ENGINE_CORE_TIME}
   ${TLOC_ENGINE_CORE_TYPES}
   ${TLOC_ENGINE_CORE_UTILITIES}
@@ -308,6 +348,7 @@ source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})
 source_group(rng FILES ${TLOC_ENGINE_CORE_RNG})
 source_group(smart_ptr FILES ${TLOC_ENGINE_CORE_SMART_PTR})
 source_group(string FILES ${TLOC_ENGINE_CORE_STRING})
+source_group(threads FILES ${TLOC_ENGINE_CORE_THREADS})
 source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})

@@ -24,6 +24,7 @@
 #include <tlocCore/rng/tloc_rng.inl.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 #include <tlocCore/string/tloc_string.inl.h>
+#include <tlocCore/threads/tloc_threads.inl.h>
 #include <tlocCore/time/tloc_time.inl.h>
 #include <tlocCore/types/tloc_types.inl.h>
 #include <tlocCore/utilities/tloc_utilities.inl.h>

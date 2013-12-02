@@ -11,10 +11,28 @@ namespace {
 
 namespace tloc { namespace core { namespace logger {
 
-  //LOG_DEBUG(core_log) << "Whatever" << 1.0f << "float";
+  static const tl_ulong s_invalidLoggerLineNumber = 0;
 
   // ///////////////////////////////////////////////////////////////////////
   // BaseLog
+
+  BaseLog_I::
+    BaseLog_I()
+    : m_fileName("Invalid log")
+    , m_lineNumber(s_invalidLoggerLineNumber)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  BaseLog_I::
+    BaseLog_I(const this_type& a_other)
+    : m_finalString(a_other.m_finalString)
+    , m_time(a_other.m_time)
+    , m_fileName(a_other.m_fileName)
+    , m_lineNumber(a_other.m_lineNumber)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   BaseLog_I::
     BaseLog_I(BufferArg a_fileName, const tl_ulong a_lineNumber)
@@ -28,19 +46,58 @@ namespace tloc { namespace core { namespace logger {
       (GetProgramTime().ElapsedSeconds());
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Log
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::
-    Log(BufferArg a_fileName, const tl_ulong a_lineNumber)
-    : base_type(a_fileName, a_lineNumber)
+  BaseLog_I::this_type&
+    BaseLog_I::
+    operator=(this_type a_other)
   {
+    swap(a_other);
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  void
+    BaseLog_I::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    swap(m_finalString, a_other.m_finalString);
+    swap(m_time, a_other.m_time);
+    swap(m_fileName, a_other.m_fileName);
+    swap(m_lineNumber, a_other.m_lineNumber);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Log
+
+#define TLOC_LOG_TEMPS    typename T_Logger
+#define TLOC_LOG_PARAMS   T_Logger
+#define TLOC_LOG_TYPE     typename Log_T<TLOC_LOG_PARAMS>
+
+  template <TLOC_LOG_TEMPS>
+  Log_T<TLOC_LOG_PARAMS>::
+    Log_T(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber)
+    : base_type(a_fileName, a_lineNumber)
+    , m_logger(a_logger)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  Log_T<TLOC_LOG_PARAMS>::
+    ~Log_T()
+  {
+    m_logger->AddLog(*this);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(BufferArg a_string)
   {
     m_finalString += a_string;
@@ -49,8 +106,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_int a_value)
   {
     m_finalString += core_str::Format("%i", a_value);
@@ -59,8 +117,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_long a_value)
   {
     m_finalString += core_str::Format("%il", a_value);
@@ -69,8 +128,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_uint a_value)
   {
     m_finalString += core_str::Format("%u", a_value);
@@ -79,8 +139,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_ulong a_value)
   {
     m_finalString += core_str::Format("%ul", a_value);
@@ -89,8 +150,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_float a_value)
   {
     m_finalString += core_str::Format("%f", a_value);
@@ -99,8 +161,9 @@ namespace tloc { namespace core { namespace logger {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log::this_type&
-    Log::
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_double a_value)
   {
     m_finalString += core_str::Format("%f", a_value);
@@ -110,41 +173,77 @@ namespace tloc { namespace core { namespace logger {
   // ///////////////////////////////////////////////////////////////////////
   // write_policy
 
-  namespace p_logger { namespace write_policy {
+  namespace p_logger {
+    namespace write_policy {
 
-    // ///////////////////////////////////////////////////////////////////////
-    // console
+      // ///////////////////////////////////////////////////////////////////////
+      // console
 
-    Console::
-      Console(BufferArg)
-    { }
-
-    void
       Console::
-      DoWrite(BufferArg a_formattedLog)
-    {
-      printf(a_formattedLog);
-    }
+        Console(BufferArg)
+      { }
 
-    // ///////////////////////////////////////////////////////////////////////
-    // file
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    File::
-      File(BufferArg a_fileName)
-      : m_file(core_io::Path(a_fileName))
-    {
-    }
+      void
+        Console::
+        DoWrite(BufferArg a_formattedLog)
+      {
+        printf(a_formattedLog);
+      }
 
-    void
+      // ///////////////////////////////////////////////////////////////////////
+      // file
+
       File::
-      DoWrite(BufferArg a_formattedLog)
-    {
-      m_file.Open();
-      m_file.Write(a_formattedLog);
-      m_file.Close();
-    }
+        File(BufferArg a_fileName)
+        : m_file(core_io::Path(a_fileName))
+      {
+      }
 
-  };};
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void
+        File::
+        DoWrite(BufferArg a_formattedLog)
+      {
+        m_file.Open();
+        m_file.Write(a_formattedLog);
+        m_file.Close();
+      }
+    };
+
+    namespace format_policy {
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Default
+
+      Default::
+        Default(BufferArg a_loggerName)
+        : m_loggerName(a_loggerName)
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      Default::str_type
+        Default::
+        DoFormat(const BaseLog_I& a_log) const
+      {
+        str_type fs =
+          core_str::Format("\n%s | %07.2f | %s | %s:%lu",
+          m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
+          a_log.GetFileName(), a_log.GetLineNumber());
+
+        return fs;
+      }
+
+    };
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // format_policy::Default
+
+
 
   // ///////////////////////////////////////////////////////////////////////
   // logger
@@ -157,27 +256,30 @@ namespace tloc { namespace core { namespace logger {
   Logger_T<TLOC_LOGGER_PARAMS>::
     Logger_T(const str_type& a_name)
     : write_base_type(a_name)
+    , format_base_type(a_name)
     , m_name(a_name)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOGGER_TEMPS>
-  void
+  TLOC_LOGGER_TYPE::this_type&
     Logger_T<TLOC_LOGGER_PARAMS>::
     AddLog(const BaseLog_I& a_log)
   {
     DoAddLog(a_log, update_policy());
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOGGER_TEMPS>
-  void
+  TLOC_LOGGER_TYPE::this_type&
     Logger_T<TLOC_LOGGER_PARAMS>::
     Flush()
   {
     DoFlush(update_policy());
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -225,6 +327,29 @@ namespace tloc { namespace core { namespace logger {
     write_base_type::DoWrite(allLogs);
   }
 
-  template class Logger_T<>;
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class Logger_T<p_logger::write_policy::Console,
+                          p_logger::update::Immediately,
+                          p_logger::format_policy::Default>;
+  template class Logger_T<p_logger::write_policy::Console,
+                          p_logger::update::OnFlush,
+                          p_logger::format_policy::Default>;
+
+  template class Logger_T<p_logger::write_policy::File,
+                          p_logger::update::Immediately,
+                          p_logger::format_policy::Default>;
+  template class Logger_T<p_logger::write_policy::File,
+                          p_logger::update::OnFlush,
+                          p_logger::format_policy::Default>;
+
+  template class Log_T<LoggerConsoleImmediate>;
+  template class Log_T<LoggerConsoleOnFlush>;
+  template class Log_T<LoggerFileImmediate>;
+  template class Log_T<LoggerFileOnFlush>;
 
 };};};
+
+#include <tlocCore/containers/tlocArray.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logger::BaseLog_I);

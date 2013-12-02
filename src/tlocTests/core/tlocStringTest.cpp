@@ -873,5 +873,14 @@ namespace TestingStrings
       core_str::Format("%s, %i, %.1f, %.1f", "hello world", 5, 10.0f, 20.0);
 
     CHECK(formattedStr.compare("hello world, 5, 10.0, 20.0") == 0);
+
+    // format a large string, this should not crash
+    char veryLongString[2056] = {'a'};
+    veryLongString[2055] = 0;
+
+    String largeFormattedString =
+      core_str::Format("%s", veryLongString);
+
+    CHECK(largeFormattedString.compare(veryLongString) == 0);
   }
 };

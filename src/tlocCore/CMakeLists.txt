@@ -6,6 +6,7 @@ set(TLOC_ENGINE_CORE
     tlocAlgorithms.h
     tlocAlgorithms.inl.h
     tlocCoreBase.h
+    tlocCoreBase.cpp
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
     tlocFunctional.h
@@ -151,6 +152,7 @@ set(TLOC_ENGINE_CORE_LOGGER
     logger/tloc_logger.cpp
     logger/tlocLogger.h
     logger/tlocLogger.cpp
+    logger/tlocLoggerHelper.h
 )
 set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.h

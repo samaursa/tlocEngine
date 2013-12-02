@@ -56,5 +56,26 @@ namespace tloc {
 
 };
 
+#include <tlocCore/logger/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// core's default logger
+namespace tloc { namespace core {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_CORE_INFO()  \
+  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
+#define TLOC_LOG_CORE_DEBUG() \
+  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
+#define TLOC_LOG_CORE_WARN()  \
+  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
+#define TLOC_LOG_CORE_ERR()   \
+  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
+
 
 #endif

@@ -348,41 +348,31 @@ namespace tloc { namespace core { namespace string {
     Vformat (const char *fmt, va_list ap)
   {
     // Allocate a buffer on the stack that's big enough for us almost
-    // all the time.
-    const tl_int k_size = 1024;
-    tl_int size = k_size;
+    // all the time.  Be prepared to allocate dynamically if it doesn't fit.
+    size_t size = 1024;
+    char stackbuf[1024];
+    core_conts::Array<char8> dynamicbuf;
+    char *buf = &stackbuf[0];
 
-    char8 buf[k_size];
+    for (;;) {
+        // Try to vsnprintf into our buffer.
+        int needed = vsnprintf (buf, size, fmt, ap);
+        // NB. C99 (which modern Linux and OS X follow) says vsnprintf
+        // failure returns the length it would have needed.  But older
+        // glibc and current Windows return -1 for failure, i.e., not
+        // telling us how much was needed.
 
-    // Try to vsnprintf into our buffer.
-    va_list apcopy;
+        if (needed <= (int)size && needed >= 0) {
+            // It fit fine so we're done.
+            return core_str::String (buf, (size_t) needed);
+        }
 
-    // unfortunately va_copy does not exist in the libs distributed with
-    // visual studio - this question provides a solution:
-    // http://stackoverflow.com/a/558259/368599
-#if defined(TLOC_COMPILER_VISUAL_CPP)
-    apcopy = ap;
-#else
-    va_copy (apcopy, ap);
-#endif
-
-    int needed = vsnprintf (&buf[0], size, fmt, ap);
-    // NB. On Windows, vsnprintf returns -1 if the string didn't fit the
-    // buffer.  On Linux & OSX, it returns the length it would have needed.
-
-    if (needed <= size && needed >= 0) {
-      // It fit fine the first time, we're done.
-      return String(&buf[0]);
-    } else {
-      // vsnprintf reported that it wanted to write more characters
-      // than we allotted.  So do a malloc of the right size and try again.
-      // This doesn't happen very often if we chose our initial size
-      // well.
-      core_conts::tl_array<char8>::type buf;
-      size = needed;
-      buf.resize (size);
-      needed = vsnprintf (&buf[0], size, fmt, apcopy);
-      return String(&buf[0]);
+        // vsnprintf reported that it wanted to write more characters
+        // than we allotted.  So try again using a dynamic buffer.  This
+        // doesn't happen very often if we chose our initial size well.
+        size = (needed > 0) ? (needed+1) : (size*2);
+        dynamicbuf.resize (size);
+        buf = &dynamicbuf[0];
     }
   }
 

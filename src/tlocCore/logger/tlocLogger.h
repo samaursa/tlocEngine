@@ -11,42 +11,34 @@
 namespace tloc { namespace core { namespace logger {
 
   class BaseLog_I
-    : public core_bclass::NonCopyable_I
   {
   public:
+    typedef BaseLog_I                       this_type;
     typedef f32                             time_type;
     typedef core_str::String                str_type;
+
+  public:
+    BaseLog_I();
+    BaseLog_I(const this_type& a_other);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (str_type, GetFinalString, m_finalString);
 
-  protected:
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetLog, m_finalString);
+    TLOC_DECL_AND_DEF_GETTER(time_type, GetTime, m_time);
+    TLOC_DECL_AND_DEF_GETTER(char*, GetFileName, m_fileName);
+    TLOC_DECL_AND_DEF_GETTER(tl_ulong, GetLineNumber, m_lineNumber);
 
+    this_type& operator=(this_type a_other);
+    void       swap(this_type& a_other);
+
+  protected:
     BaseLog_I(BufferArg a_fileName, const tl_ulong a_lineNumber);
 
     str_type          m_finalString;
     time_type         m_time;
     const char*       m_fileName;
-    const tl_ulong    m_lineNumber;
-  };
-
-  class Log
-    : public BaseLog_I
-  {
-  public:
-    typedef BaseLog_I                                   base_type;
-    typedef Log                                       this_type;
-
-  public:
-    Log(BufferArg a_fileName, const tl_ulong a_lineNumber);
-
-    this_type& operator << (BufferArg a_string);
-    this_type& operator << (tl_int    a_value);
-    this_type& operator << (tl_long   a_value);
-    this_type& operator << (tl_uint   a_value);
-    this_type& operator << (tl_ulong  a_value);
-    this_type& operator << (tl_float  a_value);
-    this_type& operator << (tl_double a_value);
+    tl_ulong          m_lineNumber;
   };
 
   namespace p_logger
@@ -94,15 +86,22 @@ namespace tloc { namespace core { namespace logger {
         typedef core_str::String                      str_type;
 
       protected:
+        Default(BufferArg a_loggerName);
 
         str_type DoFormat(const BaseLog_I& a_log) const;
+
+      private:
+        str_type m_loggerName;
       };
     };
   };
 
-  template <typename T_WritePolicy = p_logger::write_policy::Console,
-            typename T_UpdatePolicy = p_logger::update::Immediately,
-            typename T_FormatPolicy = p_logger::format_policy::Default>
+  // ///////////////////////////////////////////////////////////////////////
+  // Logger_T<>
+
+  template <typename T_WritePolicy,
+            typename T_UpdatePolicy,
+            typename T_FormatPolicy>
   class Logger_T
     : public T_WritePolicy
     , public T_FormatPolicy
@@ -123,8 +122,8 @@ namespace tloc { namespace core { namespace logger {
   public:
     Logger_T(const str_type& a_name);
 
-    void AddLog(const BaseLog_I& a_log);
-    void Flush();
+    this_type& AddLog(const BaseLog_I& a_log);
+    this_type& Flush();
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
   private:
@@ -139,8 +138,68 @@ namespace tloc { namespace core { namespace logger {
     log_cont    m_logs;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
 
+  typedef Logger_T<p_logger::write_policy::Console,
+                   p_logger::update::Immediately,
+                   p_logger::format_policy::Default>      LoggerConsoleImmediate;
+  typedef Logger_T<p_logger::write_policy::Console,
+                   p_logger::update::OnFlush,
+                   p_logger::format_policy::Default>      LoggerConsoleOnFlush;
+
+  typedef Logger_T<p_logger::write_policy::File,
+                   p_logger::update::Immediately,
+                   p_logger::format_policy::Default>      LoggerFileImmediate;
+  typedef Logger_T<p_logger::write_policy::File,
+                   p_logger::update::OnFlush,
+                   p_logger::format_policy::Default>      LoggerFileOnFlush;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Log
+
+  template <typename T_Logger>
+  class Log_T
+    : public BaseLog_I
+  {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
+      Loki::IsSameType<T_Logger, LoggerConsoleOnFlush>::value ||
+      Loki::IsSameType<T_Logger, LoggerFileImmediate>::value ||
+      Loki::IsSameType<T_Logger, LoggerFileOnFlush>::value),
+      Unsupported_logger_type);
+
+  public:
+    typedef BaseLog_I                                 base_type;
+    typedef Log_T                                     this_type;
+
+  public:
+    Log_T(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber);
+    ~Log_T();
+
+    this_type& operator << (BufferArg a_string);
+    this_type& operator << (tl_int    a_value);
+    this_type& operator << (tl_long   a_value);
+    this_type& operator << (tl_uint   a_value);
+    this_type& operator << (tl_ulong  a_value);
+    this_type& operator << (tl_float  a_value);
+    this_type& operator << (tl_double a_value);
+
+  private:
+    T_Logger* m_logger;
+  };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef Log_T<LoggerConsoleImmediate>                 LogConsoleImmediate;
+  typedef Log_T<LoggerConsoleOnFlush>                   LogConsoleOnFlush;
+  typedef Log_T<LoggerFileImmediate>                    LogFileImmediate;
+  typedef Log_T<LoggerFileOnFlush>                      LogFileOnFlush;
 
 };};};
+
+#define TLOC_LOG(_logger_, _severity_) \
+  tloc::core::logger::Log_T(_logger_, __FILE__, _LINE__)
 
 #endif

@@ -1,6 +1,7 @@
 set(TLOC_PHYSICS
   tlocDepVersionCheck.cpp 
   tlocPhysicsBase.h 
+  tlocPhysicsBase.cpp
   tloc_physics.cpp 
   tloc_physics.h 
   tloc_physics.inl.h

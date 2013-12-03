@@ -2,8 +2,10 @@
 // that can then be defined to return a static logger (see existing usage
 // in tlocCoreBase.h)
 
-// this macro MUST be used in a global namespace and MUST be used before
-#define TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT()\
+// -----------------------------------------------------------------------
+// Internal use macros
+
+#define TLOC_FORWARD_DECLARE_LOGGER(_writePolicy_, _updatePolicy_, _formatPolicy_)\
 namespace tloc { namespace core {\
 \
   /* unfortunately, some forward declaration is needed to avoid including */ \
@@ -11,9 +13,9 @@ namespace tloc { namespace core {\
   namespace logger {\
 \
     namespace p_logger {\
-      namespace write_policy  { class Console; }\
-      namespace update        { class Immediately; }\
-      namespace format_policy { class Default; }\
+      namespace write_policy  { class _writePolicy_; }\
+      namespace update_policy { class _updatePolicy_; }\
+      namespace format_policy { class _formatPolicy_; }\
     }\
 \
     template <typename T_WritePolicy, \
@@ -23,10 +25,106 @@ namespace tloc { namespace core {\
   };\
 };}
 
-#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_)\
+#define TLOC_FORWARD_DECLARE_LOGGER_FUNC(_writePolicy_, _updatePolicy_, _formatPolicy_, _funcName_)\
   /* use macros instead of this function for logging */ \
   tloc::core::logger::Logger_T\
-    <tloc::core::logger::p_logger::write_policy::Console,\
-     tloc::core::logger::p_logger::update::Immediately,\
-     tloc::core::logger::p_logger::format_policy::Default>&\
+    <tloc::core::logger::p_logger::write_policy::_writePolicy_,\
+     tloc::core::logger::p_logger::update_policy::_updatePolicy_,\
+     tloc::core::logger::p_logger::format_policy::_formatPolicy_>&\
      _funcName_()
+
+// -----------------------------------------------------------------------
+// OUTPUT IMMEDIATE DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_OUTPUT_IMMEDIATE_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(Output, Immediately, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, Immediately, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerOutputImmediate&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerOutputImmediate s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }
+
+// -----------------------------------------------------------------------
+// OUTPUT ONFLUSH DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_OUTPUT_ONFLUSH_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(Output, OnFlush, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_OUTPUT_ONFLUSH_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, OnFlush, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_OUTPUT_ONFLUSH_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerOutputOnFlush&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerOutputOnFlush s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }
+
+// -----------------------------------------------------------------------
+// CONSOLE IMMEDIATE DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(Console, Immediately, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, Immediately, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerConsoleImmediate&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerConsoleImmediate s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }
+
+// -----------------------------------------------------------------------
+// CONSOLE ONFLUSH DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_ONFLUSH_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(Console, OnFlush, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_ONFLUSH_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, OnFlush, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_CONSOLE_ONFLUSH_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerConsoleOnFlush&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerConsoleOnFlush s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }
+
+// -----------------------------------------------------------------------
+// FILE IMMEDIATE DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_FILE_IMMEDIATE_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(File, Immediately, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, Immediately, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerFileImmediate&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerFileImmediate s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }
+
+// -----------------------------------------------------------------------
+// FILE ONFLUSH DEFAULT
+
+// this macro MUST be used in a global namespace and MUST be used before
+#define TLOC_FORWARD_DECLARE_LOGGER_FILE_ONFLUSH_DEFAULT()\
+  TLOC_FORWARD_DECLARE_LOGGER(File, OnFlush, Default);
+#define TLOC_LOGGER_DECLARE_LOGGER_FUNC_FILE_ONFLUSH_DEFAULT(_funcName_)\
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, OnFlush, Default, _funcName_);
+#define TLOC_LOGGER_DEFINE_LOGGER_FUNC_FILE_ONFLUSH_DEFAULT(_funcName_, _name_)\
+  tloc::core::logger::LoggerFileOnFlush&\
+    _funcName_()\
+  {\
+    static tloc::core::logger::LoggerFileOnFlush s_coreDefaultLogger( (#_name_) );\
+    return s_coreDefaultLogger;\
+  }

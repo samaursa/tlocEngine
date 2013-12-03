@@ -10,6 +10,7 @@
 #include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
@@ -20,9 +21,6 @@
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
 #include <gl/GL.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {

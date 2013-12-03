@@ -1,6 +1,7 @@
 set(TLOC_ANIMATION
   tlocDepVersionCheck.cpp 
   tlocAnimationBase.h
+  tlocAnimationBase.cpp
   tloc_animation.cpp 
   tloc_animation.h 
   tloc_animation.inl.h 

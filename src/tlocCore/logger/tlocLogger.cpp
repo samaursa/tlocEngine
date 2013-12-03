@@ -2,10 +2,35 @@
 
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/time/tlocTime.h>
+#include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 
 namespace {
 
   static const tloc::tl_int g_initialBufferSize = 128;
+
+};
+
+namespace {
+  // -----------------------------------------------------------------------
+  // platform specific fast console output
+
+  template <typename T_Platform>
+  void DoWriteOutput(tloc::BufferArg a_formattedLog, T_Platform)
+  { printf(a_formattedLog); }
+
+  void DoWriteOutput(tloc::BufferArg a_formattedLog,
+                     tloc::core_plat::p_platform_info::win)
+  {
+    TLOC_UNUSED(a_formattedLog);
+#if defined(TLOC_OS_WIN)
+    static bool idp = IsDebuggerPresent() != 0;
+    if (idp)
+    { OutputDebugString(a_formattedLog); }
+    else
+    { printf(a_formattedLog); }
+#endif
+  }
 
 };
 
@@ -193,6 +218,20 @@ namespace tloc { namespace core { namespace logger {
       }
 
       // ///////////////////////////////////////////////////////////////////////
+      // console fast
+
+      Output::
+        Output(BufferArg)
+      { }
+
+      void
+        Output::
+        DoWrite(BufferArg a_formattedLog)
+      {
+        DoWriteOutput(a_formattedLog, core_plat::PlatformInfo::platform_type());
+      }
+
+      // ///////////////////////////////////////////////////////////////////////
       // file
 
       File::
@@ -230,7 +269,7 @@ namespace tloc { namespace core { namespace logger {
         DoFormat(const BaseLog_I& a_log) const
       {
         str_type fs =
-          core_str::Format("\n%s | %07.2f | %s | %s:%lu",
+          core_str::Format("\n%s | %07.2f | %s | %s(%lu)",
           m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
           a_log.GetFileName(), a_log.GetLineNumber());
 
@@ -287,7 +326,7 @@ namespace tloc { namespace core { namespace logger {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const BaseLog_I& a_log, p_logger::update::Immediately)
+    DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediately)
   {
     str_type log = format_base_type::DoFormat(a_log);
     write_base_type::DoWrite(log);
@@ -298,7 +337,7 @@ namespace tloc { namespace core { namespace logger {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const BaseLog_I& a_log, p_logger::update::OnFlush)
+    DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::OnFlush)
   { m_logs.push_back(a_log); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -306,7 +345,7 @@ namespace tloc { namespace core { namespace logger {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoFlush(p_logger::update::Immediately)
+    DoFlush(p_logger::update_policy::Immediately)
   { /* do nothing */ }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -314,7 +353,7 @@ namespace tloc { namespace core { namespace logger {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoFlush(p_logger::update::OnFlush)
+    DoFlush(p_logger::update_policy::OnFlush)
   {
     core_str::String allLogs;
 
@@ -331,21 +370,30 @@ namespace tloc { namespace core { namespace logger {
   // explicit instantiations
 
   template class Logger_T<p_logger::write_policy::Console,
-                          p_logger::update::Immediately,
+                          p_logger::update_policy::Immediately,
                           p_logger::format_policy::Default>;
   template class Logger_T<p_logger::write_policy::Console,
-                          p_logger::update::OnFlush,
+                          p_logger::update_policy::OnFlush,
+                          p_logger::format_policy::Default>;
+
+  template class Logger_T<p_logger::write_policy::Output,
+                          p_logger::update_policy::Immediately,
+                          p_logger::format_policy::Default>;
+  template class Logger_T<p_logger::write_policy::Output,
+                          p_logger::update_policy::OnFlush,
                           p_logger::format_policy::Default>;
 
   template class Logger_T<p_logger::write_policy::File,
-                          p_logger::update::Immediately,
+                          p_logger::update_policy::Immediately,
                           p_logger::format_policy::Default>;
   template class Logger_T<p_logger::write_policy::File,
-                          p_logger::update::OnFlush,
+                          p_logger::update_policy::OnFlush,
                           p_logger::format_policy::Default>;
 
   template class Log_T<LoggerConsoleImmediate>;
   template class Log_T<LoggerConsoleOnFlush>;
+  template class Log_T<LoggerOutputImmediate>;
+  template class Log_T<LoggerOutputOnFlush>;
   template class Log_T<LoggerFileImmediate>;
   template class Log_T<LoggerFileOnFlush>;
 

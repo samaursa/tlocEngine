@@ -5,10 +5,9 @@
 #error "Must include header before including the inline file"
 #endif
 #include <tlocCore/time/tlocTime.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 
-#if defined(TLOC_OS_WIN)
-# include <Windows.h>
-#elif defined(TLOC_OS_IPHONE)
+#if defined(TLOC_OS_IPHONE)
 # include <mach/mach_time.h>
 #endif
 

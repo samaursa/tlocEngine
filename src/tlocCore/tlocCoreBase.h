@@ -68,14 +68,10 @@ namespace tloc { namespace core {
 
 };};
 
-#define TLOC_LOG_CORE_INFO()  \
-  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
-#define TLOC_LOG_CORE_DEBUG() \
-  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
-#define TLOC_LOG_CORE_WARN()  \
-  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
-#define TLOC_LOG_CORE_ERR()   \
-  tloc::core::logger::LogConsoleImmediate(&tloc::core::GetLogger(), __FILE__, __LINE__)
+#define TLOC_LOG_CORE_INFO()    TLOC_LOG_INFO(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_DEBUG()   TLOC_LOG_DEBUG(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_WARN()    TLOC_LOG_WARN(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_ERR()     TLOC_LOG_ERR(&tloc::core::GetLogger())
 
 
 #endif

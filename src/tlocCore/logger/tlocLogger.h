@@ -51,7 +51,7 @@ namespace tloc { namespace core { namespace logger {
       class Error   { static const tl_int s_value = 3; };
     };
 
-    namespace update
+    namespace update_policy
     {
       class Immediately { };
       class OnFlush     { };
@@ -63,6 +63,15 @@ namespace tloc { namespace core { namespace logger {
       {
       protected:
         Console(BufferArg a_loggerName);
+
+        void DoWrite(BufferArg a_formattedLog);
+      };
+
+      // usually for outputting to a window other than the console
+      class Output
+      {
+      protected:
+        Output(BufferArg a_loggerName);
 
         void DoWrite(BufferArg a_formattedLog);
       };
@@ -107,6 +116,21 @@ namespace tloc { namespace core { namespace logger {
     , public T_FormatPolicy
     , public core_bclass::NonCopyable_I
   {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_WritePolicy, p_logger::write_policy::Console>::value ||
+       Loki::IsSameType<T_WritePolicy, p_logger::write_policy::Output>::value ||
+       Loki::IsSameType<T_WritePolicy, p_logger::write_policy::File>::value),
+       Invalid_write_policy_selected);
+
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_UpdatePolicy, p_logger::update_policy::Immediately>::value ||
+       Loki::IsSameType<T_UpdatePolicy, p_logger::update_policy::OnFlush>::value),
+       Invalid_write_policy_selected);
+
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_FormatPolicy, p_logger::format_policy::Default>::value),
+       Invalid_write_policy_selected);
+
   public:
     typedef Logger_T                                  this_type;
     typedef T_WritePolicy                             write_policy;
@@ -127,11 +151,11 @@ namespace tloc { namespace core { namespace logger {
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
   private:
-    void DoAddLog(const BaseLog_I& a_log, p_logger::update::Immediately);
-    void DoAddLog(const BaseLog_I& a_log, p_logger::update::OnFlush);
+    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediately);
+    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::OnFlush);
 
-    void DoFlush(p_logger::update::Immediately);
-    void DoFlush(p_logger::update::OnFlush);
+    void DoFlush(p_logger::update_policy::Immediately);
+    void DoFlush(p_logger::update_policy::OnFlush);
 
   private:
     str_type    m_name;
@@ -142,17 +166,24 @@ namespace tloc { namespace core { namespace logger {
   // typedefs
 
   typedef Logger_T<p_logger::write_policy::Console,
-                   p_logger::update::Immediately,
+                   p_logger::update_policy::Immediately,
                    p_logger::format_policy::Default>      LoggerConsoleImmediate;
   typedef Logger_T<p_logger::write_policy::Console,
-                   p_logger::update::OnFlush,
+                   p_logger::update_policy::OnFlush,
                    p_logger::format_policy::Default>      LoggerConsoleOnFlush;
 
+  typedef Logger_T<p_logger::write_policy::Output,
+                   p_logger::update_policy::Immediately,
+                   p_logger::format_policy::Default>      LoggerOutputImmediate;
+  typedef Logger_T<p_logger::write_policy::Output,
+                   p_logger::update_policy::OnFlush,
+                   p_logger::format_policy::Default>      LoggerOutputOnFlush;
+
   typedef Logger_T<p_logger::write_policy::File,
-                   p_logger::update::Immediately,
+                   p_logger::update_policy::Immediately,
                    p_logger::format_policy::Default>      LoggerFileImmediate;
   typedef Logger_T<p_logger::write_policy::File,
-                   p_logger::update::OnFlush,
+                   p_logger::update_policy::OnFlush,
                    p_logger::format_policy::Default>      LoggerFileOnFlush;
 
   // ///////////////////////////////////////////////////////////////////////
@@ -164,10 +195,12 @@ namespace tloc { namespace core { namespace logger {
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
-      Loki::IsSameType<T_Logger, LoggerConsoleOnFlush>::value ||
-      Loki::IsSameType<T_Logger, LoggerFileImmediate>::value ||
-      Loki::IsSameType<T_Logger, LoggerFileOnFlush>::value),
-      Unsupported_logger_type);
+       Loki::IsSameType<T_Logger, LoggerConsoleOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileOnFlush>::value),
+       Unsupported_logger_type);
 
   public:
     typedef BaseLog_I                                 base_type;
@@ -190,16 +223,34 @@ namespace tloc { namespace core { namespace logger {
   };
 
   // -----------------------------------------------------------------------
+  // helper functions
+
+  template <typename T_Logger>
+  Log_T<T_Logger>
+    MakeLog(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber)
+  { return Log_T<T_Logger>(a_logger, a_fileName, a_lineNumber); }
+
+  // -----------------------------------------------------------------------
   // typedefs
 
   typedef Log_T<LoggerConsoleImmediate>                 LogConsoleImmediate;
   typedef Log_T<LoggerConsoleOnFlush>                   LogConsoleOnFlush;
+  typedef Log_T<LoggerOutputImmediate>             LogOutputImmediate;
+  typedef Log_T<LoggerOutputOnFlush>               LogOutputOnFlush;
   typedef Log_T<LoggerFileImmediate>                    LogFileImmediate;
   typedef Log_T<LoggerFileOnFlush>                      LogFileOnFlush;
 
 };};};
 
 #define TLOC_LOG(_logger_, _severity_) \
-  tloc::core::logger::Log_T(_logger_, __FILE__, _LINE__)
+  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+#define TLOC_LOG_INFO(_logger_)\
+  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+#define TLOC_LOG_DEBUG(_logger_)\
+  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+#define TLOC_LOG_WARN(_logger_)\
+  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+#define TLOC_LOG_ERR(_logger_)\
+  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
 
 #endif

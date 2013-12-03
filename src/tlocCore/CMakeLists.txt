@@ -182,6 +182,7 @@ set(TLOC_ENGINE_CORE_PLATFORM
     platform/tlocPlatform.h
     platform/tlocPlatform.cpp
     platform/tlocPlatformDefines.h
+    platform/tlocPlatformSpecificIncludes.h
 )
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h

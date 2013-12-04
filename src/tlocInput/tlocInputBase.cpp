@@ -1,6 +1,6 @@
 #include "tlocInputBase.h"
 
-#include <tlocCore/logger/tlocLogger.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace input {
 

@@ -11,7 +11,7 @@ namespace {
 
 };
 
-namespace tloc { namespace core { namespace logger {
+namespace tloc { namespace core { namespace logging {
 
   // ///////////////////////////////////////////////////////////////////////
   // BaseLog

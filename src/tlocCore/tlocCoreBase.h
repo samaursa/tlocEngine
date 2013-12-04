@@ -18,7 +18,7 @@ namespace tloc {
     namespace containers       {};
     namespace data_structs     {};
     namespace error            {};
-    namespace logger           {};
+    namespace logging           {};
     namespace io               {};
     namespace memory           {};
     namespace parsers          {};
@@ -41,7 +41,7 @@ namespace tloc {
   namespace core_conts        = core::containers;
   namespace core_ds           = core::data_structs;
   namespace core_err          = core::error;
-  namespace core_log          = core::logger;
+  namespace core_log          = core::logging;
   namespace core_io           = core::io;
   namespace core_mem          = core::memory;
   namespace core_parse        = core::parsers;
@@ -56,7 +56,7 @@ namespace tloc {
 
 };
 
-#include <tlocCore/logger/tlocLoggerHelper.h>
+#include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
 

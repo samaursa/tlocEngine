@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/logger/tlocLogger.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace TestingLogging
 {
   using namespace tloc;
-  using namespace core::logger;
+  using namespace core::logging;
 
   LoggerOutputImmediate lcfi("testLogger");
 

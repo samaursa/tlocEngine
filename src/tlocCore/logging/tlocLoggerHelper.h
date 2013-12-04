@@ -10,7 +10,7 @@ namespace tloc { namespace core {\
 \
   /* unfortunately, some forward declaration is needed to avoid including */ \
   /* the Logger header */ \
-  namespace logger {\
+  namespace logging {\
 \
     namespace p_logger {\
       namespace write_policy  { class _writePolicy_; }\
@@ -27,10 +27,10 @@ namespace tloc { namespace core {\
 
 #define TLOC_FORWARD_DECLARE_LOGGER_FUNC(_writePolicy_, _updatePolicy_, _formatPolicy_, _funcName_)\
   /* use macros instead of this function for logging */ \
-  tloc::core::logger::Logger_T\
-    <tloc::core::logger::p_logger::write_policy::_writePolicy_,\
-     tloc::core::logger::p_logger::update_policy::_updatePolicy_,\
-     tloc::core::logger::p_logger::format_policy::_formatPolicy_>&\
+  tloc::core::logging::Logger_T\
+    <tloc::core::logging::p_logger::write_policy::_writePolicy_,\
+     tloc::core::logging::p_logger::update_policy::_updatePolicy_,\
+     tloc::core::logging::p_logger::format_policy::_formatPolicy_>&\
      _funcName_()
 
 // -----------------------------------------------------------------------
@@ -42,10 +42,10 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerOutputImmediate&\
+  tloc::core::logging::LoggerOutputImmediate&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerOutputImmediate s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerOutputImmediate s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }
 
@@ -58,10 +58,10 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_OUTPUT_ONFLUSH_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, OnFlush, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_OUTPUT_ONFLUSH_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerOutputOnFlush&\
+  tloc::core::logging::LoggerOutputOnFlush&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerOutputOnFlush s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerOutputOnFlush s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }
 
@@ -74,10 +74,10 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerConsoleImmediate&\
+  tloc::core::logging::LoggerConsoleImmediate&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerConsoleImmediate s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerConsoleImmediate s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }
 
@@ -90,10 +90,10 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_ONFLUSH_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, OnFlush, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_CONSOLE_ONFLUSH_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerConsoleOnFlush&\
+  tloc::core::logging::LoggerConsoleOnFlush&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerConsoleOnFlush s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerConsoleOnFlush s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }
 
@@ -106,10 +106,10 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerFileImmediate&\
+  tloc::core::logging::LoggerFileImmediate&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerFileImmediate s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerFileImmediate s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }
 
@@ -122,9 +122,9 @@ namespace tloc { namespace core {\
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_FILE_ONFLUSH_DEFAULT(_funcName_)\
   TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, OnFlush, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_FILE_ONFLUSH_DEFAULT(_funcName_, _name_)\
-  tloc::core::logger::LoggerFileOnFlush&\
+  tloc::core::logging::LoggerFileOnFlush&\
     _funcName_()\
   {\
-    static tloc::core::logger::LoggerFileOnFlush s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerFileOnFlush s_coreDefaultLogger( (#_name_) );\
     return s_coreDefaultLogger;\
   }

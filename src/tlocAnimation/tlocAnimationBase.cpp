@@ -1,6 +1,6 @@
 #include "tlocAnimationBase.h"
 
-#include <tlocCore/logger/tlocLogger.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace animation {
 

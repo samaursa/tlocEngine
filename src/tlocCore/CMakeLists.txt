@@ -147,9 +147,9 @@ set(TLOC_ENGINE_CORE_ITERATORS
     iterators/tlocIterator.inl.h
 )
 set(TLOC_ENGINE_CORE_LOGGER
-    logging/tloc_logger.h
-    logging/tloc_logger.inl.h
-    logging/tloc_logger.cpp
+    logging/tloc_logging.h
+    logging/tloc_logging.inl.h
+    logging/tloc_logging.cpp
     logging/tlocLog.h
     logging/tlocLog.cpp
     logging/tlocLogger.h

@@ -1,5 +1,5 @@
-#ifndef _TLOC_CORE_INCLUDE_ALL_LOGGER_H_
-#define _TLOC_CORE_INCLUDE_ALL_LOGGER_H_
+#ifndef _TLOC_CORE_INCLUDE_ALL_LOGGING_H_
+#define _TLOC_CORE_INCLUDE_ALL_LOGGING_H_
 
 #include <tlocCore/tlocCoreBase.h>
 

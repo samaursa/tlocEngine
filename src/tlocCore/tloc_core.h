@@ -16,7 +16,7 @@
 #include <tlocCore/error/tloc_error.h>
 #include <tlocCore/io/tloc_io.h>
 #include <tlocCore/iterators/tloc_iterators.h>
-#include <tlocCore/logging/tloc_logger.h>
+#include <tlocCore/logging/tloc_logging.h>
 #include <tlocCore/memory/tloc_memory.h>
 #include <tlocCore/platform/tloc_platform.h>
 #include <tlocCore/rng/tloc_rng.h>

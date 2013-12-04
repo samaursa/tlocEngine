@@ -150,6 +150,8 @@ set(TLOC_ENGINE_CORE_LOGGER
     logger/tloc_logger.h
     logger/tloc_logger.inl.h
     logger/tloc_logger.cpp
+    logger/tlocLog.h
+    logger/tlocLog.cpp
     logger/tlocLogger.h
     logger/tlocLogger.cpp
     logger/tlocLoggerHelper.h

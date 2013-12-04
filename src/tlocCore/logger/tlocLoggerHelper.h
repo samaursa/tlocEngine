@@ -38,9 +38,9 @@ namespace tloc { namespace core {\
 
 // this macro MUST be used in a global namespace and MUST be used before
 #define TLOC_FORWARD_DECLARE_LOGGER_OUTPUT_IMMEDIATE_DEFAULT()\
-  TLOC_FORWARD_DECLARE_LOGGER(Output, Immediately, Default);
+  TLOC_FORWARD_DECLARE_LOGGER(Output, Immediate, Default);
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_)\
-  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, Immediately, Default, _funcName_);
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Output, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_OUTPUT_IMMEDIATE_DEFAULT(_funcName_, _name_)\
   tloc::core::logger::LoggerOutputImmediate&\
     _funcName_()\
@@ -70,9 +70,9 @@ namespace tloc { namespace core {\
 
 // this macro MUST be used in a global namespace and MUST be used before
 #define TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT()\
-  TLOC_FORWARD_DECLARE_LOGGER(Console, Immediately, Default);
+  TLOC_FORWARD_DECLARE_LOGGER(Console, Immediate, Default);
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_)\
-  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, Immediately, Default, _funcName_);
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(Console, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
   tloc::core::logger::LoggerConsoleImmediate&\
     _funcName_()\
@@ -102,9 +102,9 @@ namespace tloc { namespace core {\
 
 // this macro MUST be used in a global namespace and MUST be used before
 #define TLOC_FORWARD_DECLARE_LOGGER_FILE_IMMEDIATE_DEFAULT()\
-  TLOC_FORWARD_DECLARE_LOGGER(File, Immediately, Default);
+  TLOC_FORWARD_DECLARE_LOGGER(File, Immediate, Default);
 #define TLOC_LOGGER_DECLARE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_)\
-  TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, Immediately, Default, _funcName_);
+  TLOC_FORWARD_DECLARE_LOGGER_FUNC(File, Immediate, Default, _funcName_);
 #define TLOC_LOGGER_DEFINE_LOGGER_FUNC_FILE_IMMEDIATE_DEFAULT(_funcName_, _name_)\
   tloc::core::logger::LoggerFileImmediate&\
     _funcName_()\

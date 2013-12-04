@@ -7,9 +7,9 @@
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/io/tlocFileIO.h>
 
-#include <tlocCore/logger/tlocLog.h>
+#include <tlocCore/logging/tlocLog.h>
 
-namespace tloc { namespace core { namespace logger {
+namespace tloc { namespace core { namespace logging {
 
   namespace p_logger
   {
@@ -197,14 +197,14 @@ namespace tloc { namespace core { namespace logger {
 };};};
 
 #define TLOC_LOG(_logger_, _severity_) \
-  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
 #define TLOC_LOG_INFO(_logger_)\
-  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
 #define TLOC_LOG_DEBUG(_logger_)\
-  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
 #define TLOC_LOG_WARN(_logger_)\
-  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
 #define TLOC_LOG_ERR(_logger_)\
-  tloc::core::logger::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
 
 #endif

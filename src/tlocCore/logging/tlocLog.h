@@ -6,7 +6,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 
-namespace tloc { namespace core { namespace logger {
+namespace tloc { namespace core { namespace logging {
 
   namespace p_log
   {

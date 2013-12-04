@@ -26,7 +26,7 @@ namespace tloc {
 
 };
 
-#include <tlocCore/logger/tlocLoggerHelper.h>
+#include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
 

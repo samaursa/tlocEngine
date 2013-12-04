@@ -147,14 +147,14 @@ set(TLOC_ENGINE_CORE_ITERATORS
     iterators/tlocIterator.inl.h
 )
 set(TLOC_ENGINE_CORE_LOGGER
-    logger/tloc_logger.h
-    logger/tloc_logger.inl.h
-    logger/tloc_logger.cpp
-    logger/tlocLog.h
-    logger/tlocLog.cpp
-    logger/tlocLogger.h
-    logger/tlocLogger.cpp
-    logger/tlocLoggerHelper.h
+    logging/tloc_logger.h
+    logging/tloc_logger.inl.h
+    logging/tloc_logger.cpp
+    logging/tlocLog.h
+    logging/tlocLog.cpp
+    logging/tlocLogger.h
+    logging/tlocLogger.cpp
+    logging/tlocLoggerHelper.h
 )
 set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.h

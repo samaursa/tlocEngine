@@ -27,7 +27,7 @@ namespace {
   }
 };
 
-namespace tloc { namespace core { namespace logger {
+namespace tloc { namespace core { namespace logging {
 
   // ///////////////////////////////////////////////////////////////////////
   // Log
@@ -252,4 +252,4 @@ namespace tloc { namespace core { namespace logger {
 };};};
 
 #include <tlocCore/containers/tlocArray.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logger::BaseLog_I);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logging::BaseLog_I);

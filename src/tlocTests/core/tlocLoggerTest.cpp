@@ -11,10 +11,9 @@ namespace TestingLogging
 
   TEST_CASE("core/logger", "")
   {
-    TLOC_LOG_INFO(&lcfi) << "Testing";
-
-    TLOC_LOG_CORE_INFO() << "Testing logger: " << 1 << ", " << 1.0f;
-    TLOC_LOG_CORE_INFO() << "Testing logger: " << 2 << ", " << 2.0f;
-    TLOC_LOG_CORE_INFO() << "Testing logger: " << 3 << ", " << 3.0f;
+    TLOC_LOG_INFO(&lcfi) << "Info log";
+    TLOC_LOG_DEBUG(&lcfi) << "Debug log";
+    TLOC_LOG_WARN(&lcfi) << "Warning log";
+    TLOC_LOG_ERR(&lcfi) << "Error log";
   }
 };

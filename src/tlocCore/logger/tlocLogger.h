@@ -4,56 +4,18 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/io/tlocFileIO.h>
 
+#include <tlocCore/logger/tlocLog.h>
+
 namespace tloc { namespace core { namespace logger {
-
-  class BaseLog_I
-  {
-  public:
-    typedef BaseLog_I                       this_type;
-    typedef f32                             time_type;
-    typedef core_str::String                str_type;
-
-  public:
-    BaseLog_I();
-    BaseLog_I(const this_type& a_other);
-
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (str_type, GetFinalString, m_finalString);
-
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetLog, m_finalString);
-    TLOC_DECL_AND_DEF_GETTER(time_type, GetTime, m_time);
-    TLOC_DECL_AND_DEF_GETTER(char*, GetFileName, m_fileName);
-    TLOC_DECL_AND_DEF_GETTER(tl_ulong, GetLineNumber, m_lineNumber);
-
-    this_type& operator=(this_type a_other);
-    void       swap(this_type& a_other);
-
-  protected:
-    BaseLog_I(BufferArg a_fileName, const tl_ulong a_lineNumber);
-
-    str_type          m_finalString;
-    time_type         m_time;
-    const char*       m_fileName;
-    tl_ulong          m_lineNumber;
-  };
 
   namespace p_logger
   {
-    namespace severity
-    {
-      class Info    { static const tl_int s_value = 0; };
-      class Debug   { static const tl_int s_value = 1; };
-      class Warning { static const tl_int s_value = 2; };
-      class Error   { static const tl_int s_value = 3; };
-    };
-
     namespace update_policy
     {
-      class Immediately { };
+      class Immediate   { };
       class OnFlush     { };
     };
 
@@ -123,7 +85,7 @@ namespace tloc { namespace core { namespace logger {
        Invalid_write_policy_selected);
 
     TLOC_STATIC_ASSERT(
-      (Loki::IsSameType<T_UpdatePolicy, p_logger::update_policy::Immediately>::value ||
+      (Loki::IsSameType<T_UpdatePolicy, p_logger::update_policy::Immediate>::value ||
        Loki::IsSameType<T_UpdatePolicy, p_logger::update_policy::OnFlush>::value),
        Invalid_write_policy_selected);
 
@@ -151,10 +113,10 @@ namespace tloc { namespace core { namespace logger {
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
   private:
-    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediately);
+    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediate);
     void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::OnFlush);
 
-    void DoFlush(p_logger::update_policy::Immediately);
+    void DoFlush(p_logger::update_policy::Immediate);
     void DoFlush(p_logger::update_policy::OnFlush);
 
   private:
@@ -166,21 +128,21 @@ namespace tloc { namespace core { namespace logger {
   // typedefs
 
   typedef Logger_T<p_logger::write_policy::Console,
-                   p_logger::update_policy::Immediately,
+                   p_logger::update_policy::Immediate,
                    p_logger::format_policy::Default>      LoggerConsoleImmediate;
   typedef Logger_T<p_logger::write_policy::Console,
                    p_logger::update_policy::OnFlush,
                    p_logger::format_policy::Default>      LoggerConsoleOnFlush;
 
   typedef Logger_T<p_logger::write_policy::Output,
-                   p_logger::update_policy::Immediately,
+                   p_logger::update_policy::Immediate,
                    p_logger::format_policy::Default>      LoggerOutputImmediate;
   typedef Logger_T<p_logger::write_policy::Output,
                    p_logger::update_policy::OnFlush,
                    p_logger::format_policy::Default>      LoggerOutputOnFlush;
 
   typedef Logger_T<p_logger::write_policy::File,
-                   p_logger::update_policy::Immediately,
+                   p_logger::update_policy::Immediate,
                    p_logger::format_policy::Default>      LoggerFileImmediate;
   typedef Logger_T<p_logger::write_policy::File,
                    p_logger::update_policy::OnFlush,
@@ -209,14 +171,6 @@ namespace tloc { namespace core { namespace logger {
   public:
     Log_T(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
-
-    this_type& operator << (BufferArg a_string);
-    this_type& operator << (tl_int    a_value);
-    this_type& operator << (tl_long   a_value);
-    this_type& operator << (tl_uint   a_value);
-    this_type& operator << (tl_ulong  a_value);
-    this_type& operator << (tl_float  a_value);
-    this_type& operator << (tl_double a_value);
 
   private:
     T_Logger* m_logger;

@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/logger/tlocLog.h>
 #include <tlocCore/logger/tlocLogger.h>
 
 #endif

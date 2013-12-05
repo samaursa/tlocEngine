@@ -19,16 +19,25 @@ namespace tloc { namespace core { namespace logging {
     };
   };
 
-  class BaseLog_I
+  template <typename T_Severity = p_log::severity::Info>
+  class Log_TI
   {
-  public:
-    typedef BaseLog_I                       this_type;
-    typedef f32                             time_type;
-    typedef core_str::String                str_type;
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Severity, p_log::severity::Info>::value ||
+       Loki::IsSameType<T_Severity, p_log::severity::Debug>::value ||
+       Loki::IsSameType<T_Severity, p_log::severity::Warning>::value ||
+       Loki::IsSameType<T_Severity, p_log::severity::Error>::value),
+       Unsupported_severity_type);
 
   public:
-    BaseLog_I();
-    BaseLog_I(const this_type& a_other);
+    typedef Log_TI                          this_type;
+    typedef f32                             time_type;
+    typedef core_str::String                str_type;
+    typedef T_Severity                      severity;
+
+  public:
+    Log_TI();
+    Log_TI(const this_type& a_other);
 
     this_type& operator << (BufferArg a_string);
     this_type& operator << (tl_int    a_value);
@@ -50,7 +59,7 @@ namespace tloc { namespace core { namespace logging {
     void       swap(this_type& a_other);
 
   protected:
-    BaseLog_I(BufferArg a_fileName, const tl_ulong a_lineNumber);
+    Log_TI(BufferArg a_fileName, const tl_ulong a_lineNumber);
 
     str_type          m_finalString;
     time_type         m_time;
@@ -61,7 +70,11 @@ namespace tloc { namespace core { namespace logging {
   // -----------------------------------------------------------------------
   // swap
 
-  TL_I void swap(BaseLog_I& a, BaseLog_I& b);
+  template <typename T_Severity>
+  void swap(Log_TI<T_Severity>& a, Log_TI<T_Severity>& b)
+  {
+    a.swap(b);
+  }
 
 };};};
 

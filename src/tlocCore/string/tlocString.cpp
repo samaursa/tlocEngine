@@ -1,6 +1,12 @@
 #include "tlocString.h"
 #include "tlocString.inl.h"
 
+#include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/containers/tlocContainers.inl.h>
+
+#include <stdio.h>
+#include <stdarg.h>
+
 namespace tloc { namespace core { namespace string {
 
   // ------------------------------------------------------------------------
@@ -75,6 +81,70 @@ namespace tloc { namespace core { namespace string {
   // specialized function definitions
 
   template <>
+  const char8*
+    StrChr(const char8* a_string, char a_charToLocate)
+  {
+    const char8* currChar = a_string;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { return currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { return currChar; }
+
+    return nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  char8*
+    StrChr(char8* a_string, char a_charToLocate)
+  {
+    return const_cast<char8*>(StrChr(const_cast<const char8*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  const char8*
+    StrRChr(const char8* a_string, char a_charToLocate)
+  {
+    const char8* currChar = a_string;
+    const char8* charToRet = nullptr;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { charToRet = currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { charToRet = currChar; }
+
+    return charToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  char8*
+    StrRChr(char8* a_string, char a_charToLocate)
+  {
+    return const_cast<char8*>
+      (StrRChr(const_cast<const char8*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
   tl_size
     StrLen( const char8* aCharStr)
   {
@@ -92,6 +162,7 @@ namespace tloc { namespace core { namespace string {
     return strcmp(src, dst);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <>
   tl_int
@@ -101,17 +172,23 @@ namespace tloc { namespace core { namespace string {
     return memcmp(aPtr1, aPtr2, aNumChars);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsCntrl(char8 a_char)
@@ -123,29 +200,43 @@ namespace tloc { namespace core { namespace string {
     return g_controlsStr.find(a_char) != String::npos;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsBlank(char8 a_char)
   { return g_blankStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsSpace(char8 a_char)
   { return g_spaceStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsUpper(char8 a_char)
   { return g_upperStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsLower(char8 a_char)
   { return g_lowerStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsAlpha(char8 a_char)
   { return g_alphaStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsDigit(char8 a_char)
   { return g_digitStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsNumber(const char8* a_char)
@@ -176,6 +267,8 @@ namespace tloc { namespace core { namespace string {
 
     return true;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsRealNumber(const char8* a_char)
@@ -231,6 +324,8 @@ namespace tloc { namespace core { namespace string {
     return true;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsNegNumber(const char8* a_char)
   {
@@ -246,6 +341,8 @@ namespace tloc { namespace core { namespace string {
 
     return false;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsNegRealNumber(const char8* a_char)
@@ -263,6 +360,8 @@ namespace tloc { namespace core { namespace string {
     return false;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsPosNumber(const char8* a_char)
   {
@@ -273,6 +372,8 @@ namespace tloc { namespace core { namespace string {
 
     return false;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsPosRealNumber(const char8* a_char)
@@ -285,17 +386,71 @@ namespace tloc { namespace core { namespace string {
     return false;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsXDigit(char8 a_char)
   { return g_xdigitStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     IsAlNum(char8 a_char)
   { return g_alnumStr.find(a_char) != String::npos; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     IsPunct(char8 a_char)
   { return g_punctStr.find(a_char) != String::npos; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // Note that this solution for a safer sprintf has been taken from:
+  // http://stackoverflow.com/a/69911/368599
+
+  String
+    Vformat (const char *fmt, va_list ap)
+  {
+    // Allocate a buffer on the stack that's big enough for us almost
+    // all the time.  Be prepared to allocate dynamically if it doesn't fit.
+    const size_t buffSize = 2048;
+    size_t size = buffSize;
+
+    char stackbuf[buffSize];
+    core_conts::Array<char8> dynamicbuf;
+    char *buf = &stackbuf[0];
+
+    for (;;) {
+        // Try to vsnprintf into our buffer.
+        int needed = vsnprintf (buf, size, fmt, ap);
+        // NB. C99 (which modern Linux and OS X follow) says vsnprintf
+        // failure returns the length it would have needed.  But older
+        // glibc and current Windows return -1 for failure, i.e., not
+        // telling us how much was needed.
+
+        if (needed <= (int)size && needed >= 0) {
+            // It fit fine so we're done.
+            return core_str::String (buf, (size_t) needed);
+        }
+
+        // vsnprintf reported that it wanted to write more characters
+        // than we allotted.  So try again using a dynamic buffer.  This
+        // doesn't happen very often if we chose our initial size well.
+        size = (needed > 0) ? (needed+1) : (size*2);
+        dynamicbuf.resize (size);
+        buf = &dynamicbuf[0];
+    }
+  }
+
+  String
+    Format(const char8* a_string, ...)
+  {
+    va_list ap;
+    va_start (ap, a_string);
+    String buf = Vformat (a_string, ap);
+    va_end (ap);
+    return buf;
+  }
 
   // ------------------------------------------------------------------------
   // explicit instantiations

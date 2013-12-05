@@ -27,5 +27,21 @@ namespace tloc {
 
 };
 
+#include <tlocCore/logging/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// animation's default logger
+namespace tloc { namespace animation {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_ANIM_INFO()    TLOC_LOG_INFO(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_DEBUG()   TLOC_LOG_DEBUG(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_WARN()    TLOC_LOG_WARN(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_ERR()     TLOC_LOG_ERR(&tloc::animation::GetLogger())
 
 #endif

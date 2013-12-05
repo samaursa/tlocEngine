@@ -1,6 +1,7 @@
 set(TLOC_GRAPHICS 
   tlocDepVersionCheck.cpp 
   tlocGraphicsBase.h 
+  tlocGraphicsBase.cpp
   tloc_graphics.cpp 
   tloc_graphics.h 
   tloc_graphics.inl.h 

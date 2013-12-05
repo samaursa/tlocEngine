@@ -7,6 +7,7 @@
 
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/io/tlocPath.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -47,14 +48,15 @@ namespace tloc { namespace core { namespace io {
     error_type      Open();
     error_type      Close();
     error_type      Delete();
+    error_type      Write(BufferArg a_string) const;
     error_type      GetContents(string_type& a_out) const;
     void            swap(this_type& a_other);
 
-    bool            IsOpen();
+    bool            IsOpen() const;
 
   private:
 
-    error_type DoClose();
+    error_type      DoClose();
 
     FILE*   m_file;
     Path    m_fileName;

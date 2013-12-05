@@ -85,10 +85,12 @@ namespace tloc
   typedef int               tl_int;
   typedef unsigned int      tl_uint;
   typedef float             tl_float;
+  typedef double            tl_double;
 #elif defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
   typedef int               tl_int;
   typedef unsigned int      tl_uint;
   typedef float             tl_float;
+  typedef double            tl_double;
 #else
 # error WIP
 #endif

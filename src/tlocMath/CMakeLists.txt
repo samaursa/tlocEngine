@@ -4,6 +4,7 @@ set(TLOC_MATH
   tlocMath.h 
   tlocMath.inl.h 
   tlocMathBase.h 
+  tlocMathBase.cpp
   tlocMathExplicitMacros.h 
   tloc_math.cpp 
   tloc_math.h 

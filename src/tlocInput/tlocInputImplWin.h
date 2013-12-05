@@ -14,13 +14,7 @@
 #include <tlocInput/tlocInputImpl.h>
 #include <tlocInput/tlocInputTypes.h>
 
-#ifndef NOMINMAX
-  #define NOMINMAX
-#endif
-#ifndef WIN32_LEAN_AND_MEAN
-  #define WIN32_LEAN_AND_MEAN
-#endif
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <InitGuid.h> // Required to circumvent linking errors for dxguid.lib
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>

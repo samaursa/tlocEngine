@@ -45,5 +45,15 @@ namespace tloc { namespace math {
 #define TLOC_LOG_MATH_WARN()    TLOC_LOG_WARN(&tloc::math::GetLogger())
 #define TLOC_LOG_MATH_ERR()     TLOC_LOG_ERR(&tloc::math::GetLogger())
 
+#define TLOC_LOG_MATH_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::math::GetLogger())
+
+#define TLOC_LOG_MATH_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::math::GetLogger())
+#define TLOC_LOG_MATH_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::math::GetLogger())
+
 
 #endif

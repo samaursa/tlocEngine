@@ -36,4 +36,14 @@ namespace tloc { namespace input {
 #define TLOC_LOG_INPUT_WARN()    TLOC_LOG_WARN(&tloc::input::GetLogger())
 #define TLOC_LOG_INPUT_ERR()     TLOC_LOG_ERR(&tloc::input::GetLogger())
 
+#define TLOC_LOG_INPUT_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::input::GetLogger())
+
+#define TLOC_LOG_INPUT_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::input::GetLogger())
+#define TLOC_LOG_INPUT_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::input::GetLogger())
+
 #endif

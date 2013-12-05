@@ -15,5 +15,12 @@ namespace TestingLogging
     TLOC_LOG_DEBUG(&lcfi) << "Debug log";
     TLOC_LOG_WARN(&lcfi) << "Warning log";
     TLOC_LOG_ERR(&lcfi) << "Error log";
+
+    lcfi.SetDisable(true);
+
+    TLOC_LOG_INFO(&lcfi) << "SHOULD NOT DISPLAY";
+    TLOC_LOG_DEBUG(&lcfi) << "SHOULD NOT DISPLAY";
+    TLOC_LOG_WARN(&lcfi) << "SHOULD NOT DISPLAY";
+    TLOC_LOG_ERR(&lcfi) << "SHOULD NOT DISPLAY";
   }
 };

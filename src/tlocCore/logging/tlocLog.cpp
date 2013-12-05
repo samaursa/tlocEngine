@@ -13,25 +13,35 @@ namespace {
 
 namespace tloc { namespace core { namespace logging {
 
-#define TLOC_LOG_TI_TEMPS   typename T_Severity
-#define TLOC_LOG_TI_PARAMS  T_Severity
-#define TLOC_LOG_TI_TYPE    typename Log_TI<TLOC_LOG_TI_PARAMS>
+  const char* Log_I::s_severityStr[Log_I::k_count] =
+  {
+    "Info",
+    "Debug",
+    "Warning",
+    "Error"
+  };
+
+  const char* Log_I::s_severityStrShort[Log_I::k_count] =
+  {
+    "I",
+    "D",
+    "W",
+    "E"
+  };
 
   // ///////////////////////////////////////////////////////////////////////
   // BaseLog
 
-  template <TLOC_LOG_TI_TEMPS>
-  Log_TI<TLOC_LOG_TI_PARAMS>::
-    Log_TI()
+  Log_I::
+    Log_I()
     : m_fileName("Invalid log")
     , m_lineNumber(s_invalidLoggerLineNumber)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  Log_TI<TLOC_LOG_TI_PARAMS>::
-    Log_TI(const this_type& a_other)
+  Log_I::
+    Log_I(const this_type& a_other)
     : m_finalString(a_other.m_finalString)
     , m_time(a_other.m_time)
     , m_fileName(a_other.m_fileName)
@@ -40,11 +50,12 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  Log_TI<TLOC_LOG_TI_PARAMS>::
-    Log_TI(BufferArg a_fileName, const tl_ulong a_lineNumber)
+  Log_I::
+    Log_I(severity_type a_severity, BufferArg a_fileName,
+          const tl_ulong a_lineNumber)
     : m_fileName(a_fileName)
     , m_lineNumber(a_lineNumber)
+    , m_severity(a_severity)
   {
     m_finalString.reserve(g_initialBufferSize);
 
@@ -55,9 +66,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(BufferArg a_string)
   {
     m_finalString += a_string;
@@ -66,9 +76,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_int a_value)
   {
     m_finalString += core_str::Format("%i", a_value);
@@ -77,9 +86,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_long a_value)
   {
     m_finalString += core_str::Format("%il", a_value);
@@ -88,9 +96,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_uint a_value)
   {
     m_finalString += core_str::Format("%u", a_value);
@@ -99,9 +106,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_ulong a_value)
   {
     m_finalString += core_str::Format("%ul", a_value);
@@ -110,9 +116,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_float a_value)
   {
     m_finalString += core_str::Format("%f", a_value);
@@ -121,9 +126,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_double a_value)
   {
     m_finalString += core_str::Format("%f", a_value);
@@ -133,9 +137,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
-  TLOC_LOG_TI_TYPE::this_type&
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+  Log_I::this_type&
+    Log_I::
     operator=(this_type a_other)
   {
     swap(a_other);
@@ -144,9 +147,8 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_LOG_TI_TEMPS>
   void
-    Log_TI<TLOC_LOG_TI_PARAMS>::
+    Log_I::
     swap(this_type& a_other)
   {
     using core::swap;
@@ -158,11 +160,10 @@ namespace tloc { namespace core { namespace logging {
   }
 
   // -----------------------------------------------------------------------
-  // explicit template instantiation
+  // swap
 
-  template class Log_TI<p_log::severity::Info>;
-  template class Log_TI<p_log::severity::Debug>;
-  template class Log_TI<p_log::severity::Warning>;
-  template class Log_TI<p_log::severity::Error>;
+  void swap(Log_I& a, Log_I& b)
+  { a.swap(b); }
+
 
 };};};

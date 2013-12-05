@@ -8,6 +8,7 @@
 #include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocCore/logging/tlocLog.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 
 namespace tloc { namespace core { namespace logging {
 
@@ -59,7 +60,7 @@ namespace tloc { namespace core { namespace logging {
       protected:
         Default(BufferArg a_loggerName);
 
-        str_type DoFormat(const Log_TI& a_log) const;
+        str_type DoFormat(const Log_I& a_log) const;
 
       private:
         str_type m_loggerName;
@@ -102,26 +103,30 @@ namespace tloc { namespace core { namespace logging {
     typedef T_FormatPolicy                            format_base_type;
     typedef core_str::String                          str_type;
 
-    typedef Log_TI                                 log_type;
+    typedef Log_I                                     log_type;
     typedef core_conts::Array<log_type>               log_cont;
 
   public:
     Logger_T(const str_type& a_name);
 
-    this_type& AddLog(const Log_TI& a_log);
+    this_type& AddLog(const Log_I& a_log);
     this_type& Flush();
+
+    void       SetDisable(bool a_disable);
+    bool       IsDisabled() const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
   private:
-    void DoAddLog(const Log_TI& a_log, p_logger::update_policy::Immediate);
-    void DoAddLog(const Log_TI& a_log, p_logger::update_policy::OnFlush);
+    void DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate);
+    void DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush);
 
     void DoFlush(p_logger::update_policy::Immediate);
     void DoFlush(p_logger::update_policy::OnFlush);
 
   private:
-    str_type    m_name;
-    log_cont    m_logs;
+    str_type                  m_name;
+    log_cont                  m_logs;
+    core_utils::Checkpoints   m_flags;
   };
 
   // -----------------------------------------------------------------------
@@ -153,7 +158,7 @@ namespace tloc { namespace core { namespace logging {
 
   template <typename T_Logger>
   class Log_T
-    : public Log_TI
+    : public Log_I
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
@@ -165,12 +170,22 @@ namespace tloc { namespace core { namespace logging {
        Unsupported_logger_type);
 
   public:
-    typedef Log_TI                                 base_type;
+    typedef Log_I                                     base_type;
     typedef Log_T                                     this_type;
+    typedef base_type::severity_type                  severity_type;
 
   public:
-    Log_T(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber);
+    Log_T(T_Logger* a_logger, severity_type a_severity,
+          BufferArg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
+
+    this_type& operator << (BufferArg a_string);
+    this_type& operator << (tl_int    a_value);
+    this_type& operator << (tl_long   a_value);
+    this_type& operator << (tl_uint   a_value);
+    this_type& operator << (tl_ulong  a_value);
+    this_type& operator << (tl_float  a_value);
+    this_type& operator << (tl_double a_value);
 
   private:
     T_Logger* m_logger;
@@ -181,9 +196,10 @@ namespace tloc { namespace core { namespace logging {
 
   template <typename T_Logger>
   Log_T<T_Logger>
-    MakeLog(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber)
+    MakeLog(T_Logger* a_logger, Log_I::severity_type a_severity,
+            BufferArg a_fileName, const tl_ulong a_lineNumber)
   {
-    return Log_T<T_Logger>(a_logger, a_fileName, a_lineNumber);
+    return Log_T<T_Logger>(a_logger, a_severity, a_fileName, a_lineNumber);
   }
 
   // -----------------------------------------------------------------------
@@ -199,14 +215,14 @@ namespace tloc { namespace core { namespace logging {
 };};};
 
 #define TLOC_LOG(_logger_, _severity_) \
-  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
+  tloc::core::logging::MakeLog(_logger_, _severity_, __FILE__, __LINE__)
 #define TLOC_LOG_INFO(_logger_)\
-  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_info)
 #define TLOC_LOG_DEBUG(_logger_)\
-  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN(_logger_)\
-  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_warning)
 #define TLOC_LOG_ERR(_logger_)\
-  tloc::core::logging::MakeLog(_logger_, __FILE__, __LINE__)
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_error)
 
 #endif

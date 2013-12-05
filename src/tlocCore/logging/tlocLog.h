@@ -19,25 +19,31 @@ namespace tloc { namespace core { namespace logging {
     };
   };
 
-  template <typename T_Severity = p_log::severity::Info>
-  class Log_TI
+  // ///////////////////////////////////////////////////////////////////////
+  // Log_I
+
+  class Log_I
   {
-    TLOC_STATIC_ASSERT(
-      (Loki::IsSameType<T_Severity, p_log::severity::Info>::value ||
-       Loki::IsSameType<T_Severity, p_log::severity::Debug>::value ||
-       Loki::IsSameType<T_Severity, p_log::severity::Warning>::value ||
-       Loki::IsSameType<T_Severity, p_log::severity::Error>::value),
-       Unsupported_severity_type);
+  public:
+    typedef Log_I                                   this_type;
+    typedef f32                                     time_type;
+    typedef core_str::String                        str_type;
+
+    enum
+    {
+      k_info,
+      k_debug,
+      k_warning,
+      k_error,
+      k_count
+    }; typedef tl_int                               severity_type;
+
+    static const char* s_severityStr[k_count];
+    static const char* s_severityStrShort[k_count];
 
   public:
-    typedef Log_TI                          this_type;
-    typedef f32                             time_type;
-    typedef core_str::String                str_type;
-    typedef T_Severity                      severity;
-
-  public:
-    Log_TI();
-    Log_TI(const this_type& a_other);
+    Log_I();
+    Log_I(const this_type& a_other);
 
     this_type& operator << (BufferArg a_string);
     this_type& operator << (tl_int    a_value);
@@ -54,27 +60,27 @@ namespace tloc { namespace core { namespace logging {
     TLOC_DECL_AND_DEF_GETTER(time_type, GetTime, m_time);
     TLOC_DECL_AND_DEF_GETTER(char*, GetFileName, m_fileName);
     TLOC_DECL_AND_DEF_GETTER(tl_ulong, GetLineNumber, m_lineNumber);
+    TLOC_DECL_AND_DEF_GETTER(severity_type, GetSeverity, m_severity);
 
     this_type& operator=(this_type a_other);
     void       swap(this_type& a_other);
 
   protected:
-    Log_TI(BufferArg a_fileName, const tl_ulong a_lineNumber);
+    Log_I(severity_type a_severity, BufferArg a_fileName,
+          const tl_ulong a_lineNumber);
 
+  protected:
     str_type          m_finalString;
     time_type         m_time;
     const char*       m_fileName;
     tl_ulong          m_lineNumber;
+    severity_type     m_severity;
   };
 
   // -----------------------------------------------------------------------
   // swap
 
-  template <typename T_Severity>
-  void swap(Log_TI<T_Severity>& a, Log_TI<T_Severity>& b)
-  {
-    a.swap(b);
-  }
+  TL_I void swap(Log_I& a, Log_I& b);
 
 };};};
 

@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -120,9 +121,10 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem::
     InitializeEntity(const entity_manager* , const entity_type* a_ent)
   {
-    // LOG: Warning
-    TLOC_ASSERT(a_ent->HasComponent(math_cs::Transform::k_component_type),
-      "Node component requires Transform component");
+    if (a_ent->HasComponent(math_cs::Transform::k_component_type) == false)
+    { 
+      TLOC_LOG_CORE_WARN() << "Node component requires math_cs::Transform component";
+    }
 
     SceneNode* node = a_ent->GetComponent<SceneNode>();
 

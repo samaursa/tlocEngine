@@ -4,8 +4,8 @@
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -66,13 +66,13 @@ namespace tloc { namespace graphics { namespace gl {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
-                           &currInfo.m_type, currInfo.m_name.Get());
+                           &currInfo.m_type, currInfo.m_name.get());
 
         // remove [0] from the names which appears on some cards
-        fixedName = currInfo.m_name.Get();
+        fixedName = currInfo.m_name.get();
         fixedName = fixedName.substr(0, fixedName.find('['));
-        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
-        currInfo.m_name.Get()[fixedName.length()] = '\0';
+        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.get());
+        currInfo.m_name.get()[fixedName.length()] = '\0';
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
@@ -82,10 +82,14 @@ namespace tloc { namespace graphics { namespace gl {
            itr != itrEnd; ++itr)
       {
         itr->m_location = glGetUniformLocation
-          (a_shaderProgram.GetHandle(), itr->m_name.Get());
+          (a_shaderProgram.GetHandle(), itr->m_name.get());
         // LOG:
-        TLOC_ASSERT(itr->m_location != -1,
-          "Using reserved prefix gl_ in variable name which is disallowed");
+        if (itr->m_location == -1)
+        {
+          TLOC_LOG_GFX_WARN()
+            << "Using reserved prefix gl_ in variable name is disallowed "
+            << itr->m_name.get();
+        }
       }
     }
 
@@ -110,7 +114,7 @@ namespace tloc { namespace graphics { namespace gl {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
                           &currInfo.m_nameLength, &currInfo.m_arraySize,
-                          &currInfo.m_type, currInfo.m_name.Get());
+                          &currInfo.m_type, currInfo.m_name.get());
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
@@ -120,10 +124,14 @@ namespace tloc { namespace graphics { namespace gl {
            itr != itrEnd; ++itr)
       {
         itr->m_location = glGetAttribLocation
-          (a_shaderProgram.GetHandle(), itr->m_name.Get());
+          (a_shaderProgram.GetHandle(), itr->m_name.get());
         // LOG:
-        TLOC_ASSERT(itr->m_location != -1,
-          "Using reserved prefix gl_ in variable name which is disallowed");
+        if (itr->m_location == -1)
+        {
+          TLOC_LOG_GFX_WARN()
+            << "Using reserved prefix gl_ in variable name is disallowed "
+            << itr->m_name.get();
+        }
       }
 
     }
@@ -233,7 +241,7 @@ namespace tloc { namespace graphics { namespace gl {
     { }
 
     bool operator() (const ShaderVariableInfo& a_sv)
-    { return core_str::StrCmp(a_sv.m_name.Get(), m_name) == 0; }
+    { return core_str::StrCmp(a_sv.m_name.get(), m_name) == 0; }
 
     const char* m_name;
   };

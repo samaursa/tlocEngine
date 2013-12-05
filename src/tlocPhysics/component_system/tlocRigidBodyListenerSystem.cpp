@@ -4,6 +4,7 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
 #include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
@@ -139,9 +140,10 @@ namespace tloc { namespace physics { namespace component_system {
 
     if (rbComponents.empty())
     {
-      TLOC_ASSERT(false, "There is no RigidBody component attached to this "
-                  "entity! A RigidBody component is needed for a "
-                  "RigidBodyListener component to function!");
+      TLOC_LOG_PHYS_WARN()
+        << "There is no RigidBody component attached to this "
+        << "entity. A RigidBody component is needed for a RigidBodyListener "
+        << "component to function.";
 
       // LOG: No RigidBody component attached to this entity!
       return TLOC_ERROR(error::error_rigid_body_not_attached);

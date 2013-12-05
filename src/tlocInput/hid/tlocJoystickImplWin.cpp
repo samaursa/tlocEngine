@@ -1,7 +1,9 @@
 #include "tlocJoystickImplWin.h"
+
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 // In dinput.h we have macros for offsets for the DIJOYSTATE struct but no
 // macros for DIJOYSTATE2 struct, we will define our own here (by copying
@@ -155,15 +157,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (FAILED(m_directInput->
       CreateDevice(GUID_Joystick, &m_joystick, TLOC_NULL)) )
     {
-      // LOG: Joystick failed to initialize
-      TLOC_ASSERT(false, "Joystick failed to initialize");
+      TLOC_LOG_INPUT_ERR() << "Joystick failed to initialize";
       return;
     }
 
     if (FAILED(m_joystick->SetDataFormat(&c_dfDIJoystick2)) )
     {
-      // Log: Joystick format error
-      TLOC_ASSERT(false, "Could not set joystick device format");
+      TLOC_LOG_INPUT_ERR() << "Could not set joystick device format";
     }
 
     DWORD coop = 0;
@@ -181,13 +181,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (!DoInitializeExtra(policy_type()))
     {
-      // LOG: Unable to acquire a buffered joystick
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire a buffered joystick";
       return;
     }
 
     if (FAILED(m_joystick->SetCooperativeLevel(m_windowPtr, coop)))
     {
-      // LOG: Joystick cooperative level settings error
+      TLOC_LOG_INPUT_ERR() << "Joystick cooperative level settings error";
       return;
     }
 
@@ -227,10 +227,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     m_diJoyCaps.dwSize = sizeof(DIDEVCAPS);
     if (FAILED(m_joystick->GetCapabilities(&m_diJoyCaps)) )
-    {
-      // LOG: Failed to get joystick capabilities
-      TLOC_ASSERT(false, "Failed to get joystick capabilities");
-    }
+    { TLOC_LOG_INPUT_ERR() << "Failed to get joystick capabilities"; }
 
     m_axisCount = m_diJoyCaps.dwAxes;
     m_povCount = m_diJoyCaps.dwPOVs;
@@ -279,8 +276,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (FAILED(hRes))
     {
-      // LOG: Could not get device data
-      TLOC_ASSERT(false, "Could not get joystick data");
+      TLOC_LOG_INPUT_ERR() << "Could not get joystick (device) data";
     }
 
     core::fill_all(m_axisMoved, false);
@@ -643,10 +639,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     diprg.lMax              = base_type::MAX_AXIS;
 
     if (FAILED(t->m_joystick->SetProperty(DIPROP_RANGE, &diprg.diph)))
-    {
-      // LOG: Failed to set min/max range for the axis
-      TLOC_ASSERT(false, "Failed to set min/max for the axis");
-    }
+    { TLOC_LOG_INPUT_WARN() << "Failed to set min/max for the axis"; }
 
     return DIENUM_CONTINUE;
   }

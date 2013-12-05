@@ -3,6 +3,7 @@
 #include <tlocCore/component_system/tlocEvent.inl.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -30,9 +31,8 @@ namespace tloc { namespace core { namespace component_system {
     }
     else
     {
-      TLOC_ASSERT(false,
-      "Trying to remove a listener that does not exist with event_type");
-      // LOG: Trying to remove a listener that does not exist with event_type
+      TLOC_LOG_CORE_WARN() << 
+        "Trying to remove a listener that does not exist with even_type";
     }
   }
 

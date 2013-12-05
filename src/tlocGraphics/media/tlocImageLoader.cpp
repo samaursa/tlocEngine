@@ -5,6 +5,7 @@
 #include "tlocImageLoader.h"
 
 #include <tlocCore/io/tlocFileIO.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -69,7 +70,8 @@ namespace tloc { namespace graphics { namespace media {
                                           (u32)fileCont.length());
     if (lodePngErr)
     {
-      // LOG: Take log from lodepng_error_text(lodePngErr);
+      TLOC_LOG_GFX_ERR() << "lodepng_decode32 failed: " 
+                         << lodepng_error_text(lodePngErr);
       res = TLOC_ERROR(graphics::error::error_image_decoding);
     }
     else

@@ -3,6 +3,7 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
@@ -202,7 +203,8 @@ namespace tloc { namespace graphics { namespace renderer {
     const dimension_type dim = m_params.GetDimensions();
 
     using core_utils::CastNumber;
-    // LOG: One or both dimensions is 0
+    TLOC_LOG_GFX_ERR() << "One or both dimensions of the viewport is 0: "
+                       << dim[0] << ", " << dim[1];
     TLOC_ASSERT(dim[0] > 0 && dim[1] > 0,
                 "One or both dimensions of the viewport are 0");
     glViewport(0, 0, CastNumber<GLsizei>(dim[0]), CastNumber<GLsizei>(dim[1]) );

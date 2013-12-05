@@ -1,7 +1,9 @@
 #include "tlocKeyboardImplWin.h"
+
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {
 
@@ -202,14 +204,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       CreateDevice(GUID_SysKeyboard, &m_keyboard, TLOC_NULL)))
     {
       // LOG: Keyboard failed to initialize
-      TLOC_ASSERT(false, "Keyboard failed to initialize!");
+      TLOC_LOG_INPUT_ERR() << "Keyboard failed to initialize";
       return;
     }
 
     if ( FAILED(m_keyboard->SetDataFormat(&c_dfDIKeyboard)) )
     {
-      // LOG: Keyboard format error
-      TLOC_ASSERT(false, "Keyboard format error!");
+      TLOC_LOG_INPUT_ERR() << "Could not set keyboard device format";
       return;
     }
 
@@ -228,20 +229,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (!DoInitializeExtra(policy_type()))
     {
-      // LOG: Unable to acquire a buffered keyboard
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire a buffered keyboard";
       return;
     }
 
     if (FAILED(m_keyboard->SetCooperativeLevel(m_windowPtr, coop)))
     {
-      // LOG: Keyboard cooperative level settings error
+      TLOC_LOG_INPUT_ERR() << "Keyboard cooperative level settings error";
       return;
     }
 
     HRESULT hr = m_keyboard->Acquire();
     if (FAILED(hr) && hr != DIERR_OTHERAPPHASPRIO)
     {
-      // LOG: Unable to acquire Win32 keyboard
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire a Win32 keyboard";
       return;
     }
   }
@@ -294,10 +295,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
 
     if (FAILED(hRes))
-    {
-      // LOG: Could not get device data
-      TLOC_ASSERT(false, "Could not get device data!");
-    }
+    { TLOC_LOG_INPUT_WARN() << "Could not get device data"; }
 
     for (tl_size i = 0; i < entries; ++i)
     {
@@ -371,9 +369,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
     DoReset(InputPolicy::Buffered)
-  {
-    // LOG: Reset() should not be called in buffered mode
-  }
+  { }
 
   template <KEYBOARD_IMPL_TEMP>
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::

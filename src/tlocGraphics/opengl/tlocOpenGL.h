@@ -51,18 +51,28 @@ namespace tloc { namespace graphics { namespace gl {
 
     struct CurrentProgram
     {
-      typedef gl_int      value_type;
-      static const value_type s_glParamName;
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
     };
     struct MaxCombinedTextureImageUnits
     {
-      typedef gl_int      value_type;
-      static const value_type s_glParamName;
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
     };
     struct MaxVertexAttribs
     {
-      typedef gl_int      value_type;
-      static const value_type s_glParamName;
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
+    };
+    struct NumExtensions
+    {
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
+    };
+    struct NumShadingLanguageVersions
+    {
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
     };
   };
 

@@ -3,6 +3,7 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -1192,7 +1193,7 @@ namespace tloc { namespace graphics { namespace gl {
            itrInfoEnd = a_shaderVarsInfo.end();
            itrInfo != itrInfoEnd; ++itrInfo)
       {
-        if ( shaderVarPtr->GetName().compare(itrInfo->m_name.Get()) == 0)
+        if ( shaderVarPtr->GetName().compare(itrInfo->m_name.get()) == 0)
         {
           if ( shaderVarPtr->GetType() == itrInfo->m_type &&
               itrInfo->m_location != -1)
@@ -1345,7 +1346,9 @@ namespace tloc { namespace graphics { namespace gl {
       { DoSet(uniCont[itr->second], *uniformPtr); }
       else
       {
-        // LOG: Uniform cannot be set. Did you forget to call PrepareAllUniforms?
+        TLOC_LOG_GFX_WARN()
+          << "Uniform (" << itr->first->GetName()
+          << ") cannot be set. Did you forget to call PrepareAllUniforms?";
       }
     }
   }
@@ -1375,7 +1378,9 @@ namespace tloc { namespace graphics { namespace gl {
       { DoSet(attrCont[itr->second], *attribPtr); }
       else
       {
-        // LOG: Attribute cannot be set. Did you forget to call EnableAllAttributes?
+        TLOC_LOG_GFX_WARN()
+          << "Attribute (" << itr->first->GetName()
+          << ") cannot be set. Did you forget to call PrepareAllAttributes?";
       }
     }
   }

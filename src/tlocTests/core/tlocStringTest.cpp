@@ -597,6 +597,38 @@ namespace TestingStrings
     CHECK(str.compare("abcdefg") == 0);
   }
 
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/StrChr and StrRChr", "")
+  {
+    SECTION("StrChr", "")
+    {
+      char str[] = "This is a sample string";
+      char* pch;
+
+      pch = core_str::StrChr(str, 's');
+      CHECK(StrCmp(pch, "s is a sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "s a sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK( (pch == nullptr) );
+    }
+    SECTION("StrRChr", "")
+    {
+      char8 str[] = "This is a sample string";
+      char8 * pch;
+
+      pch = core_str::StrRChr(str, 's');
+      CHECK(StrCmp(pch, "string") == 0);
+    }
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/UpperLower", "")
   {
     CHECK(CharToUpper('a') == 'A');

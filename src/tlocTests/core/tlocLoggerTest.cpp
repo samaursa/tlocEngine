@@ -22,5 +22,13 @@ namespace TestingLogging
     TLOC_LOG_DEBUG(&lcfi) << "SHOULD NOT DISPLAY";
     TLOC_LOG_WARN(&lcfi) << "SHOULD NOT DISPLAY";
     TLOC_LOG_ERR(&lcfi) << "SHOULD NOT DISPLAY";
+
+    lcfi.SetDisable(false);
+    lcfi.SetSeverity(Log::k_warning);
+
+    TLOC_LOG_INFO(&lcfi) << "SHOULD NOT DISPLAY";
+    TLOC_LOG_DEBUG(&lcfi) << "SHOULD NOT DISPLAY";
+    TLOC_LOG_WARN(&lcfi) << "Should display";
+    TLOC_LOG_ERR(&lcfi) << "Should display";
   }
 };

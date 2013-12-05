@@ -82,6 +82,11 @@ namespace tloc { namespace core { namespace logging {
 
   TL_I void swap(Log_I& a, Log_I& b);
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef Log_I               Log;
+
 };};};
 
 #endif

@@ -81,6 +81,70 @@ namespace tloc { namespace core { namespace string {
   // specialized function definitions
 
   template <>
+  const char8*
+    StrChr(const char8* a_string, char a_charToLocate)
+  {
+    const char8* currChar = a_string;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { return currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { return currChar; }
+
+    return nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  char8*
+    StrChr(char8* a_string, char a_charToLocate)
+  {
+    return const_cast<char8*>(StrChr(const_cast<const char8*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  const char8*
+    StrRChr(const char8* a_string, char a_charToLocate)
+  {
+    const char8* currChar = a_string;
+    const char8* charToRet = nullptr;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { charToRet = currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { charToRet = currChar; }
+
+    return charToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
+  char8*
+    StrRChr(char8* a_string, char a_charToLocate)
+  {
+    return const_cast<char8*>
+      (StrRChr(const_cast<const char8*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <>
   tl_size
     StrLen( const char8* aCharStr)
   {

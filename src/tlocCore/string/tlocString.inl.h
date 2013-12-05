@@ -1638,6 +1638,71 @@ namespace tloc { namespace core { namespace string {
   // Global functions
 
   template <typename T>
+  const T*
+    StrChr(const T* a_string, T a_charToLocate)
+  {
+    const T* currChar = a_string;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { return currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { return currChar; }
+
+    return nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  T*
+    StrChr(T* a_string, T a_charToLocate)
+  {
+    return const_cast<T*>
+      (StrChr(const_cast<const T*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  const T*
+    StrRChr(const T* a_string, T a_charToLocate)
+  {
+    const T* currChar = a_string;
+    const T* charToRet = nullptr;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { charToRet = currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { charToRet = currChar; }
+
+    return charToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  T*
+    StrRChr(T* a_string, T a_charToLocate)
+  {
+    return const_cast<T*>
+      (StrChr(const_cast<const T*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
   tl_size
     StrLen( const T* aCharStr )
   {
@@ -1647,6 +1712,8 @@ namespace tloc { namespace core { namespace string {
 
     return (tl_size)(lTemp - aCharStr);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   tl_int
@@ -1670,6 +1737,8 @@ namespace tloc { namespace core { namespace string {
     return 0;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   tl_int
     StrCmp( const T* aPtr1, const T* aPtr2, const tl_size& aNumChars )
@@ -1687,6 +1756,8 @@ namespace tloc { namespace core { namespace string {
     return ret;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   T
     CharToLower( const T& aChar )
@@ -1696,6 +1767,8 @@ namespace tloc { namespace core { namespace string {
     return (T)tolower((char8)aChar);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   T
     CharToUpper( const T& aChar)
@@ -1704,6 +1777,8 @@ namespace tloc { namespace core { namespace string {
       "Character is out of range for this function!");
     return (T)toupper((char8)aChar);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, typename T_StringContainer>
   void
@@ -1742,6 +1817,8 @@ namespace tloc { namespace core { namespace string {
       a_out.push_back(StringBase<T>(itr, itrCurr));
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, typename T_StringContainer>
   void
@@ -1796,6 +1873,8 @@ namespace tloc { namespace core { namespace string {
 
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator==( const T* a, const StringBase<T>& b )
@@ -1804,6 +1883,8 @@ namespace tloc { namespace core { namespace string {
     return ( (charStrSize == b.size()) && (memcmp(a, b.c_str(),
               charStrSize * sizeof(T)) == 0) );
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   bool
@@ -1814,6 +1895,8 @@ namespace tloc { namespace core { namespace string {
               charStrSize * sizeof(T)) == 0) );
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator!=( const StringBase<T>& a, const StringBase<T>& b )
@@ -1821,12 +1904,16 @@ namespace tloc { namespace core { namespace string {
     return !(a == b);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator!=( const T* a, const StringBase<T>& b )
   {
     return !(a == b);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   bool

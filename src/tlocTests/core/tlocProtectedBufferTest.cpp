@@ -36,14 +36,14 @@ namespace ProtectedBufferTest
       char5 p;
       for (int i = 0; i < 5; ++i)
       {
-        p.Get()[i] = word[i];
+        p.get()[i] = word[i];
       }
       REQUIRE(p.DoIsBufferValid(build_config_type()) == true);
     }
 
     {
       char5 p;
-      sprintf(p.Get(), "This ");
+      sprintf(p.get(), "This ");
 
       bool isBufferValid = p.DoIsBufferValid(build_config_type());
 

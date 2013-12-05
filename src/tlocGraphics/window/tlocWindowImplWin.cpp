@@ -4,6 +4,7 @@
 #include "wglext.h"
 
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
@@ -150,13 +151,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     tl_size   top			 = (verDeviceCap - modeProps.m_height) / 2;
     size_type width		 = modeProps.m_width;
     size_type height	 = modeProps.m_height;
-    // LOG: Window resolution greater than screen's resolution
     ReleaseDC(TLOC_NULL, screenDC);
 
-    // If width and height are bigger than screen, warn the user
-    // LOG: This should be a log warning
-    TLOC_ASSERT(width <= GetMaxWidth(), "Screen width not supported");
-    TLOC_ASSERT(height <= GetMaxHeight(), "Screen height not supported");
+    if (width > GetMaxWidth() || height > GetMaxHeight())
+    {
+      TLOC_LOG_GFX_WARN() << "Screen width/height not supported: " <<
+        width << ", " << height;
+    }
 
     using namespace p_window_settings;
     DWORD win32Style = WS_VISIBLE;
@@ -199,8 +200,31 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     if (fullScreen)
     { DoSwitchToFullscreen(a_mode); }
 
-    // LOG: Grab log from GetLastError
-    TLOC_ASSERT(m_handle, "CreateWindowW failed.");
+    if (m_handle == TLOC_NULL)
+    {
+      DWORD hresult = GetLastError();
+      LPTSTR errorText = NULL;
+
+      // Convoluted error string retrieval: http://stackoverflow.com/a/455533/368599
+      FormatMessage(
+        // use system message tables to retrieve error text
+        FORMAT_MESSAGE_FROM_SYSTEM
+        // allocate buffer on local heap for error text
+        |FORMAT_MESSAGE_ALLOCATE_BUFFER
+        // Important! will fail otherwise, since we're not
+        // (and CANNOT) pass insertion parameters
+        |FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,    // unused with FORMAT_MESSAGE_FROM_SYSTEM
+        hresult,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR)&errorText,  // output
+        0, // minimum size for output buffer
+        NULL);   // arguments - see note
+
+      TLOC_LOG_GFX_ERR() << "CreateWindowW failed: " << errorText;
+      LocalFree(errorText);
+    }
+
     DoCreateContext(a_mode, m_windowSettings);
 
     ++g_currWindowCount;
@@ -250,9 +274,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         wglMakeCurrent(m_deviceContext, m_OpenGLContext);
       }
       else
-      {
-        // LOG: Window already active
-      }
+      { TLOC_LOG_GFX_WARN() << "Window already active"; }
     }
     else
     {
@@ -261,9 +283,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         wglMakeCurrent(TLOC_NULL, TLOC_NULL);
       }
       else
-      {
-        // LOG: Window is already inactive
-      }
+      { TLOC_LOG_GFX_WARN() << "Window already inactive"; }
     }
   }
 
@@ -297,7 +317,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     if (wglSwapIntervalEXT) { wglSwapIntervalEXT(a_enable ? 1 : 0); }
     else
     {
-      // LOG: Could not enable vertical sync (unsupported procedure).
+      TLOC_LOG_GFX_WARN()
+        << "Could not enable vertical sync (unsupported procedure)";
     }
   }
 
@@ -522,8 +543,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         {
           if (a_settings.GetAntiAlias() > 2)
           {
-            // LOG: Failed to find a format that supports the required AA,
-            // trying lower levels.
+            TLOC_LOG_GFX_WARN() << "Failed to find a format that supports the "
+              << "required AA, trying lower levels";
+
             a_settings.SetAntiAlias(2);
             pixAttribs[11] = a_settings.GetAntiAlias();
             isValid = wglChoosePixelFormatARB(m_deviceContext, pixAttribs,
@@ -532,7 +554,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
           if (isValid == false || numFormats == 0)
           {
-            // LOG: Cannot find pixel format supporting any AA, disabling AA
+            TLOC_LOG_GFX_WARN() << "Cannot find pixel format supporting any AA"
+              << ", disabling AA";
             a_settings.SetAntiAlias(0);
           }
         }
@@ -546,7 +569,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
       else
       {
-        // LOG: AA not supported and will be disabled
+        TLOC_LOG_GFX_WARN() << "AA not supported and will be disabled";
         a_settings.SetAntiAlias(0);
       }
     }
@@ -614,7 +637,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     s32 result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
     if (result != DISP_CHANGE_SUCCESSFUL)
     {
-      // LOG: Could not change display to fullscreen
+      TLOC_LOG_GFX_WARN() << "Could not change display to full-screen";
       return;
     }
 

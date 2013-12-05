@@ -3,14 +3,15 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+#if defined(TLOC_OS_WIN)
 # include <tlocGraphics/opengl/tlocOpenGLExt.h>
-#endif // TLOC_WIN32
+#endif
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -64,6 +65,17 @@ namespace tloc { namespace graphics { namespace gl {
     if (err.Succeeded())
     {
       g_platformInitialized = true;
+
+      TLOC_LOG_GFX_INFO() << "OpenGL Version: " << (const char*)glGetString(GL_VERSION);
+      TLOC_LOG_GFX_INFO() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+      TLOC_LOG_GFX_INFO() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
+      TLOC_LOG_GFX_INFO() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
+
+      //s32 numExtensions = gl::Get<p_get::NumExtensions>();
+      //TLOC_LOG_GFX_INFO() << "# of supported extensions: " << numExtensions;
+      //for (s32 i = 0; i < numExtensions; ++i)
+      //{ TLOC_LOG_GFX_INFO() << (const char*)glGetStringi(GL_EXTENSIONS, i); }
+
       return ErrorSuccess;
     }
     else
@@ -110,12 +122,14 @@ namespace tloc { namespace graphics { namespace gl {
 #endif
     };
 
-    const GLint CurrentProgram::s_glParamName
-      = GL_CURRENT_PROGRAM;
-    const GLint MaxCombinedTextureImageUnits::s_glParamName
-      = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
-    const GLint MaxVertexAttribs::s_glParamName
-      = GL_MAX_VERTEX_ATTRIBS;
+    // -----------------------------------------------------------------------
+    // static definitions
+
+    const GLint CurrentProgram::s_glParamName               = GL_CURRENT_PROGRAM;
+    const GLint MaxCombinedTextureImageUnits::s_glParamName = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+    const GLint MaxVertexAttribs::s_glParamName             = GL_MAX_VERTEX_ATTRIBS;
+    const GLint NumExtensions::s_glParamName                = GL_NUM_EXTENSIONS;
+    const GLint NumShadingLanguageVersions::s_glParamName   = GL_NUM_SHADING_LANGUAGE_VERSIONS;
   };
 
   //------------------------------------------------------------------------

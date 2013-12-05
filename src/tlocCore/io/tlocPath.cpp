@@ -6,6 +6,8 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/io/tlocFileIO.h>
 
+#include <tlocCore/logging/tlocLogger.h>
+
 //------------------------------------------------------------------------
 // Platform specific functionality
 
@@ -72,7 +74,9 @@ namespace tloc { namespace core { namespace io {
     {
       tempFile.Close();
       if (tempFile.Delete() == tloc::common_error_types::error_failure)
-      { /* LOG: Could not erase temporary file */ }
+      { 
+        TLOC_LOG_CORE_WARN() << "Could not erase temporary file: " << tempFileName;
+      }
 
       return true;
     }

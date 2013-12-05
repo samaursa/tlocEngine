@@ -5,6 +5,7 @@
 #include <tlocCore/types/tlocAny.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocInput/hid/tlocKeyboardImplWin.h>
 #include <tlocInput/hid/tlocMouseImplWin.h>
@@ -31,7 +32,7 @@ namespace tloc { namespace input { namespace priv {
         IDirectInput8* a_directInput,
         input_param_type a_inputManagerParams)
       {
-        // LOG: Unsupported input type selected
+        TLOC_LOG_INPUT_ERR() << "Unsupported input type selected";
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         TLOC_STATIC_ASSERT_FALSE(T_InputObject, Unsupported_input_type_selected);
         return nullptr;
@@ -179,7 +180,7 @@ namespace tloc { namespace input { namespace priv {
 
     if (IsWindow(m_params.m_param1.Cast<HWND>()) == 0)
     {
-      // LOG: The passed window pointer is not valid
+      TLOC_LOG_INPUT_ERR() << "The passed window handle is not valid";
       return 1;
     }
 
@@ -190,7 +191,7 @@ namespace tloc { namespace input { namespace priv {
                             (VOID**)&m_directInput, TLOC_NULL);
     if (FAILED(hr))
     {
-      // LOG: Unable to initialize direct input
+      TLOC_LOG_INPUT_ERR() << "Unable to initialize direct input";
       return 1;
     }
 
@@ -220,8 +221,9 @@ namespace tloc { namespace input { namespace priv {
       }
       else
       {
-        // LOG: Could not create a keyboard (either one is already created
-        //      or we do not have any keyboards attached)
+        TLOC_LOG_INPUT_ERR()
+          << "Could not create a keyboard (either one is already created or we "
+          << "do not have any keyboards attached)";
       }
     }
 
@@ -412,7 +414,7 @@ namespace tloc { namespace input { namespace priv {
       }
     default:
       {
-        // LOG: Unsupported HID request
+        TLOC_LOG_INPUT_ERR() << "Unsupported HID request";
         return 0;
       }
     }

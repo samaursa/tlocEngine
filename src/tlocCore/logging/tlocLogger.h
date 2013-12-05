@@ -225,6 +225,8 @@ namespace tloc { namespace core { namespace logging {
   tloc::core::logging::MakeLog(_logger_, _severity_, __FILE__, __LINE__)
 #define TLOC_LOG_FILENAME_ONLY(_logger_, _severity_) \
   tloc::core::logging::MakeLog(_logger_, _severity_, TLOC_THIS_FILE_NAME, __LINE__)
+#define TLOC_LOG_NO_FILENAME(_logger_, _severity_) \
+  tloc::core::logging::MakeLog(_logger_, _severity_, "", -1)
 
 #define TLOC_LOG_INFO(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_info)
@@ -243,5 +245,14 @@ namespace tloc { namespace core { namespace logging {
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_warning)
 #define TLOC_LOG_ERR_FILENAME_ONLY(_logger_)\
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_error)
+
+#define TLOC_LOG_INFO_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_DEBUG_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_debug)
+#define TLOC_LOG_WARN_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_warning)
+#define TLOC_LOG_ERR_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_error)
 
 #endif

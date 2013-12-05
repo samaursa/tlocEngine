@@ -115,15 +115,6 @@ namespace tloc { namespace core { namespace utils {
   TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(_type_, _name_, _var_)
 
   // -----------------------------------------------------------------------
-  // This macro returns the file instead of the full path from the macro
-  // __FILE__
-
-#define TLOC_THIS_FILE_NAME() \
-#include <tlocCore/string/tlocString.h>\
-  static const char8* const TLOC_FILE_NAME = \
-  core_str::StrRChr(__FILE__, '/') ? StrRChr(__FILE__, '/') + 1 : __FILE__;
-
-  // -----------------------------------------------------------------------
   // Enum counter.
   //
   // This class is useful to count enums that are bit shifted, where a 'count'

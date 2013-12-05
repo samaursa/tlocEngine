@@ -123,7 +123,7 @@ namespace tloc { namespace core { namespace logging {
 
       Default::str_type
         Default::
-        DoFormat(const BaseLog_I& a_log) const
+        DoFormat(const Log_TI& a_log) const
       {
         str_type fs =
           core_str::Format("\n%s | %07.2f | %s | %s(%lu)",
@@ -156,7 +156,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   TLOC_LOGGER_TYPE::this_type&
     Logger_T<TLOC_LOGGER_PARAMS>::
-    AddLog(const BaseLog_I& a_log)
+    AddLog(const Log_TI& a_log)
   {
     DoAddLog(a_log, update_policy());
     return *this;
@@ -178,7 +178,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediate)
+    DoAddLog(const Log_TI& a_log, p_logger::update_policy::Immediate)
   {
     str_type log = format_base_type::DoFormat(a_log);
     write_base_type::DoWrite(log);
@@ -189,7 +189,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::OnFlush)
+    DoAddLog(const Log_TI& a_log, p_logger::update_policy::OnFlush)
   { m_logs.push_back(a_log); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -252,4 +252,4 @@ namespace tloc { namespace core { namespace logging {
 };};};
 
 #include <tlocCore/containers/tlocArray.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logging::BaseLog_I);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logging::Log_TI);

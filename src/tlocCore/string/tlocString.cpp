@@ -349,8 +349,10 @@ namespace tloc { namespace core { namespace string {
   {
     // Allocate a buffer on the stack that's big enough for us almost
     // all the time.  Be prepared to allocate dynamically if it doesn't fit.
-    size_t size = 1024;
-    char stackbuf[1024];
+    const size_t buffSize = 2048;
+    size_t size = buffSize;
+
+    char stackbuf[buffSize];
     core_conts::Array<char8> dynamicbuf;
     char *buf = &stackbuf[0];
 

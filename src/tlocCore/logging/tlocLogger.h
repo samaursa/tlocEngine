@@ -59,7 +59,7 @@ namespace tloc { namespace core { namespace logging {
       protected:
         Default(BufferArg a_loggerName);
 
-        str_type DoFormat(const BaseLog_I& a_log) const;
+        str_type DoFormat(const Log_TI& a_log) const;
 
       private:
         str_type m_loggerName;
@@ -102,19 +102,19 @@ namespace tloc { namespace core { namespace logging {
     typedef T_FormatPolicy                            format_base_type;
     typedef core_str::String                          str_type;
 
-    typedef BaseLog_I                                 log_type;
+    typedef Log_TI                                 log_type;
     typedef core_conts::Array<log_type>               log_cont;
 
   public:
     Logger_T(const str_type& a_name);
 
-    this_type& AddLog(const BaseLog_I& a_log);
+    this_type& AddLog(const Log_TI& a_log);
     this_type& Flush();
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
   private:
-    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::Immediate);
-    void DoAddLog(const BaseLog_I& a_log, p_logger::update_policy::OnFlush);
+    void DoAddLog(const Log_TI& a_log, p_logger::update_policy::Immediate);
+    void DoAddLog(const Log_TI& a_log, p_logger::update_policy::OnFlush);
 
     void DoFlush(p_logger::update_policy::Immediate);
     void DoFlush(p_logger::update_policy::OnFlush);
@@ -153,7 +153,7 @@ namespace tloc { namespace core { namespace logging {
 
   template <typename T_Logger>
   class Log_T
-    : public BaseLog_I
+    : public Log_TI
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
@@ -165,7 +165,7 @@ namespace tloc { namespace core { namespace logging {
        Unsupported_logger_type);
 
   public:
-    typedef BaseLog_I                                 base_type;
+    typedef Log_TI                                 base_type;
     typedef Log_T                                     this_type;
 
   public:
@@ -182,7 +182,9 @@ namespace tloc { namespace core { namespace logging {
   template <typename T_Logger>
   Log_T<T_Logger>
     MakeLog(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber)
-  { return Log_T<T_Logger>(a_logger, a_fileName, a_lineNumber); }
+  {
+    return Log_T<T_Logger>(a_logger, a_fileName, a_lineNumber);
+  }
 
   // -----------------------------------------------------------------------
   // typedefs

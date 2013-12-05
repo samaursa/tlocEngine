@@ -26,5 +26,22 @@ namespace tloc {
 
 };
 
+#include <tlocCore/logging/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// physics's default logger
+namespace tloc { namespace physics {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_PHYS_INFO()    TLOC_LOG_INFO(&tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_DEBUG()   TLOC_LOG_DEBUG(&tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_WARN()    TLOC_LOG_WARN(&tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_ERR()     TLOC_LOG_ERR(&tloc::physics::GetLogger())
+
 
 #endif

@@ -37,9 +37,9 @@ namespace tloc { namespace core { namespace time {
     ///-------------------------------------------------------------------------
     void              Calibrate();
     void              Reset();
-    sec_type          ElapsedSeconds();
-    value_type        ElapsedMilliSeconds();
-    value_type        ElapsedMicroSeconds();
+    sec_type          ElapsedSeconds() const;
+    value_type        ElapsedMilliSeconds() const;
+    value_type        ElapsedMicroSeconds() const;
 
   private:
     typedef Loki::IsSameType<adjust_policy,
@@ -51,12 +51,12 @@ namespace tloc { namespace core { namespace time {
 
     void              DoInit();
     void              DoReset();
-    sec_type          DoGetElapsedSeconds();
-    value_type        DoGetElapsedMilliSeconds();
-    value_type        DoGetElapsedMicroSeconds();
+    sec_type          DoGetElapsedSeconds() const;
+    value_type        DoGetElapsedMilliSeconds() const;
+    value_type        DoGetElapsedMicroSeconds() const;
 
 #ifdef TLOC_OS_IPHONE
-    static sec_type   DoGetTicksToSeconds();
+    static sec_type   DoGetTicksToSeconds() const;
 #endif
 
   private:
@@ -77,6 +77,11 @@ namespace tloc { namespace core { namespace time {
   typedef Timer_T<tl_float, tl_uint>  Timerf;
   typedef Timer_T<f32, u32>           Timer32;
   typedef Timer_T<f64, u64>           Timer64;
+
+  // -----------------------------------------------------------------------
+  // global functions
+
+  const Timer&  GetProgramTime();
 
 };};};
 

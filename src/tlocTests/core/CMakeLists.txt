@@ -20,6 +20,7 @@ set(TLOC_TESTS_CORE
   tlocHashtableTest.cpp
   tlocIteratorTest.cpp
   tlocListTest.cpp
+  tlocLoggerTest.cpp
   tlocMemoryPoolTest.cpp
   tlocMemoryTest.cpp
   tlocObjectCounterTest.cpp

@@ -56,5 +56,21 @@ namespace tloc {
 
 };
 
+#include <tlocCore/logging/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// prefab's default logger
+namespace tloc { namespace prefab {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_PREF_INFO()    TLOC_LOG_INFO(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_DEBUG()   TLOC_LOG_DEBUG(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_WARN()    TLOC_LOG_WARN(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_ERR()     TLOC_LOG_ERR(&tloc::prefab::GetLogger())
 
 #endif

@@ -11,13 +11,7 @@
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
-#ifndef NOMINMAX
-  #define NOMINMAX
-#endif
-#ifndef WIN32_LEAN_AND_MEAN
-  #define WIN32_LEAN_AND_MEAN
-#endif
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
 

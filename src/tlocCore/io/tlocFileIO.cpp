@@ -115,11 +115,16 @@ namespace tloc { namespace core { namespace io {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // NOTE: This function could be a 'const' but is deliberately not so to
+  //       be more consistent with usage. Close() cannot be const and
+  //       intuitively so shouldn't be Open(). Moreover, we would like to
+  //       pass a FileIO_T<> as a const reference and ensure that the receiver
+  //       cannot open/close the file
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
     FileIO_T<FILE_IO_PARAMS>::
-    Open()
+    Open() /* const */
   {
     if (m_fileName.HasFilename() == false)
     { return TLOC_ERROR(common_error_types::error_path_incorrect); }
@@ -139,7 +144,7 @@ namespace tloc { namespace core { namespace io {
   template <FILE_IO_TEMP>
   bool
     FileIO_T<FILE_IO_PARAMS>::
-    IsOpen()
+    IsOpen() const
   {
     return m_file != nullptr;
   }
@@ -155,16 +160,30 @@ namespace tloc { namespace core { namespace io {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // NOTE: See explanation in Open() for why this is not const
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
     FileIO_T<FILE_IO_PARAMS>::
-    Delete()
+    Delete() /* const */
   {
     if (::remove(m_fileName.GetPath()) == 0)
     { return ErrorSuccess; }
     else
     { return ErrorFailure; }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type
+    FileIO_T<FILE_IO_PARAMS>::
+    Write(BufferArg a_string) const
+  {
+    if (fprintf(m_file, a_string) >= 0)
+    { return ErrorSuccess; }
+    else
+    { return TLOC_ERROR(common_error_types::error_file_write); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -1,6 +1,7 @@
 set(TLOC_INPUT 
   tlocDepVersionCheck.cpp 
   tlocInputBase.h 
+  tlocInputBase.cpp
   tlocInputImpl.h 
   tlocInputManager.cpp 
   tlocInputManager.h 

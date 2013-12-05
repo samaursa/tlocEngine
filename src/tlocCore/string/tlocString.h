@@ -30,7 +30,6 @@ namespace tloc { namespace core { namespace string {
   // Ctor Helpers
 
   struct StringNoInitialize {};
-  struct StringSprintf {};
 
   //------------------------------------------------------------------------
   // StringBase
@@ -77,7 +76,6 @@ namespace tloc { namespace core { namespace string {
     StringBase(const T_InputIterator aPtrBegin, const T_InputIterator aPtrEnd);
 
     StringBase(StringNoInitialize, size_type aN);
-    StringBase(StringSprintf, const size_type aFormat, ...);
 
     ~StringBase();
 
@@ -341,6 +339,12 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef StringBase<char8>   String;
+  typedef StringBase<char32>  StringW;
+
   //////////////////////////////////////////////////////////////////////////
   // operator+ global
 
@@ -366,6 +370,30 @@ namespace tloc { namespace core { namespace string {
 
   //////////////////////////////////////////////////////////////////////////
   // Global functions
+
+  template <typename T>
+  const T* StrChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrChr(char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  const T* StrRChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrRChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrRChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrRChr(char8* a_string, char a_charToLocate);
 
   template <typename T>
   tl_size
@@ -484,8 +512,8 @@ namespace tloc { namespace core { namespace string {
   bool
     operator!=(const StringBase<T>& a, const T* b);
 
-  typedef StringBase<char8>   String;
-  typedef StringBase<char32>  StringW;
+  String
+    Format(const char8* a_string, ...);
 
   //------------------------------------------------------------------------
   // global vars

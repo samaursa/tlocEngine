@@ -4,13 +4,9 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 
 #include <tlocCore/types/tlocAny.h>
-
-#if defined(TLOC_OS_WIN)
-# define WIN32_LEAN_AND_MEAN
-# include <Windows.h>
-#endif
 
 namespace tloc { namespace graphics { namespace win {
 

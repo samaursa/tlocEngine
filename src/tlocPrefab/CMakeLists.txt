@@ -1,5 +1,6 @@
 set(TLOC_PREFAB 
   tlocPrefabBase.h 
+  tlocPrefabBase.cpp
   tloc_prefab.cpp 
   tloc_prefab.h 
   tloc_prefab.inl.h 

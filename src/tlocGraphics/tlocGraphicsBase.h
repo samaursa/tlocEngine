@@ -32,8 +32,23 @@ namespace tloc {
   namespace gfx_rend     = graphics::renderer;
   namespace gfx_t        = graphics::types;
   namespace gfx_win      = graphics::win;
-
 };
 
+#include <tlocCore/logging/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// gfx's default logger
+namespace tloc { namespace graphics {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_GFX_INFO()    TLOC_LOG_INFO(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG()   TLOC_LOG_DEBUG(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN()    TLOC_LOG_WARN(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR()     TLOC_LOG_ERR(&tloc::graphics::GetLogger())
 
 #endif

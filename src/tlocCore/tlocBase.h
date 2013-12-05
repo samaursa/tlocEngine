@@ -142,6 +142,7 @@
 # endif
 
 #else
+  // unsupported compiler
 # error WIP
 #endif
 
@@ -420,6 +421,37 @@
 # define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE()
 # define TLOC_NOT_EMPTY_SOURCE_FILE()
 #endif
+
+// -----------------------------------------------------------------------
+// This macro returns the file instead of the full path from the macro
+// __FILE__
+
+#define TLOC_DEFINE_THIS_FILE_NAME() \
+  namespace {\
+  const char*\
+    LocalStrRChr(const char* a_string, char a_charToLocate)\
+  {\
+    const char* currChar = a_string;\
+    const char* charToRet = nullptr;\
+\
+    while(*currChar != 0)\
+    {\
+      if (*currChar == a_charToLocate)\
+      { charToRet = currChar; }\
+\
+      ++currChar;\
+    }\
+\
+    if (*currChar == a_charToLocate)\
+    { charToRet = currChar; }\
+\
+    return charToRet;\
+  }\
+\
+  static const char* const TLOC_THIS_FILE_NAME = \
+  LocalStrRChr(__FILE__, '/') ? LocalStrRChr(__FILE__, '/') + 1 : \
+  (LocalStrRChr(__FILE__, '\\') ? LocalStrRChr(__FILE__, '\\') + 1 : __FILE__);\
+  }
 
 ///-------------------------------------------------------------------------
 /// @brief This struct is used to diagnose template types.

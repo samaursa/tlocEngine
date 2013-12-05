@@ -2,6 +2,8 @@
 
 #include <tlocCore/logging/tlocLogger.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace TestingLogging
 {
   using namespace tloc;
@@ -30,5 +32,7 @@ namespace TestingLogging
     TLOC_LOG_DEBUG(&lcfi) << "SHOULD NOT DISPLAY";
     TLOC_LOG_WARN(&lcfi) << "Should display";
     TLOC_LOG_ERR(&lcfi) << "Should display";
+
+    TLOC_LOG_WARN_FILENAME_ONLY(&lcfi) << "only filename displayed";
   }
 };

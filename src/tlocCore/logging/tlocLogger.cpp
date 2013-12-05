@@ -226,22 +226,12 @@ namespace tloc { namespace core { namespace logging {
         Default::
         DoFormat(const Log_I& a_log) const
       {
-        if (a_log.GetSeverity() <= Log_I::k_debug)
-        {
-          return
-            core_str::Format("\n[%s] %s | %07.2f | %s",
-            Log_I::s_severityStrShort[a_log.GetSeverity()],
-            m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str());
-        }
-        else
-        {
-          return
-            core_str::Format("\n[%s] %s | %07.2f | %s | %s(%lu)",
-            Log_I::s_severityStrShort[a_log.GetSeverity()],
-            m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
-            a_log.GetFileName(),
-            a_log.GetLineNumber());
-        }
+        return
+          core_str::Format("\n[%s] %s | %07.2f | %s | %s(%lu)",
+          Log_I::s_severityStrShort[a_log.GetSeverity()],
+          m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
+          a_log.GetFileName(),
+          a_log.GetLineNumber());
       }
 
     };

@@ -105,6 +105,7 @@ namespace tloc { namespace core { namespace logging {
 
     typedef Log_I                                     log_type;
     typedef core_conts::Array<log_type>               log_cont;
+    typedef log_type::severity_type                   severity_type;
 
   public:
     Logger_T(const str_type& a_name);
@@ -115,7 +116,12 @@ namespace tloc { namespace core { namespace logging {
     void       SetDisable(bool a_disable);
     bool       IsDisabled() const;
 
+    bool       CanDisplaySeverity(severity_type a_severity) const;
+
+    TLOC_DECL_AND_DEF_GETTER(severity_type, GetSeverity, m_severity);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(severity_type, SetSeverity, m_severity);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
+
   private:
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate);
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush);
@@ -127,6 +133,7 @@ namespace tloc { namespace core { namespace logging {
     str_type                  m_name;
     log_cont                  m_logs;
     core_utils::Checkpoints   m_flags;
+    severity_type             m_severity;
   };
 
   // -----------------------------------------------------------------------

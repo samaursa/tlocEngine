@@ -50,7 +50,9 @@ namespace tloc { namespace core { namespace logging {
   Log_T<TLOC_LOG_PARAMS>::
     ~Log_T()
   {
-    m_logger->AddLog(*this);
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { m_logger->AddLog(*this); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -60,7 +62,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(BufferArg a_string)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_string); }
 
     return *this;
@@ -73,7 +76,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_int a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -86,7 +90,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_long a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -99,7 +104,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_uint a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -112,7 +118,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_ulong a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -125,7 +132,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_float a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -138,7 +146,8 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_double a_value)
   {
-    if (m_logger->IsDisabled() == false)
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
 
     return *this;
@@ -258,6 +267,7 @@ namespace tloc { namespace core { namespace logging {
     , format_base_type(a_name)
     , m_name(a_name)
     , m_flags(k_count)
+    , m_severity(log_type::k_info)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -299,6 +309,16 @@ namespace tloc { namespace core { namespace logging {
     IsDisabled() const
   {
     return m_flags[k_logger_disabled];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOGGER_TEMPS>
+  bool
+    Logger_T<TLOC_LOGGER_PARAMS>::
+    CanDisplaySeverity(severity_type a_severity) const
+  {
+    return a_severity >= m_severity;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

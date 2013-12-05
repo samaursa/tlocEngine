@@ -372,6 +372,30 @@ namespace tloc { namespace core { namespace string {
   // Global functions
 
   template <typename T>
+  const T* StrChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrChr(char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  const T* StrRChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrRChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrRChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrRChr(char8* a_string, char a_charToLocate);
+
+  template <typename T>
   tl_size
     StrLen(const T* aCharStr);
 

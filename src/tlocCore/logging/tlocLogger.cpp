@@ -38,8 +38,9 @@ namespace tloc { namespace core { namespace logging {
 
   template <TLOC_LOG_TEMPS>
   Log_T<TLOC_LOG_PARAMS>::
-    Log_T(T_Logger* a_logger, BufferArg a_fileName, const tl_ulong a_lineNumber)
-    : base_type(a_fileName, a_lineNumber)
+    Log_T(T_Logger* a_logger, severity_type a_severity,
+          BufferArg a_fileName, const tl_ulong a_lineNumber)
+    : base_type(a_severity, a_fileName, a_lineNumber)
     , m_logger(a_logger)
   { }
 
@@ -50,6 +51,97 @@ namespace tloc { namespace core { namespace logging {
     ~Log_T()
   {
     m_logger->AddLog(*this);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(BufferArg a_string)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_string); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_int a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_long a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_uint a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_ulong a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_float a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(tl_double a_value)
+  {
+    if (m_logger->IsDisabled() == false)
+    { base_type::operator<<(a_value); }
+
+    return *this;
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -123,14 +215,24 @@ namespace tloc { namespace core { namespace logging {
 
       Default::str_type
         Default::
-        DoFormat(const Log_TI& a_log) const
+        DoFormat(const Log_I& a_log) const
       {
-        str_type fs =
-          core_str::Format("\n%s | %07.2f | %s | %s(%lu)",
-          m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
-          a_log.GetFileName(), a_log.GetLineNumber());
-
-        return fs;
+        if (a_log.GetSeverity() <= Log_I::k_debug)
+        {
+          return
+            core_str::Format("\n[%s] %s | %07.2f | %s",
+            Log_I::s_severityStrShort[a_log.GetSeverity()],
+            m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str());
+        }
+        else
+        {
+          return
+            core_str::Format("\n[%s] %s | %07.2f | %s | %s(%lu)",
+            Log_I::s_severityStrShort[a_log.GetSeverity()],
+            m_loggerName.c_str(), a_log.GetTime(), a_log.GetLog().c_str(),
+            a_log.GetFileName(),
+            a_log.GetLineNumber());
+        }
       }
 
     };
@@ -138,6 +240,12 @@ namespace tloc { namespace core { namespace logging {
 
   // ///////////////////////////////////////////////////////////////////////
   // logger
+
+  enum
+  {
+    k_logger_disabled,
+    k_count
+  };
 
 #define TLOC_LOGGER_TEMPS   typename T_WritePolicy, typename T_UpdatePolicy, typename T_FormatPolicy
 #define TLOC_LOGGER_PARAMS  T_WritePolicy, T_UpdatePolicy, T_FormatPolicy
@@ -149,6 +257,7 @@ namespace tloc { namespace core { namespace logging {
     : write_base_type(a_name)
     , format_base_type(a_name)
     , m_name(a_name)
+    , m_flags(k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -156,9 +265,10 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   TLOC_LOGGER_TYPE::this_type&
     Logger_T<TLOC_LOGGER_PARAMS>::
-    AddLog(const Log_TI& a_log)
+    AddLog(const Log_I& a_log)
   {
-    DoAddLog(a_log, update_policy());
+    if (IsDisabled() == false)
+    { DoAddLog(a_log, update_policy()); }
     return *this;
   }
 
@@ -178,7 +288,25 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const Log_TI& a_log, p_logger::update_policy::Immediate)
+    SetDisable(bool a_disable)
+  { m_flags[k_logger_disabled] = a_disable; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOGGER_TEMPS>
+  bool
+    Logger_T<TLOC_LOGGER_PARAMS>::
+    IsDisabled() const
+  {
+    return m_flags[k_logger_disabled];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOGGER_TEMPS>
+  void
+    Logger_T<TLOC_LOGGER_PARAMS>::
+    DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate)
   {
     str_type log = format_base_type::DoFormat(a_log);
     write_base_type::DoWrite(log);
@@ -189,7 +317,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
-    DoAddLog(const Log_TI& a_log, p_logger::update_policy::OnFlush)
+    DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush)
   { m_logs.push_back(a_log); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -252,4 +380,4 @@ namespace tloc { namespace core { namespace logging {
 };};};
 
 #include <tlocCore/containers/tlocArray.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logging::Log_TI);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core::logging::Log_I);

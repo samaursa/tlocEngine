@@ -226,7 +226,7 @@ namespace tloc { namespace core { namespace logging {
 #define TLOC_LOG_FILENAME_ONLY(_logger_, _severity_) \
   tloc::core::logging::MakeLog(_logger_, _severity_, TLOC_THIS_FILE_NAME, __LINE__)
 #define TLOC_LOG_NO_FILENAME(_logger_, _severity_) \
-  tloc::core::logging::MakeLog(_logger_, _severity_, "", -1)
+  tloc::core::logging::MakeLog(_logger_, _severity_, "", 0)
 
 #define TLOC_LOG_INFO(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_info)

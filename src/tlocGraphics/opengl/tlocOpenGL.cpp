@@ -66,15 +66,15 @@ namespace tloc { namespace graphics { namespace gl {
     {
       g_platformInitialized = true;
 
-      TLOC_LOG_GFX_INFO() << "OpenGL Version: " << (const char*)glGetString(GL_VERSION);
-      TLOC_LOG_GFX_INFO() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
-      TLOC_LOG_GFX_INFO() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
-      TLOC_LOG_GFX_INFO() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "OpenGL Version: " << (const char*)glGetString(GL_VERSION);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
 
       //s32 numExtensions = gl::Get<p_get::NumExtensions>();
-      //TLOC_LOG_GFX_INFO() << "# of supported extensions: " << numExtensions;
+      //TLOC_LOG_GFX_INFO_NO_FILENAME() << "# of supported extensions: " << numExtensions;
       //for (s32 i = 0; i < numExtensions; ++i)
-      //{ TLOC_LOG_GFX_INFO() << (const char*)glGetStringi(GL_EXTENSIONS, i); }
+      //{ TLOC_LOG_GFX_INFO_NO_FILENAME() << (const char*)glGetStringi(GL_EXTENSIONS, i); }
 
       return ErrorSuccess;
     }

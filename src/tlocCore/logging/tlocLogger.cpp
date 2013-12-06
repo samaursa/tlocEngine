@@ -176,7 +176,7 @@ namespace tloc { namespace core { namespace logging {
       }
 
       // ///////////////////////////////////////////////////////////////////////
-      // console fast
+      // Output
 
       Output::
         Output(BufferArg)
@@ -226,7 +226,7 @@ namespace tloc { namespace core { namespace logging {
         Default::
         DoFormat(const Log_I& a_log) const
       {
-        if (a_log.GetLineNumber() != -1)
+        if (a_log.GetLineNumber() != 0)
         {
           return
             core_str::Format("\n[%s] %s | %07.2f | %s | %s(%lu)",

@@ -71,11 +71,6 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
 
-      //s32 numExtensions = gl::Get<p_get::NumExtensions>();
-      //TLOC_LOG_GFX_INFO_NO_FILENAME() << "# of supported extensions: " << numExtensions;
-      //for (s32 i = 0; i < numExtensions; ++i)
-      //{ TLOC_LOG_GFX_INFO_NO_FILENAME() << (const char*)glGetStringi(GL_EXTENSIONS, i); }
-
       return ErrorSuccess;
     }
     else
@@ -128,7 +123,7 @@ namespace tloc { namespace graphics { namespace gl {
     const GLint CurrentProgram::s_glParamName               = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
     const GLint MaxVertexAttribs::s_glParamName             = GL_MAX_VERTEX_ATTRIBS;
-    
+
 #if defined (TLOC_OS_WIN)
     const GLint NumExtensions::s_glParamName                = GL_NUM_EXTENSIONS;
     const GLint NumShadingLanguageVersions::s_glParamName   = GL_NUM_SHADING_LANGUAGE_VERSIONS;

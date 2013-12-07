@@ -203,10 +203,11 @@ namespace tloc { namespace graphics { namespace renderer {
     const dimension_type dim = m_params.GetDimensions();
 
     using core_utils::CastNumber;
-    TLOC_LOG_GFX_ERR() << "One or both dimensions of the viewport is 0: "
-                       << dim[0] << ", " << dim[1];
-    TLOC_ASSERT(dim[0] > 0 && dim[1] > 0,
-                "One or both dimensions of the viewport are 0");
+
+    TLOC_LOG_GFX_ERR_IF(dim[0] == 0 || dim[1] == 0)
+      << "One or both dimensions of the viewport is 0: "
+      << dim[0] << ", " << dim[1];
+
     glViewport(0, 0, CastNumber<GLsizei>(dim[0]), CastNumber<GLsizei>(dim[1]) );
 
     glClearColor(col[0], col[1], col[2], col[3]);

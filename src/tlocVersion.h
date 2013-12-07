@@ -12,7 +12,7 @@
 // so the local-file will then have: x_x_6_12346
 // (please see end-of-file for rationalle behind this)
 
-#ifndef TLOC_VERSION_0_1_8251_1386345489
+#ifndef TLOC_VERSION_0_1_8262_1386384471
 #  error "You are building against an incorrect/older version of the library. The correct version is the macro above."
 #endif
 
@@ -21,4 +21,4 @@
 // Rationale behind incrementing the build number and time is that 
 // it will reduce the chances of a version number conflicting with 
 // another previous version (or a version we do not know about yet 
-// as our repository may not be up-to-date)
+// as our repository may not be up-to-date)

@@ -43,15 +43,30 @@ namespace tloc { namespace physics {
 #define TLOC_LOG_PHYS_WARN()    TLOC_LOG_WARN(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_ERR()     TLOC_LOG_ERR(&tloc::physics::GetLogger())
 
+#define TLOC_LOG_PHYS_INFO_IF(_expr_)    TLOC_LOG_INFO_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_DEBUG_IF(_expr_)   TLOC_LOG_DEBUG_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_WARN_IF(_expr_)    TLOC_LOG_WARN_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_ERR_IF(_expr_)     TLOC_LOG_ERR_IF(_expr_, &tloc::physics::GetLogger())
+
 #define TLOC_LOG_PHYS_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::physics::GetLogger())
 
+#define TLOC_LOG_PHYS_INFO_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_DEBUG_FILENAME_ONLY_IF(_expr_)   TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_WARN_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_ERR_FILENAME_ONLY_IF(_expr_)     TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, &tloc::physics::GetLogger())
+
 #define TLOC_LOG_PHYS_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::physics::GetLogger())
 #define TLOC_LOG_PHYS_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::physics::GetLogger())
+
+#define TLOC_LOG_PHYS_INFO_NO_FILENAME_IF(_expr_)    TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_DEBUG_NO_FILENAME_IF(_expr_)   TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_WARN_NO_FILENAME_IF(_expr_)    TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, &tloc::physics::GetLogger())
+#define TLOC_LOG_PHYS_ERR_NO_FILENAME_IF(_expr_)     TLOC_LOG_ERR_NO_FILENAME_IF(_expr_, &tloc::physics::GetLogger())
 
 
 #endif

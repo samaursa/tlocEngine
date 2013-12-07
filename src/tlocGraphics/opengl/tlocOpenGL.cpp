@@ -128,8 +128,11 @@ namespace tloc { namespace graphics { namespace gl {
     const GLint CurrentProgram::s_glParamName               = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
     const GLint MaxVertexAttribs::s_glParamName             = GL_MAX_VERTEX_ATTRIBS;
+    
+#if defined (TLOC_OS_WIN)
     const GLint NumExtensions::s_glParamName                = GL_NUM_EXTENSIONS;
     const GLint NumShadingLanguageVersions::s_glParamName   = GL_NUM_SHADING_LANGUAGE_VERSIONS;
+#endif
   };
 
   //------------------------------------------------------------------------

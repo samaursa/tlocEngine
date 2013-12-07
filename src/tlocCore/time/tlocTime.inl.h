@@ -211,7 +211,7 @@ namespace tloc { namespace core { namespace time {
   template <TIMER_TYPES>
   typename Timer_T<TIMER_PARAMS>::sec_type
     Timer_T<TIMER_PARAMS>::
-    DoGetTicksToSeconds() const
+    DoGetTicksToSeconds()
   {
     TLOC_ASSERT(sm_ticksToSeconds == (sec_type)0,
       "Access sm_ticksToSeconds instead of this function");
@@ -238,7 +238,7 @@ namespace tloc { namespace core { namespace time {
   template <TIMER_TYPES>
   typename Timer_T<TIMER_PARAMS>::sec_type
     Timer_T<TIMER_PARAMS>::
-    DoGetElapsedSeconds()
+    DoGetElapsedSeconds() const
   {
     value_type end = (value_type)mach_absolute_time();
     value_type delta = end - m_start;
@@ -249,7 +249,7 @@ namespace tloc { namespace core { namespace time {
   template <TIMER_TYPES>
   typename Timer_T<TIMER_PARAMS>::value_type
     Timer_T<TIMER_PARAMS>::
-    DoGetElapsedMilliSeconds()
+    DoGetElapsedMilliSeconds() const
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000.0);
   }
@@ -257,7 +257,7 @@ namespace tloc { namespace core { namespace time {
   template <TIMER_TYPES>
   typename Timer_T<TIMER_PARAMS>::value_type
     Timer_T<TIMER_PARAMS>::
-    DoGetElapsedMicroSeconds()
+    DoGetElapsedMicroSeconds() const
   {
     return (value_type)(ElapsedSeconds() * (sec_type)1000000.0);
   }

@@ -153,11 +153,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     size_type height	 = modeProps.m_height;
     ReleaseDC(TLOC_NULL, screenDC);
 
-    if (width > GetMaxWidth() || height > GetMaxHeight())
-    {
-      TLOC_LOG_GFX_WARN() << "Screen width/height not supported: " <<
-        width << ", " << height;
-    }
+    TLOC_LOG_GFX_WARN_IF(width > GetMaxWidth() || height > GetMaxHeight())
+      << "Screen width/height not supported: "
+      << width << ", " << height;
 
     using namespace p_window_settings;
     DWORD win32Style = WS_VISIBLE;

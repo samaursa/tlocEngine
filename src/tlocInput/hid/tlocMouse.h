@@ -96,7 +96,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnMouseMove(a_caller, a_event) == false)
+            OnMouseMove(a_caller, a_event) == true)
         {
           return true; // Veto the rest of the events
         }

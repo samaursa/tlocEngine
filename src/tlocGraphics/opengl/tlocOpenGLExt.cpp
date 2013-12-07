@@ -33,7 +33,6 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
-    // LOG: GLEW already initialized
     TLOC_LOG_GFX_WARN() << "GLEW already initialized";
     m_error = TLOC_ERROR(common_error_types::error_already_initialized);
     return GetLastError();

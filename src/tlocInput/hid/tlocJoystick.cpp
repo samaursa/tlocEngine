@@ -25,7 +25,7 @@ namespace tloc { namespace input { namespace hid {
 #define JOYSTICK_TYPE   typename Joystick_T<JOYSTICK_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+  
   template <JOYSTICK_TEMP>
   template <typename T_ParamList>
   Joystick_T<JOYSTICK_PARAMS>::
@@ -174,6 +174,8 @@ namespace tloc { namespace input { namespace hid {
   template Joystick_T<InputPolicy::Buffered>::Joystick_T(const windows_joystick_param_type&);
   template Joystick_T<InputPolicy::Immediate>::Joystick_T(const windows_joystick_param_type&);
 #elif defined (TLOC_OS_IPHONE)
+  template Joystick_T<InputPolicy::Buffered>::Joystick_T(const iphone_joystick_param_type&);
+  template Joystick_T<InputPolicy::Immediate>::Joystick_T(const iphone_joystick_param_type&);
 #else
 # error TODO
 #endif

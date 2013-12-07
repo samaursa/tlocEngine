@@ -147,16 +147,16 @@ namespace tloc { namespace core { namespace utils {
   // -----------------------------------------------------------------------
   // Enum to Index converter
 
-  template <int T_Enum, bool T_IncludeZero = false>
+  template <int T_Enum, bool T_IncludeZero = false, typename T_Dummy = DummyStruct>
   struct EnumToIndex
   {
     enum { result = 0 + EnumCounter<T_Enum / 2, T_IncludeZero>::result };
   };
 
-  template <bool T_IncludeZero>
-  struct EnumToIndex<0, T_IncludeZero>
+  template <bool T_IncludeZero, typename T_Dummy>
+  struct EnumToIndex<0, T_IncludeZero, T_Dummy>
   {
-    TLOC_STATIC_ASSERT(false, Enum_cannot_be_converted_to_index_when_not_including_zero);
+    TLOC_STATIC_ASSERT_FALSE(T_Dummy, Enum_cannot_be_converted_to_index_when_not_including_zero);
   };
 
   template <>

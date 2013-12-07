@@ -180,7 +180,7 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::
     Write(BufferArg a_string) const
   {
-    if (fprintf(m_file, a_string) >= 0)
+    if (fprintf(m_file, "%s", a_string.GetPtr()) >= 0)
     { return ErrorSuccess; }
     else
     { return TLOC_ERROR(common_error_types::error_file_write); }

@@ -56,7 +56,7 @@ namespace tloc { namespace core { namespace time {
     value_type        DoGetElapsedMicroSeconds() const;
 
 #ifdef TLOC_OS_IPHONE
-    static sec_type   DoGetTicksToSeconds() const;
+    static sec_type   DoGetTicksToSeconds() ;
 #endif
 
   private:

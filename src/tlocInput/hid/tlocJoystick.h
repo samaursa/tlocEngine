@@ -1,5 +1,6 @@
-#ifndef _TLOC_INPUT_HID_KEYBOARD_H_
-#define _TLOC_INPUT_HID_KEYBOARD_H_
+#pragma once
+#ifndef _TLOC_INPUT_HID_JOYSTICK_H_
+#define _TLOC_INPUT_HID_JOYSTICK_H_
 
 #include <tlocInput/tlocInputBase.h>
 
@@ -10,7 +11,6 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
-#include <tlocInput/tlocInputManager.h>
 #include <tlocInput/hid/tlocJoystickImpl.h>
 
 namespace tloc { namespace input { namespace hid {
@@ -164,7 +164,7 @@ namespace tloc { namespace input { namespace hid {
 
     void Update();
     void Reset();
-
+    
   private:
 
     typedef priv::JoystickImpl_T<this_type>           impl_type;

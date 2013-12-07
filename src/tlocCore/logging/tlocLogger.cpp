@@ -11,20 +11,20 @@ namespace {
 
   template <typename T_Platform>
   void DoWriteOutput(tloc::BufferArg a_formattedLog, T_Platform)
-  { printf(a_formattedLog); }
+  { printf("%s", a_formattedLog.GetPtr()); }
 
+#if defined(TLOC_OS_WIN)
   void DoWriteOutput(tloc::BufferArg a_formattedLog,
                      tloc::core_plat::p_platform_info::win)
   {
-    TLOC_UNUSED(a_formattedLog);
-#if defined(TLOC_OS_WIN)
     static bool idp = IsDebuggerPresent() != 0;
     if (idp)
     { OutputDebugString(a_formattedLog); }
     else
     { printf(a_formattedLog); }
-#endif
   }
+#endif
+  
 };
 
 namespace tloc { namespace core { namespace logging {
@@ -172,7 +172,7 @@ namespace tloc { namespace core { namespace logging {
         Console::
         DoWrite(BufferArg a_formattedLog)
       {
-        printf(a_formattedLog);
+        printf("%s", a_formattedLog.GetPtr());
       }
 
       // ///////////////////////////////////////////////////////////////////////

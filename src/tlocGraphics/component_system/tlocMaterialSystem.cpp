@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -88,11 +89,20 @@ namespace tloc { namespace graphics { namespace component_system {
       const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       sp->Enable();
+
+      core_err::Error err = ErrorSuccess;
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        (*itr)->PrepareAllUniforms(*sp);
-        (*itr)->PrepareAllAttributes(*sp);
+        err = (*itr)->PrepareAllUniforms(*sp);
+
+        TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
+          << "Unable to prepare all uniforms";
+
+        err = (*itr)->PrepareAllAttributes(*sp);
+
+        TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
+          << "Unable to prepare all attributes";
       }
       sp->Disable();
     }

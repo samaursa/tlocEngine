@@ -83,13 +83,10 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetUniformLocation
           (a_shaderProgram.GetHandle(), itr->m_name.get());
-        // LOG:
-        if (itr->m_location == -1)
-        {
-          TLOC_LOG_GFX_WARN()
-            << "Using reserved prefix gl_ in variable name is disallowed "
-            << itr->m_name.get();
-        }
+
+        TLOC_LOG_GFX_WARN_IF(itr->m_location == -1)
+          << "Using reserved prefix gl_ in variable name is disallowed "
+          << itr->m_name.get();
       }
     }
 
@@ -125,13 +122,10 @@ namespace tloc { namespace graphics { namespace gl {
       {
         itr->m_location = glGetAttribLocation
           (a_shaderProgram.GetHandle(), itr->m_name.get());
-        // LOG:
-        if (itr->m_location == -1)
-        {
-          TLOC_LOG_GFX_WARN()
-            << "Using reserved prefix gl_ in variable name is disallowed "
-            << itr->m_name.get();
-        }
+
+        TLOC_LOG_GFX_WARN_IF(itr->m_location == -1)
+          << "Using reserved prefix gl_ in variable name is disallowed "
+          << itr->m_name.get();
       }
 
     }

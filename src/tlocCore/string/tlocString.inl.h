@@ -126,15 +126,6 @@ namespace tloc { namespace core { namespace string {
 
   template <STRING_BASE_TYPES>
   StringBase<STRING_BASE_PARAMS>::
-    StringBase(StringSprintf, const size_type aFormat, ...)
-  {
-    TLOC_UNUSED(aFormat);
-    //TLOC_STATIC_ASSERT_WIP();
-    // TODO: Implement this string ctor
-  }
-
-  template <STRING_BASE_TYPES>
-  StringBase<STRING_BASE_PARAMS>::
     ~StringBase()
   {
     DoDeallocateSelf();
@@ -183,12 +174,6 @@ namespace tloc { namespace core { namespace string {
     const char8* GetEmptyString( char8 )
     {
       static const char8 address[] = {0};
-      return address;
-    }
-
-    const uchar8* GetEmptyString( uchar8 )
-    {
-      static const uchar8 address[] = {0};
       return address;
     }
 
@@ -1653,6 +1638,71 @@ namespace tloc { namespace core { namespace string {
   // Global functions
 
   template <typename T>
+  const T*
+    StrChr(const T* a_string, T a_charToLocate)
+  {
+    const T* currChar = a_string;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { return currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { return currChar; }
+
+    return nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  T*
+    StrChr(T* a_string, T a_charToLocate)
+  {
+    return const_cast<T*>
+      (StrChr(const_cast<const T*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  const T*
+    StrRChr(const T* a_string, T a_charToLocate)
+  {
+    const T* currChar = a_string;
+    const T* charToRet = nullptr;
+
+    while(*currChar != 0)
+    {
+      if (*currChar == a_charToLocate)
+      { charToRet = currChar; }
+
+      ++currChar;
+    }
+
+    if (*currChar == a_charToLocate)
+    { charToRet = currChar; }
+
+    return charToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  T*
+    StrRChr(T* a_string, T a_charToLocate)
+  {
+    return const_cast<T*>
+      (StrChr(const_cast<const T*>(a_string), a_charToLocate) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
   tl_size
     StrLen( const T* aCharStr )
   {
@@ -1663,13 +1713,7 @@ namespace tloc { namespace core { namespace string {
     return (tl_size)(lTemp - aCharStr);
   }
 
-  template <>
-  TL_I tl_size
-    StrLen( const char8* aCharStr)
-  {
-    // According to EASTL, this should call intrinsics
-    return (tl_size)strlen(aCharStr);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   tl_int
@@ -1693,12 +1737,7 @@ namespace tloc { namespace core { namespace string {
     return 0;
   }
 
-  TL_I tl_int
-    StrCmp( const char8* src, const char8* dst)
-  {
-    // std implementation is faster
-    return strcmp(src, dst);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   tl_int
@@ -1717,43 +1756,29 @@ namespace tloc { namespace core { namespace string {
     return ret;
   }
 
-  template <>
-  TL_I tl_int
-    StrCmp( const char8* aPtr1, const char8* aPtr2,
-            const tl_size& aNumChars )
-  {
-    return memcmp(aPtr1, aPtr2, aNumChars);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   T
     CharToLower( const T& aChar )
   {
-    TLOC_ASSERT_STRING(aChar <= 0xFF,
+    TLOC_ASSERT_STRING(aChar <= NumericLimits_T<char8>::max(),
       "Character is out of range for this function!");
     return (T)tolower((char8)aChar);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   T
     CharToUpper( const T& aChar)
   {
-    TLOC_ASSERT_STRING(aChar <= 0xFF,
+    TLOC_ASSERT_STRING(aChar <= NumericLimits_T<char8>::max(),
       "Character is out of range for this function!");
     return (T)toupper((char8)aChar);
   }
 
-  TL_I tl_int
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
-  {
-    return ::mbstowcs(a_out, a_in, a_inSize);
-  }
-
-  TL_I tl_int
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
-  {
-    return ::wcstombs(a_out, a_in, a_inSize);
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, typename T_StringContainer>
   void
@@ -1792,6 +1817,8 @@ namespace tloc { namespace core { namespace string {
       a_out.push_back(StringBase<T>(itr, itrCurr));
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, typename T_StringContainer>
   void
@@ -1833,191 +1860,6 @@ namespace tloc { namespace core { namespace string {
     }
   }
 
-  TL_I bool
-    IsCntrl(char8 a_char)
-  {
-    // We cannot test for NULL in g_controlStr because it is also the terminator
-    if (a_char == 0)
-    { return true; }
-
-    return g_controlsStr.find(a_char) != String::npos;
-  }
-
-  TL_I bool
-    IsBlank(char8 a_char)
-  { return g_blankStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsSpace(char8 a_char)
-  { return g_spaceStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsUpper(char8 a_char)
-  { return g_upperStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsLower(char8 a_char)
-  { return g_lowerStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsAlpha(char8 a_char)
-  { return g_alphaStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsDigit(char8 a_char)
-  { return g_digitStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsNumber(const char8* a_char)
-  {
-    typedef const char8*    iterator;
-
-    iterator itr    = a_char;
-    iterator itrEnd = a_char + StrLen(a_char);
-
-    // Starting with a minus sign? Continue...
-    if (*itr == '-')
-    {
-      ++itr;
-
-      // only a minus sign is not a number
-      if (itr == itrEnd)
-      { return false; }
-    }
-
-    while (itr != itrEnd)
-    {
-      if (IsDigit(*itr) == false)
-      {
-        return false;
-      }
-      ++itr;
-    }
-
-    return true;
-  }
-
-  TL_I bool
-    IsRealNumber(const char8* a_char)
-  {
-    typedef const char8*    iterator;
-
-    iterator itr = a_char;
-    iterator itrEnd = a_char + StrLen(a_char);
-
-    // Starting with a minus sign? Continue...
-    if (*itr == '-')
-    {
-      ++itr;
-
-      // only a minus sign is not a number
-      if (itr == itrEnd)
-      { return false; }
-    }
-
-    bool decimalPointFound = false;
-    bool exponentFound = false;
-
-    // NOTE about exponent digits: Any exponent digit count is accepted,
-    // including 0. The user should check manually if # of digits is required
-    while (itr != itrEnd)
-    {
-      if (*itr == '.')
-      {
-        if (decimalPointFound)
-        { return false; }
-
-        decimalPointFound = true;
-      }
-      else if (exponentFound == false && (*itr == 'E' || *itr == 'e') )
-      {
-        exponentFound = true;
-        // is the next char a + or -?
-        // Note that sign is optional: http://www.cplusplus.com/reference/ios/scientific/
-        if ( itr != itrEnd && (*(itr + 1) == '+' || *(itr + 1) == '-') )
-        {
-          ++itr;
-        }
-      }
-      else
-      {
-        if (IsDigit(*itr) == false)
-        { return false; }
-      }
-
-      ++itr;
-    }
-
-    return true;
-  }
-
-  TL_I bool
-    IsNegNumber(const char8* a_char)
-  {
-    typedef const char8*    iterator;
-
-    iterator itr = a_char;
-
-    // Starting with a minus sign? Continue...
-    if (*itr == '-')
-    {
-      return IsNumber(a_char);
-    }
-
-    return false;
-  }
-
-  TL_I bool
-    IsNegRealNumber(const char8* a_char)
-  {
-    typedef const char8*    iterator;
-
-    iterator itr = a_char;
-
-    // Starting with a minus sign? Continue...
-    if (*itr == '-')
-    {
-      return IsRealNumber(a_char);
-    }
-
-    return false;
-  }
-
-  TL_I bool
-    IsPosNumber(const char8* a_char)
-  {
-    if (IsNegNumber(a_char) == false)
-    {
-      return IsNumber(a_char);
-    }
-
-    return false;
-  }
-
-  TL_I bool
-    IsPosRealNumber(const char8* a_char)
-  {
-    if (IsNegRealNumber(a_char) == false)
-    {
-      return IsRealNumber(a_char);
-    }
-
-    return false;
-  }
-
-  TL_I bool
-    IsXDigit(char8 a_char)
-  { return g_xdigitStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsAlNum(char8 a_char)
-  { return g_alnumStr.find(a_char) != String::npos; }
-
-  TL_I bool
-    IsPunct(char8 a_char)
-  { return g_punctStr.find(a_char) != String::npos; }
-
-
   //````````````````````````````````````````````````````````````````````````
   // Global operators
 
@@ -2031,6 +1873,8 @@ namespace tloc { namespace core { namespace string {
 
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator==( const T* a, const StringBase<T>& b )
@@ -2039,6 +1883,8 @@ namespace tloc { namespace core { namespace string {
     return ( (charStrSize == b.size()) && (memcmp(a, b.c_str(),
               charStrSize * sizeof(T)) == 0) );
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   bool
@@ -2049,6 +1895,8 @@ namespace tloc { namespace core { namespace string {
               charStrSize * sizeof(T)) == 0) );
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator!=( const StringBase<T>& a, const StringBase<T>& b )
@@ -2056,12 +1904,16 @@ namespace tloc { namespace core { namespace string {
     return !(a == b);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T>
   bool
     operator!=( const T* a, const StringBase<T>& b )
   {
     return !(a == b);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   bool

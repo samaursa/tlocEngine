@@ -1,5 +1,6 @@
 set(TLOC_PREFAB 
   tlocPrefabBase.h 
+  tlocPrefabBase.cpp
   tloc_prefab.cpp 
   tloc_prefab.h 
   tloc_prefab.inl.h 
@@ -20,10 +21,14 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCuboid.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
+  graphics/tlocMaterial.h
+  graphics/tlocMaterial.cpp
   graphics/tlocMesh.h
   graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocSceneNode.h
+  graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
   graphics/tloc_graphics.cpp 
@@ -51,6 +56,14 @@ set(TLOC_PREFAB_PHYSICS
   physics/tloc_physics.inl.h
   )
 
+set(TLOC_PREFAB_ANIMATION
+  animation/tloc_animation.h
+  animation/tloc_animation.inl.h
+  animation/tloc_animation.cpp
+  animation/tlocTransformAnimation.h
+  animation/tlocTransformAnimation.cpp
+  )
+
 #-------------------------------------------
 # Project setup
 
@@ -65,6 +78,7 @@ add_library(tlocPrefab STATIC
   ${TLOC_PREFAB_INPUT}
   ${TLOC_PREFAB_MATH}
   ${TLOC_PREFAB_PHYSICS}
+  ${TLOC_PREFAB_ANIMATION}
   )
 
 add_dependencies(tlocPrefab
@@ -82,4 +96,4 @@ source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})
 source_group(input            FILES ${TLOC_PREFAB_INPUT})
 source_group(math             FILES ${TLOC_PREFAB_MATH})
 source_group(physics          FILES ${TLOC_PREFAB_PHYSICS})
-
+source_group(animation        FILES ${TLOC_PREFAB_ANIMATION})

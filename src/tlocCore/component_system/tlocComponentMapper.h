@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace component_system {
 
     size_type size() const { return m_compList.size(); }
 
-    T* operator[](tl_int a_index)
+    T* operator[](size_type a_index)
     {
       return static_cast<T*>(m_compList[a_index]);
     }

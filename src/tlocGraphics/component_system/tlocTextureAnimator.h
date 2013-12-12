@@ -42,6 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
       TextureCoords           m_coords;
       tl_float                m_frameDeltaT;
       f64                     m_startTime;
+      f64                     m_totalTime;
       core_utils::Checkpoints m_flags;
     };
 
@@ -63,32 +64,38 @@ namespace tloc { namespace graphics { namespace component_system {
                                     size_type a_index);
     void            RemoveSpriteSet(size_type a_index);
 
-    TextureCoords&       GetSpriteSet(size_type a_index);
-    const TextureCoords& GetSpriteSet(size_type a_index) const;
+    TextureCoords&       GetSpriteSequence(size_type a_index);
+    const TextureCoords& GetSpriteSequence(size_type a_index) const;
+    TextureCoords&       GetCurrentSpriteSequence();
+    const TextureCoords& GetCurrentSpriteSequence() const;
 
     void            NextFrame();
     void            PrevFrame();
     void            SetFrame(size_type a_index);
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSets, m_coordSets.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSetIndex, m_currentSet);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumSpriteSequences, m_coordSets.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetCurrentSpriteSeqIndex, m_currentSet);
     TLOC_DECL_AND_DEF_GETTER(f64,  GetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_GETTER(f64,  GetTotalTime, m_coordSets[m_currentSet].m_totalTime);
     TLOC_DECL_AND_DEF_GETTER(f64,  GetFrameDeltaT, m_coordSets[m_currentSet].m_frameDeltaT);
 
     TLOC_DECL_GETTER(bool, IsLooping);
     TLOC_DECL_GETTER(bool, IsPaused);
     TLOC_DECL_GETTER(bool, IsStopped);
-    TLOC_DECL_GETTER(bool, IsSpriteSetChanged);
+    TLOC_DECL_GETTER(bool, IsLastFrame);
+    TLOC_DECL_GETTER(bool, IsSpriteSeqChanged);
     TLOC_DECL_GETTER(size_type, GetFPS);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE
       (f64,  SetStartTime, m_coordSets[m_currentSet].m_startTime);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE
+      (f64,  SetTotalTime, m_coordSets[m_currentSet].m_totalTime);
 
     TLOC_DECL_SETTER_BY_VALUE(bool, SetLooping);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetPaused);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetStopped);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetSpriteSetChanged);
-    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentSpriteSet);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetSpriteSequenceChanged);
+    TLOC_DECL_SETTER_BY_VALUE(size_type, SetCurrentSpriteSequence);
     TLOC_DECL_SETTER_BY_VALUE(size_type, SetFPS);
 
   private:

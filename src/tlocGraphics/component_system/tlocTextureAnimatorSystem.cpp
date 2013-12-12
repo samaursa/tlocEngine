@@ -23,7 +23,6 @@ namespace tloc { namespace graphics { namespace component_system {
                           entity_manager_sptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::texture_animator))
-     , m_totalTime(0)
   { }
 
   error_type
@@ -37,9 +36,15 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     const entity_type* ent = a_ent;
 
-    gfx_cs::TextureAnimator* texAnim =
-      ent->GetComponent<gfx_cs::TextureAnimator>();
-    texAnim->SetStartTime(0);
+    const tl_size size =
+      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+
+    for (tl_size i = 0; i < size; ++i)
+    {
+      gfx_cs::TextureAnimator* texAnim =
+        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+      texAnim->SetStartTime(0);
+    }
 
     return ErrorSuccess;
   }
@@ -51,14 +56,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     TextureAnimatorSystem::
-    Pre_ProcessActiveEntities(f64 a_deltaT)
-  {
-    m_totalTime += a_deltaT;
-  }
+    Pre_ProcessActiveEntities(f64 )
+  { }
 
   void
     TextureAnimatorSystem::
-    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64)
+    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
     using math_t::Vec4f32;
@@ -68,33 +71,44 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const entity_type* ent = a_ent;
 
-    gfx_cs::TextureAnimator* texAnim =
-      ent->GetComponent<gfx_cs::TextureAnimator>();
+    const tl_size size =
+      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
 
-    f64 diff = m_totalTime - texAnim->GetStartTime();
-    f64 fps = texAnim->GetFrameDeltaT();
-
-    while (diff > fps)
+    for (tl_size i = 0; i < size; ++i)
     {
-      if (texAnim->IsPaused() == false &&
-          texAnim->IsStopped() == false)
+      gfx_cs::TextureAnimator* texAnim =
+        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+
+      texAnim->SetTotalTime(texAnim->GetTotalTime() + a_deltaT);
+
+      f64 diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
+      f64 fps = texAnim->GetFrameDeltaT();
+
+      while (diff > fps)
       {
-        texAnim->NextFrame();
+        if (texAnim->IsPaused() == false &&
+          texAnim->IsStopped() == false)
+        {
+          texAnim->NextFrame();
+        }
+
+        texAnim->SetStartTime(texAnim->GetStartTime() + fps);
+        diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
       }
 
-      texAnim->SetStartTime(texAnim->GetStartTime() + fps);
-      diff = m_totalTime - texAnim->GetStartTime();
-    }
+      if (ent->HasComponent(components::texture_coords) &&
+          texAnim->IsSpriteSeqChanged())
+      {
+        gfx_cs::TextureCoords* coordPtr =
+          ent->GetComponent<gfx_cs::TextureCoords>(i);
 
-    if (ent->HasComponent(components::texture_coords) &&
-        texAnim->IsSpriteSetChanged())
-    {
-      gfx_cs::TextureCoords* coordPtr =
-        ent->GetComponent<gfx_cs::TextureCoords>();
+        TLOC_ASSERT(coordPtr,
+          "Texture coords don't exist for corresponding texture animator");
 
-      *coordPtr = texAnim->GetSpriteSet(texAnim->GetCurrentSpriteSetIndex());
+        *coordPtr = texAnim->GetSpriteSequence(texAnim->GetCurrentSpriteSeqIndex());
 
-      texAnim->SetSpriteSetChanged(false);
+        texAnim->SetSpriteSequenceChanged(false);
+      }
     }
   }
 
@@ -102,9 +116,12 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities(f64)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  template class core_sptr::SharedPtr<TextureAnimatorSystem>;
-
 };};};
+
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimatorSystem);

@@ -13,13 +13,14 @@ namespace tloc { namespace core { namespace component_system {
     // will have a slight runtime cost.
     enum type
     {
-      core		 = 0,
-      math		 = 20,
-      graphics = 40,
-      input		 = 60,
-      physics  = 80,
-      sound    = 100,
-      ai       = 120,
+      core		  = 0,
+      math		  = 20,
+      graphics  = 40,
+      input		  = 60,
+      animation = 70,
+      physics   = 80,
+      sound     = 100,
+      ai        = 120,
 
       count    = 140
     };

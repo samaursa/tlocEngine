@@ -400,6 +400,11 @@ namespace TestingStackArray
     ints.resize(resizeSize);
     CHECK(ints.size() == resizeSize);
     CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 5);
+
+    ints.clear();
+    ints.resize(resizeSize, 0);
+    CHECK(ints.size() == resizeSize);
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 0);
   }
 
   TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Assign",

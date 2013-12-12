@@ -4,11 +4,12 @@
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 // GL Includes
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -65,13 +66,13 @@ namespace tloc { namespace graphics { namespace gl {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveUniform(a_shaderProgram.GetHandle(), i, g_buffSize,
                            &currInfo.m_nameLength, &currInfo.m_arraySize,
-                           &currInfo.m_type, currInfo.m_name.Get());
+                           &currInfo.m_type, currInfo.m_name.get());
 
         // remove [0] from the names which appears on some cards
-        fixedName = currInfo.m_name.Get();
+        fixedName = currInfo.m_name.get();
         fixedName = fixedName.substr(0, fixedName.find('['));
-        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.Get());
-        currInfo.m_name.Get()[fixedName.length()] = '\0';
+        core::copy(fixedName.begin(), fixedName.end(), currInfo.m_name.get());
+        currInfo.m_name.get()[fixedName.length()] = '\0';
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
@@ -81,10 +82,11 @@ namespace tloc { namespace graphics { namespace gl {
            itr != itrEnd; ++itr)
       {
         itr->m_location = glGetUniformLocation
-          (a_shaderProgram.GetHandle(), itr->m_name.Get());
-        // LOG:
-        TLOC_ASSERT(itr->m_location != -1,
-          "Using reserved prefix gl_ in variable name which is disallowed");
+          (a_shaderProgram.GetHandle(), itr->m_name.get());
+
+        TLOC_LOG_GFX_WARN_IF(itr->m_location == -1)
+          << "Using reserved prefix gl_ in variable name is disallowed "
+          << itr->m_name.get();
       }
     }
 
@@ -109,7 +111,7 @@ namespace tloc { namespace graphics { namespace gl {
         ShaderVariableInfo& currInfo = a_infoOut[i];
         glGetActiveAttrib(a_shaderProgram.GetHandle(), i, g_buffSize,
                           &currInfo.m_nameLength, &currInfo.m_arraySize,
-                          &currInfo.m_type, currInfo.m_name.Get());
+                          &currInfo.m_type, currInfo.m_name.get());
 
         TLOC_ASSERT(currInfo.m_nameLength > 0, "Name length should not be 0!");
       }
@@ -119,10 +121,11 @@ namespace tloc { namespace graphics { namespace gl {
            itr != itrEnd; ++itr)
       {
         itr->m_location = glGetAttribLocation
-          (a_shaderProgram.GetHandle(), itr->m_name.Get());
-        // LOG:
-        TLOC_ASSERT(itr->m_location != -1,
-          "Using reserved prefix gl_ in variable name which is disallowed");
+          (a_shaderProgram.GetHandle(), itr->m_name.get());
+
+        TLOC_LOG_GFX_WARN_IF(itr->m_location == -1)
+          << "Using reserved prefix gl_ in variable name is disallowed "
+          << itr->m_name.get();
       }
 
     }
@@ -232,7 +235,7 @@ namespace tloc { namespace graphics { namespace gl {
     { }
 
     bool operator() (const ShaderVariableInfo& a_sv)
-    { return core_str::StrCmp(a_sv.m_name.Get(), m_name) == 0; }
+    { return core_str::StrCmp(a_sv.m_name.get(), m_name) == 0; }
 
     const char* m_name;
   };
@@ -277,7 +280,6 @@ namespace tloc { namespace graphics { namespace gl {
       return TLOC_ERROR(error::error_shader_program_enable);
     }
 
-    ResetTextureUnits();
     return ErrorSuccess;
   }
 
@@ -348,12 +350,6 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // Explicit initialization
 
-  // Supporting up to 4 shader attachments
-  template class Variadic<Shader_I*, 1>;
-  template class Variadic<Shader_I*, 2>;
-  template class Variadic<Shader_I*, 3>;
-  template class Variadic<Shader_I*, 4>;
-
   template ShaderProgram::error_type ShaderProgram::AttachShaders
     (Variadic<Shader_I*, 1>);
   template ShaderProgram::error_type ShaderProgram::AttachShaders
@@ -382,8 +378,19 @@ namespace tloc { namespace graphics { namespace gl {
   template ShaderProgram::gl_result_type
     ShaderProgram::DoGet<p_shader_program::ActiveUniformMaxLength>() const;
 
-  // SmartPtr
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit initialization
+
+using namespace tloc::gfx_gl;
+using namespace tloc::core_ds;
+
+// Supporting up to 4 shader attachments
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 1);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 2);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 3);
+TLOC_INSTANTIATE_VARIADIC(Shader_I*, 4);
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);

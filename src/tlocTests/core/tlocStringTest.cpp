@@ -2,6 +2,7 @@
 
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 namespace TestingStrings
 {
@@ -75,6 +76,11 @@ namespace TestingStrings
     {
       String f(StringNoInitialize(), 10);
       CHECK(f.capacity() == 10);
+    }
+
+    {
+      String g(BufferArg("Hello"));
+      CHECK(StrCmp(g.c_str(), "Hello") == 0);
     }
 
     {// tests from cplusplus.com
@@ -591,6 +597,38 @@ namespace TestingStrings
     CHECK(str.compare("abcdefg") == 0);
   }
 
+  TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/StrChr and StrRChr", "")
+  {
+    SECTION("StrChr", "")
+    {
+      char str[] = "This is a sample string";
+      char* pch;
+
+      pch = core_str::StrChr(str, 's');
+      CHECK(StrCmp(pch, "s is a sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "s a sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "sample string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK(StrCmp(pch, "string") == 0);
+
+      pch = core_str::StrChr(pch + 1, 's');
+      CHECK( (pch == nullptr) );
+    }
+    SECTION("StrRChr", "")
+    {
+      char8 str[] = "This is a sample string";
+      char8 * pch;
+
+      pch = core_str::StrRChr(str, 's');
+      CHECK(StrCmp(pch, "string") == 0);
+    }
+  }
+
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/UpperLower", "")
   {
     CHECK(CharToUpper('a') == 'A');
@@ -645,14 +683,14 @@ namespace TestingStrings
 
     {
       char8 s1[256];
-      tl_int retIndex = CharWideToAscii(s1, sentence1, 256);
+      tl_size retIndex = CharWideToAscii(s1, sentence1, 256);
       CHECK(StrCmp(sentence2, s1) == 0);
       CHECK(retIndex == 19);
     }
 
     {
       char32 s2[256];
-      tl_int retIndex = CharAsciiToWide(s2, sentence2, 256);
+      tl_size retIndex = CharAsciiToWide(s2, sentence2, 256);
       CHECK(StrCmp(sentence1, s2) == 0);
       CHECK(retIndex == 19);
     }
@@ -859,5 +897,22 @@ namespace TestingStrings
     CHECK_FALSE(IsPosNumber("123.4567"));
     CHECK_FALSE(IsPosRealNumber("-1234.5678"));
 
+  }
+
+  TEST_CASE("Core/Strings/FreeFunctions/format", "")
+  {
+    String formattedStr =
+      core_str::Format("%s, %i, %.1f, %.1f", "hello world", 5, 10.0f, 20.0);
+
+    CHECK(formattedStr.compare("hello world, 5, 10.0, 20.0") == 0);
+
+    // format a large string, this should not crash
+    char veryLongString[2056] = {'a'};
+    veryLongString[2055] = 0;
+
+    String largeFormattedString =
+      core_str::Format("%s", veryLongString);
+
+    CHECK(largeFormattedString.compare(veryLongString) == 0);
   }
 };

@@ -138,7 +138,7 @@ namespace TestingMatrix
     CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
 
     d = a + a;
-    CHECK_MATRIX3F(c, 2, 8, 14, 4, 10, 16, 6, 12, 18);
+    CHECK_MATRIX3F(d, 2, 8, 14, 4, 10, 16, 6, 12, 18);
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/Math/Sub",

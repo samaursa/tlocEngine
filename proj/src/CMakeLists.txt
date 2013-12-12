@@ -1,6 +1,7 @@
 # -----------------------------------------------------------------------------
 # Functions
 
+# -----------------------------------------------------------------------------
 function(add_common_libraries EXEC_NAME)
   target_link_libraries(${EXEC_NAME}
     tlocCore
@@ -9,6 +10,7 @@ function(add_common_libraries EXEC_NAME)
     tlocInput
     tlocPhysics
     tlocPrefab
+    tlocAnimation
     Box2D
     )
 
@@ -43,6 +45,7 @@ function(add_common_libraries EXEC_NAME)
 
 endfunction()
 
+# -----------------------------------------------------------------------------
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
@@ -62,81 +65,7 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
   endif()
 endfunction()
 
-# This will load the default C++ configurations for supported compilers which enables
-# RTTI, Exception handling etc.
-function(load_default_configurations)
-  set(CMAKE_CXX_FLAGS_DEBUG          ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} PARENT_SCOPE)
-  set(CMAKE_CXX_FLAGS_RELEASE        ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} PARENT_SCOPE)
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} PARENT_SCOPE)
-
-  if(TLOC_COMPILER_MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm  /EHsc /RTC1 /MTd /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-  elseif(TLOC_COMPILER_XCODE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-rtti -Wno-unused-function" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-rtti -Wno-unused-function" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-rtti -Wno-unused-function" PARENT_SCOPE)
-  else()
-    message("Configuration not applied because compiler is unsupported (or not detected properly)")
-  endif()
-endfunction()
-
-function(tloc_enable_exceptions)
-  add_definitions(
-    -DTLOC_ENABLE_CPPUNWIND 
-    )
-endfunction()
-
-function(tloc_enable_rtti)
-  add_definitions(
-    -DTLOC_ENABLE_CPPRTTI 
-    )
-endfunction()
-
-function(tloc_enable_stl)
-  add_definitions(
-    -DTLOC_USING_STL 
-    )
-endfunction()
-
 # -----------------------------------------------------------------------------
-
-# Remove MinSizeRel
-set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE)
-
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-
-# Define TLOC_CXX03 if C++11 is NOT supported (force XCode to C++03 for now)
-if(NOT TLOC_COMPILER_C11 OR TLOC_COMPILER_XCODE)
-  add_definitions(-DTLOC_CXX03)
-endif()
-
-# Backup the default flags
-SET(CMAKE_CXX_FLAGS_DEFAULT                 ${CMAKE_CXX_FLAGS})
-set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
-set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
-
-if(TLOC_COMPILER_MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm /RTC1 /MTd /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /MT /Gy /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /MT /Gy /GR- /W4 /WX /c /Zi /TP")
-
-  #turn off exceptions for all configurations
-  string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-  string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-elseif(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-exceptions -fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-exceptions -fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-exceptions -fno-rtti -Wno-unused-function")
-  set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
-else()
-  message("Configuration not applied because compiler is unsupported (or not detected properly)")
-endif()
 
 # common includes
 include_directories(
@@ -157,6 +86,7 @@ link_directories(
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
+  ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
 
   ${TLOC_DEP_BUILD_PATH}/src/Box2D/
   )
@@ -170,6 +100,9 @@ foreach(lib ${USER_LIBRARY_PROJECTS})
   message(STATUS "Adding ${lib} library project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_LIB})
   set(USER_CURRENT_PROJECT_NAME ${lib})
+
+  # strict definitions
+  tloc_add_definitions_strict()
 
   add_subdirectory(${lib})
 
@@ -188,6 +121,9 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${exec})
   
+  # strict definitions
+  tloc_add_definitions_strict()
+
   add_subdirectory(${exec})
 
   # put the executable in the "Projects" folder
@@ -204,6 +140,9 @@ foreach(test ${USER_TEST_PROJECTS})
   message(STATUS "Adding ${test} executable project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
+
+  # non-strict definitions
+  tloc_add_definitions()
   
   add_subdirectory(${test})
 

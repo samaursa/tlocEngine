@@ -65,3 +65,10 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(CameraSystem);

@@ -127,6 +127,15 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
+    ::SetTransformation(const transform_type& a_tr, const scale_type& a_scale)
+  {
+    m_transformation = a_tr;
+    m_scale = a_scale;
+  }
+
+  template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::this_type
     Transform_T<TRANSFORM_PARAMS>
     ::Invert() const
@@ -146,15 +155,21 @@ namespace tloc { namespace math { namespace component_system {
 
   //------------------------------------------------------------------------
   // Explicit instantiations
-
+  
   template class Transform_T<f32>;
   template class Transform_T<f64>;
 
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
-
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+using namespace tloc;
+using namespace tloc::math_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
+
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);

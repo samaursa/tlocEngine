@@ -47,14 +47,14 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   void Material::
-    SetVertexSource(const string_type& a_source)
+    SetVertexSource(BufferArg a_source)
   {
     m_vertexProgram = a_source;
     SetUpdateRequired(true);
   }
 
   void Material::
-    SetFragmentSource(const string_type& a_source)
+    SetFragmentSource(BufferArg a_source)
   {
     m_fragmentProgram = a_source;
     SetUpdateRequired(true);
@@ -77,13 +77,16 @@ namespace tloc { namespace graphics { namespace component_system {
     return GetUniqueGroupID() < a_other.GetUniqueGroupID();
   }
 
-  //------------------------------------------------------------------------
-  // Explicit Instantiation
-
-  template class core::containers::Array<Material::shader_op_ptr>;
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Material);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(material_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit Instantiation
+
+using namespace tloc::gfx_cs;
+
+// array
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Material::shader_op_ptr);
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Material);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(material_sptr);

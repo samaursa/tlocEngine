@@ -65,7 +65,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonPress(a_caller, a_event, a_buttonCode) == false)
+            OnButtonPress(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -81,7 +81,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonRelease(a_caller, a_event, a_buttonCode) == false)
+            OnButtonRelease(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -96,7 +96,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnMouseMove(a_caller, a_event) == false)
+            OnMouseMove(a_caller, a_event) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -109,11 +109,11 @@ namespace tloc { namespace input { namespace hid {
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Mouse
     : public core::base_classes::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
     , public p_hid::Mouse
   {
   public:

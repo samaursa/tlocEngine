@@ -12,30 +12,30 @@
 
 namespace tloc {
 
-  namespace {
+  namespace priv {
     template <typename T>
-    T GetAbs(T a_value)
+    T DoGetAbs(T a_value)
     {
       return std::abs(a_value);
     }
 
-    TL_I s64 GetAbs(s64 a_value)
+    TL_I s64 DoGetAbs(s64 a_value)
     {
       return (s64)std::abs((s32)a_value);
     }
 
     template <typename T>
-    T GetSqrt(T a_value)
+    T DoGetSqrt(T a_value)
     {
       return std::sqrt(a_value);
     }
 
-    TL_I s32 GetSqrt(s32 a_value)
+    TL_I s32 DoGetSqrt(s32 a_value)
     {
       return (s32)std::sqrt((tl_float)a_value);
     }
 
-    TL_I s64 GetSqrt(s64 a_value)
+    TL_I s64 DoGetSqrt(s64 a_value)
     {
       return (s64)std::sqrt((tl_float)a_value);
     }
@@ -62,7 +62,7 @@ namespace tloc {
   T Math<T>::
     Abs(T aValue)
   {
-    return GetAbs(aValue);
+    return priv::DoGetAbs(aValue);
   }
 
   template <typename T>
@@ -146,7 +146,7 @@ namespace tloc {
   T Math<T>::
     Sqrt(T aValue)
   {
-    return GetSqrt(aValue);
+    return priv::DoGetSqrt(aValue);
   }
 
   template <typename T>

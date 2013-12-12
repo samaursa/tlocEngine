@@ -100,9 +100,6 @@ namespace tloc { namespace input {
   template class InputManager<InputPolicy::Buffered>;
   template class InputManager<InputPolicy::Immediate>;
 
-  template class core::smart_ptr::SharedPtr<InputManagerB>;
-  template class core::smart_ptr::SharedPtr<InputManagerI>;
-
   //------------------------------------------------------------------------
   // Force instantiate the constructor for each platform
 #if defined(TLOC_OS_WIN)
@@ -133,4 +130,15 @@ namespace tloc { namespace input {
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
 
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Immediate>);
+
 };};
+
+//------------------------------------------------------------------------
+// Explicit Instantiations
+
+using namespace tloc::input;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(InputManagerB);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(InputManagerI);

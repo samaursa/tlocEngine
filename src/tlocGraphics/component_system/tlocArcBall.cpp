@@ -94,11 +94,13 @@ namespace tloc { namespace graphics { namespace component_system {
     }
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBall);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(arcball_sptr);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBall);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(arcball_sptr);

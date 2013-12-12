@@ -1,5 +1,7 @@
 #include "tlocMouseImplWin.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+
 namespace tloc { namespace input { namespace hid { namespace priv {
 
   //------------------------------------------------------------------------
@@ -86,15 +88,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, TLOC_NULL)))
     {
-      // LOG: Mouse failed to initialize
-      TLOC_ASSERT(false, "Unable to initialize the mouse");
+      TLOC_LOG_INPUT_ERR() << "Unable to initialize the mouse";
       return;
     }
 
     if ( FAILED(m_mouse->SetDataFormat(&c_dfDIMouse2)) )
     {
-      // LOG: Mouse format error
-      TLOC_ASSERT(false, "Unable to initialize the mouse");
+      TLOC_LOG_INPUT_ERR() << "Could not set mouse device format";
       return;
     }
 
@@ -113,20 +113,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (!DoInitializeExtra(policy_type()))
     {
-      // LOG: Unable to acquire a buffered mouse
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire a buffered mouse";
       return;
     }
 
     if (FAILED(m_mouse->SetCooperativeLevel(m_windowPtr, coop)))
     {
-      // LOG: Mouse cooperative level settings error
+      TLOC_LOG_INPUT_ERR() << "Mouse cooperative level settings error";
       return;
     }
 
     HRESULT hr = m_mouse->Acquire();
     if (FAILED(hr) && hr != DIERR_OTHERAPPHASPRIO)
     {
-      // LOG: Unable to acquire Win32 mouse
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire Win32 mouse";
       return;
     }
 
@@ -194,8 +194,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (FAILED(hRes))
     {
-      // LOG: Could not get device data
-      TLOC_ASSERT(false, "Could not get device data!");
+      TLOC_LOG_INPUT_ERR() << "Could not get device data";
     }
 
     bool axesUpdated = false;

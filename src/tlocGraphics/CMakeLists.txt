@@ -1,6 +1,7 @@
 set(TLOC_GRAPHICS 
   tlocDepVersionCheck.cpp 
   tlocGraphicsBase.h 
+  tlocGraphicsBase.cpp
   tloc_graphics.cpp 
   tloc_graphics.h 
   tloc_graphics.inl.h 
@@ -61,9 +62,15 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMesh.h 
   component_system/tlocMeshRenderSystem.cpp 
   component_system/tlocMeshRenderSystem.h 
+  component_system/tlocSceneNode.h
+  component_system/tlocSceneNode.cpp
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocRenderSystem.h
+  component_system/tlocRenderSystem.cpp
+  component_system/tlocSceneGraphSystem.h
+  component_system/tlocSceneGraphSystem.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h
@@ -105,10 +112,15 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocAttribute.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
+  opengl/tlocFramebufferObject.h
+  opengl/tlocFramebufferObject.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
+  opengl/tlocOpenGLIncludes.h
+  opengl/tlocRenderbufferObject.h
+  opengl/tlocRenderbufferObject.cpp
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 
@@ -171,6 +183,7 @@ set(TLOC_GRAPHICS_WINDOW
   window/tlocWindowHandle.h 
   window/tlocWindowImpl.h 
   window/tlocWindowSettings.h 
+  window/tlocWindowSettings.cpp
   window/tloc_window.cpp 
   window/tloc_window.h 
   window/tloc_window.inl.h

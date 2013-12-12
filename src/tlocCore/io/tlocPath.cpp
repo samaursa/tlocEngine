@@ -6,6 +6,8 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/io/tlocFileIO.h>
 
+#include <tlocCore/logging/tlocLogger.h>
+
 //------------------------------------------------------------------------
 // Platform specific functionality
 
@@ -19,7 +21,7 @@ namespace tloc { namespace core { namespace io {
     const char* g_extension = ".";
   };
 
-  Path::Path(const char* a_path) : m_path(a_path)
+  Path::Path(const BufferArg& a_path) : m_path(a_path)
   {
     TLOC_ASSERT(!m_path.empty(), "Path string is empty!");
     DoFixPath();
@@ -55,7 +57,7 @@ namespace tloc { namespace core { namespace io {
 
   bool Path::FileExists() const
   {
-    FileIO_ReadA fileChecker(m_path.c_str());
+    FileIO_ReadA fileChecker = FileIO_ReadA(core_io::Path(m_path));
     if (fileChecker.Open() == tloc::common_error_types::error_success)
     { return true; }
 
@@ -65,14 +67,16 @@ namespace tloc { namespace core { namespace io {
   bool Path::FolderExists() const
   {
     String tempFileName = m_path + "/temp.temp";
-    Path tempPath(tempFileName.c_str());
+    Path tempPath(tempFileName);
 
-    FileIO_WriteA tempFile(tempPath.GetPath());
+    FileIO_WriteA tempFile(tempPath);
     if (tempFile.Open() == tloc::common_error_types::error_success)
     {
       tempFile.Close();
       if (tempFile.Delete() == tloc::common_error_types::error_failure)
-      { /* LOG: Could not erase temporary file */ }
+      { 
+        TLOC_LOG_CORE_WARN() << "Could not erase temporary file: " << tempFileName;
+      }
 
       return true;
     }
@@ -91,7 +95,7 @@ namespace tloc { namespace core { namespace io {
     return false;
   }
 
-  void Path::SetPath(const char* a_path)
+  void Path::SetPath(const BufferArg& a_path)
   {
     m_path = a_path;
     DoFixPath();

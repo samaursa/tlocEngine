@@ -24,7 +24,9 @@ namespace tloc { namespace core { namespace error {
 
     bool Succeeded() const;
     bool Failed() const;
+
     void Ignore() const;
+    void Check() const;
 
     tl_int      GetLineNumber() const;
     const char* GetFileName() const;

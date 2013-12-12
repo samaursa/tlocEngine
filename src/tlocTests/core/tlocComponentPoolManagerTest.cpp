@@ -187,7 +187,6 @@ namespace TestingComponentPoolManager
       ComponentPoolManager mgr;
 
       CHECK_FALSE(mgr.Exists(k_uint));
-      printf("%lu", mgr.size());
       TestWithManager<UIntComponentPtrPool>(mgr, k_uint);
       CHECK(mgr.size() == 2); // even though one pool was created, k_uint
                               // has an index of 1, thus the pool container

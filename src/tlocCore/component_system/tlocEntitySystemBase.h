@@ -8,13 +8,15 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntitySystemBase : public EventListener
+  class EntitySystemBase
+    : public EventListener
+    , public core_bclass::NonCopyable_I
   {
   public:
 
@@ -55,6 +57,8 @@ namespace tloc { namespace core { namespace component_system {
     /// CheckProcessing returns 0.
     ///-------------------------------------------------------------------------
     void ProcessActiveEntities(f64 a_deltaT = 0);
+
+    virtual void SortEntities() = 0;
 
   protected:
 
@@ -141,8 +145,8 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(entity_ptr_array, DoGetActiveEntities,
-                                          m_activeEntities);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_ptr_array, DoGetActiveEntities,
+                                    m_activeEntities);
 
   private:
     component_type_array  m_typeFlags;

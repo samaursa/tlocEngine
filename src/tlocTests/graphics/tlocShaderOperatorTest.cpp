@@ -1,6 +1,6 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/renderer/tlocRenderer.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
@@ -101,7 +101,6 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -110,7 +109,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
@@ -369,7 +368,6 @@ namespace TestingShaderOperator
   {
     using namespace graphics::win;
     using namespace math::types;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -378,7 +376,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess);
@@ -569,7 +567,6 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -578,7 +575,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess);
@@ -801,7 +798,6 @@ namespace TestingShaderOperator
   {
     using namespace math::types;
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -810,7 +806,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess);

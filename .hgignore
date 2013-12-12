@@ -29,3 +29,4 @@ build*/
 *.swp
 tlocAssetsPath.h
 tlocVersionFilePath.h
+proj/src/gameAssetsPath.h

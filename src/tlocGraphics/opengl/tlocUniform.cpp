@@ -21,9 +21,11 @@ namespace tloc { namespace graphics { namespace gl {
     return *this;
   }
 
-  //------------------------------------------------------------------------
-  // typedefs
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Uniform);
-
 };};};
+
+//------------------------------------------------------------------------
+// typedefs
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Uniform);

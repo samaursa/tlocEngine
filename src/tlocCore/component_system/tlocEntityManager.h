@@ -9,10 +9,12 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EntityManager
+    : public core_bclass::NonCopyable_I
   {
   public:
     typedef Entity*                               entity_ptr_type;

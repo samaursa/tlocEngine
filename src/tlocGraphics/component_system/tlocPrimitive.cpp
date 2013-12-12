@@ -159,9 +159,14 @@ namespace tloc { namespace graphics { namespace component_system {
   template class Primitive_TI<p_primitive::ArrayOfStructures>;
   template class Primitive_TI<p_primitive::StructureOfArrays>;
 
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::ArrayOfStructures::cont_type);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_pos_type);
-  //TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);
-
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::ArrayOfStructures::cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_pos_type);
+//TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);

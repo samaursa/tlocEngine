@@ -33,7 +33,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <PROTECTED_BUFFER_TEMP>
   ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::~ProtectedBuffer()
   {
-    TLOC_ASSERT(DoIsBufferValid(build_config_type()), 
+    TLOC_ASSERT(DoIsBufferValid(build_config_type()),
                 "Buffer overflow detected!");
   }
 
@@ -50,19 +50,19 @@ namespace tloc { namespace core { namespace data_structs {
   }
 
   template <PROTECTED_BUFFER_TEMP>
-  T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::Get()
+  T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::get()
   {
     return m_buffer;
   }
 
   template <PROTECTED_BUFFER_TEMP>
-  const T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::Get() const
+  const T* ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::get() const
   {
     return m_buffer;
   }
 
   template <PROTECTED_BUFFER_TEMP>
-  PROTECTED_BUFFER_TYPE::size_type 
+  PROTECTED_BUFFER_TYPE::size_type
     ProtectedBuffer<PROTECTED_BUFFER_PARAMS>::GetSize() const
   {
     return buffer_size;
@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace data_structs {
   {
     for (tl_int i = 0; i < overflow_type::size; ++i)
     {
-      if (m_buffer[buffer_size + i] != s_protectedArea[i]) 
+      if (m_buffer[buffer_size + i] != s_protectedArea[i])
       { return false; }
     }
     return true;
@@ -106,5 +106,8 @@ namespace tloc { namespace core { namespace data_structs {
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_PROTECTED_BUFFER(_type_, _size_)\
+  template class tloc::core_ds::ProtectedBuffer<_type_, _size_>
 
 #endif

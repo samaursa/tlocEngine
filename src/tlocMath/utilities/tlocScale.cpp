@@ -25,18 +25,15 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleUp(small_value_type a_valueToScale) const
   {
-    TLOC_ASSERT( a_valueToScale >= m_smallRange.front() &&
-                 a_valueToScale <= m_smallRange.back(), "Value out of range!");
+    TLOC_ASSERT( m_smallRange.IsInRange(a_valueToScale), "Value out of range!");
 
-    typedef typename range_small::size_type      range_size_type;
+    small_value_type r1Size;
+    large_value_type r2Size;
 
-    range_size_type r1Size, r2Size;
-    r1Size = (range_size_type)(m_smallRange.GetElementCount() *
-                               m_smallRange.GetStepSize());
-    r2Size = (range_size_type)(m_largeRange.GetElementCount() *
-                               m_largeRange.GetStepSize());
+    r1Size = m_smallRange.back() - m_smallRange.front();
+    r2Size = m_largeRange.back() - m_largeRange.front();
 
-    TLOC_ASSERT(Approx<range_size_type>(r1Size, 0) != true,
+    TLOC_ASSERT(Approx<small_value_type>(r1Size, 0) != true,
       "Divide by zero!");
 
     a_valueToScale -= m_smallRange.front();
@@ -56,18 +53,15 @@ namespace tloc { namespace math { namespace utils {
     Scale_T<SCALE_PARAMS>::
     ScaleDown(large_value_type a_valueToScale) const
   {
-    TLOC_ASSERT( a_valueToScale >= m_largeRange.front() &&
-                 a_valueToScale <= m_largeRange.back(), "Value out of range!");
+    TLOC_ASSERT( m_largeRange.IsInRange(a_valueToScale), "Value out of range!");
 
-    typedef typename range_small::size_type      range_size_type;
+    small_value_type r1Size;
+    large_value_type r2Size;
 
-    range_size_type r1Size, r2Size;
-    r1Size = (range_size_type)(m_smallRange.GetElementCount() *
-                               m_smallRange.GetStepSize());
-    r2Size = (range_size_type)(m_largeRange.GetElementCount() *
-                               m_largeRange.GetStepSize());
+    r1Size = m_smallRange.back() - m_smallRange.front();
+    r2Size = m_largeRange.back() - m_largeRange.front();
 
-    TLOC_ASSERT(Approx<range_size_type>(r2Size, 0) != true,
+    TLOC_ASSERT(Approx<large_value_type>(r2Size, 0) != true,
       "Divide by zero!");
 
     a_valueToScale -= m_largeRange.front();
@@ -99,7 +93,8 @@ namespace tloc { namespace math { namespace utils {
   TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, u32);\
   TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, u64);\
   TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, f32);\
-  TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, f64)
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, f64);\
+  TLOC_EXPLICITLY_INSTANTIATE_SCALE(_type_, tl_size)
 
   TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s8);
   TLOC_EXPLICITLY_INSTANTIATE_SCALE_ALL_TYPES(s16);

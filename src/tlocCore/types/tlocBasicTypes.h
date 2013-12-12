@@ -82,13 +82,15 @@ namespace tloc
   // on the platform itself
 
 #if defined(_WIN64) || defined(__LP64__)
-  typedef s64               tl_int;
-  typedef u64               tl_uint;
-  typedef f64               tl_float;
+  typedef int               tl_int;
+  typedef unsigned int      tl_uint;
+  typedef float             tl_float;
+  typedef double            tl_double;
 #elif defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
-  typedef s32               tl_int;
-  typedef u32               tl_uint;
-  typedef f32               tl_float;
+  typedef int               tl_int;
+  typedef unsigned int      tl_uint;
+  typedef float             tl_float;
+  typedef double            tl_double;
 #else
 # error WIP
 #endif
@@ -125,6 +127,20 @@ namespace tloc
 #define TL_LLONG_MAX              LLONG_MAX
 #define TL_ULLONG_MIN             0
 #define TL_ULLONG_MAX             ULLONG_MAX
+
+  // ///////////////////////////////////////////////////////////////////////
+  // NumericLimits_T
+
+  template <typename T>
+  class NumericLimits_T
+  {
+  public:
+    typedef T                             value_type;
+
+  public:
+    static  value_type        min();
+    static  value_type        max();
+  };
 
 };
 

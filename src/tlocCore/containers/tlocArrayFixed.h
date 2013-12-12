@@ -105,7 +105,7 @@ namespace tloc { namespace core { namespace containers {
     bool             full() const;
 
     void             resize(size_type a_newSize);
-    void             resize(size_type a_newSize, value_type& a_value);
+    void             resize(size_type a_newSize, const value_type& a_value);
 
     //------------------------------------------------------------------------
     // Modifiers

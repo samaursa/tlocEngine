@@ -1,5 +1,6 @@
 #include "tlocOpenGLExt.h"
 #include "3rdParty/Graphics/GLEW/glew.h"
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -17,7 +18,7 @@ namespace tloc { namespace graphics { namespace gl {
       GLenum err = glewInit();
       if (GLEW_OK != err)
       {
-        // LOG: glewInit failed (log which GLEW error it was
+        TLOC_LOG_GFX_ERR() << "glewInit failed: " << err;
         m_initialized = false;
         m_error = TLOC_ERROR(common_error_types::error_initialize);
 
@@ -28,14 +29,11 @@ namespace tloc { namespace graphics { namespace gl {
         m_initialized = true;
         m_error = TLOC_ERROR(common_error_types::error_success);
 
-        // LOG: OpenGL version, vendor, renderer, and number of supported
-        //      extensions (use glGetString, glGetIntegerv etc.)
-
         return GetLastError();
       }
     }
 
-    // LOG: GLEW already initialized
+    TLOC_LOG_GFX_WARN() << "GLEW already initialized";
     m_error = TLOC_ERROR(common_error_types::error_already_initialized);
     return GetLastError();
   }

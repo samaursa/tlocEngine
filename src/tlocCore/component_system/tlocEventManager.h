@@ -6,10 +6,12 @@
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EventManager
+    : public core_bclass::NonCopyable_I
   {
   public:
     typedef events::value_type                    event_type;

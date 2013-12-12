@@ -57,7 +57,8 @@ namespace tloc { namespace math { namespace utils {
   typedef Scale_T<_type_, f64>      scale_ ##_type_ ##_f64;\
   typedef Scale_T<_type_, tl_uint>  scale_ ##_type_ ##_tl_uint;\
   typedef Scale_T<_type_, tl_int>   scale_ ##_type_ ##_tl_int;\
-  typedef Scale_T<_type_, tl_float> scale_ ##_type_ ##_tl_float
+  typedef Scale_T<_type_, tl_float> scale_ ##_type_ ##_tl_float;\
+  typedef Scale_T<_type_, tl_size> scale_ ##_type_ ##_tl_size
 
   TLOC_DECLARE_SCALE_TYPES(s8);
   TLOC_DECLARE_SCALE_TYPES(s16);

@@ -69,7 +69,7 @@ namespace tloc { namespace math { namespace types {
   {
     typedef Vector4<T>    vec4_type;
 
-    vec4_type newPos = a_trans * m_origin.ConvertTo<vec4_type>();
+    vec4_type newPos = a_trans * m_origin.template ConvertTo<vec4_type>();
 
     Matrix3<T> mRot(a_trans[0], a_trans[4], a_trans[8],
                     a_trans[1], a_trans[5], a_trans[9],
@@ -77,7 +77,7 @@ namespace tloc { namespace math { namespace types {
 
     vec_type newDir = mRot * m_direction;
 
-    return this_type(origin(newPos.ConvertTo<vec_type>()), direction(newDir) );
+    return this_type(origin(newPos.template ConvertTo<vec_type>()), direction(newDir) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

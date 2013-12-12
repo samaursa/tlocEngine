@@ -6,7 +6,17 @@
 
 namespace tloc { namespace core { namespace utils {
 
-  //------------------------------------------------------------------------
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // To pointer
+
+  template <typename T>
+  tl_uintptr
+    GetMemoryAddress(const T& a)
+  {
+    return (tl_uintptr)(a);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // Pointer comparison utility
 
   template <typename T, typename U>

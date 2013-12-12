@@ -2,7 +2,7 @@
 
 #include <tlocCore/io/tlocFileIO.h>
 
-#include <tlocGraphics/renderer/tlocRenderer.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/window/tlocWindow.h>
 
@@ -57,7 +57,6 @@ namespace TestingShaderComponent
   TEST_CASE("Graphics/ShaderComponent/HardCoded", "")
   {
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode         graphics_mode;
 
@@ -66,7 +65,7 @@ namespace TestingShaderComponent
       WindowSettings("Atom & Eve"));
 
     // Initialize renderer
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     {
       gl::VertexShader vs;
@@ -88,7 +87,6 @@ namespace TestingShaderComponent
   TEST_CASE("Graphics/ShaderComponent/FromFile", "")
   {
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef Window::graphics_mode       graphics_mode;
 
@@ -97,11 +95,11 @@ namespace TestingShaderComponent
                WindowSettings("Atom & Eve"));
 
     // Initialize renderer
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
 
     // Load the files
-    io::FileIO_ReadA vsFile( g_vShaderPath.c_str() );
-    io::FileIO_ReadA fsFile( g_fShaderPath.c_str() );
+    io::FileIO_ReadA vsFile = io::FileIO_ReadA( core_io::Path(g_vShaderPath) );
+    io::FileIO_ReadA fsFile = io::FileIO_ReadA( core_io::Path(g_fShaderPath) );
 
     REQUIRE(vsFile.Open() == ErrorSuccess);
     REQUIRE(fsFile.Open() == ErrorSuccess);

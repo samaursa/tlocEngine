@@ -1,8 +1,8 @@
 #include "tlocTestCommon.h"
 
-#if defined(TLOC_OS_WIN)
-# include<Windows.h>
-#elif defined(TLOC_OS_IPHONE)
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
+
+#if defined(TLOC_OS_IPHONE)
 # include<unistd.h>
 #endif
 

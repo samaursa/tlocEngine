@@ -5,7 +5,6 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -13,6 +12,7 @@
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 
 #include <tlocMath/types/tlocMatrix4.h>
 
@@ -20,10 +20,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <typename Mesh_T>
   class MeshRenderSystem_T
-    : public core::component_system::EntityProcessingSystem
+    : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
   {
   public:
-    typedef core::component_system::EntityProcessingSystem  base_type;
+    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
     using base_type::component_type;
     using base_type::error_type;
 
@@ -39,21 +39,16 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
 
     typedef math::types::Vec3f32                          vec3_type;
-    typedef math::types::Mat4f32                          matrix_type;
 
   public:
     MeshRenderSystem_T(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
 
-    void AttachCamera(const entity_type* a_cameraEntity);
-
-    virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(const entity_manager* a_mgr,
                                         const entity_type* a_ent);
     virtual error_type ShutdownEntity(const entity_manager* a_mgr,
                                       const entity_type* a_ent);
 
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(const entity_manager* a_mgr,
                                const entity_type* a_ent,
                                f64 a_deltaT);
@@ -65,10 +60,11 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
+    using base_type::GetCamera;
+    using base_type::GetViewProjectionMatrix;
+
   private:
     shader_prog_ptr     m_shaderPtr;
-    const entity_type*  m_sharedCam;
-    matrix_type         m_vpMatrix;
 
     gl::shader_operator_sptr m_mvpOperator;
     gl::uniform_sptr         m_uniVpMat;
@@ -78,6 +74,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   typedef MeshRenderSystem_T<Mesh>      MeshRenderSystem;
+
+  TLOC_TYPEDEF_SHARED_PTR(MeshRenderSystem, mesh_render_system);
 
 };};};
 

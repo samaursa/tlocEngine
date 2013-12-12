@@ -3,7 +3,7 @@
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocAttribute.h>
 

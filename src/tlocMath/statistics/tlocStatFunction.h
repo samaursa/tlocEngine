@@ -46,10 +46,10 @@ namespace tloc { namespace math { namespace statistics {
     };
 
     template <typename T_Weighting = p_weighted_average::Back>
-    struct WeightedAverage;
+    struct WeightedAverage_T;
 
     template <>
-    struct WeightedAverage<p_weighted_average::Front>
+    struct WeightedAverage_T<p_weighted_average::Front>
     {
       template <typename T_ArrayType>
       typename T_ArrayType::value_type
@@ -75,11 +75,13 @@ namespace tloc { namespace math { namespace statistics {
         }
 
         average *= multiplier;
+
+        return average;
       }
     };
 
     template <>
-    struct WeightedAverage<p_weighted_average::Back>
+    struct WeightedAverage_T<p_weighted_average::Back>
     {
       template <typename T_ArrayType>
       typename T_ArrayType::value_type
@@ -105,6 +107,8 @@ namespace tloc { namespace math { namespace statistics {
         }
 
         average *= multiplier;
+
+        return average;
       }
     };
   };
@@ -146,7 +150,7 @@ namespace tloc { namespace math { namespace statistics {
       return m_result;
     }
 
-    TLOC_DECL_AND_DEF_GETTER(value_type, GetResult, m_result);
+    TLOC_DECL_AND_DEF_GETTER(value_type, GetLastResult, m_result);
     TLOC_DECL_AND_DEF_GETTER(array_ptr, GetData, m_data);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(array_ptr, SetData, m_data);
 

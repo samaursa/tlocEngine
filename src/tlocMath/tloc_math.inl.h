@@ -9,6 +9,7 @@
 #include <tlocMath/tlocRange.inl.h>
 
 #include <tlocMath/component_system/tloc_component_system.inl.h>
+#include <tlocMath/statistics/tloc_statistics.inl.h>
 #include <tlocMath/types/tloc_types.inl.h>
 #include <tlocMath/utilities/tloc_utilities.inl.h>
 #include <tlocMath/projection/tloc_projection.inl.h>

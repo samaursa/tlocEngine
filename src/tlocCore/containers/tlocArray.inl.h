@@ -850,7 +850,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 };};};
 
 #define TLOC_EXPLICITLY_INSTANTIATE_ARRAY(_type_)\
+  template class tloc::core_conts::ArrayBase<_type_, tloc::core_conts::Array_Unordered>;\
+  template class tloc::core_conts::ArrayBase<_type_, tloc::core_conts::Array_Ordered>;\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Unordered>;\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Ordered>
-  
+
 #endif

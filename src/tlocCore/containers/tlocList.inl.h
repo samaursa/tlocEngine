@@ -1364,4 +1364,10 @@ namespace tloc { namespace core { namespace containers {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_LIST(_type_)\
+  template class tloc::core_conts::List<_type_, \
+    tloc::core_conts::ListNode<_type_, core::doubly_linked_tag> >;\
+  template class tloc::core_conts::List<_type_, \
+    tloc::core_conts::ListNode<_type_, core::singly_linked_tag> >
+
 #endif

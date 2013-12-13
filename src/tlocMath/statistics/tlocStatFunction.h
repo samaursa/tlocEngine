@@ -18,6 +18,8 @@ namespace tloc { namespace math { namespace statistics {
       typename T_ArrayType::value_type
         DoCalculate(const T_ArrayType* a_array)
       {
+        TLOC_ASSERT(a_array->size() > 0, "There is no data to work with");
+
         typedef typename T_ArrayType::value_type          value_type;
         typedef typename T_ArrayType::const_iterator      itr_type;
 
@@ -37,6 +39,74 @@ namespace tloc { namespace math { namespace statistics {
     // ///////////////////////////////////////////////////////////////////////
     // Weighted average
 
+    namespace p_weighted_average
+    {
+      struct Front;
+      struct Back;
+    };
+
+    template <typename T_Weighting = p_weighted_average::Back>
+    struct WeightedAverage;
+
+    template <>
+    struct WeightedAverage<p_weighted_average::Front>
+    {
+      template <typename T_ArrayType>
+      typename T_ArrayType::value_type
+        DoCalculate(const T_ArrayType* a_array)
+      {
+        TLOC_ASSERT(a_array->size() > 0, "There is no data to work with");
+
+        typedef typename T_ArrayType::value_type          value_type;
+        typedef typename T_ArrayType::const_iterator      itr_type;
+
+        const value_type multiplier = 1.0f / a_array->size();
+
+        value_type average = 0;
+        value_type currMulti = multiplier;
+
+        itr_type itr    = a_array->begin();
+        itr_type itrEnd = a_array->end();
+
+        for (; itr != itrEnd; ++itr)
+        {
+          average += ((*itr) * currMulti);
+          currMulti += multiplier;
+        }
+
+        average *= multiplier;
+      }
+    };
+
+    template <>
+    struct WeightedAverage<p_weighted_average::Back>
+    {
+      template <typename T_ArrayType>
+      typename T_ArrayType::value_type
+        DoCalculate(const T_ArrayType* a_array)
+      {
+        TLOC_ASSERT(a_array->size() > 0, "There is no data to work with");
+
+        typedef typename T_ArrayType::value_type          value_type;
+        typedef typename T_ArrayType::const_iterator      itr_type;
+
+        const value_type multiplier = 1.0f / a_array->size();
+
+        value_type average = 0;
+        value_type currMulti = 1.0f;
+
+        itr_type itr    = a_array->begin();
+        itr_type itrEnd = a_array->end();
+
+        for (; itr != itrEnd; ++itr)
+        {
+          average += ((*itr) * currMulti);
+          currMulti -= multiplier;
+        }
+
+        average *= multiplier;
+      }
+    };
   };
 
   // ///////////////////////////////////////////////////////////////////////

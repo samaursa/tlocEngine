@@ -38,9 +38,9 @@ namespace TestingStatFunction
   {
     SECTION("mean", "")
     {
-      TestMean<core_conts::Array<int> >();
-      TestMean<core_conts::ArrayFixed<int, 15> >();
-      TestMean<core_conts::List<int> >();
+      TestMean<core_conts::Array<f32> >();
+      TestMean<core_conts::ArrayFixed<f32, 15> >();
+      TestMean<core_conts::List<f32> >();
     }
   }
 }

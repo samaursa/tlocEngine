@@ -11,7 +11,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   ///-------------------------------------------------------------------------
   class SmartPtr
   {
-  protected: // to disallow the user from doing anything with this base class
+  public: // to disallow the user from doing anything with this base class
     SmartPtr();
     ~SmartPtr();
   };

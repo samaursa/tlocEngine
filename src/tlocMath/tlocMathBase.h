@@ -13,6 +13,7 @@ namespace tloc {
   namespace math
   {
     namespace component_system {};
+    namespace statistics       {};
     namespace types            {};
     namespace utils            {};
     namespace proj             {};
@@ -22,6 +23,7 @@ namespace tloc {
   // Namespace aliases here
 
   namespace math_cs    = math::component_system;
+  namespace math_stat  = math::statistics;
   namespace math_t     = math::types;
   namespace math_utils = math::utils;
   namespace math_proj  = math::proj;

@@ -16,6 +16,7 @@ set(TLOC_TESTS_MATH
   tlocRayTest.cpp
   tlocRectangleTest.cpp
   tlocScaleTest.cpp
+  tlocStatFunctionTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   tlocTransformTest.cpp

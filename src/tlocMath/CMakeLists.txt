@@ -14,6 +14,15 @@ set(TLOC_MATH
   tlocRange.cpp
   )
 
+set(TLOC_MATH_STATISTICS
+  statistics/tloc_statistics.h
+  statistics/tloc_statistics.inl.h
+  statistics/tloc_statistics.cpp
+  statistics/tlocStatFunction.h
+  statistics/tlocStatFunction.inl.h
+  statistics/tlocStatFunction.cpp
+)
+
 set(TLOC_MATH_COMPONENT_SYSTEM 
   component_system/tlocComponentType.h 
   component_system/tlocProjectionComponent.cpp 
@@ -104,6 +113,7 @@ set(TLOC_MATH_PROJECTION
 add_library(tlocMath STATIC
   ${TLOC_MATH}
   ${TLOC_MATH_COMPONENT_SYSTEM}
+  ${TLOC_MATH_STATISTICS}
   ${TLOC_MATH_TYPES}
   ${TLOC_MATH_UTILITIES}
   ${TLOC_MATH_PROJECTION}
@@ -115,6 +125,7 @@ add_dependencies(tlocMath
 
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
+source_group(statistics       FILES ${TLOC_MATH_STATISTICS})
 source_group(types            FILES ${TLOC_MATH_TYPES})
 source_group(utilities        FILES ${TLOC_MATH_UTILITIES})
 source_group(projection       FILES ${TLOC_MATH_PROJECTION})

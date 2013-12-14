@@ -9,7 +9,9 @@
 #include <tlocCore/containers/tlocList.h>
 
 #include <tlocCore/utilities/tlocContainerUtils.h>
+
 #include <tlocMath/statistics/tlocStatFunction.h>
+#include <tlocMath/statistics/tlocStatFunction.inl.h>
 
 using namespace tloc;
 

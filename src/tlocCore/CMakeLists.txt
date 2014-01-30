@@ -10,6 +10,7 @@ set(TLOC_ENGINE_CORE
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
     tlocFunctional.h
+    tlocFunctional.cpp
     tlocNoOpt.h
     tlocPair.h
     tlocPair.inl.h

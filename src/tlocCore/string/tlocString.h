@@ -368,6 +368,13 @@ namespace tloc { namespace core { namespace string {
   StringBase<T>
     operator+ (const StringBase<T>& a_lhs, T a_rhs);
 
+  // ///////////////////////////////////////////////////////////////////////
+  // swap
+
+  template <typename T>
+  void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
+  { a.swap(b); }
+
   //////////////////////////////////////////////////////////////////////////
   // Global functions
 
@@ -552,14 +559,14 @@ namespace tloc { namespace core { namespace string {
 
 namespace tloc { namespace core {
 
-  //------------------------------------------------------------------------
-  // swap
+  // ///////////////////////////////////////////////////////////////////////
+  // Hash
 
-  template <typename T>
-  void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
-  { a.swap(b); }
+  template <>
+  struct hash<core_str::String>
+  { tl_size operator()(const core_str::String& a_string) const; };
 
-  // -----------------------------------------------------------------------
+  // ///////////////////////////////////////////////////////////////////////
   // binary functions for strings
 
   template <>
@@ -569,12 +576,16 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) == 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct not_equal_to<const char8*>
   {
     bool operator()(const char8* a_x, const char8* a_y) const
     { return core_str::StrCmp(a_x, a_y) != 0; }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
 
   template <>
   struct greater<const char8*>
@@ -583,12 +594,16 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) > 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct less<const char8*>
   {
     bool operator()(const char8* a_x, const char8* a_y) const
     { return core_str::StrCmp(a_x, a_y) < 0; }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
 
   template <>
   struct greater_equal<const char8*>
@@ -597,6 +612,8 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) >= 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct less_equal<const char8*>
   {
@@ -604,7 +621,7 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) <= 0; }
   };
 
-  // -----------------------------------------------------------------------
+  // ///////////////////////////////////////////////////////////////////////
   // same as above, for char32
 
   template <>
@@ -614,12 +631,16 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) == 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct not_equal_to<const char32*>
   {
     bool operator()(const char32* a_x, const char32* a_y) const
     { return core_str::StrCmp(a_x, a_y) != 0; }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
 
   template <>
   struct greater<const char32*>
@@ -628,6 +649,8 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) > 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct less<const char32*>
   {
@@ -635,12 +658,16 @@ namespace tloc { namespace core {
     { return core_str::StrCmp(a_x, a_y) < 0; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+
   template <>
   struct greater_equal<const char32*>
   {
     bool operator()(const char32* a_x, const char32* a_y) const
     { return core_str::StrCmp(a_x, a_y) >= 0; }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
 
   template <>
   struct less_equal<const char32*>

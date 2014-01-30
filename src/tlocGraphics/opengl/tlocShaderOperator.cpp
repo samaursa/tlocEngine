@@ -617,6 +617,8 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_FLOAT_VEC2:
         {
+          typedef Vec2f32                     data_type;
+
           if (isArray == false)
           {
             const Vec2f32& v =
@@ -627,7 +629,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -647,7 +648,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -659,16 +659,20 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttrib2fv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttrib2fv(a_info.m_location, farawFlat);
             }
           }
           break;
         }
       case GL_FLOAT_VEC3:
         {
+          typedef Vec3f32                     data_type;
+
           if (isArray == false)
           {
-            const Vec3f32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Vec3f32>()
               : a_attribute.GetValueAs<Vec3f32>();
@@ -676,7 +680,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -696,7 +699,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -708,16 +710,19 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttrib3fv(a_info.m_location, faraw);
+              f32       const * farawFloat = reinterpret_cast<f32 const*>(faraw);
+              glVertexAttrib3fv(a_info.m_location, farawFloat);
             }
           }
           break;
         }
       case GL_FLOAT_VEC4:
         {
+          typedef Vec4f32                     data_type;
+
           if (isArray == false)
           {
-            const Vec4f32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Vec4f32>()
               : a_attribute.GetValueAs<Vec4f32>();
@@ -725,7 +730,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -745,7 +749,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef f32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -757,7 +760,9 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttrib4fv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttrib4fv(a_info.m_location, farawFlat);
             }
           }
           break;
@@ -814,9 +819,11 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_INT_VEC2:
         {
+          typedef Tuple2s32                     data_type;
+
           if (isArray == false)
           {
-            const Tuple2s32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple2s32>()
               : a_attribute.GetValueAs<Tuple2s32>();
@@ -824,7 +831,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -844,7 +850,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -856,16 +861,20 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI2iv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI2iv(a_info.m_location, farawFlat);
             }
           }
           break;
         }
       case GL_INT_VEC3:
         {
+          typedef Tuple3s32                     data_type;
+
           if (isArray == false)
           {
-            const Tuple3s32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple3s32>()
               : a_attribute.GetValueAs<Tuple3s32>();
@@ -873,7 +882,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -893,7 +901,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -905,16 +912,20 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI3iv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI3iv(a_info.m_location, farawFlat);
             }
           }
           break;
         }
       case GL_INT_VEC4:
         {
+          typedef Tuple4s32                     data_type;
+
           if (isArray == false)
           {
-            const Tuple4s32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple4s32>()
               : a_attribute.GetValueAs<Tuple4s32>();
@@ -922,7 +933,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -942,7 +952,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef s32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -954,7 +963,9 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI4iv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI4iv(a_info.m_location, farawFlat);
             }
           }
           break;
@@ -1010,9 +1021,10 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_UNSIGNED_INT_VEC2:
         {
+          typedef Tuple2u32                     data_type;
           if (isArray == false)
           {
-            const Tuple2u32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple2u32>()
               : a_attribute.GetValueAs<Tuple2u32>();
@@ -1020,7 +1032,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1040,7 +1051,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1052,16 +1062,20 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI2uiv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI2uiv(a_info.m_location, farawFlat);
             }
           }
           break;
         }
       case GL_UNSIGNED_INT_VEC3:
         {
+          typedef Tuple3u32                     data_type;
+
           if (isArray == false)
           {
-            const Tuple3u32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple3u32>()
               : a_attribute.GetValueAs<Tuple3u32>();
@@ -1069,7 +1083,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1089,7 +1102,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1101,16 +1113,20 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI3uiv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI3uiv(a_info.m_location, farawFlat);
             }
           }
           break;
         }
       case GL_UNSIGNED_INT_VEC4:
         {
+          typedef Tuple4u32                     data_type;
+
           if (isArray == false)
           {
-            const Tuple4u32& v =
+            const data_type& v =
               isShared
               ? *a_attribute.GetValueAsShared<Tuple4u32>()
               : a_attribute.GetValueAs<Tuple4u32>();
@@ -1118,7 +1134,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else if (isVertexArray)
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1138,7 +1153,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            typedef u32                     data_type;
             typedef Array<data_type>        array_type;
             typedef SharedPtr<array_type>   shared_type;
 
@@ -1150,7 +1164,9 @@ namespace tloc { namespace graphics { namespace gl {
             if (fa.size() > 0)
             {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI4uiv(a_info.m_location, faraw);
+              data_type::value_type const * farawFlat =
+                reinterpret_cast<data_type::value_type const*>(faraw);
+              glVertexAttribI4uiv(a_info.m_location, farawFlat);
             }
           }
           break;

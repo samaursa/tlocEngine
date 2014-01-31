@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TLOC_CORE_SMART_PTR_VIRTUAL_PTR_H_
+#define _TLOC_CORE_SMART_PTR_VIRTUAL_PTR_H_
 
 #include <tlocCore/tlocCoreBase.h>
 
@@ -10,7 +11,7 @@
 namespace tloc { namespace core { namespace smart_ptr {
 
   template <typename T, typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
-  class VirtualPointer
+  class VirtualPtr
     : public SmartPtr
   {
   public:
@@ -18,7 +19,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     typedef T                                         value_type;
     typedef T_BuildConfig                             build_config;
-    typedef VirtualPointer<value_type, build_config>  this_type;
+    typedef VirtualPtr<value_type, build_config>  this_type;
 
     typedef T*                                        pointer;
     typedef T const *                                 const_pointer;
@@ -28,24 +29,24 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef tl_long                                   ref_count_type;
 
   public:
-    VirtualPointer()
+    VirtualPtr()
       : m_rawPtr(nullptr)
       , m_refCount(nullptr)
     { }
 
-    VirtualPointer(std::nullptr_t)
+    VirtualPtr(std::nullptr_t)
       : m_rawPtr(nullptr)
       , m_refCount(nullptr)
     { }
 
-    explicit VirtualPointer(pointer a_rawPtr)
+    explicit VirtualPtr(pointer a_rawPtr)
       : m_rawPtr(a_rawPtr)
       , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
     {
       DoAddRef();
     }
 
-    VirtualPointer(const this_type& a_other)
+    VirtualPtr(const this_type& a_other)
       : m_rawPtr(a_other.m_rawPtr)
       , m_refCount(a_other.m_refCount)
     {
@@ -53,7 +54,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     }
 
     template <typename T_Other>
-    VirtualPointer(const VirtualPointer<T_Other, build_config>& a_other)
+    VirtualPtr(const VirtualPtr<T_Other, build_config>& a_other)
       : m_rawPtr(a_other.get())
       , m_refCount(a_other.DoExposeCounter() )
     {
@@ -61,20 +62,20 @@ namespace tloc { namespace core { namespace smart_ptr {
     }
 
     template <typename T_Other, typename T_Policy>
-    explicit VirtualPointer(const SharedPtr<T_Other, T_Policy>& a_other)
+    explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other)
       : m_rawPtr(a_other.get())
       , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
     {
       DoAddRef();
     }
 
-    ~VirtualPointer()
+    ~VirtualPtr()
     {
       DoRemoveRef();
     }
 
     template <typename T_Other>
-    this_type&          operator= (VirtualPointer<T_Other,
+    this_type&          operator= (VirtualPtr<T_Other,
                                                   build_config> a_other)
     {
       this->swap(a_other);
@@ -94,7 +95,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       return *this;
     }
 
-    // @brief Dangerous to use this, prefer VirtualPointer<> semantics
+    // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const
     {
       return m_rawPtr;
@@ -143,7 +144,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     }
 
     template <typename T_Other>
-    void                swap(VirtualPointer<T_Other, build_config>& a_other)
+    void                swap(VirtualPtr<T_Other, build_config>& a_other)
     {
       core::swap(a_other.m_rawPtr, m_rawPtr);
       core::swap(a_other.m_refCount, m_refCount);
@@ -159,13 +160,13 @@ namespace tloc { namespace core { namespace smart_ptr {
     // friend functions - casting
     template <typename T_Other, typename build_config, typename U>
     friend
-      VirtualPointer<T_Other, build_config>
-      static_pointer_cast(const VirtualPointer<U, build_config>& a_vp);
+      VirtualPtr<T_Other, build_config>
+      static_pointer_cast(const VirtualPtr<U, build_config>& a_vp);
 
     template <typename T_Other, typename build_config, typename U>
     friend
-      VirtualPointer<T_Other, build_config>
-      const_pointer_cast(const VirtualPointer<U, build_config>& a_vp);
+      VirtualPtr<T_Other, build_config>
+      const_pointer_cast(const VirtualPtr<U, build_config>& a_vp);
 
   private:
     void DoAddRef()
@@ -205,16 +206,16 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   //template <typename T, typename T_BuildType>
   //template <typename T_Other, typename T_OtherBuildType>
-  //VirtualPointer<T, T_BuildType>::
-  //  VirtualPointer(const VirtualPointer<T_Other, T_OtherBuildType& a_other)
+  //VirtualPtr<T, T_BuildType>::
+  //  VirtualPtr(const VirtualPtr<T_Other, T_OtherBuildType& a_other)
 
   // -----------------------------------------------------------------------
   // friend functions - casting
   template <typename T_Other, typename build_config, typename U>
-  VirtualPointer<T_Other, build_config>
-    static_pointer_cast(const VirtualPointer<U, build_config>& a_vp)
+  VirtualPtr<T_Other, build_config>
+    static_pointer_cast(const VirtualPtr<U, build_config>& a_vp)
   {
-    typedef VirtualPointer<T_Other, build_config>    return_type;
+    typedef VirtualPtr<T_Other, build_config>    return_type;
 
     return_type vp;
     vp.m_rawPtr = static_cast<T_Other*>(a_vp.m_rawPtr);
@@ -225,10 +226,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <typename T_Other, typename build_config, typename U>
-  VirtualPointer<T_Other, build_config>
-    const_pointer_cast(const VirtualPointer<U, build_config>& a_vp)
+  VirtualPtr<T_Other, build_config>
+    const_pointer_cast(const VirtualPtr<U, build_config>& a_vp)
   {
-    typedef VirtualPointer<T_Other, build_config>   return_type;
+    typedef VirtualPtr<T_Other, build_config>   return_type;
 
     return_type vp;
     vp.m_rawPtr = const_cast<T_Other*>(a_vp.m_rawPtr);
@@ -239,10 +240,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  // VirtualPointer<Release>
+  // VirtualPtr<Release>
 
   template <typename T>
-  class VirtualPointer<T, core_cfg::p_build_config::Release>
+  class VirtualPtr<T, core_cfg::p_build_config::Release>
     : public SmartPtr
   {
   public:
@@ -250,7 +251,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     typedef T                                         value_type;
     typedef core_cfg::p_build_config::Release         build_config;
-    typedef VirtualPointer<value_type, build_config>  this_type;
+    typedef VirtualPtr<value_type, build_config>  this_type;
 
     typedef T*                                        pointer;
     typedef T const *                                 const_pointer;
@@ -260,34 +261,34 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef tl_int                                    ref_count_type;
 
   public:
-    VirtualPointer()
+    VirtualPtr()
       : m_rawPtr(nullptr)
     { }
 
-    VirtualPointer(std::nullptr_t)
+    VirtualPtr(std::nullptr_t)
       : m_rawPtr(nullptr)
     { }
 
-    explicit VirtualPointer(pointer a_rawPtr)
+    explicit VirtualPtr(pointer a_rawPtr)
       : m_rawPtr(a_rawPtr)
     { }
 
-    VirtualPointer(const this_type& a_other)
+    VirtualPtr(const this_type& a_other)
       : m_rawPtr(a_other.m_rawPtr)
     { }
 
     template <typename T_Other>
-    VirtualPointer(const VirtualPointer<T_Other, build_config>& a_other)
+    VirtualPtr(const VirtualPtr<T_Other, build_config>& a_other)
       : m_rawPtr(a_other.get())
     { }
 
     template <typename T_Other, typename T_Policy>
-    explicit VirtualPointer(const SharedPtr<T_Other, T_Policy>& a_other)
+    explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other)
       : m_rawPtr(a_other.get())
     { }
 
     template <typename T_Other>
-    this_type&          operator= (const VirtualPointer<T_Other,
+    this_type&          operator= (const VirtualPtr<T_Other,
                                                         build_config>& a_other)
     {
       m_rawPtr = a_other.get();
@@ -310,7 +311,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       return *this;
     }
 
-    // @brief Dangerous to use this, prefer VirtualPointer<> semantics
+    // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const
     {
       return m_rawPtr;
@@ -353,7 +354,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     }
 
     template <typename T_Other>
-    void                swap(VirtualPointer<T_Other, build_config>& a_other)
+    void                swap(VirtualPtr<T_Other, build_config>& a_other)
     {
       core::swap(a_other.m_rawPtr, m_rawPtr);
     }
@@ -367,15 +368,15 @@ namespace tloc { namespace core { namespace smart_ptr {
     // friend functions - casting
     template <typename T_Other, typename U>
     friend
-      VirtualPointer<T_Other, core_cfg::p_build_config::Release>
+      VirtualPtr<T_Other, core_cfg::p_build_config::Release>
       static_pointer_cast
-      (const VirtualPointer<U, core_cfg::p_build_config::Release>& a_vp);
+      (const VirtualPtr<U, core_cfg::p_build_config::Release>& a_vp);
 
     template <typename T_Other, typename U>
     friend
-      VirtualPointer<T_Other, core_cfg::p_build_config::Release>
+      VirtualPtr<T_Other, core_cfg::p_build_config::Release>
       const_pointer_cast
-      (const VirtualPointer<U, core_cfg::p_build_config::Release>& a_vp);
+      (const VirtualPtr<U, core_cfg::p_build_config::Release>& a_vp);
 
   private:
     pointer           m_rawPtr;
@@ -385,11 +386,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   // template definitions
 
   template <typename T_Other, typename U>
-  VirtualPointer<T_Other, core_cfg::p_build_config::Release>
+  VirtualPtr<T_Other, core_cfg::p_build_config::Release>
     static_pointer_cast
-    (const VirtualPointer<U, core_cfg::p_build_config::Release>& a_vp)
+    (const VirtualPtr<U, core_cfg::p_build_config::Release>& a_vp)
   {
-    typedef VirtualPointer
+    typedef VirtualPtr
       <T_Other, core_cfg::p_build_config::Release>   return_type;
 
     return_type vp;
@@ -399,11 +400,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <typename T_Other, typename U>
-  VirtualPointer<T_Other, core_cfg::p_build_config::Release>
+  VirtualPtr<T_Other, core_cfg::p_build_config::Release>
     const_pointer_cast
-    (const VirtualPointer<U, core_cfg::p_build_config::Release>& a_vp)
+    (const VirtualPtr<U, core_cfg::p_build_config::Release>& a_vp)
   {
-    typedef VirtualPointer
+    typedef VirtualPtr
       <T_Other, core_cfg::p_build_config::Release>   return_type;
 
     return_type vp;
@@ -413,3 +414,5 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
 };};};
+
+#endif

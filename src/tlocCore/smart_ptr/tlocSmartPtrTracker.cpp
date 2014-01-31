@@ -2,74 +2,265 @@
 
 #include <tlocCore/containers/tlocHashmap.h>
 #include <tlocCore/containers/tlocHashmap.inl.h>
+#include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
   namespace {
-    class PointerMap
+
+    // ///////////////////////////////////////////////////////////////////////
+    // PointerMap_T<>
+
+    template <typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
+    class PointerMap_T
     {
     public:
-      typedef containers::HashMap<void*, void*>   map_type;
+      typedef containers::HashMap<void*, void*>     map_type;
+      typedef containers::HashMap<void*, tl_size>   virtual_map_type;
 
     public:
-      static bool Exists(void* a_pointer)
+      bool Exists(void* a_pointer)
       {
+        if (m_mapIsDestroyed) { return false; }
+
         if (a_pointer != nullptr)
         { return m_ptrMap.find(a_pointer) != m_ptrMap.end(); }
 
         return false;
       }
 
-      static void Add(void* a_pointer)
+      bool ExistsVirtual(void* a_pointer)
       {
+        if (m_mapIsDestroyed) { return false; }
+
+        if (a_pointer != nullptr)
+        { return m_virtualPtrMap.find(a_pointer) != m_virtualPtrMap.end(); }
+
+        return false;
+      }
+
+      void StartTracking(void* a_pointer)
+      {
+        TLOC_ASSERT(!m_mapIsDestroyed, "Are you calling Add() at program exit?");
+
         if (a_pointer != nullptr)
         { m_ptrMap[a_pointer] = a_pointer; }
       }
 
-      static void Remove(void* a_pointer)
+      tl_size StartTrackingVirtual(void* a_pointer)
       {
+        TLOC_ASSERT(!m_mapIsDestroyed, "Are you callind Add() at program exit?");
+
+        if (a_pointer != nullptr)
+        {
+          virtual_map_type::iterator itr = m_virtualPtrMap.find(a_pointer);
+
+          if (itr != m_virtualPtrMap.end())
+          { ++itr->second; }
+          else
+          {
+            m_virtualPtrMap[a_pointer] = 1;
+            return 1;
+          }
+
+          return itr->second;
+        }
+
+        return 0;
+      }
+
+      void StopTracking(void* a_pointer)
+      {
+        TLOC_ASSERT(!m_mapIsDestroyed, "Are you calling Add() at program exit?");
+
         if (a_pointer != nullptr)
         { m_ptrMap.erase(a_pointer); }
       }
 
-      static tl_size size()
+      tl_size StopTrackingVirtual(void* a_pointer)
       {
-        return m_ptrMap.size();
+        TLOC_ASSERT(!m_mapIsDestroyed, "Are you calling Add() at program exit?");
+
+        if (a_pointer != nullptr)
+        {
+          virtual_map_type::iterator itr = m_virtualPtrMap.find(a_pointer);
+
+          TLOC_ASSERT(itr != m_virtualPtrMap.end(),
+            "Pointer never tracked virtually OR too many calls to this function");
+
+          TLOC_ASSERT(itr->second >= 1, "Logical error");
+          --itr->second;
+
+          if (itr->second == 0)
+          {
+            m_virtualPtrMap.erase(itr);
+            return 0;
+          }
+
+          return itr->second;
+        }
+
+        return 0;
+      }
+
+      tl_size GetNumTrackedPointers()
+      { return m_ptrMap.size(); }
+
+      tl_size GetNumTrackedVirtualPointers()
+      { return m_virtualPtrMap.size(); }
+
+      tl_size GetVirtualRefCount(void* a_pointer)
+      {
+        virtual_map_type::iterator itr = m_virtualPtrMap.find(a_pointer);
+
+        if (itr != m_virtualPtrMap.end())
+        {
+          return itr->second;
+        }
+
+        return 0;
+      }
+
+      static PointerMap_T& Get()
+      {
+        static PointerMap_T p;
+        return p;
       }
 
     private:
-      static map_type m_ptrMap;
+      PointerMap_T()
+      { m_mapIsDestroyed = false; }
+
+      ~PointerMap_T()
+      { m_mapIsDestroyed = true; }
+
+    private:
+      map_type          m_ptrMap;
+      virtual_map_type  m_virtualPtrMap;
+      static bool       m_mapIsDestroyed;
     };
 
-    PointerMap::map_type  PointerMap::m_ptrMap;
+    // ///////////////////////////////////////////////////////////////////////
+    // PointerMap_T<Release>
+
+    template <>
+    class PointerMap_T<core_cfg::p_build_config::Release>
+    {
+    public:
+      typedef containers::HashMap<void*, void*>   map_type;
+
+    public:
+      bool Exists(void* )
+      { return false; }
+
+      bool ExistsVirtual(void* )
+      { return false; }
+
+      void StartTracking(void* )
+      { }
+
+      tl_size StartTrackingVirtual(void* )
+      { return 0; }
+
+      void StopTracking(void* )
+      { }
+
+      tl_size StopTrackingVirtual(void* )
+      { return 0; }
+
+      tl_size GetNumTrackedPointers()
+      { return 0; }
+
+      tl_size GetNumTrackedVirtualPointers()
+      { return 0; }
+
+      tl_size GetVirtualRefCount(void* )
+      { return 0; }
+
+      static PointerMap_T& Get()
+      {
+        static PointerMap_T p;
+        return p;
+      }
+
+    private:
+      PointerMap_T() {}
+      ~PointerMap_T() {}
+    };
+
+
+    template <typename T_BuildConfig>
+    bool              PointerMap_T<T_BuildConfig>::m_mapIsDestroyed = true;
+
+    typedef PointerMap_T<>            PointerMap;
   }
 
   void DoStartTrackingPtr(void* a_pointer)
   {
-    TLOC_ASSERT_LOW_LEVEL(PointerMap::Exists(a_pointer) == false,
+    TLOC_ASSERT_LOW_LEVEL(PointerMap::Get().Exists(a_pointer) == false,
       "a_pointer is already managed by another (set of) smart pointers");
-    PointerMap::Add(a_pointer);
+    PointerMap::Get().StartTracking(a_pointer);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void DoStopTrackingPtr(void* a_pointer)
   {
-    TLOC_ASSERT_LOW_LEVEL(PointerMap::Exists(a_pointer),
+    TLOC_ASSERT_LOW_LEVEL(PointerMap::Get().Exists(a_pointer),
       "a_pointer has already been removed by another (set of) smart pointers");
-    PointerMap::Remove(a_pointer);
+    PointerMap::Get().StopTracking(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    DoIsPointerTracked(void* a_pointer)
+  {
+    return PointerMap::Get().Exists(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  tl_size
+    DoAddVirtualPtrRef(void* a_pointer)
+  {
+    return PointerMap::Get().StartTrackingVirtual(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  tl_size
+    DoRemoveVirtualPtrRef(void* a_pointer)
+  {
+    return PointerMap::Get().StopTrackingVirtual(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  tl_size
+    DoGetVirtualRefCount(void* a_pointer)
+  {
+    return PointerMap::Get().GetVirtualRefCount(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    DoIsPointerTrackedVirtually(void* a_pointer)
+  {
+    return PointerMap::Get().ExistsVirtual(a_pointer);
   }
 
   //////////////////////////////////////////////////////////////////////////
 
   bool Unsafe_IsPtrTracked(void* a_pointer)
   {
-    return PointerMap::Exists(a_pointer);
+    return PointerMap::Get().Exists(a_pointer);
   }
 
   tl_size Unsafe_GetPtrTrackedSize()
   {
-    return PointerMap::size();
+    return PointerMap::Get().GetNumTrackedPointers();
   }
 
 };};};};

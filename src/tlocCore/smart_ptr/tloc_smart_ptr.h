@@ -6,5 +6,6 @@
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPointer.h>
 
 #endif

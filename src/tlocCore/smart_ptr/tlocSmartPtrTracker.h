@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
   /// All smart pointers should call this function when their
   /// constructor takes in a raw pointer directly.
   ///-------------------------------------------------------------------------
-  extern void DoStartTrackingPtr(void* a_pointer);
+  void DoStartTrackingPtr(void* a_pointer);
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -31,7 +31,33 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
   /// Do NOT call this function in your smart pointers destructor. Only
   /// call it when you are actually deleting the raw pointer.
   ///-------------------------------------------------------------------------
-  extern void DoStopTrackingPtr(void* a_pointer);
+  void DoStopTrackingPtr(void* a_pointer);
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Checks whether the pointer is already tracked by a smart_ptr
+  ///-------------------------------------------------------------------------
+  bool DoIsPointerTracked(void* a_pointer);
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Internal use only by VirtualPointer
+  ///-------------------------------------------------------------------------
+  tl_size DoAddVirtualPtrRef(void* a_pointer);
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Internal use only by VirtualPointer
+  ///-------------------------------------------------------------------------
+  tl_size DoRemoveVirtualPtrRef(void* a_pointer);
+
+  ///-------------------------------------------------------------------------
+  /// @brief
+  /// Internal use only by VirtualPointer
+  ///-------------------------------------------------------------------------
+  tl_size DoGetVirtualRefCount(void* a_pointer);
+
+  bool    DoIsPointerTrackedVirtually(void* a_pointer);
 
   //////////////////////////////////////////////////////////////////////////
   // Not to be used as a reliable method as with a NoDebug policy above this

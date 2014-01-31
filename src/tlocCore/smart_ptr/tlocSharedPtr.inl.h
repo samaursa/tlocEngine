@@ -38,7 +38,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    priv::DoStartTrackingPtr( (void*)a_rawPtr);
     DoAddRef();
   }
 
@@ -73,8 +72,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other, typename T_OtherPolicy>
   SHARED_PTR_TYPE::this_type&
     SharedPtr<SHARED_PTR_PARAMS>::
-    operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other)
+    operator= (SharedPtr<T_Other, T_OtherPolicy> a_other)
   {
+    // NOTE: Cannot use copy-and-swap here because a_other is a different type
+    // and therefore not swappable unless we want to expose everything and
+    // then do some ugly casts
     DoRemoveRef();
     m_rawPtr = a_other.get();
     m_refCount = a_other.DoExposeCounter();
@@ -152,7 +154,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   void SharedPtr<SHARED_PTR_PARAMS>::DoAddRef()
   {
     if (m_refCount)
-    { ++*m_refCount; }
+    {
+      if (*m_refCount == 0)
+      { priv::DoStartTrackingPtr( (void*)m_rawPtr); }
+
+      ++*m_refCount;
+    }
   }
 
   template <SHARED_PTR_TEMPS>
@@ -163,6 +170,8 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
+        TLOC_ASSERT(priv::DoIsPointerTrackedVirtually( (void*)m_rawPtr) == false,
+          "Pointer still tracked by VirtualPointer");
         priv::DoStopTrackingPtr( (void*)m_rawPtr);
         delete m_rawPtr;
         delete m_refCount;

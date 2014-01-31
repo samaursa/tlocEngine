@@ -381,9 +381,10 @@ namespace TestingSharedPtr
       CHECK(base::m_dtorCount == 2);
 
 
-      // TODO: Test with static_pointer_cast<>() when it is available
-      //convToDer.CastFrom(basePtr2);
-      //CHECK(convToDer->m_value == 10);
+      convToDer = core_sptr::static_pointer_cast<derived>(basePtr2);
+      CHECK(convToDer->m_value == 10);
+
+      //TODO: Do const_pointer_cast checks
     }
     CHECK(base::m_ctorCount == 3);
     CHECK(base::m_dtorCount == 3);

@@ -339,7 +339,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     { return get() != nullptr; }
 
     ref_count_type      use_count() const
-    { return 0; }
+    { return 1; }
 
     bool                unique() const
     { return true; }

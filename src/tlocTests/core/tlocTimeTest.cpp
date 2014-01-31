@@ -132,8 +132,9 @@ namespace TestingTime
     timerOne.Reset ();
     timerTwo.Reset();
 
+    const UInt_type waitTimeMicroSeconds = 5;
     real_type timeOneS = timerOne.ElapsedSeconds();
-    TimeTestSleepMicroS<real_type, UInt_type>(1);
+    TimeTestSleepMicroS<real_type, UInt_type>(waitTimeMicroSeconds);
     real_type timeTwoS = timerTwo.ElapsedSeconds();
 
     CHECK(timeOneS < timeTwoS);

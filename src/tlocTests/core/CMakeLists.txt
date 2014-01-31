@@ -47,6 +47,7 @@ set(TLOC_TESTS_CORE
   tlocUCIDTest.cpp
   tlocVariadicTest.cpp
   tlocVirtualPtrTest.cpp
+  tlocVirtualStackObjectTest.cpp
   )
 #-------------------------------------------
 # Project setup

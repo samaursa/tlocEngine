@@ -12,7 +12,7 @@ namespace TestingVirtualPtr
   using namespace core;
   using namespace core::containers;
 
-  using tloc::core::smart_ptr::VirtualPointer;
+  using tloc::core::smart_ptr::VirtualPtr;
   using tloc::core::smart_ptr::SharedPtr;
 
   struct BaseStruct
@@ -50,18 +50,18 @@ namespace TestingVirtualPtr
   // ///////////////////////////////////////////////////////////////////////
   // tests
 
-  TEST_CASE("core/smart_ptr/VirtualPointer/ctors", "")
+  TEST_CASE("core/smart_ptr/VirtualPtr/ctors", "")
   {
     SECTION("default ctor", "")
     {
-      VirtualPointer<int> p;
+      VirtualPtr<int> p;
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
     SECTION("nullptr ctor", "")
     {
-      VirtualPointer<int> p(nullptr);
+      VirtualPtr<int> p(nullptr);
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
@@ -71,7 +71,7 @@ namespace TestingVirtualPtr
       int* a = new int();
 
       {
-        VirtualPointer<int> p(a);
+        VirtualPtr<int> p(a);
         CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
         CHECK( (p.get() == a) );
 
@@ -85,11 +85,11 @@ namespace TestingVirtualPtr
     {
       int* a = new int();
 
-      VirtualPointer<int> p(a);
+      VirtualPtr<int> p(a);
       CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
 
       {
-        VirtualPointer<int> pLocal(p);
+        VirtualPtr<int> pLocal(p);
         CHECK( CheckUseCount(p, 2, core_cfg::BuildConfig::build_config_type()) );
         CHECK( CheckUseCount(pLocal, 2, core_cfg::BuildConfig::build_config_type()) );
         CHECK( (p.get() == pLocal.get() && p.get() == a) );
@@ -101,14 +101,14 @@ namespace TestingVirtualPtr
       delete a;
     }
 
-    SECTION("VirtualPointer<T_Other> copy ctor", "")
+    SECTION("VirtualPtr<T_Other> copy ctor", "")
     {
       SharedStruct* s = new SharedStruct(10);
 
-      VirtualPointer<SharedStruct> p(s);
+      VirtualPtr<SharedStruct> p(s);
 
       {
-        VirtualPointer<BaseStruct> pLocal(p);
+        VirtualPtr<BaseStruct> pLocal(p);
       }
 
       CHECK( p->m_value == 10);
@@ -122,7 +122,7 @@ namespace TestingVirtualPtr
       SharedPtr<int> sptr(new int(10));
 
       {
-        VirtualPointer<int> p(sptr);
+        VirtualPtr<int> p(sptr);
         // sptr.reset(); // should throw an assertion
       }
 
@@ -130,12 +130,12 @@ namespace TestingVirtualPtr
     }
   }
 
-  TEST_CASE("core/smart_ptr/VirtualPointer/operators", "")
+  TEST_CASE("core/smart_ptr/VirtualPtr/operators", "")
   {
     SECTION("operator=(this_type)", "")
     {
-      VirtualPointer<int> vp;
-      vp = VirtualPointer<int>(new int(10));
+      VirtualPtr<int> vp;
+      vp = VirtualPtr<int>(new int(10));
 
       CHECK(*vp == 10);
     }
@@ -143,12 +143,12 @@ namespace TestingVirtualPtr
     SECTION("operator=(SharedPtr)", "")
     {
       SharedPtr<int>      sp(new int(20));
-      VirtualPointer<int> vp;
+      VirtualPtr<int> vp;
       vp = sp;
 
       CHECK(*vp == 20);
 
-      VirtualPointer<int> vp2; // vp2 needs to be reset before sp2 deletes when
+      VirtualPtr<int> vp2; // vp2 needs to be reset before sp2 deletes when
                                // it goes out of scope
       SharedPtr<int>      sp2(new int(30));
       vp2 = sp2;
@@ -160,7 +160,7 @@ namespace TestingVirtualPtr
     }
   }
 
-  TEST_CASE("core/smart_ptr/VirtualPointer/reset", "")
+  TEST_CASE("core/smart_ptr/VirtualPtr/reset", "")
   {
     SharedStruct::m_numCtors = 0;
     SharedStruct::m_numDtors = 0;
@@ -168,7 +168,7 @@ namespace TestingVirtualPtr
     SharedStruct s1(50), s2(20);
     CHECK(SharedStruct::m_numCtors == 2);
 
-    VirtualPointer<SharedStruct> vp(&s1);
+    VirtualPtr<SharedStruct> vp(&s1);
     CHECK(vp->m_value == 50);
 
     vp.reset(&s2);
@@ -180,15 +180,15 @@ namespace TestingVirtualPtr
     CHECK(SharedStruct::m_numDtors == 0);
   }
 
-  TEST_CASE("core/smart_ptr/VirtualPointer/casts", "")
+  TEST_CASE("core/smart_ptr/VirtualPtr/casts", "")
   {
     SECTION("static_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
-      VirtualPointer<BaseStruct> vp1(&localVar);
+      VirtualPtr<BaseStruct> vp1(&localVar);
 
-      VirtualPointer<SharedStruct> vp2 = core_sptr::static_pointer_cast<SharedStruct>(vp1);
+      VirtualPtr<SharedStruct> vp2 = core_sptr::static_pointer_cast<SharedStruct>(vp1);
       CHECK(vp2->m_value == 2);
 
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());
@@ -198,9 +198,9 @@ namespace TestingVirtualPtr
     {
       SharedStruct localVar(2);
 
-      const VirtualPointer<const SharedStruct> vp1(&localVar);
+      const VirtualPtr<const SharedStruct> vp1(&localVar);
 
-      VirtualPointer<SharedStruct> vp2 = core_sptr::const_pointer_cast<SharedStruct>(vp1);
+      VirtualPtr<SharedStruct> vp2 = core_sptr::const_pointer_cast<SharedStruct>(vp1);
       CHECK(vp2->m_value == 2);
 
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());

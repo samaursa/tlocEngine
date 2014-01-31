@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/smart_ptr/tlocVirtualPointer.h>
-#include <tlocCore/smart_ptr/tlocVirtualPointer.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>

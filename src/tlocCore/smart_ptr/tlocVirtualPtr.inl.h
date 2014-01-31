@@ -5,7 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include "tlocVirtualPointer.h"
+#include "tlocVirtualPtr.h"
 
 namespace tloc { namespace core { namespace smart_ptr {
 

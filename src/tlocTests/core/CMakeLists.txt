@@ -45,6 +45,7 @@ set(TLOC_TESTS_CORE
   tlocUniquePtrTest.cpp
   tlocUtilsTest.cpp
   tlocVariadicTest.cpp
+  tlocVirtualPointerTest.cpp
   )
 #-------------------------------------------
 # Project setup

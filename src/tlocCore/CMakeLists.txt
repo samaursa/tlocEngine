@@ -209,6 +209,12 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tlocSmartPtrTracker.cpp
     smart_ptr/tlocUniquePtr.h
     smart_ptr/tlocUniquePtr.inl.h
+    smart_ptr/tlocVirtualPointer.h
+    smart_ptr/tlocVirtualPointer.inl.h
+    smart_ptr/tlocVirtualPointer.cpp
+    smart_ptr/tlocVirtualStackObject.h
+    smart_ptr/tlocVirtualStackObject.inl.h
+    smart_ptr/tlocVirtualStackObject.cpp
 )
 set(TLOC_ENGINE_CORE_STRING
     string/tloc_string.h

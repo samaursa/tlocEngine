@@ -22,73 +22,26 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef core::smart_ptr::VirtualPtr<value_type>           ptr_type;
 
   public:
-    VirtualStackObject()
-      : m_value()
-      , m_valuePtr(&m_value)
-    { }
+    VirtualStackObject();
+    explicit VirtualStackObject(const value_type& a_other);
+    VirtualStackObject(const this_type& a_other);
+    ~VirtualStackObject();
 
-    explicit VirtualStackObject(const value_type& a_other)
-      : m_value(a_other)
-      , m_valuePtr(&m_value)
-    { }
+    this_type& operator=(this_type a_other);
+    this_type& operator=(const value_type& a_newValue);
 
-    VirtualStackObject(const this_type& a_other)
-      : m_value(a_other.m_value)
-      , m_valuePtr(&m_value)
-    { }
+    operator value_type&();
+    operator const value_type&() const;
 
-    ~VirtualStackObject()
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_valuePtr.unique(),
-        "This object appears to be still in use");
+    ptr_type        get();
+    const ptr_type& get() const;
 
-      // this ensures that no checks are performed after m_value is automatically
-      // deleted
-      m_valuePtr.reset();
-    }
+    bool operator==(const this_type& a_other);
+    bool operator==(const value_type& a_other);
+    bool operator!=(const this_type& a_other);
+    bool operator!=(const value_type& a_other);
 
-    this_type& operator=(this_type a_other)
-    {
-      a_other.swap(*this);
-      return *this;
-    }
-
-    this_type& operator=(const value_type& a_newValue)
-    {
-      this_type(a_newValue).swap(*this);
-      return *this;
-    }
-
-    operator value_type&()
-    { return m_value; }
-
-    operator const value_type&() const
-    { return m_value; }
-
-    ptr_type get()
-    { return m_valuePtr; }
-
-    const ptr_type& get() const
-    { return m_valuePtr; }
-
-    bool operator==(const this_type& a_other)
-    { return m_value == a_other.m_value; }
-
-    bool operator==(const value_type& a_other)
-    { return m_value == a_other; }
-
-    bool operator!=(const this_type& a_other)
-    { return m_value != a_other.m_value; }
-
-    bool operator!=(const value_type& a_other)
-    { return m_value != a_other; }
-
-    void swap(this_type& a_other)
-    {
-      using core::swap;
-
-      swap(m_value, a_other.m_value);
-    }
+    void swap(this_type& a_other);
 
   private:
 

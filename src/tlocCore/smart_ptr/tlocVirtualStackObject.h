@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _TLOC_CORE_SMART_PTR_VIRTUAL_STACK_OBJECT_H_
+#define _TLOC_CORE_SMART_PTR_VIRTUAL_STACK_OBJECT_H_
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
@@ -95,3 +97,5 @@ namespace tloc { namespace core { namespace smart_ptr {
   };
 
 };};};
+
+#endif

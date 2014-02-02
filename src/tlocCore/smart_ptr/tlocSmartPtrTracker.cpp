@@ -122,10 +122,7 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       }
 
       static PointerMap_T& Get()
-      {
-        static PointerMap_T p;
-        return p;
-      }
+      { return sm_inst; }
 
     private:
       PointerMap_T()
@@ -135,9 +132,10 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       { m_mapIsDestroyed = true; }
 
     private:
-      map_type          m_ptrMap;
-      virtual_map_type  m_virtualPtrMap;
-      static bool       m_mapIsDestroyed;
+      map_type            m_ptrMap;
+      virtual_map_type    m_virtualPtrMap;
+      static bool         m_mapIsDestroyed;
+      static PointerMap_T sm_inst;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -179,20 +177,33 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
       static PointerMap_T& Get()
       {
-        static PointerMap_T p;
-        return p;
+        return sm_inst;
       }
 
     private:
       PointerMap_T() {}
       ~PointerMap_T() {}
+
+    private:
+      static PointerMap_T sm_inst;
     };
 
+    // ------------------------------------------------------------------------
+    // typedefs
+
+    typedef PointerMap_T<>            PointerMap;
+
+    // ------------------------------------------------------------------------
+    // static var definitions
 
     template <typename T_BuildConfig>
     bool              PointerMap_T<T_BuildConfig>::m_mapIsDestroyed = true;
 
-    typedef PointerMap_T<>            PointerMap;
+    template<typename T>
+    PointerMap_T<T> PointerMap_T<T>::sm_inst;
+
+    PointerMap_T<core_cfg::p_build_config::Release>
+      PointerMap_T<core_cfg::p_build_config::Release>::sm_inst;
   }
 
   void DoStartTrackingPtr(void* a_pointer)

@@ -8,5 +8,6 @@
 
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 #endif

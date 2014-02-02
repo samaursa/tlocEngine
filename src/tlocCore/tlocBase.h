@@ -37,14 +37,14 @@
 // Common macros
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
-# ifdef _SECURE_SCL
-# undef _SECURE_SCL
+# if defined (_MSC_VER)
+#   ifdef _SECURE_SCL
+#     undef _SECURE_SCL
+#   endif
+#   define _SECURE_SCL 0  // turn of checked iterators
+#   pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
+#   pragma inline_recursion( on )
 # endif
-
-# define _SECURE_SCL 0  // turn of checked iterators
-# pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
-# pragma inline_recursion( on )
-
 #endif
 
 //////////////////////////////////////////////////////////////////////////

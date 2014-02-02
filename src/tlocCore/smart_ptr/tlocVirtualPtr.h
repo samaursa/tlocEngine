@@ -320,7 +320,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     // @brief Internal use only. See reasoning in SharedPtr<>
     ref_count_type*     DoExposeCounter() const
     {
-      return m_refCount;
+      return nullptr;
     }
 
     pointer             operator->() const

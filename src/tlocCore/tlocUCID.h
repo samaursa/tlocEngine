@@ -27,8 +27,8 @@ namespace tloc { namespace core {
     bool    operator==(const this_type& a_other) const
     { return a_other.GetClassID() == GetClassID(); }
 
-    template <typename T>
-    bool    operator==(const UCID<T>& ) const
+    template <typename U>
+    bool    operator==(const UCID<U>& ) const
     { return false; }
 
   private:

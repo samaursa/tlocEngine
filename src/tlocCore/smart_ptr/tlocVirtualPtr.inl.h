@@ -199,6 +199,128 @@ namespace tloc { namespace core { namespace smart_ptr {
     m_refCount = nullptr;
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualPtr<Release>
+
+#define TLOC_VIRTUAL_PTR_RELEASE_TEMPS  typename T
+#define TLOC_VIRTUAL_PTR_RELEASE_PARAMS T, core_cfg::p_build_config::Release
+#define TLOC_VIRTUAL_PTR_RELEASE_TYPE   typename VirtualPtr<T, core_cfg::p_build_config::Release>
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    VirtualPtr()
+    : m_rawPtr(nullptr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    VirtualPtr(std::nullptr_t)
+    : m_rawPtr(nullptr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    VirtualPtr(pointer a_rawPtr)
+    : m_rawPtr(a_rawPtr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    VirtualPtr(const this_type& a_other)
+    : m_rawPtr(a_other.m_rawPtr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::this_type&
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator= (this_type a_other)
+  {
+    m_rawPtr = a_other.get();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::pointer
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    get() const
+  {
+    return m_rawPtr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::pointer
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator->() const
+  {
+    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    return m_rawPtr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::reference
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator*() const
+  {
+    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    return *m_rawPtr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator bool() const
+  { return get() != nullptr; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::ref_count_type
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    use_count() const
+  { return 1; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  bool
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    unique() const
+  { return true; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  void
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    reset()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  void
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    swap(this_type& a_other)
+  {
+    core::swap(a_other.m_rawPtr, m_rawPtr);
+  }
+
 };};};
 
 #endif

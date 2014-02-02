@@ -165,6 +165,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   // -----------------------------------------------------------------------
   // friend functions - casting
+
   template <typename T_Other, typename build_config, typename U>
   VirtualPtr<T_Other, build_config>
     static_pointer_cast(const VirtualPtr<U, build_config>& a_vp)
@@ -178,6 +179,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     return vp;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Other, typename build_config, typename U>
   VirtualPtr<T_Other, build_config>
@@ -215,108 +218,41 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef tl_int                                    ref_count_type;
 
   public:
-    VirtualPtr()
-      : m_rawPtr(nullptr)
-    { }
+    VirtualPtr();
 
-    VirtualPtr(std::nullptr_t)
-      : m_rawPtr(nullptr)
-    { }
-
-    explicit VirtualPtr(pointer a_rawPtr)
-      : m_rawPtr(a_rawPtr)
-    { }
-
-    VirtualPtr(const this_type& a_other)
-      : m_rawPtr(a_other.m_rawPtr)
-    { }
+    VirtualPtr(std::nullptr_t);
+    explicit VirtualPtr(pointer a_rawPtr);
+    VirtualPtr(const this_type& a_other);
 
     template <typename T_Other>
-    VirtualPtr(const VirtualPtr<T_Other, build_config>& a_other)
-      : m_rawPtr(a_other.get())
-    { }
+    VirtualPtr(const VirtualPtr<T_Other, build_config>& a_other);
 
     template <typename T_Other, typename T_Policy>
-    explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other)
-      : m_rawPtr(a_other.get())
-    { }
+    explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other);
 
     template <typename T_Other>
     this_type&          operator= (const VirtualPtr<T_Other,
-                                                        build_config>& a_other)
-    {
-      m_rawPtr = a_other.get();
-
-      return *this;
-    }
-
+                                                        build_config>& a_other);
     template <typename T_Other, typename T_Policy>
-    this_type&          operator= (const SharedPtr<T_Other, T_Policy>& a_other)
-    {
-      m_rawPtr = a_other.get();
-
-      return *this;
-    }
-
-    this_type&          operator= (this_type a_other)
-    {
-      m_rawPtr = a_other.get();
-
-      return *this;
-    }
+    this_type&          operator= (const SharedPtr<T_Other, T_Policy>& a_other);
+    this_type&          operator= (this_type a_other);
 
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
-    pointer             get() const
-    {
-      return m_rawPtr;
-    }
+    pointer             get() const;
 
-    // @brief Internal use only. See reasoning in SharedPtr<>
-    ref_count_type*     DoExposeCounter() const
-    {
-      return nullptr;
-    }
-
-    pointer             operator->() const
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
-      return m_rawPtr;
-    }
-
-    reference           operator* () const
-    {
-      TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
-      return *m_rawPtr;
-    }
-
-    operator            bool() const
-    { return get() != nullptr; }
-
-    ref_count_type      use_count() const
-    { return 1; }
-
-    bool                unique() const
-    { return true; }
-
-    void                reset()
-    { }
-
-    template <typename Y>
-    void                reset(Y* a_ptr)
-    {
-      this_type(a_ptr).swap(*this);
-    }
+    pointer             operator->() const;
+    reference           operator* () const;
+    operator            bool() const;
+    ref_count_type      use_count() const;
+    bool                unique() const;
+    void                reset();
 
     template <typename T_Other>
-    void                swap(VirtualPtr<T_Other, build_config>& a_other)
-    {
-      core::swap(a_other.m_rawPtr, m_rawPtr);
-    }
+    void                reset(T_Other* a_ptr);
 
-    void                swap(this_type& a_other)
-    {
-      core::swap(a_other.m_rawPtr, m_rawPtr);
-    }
+    template <typename T_Other>
+    void                swap(VirtualPtr<T_Other, build_config>& a_other);
+    void                swap(this_type& a_other);
 
     // -----------------------------------------------------------------------
     // friend functions - casting
@@ -338,6 +274,72 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   // -----------------------------------------------------------------------
   // template definitions
+
+  template <typename T>
+  template <typename T_Other>
+  VirtualPtr<T, core_cfg::p_build_config::Release>::
+    VirtualPtr(const VirtualPtr<T_Other, core_cfg::p_build_config::Release>& a_other)
+    : m_rawPtr(a_other.get())
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other, typename T_Policy>
+  VirtualPtr<T, core_cfg::p_build_config::Release>::
+    VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other)
+    : m_rawPtr(a_other.get())
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
+    VirtualPtr<T, core_cfg::p_build_config::Release>::
+    operator= (const VirtualPtr<T_Other, build_config>& a_other)
+  {
+    m_rawPtr = a_other.get();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other, typename T_Policy>
+  typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
+    VirtualPtr<T, core_cfg::p_build_config::Release>::
+    operator= (const SharedPtr<T_Other, T_Policy>& a_other)
+  {
+    m_rawPtr = a_other.get();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  void
+    VirtualPtr<T, core_cfg::p_build_config::Release>::
+    reset(T_Other* a_ptr)
+  {
+    this_type(a_ptr).swap(*this);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  void
+    VirtualPtr<T, core_cfg::p_build_config::Release>::
+    swap(VirtualPtr<T_Other, build_config>& a_other)
+  {
+    core::swap(a_other.m_rawPtr, m_rawPtr);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Other, typename U>
   VirtualPtr<T_Other, core_cfg::p_build_config::Release>

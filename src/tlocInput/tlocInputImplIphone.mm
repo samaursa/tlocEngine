@@ -76,10 +76,10 @@ namespace tloc { namespace input { namespace priv {
         TLOC_ASSERT([[window subviews] count] != 0,
                     "Window has no views attached");
 
-        core_t::Any viewHandle([[window subviews] lastObject]);
+        OpenGLView* viewHandle([[window subviews] lastObject]);
 
         iphone_touch_surface_param_type params;
-        params.m_param1 = viewHandle.template Cast<OpenGLView*>();
+        params.m_param1 = viewHandle;
 
         T_InputObject* newInput = new T_InputObject(params);
         return newInput;

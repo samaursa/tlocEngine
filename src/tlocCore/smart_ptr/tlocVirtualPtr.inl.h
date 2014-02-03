@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocVirtualPtr.h"
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 

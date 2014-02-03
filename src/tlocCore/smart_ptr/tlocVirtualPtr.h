@@ -5,6 +5,7 @@
 
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 #include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
@@ -40,6 +41,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename T_Other, typename T_Policy>
     explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other);
 
+    template <typename T_Other>
+    explicit VirtualPtr(const UniquePtr<T_Other>& a_other);
+
     ~VirtualPtr();
 
     template <typename T_Other>
@@ -47,6 +51,10 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     template <typename T_Other, typename T_Policy>
     this_type&  operator= (const SharedPtr<T_Other, T_Policy>& a_other);
+
+    template <typename T_Other>
+    this_type&  operator= (const UniquePtr<T_Other>& a_other);
+
     this_type&  operator= (this_type a_other);
 
     pointer             operator->() const;
@@ -120,6 +128,18 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <typename T, typename T_BuildType>
   template <typename T_Other>
+  VirtualPtr<T, T_BuildType>::
+    VirtualPtr(const UniquePtr<T_Other>& a_other)
+    : m_rawPtr(a_other.get())
+    , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
+  {
+    DoAddRef();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_BuildType>
+  template <typename T_Other>
   typename VirtualPtr<T, T_BuildType>::this_type&
     VirtualPtr<T, T_BuildType>::
     operator= (VirtualPtr<T_Other, build_config> a_other)
@@ -135,6 +155,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   typename VirtualPtr<T, T_BuildType>::this_type&
     VirtualPtr<T, T_BuildType>::
     operator= (const SharedPtr<T_Other, T_Policy>& a_other)
+  {
+    this_type(a_other).swap(*this);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_BuildType>
+  template <typename T_Other>
+  typename VirtualPtr<T, T_BuildType>::this_type&
+    VirtualPtr<T, T_BuildType>::
+    operator= (const UniquePtr<T_Other>& a_other)
   {
     this_type(a_other).swap(*this);
     return *this;
@@ -231,10 +263,17 @@ namespace tloc { namespace core { namespace smart_ptr {
     explicit VirtualPtr(const SharedPtr<T_Other, T_Policy>& a_other);
 
     template <typename T_Other>
+    explicit VirtualPtr(const UniquePtr<T_Other>& a_other);
+
+    template <typename T_Other>
     this_type&          operator= (const VirtualPtr<T_Other,
                                                         build_config>& a_other);
     template <typename T_Other, typename T_Policy>
     this_type&          operator= (const SharedPtr<T_Other, T_Policy>& a_other);
+
+    template <typename T_Other>
+    this_type&          operator= (const UniquePtr<T_Other>& a_other);
+
     this_type&          operator= (this_type a_other);
 
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
@@ -311,6 +350,19 @@ namespace tloc { namespace core { namespace smart_ptr {
   typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
     VirtualPtr<T, core_cfg::p_build_config::Release>::
     operator= (const SharedPtr<T_Other, T_Policy>& a_other)
+  {
+    m_rawPtr = a_other.get();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
+    VirtualPtr<T, core_cfg::p_build_config::Release>::
+    operator= (const UniquePtr<T_Other>& a_other)
   {
     m_rawPtr = a_other.get();
 

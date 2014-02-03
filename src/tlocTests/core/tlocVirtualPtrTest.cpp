@@ -14,6 +14,7 @@ namespace TestingVirtualPtr
 
   using tloc::core::smart_ptr::VirtualPtr;
   using tloc::core::smart_ptr::SharedPtr;
+  using tloc::core::smart_ptr::UniquePtr;
 
   struct BaseStruct
   { };
@@ -131,6 +132,18 @@ namespace TestingVirtualPtr
 
       sptr.reset();
     }
+
+    SECTION("UniquePtr<> copy ctor", "")
+    {
+      UniquePtr<int> sptr(new int(10));
+
+      {
+        VirtualPtr<int> p(sptr);
+        // sptr.reset(); // should throw an assertion
+      }
+
+      sptr.reset();
+    }
   }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/operators", "")
@@ -154,6 +167,25 @@ namespace TestingVirtualPtr
       VirtualPtr<int> vp2; // vp2 needs to be reset before sp2 deletes when
                                // it goes out of scope
       SharedPtr<int>      sp2(new int(30));
+      vp2 = sp2;
+
+      vp2.reset();
+
+      // No crash should occur when sp2 goes out of scope and deletes its raw
+      // pointer
+    }
+
+    SECTION("operator=(UniquePtr)", "")
+    {
+      UniquePtr<int>      sp(new int(20));
+      VirtualPtr<int> vp;
+      vp = sp;
+
+      CHECK(*vp == 20);
+
+      VirtualPtr<int> vp2; // vp2 needs to be reset before sp2 deletes when
+                               // it goes out of scope
+      UniquePtr<int>      sp2(new int(30));
       vp2 = sp2;
 
       vp2.reset();

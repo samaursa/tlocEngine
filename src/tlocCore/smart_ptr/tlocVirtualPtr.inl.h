@@ -325,4 +325,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_)\
+  template class tloc::core_sptr::VirtualPtr<_type_>;\
+  template class tloc::core_sptr::VirtualPtr<const _type_>
+
 #endif

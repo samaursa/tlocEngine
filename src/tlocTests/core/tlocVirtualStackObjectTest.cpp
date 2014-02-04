@@ -6,28 +6,58 @@
 using namespace tloc;
 using namespace core_sptr;
 
+TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(int, int);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(int);
+
 namespace TestingVirtualStackObject
 {
   TEST_CASE("core/smart_ptr/VirtualStackObject/ctors", "")
   {
-    VirtualStackObject<int> onStack(10);
-    CHECK( (onStack == 10 ) );
+    SECTION("All ctors", "")
+    {
+      int_vso onStack;
+      onStack = 10;
+      CHECK( (onStack == 10 ) );
 
-    int onStackCopy = onStack;
-    CHECK(onStackCopy == 10);
+      int onStackCopy = onStack;
+      CHECK(onStackCopy == 10);
 
-    VirtualStackObject<int>::ptr_type ptrToVSO = onStack.get();
-    CHECK(*ptrToVSO == 10);
+      int_vso::ptr_type ptrToVSO = onStack.get();
+      CHECK(*ptrToVSO == 10);
 
-    VirtualStackObject<int> onStack2(onStack);
-    CHECK( (onStack2 == 10) );
+      int_vso onStack2(onStack);
+      CHECK( (onStack2 == 10) );
+    }
+
+    SECTION("No default ctor", "")
+    {
+      VirtualStackObject_T<int, p_virtual_stack_object::default_ctor::NotAvail>
+        onStack(20);
+      CHECK( (onStack == 20) );
+    }
   }
+
+  struct NoDefCtorOrEqualOper
+  {
+    NoDefCtorOrEqualOper(tl_int a_num)
+      : a(a_num)
+      , b(a_num)
+      , c(a_num)
+    { }
+
+    tl_int a, b, c;
+  };
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR_AND_EQUALITY
+    (NoDefCtorOrEqualOper, no_def_ctor_or_equal_oper);
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR_AND_EQUALITY
+    (NoDefCtorOrEqualOper);
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/operators", "")
   {
     SECTION("comparison", "")
     {
-      VirtualStackObject<int> s1(10), s2(20), s3(10);
+      int_vso s1(10), s2(20), s3(10);
       CHECK( (s1 == s3) );
       CHECK( (s1 != s2) );
       CHECK_FALSE( (s1 == s2) );
@@ -35,10 +65,20 @@ namespace TestingVirtualStackObject
 
     SECTION("operator=()", "")
     {
-      VirtualStackObject<int>  s1(10);
-      VirtualStackObject<int>  s2(20);
+      int_vso  s1(10);
+      int_vso  s2(20);
       s2 = s1;
       CHECK( (s1 == s2) );
+    }
+
+    SECTION("No equality", "")
+    {
+      VirtualStackObject_T<int,
+                           p_virtual_stack_object::default_ctor::NotAvail,
+                           p_virtual_stack_object::equality::NotAvail>
+        onStack(50);
+      // CHECK( (onStack == 20) ); // should be a compiler error
+      // CHECK_FALSE( (onStack != 20) ); // should be a compiler error
     }
   }
 }

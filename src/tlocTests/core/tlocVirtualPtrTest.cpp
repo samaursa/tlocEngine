@@ -37,6 +37,9 @@ namespace TestingVirtualPtr
   tl_int SharedStruct::m_numCtors;
   tl_int SharedStruct::m_numDtors;
 
+  TLOC_TYPEDEF_VIRTUAL_PTR(SharedStruct, shared_struct);
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(SharedStruct);
+
   // ///////////////////////////////////////////////////////////////////////
   // generic test functions for different builds (Debug/Release)
 

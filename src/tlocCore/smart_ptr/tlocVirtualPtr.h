@@ -423,4 +423,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
 };};};
 
+#define TLOC_TYPEDEF_VIRTUAL_PTR(_type_, _typedef_)\
+  typedef tloc::core_sptr::VirtualPtr<_type_>  _typedef_##_vptr;\
+  typedef tloc::core_sptr::VirtualPtr<const _type_>  _typedef_##_const_vptr
+
 #endif

@@ -34,15 +34,6 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    VirtualStackObjectBase_TI(const this_type& a_other)
-    : m_value(a_other.m_value)
-    , m_valuePtr(&m_value)
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
     TLOC_ASSERT_LOW_LEVEL(m_valuePtr.unique(),
@@ -56,38 +47,34 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::value_type&
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator=(this_type a_other)
-  {
-    a_other.swap(*this);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator=(const value_type& a_newValue)
-  {
-    this_type(a_newValue).swap(*this);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator value_type&()
+    operator*()
   { return m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator value_type const&() const
+  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator*() const
   { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator->() const
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -104,50 +91,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get() const
   { return m_valuePtr; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  operator==(const this_type& a_other) const
-  //{ return m_value == a_other.m_value; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  operator==(const value_type& a_other) const
-  //{ return m_value == a_other; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  operator!=(const this_type& a_other) const
-  //{ return m_value != a_other.m_value; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  operator!=(const value_type& a_other) const
-  //{ return m_value != a_other; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  void
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    swap(this_type& a_other)
-  {
-    using core::swap;
-
-    swap(m_value, a_other.m_value);
-  }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<Release>
@@ -168,52 +111,40 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    VirtualStackObjectBase_TI(const this_type& a_other)
-    : m_value(a_other.m_value)
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     ~VirtualStackObjectBase_TI()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type&
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator=(this_type a_other)
-  {
-    a_other.swap(*this);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator=(const value_type& a_newValue)
-  {
-    this_type(a_newValue).swap(*this);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator value_type&()
+    operator*()
   { return m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator value_type const&() const
+  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator*() const
   { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator->() const
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -231,50 +162,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     get() const
   { return ptr_type(&m_value); }
 
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-  //  operator==(const this_type& a_other)
-  //{ return m_value == a_other.m_value; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-  //  operator==(const value_type& a_other)
-  //{ return m_value == a_other; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-  //  operator!=(const this_type& a_other)
-  //{ return m_value != a_other.m_value; }
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  //bool
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-  //  operator!=(const value_type& a_other)
-  //{ return m_value != a_other; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  void
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    swap(this_type& a_other)
-  {
-    using core::swap;
-
-    swap(m_value, a_other.m_value);
-  }
-
 };};};
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_)\
@@ -282,6 +169,9 @@ namespace tloc { namespace core { namespace smart_ptr {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(_type_)\
   template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_EQUALITY(_type_)\
+  template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::Available, tloc::core_sptr::p_virtual_stack_object::equality::NotAvail>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR_AND_EQUALITY(_type_)\
   template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail, tloc::core_sptr::p_virtual_stack_object::equality::NotAvail>

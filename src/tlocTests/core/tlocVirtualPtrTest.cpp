@@ -196,6 +196,21 @@ namespace TestingVirtualPtr
       // No crash should occur when sp2 goes out of scope and deletes its raw
       // pointer
     }
+
+    SECTION("operator==", "")
+    {
+      VirtualPtr<int> vp;
+      CHECK( (vp == nullptr) );
+      CHECK_FALSE( (vp != nullptr) );
+
+      int temp = 10;
+      vp.reset(&temp);
+      CHECK( (vp != nullptr) );
+      CHECK( (nullptr != vp) );
+      vp.reset();
+      CHECK( (vp == nullptr) );
+      CHECK( (nullptr == vp) );
+    }
   }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/reset", "")
@@ -243,5 +258,17 @@ namespace TestingVirtualPtr
 
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());
     }
+  }
+
+  TEST_CASE("core/smart_ptr/VirtualPtr/Algorithms", "")
+  {
+    core_conts::Array<VirtualPtr<int> > vptrContainer;
+
+    for (tl_int i = 0; i < 10; ++i)
+    {
+      vptrContainer.push_back(VirtualPtr<int>(new int(10)) );
+    }
+
+    core::for_each_all(vptrContainer, core_sptr::algos::DeleteAndReset());
   }
 }

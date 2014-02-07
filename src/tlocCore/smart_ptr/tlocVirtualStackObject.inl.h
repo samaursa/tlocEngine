@@ -87,10 +87,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::ptr_type&
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_ptr_type
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get() const
-  { return m_valuePtr; }
+  { return const_ptr_type(&m_value); }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<Release>
@@ -157,7 +157,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::ptr_type&
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_ptr_type
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     get() const
   { return ptr_type(&m_value); }
@@ -165,15 +165,19 @@ namespace tloc { namespace core { namespace smart_ptr {
 };};};
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_>;\
   template class tloc::core_sptr::VirtualStackObject_T<_type_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_>;\
   template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_EQUALITY(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_>;\
   template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::Available, tloc::core_sptr::p_virtual_stack_object::equality::NotAvail>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR_AND_EQUALITY(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_>;\
   template class tloc::core_sptr::VirtualStackObject_T<_type_, tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail, tloc::core_sptr::p_virtual_stack_object::equality::NotAvail>
 
 #endif

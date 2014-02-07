@@ -44,6 +44,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     typedef VirtualStackObjectBase_TI<value_type, build_config>   this_type;
     typedef core::smart_ptr::VirtualPtr<value_type>               ptr_type;
+    typedef core::smart_ptr::VirtualPtr<const value_type>         const_ptr_type;
 
   public:
     explicit VirtualStackObjectBase_TI(const value_type& a_other);
@@ -55,8 +56,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer             operator->();
     const_pointer       operator->() const;
 
-    ptr_type        get();
-    const ptr_type& get() const;
+    ptr_type            get();
+    const_ptr_type      get() const;
 
   protected:
 
@@ -81,7 +82,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef core_cfg::p_build_config::Release                 build_config;
 
     typedef VirtualStackObjectBase_TI<value_type, build_config>   this_type;
-    typedef core::smart_ptr::VirtualPtr<value_type>               ptr_type;
+    typedef pointer                                               ptr_type;
+    typedef const_pointer                                         const_ptr_type;
 
   public:
     explicit VirtualStackObjectBase_TI(const value_type& a_other);
@@ -93,8 +95,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer             operator->();
     const_pointer       operator->() const;
 
-    ptr_type        get();
-    const ptr_type& get() const;
+    ptr_type            get();
+    const_ptr_type      get() const; // intentionally returned by value
 
   protected:
     value_type        m_value;

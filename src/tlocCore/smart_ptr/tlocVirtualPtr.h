@@ -334,6 +334,15 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <typename T>
   template <typename T_Other>
+  VirtualPtr<T, core_cfg::p_build_config::Release>::
+    VirtualPtr(const UniquePtr<T_Other>& a_other)
+    : m_rawPtr(a_other.get())
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
   typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
     VirtualPtr<T, core_cfg::p_build_config::Release>::
     operator= (const VirtualPtr<T_Other, build_config>& a_other)
@@ -420,6 +429,107 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     return vp;
   }
+
+  // -----------------------------------------------------------------------
+  // Global operators
+
+  template <class T, class U>
+  bool operator ==(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U>
+  bool operator !=(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U>
+  bool operator <(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  {
+    using tloc::core::less;
+    using tloc::type_traits::common_type;
+
+    return less<typename common_type<T*, U*>::type>()( a.get(), b.get() );
+  }
+
+  template <class T, class U>
+  bool operator >(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  { return b < a; }
+
+  template <class T, class U>
+  bool operator <=(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  { return !(b < a); }
+
+  template <class T, class U>
+  bool operator >=(const VirtualPtr<T>& a, const VirtualPtr<U>& b)
+  { return !(a < b); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <class T>
+  bool operator ==(const VirtualPtr<T>& a, nullptr_t)
+  { return !a; }
+
+  template <class T>
+  bool operator ==(nullptr_t, const VirtualPtr<T>& b)
+  { return !b; }
+
+  template <class T>
+  bool operator !=(const VirtualPtr<T>& a, nullptr_t)
+  { return (bool)a; }
+
+  template <class T>
+  bool operator !=(nullptr_t, const VirtualPtr<T>& b)
+  { return (bool)b; }
+
+  template <class T>
+  bool operator <(const VirtualPtr<T>& a, nullptr_t)
+  { return tloc::core::less<T*>()(a.get(), nullptr ); }
+
+  template <class T>
+  bool operator <(nullptr_t, const VirtualPtr<T>& b)
+  { return tloc::core::less<T*>()(nullptr, b.get()); }
+
+  template <class T>
+  bool operator <=(const VirtualPtr<T>& a, nullptr_t)
+  { return !(nullptr < a); }
+
+  template <class T>
+  bool operator <=(nullptr_t, const VirtualPtr<T>& b)
+  { return !(b < nullptr); }
+
+  template <class T>
+  bool operator >(const VirtualPtr<T>& a, nullptr_t)
+  { return nullptr <= a; }
+
+  template <class T>
+  bool operator >(nullptr_t, const VirtualPtr<T>& b)
+  { return !(b < nullptr); }
+
+  template <class T>
+  bool operator >=(const VirtualPtr<T>& a, nullptr_t)
+  { return !(a < nullptr); }
+
+  template <class T>
+  bool operator >=(nullptr_t, const VirtualPtr<T>& b)
+  { return !(nullptr < b); }
+
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos {
+
+    struct DeleteAndReset
+    {
+      template <typename T>
+      void operator()(core_sptr::VirtualPtr<T>& a_vptr)
+      {
+        T* rawPtr = a_vptr.get();
+        a_vptr.reset();
+
+        delete rawPtr;
+      }
+    };
+
+  };
 
 };};};
 

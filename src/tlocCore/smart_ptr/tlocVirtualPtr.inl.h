@@ -311,7 +311,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   void
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     reset()
-  { }
+  { m_rawPtr = nullptr; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

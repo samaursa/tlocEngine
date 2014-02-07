@@ -34,7 +34,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_Function>
   T_Function
-    for_each_all(T_Container a_container, T_Function a_func)
+    for_each_all(T_Container& a_container, T_Function a_func)
   {
     return for_each(a_container.begin(), a_container.end(), a_func);
   }

@@ -39,21 +39,21 @@ namespace tloc { namespace core { namespace component_system {
   protected: // Initialization
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent) = 0;
+                                        const entity_vptr a_ent) = 0;
     virtual error_type Post_Initialize();
 
   protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
+                               const entity_vptr a_ent,
                                f64 a_deltaT) = 0;
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
   protected: // Shutdown
     virtual error_type Pre_Shutdown();
     virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent) = 0;
+                                      const entity_vptr a_ent) = 0;
     virtual error_type Post_Shutdown();
 
   private:

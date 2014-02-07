@@ -78,7 +78,7 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        Entity* ent = entEvent.GetEntity();
+        entity_vptr ent = entEvent.GetEntity();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
@@ -108,7 +108,7 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::enable_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        Component* comp = entEvent.GetComponent();
+        component_vptr comp = entEvent.GetComponent();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)

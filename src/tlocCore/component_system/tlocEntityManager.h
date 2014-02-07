@@ -17,8 +17,9 @@ namespace tloc { namespace core { namespace component_system {
     : public core_bclass::NonCopyable_I
   {
   public:
-    typedef Entity*                               entity_ptr_type;
-    typedef Component*                            component_ptr_type;
+    typedef Entity                                entity_type;
+    typedef entity_vptr                           entity_ptr_type;
+    typedef component_vptr                        component_ptr_type;
 
     typedef containers::
       tl_array<entity_ptr_type>::type             entity_cont;
@@ -40,15 +41,15 @@ namespace tloc { namespace core { namespace component_system {
     virtual ~EntityManager();
 
     entity_ptr_type   CreateEntity();
-    void              DestroyEntity(Entity* a_entity);
+    void              DestroyEntity(entity_ptr_type a_entity);
     entity_ptr_type   GetEntity(tl_int a_index);
 
-    void        InsertComponent(Entity* a_entity, Component* a_component);
-    bool        RemoveComponent(Entity* a_entity, Component* a_component);
+    void        InsertComponent(entity_ptr_type a_entity, component_ptr_type a_component);
+    bool        RemoveComponent(entity_ptr_type a_entity, component_ptr_type a_component);
 
     void        Update();
 
-    component_cont* GetComponents(Entity* a_entity, components::value_type a_type);
+    component_cont* GetComponents(entity_ptr_type a_entity, components::value_type a_type);
 
     TLOC_DECL_AND_DEF_GETTER(entity_cont::size_type, GetUnusedEntities,
                              m_removedEntities.size());
@@ -58,7 +59,7 @@ namespace tloc { namespace core { namespace component_system {
     void DoUpdateAndCleanComponents();
     void DoUpdateAndCleanEntities();
 
-    bool DoRemoveComponent(Entity* a_entity, Component* a_component);
+    bool DoRemoveComponent(entity_ptr_type a_entity, component_ptr_type a_component);
 
   private:
 

@@ -81,8 +81,8 @@ namespace TestingEntityManager
 
     EntityManager   eMgr(evtMgr);
 
-    Entity* newEnt = eMgr.CreateEntity();
-    CHECK(newEnt != NULL);
+    EntityManager::entity_ptr_type newEnt = eMgr.CreateEntity();
+    CHECK( (newEnt != nullptr) );
     CHECK(entTrack.m_entEventCounter == 1);
 
     eMgr.DestroyEntity(newEnt);
@@ -106,6 +106,13 @@ namespace TestingEntityManager
     {
       eMgr.DestroyEntity(*itr);
     }
+
+    // clear and reset the virtual pointers to ensure that the entity manager
+    // is able to delete the entities flagged for destruction without any
+    // assertions firing
+    newEnt.reset();
+    myList.clear();
+
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
     CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
@@ -114,21 +121,23 @@ namespace TestingEntityManager
     CHECK(entTrack.m_entEventCounter == 1);
     CHECK(entTrack.m_compEventCounter == 0);
 
-    Component testComp(components::listener);
-    eMgr.InsertComponent(newEnt, &testComp);
+    component_vso testComp = component_vso(Component(components::listener));
+    eMgr.InsertComponent(newEnt, testComp.get());
     CHECK(entTrack.m_compEventCounter == 1);
 
-    Component invalidComp(components::listener + 1);
+    component_vso invalidComp = component_vso( Component(components::listener + 1) );
 
-    CHECK_FALSE(eMgr.RemoveComponent(newEnt, &invalidComp));
+    CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp.get()));
     eMgr.Update();
     CHECK(entTrack.m_compEventCounter == 1);
 
-    CHECK(eMgr.RemoveComponent(newEnt, &testComp));
+    CHECK(eMgr.RemoveComponent(newEnt, testComp.get()));
     eMgr.Update();
     CHECK(entTrack.m_compEventCounter == 0);
 
     eMgr.DestroyEntity(newEnt);
+    newEnt.reset();
+
     eMgr.Update();
     CHECK(entTrack.m_entEventCounter == 0);
     CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84

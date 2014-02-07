@@ -8,6 +8,8 @@
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/utilities/tlocGroupID.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -22,15 +24,37 @@ namespace tloc { namespace core { namespace component_system {
   class Component : private utils::ObjectCounter<Component>
   {
   public:
+    typedef Component                       this_type;
     typedef components::value_type          component_type;
     typedef utils::ObjectCounter<Component> counter_type;
     typedef counter_type::size_type         counter_size_type;
+
+    Component()
+      : m_type(components_group::invalid)
+      , m_updateRequired()
+      , m_enabled(false)
+    { }
 
     explicit Component(component_type a_type)
       : m_type(a_type)
       , m_updateRequired(true)
       , m_enabled(true)
     { }
+
+    explicit Component(const this_type& a_other)
+      : m_type(a_other.m_type)
+      , m_updateRequired(a_other.m_updateRequired)
+      , m_enabled(a_other.m_enabled)
+    { }
+
+    bool operator==(const this_type& a_other) const
+    {
+      return m_type == a_other.m_type &&
+             m_updateRequired == a_other.m_updateRequired &&
+             m_enabled == a_other.m_enabled;
+    }
+
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
     TLOC_DECL_AND_DEF_GETTER(component_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsUpdateRequired, m_updateRequired);
@@ -54,8 +78,10 @@ namespace tloc { namespace core { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(Component, component);
+  TLOC_TYPEDEF_VIRTUAL_PTR(Component, component);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Component, component);
 
-  typedef containers::tl_array<Component*>::type      component_ptr_array;
+  typedef containers::tl_array<component_vptr>::type  component_ptr_array;
   typedef containers::tl_array<component_sptr>::type  component_sptr_array;
 
   //////////////////////////////////////////////////////////////////////////

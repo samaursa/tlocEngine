@@ -24,6 +24,24 @@ namespace tloc { namespace core { namespace component_system {
     m_allComponents.resize(components_group::count);
   }
 
+  TL_I
+    Entity::
+    Entity(const this_type& a_other)
+    : base_type(a_other.GetDebugName())
+    , m_id(a_other.m_id)
+    , m_index(a_other.m_index)
+    , m_active(a_other.m_active)
+    , m_allComponents(a_other.m_allComponents)
+  { }
+
+  TL_I bool
+    Entity::operator==(const this_type& a_other) const
+  {
+    return m_id == a_other.m_id &&
+           m_index == a_other.m_index &&
+           m_active == a_other.m_active;
+  }
+
   TL_I bool Entity::HasComponent(component_type a_type) const
   {
     return components_group::count > a_type ?
@@ -66,7 +84,7 @@ namespace tloc { namespace core { namespace component_system {
     m_index = a_index;
   }
 
-  TL_I void Entity::InsertComponent(Component* a_component)
+  TL_I void Entity::InsertComponent(component_vptr a_component)
   {
     component_type ctype = a_component->GetType();
 

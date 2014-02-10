@@ -27,8 +27,8 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Memory Pool Index Wrapper
 
-#define MEMORY_POOL_INDEX_WRAPPER_TEMP    typename T_Elem, typename T_SizeType
-#define MEMORY_POOL_INDEX_WRAPPER_PARAMS  T_Elem, T_SizeType
+#define MEMORY_POOL_INDEX_WRAPPER_TEMP    typename T_Elem
+#define MEMORY_POOL_INDEX_WRAPPER_PARAMS  T_Elem
 #define MEMORY_POOL_INDEX_WRAPPER_TYPE    typename MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::template Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -36,8 +36,7 @@ namespace tloc { namespace core { namespace memory {
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper()
     : m_index(parent_type::sm_invalidIndex)
-  {
-  }
+  { }
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
@@ -84,15 +83,6 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MEMORY_POOL_INDEX_WRAPPER_TYPE::index_type
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetIndex() const
-  {
-    return m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::operator ==(wrapper_type& a_rhs)
   {
@@ -109,6 +99,163 @@ namespace tloc { namespace core { namespace memory {
   }
 
   //------------------------------------------------------------------------
+  // Helper functions
+
+  namespace {
+
+    typedef type_false                        fixed_container_selected;
+    typedef type_true                         dynamic_container_selected;
+
+    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
+    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
+
+    typedef tl_size                           size_type;
+    typedef tl_int                            index_type;
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Container>
+    void
+      DoResize(T_Container&, size_type, fixed_container_selected)
+    {
+      // intentionally empty
+    }
+
+    template <typename T_Container>
+    void
+      DoResize(T_Container& a_allElements,
+               size_type a_newSize, dynamic_container_selected)
+    {
+      a_allElements.resize(a_newSize);
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Container, typename T_AllocationPolicy,
+              typename T_SelectedValueType>
+    bool
+      DoExpand(T_Container& m_allElements, size_type a_size,
+               fixed_container_selected, T_AllocationPolicy a_allocPolicy,
+               T_SelectedValueType a_selValueType)
+    {
+      typedef typename T_Container::iterator        iterator;
+
+      const size_type prevSize = m_allElements.size();
+      const size_type maxSize = tlMin(a_size, m_allElements.capacity());
+
+      if (prevSize != m_allElements.capacity())
+      {
+        m_allElements.resize(maxSize);
+
+        iterator startingPos = m_allElements.begin();
+        advance(startingPos, prevSize);
+
+        DoInitializeRange(startingPos, m_allElements.end(),
+                          core_utils::CastNumber<index_type>(prevSize),
+                          a_allocPolicy, a_selValueType);
+
+        return true;
+      }
+
+      return false;
+    }
+
+    template <typename T_Container, typename T_AllocationPolicy,
+              typename T_SelectedValueType>
+    bool
+      DoExpand(T_Container& m_allElements, size_type a_size,
+               dynamic_container_selected, T_AllocationPolicy a_allocPolicy,
+               T_SelectedValueType a_selValueType)
+    {
+      typedef typename T_Container::iterator        iterator;
+
+      const size_type prevSize = m_allElements.size();
+
+      m_allElements.resize(a_size);
+
+      iterator startingPos = m_allElements.begin();
+      advance(startingPos, prevSize);
+
+      DoInitializeRange(startingPos, m_allElements.end(),
+                        core_utils::CastNumber<index_type>(prevSize),
+                        a_allocPolicy, a_selValueType);
+      return true;
+    }
+
+    template <typename T_Iterator, typename T_AllocationPolicy,
+              typename T_SelectedValueType>
+    void
+      DoInitializeRange(T_Iterator a_begin, T_Iterator a_end,
+                        index_type a_startingIndex,
+                        T_AllocationPolicy a_allocPolicy,
+                        T_SelectedValueType a_selValueType)
+    {
+      for ( ; a_begin != a_end; ++a_begin)
+      {
+        DoNewElement(a_begin, a_allocPolicy, a_selValueType);
+        DoGetIndexRef(*a_begin, a_allocPolicy) = a_startingIndex;
+        ++a_startingIndex;
+      }
+    }
+
+    template <typename T_WrapperType>
+    index_type&
+      DoGetIndexRef(T_WrapperType& a_element, allocation_on_stack)
+    {
+      return (index_type&)a_element.DoGetIndexRef();
+    }
+
+    template <typename T_WrapperType>
+    index_type&
+      DoGetIndexRef(T_WrapperType& a_element, allocation_on_heap)
+    {
+      return (index_type&)a_element->DoGetIndexRef();
+    }
+
+    template <typename T_WrapperType>
+    index_type
+      DoGetIndex(const T_WrapperType& a_element, allocation_on_stack)
+    {
+      return (index_type)a_element.GetIndex();
+    }
+
+    template <typename T_WrapperType>
+    index_type
+      DoGetIndex(const T_WrapperType& a_element, allocation_on_heap)
+    {
+      return (index_type)a_element->GetIndex();
+    }
+
+    template <typename T_Iterator, typename T_SelectedValueType>
+    void
+      DoNewElement(T_Iterator, allocation_on_stack, T_SelectedValueType)
+    {
+      // Intentionally empty
+    }
+
+    template <typename T_Iterator, typename T_SelectedValueType>
+    void
+      DoNewElement(T_Iterator a_pos, allocation_on_heap, T_SelectedValueType)
+    {
+      *a_pos = new T_SelectedValueType();
+    }
+
+    template <typename T_Container>
+    void
+      DoCleanup(T_Container&, allocation_on_stack)
+    {
+      // Intentionally empty
+    }
+
+    template <typename T_Container>
+    void
+      DoCleanup(T_Container& m_allElements, allocation_on_heap)
+    {
+      delete_ptrs(m_allElements.begin(), m_allElements.end());
+    }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
   // Memory Pool Index
 
   static const tl_size g_initialStartSize = 1;
@@ -130,6 +277,7 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     MemoryPoolIndexed(size_type a_initialSize)
+    : m_numAvail(0)
   {
     Resize(a_initialSize);
   }
@@ -137,14 +285,23 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::~MemoryPoolIndexed()
   {
-    DoCleanup(policy_allocation_type());
+    DoCleanup(m_allElements, policy_allocation_type());
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::Resize(size_type a_size)
   {
-    DoExpand(a_size, container_dynamic_type());
-    m_numAvail = core_utils::CastNumber<index_type>(m_allElements.size());
+    const size_type currSize = m_allElements.size();
+
+    if (a_size > currSize)
+    {
+      const size_type m_numRemaining = currSize - m_numAvail;
+
+      DoExpand(m_allElements, a_size, container_dynamic_type(),
+        policy_allocation_type(), selected_value_type());
+      m_numAvail =
+        core_utils::CastNumber<index_type>(m_allElements.size() - m_numRemaining);
+    }
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -164,7 +321,8 @@ namespace tloc { namespace core { namespace memory {
     }
 
     const size_type prevSize = GetTotal();
-    if (DoExpand(prevSize * 2, container_dynamic_type()) )
+    if (DoExpand(m_allElements, prevSize * 2, container_dynamic_type(),
+                       policy_allocation_type(), selected_value_type()) )
     {
       m_numAvail = core_utils::CastNumber<index_type>(GetTotal() - prevSize);
 
@@ -200,10 +358,10 @@ namespace tloc { namespace core { namespace memory {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    wrapper_type& toSwap = this->operator[]( DoGetIndex(*a_retElem, policy_allocation_type()) );
+    wrapper_type& toSwap = this->operator[](DoGetIndex(*a_retElem, policy_allocation_type()) );
     core::swap(toSwap, m_allElements[lastUsedElem]);
-    core::swap(DoGetIndex(toSwap, policy_allocation_type()),
-           DoGetIndex(m_allElements[lastUsedElem], policy_allocation_type()) );
+    core::swap(DoGetIndexRef(toSwap, policy_allocation_type()),
+               DoGetIndexRef(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
   }
 
@@ -223,7 +381,9 @@ namespace tloc { namespace core { namespace memory {
   {
     for (index_type i = 0; i < m_numAvail; ++i)
     {
-      RecycleElement(m_allElements[i]);
+      iterator itr = m_allElements.begin();
+      advance(itr, i);
+      RecycleElement(itr);
     }
   }
 
@@ -241,8 +401,9 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::wrapper_type const &
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index) const
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < GetTotal() - GetAvail(),
-      "Index trying to access unavailable element!");
+    TLOC_ASSERT_MEMORY_POOL_INDEX
+      (a_index < core_utils::CastNumber<index_type>(GetTotal() - GetAvail()),
+       "Index trying to access unavailable element!");
 
     return m_allElements[a_index];
   }
@@ -308,74 +469,8 @@ namespace tloc { namespace core { namespace memory {
            (DoGetIndex(*a_element, policy_allocation_type()) < (index_type)GetUsed());
   }
 
-  //------------------------------------------------------------------------
-  // Helper functions
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoResize(size_type, fixed_container_selected)
-  {
-    return;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoResize(size_type a_newSize, dynamic_container_selected)
-  {
-    m_allElements.resize(a_newSize);
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoInitializeRange(iterator a_begin, iterator a_end,
-                      index_type a_startingIndex)
-  {
-    for ( ; a_begin != a_end; ++a_begin)
-    {
-      DoNewElement(a_begin, policy_allocation_type());
-      DoGetIndex(*a_begin, policy_allocation_type()) = a_startingIndex;
-      ++a_startingIndex;
-    }
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoExpand(size_type a_size, fixed_container_selected)
-  {
-    const size_type prevSize = m_allElements.size();
-    const size_type maxSize = tlMin(a_size, m_allElements.capacity());
-
-    if (prevSize != m_allElements.capacity())
-    {
-      m_allElements.resize(maxSize);
-
-      iterator startingPos = m_allElements.begin();
-      advance(startingPos, prevSize);
-
-      DoInitializeRange(startingPos, m_allElements.end(),
-        core_utils::CastNumber<index_type>(prevSize));
-
-      return true;
-    }
-
-    return false;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoExpand(size_type a_size, dynamic_container_selected)
-  {
-    const size_type prevSize = m_allElements.size();
-
-    m_allElements.resize(a_size);
-
-    iterator startingPos = m_allElements.begin();
-    advance(startingPos, prevSize);
-
-    DoInitializeRange(startingPos, m_allElements.end(),
-      core_utils::CastNumber<index_type>(prevSize));
-    return true;
-  }
+  // -----------------------------------------------------------------------
+  // Helper methods
 
   template <MEMORY_POOL_INDEX_TEMP>
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoIsInitialized() const
@@ -392,64 +487,41 @@ namespace tloc { namespace core { namespace memory {
     return core_utils::CastNumber<index_type>(m_allElements.size() - m_numAvail);
   }
 
-  template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type&
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoGetIndex(wrapper_type& a_element, allocation_on_stack)
-  {
-    return (index_type&)a_element.m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type&
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoGetIndex(wrapper_type& a_element, allocation_on_heap)
-  {
-    return (index_type&)a_element->m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const
-  {
-    return (index_type)a_element.m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::index_type
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const
-  {
-    return (index_type)a_element->m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator, allocation_on_stack)
-  {
-    // Intentionally empty
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    DoNewElement(iterator a_pos, allocation_on_heap)
-  {
-    *a_pos = new selected_value_type();
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_stack)
-  {
-    // Intentionally empty
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoCleanup(allocation_on_heap)
-  {
-    delete_ptrs(m_allElements.begin(), m_allElements.end());
-  }
-
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, _policyAllocation_, _policyIndexing_)\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, _policyAllocation_, _policyIndexing_>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(_type_, _capacity_)\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>;\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USING_WRAPPER(_type_, _capacity_)\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>;\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USER(_type_, _capacity_)\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
+    tloc::core_mem::p_memory_pool_index::indexing::User>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USER(_type_, _capacity_)\
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
+    tloc::core_mem::p_memory_pool_index::indexing::User>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(_type_, _capacity_)\
+  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(_type_, _capacity_);\
+  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USING_WRAPPER(_type_, _capacity_)\
+
+
 
 #endif

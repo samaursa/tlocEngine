@@ -24,6 +24,9 @@
            p_memory_pool_index::allocation::On_Heap, \
            p_memory_pool_index::indexing::User>, 100>();\
 
+// testing explicit instantiation
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
+
 namespace TestingMemoryPool
 {
   using namespace tloc;
@@ -36,10 +39,8 @@ namespace TestingMemoryPool
       return m_element == a_rhs.m_element;
     }
 
-    tl_int GetIndex()
-    {
-      return m_index;
-    }
+    TLOC_DECL_AND_DEF_GETTER(tl_int, GetIndex, m_index);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(tl_int, DoGetIndexRef, m_index);
 
     tl_int m_element;
     tl_int m_index;
@@ -177,6 +178,7 @@ namespace TestingMemoryPool
     CHECK(pool.GetAvail() == 1); // default starting size is 1
     CHECK(pool.GetUsed() == 0);
 
+    pool.Resize(0); // should NOT crash
     pool.Resize(T_PoolSize);
 
     CHECK(pool.GetTotal() == T_PoolSize);

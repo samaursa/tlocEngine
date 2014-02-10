@@ -84,6 +84,12 @@ namespace tloc { namespace core { namespace memory {
                             T_Capacity,
                             policy_allocation_type>     this_type;
 
+    typedef type_false                                 fixed_container_selected;
+    typedef type_true                                  dynamic_container_selected;
+
+    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
+    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
+
   private:
 #include "tlocMemoryPoolIndexedWrapper.h"
   public:
@@ -95,13 +101,12 @@ namespace tloc { namespace core { namespace memory {
 
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       Wrapper<value_type, index_type>,
-       Wrapper<value_type, index_type>*>::Result        selected_wrapper_type;
+       Wrapper<value_type>,
+       Wrapper<value_type>*>::Result                    selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
-       Wrapper<value_type, index_type>,
-       value_type>::Result                              selected_value_type;
+       Wrapper<value_type>, value_type>::Result         selected_value_type;
 
     // Declare our element wrapper
     typedef typename Loki::Select
@@ -212,60 +217,25 @@ namespace tloc { namespace core { namespace memory {
     ///-------------------------------------------------------------------------
     bool            IsValid(const iterator a_element) const;
 
+
   public:
-
-    typedef type_false                                 fixed_container_selected;
-    typedef type_true                                  dynamic_container_selected;
-
-    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
-    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
 
     // Used for selecting functions wrt the container type
     typedef typename Loki::Select<pool_size_type::value == 0,
       type_true, type_false>::Result
                                                         container_dynamic_type;
 
+    static const index_type   sm_invalidIndex;
+
   protected:
-    void            DoResize(size_type, fixed_container_selected);
-    void            DoResize(size_type a_newSize, dynamic_container_selected);
-
-    void            DoInitializeRange(iterator a_begin, iterator a_end,
-                                      index_type a_startingIndex);
-
-    bool            DoExpand(size_type a_size, fixed_container_selected);
-    bool            DoExpand(size_type a_size, dynamic_container_selected);
 
     index_type      DoGetAvailIndex() const;
-
-
-    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_stack);
-    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_heap);
-
-    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const;
-    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const;
-
-    void            DoNewElement(iterator, allocation_on_stack);
-    void            DoNewElement(iterator a_pos, allocation_on_heap);
-
-    void            DoCleanup(allocation_on_stack);
-    void            DoCleanup(allocation_on_heap);
-
     bool            DoIsInitialized() const;
 
     container_type            m_allElements;
     index_type                m_numAvail;
-
-    static const index_type   sm_invalidIndex;
   };
 
 };};};
-
-///-------------------------------------------------------------------------
-/// @note this memory pool MUST NOT be explicitly instantiated because
-/// some methods will not compile due to different policy types - Hence one
-/// of the rare few classes where the inline file is being inclued in the
-/// header
-///-------------------------------------------------------------------------
-#include "tlocMemoryPool.inl.h"
 
 #endif

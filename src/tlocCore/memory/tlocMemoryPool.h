@@ -6,6 +6,9 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+
 namespace tloc { namespace core { namespace memory {
 
   //------------------------------------------------------------------------

@@ -26,6 +26,7 @@
 
 // testing explicit instantiation
 TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint);
 
 namespace TestingMemoryPool
 {

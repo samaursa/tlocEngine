@@ -83,7 +83,7 @@ namespace tloc { namespace core { namespace error {
     Error_T(const this_type& a_other);
     ~Error_T();
 
-    void operator=(const this_type& a_other);
+    this_type& operator=(const this_type& a_other);
 
     void swap(this_type& a_other);
 

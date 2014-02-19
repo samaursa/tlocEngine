@@ -280,12 +280,12 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->SetValue(
+        (*memPool.GetNext())->SetValue(
           my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
@@ -298,9 +298,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetValue()->x != counter &&
-          itr->GetValue()->y != counter + 1 &&
-          itr->GetValue()->z != counter + 2)
+        if ( (*(*itr)->GetValue())->x != counter &&
+          (*(*itr)->GetValue())->y != counter + 1 &&
+          (*(*itr)->GetValue())->z != counter + 2)
         {
           testPassed = false;
           break;

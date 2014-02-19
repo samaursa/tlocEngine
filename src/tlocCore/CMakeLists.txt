@@ -174,6 +174,7 @@ set(TLOC_ENGINE_CORE_MEMORY
     memory/tlocMemoryPool.h
     memory/tlocMemoryPool.inl.h
     memory/tlocMemoryPoolIndexedWrapper.h
+    memory/tlocMemoryPoolIndexedWrapper.inl.h
 )
 set(TLOC_ENGINE_CORE_PARSERS
     parsers/tloc_parsers.h

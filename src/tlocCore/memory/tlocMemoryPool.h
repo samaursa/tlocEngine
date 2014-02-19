@@ -9,6 +9,8 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 
+#include <tlocCore/memory/tlocMemoryPoolIndexedWrapper.h>
+
 namespace tloc { namespace core { namespace memory {
 
   //------------------------------------------------------------------------
@@ -34,6 +36,8 @@ namespace tloc { namespace core { namespace memory {
       // The user element must have an m_index variable
       struct User { };
     };
+
+    TL_I tl_int GetInvalidIndex();
   };
 
   //------------------------------------------------------------------------
@@ -80,6 +84,8 @@ namespace tloc { namespace core { namespace memory {
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
+    typedef core_sptr::VirtualStackObject_T<value_type> value_type_vso;
+    typedef core_sptr::VirtualPtr<value_type>           pointer;
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
 
@@ -93,23 +99,23 @@ namespace tloc { namespace core { namespace memory {
     typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
     typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
 
-  private:
-#include "tlocMemoryPoolIndexedWrapper.h"
-  public:
+    typedef priv::MemoryPoolIndexedWrapper<value_type>          wrapper_value_type;
+    typedef core_sptr::VirtualStackObject_T<wrapper_value_type> wrapper_value_type_vso;
+    typedef core_sptr::VirtualPtr<wrapper_value_type>           wrapper_pointer;
 
     // Select T or T* as the value_type
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       value_type, value_type*>::Result                 selected_user_type;
+       value_type_vso, pointer>::Result                 selected_user_type;
 
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       Wrapper<value_type>,
-       Wrapper<value_type>*>::Result                    selected_wrapper_type;
+       wrapper_value_type_vso,
+       wrapper_pointer>::Result                         selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
-       Wrapper<value_type>, value_type>::Result         selected_value_type;
+       wrapper_value_type_vso, value_type_vso>::Result      selected_value_type;
 
     // Declare our element wrapper
     typedef typename Loki::Select
@@ -227,8 +233,6 @@ namespace tloc { namespace core { namespace memory {
     typedef typename Loki::Select<pool_size_type::value == 0,
       type_true, type_false>::Result
                                                         container_dynamic_type;
-
-    static const index_type   sm_invalidIndex;
 
   protected:
 

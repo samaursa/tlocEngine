@@ -111,7 +111,7 @@ namespace TestingComponentPoolManager
         a_tempMgr.CreateNewPool<smart_ptr_type>();
 
       core_sptr::SharedPtr<smart_ptr_value_type> spt(new smart_ptr_value_type());
-      tpool->GetNext()->SetValue(spt); // do nothing with it
+      (*tpool->GetNext())->SetValue(spt); // do nothing with it
     }
     CHECK(smart_ptr_value_type::m_dtorCount ==
           smart_ptr_value_type::m_ctorCount);
@@ -123,17 +123,17 @@ namespace TestingComponentPoolManager
       typename pool_type::iterator itr = tpool->GetNext();
 
       {
-        itr->SetValue(smart_ptr_type(new smart_ptr_value_type()) );
-        itr->GetValue()->m_value = 0;
+        (*itr)->SetValue(smart_ptr_type(new smart_ptr_value_type()) );
+        (*(*itr)->GetValue())->m_value = 0;
       }
 
-      CHECK(itr->GetValue().use_count() == 1);
+      CHECK( (*itr)->GetValue().use_count() == 1);
 
       for (tl_int i = 1; i < 10; ++i)
       {
         itr = tpool->GetNext();
-        itr->SetValue(smart_ptr_type(new smart_ptr_value_type()) );
-        itr->GetValue()->m_value = i;
+        (*itr)->SetValue(smart_ptr_type(new smart_ptr_value_type()) );
+        (*(*itr)->GetValue())->m_value = i;
       }
     }
 
@@ -151,7 +151,7 @@ namespace TestingComponentPoolManager
       bool testPassed = true;
       for (; itr != itrEnd; ++itr)
       {
-        if(itr->GetValue()->m_value != counter)
+        if( (*(*itr)->GetValue())->m_value != counter)
         { testPassed = false; break; }
 
         ++counter;

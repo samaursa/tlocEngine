@@ -140,7 +140,7 @@ namespace tloc { namespace core { namespace component_system {
 
   TLOC_TYPEDEF_SHARED_PTR(Entity, entity);
   TLOC_TYPEDEF_VIRTUAL_PTR(Entity, entity);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR_AND_EQUALITY(Entity, entity);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(Entity, entity);
 
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
   typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;

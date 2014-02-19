@@ -25,8 +25,9 @@
            p_memory_pool_index::indexing::User>, 100>();\
 
 // testing explicit instantiation
-TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
-TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint);
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(tloc::tl_int, 100);
+//TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
+//TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint);
 
 namespace TestingMemoryPool
 {
@@ -35,6 +36,8 @@ namespace TestingMemoryPool
 
   struct indexed
   {
+    typedef tl_int                                          value_type;
+
     bool operator == (const indexed& a_rhs)
     {
       return m_element == a_rhs.m_element;
@@ -80,34 +83,53 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1>
-  tl_int GetIndex(T_Elem1 a, p_on_stack)
+  tl_int
+    GetIndex(T_Elem1 a, p_on_stack, p_wrapper)
   {
-    return (tl_int)a->GetIndex();
+    return (*a)->GetIndex();
   }
 
   template <typename T_Elem1>
-  tl_int GetIndex(T_Elem1 a, p_on_heap)
+  tl_int
+    GetIndex(T_Elem1 a, p_on_heap, p_wrapper)
+  {
+    return (tl_int)(*a)->GetIndex();
+  }
+
+  template <typename T_Elem1>
+  tl_int
+    GetIndex(T_Elem1 a, p_on_stack, p_user)
+  {
+    return (*a)->GetIndex();
+  }
+
+  template <typename T_Elem1>
+  tl_int
+    GetIndex(T_Elem1 a, p_on_heap, p_user)
   {
     return (tl_int) (*a)->GetIndex();
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
+  void
+    SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_wrapper)
   {
-    a->SetValue(b);
+    (*a)->SetValue(b);
   }
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
+  void
+    SetValue(T_Elem1 a, const T_Elem2& b, p_on_heap, p_wrapper)
   {
     (*a)->SetValue(b);
   }
 
 
   template <typename T_Elem1, typename T_Elem2>
-  void SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_user)
+  void
+    SetValue(T_Elem1 a, const T_Elem2& b, p_on_stack, p_user)
   {
-    a->m_element = b;
+    (*a)->m_element = b;
   }
 
   template <typename T_Elem1, typename T_Elem2>
@@ -117,29 +139,31 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1>
-  typename T_Elem1::wrapper_value_type GetValue(T_Elem1& a, p_on_stack, p_wrapper)
+  typename T_Elem1::value_type::pointer
+    GetValue(T_Elem1& a, p_on_stack, p_wrapper)
   {
-    return a.GetValue();
+    return a->GetValue();
   }
 
   template <typename T_Elem1>
-  typename Loki::TypeTraits<T_Elem1>::PointeeType::wrapper_value_type
+  typename T_Elem1::value_type::pointer
     GetValue(T_Elem1& a, p_on_heap, p_wrapper)
   {
     return a->GetValue();
   }
 
   template <typename T_Elem1>
-  T_Elem1 GetValue(T_Elem1& a, p_on_stack, p_user)
+  typename T_Elem1::pointer
+    GetValue(T_Elem1& a, p_on_stack, p_user)
   {
-    return a;
+    return a.get();
   }
 
   template <typename T_Elem1>
-  typename Loki::TypeTraits<T_Elem1>::PointeeType
+  typename T_Elem1
     GetValue(T_Elem1& a, p_on_heap, p_user)
   {
-    return *a;
+    return a;
   }
 
   //------------------------------------------------------------------------
@@ -197,13 +221,14 @@ namespace TestingMemoryPool
   {
     typedef T_PoolType                                      pool_type;
     typedef typename pool_type::iterator                    iterator;
-    typedef typename pool_type::policy_allocation_type      pol_alloc_type;
+    typedef typename pool_type::policy_allocation_type      p_alloc_type;
+    typedef typename pool_type::policy_indexing_type        p_index_type;
 
     pool_type pool(T_PoolSize);
     iterator itr = pool.GetNext();
 
     iterator itrFound = pool.Find(*itr);
-    CHECK(pool[GetIndex(itr, pol_alloc_type())] == *itrFound);
+    CHECK( (pool[GetIndex(itr, p_alloc_type(), p_index_type())] == *itrFound) );
   }
 
   TEST_CASE("Core/MemoryPool/Find", "")
@@ -246,9 +271,9 @@ namespace TestingMemoryPool
     for (tl_int i = 0; i < T_PoolSize; ++i)
     {
       const tl_int indexToRecycle = 0;
-      const typename pool_type::value_type elementToCheck =
+      const typename pool_type::pointer elementToCheck =
         GetValue(pool[0], typename pool_type::policy_allocation_type(),
-                            typename pool_type::policy_indexing_type() );
+                          typename pool_type::policy_indexing_type() );
 
       pool.RecycleAtIndex(indexToRecycle);
 
@@ -256,7 +281,7 @@ namespace TestingMemoryPool
            itr != itrEnd; ++itr)
       {
         if (GetValue(*itr, typename pool_type::policy_allocation_type(),
-          typename pool_type::policy_indexing_type()) == elementToCheck)
+            typename pool_type::policy_indexing_type()) == elementToCheck)
         {
           recycleTestPassed = false;
           goto recycle_test_finished;
@@ -278,12 +303,16 @@ recycle_test_finished:
   template <typename T_PoolType>
   void TestGrowthHelper(T_PoolType& a_pool, dynamic_pool_type)
   {
+    typedef T_PoolType                                      pool_type;
+    typedef typename pool_type::policy_allocation_type      p_alloc_type;
+    typedef typename pool_type::policy_indexing_type        p_index_type;
+
     typename T_PoolType::size_type prevSize = a_pool.GetTotal();
 
     typename T_PoolType::iterator elem = a_pool.GetNext();
     CHECK(a_pool.IsValid( elem ) );
 
-    CHECK(GetIndex(elem, typename T_PoolType::policy_allocation_type()) ==
+    CHECK(GetIndex(elem, p_alloc_type(), p_index_type()) ==
           (typename T_PoolType::index_type)prevSize);
     CHECK(a_pool.GetTotal() > prevSize);
   }

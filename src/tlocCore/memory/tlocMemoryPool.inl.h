@@ -11,6 +11,8 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
+#include <tlocCore/memory/tlocMemoryPoolIndexedWrapper.inl.h>
+
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions
 
@@ -22,83 +24,19 @@
 
 namespace tloc { namespace core { namespace memory {
 
+  namespace p_memory_pool_index {
+
+    tl_int GetInvalidIndex()
+    { return -1; }
+
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MemoryPoolIndexed
+
 #define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation, class T_PolicyIndexing
 #define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation, T_PolicyIndexing
 #define MEMORY_POOL_INDEX_TYPE    typename MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>
-
-  //------------------------------------------------------------------------
-  // Memory Pool Index Wrapper
-
-#define MEMORY_POOL_INDEX_WRAPPER_TEMP    typename T_Elem
-#define MEMORY_POOL_INDEX_WRAPPER_PARAMS  T_Elem
-#define MEMORY_POOL_INDEX_WRAPPER_TYPE    typename MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::template Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper()
-    : m_index(parent_type::sm_invalidIndex)
-  { }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::Wrapper(const wrapper_type& a_rhs)
-  {
-    m_element = a_rhs.m_element;
-    m_index = a_rhs.m_index;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  void
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
-    SetValue(const wrapper_value_type& a_value)
-  {
-    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
-      "Accessing an invalid value (see pool wrapper)");
-    m_element = a_value;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  const MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_value_type&
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetValue() const
-  {
-    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
-                          "Accessing an invalid value (see pool wrapper)");
-    return m_element;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_value_type&
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::GetValue()
-  {
-    TLOC_ASSERT_LOW_LEVEL(m_index != parent_type::sm_invalidIndex,
-                          "Accessing an invalid value (see pool wrapper)");
-    return m_element;
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::operator ==(wrapper_type& a_rhs)
-  {
-    return (m_element == a_rhs.m_element) && (m_index == a_rhs.m_index);
-  }
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Wrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::DoSwap(wrapper_type& a_rhs)
-  {
-    core::swap(m_element, a_rhs.m_element);
-    // The indexes are permanent, we don't swap those
-  }
 
   //------------------------------------------------------------------------
   // Helper functions
@@ -187,7 +125,7 @@ namespace tloc { namespace core { namespace memory {
     index_type&
       DoGetIndexRef(T_WrapperType& a_element, allocation_on_stack)
     {
-      return (index_type&)a_element.DoGetIndexRef();
+      return (index_type&)a_element->DoGetIndexRef();
     }
 
     template <typename T_WrapperType>
@@ -201,7 +139,7 @@ namespace tloc { namespace core { namespace memory {
     index_type
       DoGetIndex(const T_WrapperType& a_element, allocation_on_stack)
     {
-      return (index_type)a_element.GetIndex();
+      return (index_type)a_element->GetIndex();
     }
 
     template <typename T_WrapperType>
@@ -222,7 +160,7 @@ namespace tloc { namespace core { namespace memory {
     void
       DoNewElement(T_Iterator a_pos, allocation_on_heap, T_SelectedValueType)
     {
-      *a_pos = new T_SelectedValueType();
+      a_pos = T_Iterator(new T_SelectedValueType());
     }
 
     template <typename T_Container>
@@ -236,7 +174,7 @@ namespace tloc { namespace core { namespace memory {
     void
       DoCleanup(T_Container& m_allElements, allocation_on_heap)
     {
-      delete_ptrs(m_allElements.begin(), m_allElements.end());
+      for_each_all(m_allElements, core_sptr::algos::DeleteAndReset());
     }
   };
 
@@ -247,10 +185,6 @@ namespace tloc { namespace core { namespace memory {
 
 #define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
   TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
-
-  template <MEMORY_POOL_INDEX_TEMP>
-  const MEMORY_POOL_INDEX_TYPE::index_type
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::sm_invalidIndex = -1;
 
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndexed()
@@ -406,14 +340,15 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetAvail() const
   {
-    return m_numAvail != sm_invalidIndex ? m_numAvail : 0;
+    return m_numAvail != p_memory_pool_index::GetInvalidIndex() ? m_numAvail : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetUsed() const
   {
-    return m_numAvail != sm_invalidIndex ? (m_allElements.size() - GetAvail()) : 0;
+    return m_numAvail != p_memory_pool_index::GetInvalidIndex() ?
+      (m_allElements.size() - GetAvail()) : 0;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -448,9 +383,11 @@ namespace tloc { namespace core { namespace memory {
   bool MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     IsValid(const iterator a_element) const
   {
-    return (m_numAvail != sm_invalidIndex) &&
+    using p_memory_pool_index::GetInvalidIndex;
+
+    return (m_numAvail != GetInvalidIndex()) &&
            (a_element != m_allElements.end()) &&
-           (DoGetIndex(*a_element, policy_allocation_type()) != sm_invalidIndex) &&
+           (DoGetIndex(*a_element, policy_allocation_type()) != GetInvalidIndex()) &&
            (DoGetIndex(*a_element, policy_allocation_type()) < (index_type)GetUsed());
   }
 
@@ -462,7 +399,7 @@ namespace tloc { namespace core { namespace memory {
   {
     // TODO: Change this function to use a conditional bool type to determine
     // initialization
-    return !(m_numAvail == sm_invalidIndex);
+    return !(m_numAvail == p_memory_pool_index::GetInvalidIndex());
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -478,9 +415,13 @@ namespace tloc { namespace core { namespace memory {
 // explicit instantiation macros
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, _policyAllocation_, _policyIndexing_)\
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_);\
   template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, _policyAllocation_, _policyIndexing_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _policyAllocation_, _policyIndexing_)\
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_);\
   template class tloc::core_mem::MemoryPoolIndexed<_type_, 0, _policyAllocation_, _policyIndexing_>
 
 // -----------------------------------------------------------------------
@@ -490,17 +431,13 @@ namespace tloc { namespace core { namespace memory {
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
     tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USING_WRAPPER(_type_, _capacity_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
     tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USER(_type_, _capacity_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \

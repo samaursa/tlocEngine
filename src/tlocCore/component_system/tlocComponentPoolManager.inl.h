@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace component_system {
       {
         // User count should be <= 1 (i.e. we are the only ones with a reference
         // to the pointer
-        TLOC_ASSERT(a_begin->GetValue().use_count() <= 1,
+        TLOC_ASSERT( (*(*a_begin)->GetValue()).use_count() <= 1,
                     "Element still in use!");
       }
     }

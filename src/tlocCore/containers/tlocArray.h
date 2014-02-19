@@ -303,6 +303,13 @@ namespace tloc { namespace core { namespace containers {
                                              T_InputIterator a_last);
   };
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // swap
+
+  template <typename T, typename T_Policy>
+  void swap(Array<T, T_Policy>& a, Array<T, T_Policy>& b)
+  { a.swap(b); }
+
   //////////////////////////////////////////////////////////////////////////
   // default types for easy instantiation
 

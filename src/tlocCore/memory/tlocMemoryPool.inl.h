@@ -130,7 +130,7 @@ namespace tloc { namespace core { namespace memory {
 
     template <typename T_WrapperType>
     index_type&
-      DoGetIndexRef(T_WrapperType& a_element, allocation_on_heap)
+      DoGetIndexRef(T_WrapperType a_element, allocation_on_heap)
     {
       return (index_type&)a_element->DoGetIndexRef();
     }
@@ -158,9 +158,9 @@ namespace tloc { namespace core { namespace memory {
 
     template <typename T_Iterator, typename T_SelectedValueType>
     void
-      DoNewElement(T_Iterator a_pos, allocation_on_heap, T_SelectedValueType)
+      DoNewElement(T_Iterator& a_pos, allocation_on_heap, T_SelectedValueType)
     {
-      a_pos = T_Iterator(new T_SelectedValueType());
+      a_pos->reset(new T_SelectedValueType());
     }
 
     template <typename T_Container>
@@ -225,7 +225,8 @@ namespace tloc { namespace core { namespace memory {
 
   template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::iterator
-    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetNext()
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    GetNext()
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX(m_numAvail >= 0, "Serious logical error!");
 
@@ -252,9 +253,15 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
+  MEMORY_POOL_INDEX_TYPE::final_value_type&
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+    GetNextValue()
+  { return *GetNext(); }
+
+  template <MEMORY_POOL_INDEX_TEMP>
   MEMORY_POOL_INDEX_TYPE::iterator
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
-    Find(const wrapper_type& a_returnedElement)
+    Find(const final_value_type& a_returnedElement)
   {
     iterator itr = m_allElements.begin();
     advance(itr, DoGetIndex(a_returnedElement, policy_allocation_type()));
@@ -277,8 +284,10 @@ namespace tloc { namespace core { namespace memory {
     // Swap the recycled element with the last element in our array. We swap
     // to ensure wrapper index remains consistent
     const size_type lastUsedElem = DoGetAvailIndex() - 1;
-    wrapper_type& toSwap = this->operator[](DoGetIndex(*a_retElem, policy_allocation_type()) );
+    final_value_type& toSwap = this->operator[](DoGetIndex(*a_retElem, policy_allocation_type()) );
     core::swap(toSwap, m_allElements[lastUsedElem]);
+
+    // swap 'back' the indexes because they are permanent
     core::swap(DoGetIndexRef(toSwap, policy_allocation_type()),
                DoGetIndexRef(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
@@ -307,7 +316,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::wrapper_type&
+  MEMORY_POOL_INDEX_TYPE::final_value_type&
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index)
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX((size_type)a_index < GetTotal() - GetAvail(),
@@ -317,7 +326,7 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  MEMORY_POOL_INDEX_TYPE::wrapper_type const &
+  MEMORY_POOL_INDEX_TYPE::final_value_type const &
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index) const
   {
     TLOC_ASSERT_MEMORY_POOL_INDEX

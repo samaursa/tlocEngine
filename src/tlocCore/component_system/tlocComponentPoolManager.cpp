@@ -1,7 +1,8 @@
 #include "tlocComponentPoolManager.h"
 #include "tlocComponentPoolManager.inl.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -24,6 +25,12 @@ namespace tloc { namespace core { namespace component_system {
     : m_numActivePools(0)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ComponentPool_I::
+    ComponentPool_I(const this_type& )
+  { }
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ComponentPoolManager::
@@ -39,13 +46,13 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(index < m_pools.size(),
       "Pool not allocated for passed component type");
 
-    m_pools[index].reset();
+    m_pools[index] = nullptr;
     --m_numActivePools;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  component_pool_sptr
+  component_pool_vptr
     ComponentPoolManager::
     GetPool(component_type a_number)
   {
@@ -105,5 +112,8 @@ namespace tloc { namespace core { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core::component_system::ComponentPoolManager);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core::component_system::ComponentPool_I);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core::component_system::ComponentPoolManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core::component_system::ComponentPool_I);
+
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(tloc::core::component_system::ComponentPoolManager);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(tloc::core::component_system::ComponentPool_I);

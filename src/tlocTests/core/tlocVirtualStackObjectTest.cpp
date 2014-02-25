@@ -3,6 +3,7 @@
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl.h>
@@ -24,8 +25,9 @@ namespace TestingVirtualStackObject
     SECTION("All ctors", "")
     {
       int_vso onStack;
-      *onStack = 10;
+      onStack = 10;
       CHECK( (*onStack == 10 ) );
+      CHECK( (*onStack.get() == 10) );
 
       int onStackCopy = *onStack;
       CHECK(onStackCopy == 10);
@@ -40,7 +42,7 @@ namespace TestingVirtualStackObject
       int_vso onStack2(*onStack);
       CHECK( (*onStack2 == 30) );
 
-      *onStack2 = 10;
+      onStack2 = 10;
       CHECK(*onStack2 == 10);
       CHECK(*onStack == 30);
 
@@ -55,6 +57,20 @@ namespace TestingVirtualStackObject
       VirtualStackObject_T<int, p_virtual_stack_object::default_ctor::NotAvail>
         onStack(20);
       CHECK( (*onStack == 20) );
+    }
+
+    SECTION("Memory address check", "")
+    {
+      int_vso onStack(10);
+      tl_uintptr  memAddress = core_utils::GetMemoryAddress(onStack.get());
+
+      int_vso::pointer ptrToVSO = onStack.get();
+      CHECK(*ptrToVSO == 10);
+
+      *ptrToVSO = 20;
+
+      CHECK(*ptrToVSO == 20);
+      CHECK(core_utils::GetMemoryAddress(ptrToVSO) == memAddress);
     }
   }
 
@@ -113,6 +129,40 @@ namespace TestingVirtualStackObject
   {
     SECTION("Array<>", "")
     {
+      // BUGFIX: VSOs lose their pointer addresses when the memory is
+      // reallocated e.g. in containers. This bug was fixed by forcing the
+      // virtual pointers to grab the memory address again and perform
+      // additional checks.
+      core_conts::Array<int_vso> arr;
+      arr.resize(100);
+      arr.resize(1000);
+      arr.resize(10000);
+
+      arr.clear();
+
+      arr.resize(100);
+      arr.resize(1000);
+
+      CHECK(arr.size() == 1000);
+
+      // access all VSOs to populate their respective virtual pointers
+      for(core_conts::Array<int_vso>::iterator
+          itr = arr.begin(), itrEnd = arr.end(); itr != itrEnd; ++itr)
+      {
+        int_vso::pointer temp = itr->get();
+      }
+      // all temp pointers are destroyed and therefore we are no longer holding
+      // on to any invalid pointers, the following resize and access of
+      // pointers should work properly
+      arr.resize(5000);
+      CHECK(arr.size() == 5000);
+
+      // access all VSOs to populate their respective virtual pointers
+      for(core_conts::Array<int_vso>::iterator
+          itr = arr.begin(), itrEnd = arr.end(); itr != itrEnd; ++itr)
+      {
+        int_vso::pointer temp = itr->get();
+      }
     }
   }
 }

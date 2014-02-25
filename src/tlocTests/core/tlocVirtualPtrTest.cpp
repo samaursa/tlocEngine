@@ -260,6 +260,15 @@ namespace TestingVirtualPtr
     }
   }
 
+  TEST_CASE("core/smart_ptr/VirtualPtr/containers", "")
+  {
+    core_conts::Array<VirtualPtr<int> > vptrContainer;
+    int a = 10;
+    vptrContainer.resize(100, VirtualPtr<int>(&a));
+    vptrContainer.resize(1000,VirtualPtr<int>(&a));
+    vptrContainer.resize(10000, VirtualPtr<int>(&a));
+  }
+
   TEST_CASE("core/smart_ptr/VirtualPtr/Algorithms", "")
   {
     core_conts::Array<VirtualPtr<int> > vptrContainer;

@@ -764,14 +764,16 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // Allocate all un-allocated space
       while (m_end != a_position + spaceRequired)
       {
-        ::new(m_end++) value_type();
+        ::new(m_end) value_type();
+        ++m_end;
       }
 
       copy_backward(a_position, a_position + elemsToMove, m_end);
 
       while (a_position != m_end - elemsToMove)
       {
-        *(a_position++) = a_value;
+        *(a_position) = a_value;
+        ++a_position;
       }
     }
     else
@@ -852,5 +854,5 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 #define TLOC_EXPLICITLY_INSTANTIATE_ARRAY(_type_)\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Unordered>;\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Ordered>
-  
+
 #endif

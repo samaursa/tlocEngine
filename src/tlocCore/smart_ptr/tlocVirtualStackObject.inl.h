@@ -9,6 +9,7 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 #include "tlocVirtualStackObject.h"
 
@@ -27,8 +28,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI(const value_type& a_other)
     : m_value(a_other)
-    , m_ptr(&m_value)
-  { }
+  {
+    // m_ptr and m_constPtr are populated when accessed
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -36,8 +38,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI(const this_type& a_other)
     : m_value(a_other.m_value)
-    , m_ptr(&m_value)
-  { }
+  {
+    // m_ptr and m_constPtr are populated when accessed
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -45,6 +48,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
+    DoSetVirtualPtr();
+
+    TLOC_ASSERT(m_ptr ? m_ptr.get() == &m_value : nullptr,
+      "VirtualPtr does not appear to be tracking m_value");
     TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
       "This object appears to be still in use");
 
@@ -58,9 +65,21 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator=(const this_type& a_other)
+    operator=(this_type a_other)
   {
-    this_type(a_other).swap(*this);
+    a_other.swap(*this);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator=(const value_type& a_other)
+  {
+    this_type temp(a_other);
+    temp.swap(*this);
     return *this;
   }
 
@@ -74,7 +93,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
-    swap(m_ptr, a_other.m_ptr);
+    DoSetVirtualPtr();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -115,7 +134,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get()
-  { return m_ptr; }
+  {
+    DoSetVirtualPtr();
+    return m_ptr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -123,7 +145,70 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get() const
-  { return const_pointer(&m_value); }
+  {
+    DoSetVirtualPtr();
+    return const_pointer(&m_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  void
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    DoSetVirtualPtr()
+  {
+    if (m_ptr)
+    {
+      tl_uintptr addressOfvptr = core_utils::GetMemoryAddress(m_ptr.get());
+      tl_uintptr addressOfvalue = core_utils::GetMemoryAddress(&m_value);
+
+      // NOTE: Assertion here means that you still have VirtualPtrs who are
+      // holding on to a now incorrect address. This is usually caused by a
+      // reallocation of a container
+      TLOC_ASSERT( (m_ptr.unique() ? true : addressOfvalue == addressOfvptr),
+        "Address of value has changed - VirtualPtrs now invalid");
+
+      if (addressOfvptr != addressOfvalue)
+      {
+        m_ptr.reset(&m_value);
+      }
+    }
+    else
+    {
+      m_ptr.reset(&m_value);
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  void
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    DoSetVirtualPtr() const
+  {
+    if (m_ptr)
+    {
+      tl_uintptr addressOfvptr = core_utils::GetMemoryAddress(m_constPtr.get());
+      tl_uintptr addressOfvalue = core_utils::GetMemoryAddress(&m_value);
+
+      // NOTE: Assertion here means that you still have VirtualPtrs who are
+      // holding on to a now incorrect address. This is usually caused by a
+      // reallocation of a container
+      TLOC_ASSERT( (m_constPtr.unique() ? true : addressOfvalue == addressOfvptr),
+        "Address of value has changed - VirtualPtrs now invalid");
+
+      if (addressOfvptr != addressOfvalue)
+      {
+        value_type* nonConstVal = const_cast<value_type*>(&m_value);
+        m_ptr.reset(nonConstVal);
+      }
+    }
+    else
+    {
+      value_type* nonConstVal = const_cast<value_type*>(&m_value);
+      m_ptr.reset(nonConstVal);
+    }
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<Release>

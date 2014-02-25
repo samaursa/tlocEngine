@@ -32,7 +32,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     VirtualPtr();
     VirtualPtr(std::nullptr_t);
-    explicit VirtualPtr(pointer a_rawPtr);
+    explicit VirtualPtr(const pointer a_rawPtr);
     VirtualPtr(const this_type& a_other);
 
     template <typename T_Other>
@@ -287,7 +287,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     void                reset();
 
     template <typename T_Other>
-    void                reset(T_Other* a_ptr);
+    void                reset(const T_Other* a_ptr);
 
     template <typename T_Other>
     void                swap(VirtualPtr<T_Other, build_config>& a_other);
@@ -384,7 +384,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   void
     VirtualPtr<T, core_cfg::p_build_config::Release>::
-    reset(T_Other* a_ptr)
+    reset(const T_Other* a_ptr)
   {
     this_type(a_ptr).swap(*this);
   }
@@ -535,6 +535,6 @@ namespace tloc { namespace core { namespace smart_ptr {
 
 #define TLOC_TYPEDEF_VIRTUAL_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::VirtualPtr<_type_>  _typedef_##_vptr;\
-  typedef tloc::core_sptr::VirtualPtr<const _type_>  _typedef_##_const_vptr
+  typedef tloc::core_sptr::VirtualPtr<const _type_>  const_##_typedef_##_vptr
 
 #endif

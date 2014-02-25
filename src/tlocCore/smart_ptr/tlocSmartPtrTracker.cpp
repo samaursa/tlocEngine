@@ -34,7 +34,14 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
         if (m_mapIsDestroyed) { return false; }
 
         if (a_pointer != nullptr)
-        { return m_virtualPtrMap.find(a_pointer) != m_virtualPtrMap.end(); }
+        {
+          virtual_map_type::iterator itr = m_virtualPtrMap.find(a_pointer);
+          if (itr != m_virtualPtrMap.end())
+          {
+            return true;
+          }
+          return m_virtualPtrMap.find(a_pointer) != m_virtualPtrMap.end();
+        }
 
         return false;
       }

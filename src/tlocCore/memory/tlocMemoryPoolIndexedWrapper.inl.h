@@ -39,7 +39,17 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   {
     TLOC_ASSERT_LOW_LEVEL(m_index != p_memory_pool_index::GetInvalidIndex(),
       "Accessing an invalid value (see pool wrapper)");
-    *m_element = a_value;
+    m_element = a_value;
+  }
+
+  template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
+  void
+    MemoryPoolIndexedWrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
+    SetValue(const_pointer a_value)
+  {
+    TLOC_ASSERT_LOW_LEVEL(m_index != p_memory_pool_index::GetInvalidIndex(),
+      "Accessing an invalid value (see pool wrapper)");
+    m_element = *a_value;
   }
 
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
@@ -65,9 +75,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   MEMORY_POOL_INDEX_WRAPPER_TYPE::wrapper_type&
     MemoryPoolIndexedWrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
-    operator=(const wrapper_type& a_other)
+    operator=(wrapper_type a_other)
   {
-    m_element = a_other.m_element;
+    a_other.swap(*this);
     return *this;
   }
 
@@ -85,7 +95,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     swap(wrapper_type& a_rhs)
   {
     core::swap(m_element, a_rhs.m_element);
-    // The indexes are permanent, we don't swap those
+    core::swap(m_index, a_rhs.m_index);
   }
 
 

@@ -9,21 +9,6 @@
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
 
-#define TEST_MEMORY_POOL_INDEX(funcName)\
-  funcName<MemoryPoolIndexed<tl_uint, 100>, 100>();\
-  funcName<MemoryPoolIndexed<tl_uint>, 100>();\
-  funcName<MemoryPoolIndexed<tl_uint, 100,\
-           p_memory_pool_index::allocation::On_Stack>, 100>();\
-  funcName<MemoryPoolIndexed<tl_uint, 0,\
-           p_memory_pool_index::allocation::On_Heap>, 100>();\
-\
-  funcName<MemoryPoolIndexed<indexed, 100,\
-           p_memory_pool_index::allocation::On_Stack, \
-           p_memory_pool_index::indexing::User>, 100>();\
-  funcName<MemoryPoolIndexed<indexed, 100,\
-           p_memory_pool_index::allocation::On_Heap, \
-           p_memory_pool_index::indexing::User>, 100>();\
-
 // testing explicit instantiation
 TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(tloc::tl_int, 100);
 //TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
@@ -38,7 +23,7 @@ namespace TestingMemoryPool
   {
     typedef tl_int                                          value_type;
 
-    bool operator == (const indexed& a_rhs)
+    bool operator == (const indexed& a_rhs) const
     {
       return m_element == a_rhs.m_element;
     }
@@ -169,30 +154,67 @@ namespace TestingMemoryPool
   //------------------------------------------------------------------------
   // Tests
 
-  template <typename T_PoolType, tl_uint T_PoolSize>
+  struct AllPools
+  {
+    enum {k_poolSize = 100};
+
+    typedef p_memory_pool_index::allocation::On_Heap    on_heap;
+    typedef p_memory_pool_index::allocation::On_Stack   on_stack;
+    typedef p_memory_pool_index::indexing::User         user;
+
+    typedef MemoryPoolIndexed<tl_uint, k_poolSize>                  uint_fixed_stack;
+    typedef MemoryPoolIndexed<tl_uint>                              uint_stack;
+    typedef MemoryPoolIndexed<tl_uint, k_poolSize, on_heap>         uint_fixed_heap;
+    typedef MemoryPoolIndexed<tl_uint, 0, on_heap>                  uint_heap;
+
+    typedef MemoryPoolIndexed<indexed, k_poolSize, on_stack, user>  user_fixed_stack;
+    typedef MemoryPoolIndexed<indexed, 0, on_stack, user>           user_stack;
+    typedef MemoryPoolIndexed<indexed, k_poolSize, on_heap, user>   user_fixed_heap;
+    typedef MemoryPoolIndexed<indexed, 0, on_heap, user>            user_heap;
+
+    uint_fixed_stack                m_uintFixedStack;
+    uint_stack                      m_uintStack;
+    uint_fixed_heap                 m_uintFixedHeap;
+    uint_heap                       m_uintHeap;
+
+    user_fixed_stack                m_userFixedStack;
+    user_stack                      m_userStack;
+    user_fixed_heap                 m_userFixedHeap;
+    user_heap                       m_userHeap;
+  };
+
+  template <typename T_PoolType>
   void TestResize()
   {
     typedef T_PoolType    pool_type;
 
     {
-      pool_type pool(T_PoolSize);
-      CHECK(pool.GetAvail() == T_PoolSize);
+      pool_type pool(AllPools::k_poolSize);
+      CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
     }
 
     {
       pool_type pool;
       CHECK(pool.GetAvail() == 1); // default starting size is 1
-      pool.Resize(T_PoolSize);
-      CHECK(pool.GetAvail() == T_PoolSize);
+      pool.Resize(AllPools::k_poolSize);
+      CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
     }
   }
 
-  TEST_CASE("Core/MemoryPool/resize", "")
+  TEST_CASE_METHOD(AllPools, "Core/MemoryPool/resize", "")
   {
-    TEST_MEMORY_POOL_INDEX(TestResize);
+    TestResize<uint_fixed_stack>();
+    TestResize<uint_stack>();
+    TestResize<uint_fixed_heap>();
+    TestResize<uint_heap>();
+
+    TestResize<user_fixed_stack>();
+    TestResize<user_stack>();
+    TestResize<user_fixed_heap>();
+    TestResize<user_heap>();
   }
 
-  template <typename T_PoolType, tl_uint T_PoolSize>
+  template <typename T_PoolType>
   void TestSizeQueries()
   {
     typedef T_PoolType    pool_type;
@@ -204,19 +226,27 @@ namespace TestingMemoryPool
     CHECK(pool.GetUsed() == 0);
 
     pool.Resize(0); // should NOT crash
-    pool.Resize(T_PoolSize);
+    pool.Resize(AllPools::k_poolSize);
 
-    CHECK(pool.GetTotal() == T_PoolSize);
-    CHECK(pool.GetAvail() == T_PoolSize);
+    CHECK( (pool.GetTotal() == AllPools::k_poolSize) );
+    CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
     CHECK(pool.GetUsed() == 0);
   }
 
-  TEST_CASE("Core/MemoryPool/SizeQueries", "")
+  TEST_CASE_METHOD(AllPools, "Core/MemoryPool/SizeQueries", "")
   {
-    TEST_MEMORY_POOL_INDEX(TestSizeQueries);
+    TestSizeQueries<uint_fixed_stack>();
+    TestSizeQueries<uint_stack>();
+    TestSizeQueries<uint_fixed_heap>();
+    TestSizeQueries<uint_heap>();
+
+    TestSizeQueries<user_fixed_stack>();
+    TestSizeQueries<user_stack>();
+    TestSizeQueries<user_fixed_heap>();
+    TestSizeQueries<user_heap>();
   }
 
-  template <typename T_PoolType, tl_uint T_PoolSize>
+  template <typename T_PoolType>
   void TestFind()
   {
     typedef T_PoolType                                      pool_type;
@@ -224,64 +254,82 @@ namespace TestingMemoryPool
     typedef typename pool_type::policy_allocation_type      p_alloc_type;
     typedef typename pool_type::policy_indexing_type        p_index_type;
 
-    pool_type pool(T_PoolSize);
+    pool_type pool(AllPools::k_poolSize);
     iterator itr = pool.GetNext();
 
     iterator itrFound = pool.Find(*itr);
     CHECK( (pool[GetIndex(itr, p_alloc_type(), p_index_type())] == *itrFound) );
   }
 
-  TEST_CASE("Core/MemoryPool/Find", "")
+  TEST_CASE_METHOD(AllPools, "Core/MemoryPool/Find", "")
   {
-    TEST_MEMORY_POOL_INDEX(TestFind);
+    TestFind<uint_fixed_stack>();
+    TestFind<uint_stack>();
+    TestFind<uint_fixed_heap>();
+    TestFind<uint_heap>();
+
+    TestFind<user_fixed_stack>();
+    TestFind<user_stack>();
+    TestFind<user_fixed_heap>();
+    TestFind<user_heap>();
   }
 
-  template <typename T_PoolType, tl_uint T_PoolSize>
+  template <typename T_PoolType>
   void TestGetAndRecycle()
   {
     typedef T_PoolType    pool_type;
     typedef typename pool_type::policy_allocation_type p_alloc_type;
     typedef typename pool_type::policy_indexing_type   p_index_type;
+    typedef typename pool_type::pointer                pointer;
+    typedef typename pointer::value_type               value_type;
 
-    pool_type pool(T_PoolSize);
+    pool_type pool(AllPools::k_poolSize);
 
-    CHECK(pool.GetAvail() == T_PoolSize);
+    CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
 
-    for (tl_int i = 0; i < T_PoolSize; ++i)
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
     {
       pool.GetNext();
     }
 
-    CHECK(pool.GetUsed() == T_PoolSize);
+    CHECK( (pool.GetUsed() == AllPools::k_poolSize) );
     CHECK(pool.GetAvail() == 0);
 
-    for (tl_int i = 0; i < T_PoolSize; ++i)
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
     {
       pool.RecycleAtIndex(0);
     }
 
-    CHECK(pool.GetAvail() == T_PoolSize);
+    CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
 
-    for (tl_int i = 0; i < T_PoolSize; ++i)
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
     {
       SetValue(pool.GetNext(), i, p_alloc_type(), p_index_type() );
     }
 
     bool recycleTestPassed = true;
-    for (tl_int i = 0; i < T_PoolSize; ++i)
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
     {
       const tl_int indexToRecycle = 0;
-      const typename pool_type::pointer elementToCheck =
+      pointer elementToCheckPtr =
         GetValue(pool[0], typename pool_type::policy_allocation_type(),
                           typename pool_type::policy_indexing_type() );
 
+      const value_type elementToCheck = *elementToCheckPtr;
+
+      // if we don't reset the pointer, recycling will throw an assertion since we
+      // are still holding onto the pointer
+      elementToCheckPtr.reset();
       pool.RecycleAtIndex(indexToRecycle);
 
       for (typename T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
            itr != itrEnd; ++itr)
       {
-        if (GetValue(*itr, typename pool_type::policy_allocation_type(),
-            typename pool_type::policy_indexing_type()) == elementToCheck)
+        const value_type tempElement =
+          *GetValue(*itr, typename pool_type::policy_allocation_type(),
+                          typename pool_type::policy_indexing_type());
+
+        if (tempElement == elementToCheck)
         {
           recycleTestPassed = false;
           goto recycle_test_finished;
@@ -292,9 +340,17 @@ recycle_test_finished:
     CHECK(recycleTestPassed);
   }
 
-  TEST_CASE("Core/MemoryPool/GetAndRecycle", "")
+  TEST_CASE_METHOD(AllPools, "Core/MemoryPool/GetAndRecycle", "")
   {
-    TEST_MEMORY_POOL_INDEX(TestGetAndRecycle);
+    TestGetAndRecycle<uint_fixed_stack>();
+    TestGetAndRecycle<uint_stack>();
+    TestGetAndRecycle<uint_fixed_heap>();
+    TestGetAndRecycle<uint_heap>();
+
+    TestGetAndRecycle<user_fixed_stack>();
+    TestGetAndRecycle<user_stack>();
+    TestGetAndRecycle<user_fixed_heap>();
+    TestGetAndRecycle<user_heap>();
   }
 
   typedef type_true           dynamic_pool_type;
@@ -308,6 +364,14 @@ recycle_test_finished:
     typedef typename pool_type::policy_indexing_type        p_index_type;
 
     typename T_PoolType::size_type prevSize = a_pool.GetTotal();
+
+    T_PoolType p;
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
+    {
+      p.GetNext();
+    }
+
+    p.GetNext();
 
     typename T_PoolType::iterator elem = a_pool.GetNext();
     CHECK(a_pool.IsValid( elem ) );
@@ -326,17 +390,17 @@ recycle_test_finished:
     CHECK(a_pool.GetTotal() == prevSize);
   }
 
-  template <typename T_PoolType, tl_uint T_PoolSize>
+  template <typename T_PoolType>
   void TestGrowth()
   {
     typedef T_PoolType    pool_type;
 
-    pool_type pool(T_PoolSize);
+    pool_type pool(AllPools::k_poolSize);
 
-    CHECK(pool.GetAvail() == T_PoolSize);
+    CHECK( (pool.GetAvail() == AllPools::k_poolSize) );
 
     // Exhaust all available elements
-    for (tl_int i = 0; i < T_PoolSize; ++i)
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
     {
       pool.GetNext();
     }
@@ -347,8 +411,16 @@ recycle_test_finished:
     TestGrowthHelper(pool, typename T_PoolType::container_dynamic_type());
   }
 
-  TEST_CASE("Core/MemoryPool/GetNext_Growth", "Test GetNext growth")
+  TEST_CASE_METHOD(AllPools, "Core/MemoryPool/GetNext_Growth", "Test GetNext growth")
   {
-    TEST_MEMORY_POOL_INDEX(TestGrowth);
+    TestGrowth<uint_fixed_stack>();
+    TestGrowth<uint_stack>();
+    TestGrowth<uint_fixed_heap>();
+    TestGrowth<uint_heap>();
+
+    TestGrowth<user_fixed_stack>();
+    TestGrowth<user_stack>();
+    TestGrowth<user_fixed_heap>();
+    TestGrowth<user_heap>();
   }
 };

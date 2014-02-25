@@ -42,7 +42,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
-    this_type&          operator=(const this_type& a_other);
+    this_type&          operator=(this_type a_other);
+    this_type&          operator=(const value_type& a_other);
     void                swap(this_type& a_other);
 
     value_type&         operator*();
@@ -60,10 +61,15 @@ namespace tloc { namespace core { namespace smart_ptr {
     { return m_ptr < a_other.m_ptr; }
     TLOC_DECLARE_OPERATORS(this_type);
 
+  private:
+    void              DoSetVirtualPtr() ;
+    void              DoSetVirtualPtr() const;
+
   protected:
 
-    value_type        m_value;
-    pointer           m_ptr;
+    value_type            m_value;
+    mutable pointer       m_ptr;
+    mutable const_pointer m_constPtr;
   };
 
   // ///////////////////////////////////////////////////////////////////////

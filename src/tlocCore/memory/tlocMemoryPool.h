@@ -66,6 +66,9 @@ namespace tloc { namespace core { namespace memory {
     : public core_bclass::NonCopyable_I
   {
   public:
+    enum { k_capacity = T_Capacity };
+
+  public:
 
     typedef T_PolicyAllocation                        policy_allocation_type;
     typedef T_PolicyIndexing                          policy_indexing_type;
@@ -106,41 +109,41 @@ namespace tloc { namespace core { namespace memory {
     // Select T or T* as the value_type
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       value_type_vso, pointer>::Result                 selected_user_type;
+       value_type_vso, pointer>::Result                   selected_user_type;
 
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
        wrapper_value_type_vso,
-       wrapper_pointer>::Result                         selected_wrapper_type;
+       wrapper_pointer>::Result                           selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
-       wrapper_value_type_vso, value_type_vso>::Result      selected_value_type;
+       wrapper_value_type, value_type>::Result            selected_value_type;
 
     // Declare our element wrapper
     typedef typename Loki::Select
       <
         policy_indexing_result_type::value,
         selected_wrapper_type, selected_user_type
-      >::Result                                         wrapper_type;
+      >::Result                                           final_value_type;
 
     // Select the proper array
     typedef typename
-      containers::tl_array<wrapper_type,
-               containers::Array_Unordered>::type       d_array_type;
+      containers::tl_array<final_value_type,
+               containers::Array_Unordered>::type         d_array_type;
     typedef typename containers::tl_array_fixed
-      <wrapper_type, pool_size_type::value>::type       s_array_type;
+      <final_value_type, pool_size_type::value>::type     s_array_type;
 
     typedef typename
       Loki::Select
       <
         pool_size_type::value == 0,
         d_array_type, s_array_type
-      >::Result                                         container_type;
+      >::Result                                           container_type;
 
     // Declare iterator types
-    typedef typename container_type::iterator           iterator;
-    typedef typename container_type::const_iterator     const_iterator;
+    typedef typename container_type::iterator             iterator;
+    typedef typename container_type::const_iterator       const_iterator;
 
   public:
 
@@ -160,9 +163,10 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The next.
     ///-------------------------------------------------------------------------
-    iterator      GetNext();
+    iterator          GetNext();
+    final_value_type& GetNextValue();
 
-    iterator      Find(const wrapper_type& a_returnedElement);
+    iterator      Find(const final_value_type& a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
@@ -194,8 +198,8 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type&       operator[](index_type a_index);
-    wrapper_type const& operator[](index_type a_index) const;
+    final_value_type&       operator[](index_type a_index);
+    final_value_type const& operator[](index_type a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;

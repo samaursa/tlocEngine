@@ -38,7 +38,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_PTR_TEMPS>
   VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
-    VirtualPtr(pointer a_rawPtr)
+    VirtualPtr(const pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {

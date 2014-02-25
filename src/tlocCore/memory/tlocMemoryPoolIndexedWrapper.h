@@ -35,8 +35,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     pointer         GetValue();
     const_pointer   GetValue() const;
     void            SetValue(const value_type& a_value);
+    void            SetValue(const_pointer a_value);
 
-    wrapper_type&   operator=(const wrapper_type& a_other);
+    wrapper_type&   operator=(wrapper_type a_other);
     bool            operator==(const wrapper_type& a_rhs);
 
     TLOC_DECL_AND_DEF_GETTER(index_type, GetIndex, m_index);

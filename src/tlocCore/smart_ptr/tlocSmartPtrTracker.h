@@ -62,8 +62,9 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
   //////////////////////////////////////////////////////////////////////////
   // Not to be used as a reliable method as with a NoDebug policy above this
   // method always returns false. Use for tests only.
-  extern bool     Unsafe_IsPtrTracked(void* a_pointer);
-  extern tl_size  Unsafe_GetPtrTrackedSize();
+  bool     Unsafe_IsPtrTracked(void* a_pointer);
+  tl_size  Unsafe_GetPtrTrackedSize();
+  tl_size  Unsafe_GetVirtualPtrTrackedSize();
 
 };};};};
 

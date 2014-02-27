@@ -51,7 +51,7 @@ namespace TestingVirtualPtr
   bool CheckUseCount(const T_VirtualPointer& a_vp, tl_long , core_cfg::p_build_config::Release)
   {
     // In Release, the use_count of VPs is always 1
-    return a_vp.use_count() == 1;
+    return a_vp ? a_vp.use_count() == 1 : a_vp.use_count() == 0;
   }
 
   // ///////////////////////////////////////////////////////////////////////

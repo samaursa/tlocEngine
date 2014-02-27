@@ -50,7 +50,6 @@ namespace tloc { namespace core { namespace component_system {
   };
 
   TLOC_TYPEDEF_VIRTUAL_PTR(ComponentPool_I, component_pool);
-  TLOC_TYPEDEF_UNIQUE_PTR(ComponentPool_I, component_pool);
 
   //////////////////////////////////////////////////////////////////////////
   // ComponentPool_TI
@@ -134,9 +133,10 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     typedef ComponentPool_I                             component_pool_type;
+    typedef component_pool_vptr                         component_pool_ptr;
     typedef tl_size                                     size_type;
     typedef containers::tl_array
-      <component_pool_vptr>::type                       cont_type;
+      <component_pool_ptr>::type                        cont_type;
 
     typedef cont_type::iterator                         iterator;
     typedef cont_type::const_iterator                   const_iterator;
@@ -154,7 +154,7 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_Component>
     core_sptr::VirtualPtr<ComponentPool_TI<T_Component> >
                         GetPool();
-    component_pool_vptr GetPool(component_type a_type);
+    component_pool_ptr  GetPool(component_type a_type);
 
     template <typename T_Component>
     void                DestroyPool();
@@ -212,9 +212,9 @@ namespace tloc { namespace core { namespace component_system {
 
     iterator itr = m_pools.begin();
     core::advance(itr, compNumber);
-    itr->reset(new ComponentPool_TI<T_Component>());
+    *itr = new ComponentPool_TI<T_Component>();
 
-    component_pool_vptr cp = GetPool(compNumber);
+    component_pool_ptr cp = GetPool(compNumber);
     return core_sptr::static_pointer_cast<ComponentPool_TI<T_Component> >(cp);
   }
 
@@ -226,7 +226,7 @@ namespace tloc { namespace core { namespace component_system {
     const tl_int compNumber =
       p_component_pool_manager::ComponentID<T_Component>::k_value;
 
-    component_pool_sptr cp = GetPool(compNumber);
+    component_pool_ptr cp = GetPool(compNumber);
     return core_sptr::static_pointer_cast<ComponentPool_TI<T_Component> >(cp);
   }
 

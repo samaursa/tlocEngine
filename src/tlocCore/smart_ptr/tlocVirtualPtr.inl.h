@@ -79,6 +79,17 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_PTR_TEMPS>
+  TLOC_VIRTUAL_PTR_TYPE::this_type&
+    VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
+    operator=(pointer a_ptr)
+  {
+    this_type(a_ptr).swap(*this);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_TEMPS>
   TLOC_VIRTUAL_PTR_TYPE::pointer
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     operator->() const
@@ -226,7 +237,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
   VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
-    VirtualPtr(pointer a_rawPtr)
+    VirtualPtr(const pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   { }
 
@@ -246,7 +257,17 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator= (this_type a_other)
   {
     m_rawPtr = a_other.get();
+    return *this;
+  }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::this_type&
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator= (const pointer a_other)
+  {
+    m_rawPtr = a_other;
     return *this;
   }
 
@@ -295,7 +316,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_PTR_RELEASE_TYPE::ref_count_type
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     use_count() const
-  { return 1; }
+  {
+    return m_rawPtr == nullptr ? 0 : 1;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

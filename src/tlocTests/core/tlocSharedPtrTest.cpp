@@ -548,4 +548,12 @@ namespace TestingSharedPtr
     ConstTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
   }
 
+  TEST_CASE("core/smart_ptr/shared_ptr/GetUseCount", "")
+  {
+    SharedPtr<tl_int> sp;
+    CHECK(GetUseCount(sp) == 0);
+
+    sp.reset(new tl_int(10));
+    CHECK(GetUseCount(sp) == 1);
+  }
 }

@@ -13,9 +13,13 @@ namespace TestingArray
   using namespace core;
   using namespace core::containers;
 
-  class SomeClass
+  struct SomeClass
   {
   public:
+    SomeClass()
+      : dummy(0)
+    { }
+
     int dummy;
   };
 

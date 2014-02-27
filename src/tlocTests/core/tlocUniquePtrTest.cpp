@@ -302,4 +302,13 @@ namespace TestingUniquePtr
   {
     DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
   }
+
+  TEST_CASE("core/smart_ptr/unique_ptr/GetUseCount", "")
+  {
+    UniquePtr<tl_int> up;
+    CHECK(GetUseCount(up) == 0);
+
+    up.reset(new tl_int(10));
+    CHECK(GetUseCount(up) == 1);
+  }
 }

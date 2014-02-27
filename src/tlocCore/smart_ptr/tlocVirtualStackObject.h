@@ -37,6 +37,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef core::smart_ptr::VirtualPtr<value_type>               pointer;
     typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
+  private:
+    typedef UniquePtr<value_type>                             value_type_uptr;
+
   public:
     explicit VirtualStackObjectBase_TI(const value_type& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
@@ -52,8 +55,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     value_type_pointer             operator->();
     const_value_type_pointer       operator->() const;
 
-    pointer                get();
-    const_pointer          get() const;
+    const pointer&                  get();
+    const const_pointer&            get() const;
 
     bool operator==(const this_type& a_other) const
     { return m_ptr == a_other.m_ptr; }
@@ -61,14 +64,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     { return m_ptr < a_other.m_ptr; }
     TLOC_DECLARE_OPERATORS(this_type);
 
-  private:
-    void              DoSetVirtualPtr() ;
-    void              DoSetVirtualPtr() const;
-
   protected:
 
-    value_type            m_value;
-    mutable pointer       m_ptr;
+    value_type_uptr       m_value;
+    pointer               m_ptr;
     mutable const_pointer m_constPtr;
   };
 
@@ -78,7 +77,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T>
   class VirtualStackObjectBase_TI<T, core_cfg::p_build_config::Release>
   {
-  protected:
+  public:
     typedef T                                                 value_type;
     typedef T*                                                value_type_pointer;
     typedef const T*                                          const_value_type_pointer;
@@ -86,8 +85,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef core_cfg::p_build_config::Release                 build_config;
 
     typedef VirtualStackObjectBase_TI<value_type, build_config>   this_type;
-    typedef value_type_pointer                                    pointer;
-    typedef const_value_type_pointer                              const_pointer;
+    typedef core::smart_ptr::VirtualPtr<value_type>               pointer;
+    typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
   public:
     explicit VirtualStackObjectBase_TI(const value_type& a_other);
@@ -95,13 +94,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     ~VirtualStackObjectBase_TI();
 
     this_type&          operator=(const this_type& a_other);
+    this_type&          operator=(const value_type& a_other);
     void                swap(this_type& a_other);
 
     value_type&         operator*();
     const value_type&   operator*() const;
 
-    value_type_pointer             operator->();
-    const_value_type_pointer       operator->() const;
+    pointer             operator->();
+    const_pointer       operator->() const;
 
     pointer                get();
     const_pointer          get() const; // intentionally returned by value
@@ -109,7 +109,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     bool operator==(const this_type& a_other) const
     { return &m_value == &a_other.m_value; }
     bool operator<(const this_type& a_other) const
-    { return &m_value < a_other.m_value; }
+    { return &m_value < &a_other.m_value; }
     TLOC_DECLARE_OPERATORS(this_type);
 
   protected:

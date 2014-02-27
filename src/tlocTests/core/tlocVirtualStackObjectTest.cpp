@@ -32,12 +32,14 @@ namespace TestingVirtualStackObject
       int onStackCopy = *onStack;
       CHECK(onStackCopy == 10);
 
-      int_vso::pointer ptrToVSO(onStack.get());
-      CHECK(*ptrToVSO == 10);
+      {
+        int_vso::pointer ptrToVSO(onStack.get());
+        CHECK(*ptrToVSO == 10);
 
-      *ptrToVSO = 30;
-      CHECK(*ptrToVSO == 30);
-      CHECK(*onStack == 30);
+        *ptrToVSO = 30;
+        CHECK(*ptrToVSO == 30);
+        CHECK(*onStack == 30);
+      } // if ptrToVSO is not destroyed, line 51 will throw an assertion
 
       int_vso onStack2(*onStack);
       CHECK( (*onStack2 == 30) );
@@ -125,6 +127,37 @@ namespace TestingVirtualStackObject
   TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
   TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
 
+  class IntComponent
+  {
+  public:
+    typedef tl_int         value_type;
+
+  public:
+    IntComponent()
+    { m_ctorCount++; }
+
+    IntComponent(const IntComponent& a_other)
+      : m_value(a_other.m_value)
+    { m_ctorCount++; }
+
+    ~IntComponent()
+    { m_dtorCount++; }
+
+    tl_int m_value;
+    static tl_int m_dtorCount;
+    static tl_int m_ctorCount;
+  };
+
+  tl_int IntComponent::m_dtorCount;
+  tl_int IntComponent::m_ctorCount;
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(IntComponent, int_comp);
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(IntComponent);
+
+#define RESET_CTOR_AND_DTOR_COUNT()\
+    IntComponent::m_dtorCount = 0;\
+    IntComponent::m_ctorCount = 0
+
   TEST_CASE("core/smart_ptr/VirtualStackObject/arrays", "")
   {
     SECTION("Array<>", "")
@@ -133,36 +166,46 @@ namespace TestingVirtualStackObject
       // reallocated e.g. in containers. This bug was fixed by forcing the
       // virtual pointers to grab the memory address again and perform
       // additional checks.
-      core_conts::Array<int_vso> arr;
-      arr.resize(100);
-      arr.resize(1000);
-      arr.resize(10000);
+      core_conts::Array<int_comp_vso> arr;
+      RESET_CTOR_AND_DTOR_COUNT();
+      arr.resize(10);
+      arr.resize(20);
+      arr.resize(40);
 
       arr.clear();
+      CHECK(IntComponent::m_ctorCount > 0);
+      CHECK(IntComponent::m_dtorCount > 0);
+      CHECK(IntComponent::m_dtorCount == IntComponent::m_ctorCount);
 
+      RESET_CTOR_AND_DTOR_COUNT();
       arr.resize(100);
-      arr.resize(1000);
+      arr.resize(300);
 
-      CHECK(arr.size() == 1000);
+      CHECK(arr.size() == 300);
 
       // access all VSOs to populate their respective virtual pointers
-      for(core_conts::Array<int_vso>::iterator
+      for(core_conts::Array<int_comp_vso>::iterator
           itr = arr.begin(), itrEnd = arr.end(); itr != itrEnd; ++itr)
       {
-        int_vso::pointer temp = itr->get();
+        int_comp_vso::pointer temp = itr->get();
       }
       // all temp pointers are destroyed and therefore we are no longer holding
       // on to any invalid pointers, the following resize and access of
       // pointers should work properly
-      arr.resize(5000);
-      CHECK(arr.size() == 5000);
+      arr.resize(3000);
+      CHECK(arr.size() == 3000);
 
       // access all VSOs to populate their respective virtual pointers
-      for(core_conts::Array<int_vso>::iterator
+      for(core_conts::Array<int_comp_vso>::iterator
           itr = arr.begin(), itrEnd = arr.end(); itr != itrEnd; ++itr)
       {
-        int_vso::pointer temp = itr->get();
+        int_comp_vso::pointer temp = itr->get();
       }
+
+      arr.clear();
+      CHECK(IntComponent::m_ctorCount > 0);
+      CHECK(IntComponent::m_dtorCount > 0);
+      CHECK(IntComponent::m_dtorCount == IntComponent::m_ctorCount);
     }
   }
 }

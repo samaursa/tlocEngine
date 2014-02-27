@@ -157,6 +157,11 @@ namespace TestingVirtualPtr
       vp = VirtualPtr<int>(new int(10));
 
       CHECK(*vp == 10);
+      core_sptr::algos::DeleteAndReset()(vp);
+
+      vp = new int(20);
+      CHECK(*vp == 20);
+      core_sptr::algos::DeleteAndReset()(vp);
     }
 
     SECTION("operator=(SharedPtr)", "")
@@ -247,7 +252,7 @@ namespace TestingVirtualPtr
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());
     }
 
-    SECTION("static_pointer_cast<>()", "")
+    SECTION("const_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
@@ -265,8 +270,8 @@ namespace TestingVirtualPtr
     core_conts::Array<VirtualPtr<int> > vptrContainer;
     int a = 10;
     vptrContainer.resize(100, VirtualPtr<int>(&a));
-    vptrContainer.resize(1000,VirtualPtr<int>(&a));
-    vptrContainer.resize(10000, VirtualPtr<int>(&a));
+    vptrContainer.resize(500,VirtualPtr<int>(&a));
+    vptrContainer.resize(1000, VirtualPtr<int>(&a));
   }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/Algorithms", "")
@@ -279,5 +284,15 @@ namespace TestingVirtualPtr
     }
 
     core::for_each_all(vptrContainer, core_sptr::algos::DeleteAndReset());
+  }
+
+  TEST_CASE("core/smart_ptr/VirtualPtr/GetUseCount", "")
+  {
+    VirtualPtr<tl_int> vp;
+    CHECK(GetUseCount(vp) == 0);
+
+    tl_int temp(10);
+    vp.reset(&temp);
+    CHECK(GetUseCount(vp) == 1);
   }
 }

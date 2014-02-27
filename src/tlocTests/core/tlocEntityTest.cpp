@@ -87,5 +87,7 @@ namespace TestingEntity
     clist = e->GetComponents(g_component + 1);
     REQUIRE(clist.size() == 1);
     CHECK(clist[0].get() == &c2);
+
+    delete e;
   }
 };

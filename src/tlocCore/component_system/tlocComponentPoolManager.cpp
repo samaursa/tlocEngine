@@ -4,6 +4,8 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
+#include <tlocCore/tlocAlgorithms.inl.h>
+
 namespace tloc { namespace core { namespace component_system {
 
   //////////////////////////////////////////////////////////////////////////
@@ -15,7 +17,7 @@ namespace tloc { namespace core { namespace component_system {
 
   ComponentPool_I::
     ~ComponentPool_I()
-  { /* Intentionally empty */ }
+  { }
 
   //////////////////////////////////////////////////////////////////////////
   // ComponentPoolManager
@@ -35,7 +37,9 @@ namespace tloc { namespace core { namespace component_system {
 
   ComponentPoolManager::
     ~ComponentPoolManager()
-  { }
+  {
+    core::for_each_all(m_pools, core_sptr::algos::DeleteAndReset());
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -46,13 +50,13 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(index < m_pools.size(),
       "Pool not allocated for passed component type");
 
-    m_pools[index] = nullptr;
+    core_sptr::algos::DeleteAndReset()(m_pools[index]);
     --m_numActivePools;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  component_pool_vptr
+  ComponentPoolManager::component_pool_ptr
     ComponentPoolManager::
     GetPool(component_type a_number)
   {
@@ -62,7 +66,7 @@ namespace tloc { namespace core { namespace component_system {
     iterator itr = m_pools.begin();
     core::advance(itr, a_number);
 
-    return *itr;
+    return component_pool_ptr(*itr);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -4,6 +4,8 @@
 #include <tlocCore/containers/tlocHashmap.inl.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
+#include <tlocCore/logging/tlocLogger.h>
+
 namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
   namespace {
@@ -33,7 +35,7 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       {
         if (m_mapIsDestroyed) { return false; }
 
-        if (a_pointer != nullptr)
+        if (a_pointer != nullptr && m_virtualPtrMap.size() > 0)
         {
           virtual_map_type::iterator itr = m_virtualPtrMap.find(a_pointer);
           if (itr != m_virtualPtrMap.end())
@@ -136,7 +138,14 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       { m_mapIsDestroyed = false; }
 
       ~PointerMap_T()
-      { m_mapIsDestroyed = true; }
+      {
+        m_mapIsDestroyed = true;
+
+        TLOC_LOG_CORE_WARN_IF(m_ptrMap.size() != 0)
+          << "# SmartPtr trackers: " << m_ptrMap.size();
+        TLOC_LOG_CORE_WARN_IF(m_virtualPtrMap.size() != 0)
+          << "# VirtualPtr trackers: " << m_virtualPtrMap.size();
+      }
 
     private:
       map_type            m_ptrMap;
@@ -278,7 +287,12 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
   tl_size Unsafe_GetPtrTrackedSize()
   {
-    return PointerMap::Get().GetNumTrackedPointers();
+    return PointerMap::Get().GetNumTrackedVirtualPointers();
+  }
+
+  tl_size Unsafe_GetVirtualPtrTrackedSize()
+  {
+    return PointerMap::Get().GetNumTrackedVirtualPointers();
   }
 
 };};};};

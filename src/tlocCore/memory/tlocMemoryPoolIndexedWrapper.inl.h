@@ -27,10 +27,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   MemoryPoolIndexedWrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
     MemoryPoolIndexedWrapper(const wrapper_type& a_rhs)
-  {
-    m_element = a_rhs.m_element;
-    m_index = a_rhs.m_index;
-  }
+    : m_element(a_rhs.m_element)
+    , m_index(a_rhs.m_index)
+  { }
 
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   void

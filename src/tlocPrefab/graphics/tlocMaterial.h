@@ -28,20 +28,19 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef attribute_array::iterator               attribute_itr;
 
   public:
-    Material(core_cs::EntityManager* a_entMgr,
-             core_cs::ComponentPoolManager* a_poolMgr)
+    Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
              : Prefab_I(a_entMgr, a_poolMgr)
     { }
 
-    entity_type*  Create(const core_io::Path& a_vertexShader,
+    entity_ptr    Create(const core_io::Path& a_vertexShader,
                          const core_io::Path& a_fragmentShader);
-    void          Add(entity_type* a_ent,
+    void          Add(entity_ptr a_ent,
                       const core_io::Path& a_vertexShader,
                       const core_io::Path& a_fragmentShader);
 
-    entity_type*  Create(BufferArg a_vertexShader,
+    entity_ptr    Create(BufferArg a_vertexShader,
                          BufferArg a_fragmentShader);
-    void          Add(entity_type* a_ent,
+    void          Add(entity_ptr a_ent,
                       BufferArg a_vertexShader,
                       BufferArg a_fragmentShader);
 

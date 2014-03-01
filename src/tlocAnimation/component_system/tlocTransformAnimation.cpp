@@ -1,6 +1,5 @@
 #include "tlocTransformAnimation.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace animation { namespace component_system {
@@ -318,8 +317,10 @@ namespace tloc { namespace animation { namespace component_system {
 // ///////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::anim_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimation);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_animation_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimation);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TransformAnimation);

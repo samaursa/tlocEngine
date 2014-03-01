@@ -1,6 +1,7 @@
 #include "tlocSceneNode.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
@@ -34,7 +35,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   SceneNode::
-    SceneNode(entity_ptr_type a_entity)
+    SceneNode(entity_ptr a_entity)
     : base_type(k_component_type)
     , m_entity(a_entity)
     , m_parent(nullptr)
@@ -66,7 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     RemoveChild(pointer a_childNode)
   {
-    TLOC_ASSERT(a_childNode->GetParent() == this,
+    TLOC_ASSERT(a_childNode->GetParent().get() == this,
       "'this' is not the parent of the child");
 
     node_cont_iterator itr = core::find_all(m_children, a_childNode);
@@ -89,7 +90,7 @@ namespace tloc { namespace graphics { namespace component_system {
     RemoveParent()
   {
     TLOC_ASSERT_NOT_NULL(m_parent);
-    m_parent->RemoveChild(this);
+    m_parent->RemoveChild(pointer(this));
 
     return *this;
   }
@@ -100,20 +101,20 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneNode::
     SetParent(pointer a_parentNode)
   {
-    a_parentNode->AddChild(this);
+    a_parentNode->AddChild(pointer(this));
     return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  SceneNode::entity_ptr_type
+  SceneNode::entity_ptr
     SceneNode::
     GetEntity()
   { return m_entity; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  SceneNode::entity_const_ptr_type
+  SceneNode::const_entity_ptr
     SceneNode::
     GetEntity() const
   { return m_entity; }
@@ -249,5 +250,5 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneNode);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(scene_node_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SceneNode);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(SceneNode);

@@ -31,8 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     CameraSystem::
-    ProcessEntity(const entity_manager* ,
-                  const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     using namespace core::component_system;
     using namespace math::component_system::components;
@@ -40,7 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Camera::matrix_type         matrix_type;
 
-    Camera* cam = a_ent->GetComponent<Camera>();
+    camera_vptr cam = a_ent->GetComponent<Camera>();
 
     matrix_type viewMat;
     matrix_type m_vpMatrix;
@@ -54,7 +53,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (a_ent->HasComponent(transform))
     {
-      math_cs::Transform* vMat = a_ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_vptr vMat = a_ent->GetComponent<math_cs::Transform>();
       math_cs::Transform vMatInv = vMat->Invert();
       viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
     }

@@ -28,12 +28,19 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                               size_type;
     typedef core::error::Error                    error_type;
 
-    typedef core_cs::EntityManager                entity_manager;
     typedef core_cs::EventManager                 event_manager;
     typedef core_cs::event_manager_sptr           event_manager_sptr;
+    typedef core_cs::event_manager_vptr           event_manager_vptr;
     typedef core_cs::EventBase                    event_type;
+
+    typedef core_cs::EntityManager                entity_manager;
     typedef core_cs::entity_manager_sptr          entity_manager_sptr;
+    typedef core_cs::entity_manager_vptr          entity_manager_vptr;
+    typedef core_cs::const_entity_manager_vptr    const_entity_manager_vptr;
+
     typedef core_cs::Entity                       entity_type;
+    typedef core_cs::entity_vptr                  entity_ptr;
+    typedef core_cs::const_entity_vptr            const_entity_ptr;
     typedef EventBase::event_type                 event_value_type;
 
     typedef containers::tl_array_fixed
@@ -78,8 +85,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoInitialize(const entity_manager* a_mgr,
-                                    const entity_ptr_array& a_entities) = 0;
+    virtual error_type DoInitialize(const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -95,8 +101,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoShutdown(const entity_manager* a_mgr,
-                                  const entity_ptr_array& a_entities) = 0;
+    virtual error_type DoShutdown(const entity_ptr_array& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -121,8 +126,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
-    virtual void DoProcessActiveEntities(const entity_manager* a_mgr,
-                                         const entity_ptr_array& a_entities,
+    virtual void DoProcessActiveEntities(const entity_ptr_array& a_entities,
                                          f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
@@ -145,6 +149,10 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     bool OnEvent(const event_type& a_event);
 
+    TLOC_DECL_AND_DEF_GETTER(entity_manager_vptr, DoGetEntityManager,
+                             entity_manager_vptr(m_entityMgr));
+    TLOC_DECL_AND_DEF_GETTER(event_manager_vptr, DoGetEventManager,
+                             event_manager_vptr(m_eventMgr));
     TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_ptr_array, DoGetActiveEntities,
                                     m_activeEntities);
 

@@ -23,22 +23,23 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef RigidBodySystem::rigid_body_component rb_component;
     typedef RigidBodySystem::entity_type          entity_type;
+    typedef RigidBodySystem::entity_ptr           entity_ptr;
     typedef RigidBodySystem::error_type           error_type;
 
     rb_component&
-      GetRigidBodyComponent(const entity_type* a_ent)
+      GetRigidBodyComponent(entity_ptr a_ent)
     {
       using namespace tloc::core::component_system;
 
 
-      phys_cs::RigidBody* rigidBodyPtr =
+      phys_cs::rigid_body_vptr rigidBodyPtr =
         a_ent->GetComponent<phys_cs::RigidBody>();
 
       return *rigidBodyPtr;
     }
 
     error_type
-      InitializeRigidBodyShapeComponents(const entity_type* a_ent)
+      InitializeRigidBodyShapeComponents(entity_ptr a_ent)
     {
       using namespace tloc::core::component_system;
 
@@ -94,9 +95,9 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodySystem::error_type RigidBodySystem::
-    InitializeEntity(const entity_manager* a_mgr,
-                     const entity_type* a_ent)
+  RigidBodySystem::error_type
+    RigidBodySystem::
+    InitializeEntity(entity_ptr a_ent)
   {
     error_type result = DoInitializeRigidBodyComponent(a_ent);
 
@@ -105,26 +106,25 @@ namespace tloc { namespace physics { namespace component_system {
       result = InitializeRigidBodyShapeComponents(a_ent);
     }
 
-    TLOC_UNUSED(a_mgr);
-
     return result;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodySystem::error_type RigidBodySystem::
-    ShutdownEntity(const entity_manager* a_mgr, const entity_type* a_ent )
+  RigidBodySystem::error_type
+    RigidBodySystem::
+    ShutdownEntity(entity_ptr a_ent )
   {
     error_type result = DoShutdownRigidBodyComponent(a_ent);
 
-    TLOC_UNUSED(a_mgr);
     return result;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void RigidBodySystem::
-    ProcessEntity(const entity_manager* a_mgr, const entity_type* a_ent, f64)
+  void
+    RigidBodySystem::
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     using namespace tloc::core::component_system;
 
@@ -140,9 +140,8 @@ namespace tloc { namespace physics { namespace component_system {
 
     rb.GetTransform(rbPosition, rbOrientation);
 
-    const entity_type* ent = a_ent;
-
-    math_cs::Transform* transformPtr = ent->GetComponent<math_cs::Transform>();
+    math_cs::transform_vptr
+      transformPtr = a_ent->GetComponent<math_cs::Transform>();
 
     transform_type::position_type position((real_type)rbPosition[0],
                                            (real_type)rbPosition[1],
@@ -155,14 +154,13 @@ namespace tloc { namespace physics { namespace component_system {
 
     transformPtr->SetPosition(position);
     transformPtr->SetOrientation(orientation);
-
-    TLOC_UNUSED(a_mgr);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodySystem::error_type RigidBodySystem::
-    DoInitializeRigidBodyComponent(const entity_type* a_ent)
+  RigidBodySystem::error_type
+    RigidBodySystem::
+    DoInitializeRigidBodyComponent(entity_ptr a_ent)
   {
     using namespace tloc::core::component_system;
 
@@ -200,8 +198,9 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodySystem::error_type RigidBodySystem::
-    DoShutdownRigidBodyComponent(const entity_type* a_ent)
+  RigidBodySystem::error_type
+    RigidBodySystem::
+    DoShutdownRigidBodyComponent(entity_ptr a_ent)
   {
     using namespace tloc::core::component_system;
 

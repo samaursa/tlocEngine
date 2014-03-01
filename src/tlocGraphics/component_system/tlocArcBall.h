@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
@@ -54,8 +55,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(ArcBall, arcball);
-  TLOC_TYPEDEF_COMPONENT_POOL(arcball_sptr, arcball_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ArcBall, arcball);
+  TLOC_TYPEDEF_COMPONENT_POOL(ArcBall, arcball);
 
 };};};
 

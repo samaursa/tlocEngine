@@ -37,6 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::entity_manager;
     using base_type::entity_type;
     using base_type::event_type;
+    using base_type::entity_ptr;
     using base_type::event_value_type;
 
     typedef math::types::Mat4f32                              matrix_type;

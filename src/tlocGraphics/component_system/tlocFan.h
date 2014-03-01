@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
@@ -40,8 +41,8 @@ namespace tloc { namespace graphics { namespace component_system {
     size_type    m_sides;
   };
 
-  TLOC_TYPEDEF_SHARED_PTR(Fan, fan);
-  TLOC_TYPEDEF_COMPONENT_POOL(fan_sptr, fan_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Fan, fan);
+  TLOC_TYPEDEF_COMPONENT_POOL(Fan, fan);
 
 };};};
 

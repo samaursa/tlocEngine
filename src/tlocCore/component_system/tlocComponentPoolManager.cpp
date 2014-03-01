@@ -27,12 +27,6 @@ namespace tloc { namespace core { namespace component_system {
     : m_numActivePools(0)
   { }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  ComponentPool_I::
-    ComponentPool_I(const this_type& )
-  { }
-
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ComponentPoolManager::

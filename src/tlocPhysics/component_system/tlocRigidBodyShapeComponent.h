@@ -4,7 +4,8 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -30,6 +31,7 @@ namespace tloc { namespace physics { namespace component_system {
     typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
 
   public:
+    RigidBodyShape();
     RigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape);
 
     TLOC_DECL_AND_DEF_GETTER
@@ -42,8 +44,8 @@ namespace tloc { namespace physics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(RigidBodyShape, rigid_body_shape);
-  TLOC_TYPEDEF_COMPONENT_POOL(rigid_body_shape_sptr, rigid_body_shape_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBodyShape, rigid_body_shape);
+  TLOC_TYPEDEF_COMPONENT_POOL(RigidBodyShape, rigid_body_shape);
 
 };};};
 

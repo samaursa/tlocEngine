@@ -3,8 +3,9 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -81,13 +82,13 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<f32>        Transformf32;
   typedef Transform_T<f64>        Transformf64;
 
-  TLOC_TYPEDEF_SHARED_PTR(Transform, transform);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf32, transform_f32);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf64, transform_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transform, transform);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf32, transform_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf64, transform_f64);
 
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_sptr, transform_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f32_sptr, transform_f32_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f64_sptr, transform_f64_sptr);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform_f32);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf64, transform_f64);
 
 };};};
 

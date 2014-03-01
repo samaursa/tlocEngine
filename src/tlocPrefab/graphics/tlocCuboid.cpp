@@ -20,11 +20,11 @@ namespace tloc { namespace prefab { namespace graphics {
   // ///////////////////////////////////////////////////////////////////////
   // Cuboid
 
-  Cuboid::entity_type*
+  Cuboid::entity_ptr
     Cuboid::
     Create()
   {
-    Entity* ent = m_entMgr->CreateEntity();
+    entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent);
 
     return ent;
@@ -34,7 +34,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Cuboid::
-    Add(entity_type* a_ent)
+    Add(entity_ptr a_ent)
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
@@ -46,18 +46,18 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    typedef gfx_cs::mesh_sptr_pool        mesh_pool;
-    gfx_cs::mesh_sptr_pool_sptr           meshPool;
+    typedef gfx_cs::mesh_pool             mesh_pool;
+    gfx_cs::mesh_pool_vptr                meshPool;
 
     if (m_compPoolMgr->Exists(mesh) == false)
-    { meshPool = m_compPoolMgr->CreateNewPool<mesh_sptr>(); }
+    { meshPool = m_compPoolMgr->CreateNewPool<gfx_cs::Mesh>(); }
     else
-    { meshPool = m_compPoolMgr->GetPool<mesh_sptr>(); }
+    { meshPool = m_compPoolMgr->GetPool<gfx_cs::Mesh>(); }
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
-    itrMesh->SetValue(mesh_sptr(new gfx_cs::Mesh()) );
+    (*itrMesh)->SetValue(gfx_cs::Mesh() );
 
-    mesh_sptr meshPtr = itrMesh->GetValue();
+    gfx_cs::mesh_vptr meshPtr = (*itrMesh)->GetValue();
 
     // -----------------------------------------------------------------------
     // Generate cuboid vertices
@@ -269,21 +269,21 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    typedef math_cs::transform_f32_sptr_pool      t_pool;
-    math_cs::transform_f32_sptr_pool_sptr         tPool;
+    typedef math_cs::transform_f32_pool           t_pool;
+    math_cs::transform_f32_pool_vptr              tPool;
 
     if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
     else
-    { tPool = m_compPoolMgr->GetPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
     t_pool::iterator  itrTransform = tPool->GetNext();
-    itrTransform->SetValue(transform_sptr(new Transform()) );
+    (*itrTransform)->SetValue(Transform());
 
     // -----------------------------------------------------------------------
 
-    m_entMgr->InsertComponent(a_ent, itrTransform->GetValue().get() );
-    m_entMgr->InsertComponent(a_ent, itrMesh->GetValue().get() );
+    m_entMgr->InsertComponent(a_ent, (*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, (*itrMesh)->GetValue() );
 
   }
 };};};

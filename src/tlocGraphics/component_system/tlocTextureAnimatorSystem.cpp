@@ -25,43 +25,55 @@ namespace tloc { namespace graphics { namespace component_system {
                  Variadic<component_type, 1>(components::texture_animator))
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   error_type
     TextureAnimatorSystem::
     Pre_Initialize()
   { return ErrorSuccess; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
   error_type
     TextureAnimatorSystem::
-    InitializeEntity(const entity_manager*, const entity_type* a_ent)
+    InitializeEntity(entity_ptr a_ent)
   {
-    const entity_type* ent = a_ent;
-
     const tl_size size =
-      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+      a_ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
 
     for (tl_size i = 0; i < size; ++i)
     {
-      gfx_cs::TextureAnimator* texAnim =
-        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+      gfx_cs::texture_animator_vptr texAnim =
+        a_ent->GetComponent<gfx_cs::TextureAnimator>(i);
       texAnim->SetStartTime(0);
     }
 
     return ErrorSuccess;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
   error_type
     TextureAnimatorSystem::
-    ShutdownEntity(const entity_manager*, const entity_type*)
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
   void
     TextureAnimatorSystem::
     Pre_ProcessActiveEntities(f64 )
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
   void
     TextureAnimatorSystem::
-    ProcessEntity(const entity_manager*, const entity_type* a_ent, f64 a_deltaT)
+    ProcessEntity(entity_ptr a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
     using math_t::Vec4f32;
@@ -69,15 +81,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gfx_cs::TextureCoords                 tex_coords;
 
-    const entity_type* ent = a_ent;
-
     const tl_size size =
-      ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+      a_ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
 
     for (tl_size i = 0; i < size; ++i)
     {
-      gfx_cs::TextureAnimator* texAnim =
-        ent->GetComponent<gfx_cs::TextureAnimator>(i);
+      gfx_cs::texture_animator_vptr texAnim =
+        a_ent->GetComponent<gfx_cs::TextureAnimator>(i);
 
       texAnim->SetTotalTime(texAnim->GetTotalTime() + a_deltaT);
 
@@ -96,11 +106,11 @@ namespace tloc { namespace graphics { namespace component_system {
         diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
       }
 
-      if (ent->HasComponent(components::texture_coords) &&
+      if (a_ent->HasComponent(components::texture_coords) &&
           texAnim->IsSpriteSeqChanged())
       {
-        gfx_cs::TextureCoords* coordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>(i);
+        gfx_cs::texture_coords_vptr coordPtr =
+          a_ent->GetComponent<gfx_cs::TextureCoords>(i);
 
         TLOC_ASSERT(coordPtr,
           "Texture coords don't exist for corresponding texture animator");
@@ -111,6 +121,9 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
   void TextureAnimatorSystem::
     Post_ProcessActiveEntities(f64)

@@ -16,36 +16,24 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef core::component_system::EntityProcessingSystem    base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
   public:
     SceneGraphSystem(event_manager_sptr   a_eventMgr,
                      entity_manager_sptr  a_entityMgr);
 
-    static void DeactivateHierarchy(const entity_type* a_parent);
-    static void ActivateHierarchy(const entity_type* a_parent);
+    static void DeactivateHierarchy(entity_ptr a_parent);
+    static void ActivateHierarchy(entity_ptr a_parent);
 
     virtual void SortEntities();
 
     virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
 
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}

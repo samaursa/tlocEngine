@@ -39,7 +39,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::policy_type      policy_type;
     typedef typename base_type::button_code_type   button_code_type;
 
-    MouseImpl(parent_type* a_parent, const mouse_param_type& a_params);
+    MouseImpl(parent_type& a_parent, const mouse_param_type& a_params);
     ~MouseImpl();
 
     ///-------------------------------------------------------------------------

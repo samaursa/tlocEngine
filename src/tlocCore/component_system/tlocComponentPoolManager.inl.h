@@ -22,23 +22,8 @@ namespace tloc { namespace core { namespace component_system {
 
   template <COMPONENT_POOL_TEMPS>
   ComponentPool_TI<COMPONENT_POOL_PARAMS>::
-    ComponentPool_TI(const this_type& a_other)
-    : m_pool(a_other.m_pool)
-  { }
-
-  template <COMPONENT_POOL_TEMPS>
-  ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     ~ComponentPool_TI()
   { }
-
-  template <COMPONENT_POOL_TEMPS>
-  COMPONENT_POOL_TYPE::this_type&
-  ComponentPool_TI<COMPONENT_POOL_PARAMS>::
-    operator=(this_type a_other)
-  {
-    swap(a_other);
-    return *this;
-  }
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
@@ -92,15 +77,6 @@ namespace tloc { namespace core { namespace component_system {
     GetUsed() const
   { return m_pool.GetUsed(); }
 
-  template <COMPONENT_POOL_TEMPS>
-  void
-    ComponentPool_TI<COMPONENT_POOL_PARAMS>::
-    swap(this_type& a_other)
-  {
-    using core::swap;
-    swap(m_pool, a_other.m_pool);
-  }
-
 };};};
 
 
@@ -109,7 +85,6 @@ namespace tloc { namespace core { namespace component_system {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
 template class tloc::core_cs::ComponentPool_TI<_type_>;\
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>);\
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
 
 #endif

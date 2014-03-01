@@ -39,17 +39,15 @@ namespace tloc { namespace animation { namespace component_system {
 
   error_type
     TransformAnimationSystem::
-    InitializeEntity(const entity_manager*, const entity_type* a_ent)
+    InitializeEntity(entity_ptr a_ent)
   {
-    const entity_type* ent = a_ent;
-
     const tl_size size =
-      ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
+      a_ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
 
     for (tl_size i = 0; i < size; ++i)
     {
-      anim_cs::TransformAnimation* texAnim =
-        ent->GetComponent<anim_cs::TransformAnimation>(i);
+      transform_animation_vptr texAnim =
+        a_ent->GetComponent<anim_cs::TransformAnimation>(i);
       texAnim->SetStartTime(0);
     }
 
@@ -60,7 +58,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   error_type
     TransformAnimationSystem::
-    ShutdownEntity(const entity_manager*, const entity_type*)
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -75,14 +73,12 @@ namespace tloc { namespace animation { namespace component_system {
 
   void
     TransformAnimationSystem::
-    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 a_deltaT)
+    ProcessEntity(entity_ptr a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
 
-    const entity_type* ent = a_ent;
-
-    anim_cs::TransformAnimation* transAnim =
-      ent->GetComponent<anim_cs::TransformAnimation>(0);
+    transform_animation_vptr transAnim =
+      a_ent->GetComponent<anim_cs::TransformAnimation>(0);
 
     transAnim->SetTotalTime(transAnim->GetTotalTime() + a_deltaT);
 
@@ -101,11 +97,11 @@ namespace tloc { namespace animation { namespace component_system {
       diff = transAnim->GetTotalTime() - transAnim->GetStartTime();
     }
 
-    if (ent->HasComponent(components::transform_animation) &&
+    if (a_ent->HasComponent(components::transform_animation) &&
         transAnim->IsKFSequenceChanged())
     {
-      math_cs::Transform* transPtr =
-        ent->GetComponent<math_cs::Transform>(0);
+      math_cs::transform_vptr transPtr =
+        a_ent->GetComponent<math_cs::Transform>(0);
 
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
       typedef kf_seq::keyframe_type                       kf_type;

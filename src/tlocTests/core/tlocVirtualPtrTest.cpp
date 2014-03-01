@@ -212,6 +212,7 @@ namespace TestingVirtualPtr
       vp.reset(&temp);
       CHECK( (vp != nullptr) );
       CHECK( (nullptr != vp) );
+
       vp.reset();
       CHECK( (vp == nullptr) );
       CHECK( (nullptr == vp) );

@@ -78,8 +78,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (ent->HasComponent(components::material))
     {
-      gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
-      gfx_cs::Quad*     quadPtr = ent->GetComponent<gfx_cs::Quad>();
+      gfx_cs::material_vptr matPtr = ent->GetComponent<gfx_cs::Material>();
+      gfx_cs::quad_vptr     quadPtr = ent->GetComponent<gfx_cs::Quad>();
 
       //------------------------------------------------------------------------
       // Prepare the Quad
@@ -99,7 +99,7 @@ namespace tloc { namespace graphics { namespace component_system {
       (*m_quadList)[3] = vec3_type(rect.GetValue<rect_type::left>(),
                                    rect.GetValue<rect_type::bottom>(), 0);
 
-      math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_vptr posPtr = ent->GetComponent<math_cs::Transform>();
 
       Mat4f32 tMatrix;
       if (ent->HasComponent(components::scene_node))
@@ -134,7 +134,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
         for (tl_size i = 0; i < numTexCoords; ++i)
         {
-          gfx_cs::TextureCoords* texCoordPtr =
+          gfx_cs::texture_coords_vptr texCoordPtr =
             ent->GetComponent<gfx_cs::TextureCoords>(i);
 
           if (texCoordPtr && texCoordPtr->GetNumSets())

@@ -28,7 +28,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_ParamList>
   Keyboard<KEYBOARD_PARAMS>::Keyboard(const T_ParamList& a_paramList)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
   }
 
   template <KEYBOARD_TEMP>

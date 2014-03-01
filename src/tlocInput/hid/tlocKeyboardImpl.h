@@ -90,10 +90,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef u32                                           index_type;
 
   public:
-    KeyboardImplBase(parent_type* a_parent, param_list_type a_params)
+    KeyboardImplBase(parent_type& a_parent, param_list_type a_params)
       : base_type(a_parent), m_params(a_params)
-    {
-    }
+    { }
 
     const param_list_type& GetParams() const
     {

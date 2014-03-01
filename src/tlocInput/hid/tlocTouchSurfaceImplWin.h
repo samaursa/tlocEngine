@@ -35,9 +35,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename base_type::touch_container_type  touch_container_type;
     typedef typename base_type::size_type             size_type;
 
-    TouchSurfaceImpl
-      (parent_type* a_parent, const touch_surface_param_type& a_params)
-      : base_type(a_parent, a_params) {}
+    TouchSurfaceImpl(parent_type& a_parent,
+                     const touch_surface_param_type& a_params)
+      : base_type(a_parent, a_params)
+    { }
     ~TouchSurfaceImpl() {}
 
     const touch_type* GetTouch(touch_handle_type) const

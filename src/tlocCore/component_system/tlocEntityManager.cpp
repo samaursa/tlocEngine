@@ -2,6 +2,7 @@
 
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -210,3 +211,4 @@ namespace tloc { namespace core { namespace component_system {
 // Explicit instantiations
 
 TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::EntityManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntityManager);

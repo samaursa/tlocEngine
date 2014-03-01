@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -69,8 +70,8 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Material, material);
-  TLOC_TYPEDEF_COMPONENT_POOL(material_sptr, material_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Material, material);
+  TLOC_TYPEDEF_COMPONENT_POOL(Material, material);
 
 };};};
 

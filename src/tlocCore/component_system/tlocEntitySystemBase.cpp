@@ -18,20 +18,27 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntitySystemBase::error_type      error_type;
 
-  EntitySystemBase::~EntitySystemBase()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  EntitySystemBase::
+    ~EntitySystemBase()
   {
     m_eventMgr->RemoveListener(this, entity_events::insert_component);
     m_eventMgr->RemoveListener(this, entity_events::remove_component);
   }
 
-  error_type EntitySystemBase::Initialize()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    EntitySystemBase::
+    Initialize()
   {
     m_flags.Mark(k_systemInitialized);
 
     if (Pre_Initialize() == ErrorSuccess)
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
-      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
+      if (DoInitialize(m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
       }
@@ -40,7 +47,11 @@ namespace tloc { namespace core { namespace component_system {
     return ErrorFailure;
   }
 
-  void EntitySystemBase::ProcessActiveEntities(f64 a_deltaT)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    EntitySystemBase::
+    ProcessActiveEntities(f64 a_deltaT)
   {
     TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
       "Did you forget to call Initialize()?");
@@ -49,17 +60,21 @@ namespace tloc { namespace core { namespace component_system {
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities(a_deltaT);
-      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities, a_deltaT);
+      DoProcessActiveEntities(m_activeEntities, a_deltaT);
       Post_ProcessActiveEntities(a_deltaT);
     }
   }
 
-  error_type EntitySystemBase::Shutdown()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    EntitySystemBase::
+    Shutdown()
   {
     if (Pre_Shutdown() == ErrorSuccess)
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
-      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
+      if (DoShutdown(m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();
       }
@@ -68,7 +83,11 @@ namespace tloc { namespace core { namespace component_system {
     return ErrorFailure;
   }
 
-  bool EntitySystemBase::OnEvent(const EventBase& a_event)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    EntitySystemBase::
+    OnEvent(const EventBase& a_event)
   {
     event_value_type type = a_event.GetType();
 

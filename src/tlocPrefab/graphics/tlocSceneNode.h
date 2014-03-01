@@ -20,14 +20,13 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef gfx_cs::SceneNode*            scene_node_ptr_type;
 
   public:
-    SceneNode(core_cs::EntityManager* a_entMgr,
-              core_cs::ComponentPoolManager* a_poolMgr)
+    SceneNode(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
               : Prefab_I(a_entMgr, a_poolMgr)
               , m_parent(nullptr)
     { }
 
-    entity_type* Create();
-    this_type&   Add(entity_type* a_ent);
+    entity_ptr  Create();
+    this_type&  Add(entity_ptr a_ent);
 
     TLOC_DECL_PARAM_VAR(scene_node_ptr_type, Parent, m_parent);
   };

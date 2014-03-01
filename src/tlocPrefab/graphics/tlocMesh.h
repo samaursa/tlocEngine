@@ -19,13 +19,12 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef core_conts::Array<gfx_cs::Mesh::vert_type>    vert_cont_type;
 
   public:
-    Mesh(core_cs::EntityManager*  a_entMgr,
-         core_cs::ComponentPoolManager* a_poolMgr)
+    Mesh(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
          : Prefab_I(a_entMgr, a_poolMgr)
     { }
 
-    entity_type* Create(const vert_cont_type& a_vertices);
-    void         Add(entity_type* a_ent, const vert_cont_type& a_vertices);
+    entity_ptr   Create(const vert_cont_type& a_vertices);
+    void         Add(entity_ptr a_ent, const vert_cont_type& a_vertices);
 
   };
 

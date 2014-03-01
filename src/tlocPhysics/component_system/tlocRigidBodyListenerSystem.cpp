@@ -24,10 +24,12 @@ namespace tloc { namespace physics { namespace component_system {
 
     typedef RigidBodyListener                         rb_listener_component;
 
-    typedef rb_listener_component::rigid_body_listener_type
-                                                      rb_listener_type;
+    typedef rb_listener_component::rigid_body_listener_ptr
+                                                      rb_listener_ptr;
 
     typedef RigidBodyListenerSystem::entity_type      entity_type;
+    typedef RigidBodyListenerSystem::entity_ptr       entity_ptr;
+    typedef RigidBodyListenerSystem::const_entity_ptr const_entity_ptr;
     typedef entity_type::component_list               component_list;
 
     namespace contact
@@ -41,7 +43,7 @@ namespace tloc { namespace physics { namespace component_system {
       };
     };
 
-    rb_listener_type*
+    rb_listener_ptr
       DoGetRigidBodyListener(const component_list* a_rbListenerComponents)
     {
       using namespace tloc::core::component_system;
@@ -49,7 +51,7 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rb_listener_component* rbListenerComponent =
+      rigid_body_listener_vptr rbListenerComponent =
         rbListenerComponentsMapped[0];
 
       return rbListenerComponent->GetRigidBodyListener();
@@ -58,11 +60,11 @@ namespace tloc { namespace physics { namespace component_system {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
-      DoSendOnContactBegin(const entity_type* a_sendToEnt,
-                           const entity_type* a_contactWithEnt)
+      DoSendOnContactBegin(const_entity_ptr a_sendToEnt,
+                           const_entity_ptr a_contactWithEnt)
     {
       const entity_type::component_list* rbListenerComponents;
-      rb_listener_type* rbListener;
+      rb_listener_ptr rbListener;
 
       rbListenerComponents =
         &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
@@ -77,11 +79,11 @@ namespace tloc { namespace physics { namespace component_system {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
-      SendOnContactEnd(const entity_type* a_sendToEnt,
-                       const entity_type* a_contactWithEnt)
+      SendOnContactEnd(const_entity_ptr a_sendToEnt,
+                       const_entity_ptr a_contactWithEnt)
     {
       const entity_type::component_list* rbListenerComponents;
-      rb_listener_type* rbListener;
+      rb_listener_ptr rbListener;
 
       rbListenerComponents =
         &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
@@ -101,15 +103,15 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
                             entity_manager_sptr a_entityMgr,
                             physics_manager* a_physicsMgr)
-    : base_type(a_eventMgr, a_entityMgr
-    , Variadic<component_type, 1>(components::k_rigidBodyListener))
+    : base_type(a_eventMgr, a_entityMgr,
+                Variadic<component_type, 1>(components::k_rigidBodyListener))
     , m_physicsMgr(a_physicsMgr)
-  {
-  }
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+  RigidBodyListenerSystem::error_type
+    RigidBodyListenerSystem::
     Pre_Initialize()
   {
     m_physicsMgr->Register(this);
@@ -119,7 +121,8 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
+  RigidBodyListenerSystem::error_type
+    RigidBodyListenerSystem::
     Post_Shutdown()
   {
     m_physicsMgr->UnRegister(this);
@@ -129,14 +132,12 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    InitializeEntity(const entity_manager* ,
-                     const entity_type* a_ent)
+  RigidBodyListenerSystem::error_type
+    RigidBodyListenerSystem::
+    InitializeEntity(entity_ptr a_ent)
   {
-    const entity_type* ent = a_ent;
-
     const entity_type::component_list& rbComponents =
-      ent->GetComponents(components::k_rigidBody);
+      a_ent->GetComponents(components::k_rigidBody);
 
     if (rbComponents.empty())
     {
@@ -154,13 +155,10 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  RigidBodyListenerSystem::error_type RigidBodyListenerSystem::
-    ShutdownEntity(const entity_manager* a_mgr,
-                   const entity_type* a_ent)
-  {
-    TLOC_UNUSED_2(a_mgr, a_ent);
-    return ErrorSuccess;
-  }
+  RigidBodyListenerSystem::error_type
+    RigidBodyListenerSystem::
+    ShutdownEntity(entity_ptr)
+  { return ErrorSuccess; }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -195,13 +193,15 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void RigidBodyListenerSystem::
-    ProcessEntity(const entity_manager* , const entity_type*, f64 )
+  void
+    RigidBodyListenerSystem::
+    ProcessEntity(entity_ptr, f64 )
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool RigidBodyListenerSystem::
+  bool
+    RigidBodyListenerSystem::
     OnContactBegin(const contact_event_type& a_event)
   {
     m_allContactEvents[contact::k_begin].push_back(a_event);
@@ -210,7 +210,8 @@ namespace tloc { namespace physics { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool RigidBodyListenerSystem::
+  bool
+    RigidBodyListenerSystem::
     OnContactEnd(const contact_event_type& a_event)
   {
     m_allContactEvents[contact::k_end].push_back(a_event);

@@ -2,6 +2,9 @@
 
 #include <tlocCore/error/tlocError.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -49,7 +52,8 @@ namespace TestingRigidBodySystem
 
     typedef RigidBodyShape                      rigid_body_shape_component;
     typedef RigidBody                           rigid_body_component;
-    typedef component_system::RigidBodyListener rigid_body_listener_component;
+    typedef phys_cs::RigidBodyListener          rigid_body_listener_component;
+    typedef phys_cs::rigid_body_listener_vso    rigid_Body_listener_vso;
 
     typedef rigid_body_component::rigid_body_type::vec_type  vec_type;
 
@@ -86,7 +90,8 @@ namespace TestingRigidBodySystem
     tl_size m_numContactEnd;
   };
 
-  class ComponentContactCallback : public  physics::RigidBodyListener
+  class ComponentContactCallback
+    : public  physics::RigidBodyListener
   {
   public:
 
@@ -95,13 +100,13 @@ namespace TestingRigidBodySystem
       , m_numContactEnd(0)
     {}
 
-    void OnContactBegin(const entity_type* a_ent)
+    void OnContactBegin(const_entity_ptr a_ent)
     {
       ++m_numContactBegin;
       TLOC_UNUSED(a_ent);
     }
 
-    void OnContactEnd(const entity_type* a_ent)
+    void OnContactEnd(const_entity_ptr a_ent)
     {
       ++m_numContactEnd;
       TLOC_UNUSED(a_ent);
@@ -110,6 +115,8 @@ namespace TestingRigidBodySystem
     tl_size m_numContactBegin;
     tl_size m_numContactEnd;
   };
+
+  TLOC_TYPEDEF_VIRTUAL_PTR(ComponentContactCallback, comp_contact_callback);
 
 };
 
@@ -142,7 +149,7 @@ namespace TestingRigidBodySystem
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Box)
-    entity_type* rbStaticRectEntity = entityMgr->CreateEntity();
+    core_cs::entity_vptr rbStaticRectEntity = entityMgr->CreateEntity();
 
     transform_type transformComponent;
 
@@ -155,13 +162,16 @@ namespace TestingRigidBodySystem
     rigid_body_shape_def_type rbRectShape(rectShape);
     rigid_body_shape_component rbShapeComponent(rbRectShape);
 
-    entityMgr->InsertComponent(rbStaticRectEntity, &transformComponent);
-    entityMgr->InsertComponent(rbStaticRectEntity, &rbStaticRectComponent);
-    entityMgr->InsertComponent(rbStaticRectEntity, &rbShapeComponent);
+    entityMgr->InsertComponent(rbStaticRectEntity,
+                               math_cs::transform_vptr(&transformComponent));
+    entityMgr->InsertComponent(rbStaticRectEntity,
+                               rigid_body_vptr(&rbStaticRectComponent));
+    entityMgr->InsertComponent(rbStaticRectEntity,
+                               rigid_body_shape_vptr(&rbShapeComponent));
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Circle)
-    entity_type* rbStaticCircleEntity = entityMgr->CreateEntity();
+    core_cs::entity_vptr rbStaticCircleEntity = entityMgr->CreateEntity();
 
     transform_type transformComponent1;
 
@@ -177,13 +187,16 @@ namespace TestingRigidBodySystem
     rigid_body_shape_def_type rbCircleShape(circleShape);
     rigid_body_shape_component rbShapeComponent1(rbCircleShape);
 
-    entityMgr->InsertComponent(rbStaticCircleEntity, &transformComponent1);
-    entityMgr->InsertComponent(rbStaticCircleEntity, &rbStaticComponent);
-    entityMgr->InsertComponent(rbStaticCircleEntity, &rbShapeComponent1);
+    entityMgr->InsertComponent(rbStaticCircleEntity,
+                               math_cs::transform_vptr(&transformComponent1));
+    entityMgr->InsertComponent(rbStaticCircleEntity,
+                               rigid_body_vptr(&rbStaticComponent));
+    entityMgr->InsertComponent(rbStaticCircleEntity,
+                               rigid_body_shape_vptr(&rbShapeComponent1));
 
     //------------------------------------------------------------------------
     // Create a dynamic rigid body (Circle)
-    entity_type* rbDynamicCircleEntity = entityMgr->CreateEntity();
+    core_cs::entity_vptr rbDynamicCircleEntity = entityMgr->CreateEntity();
 
     transform_type transformComponent2;
 
@@ -196,12 +209,17 @@ namespace TestingRigidBodySystem
     rigid_body_shape_component rbShapeComponent2(rbCircleShape);
 
     ComponentContactCallback myComponentContactCallback;
-    rigid_body_listener_component rbListenerComponent(&myComponentContactCallback);
+    rigid_body_listener_component
+      rbListenerComponent( (comp_contact_callback_vptr(&myComponentContactCallback)) );
 
-    entityMgr->InsertComponent(rbDynamicCircleEntity, &transformComponent2);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, &rbDynamicComponent);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, &rbShapeComponent2);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, &rbListenerComponent);
+    entityMgr->InsertComponent(rbDynamicCircleEntity,
+                               math_cs::transform_vptr(&transformComponent2));
+    entityMgr->InsertComponent(rbDynamicCircleEntity,
+                               rigid_body_vptr(&rbDynamicComponent));
+    entityMgr->InsertComponent(rbDynamicCircleEntity,
+                               rigid_body_shape_vptr(&rbShapeComponent2));
+    entityMgr->InsertComponent(rbDynamicCircleEntity,
+                               phys_cs::rigid_body_listener_vptr(&rbListenerComponent));
 
     //------------------------------------------------------------------------
     CHECK(rigidBodySys.Initialize() == ErrorSuccess);

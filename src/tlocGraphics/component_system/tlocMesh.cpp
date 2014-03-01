@@ -1,6 +1,5 @@
 #include "tlocMesh.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -34,10 +33,13 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiation
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh_Interleaved);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_sptr);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(mesh_interleaved_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mesh);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mesh_Interleaved);
+
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Mesh);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Mesh_Interleaved);

@@ -30,10 +30,7 @@ namespace tloc { namespace core { namespace component_system {
     friend class ComponentPoolManager;
 
   public:
-    ComponentPool_I(const this_type& a_other);
     virtual ~ComponentPool_I();
-
-    this_type& operator=(this_type a_other);
 
     template <typename T_PoolType>
     T_PoolType*         GetAs()
@@ -42,8 +39,6 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_PoolType>
     T_PoolType const *  GetAs() const
     { return static_cast<T_PoolType const *>(this); }
-
-    void                swap(this_type& a_other);
 
   protected:
     ComponentPool_I();
@@ -76,10 +71,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef typename pool_type::size_type                   size_type;
 
   public:
-    ComponentPool_TI(const this_type& a_other);
     virtual ~ComponentPool_TI();
-
-    this_type& operator=(this_type a_other);
 
     iterator          GetNext();
     final_value_type& GetNextValue();
@@ -96,8 +88,6 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     void            RecycleAllUnused();
     size_type       GetUsed() const;
-
-    void            swap(this_type& a_other);
 
   protected:
     ComponentPool_TI();

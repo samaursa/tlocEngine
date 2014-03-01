@@ -3,7 +3,8 @@
 
 #include <tlocAnimation/tlocAnimationBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
@@ -99,8 +100,8 @@ namespace tloc { namespace animation { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(TransformAnimation, transform_animation);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_animation_sptr, transform_animation_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TransformAnimation, transform_animation);
+  TLOC_TYPEDEF_COMPONENT_POOL(TransformAnimation, transform_animation);
 
 };};};
 

@@ -9,9 +9,9 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
   template <typename SpriteLoaderIterator>
   void
-    DoAddSpriteAnimation(core_cs::Entity* a_entity,
-                         core_cs::EntityManager* a_mgr,
-                         core_cs::ComponentPoolManager* a_poolMgr,
+    DoAddSpriteAnimation(core_cs::entity_vptr a_entity,
+                         core_cs::entity_manager_vptr a_mgr,
+                         core_cs::component_pool_mgr_vptr a_poolMgr,
                          SpriteLoaderIterator a_begin,
                          SpriteLoaderIterator a_end,
                          bool a_loop,
@@ -26,29 +26,28 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     using namespace gfx_cs;
     using namespace gfx_cs::components;
 
-    typedef gfx_cs::texture_animator_sptr_pool      ta_pool;
-    gfx_cs::texture_animator_sptr_pool_sptr         taPool;
+    typedef gfx_cs::texture_animator_pool           ta_pool;
+    gfx_cs::texture_animator_pool_vptr              taPool;
 
-    gfx_cs::TextureAnimator* ta = nullptr;
+    gfx_cs::texture_animator_vptr ta = nullptr;
 
     const tl_size size = a_entity->GetComponents(texture_animator).size();
 
     if (size && a_setIndex < size)
     {
-      ta = a_entity->GetComponent<TextureAnimator>(a_setIndex);
+      ta = a_entity->GetComponent<gfx_cs::TextureAnimator>(a_setIndex);
     }
     else
     {
       if (a_poolMgr->Exists(texture_animator) == false)
-      { taPool = a_poolMgr->CreateNewPool<texture_animator_sptr>(); }
+      { taPool = a_poolMgr->CreateNewPool<gfx_cs::TextureAnimator>(); }
       else
-      { taPool = a_poolMgr->GetPool<texture_animator_sptr>(); }
+      { taPool = a_poolMgr->GetPool<gfx_cs::TextureAnimator>(); }
 
       ta_pool::iterator itrTa = taPool->GetNext();
-      itrTa->SetValue(texture_animator_sptr(new TextureAnimator()) );
+      (*itrTa)->SetValue(TextureAnimator() );
 
-      texture_animator_sptr taPtr = itrTa->GetValue();
-      ta = taPtr.get();
+      ta = (*itrTa)->GetValue();
 
       a_mgr->InsertComponent(a_entity, ta);
     }
@@ -90,18 +89,18 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::iterator>
-    (core_cs::Entity* a_entity,
-     core_cs::EntityManager*,
-     core_cs::ComponentPoolManager*,
+    (core_cs::entity_vptr a_entity,
+     core_cs::entity_manager_vptr,
+     core_cs::component_pool_mgr_vptr,
      SpriteLoader_SpriteSheetPacker::iterator,
      SpriteLoader_SpriteSheetPacker::iterator,
      bool, tl_size, tl_size, tl_size, bool);
 
   template void
     DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
-    (core_cs::Entity* a_entity,
-     core_cs::EntityManager*,
-     core_cs::ComponentPoolManager*,
+    (core_cs::entity_vptr a_entity,
+     core_cs::entity_manager_vptr,
+     core_cs::component_pool_mgr_vptr,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      SpriteLoader_SpriteSheetPacker::const_iterator,
      bool, tl_size, tl_size, tl_size, bool);

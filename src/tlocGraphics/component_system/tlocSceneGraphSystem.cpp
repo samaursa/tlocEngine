@@ -26,8 +26,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   struct NodeCompareFromEntity
   {
-    typedef SceneNode*                            node_ptr_type;
-    typedef core_cs::Entity*                      entity_ptr_type;
+    typedef scene_node_vptr                       node_ptr_type;
+    typedef core_cs::entity_vptr                  entity_ptr_type;
 
     bool
       operator()(entity_ptr_type a_first, entity_ptr_type a_second)
@@ -37,8 +37,8 @@ namespace tloc { namespace graphics { namespace component_system {
       TLOC_ASSERT(a_second->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
 
-      SceneNode* firstNode = a_first->GetComponent<SceneNode>();
-      SceneNode* secondNode = a_second->GetComponent<SceneNode>();
+      scene_node_vptr firstNode = a_first->GetComponent<SceneNode>();
+      scene_node_vptr secondNode = a_second->GetComponent<SceneNode>();
 
       return firstNode->GetLevel() < secondNode->GetLevel();
     }
@@ -58,7 +58,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    DeactivateHierarchy(const entity_type* a_node)
+    DeactivateHierarchy(entity_ptr a_node)
   {
     TLOC_ASSERT_NOT_NULL(a_node);
 
@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_node->HasComponent<gfx_cs::SceneNode>() == false)
     { return; }
 
-    SceneNode* node = a_node->GetComponent<SceneNode>();
+    scene_node_vptr node = a_node->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    ActivateHierarchy(const entity_type* a_parent)
+    ActivateHierarchy(entity_ptr a_parent)
   {
     TLOC_ASSERT_NOT_NULL(a_parent);
 
@@ -89,7 +89,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_parent->HasComponent(components::scene_node) == false)
     { return; }
 
-    SceneNode* node = a_parent->GetComponent<SceneNode>();
+    scene_node_vptr node = a_parent->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -119,19 +119,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     SceneGraphSystem::
-    InitializeEntity(const entity_manager* , const entity_type* a_ent)
+    InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_CORE_WARN_IF(a_ent->
       HasComponent(math_cs::Transform::k_component_type) == false)
       << "Node component requires math_cs::Transform component";
 
-    SceneNode* node = a_ent->GetComponent<SceneNode>();
+    scene_node_vptr node = a_ent->GetComponent<SceneNode>();
 
     // get the level of this node relative to its parents. If the parent
     // already has a level and update hierarchy is not required, then find
     // the level from there
 
-    SceneNode* parent = node->GetParent();
+    scene_node_vptr parent = node->GetParent();
 
     if (parent)
     {
@@ -169,7 +169,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     SceneGraphSystem::
-    ShutdownEntity(const entity_manager* , const entity_type* )
+    ShutdownEntity(entity_ptr)
   {
     return ErrorSuccess;
   }
@@ -185,14 +185,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64 )
   {
-    using math_cs::Transform;
+    using namespace math_cs;
 
-    Transform* localTransform = a_ent->GetComponent<Transform>();
-    SceneNode* node = a_ent->GetComponent<SceneNode>();
+    transform_vptr localTransform = a_ent->GetComponent<Transform>();
+    scene_node_vptr node = a_ent->GetComponent<SceneNode>();
 
-    SceneNode*         nodeParent = node->GetParent();
+    scene_node_vptr nodeParent = node->GetParent();
 
     if (nodeParent == nullptr)
     {

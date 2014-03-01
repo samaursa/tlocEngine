@@ -101,7 +101,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <JOYSTICK_IMPL_TEMP>
   JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
-    JoystickImpl_T(parent_type* a_parent,
+    JoystickImpl_T(parent_type& a_parent,
                    const joystick_params_type& a_params)
                    : JoystickImplBase(a_parent, a_params)
                    , m_directInput(a_params.m_param2)
@@ -491,8 +491,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_axisMoved[i])
         {
-          if (m_parent->SendAxisChange(m_currentState, i,
-                                       m_currentState.m_axes[i]) == false)
+          if (m_parent.SendAxisChange(m_currentState, i,
+                                      m_currentState.m_axes[i]) == false)
             return;
         }
       }
@@ -501,8 +501,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_sliderMoved[i])
         {
-          if (m_parent->SendSliderChange(m_currentState, i,
-                                         m_currentState.m_sliders[i]) == false)
+          if (m_parent.SendSliderChange(m_currentState, i,
+                                        m_currentState.m_sliders[i]) == false)
             return;
         }
       }
@@ -550,11 +550,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if( a_di.dwData & 0x80 )
     {
-      return m_parent->SendButtonPress( JoystickEvent(m_currentState), a_button);
+      return m_parent.SendButtonPress( JoystickEvent(m_currentState), a_button);
     }
     else
     {
-      return m_parent->SendButtonRelease( JoystickEvent(m_currentState), a_button);
+      return m_parent.SendButtonRelease( JoystickEvent(m_currentState), a_button);
     }
   }
 
@@ -566,8 +566,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
   {
     DoChangePOV(a_povIndex, a_di, InputPolicy::Immediate());
-    return m_parent->SendPOVChange(JoystickEvent(m_currentState), a_povIndex,
-                                   m_currentState.m_pov[a_povIndex]);
+    return m_parent.SendPOVChange
+      (JoystickEvent(m_currentState), a_povIndex, m_currentState.m_pov[a_povIndex]);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

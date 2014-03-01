@@ -3,6 +3,9 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
@@ -52,6 +55,7 @@ namespace tloc { namespace core { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_SHARED_PTR(EventManager, event_manager);
+  TLOC_TYPEDEF_VIRTUAL_PTR(EventManager, event_manager);
 
 };};};
 

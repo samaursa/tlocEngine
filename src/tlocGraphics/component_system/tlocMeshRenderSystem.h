@@ -30,12 +30,14 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_manager;
     using base_type::entity_manager;
     using base_type::entity_type;
+    using base_type::entity_ptr;
     using base_type::event_type;
     using base_type::event_value_type;
 
     typedef gl::shader_program_sptr                       shader_prog_ptr;
 
     typedef Mesh_T                                        mesh_type;
+    typedef core_sptr::VirtualPtr<mesh_type>              mesh_ptr;
     typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
 
     typedef math::types::Vec3f32                          vec3_type;
@@ -44,14 +46,10 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_sptr a_eventMgr,
                      entity_manager_sptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}

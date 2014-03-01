@@ -154,49 +154,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     get() const
   { return m_constPtr; }
 
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //void
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  DoRelocate()
-  //{
-  //  if (m_ptr)
-  //  { m_ptr.DoRelocate(&m_value); }
-
-  //  if (m_constPtr)
-  //  { m_constPtr.DoRelocate(&m_value); }
-  //}
-
-  //// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  //void
-  //  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-  //  DoSetVirtualPtr() const
-  //{
-  //  if (m_ptr)
-  //  {
-  //    tl_uintptr addressOfvptr = core_utils::GetMemoryAddress(m_constPtr.get());
-  //    tl_uintptr addressOfvalue = core_utils::GetMemoryAddress(&m_value);
-
-  //    // NOTE: Assertion here means that you still have VirtualPtrs who are
-  //    // holding on to a now incorrect address. This is usually caused by a
-  //    // reallocation of a container
-  //    TLOC_ASSERT( (m_constPtr.unique() ? true : addressOfvalue == addressOfvptr),
-  //      "Address of value has changed - VirtualPtrs now invalid");
-
-  //    if (addressOfvptr != addressOfvalue)
-  //    {
-  //      m_constPtr.reset(&m_value);
-  //    }
-  //  }
-  //  else
-  //  {
-  //    m_constPtr.reset(&m_value);
-  //  }
-  //}
-
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<Release>
 

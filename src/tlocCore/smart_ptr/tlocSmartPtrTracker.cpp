@@ -142,9 +142,9 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
         m_mapIsDestroyed = true;
 
         TLOC_LOG_CORE_WARN_IF(m_ptrMap.size() != 0)
-          << "# SmartPtr trackers NOT released: " << m_ptrMap.size();
+          << "No. of SmartPtr trackers NOT released: " << m_ptrMap.size();
         TLOC_LOG_CORE_WARN_IF(m_virtualPtrMap.size() != 0)
-          << "# VirtualPtr trackers NOT released: " << m_virtualPtrMap.size();
+          << "No. of VirtualPtr trackers NOT released: " << m_virtualPtrMap.size();
       }
 
     private:

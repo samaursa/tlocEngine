@@ -154,6 +154,22 @@ namespace tloc { namespace core { namespace smart_ptr {
     get() const
   { return m_constPtr; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return m_ptr == a_other.m_ptr; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return m_ptr < a_other.m_ptr; }
+
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<Release>
 
@@ -266,6 +282,25 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     get() const
   { return const_pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
 };};};
 

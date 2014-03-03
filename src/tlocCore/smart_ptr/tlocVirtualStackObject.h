@@ -45,23 +45,22 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
-    this_type&          operator=(this_type a_other);
-    this_type&          operator=(const value_type& a_other);
-    void                swap(this_type& a_other);
+    this_type&                operator=(this_type a_other);
+    this_type&                operator=(const value_type& a_other);
+    void                      swap(this_type& a_other);
 
-    value_type&         operator*();
-    const value_type&   operator*() const;
+    value_type&               operator*();
+    const value_type&         operator*() const;
 
-    value_type_pointer             operator->();
-    const_value_type_pointer       operator->() const;
+    value_type_pointer        operator->();
+    const_value_type_pointer  operator->() const;
 
-    const pointer&                  get();
-    const const_pointer&            get() const;
+    const pointer&            get();
+    const const_pointer&      get() const;
 
-    bool operator==(const this_type& a_other) const
-    { return m_ptr == a_other.m_ptr; }
-    bool operator<(const this_type& a_other) const
-    { return m_ptr < a_other.m_ptr; }
+    bool                      operator==(const this_type& a_other) const;
+    bool                      operator<(const this_type& a_other) const;
+
     TLOC_DECLARE_OPERATORS(this_type);
 
   protected:
@@ -106,10 +105,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer                get();
     const_pointer          get() const; // intentionally returned by value
 
-    bool operator==(const this_type& a_other) const
-    { return &m_value == &a_other.m_value; }
-    bool operator<(const this_type& a_other) const
-    { return &m_value < &a_other.m_value; }
+    bool operator==(const this_type& a_other) const;
+    bool operator<(const this_type& a_other) const;
+
     TLOC_DECLARE_OPERATORS(this_type);
 
   protected:

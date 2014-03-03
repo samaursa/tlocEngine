@@ -76,18 +76,18 @@ namespace tloc { namespace core { namespace component_system {
     iterator          GetNext();
     final_value_type& GetNextValue();
 
-    iterator        begin();
-    const_iterator  begin() const;
-    iterator        end();
-    const_iterator  end() const;
+    iterator          begin();
+    const_iterator    begin() const;
+    iterator          end();
+    const_iterator    end() const;
 
     ///-------------------------------------------------------------------------
     /// @brief
     /// Will recycle all the components that are not in use (i.e. their
     /// reference count is 1).
     ///-------------------------------------------------------------------------
-    void            RecycleAllUnused();
-    size_type       GetUsed() const;
+    void              RecycleAllUnused();
+    size_type         GetUsed() const;
 
   protected:
     ComponentPool_TI();

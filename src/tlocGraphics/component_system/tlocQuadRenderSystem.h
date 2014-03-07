@@ -25,15 +25,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
   {
   public:
-    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>       base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
+    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
@@ -50,17 +42,13 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_conts::ArrayFixed<gl::attribute_sptr, 4>     attributes_cont;
 
   public:
-    QuadRenderSystem(event_manager_sptr a_eventMgr,
-                     entity_manager_sptr a_entityMgr);
+    QuadRenderSystem(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}

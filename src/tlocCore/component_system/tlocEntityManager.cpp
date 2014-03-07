@@ -1,13 +1,13 @@
 #include "tlocEntityManager.h"
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   EntityManager::
-    EntityManager(event_manager_sptr a_eventManager)
+    EntityManager(event_manager_vptr a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
     m_componentsAndEntities.resize(components_group::count);
@@ -21,6 +21,12 @@ namespace tloc { namespace core { namespace component_system {
     {
       if (*itr) { DestroyEntity(*itr); }
     }
+
+    // update releases components and deletes entities marked for destruction
+    Update();
+
+    // delete the remaining entities, if any
+    for_each_all(m_entities, core_sptr::algos::DeleteAndReset());
   }
 
   EntityManager::entity_ptr_type EntityManager::
@@ -210,5 +216,5 @@ namespace tloc { namespace core { namespace component_system {
 //------------------------------------------------------------------------
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::EntityManager);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntityManager);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntityManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::core_cs::EntityManager);

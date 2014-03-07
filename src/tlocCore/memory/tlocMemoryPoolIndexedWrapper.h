@@ -16,7 +16,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     // we assume that wrapper_value_type is a VirtualStackOBject, therefore
     // ptr_type is the VirtualPointer for this VirtualStackObject
     typedef core_sptr::
-      VirtualStackObject_T<value_type>                  value_type_vso;
+      VirtualStackObjectBase_TI<value_type>              value_type_vso;
 
     typedef typename
       value_type_vso::pointer                           pointer;

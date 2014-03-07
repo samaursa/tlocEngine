@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef();
+    DoAddRef(nullptr);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
-    DoAddRef();
+    DoAddRef(nullptr);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -180,12 +180,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_PTR_TEMPS>
   void
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
-    DoAddRef()
+    DoAddRef(void* a_connectedPointer)
   {
     if (m_refCount)
     {
       if (*m_refCount == 0)
-      { priv::DoAddVirtualPtrRef( (void*) m_rawPtr); }
+      { priv::DoAddVirtualPtrRef( (void*) m_rawPtr, a_connectedPointer); }
 
       ++*m_refCount;
     }
@@ -203,6 +203,8 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
+        TLOC_ASSERT_LOW_LEVEL(*m_refCount == 0,
+          "use_count() reported an incorrect ref count");
         priv::DoRemoveVirtualPtrRef( (void*) m_rawPtr);
         delete m_refCount;
       }

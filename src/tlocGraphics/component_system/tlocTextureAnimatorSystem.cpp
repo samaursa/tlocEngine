@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // QuadRenderSystem
 
   TextureAnimatorSystem::
-    TextureAnimatorSystem(event_manager_sptr a_eventMgr,
-                          entity_manager_sptr a_entityMgr)
+    TextureAnimatorSystem(event_manager_ptr a_eventMgr,
+                          entity_manager_ptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::texture_animator))
   { }

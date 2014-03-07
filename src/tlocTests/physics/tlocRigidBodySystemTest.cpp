@@ -36,13 +36,13 @@ namespace TestingRigidBodySystem
   {
     typedef core::error::Error  error_type;
 
-    typedef core::component_system::event_manager_sptr  event_manager_sptr;
-    typedef core::component_system::entity_manager_sptr entity_manager_sptr;
-    typedef core::component_system::Entity              entity_type;
+    typedef core_cs::event_manager_vso          event_manager_vso;
+    typedef core_cs::entity_manager_vso         entity_manager_vso;
+    typedef core_cs::Entity                     entity_type;
 
-    typedef math::types::Rectf32                        rect_shape_type;
-    typedef math::types::Circlef32                      circle_shape_type;
-    typedef math::component_system::Transform           transform_type;
+    typedef math_t::Rectf32                     rect_shape_type;
+    typedef math_t::Circlef32                   circle_shape_type;
+    typedef math_cs::Transform                  transform_type;
 
     typedef box2d::PhysicsManager               physics_manager;
     typedef box2d::ContactEvent                 contact_event_type;
@@ -122,6 +122,7 @@ namespace TestingRigidBodySystem
 
 TLOC_DEF_TYPE(TestingRigidBodySystem::WorldContactCallback);
 
+
 namespace TestingRigidBodySystem
 {
 
@@ -139,19 +140,19 @@ namespace TestingRigidBodySystem
     WorldContactCallback myWorldContactCallback;
     physicsMgr.Register(&myWorldContactCallback);
 
-    event_manager_sptr evntMgr(new core_cs::EventManager());
-    entity_manager_sptr entityMgr(new core_cs::EntityManager(evntMgr));
+    event_manager_vso evntMgr;
+    entity_manager_vso entityMgr(evntMgr.get());
 
-    rigid_body_system rigidBodySys(evntMgr, entityMgr, &physicsMgr.GetWorld());
+    transform_type transformComponent;
+
+    rigid_body_system rigidBodySys(evntMgr.get(), entityMgr.get(), &physicsMgr.GetWorld());
 
     rigid_body_listener_system
-      rigidBodyListenerSys(evntMgr, entityMgr, &physicsMgr);
+      rigidBodyListenerSys(evntMgr.get(), entityMgr.get(), &physicsMgr);
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Box)
     core_cs::entity_vptr rbStaticRectEntity = entityMgr->CreateEntity();
-
-    transform_type transformComponent;
 
     rigid_body_def_sptr rbDef(new rigid_body_def_type);
     rigid_body_component rbStaticRectComponent(rbDef);

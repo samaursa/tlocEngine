@@ -2,6 +2,8 @@
 
 #include <tlocCore/containers/tlocHashmap.h>
 #include <tlocCore/containers/tlocHashmap.inl.h>
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 #include <tlocCore/logging/tlocLogger.h>
@@ -17,8 +19,10 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
     class PointerMap_T
     {
     public:
+      typedef core_conts::Array<void*>              ptr_array;
       typedef containers::HashMap<void*, void*>     map_type;
       typedef containers::HashMap<void*, tl_size>   virtual_map_type;
+      typedef containers::HashMap<void*, ptr_array> virtual_map_connected_ptrs_type;
 
     public:
       bool Exists(void* a_pointer)
@@ -78,6 +82,58 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
         return 0;
       }
 
+      tl_size StartTrackingVirtual(void* a_pointer, void* a_connectedPointer)
+      {
+        TLOC_ASSERT(!m_mapIsDestroyed, "Are you calling Add() at program exit?");
+
+        if (a_pointer && a_connectedPointer && (a_pointer != a_connectedPointer))
+        {
+          // connected these two pointers
+          virtual_map_connected_ptrs_type::iterator itr;
+          itr = m_virtualPtrConnectedMap.find(a_pointer);
+
+          if (itr != m_virtualPtrConnectedMap.end())
+          {
+            ptr_array& ptrArray = itr->second;
+
+            ptr_array::iterator ptrItr =
+              core::find_all(ptrArray, a_connectedPointer);
+
+            if (ptrItr == ptrArray.end())
+            { ptrArray.push_back(a_connectedPointer); }
+          }
+          else
+          {
+            ptr_array ptrArray;
+            ptrArray.push_back(a_connectedPointer);
+
+            m_virtualPtrConnectedMap[a_pointer] = ptrArray;
+          }
+
+          itr = m_virtualPtrConnectedMap.find(a_connectedPointer);
+
+          if (itr != m_virtualPtrConnectedMap.end())
+          {
+            ptr_array& ptrArray = itr->second;
+
+            ptr_array::iterator ptrItr =
+              core::find_all(ptrArray, a_pointer);
+
+            if (ptrItr == ptrArray.end())
+            { ptrArray.push_back(a_pointer); }
+          }
+          else
+          {
+            ptr_array ptrArray;
+            ptrArray.push_back(a_pointer);
+
+            m_virtualPtrConnectedMap[a_connectedPointer] = ptrArray;
+          }
+        }
+
+        return StartTrackingVirtual(a_pointer);
+      }
+
       void StopTracking(void* a_pointer)
       {
         TLOC_ASSERT(!m_mapIsDestroyed, "Are you calling Add() at program exit?");
@@ -102,6 +158,8 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
           if (itr->second == 0)
           {
+            DoRemoveVirtualPtrConnection(a_pointer);
+
             m_virtualPtrMap.erase(itr);
             return 0;
           }
@@ -110,6 +168,38 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
         }
 
         return 0;
+      }
+
+      void DoRemoveVirtualPtrConnection(void* a_pointer)
+      {
+        virtual_map_connected_ptrs_type::iterator ptrItr =
+          m_virtualPtrConnectedMap.find(a_pointer);
+
+        if (ptrItr != m_virtualPtrConnectedMap.end())
+        {
+          ptr_array ptrArray = ptrItr->second;
+          m_virtualPtrConnectedMap.erase(ptrItr);
+
+          for (ptr_array::iterator itr = ptrArray.begin(),
+            itrEnd = ptrArray.end(); itr != itrEnd; ++itr)
+          {
+            // for each of these connected pointers, remove a_pointer's
+            // reference
+            virtual_map_connected_ptrs_type::iterator tempItr
+              = m_virtualPtrConnectedMap.find(*itr);
+
+            TLOC_ASSERT(tempItr != m_virtualPtrConnectedMap.end(),
+              "These pointers are connected and should have circular references "
+              "to each other");
+
+            ptr_array& tempPtrArray = tempItr->second;
+
+            ptr_array::iterator tempPtrItr = core::find_all(tempPtrArray, a_pointer);
+
+            if (tempPtrItr != tempPtrArray.end())
+            { tempPtrArray.erase(tempPtrItr); }
+          }
+        }
       }
 
       tl_size GetNumTrackedPointers()
@@ -124,7 +214,18 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
         if (itr != m_virtualPtrMap.end())
         {
-          return itr->second;
+          // the total size is the count of vptr references for a_pointer +
+          // any connected pointers
+
+          tl_size totalCount = itr->second;
+
+          virtual_map_connected_ptrs_type::iterator ptrItr =
+            m_virtualPtrConnectedMap.find(a_pointer);
+
+          if (ptrItr != m_virtualPtrConnectedMap.end())
+          { totalCount += ptrItr->second.size(); }
+
+          return totalCount;
         }
 
         return 0;
@@ -148,10 +249,11 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       }
 
     private:
-      map_type            m_ptrMap;
-      virtual_map_type    m_virtualPtrMap;
-      static bool         m_mapIsDestroyed;
-      static PointerMap_T sm_inst;
+      map_type                        m_ptrMap;
+      virtual_map_type                m_virtualPtrMap;
+      virtual_map_connected_ptrs_type m_virtualPtrConnectedMap;
+      static bool                     m_mapIsDestroyed;
+      static PointerMap_T             sm_inst;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -252,6 +354,14 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
     DoAddVirtualPtrRef(void* a_pointer)
   {
     return PointerMap::Get().StartTrackingVirtual(a_pointer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  tl_size
+    DoAddVirtualPtrRef(void* a_pointer, void* a_connectedPointer)
+  {
+    return PointerMap::Get().StartTrackingVirtual(a_pointer, a_connectedPointer);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

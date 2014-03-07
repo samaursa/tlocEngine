@@ -20,8 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::component_system::EntityProcessingSystem      base_type;
 
   public:
-    CameraSystem(event_manager_sptr a_eventMgr,
-                 entity_manager_sptr a_entityMgr);
+    CameraSystem(event_manager_ptr a_eventMgr,
+                 entity_manager_ptr a_entityMgr);
 
     virtual error_type Pre_Initialize() { return ErrorSuccess; }
 

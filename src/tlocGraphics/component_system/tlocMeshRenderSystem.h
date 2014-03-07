@@ -43,8 +43,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::types::Vec3f32                          vec3_type;
 
   public:
-    MeshRenderSystem_T(event_manager_sptr a_eventMgr,
-                     entity_manager_sptr a_entityMgr);
+    MeshRenderSystem_T(event_manager_ptr a_eventMgr,
+                       entity_manager_ptr a_entityMgr);
 
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);

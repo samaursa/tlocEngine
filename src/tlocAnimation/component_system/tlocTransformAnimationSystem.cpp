@@ -22,8 +22,8 @@ namespace tloc { namespace animation { namespace component_system {
   // TransformAnimationSystem
 
   TransformAnimationSystem::
-    TransformAnimationSystem(event_manager_sptr a_eventMgr,
-                             entity_manager_sptr a_entityMgr)
+    TransformAnimationSystem(event_manager_ptr a_eventMgr,
+                             entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::transform_animation))
   { }

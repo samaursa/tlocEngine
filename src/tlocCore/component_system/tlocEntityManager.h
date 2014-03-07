@@ -3,8 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -40,7 +39,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef Entity::entity_id                     entity_id_type;
 
   public:
-    EntityManager(event_manager_sptr a_eventManager);
+    EntityManager(event_manager_vptr a_eventManager);
     virtual ~EntityManager();
 
     entity_ptr_type   CreateEntity();
@@ -72,7 +71,7 @@ namespace tloc { namespace core { namespace component_system {
     entity_cont             m_entities;
     entity_id_cont          m_removedEntities;
     component_entity_cont   m_componentsAndEntities;
-    event_manager_sptr      m_eventMgr;
+    event_manager_vptr      m_eventMgr;
     entity_id_type          m_nextId;
 
     ent_comp_pair_cont      m_compToRemove;
@@ -82,8 +81,8 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(EntityManager, entity_manager);
-  TLOC_TYPEDEF_VIRTUAL_PTR(EntityManager, entity_manager);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EntityManager, entity_manager);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(EntityManager, entity_manager);
 
 };};};
 

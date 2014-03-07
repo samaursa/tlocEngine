@@ -3,6 +3,9 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
@@ -295,5 +298,77 @@ namespace TestingVirtualPtr
     tl_int temp(10);
     vp.reset(&temp);
     CHECK(GetUseCount(vp) == 1);
+  }
+
+  // -----------------------------------------------------------------------
+
+  class Foo1
+  { };
+
+  class Foo2
+  { };
+
+  class Base
+    : public Foo1
+  { int c; };
+
+  class Base2
+    : public Foo2
+    , public Base
+  { int d; };
+
+  class Derived
+    : public Base2
+  { int e; };
+
+  template <typename T_BuildConfig>
+  void DoCheckVPtrCount(void* a_pointer, tl_size a_count, T_BuildConfig)
+  {
+    CHECK(a_count == core_sptr::priv::DoGetVirtualRefCount(a_pointer));
+  }
+
+  void DoCheckVPtrCount(void* , tl_size , core_cfg::p_build_config::Release)
+  { }
+
+  TEST_CASE("core/smart_ptr/VirtualPtr/MultipleInheritance",
+    "In certain cases with multiple inheritance where the base class may be "
+    "ambiguous, the pointer addresses no longer match when casting from derived "
+    "to base. In this case, the vptr fails in a way that is difficult to track "
+    "down. This 'bug' has been fixed and these are the tests for it.")
+  {
+    core_sptr::VirtualStackObjectBase_TI<Derived> dStack;
+
+    // there are TWO independent VirtualPtrs in a VSO
+    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
+
+    core_sptr::VirtualPtr<Derived>  d = dStack.get();
+
+    // d does NOT increase overall ref count (only in the VirtualPtr itself)
+    DoCheckVPtrCount((void*)dStack.get().get(), 2, core_cfg::BuildConfig::build_config_type());
+
+    // Due to the multiply inherited hierarchy, the cast results in a different
+    // pointer address. VirtualPtr and SmartPtrTracker compensate for this.
+    core_sptr::VirtualPtr<Base> b(d);
+    core_sptr::VirtualPtr<Base> bb(d);
+
+    // These casts are independent and will ADD to the total ref count of
+    // the original pointer in the SmartPtrTracker. Note that no matter how
+    // many independent VirtualPtrs we have that have been casted, they add
+    // only 1 to the total ref count in SmartPtrTracker
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+
+    d.reset();
+
+    // TWO in dStack and... b and bb counted as 1 ref
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+    b.reset(); // should not crash
+
+    // TWO in dStack and... bb counted as 1 ref
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+
+    bb.reset();
+
+    // TWO in dStack
+    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
   }
 }

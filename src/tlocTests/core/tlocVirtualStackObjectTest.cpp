@@ -56,7 +56,7 @@ namespace TestingVirtualStackObject
 
     SECTION("No default ctor", "")
     {
-      VirtualStackObject_T<int, p_virtual_stack_object::default_ctor::NotAvail>
+      VirtualStackObjectBase_TI<int, p_virtual_stack_object::default_ctor::NotAvail>
         onStack(20);
       CHECK( (*onStack == 20) );
     }
@@ -76,33 +76,59 @@ namespace TestingVirtualStackObject
     }
   }
 
-  struct NoDefCtorOrEqualOper
+  struct NoDefCtor
   {
-    NoDefCtorOrEqualOper(tl_int a_num)
+    NoDefCtor(tl_int a_num)
       : a(a_num)
       , b(a_num)
       , c(a_num)
+    { }
+
+    NoDefCtor(const NoDefCtor& a_other)
+      : a(a_other.a)
+      , b(a_other.b)
+      , c(a_other.c)
     { }
 
     tl_int a, b, c;
   };
 
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR
-    (NoDefCtorOrEqualOper, no_def_ctor);
+    (NoDefCtor, no_def_ctor);
 
-  struct NonCopyableNoDefaultNoEquality
+  struct NoCopyCtor
+  {
+    NoCopyCtor()
+      : a(0)
+      , b(0)
+      , c(0)
+    { }
+
+    tl_int a, b, c;
+  };
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR
+    (NoCopyCtor, no_copy_ctor);
+
+  struct NoDefCtorNoCopyCtor
     : public core_bclass::NonCopyable_I
   {
     // The only way to construct the object with an initial value
-    NonCopyableNoDefaultNoEquality(int)
+    NoDefCtorNoCopyCtor(tl_int a_num)
+      : a(a_num)
     { }
 
-    // Required by VSO to be able to initialize the object with an initial value
-    explicit NonCopyableNoDefaultNoEquality(const NonCopyableNoDefaultNoEquality&)
-    { }
+    tl_int a;
   };
 
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(NonCopyableNoDefaultNoEquality, nocopy);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(NoDefCtorNoCopyCtor, no_copy_no_def);
+
+  TEST_CASE("core/smart_ptr/VirtualStackObject/ctor_types", "")
+  {
+    no_def_ctor_vso         ndc(no_def_ctor_vso(10));
+    no_copy_ctor_vso        ncc;
+    no_copy_no_def_vso      ncnd(10);
+  }
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/operators", "")
   {

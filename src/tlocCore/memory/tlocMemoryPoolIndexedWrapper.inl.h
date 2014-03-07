@@ -97,7 +97,6 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     core::swap(m_index, a_rhs.m_index);
   }
 
-
 };};};};
 
 #endif

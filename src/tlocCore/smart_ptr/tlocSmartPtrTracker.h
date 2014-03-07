@@ -47,6 +47,15 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
 
   ///-------------------------------------------------------------------------
   /// @brief
+  /// Internal use only by VirtualPointer. Same as above, but this time the
+  /// incoming pointer is connected to this pointer. This case can happen with
+  /// some instances of multiple inheritance where a Base* will have a diff.
+  /// address than the Derived*
+  ///-------------------------------------------------------------------------
+  tl_size DoAddVirtualPtrRef(void* a_pointer, void* a_connectedPointer);
+
+  ///-------------------------------------------------------------------------
+  /// @brief
   /// Internal use only by VirtualPointer
   ///-------------------------------------------------------------------------
   tl_size DoRemoveVirtualPtrRef(void* a_pointer);

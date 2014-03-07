@@ -48,4 +48,4 @@ namespace tloc { namespace math { namespace component_system {
 
 // SmartPtr
 TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::math_cs::Projection);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(tloc::math_cs::projection_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(tloc::math_cs::Projection);

@@ -469,17 +469,13 @@ namespace tloc { namespace core { namespace memory {
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
     tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, 0, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_HEAP_USING_WRAPPER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
     tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, 0, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper>::Wrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_USER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _capacity_, \

@@ -29,14 +29,12 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::error::Error                    error_type;
 
     typedef core_cs::EventManager                 event_manager;
-    typedef core_cs::event_manager_sptr           event_manager_sptr;
-    typedef core_cs::event_manager_vptr           event_manager_vptr;
+    typedef core_cs::event_manager_vptr           event_manager_ptr;
     typedef core_cs::EventBase                    event_type;
 
     typedef core_cs::EntityManager                entity_manager;
-    typedef core_cs::entity_manager_sptr          entity_manager_sptr;
-    typedef core_cs::entity_manager_vptr          entity_manager_vptr;
-    typedef core_cs::const_entity_manager_vptr    const_entity_manager_vptr;
+    typedef core_cs::entity_manager_vptr          entity_manager_ptr;
+    typedef core_cs::const_entity_manager_vptr    const_entity_manager_ptr;
 
     typedef core_cs::Entity                       entity_type;
     typedef core_cs::entity_vptr                  entity_ptr;
@@ -70,8 +68,8 @@ namespace tloc { namespace core { namespace component_system {
   protected:
 
     template <tl_size T_VarSize>
-    EntitySystemBase(event_manager_sptr a_eventMgr,
-                     entity_manager_sptr a_entityMgr,
+    EntitySystemBase(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr,
                      const data_structs::
                       Variadic<component_type, T_VarSize>& a_typeFlags);
 
@@ -160,8 +158,8 @@ namespace tloc { namespace core { namespace component_system {
     component_type_array  m_typeFlags;
     entity_ptr_array      m_activeEntities;
 
-    event_manager_sptr    m_eventMgr;
-    entity_manager_sptr   m_entityMgr;
+    event_manager_ptr     m_eventMgr;
+    entity_manager_ptr    m_entityMgr;
 
     core_utils::Checkpoints m_flags;
     static const tl_int     s_flagCount;
@@ -173,8 +171,8 @@ namespace tloc { namespace core { namespace component_system {
 
   template <tl_size T_VarSize>
   EntitySystemBase::
-    EntitySystemBase(event_manager_sptr a_eventMgr,
-                     entity_manager_sptr a_entityMgr,
+    EntitySystemBase(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr,
                      const data_structs::
                       Variadic<component_type, T_VarSize>& a_typeFlags)
     : m_eventMgr(a_eventMgr)

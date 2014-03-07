@@ -100,8 +100,8 @@ namespace tloc { namespace physics { namespace component_system {
   // RigidBodyListenerSystem
 
   RigidBodyListenerSystem::
-    RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
-                            entity_manager_sptr a_entityMgr,
+    RigidBodyListenerSystem(event_manager_ptr a_eventMgr,
+                            entity_manager_ptr a_entityMgr,
                             physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::k_rigidBodyListener))

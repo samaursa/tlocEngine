@@ -1,9 +1,9 @@
 #include "tlocEventManager.h"
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/component_system/tlocEvent.inl.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace component_system {
@@ -136,5 +136,5 @@ namespace tloc { namespace core { namespace component_system {
 //------------------------------------------------------------------------
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::EventManager);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EventManager);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EventManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core_cs::EventManager);

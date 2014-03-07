@@ -87,7 +87,8 @@ namespace tloc { namespace core { namespace memory {
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
-    typedef core_sptr::VirtualStackObject_T<value_type> value_type_vso;
+    typedef core_sptr::VirtualStackObjectBase_TI
+              <value_type>                              value_type_vso;
     typedef core_sptr::VirtualPtr<value_type>           pointer;
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
@@ -103,7 +104,8 @@ namespace tloc { namespace core { namespace memory {
     typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
 
     typedef priv::MemoryPoolIndexedWrapper<value_type>          wrapper_value_type;
-    typedef core_sptr::VirtualStackObject_T<wrapper_value_type> wrapper_value_type_vso;
+    typedef core_sptr::VirtualStackObjectBase_TI
+              <wrapper_value_type>                              wrapper_value_type_vso;
     typedef core_sptr::VirtualPtr<wrapper_value_type>           wrapper_pointer;
 
     // Select T or T* as the value_type

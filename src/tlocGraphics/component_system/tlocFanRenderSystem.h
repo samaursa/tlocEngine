@@ -39,8 +39,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::shader_program_sptr                           shader_prog_ptr;
 
   public:
-    FanRenderSystem(event_manager_sptr a_eventMgr,
-                    entity_manager_sptr a_entityMgr);
+    FanRenderSystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr);
 
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);

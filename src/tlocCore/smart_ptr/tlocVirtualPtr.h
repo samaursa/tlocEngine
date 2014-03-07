@@ -20,7 +20,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     typedef T                                         value_type;
     typedef T_BuildConfig                             build_config;
-    typedef VirtualPtr<value_type, build_config>  this_type;
+    typedef VirtualPtr<value_type, build_config>      this_type;
 
     typedef T*                                        pointer;
     typedef T const *                                 const_pointer;
@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       const_pointer_cast(const VirtualPtr<U, build_config>& a_vp);
 
   private:
-    void DoAddRef();
+    void DoAddRef(void* a_connectedPointer);
     void DoRemoveRef();
 
   private:
@@ -108,9 +108,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualPtr<T, T_BuildType>::
     VirtualPtr(const VirtualPtr<T_Other, build_config>& a_other)
     : m_rawPtr(a_other.get())
-    , m_refCount(a_other.DoExposeCounter() )
+    , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef();
+    DoAddRef((void*)a_other.get());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -122,7 +122,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef();
+    DoAddRef( (void*)a_other.get() );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -134,7 +134,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef();
+    DoAddRef( (void*)a_other.get() );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -205,12 +205,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     typedef VirtualPtr<T_Other, build_config>    return_type;
 
-    return_type vp;
-    vp.m_rawPtr = static_cast<T_Other*>(a_vp.m_rawPtr);
-    vp.m_refCount = a_vp.m_refCount;
-    vp.DoAddRef();
-
-    return vp;
+    return return_type(static_cast<T_Other*>(a_vp.m_rawPtr));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -221,12 +216,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     typedef VirtualPtr<T_Other, build_config>   return_type;
 
-    return_type vp;
-    vp.m_rawPtr = const_cast<T_Other*>(a_vp.m_rawPtr);
-    vp.m_refCount = a_vp.m_refCount;
-    vp.DoAddRef();
-
-    return vp;
+    return return_type(const_cast<T_Other*>(a_vp.m_rawPtr));
   }
 
   // ///////////////////////////////////////////////////////////////////////

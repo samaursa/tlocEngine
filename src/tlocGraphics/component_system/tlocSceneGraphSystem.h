@@ -18,8 +18,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::component_system::EntityProcessingSystem    base_type;
 
   public:
-    SceneGraphSystem(event_manager_sptr   a_eventMgr,
-                     entity_manager_sptr  a_entityMgr);
+    SceneGraphSystem(event_manager_ptr   a_eventMgr,
+                     entity_manager_ptr  a_entityMgr);
 
     static void DeactivateHierarchy(entity_ptr a_parent);
     static void ActivateHierarchy(entity_ptr a_parent);

@@ -20,8 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::component_system::EntityProcessingSystem  base_type;
 
   public:
-    TextureAnimatorSystem(event_manager_sptr a_eventMgr,
-                          entity_manager_sptr a_entityMgr);
+    TextureAnimatorSystem(event_manager_ptr a_eventMgr,
+                          entity_manager_ptr a_entityMgr);
 
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);

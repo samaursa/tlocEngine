@@ -40,8 +40,8 @@ namespace tloc { namespace physics { namespace component_system {
     typedef RigidBodyShape              rigid_body_shape_component_type;
 
   public:
-    RigidBodySystem(event_manager_sptr a_eventMgr,
-                    entity_manager_sptr a_entityMgr,
+    RigidBodySystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr,
                     world_type* a_world);
 
     virtual error_type InitializeEntity(entity_ptr a_ent);

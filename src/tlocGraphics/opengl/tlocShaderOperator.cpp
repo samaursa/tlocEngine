@@ -1,8 +1,6 @@
 #include "tlocShaderOperator.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
-#include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocVector2.h>
@@ -83,7 +81,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core;
 
       bool isArray = a_uniform.IsArray();
-      bool isShared = a_uniform.IsShared();
+      bool isShared = a_uniform.IsArrayPtr();
 
       switch(a_info.m_type)
       {
@@ -95,7 +93,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type f =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1f(a_info.m_location, f);
           }
@@ -106,7 +104,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
@@ -123,7 +121,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2f(a_info.m_location, v[0], v[1]);
           }
@@ -135,7 +133,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -156,7 +154,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3f(a_info.m_location, v[0], v[1], v[2]);
           }
@@ -167,7 +165,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -188,7 +186,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4f(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
@@ -199,7 +197,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -220,7 +218,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type i =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1i(a_info.m_location, i);
           }
@@ -231,7 +229,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -251,7 +249,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2i(a_info.m_location, t[0], t[1]);
           }
@@ -262,7 +260,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -283,7 +281,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3i(a_info.m_location, t[0], t[1], t[2]);
           }
@@ -294,7 +292,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -316,7 +314,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
@@ -327,7 +325,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -350,7 +348,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type i =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1ui(a_info.m_location, i);
           }
@@ -361,7 +359,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -381,7 +379,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2ui(a_info.m_location, t[0], t[1]);
           }
@@ -392,7 +390,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -413,7 +411,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3ui(a_info.m_location, t[0], t[1], t[2]);
           }
@@ -424,7 +422,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -446,7 +444,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsShared<data_type>()
+              ? *a_uniform.GetValueAsArrayPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4ui(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
@@ -457,7 +455,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsShared<array_type>()
+              ? *a_uniform.GetValueAsArrayPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -483,7 +481,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat2f32& m =
               isShared
-              ? *a_uniform.GetValueAsShared<Mat2f32>()
+              ? *a_uniform.GetValueAsArrayPtr<Mat2f32>()
               : a_uniform.GetValueAs<Mat2f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -501,7 +499,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat3f32& m =
               isShared
-              ? *a_uniform.GetValueAsShared<Mat3f32>()
+              ? *a_uniform.GetValueAsArrayPtr<Mat3f32>()
               : a_uniform.GetValueAs<Mat3f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -519,7 +517,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat4f32& m =
               isShared
-              ? *a_uniform.GetValueAsShared<Mat4f32>()
+              ? *a_uniform.GetValueAsArrayPtr<Mat4f32>()
               : a_uniform.GetValueAs<Mat4f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -530,7 +528,7 @@ namespace tloc { namespace graphics { namespace gl {
         {
           const TextureObject& m =
             isShared
-            ? *a_uniform.GetValueAsShared<TextureObject>()
+            ? *a_uniform.GetValueAsArrayPtr<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
 
           TLOC_ASSERT(m.IsActive(),
@@ -559,7 +557,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core;
 
       bool isArray = a_attribute.IsArray();
-      bool isShared = a_attribute.IsShared();
+      bool isShared = a_attribute.IsArrayPtr();
       bool isVertexArray = a_attribute.IsAttribArray();
 
       GLint enabledVertexAttribArray = -1; // -1 means no attrib array enabled
@@ -572,7 +570,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const f32& f =
               isShared
-              ? *a_attribute.GetValueAsShared<f32>()
+              ? *a_attribute.GetValueAsArrayPtr<f32>()
               : a_attribute.GetValueAs<f32>();
             glVertexAttrib1f(a_info.m_location, f);
           }
@@ -584,7 +582,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -604,7 +602,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -623,7 +621,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const Vec2f32& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Vec2f32>()
+              ? *a_attribute.GetValueAsArrayPtr<Vec2f32>()
               : a_attribute.GetValueAs<Vec2f32>();
             glVertexAttrib2f(a_info.m_location, v[0], v[1]);
           }
@@ -634,7 +632,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -653,7 +651,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -674,7 +672,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Vec3f32>()
+              ? *a_attribute.GetValueAsArrayPtr<Vec3f32>()
               : a_attribute.GetValueAs<Vec3f32>();
             glVertexAttrib3f(a_info.m_location, v[0], v[1], v[2]);
           }
@@ -685,7 +683,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -704,7 +702,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -724,7 +722,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Vec4f32>()
+              ? *a_attribute.GetValueAsArrayPtr<Vec4f32>()
               : a_attribute.GetValueAs<Vec4f32>();
             glVertexAttrib4f(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
@@ -735,7 +733,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -754,7 +752,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -774,7 +772,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const s32& f =
               isShared
-              ? *a_attribute.GetValueAsShared<s32>()
+              ? *a_attribute.GetValueAsArrayPtr<s32>()
               : a_attribute.GetValueAs<s32>();
             glVertexAttribI1i(a_info.m_location, f);
           }
@@ -786,7 +784,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -806,7 +804,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -825,7 +823,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple2s32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple2s32>()
               : a_attribute.GetValueAs<Tuple2s32>();
             glVertexAttribI2i(a_info.m_location, v[0], v[1]);
           }
@@ -836,7 +834,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -855,7 +853,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -876,7 +874,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple3s32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple3s32>()
               : a_attribute.GetValueAs<Tuple3s32>();
             glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
           }
@@ -887,7 +885,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -906,7 +904,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -927,7 +925,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple4s32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple4s32>()
               : a_attribute.GetValueAs<Tuple4s32>();
             glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
@@ -938,7 +936,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -957,7 +955,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -976,7 +974,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const u32& f =
               isShared
-              ? *a_attribute.GetValueAsShared<u32>()
+              ? *a_attribute.GetValueAsArrayPtr<u32>()
               : a_attribute.GetValueAs<u32>();
             glVertexAttribI1ui(a_info.m_location, f);
           }
@@ -988,7 +986,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1008,7 +1006,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1026,7 +1024,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple2u32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple2u32>()
               : a_attribute.GetValueAs<Tuple2u32>();
             glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
           }
@@ -1037,7 +1035,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1056,7 +1054,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1077,7 +1075,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple3u32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple3u32>()
               : a_attribute.GetValueAs<Tuple3u32>();
             glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
           }
@@ -1088,7 +1086,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1107,7 +1105,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1128,7 +1126,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_attribute.GetValueAsShared<Tuple4u32>()
+              ? *a_attribute.GetValueAsArrayPtr<Tuple4u32>()
               : a_attribute.GetValueAs<Tuple4u32>();
             glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
@@ -1139,7 +1137,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1158,7 +1156,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_attribute.GetValueAsShared<array_type>()
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
               : a_attribute.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -1271,33 +1269,33 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    AddUniform(const uniform_ptr_type& a_uniform)
+    AddUniform(const const_uniform_ptr_type& a_uniform)
   {
     TLOC_ASSERT(a_uniform->GetName().size() > 0, "Uniform name is empty");
-    m_uniforms.push_back(core::MakePair(a_uniform, index_type(-1)) );
+    m_uniforms.push_back(core::MakePair(uniform_vso(*a_uniform), index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    AddAttribute(const attribute_ptr_type& a_attribute)
+    AddAttribute(const const_attribute_ptr_type& a_attribute)
   {
     TLOC_ASSERT(a_attribute->GetName().size() > 0, "Attribute name is empty");
-    m_attributes.push_back(core::MakePair(a_attribute, index_type(-1)) );
+    m_attributes.push_back(core::MakePair(attribute_vso(*a_attribute), index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    RemoveUniform(const uniform_ptr_type& a_uniform)
+    RemoveUniform(const uniform_vso& a_uniform)
   {
     uniform_iterator itr, itrEnd;
     for(itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
         itr != itrEnd; ++itr)
     {
-      if (itr->first.get() == a_uniform.get())
+      if (itr->first == a_uniform)
       { break; }
     }
 
@@ -1308,7 +1306,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    RemoveAttribute(const attribute_ptr_type& a_attribute)
+    RemoveAttribute(const attribute_vso& a_attribute)
   {
     attribute_iterator itr, itrEnd;
     for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
@@ -1343,7 +1341,7 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void ShaderOperator::
-    EnableAllUniforms(const ShaderProgram& a_shaderProgram)
+    EnableAllUniforms(const ShaderProgram& a_shaderProgram) const
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -1352,11 +1350,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
-    uniform_cont_type::iterator itr, itrEnd;
+    uniform_cont_type::const_iterator itr, itrEnd;
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
-      uniform_sptr uniformPtr = itr->first;
+      const_uniform_ptr_type  uniformPtr = itr->first.get();
 
       if (itr->second >= 0)
       { DoSet(uniCont[itr->second], *uniformPtr); }
@@ -1373,7 +1371,7 @@ namespace tloc { namespace graphics { namespace gl {
 
 
   void ShaderOperator::
-    EnableAllAttributes(const ShaderProgram& a_shaderProgram)
+    EnableAllAttributes(const ShaderProgram& a_shaderProgram) const
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -1383,11 +1381,11 @@ namespace tloc { namespace graphics { namespace gl {
     const glsl_var_info_cont_type&
       attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-    attribute_cont_type::iterator itr, itrEnd;
+    attribute_cont_type::const_iterator itr, itrEnd;
     for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     {
-      attribute_sptr attribPtr = itr->first;
+      const_attribute_ptr_type attribPtr = itr->first.get();
 
       // If we already know which info to pick
       if (itr->second >= 0)
@@ -1522,8 +1520,12 @@ namespace tloc { namespace graphics { namespace gl {
 //------------------------------------------------------------------------
 // explicit instantiation
 
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderOperator);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_sptr);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ShaderOperator);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(ShaderOperator);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_vptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_vptr);

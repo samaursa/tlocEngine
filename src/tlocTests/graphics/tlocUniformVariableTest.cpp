@@ -2,7 +2,8 @@
 
 #include <tlocGraphics/opengl/tlocUniform.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
 namespace TestingUniformVariable
 {
@@ -180,11 +181,14 @@ namespace TestingUniformVariable
       CHECK(u.GetValueAs<Mat4f32>()[15] == 16);
     }
 
-    {// Shared
-      core::smart_ptr::SharedPtr<f32>  sp( new f32(1.0f) );
+    SECTION("Pointer", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(f32, f32);
+      f32_vso sp; *sp = 1.0f;
+
       gl::Uniform u;
-      u.SetValueAs(sp);
-      CHECK( *u.GetValueAsShared<f32>() == Approx(1.0f) );
+      u.SetValueAs(sp.get());
+      CHECK( *u.GetValueAsArrayPtr<f32>() == Approx(1.0f) );
     }
   }
 
@@ -300,11 +304,16 @@ namespace TestingUniformVariable
 
 #endif
 
-    {// Shared
-      core::smart_ptr::SharedPtr<Array<f32> >  sp( new Array<f32>(1, f32(1.0f)) );
+    SECTION("Pointer", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<f32>, array_f32);
+
+      array_f32_vso sp;
+      sp->resize(1, 1.0f);
+
       gl::Uniform u;
-      u.SetValueAs(sp, gl::p_shader_variable_ti::Shared());
-      CHECK( (*u.GetValueAsShared<Array<f32> >())[0] == Approx(1.0f) );
+      u.SetValueAs(sp.get(), gl::p_shader_variable_ti::Pointer());
+      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
     }
   }
 };

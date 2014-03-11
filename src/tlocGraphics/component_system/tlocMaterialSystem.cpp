@@ -88,16 +88,17 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Add user attributes and uniforms
 
-      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+      typedef mat_type::shader_op_cont::iterator  shader_op_itr;
 
-      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
+      mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       sp->Enable();
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        (*itr)->PrepareAllUniforms(*sp);
-        (*itr)->PrepareAllAttributes(*sp);
+        gl::shader_operator_vptr so = itr->get();
+        so->PrepareAllUniforms(*sp);
+        so->PrepareAllAttributes(*sp);
       }
       sp->Disable();
     }

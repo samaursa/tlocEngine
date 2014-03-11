@@ -94,8 +94,7 @@ namespace tloc { namespace prefab { namespace graphics {
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);
 
-    gfx_gl::shader_operator_sptr so =
-      gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());
+    gfx_gl::shader_operator_vso so;
 
     for (uniform_itr itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
@@ -105,7 +104,7 @@ namespace tloc { namespace prefab { namespace graphics {
          itr != itrEnd; ++itr)
     { so->AddAttribute(*itr); }
 
-    mat->AddShaderOperator(so);
+    mat->AddShaderOperator(so.get());
 
     m_entMgr->InsertComponent(a_ent, mat);
   }
@@ -114,7 +113,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material&
     Material::
-    AddUniform(const uniform_sptr_type& a_uniform)
+    AddUniform(const uniform_ptr_type& a_uniform)
   {
     m_uniforms.push_back(a_uniform);
     return *this;
@@ -124,10 +123,15 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material&
     Material::
-    AddAttribute(const attribute_sptr_type& a_attribute)
+    AddAttribute(const attribute_ptr_type& a_attribute)
   {
     m_attributes.push_back(a_attribute);
     return *this;
   }
 
 };};};
+
+#include <tlocCore/containers/tlocArray.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::uniform_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::attribute_ptr_type);

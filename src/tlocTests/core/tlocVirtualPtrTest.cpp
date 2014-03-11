@@ -300,6 +300,38 @@ namespace TestingVirtualPtr
     CHECK(GetUseCount(vp) == 1);
   }
 
+  TEST_CASE("core/smart_ptr/VirtualPtr/ToVirtualPtr", "")
+  {
+    SharedPtr<tl_int>                                   sptr(new tl_int(10));
+    UniquePtr<tl_int>                                   uptr(new tl_int(20));
+    core_sptr::VirtualStackObjectBase_TI<tl_int>        vso; *vso = 30;
+    const core_sptr::VirtualStackObjectBase_TI<tl_int>  constVso = vso;
+
+    SECTION("ToConvert(SharedPtr)", "")
+    {
+      VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(sptr);
+      CHECK(*vp == 10);
+    }
+
+    SECTION("ToConvert(UniquePtr)", "")
+    {
+      VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(uptr);
+      CHECK(*vp == 20);
+    }
+
+    SECTION("ToConvert(VirtualStackObject)", "")
+    {
+      VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(vso);
+      CHECK(*vp == 30);
+    }
+
+    SECTION("ToConvert(VirtualStackObject)", "")
+    {
+      VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
+      CHECK(*vp == 30);
+    }
+  }
+
   // -----------------------------------------------------------------------
 
   class Foo1

@@ -130,11 +130,14 @@ namespace TestingAttributeVariable
     }
 #endif
 
-    {// Shared
-      core::smart_ptr::SharedPtr<f32>  sp( new f32(1.0f) );
+    SECTION("Pointer", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(f32, f32);
+      f32_vso sp; *sp = 1.0f;
+
       gl::Attribute a;
-      a.SetValueAs(sp);
-      CHECK( *a.GetValueAsShared<f32>() == Approx(1.0f) );
+      a.SetValueAs(sp.get());
+      CHECK( *a.GetValueAsArrayPtr<f32>() == Approx(1.0f) );
     }
   }
 
@@ -248,11 +251,16 @@ namespace TestingAttributeVariable
     }
 #endif
 
-    {// Shared
-      core::smart_ptr::SharedPtr<Array<f32> >  sp( new Array<f32>(1, f32(1.0f)) );
+    SECTION("Pointer", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<f32>, array_f32);
+
+      array_f32_vso sp;
+      sp->resize(1, 1.0f);
+
       gl::Attribute u;
-      u.SetVertexArray(sp, gl::p_shader_variable_ti::Shared());
-      CHECK( (*u.GetValueAsShared<Array<f32> >())[0] == Approx(1.0f) );
+      u.SetVertexArray(sp.get(), gl::p_shader_variable_ti::Pointer());
+      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
     }
   }
 };

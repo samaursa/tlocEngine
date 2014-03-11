@@ -3,7 +3,6 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/utilities/tlocCheckpoints.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/error/tlocError.h>
 
 #include <tlocGraphics/opengl/tlocAttribute.h>
@@ -19,35 +18,40 @@ namespace tloc { namespace graphics { namespace gl {
   {
   public:
     typedef ShaderOperator          this_type;
-    typedef uniform_sptr            uniform_ptr_type;
-    typedef attribute_sptr          attribute_ptr_type;
     typedef core::error::Error      error_type;
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
 
+    typedef uniform_vptr            uniform_ptr_type;
+    typedef const_uniform_vptr      const_uniform_ptr_type;
+    typedef attribute_vptr          attribute_ptr_type;
+    typedef const_attribute_vptr    const_attribute_ptr_type;
+    typedef uniform_vso             uniform_vso;
+    typedef attribute_vso           attribute_vso;
+
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
-    typedef core::Pair<uniform_ptr_type, index_type>   uniform_pair_type;
-    typedef core::Pair<attribute_ptr_type, index_type> attribute_pair_type;
+    typedef core::Pair<uniform_vso, index_type>           uniform_pair_type;
+    typedef core::Pair<attribute_vso, index_type>         attribute_pair_type;
 
-    typedef core::containers::Array<uniform_pair_type>	 uniform_cont_type;
-    typedef uniform_cont_type::iterator                  uniform_iterator;
+    typedef core::containers::Array<uniform_pair_type>	  uniform_cont_type;
+    typedef uniform_cont_type::iterator                   uniform_iterator;
 
-    typedef core::containers::Array<attribute_pair_type> attribute_cont_type;
-    typedef attribute_cont_type::iterator                attribute_iterator;
+    typedef core::containers::Array<attribute_pair_type>  attribute_cont_type;
+    typedef attribute_cont_type::iterator                 attribute_iterator;
 
-    typedef core_conts::tl_array<index_type>::type       index_cont_type;
-    typedef index_cont_type::iterator                    index_iterator;
+    typedef core_conts::tl_array<index_type>::type        index_cont_type;
+    typedef index_cont_type::iterator                     index_iterator;
 
   public:
     ShaderOperator();
     ~ShaderOperator();
 
-    void AddUniform(const uniform_ptr_type& a_uniform);
-    void AddAttribute(const attribute_ptr_type& a_attribute);
+    void AddUniform(const const_uniform_ptr_type& a_uniform);
+    void AddAttribute(const const_attribute_ptr_type& a_attribute);
 
-    void RemoveUniform(const uniform_ptr_type& a_uniform);
-    void RemoveAttribute(const attribute_ptr_type& a_attribute);
+    void RemoveUniform(const uniform_vso& a_uniform);
+    void RemoveAttribute(const attribute_vso& a_attribute);
 
     void RemoveAllUniforms();
     void RemoveAllAttributes();
@@ -70,8 +74,8 @@ namespace tloc { namespace graphics { namespace gl {
     ///
     /// @param  a_shaderProgram The shader program.
     ///-------------------------------------------------------------------------
-    void EnableAllUniforms(const ShaderProgram& a_shaderProgram);
-    void EnableAllAttributes(const ShaderProgram& a_shaderProgram);
+    void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
+    void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
@@ -100,6 +104,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   };
 
-  TLOC_TYPEDEF_SHARED_PTR(ShaderOperator, shader_operator);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderOperator, shader_operator);
 
 };};};

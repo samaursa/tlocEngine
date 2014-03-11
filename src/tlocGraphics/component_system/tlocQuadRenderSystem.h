@@ -5,7 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -32,14 +32,14 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::types::Mat4f32                              matrix_type;
 
     typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
 
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
-    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_sptr                           shader_prog_ptr;
+    typedef gl::shader_program_vptr                           shader_prog_ptr;
 
-    typedef core_conts::ArrayFixed<gl::attribute_sptr, 4>     attributes_cont;
+    typedef core_conts::ArrayFixed<gl::attribute_vso, 4>      attributes_cont;
 
   public:
     QuadRenderSystem(event_manager_ptr a_eventMgr,
@@ -61,14 +61,14 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::GetViewProjectionMatrix;
 
   private:
-    shader_prog_ptr     m_shaderPtr;
+    shader_prog_ptr           m_shaderPtr;
 
-    gl::shader_operator_sptr m_mvpOperator;
-    gl::uniform_sptr         m_uniVpMat;
+    gl::uniform_vso           m_uniVpMat;
+    gl::shader_operator_vso   m_mvpOperator;
 
     // Cache
-    vec3_cont_ptr       m_quadList;
-    gl::attribute_sptr  m_vData;
+    vec3_cont_vso       m_quadList;
+    gl::attribute_vso   m_vData;
     attributes_cont     m_tData;
   };
 

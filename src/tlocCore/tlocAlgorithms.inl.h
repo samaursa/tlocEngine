@@ -87,13 +87,6 @@ namespace tloc { namespace core {
     return detail::DoFind(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
   }
 
-  template <typename T_Container, typename T_Predicate>
-  typename T_Container::iterator
-    find_if(T_Container a_container, const T_Predicate& a_pred)
-  {
-    return find_if(a_container.begin(), a_container.end(), a_pred);
-  }
-
   template <typename T_InputIterator, typename T_Predicate>
   T_InputIterator
     find_if( T_InputIterator a_rangeBegin,

@@ -2,10 +2,10 @@
 #define TLOC_ENTITY_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/memory/tlocBufferArg.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
@@ -73,7 +73,6 @@ namespace tloc { namespace core { namespace component_system {
 
     Entity(entity_id  a_id);
     Entity(entity_id  a_id, BufferArg a_debugName);
-    explicit Entity(const this_type& a_other);
 
     bool operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -138,12 +137,10 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedef
 
-  TLOC_TYPEDEF_SHARED_PTR(Entity, entity);
-  TLOC_TYPEDEF_VIRTUAL_PTR(Entity, entity);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(Entity, entity);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Entity, entity);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Entity, entity);
 
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
-  typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;
 };};};
 
 ///-------------------------------------------------------------------------

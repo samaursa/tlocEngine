@@ -38,18 +38,21 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_primitive_type::size;
     using base_primitive_type::clear;
 
-    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetPosAttribute, m_posAttr);
-    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetNormAttribute, m_normAttr);
-    TLOC_DECL_AND_DEF_GETTER(gl::attribute_sptr, GetTCoordAttribute, m_tcoordAttr);
+    TLOC_DECL_AND_DEF_GETTER
+      (gl::const_attribute_vptr, GetPosAttribute, m_posAttr.get());
+    TLOC_DECL_AND_DEF_GETTER
+      (gl::const_attribute_vptr, GetNormAttribute, m_normAttr.get());
+    TLOC_DECL_AND_DEF_GETTER
+      (gl::const_attribute_vptr, GetTCoordAttribute, m_tcoordAttr.get());
 
-    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetPosAttribute, m_posAttr);
-    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetNormAttribute, m_normAttr);
-    TLOC_DECL_AND_DEF_SETTER(gl::attribute_sptr, SetTCoordAttribute, m_tcoordAttr);
+    TLOC_DECL_AND_DEF_SETTER(gl::Attribute, SetPosAttribute, m_posAttr);
+    TLOC_DECL_AND_DEF_SETTER(gl::Attribute, SetNormAttribute, m_normAttr);
+    TLOC_DECL_AND_DEF_SETTER(gl::Attribute, SetTCoordAttribute, m_tcoordAttr);
 
   private:
-    gl::attribute_sptr  m_posAttr;
-    gl::attribute_sptr  m_normAttr;
-    gl::attribute_sptr  m_tcoordAttr;
+    gl::attribute_vso  m_posAttr;
+    gl::attribute_vso  m_normAttr;
+    gl::attribute_vso  m_tcoordAttr;
   };
 
   //------------------------------------------------------------------------
@@ -62,7 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(Mesh, mesh);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Mesh_Interleaved, mesh_interleaved);
-  TLOC_TYPEDEF_COMPONENT_POOL(mesh_interleaved_sptr, mesh_interleaved_sptr);
+  TLOC_TYPEDEF_COMPONENT_POOL(Mesh_Interleaved, mesh_interleaved);
 
 };};};
 

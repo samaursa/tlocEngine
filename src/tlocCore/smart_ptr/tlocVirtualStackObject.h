@@ -458,6 +458,63 @@ namespace tloc { namespace core { namespace smart_ptr {
     value_type                m_value;
   };
 
+  // -----------------------------------------------------------------------
+  // global functions
+
+  template <typename T, typename T_CopyCtor,
+            typename T_DefCtor, typename T_BuildConfig>
+  VirtualPtr<T>
+    ToVirtualPtr(VirtualStackObjectBase_TI
+                    <T, T_CopyCtor, T_DefCtor, T_BuildConfig>& a_vso)
+  { return a_vso.get(); }
+
+  template <typename T, typename T_CopyCtor,
+            typename T_DefCtor, typename T_BuildConfig>
+  VirtualPtr<const T>
+    ToVirtualPtr(const VirtualStackObjectBase_TI
+                    <T, T_CopyCtor, T_DefCtor, T_BuildConfig>& a_vso)
+  { return a_vso.get(); }
+
+  namespace algos { namespace compare {
+
+    // ///////////////////////////////////////////////////////////////////////
+    // With VirtualPtr
+
+    template <typename T, typename T_BuildConfig>
+    struct WithVirtualPtr
+    {
+    public:
+      typedef core_sptr::VirtualPtr<T, T_BuildConfig>       pointer;
+
+    public:
+      WithVirtualPtr(pointer a_toCompare)
+        : m_toCompare(a_toCompare)
+      { }
+
+      template <typename T, typename T_CopyCtor,
+                typename T_DefCtor, typename T_BuildConfig>
+      bool
+        operator()
+        (const VirtualStackObjectBase_TI<T,
+                                         T_CopyCtor,
+                                         T_DefCtor,
+                                         T_BuildConfig>& a_vso)
+      { return a_vso.get() == m_toCompare; }
+
+    private:
+      pointer m_toCompare;
+    };
+
+    // -----------------------------------------------------------------------
+    // MakeVirtualPtr
+
+    template <typename T, typename T_BuildConfig>
+    WithVirtualPtr<T, T_BuildConfig>
+      MakeWithVirtualPtr(VirtualPtr<T, T_BuildConfig> a_ptr)
+    { return WithVirtualPtr<T, T_BuildConfig>(a_ptr); }
+
+  };};
+
 };};};
 
   // -----------------------------------------------------------------------

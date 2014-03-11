@@ -278,6 +278,9 @@ namespace tloc { namespace core { namespace smart_ptr { namespace priv {
       tl_size StartTrackingVirtual(void* )
       { return 0; }
 
+      tl_size StartTrackingVirtual(void* , void* )
+      { return 0; }
+
       void StopTracking(void* )
       { }
 

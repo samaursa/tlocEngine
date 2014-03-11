@@ -3,7 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/data_structures/tlocTuple.h>
@@ -122,7 +122,10 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Uniform, uniform);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Uniform, uniform);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Uniform, uniform);
+
+  typedef core_conts::Array<uniform_sptr>         uniform_sptr_cont;
 
 };};};
 

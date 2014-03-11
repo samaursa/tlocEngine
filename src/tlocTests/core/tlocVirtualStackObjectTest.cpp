@@ -234,4 +234,37 @@ namespace TestingVirtualStackObject
       CHECK(IntComponent::m_dtorCount == IntComponent::m_ctorCount);
     }
   }
+
+  TEST_CASE("core/smart_ptr/VirtualStackObject/ToVirtualPtr", "")
+  {
+    int_vso a(10);
+    int_vso::pointer aVptr = ToVirtualPtr(a);
+    CHECK( (aVptr == a.get()) );
+  }
+
+  TEST_CASE("core/smart_ptr/VirtualStackObject/algorithms", "")
+  {
+    SECTION("Compare::VirtualPtr", "")
+    {
+      typedef core_conts::Array<int_vso>      int_vso_cont;
+
+      int_vso_cont intArray;
+      intArray.push_back(int_vso(0));
+      intArray.push_back(int_vso(1));
+      intArray.push_back(int_vso(2));
+
+      int_vso_cont::iterator itr =
+        core::find_if_all(intArray,
+        core_sptr::algos::compare::MakeWithVirtualPtr(intArray[1].get()) );
+
+      CHECK(*(*itr) == 1);
+
+      int_vso temp(2);
+      // even the number 2 exists in the container of VSOs, we are matching
+      // against the VSO pointers and NOT the values
+      itr = core::find_if_all(intArray,
+        core_sptr::algos::compare::MakeWithVirtualPtr(temp.get()) );
+
+    }
+  }
 }

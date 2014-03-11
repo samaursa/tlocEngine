@@ -24,16 +24,6 @@ namespace tloc { namespace core { namespace component_system {
     m_allComponents.resize(components_group::count);
   }
 
-  TL_I
-    Entity::
-    Entity(const this_type& a_other)
-    : base_type(a_other.GetDebugName())
-    , m_id(a_other.m_id)
-    , m_index(a_other.m_index)
-    , m_active(a_other.m_active)
-    , m_allComponents(a_other.m_allComponents)
-  { }
-
   TL_I bool
     Entity::operator==(const this_type& a_other) const
   {

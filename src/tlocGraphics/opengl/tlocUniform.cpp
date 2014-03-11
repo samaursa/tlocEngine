@@ -1,6 +1,5 @@
 #include "tlocUniform.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
@@ -26,6 +25,12 @@ namespace tloc { namespace graphics { namespace gl {
 //------------------------------------------------------------------------
 // typedefs
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Uniform);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Uniform);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Uniform);
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_sptr);

@@ -1,7 +1,5 @@
 #include "tlocAttribute.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-
 namespace tloc { namespace graphics { namespace gl {
 
   Attribute::
@@ -28,6 +26,11 @@ namespace tloc { namespace graphics { namespace gl {
 //------------------------------------------------------------------------
 // Explicit Instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Attribute);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Attribute);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Attribute);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_sptr);

@@ -3,13 +3,12 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/utilities/tlocGroupID.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -77,12 +76,10 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Component, component);
-  TLOC_TYPEDEF_VIRTUAL_PTR(Component, component);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Component, component);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Component, component);
 
   typedef containers::tl_array<component_vptr>::type  component_ptr_array;
-  typedef containers::tl_array<component_sptr>::type  component_sptr_array;
 
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>

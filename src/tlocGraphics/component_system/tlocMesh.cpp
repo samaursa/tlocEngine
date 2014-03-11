@@ -12,9 +12,6 @@ namespace tloc { namespace graphics { namespace component_system {
   Mesh_T<MESH_PARAMS>::
     Mesh_T()
     : base_type(vertex_storage_policy::k_component_id)
-    , m_posAttr(new gl::Attribute())
-    , m_normAttr(new gl::Attribute())
-    , m_tcoordAttr(new gl::Attribute())
   {
     m_posAttr->SetName("a_vPos");
     m_normAttr->SetName("a_vNorm");

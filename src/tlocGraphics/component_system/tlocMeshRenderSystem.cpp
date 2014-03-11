@@ -31,10 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
                 Variadic<component_type, 1>
                 (mesh_type::vertex_storage_policy::k_component_id) )
   {
-    m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
-
-    m_mvpOperator.reset(new gl::ShaderOperator());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -46,21 +43,21 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
 
-    gl::attribute_sptr posAttr = meshType->GetPosAttribute();
-    gl::attribute_sptr normAttr = meshType->GetNormAttribute();
-    gl::attribute_sptr tcoordAttr = meshType->GetTCoordAttribute();
+    gl::attribute_vso posAttr, normAttr, tcoordAttr;
 
     posAttr->SetVertexArray(meshType->GetPositions(),
-                            gl::p_shader_variable_ti::Shared());
+                            gl::p_shader_variable_ti::Pointer());
     posAttr->SetName("a_vPos");
 
     normAttr->SetVertexArray(meshType->GetNormals(),
-                            gl::p_shader_variable_ti::Shared());
+                            gl::p_shader_variable_ti::Pointer());
     normAttr->SetName("a_vNorm");
 
     tcoordAttr->SetVertexArray(meshType->GetTCoords(),
-                            gl::p_shader_variable_ti::Shared());
+                            gl::p_shader_variable_ti::Pointer());
     tcoordAttr->SetName("a_tCoord");
+
+    meshType->SetPosAttribute(*posAttr);
 
     return ErrorSuccess;
   }
@@ -85,6 +82,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math_cs::Transform        transform_type;
     typedef gfx_cs::Material          mat_type;
+    typedef mat_type::shader_op_vso   shader_op_vso;
     typedef mat_type::shader_op_ptr   shader_op_ptr;
 
     if (a_ent->HasComponent(components::material) == false)
@@ -106,11 +104,11 @@ namespace tloc { namespace graphics { namespace component_system {
     m_uniVpMat->SetValueAs(tFinalMat);
 
     m_mvpOperator->RemoveAllUniforms();
-    m_mvpOperator->AddUniform(m_uniVpMat);
+    m_mvpOperator->AddUniform(m_uniVpMat.get());
 
     const tl_size numVertices = meshPtr->size();
 
-    shader_op_ptr so_mesh(new shader_op_ptr::value_type());
+    shader_op_vso so_mesh;
     so_mesh->AddAttribute(meshPtr->GetPosAttribute());
     so_mesh->AddAttribute(meshPtr->GetNormAttribute());
     so_mesh->AddAttribute(meshPtr->GetTCoordAttribute());
@@ -123,14 +121,14 @@ namespace tloc { namespace graphics { namespace component_system {
       sp->Enable();
       m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont_const_itr    shader_op_itr;
+      typedef mat_type::shader_op_cont::const_iterator    shader_op_itr;
 
       const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
         itr != itrEnd; ++itr)
       {
-        mat_type::shader_op_ptr so = *itr;
+        gl::const_shader_operator_vptr so = itr->get();
 
         so->EnableAllUniforms(*m_shaderPtr);
         so->EnableAllAttributes(*m_shaderPtr);

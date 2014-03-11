@@ -18,11 +18,11 @@ namespace tloc { namespace prefab { namespace graphics {
   {
   public:
     typedef Material                                this_type;
-    typedef gfx_gl::uniform_sptr                    uniform_sptr_type;
-    typedef gfx_gl::attribute_sptr                  attribute_sptr_type;
+    typedef gfx_gl::uniform_vptr                    uniform_ptr_type;
+    typedef gfx_gl::attribute_vptr                  attribute_ptr_type;
 
-    typedef core_conts::Array<uniform_sptr_type>    uniform_array;
-    typedef core_conts::Array<attribute_sptr_type>  attribute_array;
+    typedef core_conts::Array<uniform_ptr_type>    uniform_array;
+    typedef core_conts::Array<attribute_ptr_type>  attribute_array;
 
     typedef uniform_array::iterator                 uniform_itr;
     typedef attribute_array::iterator               attribute_itr;
@@ -44,8 +44,8 @@ namespace tloc { namespace prefab { namespace graphics {
                       BufferArg a_vertexShader,
                       BufferArg a_fragmentShader);
 
-    Material&     AddUniform(const uniform_sptr_type& a_uniform);
-    Material&     AddAttribute(const attribute_sptr_type& a_attribute);
+    Material&     AddUniform(const uniform_ptr_type& a_uniform);
+    Material&     AddAttribute(const attribute_ptr_type& a_attribute);
 
     TLOC_DECL_PARAM_VAR(core_str::String, AssetsPath, m_assetsPath);
 

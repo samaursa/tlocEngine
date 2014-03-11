@@ -1,7 +1,7 @@
 #include "tlocShaderVariable.h"
 
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
@@ -106,7 +106,7 @@ namespace tloc { namespace graphics { namespace gl {
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
     : m_isArray(false)
-    , m_isShared(false)
+    , m_isArrayPtr(false)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -129,13 +129,13 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
-    DoSetValueAs(SharedPtr<T> a_value)
+    DoSetValueAs(VirtualPtr<T> a_value)
   {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_value.Assign(a_value);
-    m_isShared = true;
+    m_isArrayPtr = true;
     return *(static_cast<derived_type*>(this));
   }
 
@@ -172,13 +172,13 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
-    DoSetValueAs(SharedPtr<Array<T> > a_array)
+    DoSetValueAs(VirtualPtr<Array<T> > a_array)
   {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_isArray = true;
-    m_isShared = true;
+    m_isArrayPtr = true;
     m_value.Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }

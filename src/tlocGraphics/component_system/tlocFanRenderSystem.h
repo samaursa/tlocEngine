@@ -31,12 +31,12 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::types::Vec2f32                              vec2_type;
 
     typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
 
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
-    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_sptr                           shader_prog_ptr;
+    typedef gl::shader_program_vptr                           shader_prog_ptr;
 
   public:
     FanRenderSystem(event_manager_ptr a_eventMgr,
@@ -55,14 +55,14 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    shader_prog_ptr     m_shaderPtr;
+    shader_prog_ptr           m_shaderPtr;
 
     gl::shader_operator_sptr  m_mvpOperator;
-    gl::uniform_sptr          m_uniVpMat;
+    gl::uniform_vso           m_uniVpMat;
 
-    vec3_cont_ptr             m_vertList;
-    gl::attribute_sptr        m_vData;
-    gl::attribute_sptr        m_tData;
+    vec3_cont_vso             m_vertList;
+    gl::attribute_vso         m_vData;
+    gl::attribute_vso         m_tData;
   };
 
   //------------------------------------------------------------------------

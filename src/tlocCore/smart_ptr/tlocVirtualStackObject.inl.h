@@ -780,7 +780,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     VirtualStackObjectBase_TI(const value_type& a_other)
-    : m_value(value_type(a_other))
+    : m_value(a_other)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -847,12 +847,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
-
-    m_ptr = m_value;
-    m_constPtr = m_value;
-
-    a_other.m_ptr = a_other.m_value;
-    a_other.m_constPtr = a_other.m_constPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -971,7 +965,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator==(const this_type& a_other) const
-  { return m_ptr == a_other.m_ptr; }
+  { return &m_value == &a_other.m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -979,7 +973,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator<(const this_type& a_other) const
-  { return m_ptr < a_other.m_ptr; }
+  { return &m_value < &a_other.m_value; }
 
 
 };};};

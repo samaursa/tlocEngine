@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::event_type;
     using base_type::event_value_type;
 
-    typedef gl::shader_program_sptr                       shader_prog_ptr;
+    typedef gl::shader_program_vptr                       shader_prog_ptr;
 
     typedef Mesh_T                                        mesh_type;
     typedef core_sptr::VirtualPtr<mesh_type>              mesh_ptr;
@@ -62,10 +62,10 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::GetViewProjectionMatrix;
 
   private:
-    shader_prog_ptr     m_shaderPtr;
+    shader_prog_ptr           m_shaderPtr;
 
-    gl::shader_operator_sptr m_mvpOperator;
-    gl::uniform_sptr         m_uniVpMat;
+    gl::shader_operator_vso   m_mvpOperator;
+    gl::uniform_vso           m_uniVpMat;
   };
 
   // -----------------------------------------------------------------------

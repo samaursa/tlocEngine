@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
   private:
     shader_prog_ptr           m_shaderPtr;
 
-    gl::shader_operator_sptr  m_mvpOperator;
+    gl::shader_operator_vso   m_mvpOperator;
     gl::uniform_vso           m_uniVpMat;
 
     vec3_cont_vso             m_vertList;

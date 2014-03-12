@@ -104,14 +104,14 @@ namespace tloc { namespace graphics { namespace component_system {
     m_uniVpMat->SetValueAs(tFinalMat);
 
     m_mvpOperator->RemoveAllUniforms();
-    m_mvpOperator->AddUniform(m_uniVpMat.get());
+    m_mvpOperator->AddUniform(*m_uniVpMat);
 
     const tl_size numVertices = meshPtr->size();
 
     shader_op_vso so_mesh;
-    so_mesh->AddAttribute(meshPtr->GetPosAttribute());
-    so_mesh->AddAttribute(meshPtr->GetNormAttribute());
-    so_mesh->AddAttribute(meshPtr->GetTCoordAttribute());
+    so_mesh->AddAttribute(*meshPtr->GetPosAttribute());
+    so_mesh->AddAttribute(*meshPtr->GetNormAttribute());
+    so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute());
 
     mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
 

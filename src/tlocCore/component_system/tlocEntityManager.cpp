@@ -26,7 +26,7 @@ namespace tloc { namespace core { namespace component_system {
     Update();
 
     // delete the remaining entities, if any
-    for_each_all(m_entities, core_sptr::algos::DeleteAndReset());
+    for_each_all(m_entities, core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
   EntityManager::entity_ptr_type EntityManager::
@@ -153,7 +153,7 @@ namespace tloc { namespace core { namespace component_system {
   void EntityManager::
     DoUpdateAndCleanEntities()
   {
-    for_each_all(m_entitiesToRemove, core_sptr::algos::DeleteAndReset());
+    for_each_all(m_entitiesToRemove, core_sptr::algos::virtual_ptr::DeleteAndReset());
     m_entitiesToRemove.clear();
   }
 

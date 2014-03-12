@@ -35,6 +35,8 @@ namespace tloc { namespace graphics { namespace component_system {
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
   {
+    m_quadList->resize(4);
+
     m_vData->SetName("a_vPos");
     m_uniVpMat->SetName("u_mvp");
 
@@ -78,14 +80,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const rect_type& rect = quadPtr->GetRectangleRef();
 
-      (*m_quadList)[0] = vec3_type(rect.GetValue<rect_type::right>(),
-                                   rect.GetValue<rect_type::top>(), 0);
-      (*m_quadList)[1] = vec3_type(rect.GetValue<rect_type::left>(),
-                                   rect.GetValue<rect_type::top>(), 0);
-      (*m_quadList)[2] = vec3_type(rect.GetValue<rect_type::right>(),
-                                   rect.GetValue<rect_type::bottom>(), 0);
-      (*m_quadList)[3] = vec3_type(rect.GetValue<rect_type::left>(),
-                                   rect.GetValue<rect_type::bottom>(), 0);
+      m_quadList->at(0) = vec3_type(rect.GetValue<rect_type::right>(),
+                                    rect.GetValue<rect_type::top>(), 0);
+      m_quadList->at(1) = vec3_type(rect.GetValue<rect_type::left>(),
+                                    rect.GetValue<rect_type::top>(), 0);
+      m_quadList->at(2) = vec3_type(rect.GetValue<rect_type::right>(),
+                                    rect.GetValue<rect_type::bottom>(), 0);
+      m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
+                                    rect.GetValue<rect_type::bottom>(), 0);
 
       math_cs::transform_vptr posPtr = a_ent->GetComponent<math_cs::Transform>();
 
@@ -101,14 +103,14 @@ namespace tloc { namespace graphics { namespace component_system {
       m_uniVpMat->SetValueAs(tFinalMat);
 
       m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(m_uniVpMat.get());
+      m_mvpOperator->AddUniform(*m_uniVpMat);
 
       const tl_size numVertices = m_quadList->size();
 
       m_vData->SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer() );
 
       gl::shader_operator_vso so_quad;
-      so_quad->AddAttribute(m_vData.get());
+      so_quad->AddAttribute(*m_vData);
 
       if (a_ent->HasComponent(components::texture_coords))
       {
@@ -134,7 +136,7 @@ namespace tloc { namespace graphics { namespace component_system {
             m_tData[i]->SetVertexArray(core_sptr::ToVirtualPtr(texCoordCont),
                                        gl::p_shader_variable_ti::Pointer() );
 
-            so_quad->AddAttribute(m_tData[i].get());
+            so_quad->AddAttribute(*m_tData[i]);
           }
         }
 

@@ -160,11 +160,11 @@ namespace TestingVirtualPtr
       vp = VirtualPtr<int>(new int(10));
 
       CHECK(*vp == 10);
-      core_sptr::algos::DeleteAndReset()(vp);
+      core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
 
       vp = new int(20);
       CHECK(*vp == 20);
-      core_sptr::algos::DeleteAndReset()(vp);
+      core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
     }
 
     SECTION("operator=(SharedPtr)", "")
@@ -287,7 +287,8 @@ namespace TestingVirtualPtr
       vptrContainer.push_back(VirtualPtr<int>(new int(10)) );
     }
 
-    core::for_each_all(vptrContainer, core_sptr::algos::DeleteAndReset());
+    core::for_each_all(vptrContainer,
+                       core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/GetUseCount", "")

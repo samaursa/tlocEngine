@@ -22,6 +22,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
 
+    typedef Uniform                 uniform_type;
+    typedef Attribute               attribute_type;
     typedef uniform_vptr            uniform_ptr_type;
     typedef const_uniform_vptr      const_uniform_ptr_type;
     typedef attribute_vptr          attribute_ptr_type;
@@ -47,11 +49,11 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator();
     ~ShaderOperator();
 
-    void AddUniform(const const_uniform_ptr_type& a_uniform);
-    void AddAttribute(const const_attribute_ptr_type& a_attribute);
+    void AddUniform(const uniform_type& a_uniform);
+    void AddAttribute(const attribute_type& a_attribute);
 
-    void RemoveUniform(const uniform_vso& a_uniform);
-    void RemoveAttribute(const attribute_vso& a_attribute);
+    void RemoveUniform(const uniform_iterator& a_uniform);
+    void RemoveAttribute(const attribute_iterator& a_attribute);
 
     void RemoveAllUniforms();
     void RemoveAllAttributes();
@@ -101,7 +103,6 @@ namespace tloc { namespace graphics { namespace gl {
     attribute_cont_type         m_attributes;
     core::utils::Checkpoints    m_flags;
     index_cont_type             m_enabledVertexAttrib;
-
   };
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>

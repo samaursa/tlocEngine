@@ -1269,55 +1269,37 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    AddUniform(const const_uniform_ptr_type& a_uniform)
+    AddUniform(const uniform_type& a_uniform)
   {
-    TLOC_ASSERT(a_uniform->GetName().size() > 0, "Uniform name is empty");
-    m_uniforms.push_back(core::MakePair(uniform_vso(*a_uniform), index_type(-1)) );
+    TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
+    m_uniforms.push_back(core::MakePair(uniform_vso(a_uniform), index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    AddAttribute(const const_attribute_ptr_type& a_attribute)
+    AddAttribute(const attribute_type& a_attribute)
   {
-    TLOC_ASSERT(a_attribute->GetName().size() > 0, "Attribute name is empty");
-    m_attributes.push_back(core::MakePair(attribute_vso(*a_attribute), index_type(-1)) );
+    TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
+    m_attributes.push_back(core::MakePair(attribute_vso(a_attribute), index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    RemoveUniform(const uniform_vso& a_uniform)
+    RemoveUniform(const uniform_iterator& a_uniform)
   {
-    uniform_iterator itr, itrEnd;
-    for(itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-        itr != itrEnd; ++itr)
-    {
-      if (itr->first == a_uniform)
-      { break; }
-    }
-
-    if (itr != m_uniforms.end())
-    { m_uniforms.erase(itr); }
+    m_uniforms.erase(a_uniform);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
-    RemoveAttribute(const attribute_vso& a_attribute)
+    RemoveAttribute(const attribute_iterator& a_attribute)
   {
-    attribute_iterator itr, itrEnd;
-    for(itr = m_attributes.begin(), itrEnd = m_attributes.end();
-        itr != itrEnd; ++itr)
-    {
-      if (itr->first == a_attribute)
-      { break; }
-    }
-
-    if (itr != m_attributes.end())
-    { m_attributes.erase(itr); }
+    m_attributes.erase(a_attribute);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

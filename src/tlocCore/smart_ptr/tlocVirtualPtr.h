@@ -526,16 +526,19 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   namespace algos {
 
-    struct DeleteAndReset
+    namespace virtual_ptr
     {
-      template <typename T>
-      void operator()(core_sptr::VirtualPtr<T>& a_vptr)
+      struct DeleteAndReset
       {
-        T* rawPtr = a_vptr.get();
-        a_vptr.reset();
+        template <typename T>
+        void operator()(core_sptr::VirtualPtr<T>& a_vptr)
+        {
+          T* rawPtr = a_vptr.get();
+          a_vptr.reset();
 
-        delete rawPtr;
-      }
+          delete rawPtr;
+        }
+      };
     };
 
   };

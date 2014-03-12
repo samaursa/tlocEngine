@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace component_system {
   ComponentPoolManager::
     ~ComponentPoolManager()
   {
-    core::for_each_all(m_pools, core_sptr::algos::DeleteAndReset());
+    core::for_each_all(m_pools, core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -43,7 +43,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(index < m_pools.size(),
       "Pool not allocated for passed component type");
 
-    core_sptr::algos::DeleteAndReset()(m_pools[index]);
+    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_pools[index]);
     --m_numActivePools;
   }
 

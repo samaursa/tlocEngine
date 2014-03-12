@@ -40,8 +40,6 @@ namespace tloc { namespace graphics { namespace component_system {
     m_vData->SetName("a_vPos");
     m_uniVpMat->SetName("u_mvp");
     m_tData->SetName("a_tCoord");
-
-    m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -66,8 +64,6 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     using namespace core::component_system;
     using math_t::degree_f32;
-
-    typedef gfx_cs::Material::shader_op_ptr          shader_op_ptr;
 
     if (a_ent->HasComponent(components::material))
     {
@@ -121,7 +117,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_vData->SetVertexArray(core_sptr::ToVirtualPtr(m_vertList),
                               gl::p_shader_variable_ti::Pointer());
 
-      shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
+      gl::shader_operator_vso so_fan;
       so_fan->AddAttribute(*m_vData);
 
       if (a_ent->HasComponent(components::texture_coords))

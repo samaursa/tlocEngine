@@ -15,20 +15,37 @@ namespace TestingAttributeVariable
     using namespace tloc::core_conts;
     using namespace tloc::math_t;
 
-    Vec2f32 v(0.0f, 1.0f);
-
-    gl::Attribute a;
-    a.SetValueAs(v);
-
+    SECTION("Normal values", "")
     {
-      gl::Attribute acopy(a);
-      CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+      Vec2f32 v(0.0f, 1.0f);
+
+      gl::Attribute a;
+      a.SetValueAs(v);
+
+      {
+        gl::Attribute acopy(a);
+        CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+      }
+
+      {
+        gl::Attribute acopy;
+        acopy = a;
+        CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+      }
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute acopy;
-      acopy = a;
-      CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+      gl::Attribute a;
+      Array<f32> array(1, 1.0f);
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK(a.IsAttribArray());
+
+      gl::Attribute aCopy(a);
+      CHECK(aCopy.IsAttribArray());
+
+      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+      CHECK( aCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
     }
   }
 

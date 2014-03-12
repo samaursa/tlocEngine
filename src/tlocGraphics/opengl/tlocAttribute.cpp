@@ -10,7 +10,7 @@ namespace tloc { namespace graphics { namespace gl {
   Attribute::
     Attribute(const this_type& a_other)
     : base_type(a_other)
-    , m_isAttribArray(false)
+    , m_isAttribArray(a_other.m_isAttribArray)
   { }
 
   Attribute::this_type& Attribute::

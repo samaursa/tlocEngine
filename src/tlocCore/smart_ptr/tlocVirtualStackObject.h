@@ -477,41 +477,42 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   namespace algos { namespace compare {
 
-    // ///////////////////////////////////////////////////////////////////////
-    // With VirtualPtr
+    namespace virtual_stack_object {
 
-    template <typename T, typename T_BuildConfig>
-    struct WithVirtualPtr
-    {
-    public:
-      typedef core_sptr::VirtualPtr<T, T_BuildConfig>       pointer;
+      // ///////////////////////////////////////////////////////////////////////
+      // With VirtualPtr
 
-    public:
-      WithVirtualPtr(pointer a_toCompare)
-        : m_toCompare(a_toCompare)
-      { }
+      template <typename T, typename T_BuildConfig>
+      struct WithVirtualPtr
+      {
+      public:
+        typedef core_sptr::VirtualPtr<T, T_BuildConfig>       pointer;
 
-      template <typename T, typename T_CopyCtor,
-                typename T_DefCtor, typename T_BuildConfig>
-      bool
-        operator()
-        (const VirtualStackObjectBase_TI<T,
-                                         T_CopyCtor,
-                                         T_DefCtor,
-                                         T_BuildConfig>& a_vso)
-      { return a_vso.get() == m_toCompare; }
+      public:
+        WithVirtualPtr(pointer a_toCompare)
+          : m_toCompare(a_toCompare)
+        { }
 
-    private:
-      pointer m_toCompare;
+        template <typename T, typename T_CopyCtor,
+                  typename T_DefCtor, typename T_BuildConfig>
+        bool operator()
+        (const VirtualStackObjectBase_TI<T, T_CopyCtor,
+                                         T_DefCtor, T_BuildConfig>& a_vso)
+        { return a_vso.get() == m_toCompare; }
+
+      private:
+        pointer m_toCompare;
+      };
+
+      // -----------------------------------------------------------------------
+      // MakeVirtualPtr
+
+      template <typename T, typename T_BuildConfig>
+      WithVirtualPtr<T, T_BuildConfig>
+        MakeWithVirtualPtr(VirtualPtr<T, T_BuildConfig> a_ptr)
+      { return WithVirtualPtr<T, T_BuildConfig>(a_ptr); }
+
     };
-
-    // -----------------------------------------------------------------------
-    // MakeVirtualPtr
-
-    template <typename T, typename T_BuildConfig>
-    WithVirtualPtr<T, T_BuildConfig>
-      MakeWithVirtualPtr(VirtualPtr<T, T_BuildConfig> a_ptr)
-    { return WithVirtualPtr<T, T_BuildConfig>(a_ptr); }
 
   };};
 

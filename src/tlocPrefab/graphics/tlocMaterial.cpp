@@ -98,11 +98,11 @@ namespace tloc { namespace prefab { namespace graphics {
 
     for (uniform_itr itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
-    { so->AddUniform(*itr); }
+    { so->AddUniform(**itr); }
 
     for (attribute_itr itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
-    { so->AddAttribute(*itr); }
+    { so->AddAttribute(**itr); }
 
     mat->AddShaderOperator(so.get());
 

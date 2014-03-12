@@ -100,7 +100,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_uniVpMat->SetValueAs(tFinalMat);
 
       m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(m_uniVpMat.get());
+      m_mvpOperator->AddUniform(*m_uniVpMat);
 
       // Push the center vertex
       {
@@ -122,7 +122,7 @@ namespace tloc { namespace graphics { namespace component_system {
                               gl::p_shader_variable_ti::Pointer());
 
       shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
-      so_fan->AddAttribute(m_vData.get());
+      so_fan->AddAttribute(*m_vData);
 
       if (a_ent->HasComponent(components::texture_coords))
       {
@@ -140,7 +140,7 @@ namespace tloc { namespace graphics { namespace component_system {
           m_tData->SetVertexArray(core_sptr::ToVirtualPtr(texCoordCont),
                                   gl::p_shader_variable_ti::Pointer() );
 
-          so_fan->AddAttribute(m_tData.get());
+          so_fan->AddAttribute(*m_tData);
         }
       }
 

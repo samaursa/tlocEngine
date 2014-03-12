@@ -36,8 +36,10 @@ namespace tloc { namespace graphics { namespace component_system {
   bool Material::
     RemoveShaderOperator(const const_shader_op_ptr& a_shaderOp)
   {
-    shader_op_cont_itr itr = core::remove_if_all(m_shaderOperators,
-      core_sptr::algos::compare::MakeWithVirtualPtr(a_shaderOp));
+    shader_op_cont_itr itr =
+      core::remove_if_all(m_shaderOperators,
+        core_sptr::algos::compare::virtual_stack_object::
+        MakeWithVirtualPtr(a_shaderOp));
 
     if (itr != m_shaderOperators.end())
     {

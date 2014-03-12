@@ -174,7 +174,8 @@ namespace tloc { namespace core { namespace memory {
     void
       DoCleanup(T_Container& m_allElements, allocation_on_heap)
     {
-      for_each_all(m_allElements, core_sptr::algos::DeleteAndReset());
+      for_each_all(m_allElements,
+                   core_sptr::algos::virtual_ptr::DeleteAndReset());
     }
   };
 

@@ -144,7 +144,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_float");
       uniform->SetValueAs(f32(5.0f));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
       CHECK_FALSE(so->IsUniformsCached());
     }
     {
@@ -154,7 +154,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_vec2");
       uniform->SetValueAs(Vec2f32(0.1f, 0.2f));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -163,7 +163,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_vec3");
       uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -172,7 +172,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_vec4");
       uniform->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -181,7 +181,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_int");
       uniform->SetValueAs(s32(5));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -190,7 +190,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_ivec2");
       uniform->SetValueAs(Tuple2s32(2));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -199,7 +199,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_ivec3");
       uniform->SetValueAs(Tuple3s32(3));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -208,7 +208,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_ivec4");
       uniform->SetValueAs(Tuple4s32(4));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
 #if defined (TLOC_OS_WIN)
     {
@@ -218,7 +218,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_uint");
       uniform->SetValueAs(u32(5));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -227,7 +227,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_uivec2");
       uniform->SetValueAs(Tuple2u32(2));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -236,7 +236,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_uivec3");
       uniform->SetValueAs(Tuple3u32(3));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -245,7 +245,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_uivec4");
       uniform->SetValueAs(Tuple4u32(4));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
 #endif
     {
@@ -256,7 +256,7 @@ namespace TestingShaderOperator
       uniform->SetValueAs(Mat2f32(1, 0,
                                   0, 1));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -267,7 +267,7 @@ namespace TestingShaderOperator
                                   0, 1, 0,
                                   0, 0, 1));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -279,7 +279,7 @@ namespace TestingShaderOperator
                                   0, 0, 1, 0,
                                   0, 0, 0, 1));
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
 
     // Copy the operator
@@ -329,11 +329,19 @@ namespace TestingShaderOperator
     typedef shader_op_ptr::value_type::size_type size_type;
     const size_type numUniforms = so->GetNumberOfUniforms();
 
-    // Removing uniforms does not affect cache
-    so->RemoveUniform(so->begin_uniforms()->first);
+    // Note that removing uniforms does not affect cache
+    gl::ShaderOperator::uniform_iterator uniItr =
+      core::find_if(so->begin_uniforms(), so->end_uniforms(),
+        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+
+    so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
 
-    so->RemoveUniform(so->begin_uniforms()->first);
+    uniItr =
+      core::find_if(so->begin_uniforms(), so->end_uniforms(),
+        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+
+    so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
 
     sp.Enable();
@@ -446,7 +454,7 @@ namespace TestingShaderOperator
       Array<f32>  floats(2, 2.0f);
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -457,7 +465,7 @@ namespace TestingShaderOperator
       Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -468,7 +476,7 @@ namespace TestingShaderOperator
       Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -479,7 +487,7 @@ namespace TestingShaderOperator
       Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -490,7 +498,7 @@ namespace TestingShaderOperator
       Array<s32>  ints(2, 1);
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -501,7 +509,7 @@ namespace TestingShaderOperator
       Array<Tuple2s32>  ints(2, Tuple2s32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -512,7 +520,7 @@ namespace TestingShaderOperator
       Array<Tuple3s32>  ints(2, Tuple3s32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -523,7 +531,7 @@ namespace TestingShaderOperator
       Array<Tuple4s32>  ints(2, Tuple4s32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
 #if defined (TLOC_OS_WIN)
     {
@@ -535,7 +543,7 @@ namespace TestingShaderOperator
       Array<u32>  ints(2, 1);
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -546,7 +554,7 @@ namespace TestingShaderOperator
       Array<Tuple2u32>  ints(2, Tuple2u32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -557,7 +565,7 @@ namespace TestingShaderOperator
       Array<Tuple3u32>  ints(2, Tuple3u32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -568,7 +576,7 @@ namespace TestingShaderOperator
       Array<Tuple4u32>  ints(2, Tuple4u32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(core_sptr::ToVirtualPtr(uniform));
+      so->AddUniform(*uniform);
     }
 #endif
 
@@ -667,7 +675,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_float");
       attribute->SetValueAs(f32(5.0f));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
       CHECK_FALSE(so->IsAttributesCached());
     }
     {
@@ -676,7 +684,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_vec2");
       attribute->SetValueAs(Vec2f32(0.1f, 0.2f));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -684,7 +692,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_vec3");
       attribute->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -692,7 +700,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_vec4");
       attribute->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 #if defined (TLOC_OS_WIN)
     {
@@ -701,7 +709,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_int");
       attribute->SetValueAs(s32(5));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -709,7 +717,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_ivec2");
       attribute->SetValueAs(Tuple2s32(2));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -717,7 +725,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_ivec3");
       attribute->SetValueAs(Tuple3s32(3));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -725,7 +733,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_ivec4");
       attribute->SetValueAs(Tuple4s32(4));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 
     {
@@ -734,7 +742,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_uint");
       attribute->SetValueAs(u32(5));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -742,7 +750,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_uivec2");
       attribute->SetValueAs(Tuple2u32(2));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -750,7 +758,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_uivec3");
       attribute->SetValueAs(Tuple3u32(3));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -758,7 +766,7 @@ namespace TestingShaderOperator
       attribute->SetName("u_uivec4");
       attribute->SetValueAs(Tuple4u32(4));
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 #endif
 
@@ -809,11 +817,19 @@ namespace TestingShaderOperator
     typedef shader_op_ptr::value_type::size_type size_type;
     const size_type numAttributes = so->GetNumberOfAttributes();
 
-    // Removing uniforms does not affect cache
-    so->RemoveAttribute(so->begin_attributes()->first);
+    gl::ShaderOperator::attribute_iterator attrItr =
+      core::find_if(so->begin_attributes(), so->end_attributes(),
+        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+
+    // Note that removing uniforms does not affect cache
+    so->RemoveAttribute(attrItr);
     CHECK(so->GetNumberOfAttributes() == numAttributes - 1);
 
-    so->RemoveAttribute(so->begin_attributes()->first);
+    attrItr =
+      core::find_if(so->begin_attributes(), so->end_attributes(),
+        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+
+    so->RemoveAttribute(attrItr);
     CHECK(so->GetNumberOfAttributes() == numAttributes - 2);
 
     sp.Enable();
@@ -915,7 +931,7 @@ namespace TestingShaderOperator
       Array<f32>  floats(2, 2.0f);
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -925,7 +941,7 @@ namespace TestingShaderOperator
       Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -935,7 +951,7 @@ namespace TestingShaderOperator
       Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -945,7 +961,7 @@ namespace TestingShaderOperator
       Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 #if defined (TLOC_OS_WIN)
     {
@@ -956,7 +972,7 @@ namespace TestingShaderOperator
       Array<s32>  ints(2, 1);
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -966,7 +982,7 @@ namespace TestingShaderOperator
       Array<Tuple2s32>  ints(2, Tuple2s32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -976,7 +992,7 @@ namespace TestingShaderOperator
       Array<Tuple3s32>  ints(2, Tuple3s32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -986,7 +1002,7 @@ namespace TestingShaderOperator
       Array<Tuple4s32>  ints(2, Tuple4s32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 
     {
@@ -997,7 +1013,7 @@ namespace TestingShaderOperator
       Array<u32>  ints(2, 1);
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -1007,7 +1023,7 @@ namespace TestingShaderOperator
       Array<Tuple2u32>  ints(2, Tuple2u32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -1017,7 +1033,7 @@ namespace TestingShaderOperator
       Array<Tuple3u32>  ints(2, Tuple3u32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -1027,7 +1043,7 @@ namespace TestingShaderOperator
       Array<Tuple4u32>  ints(2, Tuple4u32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(core_sptr::ToVirtualPtr(attribute));
+      so->AddAttribute(*attribute);
     }
 #endif
 

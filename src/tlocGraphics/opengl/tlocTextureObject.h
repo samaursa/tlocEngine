@@ -1,7 +1,7 @@
 #ifndef _TLOC_GRAPHICS_GL_TEXTURE_OBJECT_H_
 #define _TLOC_GRAPHICS_GL_TEXTURE_OBJECT_H_
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/media/tlocImage.h>
@@ -287,7 +287,8 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core::smart_ptr::SharedPtr<TextureObject>   texture_object_sptr;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject, texture_object);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject, texture_object);
 
 };};};
 

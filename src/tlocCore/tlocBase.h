@@ -37,14 +37,14 @@
 // Common macros
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
-# ifdef _SECURE_SCL
-# undef _SECURE_SCL
+# if defined (_MSC_VER)
+#   ifdef _SECURE_SCL
+#     undef _SECURE_SCL
+#   endif
+#   define _SECURE_SCL 0  // turn of checked iterators
+#   pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
+#   pragma inline_recursion( on )
 # endif
-
-# define _SECURE_SCL 0  // turn of checked iterators
-# pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
-# pragma inline_recursion( on )
-
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -398,7 +398,7 @@
 #define TLOC_UNUSED_4(variable1, variable2, variable3, variable4) TLOC_UNUSED_3(variable1, variable2, variable3); TLOC_UNUSED(variable4)
 #define TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5) TLOC_UNUSED_4(variable1, variable2, variable3, variable4); TLOC_UNUSED(variable5)
 #define TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5); TLOC_UNUSED(variable6)
-#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
+#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
 
 // If a source file is empty (usually because of #ifdef) then the linker will
 // generate the LNK4221 warning complaining that no symbols were found and hence

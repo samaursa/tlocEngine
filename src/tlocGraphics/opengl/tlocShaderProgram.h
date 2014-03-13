@@ -3,11 +3,11 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
@@ -117,7 +117,8 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(ShaderProgram, shader_program);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderProgram, shader_program);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderProgram, shader_program);
 
 };};};
 

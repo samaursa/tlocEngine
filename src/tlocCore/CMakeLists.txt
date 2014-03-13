@@ -10,10 +10,13 @@ set(TLOC_ENGINE_CORE
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
     tlocFunctional.h
+    tlocFunctional.cpp
     tlocNoOpt.h
     tlocPair.h
     tlocPair.inl.h
     tlocStaticAssert.h
+    tlocUCID.h
+    tlocUCID.cpp
 )
 set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
@@ -171,6 +174,7 @@ set(TLOC_ENGINE_CORE_MEMORY
     memory/tlocMemoryPool.h
     memory/tlocMemoryPool.inl.h
     memory/tlocMemoryPoolIndexedWrapper.h
+    memory/tlocMemoryPoolIndexedWrapper.inl.h
 )
 set(TLOC_ENGINE_CORE_PARSERS
     parsers/tloc_parsers.h
@@ -185,6 +189,16 @@ set(TLOC_ENGINE_CORE_PLATFORM
     platform/tlocPlatform.cpp
     platform/tlocPlatformDefines.h
     platform/tlocPlatformSpecificIncludes.h
+)
+set(TLOC_ENGINE_CORE_RESOURCES
+    resources/tloc_resources.h
+    resources/tloc_resources.inl.h
+    resources/tloc_resources.cpp
+    resources/tlocResource.h
+    resources/tlocResource.cpp
+    resources/tlocResourceFactory.h
+    resources/tlocResourceFactory.inl.h
+    resources/tlocResourceFactory.cpp
 )
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h
@@ -208,6 +222,12 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tlocSmartPtrTracker.cpp
     smart_ptr/tlocUniquePtr.h
     smart_ptr/tlocUniquePtr.inl.h
+    smart_ptr/tlocVirtualPtr.h
+    smart_ptr/tlocVirtualPtr.inl.h
+    smart_ptr/tlocVirtualPtr.cpp
+    smart_ptr/tlocVirtualStackObject.h
+    smart_ptr/tlocVirtualStackObject.inl.h
+    smart_ptr/tlocVirtualStackObject.cpp
 )
 set(TLOC_ENGINE_CORE_STRING
     string/tloc_string.h
@@ -328,6 +348,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_MEMORY}
   ${TLOC_ENGINE_CORE_PARSERS}
   ${TLOC_ENGINE_CORE_PLATFORM}
+  ${TLOC_ENGINE_CORE_RESOURCES}
   ${TLOC_ENGINE_CORE_RNG}
   ${TLOC_ENGINE_CORE_SMART_PTR}
   ${TLOC_ENGINE_CORE_STRING}
@@ -350,6 +371,7 @@ source_group(logger FILES ${TLOC_ENGINE_CORE_LOGGER})
 source_group(memory FILES ${TLOC_ENGINE_CORE_MEMORY})
 source_group(parsers FILES ${TLOC_ENGINE_CORE_PARSERS})
 source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})
+source_group(resources FILES ${TLOC_ENGINE_CORE_RESOURCES})
 source_group(rng FILES ${TLOC_ENGINE_CORE_RNG})
 source_group(smart_ptr FILES ${TLOC_ENGINE_CORE_SMART_PTR})
 source_group(string FILES ${TLOC_ENGINE_CORE_STRING})

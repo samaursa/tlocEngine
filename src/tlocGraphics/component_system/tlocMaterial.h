@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -23,13 +24,12 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core::component_system::Component_T
       <Material, components::material>                      base_type;
-    typedef gl::shader_program_sptr                         shader_prog_ptr;
+    typedef gl::shader_program_vptr                         shader_prog_ptr;
 
-    typedef gl::shader_operator_sptr                        shader_op_ptr;
-    typedef core::containers::tl_array<shader_op_ptr>::type shader_op_cont;
-
-    typedef shader_op_cont::iterator                  shader_op_cont_itr;
-    typedef shader_op_cont::const_iterator            shader_op_cont_const_itr;
+    typedef gl::shader_operator_vptr                        shader_op_ptr;
+    typedef gl::const_shader_operator_vptr                  const_shader_op_ptr;
+    typedef gl::shader_operator_vso                         shader_op_vso;
+    typedef core::containers::tl_array<shader_op_vso>::type shader_op_cont;
 
     typedef core::string::String                            string_type;
 
@@ -37,8 +37,8 @@ namespace tloc { namespace graphics { namespace component_system {
     Material();
     Material(const Material& a_other);
 
-    void AddShaderOperator(shader_op_ptr a_shaderOp);
-    bool RemoveShaderOperator(shader_op_ptr a_shaderOp);
+    void AddShaderOperator(const const_shader_op_ptr& a_shaderOp);
+    bool RemoveShaderOperator(const const_shader_op_ptr& a_shaderOp);
     void RemoveAllShaderOperators();
 
     bool operator ==(const Material& a_other) const;
@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
       (string_type, GetFragmentSource, m_fragmentProgram);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (shader_prog_ptr, GetShaderProgRef, m_shaderProgram);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+    TLOC_DECL_AND_DEF_GETTER_DIRECT
       (shader_op_cont, GetShaderOperators, m_shaderOperators);
 
     void SetVertexSource(BufferArg a_source);
@@ -69,8 +69,9 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Material, material);
-  TLOC_TYPEDEF_COMPONENT_POOL(material_sptr, material_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Material, material);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Material, material);
+  TLOC_TYPEDEF_COMPONENT_POOL(Material, material);
 
 };};};
 

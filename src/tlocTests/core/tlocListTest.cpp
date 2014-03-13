@@ -52,6 +52,10 @@ namespace TestingList
     DECLARE_TYPEDEFS(CountedClass, myClass);
   };
 
+  // testing explicit instantiation macros
+  TLOC_EXPLICITLY_INSTANTIATE_LIST(tl_int);
+  TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(tl_int);
+
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Sizes", "")
   {
     u32 sizeOfPtr = sizeof(tl_uintptr);

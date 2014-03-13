@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
@@ -36,8 +37,9 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Quad, quad);
-  TLOC_TYPEDEF_COMPONENT_POOL(quad_sptr, quad_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Quad, quad);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Quad, quad);
+  TLOC_TYPEDEF_COMPONENT_POOL(Quad, quad);
 
 };};};
 

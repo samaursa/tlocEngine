@@ -2,10 +2,10 @@
 #define TLOC_ENTITY_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/memory/tlocBufferArg.h>
-
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
@@ -60,6 +60,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     friend class EntityManager;
 
+    typedef Entity                                      this_type;
     typedef p_entity::Entity_I
       <core_cfg::BuildConfig::build_config_type>        base_type;
 
@@ -73,11 +74,15 @@ namespace tloc { namespace core { namespace component_system {
     Entity(entity_id  a_id);
     Entity(entity_id  a_id, BufferArg a_debugName);
 
+    bool operator==(const this_type& a_other) const;
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
+
     bool                        HasComponent(component_type a_type) const;
     const component_list&       GetComponents(component_type a_type) const;
 
     template <typename T_ComponentType>
-    T_ComponentType*            GetComponent(size_type a_index = 0) const;
+    core_sptr::VirtualPtr<T_ComponentType>
+                                GetComponent(size_type a_index = 0) const;
 
     template <typename T_ComponentType>
     bool                        HasComponent() const;
@@ -96,7 +101,7 @@ namespace tloc { namespace core { namespace component_system {
     void                        SetIndex(size_type a_index);
 
     component_list&             DoGetComponents(component_type a_type);
-    void                        InsertComponent(Component* a_type);
+    void                        InsertComponent(component_vptr a_type);
 
     component_list_list&        GetComponentsList();
 
@@ -112,7 +117,7 @@ namespace tloc { namespace core { namespace component_system {
   // template definitions
 
   template <typename T_ComponentType>
-  T_ComponentType*
+  core_sptr::VirtualPtr<T_ComponentType>
     Entity::GetComponent(size_type a_index) const
   {
     TLOC_ASSERT(HasComponent(T_ComponentType::k_component_type),
@@ -132,10 +137,10 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedef
 
-  TLOC_TYPEDEF_SHARED_PTR(Entity, entity);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Entity, entity);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Entity, entity);
 
-  typedef containers::tl_array<Entity*>::type                entity_ptr_array;
-  typedef containers::tl_array<entity_sptr>::type            entity_sptr_array;
+  typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
 };};};
 
 ///-------------------------------------------------------------------------

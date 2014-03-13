@@ -20,11 +20,10 @@ namespace tloc { namespace prefab { namespace animation {
     typedef anim_cs::TransformAnimation::kf_seq_type          kf_seq_type;
 
   public:
-    TransformAnimation(core_cs::EntityManager* a_entMgr,
-             core_cs::ComponentPoolManager* a_poolMgr);
+    TransformAnimation(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
-    this_type&    Add(entity_type* a_ent, const kf_seq_type& a_keyframes);
-    void          Modify(entity_type* a_ent, const kf_seq_type& a_keyframes,
+    this_type&    Add(entity_ptr a_ent, const kf_seq_type& a_keyframes);
+    void          Modify(entity_ptr a_ent, const kf_seq_type& a_keyframes,
                          tl_size a_sequenceIndex);
 
     TLOC_DECL_PARAM_VAR(tl_size, Fps, m_fps);

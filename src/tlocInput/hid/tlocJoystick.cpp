@@ -25,13 +25,13 @@ namespace tloc { namespace input { namespace hid {
 #define JOYSTICK_TYPE   typename Joystick_T<JOYSTICK_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  
+
   template <JOYSTICK_TEMP>
   template <typename T_ParamList>
   Joystick_T<JOYSTICK_PARAMS>::
     Joystick_T(const T_ParamList& a_paramList)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

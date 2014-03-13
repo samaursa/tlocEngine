@@ -579,86 +579,17 @@ namespace TestingHashtable
     }
   }
 
-  // -----------------------------------------------------------------------
-  // string hash test (note that the engine currently does not have a built-in
-  // hasher for const char*, so we will use the following one, courtesy of
-  // https://sites.google.com/site/murmurhash/
-
-  unsigned int MurmurHash2 ( const void * key, int len, unsigned int seed )
-  {
-    // 'm' and 'r' are mixing constants generated offline.
-    // They're not really 'magic', they just happen to work well.
-
-    const unsigned int m = 0x5bd1e995;
-    const int r = 24;
-
-    // Initialize the hash to a 'random' value
-
-    unsigned int h = seed ^ len;
-
-    // Mix 4 bytes at a time into the hash
-
-    const unsigned char * data = (const unsigned char *)key;
-
-    while(len >= 4)
-    {
-      unsigned int k = *(unsigned int *)data;
-
-      k *= m;
-      k ^= k >> r;
-      k *= m;
-
-      h *= m;
-      h ^= k;
-
-      data += 4;
-      len -= 4;
-    }
-
-    // Handle the last few bytes of the input array
-
-    switch(len)
-    {
-    case 3: h ^= data[2] << 16;
-    case 2: h ^= data[1] << 8;
-    case 1: h ^= data[0];
-      h *= m;
-    };
-
-    // Do a few final mixes of the hash to ensure the last few
-    // bytes are well-incorporated.
-
-    h ^= h >> 13;
-    h *= m;
-    h ^= h >> 15;
-
-    return h;
-  }
-
-  struct StringHash
-  {
-    tl_uint
-      operator()(const char8* a_value) const
-    {
-      tl_uint valueLength =
-        core_utils::CastNumber<tl_uint>(core_str::StrLen(a_value));
-
-      return core_utils::CastNumber<tl_uint>
-        (MurmurHash2(a_value, valueLength, 35) );
-    }
-  };
-
   TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with const char*", "")
   {
     using core::containers::Hashtable;
 
-    typedef HashtableElement<const char8*>       void_elem_type;
-    typedef DoublyList<void_elem_type>::type    bucket_type;
-    typedef DoublyList<bucket_type>::type       bucket_holder_type;
+    typedef HashtableElement<const core_str::String>      void_elem_type;
+    typedef DoublyList<void_elem_type>::type              bucket_type;
+    typedef DoublyList<bucket_type>::type                 bucket_holder_type;
 
     typedef HashtableFixture::HT
       <
-        bucket_holder_type, const char8*, false, false, StringHash
+        bucket_holder_type, core_str::String, false, false
       >::type doubly_nohash_nounique;
 
     typedef Hashtable<doubly_nohash_nounique> ht_type;
@@ -666,10 +597,10 @@ namespace TestingHashtable
 
     ht_type stringTable;
 
-    const char8* str1 = "This";
-    const char8* str2 = "is";
-    const char8* str3 = "absolutely";
-    const char8* str4 = "great";
+    const core_str::String str1 = "This";
+    const core_str::String str2 = "is";
+    const core_str::String str3 = "absolutely";
+    const core_str::String str4 = "great";
 
     stringTable.insert(str1);
     stringTable.insert(str2);

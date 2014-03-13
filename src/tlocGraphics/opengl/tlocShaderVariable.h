@@ -7,6 +7,7 @@
 #include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocAny.inl.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocCore/containers/tlocContainerTraits.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
@@ -185,6 +186,46 @@ namespace tloc { namespace graphics { namespace gl {
     return DoSetValueAs(a_array);
   }
 
+  namespace algos { namespace shader_variable {
+
+    namespace compare {
+
+      struct Name
+      {
+        typedef BufferArg                       value_type;
+
+        Name(value_type a_nameToCompare)
+          : m_name(a_nameToCompare)
+        { }
+
+        template <typename T>
+        bool operator()(const ShaderVariable_TI<T>& a_sv) const
+        {
+          return a_sv.GetName().compare(m_name) == 0;
+        }
+
+        value_type m_name;
+      };
+
+      struct Type
+      {
+        // typedefing gl_type just to show where the type comes from
+        typedef u32                             gl_type;
+        typedef gl_type                         value_type;
+
+        Type(value_type a_typeToCheck)
+          : m_type(a_typeToCheck)
+        { }
+
+        template <typename T>
+        bool operator()(const ShaderVariable_TI<T>& a_sv) const
+        { return m_type == a_sv.GetType(); }
+
+        value_type m_type;
+      };
+    };
+
+  };};
 
 };};};
 

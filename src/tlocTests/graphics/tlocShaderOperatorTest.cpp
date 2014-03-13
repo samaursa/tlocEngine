@@ -146,6 +146,13 @@ namespace TestingShaderOperator
 
       so->AddUniform(*uniform);
       CHECK_FALSE(so->IsUniformsCached());
+
+      gl::ShaderOperator::uniform_iterator itr =
+        core::find_if(so->begin_uniforms(), so->end_uniforms(),
+          gl::algos::shader_operator::compare::UniformName("u_float"));
+
+      REQUIRE(itr != so->end_uniforms());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -455,6 +462,13 @@ namespace TestingShaderOperator
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddUniform(*uniform);
+
+      gl::ShaderOperator::uniform_iterator itr =
+        core::find_if(so->begin_uniforms(), so->end_uniforms(),
+          gl::algos::shader_operator::compare::UniformName("u_float"));
+
+      REQUIRE(itr != so->end_uniforms());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -932,6 +946,13 @@ namespace TestingShaderOperator
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
       so->AddAttribute(*attribute);
+
+      gl::ShaderOperator::attribute_iterator itr =
+        core::find_if(so->begin_attributes(), so->end_attributes(),
+          gl::algos::shader_operator::compare::AttributeName("u_float"));
+
+      REQUIRE(itr != so->end_attributes());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );

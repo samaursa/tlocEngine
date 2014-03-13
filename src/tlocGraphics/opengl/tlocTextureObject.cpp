@@ -313,5 +313,5 @@ namespace tloc { namespace graphics { namespace gl {
 
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureObject);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject);

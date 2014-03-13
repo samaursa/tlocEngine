@@ -119,7 +119,7 @@ namespace tloc { namespace core { namespace error {
 
 #define ERROR_T_TEMP    typename T_BuildConfig
 #define ERROR_T_PARAMS  T_BuildConfig
-#define ERROR_T_TYPE    typename Error_T<ERROR_TI_PARAMS>
+#define ERROR_T_TYPE    typename Error_T<ERROR_T_PARAMS>
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
@@ -152,7 +152,8 @@ namespace tloc { namespace core { namespace error {
   }
 
   template <ERROR_T_TEMP>
-  void Error_T<ERROR_T_PARAMS>::
+  ERROR_T_TYPE::this_type&
+    Error_T<ERROR_T_PARAMS>::
     operator =(const this_type& a_other)
   {
     DoSetErrorCode(a_other.GetErrorCode() );
@@ -160,6 +161,8 @@ namespace tloc { namespace core { namespace error {
     m_file = a_other.m_file;
     a_other.Ignore();
     m_errorCheckedByUser = false;
+
+    return *this;
   }
 
   template <ERROR_T_TEMP>

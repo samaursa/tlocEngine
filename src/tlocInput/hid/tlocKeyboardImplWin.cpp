@@ -150,7 +150,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <KEYBOARD_IMPL_TEMP>
   KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
-    KeyboardImpl(parent_type* a_parent,
+    KeyboardImpl(parent_type& a_parent,
                  const keyboard_param_type& a_params)
     : KeyboardImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
@@ -317,7 +317,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           m_modifier |= KeyboardEvent::Alt;
         }
 
-        m_parent->SendOnKeyPress( KeyboardEvent(kc) );
+        m_parent.SendOnKeyPress( KeyboardEvent(kc) );
         m_buffer[kc] = true;
 
       }
@@ -336,7 +336,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           m_modifier &= ~KeyboardEvent::Alt;
         }
 
-        m_parent->SendOnKeyRelease( KeyboardEvent(kc) );
+        m_parent.SendOnKeyRelease( KeyboardEvent(kc) );
         m_buffer[kc] = false;
 
       }

@@ -8,20 +8,11 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntityProcessingSystem : public EntitySystemBase
+  class EntityProcessingSystem
+    : public EntitySystemBase
   {
   public:
     typedef EntitySystemBase                    base_type;
-    using base_type::component_type;
-    using base_type::component_type_array;
-    using base_type::size_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
   public:
     friend class EntitySystemBase;
@@ -31,41 +22,35 @@ namespace tloc { namespace core { namespace component_system {
 
   protected:
     template <size_type T_VarSize>
-    EntityProcessingSystem(event_manager_sptr a_eventMgr,
-                           entity_manager_sptr a_entityMgr,
+    EntityProcessingSystem(event_manager_ptr a_eventMgr,
+                           entity_manager_ptr a_entityMgr,
                            const data_structs::Variadic
                               <component_type, T_VarSize>& a_typeFlags);
 
   protected: // Initialization
     virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent) = 0;
+    virtual error_type InitializeEntity(entity_vptr a_ent) = 0;
     virtual error_type Post_Initialize();
 
   protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
+    virtual void ProcessEntity(entity_vptr a_ent,
                                f64 a_deltaT) = 0;
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
   protected: // Shutdown
     virtual error_type Pre_Shutdown();
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent) = 0;
+    virtual error_type ShutdownEntity(entity_vptr a_ent) = 0;
     virtual error_type Post_Shutdown();
 
   private:
-    virtual void DoProcessActiveEntities (const entity_manager* a_mgr,
-                                          const entity_ptr_array& a_entities,
+    virtual void DoProcessActiveEntities (const entity_ptr_array& a_entities,
                                           f64 a_deltaT);
 
-    virtual error_type DoInitialize(const entity_manager* a_mgr,
-                                    const entity_ptr_array& a_entities);
+    virtual error_type DoInitialize(const entity_ptr_array& a_entities);
 
-    virtual error_type DoShutdown(const entity_manager* a_mgr,
-                                  const entity_ptr_array& a_entities);
+    virtual error_type DoShutdown(const entity_ptr_array& a_entities);
   };
 
   //------------------------------------------------------------------------
@@ -73,8 +58,8 @@ namespace tloc { namespace core { namespace component_system {
 
     template <tl_size T_VarSize>
     EntityProcessingSystem::
-      EntityProcessingSystem (event_manager_sptr a_eventMgr,
-                              entity_manager_sptr a_entityMgr,
+      EntityProcessingSystem (event_manager_ptr a_eventMgr,
+                              entity_manager_ptr a_entityMgr,
                               const data_structs::
                               Variadic<component_type, T_VarSize>& a_typeFlags)
       : EntitySystemBase(a_eventMgr, a_entityMgr, a_typeFlags)

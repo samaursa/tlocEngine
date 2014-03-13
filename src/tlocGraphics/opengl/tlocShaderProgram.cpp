@@ -1,9 +1,6 @@
 #include "tlocShaderProgram.h"
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl.h>
-#include <tlocCore/data_structures/tlocVariadic.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>
 
@@ -383,6 +380,9 @@ namespace tloc { namespace graphics { namespace gl {
 //------------------------------------------------------------------------
 // Explicit initialization
 
+#include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_gl;
 using namespace tloc::core_ds;
 
@@ -393,4 +393,5 @@ TLOC_INSTANTIATE_VARIADIC(Shader_I*, 3);
 TLOC_INSTANTIATE_VARIADIC(Shader_I*, 4);
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ShaderProgram);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ShaderProgram);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(ShaderProgram);

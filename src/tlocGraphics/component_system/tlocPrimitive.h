@@ -5,6 +5,7 @@
 
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/types/tlocVertex.h>
@@ -22,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef types::Vert3fpnt                                  vert_type;
       typedef core_conts::Array<vert_type>                      cont_type;
       typedef tl_size                                           size_type;
-      typedef core_sptr::SharedPtr<cont_type>                   cont_sptr;
+      typedef core_sptr::VirtualPtr<cont_type>                  cont_sptr;
 
     public:
       ArrayOfStructures();
@@ -52,9 +53,9 @@ namespace tloc { namespace graphics { namespace component_system {
       typedef core_conts::Array<norm_type>                    cont_norm_type;
       typedef core_conts::Array<tcoord_type>                  cont_tcoord_type;
 
-      typedef core_sptr::SharedPtr<cont_pos_type>             cont_pos_sptr;
-      typedef core_sptr::SharedPtr<cont_norm_type>            cont_norm_sptr;
-      typedef core_sptr::SharedPtr<cont_tcoord_type>          cont_tcoord_sptr;
+      typedef core_sptr::VirtualPtr<cont_pos_type>            cont_pos_ptr;
+      typedef core_sptr::VirtualPtr<cont_norm_type>           cont_norm_ptr;
+      typedef core_sptr::VirtualPtr<cont_tcoord_type>         cont_tcoord_ptr;
 
       typedef tl_size                                         size_type;
 
@@ -67,14 +68,14 @@ namespace tloc { namespace graphics { namespace component_system {
       size_type size() const;
       void      clear();
 
-      TLOC_DECL_AND_DEF_GETTER(cont_pos_sptr, GetPositions, m_positions);
-      TLOC_DECL_AND_DEF_GETTER(cont_norm_sptr, GetNormals, m_normals);
-      TLOC_DECL_AND_DEF_GETTER(cont_tcoord_sptr, GetTCoords, m_tcoords);
+      TLOC_DECL_AND_DEF_GETTER(cont_pos_ptr, GetPositions, m_positions);
+      TLOC_DECL_AND_DEF_GETTER(cont_norm_ptr, GetNormals, m_normals);
+      TLOC_DECL_AND_DEF_GETTER(cont_tcoord_ptr, GetTCoords, m_tcoords);
 
     private:
-      cont_pos_sptr     m_positions;
-      cont_norm_sptr    m_normals;
-      cont_tcoord_sptr  m_tcoords;
+      cont_pos_ptr     m_positions;
+      cont_norm_ptr    m_normals;
+      cont_tcoord_ptr  m_tcoords;
     };
   };
 

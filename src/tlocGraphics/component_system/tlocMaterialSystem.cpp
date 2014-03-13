@@ -23,18 +23,23 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // MaterialSystem
 
-  MaterialSystem::MaterialSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr
-    , Variadic<component_type, 1>(components::material))
+  MaterialSystem::
+    MaterialSystem(event_manager_ptr a_eventMgr,
+                   entity_manager_ptr a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr,
+                Variadic<component_type, 1>(components::material))
   { }
 
-  error_type MaterialSystem::InitializeEntity(const entity_manager*,
-                                              const entity_type* a_ent)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    MaterialSystem::
+    InitializeEntity(entity_ptr a_ent)
   {
     using namespace core::component_system;
 
-    typedef graphics::component_system::Material        mat_type;
+    typedef gfx_cs::Material                            mat_type;
+    typedef gfx_cs::material_vptr                       mat_ptr;
     typedef mat_type::shader_prog_ptr                   shader_prog_ptr;
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
@@ -48,7 +53,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (mat_mapper::size_type i = 0; i < mat.size(); ++i)
     {
-      mat_type* matPtr = mat[i];
+      mat_ptr matPtr = mat[i];
 
       gl::VertexShader          vShader;
       gl::FragmentShader        fShader;
@@ -84,9 +89,9 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Add user attributes and uniforms
 
-      typedef mat_type::shader_op_cont_const_itr  shader_op_itr;
+      typedef mat_type::shader_op_cont::iterator  shader_op_itr;
 
-      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
+      mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       sp->Enable();
 
@@ -94,12 +99,13 @@ namespace tloc { namespace graphics { namespace component_system {
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        err = (*itr)->PrepareAllUniforms(*sp);
+				gl::shader_operator_vptr so = itr->get();
+        err = so->PrepareAllUniforms(*sp);
 
         TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
           << "Unable to prepare all uniforms";
 
-        err = (*itr)->PrepareAllAttributes(*sp);
+        err = so->PrepareAllAttributes(*sp);
 
         TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
           << "Unable to prepare all attributes";
@@ -110,13 +116,18 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   error_type
-    MaterialSystem::ShutdownEntity(const entity_manager*, const entity_type*)
+    MaterialSystem::
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
-  void MaterialSystem::ProcessEntity(const entity_manager*,
-                                     const entity_type*,
-                                     f64)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    MaterialSystem::
+    ProcessEntity(entity_ptr, f64)
   { }
 
 };};};

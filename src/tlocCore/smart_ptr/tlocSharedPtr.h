@@ -54,7 +54,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef T&                      reference;
     typedef T const &               const_reference;
 
-    typedef tl_int                  ref_count_type;
+    typedef tl_long                 ref_count_type;
 
     typedef SharedPtr<value_type, null_copy_policy_type>   this_type;
 
@@ -69,7 +69,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     ~SharedPtr();
 
     template <typename T_Other, typename T_OtherPolicy>
-    this_type& operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other);
+    this_type& operator= (SharedPtr<T_Other, T_OtherPolicy> a_other);
     this_type& operator= (this_type a_other);
 
     ///-------------------------------------------------------------------------
@@ -87,7 +87,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     ///
     /// @return Can be a NULL ptr
     ///-------------------------------------------------------------------------
-    ref_count_type* DoExposeCounter() const;
+    ref_count_type*   DoExposeCounter() const;
 
     pointer   operator->() const;
     reference operator*() const;
@@ -100,8 +100,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename Y>
     void           reset(Y* a_ptr);
 
-    template <typename T_Other>
-    void           swap(SharedPtr<T_Other, null_copy_policy_type>& a_other);
     void           swap(this_type& a_other);
 
     //------------------------------------------------------------------------
@@ -157,18 +155,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     this_type(a_ptr).swap(*this);
   }
 
-  template <typename T, typename T_NullCopyPolicy>
-  template <typename T_Other>
-  void SharedPtr<T, T_NullCopyPolicy>::
-    swap(SharedPtr<T_Other, T_NullCopyPolicy>& a_other)
-  {
-    using core::swap;
-
-    swap(m_rawPtr, a_other.m_rawPtr);
-    swap(m_refCount, a_other.m_refCount);
-  }
-
-  //////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------
   // Global operators
 
   template <class T, class U>
@@ -250,7 +237,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool operator >=(nullptr_t, const SharedPtr<T>& b)
   { return !(nullptr < b); }
 
-  //////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------
   // casting
 
   template <typename T, typename T_NullCopyPolicy, typename U>
@@ -296,14 +283,20 @@ namespace tloc { namespace core { namespace smart_ptr {
     return static_pointer_cast<T, p_shared_ptr::null_copy::Allow>(a_sp);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_NullCopyPolicy>
+  tl_size GetUseCount(const SharedPtr<T, T_NullCopyPolicy>& a_sptr)
+  { return a_sptr.use_count(); }
+
 };};};
 
 #define TLOC_TYPEDEF_SHARED_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::SharedPtr<_type_>  _typedef_##_sptr;\
-  typedef tloc::core_sptr::SharedPtr<const _type_>  _typedef_##_const_sptr;\
+  typedef tloc::core_sptr::SharedPtr<const _type_>  const_##_typedef_##_sptr;\
   typedef tloc::core_sptr::SharedPtr<_type_, \
   tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_sptr_nonullcopy;\
   typedef tloc::core_sptr::SharedPtr<const _type_, \
-  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_const_sptr_nonullcopy
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  const_##_typedef_##_sptr_nonullcopy
 
 #endif

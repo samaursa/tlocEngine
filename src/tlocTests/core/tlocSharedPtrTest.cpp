@@ -280,12 +280,12 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->SetValue(
+        (*memPool.GetNext())->SetValue(
           my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
@@ -298,9 +298,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetValue()->x != counter &&
-          itr->GetValue()->y != counter + 1 &&
-          itr->GetValue()->z != counter + 2)
+        if ( (*(*itr)->GetValue())->x != counter &&
+          (*(*itr)->GetValue())->y != counter + 1 &&
+          (*(*itr)->GetValue())->z != counter + 2)
         {
           testPassed = false;
           break;
@@ -381,9 +381,10 @@ namespace TestingSharedPtr
       CHECK(base::m_dtorCount == 2);
 
 
-      // TODO: Test with static_pointer_cast<>() when it is available
-      //convToDer.CastFrom(basePtr2);
-      //CHECK(convToDer->m_value == 10);
+      convToDer = core_sptr::static_pointer_cast<derived>(basePtr2);
+      CHECK(convToDer->m_value == 10);
+
+      //TODO: Do const_pointer_cast checks
     }
     CHECK(base::m_ctorCount == 3);
     CHECK(base::m_dtorCount == 3);
@@ -547,4 +548,12 @@ namespace TestingSharedPtr
     ConstTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
   }
 
+  TEST_CASE("core/smart_ptr/shared_ptr/GetUseCount", "")
+  {
+    SharedPtr<tl_int> sp;
+    CHECK(GetUseCount(sp) == 0);
+
+    sp.reset(new tl_int(10));
+    CHECK(GetUseCount(sp) == 1);
+  }
 }

@@ -126,6 +126,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     {
+      TLOC_ASSERT(priv::DoIsPointerTrackedVirtually( (void*)m_rawPtr) == false,
+        "Pointer still tracked by VirtualPointer");
       priv::DoStopTrackingPtr( (void*)m_rawPtr);
       delete m_rawPtr;
       m_rawPtr = nullptr;

@@ -13,11 +13,19 @@ namespace tloc { namespace graphics { namespace gl {
     : base_type(a_other)
   { }
 
-  Uniform::this_type& Uniform::
-    operator=(const this_type& a_other)
+  Uniform::this_type&
+    Uniform::
+    operator=(this_type a_other)
   {
-    base_type::operator=(a_other);
+    swap(a_other);
     return *this;
+  }
+
+  void
+    Uniform::
+    swap(this_type& a_other)
+  {
+    base_type::swap(a_other);
   }
 
 };};};

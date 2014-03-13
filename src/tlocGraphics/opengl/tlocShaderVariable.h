@@ -62,6 +62,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     derived_type& SetName(const string_type& a_value);
 
+    bool          IsValidType() const;
+
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);
@@ -70,6 +72,10 @@ namespace tloc { namespace graphics { namespace gl {
   protected:
     ShaderVariable_TI();
     ~ShaderVariable_TI();
+
+    ShaderVariable_TI(const this_type& a_other);
+
+    void swap(this_type& a_other);
 
   private:
     template <typename T>

@@ -49,18 +49,18 @@ namespace tloc { namespace graphics { namespace component_system {
                     const core_ds::Variadic
                       <component_type, T_VarSize>&  a_typeFlags);
 
-    void         SetCamera(const entity_type* a_cameraEntity);
+    void         SetCamera(const_entity_ptr a_cameraEntity);
     virtual void Pre_ProcessActiveEntities(f64);
     virtual void Post_ProcessActiveEntities(f64);
 
-    TLOC_DECL_AND_DEF_GETTER(entity_type*, GetCamera, m_sharedCam);
+    TLOC_DECL_AND_DEF_GETTER(const_entity_ptr, GetCamera, m_sharedCam);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (matrix_type, GetViewProjectionMatrix, m_vpMatrix);
     TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
 
   private:
-    const entity_type*    m_sharedCam;
+    const_entity_ptr      m_sharedCam;
     renderer_type         m_renderer;
     rof_uptr              m_renderOneFrame;
     matrix_type           m_vpMatrix;

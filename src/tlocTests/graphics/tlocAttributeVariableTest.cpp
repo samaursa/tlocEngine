@@ -46,6 +46,14 @@ namespace TestingAttributeVariable
 
       CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( aCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
+      gl::Attribute aCopy2;
+      aCopy2 = a;
+      CHECK(aCopy2.IsAttribArray());
+
+      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+      CHECK( aCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
     }
   }
 

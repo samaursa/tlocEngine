@@ -46,7 +46,7 @@ namespace TestingEntity
 
   TEST_CASE("Core/component_system/entity/entity", "")
   {
-    Entity* e = new Entity(0);
+    entity_vso e(0);
 
     CHECK(e->GetID() == 0);
     CHECK(e->GetComponentsList().size() == (tl_size)components_group::count);
@@ -87,7 +87,5 @@ namespace TestingEntity
     clist = e->GetComponents(g_component + 1);
     REQUIRE(clist.size() == 1);
     CHECK(clist[0].get() == &c2);
-
-    delete e;
   }
 };

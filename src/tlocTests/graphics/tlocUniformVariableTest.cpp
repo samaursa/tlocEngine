@@ -16,20 +16,72 @@ namespace TestingUniformVariable
     using namespace tloc::core_conts;
     using namespace tloc::math_t;
 
-    Vec2f32 v(0.0f, 1.0f);
-
-    gl::Uniform u;
-    u.SetValueAs(v);
-
+    SECTION("Normal values", "")
     {
-      gl::Uniform ucopy(u);
-      CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+      Vec2f32 v(0.0f, 1.0f);
+
+      gl::Uniform u;
+      u.SetValueAs(v);
+
+      {
+        gl::Uniform ucopy(u);
+        CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+      }
+
+      {
+        gl::Uniform ucopy;
+        ucopy = u;
+        CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+      }
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Uniform ucopy;
-      ucopy = u;
-      CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+      gl::Uniform u;
+      Array<f32> array(1, 1.0f);
+      u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK(u.IsArray());
+      CHECK_FALSE(u.IsArrayPtr());
+
+      gl::Uniform uCopy(u);
+      CHECK( uCopy.IsArray());
+      CHECK_FALSE( uCopy.IsArrayPtr());
+      CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+      CHECK( uCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
+      gl::Uniform uCopy2;
+      uCopy2 = u;
+      CHECK( uCopy2.IsArray());
+      CHECK_FALSE( uCopy2.IsArrayPtr());
+      CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+      CHECK( uCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+    }
+
+    SECTION("Array pointers", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<f32>, array_f32);
+
+      array_f32_vso sp;
+      sp->resize(1, 1.0f);
+
+      gl::Uniform u;
+      u.SetValueAs(sp.get(), gl::p_shader_variable_ti::Pointer());
+      CHECK(u.IsArray());
+      CHECK(u.IsArrayPtr());
+
+      gl::Uniform uCopy(u);
+      CHECK(uCopy.IsArray());
+      CHECK(uCopy.IsArrayPtr());
+      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK( (*uCopy.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+
+      gl::Uniform uCopy2;
+      uCopy2 = u;
+      CHECK(uCopy2.IsArray());
+      CHECK(uCopy2.IsArrayPtr());
+      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK( (*uCopy2.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+
     }
   }
 

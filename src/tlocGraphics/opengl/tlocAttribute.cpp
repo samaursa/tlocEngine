@@ -13,12 +13,21 @@ namespace tloc { namespace graphics { namespace gl {
     , m_isAttribArray(a_other.m_isAttribArray)
   { }
 
-  Attribute::this_type& Attribute::
-    operator=(const this_type& a_other)
+  Attribute::this_type&
+    Attribute::
+    operator=(this_type a_other)
   {
-    base_type::operator=(a_other);
-    m_isAttribArray = a_other.m_isAttribArray;
+    swap(a_other);
     return *this;
+  }
+
+  void
+    Attribute::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_isAttribArray, a_other.m_isAttribArray);
+    base_type::swap(a_other);
   }
 
 };};};

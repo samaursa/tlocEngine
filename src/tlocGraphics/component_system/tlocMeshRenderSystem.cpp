@@ -58,6 +58,8 @@ namespace tloc { namespace graphics { namespace component_system {
     tcoordAttr->SetName("a_tCoord");
 
     meshType->SetPosAttribute(*posAttr);
+    meshType->SetNormAttribute(*normAttr);
+    meshType->SetTCoordAttribute(*tcoordAttr);
 
     return ErrorSuccess;
   }

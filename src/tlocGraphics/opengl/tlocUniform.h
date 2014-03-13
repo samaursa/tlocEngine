@@ -21,7 +21,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class Uniform : public ShaderVariable_TI<Uniform>
+  class Uniform
+    : public ShaderVariable_TI<Uniform>
   {
   public:
     template <typename T_Derived> friend class ShaderVariable_TI;
@@ -33,7 +34,9 @@ namespace tloc { namespace graphics { namespace gl {
     Uniform();
     Uniform(const this_type& a_other);
 
-    this_type& operator=(const this_type& a_other);
+    this_type& operator=(this_type a_other);
+
+    void swap(this_type& a_other);
 
   protected:
     template <typename T>

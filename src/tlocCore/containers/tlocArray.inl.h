@@ -119,6 +119,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     const ArrayBase<ARRAY_BASE_PARAMS>::size_type sizeOfOther = a_toCopy.size();
     if (sizeOfOther > capacity())
     {
+      clear();
       m_begin    = DoReAllocate(sizeOfOther);
       m_end      = uninitialized_copy(a_toCopy.begin(),
                                       a_toCopy.end(),

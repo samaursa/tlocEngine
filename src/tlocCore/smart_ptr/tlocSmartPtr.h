@@ -16,6 +16,13 @@ namespace tloc { namespace core { namespace smart_ptr {
     ~SmartPtr();
   };
 
+  // -----------------------------------------------------------------------
+  // global functions
+
+  template <typename T>
+  tl_size GetUseCount(T* a_ptr)
+  { a_ptr == nullptr : 0 ? 1; }
+
 };};};
 
 #endif

@@ -40,19 +40,15 @@ namespace tloc { namespace physics { namespace component_system {
     typedef RigidBodyShape              rigid_body_shape_component_type;
 
   public:
-    RigidBodySystem
-      (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr,
-       world_type* a_world);
+    RigidBodySystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr,
+                    world_type* a_world);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
 
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
@@ -62,10 +58,10 @@ namespace tloc { namespace physics { namespace component_system {
 
   private:
     error_type
-      DoInitializeRigidBodyComponent(const entity_type* a_ent);
+      DoInitializeRigidBodyComponent(entity_ptr);
 
     error_type
-      DoShutdownRigidBodyComponent(const entity_type* a_ent);
+      DoShutdownRigidBodyComponent(entity_ptr);
 
   private:
     world_type* m_world;

@@ -18,16 +18,15 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef math_t::Circlef32                             circle_type;
 
   public:
-    Fan(core_cs::EntityManager*  a_entMgr,
-        core_cs::ComponentPoolManager* a_poolMgr)
+    Fan(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
         : Prefab_I(a_entMgr, a_poolMgr)
         , m_circle(circle_type(circle_type::radius(1.0f)) )
         , m_numSides(8)
         , m_texCoords(true)
     { }
 
-    entity_type*  Create();
-    void          Add(entity_type* a_ent);
+    entity_ptr    Create();
+    void          Add(entity_ptr a_ent);
 
     TLOC_DECL_PARAM_VAR(circle_type, Circle, m_circle);
     TLOC_DECL_PARAM_VAR(tl_size, Sides, m_numSides);

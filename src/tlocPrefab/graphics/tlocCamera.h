@@ -21,14 +21,13 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef math_t::Vec3f32                             vec_type;
 
   public:
-    Camera(core_cs::EntityManager*  a_entMgr,
-        core_cs::ComponentPoolManager* a_poolMgr)
-        : Prefab_I(a_entMgr, a_poolMgr)
+    Camera(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
+      : Prefab_I(a_entMgr, a_poolMgr)
     { }
 
-    entity_type* Create(const frustum_type& a_frustum,
+    entity_ptr   Create(const frustum_type& a_frustum,
                         const vec_type& a_position);
-    void         Add(entity_type* a_ent,
+    void         Add(entity_ptr a_ent,
                      const frustum_type& a_frustum,
                      const vec_type& a_position);
 

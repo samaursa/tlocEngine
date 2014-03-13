@@ -5,7 +5,7 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -25,42 +25,30 @@ namespace tloc { namespace graphics { namespace component_system {
     : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
   {
   public:
-    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>       base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
+    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
     typedef math::types::Mat4f32                              matrix_type;
 
     typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
 
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
-    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_sptr                           shader_prog_ptr;
+    typedef gl::shader_program_vptr                           shader_prog_ptr;
 
-    typedef core_conts::ArrayFixed<gl::attribute_sptr, 4>     attributes_cont;
+    typedef core_conts::ArrayFixed<gl::attribute_vso, 4>      attributes_cont;
 
   public:
-    QuadRenderSystem(event_manager_sptr a_eventMgr,
-                     entity_manager_sptr a_entityMgr);
+    QuadRenderSystem(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
@@ -73,14 +61,14 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::GetViewProjectionMatrix;
 
   private:
-    shader_prog_ptr     m_shaderPtr;
+    shader_prog_ptr           m_shaderPtr;
 
-    gl::shader_operator_sptr m_mvpOperator;
-    gl::uniform_sptr         m_uniVpMat;
+    gl::uniform_vso           m_uniVpMat;
+    gl::shader_operator_vso   m_mvpOperator;
 
     // Cache
-    vec3_cont_ptr       m_quadList;
-    gl::attribute_sptr  m_vData;
+    vec3_cont_vso       m_quadList;
+    gl::attribute_vso   m_vData;
     attributes_cont     m_tData;
   };
 

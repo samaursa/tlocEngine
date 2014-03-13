@@ -38,7 +38,7 @@ namespace TestingContiguity
     value_type* first = static_cast<value_type*>(static_cast<void*>(&v[0]));
     bool testPassed = true;
 
-    const tl_size numElements = T_Type::k_size;
+    const tl_int numElements = T_Type::k_size;
 
     for (typename cont_type::size_type i = 0, size = v.size(); i != size; ++i)
     {
@@ -46,7 +46,7 @@ namespace TestingContiguity
       {
         if ( (first + ((i * numElements) + j) )   != (&(v[i][j])) )
         {
-          testPassed = false; break;
+          testPassed = false;  //break; // causes an infinite loop on iOS release.
         }
       }
     }
@@ -88,7 +88,7 @@ namespace TestingContiguity
       {
         if ( (first + ((i * numElements) + j) )   != (&(v[i][j])) )
         {
-          testPassed = false; break;
+          testPassed = false; //break; // causes an infinite loop on iOS release.
         }
       }
     }

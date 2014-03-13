@@ -1,9 +1,17 @@
 #include "tlocRigidBodyComponent.h"
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace physics { namespace component_system{
+
+  RigidBody::
+    RigidBody()
+    : base_type(k_component_type)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBody::
     RigidBody(rigid_body_def_sptr a_rigidBodyDef)
@@ -17,7 +25,10 @@ namespace tloc { namespace physics { namespace component_system{
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::phys_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(rigid_body_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RigidBody);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(RigidBody);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(RigidBody);

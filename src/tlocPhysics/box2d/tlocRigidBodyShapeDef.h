@@ -35,6 +35,7 @@ namespace tloc { namespace physics { namespace box2d {
     typedef math::types::Circle_T<float_type>     circle_type;
 
   public:
+    RigidBodyShapeDef();
 
     template <typename T_Shape>
     RigidBodyShapeDef(const T_Shape& a_shape)

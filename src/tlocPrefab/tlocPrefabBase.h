@@ -38,20 +38,20 @@ namespace tloc {
     : core_bclass::NonCopyable_I
   {
   public:
-    typedef core_cs::EntityManager          entity_mgr_type;
-    typedef core_cs::ComponentPoolManager   comp_pool_mgr_type;
-    typedef core_cs::Entity                 entity_type;
+    typedef core_cs::entity_manager_vptr      entity_mgr_ptr;
+    typedef core_cs::component_pool_mgr_vptr  comp_pool_mgr_ptr;
+    typedef core_cs::Entity                   entity_type;
+    typedef core_cs::entity_vptr              entity_ptr;
 
   protected:
-    Prefab_I(core_cs::EntityManager*  a_entMgr,
-             core_cs::ComponentPoolManager* a_poolMgr)
+    Prefab_I(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr a_poolMgr)
              : m_entMgr(a_entMgr)
              , m_compPoolMgr(a_poolMgr)
     { }
 
   protected:
-    entity_mgr_type*          m_entMgr;
-    comp_pool_mgr_type*       m_compPoolMgr;
+    entity_mgr_ptr          m_entMgr;
+    comp_pool_mgr_ptr       m_compPoolMgr;
   };
 
 };

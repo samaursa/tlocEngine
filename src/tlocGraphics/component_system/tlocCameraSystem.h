@@ -18,27 +18,17 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef core::component_system::EntityProcessingSystem      base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
   public:
-    CameraSystem(event_manager_sptr a_eventMgr,
-                 entity_manager_sptr a_entityMgr);
+    CameraSystem(event_manager_ptr a_eventMgr,
+                 entity_manager_ptr a_entityMgr);
 
     virtual error_type Pre_Initialize() { return ErrorSuccess; }
 
-    virtual error_type InitializeEntity(const entity_manager* ,
-                                        const entity_type* )
+    virtual error_type InitializeEntity(entity_ptr)
     { return ErrorSuccess; }
 
-    virtual error_type ShutdownEntity(const entity_manager* ,
-                                      const entity_type* )
+    virtual error_type ShutdownEntity(entity_ptr)
     { return ErrorSuccess; }
 
     virtual void Pre_ProcessActiveEntities(f64 ) {}
@@ -49,9 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr, f64 a_deltaT);
   };
 
   // -----------------------------------------------------------------------

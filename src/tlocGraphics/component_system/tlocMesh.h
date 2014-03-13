@@ -62,9 +62,11 @@ namespace tloc { namespace graphics { namespace component_system {
   typedef Mesh_T<p_primitive::StructureOfArrays>  Mesh;
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Mesh, mesh);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mesh, mesh);
   TLOC_TYPEDEF_COMPONENT_POOL(Mesh, mesh);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Mesh_Interleaved, mesh_interleaved);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mesh_Interleaved, mesh_interleaved);
   TLOC_TYPEDEF_COMPONENT_POOL(Mesh_Interleaved, mesh_interleaved);
 
 };};};

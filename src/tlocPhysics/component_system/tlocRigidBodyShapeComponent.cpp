@@ -29,4 +29,5 @@ namespace tloc { namespace physics { namespace component_system {
 using namespace tloc::phys_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RigidBodyShape);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(RigidBodyShape);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(RigidBodyShape);

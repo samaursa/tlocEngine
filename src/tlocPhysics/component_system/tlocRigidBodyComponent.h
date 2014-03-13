@@ -53,6 +53,7 @@ namespace tloc { namespace physics { namespace component_system {
   // Typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBody, rigid_body);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(RigidBody, rigid_body);
   TLOC_TYPEDEF_COMPONENT_POOL(RigidBody, rigid_body);
 
 };};};

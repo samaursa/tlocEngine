@@ -65,6 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureCoords, texture_coords);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(TextureCoords, texture_coords);
   TLOC_TYPEDEF_COMPONENT_POOL(TextureCoords, texture_coords);
 
 };};};

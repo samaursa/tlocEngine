@@ -44,6 +44,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Camera, camera);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Camera, camera);
   TLOC_TYPEDEF_COMPONENT_POOL(Camera, camera);
 
 };};};

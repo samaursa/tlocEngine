@@ -101,6 +101,7 @@ namespace tloc { namespace animation { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(TransformAnimation, transform_animation);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(TransformAnimation, transform_animation);
   TLOC_TYPEDEF_COMPONENT_POOL(TransformAnimation, transform_animation);
 
 };};};

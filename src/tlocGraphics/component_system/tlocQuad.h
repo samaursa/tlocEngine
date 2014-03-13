@@ -38,6 +38,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Quad, quad);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Quad, quad);
   TLOC_TYPEDEF_COMPONENT_POOL(Quad, quad);
 
 };};};

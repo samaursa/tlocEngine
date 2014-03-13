@@ -86,6 +86,10 @@ namespace tloc { namespace math { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf32, transform_f32);
   TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf64, transform_f64);
 
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transform, transform);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf32, transform_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf64, transform_f64);
+
   TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform);
   TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform_f32);
   TLOC_TYPEDEF_COMPONENT_POOL(Transformf64, transform_f64);

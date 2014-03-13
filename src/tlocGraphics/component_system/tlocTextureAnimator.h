@@ -108,6 +108,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureAnimator, texture_animator);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(TextureAnimator, texture_animator);
   TLOC_TYPEDEF_COMPONENT_POOL(TextureAnimator, texture_animator);
 
 };};};

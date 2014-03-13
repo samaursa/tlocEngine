@@ -165,6 +165,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(SceneNode, scene_node);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(SceneNode, scene_node);
   TLOC_TYPEDEF_COMPONENT_POOL(SceneNode, scene_node);
 
 };};};

@@ -42,6 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Fan, fan);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Fan, fan);
   TLOC_TYPEDEF_COMPONENT_POOL(Fan, fan);
 
 };};};

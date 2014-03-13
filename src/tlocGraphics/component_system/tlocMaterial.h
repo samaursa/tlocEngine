@@ -70,6 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Material, material);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Material, material);
   TLOC_TYPEDEF_COMPONENT_POOL(Material, material);
 
 };};};

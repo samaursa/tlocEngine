@@ -2,8 +2,11 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/opengl/tlocAttribute.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
@@ -105,9 +108,49 @@ namespace tloc { namespace graphics { namespace gl {
     index_cont_type             m_enabledVertexAttrib;
   };
 
-#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
-
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderOperator, shader_operator);
+
+  namespace algos { namespace shader_operator {
+
+    namespace compare {
+
+      struct UniformName
+      {
+        typedef ShaderOperator::uniform_pair_type       pair_type;
+        typedef BufferArg                               value_type;
+
+        UniformName(value_type a_uniformName)
+          : m_name(a_uniformName)
+        { }
+
+        bool operator()(const pair_type& a_so) const
+        {
+          return a_so.first->GetName().compare(m_name) == 0;
+        }
+
+        value_type m_name;
+      };
+
+      struct AttributeName
+      {
+        typedef ShaderOperator::attribute_pair_type     pair_type;
+        typedef BufferArg                               value_type;
+
+        AttributeName(value_type a_attributeName)
+          : m_name(a_attributeName)
+        { }
+
+        bool operator()(const pair_type& a_so) const
+        {
+          return a_so.first->GetName().compare(m_name) == 0;
+        }
+
+        value_type m_name;
+      };
+
+    };
+
+  };};
 
 };};};

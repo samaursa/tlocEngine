@@ -20,10 +20,16 @@ namespace TestingAttributeVariable
       Vec2f32 v(0.0f, 1.0f);
 
       gl::Attribute a;
+      a.SetName("TestVar");
       a.SetValueAs(v);
+
+      CHECK(gl::algos::shader_variable::compare::Name("TestVar")(a));
+      CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
 
       {
         gl::Attribute acopy(a);
+        CHECK( acopy.GetType() == a.GetType() );
+        CHECK( (acopy.GetName().compare(a.GetName()) == 0) );
         CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
       }
 
@@ -37,12 +43,18 @@ namespace TestingAttributeVariable
     SECTION("Arrays", "")
     {
       gl::Attribute a;
+      a.SetName("TestVarArray");
       Array<f32> array(1, 1.0f);
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.IsAttribArray());
 
+      CHECK(gl::algos::shader_variable::compare::Name("TestVarArray")(a));
+      CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
+
       gl::Attribute aCopy(a);
       CHECK(aCopy.IsAttribArray());
+      CHECK( aCopy.GetType() == a.GetType() );
+      CHECK( (aCopy.GetName().compare(a.GetName()) == 0) );
 
       CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( aCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );

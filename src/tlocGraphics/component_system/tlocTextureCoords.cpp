@@ -1,6 +1,5 @@
 #include "tlocTextureCoords.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -83,8 +82,11 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureCoords);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(texture_coords_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureCoords);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TextureCoords);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TextureCoords);

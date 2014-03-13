@@ -194,7 +194,7 @@ namespace tloc { namespace graphics { namespace gl {
   // -----------------------------------------------------------------------
   // algorithms
 
-  namespace algos { namespace find {
+  namespace algos { namespace compare {
 
     namespace object {
 

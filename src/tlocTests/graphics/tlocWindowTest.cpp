@@ -5,6 +5,7 @@
 # include <tlocGraphics/window/tlocWindowImplWin.h>
 #elif defined(TLOC_OS_IPHONE)
 # include <tlocGraphics/window/tlocWindowImplIphone.h>
+# import <UIKit/UIKit.h>
 #endif
 #include <tlocGraphics/window/tlocWindow.h>
 
@@ -158,7 +159,7 @@ namespace TestingWindow
                   AddStyle<p_window_settings::style::TitleBar>());
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
-      CHECK( (win1.GetWindowHandle().Cast<void*>() != nullptr) );
+      CHECK( (win1.GetWindowHandle().Cast<UIWindow*>() != nullptr) );
     }
 
     {
@@ -170,7 +171,7 @@ namespace TestingWindow
                   AddStyle<p_window_settings::style::FullScreen>());
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK( (win2.GetWindowHandle().Cast<void*>() != nullptr) );
+      CHECK( (win2.GetWindowHandle().Cast<UIWindow*>() != nullptr) );
     }
   }
 

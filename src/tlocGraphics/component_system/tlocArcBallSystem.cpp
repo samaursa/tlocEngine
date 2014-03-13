@@ -23,8 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // ArcBallSystem
 
   ArcBallSystem::
-    ArcBallSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
+    ArcBallSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::arcball))
   { }
@@ -33,8 +32,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     ArcBallSystem::
-    ProcessEntity(const entity_manager* ,
-                  const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64 )
   {
     using math_utils::Pythagorasf32;
 
@@ -48,8 +46,8 @@ namespace tloc { namespace graphics { namespace component_system {
     pos_type posWorld;
     ori_type oriWorld;
 
-    math_cs::Transform* t = a_ent->GetComponent<math_cs::Transform>();
-    gfx_cs::ArcBall* arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
+    math_cs::transform_vptr t = a_ent->GetComponent<math_cs::Transform>();
+    gfx_cs::arcball_vptr arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
     if (a_ent->HasComponent(gfx_cs::components::scene_node))
     {

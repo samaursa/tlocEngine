@@ -120,5 +120,110 @@ namespace tloc { namespace core {
 
 };};
 
+namespace tloc { namespace core { namespace memory {
+
+  // ///////////////////////////////////////////////////////////////////////
+  // ObjectCreator
+
+  // All resources require a ResourceCreator class that can construct the
+  // resource properly.
+  template <typename T_Object>
+  class CreateObject
+  {
+  public:
+    TLOC_STATIC_ASSERT_FALSE(T_Object,
+      Object_must_have_a_specialized_ObjectCreator_class);
+  };
+
+  // -----------------------------------------------------------------------
+  // macro helpers
+
+#define TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_DEF(_full_type_)\
+namespace tloc { namespace core { namespace memory {\
+  template <>\
+  class CreateObject<_full_type_>\
+  {\
+  public:\
+    typedef _full_type_                               value_type;\
+    typedef core_sptr::VirtualPtr<value_type>         pointer;\
+  public:\
+    pointer  OnHeap()\
+    {\
+      return pointer(new value_type());\
+    }\
+    \
+    value_type  OnStack()\
+    {\
+      return value_type();\
+    }\
+  };\
+};};}
+
+
+#define TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_1PARAM(_full_type_, _T1_)\
+namespace tloc { namespace core { namespace memory {\
+  template <>\
+  class CreateObject<_full_type_>\
+  {\
+  public:\
+    typedef _full_type_                               value_type;\
+    typedef core_sptr::VirtualPtr<value_type>         pointer;\
+  public:\
+    pointer  OnHeap(const _T1_& a)\
+    {\
+      return pointer(new value_type(a));\
+    }\
+    \
+    value_type  OnStack(const _T1_& a)\
+    {\
+      return value_type(a);\
+    }\
+  };\
+};};}
+
+#define TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_2PARAM(_full_type_, _T1_, _T2_)\
+namespace tloc { namespace core { namespace memory {\
+  template <>\
+  class CreateObject<_full_type_>\
+  {\
+  public:\
+    typedef _full_type_                               value_type;\
+    typedef core_sptr::VirtualPtr<value_type>         pointer;\
+  public:\
+    pointer  OnHeap(const _T1_& a, const _T2_& b)\
+    {\
+      return pointer(new value_type(a, b));\
+    }\
+    \
+    value_type  OnStack(const _T1_& a, const _T2_& b)\
+    {\
+      return value_type(a, b);\
+    }\
+  };\
+};};}
+
+#define TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_3PARAM(_full_type_, _T1_, _T2_, _T3_)\
+namespace tloc { namespace core { namespace memory {\
+  template <>\
+  class CreateObject<_full_type_>\
+  {\
+  public:\
+    typedef _full_type_                               value_type;\
+    typedef core_sptr::VirtualPtr<value_type>         pointer;\
+  public:\
+    pointer  OnHeap(const _T1_& a, const _T2_& b, const _T3_& c)\
+    {\
+      return pointer(new value_type(a, b, c));\
+    }\
+    \
+    value_type  OnStack(const _T1_& a, const _T2_& b, const _T3_& c)\
+    {\
+      return value_type(a, b, c);\
+    }\
+  };\
+};};}
+
+};};};
+
 
 #endif  // TLOC_MEMORY_H

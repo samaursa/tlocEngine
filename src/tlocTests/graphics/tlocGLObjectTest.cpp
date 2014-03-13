@@ -58,11 +58,14 @@ namespace TestingGLShaderObject
       objects[i].SetHandle(i);
     }
 
-    glObject* res = core::find_if(itr, itrEnd, gl::algos::find::object::ByHandle(5));
+    glObject* res = core::find_if(itr, itrEnd,
+      gl::algos::compare::object::ByHandle(5));
+
     CHECK(res != itrEnd);
     CHECK(res->GetHandle() == 5);
 
-    res = core::find_if(itr, itrEnd, gl::algos::find::object::ByHandle(10));
+    res = core::find_if(itr, itrEnd,
+      gl::algos::compare::object::ByHandle(10));
     CHECK(res == itrEnd);
   }
 };

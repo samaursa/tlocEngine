@@ -34,7 +34,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_Function>
   T_Function
-    for_each_all(T_Container a_container, T_Function a_func)
+    for_each_all(T_Container& a_container, T_Function a_func)
   {
     return for_each(a_container.begin(), a_container.end(), a_func);
   }
@@ -85,13 +85,6 @@ namespace tloc { namespace core {
     typedef typename Loki::Int2Type<charTestResult::value> IsChar8;
 
     return detail::DoFind(a_rangeBegin, a_rangeEnd, a_value, IsChar8());
-  }
-
-  template <typename T_Container, typename T_Predicate>
-  typename T_Container::iterator
-    find_if(T_Container a_container, const T_Predicate& a_pred)
-  {
-    return find_if(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_InputIterator, typename T_Predicate>
@@ -1237,7 +1230,9 @@ namespace tloc { namespace core {
   void
     swap(T& a, T& b)
   {
-    T c(a); a = b; b = c;
+    T c(a);
+    a = b;
+    b = c;
   }
 
   template <typename T_Container, typename T>

@@ -1,6 +1,5 @@
 #include "tlocTransform.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 #include <tlocMath/types/tlocVector4.h>
@@ -155,7 +154,7 @@ namespace tloc { namespace math { namespace component_system {
 
   //------------------------------------------------------------------------
   // Explicit instantiations
-  
+
   template class Transform_T<f32>;
   template class Transform_T<f64>;
 
@@ -168,8 +167,14 @@ using namespace tloc;
 using namespace tloc::math_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
 
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Transformf64);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Transformf64);
+
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Transformf64);

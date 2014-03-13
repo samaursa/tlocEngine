@@ -8,7 +8,7 @@ namespace tloc { namespace core { namespace policies {
   template <typename T_Derived>
   class Base
   {
-  public:
+  protected:
     typedef T_Derived             derived_type;
     typedef Base<derived_type>    this_type;
 

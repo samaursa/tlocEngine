@@ -80,15 +80,13 @@ namespace TestingVirtualPtr
     {
       int* a = new int();
 
-      {
-        VirtualPtr<int> p(a);
-        CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
-        CHECK( (p.get() == a) );
+      VirtualPtr<int> p(a);
+      CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
+      CHECK( (p.get() == a) );
 
-        //delete a; // should fire an assertion
-      }
+      delete a;
 
-      delete a; // no assertion should be fired
+      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
 
     SECTION("this_type copy ctor", "")
@@ -106,7 +104,6 @@ namespace TestingVirtualPtr
       }
 
       CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
-      p.reset();
 
       delete a;
     }
@@ -122,7 +119,6 @@ namespace TestingVirtualPtr
       }
 
       CHECK( p->m_value == 10);
-      p.reset();
 
       delete s;
     }
@@ -131,24 +127,24 @@ namespace TestingVirtualPtr
     {
       SharedPtr<int> sptr(new int(10));
 
-      {
-        VirtualPtr<int> p(sptr);
-        // sptr.reset(); // should throw an assertion
-      }
+      VirtualPtr<int> p(sptr);
+      CHECK(*p == 10);
 
       sptr.reset();
+
+      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
 
     SECTION("UniquePtr<> copy ctor", "")
     {
       UniquePtr<int> sptr(new int(10));
 
-      {
-        VirtualPtr<int> p(sptr);
-        // sptr.reset(); // should throw an assertion
-      }
+      VirtualPtr<int> p(sptr);
+      CHECK(*p == 10);
 
       sptr.reset();
+
+      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
   }
 
@@ -170,39 +166,39 @@ namespace TestingVirtualPtr
     SECTION("operator=(SharedPtr)", "")
     {
       SharedPtr<int>      sp(new int(20));
-      VirtualPtr<int> vp;
-      vp = sp;
+      VirtualPtr<int>     vp;
 
+      vp = sp;
       CHECK(*vp == 20);
 
-      VirtualPtr<int> vp2; // vp2 needs to be reset before sp2 deletes when
-                               // it goes out of scope
+      VirtualPtr<int>     vp2;
       SharedPtr<int>      sp2(new int(30));
+
       vp2 = sp2;
+      CHECK(*vp2.get() == 30);
 
-      vp2.reset();
+      sp2.reset();
 
-      // No crash should occur when sp2 goes out of scope and deletes its raw
-      // pointer
+      //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
     SECTION("operator=(UniquePtr)", "")
     {
       UniquePtr<int>      sp(new int(20));
-      VirtualPtr<int> vp;
-      vp = sp;
+      VirtualPtr<int>     vp;
 
+      vp = sp;
       CHECK(*vp == 20);
 
-      VirtualPtr<int> vp2; // vp2 needs to be reset before sp2 deletes when
-                               // it goes out of scope
+      VirtualPtr<int>     vp2;
       UniquePtr<int>      sp2(new int(30));
+
       vp2 = sp2;
+      CHECK(*vp2.get() == 30);
 
-      vp2.reset();
+      sp2.reset();
 
-      // No crash should occur when sp2 goes out of scope and deletes its raw
-      // pointer
+      //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
     SECTION("operator==", "")
@@ -357,7 +353,7 @@ namespace TestingVirtualPtr
   template <typename T_BuildConfig>
   void DoCheckVPtrCount(void* a_pointer, tl_size a_count, T_BuildConfig)
   {
-    CHECK(a_count == core_sptr::priv::DoGetVirtualRefCount(a_pointer));
+    CHECK(a_count == core_mem::priv::DoGetNumberOfPointersToMemoryAddress(a_pointer));
   }
 
   void DoCheckVPtrCount(void* , tl_size , core_cfg::p_build_config::Release)
@@ -374,9 +370,10 @@ namespace TestingVirtualPtr
     // there are TWO independent VirtualPtrs in a VSO
     DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
 
+    // this VirtualPtr has the same addresses as the one in dStack and thus
+    // does NOT increase the overall pointer to memory address count
     core_sptr::VirtualPtr<Derived>  d = dStack.get();
 
-    // d does NOT increase overall ref count (only in the VirtualPtr itself)
     DoCheckVPtrCount((void*)dStack.get().get(), 2, core_cfg::BuildConfig::build_config_type());
 
     // Due to the multiply inherited hierarchy, the cast results in a different
@@ -385,15 +382,13 @@ namespace TestingVirtualPtr
     core_sptr::VirtualPtr<Base> bb(d);
 
     // These casts are independent and will ADD to the total ref count of
-    // the original pointer in the SmartPtrTracker. Note that no matter how
-    // many independent VirtualPtrs we have that have been casted, they add
-    // only 1 to the total ref count in SmartPtrTracker
-    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+    // the original pointer in the SmartPtrTracker.
+    DoCheckVPtrCount((void*)&*dStack, 4, core_cfg::BuildConfig::build_config_type());
 
     d.reset();
 
-    // TWO in dStack and... b and bb counted as 1 ref
-    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+    // TWO in dStack and... b and bb counted as 2 references
+    DoCheckVPtrCount((void*)&*dStack, 4, core_cfg::BuildConfig::build_config_type());
     b.reset(); // should not crash
 
     // TWO in dStack and... bb counted as 1 ref

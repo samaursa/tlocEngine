@@ -92,8 +92,9 @@ namespace tloc { namespace core { namespace smart_ptr {
       const_pointer_cast(const VirtualPtr<U, build_config>& a_vp);
 
   private:
-    void DoAddRef(void* a_connectedPointer);
-    void DoRemoveRef();
+    void  DoAddRef();
+    void* DoGetTrackablePtrAddress() const;
+    void  DoRemoveRef();
 
   private:
     pointer           m_rawPtr;
@@ -110,7 +111,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef((void*)a_other.get());
+    // add the connected address only if it is not already added from other
+    // casts
+    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    {
+      core_mem::priv::
+        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+    }
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -122,7 +130,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef( (void*)a_other.get() );
+    // add the connected address only if it is not already added from other
+    // casts
+    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    {
+      core_mem::priv::
+        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+    }
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -134,7 +149,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef( (void*)a_other.get() );
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

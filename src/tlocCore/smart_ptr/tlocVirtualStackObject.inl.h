@@ -58,19 +58,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
     // this ensures that no checks are performed after m_value is automatically
     // deleted
     m_ptr.reset();
@@ -205,19 +192,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
     // this ensures that no checks are performed after m_value is automatically
     // deleted
     m_ptr.reset();
@@ -321,19 +295,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
     // this ensures that no checks are performed after m_value is automatically
     // deleted
     m_ptr.reset();
@@ -458,19 +419,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT_LOW_LEVEL(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
     // this ensures that no checks are performed after m_value is automatically
     // deleted
     m_ptr.reset();

@@ -30,6 +30,14 @@ namespace tloc { namespace graphics { namespace gl {
     base_type::swap(a_other);
   }
 
+  void
+    Attribute::
+    Reset()
+  {
+    m_isAttribArray = false;
+    base_type::Reset();
+  }
+
 };};};
 
 //------------------------------------------------------------------------

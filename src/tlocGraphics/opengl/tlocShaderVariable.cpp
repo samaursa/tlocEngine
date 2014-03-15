@@ -223,6 +223,25 @@ namespace tloc { namespace graphics { namespace gl {
     return m_type != GL_NONE;
   }
 
+  template <SHADER_VARIABLE_TEMP>
+  void
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    ResetValue()
+  { m_value.Reset(); }
+
+  template <SHADER_VARIABLE_TEMP>
+  void
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    Reset()
+  {
+    m_type        = GL_NONE;
+    m_isArray     = false;
+    m_isArrayPtr  = false;
+
+    m_value.Reset();
+    m_name.clear();
+  }
+
   //------------------------------------------------------------------------
   // Explicit instantiation
 

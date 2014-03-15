@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef(nullptr);
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
-    DoAddRef(nullptr);
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -95,6 +95,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator->() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
+
     return m_rawPtr;
   }
 
@@ -106,6 +109,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator*() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
     return *m_rawPtr;
   }
 
@@ -123,6 +128,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     get() const
   {
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
     return m_rawPtr;
   }
 
@@ -180,15 +187,30 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_PTR_TEMPS>
   void
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
-    DoAddRef(void* a_connectedPointer)
+    DoAddRef()
   {
     if (m_refCount)
     {
       if (*m_refCount == 0)
-      { priv::DoAddVirtualPtrRef( (void*) m_rawPtr, a_connectedPointer); }
+      {
+        core_mem::priv::DoTrackPointerToMemoryAddress
+          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+      }
 
       ++*m_refCount;
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_TEMPS>
+  void*
+    VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
+    DoGetTrackablePtrAddress() const
+  {
+    // m_refCount is a trackable address because it is new'ed. If we add 'this'
+    // pointer as trackable then we have to add extra logic in assignment.
+    return m_refCount;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -205,7 +227,9 @@ namespace tloc { namespace core { namespace smart_ptr {
       {
         TLOC_ASSERT_LOW_LEVEL(*m_refCount == 0,
           "use_count() reported an incorrect ref count");
-        priv::DoRemoveVirtualPtrRef( (void*) m_rawPtr);
+        core_mem::priv::DoUntrackPointerToMemoryAddress
+          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+
         delete m_refCount;
       }
     }

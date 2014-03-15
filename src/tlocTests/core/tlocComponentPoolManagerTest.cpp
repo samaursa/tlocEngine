@@ -105,8 +105,6 @@ namespace TestingComponentPoolManager
     UIntComponent::m_dtorCount = 0;\
     UIntComponent::m_ctorCount = 0
 
-  tl_size vptrCount = 0;
-
   template <typename T_PoolType>
   void TestWithManager(ComponentPoolManager& a_mgr, tl_int a_compType)
   {
@@ -119,7 +117,6 @@ namespace TestingComponentPoolManager
 
     RESET_CTOR_AND_DTOR_COUNT();
     {
-      vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
       // BUGFIX: Component pool sanity check was faulty
       ComponentPoolManager a_tempMgr;
       core_sptr::VirtualPtr<T_PoolType> tpool =
@@ -130,12 +127,9 @@ namespace TestingComponentPoolManager
         tpool->GetNext();
       }
 
-      vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
-
       tpool->GetNextValue()->SetValue(value_type()); // do nothing with it
     }
 
-    vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
     CHECK(value_type::m_dtorCount == value_type::m_ctorCount);
 
     RESET_CTOR_AND_DTOR_COUNT();
@@ -161,21 +155,15 @@ namespace TestingComponentPoolManager
         (*itr)->SetValue(value_type());
         (*itr)->GetValue()->m_value = i;
       }
-
-      vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
     }
 
-    vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
     {
-      vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
       comp_pool_ptr compPool = a_mgr.GetPool(a_compType);
 
       pool_type* intCompPool = compPool->GetAs<pool_type>();
 
       typename pool_type::iterator itr = intCompPool->begin();
       typename pool_type::iterator itrEnd = intCompPool->end();
-
-      vptrCount = core_sptr::priv::Unsafe_GetVirtualPtrTrackedSize();
 
       REQUIRE( (distance(itr, itrEnd) == elementsToPool) );
 

@@ -72,6 +72,8 @@ namespace tloc { namespace graphics { namespace gl {
       return base_type::SetValueAs(a_array, p_shader_variable_ti::Pointer());
     }
 
+    void Reset();
+
     TLOC_DECL_AND_DEF_GETTER(bool, IsAttribArray, m_isAttribArray);
 
   protected:

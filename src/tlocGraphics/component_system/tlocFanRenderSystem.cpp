@@ -129,11 +129,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
         if (texCoordPtr->GetNumSets())
         {
-          gfx_cs::TextureCoords::cont_type_sptr
+          gfx_cs::TextureCoords::cont_type_ptr
             texCoordCont = texCoordPtr->GetCoords
             (set_index(texCoordPtr->GetCurrentSet()) );
 
-          m_tData->SetVertexArray(core_sptr::ToVirtualPtr(texCoordCont),
+          m_tData->SetVertexArray(texCoordCont,
                                   gl::p_shader_variable_ti::Pointer() );
 
           so_fan->AddAttribute(*m_tData);
@@ -193,6 +193,10 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr->Disable();
       m_shaderPtr.reset();
     }
+
+    // clear the stored attributes
+    m_vData->ResetValue();
+    m_tData->ResetValue();
 
     base_type::Post_ProcessActiveEntities(f64());
   }

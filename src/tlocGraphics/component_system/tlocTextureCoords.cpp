@@ -11,11 +11,35 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
   TextureCoords::
+    TextureCoords(const this_type& a_other)
+    : base_type(a_other)
+    , m_coordSets(a_other.m_coordSets)
+    , m_currentSet(a_other.m_currentSet)
+  { }
+
+  TextureCoords::
     TextureCoords(const cont_set_type& a_coords)
     : base_type(k_component_type)
     , m_coordSets(a_coords)
     , m_currentSet(0)
   { }
+
+  TextureCoords::this_type&
+    TextureCoords::
+    operator=(this_type a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  void
+    TextureCoords::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_coordSets, a_other.m_coordSets);
+    swap(m_currentSet, a_other.m_currentSet);
+  }
 
   TextureCoords::size_type
     TextureCoords::
@@ -65,15 +89,21 @@ namespace tloc { namespace graphics { namespace component_system {
   void TextureCoords::
     DoResizeSetToAccomodate(set_index a_index)
   {
-    if (a_index >= m_coordSets.size())
-    { m_coordSets.push_back(cont_type_sptr(new cont_type()) ); }
+    m_coordSets.resize(a_index + 1);
   }
 
-  TextureCoords::cont_type_sptr
+  TextureCoords::cont_type_ptr
+    TextureCoords::
+    GetCoords(set_index a_setIndex)
+  {
+    return m_coordSets[a_setIndex].get();
+  }
+
+  TextureCoords::const_cont_type_ptr
     TextureCoords::
     GetCoords(set_index a_setIndex) const
   {
-    return m_coordSets[a_setIndex];
+    return m_coordSets[a_setIndex].get();
   }
 
 };};};
@@ -90,3 +120,6 @@ using namespace tloc::gfx_cs;
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureCoords);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TextureCoords);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TextureCoords);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TextureCoords::cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(TextureCoords::cont_type);

@@ -69,6 +69,69 @@ namespace TestingAttributeVariable
     }
   }
 
+  TEST_CASE("Graphics/gl/Attribute/Reset", "")
+  {
+    using namespace tloc::core_ds;
+    using namespace tloc::core_conts;
+    using namespace tloc::math_t;
+
+    SECTION("Normal values", "")
+    {
+      Vec2f32 v(0.0f, 1.0f);
+
+      gl::Attribute a;
+      a.SetName("TestVar");
+      a.SetValueAs(v);
+      CHECK(a.IsValidType());
+
+      a.Reset();
+      CHECK(a.GetName().length() == 0);
+      CHECK_FALSE(a.IsValidType());
+
+      Vec3f32 v2(0.0f, 1.0f, 2.0f);
+
+      // changing type without Reset() is not allowed
+      a.SetValueAs(v2);
+      a.SetName("TestVar2");
+      CHECK( a.IsValidType() );
+      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(0.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(2.0f));
+
+      Vec3f32 v3(3.0f, 4.0f, 5.0f);
+
+      a.ResetValue();
+      a.SetValueAs(v3);
+      CHECK( a.IsValidType() );
+      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(3.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(4.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(5.0f));
+    }
+
+    SECTION("Arrays", "")
+    {
+      gl::Attribute a;
+      a.SetName("TestVarArray");
+      Array<f32> array(1, 1.0f);
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK(a.IsAttribArray());
+
+      Array<s32> array2(2, 2);
+      a.Reset();
+      CHECK(a.GetName().length() == 0);
+      CHECK_FALSE(a.IsValidType());
+
+      a.SetVertexArray(array2, gl::p_shader_variable_ti::CopyArray() );
+      a.SetName("TestVarArray2");
+      CHECK( a.IsValidType() );
+      CHECK( a.IsAttribArray() );
+      CHECK( a.IsValidType() );
+      CHECK( a.GetValueAs<Array<s32> >()[0] == 2);
+      CHECK( a.GetValueAs<Array<s32> >()[1] == 2);
+
+    }
+  }
+
   TEST_CASE("Graphics/gl/Attribute", "")
   {
     using namespace tloc::core_ds;

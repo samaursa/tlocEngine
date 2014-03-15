@@ -65,6 +65,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     bool          IsValidType() const;
 
+    void          ResetValue();
+    void          Reset();
+
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);

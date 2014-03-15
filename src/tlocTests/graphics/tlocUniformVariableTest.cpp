@@ -85,6 +85,103 @@ namespace TestingUniformVariable
     }
   }
 
+  TEST_CASE("Graphics/gl/Uniform/Reset", "")
+  {
+    using namespace tloc::core_ds;
+    using namespace tloc::core_conts;
+    using namespace tloc::math_t;
+
+    SECTION("Normal values", "")
+    {
+      Vec2f32 v(0.0f, 1.0f);
+
+      gl::Uniform u;
+      u.SetValueAs(v);
+      u.SetName("TestVar");
+      CHECK(u.IsValidType());
+
+      u.Reset();
+      CHECK_FALSE(u.IsValidType());
+      CHECK(u.GetName().length() == 0);
+
+      Vec3f32 v2(0.0f, 1.0f, 2.0f);
+      u.SetValueAs(v2);
+      u.SetName("TestVar2");
+      CHECK(u.IsValidType());
+
+      CHECK(u.GetValueAs<Vec3f32>()[0] == Approx(0.0f));
+      CHECK(u.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
+      CHECK(u.GetValueAs<Vec3f32>()[2] == Approx(2.0f));
+
+      u.ResetValue();
+
+      Vec3f32 v3(2.0f, 3.0f, 4.0f);
+      u.SetValueAs(v3);
+      CHECK(u.IsValidType());
+
+      CHECK(u.GetValueAs<Vec3f32>()[0] == Approx(2.0f));
+      CHECK(u.GetValueAs<Vec3f32>()[1] == Approx(3.0f));
+      CHECK(u.GetValueAs<Vec3f32>()[2] == Approx(4.0f));
+    }
+
+    SECTION("Arrays", "")
+    {
+      gl::Uniform u;
+      Array<f32> array(1, 1.0f);
+      u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
+      u.SetName("TestVar");
+      CHECK(u.IsArray());
+      CHECK_FALSE(u.IsArrayPtr());
+
+      u.Reset();
+      CHECK_FALSE(u.IsValidType());
+      CHECK_FALSE(u.IsArray());
+      CHECK_FALSE(u.IsArrayPtr());
+      CHECK(u.GetName().length() == 0);
+
+      Array<s32> array2(2, 2);
+      u.SetValueAs(array2, gl::p_shader_variable_ti::CopyArray() );
+      u.SetName("TestVar2");
+      CHECK(u.IsArray());
+      CHECK_FALSE(u.IsArrayPtr());
+
+      CHECK(u.GetValueAs<Array<s32> >()[0] == 2);
+      CHECK(u.GetValueAs<Array<s32> >()[1] == 2);
+    }
+
+    SECTION("Array pointers", "")
+    {
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<f32>, array_f32);
+      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<s32>, array_s32);
+
+      array_f32_vso f32Array;
+      f32Array->resize(1, 1.0f);
+
+      array_s32_vso s32Array;
+      s32Array->resize(2, 2);
+
+      gl::Uniform u;
+      u.SetValueAs(f32Array.get(), gl::p_shader_variable_ti::Pointer() );
+      u.SetName("TestVar");
+      CHECK(u.IsArray());
+      CHECK(u.IsArrayPtr());
+
+      u.Reset();
+      CHECK_FALSE(u.IsValidType());
+      CHECK_FALSE(u.IsArray());
+      CHECK_FALSE(u.IsArrayPtr());
+      CHECK(u.GetName().length() == 0);
+
+      u.SetValueAs(s32Array.get(), gl::p_shader_variable_ti::Pointer() );
+      u.SetName("TestVar2");
+      CHECK(u.IsArray());
+      CHECK(u.IsArrayPtr());
+
+      CHECK(u.GetValueAsArrayPtr<array_s32_vso::pointer::value_type>()->at(0) == 2);
+      CHECK(u.GetValueAsArrayPtr<array_s32_vso::pointer::value_type>()->at(1) == 2);
+    }
+  }
+
   TEST_CASE("Graphics/gl/Uniform", "")
   {
     using namespace tloc::core_ds;

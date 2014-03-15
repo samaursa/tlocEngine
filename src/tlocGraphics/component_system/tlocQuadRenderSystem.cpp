@@ -129,17 +129,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
           if (texCoordPtr && texCoordPtr->GetNumSets())
           {
-            gfx_cs::TextureCoords::cont_type_sptr
+            gfx_cs::TextureCoords::cont_type_ptr
               texCoordCont = texCoordPtr->GetCoords
               (set_index(texCoordPtr->GetCurrentSet()) );
 
-            m_tData[i]->SetVertexArray(core_sptr::ToVirtualPtr(texCoordCont),
+            m_tData[i]->SetVertexArray(texCoordCont,
                                        gl::p_shader_variable_ti::Pointer() );
 
             so_quad->AddAttribute(*m_tData[i]);
           }
         }
-
       }
 
       //------------------------------------------------------------------------
@@ -190,6 +189,13 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr->Disable();
       m_shaderPtr.reset();
     }
+
+    // clear the stored attributes
+    m_vData->ResetValue();
+
+    for (attributes_cont::iterator itr = m_tData.begin(), itrEnd = m_tData.end();
+         itr != itrEnd; ++itr)
+    { (*itr)->ResetValue(); }
 
     base_type::Post_ProcessActiveEntities(f64());
   }

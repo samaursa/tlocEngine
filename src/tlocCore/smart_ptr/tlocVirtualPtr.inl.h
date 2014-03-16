@@ -282,7 +282,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator= (this_type a_other)
   {
-    m_rawPtr = a_other.get();
+    m_rawPtr = a_other.m_rawPtr;
     return *this;
   }
 
@@ -314,7 +314,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator->() const
   {
-    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
     return m_rawPtr;
   }
 
@@ -325,7 +324,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator*() const
   {
-    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
     return *m_rawPtr;
   }
 
@@ -352,7 +350,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     unique() const
-  { return true; }
+  { return use_count() == 1; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

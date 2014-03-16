@@ -369,6 +369,98 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     MemoryTracker_T<T_BuildConfig>
       MemoryTracker_T<T_BuildConfig>::s_tracker;
 
+    // ///////////////////////////////////////////////////////////////////////
+    // Relase build
+
+    template <>
+    class MemoryTracker_T<core_cfg::p_build_config::Release>
+    {
+    public:
+      typedef void*                             mem_info_type;
+      typedef void*                             ptr_info_type;
+
+      typedef core_cfg::p_build_config::Release build_config;
+      typedef MemoryTracker_T<build_config>     this_type;
+
+      typedef core_conts::Array<mem_info_type>  mem_array;
+      typedef core_conts::Array<ptr_info_type>  ptr_array;
+
+      typedef core_conts::HashMap
+        <mem_info_type, ptr_array>              memAddress_map_type;
+
+      typedef core_conts::HashMap
+        <mem_info_type, mem_array>              mem_to_mem_map;
+
+      typedef core_conts::HashMap
+        <ptr_info_type, mem_info_type>          pointer_map_type;
+
+      typedef tl_size                           size_type;
+
+    public:
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void TrackMemoryAddress(void* )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void TrackConnectedMemoryAddress(void* , void* )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void UntrackMemoryAddress(void* )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void TrackPointerToMemoryAddress(void* , void* )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void UntrackPointerToMemoryAddress(void* , void* )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      bool IsMemoryAddressTracked(void* )
+      { return true; }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      bool IsPointerTracked(void* )
+      { return false; }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      bool IsPointerToValidMemoryAddress(void* )
+      { return true; }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      size_type GetNumberOfPointersToMemAddresses(void* )
+      { return 0; }
+
+    public:
+
+      static this_type& Get()
+      { return s_tracker; }
+
+      static bool
+        IsTrackerAvail()
+      { return true; }
+
+    private:
+      static this_type              s_tracker;
+    };
+
+    MemoryTracker_T<core_cfg::p_build_config::Release>
+      MemoryTracker_T<core_cfg::p_build_config::Release>::s_tracker;
+
+    // -----------------------------------------------------------------------
+    // typedefs
+
     typedef MemoryTracker_T<>               MemoryTracker;
 
   }; // priv

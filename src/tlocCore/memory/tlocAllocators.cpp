@@ -449,7 +449,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
       static bool
         IsTrackerAvail()
-      { return true; }
+      { return false; }
 
     private:
       static this_type              s_tracker;

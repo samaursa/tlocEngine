@@ -367,14 +367,11 @@ namespace TestingVirtualPtr
   {
     core_sptr::VirtualStackObjectBase_TI<Derived> dStack;
 
-    // there are TWO independent VirtualPtrs in a VSO
-    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
 
-    // this VirtualPtr has the same addresses as the one in dStack and thus
-    // does NOT increase the overall pointer to memory address count
     core_sptr::VirtualPtr<Derived>  d = dStack.get();
 
-    DoCheckVPtrCount((void*)dStack.get().get(), 2, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
     // Due to the multiply inherited hierarchy, the cast results in a different
     // pointer address. VirtualPtr and SmartPtrTracker compensate for this.
@@ -383,20 +380,19 @@ namespace TestingVirtualPtr
 
     // These casts are independent and will ADD to the total ref count of
     // the original pointer in the SmartPtrTracker.
-    DoCheckVPtrCount((void*)&*dStack, 4, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
 
     d.reset();
 
-    // TWO in dStack and... b and bb counted as 2 references
-    DoCheckVPtrCount((void*)&*dStack, 4, core_cfg::BuildConfig::build_config_type());
+    // b and bb counted as 2 references
+    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
     b.reset(); // should not crash
 
-    // TWO in dStack and... bb counted as 1 ref
-    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
+    // bb counted as 1 ref
+    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
     bb.reset();
 
-    // TWO in dStack
-    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
   }
 }

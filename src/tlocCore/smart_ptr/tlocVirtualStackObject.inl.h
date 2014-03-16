@@ -533,9 +533,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
   TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator=(const this_type& a_other)
+    operator=(this_type a_other)
   {
-    this_type(a_other).swap(*this);
+    swap(a_other);
     return *this;
   }
 
@@ -582,18 +582,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -669,18 +669,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -800,18 +800,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -878,18 +878,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

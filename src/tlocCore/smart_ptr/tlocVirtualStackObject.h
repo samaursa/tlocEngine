@@ -284,21 +284,21 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
-    this_type&          operator=(const this_type& a_other);
-    this_type&          operator=(const value_type& a_other);
-    void                swap(this_type& a_other);
+    this_type&                operator=(this_type a_other);
+    this_type&                operator=(const value_type& a_other);
+    void                      swap(this_type& a_other);
 
-    value_type&         operator*();
-    const value_type&   operator*() const;
+    value_type&               operator*();
+    const value_type&         operator*() const;
 
-    pointer             operator->();
-    const_pointer       operator->() const;
+    value_type_pointer        operator->();
+    const_value_type_pointer  operator->() const;
 
-    pointer                get();
-    const_pointer          get() const; // intentionally returned by value
+    pointer                   get();
+    const_pointer             get() const; // intentionally returned by value
 
-    bool operator==(const this_type& a_other) const;
-    bool operator<(const this_type& a_other) const;
+    bool                      operator==(const this_type& a_other) const;
+    bool                      operator<(const this_type& a_other) const;
 
     TLOC_DECLARE_OPERATORS(this_type);
 
@@ -334,17 +334,17 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualStackObjectBase_TI();
     ~VirtualStackObjectBase_TI();
 
-    value_type&             operator*();
-    const value_type&       operator*() const;
+    value_type&               operator*();
+    const value_type&         operator*() const;
 
-    pointer                 operator->();
-    const_pointer           operator->() const;
+    value_type_pointer        operator->();
+    const_value_type_pointer  operator->() const;
 
-    pointer                 get();
-    const_pointer           get() const; // intentionally returned by value
+    pointer                   get();
+    const_pointer             get() const; // intentionally returned by value
 
-    bool                    operator==(const this_type& a_other) const;
-    bool                    operator<(const this_type& a_other) const;
+    bool                      operator==(const this_type& a_other) const;
+    bool                      operator<(const this_type& a_other) const;
 
     TLOC_DECLARE_OPERATORS(this_type);
 
@@ -389,8 +389,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     value_type&               operator*();
     const value_type&         operator*() const;
 
-    pointer                   operator->();
-    const_pointer             operator->() const;
+    value_type_pointer        operator->();
+    const_value_type_pointer  operator->() const;
 
     pointer                   get();
     const_pointer             get() const; // intentionally returned by value
@@ -442,8 +442,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     value_type&               operator*();
     const value_type&         operator*() const;
 
-    pointer                   operator->();
-    const_pointer             operator->() const;
+    value_type_pointer        operator->();
+    const_value_type_pointer  operator->() const;
 
     pointer                   get();
     const_pointer             get() const; // intentionally returned by value

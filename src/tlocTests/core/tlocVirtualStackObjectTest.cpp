@@ -1,16 +1,14 @@
 #include "tlocTestCommon.h"
 
+#define private public
+
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 
-#include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl.h>
-#include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl.h>
-#include <tlocCore/containers/tlocHashmap.h>
-#include <tlocCore/containers/tlocHashmap.inl.h>
+#include <tlocCore/containers/tloc_containers.h>
+#include <tlocCore/containers/tloc_containers.inl.h>
 
 using namespace tloc;
 using namespace core_sptr;
@@ -18,40 +16,64 @@ using namespace core_sptr;
 TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(int, int);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(int);
 
+TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(int, int_nocopy);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(int);
+
+TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(int, int_nocopy_nodef);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(int);
+
 namespace TestingVirtualStackObject
 {
   TEST_CASE("core/smart_ptr/VirtualStackObject/ctors", "")
   {
     SECTION("All ctors", "")
     {
-      int_vso onStack;
-      onStack = 10;
-      CHECK( (*onStack == 10 ) );
-      CHECK( (*onStack.get() == 10) );
-
-      int onStackCopy = *onStack;
-      CHECK(onStackCopy == 10);
-
+      SECTION("Default VSO", "")
       {
-        int_vso::pointer ptrToVSO(onStack.get());
-        CHECK(*ptrToVSO == 10);
+        int_vso onStack;
+        onStack = 10;
+        CHECK( (*onStack == 10 ) );
+        CHECK( (*onStack.get() == 10) );
 
-        *ptrToVSO = 30;
-        CHECK(*ptrToVSO == 30);
+        int onStackCopy = *onStack;
+        CHECK(onStackCopy == 10);
+
+        {
+          int_vso::pointer ptrToVSO(onStack.get());
+          CHECK(*ptrToVSO == 10);
+
+          *ptrToVSO = 30;
+          CHECK(*ptrToVSO == 30);
+          CHECK(*onStack == 30);
+        } // if ptrToVSO is not destroyed, line 51 will throw an assertion
+
+        int_vso onStack2(*onStack);
+        CHECK( (*onStack2 == 30) );
+
+        onStack2 = 10;
+        CHECK(*onStack2 == 10);
         CHECK(*onStack == 30);
-      } // if ptrToVSO is not destroyed, line 51 will throw an assertion
 
-      int_vso onStack2(*onStack);
-      CHECK( (*onStack2 == 30) );
+        onStack = onStack2;
+        CHECK(*onStack2 == 10);
+        CHECK(*onStack == 10);
+      }
 
-      onStack2 = 10;
-      CHECK(*onStack2 == 10);
-      CHECK(*onStack == 30);
+      SECTION("No copy", "")
+      {
+        int_nocopy_vso onStack;
+        *onStack = 10;
 
-      onStack = onStack2;
-      CHECK(*onStack2 == 10);
-      CHECK(*onStack == 10);
+        CHECK( (*onStack == 10) );
+        CHECK( (*onStack.get() == 10) );
+      }
 
+      SECTION("No copy no default", "")
+      {
+        int_nocopy_nodef_vso onStack(20);
+        CHECK( (*onStack == 20) );
+        CHECK( (*onStack.get() == 20) );
+      }
     }
 
     SECTION("No default ctor", "")
@@ -184,6 +206,18 @@ namespace TestingVirtualStackObject
     IntComponent::m_dtorCount = 0;\
     IntComponent::m_ctorCount = 0
 
+  template <typename T_Ptr, typename T_BuildType>
+  void CheckPointer(const T_Ptr& a_ptr, bool a_validity, T_BuildType)
+  {
+    CHECK(core_mem::priv::DoIsPointerToValidMemoryAddress
+      (a_ptr.DoGetTrackablePtrAddress()) == a_validity);
+  }
+
+  template <typename T_Ptr>
+  void CheckPointer(const T_Ptr& , void* , core_cfg::p_build_config::Release)
+  { }
+
+
   TEST_CASE("core/smart_ptr/VirtualStackObject/arrays", "")
   {
     SECTION("Array<>", "")
@@ -196,7 +230,19 @@ namespace TestingVirtualStackObject
       RESET_CTOR_AND_DTOR_COUNT();
       arr.resize(10);
       arr.resize(20);
+
+      int_comp_vso::pointer ptr = arr.begin()->get();
+      CheckPointer(ptr, true, core_cfg::BuildConfig::build_config_type());
+
+      arr.resize(21);
+      CheckPointer(ptr, false, core_cfg::BuildConfig::build_config_type());
+
+      ptr = arr.begin()->get();
+      CheckPointer(ptr, true, core_cfg::BuildConfig::build_config_type());
+
       arr.resize(40);
+      CheckPointer(ptr, false, core_cfg::BuildConfig::build_config_type());
+
 
       arr.clear();
       CHECK(IntComponent::m_ctorCount > 0);
@@ -246,6 +292,8 @@ namespace TestingVirtualStackObject
   {
     SECTION("Compare::VirtualPtr", "")
     {
+      core_conts::ArrayFixed<int_vso, 100> int_array;
+
       typedef core_conts::Array<int_vso>      int_vso_cont;
 
       int_vso_cont intArray;

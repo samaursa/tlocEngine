@@ -60,7 +60,6 @@ namespace tloc { namespace core { namespace memory {
   ///-------------------------------------------------------------------------
   template <class T,
             tl_uint T_Capacity = 0,
-            class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndexed
     : public core_bclass::NonCopyable_I
@@ -69,9 +68,15 @@ namespace tloc { namespace core { namespace memory {
     enum { k_capacity = T_Capacity };
 
   public:
+    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
 
-    typedef T_PolicyAllocation                        policy_allocation_type;
-    typedef T_PolicyIndexing                          policy_indexing_type;
+    typedef typename
+      Loki::Select<pool_size_type::value == 0,
+        p_memory_pool_index::allocation::On_Heap,
+        p_memory_pool_index::allocation::On_Stack>
+        ::Result                                        policy_allocation_type;
+
+    typedef T_PolicyIndexing                            policy_indexing_type;
 
     typedef typename
       Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
@@ -82,8 +87,6 @@ namespace tloc { namespace core { namespace memory {
       Loki::Int2Type<Loki::IsSameType<policy_indexing_type,
       p_memory_pool_index::indexing::Wrapper>::value>
                                                   policy_indexing_result_type;
-
-    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
 
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;

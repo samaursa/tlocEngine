@@ -202,7 +202,7 @@ namespace tloc { namespace core { namespace component_system {
 
     iterator itr = m_pools.begin();
     core::advance(itr, compNumber);
-    *itr = new ComponentPool_TI<T_Component>();
+    itr->reset(new ComponentPool_TI<T_Component>());
 
     component_pool_ptr cp = GetPool(compNumber);
     return core_sptr::static_pointer_cast<ComponentPool_TI<T_Component> >(cp);

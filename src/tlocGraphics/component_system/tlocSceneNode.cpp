@@ -211,7 +211,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     SceneNode::
     IsHierarchyUpdateRequired() const
   {
@@ -227,7 +227,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     SceneNode::
     IsTransformUpdateRequired() const
   {

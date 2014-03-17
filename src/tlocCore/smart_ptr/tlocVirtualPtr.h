@@ -65,6 +65,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const;
+
     ref_count_type      use_count() const;
     bool                unique() const;
     void                reset();
@@ -92,8 +93,9 @@ namespace tloc { namespace core { namespace smart_ptr {
       const_pointer_cast(const VirtualPtr<U, build_config>& a_vp);
 
   private:
-    void DoAddRef(void* a_connectedPointer);
-    void DoRemoveRef();
+    void  DoAddRef();
+    void* DoGetTrackablePtrAddress() const;
+    void  DoRemoveRef();
 
   private:
     pointer           m_rawPtr;
@@ -110,7 +112,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef((void*)a_other.get());
+    // add the connected address only if it is not already added from other
+    // casts
+    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    {
+      core_mem::priv::
+        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+    }
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -122,7 +131,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef( (void*)a_other.get() );
+    // add the connected address only if it is not already added from other
+    // casts
+    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    {
+      core_mem::priv::
+        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+    }
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -134,7 +150,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    DoAddRef( (void*)a_other.get() );
+    DoAddRef();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -256,7 +272,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     explicit VirtualPtr(const UniquePtr<T_Other>& a_other);
 
     template <typename T_Other>
-    this_type&  operator=(const VirtualPtr<T_Other, build_config>& a_other);
+    this_type&  operator=(VirtualPtr<T_Other, build_config> a_other);
 
     template <typename T_Other, typename T_Policy>
     this_type&  operator=(const SharedPtr<T_Other, T_Policy>& a_other);
@@ -267,12 +283,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     this_type& operator=(this_type a_other);
     this_type& operator=(const pointer a_rawPtr);
 
+    pointer             operator->() const;
+    reference           operator* () const;
+
+    operator            bool() const;
+
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const;
 
-    pointer             operator->() const;
-    reference           operator* () const;
-    operator            bool() const;
     ref_count_type      use_count() const;
     bool                unique() const;
     void                reset();
@@ -283,8 +301,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename T_Other>
     void                swap(VirtualPtr<T_Other, build_config>& a_other);
     void                swap(this_type& a_other);
-
-    //void                DoRelocate(pointer a_ptr);
 
     // -----------------------------------------------------------------------
     // friend functions - casting
@@ -338,10 +354,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   typename VirtualPtr<T, core_cfg::p_build_config::Release>::this_type&
     VirtualPtr<T, core_cfg::p_build_config::Release>::
-    operator= (const VirtualPtr<T_Other, build_config>& a_other)
+    operator= (VirtualPtr<T_Other, build_config> a_other)
   {
-    m_rawPtr = a_other.get();
-
+    this->swap(a_other);
     return *this;
   }
 
@@ -353,8 +368,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<T, core_cfg::p_build_config::Release>::
     operator= (const SharedPtr<T_Other, T_Policy>& a_other)
   {
-    m_rawPtr = a_other.get();
-
+    this_type(a_other).swap(*this);
     return *this;
   }
 
@@ -366,8 +380,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<T, core_cfg::p_build_config::Release>::
     operator= (const UniquePtr<T_Other>& a_other)
   {
-    m_rawPtr = a_other.get();
-
+    this_type(a_other).swap(*this);
     return *this;
   }
 

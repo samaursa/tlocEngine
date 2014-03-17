@@ -61,6 +61,8 @@ namespace tloc { namespace graphics { namespace gl {
   core_err::Error
     InitializePlatform()
   {
+    AssertOpenGLContextExists();
+
     core_err::Error err =
       DoInitializePlatform(core_plat::PlatformInfo::platform_type());
     if (err.Succeeded())

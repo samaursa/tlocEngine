@@ -10,9 +10,7 @@
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 // testing explicit instantiation
-TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(tloc::tl_int, 100);
-//TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint, 100);
-//TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_AND_HEAP_USING_WRAPPER(tloc::tl_uint);
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_USING_WRAPPER(tloc::tl_int, 100);
 
 namespace TestingMemoryPool
 {
@@ -183,25 +181,17 @@ namespace TestingMemoryPool
     typedef p_memory_pool_index::allocation::On_Stack   on_stack;
     typedef p_memory_pool_index::indexing::User         user;
 
-    typedef MemoryPoolIndexed<tl_uint, k_poolSize>                  uint_fixed_stack;
-    typedef MemoryPoolIndexed<tl_uint>                              uint_stack;
-    typedef MemoryPoolIndexed<tl_uint, k_poolSize, on_heap>         uint_fixed_heap;
-    typedef MemoryPoolIndexed<tl_uint, 0, on_heap>                  uint_heap;
+    typedef MemoryPoolIndexed<tl_uint, k_poolSize>        fixed_mem_pool;
+    typedef MemoryPoolIndexed<tl_uint>                    dyn_mem_pool;
 
-    typedef MemoryPoolIndexed<indexed, k_poolSize, on_stack, user>  user_fixed_stack;
-    typedef MemoryPoolIndexed<indexed, 0, on_stack, user>           user_stack;
-    typedef MemoryPoolIndexed<indexed, k_poolSize, on_heap, user>   user_fixed_heap;
-    typedef MemoryPoolIndexed<indexed, 0, on_heap, user>            user_heap;
+    typedef MemoryPoolIndexed<indexed, k_poolSize, user>  user_fixed_mem_pool;
+    typedef MemoryPoolIndexed<indexed, 0, user>           user_dyn_mem_pool;
 
-    uint_fixed_stack                m_uintFixedStack;
-    uint_stack                      m_uintStack;
-    uint_fixed_heap                 m_uintFixedHeap;
-    uint_heap                       m_uintHeap;
+    fixed_mem_pool                          m_uintFixedStack;
+    dyn_mem_pool                            m_uintStack;
 
-    user_fixed_stack                m_userFixedStack;
-    user_stack                      m_userStack;
-    user_fixed_heap                 m_userFixedHeap;
-    user_heap                       m_userHeap;
+    user_fixed_mem_pool                     m_userFixedStack;
+    user_dyn_mem_pool                       m_userHeap;
   };
 
   template <typename T_PoolType>
@@ -224,31 +214,17 @@ namespace TestingMemoryPool
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/resize", "")
   {
-    TestResize<uint_fixed_stack>();
-    TestResize<uint_stack>();
-    TestResize<uint_fixed_heap>();
-    TestResize<uint_heap>();
+    TestResize<fixed_mem_pool>();
+    TestResize<dyn_mem_pool>();
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestResize<user_fixed_stack>();
+    TestResize<user_fixed_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestResize<user_stack>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestResize<user_fixed_heap>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestResize<user_heap>();
+    TestResize<user_dyn_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
@@ -275,31 +251,17 @@ namespace TestingMemoryPool
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/SizeQueries", "")
   {
-    TestSizeQueries<uint_fixed_stack>();
-    TestSizeQueries<uint_stack>();
-    TestSizeQueries<uint_fixed_heap>();
-    TestSizeQueries<uint_heap>();
+    TestSizeQueries<fixed_mem_pool>();
+    TestSizeQueries<dyn_mem_pool>();
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestSizeQueries<user_fixed_stack>();
+    TestSizeQueries<user_fixed_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestSizeQueries<user_stack>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestSizeQueries<user_fixed_heap>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestSizeQueries<user_heap>();
+    TestSizeQueries<user_dyn_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
@@ -322,16 +284,12 @@ namespace TestingMemoryPool
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/Find", "")
   {
-    TestFind<uint_fixed_stack>();
-    TestFind<uint_stack>();
-    TestFind<uint_fixed_heap>();
-    TestFind<uint_heap>();
+    TestFind<fixed_mem_pool>();
+    TestFind<dyn_mem_pool>();
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestFind<user_fixed_stack>();
-    TestFind<user_stack>();
-    TestFind<user_fixed_heap>();
-    TestFind<user_heap>();
+    TestFind<user_fixed_mem_pool>();
+    TestFind<user_dyn_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
@@ -405,31 +363,17 @@ recycle_test_finished:
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/GetAndRecycle", "")
   {
-    TestGetAndRecycle<uint_fixed_stack>();
-    TestGetAndRecycle<uint_stack>();
-    TestGetAndRecycle<uint_fixed_heap>();
-    TestGetAndRecycle<uint_heap>();
+    TestGetAndRecycle<fixed_mem_pool>();
+    TestGetAndRecycle<dyn_mem_pool>();
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestGetAndRecycle<user_fixed_stack>();
+    TestGetAndRecycle<user_fixed_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestGetAndRecycle<user_stack>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestGetAndRecycle<user_fixed_heap>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestGetAndRecycle<user_heap>();
+    TestGetAndRecycle<user_dyn_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
@@ -495,31 +439,17 @@ recycle_test_finished:
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/GetNext_Growth", "Test GetNext growth")
   {
-    TestGrowth<uint_fixed_stack>();
-    TestGrowth<uint_stack>();
-    TestGrowth<uint_fixed_heap>();
-    TestGrowth<uint_heap>();
+    TestGrowth<fixed_mem_pool>();
+    TestGrowth<dyn_mem_pool>();
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestGrowth<user_fixed_stack>();
+    TestGrowth<user_fixed_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
 
     RESET_CTOR_AND_DTOR_COUNT();
-    TestGrowth<user_stack>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestGrowth<user_fixed_heap>();
-    CHECK(indexed::m_ctorCount > 0);
-    CHECK(indexed::m_dtorCount > 0);
-    CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
-
-    RESET_CTOR_AND_DTOR_COUNT();
-    TestGrowth<user_heap>();
+    TestGrowth<user_dyn_mem_pool>();
     CHECK(indexed::m_ctorCount > 0);
     CHECK(indexed::m_dtorCount > 0);
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);

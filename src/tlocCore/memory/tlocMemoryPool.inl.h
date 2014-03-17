@@ -34,8 +34,8 @@ namespace tloc { namespace core { namespace memory {
   // ///////////////////////////////////////////////////////////////////////
   // MemoryPoolIndexed
 
-#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyAllocation, class T_PolicyIndexing
-#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyAllocation, T_PolicyIndexing
+#define MEMORY_POOL_INDEX_TEMP    class T, tl_uint T_Capacity, class T_PolicyIndexing
+#define MEMORY_POOL_INDEX_PARAMS  T, T_Capacity, T_PolicyIndexing
 #define MEMORY_POOL_INDEX_TYPE    typename MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>
 
   //------------------------------------------------------------------------
@@ -424,28 +424,21 @@ namespace tloc { namespace core { namespace memory {
 // -----------------------------------------------------------------------
 // explicit instantiation macros
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, _policyAllocation_, _policyIndexing_)\
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, _policyIndexing_)\
   TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_);\
   TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, _policyAllocation_, _policyIndexing_>
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, _capacity_, _policyIndexing_>
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _policyAllocation_, _policyIndexing_)\
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _policyIndexing_)\
   TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_);\
   TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_);\
-  template class tloc::core_mem::MemoryPoolIndexed<_type_, 0, _policyAllocation_, _policyIndexing_>
+  template class tloc::core_mem::MemoryPoolIndexed<_type_, 0, _policyIndexing_>
 
 // -----------------------------------------------------------------------
 // fixed memory pools
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(_type_, _capacity_)\
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_USING_WRAPPER(_type_, _capacity_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
-
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USING_WRAPPER(_type_, _capacity_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
   template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
@@ -454,43 +447,17 @@ namespace tloc { namespace core { namespace memory {
     tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
     tloc::core_mem::p_memory_pool_index::indexing::User)
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USER(_type_, _capacity_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
-    tloc::core_mem::p_memory_pool_index::indexing::User)
-
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_AND_HEAP_USING_WRAPPER(_type_, _capacity_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USING_WRAPPER(_type_, _capacity_);\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_HEAP_USING_WRAPPER(_type_, _capacity_)\
-
 // -----------------------------------------------------------------------
 // dynamic memory pools
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_USING_WRAPPER(_type_)\
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
   template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
 
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_HEAP_USING_WRAPPER(_type_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
-    tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
-
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_USER(_type_)\
+#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _capacity_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
     tloc::core_mem::p_memory_pool_index::indexing::User)
-
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_HEAP_USER(_type_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
-    tloc::core_mem::p_memory_pool_index::allocation::On_Heap, \
-    tloc::core_mem::p_memory_pool_index::indexing::User)
-
-#define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_AND_HEAP_USING_WRAPPER(_type_)\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_STACK_USING_WRAPPER(_type_);\
-  TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_ON_HEAP_USING_WRAPPER(_type_)\
 
 
 

@@ -1,6 +1,5 @@
 #include "tlocTestCommon.h"
 
-#define private public
 #include <tlocCore/data_structures/tlocCharBuffer.h>
 #include <tlocCore/data_structures/tlocCharBuffer.inl.h>
 
@@ -38,20 +37,13 @@ namespace ProtectedBufferTest
       {
         p.get()[i] = word[i];
       }
-      REQUIRE(p.DoIsBufferValid(build_config_type()) == true);
     }
 
+    SECTION("Test buffer validity",
+            "Only run occasionally as this corrupts the stack")
     {
-      char5 p;
-      sprintf(p.get(), "This ");
-
-      bool isBufferValid = p.DoIsBufferValid(build_config_type());
-
-      CheckBufferStatusForInvalidBuffer
-        <configs::BuildConfig::build_config_type>()(isBufferValid);
-      //CHECK(isBufferValid == false);
-
-      p.DoInit(build_config_type()); // To avoid the assertion in the destructor
+      //char5 p;
+      //sprintf(p.get(), "This ");
     }
   }
 }

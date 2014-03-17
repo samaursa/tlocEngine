@@ -53,6 +53,11 @@ namespace tloc { namespace core { namespace containers {
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
+  private:
+    typedef type_true                                     array_simple_type;
+    typedef type_false                                    array_complex_type;
+
+  public:
     //------------------------------------------------------------------------
     // Functions
     //
@@ -120,6 +125,8 @@ namespace tloc { namespace core { namespace containers {
     iterator         erase(iterator a_rangeBegin, iterator a_rangeEnd);
     void             clear();
 
+    void             swap(this_type& a_vec);
+
   protected:
     //------------------------------------------------------------------------
     // Internal Functions
@@ -134,6 +141,9 @@ namespace tloc { namespace core { namespace containers {
 
     pointer          DoAllocate(const size_type& a_size);
     pointer          DoReAllocate(const size_type& a_size);
+    pointer          DoReallocateWithCopy(size_type a_size, array_simple_type);
+    pointer          DoReallocateWithCopy(size_type a_size, array_complex_type);
+
     void             DoFree(pointer a_ptr);
 
     // Destroys a range of values only

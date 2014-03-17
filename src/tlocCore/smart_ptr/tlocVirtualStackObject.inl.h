@@ -28,8 +28,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI()
     : m_value(new value_type())
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -38,8 +36,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI(const value_type& a_other)
     : m_value(new value_type(a_other))
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -48,8 +44,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI(const this_type& a_other)
     : m_value(new value_type(*a_other.m_value))
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -57,25 +51,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     ~VirtualStackObjectBase_TI()
-  {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
-    // this ensures that no checks are performed after m_value is automatically
-    // deleted
-    m_ptr.reset();
-    m_constPtr.reset();
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -110,12 +86,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
-
-    m_ptr = m_value;
-    m_constPtr = m_value;
-
-    a_other.m_ptr = a_other.m_value;
-    a_other.m_constPtr = a_other.m_value;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -153,18 +123,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get()
-  { return m_ptr; }
+  { return pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get() const
-  { return m_constPtr; }
+  { return const_pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -172,7 +142,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     operator==(const this_type& a_other) const
-  { return m_ptr == a_other.m_ptr; }
+  { return m_value.get() == a_other.m_value.get(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -180,7 +150,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     operator<(const this_type& a_other) const
-  { return m_ptr < a_other.m_ptr; }
+  { return m_value.get() < a_other.m_value.get(); }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<>
@@ -195,8 +165,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     VirtualStackObjectBase_TI()
     : m_value(new value_type())
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -204,25 +172,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     ~VirtualStackObjectBase_TI()
-  {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
-    // this ensures that no checks are performed after m_value is automatically
-    // deleted
-    m_ptr.reset();
-    m_constPtr.reset();
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -259,18 +209,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     get()
-  { return m_ptr; }
+  { return pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::const_pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     get() const
-  { return m_constPtr; }
+  { return const_pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -278,7 +228,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     operator==(const this_type& a_other) const
-  { return m_ptr == a_other.m_ptr; }
+  { return m_value.get() == a_other.m_value.get(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -286,7 +236,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     operator<(const this_type& a_other) const
-  { return m_ptr < a_other.m_ptr; }
+  { return m_value.get() < a_other.m_value.get(); }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<>
@@ -301,8 +251,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     VirtualStackObjectBase_TI(const value_type& a_other)
     : m_value(new value_type(a_other))
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -310,9 +258,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     VirtualStackObjectBase_TI(const this_type& a_other)
-    : m_value(new value_type(a_other.m_value))
-    , m_ptr(m_value)
-    , m_constPtr(m_value)
+    : m_value(new value_type(*a_other.m_value))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -320,41 +266,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     ~VirtualStackObjectBase_TI()
-  {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
-    // this ensures that no checks are performed after m_value is automatically
-    // deleted
-    m_ptr.reset();
-    m_constPtr.reset();
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
-    operator*()
-  { return *m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
-    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
-    operator*() const
-  { return *m_value; }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -389,13 +301,23 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
-
-    m_ptr = m_value;
-    m_constPtr = m_value;
-
-    a_other.m_ptr = a_other.m_value;
-    a_other.m_constPtr = a_other.m_constPtr;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator*()
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator*() const
+  { return *m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -416,18 +338,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     get()
-  { return m_ptr; }
+  { return pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::const_pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     get() const
-  { return m_constPtr; }
+  { return const_pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -435,7 +357,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     operator==(const this_type& a_other) const
-  { return m_ptr == a_other.m_ptr; }
+  { return &m_value == &a_other.m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -443,7 +365,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     operator<(const this_type& a_other) const
-  { return m_ptr < a_other.m_ptr; }
+  { return &m_value < &a_other.m_value; }
 
   // ///////////////////////////////////////////////////////////////////////
   // VirtualStackObjectBase_TI<>
@@ -457,25 +379,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     ~VirtualStackObjectBase_TI()
-  {
-    //DoSetVirtualPtr();
-
-    TLOC_ASSERT_LOW_LEVEL(m_ptr ? m_ptr.get() == m_value.get() : nullptr,
-      "VirtualPtr does not appear to be tracking m_value");
-    TLOC_ASSERT_LOW_LEVEL(m_ptr.unique(),
-      "This object appears to be still in use");
-
-    // we have m_ptr and m_constPtr which is 2 references. We should not have
-    // any more references. NOTE that this may include casted references of
-    // multiply inherited classes which may have different pointer addresses
-    TLOC_ASSERT_LOW_LEVEL(priv::DoGetVirtualRefCount((void*)m_ptr.get()) == 2,
-      "Unexpected RefCount for pointer - other VirtualPtrs pointing to m_value");
-
-    // this ensures that no checks are performed after m_value is automatically
-    // deleted
-    m_ptr.reset();
-    m_constPtr.reset();
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -512,18 +416,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     get()
-  { return m_ptr; }
+  { return pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::const_pointer&
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     get() const
-  { return m_constPtr; }
+  { return const_pointer(m_value); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -531,7 +435,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     operator==(const this_type& a_other) const
-  { return m_ptr == a_other.m_ptr; }
+  { return &m_value == &a_other.m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -539,7 +443,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     operator<(const this_type& a_other) const
-  { return m_ptr < a_other.m_ptr; }
+  { return &m_value < &a_other.m_value; }
 
   // ///////////////////////////////////////////////////////////////////////
   // ///////////////////////////////////////////////////////////////////////
@@ -585,9 +489,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
   TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator=(const this_type& a_other)
+    operator=(this_type a_other)
   {
-    this_type(a_other).swap(*this);
+    swap(a_other);
     return *this;
   }
 
@@ -634,18 +538,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -721,18 +625,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -852,18 +756,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -930,18 +834,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator->()
-  { return pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_pointer
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_value_type_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
     operator->() const
-  { return const_pointer(&m_value); }
+  { return &m_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

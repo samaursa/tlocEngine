@@ -8,6 +8,7 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/iterators/tlocIterator.inl.h>
 #include <tlocCore/memory/tlocMemory.inl.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -357,6 +358,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
+  template <ARRAY_BASE_TYPES>
+  void ArrayBase<ARRAY_BASE_PARAMS>::swap(this_type& a_vec)
+  {
+    core::swap(m_begin, a_vec.m_begin);
+    core::swap(m_end, a_vec.m_end);
+    core::swap(m_capacity, a_vec.m_capacity);
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 
@@ -371,7 +380,29 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
     ArrayBase<ARRAY_BASE_PARAMS>::DoReAllocate(const size_type& a_size)
   {
+    typedef Loki::Int2Type<Loki::TypeTraits<value_type>::isFundamental ||
+      Loki::TypeTraits<value_type>::isPointer>    simple_or_complex_type;
+
+    return DoReallocateWithCopy(a_size, simple_or_complex_type());
+  }
+
+  template <ARRAY_BASE_TYPES>
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
+    ArrayBase<ARRAY_BASE_PARAMS>::
+    DoReallocateWithCopy(size_type a_size, array_simple_type)
+  {
     return (pointer)TL_REALLOC(m_begin, sizeof(value_type) * a_size);
+  }
+
+  template <ARRAY_BASE_TYPES>
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
+    ArrayBase<ARRAY_BASE_PARAMS>::
+    DoReallocateWithCopy(size_type a_size, array_complex_type)
+  {
+    this_type temp(a_size);
+    temp = *this;
+    swap(temp);
+    return (pointer)m_begin;
   }
 
   template <ARRAY_BASE_TYPES>
@@ -669,9 +700,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   void Array<ARRAY_PARAMS>::swap(this_type& a_vec)
   {
-    core::swap(m_begin, a_vec.m_begin);
-    core::swap(m_end, a_vec.m_end);
-    core::swap(m_capacity, a_vec.m_capacity);
+    base_type::swap(a_vec);
   }
 
   //------------------------------------------------------------------------

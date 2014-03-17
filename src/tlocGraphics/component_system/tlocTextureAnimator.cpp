@@ -149,22 +149,22 @@ namespace tloc { namespace graphics { namespace component_system {
     m_coordSets[m_currentSet].m_flags.Mark(k_spriteSetChanged);
   }
 
-  const bool
+  bool
     TextureAnimator::
     IsLooping() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_looping); }
 
-  const bool
+  bool
     TextureAnimator::
     IsPaused() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_paused); }
 
-  const bool
+  bool
     TextureAnimator::
     IsStopped() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_stopped); }
 
-  const bool
+  bool
     TextureAnimator::
     IsLastFrame() const
   {
@@ -177,12 +177,12 @@ namespace tloc { namespace graphics { namespace component_system {
     return currSet == totalSets - 1;
   }
 
-  const bool
+  bool
     TextureAnimator::
     IsSpriteSeqChanged() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_spriteSetChanged); }
 
-  const TextureAnimator::size_type
+  TextureAnimator::size_type
     TextureAnimator::
     GetFPS() const
   {

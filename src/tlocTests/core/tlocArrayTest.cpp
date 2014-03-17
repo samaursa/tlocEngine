@@ -478,32 +478,50 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
-    ints.resize(0); // should not crash or do anything
-    CHECK(ints.size() == 0);
-    ints.resize(2); // should not crash
-    CHECK(ints.size() == 2);
-    ints.clear();
-
-    u32 firstElement = 0;
-    u32 arraySize = 10;
-    FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);
-    CHECK(ints.size() == arraySize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, arraySize);
-
-    u32 resizeSize = 5;
-    ints.resize(resizeSize);
-    CHECK(ints.size() == resizeSize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, resizeSize);
-
-    resizeSize = 150;
-    ints.resize(resizeSize);
-    CHECK(ints.size() == resizeSize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, 5);
-
-    // Check that all 'resizeSize' elements have been allocated properly
-    for (u32 i = 0; i < resizeSize; ++i)
+    SECTION("Simple types", "")
     {
-      ints[i] = i;
+      ints.resize(0); // should not crash or do anything
+      CHECK(ints.size() == 0);
+      ints.resize(2); // should not crash
+      CHECK(ints.size() == 2);
+      ints.clear();
+
+      u32 firstElement = 0;
+      u32 arraySize = 10;
+      FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);
+      CHECK(ints.size() == arraySize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, arraySize);
+
+      u32 resizeSize = 5;
+      ints.resize(resizeSize);
+      CHECK(ints.size() == resizeSize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, resizeSize);
+
+      resizeSize = 150;
+      ints.resize(resizeSize);
+      CHECK(ints.size() == resizeSize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, 5);
+
+      // Check that all 'resizeSize' elements have been allocated properly
+      for (u32 i = 0; i < resizeSize; ++i)
+      {
+        ints[i] = i;
+      }
+    }
+
+    SECTION("Complex types", "Our array copies complex types instead of using "
+      "realloc which 'moves' the objects. This is to ensure that objects with "
+      "side effects get constructed/destructed/copied properly. This is "
+      "obviously slower than reallocation provided reallocation can 'extend' "
+      "the memory block. On the plus side, it is not deterministically slow for "
+      "complex objects")
+    {
+      someClass.resize(1);
+      SomeClass* ptr = someClass.begin();
+
+      someClass.resize(someClass.capacity() + 1);
+      // pointer should be invalid
+      CHECK(ptr != someClass.begin());
     }
   }
 

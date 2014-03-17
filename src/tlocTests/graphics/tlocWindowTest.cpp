@@ -58,11 +58,15 @@ namespace TestingWindow
     typedef Window::graphics_mode graphics_mode;
 
     Window win;
-    CHECK(win.IsValid() == false);
-    CHECK(win.IsCreated() == false);
+    CHECK_FALSE(win.IsValid() );
+    CHECK_FALSE(win.IsCreated() );
+    CHECK_FALSE(win.HasValidContext() );
+    CHECK_FALSE(win.IsActive() );
     win.Create();
-    CHECK(win.IsValid() == true);
-    CHECK(win.IsCreated() == true);
+    CHECK(win.IsValid() );
+    CHECK(win.HasValidContext() );
+    CHECK(win.IsActive() );
+    CHECK(win.IsCreated() );
 
     win.SetMouseVisibility(false);
     CHECK(GetCursor() == TLOC_NULL);
@@ -73,12 +77,16 @@ namespace TestingWindow
       g_windowSizeX = 200; g_windowSizeY = 200;
 
       Window win2;
-      CHECK(win2.IsValid() == false);
-      CHECK(win2.IsCreated() == false);
+      CHECK_FALSE(win2.IsValid() );
+      CHECK_FALSE(win2.IsCreated() );
+      CHECK_FALSE(win2.HasValidContext() );
+      CHECK_FALSE(win2.IsActive() );
       win2.Create(graphics_mode
         (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
         WindowSettings("Test").ClearStyles().AddStyle<p_window_settings::style::TitleBar>());
       CHECK(win2.IsValid() == true);
+      CHECK(win2.HasValidContext());
+      CHECK(win2.IsActive());
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == g_windowSizeX);
       CHECK(win2.GetHeight() == g_windowSizeY);

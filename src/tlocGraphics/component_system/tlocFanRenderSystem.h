@@ -36,7 +36,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_vptr                           shader_prog_ptr;
+    typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
 
   public:
     FanRenderSystem(event_manager_ptr a_eventMgr,
@@ -55,9 +55,10 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    shader_prog_ptr           m_shaderPtr;
+    const_shader_prog_ptr     m_shaderPtr;
 
-    gl::shader_operator_vso   m_mvpOperator;
+    gl::shader_operator_vso   m_mvpOperator,
+                              m_so_fan;
     gl::uniform_vso           m_uniVpMat;
 
     vec3_cont_vso             m_vertList;

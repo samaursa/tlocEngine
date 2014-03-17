@@ -206,7 +206,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/with containers", "")
   {
-    TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
+    //TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_singly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_doubly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
   }

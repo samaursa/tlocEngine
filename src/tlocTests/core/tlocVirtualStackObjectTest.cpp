@@ -1,16 +1,14 @@
 #include "tlocTestCommon.h"
 
+#define private public
+
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 
-#include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl.h>
-#include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl.h>
-#include <tlocCore/containers/tlocHashmap.h>
-#include <tlocCore/containers/tlocHashmap.inl.h>
+#include <tlocCore/containers/tloc_containers.h>
+#include <tlocCore/containers/tloc_containers.inl.h>
 
 using namespace tloc;
 using namespace core_sptr;
@@ -208,6 +206,18 @@ namespace TestingVirtualStackObject
     IntComponent::m_dtorCount = 0;\
     IntComponent::m_ctorCount = 0
 
+  template <typename T_Ptr, typename T_BuildType>
+  void CheckPointer(const T_Ptr& a_ptr, bool a_validity, T_BuildType)
+  {
+    CHECK(core_mem::priv::DoIsPointerToValidMemoryAddress
+      (a_ptr.DoGetTrackablePtrAddress()) == a_validity);
+  }
+
+  template <typename T_Ptr>
+  void CheckPointer(const T_Ptr& , void* , core_cfg::p_build_config::Release)
+  { }
+
+
   TEST_CASE("core/smart_ptr/VirtualStackObject/arrays", "")
   {
     SECTION("Array<>", "")
@@ -220,7 +230,19 @@ namespace TestingVirtualStackObject
       RESET_CTOR_AND_DTOR_COUNT();
       arr.resize(10);
       arr.resize(20);
+
+      int_comp_vso::pointer ptr = arr.begin()->get();
+      CheckPointer(ptr, true, core_cfg::BuildConfig::build_config_type());
+
+      arr.resize(21);
+      CheckPointer(ptr, false, core_cfg::BuildConfig::build_config_type());
+
+      ptr = arr.begin()->get();
+      CheckPointer(ptr, true, core_cfg::BuildConfig::build_config_type());
+
       arr.resize(40);
+      CheckPointer(ptr, false, core_cfg::BuildConfig::build_config_type());
+
 
       arr.clear();
       CHECK(IntComponent::m_ctorCount > 0);
@@ -270,6 +292,8 @@ namespace TestingVirtualStackObject
   {
     SECTION("Compare::VirtualPtr", "")
     {
+      core_conts::ArrayFixed<int_vso, 100> int_array;
+
       typedef core_conts::Array<int_vso>      int_vso_cont;
 
       int_vso_cont intArray;

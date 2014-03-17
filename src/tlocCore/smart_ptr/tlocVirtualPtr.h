@@ -65,6 +65,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const;
+
     ref_count_type      use_count() const;
     bool                unique() const;
     void                reset();
@@ -289,6 +290,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
     // @brief Dangerous to use this, prefer VirtualPtr<> semantics
     pointer             get() const;
+
     ref_count_type      use_count() const;
     bool                unique() const;
     void                reset();

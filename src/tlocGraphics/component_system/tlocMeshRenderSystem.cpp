@@ -84,7 +84,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef math_cs::Transform        transform_type;
     typedef gfx_cs::Material          mat_type;
-    typedef mat_type::shader_op_vso   shader_op_vso;
     typedef mat_type::shader_op_ptr   shader_op_ptr;
 
     if (a_ent->HasComponent(components::material) == false)
@@ -110,12 +109,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const tl_size numVertices = meshPtr->size();
 
-    shader_op_vso so_mesh;
+    so_mesh->RemoveAllAttributes();
     so_mesh->AddAttribute(*meshPtr->GetPosAttribute());
     so_mesh->AddAttribute(*meshPtr->GetNormAttribute());
     so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute());
 
-    mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
+    const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     if (m_shaderPtr == nullptr ||
         m_shaderPtr.get() != sp.get())

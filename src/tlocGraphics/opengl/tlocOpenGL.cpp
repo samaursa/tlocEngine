@@ -8,6 +8,7 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/window/tlocWindow.h>
 
 #if defined(TLOC_OS_WIN)
 # include <tlocGraphics/opengl/tlocOpenGLExt.h>
@@ -75,6 +76,22 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else
     { return err; }
+  }
+
+  bool
+    IsPlatformInitialized()
+  {
+    return g_platformInitialized;
+  }
+
+  void
+    AssertOpenGLContextExists()
+  {
+    TLOC_ASSERT(gfx_win::GetCurrentActiveWindow() ?
+                gfx_win::GetCurrentActiveWindow()->HasValidContext() :
+                false,
+                "No OpenGL context exists (destroyed?) OR no existing context "
+                "has been set as active");
   }
 
   // ///////////////////////////////////////////////////////////////////////

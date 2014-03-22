@@ -29,57 +29,46 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // FanRenderSystem
 
-  FanRenderSystem::FanRenderSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
-     : base_type(a_eventMgr, a_entityMgr,
-                 Variadic<component_type, 1>(components::fan))
-     , m_vertList(new vec3_cont_type())
+  FanRenderSystem::
+    FanRenderSystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr,
+                Variadic<component_type, 1>(components::fan))
   {
-    //
     m_vertList->reserve(30);
 
-    m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
-
-    m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
-
-    m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
-
-    m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  error_type FanRenderSystem::InitializeEntity(const entity_manager*,
-                                               const entity_type* )
+  error_type
+    FanRenderSystem::
+    InitializeEntity(entity_ptr)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
-                                             const entity_type*)
+  error_type
+    FanRenderSystem::
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void FanRenderSystem::ProcessEntity(const entity_manager*,
-                                      const entity_type* a_ent,
-                                      f64)
+  void
+    FanRenderSystem::
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     using namespace core::component_system;
     using math_t::degree_f32;
 
-    typedef gfx_cs::Material::shader_op_ptr          shader_op_ptr;
-
-    const entity_type* ent = a_ent;
-
-    if (ent->HasComponent(components::material))
+    if (a_ent->HasComponent(components::material))
     {
-      gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
-
-      gfx_cs::Fan* fanPtr = ent->GetComponent<gfx_cs::Fan>();
+      gfx_cs::material_vptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
+      gfx_cs::fan_vptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
       //------------------------------------------------------------------------
       // Prepare the Fan
@@ -94,11 +83,11 @@ namespace tloc { namespace graphics { namespace component_system {
       const size_type numSides = fanPtr->GetNumSides();
       const f32 angleInterval = 360.0f/numSides;
 
-      math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_vptr posPtr = a_ent->GetComponent<math_cs::Transform>();
 
       Mat4f32 tMatrix;
-      if (ent->HasComponent(components::scene_node))
-      { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+      if (a_ent->HasComponent(components::scene_node))
+      { tMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
       else
       { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
@@ -107,7 +96,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_uniVpMat->SetValueAs(tFinalMat);
 
       m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(m_uniVpMat);
+      m_mvpOperator->AddUniform(*m_uniVpMat);
 
       // Push the center vertex
       {
@@ -125,28 +114,29 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const tl_size numVertices = m_vertList->size();
 
-      m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::Shared());
+      m_vData->SetVertexArray(core_sptr::ToVirtualPtr(m_vertList),
+                              gl::p_shader_variable_ti::Pointer());
 
-      shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
-      so_fan->AddAttribute(m_vData);
+      gl::shader_operator_vso so_fan;
+      so_fan->AddAttribute(*m_vData);
 
-      if (ent->HasComponent(components::texture_coords))
+      if (a_ent->HasComponent(components::texture_coords))
       {
         typedef gfx_cs::TextureCoords::set_index    set_index;
 
-        gfx_cs::TextureCoords* texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>();
+        gfx_cs::texture_coords_vptr texCoordPtr =
+          a_ent->GetComponent<gfx_cs::TextureCoords>();
 
         if (texCoordPtr->GetNumSets())
         {
-          gfx_cs::TextureCoords::cont_type_sptr
+          gfx_cs::TextureCoords::cont_type_ptr
             texCoordCont = texCoordPtr->GetCoords
             (set_index(texCoordPtr->GetCurrentSet()) );
 
-          m_tData->SetVertexArray
-            (texCoordCont, gl::p_shader_variable_ti::Shared() );
+          m_tData->SetVertexArray(texCoordCont,
+                                  gl::p_shader_variable_ti::Pointer() );
 
-          so_fan->AddAttribute(m_tData);
+          so_fan->AddAttribute(*m_tData);
         }
       }
 
@@ -171,7 +161,7 @@ namespace tloc { namespace graphics { namespace component_system {
       for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        gfx_cs::Material::shader_op_ptr so = *itr;
+        gl::const_shader_operator_vptr so = itr->get();
 
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);
@@ -192,7 +182,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void FanRenderSystem::Post_ProcessActiveEntities(f64)
+  void
+    FanRenderSystem::
+    Post_ProcessActiveEntities(f64)
   {
     // No materials/entities may have been loaded initially
     // (m_shaderPtr would have remained NULL)
@@ -201,6 +193,10 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr->Disable();
       m_shaderPtr.reset();
     }
+
+    // clear the stored attributes
+    m_vData->ResetValue();
+    m_tData->ResetValue();
 
     base_type::Post_ProcessActiveEntities(f64());
   }

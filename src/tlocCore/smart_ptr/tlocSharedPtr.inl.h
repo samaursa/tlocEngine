@@ -156,7 +156,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     if (m_refCount)
     {
       if (*m_refCount == 0)
-      { priv::DoStartTrackingPtr( (void*)m_rawPtr); }
+      { core_mem::priv::DoTrackMemoryAddress( (void*)m_rawPtr); }
 
       ++*m_refCount;
     }
@@ -170,9 +170,8 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        TLOC_ASSERT(priv::DoIsPointerTrackedVirtually( (void*)m_rawPtr) == false,
-          "Pointer still tracked by VirtualPointer");
-        priv::DoStopTrackingPtr( (void*)m_rawPtr);
+        core_mem::priv::DoUntrackMemoryAddress( (void*)m_rawPtr);
+
         delete m_rawPtr;
         delete m_refCount;
       }

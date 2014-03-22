@@ -15,7 +15,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <RENDER_SYSTEM_TEMPS>
   void RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    SetCamera(const entity_type* a_cameraEntity)
+    SetCamera(const_entity_ptr a_cameraEntity)
   {
     m_sharedCam = a_cameraEntity;
 

@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace io {
     bool FolderExists() const;
     bool HasFilename() const;
 
-    TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
+    TLOC_DECL_AND_DEF_GETTER(const char*, GetPath, m_path.c_str());
     void SetPath(const BufferArg& a_path);
 
     bool operator==(const this_type& a_other) const;

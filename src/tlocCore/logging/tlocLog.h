@@ -58,7 +58,7 @@ namespace tloc { namespace core { namespace logging {
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetLog, m_finalString);
     TLOC_DECL_AND_DEF_GETTER(time_type, GetTime, m_time);
-    TLOC_DECL_AND_DEF_GETTER(char*, GetFileName, m_fileName);
+    TLOC_DECL_AND_DEF_GETTER(const char*, GetFileName, m_fileName);
     TLOC_DECL_AND_DEF_GETTER(tl_ulong, GetLineNumber, m_lineNumber);
     TLOC_DECL_AND_DEF_GETTER(severity_type, GetSeverity, m_severity);
 

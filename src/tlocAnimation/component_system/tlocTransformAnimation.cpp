@@ -1,6 +1,5 @@
 #include "tlocTransformAnimation.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace animation { namespace component_system {
@@ -208,42 +207,42 @@ namespace tloc { namespace animation { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     TransformAnimation::
     IsLooping() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_looping); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     TransformAnimation::
     IsPaused() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_paused); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     TransformAnimation::
     IsStopped() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_stopped); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     TransformAnimation::
     IsReversed() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_reverse); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     TransformAnimation::
     IsKFSequenceChanged() const
   { return m_kfSeqSet[m_currentSeq].m_flags.IsMarked(k_keyframeSetChanged); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const TransformAnimation::size_type
+  TransformAnimation::size_type
     TransformAnimation::
     GetFPS() const
   { return static_cast<size_type>(1.0f / m_kfSeqSet[m_currentSeq].m_frameDeltaT); }
@@ -318,8 +317,11 @@ namespace tloc { namespace animation { namespace component_system {
 // ///////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::anim_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimation);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_animation_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimation);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TransformAnimation);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TransformAnimation);

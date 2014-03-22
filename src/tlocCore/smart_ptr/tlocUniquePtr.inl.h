@@ -35,7 +35,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   {
-    priv::DoStartTrackingPtr( (void*)a_rawPtr);
+    core_mem::priv::DoTrackMemoryAddress((void*)m_rawPtr);
   }
 
   template <UNIQUE_PTR_TEMPS>
@@ -126,7 +126,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     {
-      priv::DoStopTrackingPtr( (void*)m_rawPtr);
+      core_mem::priv::DoUntrackMemoryAddress((void*)m_rawPtr);
+
       delete m_rawPtr;
       m_rawPtr = nullptr;
     }

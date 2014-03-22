@@ -11,5 +11,11 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(_type_)\
+  TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(_type_);\
+  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(_type_)
 
 #endif

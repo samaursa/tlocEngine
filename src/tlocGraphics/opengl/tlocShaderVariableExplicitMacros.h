@@ -9,7 +9,7 @@
   ShaderVariable_TI<_derType_>::DoSetValueAs(const _type_&);\
   \
   template ShaderVariable_TI<_derType_>::derived_type& \
-  ShaderVariable_TI<_derType_>::DoSetValueAs(SharedPtr<_type_>);\
+  ShaderVariable_TI<_derType_>::DoSetValueAs(VirtualPtr<_type_>);\
   \
   template ShaderVariable_TI<_derType_>::derived_type& \
   ShaderVariable_TI<_derType_>::DoSetValueAs(const Array<_type_>&,\
@@ -20,6 +20,6 @@
                                              p_shader_variable_ti::SwapArray);\
   \
   template ShaderVariable_TI<_derType_>::derived_type& \
-  ShaderVariable_TI<_derType_>::DoSetValueAs(SharedPtr<Array<_type_> >)
+  ShaderVariable_TI<_derType_>::DoSetValueAs(VirtualPtr<Array<_type_> >)
 
 #endif

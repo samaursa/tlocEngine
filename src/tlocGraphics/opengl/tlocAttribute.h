@@ -3,7 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -22,7 +22,8 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class Attribute : public ShaderVariable_TI<Attribute>
+  class Attribute
+    : public ShaderVariable_TI<Attribute>
   {
   public:
     template <typename T_Derived> friend class ShaderVariable_TI;
@@ -34,7 +35,9 @@ namespace tloc { namespace graphics { namespace gl {
     Attribute();
     Attribute(const this_type& a_other);
 
-    this_type& operator=(const this_type& a_other);
+    this_type& operator=(this_type a_other);
+
+    void swap(this_type& a_other);
 
     template <typename T>
     derived_type& SetValueAs(const T& a_value)
@@ -62,12 +65,14 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     derived_type&
       SetVertexArray
-      (core::smart_ptr::SharedPtr<core::containers::Array<T> > a_array,
-       p_shader_variable_ti::Shared)
+      (core::smart_ptr::VirtualPtr<core::containers::Array<T> > a_array,
+       p_shader_variable_ti::Pointer)
     {
       m_isAttribArray = true;
-      return base_type::SetValueAs(a_array, p_shader_variable_ti::Shared());
+      return base_type::SetValueAs(a_array, p_shader_variable_ti::Pointer());
     }
+
+    void Reset();
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsAttribArray, m_isAttribArray);
 
@@ -159,7 +164,10 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Attribute, attribute);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Attribute, attribute);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Attribute, attribute);
+
+  typedef core_conts::Array<attribute_sptr>         attribute_sptr_cont;
 
 };};};
 

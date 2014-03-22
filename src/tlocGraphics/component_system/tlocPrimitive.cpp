@@ -1,7 +1,5 @@
 #include "tlocPrimitive.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-
 namespace tloc { namespace graphics { namespace component_system {
 
   namespace p_primitive {
@@ -164,9 +162,11 @@ namespace tloc { namespace graphics { namespace component_system {
 // -----------------------------------------------------------------------
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::ArrayOfStructures::cont_type);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_pos_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::ArrayOfStructures::cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::StructureOfArrays::cont_pos_type);
 //TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);

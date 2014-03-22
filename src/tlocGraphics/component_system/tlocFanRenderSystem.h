@@ -26,38 +26,26 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
 
     typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core_sptr::SharedPtr<vec3_cont_type>              vec3_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
 
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
-    typedef core_sptr::SharedPtr<vec2_cont_type>              vec2_cont_ptr;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_sptr                           shader_prog_ptr;
+    typedef gl::shader_program_vptr                           shader_prog_ptr;
 
   public:
-    FanRenderSystem(event_manager_sptr a_eventMgr,
-                    entity_manager_sptr a_entityMgr);
+    FanRenderSystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr);
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
@@ -67,14 +55,14 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    shader_prog_ptr     m_shaderPtr;
+    shader_prog_ptr           m_shaderPtr;
 
-    gl::shader_operator_sptr  m_mvpOperator;
-    gl::uniform_sptr          m_uniVpMat;
+    gl::shader_operator_vso   m_mvpOperator;
+    gl::uniform_vso           m_uniVpMat;
 
-    vec3_cont_ptr             m_vertList;
-    gl::attribute_sptr        m_vData;
-    gl::attribute_sptr        m_tData;
+    vec3_cont_vso             m_vertList;
+    gl::attribute_vso         m_vData;
+    gl::attribute_vso         m_tData;
   };
 
   //------------------------------------------------------------------------

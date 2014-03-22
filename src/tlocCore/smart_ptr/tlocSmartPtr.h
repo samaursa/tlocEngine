@@ -11,10 +11,17 @@ namespace tloc { namespace core { namespace smart_ptr {
   ///-------------------------------------------------------------------------
   class SmartPtr
   {
-  protected: // to disallow the user from doing anything with this base class
+  public: // to disallow the user from doing anything with this base class
     SmartPtr();
     ~SmartPtr();
   };
+
+  // -----------------------------------------------------------------------
+  // global functions
+
+  template <typename T>
+  tl_size GetUseCount(T* a_ptr)
+  { a_ptr == nullptr : 0 ? 1; }
 
 };};};
 

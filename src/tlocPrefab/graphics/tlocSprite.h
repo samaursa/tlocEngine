@@ -16,9 +16,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
   template <typename SpriteLoaderIterator>
     void
-      DoAddSpriteAnimation(core_cs::Entity* a_entity,
-                           core_cs::EntityManager* a_mgr,
-                           core_cs::ComponentPoolManager* a_poolMgr,
+      DoAddSpriteAnimation(core_cs::entity_vptr a_entity,
+                           core_cs::entity_manager_vptr a_mgr,
+                           core_cs::component_pool_mgr_vptr a_poolMgr,
                            SpriteLoaderIterator a_begin,
                            SpriteLoaderIterator a_end,
                            bool a_loop,
@@ -37,8 +37,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef tl_size               size_type;
 
   public:
-    SpriteAnimation(core_cs::EntityManager*  a_entMgr,
-                    core_cs::ComponentPoolManager* a_poolMgr)
+    SpriteAnimation(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
                     : Prefab_I(a_entMgr, a_poolMgr)
                     , m_loop(true)
                     , m_fps(24)
@@ -49,7 +48,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     template <typename SpriteLoaderIterator>
     void
-      Add(entity_type* a_entity,
+      Add(entity_ptr a_entity,
           SpriteLoaderIterator a_begin,
           SpriteLoaderIterator a_end)
     {
@@ -68,7 +67,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     template <typename T_ContOfSpriteLoaderItrBeginEndPair>
     void
-      Add(entity_type* a_entity,
+      Add(entity_ptr a_entity,
           T_ContOfSpriteLoaderItrBeginEndPair a_spriteLoaderIterators)
     {
       using namespace gfx_med;

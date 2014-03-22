@@ -283,14 +283,20 @@ namespace tloc { namespace core { namespace smart_ptr {
     return static_pointer_cast<T, p_shared_ptr::null_copy::Allow>(a_sp);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_NullCopyPolicy>
+  tl_size GetUseCount(const SharedPtr<T, T_NullCopyPolicy>& a_sptr)
+  { return a_sptr.use_count(); }
+
 };};};
 
 #define TLOC_TYPEDEF_SHARED_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::SharedPtr<_type_>  _typedef_##_sptr;\
-  typedef tloc::core_sptr::SharedPtr<const _type_>  _typedef_##_const_sptr;\
+  typedef tloc::core_sptr::SharedPtr<const _type_>  const_##_typedef_##_sptr;\
   typedef tloc::core_sptr::SharedPtr<_type_, \
   tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_sptr_nonullcopy;\
   typedef tloc::core_sptr::SharedPtr<const _type_, \
-  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_const_sptr_nonullcopy
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  const_##_typedef_##_sptr_nonullcopy
 
 #endif

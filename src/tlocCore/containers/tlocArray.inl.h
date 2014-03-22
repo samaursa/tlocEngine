@@ -8,6 +8,7 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/iterators/tlocIterator.inl.h>
 #include <tlocCore/memory/tlocMemory.inl.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -119,6 +120,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     const ArrayBase<ARRAY_BASE_PARAMS>::size_type sizeOfOther = a_toCopy.size();
     if (sizeOfOther > capacity())
     {
+      clear();
       m_begin    = DoReAllocate(sizeOfOther);
       m_end      = uninitialized_copy(a_toCopy.begin(),
                                       a_toCopy.end(),
@@ -356,6 +358,14 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
     }
   }
 
+  template <ARRAY_BASE_TYPES>
+  void ArrayBase<ARRAY_BASE_PARAMS>::swap(this_type& a_vec)
+  {
+    core::swap(m_begin, a_vec.m_begin);
+    core::swap(m_end, a_vec.m_end);
+    core::swap(m_capacity, a_vec.m_capacity);
+  }
+
   //------------------------------------------------------------------------
   // Internal functions
 
@@ -370,7 +380,29 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
     ArrayBase<ARRAY_BASE_PARAMS>::DoReAllocate(const size_type& a_size)
   {
+    typedef Loki::Int2Type<Loki::TypeTraits<value_type>::isFundamental ||
+      Loki::TypeTraits<value_type>::isPointer>    simple_or_complex_type;
+
+    return DoReallocateWithCopy(a_size, simple_or_complex_type());
+  }
+
+  template <ARRAY_BASE_TYPES>
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
+    ArrayBase<ARRAY_BASE_PARAMS>::
+    DoReallocateWithCopy(size_type a_size, array_simple_type)
+  {
     return (pointer)TL_REALLOC(m_begin, sizeof(value_type) * a_size);
+  }
+
+  template <ARRAY_BASE_TYPES>
+  typename ArrayBase<ARRAY_BASE_PARAMS>::pointer
+    ArrayBase<ARRAY_BASE_PARAMS>::
+    DoReallocateWithCopy(size_type a_size, array_complex_type)
+  {
+    this_type temp(a_size);
+    temp = *this;
+    swap(temp);
+    return (pointer)m_begin;
   }
 
   template <ARRAY_BASE_TYPES>
@@ -668,9 +700,7 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
   template <ARRAY_TYPES>
   void Array<ARRAY_PARAMS>::swap(this_type& a_vec)
   {
-    core::swap(m_begin, a_vec.m_begin);
-    core::swap(m_end, a_vec.m_end);
-    core::swap(m_capacity, a_vec.m_capacity);
+    base_type::swap(a_vec);
   }
 
   //------------------------------------------------------------------------
@@ -764,14 +794,16 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
       // Allocate all un-allocated space
       while (m_end != a_position + spaceRequired)
       {
-        ::new(m_end++) value_type();
+        ::new(m_end) value_type();
+        ++m_end;
       }
 
       copy_backward(a_position, a_position + elemsToMove, m_end);
 
       while (a_position != m_end - elemsToMove)
       {
-        *(a_position++) = a_value;
+        *(a_position) = a_value;
+        ++a_position;
       }
     }
     else
@@ -850,7 +882,9 @@ TLOC_PRINT_ARRAY_INDEX_OUT_OF_RANGE(rangeEnd) )
 };};};
 
 #define TLOC_EXPLICITLY_INSTANTIATE_ARRAY(_type_)\
+  template class tloc::core_conts::ArrayBase<_type_, tloc::core_conts::Array_Unordered>;\
+  template class tloc::core_conts::ArrayBase<_type_, tloc::core_conts::Array_Ordered>;\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Unordered>;\
   template class tloc::core_conts::Array<_type_, tloc::core_conts::Array_Ordered>
-  
+
 #endif

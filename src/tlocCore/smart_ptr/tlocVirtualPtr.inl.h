@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocVirtualPtr.h"
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 
@@ -36,7 +38,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_PTR_TEMPS>
   VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
-    VirtualPtr(pointer a_rawPtr)
+    VirtualPtr(const pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
@@ -77,11 +79,25 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_PTR_TEMPS>
+  TLOC_VIRTUAL_PTR_TYPE::this_type&
+    VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
+    operator=(pointer a_ptr)
+  {
+    this_type(a_ptr).swap(*this);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_TEMPS>
   TLOC_VIRTUAL_PTR_TYPE::pointer
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     operator->() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
+
     return m_rawPtr;
   }
 
@@ -93,6 +109,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator*() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
     return *m_rawPtr;
   }
 
@@ -110,6 +128,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     get() const
   {
+    core_mem::priv::DoAssertPointerToValidMemoryAddress
+      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
     return m_rawPtr;
   }
 
@@ -172,10 +192,25 @@ namespace tloc { namespace core { namespace smart_ptr {
     if (m_refCount)
     {
       if (*m_refCount == 0)
-      { priv::DoAddVirtualPtrRef( (void*) m_rawPtr); }
+      {
+        core_mem::priv::DoTrackPointerToMemoryAddress
+          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+      }
 
       ++*m_refCount;
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_TEMPS>
+  void*
+    VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
+    DoGetTrackablePtrAddress() const
+  {
+    // m_refCount is a trackable address because it is new'ed. If we add 'this'
+    // pointer as trackable then we have to add extra logic in assignment.
+    return m_refCount;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -190,7 +225,11 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        priv::DoRemoveVirtualPtrRef( (void*) m_rawPtr);
+        TLOC_ASSERT_LOW_LEVEL(*m_refCount == 0,
+          "use_count() reported an incorrect ref count");
+        core_mem::priv::DoUntrackPointerToMemoryAddress
+          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+
         delete m_refCount;
       }
     }
@@ -224,7 +263,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
   VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
-    VirtualPtr(pointer a_rawPtr)
+    VirtualPtr(const pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   { }
 
@@ -243,8 +282,18 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator= (this_type a_other)
   {
-    m_rawPtr = a_other.get();
+    m_rawPtr = a_other.m_rawPtr;
+    return *this;
+  }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
+  TLOC_VIRTUAL_PTR_RELEASE_TYPE::this_type&
+    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
+    operator= (const pointer a_other)
+  {
+    m_rawPtr = a_other;
     return *this;
   }
 
@@ -265,7 +314,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator->() const
   {
-    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
     return m_rawPtr;
   }
 
@@ -276,7 +324,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     operator*() const
   {
-    TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
     return *m_rawPtr;
   }
 
@@ -293,7 +340,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_PTR_RELEASE_TYPE::ref_count_type
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     use_count() const
-  { return 1; }
+  {
+    return m_rawPtr == nullptr ? 0 : 1;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -301,7 +350,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     unique() const
-  { return true; }
+  { return use_count() == 1; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -309,7 +358,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   void
     VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
     reset()
-  { }
+  { m_rawPtr = nullptr; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -322,5 +371,9 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(_type_)\
+  template class tloc::core_sptr::VirtualPtr<_type_>;\
+  template class tloc::core_sptr::VirtualPtr<const _type_>
 
 #endif

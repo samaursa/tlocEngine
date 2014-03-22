@@ -37,8 +37,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <MOUSE_IMPL_TEMP>
   MouseImpl<MOUSE_IMPL_PARAMS>::
-    MouseImpl(parent_type* a_parent,
-    const mouse_param_type& a_params)
+    MouseImpl(parent_type& a_parent,
+              const mouse_param_type& a_params)
     : MouseImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
     , m_mouse(TLOC_NULL)
@@ -135,8 +135,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     GetClientRect(m_windowPtr, &rect);
     parent_type::abs_value_type width  = rect.right - rect.left;
     parent_type::abs_value_type height = rect.bottom - rect.top;
-    m_parent->SetClampX(parent_type::abs_range_type(0, width));
-    m_parent->SetClampY(parent_type::abs_range_type(0, height));
+    m_parent.SetClampX(parent_type::abs_range_type(0, width));
+    m_parent.SetClampY(parent_type::abs_range_type(0, height));
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -208,11 +208,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-        { m_parent->SendOnButtonPress(m_currentState, code); }
+        { m_parent.SendOnButtonPress(m_currentState, code); }
         else
         {
           m_currentState.m_buttonCode ^= code;
-          m_parent->SendOnButtonRelease(m_currentState, code);
+          m_parent.SendOnButtonRelease(m_currentState, code);
         }
       }
       else
@@ -262,10 +262,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
       // Clamp the values
-      if (m_parent->IsClamped())
-      { m_parent->Clamp(m_currentState); }
+      if (m_parent.IsClamped())
+      { m_parent.Clamp(m_currentState); }
 
-      m_parent->SendOnMouseMove(m_currentState);
+      m_parent.SendOnMouseMove(m_currentState);
     }
   }
 
@@ -324,8 +324,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode |= MouseEvent::button8;
 
     // Clamp the values
-    if (m_parent->IsClamped())
-    { m_parent->Clamp(m_currentState); }
+    if (m_parent.IsClamped())
+    { m_parent.Clamp(m_currentState); }
   }
 
   template <MOUSE_IMPL_TEMP>

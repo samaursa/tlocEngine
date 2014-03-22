@@ -9,67 +9,58 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 #include "tlocVirtualStackObject.h"
 
 namespace tloc { namespace core { namespace smart_ptr {
 
   // ///////////////////////////////////////////////////////////////////////
-  // VirtualStackObject_T<>
+  // VirtualStackObjectBase_TI<>
 
-#define TLOC_VIRTUAL_STACK_OBJECT_TEMPS   typename T, typename T_BuildConfig
-#define TLOC_VIRTUAL_STACK_OBJECT_PARAMS  T, T_BuildConfig
-#define TLOC_VIRTUAL_STACK_OBJECT_TYPE    typename VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>
+#define TLOC_VIRTUAL_STACK_OBJECT_TEMPS   typename T, typename T_CopyCtor, typename T_DefCtor, typename T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_PARAMS  T, T_CopyCtor, T_DefCtor, T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    VirtualStackObject()
-    : m_value()
-    , m_valuePtr(&m_value)
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI()
+    : m_value(new value_type())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    VirtualStackObject(const value_type& a_other)
-    : m_value(a_other)
-    , m_valuePtr(&m_value)
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI(const value_type& a_other)
+    : m_value(new value_type(a_other))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    VirtualStackObject(const this_type& a_other)
-    : m_value(a_other.m_value)
-    , m_valuePtr(&m_value)
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI(const this_type& a_other)
+    : m_value(new value_type(*a_other.m_value))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    ~VirtualStackObject()
-  {
-    TLOC_ASSERT_LOW_LEVEL(m_valuePtr.unique(),
-      "This object appears to be still in use");
-
-    // this ensures that no checks are performed after m_value is automatically
-    // deleted
-    m_valuePtr.reset();
-  }
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     operator=(this_type a_other)
   {
-    a_other.swap(*this);
+    swap(a_other);
     return *this;
   }
 
@@ -77,214 +68,234 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::this_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator=(const value_type& a_newValue)
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator=(const value_type& a_other)
   {
-    this_type(a_newValue).swap(*this);
+    this_type temp(a_other);
+    swap(temp);
     return *this;
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator value_type&()
-  { return m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator value_type const&() const
-  { return m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_TYPE::ptr_type
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    get()
-  { return m_valuePtr; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::ptr_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    get() const
-  { return m_valuePtr; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator==(const this_type& a_other)
-  { return m_value == a_other.m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator==(const value_type& a_other)
-  { return m_value == a_other; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator!=(const this_type& a_other)
-  { return m_value != a_other.m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    operator!=(const value_type& a_other)
-  { return m_value != a_other; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   void
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     swap(this_type& a_other)
   {
     using core::swap;
 
     swap(m_value, a_other.m_value);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator*()
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator*() const
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator->()
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator->() const
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    get()
+  { return pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    get() const
+  { return const_pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return m_value.get() == a_other.m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return m_value.get() < a_other.m_value.get(); }
 
   // ///////////////////////////////////////////////////////////////////////
-  // VirtualStackObject_T<Release>
+  // VirtualStackObjectBase_TI<>
 
-#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS   typename T
-#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS  T, core_cfg::p_build_config::Release
-#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE    typename VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS   typename T, typename T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS  T, p_virtual_stack_object::copy_ctor::NotAvail, p_virtual_stack_object::default_ctor::Available, T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    VirtualStackObject()
-    : m_value()
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    VirtualStackObjectBase_TI()
+    : m_value(new value_type())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    VirtualStackObject(const value_type& a_other)
-    : m_value(a_other)
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    ~VirtualStackObjectBase_TI()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    VirtualStackObject(const this_type& a_other)
-    : m_value(a_other.m_value)
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator*()
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator*() const
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator->()
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator->() const
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    get()
+  { return pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    get() const
+  { return const_pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return m_value.get() == a_other.m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return m_value.get() < a_other.m_value.get(); }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS   typename T, typename T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS  T, p_virtual_stack_object::copy_ctor::Available, p_virtual_stack_object::default_ctor::NotAvail, T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(const value_type& a_other)
+    : m_value(new value_type(a_other))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    ~VirtualStackObject()
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(const this_type& a_other)
+    : m_value(new value_type(*a_other.m_value))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     operator=(this_type a_other)
   {
-    a_other.swap(*this);
+    swap(a_other);
     return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator=(const value_type& a_newValue)
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator=(const value_type& a_other)
   {
-    this_type(a_newValue).swap(*this);
+    this_type temp(a_other);
+    swap(temp);
     return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator value_type&()
-  { return m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator value_type const&() const
-  { return m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::ptr_type
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    get()
-  { return ptr_type(&m_value); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::ptr_type&
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    get() const
-  { return ptr_type(&m_value); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator==(const this_type& a_other)
-  { return m_value == a_other.m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator==(const value_type& a_other)
-  { return m_value == a_other; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator!=(const this_type& a_other)
-  { return m_value != a_other.m_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  bool
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    operator!=(const value_type& a_other)
-  { return m_value != a_other; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
   void
-    VirtualStackObject<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     swap(this_type& a_other)
   {
     using core::swap;
@@ -292,6 +303,601 @@ namespace tloc { namespace core { namespace smart_ptr {
     swap(m_value, a_other.m_value);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator*()
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator*() const
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator->()
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator->() const
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    get()
+  { return pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    get() const
+  { return const_pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS   typename T, typename T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS  T, p_virtual_stack_object::copy_ctor::NotAvail, p_virtual_stack_object::default_ctor::NotAvail, T_BuildConfig
+#define TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator*()
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator*() const
+  { return *m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator->()
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator->() const
+  { return m_value.get(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    get()
+  { return pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    get() const
+  { return const_pointer(m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // ///////////////////////////////////////////////////////////////////////
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<Release>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS   typename T
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS  T, p_virtual_stack_object::copy_ctor::Available, p_virtual_stack_object::default_ctor::Available, core_cfg::p_build_config::Release
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI(const value_type& a_other)
+    : m_value(a_other)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI(const this_type& a_other)
+    : m_value(a_other.m_value)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator=(this_type a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator=(const value_type& a_other)
+  {
+    this_type temp(a_other);
+    swap(temp);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  void
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    swap(m_value, a_other.m_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator*()
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator*() const
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator->() const
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    get()
+  { return pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    get() const
+  { return const_pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<Release>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS   typename T
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS  T, p_virtual_stack_object::copy_ctor::NotAvail, p_virtual_stack_object::default_ctor::Available, core_cfg::p_build_config::Release
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator*()
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator*() const
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator->() const
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    get()
+  { return pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    get() const
+  { return const_pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS   typename T
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS  T, p_virtual_stack_object::copy_ctor::Available, p_virtual_stack_object::default_ctor::NotAvail, core_cfg::p_build_config::Release
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(const value_type& a_other)
+    : m_value(a_other)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(const this_type& a_other)
+    : m_value(a_other.m_value)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator*()
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator*() const
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator=(this_type a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::this_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator=(const value_type& a_other)
+  {
+    this_type temp(a_other);
+    swap(temp);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  void
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    swap(m_value, a_other.m_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator->() const
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    get()
+  { return pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    get() const
+  { return const_pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VirtualStackObjectBase_TI<>
+
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS   typename T
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS  T, p_virtual_stack_object::copy_ctor::NotAvail, p_virtual_stack_object::default_ctor::NotAvail, core_cfg::p_build_config::Release
+#define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    ~VirtualStackObjectBase_TI()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator*()
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  const TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::value_type&
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator*() const
+  { return m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator->()
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_value_type_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator->() const
+  { return &m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    get()
+  { return pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TYPE::const_pointer
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    get() const
+  { return const_pointer(&m_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator==(const this_type& a_other) const
+  { return &m_value == &a_other.m_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_TEMPS>
+  bool
+    VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_COPY_NO_DEFAULT_PARAMS>::
+    operator<(const this_type& a_other) const
+  { return &m_value < &a_other.m_value; }
+
+
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
+    tloc::core_sptr::p_virtual_stack_object::copy_ctor::Available,\
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
+    tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail,\
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::Available>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(_type_)\
+  template class tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
+    tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail,\
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>
 
 #endif

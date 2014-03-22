@@ -280,12 +280,12 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->SetValue(
+        (*memPool.GetNext())->SetValue(
           my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
@@ -298,9 +298,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetValue()->x != counter &&
-          itr->GetValue()->y != counter + 1 &&
-          itr->GetValue()->z != counter + 2)
+        if ( (*(*itr)->GetValue())->x != counter &&
+          (*(*itr)->GetValue())->y != counter + 1 &&
+          (*(*itr)->GetValue())->z != counter + 2)
         {
           testPassed = false;
           break;
@@ -438,39 +438,45 @@ namespace TestingSharedPtr
   {
     using namespace smart_ptr::priv;
 
-    {
-      derived* d1 = new derived();
-      derived* d2 = new derived();
-      derived* d3 = new derived();
+    derived* d1 = new derived();
+    derived* d2 = new derived();
+    derived* d3 = new derived();
 
-      SharedPtr<derived> derPtr(d1);
-      SharedPtr<derived> derPtrS(derPtr);
+    SharedPtr<derived> derPtr(d1);
+    SharedPtr<derived> derPtrS(derPtr);
 
-      // This SHOULD fail
-      // TODO: Turn this into a real test once we have a throwing assertion
-      // SharedPtr<derived> derPtrSS(d1);
+    // This SHOULD fail
+    // TODO: Turn this into a real test once we have a throwing assertion
+    // SharedPtr<derived> derPtrSS(d1);
 
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
-      CHECK(Unsafe_IsPtrTracked( (void*)d1));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d3));
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
 
-      derPtrS.reset();
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
 
-      derPtr.reset();
-      CHECK(Unsafe_GetPtrTrackedSize() == 0);
+    // derPtrS and derPtr are the same SharedPtr essentially and count
+    // as one pointer reference
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
 
-      derPtr.reset(d2);
-      SharedPtr<derived> derPtr2(d3);
-      CHECK(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK(Unsafe_IsPtrTracked( (void*)d3));
+    derPtrS.reset();
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
 
-      CHECK(Unsafe_GetPtrTrackedSize() == 2);
-    }
+    derPtr.reset();
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
-    CHECK(Unsafe_GetPtrTrackedSize() == 0);
+    derPtr.reset(d2);
+    SharedPtr<derived> derPtr2(d3);
+    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 1);
+
+    delete d1;
+    delete d2;
+    delete d3;
   }
 
   void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
@@ -548,4 +554,12 @@ namespace TestingSharedPtr
     ConstTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
   }
 
+  TEST_CASE("core/smart_ptr/shared_ptr/GetUseCount", "")
+  {
+    SharedPtr<tl_int> sp;
+    CHECK(GetUseCount(sp) == 0);
+
+    sp.reset(new tl_int(10));
+    CHECK(GetUseCount(sp) == 1);
+  }
 }

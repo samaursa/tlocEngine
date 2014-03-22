@@ -1,6 +1,5 @@
 #include "tlocTextureObject.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -116,7 +115,7 @@ namespace tloc { namespace graphics { namespace gl {
 #if !defined(GL_STENCIL_INDEX) && defined(GL_STENCIL_INDEX8)
 #define GL_STENCIL_INDEX                            GL_STENCIL_INDEX8
 #endif
-    
+
     using namespace wrap_technique;
     using namespace filter;
     using namespace format;
@@ -310,6 +309,9 @@ namespace tloc { namespace graphics { namespace gl {
 //------------------------------------------------------------------------
 // Explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureObject);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObject);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject);

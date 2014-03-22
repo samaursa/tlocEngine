@@ -9,33 +9,36 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::ComponentPoolManager;
 
   using gfx_cs::scene_node_sptr;
+  using gfx_cs::scene_node_vptr;
+
   using math_cs::transform_sptr;
+  using math_cs::transform_vptr;
   using math_cs::Transform;
 
   // ///////////////////////////////////////////////////////////////////////
   // SceneNode
 
-  SceneNode::entity_type*
+  SceneNode::entity_ptr
     SceneNode::
     Create()
   {
-    Entity* ent = m_entMgr->CreateEntity();
+    entity_ptr ent = m_entMgr->CreateEntity();
 
     using namespace math_cs::components;
 
     // Create the transform component (and the transform pool if necessary)
-    typedef math_cs::transform_f32_sptr_pool  t_pool;
-    math_cs::transform_f32_sptr_pool_sptr     tPool;
+    typedef math_cs::transform_f32_pool         t_pool;
+    math_cs::transform_f32_pool_vptr            tPool;
 
     if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
     else
-    { tPool = m_compPoolMgr->GetPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->SetValue(transform_sptr(new Transform()) );
+    (*itrTransform)->SetValue(Transform() );
 
-    m_entMgr->InsertComponent(ent, itrTransform->GetValue().get() );
+    m_entMgr->InsertComponent(ent, (*itrTransform)->GetValue() );
 
     // Add the SceneNode component
     Add(ent);
@@ -47,28 +50,28 @@ namespace tloc { namespace prefab { namespace graphics {
 
   SceneNode::this_type&
     SceneNode::
-    Add(entity_type* a_ent)
+    Add(entity_ptr a_ent)
   {
     TLOC_ASSERT(a_ent->HasComponent(gfx_cs::SceneNode::k_component_type) == false,
       "Entity already has a SceneNode");
 
     using namespace gfx_cs::components;
 
-    typedef gfx_cs::scene_node_sptr_pool        scene_node_pool;
-    gfx_cs::scene_node_sptr_pool_sptr           sceneNodePool;
+    typedef gfx_cs::scene_node_pool             scene_node_pool;
+    gfx_cs::scene_node_pool_vptr                sceneNodePool;
 
     if (m_compPoolMgr->Exists(scene_node) == false)
-    { sceneNodePool = m_compPoolMgr->CreateNewPool<scene_node_sptr>(); }
+    { sceneNodePool = m_compPoolMgr->CreateNewPool<gfx_cs::SceneNode>(); }
     else
-    { sceneNodePool = m_compPoolMgr->GetPool<scene_node_sptr>(); }
+    { sceneNodePool = m_compPoolMgr->GetPool<gfx_cs::SceneNode>(); }
 
     scene_node_pool::iterator itrSceneNode = sceneNodePool->GetNext();
-    itrSceneNode->SetValue(scene_node_sptr(new gfx_cs::SceneNode(a_ent)) );
+    (*itrSceneNode)->SetValue(gfx_cs::SceneNode(a_ent) );
 
     if (m_parent)
-    { m_parent->AddChild(itrSceneNode->GetValue().get()); }
+    { m_parent->AddChild( (*itrSceneNode)->GetValue() ); }
 
-    m_entMgr->InsertComponent(a_ent, itrSceneNode->GetValue().get());
+    m_entMgr->InsertComponent(a_ent, (*itrSceneNode)->GetValue() );
 
     return *this;
   }

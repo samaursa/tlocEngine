@@ -11,27 +11,6 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace
-  {
-    template <typename T_Iterator, typename T_BuildConfig>
-    void DoAssertElementsNotInUse(T_Iterator a_begin, T_Iterator a_end,
-                                  T_BuildConfig)
-    {
-      for (; a_begin != a_end; ++a_begin)
-      {
-        // User count should be <= 1 (i.e. we are the only ones with a reference
-        // to the pointer
-        TLOC_ASSERT(a_begin->GetValue().use_count() <= 1,
-                    "Element still in use!");
-      }
-    }
-
-    template <typename T_Iterator>
-    void DoAssertElementsNotInUse(T_Iterator, T_Iterator,
-                                  configs::p_build_config::Release)
-    { /* Intentioanlly Empty */ }
-  }
-
 #define COMPONENT_POOL_TEMPS  typename T_Component
 #define COMPONENT_POOL_PARAMS T_Component
 #define COMPONENT_POOL_TYPE   typename ComponentPool_TI<COMPONENT_POOL_PARAMS>
@@ -44,15 +23,18 @@ namespace tloc { namespace core { namespace component_system {
   template <COMPONENT_POOL_TEMPS>
   ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     ~ComponentPool_TI()
-  {
-    DoAssertElementsNotInUse(begin(), end(),
-                             configs::BuildConfig::GetBuildConfigType());
-  }
+  { }
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     GetNext()
   { return m_pool.GetNext(); }
+
+  template <COMPONENT_POOL_TEMPS>
+  COMPONENT_POOL_TYPE::final_value_type&
+    ComponentPool_TI<COMPONENT_POOL_PARAMS>::
+    GetNextValue()
+  { return m_pool.GetNextValue(); }
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
@@ -83,7 +65,7 @@ namespace tloc { namespace core { namespace component_system {
 
     for (; itr != itrEnd; ++itr)
     {
-      if (itr->GetValue().use_count() == 1)
+      if ( (*itr)->GetValue().use_count() == 1)
       {
         m_pool.RecycleElement(itr);
       }
@@ -103,6 +85,7 @@ namespace tloc { namespace core { namespace component_system {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
 template class tloc::core_cs::ComponentPool_TI<_type_>;\
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(_type_);\
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
 
 #endif

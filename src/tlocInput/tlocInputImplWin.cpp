@@ -119,7 +119,7 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
-    InputManagerImpl(parent_type* a_parent,
+    InputManagerImpl(parent_type& a_parent,
                      param_type a_params)
                      : InputManagerImplBase(a_parent, a_params)
                      , m_directInput(TLOC_NULL)

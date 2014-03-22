@@ -53,9 +53,7 @@ namespace tloc { namespace input { namespace priv {
     typedef typename parent_type::size_type           size_type;
     typedef typename parent_type::input_type          input_type;
 
-    InputManagerImpl(parent_type* a_parent,
-                     param_type a_params);
-
+    InputManagerImpl(parent_type& a_parent, param_type a_params);
     ~InputManagerImpl();
 
     ///-------------------------------------------------------------------------

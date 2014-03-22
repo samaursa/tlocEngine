@@ -130,123 +130,163 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
+    // stores all uniforms to keep 1 reference alive at all times
+    gl::uniform_sptr_cont uniCont;
+
     shader_op_ptr so(new gl::ShaderOperator());
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
       uniform->SetValueAs(f32(5.0f));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
       CHECK_FALSE(so->IsUniformsCached());
+
+      gl::ShaderOperator::uniform_iterator itr =
+        core::find_if(so->begin_uniforms(), so->end_uniforms(),
+          gl::algos::shader_operator::compare::UniformName("u_float"));
+
+      REQUIRE(itr != so->end_uniforms());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
       uniform->SetValueAs(Vec2f32(0.1f, 0.2f));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
       uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
       uniform->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
       uniform->SetValueAs(s32(5));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
       uniform->SetValueAs(Tuple2s32(2));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
       uniform->SetValueAs(Tuple3s32(3));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
       uniform->SetValueAs(Tuple4s32(4));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
       uniform->SetValueAs(u32(5));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
       uniform->SetValueAs(Tuple2u32(2));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
       uniform->SetValueAs(Tuple3u32(3));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
       uniform->SetValueAs(Tuple4u32(4));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
 #endif
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat2");
       uniform->SetValueAs(Mat2f32(1, 0,
                                   0, 1));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat3");
       uniform->SetValueAs(Mat3f32(1, 0, 0,
                                   0, 1, 0,
                                   0, 0, 1));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat4");
       uniform->SetValueAs(Mat4f32(1, 0, 0, 0,
                                   0, 1, 0, 0,
                                   0, 0, 1, 0,
                                   0, 0, 0, 1));
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
 
     // Copy the operator
@@ -296,11 +336,19 @@ namespace TestingShaderOperator
     typedef shader_op_ptr::value_type::size_type size_type;
     const size_type numUniforms = so->GetNumberOfUniforms();
 
-    // Removing uniforms does not affect cache
-    so->RemoveUniform(so->begin_uniforms()->first);
+    // Note that removing uniforms does not affect cache
+    gl::ShaderOperator::uniform_iterator uniItr =
+      core::find_if(so->begin_uniforms(), so->end_uniforms(),
+        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+
+    so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
 
-    so->RemoveUniform(so->begin_uniforms()->first);
+    uniItr =
+      core::find_if(so->begin_uniforms(), so->end_uniforms(),
+        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+
+    so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
 
     sp.Enable();
@@ -397,118 +445,152 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
+    // stores all uniforms to keep 1 reference alive at all times
+    gl::uniform_sptr_cont uniCont;
+
     shader_op_ptr so(new gl::ShaderOperator());
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
 
       Array<f32>  floats(2, 2.0f);
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
+
+      gl::ShaderOperator::uniform_iterator itr =
+        core::find_if(so->begin_uniforms(), so->end_uniforms(),
+          gl::algos::shader_operator::compare::UniformName("u_float"));
+
+      REQUIRE(itr != so->end_uniforms());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
 
       Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
 
       Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
 
       Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       uniform->SetValueAs(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
 
       Array<s32>  ints(2, 1);
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
 
       Array<Tuple2s32>  ints(2, Tuple2s32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
 
       Array<Tuple3s32>  ints(2, Tuple3s32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
 
       Array<Tuple4s32>  ints(2, Tuple4s32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
 
       Array<u32>  ints(2, 1);
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
 
       Array<Tuple2u32>  ints(2, Tuple2u32(2));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
 
       Array<Tuple3u32>  ints(2, Tuple3u32(3));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
     {
-      uniform_ptr_type    uniform(new gl::Uniform());
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
 
       Array<Tuple4u32>  ints(2, Tuple4u32(4));
       uniform->SetValueAs(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddUniform(uniform);
+      so->AddUniform(*uniform);
     }
 #endif
 
@@ -596,94 +678,109 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
+    // stores all uniforms to keep 1 reference alive at all times
+    gl::attribute_sptr_cont attribCont;
+
     shader_op_ptr so(new gl::ShaderOperator());
 
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_float");
       attribute->SetValueAs(f32(5.0f));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
       CHECK_FALSE(so->IsAttributesCached());
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec2");
       attribute->SetValueAs(Vec2f32(0.1f, 0.2f));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec3");
       attribute->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec4");
       attribute->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 #if defined (TLOC_OS_WIN)
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_int");
       attribute->SetValueAs(s32(5));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec2");
       attribute->SetValueAs(Tuple2s32(2));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec3");
       attribute->SetValueAs(Tuple3s32(3));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec4");
       attribute->SetValueAs(Tuple4s32(4));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uint");
       attribute->SetValueAs(u32(5));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec2");
       attribute->SetValueAs(Tuple2u32(2));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec3");
       attribute->SetValueAs(Tuple3u32(3));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec4");
       attribute->SetValueAs(Tuple4u32(4));
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 #endif
 
@@ -734,11 +831,19 @@ namespace TestingShaderOperator
     typedef shader_op_ptr::value_type::size_type size_type;
     const size_type numAttributes = so->GetNumberOfAttributes();
 
-    // Removing uniforms does not affect cache
-    so->RemoveAttribute(so->begin_attributes()->first);
+    gl::ShaderOperator::attribute_iterator attrItr =
+      core::find_if(so->begin_attributes(), so->end_attributes(),
+        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+
+    // Note that removing uniforms does not affect cache
+    so->RemoveAttribute(attrItr);
     CHECK(so->GetNumberOfAttributes() == numAttributes - 1);
 
-    so->RemoveAttribute(so->begin_attributes()->first);
+    attrItr =
+      core::find_if(so->begin_attributes(), so->end_attributes(),
+        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+
+    so->RemoveAttribute(attrItr);
     CHECK(so->GetNumberOfAttributes() == numAttributes - 2);
 
     sp.Enable();
@@ -827,117 +932,139 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
+    // stores all uniforms to keep 1 reference alive at all times
+    gl::attribute_sptr_cont attribCont;
+
     shader_op_ptr so(new gl::ShaderOperator());
 
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_float");
 
       Array<f32>  floats(2, 2.0f);
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
+
+      gl::ShaderOperator::attribute_iterator itr =
+        core::find_if(so->begin_attributes(), so->end_attributes(),
+          gl::algos::shader_operator::compare::AttributeName("u_float"));
+
+      REQUIRE(itr != so->end_attributes());
+      CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec2");
 
       Array<Vec2f32>  floats(2, Vec2f32(5.0f, 6.0f));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec3");
 
       Array<Vec3f32>  floats(2, Vec3f32(1, 2, 3));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_vec4");
 
       Array<Vec4f32>  floats(2, Vec4f32(1, 2, 3, 4));
       attribute->SetVertexArray(floats, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 #if defined (TLOC_OS_WIN)
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_int");
 
       Array<s32>  ints(2, 1);
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec2");
 
       Array<Tuple2s32>  ints(2, Tuple2s32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec3");
 
       Array<Tuple3s32>  ints(2, Tuple3s32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_ivec4");
 
       Array<Tuple4s32>  ints(2, Tuple4s32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uint");
 
       Array<u32>  ints(2, 1);
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec2");
 
       Array<Tuple2u32>  ints(2, Tuple2u32(2));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec3");
 
       Array<Tuple3u32>  ints(2, Tuple3u32(3));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
     {
-      attribute_ptr_type attribute(new gl::Attribute());
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
       attribute->SetName("u_uivec4");
 
       Array<Tuple4u32>  ints(2, Tuple4u32(4));
       attribute->SetVertexArray(ints, gl::p_shader_variable_ti::SwapArray());
 
-      so->AddAttribute(attribute);
+      so->AddAttribute(*attribute);
     }
 #endif
 

@@ -1,6 +1,5 @@
 #include "tlocTextureAnimator.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -150,22 +149,22 @@ namespace tloc { namespace graphics { namespace component_system {
     m_coordSets[m_currentSet].m_flags.Mark(k_spriteSetChanged);
   }
 
-  const bool
+  bool
     TextureAnimator::
     IsLooping() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_looping); }
 
-  const bool
+  bool
     TextureAnimator::
     IsPaused() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_paused); }
 
-  const bool
+  bool
     TextureAnimator::
     IsStopped() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_stopped); }
 
-  const bool
+  bool
     TextureAnimator::
     IsLastFrame() const
   {
@@ -178,12 +177,12 @@ namespace tloc { namespace graphics { namespace component_system {
     return currSet == totalSets - 1;
   }
 
-  const bool
+  bool
     TextureAnimator::
     IsSpriteSeqChanged() const
   { return m_coordSets[m_currentSet].m_flags.IsMarked(k_spriteSetChanged); }
 
-  const TextureAnimator::size_type
+  TextureAnimator::size_type
     TextureAnimator::
     GetFPS() const
   {
@@ -238,8 +237,11 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimator);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(texture_animator_sptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureAnimator);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TextureAnimator);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TextureAnimator);

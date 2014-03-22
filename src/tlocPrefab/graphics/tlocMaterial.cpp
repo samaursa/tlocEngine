@@ -14,12 +14,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Material::entity_type*
+  Material::entity_ptr
     Material::
     Create(const core_io::Path& a_vertexShader,
            const core_io::Path& a_fragmentShader)
   {
-    Entity* ent = m_entMgr->CreateEntity();
+    entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertexShader, a_fragmentShader);
 
     return ent;
@@ -27,12 +27,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Material::entity_type*
+  Material::entity_ptr
     Material::
     Create(BufferArg a_vertexShader,
            BufferArg a_fragmentShader)
   {
-    Entity* ent = m_entMgr->CreateEntity();
+    entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertexShader, a_fragmentShader);
 
     return ent;
@@ -42,7 +42,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Material::
-    Add(entity_type* a_ent,
+    Add(entity_ptr a_ent,
         const core_io::Path& a_vertexShader,
         const core_io::Path& a_fragmentShader)
   {
@@ -72,49 +72,48 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Material::
-    Add(entity_type* a_ent, BufferArg a_vertexShader, BufferArg a_fragmentShader)
+    Add(entity_ptr a_ent, BufferArg a_vertexShader, BufferArg a_fragmentShader)
   {
     using namespace gfx_cs::components;
 
     typedef ComponentPoolManager              pool_mgr;
-    typedef gfx_cs::material_sptr_pool        mat_pool;
+    typedef gfx_cs::material_pool             mat_pool;
 
-    gfx_cs::material_sptr_pool_sptr matPool;
+    gfx_cs::material_pool_vptr                matPool;
 
     if (m_compPoolMgr->Exists(material) == false)
-    { matPool = m_compPoolMgr->CreateNewPool<material_sptr>(); }
+    { matPool = m_compPoolMgr->CreateNewPool<gfx_cs::Material>(); }
     else
-    { matPool = m_compPoolMgr->GetPool<material_sptr>(); }
+    { matPool = m_compPoolMgr->GetPool<gfx_cs::Material>(); }
 
     mat_pool::iterator  itrMat = matPool->GetNext();
-    itrMat->SetValue(material_sptr(new gfx_cs::Material()) );
+    (*itrMat)->SetValue(gfx_cs::Material() );
 
-    gfx_cs::material_sptr mat = itrMat->GetValue();
+    gfx_cs::material_vptr mat = (*itrMat)->GetValue();
 
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);
 
-    gfx_gl::shader_operator_sptr so =
-      gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());
+    gfx_gl::shader_operator_vso so;
 
     for (uniform_itr itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
-    { so->AddUniform(*itr); }
+    { so->AddUniform(**itr); }
 
     for (attribute_itr itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
-    { so->AddAttribute(*itr); }
+    { so->AddAttribute(**itr); }
 
-    mat->AddShaderOperator(so);
+    mat->AddShaderOperator(so.get());
 
-    m_entMgr->InsertComponent(a_ent, mat.get());
+    m_entMgr->InsertComponent(a_ent, mat);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Material&
     Material::
-    AddUniform(const uniform_sptr_type& a_uniform)
+    AddUniform(const uniform_ptr_type& a_uniform)
   {
     m_uniforms.push_back(a_uniform);
     return *this;
@@ -124,10 +123,15 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material&
     Material::
-    AddAttribute(const attribute_sptr_type& a_attribute)
+    AddAttribute(const attribute_ptr_type& a_attribute)
   {
     m_attributes.push_back(a_attribute);
     return *this;
   }
 
 };};};
+
+#include <tlocCore/containers/tlocArray.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::uniform_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::attribute_ptr_type);

@@ -31,8 +31,6 @@ namespace tloc { namespace graphics { namespace gl {
     enum flags
     {
       k_shaderAttached = 0,
-      k_shaderLinked,
-      k_shaderEnabled,
       k_uniformInfoLoaded,
       k_attributeInfoLoaded,
       k_count
@@ -198,19 +196,20 @@ namespace tloc { namespace graphics { namespace gl {
       return TLOC_ERROR(error::error_shader_program_link);
     }
 
-    m_flags.Mark(k_shaderLinked);
     return ErrorSuccess;
   }
 
   bool ShaderProgram::IsLinked() const
   {
-    return m_flags[k_shaderLinked];
+    GLint result;
+    glGetProgramiv(GetHandle(), GL_LINK_STATUS, &result);
+
+    return result == GL_TRUE ? true : false;
   }
 
   void ShaderProgram::LoadUniformInfo()
   {
-    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
-                "Shader not linked! - Did you forget to call Link()?");
+    TLOC_ASSERT(IsLinked(), "Shader not linked! - Did you forget to call Link()?");
 
     if (m_flags.ReturnAndMark(k_uniformInfoLoaded) == false)
     { DoGetUniformInfo(*this, m_uniformInfo); }
@@ -218,8 +217,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderProgram::LoadAttributeInfo()
   {
-    TLOC_ASSERT(m_flags.IsMarked(k_shaderLinked),
-                "Shader not linked! - Did you forget to call Link()?");
+    TLOC_ASSERT(IsLinked(), "Shader not linked! - Did you forget to call Link()?");
 
     if (m_flags.ReturnAndMark(k_attributeInfoLoaded) == false)
     { DoGetAttributeInfo(*this, m_attributeInfo); }

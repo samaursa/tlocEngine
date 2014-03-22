@@ -214,7 +214,7 @@ namespace TestingVirtualStackObject
   }
 
   template <typename T_Ptr>
-  void CheckPointer(const T_Ptr& , void* , core_cfg::p_build_config::Release)
+  void CheckPointer(const T_Ptr& , bool , core_cfg::p_build_config::Release)
   { }
 
 

@@ -7,7 +7,6 @@
 
 #include "tlocSharedPtr.h"
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>

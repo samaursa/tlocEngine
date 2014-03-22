@@ -28,7 +28,8 @@ namespace tloc { namespace graphics { namespace gl {
     struct ActiveUniformMaxLength  { static const tl_int s_glStatusName; };
   };
 
-  class ShaderProgram : public Object_T<ShaderProgram, p_object::WithError>
+  class ShaderProgram
+    : public Object_T<ShaderProgram, p_object::WithError>
   {
   public:
     template <typename T> friend class ObjectRefCounted;
@@ -44,12 +45,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
 
-    typedef tl_size                         size_type;
-    typedef s32                             gl_result_type;
+    typedef tl_size                                       size_type;
+    typedef s32                                           gl_result_type;
 
-    typedef ShaderVariableInfo              glsl_var_info_type;
+    typedef ShaderVariableInfo                            glsl_var_info_type;
     typedef core::containers::tl_array
-            <ShaderVariableInfo>::type      glsl_var_info_cont_type;
+            <ShaderVariableInfo>::type                    glsl_var_info_cont_type;
 
   public:
     ShaderProgram();
@@ -83,9 +84,9 @@ namespace tloc { namespace graphics { namespace gl {
     gl_result_type  DoGet() const;
 
   private:
-    core::utils::Checkpoints         m_flags;
     glsl_var_info_cont_type          m_attributeInfo;
     glsl_var_info_cont_type          m_uniformInfo;
+    core::utils::Checkpoints         m_flags;
 
     s32                              m_currTextureUnit;
 

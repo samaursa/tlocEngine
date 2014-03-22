@@ -26,6 +26,8 @@ namespace tloc { namespace graphics { namespace gl {
     InitializePlatform();
   bool
     IsPlatformInitialized();
+  void
+    AssertOpenGLContextExists();
 
   // ///////////////////////////////////////////////////////////////////////
   // OpenGL get functions (safely wrapped)
@@ -64,7 +66,7 @@ namespace tloc { namespace graphics { namespace gl {
       typedef gl_int            value_type;
       static const value_type   s_glParamName;
     };
-    
+
 #if defined (TLOC_OS_WIN)
     struct NumExtensions
     {
@@ -83,6 +85,7 @@ namespace tloc { namespace graphics { namespace gl {
   typename T_GlPName::value_type
     Get()
   {
+    AssertOpenGLContextExists();
     typedef typename T_GlPName::value_type  ret_type;
 
     ret_type toRet;

@@ -257,10 +257,9 @@ namespace TestingUniquePtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
-
     derived* d1 = new derived();
     derived* d2 = new derived();
     derived* d3 = new derived();
@@ -292,12 +291,12 @@ namespace TestingUniquePtr
     delete d3;
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/unique_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
 
   TEST_CASE("core/smart_ptr/unique_ptr/GetUseCount", "")

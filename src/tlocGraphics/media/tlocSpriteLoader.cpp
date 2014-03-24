@@ -397,39 +397,13 @@ namespace tloc { namespace graphics { namespace media {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  struct nameMatch
-  {
-    nameMatch(BufferArg a_name)
-      : m_name (a_name)
-    { }
-
-    bool operator()(const SpriteInfo& a_si)
-    {
-      typedef SpriteInfo::string_type::size_type      size_type;
-
-      const size_type siNameLength = a_si.m_name.length();
-      const size_type compNameLength = core_str::StrLen(m_name);
-
-      if (siNameLength < compNameLength)
-      { return false; }
-
-      if (a_si.m_name.compare(0, compNameLength, m_name) == 0)
-      {
-        return true;
-      }
-
-      return false;
-    }
-
-    const char* m_name;
-  };
-
   template <SPRITE_LOADER_TEMPS>
   SPRITE_LOADER_TYPE::iterator
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     begin(BufferArg a_name)
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
+    return core::find_if_all(m_spriteInfo,
+                             algos::compare::sprite_info::NameBegins(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -441,7 +415,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name));
+                        algos::compare::sprite_info::NameBegins(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())
@@ -457,7 +431,8 @@ namespace tloc { namespace graphics { namespace media {
     SpriteLoader_T<SPRITE_LOADER_PARAMS>::
     begin(BufferArg a_name) const
   {
-    return core::find_if_all(m_spriteInfo, nameMatch(a_name));
+    return core::find_if_all(m_spriteInfo,
+                             algos::compare::sprite_info::NameBegins(a_name));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -469,7 +444,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     const_iterator itr =
       core::find_if_end(m_spriteInfo.begin(), m_spriteInfo.end(),
-                        nameMatch(a_name));
+                        algos::compare::sprite_info::NameBegins(a_name));
 
     // end iterator must be past-the-end, ensure that this is the case
     if (itr != m_spriteInfo.end())

@@ -447,33 +447,29 @@ namespace TestingSharedPtr
     // SharedPtr<derived> derPtrSS(d1);
 
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
 
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
 
     // derPtrS and derPtr are the same SharedPtr essentially and count
     // as one pointer reference
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
 
     derPtrS.reset();
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset();
     CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset(d2);
     SharedPtr<derived> derPtr2(d3);
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 1);
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 1);
-
-    delete d1;
-    delete d2;
-    delete d3;
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 0);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 0);
   }
 
   void DoDebugTest(core_cfg::p_build_config::Release)

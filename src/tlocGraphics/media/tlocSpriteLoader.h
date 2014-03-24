@@ -107,6 +107,59 @@ namespace tloc { namespace graphics { namespace media {
   typedef SpriteLoader_T
     <p_sprite_loader::parser::TexturePacker>     SpriteLoader_TexturePacker;
 
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace compare { namespace sprite_info {
+
+      struct Name
+      {
+        typedef SpriteInfo                    value_type;
+
+        Name(BufferArg a_nameToSearch)
+          : m_nameToSearch(a_nameToSearch)
+        { }
+
+        bool operator()(const value_type& a_other)
+        {
+          return a_other.m_name.compare(m_nameToSearch) == 0;
+        }
+
+        BufferArg m_nameToSearch;
+      };
+
+      struct NameBegins
+      {
+        typedef SpriteInfo                    value_type;
+
+        NameBegins(BufferArg a_nameToSearch)
+          : m_name (a_nameToSearch)
+        { }
+
+      // if the sprite name begins with a_nameToSearch, return true
+        bool operator()(const value_type& a_si)
+        {
+          typedef SpriteInfo::string_type::size_type      size_type;
+
+          const size_type siNameLength = a_si.m_name.length();
+          const size_type compNameLength = core_str::StrLen(m_name.GetPtr());
+
+          if (siNameLength < compNameLength)
+          { return false; }
+
+          if (a_si.m_name.compare(0, compNameLength, m_name) == 0)
+          {
+            return true;
+          }
+
+          return false;
+        }
+
+        BufferArg m_name;
+      };
+
+  };};};
+
 };};};
 
 #endif

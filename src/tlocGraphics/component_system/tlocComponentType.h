@@ -24,6 +24,8 @@ namespace tloc { namespace graphics { namespace component_system {
       camera,
       arcball,
 
+      static_text,
+
       count
     }; typedef tl_int value_type;
   };

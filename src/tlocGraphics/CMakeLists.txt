@@ -71,6 +71,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocRenderSystem.cpp
   component_system/tlocSceneGraphSystem.h
   component_system/tlocSceneGraphSystem.cpp
+  component_system/tlocStaticText.h
+  component_system/tlocStaticText.cpp
+  component_system/tlocStaticTextRenderSystem.h
+  component_system/tlocStaticTextRenderSystem.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h
@@ -94,13 +98,19 @@ set(TLOC_GRAPHICS_ERROR
   )
 
 set(TLOC_GRAPHICS_MEDIA 
+  media/tloc_media.cpp 
+  media/tloc_media.h 
+  media/tloc_media.inl.h
+  media/tlocFont.h
+  media/tlocFont.cpp
+  media/tlocFreeType.h
+  media/tlocFreeType.cpp
+  media/tlocGlyph.h
+  media/tlocGlyph.cpp
   media/tlocImage.cpp 
   media/tlocImage.h 
   media/tlocImageLoader.cpp 
   media/tlocImageLoader.h 
-  media/tloc_media.cpp 
-  media/tloc_media.h 
-  media/tloc_media.inl.h
   media/tlocObjLoader.h
   media/tlocObjLoader.cpp
   media/tlocSpriteLoader.h
@@ -226,6 +236,7 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
+  ${TLOC_DEP_PATH}/include/FreeType/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )

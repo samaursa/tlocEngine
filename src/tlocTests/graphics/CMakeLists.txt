@@ -29,6 +29,14 @@ set(TLOC_TESTS_GRAPHICS_ASSETS
 
 set(TLOC_CURRENT_EXEC_NAME tlocTestsGraphics)
 
+include_directories(
+  ${TLOC_DEP_PATH}/include/FreeType/
+  )
+
+link_directories(
+  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
+  )
+
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
   ${TLOC_TESTS_GRAPHICS}
@@ -53,6 +61,7 @@ if(MSVC)
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   glu32.lib
   OpenGL32.lib
+  freetype.lib
   )
 endif()
 

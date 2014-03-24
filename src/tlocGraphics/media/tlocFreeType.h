@@ -13,6 +13,27 @@
 
 namespace tloc { namespace graphics { namespace media { 
 
+  class FreeTypeGlyph
+  {
+    public:
+      typedef FT_Glyph                            ft_glyph_type;
+      typedef FreeTypeGlyph                       this_type;
+
+    public:
+      FreeTypeGlyph();
+      explicit FreeTypeGlyph(ft_glyph_type a_glyphToCopy);
+      FreeTypeGlyph(const this_type& a_other);
+
+      this_type& operator=(this_type a_other);
+
+      void swap(this_type& a_other);
+
+      TLOC_DECL_AND_DEF_GETTER(ft_glyph_type, GetGlyph, m_glyph);
+
+    private:
+      ft_glyph_type   m_glyph;
+  };
+
   class FreeType
     : core_bclass::InitializeAndDestroy_TI<FreeType, 
         core_bclass::p_initialize_and_destroy::OneParam>
@@ -29,18 +50,25 @@ namespace tloc { namespace graphics { namespace media {
 
     typedef FT_Library                            ft_library_type;
     typedef FT_Face                               ft_face_type;
+    typedef FT_Glyph                              ft_glyph_type;
+    typedef FT_UInt                               ft_index_type;
+    typedef FT_UShort                             ft_ushort;
+    typedef FT_ULong                              ft_ulong;
 
     typedef core_conts::Array<char8>              data_type;
 
   public:
     FreeType();
 
+    bool          SetCurrentSize(ft_ushort a_charSize) const;
+    FreeTypeGlyph LoadGlyph(ft_ulong a_charCode) const;
+
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 
   protected:
 
-    error_type  DoInitialize(const data_type& a_data);
-    error_type  DoDestroy();
+    error_type    DoInitialize(const data_type& a_data);
+    error_type    DoDestroy();
 
   private:
     ft_library_type m_library;

@@ -168,4 +168,37 @@ namespace TestingSpriteLoader
     CHECK( itr->m_dimensions == sl_tp.GetSpriteInfo()[30].m_dimensions);
     CHECK( core::distance(itr, itrEnd) == 22);
   }
+
+  TEST_CASE("Graphics/media/SpriteLoader/algorithms", "")
+  {
+    SpriteLoader_TexturePacker sl_tp;
+
+    core_io::FileIO_ReadA
+      txtFile(core_io::Path(g_texture_packer_multiple_path.c_str()) );
+
+    REQUIRE(txtFile.Open() == ErrorSuccess);
+
+    core_str::String fileContents;
+    txtFile.GetContents(fileContents);
+
+    sl_tp.Init(fileContents, gfx_t::Dimension2u(core_ds::MakeTuple(5000, 4000)) );
+
+    CHECK(sl_tp.GetSpriteInfo().size() == 842);
+
+    SpriteLoader_TexturePacker::iterator itr;
+
+    itr = core::find_if(sl_tp.begin(), sl_tp.end(),
+                        algos::compare::sprite_info::Name("Wake_Happy_01.png"));
+
+    CHECK(itr->m_name.compare("Wake_Happy_01.png") == 0);
+    CHECK_TUP2S(itr->m_startingPos, 0, 0);
+    CHECK_TUP2S(itr->m_dimensions, 200, 200);
+
+    itr = core::find_if(sl_tp.begin(), sl_tp.end(),
+                        algos::compare::sprite_info::NameBegins("idle"));
+
+    CHECK(itr->m_name.compare("idle_angry1_01.png") == 0);
+    CHECK_TUP2S(itr->m_startingPos, 1600, 0);
+    CHECK_TUP2S(itr->m_dimensions, 200, 200);
+  }
 };

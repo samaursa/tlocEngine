@@ -269,6 +269,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       if (m_deviceContext && m_OpenGLContext && (wglGetCurrentContext() != m_OpenGLContext))
       {
+        priv::SetCurrentActiveWindow(m_parentWindow);
         wglMakeCurrent(m_deviceContext, m_OpenGLContext);
       }
       else
@@ -278,11 +279,17 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       if (wglGetCurrentContext() == m_OpenGLContext)
       {
+        priv::SetNonActiveWindow(m_parentWindow);
         wglMakeCurrent(TLOC_NULL, TLOC_NULL);
       }
       else
       { TLOC_LOG_GFX_WARN() << "Window already inactive"; }
     }
+  }
+
+  bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::HasValidContext() const
+  {
+    return m_OpenGLContext != TLOC_NULL;
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ProcessEvents()
@@ -612,7 +619,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     m_OpenGLContext = wglCreateContext(m_deviceContext);
     TLOC_ASSERT(m_OpenGLContext, "Failed to create OpenGL context");
 
-    SetActive(true);
+    m_parentWindow->SetActive(true);
 
     if (a_settings.GetAntiAlias() > 0)
     {
@@ -668,9 +675,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // SFML: Destroy the OpenGL context
     if (m_OpenGLContext)
     {
-      SetActive(false);
+      if (m_parentWindow->IsActive() == false)
+      { m_parentWindow->SetActive(true); }
+
       wglDeleteContext(m_OpenGLContext);
       m_OpenGLContext = TLOC_NULL;
+
+      m_parentWindow->SetActive(false);
     }
 
     if (m_deviceContext)

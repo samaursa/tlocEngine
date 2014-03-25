@@ -15,11 +15,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
   Material::Material()
     : base_type(k_component_type)
-    , m_shaderProgram(new shader_prog_ptr::value_type())
   { }
 
   Material::Material(const Material& a_other)
-    : base_type(k_component_type)
+    : base_type(a_other)
     , m_vertexProgram(a_other.m_vertexProgram)
     , m_fragmentProgram(a_other.m_fragmentProgram)
     , m_shaderProgram(a_other.m_shaderProgram)
@@ -71,9 +70,9 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   void Material::
-    SetShaderProgram(const shader_prog_ptr& a_sp)
+    SetShaderProgram(const gl::ShaderProgram& a_sp)
   {
-    m_shaderProgram = a_sp;
+    *m_shaderProgram = a_sp;
     SetUpdateRequired(true);
   }
 

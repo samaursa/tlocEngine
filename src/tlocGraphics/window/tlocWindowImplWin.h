@@ -125,6 +125,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active);
 
+    bool HasValidContext() const;
+
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync
     ///

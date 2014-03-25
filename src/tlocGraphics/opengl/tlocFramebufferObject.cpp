@@ -192,7 +192,7 @@ namespace tloc { namespace graphics { namespace gl {
   FramebufferObject::
     FramebufferObject(p_framebuffer_object::Default)
   {
-    SetHandle(0);
+    ResetHandle();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

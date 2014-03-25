@@ -43,6 +43,7 @@ namespace tloc { namespace graphics { namespace win {
   Window_T<WINDOW_PARAMS>::
     ~Window_T()
   {
+    Close();
     delete m_impl;
   }
 
@@ -214,6 +215,23 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
+  bool Window_T<WINDOW_PARAMS>::
+    IsActive() const
+  {
+    return GetCurrentActiveWindow() == this;
+  }
+
+  template <WINDOW_TEMP>
+  bool Window_T<WINDOW_PARAMS>::
+    HasValidContext() const
+  {
+    if (IsValid())
+    { return m_impl->HasValidContext(); }
+
+    return false;
+  }
+
+  template <WINDOW_TEMP>
   void Window_T<WINDOW_PARAMS>::
     SetMouseVisibility(bool a_visible)
   {
@@ -301,7 +319,9 @@ namespace tloc { namespace graphics { namespace win {
   //////////////////////////////////////////////////////////////////////////
   // Globals
 
-  Window_T<>* g_currentActiveWindow;
+  namespace {
+    Window_T<>*                   g_currentActiveWindow = nullptr;
+  }
 
   Window_T<>* GetCurrentActiveWindow()
   {

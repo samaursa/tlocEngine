@@ -3,8 +3,6 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 
@@ -434,10 +432,9 @@ namespace TestingSharedPtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
-
     derived* d1 = new derived();
     derived* d2 = new derived();
     derived* d3 = new derived();
@@ -479,12 +476,12 @@ namespace TestingSharedPtr
     delete d3;
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/shared_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
 
   struct BaseClass

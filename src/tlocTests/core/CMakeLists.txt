@@ -9,6 +9,7 @@ set(TLOC_TESTS_CORE
   tlocCheckPointsTest.cpp
   tlocComponentPoolManagerTest.cpp
   tlocContainerTraitsTest.cpp
+  tlocContainerUtilsTest.cpp
   tlocEntityManagerTest.cpp
   tlocEntityTest.cpp
   tlocErrorTest.cpp

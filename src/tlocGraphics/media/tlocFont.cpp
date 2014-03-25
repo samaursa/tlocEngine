@@ -32,15 +32,15 @@ namespace tloc { namespace graphics { namespace media {
   Font::error_type
     Font::
     DoInitialize(const data_type& a_data)
-  { 
+  {
     return m_ft->Initialize(a_data);
   }
 
   Font::error_type
     Font::
     DoDestroy()
-  { 
-    return m_ft->Destroy();
+  {
+    return ErrorSuccess;
   }
 
 };};};

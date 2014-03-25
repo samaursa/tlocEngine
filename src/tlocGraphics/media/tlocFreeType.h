@@ -11,7 +11,7 @@
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/string/tlocString.h>
 
-namespace tloc { namespace graphics { namespace media { 
+namespace tloc { namespace graphics { namespace media {
 
   class FreeTypeGlyph
   {
@@ -35,7 +35,7 @@ namespace tloc { namespace graphics { namespace media {
   };
 
   class FreeType
-    : core_bclass::InitializeAndDestroy_TI<FreeType, 
+    : core_bclass::InitializeAndDestroy_TI<FreeType,
         core_bclass::p_initialize_and_destroy::OneParam>
   {
     TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(FreeType);
@@ -43,7 +43,7 @@ namespace tloc { namespace graphics { namespace media {
   public:
     typedef FreeType                              this_type;
     typedef core_bclass::
-            InitializeAndDestroy_TI<this_type, 
+            InitializeAndDestroy_TI<this_type,
             core_bclass::p_initialize_and_destroy::
             OneParam>                             base_type;
     typedef base_type::error_type                 error_type;
@@ -69,6 +69,9 @@ namespace tloc { namespace graphics { namespace media {
 
     error_type    DoInitialize(const data_type& a_data);
     error_type    DoDestroy();
+
+  private:
+    error_type    Destroy(); // intentionally not defined
 
   private:
     ft_library_type m_library;

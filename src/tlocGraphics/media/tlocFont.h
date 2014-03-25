@@ -10,7 +10,7 @@
 namespace tloc { namespace graphics { namespace media {
 
   class Font
-    : public core_bclass::InitializeAndDestroy_TI<Font, 
+    : public core_bclass::InitializeAndDestroy_TI<Font,
               core_bclass::p_initialize_and_destroy::OneParam>
   {
     TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(Font);
@@ -18,7 +18,7 @@ namespace tloc { namespace graphics { namespace media {
   public:
     typedef Font                                          this_type;
     typedef core_bclass::
-      InitializeAndDestroy_TI<this_type, 
+      InitializeAndDestroy_TI<this_type,
       core_bclass::p_initialize_and_destroy::OneParam>    base_type;
 
     typedef core_sptr::UniquePtr<FreeType>                ft_ptr;
@@ -36,6 +36,9 @@ namespace tloc { namespace graphics { namespace media {
 
     error_type    DoInitialize(const data_type& a_data);
     error_type    DoDestroy();
+
+  private:
+    error_type    Destroy(); // intentionally not defined
 
   private:
     ft_ptr  m_ft;

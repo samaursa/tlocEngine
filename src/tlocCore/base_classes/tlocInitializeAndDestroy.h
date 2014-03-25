@@ -38,6 +38,9 @@ namespace tloc { namespace core { namespace base_classes {
     void        AssertIsInitialized() const;
     void        AssertIsDestroyed() const;
 
+    void        AssertIsNotInitialized() const;
+    void        AssertIsNotDestroyed() const;
+
     bool        IsInitialized() const;
     bool        IsDestroyed() const;
 
@@ -64,8 +67,8 @@ namespace tloc { namespace core { namespace base_classes {
   InitializeAndDestroyBase_TI<T_DerivedClass>::
     ~InitializeAndDestroyBase_TI()
   {
-    TLOC_ASSERT(IsDestroyed(),
-      "Destroy() was not called OR Destroy() was unsuccessful");
+    if (IsDestroyed() == false)
+    { Destroy(); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -75,8 +78,8 @@ namespace tloc { namespace core { namespace base_classes {
     InitializeAndDestroyBase_TI<T_DerivedClass>::
     Destroy()
   {
-    TLOC_ASSERT(IsDestroyed() == false,
-                "This class has already been destroyed once");
+    AssertIsInitialized();
+    AssertIsNotDestroyed();
 
     error_type err = static_cast<derived_type*>(this)->DoDestroy();
     if (err == ErrorSuccess)
@@ -91,9 +94,7 @@ namespace tloc { namespace core { namespace base_classes {
   void
     InitializeAndDestroyBase_TI<T_DerivedClass>::
     AssertIsInitialized() const
-  { 
-    TLOC_ASSERT(this->IsInitialized(), "Object not initialized");
-  }
+  { TLOC_ASSERT(this->IsInitialized(), "Object not initialized"); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -101,9 +102,23 @@ namespace tloc { namespace core { namespace base_classes {
   void
     InitializeAndDestroyBase_TI<T_DerivedClass>::
     AssertIsDestroyed() const
-  { 
-    TLOC_ASSERT(this->IsDestroyed(), "Object not destroyed");
-  }
+  { TLOC_ASSERT(this->IsDestroyed(), "Object not destroyed"); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DerivedClass>
+  void
+    InitializeAndDestroyBase_TI<T_DerivedClass>::
+    AssertIsNotInitialized() const
+  { TLOC_ASSERT(this->IsInitialized() == false, "Object is already initialized"); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DerivedClass>
+  void
+    InitializeAndDestroyBase_TI<T_DerivedClass>::
+    AssertIsNotDestroyed() const
+  { TLOC_ASSERT(this->IsDestroyed() == false, "Object is already destroyed"); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -124,7 +139,7 @@ namespace tloc { namespace core { namespace base_classes {
   // ///////////////////////////////////////////////////////////////////////
   // InitializeAndDestroy_TI
 
-  template <typename T_DerivedClass, 
+  template <typename T_DerivedClass,
             typename T_NumParams = p_initialize_and_destroy::NoParams>
   class InitializeAndDestroy_TI;
 
@@ -132,7 +147,7 @@ namespace tloc { namespace core { namespace base_classes {
   // InitializeAndDestroy_TI<NoParams>
 
   template <typename T_DerivedClass>
-  class InitializeAndDestroy_TI<T_DerivedClass, 
+  class InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::NoParams>
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
@@ -153,14 +168,13 @@ namespace tloc { namespace core { namespace base_classes {
   // template definitions
 
   template <typename T_DerivedClass>
-  typename InitializeAndDestroy_TI<T_DerivedClass, 
+  typename InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::NoParams>::error_type
-    InitializeAndDestroy_TI<T_DerivedClass, 
+    InitializeAndDestroy_TI<T_DerivedClass,
                             p_initialize_and_destroy::NoParams>::
     Initialize()
   {
-    TLOC_ASSERT(IsInitialized() == false,
-                "This class has already been initialized once");
+    AssertIsNotInitialized();
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize();
     if (err == ErrorSuccess)
@@ -173,7 +187,7 @@ namespace tloc { namespace core { namespace base_classes {
   // InitializeAndDestroy_TI<NoParams>
 
   template <typename T_DerivedClass>
-  class InitializeAndDestroy_TI<T_DerivedClass, 
+  class InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::OneParam>
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
@@ -196,14 +210,13 @@ namespace tloc { namespace core { namespace base_classes {
 
   template <typename T_DerivedClass>
   template <typename T>
-  typename InitializeAndDestroy_TI<T_DerivedClass, 
+  typename InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::OneParam>::error_type
-    InitializeAndDestroy_TI<T_DerivedClass, 
+    InitializeAndDestroy_TI<T_DerivedClass,
                             p_initialize_and_destroy::OneParam>::
     Initialize(const T& a_p1)
   {
-    TLOC_ASSERT(IsInitialized() == false,
-                "This class has already been initialized once");
+    AssertIsNotInitialized();
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize(a_p1);
     if (err == ErrorSuccess)
@@ -216,7 +229,7 @@ namespace tloc { namespace core { namespace base_classes {
   // InitializeAndDestroy_TI<NoParams>
 
   template <typename T_DerivedClass>
-  class InitializeAndDestroy_TI<T_DerivedClass, 
+  class InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::TwoParams>
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
@@ -239,14 +252,13 @@ namespace tloc { namespace core { namespace base_classes {
 
   template <typename T_DerivedClass>
   template <typename T, typename U>
-  typename InitializeAndDestroy_TI<T_DerivedClass, 
+  typename InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::TwoParams>::error_type
-    InitializeAndDestroy_TI<T_DerivedClass, 
+    InitializeAndDestroy_TI<T_DerivedClass,
                             p_initialize_and_destroy::TwoParams>::
     Initialize(const T& a_p1, const U& a_p2)
   {
-    TLOC_ASSERT(IsInitialized() == false,
-                "This class has already been initialized once");
+    AssertIsNotInitialized();
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize(a_p1, a_p2);
     if (err == ErrorSuccess)
@@ -259,7 +271,7 @@ namespace tloc { namespace core { namespace base_classes {
   // InitializeAndDestroy_TI<NoParams>
 
   template <typename T_DerivedClass>
-  class InitializeAndDestroy_TI<T_DerivedClass, 
+  class InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::ThreeParams>
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
@@ -282,14 +294,13 @@ namespace tloc { namespace core { namespace base_classes {
 
   template <typename T_DerivedClass>
   template <typename T, typename U, typename V>
-  typename InitializeAndDestroy_TI<T_DerivedClass, 
+  typename InitializeAndDestroy_TI<T_DerivedClass,
                                 p_initialize_and_destroy::ThreeParams>::error_type
-    InitializeAndDestroy_TI<T_DerivedClass, 
+    InitializeAndDestroy_TI<T_DerivedClass,
                             p_initialize_and_destroy::ThreeParams>::
     Initialize(const T& a_p1, const U& a_p2, const V& a_p3)
   {
-    TLOC_ASSERT(IsInitialized() == false,
-                "This class has already been initialized once");
+    AssertIsNotInitialized();
 
     error_type err = static_cast<derived_type*>( this )->
       DoInitialize( a_p1, a_p2, a_p3 );
@@ -320,7 +331,7 @@ namespace tloc { namespace core { namespace base_classes {
 #define TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_THREE_PARAMS(_type_)\
   friend class tloc::core::base_classes::InitializeAndDestroyBase_TI<_type_>;\
   friend class tloc::core::base_classes::InitializeAndDestroy_TI<_type_, tloc::core::base_classes::p_initialize_and_destroy::ThreeParams>
-  
+
 
 #define TLOC_USING_INITIALIZE_AND_DESTROY_METHODS()\
   using base_type::AssertIsInitialized;\

@@ -20,21 +20,15 @@ namespace tloc { namespace graphics { namespace media {
 
   FreeTypeGlyph::
     FreeTypeGlyph(ft_glyph_type a_glyphToCopy)
-    : m_glyph(nullptr)
-  { 
-    FT_Error err = FT_Glyph_Copy( a_glyphToCopy, &m_glyph );
-    TLOC_ASSERT(err == 0, "Could not copy - most likely out of memory");
-  }
+    : m_glyph(a_glyphToCopy)
+  { }
 
   //xx
 
   FreeTypeGlyph::
     FreeTypeGlyph(const this_type& a_other)
-    : m_glyph(nullptr)
-  { 
-    FT_Error err = FT_Glyph_Copy( a_other.GetGlyph(), &m_glyph );
-    TLOC_ASSERT(err == 0, "Could not copy - most likely out of memory");
-  }
+    : m_glyph(a_other.m_glyph)
+  { }
 
   //xx
 
@@ -70,6 +64,8 @@ namespace tloc { namespace graphics { namespace media {
     FreeType::
     SetCurrentSize(ft_ushort a_charSize) const
   { 
+    AssertIsInitialized();
+
     const ft_ushort currentSize = m_face->size->metrics.x_ppem;
 
     if (currentSize != a_charSize)
@@ -91,6 +87,8 @@ namespace tloc { namespace graphics { namespace media {
     FreeType::
     LoadGlyph(ft_ulong a_charCode) const
   {
+    AssertIsInitialized();
+
     FT_Error err = FT_Load_Char(m_face, a_charCode, FT_LOAD_RENDER);
 
     if (err)
@@ -101,18 +99,7 @@ namespace tloc { namespace graphics { namespace media {
       return FreeTypeGlyph();
     }
 
-    FT_Glyph glyph;
-    err = FT_Get_Glyph(m_face->glyph, &glyph);
-
-    if (err)
-    {
-      TLOC_LOG_GFX_ERR_IF( err != 0 )
-        << "Could not get glyph from face for character: " << a_charCode;
-
-      return FreeTypeGlyph();
-    }
-
-    return FreeTypeGlyph(glyph);
+    return FreeTypeGlyph(m_face->glyph);
   }
 
   //xx

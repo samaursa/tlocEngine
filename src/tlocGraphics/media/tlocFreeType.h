@@ -9,14 +9,14 @@
 #include FT_MODULE_ERRORS_H
 
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
-#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace graphics { namespace media { 
 
   class FreeTypeGlyph
   {
     public:
-      typedef FT_Glyph                            ft_glyph_type;
+      typedef FT_GlyphSlot                        ft_glyph_type;
       typedef FreeTypeGlyph                       this_type;
 
     public:
@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace media {
 
       void swap(this_type& a_other);
 
-      TLOC_DECL_AND_DEF_GETTER(ft_glyph_type, GetGlyph, m_glyph);
+      TLOC_DECL_AND_DEF_GETTER(ft_glyph_type, GetGlyphSlot, m_glyph);
 
     private:
       ft_glyph_type   m_glyph;
@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace media {
     : core_bclass::InitializeAndDestroy_TI<FreeType, 
         core_bclass::p_initialize_and_destroy::OneParam>
   {
-    friend class core_bclass::InitializeAndDestroy_TI<FreeType>;
+    TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(FreeType);
 
   public:
     typedef FreeType                              this_type;
@@ -55,7 +55,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef FT_UShort                             ft_ushort;
     typedef FT_ULong                              ft_ulong;
 
-    typedef core_conts::Array<char8>              data_type;
+    typedef core_str::String                      data_type;
 
   public:
     FreeType();

@@ -38,6 +38,7 @@ namespace tloc { namespace graphics { namespace error {
 
     error_free_type_initialize,
     error_free_type_error_loading_font,
+    error_free_type_error_setting_size
   };
 
 };};};

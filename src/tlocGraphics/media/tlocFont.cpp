@@ -22,7 +22,15 @@ namespace tloc { namespace graphics { namespace media {
     FT_Bitmap bmp = g.GetGlyphSlot()->bitmap;
     Image::const_uchar8_ptr bmpBuff(bmp.buffer);
 
-    fontImg.LoadFromMemory(bmpBuff, core_ds::MakeTuple(bmp.width, bmp.rows), 4);
+    Image::pixel_container_type pixelCont;
+    for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
+    {
+      uchar8 gc = bmpBuff.get()[i];
+      gfx_t::Color c(gc, gc, gc, gc);
+      pixelCont.push_back(c);
+    }
+
+    fontImg.LoadFromMemory(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
 
     return fontImg;
   }

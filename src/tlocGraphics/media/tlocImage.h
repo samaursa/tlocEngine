@@ -36,6 +36,9 @@ namespace tloc { namespace graphics { namespace media {
                                      dimension_type a_dim,
                                      size_type a_channels);
 
+    error_type        LoadFromMemory(const pixel_container_type& a_buffer,
+                                     dimension_type a_dim);
+
     error_type        Create(dimension_type a_dim, const color_type& a_color);
 
     void              SetPixel(size_type a_X, size_type a_Y,

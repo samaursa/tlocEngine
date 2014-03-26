@@ -6,6 +6,7 @@ set(TLOC_TESTS_GRAPHICS
   tlocGLGeneralTest.cpp
   tlocGLObjectTest.cpp
   tlocGraphicsModesTest.cpp
+  tlocImageTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
   tlocObjLoaderTest.cpp

@@ -224,7 +224,7 @@ namespace tloc { namespace graphics { namespace types {
 
   Color
     Color::
-    operator +(const Color &a_other)
+    operator +(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] += a_other[0];
@@ -249,7 +249,7 @@ namespace tloc { namespace graphics { namespace types {
 
   Color
     Color::
-    operator *(const Color &a_other)
+    operator *(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] *= a_other[0];
@@ -274,7 +274,7 @@ namespace tloc { namespace graphics { namespace types {
 
   Color
     Color::
-    operator -(const Color &a_other)
+    operator -(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] -= a_other[0];
@@ -299,7 +299,7 @@ namespace tloc { namespace graphics { namespace types {
 
   bool
     Color::
-    operator ==(const Color &a_other)
+    operator ==(const Color &a_other) const
   {
     return ( m_rgba[0] == a_other[0] &&
              m_rgba[1] == a_other[1] &&
@@ -309,7 +309,7 @@ namespace tloc { namespace graphics { namespace types {
 
   bool
     Color::
-    operator !=(const Color &a_other)
+    operator !=(const Color &a_other) const
   {
     return !operator==(a_other);
   }

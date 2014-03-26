@@ -40,6 +40,17 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   Image::error_type
+    Image::
+    LoadFromMemory(const pixel_container_type& a_buffer, dimension_type a_dim)
+  {
+    TLOC_ASSERT( (a_dim[0] * a_dim[1]) == a_buffer.size(),
+      "Invalid buffer size wrt image dimensions");
+    m_pixels = a_buffer;
+    m_dim = a_dim;
+    return ErrorSuccess;
+  }
+
+  Image::error_type
     Image::Create(dimension_type a_dim, const color_type& a_color)
   {
     m_dim = a_dim;

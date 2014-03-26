@@ -89,15 +89,15 @@ namespace tloc { namespace graphics { namespace types {
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;
 
-    Color   operator + (const Color& a_other);
+    Color   operator + (const Color& a_other) const;
     Color&  operator +=(const Color& a_other);
-    Color   operator * (const Color& a_other);
+    Color   operator * (const Color& a_other) const;
     Color&  operator *=(const Color& a_other);
-    Color   operator - (const Color& a_other);
+    Color   operator - (const Color& a_other) const;
     Color&  operator -=(const Color& a_other);
 
-    bool    operator ==(const Color& a_other);
-    bool    operator !=(const Color& a_other);
+    bool    operator ==(const Color& a_other) const;
+    bool    operator !=(const Color& a_other) const;
 
     TLOC_DECL_AND_DEF_GETTER(container_type, Get, m_rgba);
 

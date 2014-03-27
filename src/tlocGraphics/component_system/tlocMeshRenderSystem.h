@@ -4,7 +4,6 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -74,7 +73,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   typedef MeshRenderSystem_T<Mesh>      MeshRenderSystem;
 
-  TLOC_TYPEDEF_SHARED_PTR(MeshRenderSystem, mesh_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(MeshRenderSystem, mesh_render_system);
 
 };};};
 

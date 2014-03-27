@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocArcBall.h>
@@ -108,6 +107,8 @@ namespace tloc { namespace graphics { namespace component_system {
 // -----------------------------------------------------------------------
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(ArcBallSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ArcBallSystem);

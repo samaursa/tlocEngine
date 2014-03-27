@@ -1,6 +1,5 @@
 #include "tlocMaterialSystem.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
@@ -151,6 +150,8 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MaterialSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(MaterialSystem);

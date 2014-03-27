@@ -492,3 +492,7 @@ namespace tloc { namespace graphics { namespace media {
   template class SpriteLoader_T<p_sprite_loader::parser::TexturePacker>;
 
 };};};
+
+#include <tlocCore/containers/tlocArray.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::gfx_med::SpriteInfo);

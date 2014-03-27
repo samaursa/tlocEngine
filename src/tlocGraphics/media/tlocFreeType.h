@@ -10,8 +10,9 @@
 
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocGraphics/media/tlocImage.h>
 
-namespace tloc { namespace graphics { namespace media {
+namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   class FreeTypeGlyph
   {
@@ -56,12 +57,15 @@ namespace tloc { namespace graphics { namespace media {
     typedef FT_ULong                              ft_ulong;
 
     typedef core_str::String                      data_type;
+    typedef image_sptr                            image_ptr;
 
   public:
     FreeType();
 
     bool          SetCurrentSize(ft_ushort a_charSize) const;
     FreeTypeGlyph LoadGlyph(ft_ulong a_charCode) const;
+
+    image_ptr     GetGlyphImage(ft_ulong a_charCode) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 
@@ -78,6 +82,6 @@ namespace tloc { namespace graphics { namespace media {
     ft_face_type    m_face;
   };
 
-};};};
+};};};};
 
 #endif

@@ -172,13 +172,6 @@ namespace tloc { namespace graphics { namespace types {
   { }
 
   template <typename T_ValueType>
-  Color::
-    Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A)
-  {
-    SetAs(a_R, a_G, a_B, a_A);
-  }
-
-  template <typename T_ValueType>
   void
     Color::
     DoSetAs(T_ValueType a_R, T_ValueType a_G,
@@ -323,15 +316,6 @@ namespace tloc { namespace graphics { namespace types {
   template int_color_type Color::DoGetAs<p_color::format::ABGR>() const;
   template int_color_type Color::DoGetAs<p_color::format::ARGB>() const;
   template int_color_type Color::DoGetAs<p_color::format::BGRA>() const;
-
-  // The reason for template ctors is to avoid declaring the constructors for
-  // all of the following types. s32 and s64 are there to facilitate casting
-  // from an r-value constant.
-  template Color::Color(u8, u8, u8, u8);
-  template Color::Color(s32, s32, s32, s32);
-  template Color::Color(s64, s64, s64, s64);
-  template Color::Color(f32, f32, f32, f32);
-  template Color::Color(f64, f64, f64, f64);
 
   template void Color::DoSetAs(u8, u8, u8, u8);
   template void Color::DoSetAs(s32, s32, s32, s32);

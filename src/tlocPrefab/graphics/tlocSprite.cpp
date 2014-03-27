@@ -55,17 +55,17 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     TextureCoords tcoord;
     for (int i = 0; a_begin != a_end; ++i, ++a_begin)
     {
-      SpriteInfo si = *a_begin;
+      sprite_info_str si = *a_begin;
 
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd[0],
-                                              si.m_texCoordStart[1]),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordEnd()[0],
+                                              si.GetTexCoordStart()[1]),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordStart()),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordEnd()),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart[0],
-                                              si.m_texCoordEnd[1]),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordStart()[0],
+                                              si.GetTexCoordEnd()[1]),
                                               TextureCoords::set_index(i));
     }
 

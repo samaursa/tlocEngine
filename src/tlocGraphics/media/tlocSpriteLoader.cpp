@@ -106,7 +106,7 @@ namespace tloc { namespace graphics { namespace media {
       SpriteSheetPacker::
       Parse(const core_str::String& a_input,
             const Dimension2 a_imgDim,
-            core_conts::Array<SpriteInfo>& a_out)
+            core_conts::Array<sprite_info_str>& a_out)
     {
       typedef core_conts::Array<core_str::String>   string_array;
 
@@ -128,16 +128,20 @@ namespace tloc { namespace graphics { namespace media {
         eachLine.clear();
         core_str::Tokenize(itr->c_str(), ' ', eachLine);
 
-        SpriteInfo si;
-        si.m_name = eachLine[0];
-        si.m_startingPos[0] = atoi(eachLine[2].c_str());
-        si.m_startingPos[1] = atoi(eachLine[3].c_str());
-        si.m_dimensions[0]   = atoi(eachLine[4].c_str());
-        si.m_dimensions[1]   = atoi(eachLine[5].c_str());
+        sprite_info_str::pos_type startingPos;
+        sprite_info_str::dim_type dimensions;
+
+        const core_str::String& m_name = eachLine[0];
+        startingPos[0]                 = atoi(eachLine[2].c_str());
+        startingPos[1]                 = atoi(eachLine[3].c_str());
+        dimensions[0]                  = atoi(eachLine[4].c_str());
+        dimensions[1]                  = atoi(eachLine[5].c_str());
+
+        sprite_info_str si(m_name, startingPos, dimensions);
 
         dim_type dim(core_ds::Variadic2u32
-          (si.m_startingPos[0] + si.m_dimensions[0],
-           si.m_startingPos[1] + si.m_dimensions[1]) );
+          (startingPos[0] + dimensions[0],
+           startingPos[1] + dimensions[1]) );
         maxDim.ModifyMaxDimension(dim);
 
         a_out.push_back(si);
@@ -233,7 +237,7 @@ namespace tloc { namespace graphics { namespace media {
       TexturePacker::
       Parse(const core_str::String& a_input,
             const Dimension2 a_imgDim,
-            core_conts::Array<SpriteInfo>& a_out)
+            core_conts::Array<sprite_info_str>& a_out)
     {
       using namespace rapidxml;
 
@@ -276,13 +280,16 @@ namespace tloc { namespace graphics { namespace media {
         TLOC_ASSERT_NOT_NULL(xAttr); TLOC_ASSERT_NOT_NULL(yAttr);
         TLOC_ASSERT_NOT_NULL(wAttr); TLOC_ASSERT_NOT_NULL(hAttr);
 
-        SpriteInfo si;
-        si.m_name = nAttr->value();
-        si.m_startingPos[0] = atoi(xAttr->value());
-        si.m_startingPos[1] = atoi(yAttr->value());
-        si.m_dimensions[0]   = atoi(wAttr->value());
-        si.m_dimensions[1]   = atoi(hAttr->value());
+        sprite_info_str::pos_type startingPos;
+        sprite_info_str::dim_type dimensions;
 
+        const core_str::String& m_name = nAttr->value();
+        startingPos[0]                 = atoi( xAttr->value() );
+        startingPos[1]                 = atoi( yAttr->value() );
+        dimensions[0]                  = atoi( wAttr->value() );
+        dimensions[1]                  = atoi( hAttr->value() );
+
+        sprite_info_str si(m_name, startingPos, dimensions);
         a_out.push_back(si);
 
         nextSpriteNode = nextSpriteNode->next_sibling("sprite");
@@ -334,50 +341,12 @@ namespace tloc { namespace graphics { namespace media {
 
     if (err == ErrorSuccess)
     {
-      using math::range_tl_size;
-      using math::range_f32;
+      using core::for_each_all;
+      using namespace algos::transform::sprite_info;
+      using namespace p_sprite_info;
 
-      typedef math_utils::scale_f32_tl_size     range_type;
-
-      range_tl_size spriteRangeX(0, m_imageDimensions[gfx_t::dimension::width] + 1);
-      range_tl_size spriteRangeY(0, m_imageDimensions[gfx_t::dimension::height] + 1);
-
-      range_f32 texRange(0.0f, 2.0f);
-
-      range_type texToSpriteX =
-        range_type( range_type::range_small(texRange),
-                    range_type::range_large(spriteRangeX) );
-
-      range_type texToSpriteY =
-        range_type( range_type::range_small(texRange),
-                    range_type::range_large(spriteRangeY) );
-
-      iterator itr = m_spriteInfo.begin();
-      iterator itrEnd = m_spriteInfo.end();
-
-      // we need to include the last row and col due to precision errors
-      // NOTE: You should have at least 1 pixel transparent padding around each
-      // sprite
-      const f32 oneRow = texToSpriteX.ScaleDown(1);
-      const f32 oneCol = texToSpriteY.ScaleDown(1);
-
-      while (itr != itrEnd)
-      {
-        itr->m_texCoordStart[0] = texToSpriteX.ScaleDown(itr->m_startingPos[0]);
-        itr->m_texCoordStart[1] = texToSpriteY.ScaleDown(itr->m_startingPos[1]);
-
-        itr->m_texCoordEnd[0] = itr->m_texCoordStart[0] + oneRow +
-                                texToSpriteX.ScaleDown(itr->m_dimensions[0] - 1);
-        itr->m_texCoordEnd[1] = itr->m_texCoordStart[1] + oneCol +
-                                texToSpriteY.ScaleDown(itr->m_dimensions[1] - 1);
-
-        // sprite sheet packer y-coord starts from the top, OpenGL start
-        // from the bottom, so we need to flip the y-coords
-        itr->m_texCoordStart[1] = 1.0f + Mathf32::EPSILON - itr->m_texCoordStart[1];
-        itr->m_texCoordEnd[1]   = 1.0f + Mathf32::EPSILON - itr->m_texCoordEnd[1];
-
-        ++itr;
-      }
+      for_each_all( m_spriteInfo,
+                    ComputeTexCoords( a_imageDimensions, FlipYCoords() ) );
 
       m_flags.Mark(k_initialized);
     }
@@ -495,4 +464,4 @@ namespace tloc { namespace graphics { namespace media {
 
 #include <tlocCore/containers/tlocArray.inl.h>
 
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::gfx_med::SpriteInfo);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::gfx_med::sprite_info_str);

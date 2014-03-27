@@ -36,8 +36,8 @@ namespace tloc { namespace graphics { namespace media {
 
     typedef math_utils::scale_f32_tl_size                 range_type;
 
-    range_tl_size spriteRangeX(0, a_imgDimensions[gfx_t::dimension::width] + 1);
-    range_tl_size spriteRangeY(0, a_imgDimensions[gfx_t::dimension::height] + 1);
+    range_tl_size spriteRangeX( 0, a_imgDimensions[gfx_t::dimension::width] + 1 );
+    range_tl_size spriteRangeY( 0, a_imgDimensions[gfx_t::dimension::height] + 1 );
 
     Rangef texRange(0.0f, 2.0f);
 
@@ -71,5 +71,44 @@ namespace tloc { namespace graphics { namespace media {
       m_texCoordEnd[1] = 1.0f + Mathf::EPSILON - m_texCoordEnd[1];
     }
   }
+
+  // -----------------------------------------------------------------------
+  // algos
+
+  namespace algos { namespace compare {
+    namespace sprite_info {
+
+      // ///////////////////////////////////////////////////////////////////////
+      // NameBegins
+
+      NameBegins::
+        NameBegins(BufferArg a_name)
+        : m_name( a_name )
+      { }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      bool
+        NameBegins::
+        operator ()( const value_type& a_si )
+      {
+        typedef str_type::size_type      size_type;
+
+        const size_type siNameLength = a_si.GetName().length();
+        const size_type compNameLength = core_str::StrLen( m_name.GetPtr() );
+
+        if ( siNameLength < compNameLength )
+        { return false; }
+
+        if ( a_si.GetName().compare( 0, compNameLength, m_name ) == 0 )
+        {
+          return true;
+        }
+
+        return false;
+      }
+
+    };
+  };};
 
 };};};

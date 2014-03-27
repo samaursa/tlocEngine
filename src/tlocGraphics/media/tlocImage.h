@@ -6,7 +6,6 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tloccontainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 

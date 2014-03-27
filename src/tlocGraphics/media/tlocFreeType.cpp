@@ -6,9 +6,9 @@
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
-namespace tloc { namespace graphics { namespace media {
+namespace tloc { namespace graphics { namespace media { namespace free_type {
 
-  ///
+  // ///////////////////////////////////////////////////////////////////////
   // FreeTypeGlyph
 
   FreeTypeGlyph::
@@ -16,21 +16,21 @@ namespace tloc { namespace graphics { namespace media {
     : m_glyph(nullptr)
   { }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeTypeGlyph::
     FreeTypeGlyph(ft_glyph_type a_glyphToCopy)
     : m_glyph(a_glyphToCopy)
   { }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeTypeGlyph::
     FreeTypeGlyph(const this_type& a_other)
     : m_glyph(a_other.m_glyph)
   { }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeTypeGlyph::this_type&
     FreeTypeGlyph::
@@ -40,7 +40,7 @@ namespace tloc { namespace graphics { namespace media {
     return *this;
   }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     FreeTypeGlyph::
@@ -81,7 +81,7 @@ namespace tloc { namespace graphics { namespace media {
     { return true; }
   }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeTypeGlyph
     FreeType::
@@ -102,7 +102,34 @@ namespace tloc { namespace graphics { namespace media {
     return FreeTypeGlyph(m_face->glyph);
   }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FreeType::image_ptr
+    FreeType::
+    GetGlyphImage(ft_ulong a_charCode) const
+  {
+    AssertIsInitialized();
+
+    FreeTypeGlyph g = LoadGlyph(a_charCode);
+
+    FT_Bitmap bmp = g.GetGlyphSlot()->bitmap;
+    Image::const_uchar8_ptr bmpBuff(bmp.buffer);
+
+    Image::pixel_container_type pixelCont;
+    for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
+    {
+      uchar8 gc = bmpBuff.get()[i];
+      gfx_t::Color c(gc, gc, gc, gc);
+      pixelCont.push_back(c);
+    }
+
+    image_ptr fontImg(new image_ptr::value_type());
+    fontImg->LoadFromMemory(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
+
+    return fontImg;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeType::error_type
     FreeType::
@@ -152,6 +179,6 @@ namespace tloc { namespace graphics { namespace media {
     return ErrorSuccess;
   }
 
-};};};
+};};};};
 
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::char8);

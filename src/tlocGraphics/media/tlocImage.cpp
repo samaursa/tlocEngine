@@ -1,7 +1,6 @@
 #include "tlocImage.h"
 
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -75,6 +74,8 @@ namespace tloc { namespace graphics { namespace media {
 
 //------------------------------------------------------------------------
 // Explicitly instantiate the container
+
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 using namespace tloc::gfx_med;
 using namespace tloc::gfx_t;

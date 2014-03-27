@@ -1,41 +1,36 @@
 #include "tlocFont.h"
 
+#include <tlocGraphics/media/tlocFreeType.h>
+
 namespace tloc { namespace graphics { namespace media {
 
-  ///
+  // ///////////////////////////////////////////////////////////////////////
   // Font
 
   Font::
     Font()
-    : m_ft(new FreeType())
+    : m_ft(new ft_ptr::value_type())
   { }
 
-  gfx_med::Image
-    Font::
-    GetCharImage(wchar_t a_char)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::
+    ~Font()
   {
-    AssertIsInitialized();
-
-    FreeTypeGlyph g = m_ft->LoadGlyph(a_char);
-
-    gfx_med::Image fontImg;
-    FT_Bitmap bmp = g.GetGlyphSlot()->bitmap;
-    Image::const_uchar8_ptr bmpBuff(bmp.buffer);
-
-    Image::pixel_container_type pixelCont;
-    for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
-    {
-      uchar8 gc = bmpBuff.get()[i];
-      gfx_t::Color c(gc, gc, gc, gc);
-      pixelCont.push_back(c);
-    }
-
-    fontImg.LoadFromMemory(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
-
-    return fontImg;
+    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft);
   }
 
-  //xx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::image_ptr
+    Font::
+    GetCharImage(tl_ulong a_char)
+  {
+    AssertIsInitialized();
+    return m_ft->GetGlyphImage(a_char);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Font::error_type
     Font::
@@ -43,6 +38,8 @@ namespace tloc { namespace graphics { namespace media {
   {
     return m_ft->Initialize(a_data);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Font::error_type
     Font::
@@ -53,5 +50,5 @@ namespace tloc { namespace graphics { namespace media {
 
 };};};
 
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(tloc::graphics::media::FreeType);
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::graphics::media::free_type::FreeType);

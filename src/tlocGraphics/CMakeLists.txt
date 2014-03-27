@@ -113,6 +113,8 @@ set(TLOC_GRAPHICS_MEDIA
   media/tlocImageLoader.h 
   media/tlocObjLoader.h
   media/tlocObjLoader.cpp
+  media/tlocSpriteInfo.h
+  media/tlocSpriteInfo.cpp
   media/tlocSpriteLoader.h
   media/tlocSpriteLoader.cpp
   )

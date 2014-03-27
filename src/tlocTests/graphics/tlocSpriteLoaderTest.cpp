@@ -45,32 +45,32 @@ namespace TestingSpriteLoader
     // we will check the first couple of lines and the last couple of lines
     // NOTE: y-coords are 1.0f - ### because SpriteSheetPacker starts y-coord
     // from top while OpenGL y-coord starts from the bottom
-    CHECK(sl_ssp.GetSpriteInfo()[0].m_name.compare("red_idle_0001") == 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[0].m_startingPos, 0, 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[0].m_dimensions, 140, 140);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[0].m_texCoordStart, 0, 1.0f - 0);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[0].m_texCoordEnd, 140.0f/1820.0f, 1.0f - 140.0f/1260.0f);
+    CHECK(sl_ssp.GetSpriteInfo()[0].GetName().compare("red_idle_0001") == 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[0].GetStartingPos(), 0, 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[0].GetDimensions(), 140, 140);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[0].GetTexCoordStart(), 0, 1.0f - 0);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[0].GetTexCoordEnd(), 140.0f/1820.0f, 1.0f - 140.0f/1260.0f);
 
-    CHECK(sl_ssp.GetSpriteInfo()[1].m_name.compare("red_idle_0002") == 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].m_startingPos, 140, 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].m_dimensions, 140, 140);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].m_texCoordStart, 140.0f/1820.0f, 1.0f - 0);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].m_texCoordEnd, 140.0f/1820.0f + 140.0f/1820.0f,
+    CHECK(sl_ssp.GetSpriteInfo()[1].GetName().compare("red_idle_0002") == 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].GetStartingPos(), 140, 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[1].GetDimensions(), 140, 140);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].GetTexCoordStart(), 140.0f/1820.0f, 1.0f - 0);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[1].GetTexCoordEnd(), 140.0f/1820.0f + 140.0f/1820.0f,
                                                          1.0f - 140.0f/1260.0f);
 
-    CHECK(sl_ssp.GetSpriteInfo()[9].m_name.compare("red_idle_0010") == 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].m_startingPos, 420, 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].m_dimensions, 140, 140);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].m_texCoordStart, 420.0f/1820.0f, 1.0f - 0);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].m_texCoordEnd, 420.0f/1820.0f + 140.0f/1820.0f,
+    CHECK(sl_ssp.GetSpriteInfo()[9].GetName().compare("red_idle_0010") == 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].GetStartingPos(), 420, 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[9].GetDimensions(), 140, 140);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].GetTexCoordStart(), 420.0f/1820.0f, 1.0f - 0);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[9].GetTexCoordEnd(), 420.0f/1820.0f + 140.0f/1820.0f,
                                                          1.0f - 140.0f/1260.0f);
 
-    CHECK(sl_ssp.GetSpriteInfo()[103].m_name.compare("red_idle_0104") == 0);
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].m_startingPos, 700, 1120);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].m_texCoordStart, 700.0f/1820.0f, 1.0f - 1120.0f/1260.0f);
-    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].m_texCoordEnd, 700.0f/1820.0f + 140.0f/1820.0f,
+    CHECK(sl_ssp.GetSpriteInfo()[103].GetName().compare("red_idle_0104") == 0);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].GetStartingPos(), 700, 1120);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].GetTexCoordStart(), 700.0f/1820.0f, 1.0f - 1120.0f/1260.0f);
+    CHECK_VEC2F(sl_ssp.GetSpriteInfo()[103].GetTexCoordEnd(), 700.0f/1820.0f + 140.0f/1820.0f,
                                                            1.0f - (1120.0f/1260.0f + 140.0f/1260.0f));
-    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].m_dimensions, 140, 140);
+    CHECK_TUP2S(sl_ssp.GetSpriteInfo()[103].GetDimensions(), 140, 140);
 
     SpriteLoader_SpriteSheetPacker::const_iterator itr, itrEnd;
 
@@ -97,17 +97,17 @@ namespace TestingSpriteLoader
 
     CHECK(sl_tp.GetSpriteInfo().size() == 52);
 
-    CHECK(sl_tp.GetSpriteInfo()[0].m_name.compare("animation_spawn_alpha_000.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].m_startingPos, 0, 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].m_dimensions, 340, 340);
+    CHECK(sl_tp.GetSpriteInfo()[0].GetName().compare("animation_spawn_alpha_000.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].GetStartingPos(), 0, 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].GetDimensions(), 340, 340);
 
-    CHECK(sl_tp.GetSpriteInfo()[50].m_name.compare("animation_spawn_alpha_050.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[50].m_startingPos, 680, 1700);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[50].m_dimensions, 340, 340);
+    CHECK(sl_tp.GetSpriteInfo()[50].GetName().compare("animation_spawn_alpha_050.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[50].GetStartingPos(), 680, 1700);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[50].GetDimensions(), 340, 340);
 
-    CHECK(sl_tp.GetSpriteInfo()[51].m_name.compare("animation_spawn_alpha_051.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[51].m_startingPos, 1700, 1360);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[51].m_dimensions, 340, 340);
+    CHECK(sl_tp.GetSpriteInfo()[51].GetName().compare("animation_spawn_alpha_051.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[51].GetStartingPos(), 1700, 1360);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[51].GetDimensions(), 340, 340);
   }
 
   TEST_CASE("Graphics/media/SpriteLoader/TexturePackerMultiple", "")
@@ -126,46 +126,46 @@ namespace TestingSpriteLoader
 
     CHECK(sl_tp.GetSpriteInfo().size() == 842);
 
-    CHECK(sl_tp.GetSpriteInfo()[0].m_name.compare("Wake_Happy_01.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].m_startingPos, 0, 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].m_dimensions, 200, 200);
+    CHECK(sl_tp.GetSpriteInfo()[0].GetName().compare("Wake_Happy_01.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].GetStartingPos(), 0, 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[0].GetDimensions(), 200, 200);
 
-    CHECK(sl_tp.GetSpriteInfo()[8].m_name.compare("idle_angry1_01.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[8].m_startingPos, 1600, 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[8].m_dimensions, 200, 200);
+    CHECK(sl_tp.GetSpriteInfo()[8].GetName().compare("idle_angry1_01.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[8].GetStartingPos(), 1600, 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[8].GetDimensions(), 200, 200);
 
-    CHECK(sl_tp.GetSpriteInfo()[30].m_name.compare("idle_angry2_01.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[30].m_startingPos, 400, 200);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[30].m_dimensions, 200, 200);
+    CHECK(sl_tp.GetSpriteInfo()[30].GetName().compare("idle_angry2_01.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[30].GetStartingPos(), 400, 200);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[30].GetDimensions(), 200, 200);
 
-    CHECK(sl_tp.GetSpriteInfo()[52].m_name.compare("idle_angry3_01.png") == 0);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[52].m_startingPos, 400, 200);
-    CHECK_TUP2S(sl_tp.GetSpriteInfo()[52].m_dimensions, 200, 200);
+    CHECK(sl_tp.GetSpriteInfo()[52].GetName().compare("idle_angry3_01.png") == 0);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[52].GetStartingPos(), 400, 200);
+    CHECK_TUP2S(sl_tp.GetSpriteInfo()[52].GetDimensions(), 200, 200);
 
     SpriteLoader_TexturePacker::const_iterator itr, itrEnd;
 
     itr     = sl_tp.begin("Wake_Happy");
     itrEnd  = sl_tp.end("Wake_Happy");
 
-    CHECK( (itr->m_name.compare(sl_tp.GetSpriteInfo()[0].m_name) == 0) );
-    CHECK( itr->m_startingPos == sl_tp.GetSpriteInfo()[0].m_startingPos );
-    CHECK( itr->m_dimensions == sl_tp.GetSpriteInfo()[0].m_dimensions);
+    CHECK( (itr->GetName().compare(sl_tp.GetSpriteInfo()[0].GetName()) == 0) );
+    CHECK( itr->GetStartingPos() == sl_tp.GetSpriteInfo()[0].GetStartingPos() );
+    CHECK( itr->GetDimensions() == sl_tp.GetSpriteInfo()[0].GetDimensions());
     CHECK( core::distance(itr, itrEnd) == 8);
 
     itr     = sl_tp.begin("idle_angry1");
     itrEnd  = sl_tp.end("idle_angry1");
 
-    CHECK( (itr->m_name.compare(sl_tp.GetSpriteInfo()[8].m_name) == 0) );
-    CHECK( itr->m_startingPos == sl_tp.GetSpriteInfo()[8].m_startingPos );
-    CHECK( itr->m_dimensions == sl_tp.GetSpriteInfo()[8].m_dimensions);
+    CHECK( (itr->GetName().compare(sl_tp.GetSpriteInfo()[8].GetName()) == 0) );
+    CHECK( itr->GetStartingPos() == sl_tp.GetSpriteInfo()[8].GetStartingPos() );
+    CHECK( itr->GetDimensions() == sl_tp.GetSpriteInfo()[8].GetDimensions());
     CHECK( core::distance(itr, itrEnd) == 22);
 
     itr     = sl_tp.begin("idle_angry2");
     itrEnd  = sl_tp.end("idle_angry2");
 
-    CHECK( (itr->m_name.compare(sl_tp.GetSpriteInfo()[30].m_name) == 0) );
-    CHECK( itr->m_startingPos == sl_tp.GetSpriteInfo()[30].m_startingPos );
-    CHECK( itr->m_dimensions == sl_tp.GetSpriteInfo()[30].m_dimensions);
+    CHECK( (itr->GetName().compare(sl_tp.GetSpriteInfo()[30].GetName()) == 0) );
+    CHECK( itr->GetStartingPos() == sl_tp.GetSpriteInfo()[30].GetStartingPos() );
+    CHECK( itr->GetDimensions() == sl_tp.GetSpriteInfo()[30].GetDimensions());
     CHECK( core::distance(itr, itrEnd) == 22);
   }
 
@@ -188,17 +188,17 @@ namespace TestingSpriteLoader
     SpriteLoader_TexturePacker::iterator itr;
 
     itr = core::find_if(sl_tp.begin(), sl_tp.end(),
-                        algos::compare::sprite_info::Name("Wake_Happy_01.png"));
+                        algos::compare::sprite_info::MakeName("Wake_Happy_01.png"));
 
-    CHECK(itr->m_name.compare("Wake_Happy_01.png") == 0);
-    CHECK_TUP2S(itr->m_startingPos, 0, 0);
-    CHECK_TUP2S(itr->m_dimensions, 200, 200);
+    CHECK(itr->GetName().compare("Wake_Happy_01.png") == 0);
+    CHECK_TUP2S(itr->GetStartingPos(), 0, 0);
+    CHECK_TUP2S(itr->GetDimensions(), 200, 200);
 
     itr = core::find_if(sl_tp.begin(), sl_tp.end(),
                         algos::compare::sprite_info::NameBegins("idle"));
 
-    CHECK(itr->m_name.compare("idle_angry1_01.png") == 0);
-    CHECK_TUP2S(itr->m_startingPos, 1600, 0);
-    CHECK_TUP2S(itr->m_dimensions, 200, 200);
+    CHECK(itr->GetName().compare("idle_angry1_01.png") == 0);
+    CHECK_TUP2S(itr->GetStartingPos(), 1600, 0);
+    CHECK_TUP2S(itr->GetDimensions(), 200, 200);
   }
 };

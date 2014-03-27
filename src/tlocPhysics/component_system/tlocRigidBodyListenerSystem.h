@@ -4,7 +4,8 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/containers/tlocArray.h>
 
@@ -67,7 +68,7 @@ namespace tloc { namespace physics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(RigidBodyListenerSystem, rigid_body_listener_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBodyListenerSystem, rigid_body_listener_system);
 
 };};};
 

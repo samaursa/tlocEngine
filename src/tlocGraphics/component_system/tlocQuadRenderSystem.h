@@ -4,8 +4,9 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -76,7 +77,7 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(QuadRenderSystem, quad_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(QuadRenderSystem, quad_render_system);
 
 };};};
 

@@ -1,8 +1,6 @@
 #include "tlocComponentPoolManager.h"
 #include "tlocComponentPoolManager.inl.h"
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-
 #include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
@@ -109,9 +107,9 @@ namespace tloc { namespace core { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core::component_system::ComponentPoolManager);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core::component_system::ComponentPool_I);
 
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core::component_system::ComponentPoolManager);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core::component_system::ComponentPool_I);
 
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core::component_system::ComponentPoolManager);

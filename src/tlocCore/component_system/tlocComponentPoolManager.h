@@ -9,8 +9,7 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocType.h>
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -234,7 +233,7 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_VIRTUAL_PTR(ComponentPoolManager, component_pool_mgr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ComponentPoolManager, component_pool_mgr);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(ComponentPoolManager, component_pool_mgr);
 
 };};};

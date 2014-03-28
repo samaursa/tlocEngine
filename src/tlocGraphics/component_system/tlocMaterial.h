@@ -28,6 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::const_shader_program_vptr                   const_shader_prog_ptr;
     typedef gl::shader_program_vso                          shader_prog_vso;
 
+    typedef gl::ShaderOperator                              shader_op;
     typedef gl::shader_operator_vptr                        shader_op_ptr;
     typedef gl::const_shader_operator_vptr                  const_shader_op_ptr;
     typedef gl::shader_operator_vso                         shader_op_vso;
@@ -39,8 +40,8 @@ namespace tloc { namespace graphics { namespace component_system {
     Material();
     Material(const Material& a_other);
 
-    void AddShaderOperator(const const_shader_op_ptr& a_shaderOp);
-    bool RemoveShaderOperator(const const_shader_op_ptr& a_shaderOp);
+    void AddShaderOperator(const shader_op& a_shaderOp);
+    bool RemoveShaderOperator(const_shader_op_ptr a_shaderOp);
     void RemoveAllShaderOperators();
 
     bool operator ==(const Material& a_other) const;

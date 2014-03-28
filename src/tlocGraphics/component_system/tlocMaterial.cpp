@@ -26,14 +26,14 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
   void Material::
-    AddShaderOperator(const const_shader_op_ptr& a_shaderOp)
+    AddShaderOperator(const shader_op& a_shaderOp)
   {
-    m_shaderOperators.push_back(shader_op_vso(*a_shaderOp));
+    m_shaderOperators.push_back(shader_op_vso(a_shaderOp));
     SetUpdateRequired(true);
   }
 
   bool Material::
-    RemoveShaderOperator(const const_shader_op_ptr& a_shaderOp)
+    RemoveShaderOperator(const_shader_op_ptr a_shaderOp)
   {
     shader_op_cont_itr itr =
       core::remove_if_all(m_shaderOperators,

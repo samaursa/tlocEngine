@@ -104,7 +104,7 @@ namespace tloc { namespace prefab { namespace graphics {
          itr != itrEnd; ++itr)
     { so->AddAttribute(**itr); }
 
-    mat->AddShaderOperator(so.get());
+    mat->AddShaderOperator(*so);
 
     m_entMgr->InsertComponent(a_ent, mat);
   }

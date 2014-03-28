@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    DeactivateHierarchy(entity_ptr a_node)
+    DeactivateHierarchy(const_entity_ptr a_node)
   {
     TLOC_ASSERT_NOT_NULL(a_node);
 
@@ -79,7 +79,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    ActivateHierarchy(entity_ptr a_parent)
+    ActivateHierarchy(const_entity_ptr a_parent)
   {
     TLOC_ASSERT_NOT_NULL(a_parent);
 

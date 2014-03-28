@@ -523,6 +523,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   tl_size GetUseCount(const VirtualPtr<T>& a_vptr)
   { return a_vptr.use_count(); }
 
+  template <typename T>
+  VirtualPtr<T>
+    ToVirtualPtr(VirtualPtr<T> a_vptr)
+  { return a_vptr; }
+
   template <typename T, typename T_CopyPolicy>
   VirtualPtr<T>
     ToVirtualPtr(const SharedPtr<T, T_CopyPolicy>& a_sptr)

@@ -327,6 +327,13 @@ namespace TestingVirtualPtr
       VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
       CHECK(*vp == 30);
     }
+
+    SECTION("ToConvert(VirtualPtr)", "")
+    {
+      VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
+      vp = core_sptr::ToVirtualPtr(vp);
+      CHECK(*vp == 30);
+    }
   }
 
   // -----------------------------------------------------------------------

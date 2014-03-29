@@ -96,7 +96,7 @@ namespace tloc { namespace core { namespace component_system {
   };
 
 #define TLOC_TYPEDEF_COMPONENT_POOL(_component_, _typedef_)\
-    typedef core_cs::ComponentPool_TI<_component_>      _typedef_##_pool;\
+    typedef tloc::core_cs::ComponentPool_TI<_component_>      _typedef_##_pool;\
     TLOC_TYPEDEF_VIRTUAL_PTR(_typedef_##_pool, _typedef_##_pool)
 
   //////////////////////////////////////////////////////////////////////////

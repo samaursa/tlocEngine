@@ -72,8 +72,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   UniquePtr<T>::
     UniquePtr(const UniquePtr<T_Other>& a_other)
-    : m_rawPtr( static_cast<pointer>(a_other.release()) )
-  { }
+    : m_rawPtr( static_cast<pointer>(
+                const_cast<UniquePtr<T_Other>* >(&a_other)->release()) )
+  { 
+    core_mem::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Global operators

@@ -37,7 +37,21 @@ namespace TestingLogging
 
     s32 i = 1;
 
-    TLOC_LOG_WARN_IF(i == 1, &lcfi) << "i: " << i << " == 1";
-    TLOC_LOG_WARN_IF(i == 2, &lcfi) << "i: " << i << " == 2";
+    TLOC_LOG_WARN_IF(i == 1, &lcfi) << "Should display";
+    TLOC_LOG_WARN_IF(i == 2, &lcfi) << "SHOULD NOT display";
+
+    TLOC_LOG_INFO_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_DEBUG_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_ERR_IF(i == 2, &lcfi) << "SHOULD NOT display";
+
+    TLOC_LOG_INFO_FILENAME_ONLY_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_DEBUG_FILENAME_ONLY_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_WARN_FILENAME_ONLY_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_ERR_FILENAME_ONLY_IF(i == 2, &lcfi) << "SHOULD NOT display";
+
+    TLOC_LOG_INFO_NO_FILENAME_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_DEBUG_NO_FILENAME_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_WARN_NO_FILENAME_IF(i == 2, &lcfi) << "SHOULD NOT display";
+    TLOC_LOG_ERR_NO_FILENAME_IF(i == 2, &lcfi) << "SHOULD NOT display";
   }
 };

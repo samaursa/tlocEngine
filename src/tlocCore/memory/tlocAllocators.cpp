@@ -60,6 +60,8 @@ ALLOCATOR_DECL_NO_THROW()
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/logging/tlocLogger.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace core { namespace memory { namespace priv {
 
   namespace {
@@ -95,6 +97,8 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
+        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(m_loggingEnabled) 
+          << "Tracking memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertAddressIsNotTracked(a_memAddress);
 
         m_memAddresses[a_memAddress] = ptr_array();
@@ -105,6 +109,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       void TrackConnectedMemoryAddress(void* a_memAddress,
                                        void* a_connectedAddress)
       {
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled) 
+          << "Tracking connected memory address (" << (tl_uintptr)a_memAddress
+          << ") to (" << (tl_uintptr)a_memAddress << ")";
         TLOC_ASSERT_LOW_LEVEL(a_memAddress != a_connectedAddress,
           "The connected memory address cannot be the same as a_memAddress");
 
@@ -116,7 +123,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
         DoAssertAddressIsTracked(a_memAddress);
         DoAssertAddressIsNotTracked(a_connectedAddress);
 
-        m_memAddresses[a_connectedAddress] = ptr_array();
+        TrackMemoryAddress(a_connectedAddress);
 
         mem_to_mem_map::iterator itrMemToMem = m_memToMemMap.find(a_memAddress);
 
@@ -140,6 +147,8 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled) 
+          << "Untracking memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertAddressIsTracked(a_memAddress);
 
         memAddress_map_type::iterator itrMemAddress =
@@ -151,6 +160,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
              itr != itrEnd; ++itr)
         {
           DoAssertPtrIsTracked(*itr);
+
+          TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF( m_loggingEnabled )
+            << "Invalidating vptr (" << (tl_uintptr) *itr << ")";
 
           // invalidate the pointer to address - this address may actually be
           // different than a_memAddress because of multiple inheritance (in
@@ -168,8 +180,14 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
           for (; itrMem != itrMemEnd; ++itrMem)
           {
+            TLOC_LOG_CORE_INFO_IF( m_loggingEnabled ) << 
+              "Attempting to untrack connected address ("
+              << (tl_uintptr)*itrMem << ")...";
+
             UntrackMemoryAddress(*itrMem);
           }
+
+          m_memToMemMap.erase(a_memAddress);
         }
 
         m_memAddresses.erase(itrMemAddress);
@@ -181,6 +199,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF( m_loggingEnabled )
+          << "Tracking pointer (" << (tl_uintptr)a_ptrAddress << ") to "
+          << "memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertPtrIsNotTracked(a_ptrAddress);
 
         m_pointerToAddresses[a_ptrAddress] = a_memAddress;
@@ -210,6 +231,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
+        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF( m_loggingEnabled )
+          << "Untracking pointer (" << (tl_uintptr)a_ptrAddress << ") to "
+          << "memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertPtrIsTracked(a_ptrAddress);
 
         pointer_map_type::iterator itrPtr =
@@ -298,13 +322,24 @@ namespace tloc { namespace core { namespace memory { namespace priv {
         return total;
       }
 
+      TLOC_DECL_AND_DEF_SETTER(bool, EnableLogging, m_loggingEnabled);
+      TLOC_DECL_AND_DEF_GETTER(bool, IsLoggingEnabled, m_loggingEnabled);
+
     private:
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       void DoAssertAddressIsTracked(void* a_memAddress)
       {
-        TLOC_ASSERT(IsMemoryAddressTracked(a_memAddress) == true,
+        bool isAddressTracked = IsMemoryAddressTracked(a_memAddress);
+
+        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(isAddressTracked == false)
+          << "Pointer (" << core_utils::GetMemoryAddress( a_memAddress)
+          << ") is not tracked. Possible causes include no calls to "
+          << "TrackAddress() OR trying to remove memory address of an upcasted "
+          << "pointer.";
+
+        TLOC_ASSERT(isAddressTracked,
           "Memory address is not tracked. Possibly cause includes no calls "
           "to TrackAddress() OR trying to remove memory address of an upcasted "
           "pointer.");
@@ -314,10 +349,17 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
       void DoAssertAddressIsNotTracked(void* a_memAddress)
       {
-        TLOC_ASSERT(IsMemoryAddressTracked(a_memAddress) == false,
+        bool isAddressTracked = IsMemoryAddressTracked(a_memAddress);
+
+        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(isAddressTracked)
+          << "Pointer (" << core_utils::GetMemoryAddress( a_memAddress)
+          << ") is already tracked. Possible causes include delete not calling "
+          << "UntrackAddress() OR multiple calls to TrackAddress()";
+
+        TLOC_ASSERT(isAddressTracked == false,
           "Memory address is already tracked. Possibly causes include delete "
           "not calling UntrackAddress() properly OR multiple calls to "
-          "TrackAddress");
+          "TrackAddress()");
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -341,6 +383,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
     public:
       MemoryTracker_T()
+        : m_loggingEnabled(false)
       { s_trackerAvailable = true; }
 
       ~MemoryTracker_T()
@@ -357,6 +400,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       memAddress_map_type           m_memAddresses;
       mem_to_mem_map                m_memToMemMap;
       pointer_map_type              m_pointerToAddresses;
+      bool                          m_loggingEnabled;
 
       static bool                   s_trackerAvailable;
       static this_type              s_tracker;
@@ -553,7 +597,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
     bool isPointerToValidMemAddress = DoIsPointerToValidMemoryAddress(a_ptr);
 
-    TLOC_LOG_CORE_ERR_IF(isPointerToValidMemAddress == false)
+    TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(isPointerToValidMemAddress == false)
       << "Pointer (" << core_utils::GetMemoryAddress(a_ptr)
       << ") is pointing to a invalid/deleted "
       << "memory address (" << core_utils::GetMemoryAddress(a_memAddress)
@@ -569,6 +613,22 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     DoGetNumberOfPointersToMemoryAddress(void* a_memAddress)
   {
     return MemoryTracker::Get().GetNumberOfPointersToMemAddresses(a_memAddress);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoEnableLogging()
+  {
+    MemoryTracker::Get().EnableLogging(true);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoDisableLogging()
+  {
+    MemoryTracker::Get().EnableLogging( true );
   }
 
 };};};};

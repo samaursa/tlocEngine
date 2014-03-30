@@ -303,4 +303,63 @@ namespace TestingUniquePtr
     up.reset(new tl_int(10));
     CHECK(GetUseCount(up) == 1);
   }
+
+  template <typename T_BuildConfig>
+  void CheckMemAddressIsTracked(void* a_memAddress, bool a_tracked, T_BuildConfig)
+  {
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked(a_memAddress) == a_tracked);
+  }
+
+  void CheckMemAddressIsTracked(void* , bool , core_cfg::p_build_config::Release)
+  { /* intentionally empty */}
+
+  TEST_CASE("core/smart_ptr/unique_ptr/Release", "")
+  {
+    SECTION("Basic functionality", "")
+    {
+      UniquePtr<derived> up(new derived());
+      CHECK(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      UniquePtr<derived> up2(up);
+      CHECK_FALSE(up);
+      CHECK(up2);
+
+      CheckMemAddressIsTracked( (void*) up2.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+
+      UniquePtr<base> up3(up2);
+      CHECK_FALSE(up2);
+      CHECK(up3);
+
+      CheckMemAddressIsTracked( (void*) up3.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+    }
+
+    SECTION("Basic functionality", "Also tests whether release is untracking "
+             "the memory address it started tracking on construction.")
+    {
+      UniquePtr<tl_int> up(new tl_int(50));
+      CHECK(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      tl_int* rawPtr = up.release();
+      CHECK_FALSE(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), false,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      delete rawPtr;
+    }
+  }
+
+  struct LargeObject
+  {
+    int m_largeArray[100];
+  };
 }

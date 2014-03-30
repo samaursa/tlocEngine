@@ -1,6 +1,7 @@
 set(TLOC_TESTS_CORE
   main.cpp
   tlocAlgorithmsTest.cpp
+  tlocAllocatorsTest.cpp
   tlocAnyTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp

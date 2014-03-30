@@ -339,28 +339,47 @@ namespace TestingVirtualPtr
   // -----------------------------------------------------------------------
 
   class Foo1
-  { };
+  { 
+  public:
+    virtual ~Foo1() {}
+  };
 
   class Foo2
-  { };
+  { 
+  public:
+    virtual ~Foo2() {}
+  };
 
   class Base
     : public Foo1
-  { int c; };
+  { 
+  public:
+    virtual ~Base() {}
+    int c;
+  };
 
   class Base2
     : public Foo2
     , public Base
-  { int d; };
+  { 
+  public:
+    virtual ~Base2() {}
+    int d;
+  };
 
   class Derived
     : public Base2
-  { int e; };
+  { 
+  public:
+    virtual ~Derived() {}
+    int e;
+  };
 
   template <typename T_BuildConfig>
   void DoCheckVPtrCount(void* a_pointer, tl_size a_count, T_BuildConfig)
   {
-    CHECK(a_count == core_mem::priv::DoGetNumberOfPointersToMemoryAddress(a_pointer));
+    CHECK( a_count ==
+           core_mem::tracking::priv::DoGetNumberOfPointersToMemoryAddress( a_pointer ) );
   }
 
   void DoCheckVPtrCount(void* , tl_size , core_cfg::p_build_config::Release)

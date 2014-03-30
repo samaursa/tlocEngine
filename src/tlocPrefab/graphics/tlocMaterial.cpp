@@ -133,5 +133,5 @@ namespace tloc { namespace prefab { namespace graphics {
 
 #include <tlocCore/containers/tlocArray.inl.h>
 
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::uniform_ptr_type);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::prefab_gfx::Material::attribute_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::uniform_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::attribute_ptr_type);

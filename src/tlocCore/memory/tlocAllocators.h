@@ -34,7 +34,8 @@ void* operator new (std::size_t size, const std::nothrow_t&) throw();
 void  operator delete (void* ptr, const std::nothrow_t&) throw();
 # endif
 
-namespace tloc { namespace core { namespace memory { namespace priv {
+namespace tloc { namespace core { namespace memory { 
+  namespace tracking { namespace priv {
 
   void DoTrackMemoryAddress(void* a_memAddress);
   void DoUntrackMemoryAddress(void* a_memAddress);
@@ -55,7 +56,8 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   void DoEnableLogging();
   void DoDisableLogging();
 
-};};};};
+  };};
+};};};
 
 #endif // TLOC_USE_CUSTOM_NEW_DELETE
 

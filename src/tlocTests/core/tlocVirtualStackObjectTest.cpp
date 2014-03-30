@@ -219,7 +219,7 @@ namespace TestingVirtualStackObject
   template <typename T_Ptr, typename T_BuildType>
   void CheckPointer(const T_Ptr& a_ptr, bool a_validity, T_BuildType)
   {
-    CHECK(core_mem::priv::DoIsPointerToValidMemoryAddress
+    CHECK(core_mem::tracking::priv::DoIsPointerToValidMemoryAddress
       (a_ptr.DoGetTrackablePtrAddress()) == a_validity);
   }
 

@@ -95,8 +95,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator->() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
-    core_mem::priv::DoAssertPointerToValidMemoryAddress
-      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
+    core_mem::tracking::priv::DoAssertPointerToValidMemoryAddress
+      ( (void*) m_rawPtr, DoGetTrackablePtrAddress() );
 
     return m_rawPtr;
   }
@@ -109,8 +109,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator*() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference nullptr");
-    core_mem::priv::DoAssertPointerToValidMemoryAddress
-      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
+
+    core_mem::tracking::priv::DoAssertPointerToValidMemoryAddress
+      ( (void*) m_rawPtr, DoGetTrackablePtrAddress() );
+
     return *m_rawPtr;
   }
 
@@ -128,8 +130,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     get() const
   {
-    core_mem::priv::DoAssertPointerToValidMemoryAddress
-      ((void*)m_rawPtr, DoGetTrackablePtrAddress());
+    core_mem::tracking::priv::DoAssertPointerToValidMemoryAddress
+      ( (void*) m_rawPtr, DoGetTrackablePtrAddress() );
+
     return m_rawPtr;
   }
 
@@ -193,8 +196,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     {
       if (*m_refCount == 0)
       {
-        core_mem::priv::DoTrackPointerToMemoryAddress
-          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+        core_mem::tracking::priv::DoTrackPointerToMemoryAddress
+          ( (void*) m_rawPtr, DoGetTrackablePtrAddress() );
       }
 
       ++*m_refCount;
@@ -227,8 +230,8 @@ namespace tloc { namespace core { namespace smart_ptr {
       {
         TLOC_ASSERT_LOW_LEVEL(*m_refCount == 0,
           "use_count() reported an incorrect ref count");
-        core_mem::priv::DoUntrackPointerToMemoryAddress
-          ( (void*)m_rawPtr, DoGetTrackablePtrAddress());
+        core_mem::tracking::priv::DoUntrackPointerToMemoryAddress 
+          ( (void*) m_rawPtr, DoGetTrackablePtrAddress() );
 
         delete m_refCount;
       }

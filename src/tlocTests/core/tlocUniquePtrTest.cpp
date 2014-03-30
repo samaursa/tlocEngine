@@ -257,6 +257,8 @@ namespace TestingUniquePtr
 
   }
 
+  using namespace core_mem::tracking::priv;
+
   template <typename T_BuildConfig>
   void DoDebugTest(T_BuildConfig)
   {
@@ -265,13 +267,13 @@ namespace TestingUniquePtr
     derived* d3 = new derived();
 
     UniquePtr<derived> derPtr(d1);
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d3));
 
     UniquePtr<derived> derPtrS(derPtr);
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     // This SHOULD fail
     // TODO: Turn this into a real test once we have a throwing assertion
@@ -279,12 +281,12 @@ namespace TestingUniquePtr
 
     derPtr.swap(derPtrS);
     derPtr.reset();
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset(d2);
     UniquePtr<derived> derPtr2(d3);
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(DoIsMemoryAddressTracked( (void*)d3));
   }
 
   void DoDebugTest(core_cfg::p_build_config::Release)
@@ -307,7 +309,7 @@ namespace TestingUniquePtr
   template <typename T_BuildConfig>
   void CheckMemAddressIsTracked(void* a_memAddress, bool a_tracked, T_BuildConfig)
   {
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked(a_memAddress) == a_tracked);
+    CHECK(DoIsMemoryAddressTracked(a_memAddress) == a_tracked);
   }
 
   void CheckMemAddressIsTracked(void* , bool , core_cfg::p_build_config::Release)

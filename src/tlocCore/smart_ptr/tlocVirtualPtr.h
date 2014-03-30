@@ -111,12 +111,13 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
+    using namespace core_mem::tracking::priv;
+
     // add the connected address only if it is not already added from other
     // casts
-    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    if (DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
     {
-      core_mem::priv::
-        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+      DoTrackConnectedMemoryAddress( (void*) a_other.get(), (void*) m_rawPtr );
     }
     DoAddRef();
   }
@@ -130,12 +131,13 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.get())
     , m_refCount(m_rawPtr ? new ref_count_type(0) : nullptr)
   {
+    using namespace core_mem::tracking::priv;
+
     // add the connected address only if it is not already added from other
     // casts
-    if (core_mem::priv::DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    if (DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
     {
-      core_mem::priv::
-        DoTrackConnectedMemoryAddress((void*)a_other.get(), (void*)m_rawPtr);
+      DoTrackConnectedMemoryAddress( (void*) a_other.get(), (void*) m_rawPtr );
     }
     DoAddRef();
   }

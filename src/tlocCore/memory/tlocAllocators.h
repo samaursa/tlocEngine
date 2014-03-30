@@ -52,6 +52,9 @@ namespace tloc { namespace core { namespace memory { namespace priv {
 
   size_t DoGetNumberOfPointersToMemoryAddress(void* a_memAddress);
 
+  void DoEnableLogging();
+  void DoDisableLogging();
+
 };};};};
 
 #endif // TLOC_USE_CUSTOM_NEW_DELETE

@@ -172,6 +172,16 @@ namespace TestingVirtualStackObject
     }
   }
 
+  TEST_CASE("core/smart_ptr/VirtualStackObject/containers stress test", "")
+  {
+    core_conts::Array<int_vso> vsoContainer;
+    vsoContainer.resize(100);
+    vsoContainer.resize(500);
+    vsoContainer.clear();
+    vsoContainer.resize(500);
+    vsoContainer.resize(1000);
+  }
+
   TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
   TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
 

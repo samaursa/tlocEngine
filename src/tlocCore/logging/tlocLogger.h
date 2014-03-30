@@ -232,7 +232,7 @@ namespace tloc { namespace core { namespace logging {
   if (_expr_) TLOC_LOG(_logger_, _severity_)
 #define TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, _severity_) \
   if (_expr_) TLOC_LOG_FILENAME_ONLY(_logger_, _severity_)
-#define TLOC_LOG_NO_FILENAME_IF(_logger_, _severity_) \
+#define TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, _severity_) \
   if (_expr_) TLOC_LOG_NO_FILENAME(_logger_, _severity_)
 
 #define TLOC_LOG_INFO(_logger_)\
@@ -264,11 +264,11 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
-#define TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_logger_)\
+#define TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
-#define TLOC_LOG_WARN_FILENAME_ONLY_IF(_logger_)\
+#define TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_warning)
-#define TLOC_LOG_ERR_FILENAME_ONLY_IF(_logger_)\
+#define TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_error)
 
 #define TLOC_LOG_INFO_NO_FILENAME(_logger_)\

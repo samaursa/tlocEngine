@@ -25,11 +25,11 @@ namespace tloc {
   // ///////////////////////////////////////////////////////////////////////
   // Namespace aliases here
 
-  namespace prefab_core   = prefab::core;
-  namespace prefab_gfx    = prefab::graphics;
-  namespace prefab_input  = prefab::input;
-  namespace prefab_phys   = prefab::physics;
-  namespace prefab_anim   = prefab::animation;
+  namespace pref_core   = prefab::core;
+  namespace pref_gfx    = prefab::graphics;
+  namespace pref_input  = prefab::input;
+  namespace pref_phys   = prefab::physics;
+  namespace pref_anim   = prefab::animation;
 
   // ///////////////////////////////////////////////////////////////////////
   // Base for all prefab objects

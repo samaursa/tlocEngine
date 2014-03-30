@@ -24,8 +24,8 @@ ALLOCATOR_DECL_NO_THROW()
 
   if (ptr)
   {
-    if (core_mem::priv::DoIsMemoryAddressTracked(ptr))
-    { core_mem::priv::DoUntrackMemoryAddress(ptr); }
+    if (core_mem::tracking::priv::DoIsMemoryAddressTracked(ptr))
+    { core_mem::tracking::priv::DoUntrackMemoryAddress(ptr); }
 
     TL_FREE(ptr);
   }
@@ -45,8 +45,8 @@ ALLOCATOR_DECL_NO_THROW()
 
   if (ptr)
   {
-    if (core_mem::priv::DoIsMemoryAddressTracked(ptr))
-    { core_mem::priv::DoUntrackMemoryAddress(ptr); }
+    if (core_mem::tracking::priv::DoIsMemoryAddressTracked(ptr))
+    { core_mem::tracking::priv::DoUntrackMemoryAddress(ptr); }
 
     TL_FREE(ptr);
   }
@@ -62,7 +62,8 @@ ALLOCATOR_DECL_NO_THROW()
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
-namespace tloc { namespace core { namespace memory { namespace priv {
+namespace tloc { namespace core { namespace memory { 
+  namespace tracking { namespace priv {
 
   namespace {
 
@@ -637,6 +638,6 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     MemoryTracker::Get().EnableLogging( true );
   }
 
-};};};};
+};};};};};
 
 #endif

@@ -155,7 +155,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     if (m_refCount)
     {
       if (*m_refCount == 0)
-      { core_mem::priv::DoTrackMemoryAddress( (void*)m_rawPtr); }
+      { 
+        core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr ); }
 
       ++*m_refCount;
     }
@@ -169,7 +170,7 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        core_mem::priv::DoUntrackMemoryAddress( (void*)m_rawPtr);
+        core_mem::tracking::priv::DoUntrackMemoryAddress( (void*)m_rawPtr);
 
         delete m_rawPtr;
         delete m_refCount;

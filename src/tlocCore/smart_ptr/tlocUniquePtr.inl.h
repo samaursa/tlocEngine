@@ -34,7 +34,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   {
-    core_mem::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+    core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
   }
 
   template <UNIQUE_PTR_TEMPS>
@@ -42,7 +42,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr(const this_type& a_other)
     : m_rawPtr( const_cast<this_type*>(&a_other)->release() )
   { 
-    core_mem::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+    core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
   }
 
   template <UNIQUE_PTR_TEMPS>
@@ -71,7 +71,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   UNIQUE_PTR_TYPE::pointer  UniquePtr<UNIQUE_PTR_PARAMS>::
     release(pointer a_ptr)
   {
-    core_mem::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
+    core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
     pointer toReturn = m_rawPtr;
     m_rawPtr = a_ptr;
     return toReturn;
@@ -128,7 +128,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     {
-      core_mem::priv::DoUntrackMemoryAddress((void*)m_rawPtr);
+      core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
 
       delete m_rawPtr;
       m_rawPtr = nullptr;

@@ -75,7 +75,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr( static_cast<pointer>(
                 const_cast<UniquePtr<T_Other>* >(&a_other)->release()) )
   { 
-    core_mem::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+    core_mem::tracking::priv::DoTrackMemoryAddress((void*)m_rawPtr);
   }
 
   //////////////////////////////////////////////////////////////////////////

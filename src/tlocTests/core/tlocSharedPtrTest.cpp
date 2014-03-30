@@ -432,6 +432,8 @@ namespace TestingSharedPtr
 
   }
 
+  using namespace core_mem::tracking::priv;
+
   template <typename T_BuildConfig>
   void DoDebugTest(T_BuildConfig)
   {
@@ -446,30 +448,30 @@ namespace TestingSharedPtr
     // TODO: Turn this into a real test once we have a throwing assertion
     // SharedPtr<derived> derPtrSS(d1);
 
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
 
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
 
     // derPtrS and derPtr are the same SharedPtr essentially and count
     // as one pointer reference
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d3));
 
     derPtrS.reset();
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset();
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset(d2);
     SharedPtr<derived> derPtr2(d3);
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 0);
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 0);
+    CHECK(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 0);
   }
 
   void DoDebugTest(core_cfg::p_build_config::Release)

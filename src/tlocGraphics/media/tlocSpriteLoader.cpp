@@ -1,10 +1,11 @@
 #include "tlocSpriteLoader.h"
 
-#include <tlocGraphics/error/tlocErrorTypes.h>
-
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/memory/tlocBufferArg.h>
+
+#include <tlocGraphics/error/tlocErrorTypes.h>
 
 #include <tlocMath/tlocRange.h>
 #include <tlocMath/utilities/tlocScale.h>
@@ -17,7 +18,7 @@ namespace rapidxml {
   void parse_error_handler(const char *what, void *)
   {
     TLOC_UNUSED(what);
-    TLOC_ASSERT(false, what);
+    TLOC_ASSERT_FALSE(what);
   }
 
 };

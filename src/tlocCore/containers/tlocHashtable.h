@@ -2,6 +2,8 @@
 #define TLOC_HASH_TABLE_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>

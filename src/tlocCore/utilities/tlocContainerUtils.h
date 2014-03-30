@@ -2,6 +2,8 @@
 #define TLOC_CONTAINER_UTILS_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 

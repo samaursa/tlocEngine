@@ -6,21 +6,14 @@
 #endif
 
 #include "tlocMemoryPool.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
 #include <tlocCore/memory/tlocMemoryPoolIndexedWrapper.inl.h>
-
-//------------------------------------------------------------------------
-// Fine grain control to enable/disable assertions
-
-#ifndef TLOC_DISABLE_ASSERT_MEMORY_POOL_INDEX
-# define TLOC_ASSERT_MEMORY_POOL_INDEX(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_MEMORY_POOL_INDEX(_Expression, _Msg)
-#endif
 
 namespace tloc { namespace core { namespace memory {
 
@@ -184,9 +177,6 @@ namespace tloc { namespace core { namespace memory {
 
   static const tl_size g_initialStartSize = 1;
 
-#define TLOC_ASSERT_MEMORY_POOL_INITIALIZED()\
-  TLOC_ASSERT_MEMORY_POOL_INDEX(DoIsInitialized(), "Memory pool not initialized!");
-
   template <MEMORY_POOL_INDEX_TEMP>
   MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::MemoryPoolIndexed()
     : m_numAvail(0)
@@ -229,7 +219,7 @@ namespace tloc { namespace core { namespace memory {
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     GetNext()
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(m_numAvail >= 0, "Serious logical error!");
+    TLOC_ASSERT_LOW_LEVEL(m_numAvail >= 0, "Serious logical error!");
 
     if (m_numAvail != 0)
     {
@@ -275,8 +265,8 @@ namespace tloc { namespace core { namespace memory {
   {
     if (m_numAvail >= (index_type)m_allElements.size())
     {
-      TLOC_ASSERT_MEMORY_POOL_INDEX(false,
-        "Trying to recycle more elements than we have!");
+      TLOC_ASSERT_LOW_LEVEL_FALSE
+        ("Trying to recycle more elements than we have!");
       return;
     }
 
@@ -297,7 +287,7 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::RecycleAtIndex(index_type a_index)
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(a_index < (index_type)m_allElements.size(),
+    TLOC_ASSERT_LOW_LEVEL(a_index < (index_type)m_allElements.size(),
                                   "Index out of bounds!");
 
     iterator itr = m_allElements.begin();
@@ -320,7 +310,7 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::final_value_type&
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index)
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX((size_type)a_index < GetTotal() - GetAvail(),
+    TLOC_ASSERT_LOW_LEVEL((size_type)a_index < GetTotal() - GetAvail(),
       "Index trying to access unavailable element!");
 
     return m_allElements[a_index];
@@ -330,7 +320,7 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::final_value_type const &
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index) const
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX
+    TLOC_ASSERT_LOW_LEVEL
       (a_index < core_utils::CastNumber<index_type>(GetTotal() - GetAvail()),
        "Index trying to access unavailable element!");
 
@@ -341,7 +331,7 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::size_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::GetTotal() const
   {
-    TLOC_ASSERT_MEMORY_POOL_INDEX(m_allElements.size() > 0,
+    TLOC_ASSERT_LOW_LEVEL(m_allElements.size() > 0,
       "m_allElements.size() should never be 0 as g_initialStartSize is > 0");
     return m_allElements.size();
   }

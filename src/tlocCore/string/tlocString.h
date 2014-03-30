@@ -2,6 +2,8 @@
 #define TLOC_STRING_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>

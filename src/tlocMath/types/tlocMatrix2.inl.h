@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocMath/types/tlocVector2.inl.h>
 #include <tlocMath/types/tlocMatrix.inl.h>
 

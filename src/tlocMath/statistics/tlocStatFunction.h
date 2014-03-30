@@ -1,6 +1,7 @@
 #ifndef _TLOC_MATH_STATISTICS_FUNCTION_H_
 #define _TLOC_MATH_STATISTICS_FUNCTION_H_
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>

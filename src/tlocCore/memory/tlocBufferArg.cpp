@@ -1,5 +1,7 @@
 #include "tlocBufferArg.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace core { namespace memory {
 
 #define TLOC_BUFFER_ARG_TEMPS   typename T_Char

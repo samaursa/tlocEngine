@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocMatrix.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTable.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 

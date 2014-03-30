@@ -1,5 +1,6 @@
 #include "tlocSceneGraphSystem.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 

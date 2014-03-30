@@ -6,8 +6,9 @@
 #endif
 
 #include "tlocSharedPtr.h"
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
 
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 
@@ -46,7 +47,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
-    null_copy_policy_type::CheckNullBeforeCopy(m_rawPtr);
+    null_copy_policy_type::CheckNullBeforeCopy((void*)m_rawPtr);
     // Mainly for containers
     DoAddRef();
   }

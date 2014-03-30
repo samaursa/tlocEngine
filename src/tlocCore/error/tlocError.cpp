@@ -1,4 +1,6 @@
 #include "tlocError.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 
 namespace tloc { namespace core { namespace error {

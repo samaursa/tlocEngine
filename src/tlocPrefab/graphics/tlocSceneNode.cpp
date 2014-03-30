@@ -1,5 +1,7 @@
 #include "tlocSceneNode.h"
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocMath/component_system/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {

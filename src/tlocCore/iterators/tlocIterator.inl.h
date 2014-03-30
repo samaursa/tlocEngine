@@ -6,6 +6,7 @@
 #endif
 
 #include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/tlocAssert.h>
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////

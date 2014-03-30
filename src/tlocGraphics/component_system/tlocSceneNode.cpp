@@ -1,5 +1,6 @@
 #include "tlocSceneNode.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 
 #include <tlocCore/containers/tlocContainers.inl.h>

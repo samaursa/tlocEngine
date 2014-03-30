@@ -1,5 +1,6 @@
 #include "tlocRigidBodySystem.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 
@@ -187,7 +188,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     if (currRBInternal == nullptr)
     {
-      TLOC_ASSERT(false, "Box2D RigidBody could not be allocated!");
+      TLOC_ASSERT_FALSE("Box2D RigidBody could not be allocated!");
       return TLOC_ERROR(error::error_rigid_body_could_not_be_allocated);
     }
 

@@ -2,6 +2,7 @@
 #include "tlocComponentPoolManager.inl.h"
 
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocAssert.h>
 
 namespace tloc { namespace core { namespace component_system {
 

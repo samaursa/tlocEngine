@@ -9,6 +9,7 @@
 
 #include <tlocCore/logging/tlocLog.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
+#include <tlocCore/tlocStaticAssert.h>
 
 namespace tloc { namespace core { namespace logging {
 

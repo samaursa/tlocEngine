@@ -1,5 +1,7 @@
 #include "tlocBuildConfig.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace core { namespace configs {
 
   //////////////////////////////////////////////////////////////////////////

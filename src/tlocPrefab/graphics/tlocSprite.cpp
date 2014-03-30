@@ -1,5 +1,7 @@
 #include "tlocSprite.h"
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
 
 namespace tloc { namespace prefab { namespace graphics { namespace priv {

@@ -208,7 +208,7 @@ namespace tloc { namespace animation { namespace component_system {
           break;
         }
       default:
-        TLOC_ASSERT(false, "Unsupported interpolation type");
+        TLOC_ASSERT_FALSE("Unsupported interpolation type");
       }
 
       transPtr->SetTransformation(interpolatedVal);

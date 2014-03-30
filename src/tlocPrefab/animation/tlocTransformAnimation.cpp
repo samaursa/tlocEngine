@@ -1,5 +1,7 @@
 #include "tlocTransformAnimation.h"
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocAnimation/component_system/tlocComponentType.h>
 
 namespace tloc { namespace prefab { namespace animation {

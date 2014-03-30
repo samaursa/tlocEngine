@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocMath/types/tlocVector2.inl.h>
 #include <tlocMath/types/tlocMatrix2.inl.h>
 
@@ -70,7 +72,7 @@ namespace tloc { namespace physics { namespace box2d {
 
     if (fixture == nullptr)
     {
-      TLOC_ASSERT(false, "Box2D Fixture could not be allocated!");
+      TLOC_ASSERT_FALSE("Box2D Fixture could not be allocated!");
       return TLOC_ERROR(error::error_rigid_body_shape_could_not_be_created);
     }
 

@@ -4,8 +4,9 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -37,7 +38,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
     typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
 
-    typedef gl::shader_program_vptr                           shader_prog_ptr;
+    typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
 
     typedef core_conts::ArrayFixed<gl::attribute_vso, 4>      attributes_cont;
 
@@ -61,10 +62,11 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::GetViewProjectionMatrix;
 
   private:
-    shader_prog_ptr           m_shaderPtr;
+    const_shader_prog_ptr     m_shaderPtr;
 
     gl::uniform_vso           m_uniVpMat;
-    gl::shader_operator_vso   m_mvpOperator;
+    gl::shader_operator_vso   m_mvpOperator,
+                              m_so_quad;
 
     // Cache
     vec3_cont_vso       m_quadList;
@@ -75,7 +77,7 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(QuadRenderSystem, quad_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(QuadRenderSystem, quad_render_system);
 
 };};};
 

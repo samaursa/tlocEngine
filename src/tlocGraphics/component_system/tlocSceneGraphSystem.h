@@ -4,6 +4,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEventManager.h>
@@ -21,8 +23,8 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem(event_manager_ptr   a_eventMgr,
                      entity_manager_ptr  a_entityMgr);
 
-    static void DeactivateHierarchy(entity_ptr a_parent);
-    static void ActivateHierarchy(entity_ptr a_parent);
+    static void DeactivateHierarchy(const_entity_ptr a_parent);
+    static void ActivateHierarchy(const_entity_ptr a_parent);
 
     virtual void SortEntities();
 
@@ -46,7 +48,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(SceneGraphSystem, scene_graph_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(SceneGraphSystem, scene_graph_system);
 
 };};};
 

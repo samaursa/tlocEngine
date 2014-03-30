@@ -1,6 +1,5 @@
 #include "tlocFanRenderSystem.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
@@ -117,8 +116,8 @@ namespace tloc { namespace graphics { namespace component_system {
       m_vData->SetVertexArray(core_sptr::ToVirtualPtr(m_vertList),
                               gl::p_shader_variable_ti::Pointer());
 
-      gl::shader_operator_vso so_fan;
-      so_fan->AddAttribute(*m_vData);
+      m_so_fan->RemoveAllAttributes();
+      m_so_fan->AddAttribute(*m_vData);
 
       if (a_ent->HasComponent(components::texture_coords))
       {
@@ -136,14 +135,14 @@ namespace tloc { namespace graphics { namespace component_system {
           m_tData->SetVertexArray(texCoordCont,
                                   gl::p_shader_variable_ti::Pointer() );
 
-          so_fan->AddAttribute(*m_tData);
+          m_so_fan->AddAttribute(*m_tData);
         }
       }
 
       //------------------------------------------------------------------------
       // Enable the shader
 
-      gfx_cs::Material::shader_prog_ptr sp = matPtr->GetShaderProgRef();
+      Material::const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
@@ -155,13 +154,13 @@ namespace tloc { namespace graphics { namespace component_system {
         sp->Enable();
         m_shaderPtr = sp;
 
-      typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
-      const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
+        typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
+        const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
 
-      for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
-           itr != itrEnd; ++itr)
-      {
-        gl::const_shader_operator_vptr so = itr->get();
+        for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
+          itr != itrEnd; ++itr)
+        {
+          gl::const_shader_operator_vptr so = itr->get();
 
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);
@@ -172,8 +171,8 @@ namespace tloc { namespace graphics { namespace component_system {
       m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
       m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
 
-      so_fan->PrepareAllAttributes(*m_shaderPtr);
-      so_fan->EnableAllAttributes(*m_shaderPtr);
+      m_so_fan->PrepareAllAttributes(*m_shaderPtr);
+      m_so_fan->EnableAllAttributes(*m_shaderPtr);
 
       glDrawArrays(GL_TRIANGLE_FAN, 0,
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));
@@ -194,10 +193,6 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr.reset();
     }
 
-    // clear the stored attributes
-    m_vData->ResetValue();
-    m_tData->ResetValue();
-
     base_type::Post_ProcessActiveEntities(f64());
   }
 
@@ -206,6 +201,8 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FanRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FanRenderSystem);

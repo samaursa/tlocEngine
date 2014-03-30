@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -228,6 +227,8 @@ namespace tloc { namespace animation { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::anim_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimationSystem);

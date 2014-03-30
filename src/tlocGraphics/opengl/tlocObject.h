@@ -35,7 +35,8 @@ namespace tloc { namespace graphics { namespace gl {
   protected:
     ObjectBase();
 
-    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
+    void ResetHandle();
+    TLOC_DECL_SETTER_BY_VALUE(object_handle, SetHandle);
 
   private:
     object_handle m_handle;

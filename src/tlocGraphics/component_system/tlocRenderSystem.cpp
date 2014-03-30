@@ -1,5 +1,7 @@
 #include "tlocRenderSystem.h"
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocGraphics/component_system/tlocCamera.h>
 
 namespace tloc { namespace graphics { namespace component_system {

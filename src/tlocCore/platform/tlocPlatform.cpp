@@ -1,5 +1,7 @@
 #include "tlocPlatform.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace core { namespace platform {
 
   //////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 #include "tlocInputImplWin.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
-
 #include <tlocCore/types/tlocAny.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/string/tlocString.inl.h>
@@ -114,6 +114,9 @@ namespace tloc { namespace input { namespace priv {
 #define ASSERT_INPUT_TYPE(x) TLOC_ASSERT((x) < p_hid::Count::m_index,\
   "Unsupported input type passed!")
 
+#define STATIC_ASSERT_INPUT_TYPE(x) TLOC_STATIC_ASSERT((x) < p_hid::Count::m_index,\
+  Unsupported_input_type_passed)
+
   //------------------------------------------------------------------------
   // InputManagerImpl
 
@@ -204,7 +207,7 @@ namespace tloc { namespace input { namespace priv {
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     CreateHID(param_options::value_type a_params)
   {
-    ASSERT_INPUT_TYPE(T_InputObject::m_index);
+    STATIC_ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
     T_InputObject* newInput = nullptr;
 
@@ -371,7 +374,7 @@ namespace tloc { namespace input { namespace priv {
   T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     GetHID(size_type a_index)
   {
-    ASSERT_INPUT_TYPE(T_InputObject::m_index);
+    STATIC_ASSERT_INPUT_TYPE(T_InputObject::m_index);
     TLOC_ASSERT(a_index < m_winHIDs[T_InputObject::m_index].size(),
                 "Index out of range!");
 

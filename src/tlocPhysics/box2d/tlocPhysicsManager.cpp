@@ -1,5 +1,7 @@
 #include "tlocPhysicsManager.h"
 
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocMath/types/tlocVector2.inl.h>
 
 #include <tlocPhysics/box2d/tlocWorld.h>

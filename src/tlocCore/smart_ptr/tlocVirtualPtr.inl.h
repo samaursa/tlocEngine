@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocVirtualPtr.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 

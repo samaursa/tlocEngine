@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocProtectedBuffer.h>
 
 namespace tloc { namespace core { namespace data_structs {

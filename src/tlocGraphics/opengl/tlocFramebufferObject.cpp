@@ -1,5 +1,6 @@
 #include "tlocFramebufferObject.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 #include <tlocCore/platform/tlocPlatform.h>
@@ -403,7 +404,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else
     {
-      TLOC_ASSERT(false, "Unsupported internal format for specified attachment");
+      TLOC_ASSERT_FALSE("Unsupported internal format for specified attachment");
     }
   }
 
@@ -460,7 +461,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else
     {
-      TLOC_ASSERT(false, "Unsupported internal format for specified attachment");
+      TLOC_ASSERT_FALSE("Unsupported internal format for specified attachment");
     }
   }
 

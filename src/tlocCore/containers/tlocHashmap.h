@@ -2,6 +2,8 @@
 #define TLOC_HASH_MAP_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/iterators/tlocIterator.h>

@@ -1,5 +1,6 @@
 #include "tlocJoystickImplWin.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>

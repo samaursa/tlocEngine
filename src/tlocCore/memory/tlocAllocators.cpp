@@ -59,6 +59,7 @@ ALLOCATOR_DECL_NO_THROW()
 #include <tlocCore/configs/tlocBuildConfig.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/tlocAssert.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 

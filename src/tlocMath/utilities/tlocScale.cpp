@@ -1,6 +1,8 @@
 #include "tlocScale.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
+
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocMath.inl.h>
 

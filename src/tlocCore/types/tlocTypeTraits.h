@@ -5,6 +5,9 @@
 #include "3rdParty/loki/TypeTraits.h"
 
 #include <tlocCore/types/tlocTypeTraitsCommonType.h>
+#include <tlocCore/tlocStaticAssert.h>
+
+#include <3rdParty/loki/TypeTraits.h>
 
 namespace tloc
 {

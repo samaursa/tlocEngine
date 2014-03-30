@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/error/tlocError.h>
@@ -18,7 +19,7 @@
 namespace tloc { namespace core { namespace base_classes {
 
   // ///////////////////////////////////////////////////////////////////////
-  // InitializeAndDestroyOnce_TI (should go into core's base classes)
+  // TODO: InitializeAndDestroyOnce_TI (should go into core's base classes)
 
   template <typename T_Derived>
   class InitializeAndDestroyOnce_TI

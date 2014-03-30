@@ -1,4 +1,6 @@
 #include "tlocInputTypes.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.h>
 
 namespace tloc { namespace input { namespace Component {
@@ -85,7 +87,7 @@ namespace tloc { namespace input { namespace Component {
         { return "west"; }
       }
       else
-      { TLOC_ASSERT(false, "Invalid case statement - see cases above"); }
+      { TLOC_ASSERT_FALSE("Invalid case statement - see cases above"); }
     case k_north_east:
       return s_enumStrings[core_utils::EnumToIndex<k_north_east, true>::result];
     case k_south_east:
@@ -95,7 +97,7 @@ namespace tloc { namespace input { namespace Component {
     case k_south_west:
       return s_enumStrings[core_utils::EnumToIndex<k_south_west, true>::result];
     default:
-      TLOC_ASSERT(false, "Invalid direction is stored");
+      TLOC_ASSERT_FALSE("Invalid direction is stored");
       return s_enumStrings[core_utils::EnumToIndex<k_centered, true>::result];
     };
   }
@@ -154,7 +156,7 @@ namespace tloc { namespace input { namespace Component {
         { return "w"; }
       }
       else
-      { TLOC_ASSERT(false, "Invalid case statement - see cases above"); }
+      { TLOC_ASSERT_FALSE("Invalid case statement - see cases above"); }
     case k_north_east:
       return s_enumStringsShort[core_utils::EnumToIndex<k_north_east, true>::result];
     case k_south_east:
@@ -164,7 +166,7 @@ namespace tloc { namespace input { namespace Component {
     case k_south_west:
       return s_enumStringsShort[core_utils::EnumToIndex<k_south_west, true>::result];
     default:
-      TLOC_ASSERT(false, "Invalid direction is stored");
+      TLOC_ASSERT_FALSE("Invalid direction is stored");
       return s_enumStringsShort[core_utils::EnumToIndex<k_centered, true>::result];
     };
   }

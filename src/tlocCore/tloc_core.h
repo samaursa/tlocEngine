@@ -4,6 +4,8 @@
 // _misc
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/tlocAlgorithms.h>

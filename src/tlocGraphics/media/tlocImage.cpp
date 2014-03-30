@@ -1,5 +1,6 @@
 #include "tlocImage.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 

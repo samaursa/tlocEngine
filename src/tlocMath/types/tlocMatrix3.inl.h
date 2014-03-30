@@ -6,6 +6,9 @@
 #endif
 
 #include "tlocMatrix3.h"
+
+#include <tlocCore/tlocAssert.h>
+
 #include <tlocMath/types/tlocVector3.inl.h>
 #include <tlocMath/types/tlocMatrix.inl.h>
 

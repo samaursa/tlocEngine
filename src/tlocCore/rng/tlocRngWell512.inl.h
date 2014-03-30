@@ -2,6 +2,7 @@
 #define TLOC_RNG_WELL_512_INL
 
 #include "tlocRngWell512.h"
+#include <tlocCore/tlocAssert.h>
 
 #include <time.h>
 

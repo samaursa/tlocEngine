@@ -1,5 +1,6 @@
 #include "tlocFileIO.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>

@@ -1,5 +1,6 @@
 #include "tlocMaterial.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocGraphics/component_system/tlocMaterial.h>

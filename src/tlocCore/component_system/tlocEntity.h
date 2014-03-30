@@ -5,6 +5,7 @@
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocComponent.h>

@@ -1,5 +1,6 @@
 #include "tlocQuadRenderSystem.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>

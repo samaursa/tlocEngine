@@ -1,5 +1,6 @@
 #include "tlocShaderProgram.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>

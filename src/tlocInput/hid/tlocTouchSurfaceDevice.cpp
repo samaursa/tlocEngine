@@ -1,5 +1,7 @@
 #include "tlocTouchSurfaceDevice.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace input { namespace hid { namespace priv {
 
   //////////////////////////////////////////////////////////////////////////
@@ -197,7 +199,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     // Function is never called.
     static buffer_container_type s_emptyBufferContainer;
-    TLOC_ASSERT(false, "This function is only a stub and should never be called!");
+    TLOC_ASSERT_FALSE("This function is only a stub and should never be called!");
     return s_emptyBufferContainer;
   }
 

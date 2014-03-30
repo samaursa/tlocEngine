@@ -1,5 +1,6 @@
 #include "tlocCuboid.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>

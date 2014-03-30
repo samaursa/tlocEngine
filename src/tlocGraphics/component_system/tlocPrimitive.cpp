@@ -1,5 +1,7 @@
 #include "tlocPrimitive.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace graphics { namespace component_system {
 
   namespace p_primitive {

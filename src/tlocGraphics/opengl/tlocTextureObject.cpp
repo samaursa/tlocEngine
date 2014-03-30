@@ -1,5 +1,6 @@
 #include "tlocTextureObject.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>

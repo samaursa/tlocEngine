@@ -14,23 +14,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     namespace null_copy
     {
       struct Allow
-      {
-        template <typename T_Ptr>
-        void CheckNullBeforeCopy(T_Ptr )
-        { /* Intentionally Empty */ }
-
-      };
+      { void CheckNullBeforeCopy(void* a_ptr ); };
 
       struct Disallow
-      {
-        template <typename T_Ptr>
-        void CheckNullBeforeCopy(T_Ptr a_rawPtr)
-        {
-          TLOC_ASSERT_LOW_LEVEL(a_rawPtr != nullptr,
-            "Copy of NULL SharedPtr is disabled");
-          TLOC_UNUSED(a_rawPtr);
-        }
-      };
+      { void CheckNullBeforeCopy(void* a_rawPtr); };
     };
   };
 

@@ -1,4 +1,6 @@
 #include "tlocFrustum.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
 

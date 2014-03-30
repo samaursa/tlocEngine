@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocAny.inl.h>

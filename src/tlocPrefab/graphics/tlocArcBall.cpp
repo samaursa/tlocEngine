@@ -1,9 +1,11 @@
 #include "tlocArcBall.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocMath/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocComponentType.h>
 
+#include <tlocMath/component_system/tlocComponentType.h>
+
+#include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocArcBall.h>
 
 namespace tloc { namespace prefab { namespace graphics {

@@ -1,5 +1,6 @@
 #include "tlocWindow.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/containers/tlocQueue.inl.h>
 
 //------------------------------------------------------------------------

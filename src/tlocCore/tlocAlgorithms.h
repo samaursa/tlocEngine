@@ -3,9 +3,11 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms

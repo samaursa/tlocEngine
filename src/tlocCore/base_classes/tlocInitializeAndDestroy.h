@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/tlocAssert.h>
 
 namespace tloc { namespace core { namespace base_classes {
 

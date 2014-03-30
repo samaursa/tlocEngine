@@ -16,13 +16,9 @@
 // Header files that will be included in almost every file in the engine.
 // Avoid including extra headers here
 
-#include <assert.h>
 #include <tlocCore/types/tlocNullptr.h>
-#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
-
-#include <3rdParty/loki/TypeTraits.h>
 
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
@@ -293,97 +289,35 @@
 //````````````````````````````````````````````````````````````````````````
 // Run-time
 
-#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-
-// Sometimes VS gives the warning C4127: conditional expression is constant. To
-// circumvent that, TLOC_ASSERT for VS is slightly different.
-#if defined(_MSC_VER)
-  #define TLOC_ASSERT(_Expression, _Msg) \
-  assert( (_Msg, _Expression) )
-#else
-  #define TLOC_ASSERT(_Expression, _Msg) \
-  assert(_Expression && _Msg)
-#endif
-
-// Use this macro when warning the user of a potential problem that the user may
-// have overlooked. These can be safely disabled, i.e. the function guarantees
-// it will work properly with these asserts disabled
-#   ifndef TLOC_DISABLE_ASSERT_WARNINGS
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
-#   else
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
-#   endif
-
-#else
-#define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERT_WARN(_Expression, _Msg)
-#endif
-
-// Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
-
-//````````````````````````````````````````````````````````````````````````
-// Compile time
-
-// TODO: solve static assert problems on LLVM
-#ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
-#else
-# define TLOC_STATIC_ASSERT(_Expression, _Msg)
-#endif
-
-# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
-  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
-
-# define TLOC_STATIC_ASSERT_WIP() \
-  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
-# define TLOC_ASSERT_WIP() \
-  TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
-
-# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER)
-# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer)
-# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE)
-# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference)
-
-# define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT)
-# define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC)
-# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
-# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
-# define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
-  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported)
-
-//------------------------------------------------------------------------
-// Low level assertions
-// Define TLOC_ENABLE_ASSERT_LOW_LEVEL in your project to catch low level asserts
-// e.g. out of bounds access. These asserts are in areas that can be potentially
-// performance sensitive (e.g. vector/matrix accessors).
-
-#ifndef TLOC_DISABLE_ASSERT_LOW_LEVEL
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
-#endif
-
-//------------------------------------------------------------------------
-// Container assertions
-// Define TLOC_DISABLE_ASSERT_CONTAINERS in your project to disable assertions
-// for containers. These asserts are on by default in all configurations except
-// release WITHOUT debug info
-
-#if !defined(TLOC_DISABLE_ASSERT_CONTAINERS) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
-#endif
+//#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
+//
+//// Sometimes VS gives the warning C4127: conditional expression is constant. To
+//// circumvent that, TLOC_ASSERT for VS is slightly different.
+//#if defined(_MSC_VER)
+//  #define TLOC_ASSERT(_Expression, _Msg) \
+//  assert( (_Msg, _Expression) )
+//#else
+//  #define TLOC_ASSERT(_Expression, _Msg) \
+//  assert(_Expression && _Msg)
+//#endif
+//
+//// Use this macro when warning the user of a potential problem that the user may
+//// have overlooked. These can be safely disabled, i.e. the function guarantees
+//// it will work properly with these asserts disabled
+//#   ifndef TLOC_DISABLE_ASSERT_WARNINGS
+//#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
+//#   else
+//#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
+//#   endif
+//
+//#else
+//#define TLOC_ASSERT(_Expression, _Msg)
+//#define TLOC_ASSERT_WARN(_Expression, _Msg)
+//#endif
+//
+//// Other common asserts
+//#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
+//#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
 
 //////////////////////////////////////////////////////////////////////////
 // Miscellaneous

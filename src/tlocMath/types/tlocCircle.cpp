@@ -1,5 +1,6 @@
 #include "tlocCircle.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #include <tlocMath/types/tlocVector2.inl.h>

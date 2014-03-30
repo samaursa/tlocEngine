@@ -1,5 +1,6 @@
 #include "tlocEntitySystemBase.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 

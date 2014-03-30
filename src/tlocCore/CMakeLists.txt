@@ -5,6 +5,8 @@ set(TLOC_ENGINE_CORE
     tloc_core.cpp
     tlocAlgorithms.h
     tlocAlgorithms.inl.h
+    tlocAssert.h
+    tlocAssert.cpp
     tlocCoreBase.h
     tlocCoreBase.cpp
     tlocCoreIncludes.h
@@ -216,10 +218,12 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tloc_smart_ptr.cpp
     smart_ptr/tlocSharedPtr.h
     smart_ptr/tlocSharedPtr.inl.h
+    smart_ptr/tlocSharedPtr.cpp
     smart_ptr/tlocSmartPtr.h
     smart_ptr/tlocSmartPtr.inl.h
     smart_ptr/tlocUniquePtr.h
     smart_ptr/tlocUniquePtr.inl.h
+    smart_ptr/tlocUniquePtr.cpp
     smart_ptr/tlocVirtualPtr.h
     smart_ptr/tlocVirtualPtr.inl.h
     smart_ptr/tlocVirtualPtr.cpp

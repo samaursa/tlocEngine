@@ -1,6 +1,9 @@
 #include "tlocType.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/tlocAssert.h>
 
 #include <limits>
 

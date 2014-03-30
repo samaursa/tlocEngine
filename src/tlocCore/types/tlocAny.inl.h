@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #ifndef TLOC_DISABLE_ASSERT_ANY

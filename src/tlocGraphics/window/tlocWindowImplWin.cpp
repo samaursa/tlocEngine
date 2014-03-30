@@ -3,6 +3,7 @@
 #include "glext.h"
 #include "wglext.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>
 
@@ -78,7 +79,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     else
     {
       // Window is external, which we are not handling yet
-      TLOC_ASSERT(false, "External windows are not supported yet");
+      TLOC_ASSERT_FALSE("External windows are not supported yet");
     }
   }
 

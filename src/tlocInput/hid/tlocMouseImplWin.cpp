@@ -1,5 +1,6 @@
 #include "tlocMouseImplWin.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace input { namespace hid { namespace priv {

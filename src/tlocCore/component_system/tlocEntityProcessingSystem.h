@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocEntitySystemBase.h>
 
@@ -18,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
     friend class EntitySystemBase;
 
     virtual void SortEntities()
-    { TLOC_ASSERT(false, "No sorting function defined for this system"); }
+    { TLOC_ASSERT_FALSE("No sorting function defined for this system"); }
 
   protected:
     template <size_type T_VarSize>

@@ -486,6 +486,12 @@ namespace tloc { namespace core { namespace memory { namespace priv {
       size_type GetNumberOfPointersToMemAddresses(void* )
       { return 0; }
 
+      void EnableLogging(bool)
+      { }
+
+      bool IsLoggingEnabled()
+      { return false; }
+
     public:
 
       static this_type& Get()

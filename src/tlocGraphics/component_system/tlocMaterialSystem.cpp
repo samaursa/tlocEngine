@@ -1,6 +1,5 @@
 #include "tlocMaterialSystem.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
@@ -41,6 +40,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gfx_cs::Material                            mat_type;
     typedef gfx_cs::material_vptr                       mat_ptr;
     typedef mat_type::shader_prog_ptr                   shader_prog_ptr;
+    typedef mat_type::const_shader_prog_ptr             const_shader_prog_ptr;
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
@@ -59,29 +59,43 @@ namespace tloc { namespace graphics { namespace component_system {
       gl::FragmentShader        fShader;
       gl::Shader_I::error_type  result = ErrorSuccess;
 
-      shader_prog_ptr sp = matPtr->GetShaderProgRef();
+      shader_prog_ptr sp = matPtr->GetShaderProg();
 
-      if (sp->IsLinked())
-      { continue; }
+      if (sp->IsLinked() == false)
+      {
+        // TODO: Log this instead
+        const size_type vertSourceSize = matPtr->GetVertexSource().size();
+        const size_type fragSourceSize = matPtr->GetFragmentSource().size();
 
-      // TODO: Log this instead
-      TLOC_ASSERT(matPtr->GetVertexSource().size() > 0, "Vertex shader is empty");
-      TLOC_ASSERT(matPtr->GetFragmentSource().size() > 0, "Fragment shader is empty");
+        TLOC_LOG_GFX_WARN_IF(vertSourceSize == 0)
+          << "Vertex shader source is empty";
+        TLOC_LOG_GFX_WARN_IF(fragSourceSize == 0)
+          << "Fragment shader source is empty";
 
-      vShader.Load(matPtr->GetVertexSource().c_str() );
-      result = vShader.Compile();
-      TLOC_ASSERT(result == ErrorSuccess, "Could not compile vertex shader");
+        vShader.Load(matPtr->GetVertexSource().c_str() );
+        result = vShader.Compile();
+        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+          << "Could not compile vertex shader:\n"
+          << vShader.GetError().c_str();
 
-      result = fShader.Load(matPtr->GetFragmentSource().c_str());
-      result = fShader.Compile();
-      TLOC_ASSERT(result == ErrorSuccess, "Could not compile fragment shader");
+        result = fShader.Load(matPtr->GetFragmentSource().c_str());
+        result = fShader.Compile();
+        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+          << "Could not compile fragment shader:\n"
+          << fShader.GetError().c_str();
 
-      result = sp->AttachShaders
-        (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
-      TLOC_ASSERT(result == ErrorSuccess, "Could not attach shader programs");
+        result = sp->AttachShaders
+          (shader_prog_ptr::value_type::two_shader_components(&vShader, &fShader) );
+        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+          << "Could not attach shader program(s)";
 
-      result = sp->Link();
-      TLOC_ASSERT(result == ErrorSuccess, "Could not link shaders");
+        result = sp->Link();
+
+        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+          << "Could not link shader(s):\n"
+          << sp->GetError().c_str();
+      }
+
       sp->LoadUniformInfo();
       sp->LoadAttributeInfo();
       sp->Disable();
@@ -136,6 +150,8 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(MaterialSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(MaterialSystem);

@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -109,8 +108,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_vData->SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer() );
 
-      gl::shader_operator_vso so_quad;
-      so_quad->AddAttribute(*m_vData);
+      m_so_quad->RemoveAllAttributes();
+      m_so_quad->AddAttribute(*m_vData);
 
       if (a_ent->HasComponent(components::texture_coords))
       {
@@ -136,7 +135,7 @@ namespace tloc { namespace graphics { namespace component_system {
             m_tData[i]->SetVertexArray(texCoordCont,
                                        gl::p_shader_variable_ti::Pointer() );
 
-            so_quad->AddAttribute(*m_tData[i]);
+            m_so_quad->AddAttribute(*m_tData[i]);
           }
         }
       }
@@ -144,7 +143,7 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Enable the shader
 
-      mat_type::shader_prog_ptr sp = matPtr->GetShaderProgRef();
+      const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
@@ -172,9 +171,10 @@ namespace tloc { namespace graphics { namespace component_system {
       m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
       m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
 
-      so_quad->PrepareAllAttributes(*m_shaderPtr);
-      so_quad->EnableAllAttributes(*m_shaderPtr);
+      m_so_quad->PrepareAllAttributes(*m_shaderPtr);
+      m_so_quad->EnableAllAttributes(*m_shaderPtr);
 
+      TLOC_UNUSED(numVertices);
       glDrawArrays(GL_TRIANGLE_STRIP, 0,
                    core_utils::CastNumber<gfx_t::gl_sizei, tl_size>(numVertices));
     }
@@ -190,13 +190,6 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderPtr.reset();
     }
 
-    // clear the stored attributes
-    m_vData->ResetValue();
-
-    for (attributes_cont::iterator itr = m_tData.begin(), itrEnd = m_tData.end();
-         itr != itrEnd; ++itr)
-    { (*itr)->ResetValue(); }
-
     base_type::Post_ProcessActiveEntities(f64());
   }
 
@@ -205,6 +198,8 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(QuadRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(QuadRenderSystem);

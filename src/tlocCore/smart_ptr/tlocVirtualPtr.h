@@ -6,7 +6,6 @@
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -523,6 +522,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T>
   tl_size GetUseCount(const VirtualPtr<T>& a_vptr)
   { return a_vptr.use_count(); }
+
+  template <typename T>
+  VirtualPtr<T>
+    ToVirtualPtr(VirtualPtr<T> a_vptr)
+  { return a_vptr; }
 
   template <typename T, typename T_CopyPolicy>
   VirtualPtr<T>

@@ -114,6 +114,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef gfx_rend::Renderer                           renderer_type;
     typedef renderer_type::Params                        renderer_params_type;
     typedef gfx_rend::renderer_sptr                      renderer_sptr;
+    typedef priv::WindowImpl<this_type>                  impl_type;
 
   public:
 
@@ -245,6 +246,10 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active = true) const;
 
+    bool IsActive() const;
+
+    bool HasValidContext() const;
+
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.
     ///
@@ -314,7 +319,6 @@ namespace tloc { namespace graphics { namespace win {
 
     void DoCreateImpl();
 
-    typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
     bool                                    m_mouseVisible;
@@ -349,7 +353,6 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_window The Window
     ///-------------------------------------------------------------------------
     void SetNonActiveWindow(Window_T<>* a_window);
-
   };
 
   //////////////////////////////////////////////////////////////////////////

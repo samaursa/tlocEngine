@@ -3,8 +3,6 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 
@@ -434,10 +432,9 @@ namespace TestingSharedPtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
-
     derived* d1 = new derived();
     derived* d2 = new derived();
     derived* d3 = new derived();
@@ -450,41 +447,37 @@ namespace TestingSharedPtr
     // SharedPtr<derived> derPtrSS(d1);
 
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
 
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
 
     // derPtrS and derPtr are the same SharedPtr essentially and count
     // as one pointer reference
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
 
     derPtrS.reset();
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset();
     CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     derPtr.reset(d2);
     SharedPtr<derived> derPtr2(d3);
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
-    CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 1);
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 1);
-
-    delete d1;
-    delete d2;
-    delete d3;
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 0);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 0);
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/shared_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
 
   struct BaseClass

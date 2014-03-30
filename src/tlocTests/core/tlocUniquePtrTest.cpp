@@ -257,22 +257,21 @@ namespace TestingUniquePtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
-
     derived* d1 = new derived();
     derived* d2 = new derived();
     derived* d3 = new derived();
 
     UniquePtr<derived> derPtr(d1);
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d1));
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
     CHECK_FALSE(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
 
     UniquePtr<derived> derPtrS(derPtr);
-    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 1);
+    CHECK(core_mem::priv::DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     // This SHOULD fail
     // TODO: Turn this into a real test once we have a throwing assertion
@@ -286,18 +285,14 @@ namespace TestingUniquePtr
     UniquePtr<derived> derPtr2(d3);
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d2));
     CHECK(core_mem::priv::DoIsMemoryAddressTracked( (void*)d3));
-
-    delete d1;
-    delete d2;
-    delete d3;
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/unique_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
 
   TEST_CASE("core/smart_ptr/unique_ptr/GetUseCount", "")

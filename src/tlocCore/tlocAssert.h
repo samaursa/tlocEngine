@@ -33,19 +33,13 @@ namespace tloc { namespace core { namespace assert {
   do {\
     if (!(_Expression))\
     {\
-      printf("[E] Assertion failed: %s | %s(%lu)", _Msg, __FILE__, __LINE__);\
+      printf("\n[E] Assertion (%s) FAILED: %s | %s(%lu)", (#_Expression), _Msg, __FILE__, __LINE__);\
       TLOC_DEBUG_BREAK();\
     }\
   } while((void)0, 0)
 
   #define TLOC_ASSERT_WARN(_Expression, _Msg) \
-  do {\
-    if (!(_Expression))\
-    {\
-      printf("[E] Assertion failed: %s | %s(%lu)", _Msg, __FILE__, __LINE__);\
-      TLOC_DEBUG_BREAK();\
-    }\
-  } while((void)0, 0)
+    TLOC_ASSERT(_Expression, _Msg)
 
 #else
   #define TLOC_ASSERT(_Expression, _Msg) 

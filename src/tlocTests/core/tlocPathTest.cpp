@@ -9,7 +9,7 @@
 #include <cstring>
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocCore/io/tlocPath.h>
 
@@ -46,6 +46,12 @@ namespace TestingIOPath
       const char* path = "../../doc/users/myFile.txt";
       io::Path p(path);
       CHECK(StrCmp(p.GetPath(), path) == 0);
+
+      io::Path dup(p);
+      CHECK(dup == p);
+
+      io::Path notDup("../../doc/users/myFile.exe");
+      CHECK_FALSE(notDup == p);
 
       String ret;
       p.GetFileName(ret);

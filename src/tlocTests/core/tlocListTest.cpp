@@ -1,15 +1,15 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 #define private public
-#define protected public
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
-#undef private
-#undef protected
+#include <tlocCore/containers/tlocList.inl.h>
 
+// testing explicit instantiation macros
+TLOC_EXPLICITLY_INSTANTIATE_LIST(tloc::tl_int);
+TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(tloc::tl_int);
 
 namespace TestingList
 {
@@ -790,6 +790,19 @@ namespace TestingList
     CHECK(*itr++ == 200);
 
     itr2 = second.begin();
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
+    CHECK(*itr2++ == 100);
+
+    swap(first, second);
+    itr = second.begin();
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+    CHECK(*itr++ == 200);
+
+    itr2 = first.begin();
     CHECK(*itr2++ == 100);
     CHECK(*itr2++ == 100);
     CHECK(*itr2++ == 100);

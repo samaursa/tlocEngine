@@ -56,21 +56,30 @@ int main(int argc, char** argv)
   currentActiveWindow = tloc::graphics::win::GetCurrentActiveWindow();
   if (currentActiveWindow != NULL) 
   {
-    currentActiveWindow->SendEvent(tloc::graphics::win::WindowEvent::lost_focus);
+    using namespace tloc::graphics::win;
+    
+    WindowEvent evt(WindowEvent::lost_focus,
+                    currentActiveWindow->GetWidth(),
+                    currentActiveWindow->GetHeight());
+    currentActiveWindow->SendEvent(evt);
   }
   
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+  using namespace tloc::graphics::win;
   // Restart any tasks that were paused (or not yet started) while the 
   // application was inactive. If the application was previously in the
   // background, optionally refresh the user interface.
   tloc::graphics::win::Window_T<>* currentActiveWindow;
   currentActiveWindow = tloc::graphics::win::GetCurrentActiveWindow();
-  if (currentActiveWindow != NULL) 
+  if (currentActiveWindow != NULL)
   {
-    currentActiveWindow->SendEvent(tloc::graphics::win::WindowEvent::gained_focus);
+    WindowEvent evt(WindowEvent::gained_focus,
+                    currentActiveWindow->GetWidth(),
+                    currentActiveWindow->GetHeight());
+    currentActiveWindow->SendEvent(evt);
   }
 }
 

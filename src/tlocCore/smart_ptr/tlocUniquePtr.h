@@ -1,6 +1,7 @@
 #ifndef _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
 #define _TLOC_CORE_SMART_PTR_UNIQUE_PTR_H_
 
+#include <tlocCore/memory/tlocAllocators.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
@@ -64,6 +65,19 @@ namespace tloc { namespace core { namespace smart_ptr {
     pointer   m_rawPtr;
 
   };
+
+  //------------------------------------------------------------------------
+  // template definitions
+
+  template <typename T>
+  template <typename T_Other>
+  UniquePtr<T>::
+    UniquePtr(const UniquePtr<T_Other>& a_other)
+    : m_rawPtr( static_cast<pointer>(
+                const_cast<UniquePtr<T_Other>* >(&a_other)->release()) )
+  { 
+    core_mem::tracking::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Global operators
@@ -146,6 +160,25 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <class T>
   bool operator >=(nullptr_t, const UniquePtr<T>& b)
   { return !(nullptr < b); }
+
+  // -----------------------------------------------------------------------
+  // swap
+
+  template <typename T>
+  void swap(UniquePtr<T>& a, UniquePtr<T>& b)
+  { a.swap(b); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  tl_size GetUseCount(const UniquePtr<T>& a_uptr)
+  {
+    return a_uptr == nullptr ? 0 : 1;
+  }
+
+#define TLOC_TYPEDEF_UNIQUE_PTR(_type_, _typedef_)\
+  typedef tloc::core_sptr::UniquePtr<_type_>  _typedef_##_uptr;\
+  typedef tloc::core_sptr::UniquePtr<const _type_>  const_##_typedef_##_uptr
 
 };};};
 

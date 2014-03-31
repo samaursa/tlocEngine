@@ -8,5 +8,6 @@
 #include <tlocPrefab/input/tloc_input.h>
 #include <tlocPrefab/math/tloc_math.h>
 #include <tlocPrefab/physics/tloc_physics.h>
+#include <tlocPrefab/animation/tloc_animation.h>
 
 #endif

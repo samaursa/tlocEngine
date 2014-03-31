@@ -5,31 +5,101 @@
 
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class IPrimitive : public core::component_system::Component_T<IPrimitive>
+  namespace p_primitive
   {
-  protected:
-    typedef core::component_system::Component_T<IPrimitive>   base_type;
+    class ArrayOfStructures
+    {
+    public:
+      enum { k_component_id = components::mesh_interleaved };
 
-    typedef types::Vert3fpnc                              vert_type;
-    typedef core::containers::tl_array<vert_type>::type   cont_type;
-    typedef cont_type::iterator                           iterator;
-    typedef cont_type::const_iterator                     const_iterator;
+    public:
+      typedef types::Vert3fpnt                                  vert_type;
+      typedef core_conts::Array<vert_type>                      cont_type;
+      typedef tl_size                                           size_type;
+      typedef core_sptr::VirtualPtr<cont_type>                  cont_sptr;
+
+    public:
+      ArrayOfStructures();
+
+      void      AddVertex(const vert_type& a_vertex);
+      vert_type GetVertex(size_type a_position) const;
+      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
+      size_type size() const;
+      void      clear();
+
+    private:
+      cont_sptr m_vertexes;
+    };
+
+    class StructureOfArrays
+    {
+    public:
+      enum { k_component_id = components::mesh};
+
+    public:
+      typedef types::Vert3fpnt                                vert_type;
+      typedef math_t::Vec3f32                                 pos_type;
+      typedef math_t::Vec3f32                                 norm_type;
+      typedef math_t::Vec2f32                                 tcoord_type;
+
+      typedef core_conts::Array<pos_type>                     cont_pos_type;
+      typedef core_conts::Array<norm_type>                    cont_norm_type;
+      typedef core_conts::Array<tcoord_type>                  cont_tcoord_type;
+
+      typedef core_sptr::VirtualPtr<cont_pos_type>            cont_pos_ptr;
+      typedef core_sptr::VirtualPtr<cont_norm_type>           cont_norm_ptr;
+      typedef core_sptr::VirtualPtr<cont_tcoord_type>         cont_tcoord_ptr;
+
+      typedef tl_size                                         size_type;
+
+    public:
+      StructureOfArrays();
+
+      void      AddVertex(const vert_type& a_vertex);
+      vert_type GetVertex(size_type a_position) const;
+      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
+      size_type size() const;
+      void      clear();
+
+      TLOC_DECL_AND_DEF_GETTER(cont_pos_ptr, GetPositions, m_positions);
+      TLOC_DECL_AND_DEF_GETTER(cont_norm_ptr, GetNormals, m_normals);
+      TLOC_DECL_AND_DEF_GETTER(cont_tcoord_ptr, GetTCoords, m_tcoords);
+
+    private:
+      cont_pos_ptr     m_positions;
+      cont_norm_ptr    m_normals;
+      cont_tcoord_ptr  m_tcoords;
+    };
+  };
+
+  template <typename T_VertexStoragePolicy = p_primitive::StructureOfArrays>
+  class Primitive_TI
+    : public T_VertexStoragePolicy
+  {
+  public:
+    typedef types::Vert3fpnt                                vert_type;
+    typedef typename core_conts::tl_array<vert_type>::type  cont_type;
+    typedef typename cont_type::iterator                    iterator;
+    typedef typename cont_type::const_iterator              const_iterator;
+    typedef tl_size                                         size_type;
+
+    typedef T_VertexStoragePolicy                           base_type;
 
   public:
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(cont_type, GetVertexes, m_vertexes);
+    using base_type::AddVertex;
+    using base_type::GetVertex;
+    using base_type::ModifyVertex;
+    using base_type::size;
 
   protected:
-    IPrimitive(components::value_type a_id);
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(cont_type, DoGetVertexes, m_vertexes);
-
-  protected:
-    cont_type m_vertexes;
+    Primitive_TI();
   };
 
 };};};

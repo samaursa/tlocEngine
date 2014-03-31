@@ -46,7 +46,9 @@ namespace tloc { namespace core { namespace utils {
   // Getters
 
 #define TLOC_DECL_GETTER(_type_, _name_)\
-  const _type_ _name_() const
+  _type_ _name_() const
+#define TLOC_DECL_GETTER_NON_CONST(_type_, _name_)\
+  _type_ _name_()
 #define TLOC_DECL_GETTER_DIRECT(_type_, _name_)\
   _type_&       _name_()
 #define TLOC_DECL_GETTER_CONST_DIRECT(_type_, _name_)\
@@ -54,6 +56,9 @@ namespace tloc { namespace core { namespace utils {
 
 #define TLOC_DECL_AND_DEF_GETTER(_type_, _name_, _var_)\
   TLOC_DECL_GETTER(_type_, _name_) { return _var_; }
+
+#define TLOC_DECL_AND_DEF_GETTER_NON_CONST(_type_, _name_, _var_)\
+  TLOC_DECL_GETTER_NON_CONST(_type_, _name_) { return _var_; }
 
 #define TLOC_DECL_AND_DEF_GETTER_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_GETTER_DIRECT(_type_, _name_) { return _var_; }
@@ -66,8 +71,46 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DECL_SETTER(_type_, _name_)\
   void            _name_(_type_ const & a_in)
 
+#define TLOC_DECL_SETTER_CHAIN(_type_, _name_)\
+  this_type&      _name_(_type_ const & a_in)
+
+#define TLOC_DECL_SETTER_BY_VALUE(_type_, _name_)\
+  void            _name_(_type_ a_in)
+
+#define TLOC_DECL_SETTER_BY_VALUE_CHAIN(_type_, _name_)\
+  this_type&      _name_(_type_ a_in)
+
 #define TLOC_DECL_AND_DEF_SETTER(_type_, _name_, _var_)\
   TLOC_DECL_SETTER(_type_, _name_) { _var_ = a_in; }
+
+#define TLOC_DECL_AND_DEF_SETTER_BY_VALUE(_type_, _name_, _var_)\
+  TLOC_DECL_SETTER_BY_VALUE(_type_, _name_) { _var_ = a_in; }
+
+#define TLOC_DECL_AND_DEF_SETTER_CHAIN(_type_, _name_, _var_)\
+  TLOC_DECL_SETTER_CHAIN(_type_, _name_) { _var_ = a_in; return *this; }
+
+#define TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(_type_, _name_, _var_)\
+  TLOC_DECL_SETTER_BY_VALUE_CHAIN(_type_, _name_) { _var_ = a_in; return *this; }
+
+  // -----------------------------------------------------------------------
+  // For parameters
+
+  // This will declare and define getter/setter with the passed name. It
+  // will also return *this (reference of the instance) to allow chaining
+  // these methods.
+  // NOTE: You need to typedef the class as this_type
+
+  // Variable name is _name_
+  // Getter name is Get_name_
+  // Setter name is Set_name_
+
+#define TLOC_DECL_PARAM_VAR(_type_, _methodName_, _var_)\
+  this_type& _methodName_(const _type_& a_value)\
+  {\
+    _var_ = a_value;\
+    return *this;\
+  }\
+  _type_ _var_
 
   //------------------------------------------------------------------------
   // Expansions
@@ -76,16 +119,22 @@ namespace tloc { namespace core { namespace utils {
   TLOC_DECL_AND_DEF_GETTER_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(_type_, _name_, _var_)
 
-  ///-------------------------------------------------------------------------
-  /// Enum counter.
-  ///
-  /// This class is useful to count enums that are bit shifted, where a 'count'
-  /// doesn't give us the correct answer (for full usage, see tests)
-  ///-------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // Enum counter.
+  //
+  // This class is useful to count enums that are bit shifted, where a 'count'
+  // doesn't give us the correct answer (for full usage, see tests)
+  // -----------------------------------------------------------------------
   template <int T_CountInBits, bool T_CountZero = false>
   struct EnumCounter
   {
     enum { result = 1 + EnumCounter<T_CountInBits / 2, T_CountZero>::result };
+  };
+
+  template <bool T_CountZero>
+  struct EnumCounter<0, T_CountZero>
+  {
+    enum { result = 0 };
   };
 
   template <>
@@ -100,13 +149,25 @@ namespace tloc { namespace core { namespace utils {
     enum { result = 2 };
   };
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Enum to Index converter
 
-  template <int T_Enum, bool T_IncludeZero = false>
+  template <int T_Enum, bool T_IncludeZero = false, typename T_Dummy = DummyStruct>
   struct EnumToIndex
   {
     enum { result = 0 + EnumCounter<T_Enum / 2, T_IncludeZero>::result };
+  };
+
+  template <bool T_IncludeZero, typename T_Dummy>
+  struct EnumToIndex<0, T_IncludeZero, T_Dummy>
+  {
+    TLOC_STATIC_ASSERT_FALSE(T_Dummy, Enum_cannot_be_converted_to_index_when_not_including_zero);
+  };
+
+  template <>
+  struct EnumToIndex<0, true>
+  {
+    enum { result = 0 };
   };
 
   template <>
@@ -121,12 +182,12 @@ namespace tloc { namespace core { namespace utils {
     enum { result = 1 };
   };
 
-  ///-----------------------------------------------------------------------------
-  /// Used to prevent a struct or class from being initialized by declaring a
-  /// constructor with a static assert. Must be inherited from.
-  ///
-  /// \tparam  T A type that cannot be evaluated until compilation.
-  ///-----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // Used to prevent a struct or class from being initialized by declaring a
+  // constructor with a static assert. Must be inherited from.
+  //
+  // \tparam  T A type that cannot be evaluated until compilation.
+  // -----------------------------------------------------------------------
 
   template <typename T>
   struct TypedefHelperBase

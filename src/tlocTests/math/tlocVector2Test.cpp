@@ -3,7 +3,7 @@
 #define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
 #include <tlocMath/types/tlocVector2.h>
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 #undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
@@ -44,7 +44,7 @@ namespace TestingVector2f
     CHECK_VEC2F(c, 1, 2);
     CHECK_VEC2F(a, 1, 2);
 
-    c.Zero();
+    c.MakeZero();
     CHECK_VEC2F(c, 0, 0);
 
     d = a; e = b; d.Swap(e);
@@ -95,7 +95,7 @@ namespace TestingVector2f
     CHECK_VEC2F(a, BIG_FLOAT, BIG_FLOAT);
 #undef BIG_FLOAT
 
-    a.Zero();
+    a.MakeZero();
     CHECK_VEC2F(a, 0, 0);
   }
 
@@ -114,28 +114,29 @@ namespace TestingVector2f
     CHECK_VEC2F(c, -4, -4);
 
     // Addition single
-    c.Add(b);
+    c = c.Add(b);
     CHECK_VEC2F(c, 1, 2);
 
     // Subtraction single
-    c.Sub(a);
+    c = c.Sub(a);
     CHECK_VEC2F(c, 0, 0);
-    c.Sub(a);
+    c = c.Sub(a);
     CHECK_VEC2F(c, -1, -2);
 
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
 
-    c.Zero();
-    c.Mul(a);
+    c.MakeZero();
+    c = c.Mul(a);
     CHECK_VEC2F(c, 0, 0);
-    c = b; c.Mul(b);
+    c = b;
+    c = c.Mul(b);
     CHECK_VEC2F(c, 25, 36);
-    c.Mul(2);
+    c = c.Mul(2);
     CHECK_VEC2F(c, 50, 72);
-    c.Div(b);
+    c = c.Div(b);
     CHECK_VEC2F(c, 10, 12);
-    c.Div(2);
+    c = c.Div(2);
     CHECK_VEC2F(c, 5, 6);
   }
 
@@ -166,7 +167,7 @@ namespace TestingVector2f
     //////////////////////////////////////////////////////////////////////////
     // Multiplication single
 
-    c.Zero();
+    c.MakeZero();
     c *= a;
     CHECK_VEC2F(c, 0, 0);
     c = b; c *= b;

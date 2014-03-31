@@ -31,14 +31,17 @@ namespace tloc { namespace physics { namespace box2d {
   ///-------------------------------------------------------------------------
   struct ContactEvent
   {
-    typedef core::component_system::Entity entity_type;
+    typedef core_cs::Entity              entity_type;
+    typedef core_cs::entity_vptr         entity_ptr;
+    typedef core_cs::const_entity_vptr   const_entity_ptr;
 
     ContactEvent
-      (const entity_type* a_entityA = NULL, const entity_type* a_entityB = NULL)
-      : m_entityA(a_entityA), m_entityB(a_entityB) {}
+      (const_entity_ptr a_entityA = nullptr,
+       const_entity_ptr a_entityB = nullptr)
+       : m_entityA(a_entityA), m_entityB(a_entityB) {}
 
-    const entity_type* m_entityA;
-    const entity_type* m_entityB;
+    const_entity_ptr m_entityA;
+    const_entity_ptr m_entityB;
   };
 
   struct ContactCallbacks

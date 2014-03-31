@@ -75,7 +75,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::size_type               size_type;
     typedef u32                                           index_type;
 
-    MouseImplBase(parent_type* a_parent, param_list_type a_params)
+    MouseImplBase(parent_type& a_parent, param_list_type a_params)
       : base_type(a_parent), m_params(a_params)
     { }
 

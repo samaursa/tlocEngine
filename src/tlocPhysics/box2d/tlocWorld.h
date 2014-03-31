@@ -18,7 +18,8 @@ namespace tloc { namespace physics { namespace box2d {
   /// @brief  A physics world used to contain and simulate multiple bodies and
   /// constraints. An instance can only be constructed by the PhysicsManager.
   ///-------------------------------------------------------------------------
-  class World : public core::NonCopyable
+  class World
+    : public core_bclass::NonCopyable_I
   {
   public:
     friend class PhysicsManager;

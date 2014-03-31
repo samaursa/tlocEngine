@@ -1,5 +1,8 @@
 #include "tlocComponentPoolManager.h"
-#include "tlocComponentPoolManager.inl"
+#include "tlocComponentPoolManager.inl.h"
+
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/tlocAssert.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -12,15 +15,22 @@ namespace tloc { namespace core { namespace component_system {
 
   ComponentPool_I::
     ~ComponentPool_I()
-  { /* Intentionally empty */ }
+  { }
 
   //////////////////////////////////////////////////////////////////////////
   // ComponentPoolManager
 
   ComponentPoolManager::
+    ComponentPoolManager()
+    : m_numActivePools(0)
+  { }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ComponentPoolManager::
     ~ComponentPoolManager()
   {
-    delete_ptrs(m_pools.begin(), m_pools.end());
+    core::for_each_all(m_pools, core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -32,16 +42,14 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(index < m_pools.size(),
       "Pool not allocated for passed component type");
 
-    delete m_pools[index];
-
-    iterator itr = m_pools.begin();
-    advance(itr, index);
-    m_pools.erase(itr);
+    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_pools[index]);
+    --m_numActivePools;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ComponentPoolManager::iterator ComponentPoolManager::
+  ComponentPoolManager::component_pool_ptr
+    ComponentPoolManager::
     GetPool(component_type a_number)
   {
     TLOC_ASSERT( (size_type)a_number < m_pools.size(),
@@ -50,7 +58,7 @@ namespace tloc { namespace core { namespace component_system {
     iterator itr = m_pools.begin();
     core::advance(itr, a_number);
 
-    return itr;
+    return component_pool_ptr(*itr);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -58,12 +66,16 @@ namespace tloc { namespace core { namespace component_system {
   bool ComponentPoolManager::
     Exists(component_type a_number)
   {
-    if (core::utils::CastNumber<size_type, component_type>(a_number) >= size())
+    size_type cIndex =
+      core_utils::CastNumber<size_type>(a_number);
+    size_type s = size();
+
+    if (s == 0 ||  cIndex >= s)
     { return false; }
 
     iterator itr = m_pools.begin();
     advance(itr, a_number);
-    if (*itr == NULL)
+    if (*itr == nullptr )
     { return false; }
 
     return true;
@@ -77,6 +89,12 @@ namespace tloc { namespace core { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  ComponentPoolManager::size_type ComponentPoolManager::
+    GetNumActivePools() const
+  { return m_numActivePools; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void ComponentPoolManager::
     DoResize(size_type a_index)
   {
@@ -85,3 +103,14 @@ namespace tloc { namespace core { namespace component_system {
   }
 
 };};};
+
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core::component_system::ComponentPoolManager);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core::component_system::ComponentPool_I);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core::component_system::ComponentPoolManager);

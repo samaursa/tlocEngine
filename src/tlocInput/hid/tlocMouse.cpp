@@ -1,8 +1,9 @@
 #include "tlocMouse.h"
 
-#include <tlocCore/types/tlocTypes.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
-#include <tlocCore/tlocRange.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
+#include <tlocMath/tlocRange.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -21,19 +22,6 @@ namespace tloc { namespace input { namespace hid {
 #define MOUSE_PARAMS T_Policy, T_Platform
 #define MOUSE_TYPE   typename Mouse<MOUSE_PARAMS>
 
-  template class Mouse<InputPolicy::Buffered>;
-  template class Mouse<InputPolicy::Immediate>;
-
-  // Force instantiate the constructor for each platform
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
-  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
-#elif defined (TLOC_OS_IPHONE)
-  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
-  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
-#else
-# error TODO
-#endif
 
   //------------------------------------------------------------------------
   // Method definitions
@@ -43,7 +31,7 @@ namespace tloc { namespace input { namespace hid {
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
     : m_clamped(true)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
   }
 
   template <MOUSE_TEMP>
@@ -69,8 +57,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnButtonPress( (tl_size)this, a_event, a_buttonCode) == true)
+      if (m_allObservers[i]->OnButtonPress(core_utils::GetMemoryAddress(this),
+                                           a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -84,8 +72,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnButtonRelease( (tl_size)this, a_event, a_buttonCode) == true)
+      if (m_allObservers[i]->OnButtonRelease(core_utils::GetMemoryAddress(this),
+                                             a_event, a_buttonCode) == true)
       {
         break;
       }
@@ -98,11 +86,9 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnMouseMove( (tl_size)this, a_event) == true)
-      {
-        break;
-      }
+      if (m_allObservers[i]->OnMouseMove(core_utils::GetMemoryAddress(this),
+                                         a_event) == true)
+      { break; }
     }
   }
 
@@ -145,5 +131,24 @@ namespace tloc { namespace input { namespace hid {
   {
     m_clampY = a_range;
   }
+
+  //------------------------------------------------------------------------
+  // Forward Instantiations
+
+  template class Mouse<InputPolicy::Buffered>;
+  template class Mouse<InputPolicy::Immediate>;
+
+  //------------------------------------------------------------------------
+  // Force instantiate the constructor for each platform
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+  template Mouse<InputPolicy::Buffered>::Mouse(const windows_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const windows_mouse_param_type&);
+#elif defined (TLOC_OS_IPHONE)
+  template Mouse<InputPolicy::Buffered>::Mouse(const iphone_mouse_param_type&);
+  template Mouse<InputPolicy::Immediate>::Mouse(const iphone_mouse_param_type&);
+#else
+# error TODO
+#endif
 
 };};};

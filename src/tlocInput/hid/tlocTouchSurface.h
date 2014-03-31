@@ -99,12 +99,12 @@ namespace tloc { namespace input { namespace hid {
   };
 
   template <typename T_Policy = InputPolicy::Buffered,
-    typename T_Platform = typename core::PlatformInfo<>::platform_type>
+    typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class TouchSurface
     : public core::base_classes::DispatcherBaseArray
              <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type
-    , public core::NonCopyable
-  , public p_hid::TouchSurface
+    , public core_bclass::NonCopyable_I
+    , public p_hid::TouchSurface
   {
   public:
     typedef T_Platform                                    platform_type;
@@ -135,7 +135,7 @@ namespace tloc { namespace input { namespace hid {
     typedef priv::TouchSurfaceImpl<this_type> impl_type;
     typedef core::smart_ptr::UniquePtr<impl_type> impl_ptr_type;
 
-    impl_type*  m_impl;
+    impl_ptr_type  m_impl;
   };
 
   typedef TouchSurface<InputPolicy::Buffered>   TouchSurfaceB;

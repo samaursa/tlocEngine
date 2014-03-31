@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace types {
                T_ValueType a_A);
 
     template <typename T_ColorFormat>
-    int_type GetAs()
+    int_type GetAs() const
     {
       using namespace p_color::format;
       type_traits::AssertTypeIsSupported
@@ -63,7 +63,15 @@ namespace tloc { namespace graphics { namespace types {
     }
 
     template <typename T_ColorFormat, typename T_VectorType>
-    void     GetAs(T_VectorType& a_vec)
+    T_VectorType GetAs() const
+    {
+      T_VectorType v;
+      GetAs<T_ColorFormat>(v);
+      return v;
+    }
+
+    template <typename T_ColorFormat, typename T_VectorType>
+    void     GetAs(T_VectorType& a_vec) const
     {
       using namespace p_color::format;
       using tloc::math::types::Vec4f32;
@@ -99,13 +107,29 @@ namespace tloc { namespace graphics { namespace types {
 
   private:
     template <typename T_ColorFormat>
-    int_type DoGetAs();
+    int_type DoGetAs() const;
 
     template <typename T_ColorFormat, typename T_VectorType>
-    void DoGetAs(T_VectorType& a_vec);
+    void DoGetAs(T_VectorType& a_vec) const;
+
+    template <typename T_ValueType>
+    void DoSetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
+                 T_ValueType a_A);
 
     container_type      m_rgba;
   };
+
+  //--
+  // Template definitions
+
+  template <typename T_ValueType>
+  void Color::SetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
+                    T_ValueType a_A)
+  {
+    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueType);
+    DoSetAs(a_R, a_G, a_B, a_A);
+  }
+
 
 };};};
 

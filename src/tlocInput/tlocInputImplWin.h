@@ -4,6 +4,7 @@
 #include <tlocInput/tlocInputBase.h>
 
 #include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/containers/tlocArray.h>
@@ -13,15 +14,14 @@
 #include <tlocInput/tlocInputImpl.h>
 #include <tlocInput/tlocInputTypes.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <InitGuid.h> // Required to circumvent linking errors for dxguid.lib
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND> input_param_type;
+  typedef ParamList<core_t::Any> input_param_type;
 
 };};
 
@@ -30,7 +30,7 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool                  m_available;
+    bool                  m_inUse;
     GUID                  m_productGuid;
     GUID                  m_deviceGuid;
     core::string::String  m_deviceName;
@@ -53,9 +53,7 @@ namespace tloc { namespace input { namespace priv {
     typedef typename parent_type::size_type           size_type;
     typedef typename parent_type::input_type          input_type;
 
-    InputManagerImpl(parent_type* a_parent,
-                     param_type a_params);
-
+    InputManagerImpl(parent_type& a_parent, param_type a_params);
     ~InputManagerImpl();
 
     ///-------------------------------------------------------------------------
@@ -72,7 +70,7 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(parameter_options::Type a_params);
+    T_InputObject*  CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.

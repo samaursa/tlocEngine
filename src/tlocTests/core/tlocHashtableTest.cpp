@@ -3,16 +3,19 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocType.h>
 
 #include <tlocCore/containers/tlocList.h>
-#include <tlocCore/containers/tlocList.inl>
+#include <tlocCore/containers/tlocList.inl.h>
+
+#include <tlocCore/string/tlocString.h>
 
 #include <tlocCore/tlocFunctional.h>
 
 #include <tlocCore/containers/tlocHashtable.h>
-#include <tlocCore/containers/tlocHashtable.inl>
+#include <tlocCore/containers/tlocHashtable.inl.h>
 
 namespace TestingHashtable
 {
@@ -35,10 +38,10 @@ namespace TestingHashtable
     typedef DoublyList<e_type, true>::type  doubly_type;
     typedef Array<e_type>                   array_type;
 
-    template <typename T_HashT, typename T_Key, bool T_CacheHash, bool T_Unique>
+    template <typename T_HashT, typename T_Key, bool T_CacheHash, bool T_Unique, typename T_Hasher = hash<T_Key> >
     struct HT
     {
-      typedef HashtablePolicy<T_Key, use_self<T_Key>, hash<T_Key>,
+      typedef HashtablePolicy<T_Key, use_self<T_Key>, T_Hasher,
         hash_to_range_mod, range_hash_default, equal_to<T_Key>,
         prime_rehash_policy, T_HashT, T_CacheHash, T_Unique> type;
     };
@@ -139,15 +142,6 @@ namespace TestingHashtable
       T_Method<Hashtable<HashtableFixture::arraydouble_nohash_unique> >();
     }
   };
-
-  template class Hashtable<HashtableFixture::singly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doubly_nohash_unique>;
-  template class Hashtable<HashtableFixture::singlydoubly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doublysingly_nohash_unique>;
-  template class Hashtable<HashtableFixture::doublyarray_nohash_unique>;
-  template class Hashtable<HashtableFixture::array_nohash_unique>;
-  template class Hashtable<HashtableFixture::arraysingly_nohash_unique>;
-  template class Hashtable<HashtableFixture::arraydouble_nohash_unique>;
 
 #define TestMethodAllVariationsUniqueHashNotStored(T_Type) \
     T_Type<Hashtable<singly_nohash_unique> >(); \
@@ -584,4 +578,52 @@ namespace TestingHashtable
       CHECK( *itr == int2);
     }
   }
+
+  TEST_CASE_METHOD(HashtableFixture, "Core/Containers/Hashtable/with const char*", "")
+  {
+    using core::containers::Hashtable;
+
+    typedef HashtableElement<const core_str::String>      void_elem_type;
+    typedef DoublyList<void_elem_type>::type              bucket_type;
+    typedef DoublyList<bucket_type>::type                 bucket_holder_type;
+
+    typedef HashtableFixture::HT
+      <
+        bucket_holder_type, core_str::String, false, false
+      >::type doubly_nohash_nounique;
+
+    typedef Hashtable<doubly_nohash_nounique> ht_type;
+    typedef ht_type::iterator                 ht_itr_type;
+
+    ht_type stringTable;
+
+    const core_str::String str1 = "This";
+    const core_str::String str2 = "is";
+    const core_str::String str3 = "absolutely";
+    const core_str::String str4 = "great";
+
+    stringTable.insert(str1);
+    stringTable.insert(str2);
+
+    CHECK(stringTable.find(str3) == stringTable.end());
+    CHECK(stringTable.find(str4) == stringTable.end());
+    CHECK(stringTable.find(str1) != stringTable.end());
+    CHECK(stringTable.find(str2) != stringTable.end());
+
+    CHECK(stringTable.size() == 2);
+
+    {
+      ht_itr_type itr = stringTable.find(str1);
+      CHECK( *itr == str1);
+    }
+
+    {
+      ht_itr_type itr = stringTable.find(str2);
+      CHECK( *itr == str2);
+    }
+
+    CHECK(stringTable.erase(str1) == 1);
+    CHECK(stringTable.size() == 1);
+  }
+
 };

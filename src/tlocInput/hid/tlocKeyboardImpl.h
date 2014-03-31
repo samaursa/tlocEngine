@@ -76,7 +76,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <class T_ParentKeyboard, class T_ParamList>
   class KeyboardImplBase
-    : public core::base_classes::ImplBase<T_ParentKeyboard>
+    : public core_bclass::ImplBase<T_ParentKeyboard>
   {
   public:
     typedef core::base_classes::ImplBase<T_ParentKeyboard>  base_type;
@@ -89,10 +89,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::modifier_type           modifier_type;
     typedef u32                                           index_type;
 
-    KeyboardImplBase(parent_type* a_parent, param_list_type a_params)
+  public:
+    KeyboardImplBase(parent_type& a_parent, param_list_type a_params)
       : base_type(a_parent), m_params(a_params)
-    {
-    }
+    { }
 
     const param_list_type& GetParams() const
     {

@@ -54,6 +54,58 @@ namespace tloc { namespace core {
   template <typename T1, typename T2>
   TL_FI bool operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b);
 
+  namespace algos { namespace compare {
+
+    namespace pair {
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Compare the first value
+
+      template <typename T>
+      struct First
+      {
+        First(const T& a_valueToCompare)
+          : m_valueToCompare(a_valueToCompare)
+        { }
+
+        template <typename U>
+        bool operator()(const Pair<T, U>& a_pair)
+        { return a_pair.first == m_valueToCompare; }
+
+        const T& m_valueToCompare;
+      };
+
+      template <typename T>
+      First<T>
+        MakeFirst(const T& a_valueToCompare)
+      { return First<T>(a_valueToCompare); }
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Compare the second value
+
+      template <typename T>
+      struct Second
+      {
+        Second(const T& a_valueToCompare)
+          : m_valueToCompare(a_valueToCompare)
+        { }
+
+        template <typename U>
+        bool operator()(const Pair<T, U>& a_pair)
+        { return a_pair.second == m_valueToCompare; }
+
+        const T& m_valueToCompare;
+      };
+
+      template <typename T>
+      Second<T>
+        MakeSecond(const T& a_valueToCompare)
+      { return Second<T>(a_valueToCompare); }
+
+    };
+
+  };};
+
 };};
 
 #if _MSC_VER

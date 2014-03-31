@@ -7,6 +7,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 namespace tloc { namespace input {
 
@@ -30,18 +31,18 @@ namespace tloc { namespace input {
     template <typename T_InputObject>
     void IsInputTypeSupported()
     {
+#ifndef TLOC_OS_IPHONE // see changelog for why we have to do this
       TLOC_STATIC_ASSERT(
         (Loki::Conversion<T_InputObject, p_hid::HIDType>::exists),
         Object_must_be_HID_type);
+#endif
     }
   }
 
-  namespace parameter_options
+  namespace param_options
   {
-    enum Type
+    enum
     {
-      TL_DEFAULT = 0,
-
       // Useful only for windows
       TL_WIN_DISCL_BACKGROUND   = 1 << 0,
       TL_WIN_DISCL_EXCLUSIVE    = 1 << 1,
@@ -49,8 +50,11 @@ namespace tloc { namespace input {
       TL_WIN_DISCL_NONEXCLUSIVE = 1 << 3,
       TL_WIN_DISCL_NOWINKEY     = 1 << 4,
 
-      count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
-    };
+      TL_WIN_DISCL_DEFAULT = TL_WIN_DISCL_FOREGROUND |
+                             TL_WIN_DISCL_NONEXCLUSIVE,
+
+      k_count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
+    }; typedef tl_int value_type;
   }
 
   namespace buffer_size
@@ -114,7 +118,7 @@ namespace tloc { namespace input {
 
       // Relative and absolute types
       typedef core::ConditionalTypePackage
-              <value_type, value_type, 
+              <value_type, value_type,
                policy_result_type::value>                     rel_and_abs;
       typedef value_type                                      rel_type;
       typedef typename rel_and_abs::cond_type                 abs_type;
@@ -205,6 +209,40 @@ namespace tloc { namespace input {
     typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Point of view
+    struct Pov
+    {
+    public:
+      enum
+      {
+        k_centered    = 0,
+        k_north       = 1 << 0,
+        k_south       = 1 << 1,
+        k_east        = 1 << 2,
+        k_west        = 1 << 3,
+        k_north_east  = 1 << 4,
+        k_south_east  = 1 << 5,
+        k_north_west  = 1 << 6,
+        k_south_west  = 1 << 7,
+
+        k_count = core_utils::EnumCounter<k_south_west, true>::result
+      }; typedef tl_int direction_type;
+
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE(direction_type, SetDirection, m_direction);
+      TLOC_DECL_AND_DEF_GETTER(direction_type, GetDirection, m_direction);
+
+      bool        IsDirection(direction_type a_dir) const;
+      const char* GetDirectionAsString(direction_type a_dir) const;
+      const char* GetDirectionAsShortString(direction_type a_dir) const;
+
+    private:
+      direction_type      m_direction;
+
+      static const char*  s_enumStrings[];
+      static const char*  s_enumStringsShort[];
+    };
   }
 
 };};

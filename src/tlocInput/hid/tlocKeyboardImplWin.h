@@ -11,14 +11,16 @@
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
 
+// ///////////////////////////////////////////////////////////////////////
+// ParamList
+
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND, IDirectInput8*, parameter_options::Type>
+  typedef ParamList<HWND, IDirectInput8*, param_options::value_type>
     windows_keyboard_param_type;
 
 };};
@@ -43,7 +45,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::policy_type         policy_type;
     typedef typename base_type::keycode_type          keycode_type;
 
-    KeyboardImpl(parent_type* a_parent,
+    KeyboardImpl(parent_type& a_parent,
                  const keyboard_param_type& a_params);
     ~KeyboardImpl();
 

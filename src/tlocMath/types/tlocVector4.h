@@ -13,6 +13,8 @@ namespace tloc { namespace math { namespace types {
   template <typename T>
   class Vector4 : public Vector<T, 4>
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
   public:
     typedef Vector4<T>            this_type;
     typedef Vector<T, 4>          base_type;

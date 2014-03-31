@@ -2,6 +2,8 @@
 #define TLOC_LIST_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -402,5 +404,18 @@ namespace tloc { namespace core { namespace containers {
   };
 
 };};};
+
+namespace tloc { namespace core {
+
+  //------------------------------------------------------------------------
+  // swap
+
+  template <typename T, typename T_Node, typename T_Policy, 
+            bool T_DedicatedSize>
+  void swap(core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& a,
+            core_conts::List<T, T_Node, T_Policy, T_DedicatedSize>& b)
+  { a.swap(b); }
+
+};};
 
 #endif

@@ -1,6 +1,8 @@
 #include "tlocPhysicsManager.h"
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocCore/tlocAssert.h>
+
+#include <tlocMath/types/tlocVector2.inl.h>
 
 #include <tlocPhysics/box2d/tlocWorld.h>
 
@@ -16,6 +18,7 @@ namespace tloc { namespace physics { namespace box2d {
   namespace {
 
     typedef ContactEvent::entity_type   entity_type;
+    typedef ContactEvent::entity_ptr    entity_ptr;
     typedef b2Fixture                   fixture_type;
 
     typedef f32                         float_internal_type;
@@ -26,11 +29,11 @@ namespace tloc { namespace physics { namespace box2d {
       count
     };
 
-    entity_type*
+    entity_ptr
       DoGetParentEntity(fixture_type* a_fixture)
     {
-      return static_cast<entity_type*>
-        (a_fixture->GetUserData());
+      return entity_ptr(static_cast<entity_type*>
+                        (a_fixture->GetUserData()) );
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -41,8 +44,8 @@ namespace tloc { namespace physics { namespace box2d {
     ContactEvent
       DoCreateContactEvent(fixture_type* a_fixtureA, fixture_type* a_fixtureB)
     {
-      entity_type* entityA;
-      entity_type* entityB;
+      entity_ptr entityA;
+      entity_ptr entityB;
 
       entityA = DoGetParentEntity(a_fixtureA);
       entityB = DoGetParentEntity(a_fixtureB);
@@ -101,8 +104,8 @@ namespace tloc { namespace physics { namespace box2d {
   PhysicsManager::
     PhysicsManager()
     : m_flags(count)
-    , m_world(NULL)
-    , m_contactListener(NULL)
+    , m_world(nullptr)
+    , m_contactListener(nullptr)
   {
   }
 
@@ -124,7 +127,7 @@ namespace tloc { namespace physics { namespace box2d {
     m_world->GetWorld().SetContactListener(m_contactListener);
 
     m_flags.Mark(initialized);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -138,7 +141,7 @@ namespace tloc { namespace physics { namespace box2d {
     delete m_world;
     delete m_contactListener;
 
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -207,6 +210,6 @@ namespace tloc { namespace physics { namespace box2d {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiation
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::physics::box2d::PhysicsManager::vec_type);

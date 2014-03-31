@@ -1,48 +1,17 @@
 #-----------------------------------------------------------
 # - This project require some settings to be turned on
 
-# Store the current settings
-SET(CMAKE_CXX_FLAGS_OLD                 ${CMAKE_CXX_FLAGS})
-set(CMAKE_CXX_FLAGS_DEBUG_OLD           ${CMAKE_CXX_FLAGS_DEBUG})
-set(CMAKE_CXX_FLAGS_RELEASE_OLD         ${CMAKE_CXX_FLAGS_RELEASE})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_OLD  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+# set normal (non-strict) compiler flags
+tloc_add_definitions()
 
-set(CMAKE_CXX_FLAGS_DEBUG          ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT})
-set(CMAKE_CXX_FLAGS_RELEASE        ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT})
-
-if(TLOC_COMPILER_MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG           "/Od /Gm  /EHsc /RTC1 /MTd /GR /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELEASE         "/O2 /Ob2 /Oi /Ot /GL /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP")
-elseif(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS "-x objective-c++")
-  set(CMAKE_CXX_FLAGS_DEBUG "-fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELEASE "-fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fno-rtti -Wno-unused-function")
-else()
-  message("Configuration not applied because compiler is unsupported (or not detected properly)")
-endif()
-
-SET(CMAKE_CXX_FLAGS_DEFAULT                 ${CMAKE_CXX_FLAGS})
-set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
-set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
-
-
-
+# add all the test projects
 set(tlocAllTests
   tlocTestsCore
   tlocTestsGraphics
   tlocTestsInput
   tlocTestsMath
   tlocTestsPhysics
-  )
-
-add_definitions(
-  -DTLOC_ENABLE_CPPUNWIND 
-  -DTLOC_ENABLE_CPPRTTI 
-  -DTLOC_USING_STL 
+  tlocTestsAnimation
   )
 
 include_directories(
@@ -54,13 +23,25 @@ add_subdirectory(graphics)
 add_subdirectory(input)
 add_subdirectory(math)
 add_subdirectory(physics)
+add_subdirectory(animation)
 
 if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})
     if(TARGET ${testProj})
+      # MSVC requires LTCG for Release
+      set_target_properties(${testProj}
+        PROPERTIES
+        LINK_FLAGS_RELEASE "/LTCG"
+        LINK_FLAGS_RELWITHDEBINFO "/LTCG"
+        )
       set_target_properties(${testProj}
         PROPERTIES
         FOLDER tlocTests
+        )
+      # Make tlocVersion and tlocVersionTool as dependencies for all projects
+      add_dependencies(${testProj}
+        tlocVersion
+        tlocVersionTool
         )
     else()
       message("Test project ${testProj} not generated successfully.")

@@ -1,10 +1,10 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include "tlocCore/tlocAlgorithms.inl"
+#include "tlocCore/tlocAlgorithms.inl.h"
 
 #include <tlocCore/data_structures/tlocTuple.h>
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #include <tlocCore/data_structures/tlocVariadic.h>
 
@@ -130,6 +130,8 @@ namespace TestingTuple
     Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
     Tuple<tl_int, 5> a5(2);
 
+    Tuple<tl_uint, 4> u4(10);
+
     a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_one>();
     CHECK_TUP(a4_one, 0, 0, 0, 1);
     a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_zero>();
@@ -139,6 +141,9 @@ namespace TestingTuple
     CHECK_TUP(a4_same, 2, 2, 2, 2);
     a4_same = a3.ConvertTo<Tuple<tl_int, 4> >(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
+
+    u4 = a3.ConvertTo<Tuple<tl_uint, 4> >();
+    CHECK_TUP(u4, 0, 0, 0, 1);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Implicit conversion",
@@ -152,5 +157,23 @@ namespace TestingTuple
 
     a4 = a4.Cast<Tuple<s32, 4> >();
     CHECK_TUP(a4, 1, 2, 3, 9);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/MakeTuple", "")
+  {
+    Tuple<s32, 2> tup2 = core_ds::MakeTuple(1, 2);
+    CHECK(tup2[0] == 1);
+    CHECK(tup2[1] == 2);
+
+    Tuple<s32, 3> tup3 = core_ds::MakeTuple(1, 2, 3);
+    CHECK(tup3[0] == 1);
+    CHECK(tup3[1] == 2);
+    CHECK(tup3[2] == 3);
+
+    Tuple<s32, 4> tup4 = core_ds::MakeTuple(1, 2, 3, 4);
+    CHECK(tup4[0] == 1);
+    CHECK(tup4[1] == 2);
+    CHECK(tup4[2] == 3);
+    CHECK(tup4[3] == 4);
   }
 };

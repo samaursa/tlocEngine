@@ -3,9 +3,9 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/types/tlocTypes.inl>
+#include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 namespace TestingArray
 {
@@ -13,11 +13,44 @@ namespace TestingArray
   using namespace core;
   using namespace core::containers;
 
-  class SomeClass
+  struct SomeClass
   {
   public:
-    int dummy;
+    SomeClass()
+      : dummy(0)
+    { ++s_ctorCount; }
+
+    SomeClass(const SomeClass& a_other)
+      : dummy(a_other.dummy)
+    { ++s_ctorCount; }
+
+    SomeClass& operator=(SomeClass a_other)
+    {
+      swap(a_other);
+      return *this;
+    }
+
+    void swap(SomeClass& a_other)
+    {
+      using core::swap;
+      swap(dummy, a_other.dummy);
+    }
+
+    ~SomeClass()
+    { ++s_dtorCount;
+    }
+
+    int           dummy;
+    static int    s_ctorCount;
+    static int    s_dtorCount;
   };
+
+  int SomeClass::s_ctorCount;
+  int SomeClass::s_dtorCount;
+
+#define RESET_CTOR_DTOR_COUNT()\
+  SomeClass::s_ctorCount = 0;\
+  SomeClass::s_dtorCount = 0
 
   struct ArrayFixture
   {
@@ -133,91 +166,91 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/AssignmentOperator",
     "Test assigning an array to another")
   {
-    /*Array<u32> copyFromSmallArray, copyFromMedArray, copyFromLargeArray;
-    Array<u32> copyToSmallArray, copyToMedArray, copyToLargeArray;
-    FILL_INT_ARRAY_BY_PUSH(copyFromSmallArray, 0, 10);
-    FILL_INT_ARRAY_BY_PUSH(copyFromMedArray, 0, 20);
-    FILL_INT_ARRAY_BY_PUSH(copyFromLargeArray, 0, 30);*/
+    //TODO: Turn into function later so that we are not repeating the same tests
+    // multiple times with different types.
 
-    Array<u32> copyToTestArray;
-    FILL_INT_ARRAY_BY_PUSH(copyToTestArray, 0, 5);
+    SECTION("Array<u32>", "")
+    {
+      Array<u32> copyToTestArray;
+      FILL_INT_ARRAY_BY_PUSH(copyToTestArray, 0, 5);
 
-    REQUIRE(copyToTestArray.capacity() == 8);
-    REQUIRE(copyToTestArray.size() == 5);
+      REQUIRE(copyToTestArray.capacity() == 8);
+      REQUIRE(copyToTestArray.size() == 5);
 
-    Array<u32> copyFromTestArray;
+      Array<u32> copyFromTestArray;
 
-    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 20);
+      FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 20);
 
-    copyToTestArray = copyFromTestArray;
+      copyToTestArray = copyFromTestArray;
 
-    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 20);
+      CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 20);
 
-    REQUIRE(copyToTestArray.capacity() == 20);
-    REQUIRE(copyToTestArray.size() == 20);
+      REQUIRE(copyToTestArray.capacity() == 20);
+      REQUIRE(copyToTestArray.size() == 20);
 
-    copyFromTestArray.clear();
-    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 10);
+      copyFromTestArray.clear();
+      FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 10);
 
-    copyToTestArray = copyFromTestArray;
+      copyToTestArray = copyFromTestArray;
 
-    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 10);
+      CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 10);
 
-    REQUIRE(copyToTestArray.capacity() == 20);
-    REQUIRE(copyToTestArray.size() == 10);
+      REQUIRE(copyToTestArray.capacity() == 20);
+      REQUIRE(copyToTestArray.size() == 10);
 
-    copyFromTestArray.clear();
-    FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 15);
+      copyFromTestArray.clear();
+      FILL_INT_ARRAY_BY_PUSH(copyFromTestArray, 0, 15);
 
-    copyToTestArray = copyFromTestArray;
+      copyToTestArray = copyFromTestArray;
 
-    CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 15);
+      CHECK_ARRAY_BY_INDEX(copyToTestArray, 0, 15);
 
-    REQUIRE(copyToTestArray.capacity() == 20);
-    REQUIRE(copyToTestArray.size() == 15);
+      REQUIRE(copyToTestArray.capacity() == 20);
+      REQUIRE(copyToTestArray.size() == 15);
+    }
 
-    //TODO: Turn into function later
+    RESET_CTOR_DTOR_COUNT();
 
-    Array<SomeClass> copyToTestClassArray;
-    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyToTestClassArray, 0, 5);
+    SECTION("Array<SomeClass>", "")
+    {
+      Array<SomeClass> copyToTestClassArray;
+      FILL_TEST_CLASS_ARRAY_BY_PUSH(copyToTestClassArray, 0, 5);
 
-    REQUIRE(copyToTestClassArray.capacity() == 8);
-    REQUIRE(copyToTestClassArray.size() == 5);
+      REQUIRE(copyToTestClassArray.capacity() == 8);
+      REQUIRE(copyToTestClassArray.size() == 5);
 
-    Array<SomeClass> copyFromTestClassArray;
+      Array<SomeClass> copyFromTestClassArray;
 
-    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 20);
+      FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 20);
 
-    copyToTestClassArray = copyFromTestClassArray;
+      copyToTestClassArray = copyFromTestClassArray;
 
-    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 20);
+      CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 20);
 
-    REQUIRE(copyToTestClassArray.capacity() == 20);
-    REQUIRE(copyToTestClassArray.size() == 20);
+      REQUIRE(copyToTestClassArray.capacity() == 20);
+      REQUIRE(copyToTestClassArray.size() == 20);
 
-    copyFromTestClassArray.clear();
-    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 10);
+      copyFromTestClassArray.clear();
+      FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 10);
 
-    copyToTestClassArray = copyFromTestClassArray;
+      copyToTestClassArray = copyFromTestClassArray;
 
-    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 10);
+      CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 10);
 
-    REQUIRE(copyToTestClassArray.capacity() == 20);
-    REQUIRE(copyToTestClassArray.size() == 10);
+      REQUIRE(copyToTestClassArray.capacity() == 20);
+      REQUIRE(copyToTestClassArray.size() == 10);
 
-    copyFromTestClassArray.clear();
-    FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 15);
+      copyFromTestClassArray.clear();
+      FILL_TEST_CLASS_ARRAY_BY_PUSH(copyFromTestClassArray, 0, 15);
 
-    copyToTestClassArray = copyFromTestClassArray;
+      copyToTestClassArray = copyFromTestClassArray;
 
-    CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 15);
+      CHECK_TEST_CLASS_ARRAY_BY_INDEX(copyToTestClassArray, 0, 15);
 
-    REQUIRE(copyToTestClassArray.capacity() == 20);
-    REQUIRE(copyToTestClassArray.size() == 15);
-
-    /*smallArray = largeArray;
-
-    CHECK_ARRAY_BY_INDEX(smallArray, 0, 30);*/
+      REQUIRE(copyToTestClassArray.capacity() == 20);
+      REQUIRE(copyToTestClassArray.size() == 15);
+    }
+    CHECK(SomeClass::s_ctorCount == SomeClass::s_dtorCount);
   }
 
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/ElementAccess",
@@ -445,32 +478,50 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
-    ints.resize(0); // should not crash or do anything
-    CHECK(ints.size() == 0);
-    ints.resize(2); // should not crash
-    CHECK(ints.size() == 2);
-    ints.clear();
-
-    u32 firstElement = 0;
-    u32 arraySize = 10;
-    FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);
-    CHECK(ints.size() == arraySize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, arraySize);
-
-    u32 resizeSize = 5;
-    ints.resize(resizeSize);
-    CHECK(ints.size() == resizeSize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, resizeSize);
-
-    resizeSize = 150;
-    ints.resize(resizeSize);
-    CHECK(ints.size() == resizeSize);
-    CHECK_ARRAY_BY_INDEX(ints, firstElement, 5);
-
-    // Check that all 'resizeSize' elements have been allocated properly
-    for (u32 i = 0; i < resizeSize; ++i)
+    SECTION("Simple types", "")
     {
-      ints[i] = i;
+      ints.resize(0); // should not crash or do anything
+      CHECK(ints.size() == 0);
+      ints.resize(2); // should not crash
+      CHECK(ints.size() == 2);
+      ints.clear();
+
+      u32 firstElement = 0;
+      u32 arraySize = 10;
+      FILL_INT_ARRAY_BY_PUSH(ints, firstElement, arraySize);
+      CHECK(ints.size() == arraySize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, arraySize);
+
+      u32 resizeSize = 5;
+      ints.resize(resizeSize);
+      CHECK(ints.size() == resizeSize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, resizeSize);
+
+      resizeSize = 150;
+      ints.resize(resizeSize);
+      CHECK(ints.size() == resizeSize);
+      CHECK_ARRAY_BY_INDEX(ints, firstElement, 5);
+
+      // Check that all 'resizeSize' elements have been allocated properly
+      for (u32 i = 0; i < resizeSize; ++i)
+      {
+        ints[i] = i;
+      }
+    }
+
+    SECTION("Complex types", "Our array copies complex types instead of using "
+      "realloc which 'moves' the objects. This is to ensure that objects with "
+      "side effects get constructed/destructed/copied properly. This is "
+      "obviously slower than reallocation provided reallocation can 'extend' "
+      "the memory block. On the plus side, it is not deterministically slow for "
+      "complex objects")
+    {
+      someClass.resize(1);
+      SomeClass* ptr = someClass.begin();
+
+      someClass.resize(someClass.capacity() + 1);
+      // pointer should be invalid
+      CHECK(ptr != someClass.begin());
     }
   }
 

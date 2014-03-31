@@ -20,26 +20,25 @@ namespace tloc { namespace core { namespace base_classes {
   /// implementations can derive from this class.
   ///-------------------------------------------------------------------------
   template <class T_ParentClass>
-  class ImplBase : public NonCopyable
+  class ImplBase
+    : public NonCopyable_I
   {
   public:
     typedef T_ParentClass                             parent_type;
     typedef typename parent_type::platform_type       platform_type;
 
-    ImplBase(parent_type* a_parent) : m_parent(a_parent)
-    {
-      TLOC_ASSERT_NOT_NULL(m_parent);
-    }
+    ImplBase(parent_type& a_parent) : m_parent(a_parent)
+    { }
 
-    const parent_type* GetParent() const { return m_parent; }
-    parent_type*       GetParent()       { return m_parent; }
+    const parent_type& GetParent() const { return m_parent; }
+    parent_type&       GetParent()       { return m_parent; }
 
   protected:
     ~ImplBase() {}
 
   protected:
 
-    parent_type*      m_parent;
+    parent_type&      m_parent;
   };
 
 };};};

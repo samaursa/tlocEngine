@@ -4,14 +4,16 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocPhysics/box2d/tlocRigidBodyDef.h>
 #include <tlocPhysics/box2d/tlocRigidBody.h>
-#include <tlocPhysics/box2d/tlocRigidBody.inl>
+#include <tlocPhysics/box2d/tlocRigidBody.inl.h>
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics { namespace component_system {
 
@@ -21,14 +23,18 @@ namespace tloc { namespace physics { namespace component_system {
   /// Note: The component is initialized during the RigidBodySystem
   /// initialization.
   ///-------------------------------------------------------------------------
-  class RigidBody : public core::component_system::Component_T<RigidBody>
+  class RigidBody
+    : public core::component_system::Component_T<RigidBody,
+                                                 components::k_rigidBody>
   {
   public:
-    typedef core::component_system::Component_T<RigidBody>  base_type;
+    typedef core::component_system::Component_T
+      <RigidBody, components::k_rigidBody>                  base_type;
     typedef box2d::rigid_body_def_sptr                      rigid_body_def_sptr;
     typedef box2d::RigidBody                                rigid_body_type;
 
   public:
+    RigidBody();
     RigidBody
       (rigid_body_def_sptr a_rigidBodyDef);
 
@@ -46,8 +52,9 @@ namespace tloc { namespace physics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBody>                   RigidBodyPtr;
-  typedef core::component_system::ComponentPool_TI<RigidBodyPtr>  rigid_body_pool;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBody, rigid_body);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(RigidBody, rigid_body);
+  TLOC_TYPEDEF_COMPONENT_POOL(RigidBody, rigid_body);
 
 };};};
 #endif

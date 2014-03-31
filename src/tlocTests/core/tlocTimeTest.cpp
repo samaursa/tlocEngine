@@ -1,15 +1,15 @@
 #include "tlocTestCommon.h"
 
-#if defined(TLOC_OS_WIN)
-# include<Windows.h>
-#elif defined(TLOC_OS_IPHONE)
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
+
+#if defined(TLOC_OS_IPHONE)
 # include<unistd.h>
 #endif
 
 #include<time.h>
 
 #include <tlocCore/time/tlocTime.h>
-#include <tlocCore/time/tlocTime.inl>
+#include <tlocCore/time/tlocTime.inl.h>
 
 namespace TestingTime
 {
@@ -110,12 +110,12 @@ namespace TestingTime
   template <typename T_UInt>
   void TimeTestSleepCTimeS(T_UInt durationS)
   {
-    T_UInt startTime = (T_UInt)::time(NULL);
+    T_UInt startTime = (T_UInt)::time(nullptr);
     T_UInt currentTime = startTime;
 
     while (currentTime - startTime < durationS)
     {
-      currentTime = (T_UInt)::time(NULL);
+      currentTime = (T_UInt)::time(nullptr);
     }
   }
 
@@ -132,8 +132,9 @@ namespace TestingTime
     timerOne.Reset ();
     timerTwo.Reset();
 
+    const UInt_type waitTimeMicroSeconds = 5;
     real_type timeOneS = timerOne.ElapsedSeconds();
-    TimeTestSleepMicroS<real_type, UInt_type>(1);
+    TimeTestSleepMicroS<real_type, UInt_type>(waitTimeMicroSeconds);
     real_type timeTwoS = timerTwo.ElapsedSeconds();
 
     CHECK(timeOneS < timeTwoS);

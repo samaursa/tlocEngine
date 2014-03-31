@@ -6,6 +6,11 @@
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+
+#include <tlocCore/memory/tlocMemoryPoolIndexedWrapper.h>
+
 namespace tloc { namespace core { namespace memory {
 
   //------------------------------------------------------------------------
@@ -31,6 +36,8 @@ namespace tloc { namespace core { namespace memory {
       // The user element must have an m_index variable
       struct User { };
     };
+
+    TL_I tl_int GetInvalidIndex();
   };
 
   //------------------------------------------------------------------------
@@ -53,14 +60,23 @@ namespace tloc { namespace core { namespace memory {
   ///-------------------------------------------------------------------------
   template <class T,
             tl_uint T_Capacity = 0,
-            class T_PolicyAllocation = p_memory_pool_index::allocation::On_Stack,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndexed
+    : public core_bclass::NonCopyable_I
   {
   public:
+    enum { k_capacity = T_Capacity };
 
-    typedef T_PolicyAllocation                        policy_allocation_type;
-    typedef T_PolicyIndexing                          policy_indexing_type;
+  public:
+    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
+
+    typedef typename
+      Loki::Select<pool_size_type::value == 0,
+        p_memory_pool_index::allocation::On_Heap,
+        p_memory_pool_index::allocation::On_Stack>
+        ::Result                                        policy_allocation_type;
+
+    typedef T_PolicyIndexing                            policy_indexing_type;
 
     typedef typename
       Loki::Int2Type<Loki::IsSameType<policy_allocation_type,
@@ -72,10 +88,11 @@ namespace tloc { namespace core { namespace memory {
       p_memory_pool_index::indexing::Wrapper>::value>
                                                   policy_indexing_result_type;
 
-    typedef typename Loki::Int2Type<T_Capacity>         pool_size_type;
-
     // The value_type can be T or T* depending on the policy
     typedef T                                           value_type;
+    typedef core_sptr::VirtualStackObjectBase_TI
+              <value_type>                              value_type_vso;
+    typedef core_sptr::VirtualPtr<value_type>           pointer;
     typedef tl_int                                      index_type;
     typedef tl_size                                     size_type;
 
@@ -83,49 +100,55 @@ namespace tloc { namespace core { namespace memory {
                             T_Capacity,
                             policy_allocation_type>     this_type;
 
-  private:
-#include "tlocMemoryPoolIndexedWrapper.h"
-  public:
+    typedef type_false                                 fixed_container_selected;
+    typedef type_true                                  dynamic_container_selected;
+
+    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
+    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
+
+    typedef priv::MemoryPoolIndexedWrapper<value_type>          wrapper_value_type;
+    typedef core_sptr::VirtualStackObjectBase_TI
+              <wrapper_value_type>                              wrapper_value_type_vso;
+    typedef core_sptr::VirtualPtr<wrapper_value_type>           wrapper_pointer;
 
     // Select T or T* as the value_type
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       value_type, value_type*>::Result                 selected_user_type;
+       value_type_vso, pointer>::Result                   selected_user_type;
 
     typedef typename Loki::Select
       <policy_allocation_result_type::value,
-       Wrapper<value_type, index_type>,
-       Wrapper<value_type, index_type>*>::Result        selected_wrapper_type;
+       wrapper_value_type_vso,
+       wrapper_pointer>::Result                           selected_wrapper_type;
 
     typedef typename Loki::Select
       <policy_indexing_result_type::value,
-       Wrapper<value_type, index_type>,
-       value_type>::Result                              selected_value_type;
+       wrapper_value_type, value_type>::Result            selected_value_type;
 
     // Declare our element wrapper
     typedef typename Loki::Select
       <
         policy_indexing_result_type::value,
         selected_wrapper_type, selected_user_type
-      >::Result                                         wrapper_type;
+      >::Result                                           final_value_type;
 
     // Select the proper array
     typedef typename
-      containers::tl_array<wrapper_type,
-               containers::Array_Unordered>::type       d_array_type;
+      containers::tl_array<final_value_type,
+               containers::Array_Unordered>::type         d_array_type;
     typedef typename containers::tl_array_fixed
-      <wrapper_type, pool_size_type::value>::type       s_array_type;
+      <final_value_type, pool_size_type::value>::type     s_array_type;
 
     typedef typename
       Loki::Select
       <
         pool_size_type::value == 0,
         d_array_type, s_array_type
-      >::Result                                         container_type;
+      >::Result                                           container_type;
 
     // Declare iterator types
-    typedef typename container_type::iterator           iterator;
-    typedef typename container_type::const_iterator     const_iterator;
+    typedef typename container_type::iterator             iterator;
+    typedef typename container_type::const_iterator       const_iterator;
 
   public:
 
@@ -145,9 +168,10 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The next.
     ///-------------------------------------------------------------------------
-    iterator      GetNext();
+    iterator          GetNext();
+    final_value_type& GetNextValue();
 
-    iterator      Find(const wrapper_type& a_returnedElement);
+    iterator      Find(const final_value_type& a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
@@ -179,8 +203,8 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @return The indexed value.
     ///-------------------------------------------------------------------------
-    wrapper_type&       operator[](tl_int a_index);
-    wrapper_type const& operator[](tl_int a_index) const;
+    final_value_type&       operator[](index_type a_index);
+    final_value_type const& operator[](index_type a_index) const;
 
     size_type   GetTotal() const;
     size_type   GetAvail() const;
@@ -211,13 +235,8 @@ namespace tloc { namespace core { namespace memory {
     ///-------------------------------------------------------------------------
     bool            IsValid(const iterator a_element) const;
 
+
   public:
-
-    typedef type_false                                 fixed_container_selected;
-    typedef type_true                                  dynamic_container_selected;
-
-    typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
-    typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
 
     // Used for selecting functions wrt the container type
     typedef typename Loki::Select<pool_size_type::value == 0,
@@ -225,46 +244,14 @@ namespace tloc { namespace core { namespace memory {
                                                         container_dynamic_type;
 
   protected:
-    void            DoResize(size_type, fixed_container_selected);
-    void            DoResize(size_type a_newSize, dynamic_container_selected);
-
-    void            DoInitializeRange(iterator a_begin, iterator a_end,
-                                      index_type a_startingIndex);
-
-    bool            DoExpand(size_type a_size, fixed_container_selected);
-    bool            DoExpand(size_type a_size, dynamic_container_selected);
 
     index_type      DoGetAvailIndex() const;
-
-
-    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_stack);
-    index_type&      DoGetIndex(wrapper_type& a_element, allocation_on_heap);
-
-    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_stack) const;
-    index_type      DoGetIndex(const wrapper_type& a_element, allocation_on_heap) const;
-
-    void            DoNewElement(iterator, allocation_on_stack);
-    void            DoNewElement(iterator a_pos, allocation_on_heap);
-
-    void            DoCleanup(allocation_on_stack);
-    void            DoCleanup(allocation_on_heap);
-
     bool            DoIsInitialized() const;
 
     container_type            m_allElements;
     index_type                m_numAvail;
-
-    static const index_type   sm_invalidIndex;
   };
 
 };};};
-
-///-------------------------------------------------------------------------
-/// @note this memory pool MUST NOT be explicitly instantiated because
-/// some methods will not compile due to different policy types - Hence one
-/// of the rare few classes where the inline file is being inclued in the
-/// header
-///-------------------------------------------------------------------------
-#include "tlocMemoryPool.inl"
 
 #endif

@@ -1,6 +1,6 @@
 #include "tlocTouchSurface.h"
 
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 //------------------------------------------------------------------------
 // Platform dependent includes
@@ -26,7 +26,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_ParamList>
   TouchSurface<TOUCH_SURFACE_PARAMS>::TouchSurface(const T_ParamList& a_paramList)
   {
-    m_impl = new impl_type(this, a_paramList);
+    m_impl.reset( new impl_type(*this, a_paramList) );
   }
 
   template <TOUCH_SURFACE_TEMP>

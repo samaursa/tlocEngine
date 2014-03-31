@@ -1,11 +1,11 @@
 #include "tlocCamera.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocMath/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocComponentType.h>
 
+#include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
+#include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
 
 namespace tloc { namespace prefab { namespace graphics {

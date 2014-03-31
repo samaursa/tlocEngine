@@ -23,15 +23,6 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::entity_ptr;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
 

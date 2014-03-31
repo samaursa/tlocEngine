@@ -8,6 +8,7 @@
 
 #include "tlocMemoryPoolIndexedWrapper.h"
 #include <tlocCore/tlocAssert.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
 namespace tloc { namespace core { namespace memory { namespace priv {

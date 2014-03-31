@@ -7,6 +7,7 @@
 
 #include "tlocComponentPoolManager.h"
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace component_system {

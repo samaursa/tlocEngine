@@ -52,6 +52,10 @@ namespace tloc { namespace graphics { namespace component_system {
     m_tData.push_back(gl::attribute_vso() );
     m_tData.back()->SetName("a_tCoord4");
   }
+  
+  QuadRenderSystem::
+    ~QuadRenderSystem()
+  { }
 
   error_type QuadRenderSystem::InitializeEntity(entity_ptr)
   { return ErrorSuccess; }
@@ -204,3 +208,5 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(QuadRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(QuadRenderSystem::vec2_cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(QuadRenderSystem::vec3_cont_type);

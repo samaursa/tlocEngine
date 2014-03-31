@@ -451,7 +451,8 @@ namespace tloc { namespace core { namespace memory {
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_USING_WRAPPER(_type_, _capacity_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>;\
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>)
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_ON_STACK_USER(_type_, _capacity_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL(_type_, _capacity_, \
@@ -464,7 +465,8 @@ namespace tloc { namespace core { namespace memory {
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, \
     tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
-  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>
+  template class tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>;\
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>)
 
 #define TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USER(_type_)\
   TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN(_type_, _capacity_, \

@@ -2,6 +2,8 @@
 #define TLOC_ARRAY_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
@@ -53,6 +55,11 @@ namespace tloc { namespace core { namespace containers {
     typedef tloc::core::reverse_iterator<iterator>        reverse_iterator;
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
+  private:
+    typedef type_true                                     array_simple_type;
+    typedef type_false                                    array_complex_type;
+
+  public:
     //------------------------------------------------------------------------
     // Functions
     //
@@ -120,6 +127,8 @@ namespace tloc { namespace core { namespace containers {
     iterator         erase(iterator a_rangeBegin, iterator a_rangeEnd);
     void             clear();
 
+    void             swap(this_type& a_vec);
+
   protected:
     //------------------------------------------------------------------------
     // Internal Functions
@@ -134,6 +143,9 @@ namespace tloc { namespace core { namespace containers {
 
     pointer          DoAllocate(const size_type& a_size);
     pointer          DoReAllocate(const size_type& a_size);
+    pointer          DoReallocateWithCopy(size_type a_size, array_simple_type);
+    pointer          DoReallocateWithCopy(size_type a_size, array_complex_type);
+
     void             DoFree(pointer a_ptr);
 
     // Destroys a range of values only
@@ -302,6 +314,13 @@ namespace tloc { namespace core { namespace containers {
                                              T_InputIterator a_first,
                                              T_InputIterator a_last);
   };
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // swap
+
+  template <typename T, typename T_Policy>
+  void swap(Array<T, T_Policy>& a, Array<T, T_Policy>& b)
+  { a.swap(b); }
 
   //////////////////////////////////////////////////////////////////////////
   // default types for easy instantiation

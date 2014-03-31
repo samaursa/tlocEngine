@@ -1,5 +1,5 @@
 #include "tlocTuple.h"
-#include "tlocTuple.inl"
+#include "tlocTuple.inl.h"
 
 #ifndef TLOC_FULL_SOURCE
 //------------------------------------------------------------------------
@@ -24,7 +24,7 @@
 #undef CLASS_NAME
 //------------------------------------------------------------------------
 // Include the definitions
-#include <tlocCore/data_structures/tlocTuple.inl>
+#include <tlocCore/data_structures/tlocTuple.inl.h>
 
 #else
 
@@ -51,6 +51,10 @@ namespace tloc { namespace core { namespace data_structs {
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s64, 4);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u32, 4);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(u64, 4);
+
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(tl_size, 2);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(tl_size, 3);
+  TLOC_EXPLICITLY_INSTANTIATE_TUPLE(tl_size, 4);
 
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 2);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 3);

@@ -25,6 +25,9 @@
     };
 
     extern nullptr_t nullptr;
+  #else
+    #include <cstddef>
+    using std::nullptr_t;
   #endif
 
 #endif

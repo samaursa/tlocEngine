@@ -1,6 +1,6 @@
 #include "tlocWorld.h"
 
-#include <tlocMath/types/tlocVector2.inl>
+#include <tlocMath/types/tlocVector2.inl.h>
 
 namespace tloc { namespace physics { namespace box2d {
 
@@ -26,6 +26,6 @@ namespace tloc { namespace physics { namespace box2d {
 //////////////////////////////////////////////////////////////////////////
 // Explicit instantiation
 
-#include <tlocCore/types/tlocStrongType.inl>
+#include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::physics::box2d::World::vec_type);

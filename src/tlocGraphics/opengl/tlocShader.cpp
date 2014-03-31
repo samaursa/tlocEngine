@@ -1,10 +1,11 @@
 #include "tlocShader.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -44,7 +45,8 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  Shader_I::Shader_I() : m_flags(count)
+  Shader_I::Shader_I()
+    : m_flags(count)
   {
   }
 
@@ -65,7 +67,7 @@ namespace tloc { namespace graphics { namespace gl {
     object_handle handle = GetHandle();
     if (!handle)
     {
-      return common_error_types::error_invalid_handle;
+      return TLOC_ERROR(common_error_types::error_invalid_handle);
     }
 
     // Load the shader
@@ -74,10 +76,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     // TODO: Log proper OpenGL errors
     if(Error().Failed())
-    { return error::error_shader_source; }
+    { return TLOC_ERROR(error::error_shader_source); }
 
     m_flags.Mark(shader_loaded);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   Shader_I::error_type Shader_I::Compile()
@@ -99,11 +101,11 @@ namespace tloc { namespace graphics { namespace gl {
       DoSetError(logBuffer);
 
       // TODO: Write shader log
-      return error::error_shader_compile;
+      return TLOC_ERROR(error::error_shader_compile);
     }
 
     m_flags.Mark(shader_compiled);
-    return ErrorSuccess();
+    return ErrorSuccess;
   }
 
   //////////////////////////////////////////////////////////////////////////

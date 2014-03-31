@@ -116,7 +116,7 @@ namespace tloc { namespace physics { namespace box2d {
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBodyDef> rigid_body_def_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(RigidBodyDef, rigid_body_def);
 
 };};};
 

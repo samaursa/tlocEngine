@@ -1,8 +1,10 @@
 #include "tlocEventManager.h"
 
-#include <tlocCore/component_system/tlocEvent.inl>
-#include <tlocCore/containers/tlocContainers.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+#include <tlocCore/component_system/tlocEvent.inl.h>
+#include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -30,9 +32,8 @@ namespace tloc { namespace core { namespace component_system {
     }
     else
     {
-      TLOC_ASSERT(false,
-      "Trying to remove a listener that does not exist with event_type");
-      // LOG: Trying to remove a listener that does not exist with event_type
+      TLOC_LOG_CORE_WARN() <<
+        "Trying to remove a listener that does not exist with even_type";
     }
   }
 
@@ -130,10 +131,10 @@ namespace tloc { namespace core { namespace component_system {
     m_events.clear();
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  template class core_sptr::SharedPtr<EventManager>;
-  template class core_sptr::SharedPtr<const EventManager>;
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EventManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core_cs::EventManager);

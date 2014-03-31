@@ -1,5 +1,7 @@
 #include "tlocTouchSurfaceDevice.h"
 
+#include <tlocCore/tlocAssert.h>
+
 namespace tloc { namespace input { namespace hid { namespace priv {
 
   //////////////////////////////////////////////////////////////////////////
@@ -27,7 +29,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
     else
     {
-      return NULL;
+      return nullptr;
     }
   }
 
@@ -121,9 +123,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoPushBackBufferedElement(bufferedElem);
 
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
-
-    DoEraseTouch(itr);
+    if (itr != GetCurrentTouches().end())
+    {
+      DoEraseTouch(itr);
+    }
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -135,10 +138,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoPushBackBufferedElement(bufferedElem);
 
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
-    TLOC_ASSERT(itr != GetCurrentTouches().end(), "Touch could not be moved! (not found)");
-
-    (*itr).m_X.m_abs() = a_x;
-    (*itr).m_Y.m_abs() = a_y;
+    if (itr != GetCurrentTouches().end())
+    {
+      (*itr).m_X.m_abs() = a_x;
+      (*itr).m_Y.m_abs() = a_y;
+    }
   }
 
   void TouchSurfaceDeviceBuffered::
@@ -195,7 +199,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     // Function is never called.
     static buffer_container_type s_emptyBufferContainer;
-    TLOC_ASSERT(false, "This function is only a stub and should never be called!");
+    TLOC_ASSERT_FALSE("This function is only a stub and should never be called!");
     return s_emptyBufferContainer;
   }
 

@@ -1,7 +1,7 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 //------------------------------------------------------------------------
 // Local functions/vars
@@ -33,7 +33,7 @@ namespace
   };
 }
 
-namespace tloc { namespace graphics {
+namespace tloc { namespace graphics { namespace win {
 
 #define GRAPHICS_MODES_TEMP   typename T_Platform
 #define GRAPHICS_MODES_PARAMS T_Platform
@@ -123,4 +123,4 @@ namespace tloc { namespace graphics {
 
   template class GraphicsMode<>;
 
-};};
+};};};

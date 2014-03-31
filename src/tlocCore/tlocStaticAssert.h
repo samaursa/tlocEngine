@@ -51,4 +51,41 @@ namespace static_assert_implementation {
 
 } // namespace implementation
 
+// ///////////////////////////////////////////////////////////////////////
+// Static Assert
+
+// TODO: solve static assert problems on LLVM
+#ifndef TLOC_DISABLE_STATIC_ASSERT
+# define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
+#else
+# define TLOC_STATIC_ASSERT(_Expression, _Msg)
+#endif
+
+# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
+  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
+
+# define TLOC_STATIC_ASSERT_WIP() \
+  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
+
+# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER)
+# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer)
+# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE)
+# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
+  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference)
+
+# define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT)
+# define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC)
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
+# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
+  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL)
+# define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
+  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported)
+
+
 #endif

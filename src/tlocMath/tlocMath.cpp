@@ -1,5 +1,5 @@
 #include "tlocMath.h"
-#include "tlocMath.inl"
+#include "tlocMath.inl.h"
 
 #include <limits>
 

@@ -1,6 +1,11 @@
+// Put this here first to avoid abs function ambiguity problems
+#include <3rdParty/Graphics/lodepng/lodepng.h>
+#include <3rdParty/Graphics/lodepng/lodepng.c>
+
 #include "tlocImageLoader.h"
 
 #include <tlocCore/io/tlocFileIO.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -22,7 +27,7 @@ namespace tloc { namespace graphics { namespace media {
       { return res; }
 
       imgFile.GetContents(a_out);
-      return common_error_types::error_success;
+      return TLOC_ERROR(common_error_types::error_success);
     }
   };
 
@@ -48,9 +53,6 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // ImageLoaderPng
 
-#include <3rdParty/Graphics/lodepng/lodepng.h>
-#include <3rdParty/Graphics/lodepng/lodepng.c>
-
   ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
   {
     String fileCont;
@@ -68,12 +70,15 @@ namespace tloc { namespace graphics { namespace media {
                                           (u32)fileCont.length());
     if (lodePngErr)
     {
-      // LOG: Take log from lodepng_error_text(lodePngErr);
-      res = graphics::error::error_image_decoding;
+      TLOC_LOG_GFX_ERR() << "lodepng_decode32 failed: " 
+                         << lodepng_error_text(lodePngErr);
+      res = TLOC_ERROR(graphics::error::error_image_decoding);
     }
     else
     {
-      res = DoLoadImageFromMemory(image, dimention_type(width, height), 4);
+      dimention_type dim =
+        core_ds::Variadic<dimention_type::value_type, 2>(width, height);
+      res = DoLoadImageFromMemory(image, dim, 4);
     }
 
     free(image);

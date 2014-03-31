@@ -6,7 +6,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tloccontainers.inl>
+#include <tlocCore/containers/tloccontainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/types/tlocColor.h>
@@ -22,7 +22,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::containers::tl_array<color_type>::type  pixel_container_type;
     typedef core::error::Error                            error_type;
     typedef Image                                         this_type;
-    typedef types::Dimension2u                            dimension_type;
+    typedef types::Dimension2                             dimension_type;
 
   public:
     Image();
@@ -43,6 +43,7 @@ namespace tloc { namespace graphics { namespace media {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
+    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
                                           GetPixels, m_pixels);
 
@@ -54,7 +55,7 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef core::smart_ptr::SharedPtr<Image> image_sptr;
+  TLOC_TYPEDEF_SHARED_PTR(Image, image);
 
 };};};
 

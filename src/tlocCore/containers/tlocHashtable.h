@@ -2,6 +2,8 @@
 #define TLOC_HASH_TABLE_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/tlocAlgorithms.h>
@@ -232,26 +234,26 @@ namespace tloc { namespace core { namespace containers {
     typedef typename T_Policy::element_type      element_type;
     typedef typename T_Policy::value_type        value_type;
     typedef typename T_Policy::key_type          key_type;
-    typedef typename T_Policy::range_hasher_type range_hasher_base_type;
+    typedef typename T_Policy::range_hasher_type range_hasher_type;
     typedef typename T_Policy::extract_key_type  extract_key_type;
     typedef typename T_Policy::key_equal         key_equal;
     typedef typename T_Policy::size_type         size_type;
 
-    typedef typename range_hasher_base_type::hasher             hasher_base_type;
-    typedef typename range_hasher_base_type::hash_to_range_type hash_to_range_type;
+    typedef typename range_hasher_type::hasher             hasher;
+    typedef typename range_hasher_type::hash_to_range_type hash_to_range_type;
 
     //------------------------------------------------------------------------
     // Methods
 
     hash_code_type get_hash_code(const key_type& a_key) const
-    { return (hash_code_type)hasher_base_type::operator()(a_key); }
+    { return (hash_code_type)hasher::operator()(a_key); }
 
     size_type bucket_index(const tl_uint& a_key, size_type a_bucketCount) const
     {
-      typedef typename range_hasher_base_type::first_argument_type  arg1;
-      typedef typename range_hasher_base_type::second_argument_type arg2;
+      typedef typename hash_to_range_type::first_argument_type  arg1;
+      typedef typename hash_to_range_type::second_argument_type arg2;
 
-      return (size_type)range_hasher_base_type::operator()
+      return (size_type)hash_to_range_type::operator()
         ( (arg1)a_key, (arg2)a_bucketCount);
     }
 
@@ -267,11 +269,11 @@ namespace tloc { namespace core { namespace containers {
 
     size_type bucket_index(const element_type& a_elem, size_type a_bucketCount) const
     {
-      typedef typename range_hasher_base_type::first_argument_type  arg1;
-      typedef typename range_hasher_base_type::second_argument_type arg2;
-      typedef typename range_hasher_base_type::result_type          res;
+      typedef typename range_hasher_type::first_argument_type  arg1;
+      typedef typename range_hasher_type::second_argument_type arg2;
+      typedef typename range_hasher_type::result_type          res;
 
-      return (res)range_hasher_base_type::operator()
+      return (res)range_hasher_type::operator()
         ((arg1)extract_key_type::operator()( a_elem.m_value()), (arg2)a_bucketCount);
     }
 

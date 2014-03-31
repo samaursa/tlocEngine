@@ -1,10 +1,12 @@
 #include "tlocOpenGLExt.h"
 #include "3rdParty/Graphics/GLEW/glew.h"
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
   bool                  OpenGLExt::m_initialized = false;
-  OpenGLExt::error_type OpenGLExt::m_error = common_error_types::error_success;
+  OpenGLExt::error_type OpenGLExt::m_error =
+    TLOC_ERROR(common_error_types::error_success);
 
   OpenGLExt::OpenGLExt()
   { }
@@ -16,26 +18,23 @@ namespace tloc { namespace graphics { namespace gl {
       GLenum err = glewInit();
       if (GLEW_OK != err)
       {
-        // LOG: glewInit failed (log which GLEW error it was
+        TLOC_LOG_GFX_ERR() << "glewInit failed: " << err;
         m_initialized = false;
-        m_error = common_error_types::error_initialize;
+        m_error = TLOC_ERROR(common_error_types::error_initialize);
 
         return GetLastError();
       }
       else
       {
         m_initialized = true;
-        m_error = common_error_types::error_success;
-
-        // LOG: OpenGL version, vendor, renderer, and number of supported
-        //      extensions (use glGetString, glGetIntegerv etc.)
+        m_error = TLOC_ERROR(common_error_types::error_success);
 
         return GetLastError();
       }
     }
 
-    // LOG: GLEW already initialized
-    m_error = common_error_types::error_already_initialized;
+    TLOC_LOG_GFX_WARN() << "GLEW already initialized";
+    m_error = TLOC_ERROR(common_error_types::error_already_initialized);
     return GetLastError();
   }
 

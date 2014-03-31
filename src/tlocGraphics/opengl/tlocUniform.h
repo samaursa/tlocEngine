@@ -3,7 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/data_structures/tlocTuple.h>
@@ -21,13 +21,22 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  class Uniform : public ShaderVariable_TI<Uniform>
+  class Uniform
+    : public ShaderVariable_TI<Uniform>
   {
   public:
     template <typename T_Derived> friend class ShaderVariable_TI;
 
     typedef Uniform                         this_type;
     typedef ShaderVariable_TI<this_type>    base_type;
+
+  public:
+    Uniform();
+    Uniform(const this_type& a_other);
+
+    this_type& operator=(this_type a_other);
+
+    void swap(this_type& a_other);
 
   protected:
     template <typename T>
@@ -36,6 +45,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::containers;
       using namespace core::data_structs;
       using namespace math::types;
+      using namespace graphics::types;
 
       tloc::type_traits::AssertTypeIsSupported
         <T,
@@ -67,6 +77,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       using namespace core::data_structs;
       using namespace math::types;
+      using namespace graphics::types;
 
       type_traits::AssertTypeIsSupported
         <T,
@@ -87,6 +98,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core::data_structs;
       using namespace core::containers;
       using namespace math::types;
+      using namespace graphics::types;
 
       tloc::type_traits::AssertTypeIsSupported
         <Array<T>,
@@ -113,7 +125,10 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef tloc::core::smart_ptr::SharedPtr<Uniform>   UniformPtr;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Uniform, uniform);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Uniform, uniform);
+
+  typedef core_conts::Array<uniform_sptr>         uniform_sptr_cont;
 
 };};};
 

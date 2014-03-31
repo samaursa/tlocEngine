@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/data_structures/tlocTable.h>
-#include <tlocCore/data_structures/tlocTable.inl>
+#include <tlocCore/data_structures/tlocTable.inl.h>
 
 namespace TestingTable
 {

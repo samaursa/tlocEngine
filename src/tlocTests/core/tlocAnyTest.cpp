@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/types/tlocAny.h>
-#include <tlocCore/types/tlocAny.inl>
+#include <tlocCore/types/tlocAny.inl.h>
 
 // We are using std::string instead of our string to try to segregate the tests
 // as much as possible from the rest of the engine code
@@ -88,9 +88,13 @@ namespace TestingAnyType
       CHECK(a.Cast<tl_int>() == 1);
       CHECK(b.Cast<tl_int>() == 2);
 
-      a.Swap(b);
+      a.swap(b);
       CHECK(a.Cast<tl_int>() == 2);
       CHECK(b.Cast<tl_int>() == 1);
+
+      swap(a, b);
+      CHECK(b.Cast<tl_int>() == 2);
+      CHECK(a.Cast<tl_int>() == 1);
     }
 
     {
@@ -102,7 +106,7 @@ namespace TestingAnyType
       CHECK(a.Cast<std::string>().compare("Hello") == 0);
       CHECK(b.Cast<std::string>().compare("World") == 0);
 
-      a.Swap(b);
+      a.swap(b);
 
       CHECK(a.Cast<std::string>().compare("World") == 0);
       CHECK(b.Cast<std::string>().compare("Hello") == 0);
@@ -119,9 +123,19 @@ namespace TestingAnyType
       CHECK_MATH_VEC3(a.Cast<MathVec>(), 1, 2, 3);
       CHECK_MATH_VEC3(b.Cast<MathVec>(), 4, 5, 6);
 
-      a.Swap(b);
+      a.swap(b);
 
       CHECK_MATH_VEC3(a.Cast<MathVec>(), 4, 5, 6);
+      CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
+    }
+
+    {
+      // Bug fix
+      types::Any a, b;
+      a = MathVec(1, 2, 3);
+      b = a;
+
+      CHECK_MATH_VEC3(a.Cast<MathVec>(), 1, 2, 3);
       CHECK_MATH_VEC3(b.Cast<MathVec>(), 1, 2, 3);
     }
   }

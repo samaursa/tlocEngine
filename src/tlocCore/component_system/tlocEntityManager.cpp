@@ -1,12 +1,13 @@
 #include "tlocEntityManager.h"
 
-#include <tlocCore/component_system/tlocEntity.inl>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   EntityManager::
-    EntityManager(event_manager_sptr a_eventManager)
+    EntityManager(event_manager_vptr a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
   {
     m_componentsAndEntities.resize(components_group::count);
@@ -20,12 +21,18 @@ namespace tloc { namespace core { namespace component_system {
     {
       if (*itr) { DestroyEntity(*itr); }
     }
+
+    // update releases components and deletes entities marked for destruction
+    Update();
+
+    // delete the remaining entities, if any
+    for_each_all(m_entities, core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
   EntityManager::entity_ptr_type EntityManager::
     CreateEntity()
   {
-    Entity* e = new Entity(m_nextId++);
+    entity_ptr_type e(new Entity(m_nextId++));
 
     if (m_removedEntities.size() > 0)
     {
@@ -46,12 +53,12 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    DestroyEntity(Entity* a_entity)
+    DestroyEntity(entity_ptr_type a_entity)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
 
-    m_entities[a_entity->GetIndex()] = NULL;
+    m_entities[a_entity->GetIndex()] = nullptr;
     m_entitiesToRemove.push_back(a_entity);
 
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
@@ -65,7 +72,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    InsertComponent(Entity *a_entity, Component *a_component)
+    InsertComponent(entity_ptr_type a_entity, component_vptr a_component)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
@@ -81,7 +88,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   bool EntityManager::
-    RemoveComponent(Entity* a_entity, Component* a_component)
+    RemoveComponent(entity_ptr_type a_entity, component_ptr_type a_component)
   {
     component_cont& entityComps = a_entity->DoGetComponents(a_component->GetType());
     component_cont::iterator itr = core::find_all(entityComps, a_component);
@@ -98,7 +105,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   bool EntityManager::
-    DoRemoveComponent(Entity* a_entity, Component* a_component)
+    DoRemoveComponent(entity_ptr_type a_entity, component_ptr_type a_component)
   {
     // LOGIC: We allow the client to remove a component even if the component
     // does not exist in the entity. Return true if it exists, o/w false. Then,
@@ -146,7 +153,7 @@ namespace tloc { namespace core { namespace component_system {
   void EntityManager::
     DoUpdateAndCleanEntities()
   {
-    delete_ptrs(m_entitiesToRemove.begin(), m_entitiesToRemove.end());
+    for_each_all(m_entitiesToRemove, core_sptr::algos::virtual_ptr::DeleteAndReset());
     m_entitiesToRemove.clear();
   }
 
@@ -186,7 +193,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   EntityManager::component_cont* EntityManager::
-    GetComponents(Entity* a_entity, components::value_type a_type)
+    GetComponents(entity_ptr_type a_entity, components::value_type a_type)
   {
     typedef Entity::component_list_list comp_d_list;
 
@@ -201,13 +208,13 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    return NULL;
+    return nullptr;
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  template class core_sptr::SharedPtr<EntityManager>;
-  template class core_sptr::SharedPtr<const EntityManager>;
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntityManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::core_cs::EntityManager);

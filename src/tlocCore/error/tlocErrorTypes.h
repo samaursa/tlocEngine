@@ -15,6 +15,7 @@ namespace tloc { namespace core { namespace error {
       error_graphics  = 3000,
       error_input     = 4000,
       error_physics   = 5000,
+      error_animation = 6000,
     };
   };
 
@@ -39,6 +40,7 @@ namespace tloc {
       error_path_incorrect,
       error_file_not_found,
       error_file_corrupt,
+      error_file_write,
       error_invalid_handle,
     };
   };

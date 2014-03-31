@@ -20,7 +20,7 @@ namespace tloc { namespace core { namespace configs {
 #elif defined (TLOC_RELEASE_DEBUGINFO)
   template <typename T_BuildConfigType = p_build_config::Release_DebugInfo>
 #endif
-  class BuildConfig
+  class BuildConfig_T
   {
   public:
     typedef T_BuildConfigType   build_config_type;
@@ -40,6 +40,11 @@ namespace tloc { namespace core { namespace configs {
 
     static const char* m_buildTypes[total_build_configs];
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  typedef BuildConfig_T<>     BuildConfig;
 
 };};};
 

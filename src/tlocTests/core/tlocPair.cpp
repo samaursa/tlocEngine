@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocCore/tlocPair.h>
-#include <tlocCore/tlocPair.inl>
+#include <tlocCore/tlocPair.inl.h>
 
 
 namespace TestingPair

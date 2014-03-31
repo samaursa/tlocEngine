@@ -14,11 +14,11 @@ namespace tloc { namespace graphics { namespace gl {
 
       typedef core::data_structs::ProtectedBuffer<char8, g_buffSize>  buff_type;
 
-      GLsizei     m_nameLength;
-      GLint       m_arraySize;
-      GLint       m_location;
-      GLenum      m_type;
-      buff_type   m_name;
+      gfx_t::gl_sizei      m_nameLength;
+      gfx_t::gl_int        m_arraySize;
+      gfx_t::gl_int        m_location;
+      gfx_t::gl_enum       m_type;
+      buff_type            m_name;
     };
 
 };};};

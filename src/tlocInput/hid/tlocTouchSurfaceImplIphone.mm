@@ -1,7 +1,7 @@
 #include "tlocTouchSurfaceImplIphone.h"
 
 #include <tlocCore/tlocAlgorithms.h>
-#include <tloccore/tlocAlgorithms.inl>
+#include <tloccore/tlocAlgorithms.inl.h>
 
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 
@@ -28,7 +28,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   
   template <TOUCH_SURFACE_IMPL_TEMP>
   TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
-    TouchSurfaceImpl(parent_type* a_parent,
+    TouchSurfaceImpl(parent_type& a_parent,
     const touch_surface_param_type& a_params)
     : base_type(a_parent, a_params)
   {
@@ -69,10 +69,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     {
       m_currentTouches.resize(m_touchDevice.GetCurrentTouches().size());
     }
-
-    core::copy(m_touchDevice.GetCurrentTouches().begin(),
-               m_touchDevice.GetCurrentTouches().end(),
-               m_currentTouches.begin());
 
     DoUpdate(policy_type());
   }
@@ -123,6 +119,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoUpdate(InputPolicy::Buffered)
   {
+    core::copy(m_touchDevice.GetCurrentTouches().begin(),
+               m_touchDevice.GetCurrentTouches().end(),
+               m_currentTouches.begin());
+
     typename touch_device_type::buffer_container_type::const_iterator itr =
       m_touchDevice.GetBufferedTouches().begin();
     const typename touch_device_type::buffer_container_type::const_iterator itrEnd =
@@ -134,17 +134,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         case TouchSurfaceBufferedElement::begin:
         {
-          m_parent->SendOnTouchPress((*itr).m_event);
+          m_parent.SendOnTouchPress((*itr).m_event);
           break;
         }
         case TouchSurfaceBufferedElement::end:
         {
-          m_parent->SendOnTouchRelease((*itr).m_event);
+          m_parent.SendOnTouchRelease((*itr).m_event);
           break;
         }
         case TouchSurfaceBufferedElement::move:
         {
-          m_parent->SendOnTouchMove((*itr).m_event);
+          m_parent.SendOnTouchMove((*itr).m_event);
           break;
         }
 
@@ -152,13 +152,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
       ++itr;
     }
+
+    // We need to reset the touch device's buffer to prevent touches from
+    // accumulating
+    m_touchDevice.Reset();
   }
 
   template <TOUCH_SURFACE_IMPL_TEMP>
   void TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
     DoUpdate(InputPolicy::Immediate)
   {
-    // Does nothing
+    core::copy(m_touchDevice.GetCurrentTouches().begin(),
+               m_touchDevice.GetCurrentTouches().end(),
+               m_currentTouches.begin());
   }
 
   //////////////////////////////////////////////////////////////////////////

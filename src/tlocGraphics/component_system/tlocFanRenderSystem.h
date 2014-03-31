@@ -4,60 +4,50 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
 
-#include <tlocGraphics/view_projection/tlocFrustum.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/projection/tlocFrustum.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
   class FanRenderSystem
-    : public core::component_system::EntityProcessingSystem
+    : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
   {
   public:
-    typedef core::component_system::EntityProcessingSystem  base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
+    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec2f32                              vec2_type;
-    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
-    typedef math::types::Mat4f32                              matrix_type;
 
-    typedef gl::ShaderProgramPtr                              shader_prog_ptr;
+    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
+
+    typedef core::containers::tl_array<vec2_type>::type       vec2_cont_type;
+    typedef core_sptr::VirtualStackObjectBase_TI<vec2_cont_type>  vec2_cont_vso;
+
+    typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
 
   public:
-    FanRenderSystem(event_manager_sptr a_eventMgr,
-                    entity_manager_sptr a_entityMgr);
+    FanRenderSystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr);
 
-    void AttachCamera(const entity_type* a_cameraEntity);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
-
-    virtual void Pre_ProcessActiveEntities();
-    virtual void ProcessEntity(const entity_manager* a_mgr, 
-                               const entity_type* a_ent);
-    virtual void Post_ProcessActiveEntities();
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
@@ -66,16 +56,21 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    shader_prog_ptr     m_shaderPtr;
-    const entity_type*  m_sharedCam;
-    matrix_type         m_vpMatrix;
+    const_shader_prog_ptr     m_shaderPtr;
 
-    vec3_cont_type          m_vertList;
-    vec2_cont_type          m_texList;
-    gl::ShaderOperatorPtr   m_projectionOperator;
-    gl::AttributePtr        m_vData;
-    gl::AttributePtr        m_tData;
+    gl::shader_operator_vso   m_mvpOperator,
+                              m_so_fan;
+    gl::uniform_vso           m_uniVpMat;
+
+    vec3_cont_vso             m_vertList;
+    gl::attribute_vso         m_vData;
+    gl::attribute_vso         m_tData;
   };
+
+  //------------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(FanRenderSystem, fan_render_system);
 
 };};};
 

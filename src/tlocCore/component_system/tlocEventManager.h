@@ -3,13 +3,17 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EventManager
+    : public core_bclass::NonCopyable_I
   {
   public:
     typedef events::value_type                    event_type;
@@ -49,8 +53,8 @@ namespace tloc { namespace core { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef smart_ptr::SharedPtr<EventManager>        event_manager_sptr;
-  typedef smart_ptr::SharedPtr<const EventManager>  event_manager_const_sptr;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EventManager, event_manager);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager, event_manager);
 
 };};};
 

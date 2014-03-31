@@ -6,6 +6,7 @@
 
 #include <tlocCore/types/tlocTemplateParams.h>
 
+#include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
 
 namespace tloc { namespace input {
@@ -32,7 +33,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename base_type::button_code_type  button_code_type;
 
   public:
-    MouseImpl(parent_type* a_parent, const mouse_param_type& a_params)
+    MouseImpl(parent_type& a_parent, const mouse_param_type& a_params)
       : base_type(a_parent, a_params) {}
 
     ~MouseImpl() {}

@@ -4,6 +4,8 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
+#include <limits>
+#include <cmath>
 
 namespace tloc {
 
@@ -92,6 +94,8 @@ namespace tloc {
     static const T      m_sinTable[64];
   };
 
+
+
   //------------------------------------------------------------------------
   // Typedefs
   typedef Math<s32>   Mathi;
@@ -101,6 +105,50 @@ namespace tloc {
   typedef Math<f64>   Mathf64;
 
   typedef Math<tl_float>   Mathf;
+
+  namespace math {
+
+    namespace priv
+    {
+      typedef type_true   IsFloat;
+      typedef type_false  IsNotFloat;
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsFloat);
+
+      template <typename T>
+      T DoRemainder(T a_num1, T a_num2, IsNotFloat);
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsFloat);
+
+      template <typename T>
+      bool DoApprox(T a_num1, T a_num2, T a_epsilon, IsNotFloat);
+
+      typedef type_true   IsUnsigned;
+      typedef type_false  IsSigned;
+
+      template <typename T>
+      T DoAbs(T a_value, IsSigned);
+
+      template <typename T>
+      T DoAbs(T a_value, IsUnsigned);
+
+    };
+
+    template <typename T>
+    T Abs(T a_value);
+
+    template <typename T>
+    T Remainder(T a_numerator, T a_denominator);
+
+    template <typename T>
+    T Epsilon();
+
+    template <typename T>
+    bool Approx(T a_num1, T a_num2);
+
+  };
 
 };
 

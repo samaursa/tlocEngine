@@ -18,7 +18,6 @@ namespace tloc {
     namespace gl               {};
     namespace renderer         {};
     namespace types            {};
-    namespace view_proj        {};
     namespace win              {};
   };
 
@@ -32,10 +31,49 @@ namespace tloc {
   namespace gfx_gl       = graphics::gl;
   namespace gfx_rend     = graphics::renderer;
   namespace gfx_t        = graphics::types;
-  namespace gfx_vp       = graphics::view_proj;
   namespace gfx_win      = graphics::win;
-
 };
 
+#include <tlocCore/logging/tlocLoggerHelper.h>
+
+TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();
+
+// -----------------------------------------------------------------------
+// gfx's default logger
+namespace tloc { namespace graphics {
+
+  TLOC_LOGGER_DECLARE_LOGGER_FUNC_CONSOLE_IMMEDIATE_DEFAULT(GetLogger);
+
+};};
+
+#define TLOC_LOG_GFX_INFO()    TLOC_LOG_INFO(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG()   TLOC_LOG_DEBUG(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN()    TLOC_LOG_WARN(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR()     TLOC_LOG_ERR(&tloc::graphics::GetLogger())
+
+#define TLOC_LOG_GFX_INFO_IF(_expr_)    TLOC_LOG_INFO_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG_IF(_expr_)   TLOC_LOG_DEBUG_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN_IF(_expr_)    TLOC_LOG_WARN_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR_IF(_expr_)     TLOC_LOG_ERR_IF(_expr_, &tloc::graphics::GetLogger())
+
+#define TLOC_LOG_GFX_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::graphics::GetLogger())
+
+#define TLOC_LOG_GFX_INFO_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG_FILENAME_ONLY_IF(_expr_)   TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(_expr_)     TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, &tloc::graphics::GetLogger())
+
+#define TLOC_LOG_GFX_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::graphics::GetLogger())
+
+#define TLOC_LOG_GFX_INFO_NO_FILENAME_IF(_expr_)    TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_DEBUG_NO_FILENAME_IF(_expr_)   TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_WARN_NO_FILENAME_IF(_expr_)    TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, &tloc::graphics::GetLogger())
+#define TLOC_LOG_GFX_ERR_NO_FILENAME_IF(_expr_)     TLOC_LOG_ERR_NO_FILENAME_IF(_expr_, &tloc::graphics::GetLogger())
 
 #endif

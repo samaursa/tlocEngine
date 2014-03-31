@@ -34,7 +34,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename base_type::keycode_type          keycode_type;
     typedef typename base_type::size_type             size_type;
 
-    KeyboardImpl(parent_type* a_parent,
+    KeyboardImpl(parent_type& a_parent,
                  const keyboard_param_type& a_params);
     ~KeyboardImpl();
 

@@ -1,8 +1,8 @@
 #include "tlocInputManager.h"
 #include "tlocInputTypes.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl>
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
@@ -33,7 +33,7 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   InputManager<INPUT_MANAGER_PARAM>::InputManager(T_ParamList a_paramList)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
     m_impl->Initialize();
   }
 
@@ -44,7 +44,7 @@ namespace tloc { namespace input {
   template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
   T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
-    DoCreateHID(parameter_options::Type a_params)
+    DoCreateHID(param_options::value_type a_params)
   {
     return m_impl->template CreateHID<T_InputObject>(a_params);
   }
@@ -100,9 +100,6 @@ namespace tloc { namespace input {
   template class InputManager<InputPolicy::Buffered>;
   template class InputManager<InputPolicy::Immediate>;
 
-  template class core::smart_ptr::SharedPtr<InputManagerB>;
-  template class core::smart_ptr::SharedPtr<InputManagerI>;
-
   //------------------------------------------------------------------------
   // Force instantiate the constructor for each platform
 #if defined(TLOC_OS_WIN)
@@ -120,7 +117,7 @@ namespace tloc { namespace input {
 
 #define INSTANTIATE_FOR_HID(_HID_, _type_)\
   template _HID_<_type_::policy_type>* _type_::DoCreateHID\
-  <_HID_<_type_::policy_type> >(parameter_options::Type);\
+  <_HID_<_type_::policy_type> >(param_options::value_type);\
   template _HID_<_type_::policy_type>* _type_::DoGetHID\
   <_HID_<_type_::policy_type> >(_type_::size_type);\
 
@@ -133,4 +130,15 @@ namespace tloc { namespace input {
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::TouchSurface, InputManager<InputPolicy::Immediate>);
 
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Buffered>);
+  INSTANTIATE_FOR_HID(hid::Joystick_T, InputManager<InputPolicy::Immediate>);
+
 };};
+
+//------------------------------------------------------------------------
+// Explicit Instantiations
+
+using namespace tloc::input;
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(InputManagerB);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(InputManagerI);

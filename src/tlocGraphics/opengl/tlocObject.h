@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
@@ -24,15 +25,26 @@ namespace tloc { namespace graphics { namespace gl {
 
     bool IsValid();
 
+    void swap(ObjectBase& a_other)
+    {
+      using core::swap;
+      swap(m_handle, a_other.m_handle);
+    }
+
     TLOC_DECL_AND_DEF_GETTER(object_handle, GetHandle, m_handle);
-    TLOC_DECL_AND_DEF_SETTER(object_handle, SetHandle, m_handle);
 
   protected:
     ObjectBase();
 
+    void ResetHandle();
+    TLOC_DECL_SETTER_BY_VALUE(object_handle, SetHandle);
+
   private:
     object_handle m_handle;
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // ObjectRefCounted
 
   template <typename T_Derived>
   class ObjectRefCounted : public ObjectBase
@@ -46,41 +58,12 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     ObjectRefCounted(const ObjectRefCounted& a_other)
       : ObjectBase()
-      , m_refCount(NULL)
+      , m_refCount(nullptr)
     {
-      operator=(a_other);
-    }
-
-    this_type& operator=(const ObjectRefCounted& a_other)
-    {
-      TLOC_ASSERT(GetHandle() == 0 || a_other.GetHandle() == GetHandle(),
-                  "gl::Object copying allowed only on same or invalid handle IDs");
-
+      SetHandle(a_other.GetHandle());
       m_refCount = a_other.m_refCount;
       ++(*m_refCount);
-
-      return *this;
     }
-
-    void SetHandle(object_handle const & a_handle)
-    {
-      TLOC_ASSERT(m_refCount == NULL, "Object already has a handle!");
-      m_refCount = new size_type(0);
-
-      base_type::SetHandle(a_handle);
-    }
-
-    TLOC_DECL_AND_DEF_GETTER(size_type, use_count, *m_refCount );
-
-    bool IsLastRef()
-    { return m_refCount == NULL || use_count() == 0; }
-
-  protected:
-
-    ObjectRefCounted()
-      : ObjectBase()
-      , m_refCount(NULL)
-    { }
 
     ~ObjectRefCounted()
     {
@@ -91,7 +74,7 @@ namespace tloc { namespace graphics { namespace gl {
         if ( IsLastRef() )
         {
           delete m_refCount;
-          m_refCount = NULL;
+          m_refCount = nullptr;
         }
         else
         { --(refCount); }
@@ -101,29 +84,105 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
+    this_type& operator=(ObjectRefCounted a_other)
+    {
+      swap(a_other);
+      return *this;
+    }
+
+    void swap(this_type& a_other)
+    {
+      using core::swap;
+      swap(m_refCount, a_other.m_refCount);
+      base_type::swap(a_other);
+    }
+
+    void SetHandle(object_handle const & a_handle)
+    {
+      TLOC_ASSERT(m_refCount == nullptr, "Object already has a handle!");
+      m_refCount = new size_type(0);
+
+      base_type::SetHandle(a_handle);
+    }
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, use_count, *m_refCount );
+
+    bool IsLastRef()
+    { return m_refCount == nullptr || use_count() == 0; }
+
+  protected:
+
+    ObjectRefCounted()
+      : ObjectBase()
+      , m_refCount(nullptr)
+    { }
+
   private:
     size_type* m_refCount;
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Object_T<T_Derived, OnlyID>
+
   template < typename T_Derived,
              typename T_Policy = p_object::OnlyID >
-  class Object_T : public ObjectRefCounted<T_Derived>
+  class Object_T
+    : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectBase                  base_type;
-    typedef base_type::object_handle    object_handle;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
+    typedef T_Derived                   derived_type;
     typedef core::error::Error          error_type;
+
+    typedef Object_T<derived_type, T_Policy> this_type;
+
+  public:
+    Object_T()
+      : base_type()
+    { }
+
+    Object_T(const this_type& a_other)
+      : base_type(a_other)
+    { }
+
+    Object_T(const derived_type& a_other)
+      : base_type(a_other)
+    { }
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Object_T<T_Derived, WithError>
 
   template<typename T_Derived>
   class Object_T<T_Derived, p_object::WithError>
     : public ObjectRefCounted<T_Derived>
   {
   public:
-    typedef ObjectBase                  base_type;
-    typedef base_type::object_handle    object_handle;
+    typedef ObjectRefCounted<T_Derived>         base_type;
+    typedef typename base_type::object_handle   object_handle;
+
+    typedef T_Derived                   derived_type;
     typedef core::error::Error          error_type;
     typedef core::string::String        string_type;
+
+    typedef Object_T<derived_type>      this_type;
+
+  public:
+
+    Object_T()
+      : base_type()
+    { }
+
+    Object_T(const this_type& a_other)
+
+      : base_type(a_other)
+    { }
+
+    Object_T(const derived_type& a_other)
+      : base_type(a_other)
+    { }
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetError, m_error);
 
@@ -133,6 +192,31 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     string_type m_error;
   };
+
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace compare {
+
+    namespace object {
+
+      struct ByHandle
+      {
+        typedef ObjectBase::object_handle         object_handle;
+
+        ByHandle(object_handle  a_handleToSearch)
+          : m_handleToSearch(a_handleToSearch)
+        { }
+
+        bool operator()(const ObjectBase& a_object)
+        { return m_handleToSearch == a_object.GetHandle(); }
+
+      private:
+        object_handle m_handleToSearch;
+      };
+    };
+
+  };};
 
 };};};
 

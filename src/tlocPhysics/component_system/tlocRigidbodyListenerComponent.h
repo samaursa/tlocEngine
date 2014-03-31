@@ -4,11 +4,14 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+
+#include <tlocPhysics/component_system/tlocComponentType.h>
 
 namespace tloc { namespace physics {
 
@@ -21,12 +24,17 @@ namespace tloc { namespace physics {
   class RigidBodyListener
   {
   public:
-    typedef core::component_system::Entity entity_type;
+    typedef core_cs::Entity             entity_type;
+    typedef core_cs::const_entity_vptr  const_entity_ptr;
 
   public:
-    virtual void OnContactBegin(const entity_type* a_ent) = 0;
-    virtual void OnContactEnd(const entity_type* a_ent) = 0;
+    virtual void OnContactBegin(const_entity_ptr a_ent) = 0;
+    virtual void OnContactEnd(const_entity_ptr a_ent) = 0;
+
+    virtual ~RigidBodyListener() { }
   };
+
+  TLOC_TYPEDEF_VIRTUAL_PTR(RigidBodyListener, rigid_body_listener);
 
 };};
 
@@ -38,35 +46,35 @@ namespace tloc { namespace physics { namespace component_system {
   /// RigidBodyListener callback class.
   ///-------------------------------------------------------------------------
   class RigidBodyListener :
-    public core::component_system::Component_T<RigidBodyListener>
+    public core::component_system::Component_T<RigidBodyListener,
+                                               components::k_rigidBodyListener>
   {
   public:
     typedef RigidBodyListener                                       this_type;
-    typedef core::component_system::Component_T<RigidBodyListener>  base_type;
+    typedef core::component_system::Component_T
+      <RigidBodyListener, components::k_rigidBodyListener>          base_type;
 
-    typedef physics::RigidBodyListener  rigid_body_listener_type;
-
-  public:
-    RigidBodyListener(rigid_body_listener_type* a_listener);
+    typedef physics::rigid_body_listener_vptr         rigid_body_listener_ptr;
 
   public:
-    rigid_body_listener_type* GetRigidBodyListener()
-    { return m_rigidBodyListener; }
+    RigidBodyListener();
+    RigidBodyListener(const rigid_body_listener_ptr& a_listener);
+
+  public:
 
     TLOC_DECL_AND_DEF_GETTER
-      (rigid_body_listener_type*, GetRigidBodyListener, m_rigidBodyListener);
+      (rigid_body_listener_ptr, GetRigidBodyListener, m_rigidBodyListener);
 
   private:
-    rigid_body_listener_type* m_rigidBodyListener;
+    rigid_body_listener_ptr m_rigidBodyListener;
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Typedefs
 
-  typedef core::smart_ptr::SharedPtr<RigidBodyListener> RigidBodyListenerPtr;
-
-  typedef core::component_system::ComponentPool_TI<RigidBodyListenerPtr>
-                                                        rigid_body_listener_pool;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBodyListener, rigid_body_listener);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(RigidBodyListener, rigid_body_listener);
+  TLOC_TYPEDEF_COMPONENT_POOL(RigidBodyListener, rigid_body_listener);
 
 };};};
 

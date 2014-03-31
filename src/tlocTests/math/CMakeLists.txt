@@ -3,13 +3,20 @@ set(TLOC_TESTS_MATH
   tlocAngleTest.cpp
   tlocCircleTest.cpp
   tlocContiguityTest.cpp
+  tlocCuboidTest.cpp
+  tlocFOVTest.cpp
+  tlocFrustumTest.cpp
   tlocMathTest.cpp
   tlocMatrix2Test.cpp
   tlocMatrix3Test.cpp
   tlocMatrix4Test.cpp
   tlocMatrixTest.cpp
   tlocPythagorasTest.cpp
+  tlocRangeTest.cpp
+  tlocRayTest.cpp
   tlocRectangleTest.cpp
+  tlocScaleTest.cpp
+  tlocStatFunctionTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   tlocTransformTest.cpp
@@ -43,7 +50,9 @@ if(APPLE)
   set(PRODUCT_NAME    "\${PRODUCT_NAME}")
   set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
     set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
-			MACOSX_BUNDLE_INFO_PLIST ${TLOC_PATH}/platform/iOS/tlocEngine.plist)
+      MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
+
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files

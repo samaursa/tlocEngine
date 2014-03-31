@@ -1,5 +1,6 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocInput/hid/tlocTouchSurfaceDevice.h>
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
 
 #import <UIKit/UIKit.h>
 
@@ -21,6 +22,7 @@
 ///                       A stencil buffer will not be created if 0.
 ///-------------------------------------------------------------------------
 - (id)initWithFrame:(CGRect)a_frame
+        screenScale:(CGFloat)a_scale
       retainBacking:(BOOL)a_retained
        bitsPerPixel:(size_t)a_bitsPerPix
        bitsPerDepth:(size_t)a_depthBits
@@ -35,6 +37,11 @@
 /// Set the context of this view as the current one.
 ///-------------------------------------------------------------------------
 - (void)SetAsCurrentContext;
+
+///-------------------------------------------------------------------------
+/// Does the view have a valid context
+///-------------------------------------------------------------------------
+- (bool)HasValidContext;
 
 ///-------------------------------------------------------------------------
 /// Allows us to update the render buffer dimensions. Especially useful if
@@ -95,5 +102,10 @@
 ///                       touches belong.
 ///-------------------------------------------------------------------------
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)a_event;
+
+///-------------------------------------------------------------------------
+/// Returns the view's framebuffer
+///-------------------------------------------------------------------------
+- (tloc::gfx_gl::framebuffer_object_sptr)GetFramebuffer;
 
 @end

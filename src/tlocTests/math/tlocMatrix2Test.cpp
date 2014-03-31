@@ -1,16 +1,12 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix2.h>
-#include <tlocMath/types/tlocMatrix2.inl>
-
 #include <tlocMath/types/tlocVector2.h>
-#include <tlocMath/types/tlocVector2.inl>
 
 namespace TestingMatrix2
 {
   using namespace tloc;
   using namespace core::data_structs;
-  using namespace math;
   using math::types::Mat2f;
   using math::types::Vec2f;
   using math::types::Mat2f32;
@@ -56,6 +52,11 @@ namespace TestingMatrix2
     REQUIRE(sizeof(Mat2f64) == (sizeof(f64) * 4));
   }
 
+  TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/operators", "")
+  {
+    c = a * b;
+  }
+
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/General",
     "Test general/basic functionality")
   {
@@ -98,13 +99,13 @@ namespace TestingMatrix2
   TEST_CASE_METHOD(Matrix2Fixture, "Math/Matrix2/Math/Mul",
     "Test multiplication")
   {
-    c.Identity();
+    c.MakeIdentity();
     d = c;
-    c.Mul(d);
+    c = c.Mul(d);
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
 
-    c.Zero();
-    d.Zero();
+    c.MakeZero();
+    d.MakeZero();
     tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
     d.Set(values, Mat2f::k_ColMajor);
@@ -112,7 +113,7 @@ namespace TestingMatrix2
     e.Mul(c, d);
     CHECK_MATRIX2F(e, 5, 11, 11, 25);
 
-    c.Mul(d);
+    c = c.Mul(d);
     CHECK_MATRIX2F(c, 5, 11, 11, 25);
 
     Vec2f v1(1, 2);
@@ -136,7 +137,7 @@ namespace TestingMatrix2
   {
     tl_float values[4] = {1, 2, 3, 4};
     c.Set(values, Mat2f::k_RowMajor);
-    REQUIRE(c.Inverse() == true);
+    c = c.Inverse();
     CHECK_MATRIX2F(c, -2.0f, 1.5f, 1.0f, -0.5f);
   }
 
@@ -148,7 +149,7 @@ namespace TestingMatrix2
     d.Adjoint(c);
     CHECK_MATRIX2F(d, 4, -3, -2, 1);
 
-    c.Adjoint();
+    c = c.Adjoint();
     CHECK_MATRIX2F(c, 4, -3, -2, 1);
   }
 
@@ -158,13 +159,13 @@ namespace TestingMatrix2
     tl_float values[4] = {1, 0, 0, 1};
     c.Set(values, Mat2f::k_ColMajor);
 
-    c.Orthonormalize();
+    c = c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
 
     tl_float values2[4] = {2, 0, 0, 2};
     c.Set(values2, Mat2f::k_ColMajor);
 
-    c.Orthonormalize();
+    c = c.Orthonormalize();
     CHECK_MATRIX2F(c, 1, 0, 0, 1);
   }
 

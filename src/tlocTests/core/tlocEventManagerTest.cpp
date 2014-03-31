@@ -2,16 +2,17 @@
 
 #include <tlocCore/tlocBase.h>
 
-#define protected public
-#define private public
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl>
+#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tlocContainers.inl>
+#include <tlocCore/containers/tlocContainers.inl.h>
 
 namespace TestingEventManager
 {
@@ -88,24 +89,27 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
-  class CompToTest : public core::component_system::Component_T<CompToTest>
+  class CompToTest
+    : public core::component_system::Component_T<CompToTest, components::listener>
   {
   public:
-    typedef core::component_system::Component_T<CompToTest>  base_type;
+    typedef core::component_system::Component_T
+      <CompToTest, components::listener>            base_type;
   public:
-    CompToTest() : base_type(components::listener)
+    CompToTest() : base_type(k_component_type)
     {}
   };
 
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(CompToTest, comp_to_test);
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
     EventTracker globalTracker;
     EventTracker tracker;
 
-    Entity        dummyEnt(0);
-    CompToTest transComp;
-    Component     dummyComp(transComp);
+    entity_vso        dummyEnt(0);
+    comp_to_test_vso  transComp;
+    component_vso     dummyComp(*transComp);
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);
@@ -116,39 +120,39 @@ namespace TestingEventManager
     CHECK(globalTracker.GetEventCount(currentEvent) == 0);
     CHECK(tracker.GetEventCount(currentEvent) == 0);
 
-    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 1);
 
     currentEvent = entity_events::destroy_entity;
-    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 0);
 
     currentEvent = entity_events::insert_component;
     mgr.AddListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 1);
 
     mgr.RemoveListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, &dummyEnt, &transComp));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 1); // no change
 
     currentEvent = entity_events::create_entity;
-    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 2);
 
     mgr.RemoveAllListeners();
 
-    mgr.DispatchNow(EntityEvent(currentEvent, &dummyEnt));
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 2);
 

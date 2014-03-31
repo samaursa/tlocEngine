@@ -4,12 +4,13 @@
 #include <tlocInput/tlocInputBase.h>
 
 #include <tlocCore/tlocBase.h>
-#include <tlocCore/tlocRange.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocMath/tlocRange.h>
 
 #include <tlocInput/tlocInputTypes.h>
 #include <tlocInput/hid/tlocMouseImpl.h>
@@ -64,7 +65,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonPress(a_caller, a_event, a_buttonCode) == false)
+            OnButtonPress(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -80,7 +81,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonRelease(a_caller, a_event, a_buttonCode) == false)
+            OnButtonRelease(a_caller, a_event, a_buttonCode) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -95,7 +96,7 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnMouseMove(a_caller, a_event) == false)
+            OnMouseMove(a_caller, a_event) == true)
         {
           return true; // Veto the rest of the events
         }
@@ -108,11 +109,11 @@ namespace tloc { namespace input { namespace hid {
   /// Cross-platform class to handle keyboard input.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Mouse
     : public core::base_classes::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
     , public p_hid::Mouse
   {
   public:
@@ -120,7 +121,7 @@ namespace tloc { namespace input { namespace hid {
     typedef T_Policy                                    policy_type;
     typedef MouseEvent                                  event_type;
     typedef event_type::axis_type::abs_type::value_type abs_value_type;
-    typedef core::Range_T<abs_value_type>               abs_range_type;
+    typedef math::Range_T<abs_value_type>               abs_range_type;
     typedef event_type::axis_type::rel_type             rel_value_type;
     typedef event_type::button_code_type                button_code_type;
 
@@ -148,7 +149,7 @@ namespace tloc { namespace input { namespace hid {
     void Update();
     void Reset();
 
-    TLOC_DECL_AND_DEF_GETTER(bool, GetClamped, m_clamped);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsClamped, m_clamped);
     TLOC_DECL_AND_DEF_SETTER(bool, SetClamped, m_clamped);
 
     TLOC_DECL_AND_DEF_GETTER(abs_range_type, GetClampX, m_clampX);

@@ -1,5 +1,5 @@
 #include "tlocAngle.h"
-#include "tlocAngle.inl"
+#include "tlocAngle.inl.h"
 
 namespace tloc { namespace math { namespace types {
 

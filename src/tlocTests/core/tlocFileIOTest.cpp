@@ -42,24 +42,48 @@ namespace TestingFileIO
 
     // Prepare the file that we will be testing
     FILE* m_file = fopen(path, "w");
-    REQUIRE(m_file != NULL);
+    REQUIRE((m_file != nullptr));
 
     fputs(sentence, m_file);
     fclose(m_file);
 
     // Start our tests
-    io::FileIO_ReadA fileReader(path);
+    io::FileIO_ReadA fileReader = io::FileIO_ReadA(core_io::Path(path));
     CHECK_FALSE(fileReader.IsOpen());
     CHECK(fileReader.Open() == common_error_types::error_success);
     CHECK(fileReader.IsOpen());
 
     String fileContents;
     fileReader.GetContents(fileContents);
-
     CHECK(fileContents.compare(sentence) == 0);
+
+    // should close the file fileReader currently has and copy the rhs file
+    // reader into fileReader
+    fileReader = io::FileIO_ReadA(core_io::Path(path));
+    CHECK_FALSE(fileReader.IsOpen());
+    CHECK(fileReader.Open() == common_error_types::error_success);
+    CHECK(fileReader.IsOpen());
+
     CHECK(fileReader.Close() == common_error_types::error_success );
     CHECK_FALSE(fileReader.IsOpen());
 
+    // write something to the file
+    const char* appendedWords = " Appended words.";
+
+    io::FileIO_AppendA fileAppend( (core_io::Path(path)) );
+    REQUIRE(fileAppend.Open() == ErrorSuccess);
+    REQUIRE(fileAppend.Write(appendedWords) == ErrorSuccess);
+    REQUIRE(fileAppend.Close() == ErrorSuccess);
+
+    REQUIRE(fileReader.Open() == ErrorSuccess);
+    String appendedFileContents;
+    fileReader.GetContents(appendedFileContents);
+    CHECK(appendedFileContents.compare(String(sentence) + appendedWords) == 0);
+    REQUIRE(fileReader.Close() == ErrorSuccess);
+
     CHECK(fileReader.Delete() == common_error_types::error_success );
+
+    io::FileIO_ReadA fileReaderNoFile(core_io::Path("fileDoesNotExist.txt"));
+    CHECK(fileReaderNoFile.Open() != ErrorSuccess);
   }
 };

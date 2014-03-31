@@ -53,10 +53,10 @@
   // already has.
   UIWindow* uiwindow = self->windowImpl->GetWindowHandle().Cast<UIWindow*>();
   UIScreen* uiscreen = [uiwindow screen];
-  
+
   CGRect frame;
-  if (self->windowImpl->GetWindowSettings().m_style& 
-      tloc::graphics::win::WindowSettings::style_titlebar)
+  if (self->windowImpl->GetWindowSettings().GetStyleBits()&
+      tloc::graphics::win::p_window_settings::style::TitleBar::s_glParamName)
   {
     frame = [uiscreen applicationFrame];
   }
@@ -71,8 +71,12 @@
   [view setFrame:uiwindow.bounds];
   [view UpdateRenderBufferDimensions];
   
-  self->windowImpl->GetParentWindowHandle()
-    ->SendEvent(tloc::graphics::win::WindowEvent::resized);
+  tloc::graphics::win::WindowEvent evt
+    (tloc::graphics::win::WindowEvent::resized,
+     self->windowImpl->GetParentWindowHandle()->GetWidth(),
+     self->windowImpl->GetParentWindowHandle()->GetHeight());
+  
+  self->windowImpl->GetParentWindowHandle()->SendEvent(evt);
 }
 
 @end

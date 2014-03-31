@@ -2,9 +2,13 @@
 #define TLOC_STRING_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+
+#include <tlocCore/tlocFunctional.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in Strings
@@ -28,7 +32,6 @@ namespace tloc { namespace core { namespace string {
   // Ctor Helpers
 
   struct StringNoInitialize {};
-  struct StringSprintf {};
 
   //------------------------------------------------------------------------
   // StringBase
@@ -75,7 +78,6 @@ namespace tloc { namespace core { namespace string {
     StringBase(const T_InputIterator aPtrBegin, const T_InputIterator aPtrEnd);
 
     StringBase(StringNoInitialize, size_type aN);
-    StringBase(StringSprintf, const size_type aFormat, ...);
 
     ~StringBase();
 
@@ -118,7 +120,7 @@ namespace tloc { namespace core { namespace string {
     this_type& operator+= (const_pointer aCharStr);
     this_type& operator+= (const_reference aChar);
 
-    this_type& operator = (const this_type& aStr);
+    this_type& operator = (this_type aStr);
     this_type& operator = (const_pointer aCharStr);
     this_type& operator = (value_type aChar);
 
@@ -339,8 +341,14 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   const tl_size StringBase<T>::npos = (tl_size) - 1;
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef StringBase<char8>   String;
+  typedef StringBase<char32>  StringW;
+
   //////////////////////////////////////////////////////////////////////////
-  // Plus operator global
+  // operator+ global
 
   template <typename T>
   StringBase<T>
@@ -362,8 +370,39 @@ namespace tloc { namespace core { namespace string {
   StringBase<T>
     operator+ (const StringBase<T>& a_lhs, T a_rhs);
 
+  // ///////////////////////////////////////////////////////////////////////
+  // swap
+
+  template <typename T>
+  void swap(core_str::StringBase<T>& a, core_str::StringBase<T>& b)
+  { a.swap(b); }
+
   //////////////////////////////////////////////////////////////////////////
   // Global functions
+
+  template <typename T>
+  const T* StrChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrChr(char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  const T* StrRChr(const T* a_string, T a_charToLocate);
+
+  template <>
+  const char8* StrRChr(const char8* a_string, char a_charToLocate);
+
+  template <typename T>
+  T* StrRChr(T* a_string, T a_charToLocate);
+
+  template <>
+  char8* StrRChr(char8* a_string, char a_charToLocate);
 
   template <typename T>
   tl_size
@@ -376,6 +415,9 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2);
+  template <>
+  tl_int
+    StrCmp(const char8* a_ptr1, const char8* a_ptr2);
   template <typename T>
   tl_int
     StrCmp(const T* aPtr1, const T* aPtr2, const tl_size& aNumChars);
@@ -390,10 +432,66 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   T
     CharToUpper(const T& aChar);
-  tl_int
+  tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
-  tl_int
+  tl_size
     CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
+
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, T a_delim, T_StringContainer& a_out);
+
+  template <typename T, typename T_StringContainer>
+  void
+    Tokenize(const T* a_string, const T* a_delims, T_StringContainer& a_out);
+
+  bool
+    IsCntrl(char8 a_char);
+
+  bool
+    IsBlank(char8 a_char);
+
+  bool
+    IsSpace(char8 a_char);
+
+  bool
+    IsUpper(char8 a_char);
+
+  bool
+    IsLower(char8 a_char);
+
+  bool
+    IsAlpha(char8 a_char);
+
+  bool
+    IsDigit(char8 a_char);
+
+  bool
+    IsNumber(const char8* a_char);
+
+  bool
+    IsRealNumber(const char8* a_char);
+
+  bool
+    IsNegNumber(const char8* a_char);
+
+  bool
+    IsNegRealNumber(const char8* a_char);
+
+  bool
+    IsPosNumber(const char8* a_char);
+
+  bool
+    IsPosRealNumber(const char8* a_char);
+
+  bool
+    IsXDigit(char8 a_char);
+
+  bool
+    IsAlNum(char8 a_char);
+
+  bool
+    IsPunct(char8 a_char);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone
@@ -423,9 +521,163 @@ namespace tloc { namespace core { namespace string {
   bool
     operator!=(const StringBase<T>& a, const T* b);
 
-  typedef StringBase<char8>   String;
-  typedef StringBase<char32>  StringW;
+  String
+    Format(const char8* a_string, ...);
+
+  //------------------------------------------------------------------------
+  // global vars
+
+  extern char8 g_controls[];
+  extern String g_controlsStr;
+
+  extern char8 g_blank[];
+  extern String g_blankStr;
+
+  extern char8 g_space[];
+  extern String g_spaceStr;
+
+  extern char8 g_upper[];
+  extern String g_upperStr;
+
+  extern char8 g_lower[];
+  extern String g_lowerStr;
+
+  extern char8 g_alpha[];
+  extern String g_alphaStr;
+
+  extern char8 g_digit[];
+  extern String g_digitStr;
+
+  extern char8 g_xdigit[];
+  extern String g_xdigitStr;
+
+  extern char8 g_alnum[];
+  extern String g_alnumStr;
+
+  extern char8 g_punct[];
+  extern String g_punctStr;
 
 };};};
+
+namespace tloc { namespace core {
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Hash
+
+  template <>
+  struct hash<core_str::String>
+  { tl_size operator()(const core_str::String& a_string) const; };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // binary functions for strings
+
+  template <>
+  struct equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct not_equal_to<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct greater<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct less<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct greater_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct less_equal<const char8*>
+  {
+    bool operator()(const char8* a_x, const char8* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // same as above, for char32
+
+  template <>
+  struct equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) == 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct not_equal_to<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) != 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct greater<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) > 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct less<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) < 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct greater_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) >= 0; }
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  template <>
+  struct less_equal<const char32*>
+  {
+    bool operator()(const char32* a_x, const char32* a_y) const
+    { return core_str::StrCmp(a_x, a_y) <= 0; }
+  };
+
+};};
 
 #endif

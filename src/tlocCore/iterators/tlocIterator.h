@@ -2,6 +2,8 @@
 #define TLOC_ITERATOR_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
@@ -132,6 +134,11 @@ namespace tloc { namespace core {
     T_Container& m_container;
   };
 
+  template <typename T_Container>
+  back_insert_iterator<T_Container>
+    MakeBackInsertIterator(T_Container& a_container)
+  { return back_insert_iterator<T_Container>(a_container); }
+
   //````````````````````````````````````````````````````````````````````````
   // front_insert_iterator
 
@@ -156,6 +163,10 @@ namespace tloc { namespace core {
     T_Container& m_container;
   };
 
+  template <typename T_Container>
+  front_insert_iterator<T_Container>
+    MakeFrontInsertIterator(T_Container& a_container)
+  { return front_insert_iterator<T_Container>(a_container); }
 
 
   //````````````````````````````````````````````````````````````````````````
@@ -182,6 +193,11 @@ namespace tloc { namespace core {
     T_Container&                    m_container;
     typename T_Container::iterator  m_itr;
   };
+
+  template <typename T_Container, typename T_IteratorType>
+  insert_iterator<T_Container>
+    MakeInsertIterator(T_Container& a_container, T_IteratorType a_itr)
+  { return insert_iterator<T_Container>(a_container, a_itr); }
 
   //````````````````````````````````````````````````````````````````````````
   // reverse_iterator

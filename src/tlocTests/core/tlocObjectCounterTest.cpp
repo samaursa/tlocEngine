@@ -2,7 +2,7 @@
 
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocArray.inl>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 namespace TestingObjectCounter
 {

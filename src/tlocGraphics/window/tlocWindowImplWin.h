@@ -7,19 +7,20 @@
 #include <tlocCore/types/tlocTypes.h>
 
 #include <tlocCore/string/tlocString.h>
-#include <tlocCore/string/tlocString.inl>
+#include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocCore/platform/tlocPlatform.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
+
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
 #include <gl/GL.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
@@ -33,15 +34,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // TODO: Static assert to prevent other platforms from using this class
 
-    typedef core::PlatformInfo<>::platform_type          platform_type;
-    typedef WindowImpl<Window_T<> >                        this_type;
-    typedef WindowImplBase<Window_T<> >                    base_type;
+    typedef core_plat::PlatformInfo::platform_type       platform_type;
+    typedef WindowImpl<Window_T<> >                      this_type;
+    typedef WindowImplBase<Window_T<> >                  base_type;
     typedef GraphicsMode<platform_type>                  graphics_mode;
     typedef base_type::parent_window_type                parent_window_type;
 
     typedef HWND                                         window_handle_type;
     typedef WindowSettings::style_type                   window_style_type;
     typedef tl_size                                      size_type;
+
+    typedef gl::FramebufferObject                        fbo_type;
+    typedef gl::framebuffer_object_sptr                  fbo_sptr;
 
   public:
 
@@ -71,8 +75,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @param  a_mode The graphics mode
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                const window_style_type& a_style);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
@@ -87,6 +90,24 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum width of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum width.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxWidth() const;
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Gets the maximum height of the window that the system is capable
+    /// of supporting.
+    ///
+    /// @return The maximum height.
+    ///-------------------------------------------------------------------------
+    size_type GetMaxHeight() const;
 
     void ProcessEvents();
 
@@ -103,6 +124,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @param  a_active true to set this window as active.
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active);
+
+    bool HasValidContext() const;
 
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync
@@ -159,6 +182,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
     void SwapBuffers();
+
+    ///-------------------------------------------------------------------------
+    /// Called by Window_T<> when setting up the renderer
+    ///-------------------------------------------------------------------------
+    fbo_sptr DoGetFramebuffer();
 
   private:
 

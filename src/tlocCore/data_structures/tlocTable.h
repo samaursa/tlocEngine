@@ -59,8 +59,8 @@ namespace tloc { namespace core { namespace data_structs {
 
     // Access range is that of an integer, approx. 2.1 billion rows & cols.
     // If size is more than that, use the get function instead
-    value_type& operator() (tl_int aRow, tl_int aCol);
-    const value_type& operator() (tl_int aRow, tl_int aCol) const;
+    value_type& operator() (size_type aRow, size_type aCol);
+    const value_type& operator() (size_type aRow, size_type aCol) const;
 
     value_type& Get(size_type aRow, size_type aCol);
     const value_type& Get(size_type aRow, size_type aCol) const;
@@ -68,8 +68,8 @@ namespace tloc { namespace core { namespace data_structs {
     void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
     void GetCol(size_type aCol, tuple_row_type& aColOut) const;
 
-    value_type& operator[] (tl_int aIndex);
-    const value_type& operator[] (tl_int aIndex) const;
+    value_type& operator[] (size_type aIndex);
+    const value_type& operator[] (size_type aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
     T*        data();
@@ -107,5 +107,7 @@ namespace tloc { namespace core { namespace data_structs {
   };
 
 };};};
+
+#include "tlocTable.inl.h"
 
 #endif

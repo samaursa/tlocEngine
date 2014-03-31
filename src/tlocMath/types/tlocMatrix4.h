@@ -9,9 +9,25 @@
 
 namespace tloc { namespace math { namespace types {
 
+  namespace p_matrix4
+  {
+    struct NonAffine{};
+    // i.e. the matrix is an actual transformation matrix
+    struct Affine{};
+  };
+
+  // Matrix indices (columns are vertical)
+  //
+  // 0   4   8    12
+  // 1   5   9    13
+  // 2   6   10   14
+  // 3   7   11   15
+
   template <typename T>
   class Matrix4 : public Matrix<T, 4>
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
@@ -30,6 +46,8 @@ namespace tloc { namespace math { namespace types {
     using base_type::MakeDiagonal;
     using base_type::m_values;
     using base_type::k_MatrixSize;
+
+    using base_type::operator*;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -68,7 +86,39 @@ namespace tloc { namespace math { namespace types {
     Matrix4(const core::data_structs::
             Variadic<value_type, k_MatrixSize>& a_vars,
             matrix_order a_order);
+
+    this_type Adjoint() const;
+
+    // Non-affine inverse assumed. Slower than affine inverse.
+    this_type Invert() const;
+
+    // Affine: faster, but incorrect results for non-affine matrices
+    template <typename T_InverseType>
+    this_type Invert() const;
+
+    value_type Determinant() const;
+
+  private:
+    this_type DoInvert(p_matrix4::NonAffine) const;
+    this_type DoInvert(p_matrix4::Affine) const;
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T>
+  template <typename T_InverseType>
+  typename Matrix4<T>::this_type
+    Matrix4<T>::Invert() const
+  {
+    type_traits::AssertTypeIsSupported
+      <T_InverseType, p_matrix4::Affine, p_matrix4::NonAffine>();
+
+    return DoInvert(T_InverseType());
+  }
+
+  // -----------------------------------------------------------------------
+  // typedefs
 
   typedef Matrix4<f32>  Mat4f32;
   typedef Matrix4<f64>  Mat4f64;

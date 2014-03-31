@@ -1,61 +1,68 @@
 #include "tlocCamera.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocMath/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocComponentType.h>
-#include <tlocGraphics/component_system/tlocProjectionComponent.h>
 
+#include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
+#include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/component_system/tlocCamera.h>
+
 namespace tloc { namespace prefab { namespace graphics {
-  core_cs::Entity*
-    CreateCamera(core_cs::EntityManager& a_mgr,
-                 core_cs::ComponentPoolManager& a_poolMgr)
+
+  Camera::entity_ptr
+    Camera::
+    Create(const frustum_type& a_frustum, const vec_type& a_position)
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_frustum, a_position);
+
+    return ent;
+  }
+
+  void
+    Camera::
+    Add(entity_ptr a_ent, const frustum_type& a_frustum,
+        const vec_type& a_position)
   {
     using math_cs::components::transform;
-    using tloc::graphics::component_system::components::projection;
+    using gfx_cs::components::camera;
 
     using namespace core_cs;
     using namespace math_cs;
-    using namespace tloc::graphics::component_system;
+    using namespace gfx_cs;
 
-    typedef ComponentPoolManager    pool_mgr;
-    typedef pool_mgr::iterator      comp_pool_ptr;
+    typedef ComponentPoolManager                    pool_mgr;
+    typedef tloc::math_cs::transform_f32_pool       t_pool;
 
-    comp_pool_ptr cpool;
+    transform_f32_pool_vptr                         tPool;
 
     // Get or create the transform pool
-    if (a_poolMgr.Exists(transform) == false)
-    { cpool = a_poolMgr.CreateNewPool<TransformPtr>(transform); }
+    if (m_compPoolMgr->Exists(transform) == false)
+    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
     else
-    { cpool = a_poolMgr.GetPool(transform); }
+    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
-    typedef tloc::math_cs::TransformPool  t_pool;
-
-    t_pool* tPool = (*cpool)->GetAs<t_pool>();
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    itrTransform->GetElement() = TransformPtr(new Transform());
+    (*itrTransform)->SetValue(Transformf32(a_position) );
+
+    typedef gfx_cs::camera_pool                     p_pool;
+
+    camera_pool_vptr                                pPool;
 
     // Get or create the projection pool
-    if (a_poolMgr.Exists(projection) == false)
-    { cpool = a_poolMgr.CreateNewPool<ProjectionPtr>(projection); }
+    if (m_compPoolMgr->Exists(camera) == false)
+    { pPool = m_compPoolMgr->CreateNewPool<gfx_cs::Camera>(); }
     else
-    { cpool = a_poolMgr.GetPool(projection); }
-
-    typedef tloc::graphics::component_system::ProjectionPool p_pool;
-
-    p_pool* pPool = (*cpool)->GetAs<p_pool>();
+    { pPool = m_compPoolMgr->GetPool<gfx_cs::Camera>(); }
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    itrProjection->GetElement() = ProjectionPtr(new Projection());
+    (*itrProjection)->SetValue(gfx_cs::Camera(a_frustum) );
 
     // Create an entity from the manager and return to user
-    Entity* ent = a_mgr.CreateEntity();
-    a_mgr.InsertComponent(ent, &*(itrTransform->GetElement()) );
-    a_mgr.InsertComponent(ent, &*(itrProjection->GetElement()) );
-
-    return ent;
+    m_entMgr->InsertComponent(a_ent, (*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, (*itrProjection)->GetValue() );
   }
 
 };};};

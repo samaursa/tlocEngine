@@ -1,12 +1,13 @@
 set(TLOC_GRAPHICS 
   tlocDepVersionCheck.cpp 
   tlocGraphicsBase.h 
+  tlocGraphicsBase.cpp
   tloc_graphics.cpp 
   tloc_graphics.h 
-  tloc_graphics.inl 
+  tloc_graphics.inl.h 
   )
 
-set(3RD_PARTY_PATH ${TLOC_PATH}/src/3rdParty/Graphics/)
+set(3RD_PARTY_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/)
 set(TLOC_GRAPHICS_3RD_PARTY_COMPRESSION
   ${3RD_PARTY_PATH}/miniz/miniz.c
   )
@@ -40,6 +41,14 @@ set(TLOC_GRAPHICS_APPLICATION
   )
 
 set(TLOC_GRAPHICS_COMPONENT_SYSTEM
+  component_system/tlocArcBall.h
+  component_system/tlocArcBall.cpp
+  component_system/tlocArcBallSystem.h
+  component_system/tlocArcBallSystem.cpp
+  component_system/tlocCamera.h
+  component_system/tlocCamera.cpp
+  component_system/tlocCameraSystem.h
+  component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
@@ -53,25 +62,35 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMesh.h 
   component_system/tlocMeshRenderSystem.cpp 
   component_system/tlocMeshRenderSystem.h 
+  component_system/tlocSceneNode.h
+  component_system/tlocSceneNode.cpp
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
-  component_system/tlocProjectionComponent.cpp 
-  component_system/tlocProjectionComponent.h 
+  component_system/tlocRenderSystem.h
+  component_system/tlocRenderSystem.cpp
+  component_system/tlocSceneGraphSystem.h
+  component_system/tlocSceneGraphSystem.cpp
+  component_system/tlocTextureAnimator.h
+  component_system/tlocTextureAnimator.cpp
+  component_system/tlocTextureAnimatorSystem.h
+  component_system/tlocTextureAnimatorSystem.cpp
+  component_system/tlocTextureCoords.h
+  component_system/tlocTextureCoords.cpp
   component_system/tlocQuad.cpp 
   component_system/tlocQuad.h 
   component_system/tlocQuadRenderSystem.cpp 
   component_system/tlocQuadRenderSystem.h 
   component_system/tloc_component_system.cpp 
   component_system/tloc_component_system.h 
-  component_system/tloc_component_system.inl
+  component_system/tloc_component_system.inl.h
   )
 
 set(TLOC_GRAPHICS_ERROR 
   error/tlocErrorTypes.h 
   error/tloc_error.cpp 
   error/tloc_error.h 
-  error/tloc_error.inl
+  error/tloc_error.inl.h
   )
 
 set(TLOC_GRAPHICS_MEDIA 
@@ -81,7 +100,11 @@ set(TLOC_GRAPHICS_MEDIA
   media/tlocImageLoader.h 
   media/tloc_media.cpp 
   media/tloc_media.h 
-  media/tloc_media.inl
+  media/tloc_media.inl.h
+  media/tlocObjLoader.h
+  media/tlocObjLoader.cpp
+  media/tlocSpriteLoader.h
+  media/tlocSpriteLoader.cpp
   )
 
 set(TLOC_GRAPHICS_OPENGL 
@@ -89,10 +112,15 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocAttribute.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
+  opengl/tlocFramebufferObject.h
+  opengl/tlocFramebufferObject.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
+  opengl/tlocOpenGLIncludes.h
+  opengl/tlocRenderbufferObject.h
+  opengl/tlocRenderbufferObject.cpp
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 
@@ -111,7 +139,7 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocUniformExplicitMacros.h 
   opengl/tloc_opengl.cpp 
   opengl/tloc_opengl.h 
-  opengl/tloc_opengl.inl
+  opengl/tloc_opengl.inl.h
   )
 
 if(WIN32)
@@ -127,31 +155,20 @@ set(TLOC_GRAPHICS_RENDERER
   renderer/tlocRenderer.h 
   renderer/tloc_renderer.cpp 
   renderer/tloc_renderer.h 
-  renderer/tloc_renderer.inl
+  renderer/tloc_renderer.inl.h
   )
 
 set(TLOC_GRAPHICS_TYPES 
-  types/tlocAspectRatio.cpp 
-  types/tlocAspectRatio.h 
   types/tlocColor.cpp 
   types/tlocColor.h 
   types/tlocDimension.h 
-  types/tlocFOV.cpp 
-  types/tlocFOV.h 
   types/tlocVertex.h 
   types/tloc_types.cpp 
   types/tloc_types.h 
-  types/tloc_types.inl
+  types/tloc_types.inl.h
   )
 
 set(TLOC_GRAPHICS_VIEW_PROJECTION 
-  view_projection/tlocCamera.cpp 
-  view_projection/tlocCamera.h 
-  view_projection/tlocFrustum.cpp 
-  view_projection/tlocFrustum.h 
-  view_projection/tloc_view_projection.cpp 
-  view_projection/tloc_view_projection.h 
-  view_projection/tloc_view_projection.inl
   )
 
 set(TLOC_GRAPHICS_WINDOW 
@@ -162,13 +179,14 @@ set(TLOC_GRAPHICS_WINDOW
   window/tlocGraphicsModes.h 
   window/tlocWindow.cpp 
   window/tlocWindow.h 
-  window/tlocWindow.inl 
+  window/tlocWindow.inl.h 
   window/tlocWindowHandle.h 
   window/tlocWindowImpl.h 
   window/tlocWindowSettings.h 
+  window/tlocWindowSettings.cpp
   window/tloc_window.cpp 
   window/tloc_window.h 
-  window/tloc_window.inl
+  window/tloc_window.inl.h
   )
 
 #-------------------------------------------
@@ -208,8 +226,8 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_PATH}/src/3rdParty/Graphics/GLEW/
-  ${TLOC_PATH}/src/3rdParty/Graphics/glext/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
+  ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
 
 add_library(tlocGraphics STATIC
@@ -229,6 +247,13 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
   )
 
+add_dependencies(tlocGraphics
+  tlocCore
+  tlocMath
+  )
+
+set_platform_specific_properties(tlocGraphics)
+
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
 source_group(component_system FILES ${TLOC_GRAPHICS_COMPONENT_SYSTEM})
@@ -237,7 +262,7 @@ source_group(media            FILES ${TLOC_GRAPHICS_MEDIA})
 source_group(opengl           FILES ${TLOC_GRAPHICS_OPENGL})
 source_group(renderer         FILES ${TLOC_GRAPHICS_RENDERER})
 source_group(types            FILES ${TLOC_GRAPHICS_TYPES})
-source_group(view_projection  FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
+source_group(view             FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
 source_group(window           FILES ${TLOC_GRAPHICS_WINDOW})
 
 source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})

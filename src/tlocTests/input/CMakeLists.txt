@@ -60,4 +60,6 @@ if(WIN32)
     )
 endif()
 
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
+
 # Filters to organize the source files

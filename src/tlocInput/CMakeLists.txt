@@ -90,5 +90,7 @@ add_dependencies(tlocInput
   tlocMath
   )
 
+set_platform_specific_properties(tlocInput)
+
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})

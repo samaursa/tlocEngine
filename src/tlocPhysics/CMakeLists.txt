@@ -70,6 +70,8 @@ add_dependencies(tlocPhysics
   tlocMath
   )
 
+set_platform_specific_properties(tlocPhysics)
+
 # Filters to organize the source files
 source_group(box2d            FILES ${TLOC_PHYSICS_BOX2D})
 source_group(component_system FILES ${TLOC_PHYSICS_COMPONENT_SYSTEM})

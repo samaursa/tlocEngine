@@ -90,6 +90,8 @@ add_dependencies(tlocPrefab
   tlocPrefab
   )
 
+set_platform_specific_properties(tlocPrefab)
+
 # Filters to organize the source files
 source_group(core             FILES ${TLOC_PREFAB_CORE})
 source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})

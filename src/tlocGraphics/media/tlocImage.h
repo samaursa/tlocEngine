@@ -6,8 +6,8 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/containers/tloccontainers.inl.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/types/tlocDimension.h>
@@ -23,6 +23,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::error::Error                            error_type;
     typedef Image                                         this_type;
     typedef types::Dimension2                             dimension_type;
+    typedef core_sptr::VirtualPtr<const uchar8>           const_uchar8_ptr;
 
   public:
     Image();
@@ -30,9 +31,12 @@ namespace tloc { namespace graphics { namespace media {
     ///-------------------------------------------------------------------------
     /// @brief Loads color buffer from memory (assuming RGBA format)
     ///-------------------------------------------------------------------------
-    error_type        LoadFromMemory(const uchar8* a_buffer,
+    error_type        LoadFromMemory(const_uchar8_ptr a_buffer,
                                      dimension_type a_dim,
                                      size_type a_channels);
+
+    error_type        LoadFromMemory(const pixel_container_type& a_buffer,
+                                     dimension_type a_dim);
 
     error_type        Create(dimension_type a_dim, const color_type& a_color);
 

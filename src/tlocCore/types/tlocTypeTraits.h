@@ -224,7 +224,7 @@ namespace tloc
       typedef T&                                            reference;
       typedef const T&                                      const_reference;
 
-      typename
+      typedef typename
         Loki::Select<Loki::TypeTraits<T>::isFundamental,
                      const T,
                      const T&>::Result                      param_type;
@@ -237,7 +237,7 @@ namespace tloc
       typedef T&                                            reference;
       typedef const T&                                      const_reference;
 
-      typename
+      typedef typename
         Loki::Select<Loki::TypeTraits<T>::isFundamental,
                      const T,
                      const T&>::Result                      param_type;

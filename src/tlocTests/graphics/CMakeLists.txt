@@ -66,5 +66,7 @@ if(APPLE)
                         RESOURCE "${TLOC_TESTS_GRAPHICS_ASSETS}")
 endif()
 
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
+
 # Filters to organize the source files
 #source_group(assets FILES ${TLOC_TESTS_GRAPHICS_ASSETS})

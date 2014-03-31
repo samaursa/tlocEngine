@@ -31,7 +31,7 @@ namespace tloc { namespace input { namespace hid {
   Joystick_T<JOYSTICK_PARAMS>::
     Joystick_T(const T_ParamList& a_paramList)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

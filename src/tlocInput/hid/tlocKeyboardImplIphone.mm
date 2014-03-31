@@ -26,9 +26,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <KEYBOARD_IMPL_TEMP>
   KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
-    KeyboardImpl(parent_type* a_parent,
+    KeyboardImpl(parent_type& a_parent,
                  const keyboard_param_type& a_params)
-    : base_type(*a_parent, a_params)
+    : base_type(a_parent, a_params)
   {
     DoInitialize();
   }
